@@ -23,15 +23,15 @@ class _BottomBarState extends State<BottomBar> {
         unselectedItemColor: Colors.grey,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.place),
-            label: 'Sites',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.book),
             label: 'Notes',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.note),
+            icon: Icon(Icons.place),
+            label: 'Sites',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.grid_4x4),
             label: 'Collecting Events',
           ),
           BottomNavigationBarItem(
