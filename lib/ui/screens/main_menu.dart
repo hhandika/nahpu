@@ -30,9 +30,7 @@ class _MainMenuState extends State<MainMenu> {
         ],
       ),
       drawer: const Drawer(),
-      body: const Center(
-        child: Text('Nahpu Project'),
-      ),
+      body: Row(children: const [Text('Nahpu Project')]),
       floatingActionButton: SpeedDial(
         icon: Icons.add,
         backgroundColor: const Color(0xFF2457C5),

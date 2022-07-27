@@ -21,16 +21,31 @@ class _NewProjectFormState extends State<NewProjectForm> {
           title: const Text('Create a new project'),
           backgroundColor: const Color(0xFF2457C5),
         ),
-        body: Center(
-          child: ElevatedButton(
-            child: const Text('Create'),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ProjectMenu()),
-              );
-            },
-          ),
+        body: Align(
+          alignment: const Alignment(0.9, 0.95),
+          child: Wrap(spacing: 10, children: [
+            ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.grey),
+              ),
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ProjectMenu()),
+                );
+              },
+            ),
+            ElevatedButton(
+              child: const Text('Create'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ProjectMenu()),
+                );
+              },
+            )
+          ]),
         ));
   }
 }
