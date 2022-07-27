@@ -30,10 +30,7 @@ class _NewProjectFormState extends State<NewProjectForm> {
               ),
               child: const Text('Cancel'),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ProjectMenu()),
-                );
+                Navigator.pop(context);
               },
             ),
             ElevatedButton(
