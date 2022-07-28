@@ -5,6 +5,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:nahpu/ui/screens/main_menu.dart';
 import 'package:nahpu/ui/screens/forms/new_project_form.dart';
 import 'package:nahpu/ui/screens/projects/notes.dart';
+import 'package:nahpu/ui/screens/projects/sites.dart';
 
 class ProjectMenu extends StatefulWidget {
   const ProjectMenu({Key? key}) : super(key: key);
@@ -226,7 +227,7 @@ class _ProjectMenuState extends State<ProjectMenu> {
       case 1:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const Notes()),
+          MaterialPageRoute(builder: (context) => const Sites()),
         );
         break;
       case 2:
