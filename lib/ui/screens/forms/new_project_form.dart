@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import './project_menu.dart';
+import '../projects/project_menu.dart';
 
 class NewProjectForm extends StatefulWidget {
   const NewProjectForm({Key? key}) : super(key: key);
