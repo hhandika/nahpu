@@ -230,10 +230,6 @@ class _ProjectMenuState extends State<ProjectMenu> {
         );
         break;
       case 2:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const MainMenu()),
-        );
         break;
       case 3:
         Navigator.push(
