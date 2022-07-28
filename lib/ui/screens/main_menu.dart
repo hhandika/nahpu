@@ -40,6 +40,19 @@ class _MainMenuState extends State<MainMenu> {
               child: Text('Menu',
                   style: TextStyle(color: Colors.white, fontSize: 24)),
             ),
+            ListTile(
+              leading: const Icon(Icons.create),
+              title: const Align(
+                  alignment: Alignment(-1.65, 0),
+                  child: Text('Create a new project')),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const NewProjectForm()),
+                );
+              },
+            ),
             const ListTile(
               leading: Icon(Icons.settings),
               title:
@@ -48,10 +61,25 @@ class _MainMenuState extends State<MainMenu> {
               //   // Navigator.of(context).pop();
               // },
             ),
+            const Divider(
+              color: Colors.grey,
+            ),
             ListTile(
               leading: const Icon(Icons.info),
               title: const Align(
                   alignment: Alignment(-1.3, 0), child: Text('About')),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MainMenu()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.help),
+              title: const Align(
+                  alignment: Alignment(-1.55, 0),
+                  child: Text('Help and feedback')),
               onTap: () {
                 Navigator.push(
                   context,

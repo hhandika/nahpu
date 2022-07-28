@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import 'package:nahpu/ui/screens/main_menu.dart';
+import 'package:nahpu/ui/screens/projects/new_project_form.dart';
 
 class ProjectMenu extends StatefulWidget {
   const ProjectMenu({Key? key}) : super(key: key);
@@ -85,9 +86,23 @@ class _ProjectMenuState extends State<ProjectMenu> {
                   style: TextStyle(color: Colors.white, fontSize: 24)),
             ),
             ListTile(
+              leading: const Icon(Icons.create),
+              title: const Align(
+                  alignment: Alignment(-1.65, 0),
+                  child: Text('Create a new project')),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const NewProjectForm()),
+                );
+              },
+            ),
+            const Divider(color: Colors.grey),
+            ListTile(
               leading: const Icon(Icons.save),
               title: const Align(
-                  alignment: Alignment(-1.4, 0),
+                  alignment: Alignment(-1.45, 0),
                   child: Text('Save project as')),
               onTap: () {
                 Navigator.push(
@@ -97,9 +112,10 @@ class _ProjectMenuState extends State<ProjectMenu> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.ios_share),
+              leading: const Icon(Icons.table_view),
               title: const Align(
-                  alignment: Alignment(-1.4, 0), child: Text('Export project')),
+                  alignment: Alignment(-1.5, 0),
+                  child: Text('Export to csv/tsv')),
               onTap: () {
                 Navigator.push(
                   context,
@@ -107,6 +123,18 @@ class _ProjectMenuState extends State<ProjectMenu> {
                 );
               },
             ),
+            ListTile(
+              leading: const Icon(Icons.picture_as_pdf),
+              title: const Align(
+                  alignment: Alignment(-1.4, 0), child: Text('Export to pdf')),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MainMenu()),
+                );
+              },
+            ),
+            const Divider(color: Colors.grey),
             const ListTile(
               leading: Icon(Icons.settings),
               title:
