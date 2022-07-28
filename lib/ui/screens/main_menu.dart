@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:nahpu/ui/screens/new_project_form.dart';
+import 'package:nahpu/ui/screens/projects/new_project_form.dart';
 
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
-import './new_project_form.dart';
+import './projects/new_project_form.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({Key? key}) : super(key: key);

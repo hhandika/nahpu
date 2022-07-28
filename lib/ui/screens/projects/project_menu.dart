@@ -18,7 +18,7 @@ class _ProjectMenuState extends State<ProjectMenu> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Project Menu"),
+        title: const Text("Project Home"),
         backgroundColor: const Color(0xFF2457C5),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
@@ -84,6 +84,29 @@ class _ProjectMenuState extends State<ProjectMenu> {
               child: Text('Menu',
                   style: TextStyle(color: Colors.white, fontSize: 24)),
             ),
+            ListTile(
+              leading: const Icon(Icons.save),
+              title: const Align(
+                  alignment: Alignment(-1.4, 0),
+                  child: Text('Save project as')),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MainMenu()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.ios_share),
+              title: const Align(
+                  alignment: Alignment(-1.4, 0), child: Text('Export project')),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MainMenu()),
+                );
+              },
+            ),
             const ListTile(
               leading: Icon(Icons.settings),
               title:
@@ -94,11 +117,25 @@ class _ProjectMenuState extends State<ProjectMenu> {
             ),
             ListTile(
               leading: const Icon(Icons.exit_to_app),
-              title: Align(
-                  alignment: const Alignment(-1.4, 0),
+              title: const Align(
+                  alignment: Alignment(-1.4, 0), child: Text('Close project')),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MainMenu()),
+                );
+              },
+            ),
+            const Divider(
+              color: Colors.grey,
+            ),
+            ListTile(
+              leading: const Icon(Icons.delete),
+              title: const Align(
+                  alignment: Alignment(-1.4, 0),
                   child: Text(
-                    'Close project',
-                    style: TextStyle(color: Colors.red[500]),
+                    'Delete all records',
+                    style: TextStyle(color: Colors.redAccent),
                   )),
               onTap: () {
                 Navigator.push(
