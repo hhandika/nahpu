@@ -34,6 +34,10 @@ class _NewProjectFormState extends State<NewProjectForm> {
               },
             ),
             ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(const Color(0xFF2457C5)),
+              ),
               child: const Text('Create'),
               onPressed: () {
                 Navigator.push(

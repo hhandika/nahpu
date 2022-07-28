@@ -29,14 +29,48 @@ class _MainMenuState extends State<MainMenu> {
           ),
         ],
       ),
-      drawer: const Drawer(),
-      body: Row(children: const [Text('Nahpu Project')]),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color(0xFF2457C5),
+              ),
+              child: Text('Menu',
+                  style: TextStyle(color: Colors.white, fontSize: 24)),
+            ),
+            const ListTile(
+              leading: Icon(Icons.settings),
+              title:
+                  Align(alignment: Alignment(-1.3, 0), child: Text('Settings')),
+              // onTap: () {
+              //   // Navigator.of(context).pop();
+              // },
+            ),
+            ListTile(
+              leading: const Icon(Icons.info),
+              title: const Align(
+                  alignment: Alignment(-1.3, 0), child: Text('About')),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MainMenu()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      body: Row(children: const [
+        Align(alignment: Alignment.topCenter, child: Text('Nahpu Project'))
+      ]),
       floatingActionButton: SpeedDial(
         icon: Icons.add,
         backgroundColor: const Color(0xFF2457C5),
         children: [
           SpeedDialChild(
-            child: const Icon(Icons.create),
+            child: const Icon(Icons.create, color: Colors.white),
             backgroundColor: const Color(0xFF2457C5),
             label: 'New Project',
             onTap: () {
