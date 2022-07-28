@@ -123,6 +123,18 @@ class _ProjectMenuState extends State<ProjectMenu> {
             ),
             const Divider(color: Colors.grey),
             ListTile(
+              leading: const Icon(Icons.add_box),
+              title: const Align(
+                  alignment: Alignment(-1.45, 0),
+                  child: Text('Bundle records')),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MainMenu()),
+                );
+              },
+            ),
+            ListTile(
               leading: const Icon(Icons.save),
               title: const Align(
                   alignment: Alignment(-1.45, 0),
