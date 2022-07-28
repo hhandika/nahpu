@@ -16,7 +16,7 @@ class _NotesState extends State<Notes> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Notes"),
+        title: const Text("Field Notes"),
         backgroundColor: const Color(0xFF2457C5),
         actions: [
           IconButton(

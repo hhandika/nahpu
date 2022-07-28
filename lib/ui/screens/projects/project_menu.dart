@@ -1,11 +1,14 @@
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import 'package:nahpu/ui/screens/main_menu.dart';
 import 'package:nahpu/ui/screens/forms/new_project_form.dart';
+import 'package:nahpu/ui/screens/projects/coll_events.dart';
 import 'package:nahpu/ui/screens/projects/notes.dart';
 import 'package:nahpu/ui/screens/projects/sites.dart';
+import 'package:nahpu/ui/screens/projects/specimens.dart';
 
 class ProjectMenu extends StatefulWidget {
   const ProjectMenu({Key? key}) : super(key: key);
@@ -180,35 +183,48 @@ class _ProjectMenuState extends State<ProjectMenu> {
       body: const Center(
         child: Text('Nahpu Project'),
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: ConvexAppBar(
         backgroundColor: const Color(0xFF2457C5),
-        type: BottomNavigationBarType.fixed,
+        style: TabStyle.fixedCircle,
         elevation: 10,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.grey[400],
-        currentIndex: _defaultIndex,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            label: 'Notes',
+        color: Colors.white,
+        initialActiveIndex: _defaultIndex,
+        items: const [
+          TabItem(
+            icon: Icon(
+              Icons.book,
+              color: Colors.white,
+            ),
+            title: 'Notes',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.place),
-            label: 'Sites',
+          TabItem(
+            icon: Icon(
+              Icons.place,
+              color: Colors.white,
+            ),
+            title: 'Sites',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+          TabItem(
+            icon: Icon(
+              Icons.home,
+              color: Color(0xFF2457C5),
+              size: 45,
+            ),
+            title: 'Home',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.timeline),
-            label: 'CollEvents',
+          TabItem(
+            icon: Icon(
+              Icons.timeline,
+              color: Colors.white,
+            ),
+            title: 'CollEvents',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.pets),
-            label: 'Specimens',
+          TabItem(
+            icon: Icon(
+              Icons.pets,
+              color: Colors.white,
+            ),
+            title: 'Specimens',
           ),
         ],
         onTap: _onItemTapped,
@@ -235,13 +251,13 @@ class _ProjectMenuState extends State<ProjectMenu> {
       case 3:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const Notes()),
+          MaterialPageRoute(builder: (context) => const CollEvents()),
         );
         break;
       case 4:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const Notes()),
+          MaterialPageRoute(builder: (context) => const Specimens()),
         );
         break;
     }

@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 
-enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
+enum MenuSelection { newEvent, pdfExport, deleteRecords, deleteAllRecords }
 
-class Sites extends StatefulWidget {
-  const Sites({Key? key}) : super(key: key);
+class CollEvents extends StatefulWidget {
+  const CollEvents({Key? key}) : super(key: key);
 
   @override
-  State<Sites> createState() => _SitesState();
+  State<CollEvents> createState() => _CollEventsState();
 }
 
-class _SitesState extends State<Sites> {
+class _CollEventsState extends State<CollEvents> {
   String _selectedMenu = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Sites"),
+        title: const Text("Collecting Events"),
         backgroundColor: const Color(0xFF2457C5),
         actions: [
           IconButton(
@@ -32,7 +32,7 @@ class _SitesState extends State<Sites> {
               itemBuilder: (BuildContext context) =>
                   <PopupMenuEntry<MenuSelection>>[
                     const PopupMenuItem<MenuSelection>(
-                      value: MenuSelection.newSite,
+                      value: MenuSelection.newEvent,
                       child: Text('Create a new record'),
                     ),
                     const PopupMenuItem<MenuSelection>(
@@ -60,7 +60,7 @@ class _SitesState extends State<Sites> {
 
   void _onPopupMenuSelected(MenuSelection item) {
     switch (item) {
-      case MenuSelection.newSite:
+      case MenuSelection.newEvent:
         setState(() {
           _selectedMenu = 'Create a new record';
         });
