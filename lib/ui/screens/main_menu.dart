@@ -36,8 +36,9 @@ class _MainMenuState extends State<MainMenu> {
               decoration: BoxDecoration(
                 color: Color(0xFF2457C5),
               ),
-              child: Text('Menu',
-                  style: TextStyle(color: Colors.white, fontSize: 24)),
+              child: CircleAvatar(
+                backgroundColor: Colors.white,
+              ),
             ),
             ListTile(
               leading: const Icon(Icons.create),

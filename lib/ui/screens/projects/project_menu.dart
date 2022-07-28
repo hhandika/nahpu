@@ -83,12 +83,30 @@ class _ProjectMenuState extends State<ProjectMenu> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Color(0xFF2457C5),
+            const UserAccountsDrawerHeader(
+              decoration: BoxDecoration(color: Color(0xFF2457C5)),
+              accountName: Text(
+                "Heru Handika",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              child: Text('Menu',
-                  style: TextStyle(color: Colors.white, fontSize: 24)),
+              accountEmail: Text(
+                "handika@email.com",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              currentAccountPicture: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Text(
+                  "H",
+                  style: TextStyle(
+                    fontSize: 45,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
             ),
             ListTile(
               leading: const Icon(Icons.create),
