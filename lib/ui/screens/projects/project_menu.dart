@@ -4,6 +4,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import 'package:nahpu/ui/screens/main_menu.dart';
 import 'package:nahpu/ui/screens/projects/new_project_form.dart';
+import './notes.dart';
 
 class ProjectMenu extends StatefulWidget {
   const ProjectMenu({Key? key}) : super(key: key);
@@ -13,7 +14,7 @@ class ProjectMenu extends StatefulWidget {
 }
 
 class _ProjectMenuState extends State<ProjectMenu> {
-  final int _selectedIndex = 2;
+  final int _defaultIndex = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -186,7 +187,7 @@ class _ProjectMenuState extends State<ProjectMenu> {
         showUnselectedLabels: true,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.grey[400],
-        currentIndex: _selectedIndex,
+        currentIndex: _defaultIndex,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.book),
@@ -209,7 +210,43 @@ class _ProjectMenuState extends State<ProjectMenu> {
             label: 'Specimens',
           ),
         ],
+        onTap: _onItemTapped,
       ),
     );
+  }
+
+  void _onItemTapped(int index) {
+    switch (index) {
+      case 0:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const Notes()),
+        );
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const Notes()),
+        );
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MainMenu()),
+        );
+        break;
+      case 3:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const Notes()),
+        );
+        break;
+      case 4:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const Notes()),
+        );
+        break;
+    }
   }
 }
