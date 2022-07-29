@@ -1,0 +1,5 @@
+CREATE TABLE Project (
+    id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    collector TEXT,
+)
