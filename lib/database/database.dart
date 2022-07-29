@@ -16,15 +16,17 @@ class Database extends _$Database {
   Database() : super(_openConnection());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 1; // bump this when you change the schema
 
-  Future<int> createProject(ProjectCompanion name) async {
-    return into(project).insert(name);
-  }
+  Future<int> createProject(ProjectCompanion name) =>
+      into(project).insert(name);
 
-  Future<List<ProjectData>> getAllProjects() async {
-    return await select(project).get();
-  }
+  Future<List<ProjectData>> getAllProjects() => select(project).get();
+
+  Future<void> deleteProject(int id) =>
+      (delete(project)..where((t) => t.id.equals(id))).go();
+
+  Future updateEntry(ProjectData entry) => update(project).replace(entry);
 }
 
 LazyDatabase _openConnection() {
@@ -35,6 +37,6 @@ LazyDatabase _openConnection() {
     final dbDir = await getApplicationDocumentsDirectory();
     final file = File(p.join(dbDir.path, 'nahpu.db'));
     print('App database path: ${file.path}');
-    return NativeDatabase(file);
+    return NativeDatabase(file, logStatements: true);
   });
 }
