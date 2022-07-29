@@ -31,6 +31,7 @@ LazyDatabase _openConnection(String dbName) {
     // for your app.
     final dbDir = await getApplicationDocumentsDirectory();
     final file = File(p.join(dbDir.path, '$dbName.db'));
+    print('App database path: ${file.path}');
     return NativeDatabase(file);
   });
 }

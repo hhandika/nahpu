@@ -179,9 +179,9 @@ class Project extends Table with TableInfo<Project, ProjectData> {
   @override
   List<GeneratedColumn> get $columns => [id, name, collector];
   @override
-  String get aliasedName => _alias ?? 'Project';
+  String get aliasedName => _alias ?? 'project';
   @override
-  String get actualTableName => 'Project';
+  String get actualTableName => 'project';
   @override
   VerificationContext validateIntegrity(Insertable<ProjectData> instance,
       {bool isInserting = false}) {

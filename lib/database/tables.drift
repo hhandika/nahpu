@@ -1,4 +1,4 @@
-CREATE TABLE Project (
+CREATE TABLE project (
     id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
     name TEXT,
     collector TEXT,
