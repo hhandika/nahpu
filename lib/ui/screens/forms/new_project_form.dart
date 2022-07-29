@@ -5,8 +5,6 @@ import 'package:drift/drift.dart' as db;
 import '../projects/project_menu.dart';
 import 'package:nahpu/database/database.dart';
 
-Database? _database;
-
 class NewProjectForm extends StatefulWidget {
   const NewProjectForm({Key? key}) : super(key: key);
 
@@ -81,7 +79,8 @@ class _NewProjectFormState extends State<NewProjectForm> {
   }
 
   Future<void> _createProject() async {
-    _database?.createProject(ProjectCompanion(
+    final database = Database(dbName: nameController.text);
+    database.createProject(ProjectCompanion(
         id: db.Value(_formKey),
         name: db.Value(nameController.text),
         collector: db.Value(collectorController.text)));

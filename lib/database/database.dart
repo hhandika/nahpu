@@ -13,7 +13,8 @@ part 'database.g.dart';
   include: {'tables.drift'},
 )
 class Database extends _$Database {
-  Database() : super(_openConnection());
+  final String dbName;
+  Database({required this.dbName}) : super(_openConnection(dbName));
 
   @override
   int get schemaVersion => 1;
@@ -23,13 +24,13 @@ class Database extends _$Database {
   }
 }
 
-LazyDatabase _openConnection() {
+LazyDatabase _openConnection(String dbName) {
   // the LazyDatabase util lets us find the right location for the file async.
   return LazyDatabase(() async {
     // put the database file, called db.sqlite here, into the documents folder
     // for your app.
     final dbDir = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbDir.path, 'nahpu.db'));
+    final file = File(p.join(dbDir.path, '$dbName.db'));
     return NativeDatabase(file);
   });
 }
