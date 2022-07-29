@@ -17,10 +17,10 @@ class Database extends _$Database {
   Database({required this.dbName}) : super(_openConnection(dbName));
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   Future<int> createProject(ProjectCompanion name) async {
-    return await into(project).insert(name);
+    return into(project).insert(name);
   }
 }
 
