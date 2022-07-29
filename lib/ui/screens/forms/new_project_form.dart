@@ -64,6 +64,7 @@ class _NewProjectFormState extends State<NewProjectForm> {
                 child: const Text('Create'),
                 onPressed: () {
                   _createProject();
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -79,10 +80,11 @@ class _NewProjectFormState extends State<NewProjectForm> {
   }
 
   Future<void> _createProject() async {
-    final database = Database(dbName: nameController.text);
+    final database = Database();
     database.createProject(ProjectCompanion(
         id: db.Value(_formKey),
         name: db.Value(nameController.text),
         collector: db.Value(collectorController.text)));
+    print('Project $database.getAllProjects()');
   }
 }
