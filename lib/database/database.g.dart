@@ -443,7 +443,7 @@ class Project extends Table with TableInfo<Project, ProjectData> {
 
 class SiteData extends DataClass implements Insertable<SiteData> {
   final String siteID;
-  final String? projectID;
+  final String? projectId;
   final String? leadStuff;
   final String? type;
   final String? country;
@@ -451,7 +451,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
   final String? preciseLocality;
   SiteData(
       {required this.siteID,
-      this.projectID,
+      this.projectId,
       this.leadStuff,
       this.type,
       this.country,
@@ -462,8 +462,8 @@ class SiteData extends DataClass implements Insertable<SiteData> {
     return SiteData(
       siteID: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}siteID'])!,
-      projectID: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}projectID']),
+      projectId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}projectId']),
       leadStuff: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}leadStuff']),
       type: const StringType()
@@ -480,8 +480,8 @@ class SiteData extends DataClass implements Insertable<SiteData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['siteID'] = Variable<String>(siteID);
-    if (!nullToAbsent || projectID != null) {
-      map['projectID'] = Variable<String?>(projectID);
+    if (!nullToAbsent || projectId != null) {
+      map['projectId'] = Variable<String?>(projectId);
     }
     if (!nullToAbsent || leadStuff != null) {
       map['leadStuff'] = Variable<String?>(leadStuff);
@@ -504,9 +504,9 @@ class SiteData extends DataClass implements Insertable<SiteData> {
   SiteCompanion toCompanion(bool nullToAbsent) {
     return SiteCompanion(
       siteID: Value(siteID),
-      projectID: projectID == null && nullToAbsent
+      projectId: projectId == null && nullToAbsent
           ? const Value.absent()
-          : Value(projectID),
+          : Value(projectId),
       leadStuff: leadStuff == null && nullToAbsent
           ? const Value.absent()
           : Value(leadStuff),
@@ -527,7 +527,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return SiteData(
       siteID: serializer.fromJson<String>(json['siteID']),
-      projectID: serializer.fromJson<String?>(json['projectID']),
+      projectId: serializer.fromJson<String?>(json['projectId']),
       leadStuff: serializer.fromJson<String?>(json['leadStuff']),
       type: serializer.fromJson<String?>(json['type']),
       country: serializer.fromJson<String?>(json['country']),
@@ -540,7 +540,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'siteID': serializer.toJson<String>(siteID),
-      'projectID': serializer.toJson<String?>(projectID),
+      'projectId': serializer.toJson<String?>(projectId),
       'leadStuff': serializer.toJson<String?>(leadStuff),
       'type': serializer.toJson<String?>(type),
       'country': serializer.toJson<String?>(country),
@@ -551,7 +551,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
 
   SiteData copyWith(
           {String? siteID,
-          String? projectID,
+          String? projectId,
           String? leadStuff,
           String? type,
           String? country,
@@ -559,7 +559,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
           String? preciseLocality}) =>
       SiteData(
         siteID: siteID ?? this.siteID,
-        projectID: projectID ?? this.projectID,
+        projectId: projectId ?? this.projectId,
         leadStuff: leadStuff ?? this.leadStuff,
         type: type ?? this.type,
         country: country ?? this.country,
@@ -570,7 +570,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
   String toString() {
     return (StringBuffer('SiteData(')
           ..write('siteID: $siteID, ')
-          ..write('projectID: $projectID, ')
+          ..write('projectId: $projectId, ')
           ..write('leadStuff: $leadStuff, ')
           ..write('type: $type, ')
           ..write('country: $country, ')
@@ -582,13 +582,13 @@ class SiteData extends DataClass implements Insertable<SiteData> {
 
   @override
   int get hashCode => Object.hash(
-      siteID, projectID, leadStuff, type, country, state, preciseLocality);
+      siteID, projectId, leadStuff, type, country, state, preciseLocality);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is SiteData &&
           other.siteID == this.siteID &&
-          other.projectID == this.projectID &&
+          other.projectId == this.projectId &&
           other.leadStuff == this.leadStuff &&
           other.type == this.type &&
           other.country == this.country &&
@@ -598,7 +598,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
 
 class SiteCompanion extends UpdateCompanion<SiteData> {
   final Value<String> siteID;
-  final Value<String?> projectID;
+  final Value<String?> projectId;
   final Value<String?> leadStuff;
   final Value<String?> type;
   final Value<String?> country;
@@ -606,7 +606,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
   final Value<String?> preciseLocality;
   const SiteCompanion({
     this.siteID = const Value.absent(),
-    this.projectID = const Value.absent(),
+    this.projectId = const Value.absent(),
     this.leadStuff = const Value.absent(),
     this.type = const Value.absent(),
     this.country = const Value.absent(),
@@ -615,7 +615,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
   });
   SiteCompanion.insert({
     required String siteID,
-    this.projectID = const Value.absent(),
+    this.projectId = const Value.absent(),
     this.leadStuff = const Value.absent(),
     this.type = const Value.absent(),
     this.country = const Value.absent(),
@@ -624,7 +624,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
   }) : siteID = Value(siteID);
   static Insertable<SiteData> custom({
     Expression<String>? siteID,
-    Expression<String?>? projectID,
+    Expression<String?>? projectId,
     Expression<String?>? leadStuff,
     Expression<String?>? type,
     Expression<String?>? country,
@@ -633,7 +633,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
   }) {
     return RawValuesInsertable({
       if (siteID != null) 'siteID': siteID,
-      if (projectID != null) 'projectID': projectID,
+      if (projectId != null) 'projectId': projectId,
       if (leadStuff != null) 'leadStuff': leadStuff,
       if (type != null) 'type': type,
       if (country != null) 'country': country,
@@ -644,7 +644,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
 
   SiteCompanion copyWith(
       {Value<String>? siteID,
-      Value<String?>? projectID,
+      Value<String?>? projectId,
       Value<String?>? leadStuff,
       Value<String?>? type,
       Value<String?>? country,
@@ -652,7 +652,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
       Value<String?>? preciseLocality}) {
     return SiteCompanion(
       siteID: siteID ?? this.siteID,
-      projectID: projectID ?? this.projectID,
+      projectId: projectId ?? this.projectId,
       leadStuff: leadStuff ?? this.leadStuff,
       type: type ?? this.type,
       country: country ?? this.country,
@@ -667,8 +667,8 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
     if (siteID.present) {
       map['siteID'] = Variable<String>(siteID.value);
     }
-    if (projectID.present) {
-      map['projectID'] = Variable<String?>(projectID.value);
+    if (projectId.present) {
+      map['projectId'] = Variable<String?>(projectId.value);
     }
     if (leadStuff.present) {
       map['leadStuff'] = Variable<String?>(leadStuff.value);
@@ -692,7 +692,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
   String toString() {
     return (StringBuffer('SiteCompanion(')
           ..write('siteID: $siteID, ')
-          ..write('projectID: $projectID, ')
+          ..write('projectId: $projectId, ')
           ..write('leadStuff: $leadStuff, ')
           ..write('type: $type, ')
           ..write('country: $country, ')
@@ -714,9 +714,9 @@ class Site extends Table with TableInfo<Site, SiteData> {
       type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL PRIMARY KEY');
-  final VerificationMeta _projectIDMeta = const VerificationMeta('projectID');
-  late final GeneratedColumn<String?> projectID = GeneratedColumn<String?>(
-      'projectID', aliasedName, true,
+  final VerificationMeta _projectIdMeta = const VerificationMeta('projectId');
+  late final GeneratedColumn<String?> projectId = GeneratedColumn<String?>(
+      'projectId', aliasedName, true,
       type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -753,7 +753,7 @@ class Site extends Table with TableInfo<Site, SiteData> {
           $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns =>
-      [siteID, projectID, leadStuff, type, country, state, preciseLocality];
+      [siteID, projectId, leadStuff, type, country, state, preciseLocality];
   @override
   String get aliasedName => _alias ?? 'site';
   @override
@@ -769,9 +769,9 @@ class Site extends Table with TableInfo<Site, SiteData> {
     } else if (isInserting) {
       context.missing(_siteIDMeta);
     }
-    if (data.containsKey('projectID')) {
-      context.handle(_projectIDMeta,
-          projectID.isAcceptableOrUnknown(data['projectID']!, _projectIDMeta));
+    if (data.containsKey('projectId')) {
+      context.handle(_projectIdMeta,
+          projectId.isAcceptableOrUnknown(data['projectId']!, _projectIdMeta));
     }
     if (data.containsKey('leadStuff')) {
       context.handle(_leadStuffMeta,

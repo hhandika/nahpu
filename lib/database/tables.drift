@@ -11,7 +11,7 @@ CREATE TABLE project (
 
 CREATE TABLE site (
     siteID TEXT NOT NULL PRIMARY KEY,
-    projectID TEXT,
+    projectId TEXT,
     leadStuff TEXT,
     type TEXT,
     country TEXT,

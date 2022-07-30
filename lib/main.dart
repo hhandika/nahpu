@@ -16,7 +16,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Provider(
       create: (_) => Database(),
-      child: const MaterialApp(title: 'Nahpu', home: MainMenu()),
+      child: MaterialApp(
+        title: 'Nahpu',
+        home: const MainMenu(),
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+      ),
       dispose: (_, Database database) => database.close(),
     );
   }
