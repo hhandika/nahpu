@@ -3,7 +3,7 @@ import 'package:nahpu/database/database.dart';
 
 import 'package:provider/provider.dart';
 
-import './ui/screens/main_menu.dart';
+import 'package:nahpu/screens/main_menu.dart';
 
 void main() {
   runApp(const MyApp());

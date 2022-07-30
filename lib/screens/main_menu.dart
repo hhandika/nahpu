@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
-import 'package:nahpu/ui/screens/forms/new_project_form.dart';
+import 'package:nahpu/screens/projects/create_project_form.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({Key? key}) : super(key: key);
@@ -49,7 +49,7 @@ class _MainMenuState extends State<MainMenu> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const NewProjectForm()),
+                      builder: (context) => const CreateProjectForm()),
                 );
               },
             ),
@@ -104,7 +104,8 @@ class _MainMenuState extends State<MainMenu> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const NewProjectForm()),
+                MaterialPageRoute(
+                    builder: (context) => const CreateProjectForm()),
               );
             },
           ),

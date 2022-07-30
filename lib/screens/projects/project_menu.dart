@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
-import 'package:nahpu/ui/screens/main_menu.dart';
-import 'package:nahpu/ui/screens/forms/new_project_form.dart';
-import 'package:nahpu/ui/screens/projects/coll_events.dart';
-import 'package:nahpu/ui/screens/projects/notes.dart';
-import 'package:nahpu/ui/screens/projects/sites.dart';
-import 'package:nahpu/ui/screens/projects/specimens.dart';
+import 'package:nahpu/screens/main_menu.dart';
+import 'package:nahpu/screens/projects/create_project_form.dart';
+import 'package:nahpu/screens/projects/coll_events.dart';
+import 'package:nahpu/screens/projects/notes.dart';
+import 'package:nahpu/screens/projects/sites.dart';
+import 'package:nahpu/screens/projects/specimens.dart';
 
 class ProjectMenu extends StatefulWidget {
   const ProjectMenu({Key? key}) : super(key: key);
@@ -117,7 +117,7 @@ class _ProjectMenuState extends State<ProjectMenu> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const NewProjectForm()),
+                      builder: (context) => const CreateProjectForm()),
                 );
               },
             ),

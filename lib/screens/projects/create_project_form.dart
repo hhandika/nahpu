@@ -6,14 +6,14 @@ import 'package:uuid/uuid.dart';
 import '../projects/project_menu.dart';
 import 'package:nahpu/database/database.dart';
 
-class NewProjectForm extends StatefulWidget {
-  const NewProjectForm({Key? key}) : super(key: key);
+class CreateProjectForm extends StatefulWidget {
+  const CreateProjectForm({Key? key}) : super(key: key);
 
   @override
-  State<NewProjectForm> createState() => _NewProjectFormState();
+  State<CreateProjectForm> createState() => _NewProjectFormState();
 }
 
-class _NewProjectFormState extends State<NewProjectForm> {
+class _NewProjectFormState extends State<CreateProjectForm> {
   final _formKey = const Uuid().v4();
   final projectNameController = TextEditingController();
   final descriptionController = TextEditingController();
