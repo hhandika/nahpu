@@ -8,32 +8,34 @@ part of 'database.dart';
 
 // ignore_for_file: type=lint
 class ProjectData extends DataClass implements Insertable<ProjectData> {
-  final String projectId;
+  final String projectUuid;
   final String? projectName;
   final String? projectDescription;
+  final String? principalInvestigator;
   final String? collector;
   final String? collectorEmail;
   final int? catNumStart;
   final int? catNumEnd;
-  final String? principalInvestigator;
   ProjectData(
-      {required this.projectId,
+      {required this.projectUuid,
       this.projectName,
       this.projectDescription,
+      this.principalInvestigator,
       this.collector,
       this.collectorEmail,
       this.catNumStart,
-      this.catNumEnd,
-      this.principalInvestigator});
+      this.catNumEnd});
   factory ProjectData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return ProjectData(
-      projectId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}projectId'])!,
+      projectUuid: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}projectUuid'])!,
       projectName: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}projectName']),
       projectDescription: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}projectDescription']),
+      principalInvestigator: const StringType().mapFromDatabaseResponse(
+          data['${effectivePrefix}principalInvestigator']),
       collector: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}collector']),
       collectorEmail: const StringType()
@@ -42,19 +44,20 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}catNumStart']),
       catNumEnd: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}catNumEnd']),
-      principalInvestigator: const StringType().mapFromDatabaseResponse(
-          data['${effectivePrefix}principalInvestigator']),
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['projectId'] = Variable<String>(projectId);
+    map['projectUuid'] = Variable<String>(projectUuid);
     if (!nullToAbsent || projectName != null) {
       map['projectName'] = Variable<String?>(projectName);
     }
     if (!nullToAbsent || projectDescription != null) {
       map['projectDescription'] = Variable<String?>(projectDescription);
+    }
+    if (!nullToAbsent || principalInvestigator != null) {
+      map['principalInvestigator'] = Variable<String?>(principalInvestigator);
     }
     if (!nullToAbsent || collector != null) {
       map['collector'] = Variable<String?>(collector);
@@ -68,21 +71,21 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
     if (!nullToAbsent || catNumEnd != null) {
       map['catNumEnd'] = Variable<int?>(catNumEnd);
     }
-    if (!nullToAbsent || principalInvestigator != null) {
-      map['principalInvestigator'] = Variable<String?>(principalInvestigator);
-    }
     return map;
   }
 
   ProjectCompanion toCompanion(bool nullToAbsent) {
     return ProjectCompanion(
-      projectId: Value(projectId),
+      projectUuid: Value(projectUuid),
       projectName: projectName == null && nullToAbsent
           ? const Value.absent()
           : Value(projectName),
       projectDescription: projectDescription == null && nullToAbsent
           ? const Value.absent()
           : Value(projectDescription),
+      principalInvestigator: principalInvestigator == null && nullToAbsent
+          ? const Value.absent()
+          : Value(principalInvestigator),
       collector: collector == null && nullToAbsent
           ? const Value.absent()
           : Value(collector),
@@ -95,9 +98,6 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
       catNumEnd: catNumEnd == null && nullToAbsent
           ? const Value.absent()
           : Value(catNumEnd),
-      principalInvestigator: principalInvestigator == null && nullToAbsent
-          ? const Value.absent()
-          : Value(principalInvestigator),
     );
   }
 
@@ -105,171 +105,175 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return ProjectData(
-      projectId: serializer.fromJson<String>(json['projectId']),
+      projectUuid: serializer.fromJson<String>(json['projectUuid']),
       projectName: serializer.fromJson<String?>(json['projectName']),
       projectDescription:
           serializer.fromJson<String?>(json['projectDescription']),
+      principalInvestigator:
+          serializer.fromJson<String?>(json['principalInvestigator']),
       collector: serializer.fromJson<String?>(json['collector']),
       collectorEmail: serializer.fromJson<String?>(json['collectorEmail']),
       catNumStart: serializer.fromJson<int?>(json['catNumStart']),
       catNumEnd: serializer.fromJson<int?>(json['catNumEnd']),
-      principalInvestigator:
-          serializer.fromJson<String?>(json['principalInvestigator']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'projectId': serializer.toJson<String>(projectId),
+      'projectUuid': serializer.toJson<String>(projectUuid),
       'projectName': serializer.toJson<String?>(projectName),
       'projectDescription': serializer.toJson<String?>(projectDescription),
+      'principalInvestigator':
+          serializer.toJson<String?>(principalInvestigator),
       'collector': serializer.toJson<String?>(collector),
       'collectorEmail': serializer.toJson<String?>(collectorEmail),
       'catNumStart': serializer.toJson<int?>(catNumStart),
       'catNumEnd': serializer.toJson<int?>(catNumEnd),
-      'principalInvestigator':
-          serializer.toJson<String?>(principalInvestigator),
     };
   }
 
   ProjectData copyWith(
-          {String? projectId,
+          {String? projectUuid,
           String? projectName,
           String? projectDescription,
+          String? principalInvestigator,
           String? collector,
           String? collectorEmail,
           int? catNumStart,
-          int? catNumEnd,
-          String? principalInvestigator}) =>
+          int? catNumEnd}) =>
       ProjectData(
-        projectId: projectId ?? this.projectId,
+        projectUuid: projectUuid ?? this.projectUuid,
         projectName: projectName ?? this.projectName,
         projectDescription: projectDescription ?? this.projectDescription,
+        principalInvestigator:
+            principalInvestigator ?? this.principalInvestigator,
         collector: collector ?? this.collector,
         collectorEmail: collectorEmail ?? this.collectorEmail,
         catNumStart: catNumStart ?? this.catNumStart,
         catNumEnd: catNumEnd ?? this.catNumEnd,
-        principalInvestigator:
-            principalInvestigator ?? this.principalInvestigator,
       );
   @override
   String toString() {
     return (StringBuffer('ProjectData(')
-          ..write('projectId: $projectId, ')
+          ..write('projectUuid: $projectUuid, ')
           ..write('projectName: $projectName, ')
           ..write('projectDescription: $projectDescription, ')
+          ..write('principalInvestigator: $principalInvestigator, ')
           ..write('collector: $collector, ')
           ..write('collectorEmail: $collectorEmail, ')
           ..write('catNumStart: $catNumStart, ')
-          ..write('catNumEnd: $catNumEnd, ')
-          ..write('principalInvestigator: $principalInvestigator')
+          ..write('catNumEnd: $catNumEnd')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(projectId, projectName, projectDescription,
-      collector, collectorEmail, catNumStart, catNumEnd, principalInvestigator);
+  int get hashCode => Object.hash(projectUuid, projectName, projectDescription,
+      principalInvestigator, collector, collectorEmail, catNumStart, catNumEnd);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is ProjectData &&
-          other.projectId == this.projectId &&
+          other.projectUuid == this.projectUuid &&
           other.projectName == this.projectName &&
           other.projectDescription == this.projectDescription &&
+          other.principalInvestigator == this.principalInvestigator &&
           other.collector == this.collector &&
           other.collectorEmail == this.collectorEmail &&
           other.catNumStart == this.catNumStart &&
-          other.catNumEnd == this.catNumEnd &&
-          other.principalInvestigator == this.principalInvestigator);
+          other.catNumEnd == this.catNumEnd);
 }
 
 class ProjectCompanion extends UpdateCompanion<ProjectData> {
-  final Value<String> projectId;
+  final Value<String> projectUuid;
   final Value<String?> projectName;
   final Value<String?> projectDescription;
+  final Value<String?> principalInvestigator;
   final Value<String?> collector;
   final Value<String?> collectorEmail;
   final Value<int?> catNumStart;
   final Value<int?> catNumEnd;
-  final Value<String?> principalInvestigator;
   const ProjectCompanion({
-    this.projectId = const Value.absent(),
+    this.projectUuid = const Value.absent(),
     this.projectName = const Value.absent(),
     this.projectDescription = const Value.absent(),
+    this.principalInvestigator = const Value.absent(),
     this.collector = const Value.absent(),
     this.collectorEmail = const Value.absent(),
     this.catNumStart = const Value.absent(),
     this.catNumEnd = const Value.absent(),
-    this.principalInvestigator = const Value.absent(),
   });
   ProjectCompanion.insert({
-    required String projectId,
+    required String projectUuid,
     this.projectName = const Value.absent(),
     this.projectDescription = const Value.absent(),
+    this.principalInvestigator = const Value.absent(),
     this.collector = const Value.absent(),
     this.collectorEmail = const Value.absent(),
     this.catNumStart = const Value.absent(),
     this.catNumEnd = const Value.absent(),
-    this.principalInvestigator = const Value.absent(),
-  }) : projectId = Value(projectId);
+  }) : projectUuid = Value(projectUuid);
   static Insertable<ProjectData> custom({
-    Expression<String>? projectId,
+    Expression<String>? projectUuid,
     Expression<String?>? projectName,
     Expression<String?>? projectDescription,
+    Expression<String?>? principalInvestigator,
     Expression<String?>? collector,
     Expression<String?>? collectorEmail,
     Expression<int?>? catNumStart,
     Expression<int?>? catNumEnd,
-    Expression<String?>? principalInvestigator,
   }) {
     return RawValuesInsertable({
-      if (projectId != null) 'projectId': projectId,
+      if (projectUuid != null) 'projectUuid': projectUuid,
       if (projectName != null) 'projectName': projectName,
       if (projectDescription != null) 'projectDescription': projectDescription,
+      if (principalInvestigator != null)
+        'principalInvestigator': principalInvestigator,
       if (collector != null) 'collector': collector,
       if (collectorEmail != null) 'collectorEmail': collectorEmail,
       if (catNumStart != null) 'catNumStart': catNumStart,
       if (catNumEnd != null) 'catNumEnd': catNumEnd,
-      if (principalInvestigator != null)
-        'principalInvestigator': principalInvestigator,
     });
   }
 
   ProjectCompanion copyWith(
-      {Value<String>? projectId,
+      {Value<String>? projectUuid,
       Value<String?>? projectName,
       Value<String?>? projectDescription,
+      Value<String?>? principalInvestigator,
       Value<String?>? collector,
       Value<String?>? collectorEmail,
       Value<int?>? catNumStart,
-      Value<int?>? catNumEnd,
-      Value<String?>? principalInvestigator}) {
+      Value<int?>? catNumEnd}) {
     return ProjectCompanion(
-      projectId: projectId ?? this.projectId,
+      projectUuid: projectUuid ?? this.projectUuid,
       projectName: projectName ?? this.projectName,
       projectDescription: projectDescription ?? this.projectDescription,
+      principalInvestigator:
+          principalInvestigator ?? this.principalInvestigator,
       collector: collector ?? this.collector,
       collectorEmail: collectorEmail ?? this.collectorEmail,
       catNumStart: catNumStart ?? this.catNumStart,
       catNumEnd: catNumEnd ?? this.catNumEnd,
-      principalInvestigator:
-          principalInvestigator ?? this.principalInvestigator,
     );
   }
 
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (projectId.present) {
-      map['projectId'] = Variable<String>(projectId.value);
+    if (projectUuid.present) {
+      map['projectUuid'] = Variable<String>(projectUuid.value);
     }
     if (projectName.present) {
       map['projectName'] = Variable<String?>(projectName.value);
     }
     if (projectDescription.present) {
       map['projectDescription'] = Variable<String?>(projectDescription.value);
+    }
+    if (principalInvestigator.present) {
+      map['principalInvestigator'] =
+          Variable<String?>(principalInvestigator.value);
     }
     if (collector.present) {
       map['collector'] = Variable<String?>(collector.value);
@@ -283,24 +287,20 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
     if (catNumEnd.present) {
       map['catNumEnd'] = Variable<int?>(catNumEnd.value);
     }
-    if (principalInvestigator.present) {
-      map['principalInvestigator'] =
-          Variable<String?>(principalInvestigator.value);
-    }
     return map;
   }
 
   @override
   String toString() {
     return (StringBuffer('ProjectCompanion(')
-          ..write('projectId: $projectId, ')
+          ..write('projectUuid: $projectUuid, ')
           ..write('projectName: $projectName, ')
           ..write('projectDescription: $projectDescription, ')
+          ..write('principalInvestigator: $principalInvestigator, ')
           ..write('collector: $collector, ')
           ..write('collectorEmail: $collectorEmail, ')
           ..write('catNumStart: $catNumStart, ')
-          ..write('catNumEnd: $catNumEnd, ')
-          ..write('principalInvestigator: $principalInvestigator')
+          ..write('catNumEnd: $catNumEnd')
           ..write(')'))
         .toString();
   }
@@ -311,9 +311,10 @@ class Project extends Table with TableInfo<Project, ProjectData> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   Project(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _projectIdMeta = const VerificationMeta('projectId');
-  late final GeneratedColumn<String?> projectId = GeneratedColumn<String?>(
-      'projectId', aliasedName, false,
+  final VerificationMeta _projectUuidMeta =
+      const VerificationMeta('projectUuid');
+  late final GeneratedColumn<String?> projectUuid = GeneratedColumn<String?>(
+      'projectUuid', aliasedName, false,
       type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL PRIMARY KEY');
@@ -328,6 +329,13 @@ class Project extends Table with TableInfo<Project, ProjectData> {
       const VerificationMeta('projectDescription');
   late final GeneratedColumn<String?> projectDescription =
       GeneratedColumn<String?>('projectDescription', aliasedName, true,
+          type: const StringType(),
+          requiredDuringInsert: false,
+          $customConstraints: '');
+  final VerificationMeta _principalInvestigatorMeta =
+      const VerificationMeta('principalInvestigator');
+  late final GeneratedColumn<String?> principalInvestigator =
+      GeneratedColumn<String?>('principalInvestigator', aliasedName, true,
           type: const StringType(),
           requiredDuringInsert: false,
           $customConstraints: '');
@@ -357,23 +365,16 @@ class Project extends Table with TableInfo<Project, ProjectData> {
       type: const IntType(),
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _principalInvestigatorMeta =
-      const VerificationMeta('principalInvestigator');
-  late final GeneratedColumn<String?> principalInvestigator =
-      GeneratedColumn<String?>('principalInvestigator', aliasedName, true,
-          type: const StringType(),
-          requiredDuringInsert: false,
-          $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
-        projectId,
+        projectUuid,
         projectName,
         projectDescription,
+        principalInvestigator,
         collector,
         collectorEmail,
         catNumStart,
-        catNumEnd,
-        principalInvestigator
+        catNumEnd
       ];
   @override
   String get aliasedName => _alias ?? 'project';
@@ -384,11 +385,13 @@ class Project extends Table with TableInfo<Project, ProjectData> {
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('projectId')) {
-      context.handle(_projectIdMeta,
-          projectId.isAcceptableOrUnknown(data['projectId']!, _projectIdMeta));
+    if (data.containsKey('projectUuid')) {
+      context.handle(
+          _projectUuidMeta,
+          projectUuid.isAcceptableOrUnknown(
+              data['projectUuid']!, _projectUuidMeta));
     } else if (isInserting) {
-      context.missing(_projectIdMeta);
+      context.missing(_projectUuidMeta);
     }
     if (data.containsKey('projectName')) {
       context.handle(
@@ -401,6 +404,12 @@ class Project extends Table with TableInfo<Project, ProjectData> {
           _projectDescriptionMeta,
           projectDescription.isAcceptableOrUnknown(
               data['projectDescription']!, _projectDescriptionMeta));
+    }
+    if (data.containsKey('principalInvestigator')) {
+      context.handle(
+          _principalInvestigatorMeta,
+          principalInvestigator.isAcceptableOrUnknown(
+              data['principalInvestigator']!, _principalInvestigatorMeta));
     }
     if (data.containsKey('collector')) {
       context.handle(_collectorMeta,
@@ -422,17 +431,11 @@ class Project extends Table with TableInfo<Project, ProjectData> {
       context.handle(_catNumEndMeta,
           catNumEnd.isAcceptableOrUnknown(data['catNumEnd']!, _catNumEndMeta));
     }
-    if (data.containsKey('principalInvestigator')) {
-      context.handle(
-          _principalInvestigatorMeta,
-          principalInvestigator.isAcceptableOrUnknown(
-              data['principalInvestigator']!, _principalInvestigatorMeta));
-    }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {projectId};
+  Set<GeneratedColumn> get $primaryKey => {projectUuid};
   @override
   ProjectData map(Map<String, dynamic> data, {String? tablePrefix}) {
     return ProjectData.fromData(data,
@@ -450,7 +453,7 @@ class Project extends Table with TableInfo<Project, ProjectData> {
 
 class SiteData extends DataClass implements Insertable<SiteData> {
   final String siteID;
-  final String? projectId;
+  final String? projectUuid;
   final String? leadStuff;
   final String? type;
   final String? country;
@@ -458,7 +461,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
   final String? preciseLocality;
   SiteData(
       {required this.siteID,
-      this.projectId,
+      this.projectUuid,
       this.leadStuff,
       this.type,
       this.country,
@@ -469,8 +472,8 @@ class SiteData extends DataClass implements Insertable<SiteData> {
     return SiteData(
       siteID: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}siteID'])!,
-      projectId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}projectId']),
+      projectUuid: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}projectUuid']),
       leadStuff: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}leadStuff']),
       type: const StringType()
@@ -487,8 +490,8 @@ class SiteData extends DataClass implements Insertable<SiteData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['siteID'] = Variable<String>(siteID);
-    if (!nullToAbsent || projectId != null) {
-      map['projectId'] = Variable<String?>(projectId);
+    if (!nullToAbsent || projectUuid != null) {
+      map['projectUuid'] = Variable<String?>(projectUuid);
     }
     if (!nullToAbsent || leadStuff != null) {
       map['leadStuff'] = Variable<String?>(leadStuff);
@@ -511,9 +514,9 @@ class SiteData extends DataClass implements Insertable<SiteData> {
   SiteCompanion toCompanion(bool nullToAbsent) {
     return SiteCompanion(
       siteID: Value(siteID),
-      projectId: projectId == null && nullToAbsent
+      projectUuid: projectUuid == null && nullToAbsent
           ? const Value.absent()
-          : Value(projectId),
+          : Value(projectUuid),
       leadStuff: leadStuff == null && nullToAbsent
           ? const Value.absent()
           : Value(leadStuff),
@@ -534,7 +537,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return SiteData(
       siteID: serializer.fromJson<String>(json['siteID']),
-      projectId: serializer.fromJson<String?>(json['projectId']),
+      projectUuid: serializer.fromJson<String?>(json['projectUuid']),
       leadStuff: serializer.fromJson<String?>(json['leadStuff']),
       type: serializer.fromJson<String?>(json['type']),
       country: serializer.fromJson<String?>(json['country']),
@@ -547,7 +550,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'siteID': serializer.toJson<String>(siteID),
-      'projectId': serializer.toJson<String?>(projectId),
+      'projectUuid': serializer.toJson<String?>(projectUuid),
       'leadStuff': serializer.toJson<String?>(leadStuff),
       'type': serializer.toJson<String?>(type),
       'country': serializer.toJson<String?>(country),
@@ -558,7 +561,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
 
   SiteData copyWith(
           {String? siteID,
-          String? projectId,
+          String? projectUuid,
           String? leadStuff,
           String? type,
           String? country,
@@ -566,7 +569,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
           String? preciseLocality}) =>
       SiteData(
         siteID: siteID ?? this.siteID,
-        projectId: projectId ?? this.projectId,
+        projectUuid: projectUuid ?? this.projectUuid,
         leadStuff: leadStuff ?? this.leadStuff,
         type: type ?? this.type,
         country: country ?? this.country,
@@ -577,7 +580,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
   String toString() {
     return (StringBuffer('SiteData(')
           ..write('siteID: $siteID, ')
-          ..write('projectId: $projectId, ')
+          ..write('projectUuid: $projectUuid, ')
           ..write('leadStuff: $leadStuff, ')
           ..write('type: $type, ')
           ..write('country: $country, ')
@@ -589,13 +592,13 @@ class SiteData extends DataClass implements Insertable<SiteData> {
 
   @override
   int get hashCode => Object.hash(
-      siteID, projectId, leadStuff, type, country, state, preciseLocality);
+      siteID, projectUuid, leadStuff, type, country, state, preciseLocality);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is SiteData &&
           other.siteID == this.siteID &&
-          other.projectId == this.projectId &&
+          other.projectUuid == this.projectUuid &&
           other.leadStuff == this.leadStuff &&
           other.type == this.type &&
           other.country == this.country &&
@@ -605,7 +608,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
 
 class SiteCompanion extends UpdateCompanion<SiteData> {
   final Value<String> siteID;
-  final Value<String?> projectId;
+  final Value<String?> projectUuid;
   final Value<String?> leadStuff;
   final Value<String?> type;
   final Value<String?> country;
@@ -613,7 +616,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
   final Value<String?> preciseLocality;
   const SiteCompanion({
     this.siteID = const Value.absent(),
-    this.projectId = const Value.absent(),
+    this.projectUuid = const Value.absent(),
     this.leadStuff = const Value.absent(),
     this.type = const Value.absent(),
     this.country = const Value.absent(),
@@ -622,7 +625,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
   });
   SiteCompanion.insert({
     required String siteID,
-    this.projectId = const Value.absent(),
+    this.projectUuid = const Value.absent(),
     this.leadStuff = const Value.absent(),
     this.type = const Value.absent(),
     this.country = const Value.absent(),
@@ -631,7 +634,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
   }) : siteID = Value(siteID);
   static Insertable<SiteData> custom({
     Expression<String>? siteID,
-    Expression<String?>? projectId,
+    Expression<String?>? projectUuid,
     Expression<String?>? leadStuff,
     Expression<String?>? type,
     Expression<String?>? country,
@@ -640,7 +643,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
   }) {
     return RawValuesInsertable({
       if (siteID != null) 'siteID': siteID,
-      if (projectId != null) 'projectId': projectId,
+      if (projectUuid != null) 'projectUuid': projectUuid,
       if (leadStuff != null) 'leadStuff': leadStuff,
       if (type != null) 'type': type,
       if (country != null) 'country': country,
@@ -651,7 +654,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
 
   SiteCompanion copyWith(
       {Value<String>? siteID,
-      Value<String?>? projectId,
+      Value<String?>? projectUuid,
       Value<String?>? leadStuff,
       Value<String?>? type,
       Value<String?>? country,
@@ -659,7 +662,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
       Value<String?>? preciseLocality}) {
     return SiteCompanion(
       siteID: siteID ?? this.siteID,
-      projectId: projectId ?? this.projectId,
+      projectUuid: projectUuid ?? this.projectUuid,
       leadStuff: leadStuff ?? this.leadStuff,
       type: type ?? this.type,
       country: country ?? this.country,
@@ -674,8 +677,8 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
     if (siteID.present) {
       map['siteID'] = Variable<String>(siteID.value);
     }
-    if (projectId.present) {
-      map['projectId'] = Variable<String?>(projectId.value);
+    if (projectUuid.present) {
+      map['projectUuid'] = Variable<String?>(projectUuid.value);
     }
     if (leadStuff.present) {
       map['leadStuff'] = Variable<String?>(leadStuff.value);
@@ -699,7 +702,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
   String toString() {
     return (StringBuffer('SiteCompanion(')
           ..write('siteID: $siteID, ')
-          ..write('projectId: $projectId, ')
+          ..write('projectUuid: $projectUuid, ')
           ..write('leadStuff: $leadStuff, ')
           ..write('type: $type, ')
           ..write('country: $country, ')
@@ -721,9 +724,10 @@ class Site extends Table with TableInfo<Site, SiteData> {
       type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL PRIMARY KEY');
-  final VerificationMeta _projectIdMeta = const VerificationMeta('projectId');
-  late final GeneratedColumn<String?> projectId = GeneratedColumn<String?>(
-      'projectId', aliasedName, true,
+  final VerificationMeta _projectUuidMeta =
+      const VerificationMeta('projectUuid');
+  late final GeneratedColumn<String?> projectUuid = GeneratedColumn<String?>(
+      'projectUuid', aliasedName, true,
       type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -760,7 +764,7 @@ class Site extends Table with TableInfo<Site, SiteData> {
           $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns =>
-      [siteID, projectId, leadStuff, type, country, state, preciseLocality];
+      [siteID, projectUuid, leadStuff, type, country, state, preciseLocality];
   @override
   String get aliasedName => _alias ?? 'site';
   @override
@@ -776,9 +780,11 @@ class Site extends Table with TableInfo<Site, SiteData> {
     } else if (isInserting) {
       context.missing(_siteIDMeta);
     }
-    if (data.containsKey('projectId')) {
-      context.handle(_projectIdMeta,
-          projectId.isAcceptableOrUnknown(data['projectId']!, _projectIdMeta));
+    if (data.containsKey('projectUuid')) {
+      context.handle(
+          _projectUuidMeta,
+          projectUuid.isAcceptableOrUnknown(
+              data['projectUuid']!, _projectUuidMeta));
     }
     if (data.containsKey('leadStuff')) {
       context.handle(_leadStuffMeta,
@@ -826,6 +832,14 @@ abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   late final Project project = Project(this);
   late final Site site = Site(this);
+  Selectable<String> listProject() {
+    return customSelect('SELECT projectUuid FROM project',
+        variables: [],
+        readsFrom: {
+          project,
+        }).map((QueryRow row) => row.read<String>('projectUuid'));
+  }
+
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override

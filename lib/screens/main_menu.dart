@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import 'package:nahpu/screens/projects/create_project_form.dart';
+import 'package:nahpu/screens/projects/project_menu.dart';
+import 'package:provider/provider.dart';
+import 'package:nahpu/database/database.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({Key? key}) : super(key: key);
@@ -90,9 +93,31 @@ class _MainMenuState extends State<MainMenu> {
           ],
         ),
       ),
-      body: Row(children: const [
-        Align(alignment: Alignment.topCenter, child: Text('Nahpu Project'))
-      ]),
+      body: Center(
+        child: FutureBuilder<List<String?>>(
+          future: _getProjectList(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return ListView.builder(
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(snapshot.data![index]!),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ProjectMenu()),
+                      );
+                    },
+                  );
+                },
+              );
+            } else {
+              return const Text("No project found!");
+            }
+          },
+        ),
+      ),
       floatingActionButton: SpeedDial(
         icon: Icons.add,
         backgroundColor: const Color(0xFF2457C5),
@@ -112,5 +137,9 @@ class _MainMenuState extends State<MainMenu> {
         ],
       ),
     );
+  }
+
+  Future<List<String?>> _getProjectList() async {
+    return Provider.of<Database>(context, listen: false).getProjectList();
   }
 }

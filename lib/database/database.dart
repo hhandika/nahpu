@@ -31,8 +31,10 @@ class Database extends _$Database {
 
   Future<List<ProjectData>> getAllProjects() => select(project).get();
 
+  Future<List<String?>> getProjectList() => listProject().get();
+
   Future<void> deleteProject(String id) {
-    return (delete(project)..where((t) => t.projectId.equals(id))).go();
+    return (delete(project)..where((t) => t.projectUuid.equals(id))).go();
   }
 
   Future updateEntry(ProjectData entry) => update(project).replace(entry);

@@ -166,7 +166,7 @@ class _NewProjectFormState extends State<CreateProjectForm> {
   Future<void> _createProject() async {
     final database = Provider.of<Database>(context, listen: false);
     database.createProject(ProjectCompanion(
-      projectId: db.Value(_uuidKey),
+      projectUuid: db.Value(_uuidKey),
       projectName: db.Value(projectNameController.text),
       projectDescription: db.Value(descriptionController.text),
       collector: db.Value(collectorController.text),
