@@ -1,5 +1,20 @@
 CREATE TABLE project (
-    id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
-    name TEXT,
+    projectId TEXT NOT NULL PRIMARY KEY,
+    projectName TEXT UNIQUE,
+    projectDescription TEXT,
     collector TEXT,
-)
+    collectorEmail TEXT,
+    catNumStart INT,
+    catNumEnd INT,
+    teamLeader TEXT,
+);
+
+CREATE TABLE site (
+    siteID TEXT NOT NULL PRIMARY KEY,
+    projectID TEXT,
+    leadStuff TEXT,
+    type TEXT,
+    country TEXT,
+    state TEXT,
+    preciseLocality TEXT,
+);

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
+import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
@@ -18,13 +19,21 @@ class Database extends _$Database {
   @override
   int get schemaVersion => 1; // bump this when you change the schema
 
+  @override
+  MigrationStrategy get migration {
+    return MigrationStrategy(onCreate: (m) async {
+      await m.createAll(); // create all tables
+    });
+  }
+
   Future<int> createProject(ProjectCompanion name) =>
       into(project).insert(name);
 
   Future<List<ProjectData>> getAllProjects() => select(project).get();
 
-  Future<void> deleteProject(int id) =>
-      (delete(project)..where((t) => t.id.equals(id))).go();
+  Future<void> deleteProject(String id) {
+    return (delete(project)..where((t) => t.projectId.equals(id))).go();
+  }
 
   Future updateEntry(ProjectData entry) => update(project).replace(entry);
 }
@@ -36,7 +45,9 @@ LazyDatabase _openConnection() {
     // for your app.
     final dbDir = await getApplicationDocumentsDirectory();
     final file = File(p.join(dbDir.path, 'nahpu.db'));
-    print('App database path: ${file.path}');
+    if (kDebugMode) {
+      print('App database path: ${file.path}');
+    }
     return NativeDatabase(file, logStatements: true);
   });
 }
