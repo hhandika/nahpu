@@ -15,7 +15,7 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
   final String? collectorEmail;
   final int? catNumStart;
   final int? catNumEnd;
-  final String? teamLeader;
+  final String? principalInvestigator;
   ProjectData(
       {required this.projectId,
       this.projectName,
@@ -24,7 +24,7 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
       this.collectorEmail,
       this.catNumStart,
       this.catNumEnd,
-      this.teamLeader});
+      this.principalInvestigator});
   factory ProjectData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return ProjectData(
@@ -42,8 +42,8 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}catNumStart']),
       catNumEnd: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}catNumEnd']),
-      teamLeader: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}teamLeader']),
+      principalInvestigator: const StringType().mapFromDatabaseResponse(
+          data['${effectivePrefix}principalInvestigator']),
     );
   }
   @override
@@ -68,8 +68,8 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
     if (!nullToAbsent || catNumEnd != null) {
       map['catNumEnd'] = Variable<int?>(catNumEnd);
     }
-    if (!nullToAbsent || teamLeader != null) {
-      map['teamLeader'] = Variable<String?>(teamLeader);
+    if (!nullToAbsent || principalInvestigator != null) {
+      map['principalInvestigator'] = Variable<String?>(principalInvestigator);
     }
     return map;
   }
@@ -95,9 +95,9 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
       catNumEnd: catNumEnd == null && nullToAbsent
           ? const Value.absent()
           : Value(catNumEnd),
-      teamLeader: teamLeader == null && nullToAbsent
+      principalInvestigator: principalInvestigator == null && nullToAbsent
           ? const Value.absent()
-          : Value(teamLeader),
+          : Value(principalInvestigator),
     );
   }
 
@@ -113,7 +113,8 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
       collectorEmail: serializer.fromJson<String?>(json['collectorEmail']),
       catNumStart: serializer.fromJson<int?>(json['catNumStart']),
       catNumEnd: serializer.fromJson<int?>(json['catNumEnd']),
-      teamLeader: serializer.fromJson<String?>(json['teamLeader']),
+      principalInvestigator:
+          serializer.fromJson<String?>(json['principalInvestigator']),
     );
   }
   @override
@@ -127,7 +128,8 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
       'collectorEmail': serializer.toJson<String?>(collectorEmail),
       'catNumStart': serializer.toJson<int?>(catNumStart),
       'catNumEnd': serializer.toJson<int?>(catNumEnd),
-      'teamLeader': serializer.toJson<String?>(teamLeader),
+      'principalInvestigator':
+          serializer.toJson<String?>(principalInvestigator),
     };
   }
 
@@ -139,7 +141,7 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
           String? collectorEmail,
           int? catNumStart,
           int? catNumEnd,
-          String? teamLeader}) =>
+          String? principalInvestigator}) =>
       ProjectData(
         projectId: projectId ?? this.projectId,
         projectName: projectName ?? this.projectName,
@@ -148,7 +150,8 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
         collectorEmail: collectorEmail ?? this.collectorEmail,
         catNumStart: catNumStart ?? this.catNumStart,
         catNumEnd: catNumEnd ?? this.catNumEnd,
-        teamLeader: teamLeader ?? this.teamLeader,
+        principalInvestigator:
+            principalInvestigator ?? this.principalInvestigator,
       );
   @override
   String toString() {
@@ -160,14 +163,14 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
           ..write('collectorEmail: $collectorEmail, ')
           ..write('catNumStart: $catNumStart, ')
           ..write('catNumEnd: $catNumEnd, ')
-          ..write('teamLeader: $teamLeader')
+          ..write('principalInvestigator: $principalInvestigator')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(projectId, projectName, projectDescription,
-      collector, collectorEmail, catNumStart, catNumEnd, teamLeader);
+      collector, collectorEmail, catNumStart, catNumEnd, principalInvestigator);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -179,7 +182,7 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
           other.collectorEmail == this.collectorEmail &&
           other.catNumStart == this.catNumStart &&
           other.catNumEnd == this.catNumEnd &&
-          other.teamLeader == this.teamLeader);
+          other.principalInvestigator == this.principalInvestigator);
 }
 
 class ProjectCompanion extends UpdateCompanion<ProjectData> {
@@ -190,7 +193,7 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
   final Value<String?> collectorEmail;
   final Value<int?> catNumStart;
   final Value<int?> catNumEnd;
-  final Value<String?> teamLeader;
+  final Value<String?> principalInvestigator;
   const ProjectCompanion({
     this.projectId = const Value.absent(),
     this.projectName = const Value.absent(),
@@ -199,7 +202,7 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
     this.collectorEmail = const Value.absent(),
     this.catNumStart = const Value.absent(),
     this.catNumEnd = const Value.absent(),
-    this.teamLeader = const Value.absent(),
+    this.principalInvestigator = const Value.absent(),
   });
   ProjectCompanion.insert({
     required String projectId,
@@ -209,7 +212,7 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
     this.collectorEmail = const Value.absent(),
     this.catNumStart = const Value.absent(),
     this.catNumEnd = const Value.absent(),
-    this.teamLeader = const Value.absent(),
+    this.principalInvestigator = const Value.absent(),
   }) : projectId = Value(projectId);
   static Insertable<ProjectData> custom({
     Expression<String>? projectId,
@@ -219,7 +222,7 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
     Expression<String?>? collectorEmail,
     Expression<int?>? catNumStart,
     Expression<int?>? catNumEnd,
-    Expression<String?>? teamLeader,
+    Expression<String?>? principalInvestigator,
   }) {
     return RawValuesInsertable({
       if (projectId != null) 'projectId': projectId,
@@ -229,7 +232,8 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
       if (collectorEmail != null) 'collectorEmail': collectorEmail,
       if (catNumStart != null) 'catNumStart': catNumStart,
       if (catNumEnd != null) 'catNumEnd': catNumEnd,
-      if (teamLeader != null) 'teamLeader': teamLeader,
+      if (principalInvestigator != null)
+        'principalInvestigator': principalInvestigator,
     });
   }
 
@@ -241,7 +245,7 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
       Value<String?>? collectorEmail,
       Value<int?>? catNumStart,
       Value<int?>? catNumEnd,
-      Value<String?>? teamLeader}) {
+      Value<String?>? principalInvestigator}) {
     return ProjectCompanion(
       projectId: projectId ?? this.projectId,
       projectName: projectName ?? this.projectName,
@@ -250,7 +254,8 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
       collectorEmail: collectorEmail ?? this.collectorEmail,
       catNumStart: catNumStart ?? this.catNumStart,
       catNumEnd: catNumEnd ?? this.catNumEnd,
-      teamLeader: teamLeader ?? this.teamLeader,
+      principalInvestigator:
+          principalInvestigator ?? this.principalInvestigator,
     );
   }
 
@@ -278,8 +283,9 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
     if (catNumEnd.present) {
       map['catNumEnd'] = Variable<int?>(catNumEnd.value);
     }
-    if (teamLeader.present) {
-      map['teamLeader'] = Variable<String?>(teamLeader.value);
+    if (principalInvestigator.present) {
+      map['principalInvestigator'] =
+          Variable<String?>(principalInvestigator.value);
     }
     return map;
   }
@@ -294,7 +300,7 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
           ..write('collectorEmail: $collectorEmail, ')
           ..write('catNumStart: $catNumStart, ')
           ..write('catNumEnd: $catNumEnd, ')
-          ..write('teamLeader: $teamLeader')
+          ..write('principalInvestigator: $principalInvestigator')
           ..write(')'))
         .toString();
   }
@@ -351,12 +357,13 @@ class Project extends Table with TableInfo<Project, ProjectData> {
       type: const IntType(),
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _teamLeaderMeta = const VerificationMeta('teamLeader');
-  late final GeneratedColumn<String?> teamLeader = GeneratedColumn<String?>(
-      'teamLeader', aliasedName, true,
-      type: const StringType(),
-      requiredDuringInsert: false,
-      $customConstraints: '');
+  final VerificationMeta _principalInvestigatorMeta =
+      const VerificationMeta('principalInvestigator');
+  late final GeneratedColumn<String?> principalInvestigator =
+      GeneratedColumn<String?>('principalInvestigator', aliasedName, true,
+          type: const StringType(),
+          requiredDuringInsert: false,
+          $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
         projectId,
@@ -366,7 +373,7 @@ class Project extends Table with TableInfo<Project, ProjectData> {
         collectorEmail,
         catNumStart,
         catNumEnd,
-        teamLeader
+        principalInvestigator
       ];
   @override
   String get aliasedName => _alias ?? 'project';
@@ -415,11 +422,11 @@ class Project extends Table with TableInfo<Project, ProjectData> {
       context.handle(_catNumEndMeta,
           catNumEnd.isAcceptableOrUnknown(data['catNumEnd']!, _catNumEndMeta));
     }
-    if (data.containsKey('teamLeader')) {
+    if (data.containsKey('principalInvestigator')) {
       context.handle(
-          _teamLeaderMeta,
-          teamLeader.isAcceptableOrUnknown(
-              data['teamLeader']!, _teamLeaderMeta));
+          _principalInvestigatorMeta,
+          principalInvestigator.isAcceptableOrUnknown(
+              data['principalInvestigator']!, _principalInvestigatorMeta));
     }
     return context;
   }
