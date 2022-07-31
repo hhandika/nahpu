@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:nahpu/database/database.dart';
 
-class Bloc {
-  Bloc({required this.context, this.db});
+import 'package:provider/provider.dart';
+
+class ProjectModel {
+  ProjectModel({required this.context}) : super();
   final BuildContext context;
-  final db;
 
-  void createProject(ProjectCompanion name) {
-    db.createProject(name);
-  }
-
-  void close() {
-    db.close();
+  Future<void> createProject(ProjectCompanion project) async {
+    return Provider.of<Database>(context, listen: false).createProject(project);
   }
 }
