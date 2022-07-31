@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import 'package:nahpu/screens/projects/create_project_form.dart';
-import 'package:nahpu/screens/projects/project_menu.dart';
+import 'package:nahpu/screens/projects/project_home.dart';
 import 'package:provider/provider.dart';
 import 'package:nahpu/database/database.dart';
 
@@ -17,8 +17,6 @@ class Home extends StatefulWidget {
 }
 
 class _MainMenuState extends State<Home> {
-  String _projectUuid = '';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

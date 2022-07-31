@@ -211,7 +211,7 @@ class _ProjectHomeState extends State<ProjectHome> {
         ),
       ),
       body: const Center(
-        child: Text('Nahpu Project'),
+        child: Text('Project ID'),
       ),
       bottomNavigationBar: ConvexAppBar(
         backgroundColor: const Color(0xFF2457C5),

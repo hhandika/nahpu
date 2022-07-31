@@ -5,7 +5,7 @@ import 'package:drift/drift.dart' as db;
 import 'package:uuid/uuid.dart';
 import 'package:provider/provider.dart';
 
-import '../projects/project_menu.dart';
+import 'project_home.dart';
 import 'package:nahpu/database/database.dart';
 
 class CreateProjectForm extends StatefulWidget {
