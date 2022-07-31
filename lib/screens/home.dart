@@ -17,6 +17,8 @@ class Home extends StatefulWidget {
 }
 
 class _MainMenuState extends State<Home> {
+  String _projectUuid = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -183,7 +185,7 @@ class _MainMenuState extends State<Home> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ProjectMenu()),
+                          builder: (context) => const ProjectHome()),
                     );
                   },
                 ));

@@ -10,14 +10,14 @@ import 'package:nahpu/screens/projects/notes.dart';
 import 'package:nahpu/screens/projects/sites.dart';
 import 'package:nahpu/screens/projects/specimens.dart';
 
-class ProjectMenu extends StatefulWidget {
-  const ProjectMenu({Key? key}) : super(key: key);
+class ProjectHome extends StatefulWidget {
+  const ProjectHome({Key? key}) : super(key: key);
 
   @override
-  State<ProjectMenu> createState() => _ProjectMenuState();
+  State<ProjectHome> createState() => _ProjectHomeState();
 }
 
-class _ProjectMenuState extends State<ProjectMenu> {
+class _ProjectHomeState extends State<ProjectHome> {
   final int _defaultIndex = 2;
 
   @override

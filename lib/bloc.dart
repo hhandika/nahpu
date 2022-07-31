@@ -1,9 +1,9 @@
 import 'package:nahpu/database/database.dart';
 
 class Bloc {
-  final Database db;
-
   Bloc() : db = Database();
+
+  final Database db;
 
   void createProject(ProjectCompanion name) {
     db.createProject(name);

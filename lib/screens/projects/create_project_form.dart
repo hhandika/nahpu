@@ -158,7 +158,7 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const ProjectMenu()),
+                                            const ProjectHome()),
                                   );
                                 }
                               },
