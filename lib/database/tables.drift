@@ -4,6 +4,7 @@ CREATE TABLE project (
     projectDescription TEXT,
     principalInvestigator TEXT,
     collector TEXT,
+    collectorInitial TEXT,
     collectorEmail TEXT,
     catNumStart INT,
     catNumEnd INT
@@ -16,7 +17,10 @@ CREATE TABLE site (
     type TEXT,
     country TEXT,
     state TEXT,
-    preciseLocality TEXT
+    preciseLocality TEXT,
+    latitude REAL,
+    longitude REAL,
+    elevation INT
 );
 
 listProject: SELECT projectUuid,projectName FROM project;
