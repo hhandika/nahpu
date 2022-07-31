@@ -11,7 +11,9 @@ import 'package:nahpu/screens/projects/sites.dart';
 import 'package:nahpu/screens/projects/specimens.dart';
 
 class ProjectHome extends StatefulWidget {
-  const ProjectHome({Key? key}) : super(key: key);
+  const ProjectHome({Key? key, required this.projectUuid}) : super(key: key);
+
+  final String projectUuid;
 
   @override
   State<ProjectHome> createState() => _ProjectHomeState();
@@ -210,8 +212,8 @@ class _ProjectHomeState extends State<ProjectHome> {
           ],
         ),
       ),
-      body: const Center(
-        child: Text('Project ID'),
+      body: Center(
+        child: Text('Project UUID ${widget.projectUuid}'),
       ),
       bottomNavigationBar: ConvexAppBar(
         backgroundColor: const Color(0xFF2457C5),

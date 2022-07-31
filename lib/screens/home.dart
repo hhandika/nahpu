@@ -183,7 +183,9 @@ class _MainMenuState extends State<Home> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ProjectHome()),
+                          builder: (context) => ProjectHome(
+                                projectUuid: snapshot.data![index].projectUuid,
+                              )),
                     );
                   },
                 ));
