@@ -46,7 +46,7 @@ LazyDatabase _openConnection() {
     // put the database file, called db.sqlite here, into the documents folder
     // for your app.
     final dbDir = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbDir.path, 'nahpu.db'));
+    final file = File(p.join(dbDir.path, 'nahpu/nahpu.db'));
     if (kDebugMode) {
       print('App database path: ${file.path}');
     }
