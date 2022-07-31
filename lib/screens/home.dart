@@ -189,9 +189,8 @@ class _MainMenuState extends State<Home> {
                 ));
               },
             );
-          } else {
-            return const Card(child: Text("No project found!"));
           }
+          return const Text("No project found!");
         },
       ),
     );
