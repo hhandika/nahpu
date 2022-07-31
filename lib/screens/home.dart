@@ -19,7 +19,7 @@ class _MainMenuState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("NAHPU"),
+        title: const Text("HOME"),
         backgroundColor: const Color(0xFF2457C5),
         actions: [
           IconButton(
@@ -94,33 +94,67 @@ class _MainMenuState extends State<Home> {
         ),
       ),
       body: Center(
-        child: FutureBuilder<List<ListProjectResult>>(
-          future: _getProjectList(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return ListView.builder(
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Row(children: [
-                      Text(snapshot.data![index].projectName),
-                      Text(snapshot.data![index].projectUuid)
-                    ]),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ProjectMenu()),
-                      );
-                    },
-                  );
-                },
-              );
-            } else {
-              return const Text("No project found!");
-            }
-          },
-        ),
+        child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: SizedBox(
+                width: 500,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(children: const [
+                        Text(
+                          'Existing projects:',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ]),
+                      const Divider(
+                        color: Colors.grey,
+                      ),
+                      Expanded(
+                        child: FutureBuilder<List<ListProjectResult>>(
+                          future: _getProjectList(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return ListView.separated(
+                                separatorBuilder:
+                                    (BuildContext context, int index) =>
+                                        const Divider(),
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (context, index) {
+                                  return Card(
+                                      child: ListTile(
+                                    leading: const Icon(
+                                        Icons.insert_drive_file_outlined),
+                                    title: Text(
+                                      snapshot.data![index].projectName,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 14),
+                                    ),
+                                    subtitle: Text(
+                                      snapshot.data![index].projectUuid,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w200,
+                                          fontSize: 10),
+                                    ),
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ProjectMenu()),
+                                      );
+                                    },
+                                  ));
+                                },
+                              );
+                            } else {
+                              return const Text("No project found!");
+                            }
+                          },
+                        ),
+                      )
+                    ]))),
       ),
       floatingActionButton: SpeedDial(
         icon: Icons.add,
