@@ -7,6 +7,8 @@ import 'package:nahpu/screens/projects/project_menu.dart';
 import 'package:provider/provider.dart';
 import 'package:nahpu/database/database.dart';
 
+enum MenuSelection { details, deleteProject }
+
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -97,63 +99,21 @@ class _MainMenuState extends State<Home> {
         child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: SizedBox(
-                width: 500,
+                width: 600,
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Row(children: const [
                         Text(
                           'Existing projects:',
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(fontSize: 18),
                         ),
                       ]),
                       const Divider(
                         color: Colors.grey,
+                        thickness: 1.5,
                       ),
-                      Expanded(
-                        child: FutureBuilder<List<ListProjectResult>>(
-                          future: _getProjectList(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return ListView.separated(
-                                separatorBuilder:
-                                    (BuildContext context, int index) =>
-                                        const Divider(),
-                                itemCount: snapshot.data!.length,
-                                itemBuilder: (context, index) {
-                                  return Card(
-                                      child: ListTile(
-                                    leading: const Icon(
-                                        Icons.insert_drive_file_outlined),
-                                    title: Text(
-                                      snapshot.data![index].projectName,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 14),
-                                    ),
-                                    subtitle: Text(
-                                      snapshot.data![index].projectUuid,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.w200,
-                                          fontSize: 10),
-                                    ),
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const ProjectMenu()),
-                                      );
-                                    },
-                                  ));
-                                },
-                              );
-                            } else {
-                              return const Text("No project found!");
-                            }
-                          },
-                        ),
-                      )
+                      _drawListView(),
                     ]))),
       ),
       floatingActionButton: SpeedDial(
@@ -175,6 +135,77 @@ class _MainMenuState extends State<Home> {
         ],
       ),
     );
+  }
+
+  Widget _drawListView() {
+    Future<List<ListProjectResult>> projectList = _getProjectList();
+    return Expanded(
+      child: FutureBuilder<List<ListProjectResult>>(
+        future: projectList,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView.separated(
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(),
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                return Card(
+                    child: ListTile(
+                  leading: const Icon(
+                    Icons.insert_drive_file_outlined,
+                    size: 40,
+                    color: Colors.blueGrey,
+                  ),
+                  title: Text(
+                    snapshot.data![index].projectName,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  subtitle: Text(
+                    snapshot.data![index].projectUuid,
+                    style: const TextStyle(fontSize: 8),
+                  ),
+                  trailing: PopupMenuButton<MenuSelection>(
+                      onSelected: _onPopupMenuSelected,
+                      itemBuilder: (BuildContext context) =>
+                          <PopupMenuEntry<MenuSelection>>[
+                            const PopupMenuItem<MenuSelection>(
+                              value: MenuSelection.details,
+                              child: Text('Details'),
+                            ),
+                            const PopupMenuItem<MenuSelection>(
+                              value: MenuSelection.deleteProject,
+                              child: Text('Delete',
+                                  style: TextStyle(color: Colors.red)),
+                            ),
+                          ]),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProjectMenu()),
+                    );
+                  },
+                ));
+              },
+            );
+          } else {
+            return const Card(child: Text("No project found!"));
+          }
+        },
+      ),
+    );
+  }
+
+  void _onPopupMenuSelected(MenuSelection item) {
+    switch (item) {
+      case MenuSelection.details:
+        setState(() {});
+        break;
+      case MenuSelection.deleteProject:
+        setState(() {});
+        break;
+    }
   }
 
   Future<List<ListProjectResult>> _getProjectList() async {
