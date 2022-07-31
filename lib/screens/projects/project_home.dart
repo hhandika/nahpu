@@ -213,8 +213,11 @@ class _ProjectHomeState extends State<ProjectHome> {
         ),
       ),
       body: Center(
-        child: Text('Project UUID ${widget.projectUuid}'),
-      ),
+          child: Card(
+              child: ListTile(
+        title: const Text('Project Overview'),
+        subtitle: Text('Project UUID: ${widget.projectUuid}'),
+      ))),
       bottomNavigationBar: ConvexAppBar(
         backgroundColor: const Color(0xFF2457C5),
         style: TabStyle.fixedCircle,
