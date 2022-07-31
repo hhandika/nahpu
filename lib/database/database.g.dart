@@ -9,7 +9,7 @@ part of 'database.dart';
 // ignore_for_file: type=lint
 class ProjectData extends DataClass implements Insertable<ProjectData> {
   final String projectUuid;
-  final String? projectName;
+  final String projectName;
   final String? projectDescription;
   final String? principalInvestigator;
   final String? collector;
@@ -18,7 +18,7 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
   final int? catNumEnd;
   ProjectData(
       {required this.projectUuid,
-      this.projectName,
+      required this.projectName,
       this.projectDescription,
       this.principalInvestigator,
       this.collector,
@@ -31,7 +31,7 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
       projectUuid: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}projectUuid'])!,
       projectName: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}projectName']),
+          .mapFromDatabaseResponse(data['${effectivePrefix}projectName'])!,
       projectDescription: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}projectDescription']),
       principalInvestigator: const StringType().mapFromDatabaseResponse(
@@ -50,9 +50,7 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['projectUuid'] = Variable<String>(projectUuid);
-    if (!nullToAbsent || projectName != null) {
-      map['projectName'] = Variable<String?>(projectName);
-    }
+    map['projectName'] = Variable<String>(projectName);
     if (!nullToAbsent || projectDescription != null) {
       map['projectDescription'] = Variable<String?>(projectDescription);
     }
@@ -77,9 +75,7 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
   ProjectCompanion toCompanion(bool nullToAbsent) {
     return ProjectCompanion(
       projectUuid: Value(projectUuid),
-      projectName: projectName == null && nullToAbsent
-          ? const Value.absent()
-          : Value(projectName),
+      projectName: Value(projectName),
       projectDescription: projectDescription == null && nullToAbsent
           ? const Value.absent()
           : Value(projectDescription),
@@ -106,7 +102,7 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return ProjectData(
       projectUuid: serializer.fromJson<String>(json['projectUuid']),
-      projectName: serializer.fromJson<String?>(json['projectName']),
+      projectName: serializer.fromJson<String>(json['projectName']),
       projectDescription:
           serializer.fromJson<String?>(json['projectDescription']),
       principalInvestigator:
@@ -122,7 +118,7 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'projectUuid': serializer.toJson<String>(projectUuid),
-      'projectName': serializer.toJson<String?>(projectName),
+      'projectName': serializer.toJson<String>(projectName),
       'projectDescription': serializer.toJson<String?>(projectDescription),
       'principalInvestigator':
           serializer.toJson<String?>(principalInvestigator),
@@ -187,7 +183,7 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
 
 class ProjectCompanion extends UpdateCompanion<ProjectData> {
   final Value<String> projectUuid;
-  final Value<String?> projectName;
+  final Value<String> projectName;
   final Value<String?> projectDescription;
   final Value<String?> principalInvestigator;
   final Value<String?> collector;
@@ -206,17 +202,18 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
   });
   ProjectCompanion.insert({
     required String projectUuid,
-    this.projectName = const Value.absent(),
+    required String projectName,
     this.projectDescription = const Value.absent(),
     this.principalInvestigator = const Value.absent(),
     this.collector = const Value.absent(),
     this.collectorEmail = const Value.absent(),
     this.catNumStart = const Value.absent(),
     this.catNumEnd = const Value.absent(),
-  }) : projectUuid = Value(projectUuid);
+  })  : projectUuid = Value(projectUuid),
+        projectName = Value(projectName);
   static Insertable<ProjectData> custom({
     Expression<String>? projectUuid,
-    Expression<String?>? projectName,
+    Expression<String>? projectName,
     Expression<String?>? projectDescription,
     Expression<String?>? principalInvestigator,
     Expression<String?>? collector,
@@ -239,7 +236,7 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
 
   ProjectCompanion copyWith(
       {Value<String>? projectUuid,
-      Value<String?>? projectName,
+      Value<String>? projectName,
       Value<String?>? projectDescription,
       Value<String?>? principalInvestigator,
       Value<String?>? collector,
@@ -266,7 +263,7 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
       map['projectUuid'] = Variable<String>(projectUuid.value);
     }
     if (projectName.present) {
-      map['projectName'] = Variable<String?>(projectName.value);
+      map['projectName'] = Variable<String>(projectName.value);
     }
     if (projectDescription.present) {
       map['projectDescription'] = Variable<String?>(projectDescription.value);
@@ -321,10 +318,10 @@ class Project extends Table with TableInfo<Project, ProjectData> {
   final VerificationMeta _projectNameMeta =
       const VerificationMeta('projectName');
   late final GeneratedColumn<String?> projectName = GeneratedColumn<String?>(
-      'projectName', aliasedName, true,
+      'projectName', aliasedName, false,
       type: const StringType(),
-      requiredDuringInsert: false,
-      $customConstraints: 'UNIQUE');
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL UNIQUE');
   final VerificationMeta _projectDescriptionMeta =
       const VerificationMeta('projectDescription');
   late final GeneratedColumn<String?> projectDescription =
@@ -398,6 +395,8 @@ class Project extends Table with TableInfo<Project, ProjectData> {
           _projectNameMeta,
           projectName.isAcceptableOrUnknown(
               data['projectName']!, _projectNameMeta));
+    } else if (isInserting) {
+      context.missing(_projectNameMeta);
     }
     if (data.containsKey('projectDescription')) {
       context.handle(
@@ -832,16 +831,30 @@ abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   late final Project project = Project(this);
   late final Site site = Site(this);
-  Selectable<String> listProject() {
-    return customSelect('SELECT projectUuid FROM project',
+  Selectable<ListProjectResult> listProject() {
+    return customSelect('SELECT projectUuid,projectName FROM project',
         variables: [],
         readsFrom: {
           project,
-        }).map((QueryRow row) => row.read<String>('projectUuid'));
+        }).map((QueryRow row) {
+      return ListProjectResult(
+        projectUuid: row.read<String>('projectUuid'),
+        projectName: row.read<String>('projectName'),
+      );
+    });
   }
 
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [project, site];
+}
+
+class ListProjectResult {
+  final String projectUuid;
+  final String projectName;
+  ListProjectResult({
+    required this.projectUuid,
+    required this.projectName,
+  });
 }

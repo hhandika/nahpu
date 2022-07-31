@@ -7,14 +7,14 @@ import 'package:nahpu/screens/projects/project_menu.dart';
 import 'package:provider/provider.dart';
 import 'package:nahpu/database/database.dart';
 
-class MainMenu extends StatefulWidget {
-  const MainMenu({Key? key}) : super(key: key);
+class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
 
   @override
-  State<MainMenu> createState() => _MainMenuState();
+  State<Home> createState() => _MainMenuState();
 }
 
-class _MainMenuState extends State<MainMenu> {
+class _MainMenuState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,7 +74,7 @@ class _MainMenuState extends State<MainMenu> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const MainMenu()),
+                  MaterialPageRoute(builder: (context) => const Home()),
                 );
               },
             ),
@@ -86,7 +86,7 @@ class _MainMenuState extends State<MainMenu> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const MainMenu()),
+                  MaterialPageRoute(builder: (context) => const Home()),
                 );
               },
             ),
@@ -94,14 +94,18 @@ class _MainMenuState extends State<MainMenu> {
         ),
       ),
       body: Center(
-        child: FutureBuilder<List<String?>>(
+        child: FutureBuilder<List<ListProjectResult>>(
           future: _getProjectList(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return ListView.builder(
+                itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text(snapshot.data![index]!),
+                    title: Row(children: [
+                      Text(snapshot.data![index].projectName),
+                      Text(snapshot.data![index].projectUuid)
+                    ]),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -139,7 +143,7 @@ class _MainMenuState extends State<MainMenu> {
     );
   }
 
-  Future<List<String?>> _getProjectList() async {
+  Future<List<ListProjectResult>> _getProjectList() async {
     return Provider.of<Database>(context, listen: false).getProjectList();
   }
 }

@@ -1,6 +1,6 @@
 CREATE TABLE project (
     projectUuid TEXT NOT NULL PRIMARY KEY,
-    projectName TEXT UNIQUE,
+    projectName TEXT NOT NULL UNIQUE,
     projectDescription TEXT,
     principalInvestigator TEXT,
     collector TEXT,
@@ -19,4 +19,4 @@ CREATE TABLE site (
     preciseLocality TEXT
 );
 
-listProject: SELECT projectUuid FROM project;
+listProject: SELECT projectUuid,projectName FROM project;

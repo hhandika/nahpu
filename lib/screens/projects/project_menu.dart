@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
-import 'package:nahpu/screens/main_menu.dart';
+import 'package:nahpu/screens/home.dart';
 import 'package:nahpu/screens/projects/create_project_form.dart';
 import 'package:nahpu/screens/projects/coll_events.dart';
 import 'package:nahpu/screens/projects/notes.dart';
@@ -130,7 +130,7 @@ class _ProjectMenuState extends State<ProjectMenu> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const MainMenu()),
+                  MaterialPageRoute(builder: (context) => const Home()),
                 );
               },
             ),
@@ -142,7 +142,7 @@ class _ProjectMenuState extends State<ProjectMenu> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const MainMenu()),
+                  MaterialPageRoute(builder: (context) => const Home()),
                 );
               },
             ),
@@ -154,7 +154,7 @@ class _ProjectMenuState extends State<ProjectMenu> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const MainMenu()),
+                  MaterialPageRoute(builder: (context) => const Home()),
                 );
               },
             ),
@@ -165,7 +165,7 @@ class _ProjectMenuState extends State<ProjectMenu> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const MainMenu()),
+                  MaterialPageRoute(builder: (context) => const Home()),
                 );
               },
             ),
@@ -185,7 +185,7 @@ class _ProjectMenuState extends State<ProjectMenu> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const MainMenu()),
+                  MaterialPageRoute(builder: (context) => const Home()),
                 );
               },
             ),
@@ -203,7 +203,7 @@ class _ProjectMenuState extends State<ProjectMenu> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const MainMenu()),
+                  MaterialPageRoute(builder: (context) => const Home()),
                 );
               },
             ),

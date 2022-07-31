@@ -17,7 +17,7 @@ class Database extends _$Database {
   Database() : super(_openConnection());
 
   @override
-  int get schemaVersion => 1; // bump this when you change the schema
+  int get schemaVersion => 2; // bump this when you change the schema
 
   @override
   MigrationStrategy get migration {
@@ -31,7 +31,7 @@ class Database extends _$Database {
 
   Future<List<ProjectData>> getAllProjects() => select(project).get();
 
-  Future<List<String?>> getProjectList() => listProject().get();
+  Future<List<ListProjectResult>> getProjectList() => listProject().get();
 
   Future<void> deleteProject(String id) {
     return (delete(project)..where((t) => t.projectUuid.equals(id))).go();

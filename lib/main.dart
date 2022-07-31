@@ -3,7 +3,7 @@ import 'package:nahpu/database/database.dart';
 
 import 'package:provider/provider.dart';
 
-import 'package:nahpu/screens/main_menu.dart';
+import 'package:nahpu/screens/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       create: (_) => Database(),
       child: MaterialApp(
         title: 'Nahpu',
-        home: const MainMenu(),
+        home: const Home(),
         theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
