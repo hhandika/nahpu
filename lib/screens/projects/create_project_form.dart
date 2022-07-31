@@ -21,6 +21,7 @@ class _NewProjectFormState extends State<CreateProjectForm> {
   final projectNameController = TextEditingController();
   final descriptionController = TextEditingController();
   final collectorController = TextEditingController();
+  final collectorInitialController = TextEditingController();
   final collectorEmailController = TextEditingController();
   final catNumController = TextEditingController();
   final piController = TextEditingController();
@@ -68,15 +69,14 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                           ),
                           ProjectFormField(
                             controller: descriptionController,
-                            labelText: 'Project description*',
+                            labelText: 'Project description',
                             hintText:
-                                'Enter a description of the project (required)',
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Project description is required';
-                              }
-                              return null;
-                            },
+                                'Enter a description of the project (optional)',
+                          ),
+                          ProjectFormField(
+                            controller: piController,
+                            labelText: 'Principal Investigator',
+                            hintText: 'Enter PI name of the project (optional)',
                           ),
                           ProjectFormField(
                             controller: collectorController,
@@ -86,6 +86,18 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Collector name is required';
+                              }
+                              return null;
+                            },
+                          ),
+                          ProjectFormField(
+                            controller: collectorEmailController,
+                            hintText:
+                                'Enter the collector name initial (required)',
+                            labelText: 'Collector initial*',
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Collector initial is required';
                               }
                               return null;
                             },
@@ -121,11 +133,6 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                               }
                               return null;
                             },
-                          ),
-                          ProjectFormField(
-                            controller: piController,
-                            labelText: 'Principal Investigator',
-                            hintText: 'Enter PI name of the project (optional)',
                           ),
                           Wrap(spacing: 10, children: [
                             ElevatedButton(
@@ -170,6 +177,7 @@ class _NewProjectFormState extends State<CreateProjectForm> {
       projectName: db.Value(projectNameController.text),
       projectDescription: db.Value(descriptionController.text),
       collector: db.Value(collectorController.text),
+      collectorInitial: db.Value(collectorInitialController.text),
       collectorEmail: db.Value(collectorEmailController.text),
       catNumStart: db.Value(int.parse(catNumController.text)),
       principalInvestigator: db.Value(piController.text),
