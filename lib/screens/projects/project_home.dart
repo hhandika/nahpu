@@ -214,10 +214,16 @@ class _ProjectHomeState extends State<ProjectHome> {
           ],
         ),
       ),
-      body: Center(
-          child: ProjectOverview(
-        projectUuid: widget.projectUuid,
-      )),
+      body: GridView(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 1,
+            childAspectRatio: 1.0,
+          ),
+          children: [
+            ProjectOverview(
+              projectUuid: widget.projectUuid,
+            )
+          ]),
       bottomNavigationBar: ConvexAppBar(
         backgroundColor: const Color(0xFF2457C5),
         style: TabStyle.fixedCircle,
@@ -313,26 +319,36 @@ class ProjectOverview extends StatelessWidget {
     return Card(
         child: Container(
             width: 400,
-            height: 400,
-            color: Colors.blueGrey,
+            color: Colors.grey[100],
             child: FutureBuilder(
                 future: data,
-                builder: (context, AsyncSnapshot<ProjectData> snapshot) =>
-                    Column(children: [
-                      const Text('Project Overview'),
-                      Text('Project UUID: $projectUuid'),
-                      Text(
-                          'Project Name: ${snapshot.data?.projectName ?? 'Empty!'}'),
-                      Text(
-                          'Project Description: ${snapshot.data?.projectDescription ?? 'Empty!'}'),
-                      Text(
-                          'Principal Investigator: ${snapshot.data?.principalInvestigator ?? 'No PI'}'),
-                      Text('Collector Name: ${snapshot.data!.collector}'),
-                      Text('Collector Email: ${snapshot.data!.collectorEmail}'),
-                      Text(
-                          'Start collector number at: ${snapshot.data!.catNumStart}'),
-                      Text(
-                          'End collector number at: ${snapshot.data!.catNumEnd}'),
-                    ]))));
+                builder: (context, AsyncSnapshot<ProjectData> snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return ListTile(
+                        title: const Text('Project Overview'),
+                        subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text('Project UUID: $projectUuid'),
+                              Text(
+                                  'Project Name: ${snapshot.data?.projectName ?? 'Empty!'}'),
+                              Text(
+                                  'Project Description: ${snapshot.data?.projectDescription ?? 'Empty!'}'),
+                              Text(
+                                  'Principal Investigator: ${snapshot.data?.principalInvestigator ?? 'No PI'}'),
+                              Text(
+                                  'Collector Name: ${snapshot.data?.collector ?? 'No Collector'}'),
+                              Text(
+                                  'Collector Email: ${snapshot.data?.collectorEmail ?? 'No Collector Email'}'),
+                              Text(
+                                  'Start collector number at: ${snapshot.data?.catNumStart ?? 'No CatNumStart'}'),
+                              Text(
+                                  'End collector number at: ${snapshot.data?.catNumEnd ?? 'No CatNumEnd'}'),
+                            ]));
+                  }
+                })));
   }
 }
