@@ -91,7 +91,7 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                             },
                           ),
                           ProjectFormField(
-                            controller: collectorEmailController,
+                            controller: collectorInitialController,
                             hintText:
                                 'Enter the collector name initial (required)',
                             labelText: 'Collector initial*',

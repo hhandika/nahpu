@@ -1,6 +1,5 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer';
 
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:nahpu/models/project.dart';
@@ -308,21 +307,31 @@ class ProjectOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Future<ProjectData> projectData =
-        ProjectModel(context: context).getProjectByUuid(
+    final data = ProjectModel(context: context).getProjectByUuid(
       projectUuid,
     );
-
-    final data = inspect(projectData);
     return Card(
         child: Container(
             width: 400,
             height: 400,
             color: Colors.blueGrey,
-            child: Column(children: [
-              const Text('Project Overview'),
-              Text('Project UUID: $projectUuid'),
-              Text('Project Name: ${data.toString()}'),
-            ])));
+            child: FutureBuilder(
+                future: data,
+                builder: (context, AsyncSnapshot<ProjectData> snapshot) =>
+                    Column(children: [
+                      const Text('Project Overview'),
+                      Text('Project UUID: $projectUuid'),
+                      Text('Project Name: ${snapshot.data!.projectName}'),
+                      Text(
+                          'Project Descrtion: ${snapshot.data?.projectDescription != null ? snapshot.data!.projectDescription : 'Empty!'}'),
+                      Text(
+                          'Principal Investigator: ${snapshot.data?.principalInvestigator != null ? snapshot.data!.principalInvestigator : 'No PI'}'),
+                      Text('Collector Name: ${snapshot.data!.collector}'),
+                      Text('Collector Email: ${snapshot.data!.collectorEmail}'),
+                      Text(
+                          'Start collector number at: ${snapshot.data!.catNumStart}'),
+                      Text(
+                          'End collector number at: ${snapshot.data!.catNumEnd}'),
+                    ]))));
   }
 }
