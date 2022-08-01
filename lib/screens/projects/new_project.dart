@@ -182,7 +182,6 @@ class _NewProjectFormState extends State<CreateProjectForm> {
     _validationMsg = null;
     setState(() {});
 
-    // Non async validation
     if (projectNameController.text.isEmpty) {
       _validationMsg = 'Project name is required';
       setState(() {});
@@ -190,12 +189,10 @@ class _NewProjectFormState extends State<CreateProjectForm> {
 
     bool isExist = await ProjectModel(context: context)
         .isProjectExists(projectNameController.text);
-
     if (isExist) {
       _validationMsg = 'Project name already exists';
       setState(() {});
     }
-
     setState(() {});
   }
 
