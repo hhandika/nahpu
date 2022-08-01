@@ -327,6 +327,12 @@ class ProjectOverview extends StatelessWidget {
                           'Project Descrtion: ${snapshot.data?.projectDescription ?? 'Empty!'}'),
                       Text(
                           'Principal Investigator: ${snapshot.data?.principalInvestigator ?? 'No PI'}'),
+                      Text('Collector Name: ${snapshot.data!.collector}'),
+                      Text('Collector Email: ${snapshot.data!.collectorEmail}'),
+                      Text(
+                          'Start collector number at: ${snapshot.data!.catNumStart}'),
+                      Text(
+                          'End collector number at: ${snapshot.data!.catNumEnd}'),
                     ]))));
   }
 }
