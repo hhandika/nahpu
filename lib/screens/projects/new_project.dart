@@ -25,10 +25,8 @@ class _NewProjectFormState extends State<CreateProjectForm> {
   final collectorEmailController = TextEditingController();
   final catNumController = TextEditingController();
   final piController = TextEditingController();
-
-  get child => null;
-
-  get onPressed => null;
+  bool isInvalid = false;
+  dynamic _validationMsg;
 
   @override
   Widget build(BuildContext context) {
@@ -49,22 +47,24 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                         // crossAxisAlignment: CrossAxisAlignment.center,
 
                         children: [
-                          ProjectFormField(
-                            controller: projectNameController,
-                            labelText: 'Project name*',
-                            hintText:
-                                'Enter the name of the project (required)',
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(50),
-                              FilteringTextInputFormatter.allow(
-                                RegExp(r'[a-zA-Z0-9-_]+|\s'),
-                              ),
-                            ],
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Project name is required';
+                          Focus(
+                            child: ProjectFormField(
+                              controller: projectNameController,
+                              labelText: 'Project name*',
+                              hintText:
+                                  'Enter the name of the project (required)',
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(50),
+                                FilteringTextInputFormatter.allow(
+                                  RegExp(r'[a-zA-Z0-9-_]+|\s'),
+                                ),
+                              ],
+                              validator: (value) => _validationMsg,
+                            ),
+                            onFocusChange: (hasFocus) {
+                              if (!hasFocus) {
+                                _checkProjectName();
                               }
-                              return null;
                             },
                           ),
                           ProjectFormField(
@@ -150,8 +150,9 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                                 backgroundColor: MaterialStateProperty.all(
                                     const Color(0xFF2457C5)),
                               ),
-                              onPressed: () {
+                              onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
+                                  _formKey.currentState!.save();
                                   _createProject();
                                   _goToProjectHome();
                                 }
@@ -165,7 +166,7 @@ class _NewProjectFormState extends State<CreateProjectForm> {
   }
 
   Future<void> _createProject() async {
-    ProjectModel(context: context).createProject(ProjectCompanion(
+    await ProjectModel(context: context).createProject(ProjectCompanion(
       projectUuid: db.Value(_uuidKey),
       projectName: db.Value(projectNameController.text),
       projectDescription: db.Value(descriptionController.text),
@@ -175,6 +176,27 @@ class _NewProjectFormState extends State<CreateProjectForm> {
       catNumStart: db.Value(int.parse(catNumController.text)),
       principalInvestigator: db.Value(piController.text),
     ));
+  }
+
+  Future _checkProjectName() async {
+    _validationMsg = null;
+    setState(() {});
+
+    // Non async validation
+    if (projectNameController.text.isEmpty) {
+      _validationMsg = 'Project name is required';
+      setState(() {});
+    }
+
+    bool isExist = await ProjectModel(context: context)
+        .isProjectExists(projectNameController.text);
+
+    if (isExist) {
+      _validationMsg = 'Project name already exists';
+      setState(() {});
+    }
+
+    setState(() {});
   }
 
   Future<void> _goToProjectHome() async {
@@ -194,6 +216,7 @@ class ProjectFormField extends StatelessWidget {
       required this.controller,
       this.keyboardType,
       this.inputFormatters,
+      this.onSaved,
       this.validator})
       : super(key: key);
 
@@ -203,6 +226,7 @@ class ProjectFormField extends StatelessWidget {
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final String? Function(String?)? validator;
+  final String? Function(String?)? onSaved;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -216,6 +240,7 @@ class ProjectFormField extends StatelessWidget {
           keyboardType: keyboardType,
           inputFormatters: inputFormatters,
           validator: validator,
+          onSaved: onSaved,
         ));
   }
 }

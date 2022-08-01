@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
-import 'package:nahpu/screens/projects/create_project_form.dart';
+import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/projects/project_home.dart';
 import 'package:provider/provider.dart';
 import 'package:nahpu/database/database.dart';
@@ -13,10 +13,10 @@ class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
-  State<Home> createState() => _MainMenuState();
+  State<Home> createState() => _HomeState();
 }
 
-class _MainMenuState extends State<Home> {
+class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

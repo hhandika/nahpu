@@ -20,4 +20,15 @@ class ProjectModel {
   Future<ProjectData> getProjectByUuid(String uuid) async {
     return db.getProjectByUuid(uuid);
   }
+
+  Future<String?> getProjectByName(String projectName) async {
+    final String? query = await db
+        .getProjectByName(projectName)
+        .then((value) => value?.projectName);
+    return query;
+  }
+
+  Future<bool> isProjectExists(String projectName) async {
+    return getProjectByName(projectName).then((value) => value != null);
+  }
 }

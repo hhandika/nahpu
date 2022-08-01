@@ -5,7 +5,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:nahpu/models/project.dart';
 
 import 'package:nahpu/screens/home.dart';
-import 'package:nahpu/screens/projects/create_project_form.dart';
+import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/projects/coll_events.dart';
 import 'package:nahpu/screens/projects/notes.dart';
 import 'package:nahpu/screens/projects/sites.dart';
