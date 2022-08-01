@@ -153,13 +153,7 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
                                   _createProject();
-
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ProjectHome(projectUuid: _uuidKey)),
-                                  );
+                                  _goToProjectHome();
                                 }
                               },
                               child: const Text('Create'),
@@ -181,6 +175,14 @@ class _NewProjectFormState extends State<CreateProjectForm> {
       catNumStart: db.Value(int.parse(catNumController.text)),
       principalInvestigator: db.Value(piController.text),
     ));
+  }
+
+  Future<void> _goToProjectHome() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ProjectHome(projectUuid: _uuidKey)),
+    );
   }
 }
 

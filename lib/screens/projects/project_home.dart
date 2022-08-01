@@ -321,17 +321,12 @@ class ProjectOverview extends StatelessWidget {
                     Column(children: [
                       const Text('Project Overview'),
                       Text('Project UUID: $projectUuid'),
-                      Text('Project Name: ${snapshot.data!.projectName}'),
                       Text(
-                          'Project Descrtion: ${snapshot.data?.projectDescription != null ? snapshot.data!.projectDescription : 'Empty!'}'),
+                          'Project Name: ${snapshot.data?.projectName ?? 'Empty!'}'),
                       Text(
-                          'Principal Investigator: ${snapshot.data?.principalInvestigator != null ? snapshot.data!.principalInvestigator : 'No PI'}'),
-                      Text('Collector Name: ${snapshot.data!.collector}'),
-                      Text('Collector Email: ${snapshot.data!.collectorEmail}'),
+                          'Project Descrtion: ${snapshot.data?.projectDescription ?? 'Empty!'}'),
                       Text(
-                          'Start collector number at: ${snapshot.data!.catNumStart}'),
-                      Text(
-                          'End collector number at: ${snapshot.data!.catNumEnd}'),
+                          'Principal Investigator: ${snapshot.data?.principalInvestigator ?? 'No PI'}'),
                     ]))));
   }
 }

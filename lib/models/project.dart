@@ -4,7 +4,8 @@ import 'package:nahpu/database/database.dart';
 import 'package:provider/provider.dart';
 
 class ProjectModel {
-  ProjectModel({required this.context}) : db = Provider.of<Database>(context);
+  ProjectModel({required this.context})
+      : db = Provider.of<Database>(context, listen: false);
   final BuildContext context;
   final Database db;
 
