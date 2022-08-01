@@ -31,6 +31,11 @@ class Database extends _$Database {
 
   Future<List<ProjectData>> getAllProjects() => select(project).get();
 
+  Future<ProjectData> getProjectByUuid(String uuid) async {
+    return (select(project)..where((t) => t.projectUuid.equals(uuid)))
+        .getSingle();
+  }
+
   Future<List<ListProjectResult>> getProjectList() => listProject().get();
 
   Future<void> deleteProject(String id) {

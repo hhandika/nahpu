@@ -1,7 +1,9 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer';
 
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:nahpu/models/project.dart';
 
 import 'package:nahpu/screens/home.dart';
 import 'package:nahpu/screens/projects/create_project_form.dart';
@@ -9,6 +11,7 @@ import 'package:nahpu/screens/projects/coll_events.dart';
 import 'package:nahpu/screens/projects/notes.dart';
 import 'package:nahpu/screens/projects/sites.dart';
 import 'package:nahpu/screens/projects/specimens.dart';
+import 'package:nahpu/database/database.dart';
 
 class ProjectHome extends StatefulWidget {
   const ProjectHome({Key? key, required this.projectUuid}) : super(key: key);
@@ -213,11 +216,9 @@ class _ProjectHomeState extends State<ProjectHome> {
         ),
       ),
       body: Center(
-          child: Card(
-              child: ListTile(
-        title: const Text('Project Overview'),
-        subtitle: Text('Project UUID: ${widget.projectUuid}'),
-      ))),
+          child: ProjectOverview(
+        projectUuid: widget.projectUuid,
+      )),
       bottomNavigationBar: ConvexAppBar(
         backgroundColor: const Color(0xFF2457C5),
         style: TabStyle.fixedCircle,
@@ -296,5 +297,32 @@ class _ProjectHomeState extends State<ProjectHome> {
         );
         break;
     }
+  }
+}
+
+class ProjectOverview extends StatelessWidget {
+  const ProjectOverview({Key? key, required this.projectUuid})
+      : super(key: key);
+
+  final String projectUuid;
+
+  @override
+  Widget build(BuildContext context) {
+    final Future<ProjectData> projectData =
+        ProjectModel(context: context).getProjectByUuid(
+      projectUuid,
+    );
+
+    final data = inspect(projectData);
+    return Card(
+        child: Container(
+            width: 400,
+            height: 400,
+            color: Colors.blueGrey,
+            child: Column(children: [
+              const Text('Project Overview'),
+              Text('Project UUID: $projectUuid'),
+              Text('Project Name: ${data.toString()}'),
+            ])));
   }
 }

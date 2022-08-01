@@ -15,4 +15,8 @@ class ProjectModel {
   Future<List<ProjectData>> getAllProjects() async {
     return db.getAllProjects();
   }
+
+  Future<ProjectData> getProjectByUuid(String uuid) async {
+    return db.getProjectByUuid(uuid);
+  }
 }
