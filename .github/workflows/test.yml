@@ -1,0 +1,33 @@
+name: Segul-Tests
+
+on: push
+
+jobs:
+  check:
+    name: Test
+    runs-on: ${{ matrix.os }}
+    env:
+        JAVA_VERSION: "11.0"
+        FLUTTER_VERSION: "3.0.5"
+    strategy:
+      matrix:
+        os: ["ubuntu-latest", 'windows-latest', "macos-latest"]
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Install stable toolchain
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: $
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: $
+      - run: flutter pub get
+      - run: flutter analyze
+
+      - name: Test flutter
+        uses: actions-rs/cargo@v1
+      - run: flutter test
