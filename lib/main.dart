@@ -21,7 +21,8 @@ class MyApp extends StatelessWidget {
         title: 'Nahpu',
         home: const Home(),
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          colorSchemeSeed: const Color(0xFF2457C5),
+          useMaterial3: true,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
       ),

@@ -318,6 +318,8 @@ class ProjectOverview extends StatelessWidget {
       projectUuid,
     );
     return Card(
+        elevation: 0,
+        color: Theme.of(context).colorScheme.surfaceVariant,
         child: SingleChildScrollView(
             child: FutureBuilder(
                 future: data,
