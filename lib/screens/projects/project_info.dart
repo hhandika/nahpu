@@ -9,23 +9,20 @@ class ProjectInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Text('Project UUID: ${projectData?.projectUuid}'),
-          Text('Project Name: ${projectData?.projectName ?? 'Empty!'}'),
-          Text(
-              'Project Description: ${projectData?.projectDescription ?? 'Empty!'}'),
-          Text(
-              'Principal Investigator: ${projectData?.principalInvestigator ?? 'No PI'}'),
-          Text('Collector Name: ${projectData?.collector ?? 'No Collector'}'),
-          Text(
-              'Collector Email: ${projectData?.collectorEmail ?? 'No Collector Email'}'),
-          Text(
-              'Start collector number at: ${projectData?.catNumStart ?? 'No CatNumStart'}'),
-          Text(
-              'End collector number at: ${projectData?.catNumEnd ?? 'No CatNumEnd'}'),
-        ]);
+    return ListBody(children: <Widget>[
+      Text('Project Name: ${projectData?.projectName ?? 'Empty!'}'),
+      Text('Project UUID: ${projectData?.projectUuid}'),
+      Text(
+          'Project Description: ${projectData?.projectDescription ?? 'Empty!'}'),
+      Text(
+          'Principal Investigator: ${projectData?.principalInvestigator ?? 'No PI'}'),
+      Text('Collector Name: ${projectData?.collector ?? 'No Collector'}'),
+      Text(
+          'Collector Email: ${projectData?.collectorEmail ?? 'No Collector Email'}'),
+      Text(
+          'Start collector number at: ${projectData?.catNumStart ?? 'No CatNumStart'}'),
+      Text(
+          'End collector number at: ${projectData?.catNumEnd ?? 'No CatNumEnd'}'),
+    ]);
   }
 }

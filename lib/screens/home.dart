@@ -5,6 +5,7 @@ import 'package:nahpu/models/project.dart';
 
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/projects/project_home.dart';
+import 'package:nahpu/screens/projects/project_info.dart';
 import 'package:provider/provider.dart';
 import 'package:nahpu/database/database.dart';
 
@@ -170,9 +171,13 @@ class _HomeState extends State<Home> {
                       onSelected: _onPopupMenuSelected,
                       itemBuilder: (BuildContext context) =>
                           <PopupMenuEntry<MenuSelection>>[
-                            const PopupMenuItem<MenuSelection>(
+                            PopupMenuItem<MenuSelection>(
                               value: MenuSelection.details,
-                              child: Text('Details'),
+                              child: const Text('Info'),
+                              onTap: () async {
+                                _getProjectInfo(
+                                    context, snapshot.data![index].projectUuid);
+                              },
                             ),
                             PopupMenuItem<MenuSelection>(
                               value: MenuSelection.deleteProject,
@@ -220,5 +225,33 @@ class _HomeState extends State<Home> {
 
   Future<List<ListProjectResult>> _getProjectList() async {
     return Provider.of<Database>(context, listen: false).getProjectList();
+  }
+
+  Future<void> _getProjectInfo(BuildContext context, projectUuid) async {
+    final projectData = await ProjectModel(context: context).getProjectByUuid(
+      projectUuid,
+    );
+
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Project information'),
+          content: SingleChildScrollView(
+            child: ProjectInfo(
+              projectData: projectData,
+            ),
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              child: const Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
