@@ -13,10 +13,16 @@ jobs:
     steps:
       - name: Check sources
         uses: actions/checkout@v2
+      
+      - name: Setup Java
       - uses: actions/setup-java@v1
         with:
           java-version: '17.x'
+      
+      - name: Setup Flutter
       - uses: subosito/flutter-action@v2
       - run: flutter pub get
       - run: flutter analyze
+
+      - name: Test the app
       - run: flutter test
