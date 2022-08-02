@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:nahpu/models/project.dart';
 
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/projects/project_home.dart';
@@ -173,9 +174,13 @@ class _HomeState extends State<Home> {
                               value: MenuSelection.details,
                               child: Text('Details'),
                             ),
-                            const PopupMenuItem<MenuSelection>(
+                            PopupMenuItem<MenuSelection>(
                               value: MenuSelection.deleteProject,
-                              child: Text('Delete',
+                              onTap: () async {
+                                _deleteProject(
+                                    context, snapshot.data![index].projectUuid);
+                              },
+                              child: const Text('Delete',
                                   style: TextStyle(color: Colors.red)),
                             ),
                           ]),
@@ -196,6 +201,10 @@ class _HomeState extends State<Home> {
         },
       ),
     );
+  }
+
+  Future<void> _deleteProject(BuildContext context, String projectUuid) async {
+    ProjectModel(context: context).deleteProject(projectUuid);
   }
 
   void _onPopupMenuSelected(MenuSelection item) {

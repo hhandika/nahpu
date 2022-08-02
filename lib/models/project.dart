@@ -31,4 +31,8 @@ class ProjectModel {
   Future<bool> isProjectExists(String projectName) async {
     return getProjectByName(projectName).then((value) => value != null);
   }
+
+  Future<void> deleteProject(String projectUuid) async {
+    return await db.deleteProject(projectUuid);
+  }
 }
