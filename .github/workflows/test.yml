@@ -25,4 +25,5 @@ jobs:
       - run: flutter analyze
 
       - name: Test the app
+      - uses: subosito/flutter-action@v2
       - run: flutter test
