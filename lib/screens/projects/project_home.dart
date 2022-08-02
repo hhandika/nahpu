@@ -318,9 +318,7 @@ class ProjectOverview extends StatelessWidget {
       projectUuid,
     );
     return Card(
-        child: Container(
-            width: 400,
-            color: Colors.grey[100],
+        child: SingleChildScrollView(
             child: FutureBuilder(
                 future: data,
                 builder: (context, AsyncSnapshot<ProjectData> snapshot) {
