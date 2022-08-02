@@ -23,11 +23,10 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          command: |
-            pub get
-            analyze
+      - run: |
+          flutter pub get
+          flutter analyze
 
       - name: Run test
         uses: subosito/flutter-action@v2
-        with:
-          command: test
+      - run: flutter test
