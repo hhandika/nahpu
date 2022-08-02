@@ -5,26 +5,54 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
+// import 'dart:js_util';
+
+// import 'package:flutter/material.dart';
+
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:nahpu/main.dart';
+// import 'package:nahpu/main.dart';
+import 'package:nahpu/screens/projects/new_project.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  // testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  //   // Build our app and trigger a frame.
+  //   await tester.pumpWidget(const MyApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  //   // Verify that our counter starts at 0.
+  //   expect(find.text('0'), findsOneWidget);
+  //   expect(find.text('1'), findsNothing);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  //   // Tap the '+' icon and trigger a frame.
+  //   await tester.tap(find.byIcon(Icons.add));
+  //   await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  //   // Verify that our counter has incremented.
+  //   expect(find.text('0'), findsNothing);
+  //   expect(find.text('1'), findsOneWidget);
+  // });
+  test('Test email is valid', () {
+    String email = 'test@gmail.com';
+    String email2 = 'test\$\$#%@gmail';
+    expect(email.isValidEmail, isTrue);
+    expect(email2.isValidEmail, isFalse);
   });
+
+  test('Test validation for project names', () {
+    String projectName = 'Project Name';
+    String projectName2 = 'Project Name2';
+    String projectName3 = 'Project Name!?*';
+    expect(projectName.isValidProjectName, isTrue);
+    expect(projectName2.isValidProjectName, isTrue);
+    expect(projectName3.isValidProjectName, isFalse);
+  });
+
+  test('Test valid catalog numbers', (() {
+    String catNum = '123456789';
+    String catNum2 = '1234567890';
+    String catNum3 = '12345678901wrw';
+    expect(catNum.isValidCatNum, isTrue);
+    expect(catNum2.isValidCatNum, isTrue);
+    expect(catNum3.isValidCatNum, isFalse);
+  }));
 }

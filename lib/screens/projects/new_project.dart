@@ -244,8 +244,13 @@ class ProjectFormField extends StatelessWidget {
 
 extension StringValidator on String {
   bool get isValidCatNum {
-    final catNumRegex = RegExp(r'[0-9]');
+    final catNumRegex = RegExp(r'^[0-9]+$');
     return catNumRegex.hasMatch(this);
+  }
+
+  bool get isValidProjectName {
+    final projectNameRegex = RegExp(r'^[a-zA-Z0-9-_ ]+$');
+    return projectNameRegex.hasMatch(this);
   }
 
   bool get isValidEmail {
