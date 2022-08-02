@@ -11,6 +11,7 @@ import 'package:nahpu/screens/projects/notes.dart';
 import 'package:nahpu/screens/projects/sites.dart';
 import 'package:nahpu/screens/projects/specimens.dart';
 import 'package:nahpu/database/database.dart';
+import 'package:nahpu/screens/projects/project_info.dart';
 
 class ProjectHome extends StatefulWidget {
   const ProjectHome({Key? key, required this.projectUuid}) : super(key: key);
@@ -324,31 +325,21 @@ class ProjectOverview extends StatelessWidget {
                 future: data,
                 builder: (context, AsyncSnapshot<ProjectData> snapshot) {
                   if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
+                    return showAlert(context, 'Error: ${snapshot.error}');
                   } else {
                     return ListTile(
                         title: const Text('Project Overview'),
-                        subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text('Project UUID: $projectUuid'),
-                              Text(
-                                  'Project Name: ${snapshot.data?.projectName ?? 'Empty!'}'),
-                              Text(
-                                  'Project Description: ${snapshot.data?.projectDescription ?? 'Empty!'}'),
-                              Text(
-                                  'Principal Investigator: ${snapshot.data?.principalInvestigator ?? 'No PI'}'),
-                              Text(
-                                  'Collector Name: ${snapshot.data?.collector ?? 'No Collector'}'),
-                              Text(
-                                  'Collector Email: ${snapshot.data?.collectorEmail ?? 'No Collector Email'}'),
-                              Text(
-                                  'Start collector number at: ${snapshot.data?.catNumStart ?? 'No CatNumStart'}'),
-                              Text(
-                                  'End collector number at: ${snapshot.data?.catNumEnd ?? 'No CatNumEnd'}'),
-                            ]));
+                        subtitle: ProjectInfo(projectData: snapshot.data));
                   }
                 })));
+  }
+
+  Widget showAlert(BuildContext context, String error) {
+    return AlertDialog(
+        title: const Text('ERROR!'),
+        content: Column(children: [
+          Text(
+              'Failed fetching data from the database. Check if the project name exists. Error: $error')
+        ]));
   }
 }

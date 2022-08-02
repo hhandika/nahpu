@@ -4,10 +4,11 @@ import 'package:nahpu/database/database.dart';
 import 'package:provider/provider.dart';
 
 class ProjectModel {
-  ProjectModel({required this.context})
-      : db = Provider.of<Database>(context, listen: false);
   final BuildContext context;
   final Database db;
+
+  ProjectModel({required this.context})
+      : db = Provider.of<Database>(context, listen: false);
 
   Future<void> createProject(ProjectCompanion project) async {
     return db.createProject(project);
