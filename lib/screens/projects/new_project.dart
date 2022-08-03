@@ -142,6 +142,7 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                               ),
                               child: const Text(
                                 'Cancel',
+                                style: TextStyle(color: Colors.black),
                               ),
                               onPressed: () {
                                 Navigator.pop(context);
@@ -152,7 +153,7 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                                 backgroundColor: MaterialStateProperty.all(
                                     Theme.of(context)
                                         .colorScheme
-                                        .tertiaryContainer),
+                                        .inverseSurface),
                               ),
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
@@ -161,8 +162,9 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                                   _goToProjectHome();
                                 }
                               },
-                              child: const Text('Create',
-                                  style: TextStyle(color: Colors.white)),
+                              child: const Text(
+                                'Create',
+                              ),
                             )
                           ])
                         ],

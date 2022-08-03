@@ -228,7 +228,7 @@ class _ProjectHomeState extends State<ProjectHome> {
             )
           ]),
       bottomNavigationBar: ConvexAppBar(
-        backgroundColor: Theme.of(context).colorScheme.secondary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         style: TabStyle.fixedCircle,
         elevation: 10,
         color: Theme.of(context).colorScheme.surface,
@@ -251,7 +251,7 @@ class _ProjectHomeState extends State<ProjectHome> {
           TabItem(
             icon: Icon(
               Icons.home,
-              color: Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.primary,
               size: 45,
             ),
             title: 'Home',
@@ -320,8 +320,7 @@ class ProjectOverview extends StatelessWidget {
       projectUuid,
     );
     return Card(
-        elevation: 0,
-        color: Theme.of(context).colorScheme.surfaceVariant,
+        color: Theme.of(context).colorScheme.surface,
         child: SingleChildScrollView(
             child: FutureBuilder(
                 future: data,
