@@ -123,10 +123,11 @@ class _HomeState extends State<Home> {
       floatingActionButton: SpeedDial(
         icon: Icons.add_outlined,
         backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Colors.white,
+        foregroundColor: Theme.of(context).colorScheme.onInverseSurface,
         children: [
           SpeedDialChild(
-            child: const Icon(Icons.create_outlined, color: Colors.white),
+            child: Icon(Icons.create_outlined,
+                color: Theme.of(context).colorScheme.onInverseSurface),
             backgroundColor: Theme.of(context).colorScheme.primary,
             label: 'New Project',
             onTap: () {

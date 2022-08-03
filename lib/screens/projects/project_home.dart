@@ -36,10 +36,12 @@ class _ProjectHomeState extends State<ProjectHome> {
       floatingActionButton: SpeedDial(
         icon: Icons.add,
         backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Theme.of(context).colorScheme.onInverseSurface,
         direction: SpeedDialDirection.down,
         children: [
           SpeedDialChild(
-            child: const Icon(Icons.book, color: Colors.white),
+            child: Icon(Icons.book,
+                color: Theme.of(context).colorScheme.onInverseSurface),
             backgroundColor: Theme.of(context).colorScheme.secondary,
             label: 'New Notes',
             onTap: () {
@@ -50,7 +52,8 @@ class _ProjectHomeState extends State<ProjectHome> {
             },
           ),
           SpeedDialChild(
-            child: const Icon(Icons.place, color: Colors.white),
+            child: Icon(Icons.place,
+                color: Theme.of(context).colorScheme.onInverseSurface),
             backgroundColor: Theme.of(context).colorScheme.secondary,
             label: 'New Sites',
             onTap: () {
@@ -61,7 +64,8 @@ class _ProjectHomeState extends State<ProjectHome> {
             },
           ),
           SpeedDialChild(
-            child: const Icon(Icons.timeline, color: Colors.white),
+            child: Icon(Icons.timeline,
+                color: Theme.of(context).colorScheme.onInverseSurface),
             backgroundColor: Theme.of(context).colorScheme.secondary,
             label: 'New CollEvents',
             onTap: () {
@@ -72,7 +76,8 @@ class _ProjectHomeState extends State<ProjectHome> {
             },
           ),
           SpeedDialChild(
-            child: const Icon(Icons.pets, color: Colors.white),
+            child: Icon(Icons.pets,
+                color: Theme.of(context).colorScheme.onInverseSurface),
             backgroundColor: Theme.of(context).colorScheme.secondary,
             label: 'New Specimens',
             onTap: () {
