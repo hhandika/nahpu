@@ -1,5 +1,6 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
+import 'package:nahpu/configs/themes.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/screens/home.dart';
 
@@ -12,14 +13,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  static final _defaultLightColorScheme =
-      ColorScheme.fromSwatch(primarySwatch: Colors.teal);
-
-  static final _defaultDarkColorScheme = ColorScheme.fromSwatch(
-    primarySwatch: Colors.teal,
-    brightness: Brightness.dark,
-  );
-
   @override
   Widget build(BuildContext context) {
     return DynamicColorBuilder(builder: (lightColorScheme, darkColorScheme) {
@@ -28,16 +21,8 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           title: 'Nahpu',
           home: const Home(),
-          theme: ThemeData(
-            colorScheme: lightColorScheme ?? _defaultLightColorScheme,
-            useMaterial3: true,
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-          ),
-          darkTheme: ThemeData(
-            colorScheme: darkColorScheme ?? _defaultDarkColorScheme,
-            useMaterial3: true,
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-          ),
+          theme: NahpuTheme.lightTheme(lightColorScheme),
+          darkTheme: NahpuTheme.darkTheme(darkColorScheme),
         ),
         dispose: (_, Database database) => database.close(),
       );
