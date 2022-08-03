@@ -109,14 +109,12 @@ class _HomeState extends State<Home> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Row(children: const [
-                        Text(
-                          'Existing projects:',
-                          style: TextStyle(fontSize: 18),
-                        ),
+                      Row(children: [
+                        Text('Existing projects:',
+                            style: Theme.of(context).textTheme.headlineSmall),
                       ]),
-                      const Divider(
-                        color: Colors.grey,
+                      Divider(
+                        color: Theme.of(context).colorScheme.onSurface,
                         thickness: 1.5,
                       ),
                       _drawListView(),
@@ -150,7 +148,9 @@ class _HomeState extends State<Home> {
       child: FutureBuilder<List<ListProjectResult>>(
         future: projectList,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else if (snapshot.hasData) {
             return ListView.separated(
               separatorBuilder: (BuildContext context, int index) =>
                   const Divider(),
@@ -158,10 +158,10 @@ class _HomeState extends State<Home> {
               itemBuilder: (context, index) {
                 return Card(
                     child: ListTile(
-                  leading: const Icon(
+                  leading: Icon(
                     Icons.insert_drive_file_outlined,
                     size: 40,
-                    color: Colors.blueGrey,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                   title: Text(
                     snapshot.data![index].projectName,
@@ -207,7 +207,9 @@ class _HomeState extends State<Home> {
               },
             );
           }
-          return const Text("No project found!");
+          return const Center(
+            child: Text('No projects found.'),
+          );
         },
       ),
     );
