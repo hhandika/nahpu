@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'package:nahpu/models/project.dart';
 
 import 'package:nahpu/screens/projects/new_project.dart';
@@ -19,6 +21,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final Uri _helpUrl =
+      Uri(scheme: 'https', host: 'github.com/hhandika/nahpu/issues');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,9 +81,16 @@ class _HomeState extends State<Home> {
               title: const Align(
                   alignment: Alignment(-1.3, 0), child: Text('About')),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Home()),
+                return showAboutDialog(
+                  context: context,
+                  applicationName: 'Nahpu',
+                  applicationVersion: '0.0.1',
+                  applicationIcon: const Icon(Icons.info),
+                  children: [
+                    const Text(
+                        '''Nahpu is a tool for cataloging natural history specimens. 
+                        It is a work in progress. Please report any bugs.'''),
+                  ],
                 );
               },
             ),
@@ -88,10 +100,7 @@ class _HomeState extends State<Home> {
                   alignment: Alignment(-1.55, 0),
                   child: Text('Help and feedback')),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Home()),
-                );
+                _launchHelpUrl(_helpUrl);
               },
             ),
           ],
@@ -254,5 +263,14 @@ class _HomeState extends State<Home> {
         );
       },
     );
+  }
+
+  Future<void> _launchHelpUrl(Uri url) async {
+    if (!await launchUrl(
+      url,
+      mode: LaunchMode.externalApplication,
+    )) {
+      throw 'Could not launch $url';
+    }
   }
 }
