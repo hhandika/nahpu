@@ -21,8 +21,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final Uri _helpUrl =
-      Uri(scheme: 'https', host: 'github.com/hhandika/nahpu/issues');
+  final Uri _helpUrl = Uri(
+      scheme: 'https', host: 'www.github.com', path: 'hhandika/nahpu/issues');
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +54,7 @@ class _HomeState extends State<Home> {
             ),
             ListTile(
               leading: const Icon(Icons.create),
-              title: const Align(
-                  alignment: Alignment(-1.65, 0),
-                  child: Text('Create a new project')),
+              title: const Text('Create a new project'),
               onTap: () {
                 Navigator.push(
                   context,
@@ -67,8 +65,7 @@ class _HomeState extends State<Home> {
             ),
             const ListTile(
               leading: Icon(Icons.settings),
-              title:
-                  Align(alignment: Alignment(-1.3, 0), child: Text('Settings')),
+              title: Text('Settings'),
               // onTap: () {
               //   // Navigator.of(context).pop();
               // },
@@ -78,8 +75,7 @@ class _HomeState extends State<Home> {
             ),
             ListTile(
               leading: const Icon(Icons.info),
-              title: const Align(
-                  alignment: Alignment(-1.3, 0), child: Text('About')),
+              title: const Text('About'),
               onTap: () {
                 return showAboutDialog(
                   context: context,
@@ -88,17 +84,16 @@ class _HomeState extends State<Home> {
                   applicationIcon: const Icon(Icons.info),
                   children: [
                     const Text(
-                        '''Nahpu is a tool for cataloging natural history specimens. 
-                        It is a work in progress. Please report any bugs.'''),
+                        'A tool for cataloging natural history specimens.'),
+                    const Text('It is a work in progress.'),
+                    const Text('Please report any bugs or feature requests'),
                   ],
                 );
               },
             ),
             ListTile(
               leading: const Icon(Icons.help),
-              title: const Align(
-                  alignment: Alignment(-1.55, 0),
-                  child: Text('Help and feedback')),
+              title: const Text('Help and feedback'),
               onTap: () {
                 _launchHelpUrl(_helpUrl);
               },
