@@ -136,24 +136,19 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                           ),
                           Wrap(spacing: 10, children: [
                             ElevatedButton(
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    Theme.of(context).colorScheme.surface),
-                              ),
-                              child: const Text(
-                                'Cancel',
-                                style: TextStyle(color: Colors.black),
-                              ),
+                              child: const Text('Cancel'),
                               onPressed: () {
                                 Navigator.pop(context);
                               },
                             ),
                             ElevatedButton(
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    Theme.of(context)
-                                        .colorScheme
-                                        .inverseSurface),
+                              style: ElevatedButton.styleFrom(
+                                onPrimary: Theme.of(context)
+                                    .colorScheme
+                                    .onSecondaryContainer,
+                                primary: Theme.of(context)
+                                    .colorScheme
+                                    .secondaryContainer,
                               ),
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
