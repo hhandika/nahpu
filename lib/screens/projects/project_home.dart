@@ -117,9 +117,7 @@ class _ProjectHomeState extends State<ProjectHome> {
             ),
             ListTile(
               leading: const Icon(Icons.create),
-              title: const Align(
-                  alignment: Alignment(-1.65, 0),
-                  child: Text('Create a new project')),
+              title: const Text('Create a new project'),
               onTap: () {
                 Navigator.push(
                   context,
@@ -131,9 +129,7 @@ class _ProjectHomeState extends State<ProjectHome> {
             const Divider(color: Colors.grey),
             ListTile(
               leading: const Icon(Icons.add_box),
-              title: const Align(
-                  alignment: Alignment(-1.45, 0),
-                  child: Text('Bundle records')),
+              title: const Text('Bundle records'),
               onTap: () {
                 Navigator.push(
                   context,
@@ -143,9 +139,7 @@ class _ProjectHomeState extends State<ProjectHome> {
             ),
             ListTile(
               leading: const Icon(Icons.save),
-              title: const Align(
-                  alignment: Alignment(-1.45, 0),
-                  child: Text('Save project as')),
+              title: const Text('Save project as'),
               onTap: () {
                 Navigator.push(
                   context,
@@ -155,9 +149,7 @@ class _ProjectHomeState extends State<ProjectHome> {
             ),
             ListTile(
               leading: const Icon(Icons.table_view),
-              title: const Align(
-                  alignment: Alignment(-1.5, 0),
-                  child: Text('Export to csv/tsv')),
+              title: const Text('Export to csv/tsv'),
               onTap: () {
                 Navigator.push(
                   context,
@@ -167,8 +159,7 @@ class _ProjectHomeState extends State<ProjectHome> {
             ),
             ListTile(
               leading: const Icon(Icons.picture_as_pdf),
-              title: const Align(
-                  alignment: Alignment(-1.4, 0), child: Text('Export to pdf')),
+              title: const Text('Export to pdf'),
               onTap: () {
                 Navigator.push(
                   context,
@@ -179,16 +170,14 @@ class _ProjectHomeState extends State<ProjectHome> {
             const Divider(color: Colors.grey),
             const ListTile(
               leading: Icon(Icons.settings),
-              title:
-                  Align(alignment: Alignment(-1.3, 0), child: Text('Settings')),
+              title: Text('Settings'),
               // onTap: () {
               //   // Navigator.of(context).pop();
               // },
             ),
             ListTile(
               leading: const Icon(Icons.exit_to_app),
-              title: const Align(
-                  alignment: Alignment(-1.4, 0), child: Text('Close project')),
+              title: const Text('Close project'),
               onTap: () {
                 Navigator.push(
                   context,
@@ -201,12 +190,10 @@ class _ProjectHomeState extends State<ProjectHome> {
             ),
             ListTile(
               leading: const Icon(Icons.delete),
-              title: const Align(
-                  alignment: Alignment(-1.4, 0),
-                  child: Text(
-                    'Delete all records',
-                    style: TextStyle(color: Colors.redAccent),
-                  )),
+              title: const Text(
+                'Delete all records',
+                style: TextStyle(color: Colors.redAccent),
+              ),
               onTap: () {
                 Navigator.push(
                   context,
