@@ -327,7 +327,7 @@ class ProjectOverview extends StatelessWidget {
         title: const Text('ERROR!'),
         content: Column(children: [
           Text(
-              'Failed fetching data from the database. Check if the project name exists. Error: $error')
+              'Failed fetching data from the database. Check if the project name exists. $error')
         ]));
   }
 }
