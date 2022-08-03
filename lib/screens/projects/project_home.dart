@@ -5,11 +5,12 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:nahpu/models/project.dart';
 
 import 'package:nahpu/screens/home.dart';
+import 'package:nahpu/screens/notes/new_notes.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
-import 'package:nahpu/screens/projects/coll_events.dart';
-import 'package:nahpu/screens/projects/notes.dart';
-import 'package:nahpu/screens/projects/sites.dart';
-import 'package:nahpu/screens/projects/specimens.dart';
+import 'package:nahpu/screens/collecting/coll_events.dart';
+import 'package:nahpu/screens/notes/notes.dart';
+import 'package:nahpu/screens/sites/sites.dart';
+import 'package:nahpu/screens/specimens/specimens.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/screens/projects/project_info.dart';
 
@@ -44,11 +45,11 @@ class _ProjectHomeState extends State<ProjectHome> {
                 color: Theme.of(context).colorScheme.onInverseSurface),
             backgroundColor: Theme.of(context).colorScheme.secondary,
             label: 'New Notes',
-            onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => const NewProjectForm()),
-              // );
+            onTap: () async {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const NewNotes()),
+              );
             },
           ),
           SpeedDialChild(
