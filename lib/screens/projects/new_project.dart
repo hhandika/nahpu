@@ -34,7 +34,7 @@ class _NewProjectFormState extends State<CreateProjectForm> {
         // resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text('Create a new project'),
-          backgroundColor: const Color(0xFF2457C5),
+          backgroundColor: Theme.of(context).colorScheme.primary,
         ),
         body: Center(
           child: Form(
@@ -137,10 +137,12 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                           Wrap(spacing: 10, children: [
                             ElevatedButton(
                               style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.grey),
+                                backgroundColor: MaterialStateProperty.all(
+                                    Theme.of(context).colorScheme.surface),
                               ),
-                              child: const Text('Cancel'),
+                              child: const Text(
+                                'Cancel',
+                              ),
                               onPressed: () {
                                 Navigator.pop(context);
                               },
@@ -148,7 +150,9 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                             ElevatedButton(
                               style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
-                                    const Color(0xFF2457C5)),
+                                    Theme.of(context)
+                                        .colorScheme
+                                        .tertiaryContainer),
                               ),
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
@@ -157,7 +161,8 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                                   _goToProjectHome();
                                 }
                               },
-                              child: const Text('Create'),
+                              child: const Text('Create',
+                                  style: TextStyle(color: Colors.white)),
                             )
                           ])
                         ],

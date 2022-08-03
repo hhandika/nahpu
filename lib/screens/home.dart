@@ -23,8 +23,8 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("HOME"),
-        backgroundColor: const Color(0xFF2457C5),
+        title: Text("HOME", style: Theme.of(context).textTheme.headline6),
+        backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
@@ -39,11 +39,11 @@ class _HomeState extends State<Home> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
+            DrawerHeader(
               decoration: BoxDecoration(
-                color: Color(0xFF2457C5),
+                color: Theme.of(context).colorScheme.primary,
               ),
-              child: CircleAvatar(
+              child: const CircleAvatar(
                 backgroundColor: Colors.white,
               ),
             ),
@@ -119,12 +119,13 @@ class _HomeState extends State<Home> {
                     ]))),
       ),
       floatingActionButton: SpeedDial(
-        icon: Icons.add,
-        backgroundColor: const Color(0xFF2457C5),
+        icon: Icons.add_outlined,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Colors.white,
         children: [
           SpeedDialChild(
-            child: const Icon(Icons.create, color: Colors.white),
-            backgroundColor: const Color(0xFF2457C5),
+            child: const Icon(Icons.create_outlined, color: Colors.white),
+            backgroundColor: Theme.of(context).colorScheme.primary,
             label: 'New Project',
             onTap: () {
               Navigator.push(

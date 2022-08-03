@@ -30,17 +30,17 @@ class _ProjectHomeState extends State<ProjectHome> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Project Home"),
-        backgroundColor: const Color(0xFF2457C5),
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       floatingActionButton: SpeedDial(
         icon: Icons.add,
-        backgroundColor: const Color(0xFF2457C5),
+        backgroundColor: Theme.of(context).colorScheme.primary,
         direction: SpeedDialDirection.down,
         children: [
           SpeedDialChild(
             child: const Icon(Icons.book, color: Colors.white),
-            backgroundColor: const Color.fromRGBO(36, 87, 197, 1),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
             label: 'New Notes',
             onTap: () {
               // Navigator.push(
@@ -51,7 +51,7 @@ class _ProjectHomeState extends State<ProjectHome> {
           ),
           SpeedDialChild(
             child: const Icon(Icons.place, color: Colors.white),
-            backgroundColor: const Color.fromRGBO(36, 87, 197, 1),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
             label: 'New Sites',
             onTap: () {
               // Navigator.push(
@@ -62,7 +62,7 @@ class _ProjectHomeState extends State<ProjectHome> {
           ),
           SpeedDialChild(
             child: const Icon(Icons.timeline, color: Colors.white),
-            backgroundColor: const Color.fromRGBO(36, 87, 197, 1),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
             label: 'New CollEvents',
             onTap: () {
               // Navigator.push(
@@ -73,7 +73,7 @@ class _ProjectHomeState extends State<ProjectHome> {
           ),
           SpeedDialChild(
             child: const Icon(Icons.pets, color: Colors.white),
-            backgroundColor: const Color.fromRGBO(36, 87, 197, 1),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
             label: 'New Specimens',
             onTap: () {
               // Navigator.push(
@@ -88,15 +88,16 @@ class _ProjectHomeState extends State<ProjectHome> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            const UserAccountsDrawerHeader(
-              decoration: BoxDecoration(color: Color(0xFF2457C5)),
-              accountName: Text(
+            UserAccountsDrawerHeader(
+              decoration:
+                  BoxDecoration(color: Theme.of(context).colorScheme.primary),
+              accountName: const Text(
                 "Heru Handika",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              accountEmail: Text(
+              accountEmail: const Text(
                 "handika@email.com",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -109,6 +110,7 @@ class _ProjectHomeState extends State<ProjectHome> {
                   style: TextStyle(
                     fontSize: 45,
                     fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
               ),
@@ -226,30 +228,30 @@ class _ProjectHomeState extends State<ProjectHome> {
             )
           ]),
       bottomNavigationBar: ConvexAppBar(
-        backgroundColor: const Color(0xFF2457C5),
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         style: TabStyle.fixedCircle,
         elevation: 10,
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         initialActiveIndex: _defaultIndex,
-        items: const [
+        items: [
           TabItem(
             icon: Icon(
               Icons.book,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.surface,
             ),
             title: 'Notes',
           ),
           TabItem(
             icon: Icon(
               Icons.place,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.surface,
             ),
             title: 'Sites',
           ),
           TabItem(
             icon: Icon(
               Icons.home,
-              color: Color(0xFF2457C5),
+              color: Theme.of(context).colorScheme.secondary,
               size: 45,
             ),
             title: 'Home',
@@ -257,14 +259,14 @@ class _ProjectHomeState extends State<ProjectHome> {
           TabItem(
             icon: Icon(
               Icons.timeline,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.surface,
             ),
             title: 'CollEvents',
           ),
           TabItem(
             icon: Icon(
               Icons.pets,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.surface,
             ),
             title: 'Specimens',
           ),
