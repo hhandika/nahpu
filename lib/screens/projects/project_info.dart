@@ -11,7 +11,15 @@ class ProjectInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListBody(children: <Widget>[
       Text('Project Name: ${projectData?.projectName ?? 'Empty!'}'),
-      Text('Project UUID: ${projectData?.projectUuid}'),
+      RichText(
+          text: TextSpan(
+              text: 'Project UUID: ',
+              style: DefaultTextStyle.of(context).style,
+              children: [
+            TextSpan(
+                text: '${projectData?.projectUuid}',
+                style: const TextStyle(fontSize: 12))
+          ])),
       Text(
           'Project Description: ${projectData?.projectDescription ?? 'Empty!'}'),
       Text(
