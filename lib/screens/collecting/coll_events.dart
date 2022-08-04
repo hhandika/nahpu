@@ -17,7 +17,7 @@ class _CollEventsState extends State<CollEvents> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Collecting Events"),
-        backgroundColor: const Color(0xFF2457C5),
+        backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           IconButton(
             icon: const Icon(Icons.add),

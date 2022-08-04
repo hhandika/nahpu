@@ -17,7 +17,7 @@ class _SpecimensState extends State<Specimens> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Specimen Records"),
-        backgroundColor: const Color(0xFF2457C5),
+        backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
