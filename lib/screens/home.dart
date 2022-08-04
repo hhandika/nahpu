@@ -32,7 +32,7 @@ class _HomeState extends State<Home> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           IconButton(
-            icon: const Icon(Icons.search),
+            icon: const Icon(Icons.search_rounded),
             onPressed: () {
               // Navigator.of(context)
               //     .push(MaterialPageRoute(builder: (_) => const Search()));
