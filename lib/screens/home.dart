@@ -126,7 +126,7 @@ class _HomeState extends State<Home> {
         foregroundColor: Theme.of(context).colorScheme.onInverseSurface,
         children: [
           SpeedDialChild(
-            child: Icon(Icons.create_outlined,
+            child: Icon(Icons.create_rounded,
                 color: Theme.of(context).colorScheme.onInverseSurface),
             backgroundColor: Theme.of(context).colorScheme.primary,
             label: 'New Project',
@@ -156,6 +156,7 @@ class _HomeState extends State<Home> {
               separatorBuilder: (BuildContext context, int index) =>
                   const Divider(),
               itemCount: snapshot.data!.length,
+              reverse: true,
               itemBuilder: (context, index) {
                 return Card(
                     child: ListTile(
