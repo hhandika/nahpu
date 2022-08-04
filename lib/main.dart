@@ -1,10 +1,11 @@
-import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
+
+import 'package:dynamic_color/dynamic_color.dart';
+import 'package:provider/provider.dart';
+
 import 'package:nahpu/configs/themes.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/screens/home.dart';
-
-import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
