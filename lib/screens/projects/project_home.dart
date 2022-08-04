@@ -41,7 +41,7 @@ class _ProjectHomeState extends State<ProjectHome> {
         direction: SpeedDialDirection.down,
         children: [
           SpeedDialChild(
-            child: Icon(Icons.book,
+            child: Icon(Icons.book_rounded,
                 color: Theme.of(context).colorScheme.onInverseSurface),
             backgroundColor: Theme.of(context).colorScheme.secondary,
             label: 'New Notes',
@@ -53,7 +53,7 @@ class _ProjectHomeState extends State<ProjectHome> {
             },
           ),
           SpeedDialChild(
-            child: Icon(Icons.place,
+            child: Icon(Icons.place_rounded,
                 color: Theme.of(context).colorScheme.onInverseSurface),
             backgroundColor: Theme.of(context).colorScheme.secondary,
             label: 'New Sites',
@@ -65,7 +65,7 @@ class _ProjectHomeState extends State<ProjectHome> {
             },
           ),
           SpeedDialChild(
-            child: Icon(Icons.timeline,
+            child: Icon(Icons.timeline_rounded,
                 color: Theme.of(context).colorScheme.onInverseSurface),
             backgroundColor: Theme.of(context).colorScheme.secondary,
             label: 'New CollEvents',
@@ -77,7 +77,7 @@ class _ProjectHomeState extends State<ProjectHome> {
             },
           ),
           SpeedDialChild(
-            child: Icon(Icons.pets,
+            child: Icon(Icons.pets_rounded,
                 color: Theme.of(context).colorScheme.onInverseSurface),
             backgroundColor: Theme.of(context).colorScheme.secondary,
             label: 'New Specimens',
@@ -122,7 +122,7 @@ class _ProjectHomeState extends State<ProjectHome> {
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.create),
+              leading: const Icon(Icons.create_rounded),
               title: const Text('Create a new project'),
               onTap: () {
                 Navigator.push(
@@ -134,7 +134,7 @@ class _ProjectHomeState extends State<ProjectHome> {
             ),
             const Divider(color: Colors.grey),
             ListTile(
-              leading: const Icon(Icons.add_box),
+              leading: const Icon(Icons.add_box_rounded),
               title: const Text('Bundle records'),
               onTap: () {
                 Navigator.push(
@@ -144,7 +144,7 @@ class _ProjectHomeState extends State<ProjectHome> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.save),
+              leading: const Icon(Icons.save_rounded),
               title: const Text('Save project as'),
               onTap: () {
                 Navigator.push(
@@ -154,7 +154,7 @@ class _ProjectHomeState extends State<ProjectHome> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.table_view),
+              leading: const Icon(Icons.table_view_rounded),
               title: const Text('Export to csv/tsv'),
               onTap: () {
                 Navigator.push(
@@ -164,7 +164,7 @@ class _ProjectHomeState extends State<ProjectHome> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.picture_as_pdf),
+              leading: const Icon(Icons.picture_as_pdf_rounded),
               title: const Text('Export to pdf'),
               onTap: () {
                 Navigator.push(
@@ -175,14 +175,14 @@ class _ProjectHomeState extends State<ProjectHome> {
             ),
             const Divider(color: Colors.grey),
             const ListTile(
-              leading: Icon(Icons.settings),
+              leading: Icon(Icons.settings_rounded),
               title: Text('Settings'),
               // onTap: () {
               //   // Navigator.of(context).pop();
               // },
             ),
             ListTile(
-              leading: const Icon(Icons.exit_to_app),
+              leading: const Icon(Icons.exit_to_app_rounded),
               title: const Text('Close project'),
               onTap: () {
                 Navigator.push(
@@ -195,7 +195,7 @@ class _ProjectHomeState extends State<ProjectHome> {
               color: Colors.grey,
             ),
             ListTile(
-              leading: const Icon(Icons.delete),
+              leading: const Icon(Icons.delete_rounded),
               title: const Text(
                 'Delete all records',
                 style: TextStyle(color: Colors.redAccent),
@@ -229,21 +229,21 @@ class _ProjectHomeState extends State<ProjectHome> {
         items: [
           TabItem(
             icon: Icon(
-              Icons.book,
+              Icons.book_rounded,
               color: Theme.of(context).colorScheme.surface,
             ),
             title: 'Notes',
           ),
           TabItem(
             icon: Icon(
-              Icons.place,
+              Icons.place_rounded,
               color: Theme.of(context).colorScheme.surface,
             ),
             title: 'Sites',
           ),
           TabItem(
             icon: Icon(
-              Icons.home,
+              Icons.home_rounded,
               color: Theme.of(context).colorScheme.primary,
               size: 45,
             ),
@@ -251,14 +251,14 @@ class _ProjectHomeState extends State<ProjectHome> {
           ),
           TabItem(
             icon: Icon(
-              Icons.timeline,
+              Icons.timeline_rounded,
               color: Theme.of(context).colorScheme.surface,
             ),
             title: 'CollEvents',
           ),
           TabItem(
             icon: Icon(
-              Icons.pets,
+              Icons.pets_rounded,
               color: Theme.of(context).colorScheme.surface,
             ),
             title: 'Specimens',

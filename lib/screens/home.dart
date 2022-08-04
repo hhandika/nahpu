@@ -53,7 +53,7 @@ class _HomeState extends State<Home> {
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.create),
+              leading: const Icon(Icons.create_rounded),
               title: const Text('Create a new project'),
               onTap: () {
                 Navigator.push(
@@ -64,7 +64,7 @@ class _HomeState extends State<Home> {
               },
             ),
             const ListTile(
-              leading: Icon(Icons.settings),
+              leading: Icon(Icons.settings_rounded),
               title: Text('Settings'),
               // onTap: () {
               //   // Navigator.of(context).pop();
@@ -74,7 +74,7 @@ class _HomeState extends State<Home> {
               color: Colors.grey,
             ),
             ListTile(
-              leading: const Icon(Icons.info),
+              leading: const Icon(Icons.info_rounded),
               title: const Text('About'),
               onTap: () {
                 return showAboutDialog(
@@ -92,7 +92,7 @@ class _HomeState extends State<Home> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.help),
+              leading: const Icon(Icons.help_rounded),
               title: const Text('Help and feedback'),
               onTap: () {
                 _launchHelpUrl(_helpUrl);
@@ -102,6 +102,7 @@ class _HomeState extends State<Home> {
         ),
       ),
       body: SafeArea(
+          child: Center(
         child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: SizedBox(
@@ -119,9 +120,9 @@ class _HomeState extends State<Home> {
                       ),
                       _drawListView(),
                     ]))),
-      ),
+      )),
       floatingActionButton: SpeedDial(
-        icon: Icons.add_outlined,
+        icon: Icons.add_rounded,
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Theme.of(context).colorScheme.onInverseSurface,
         children: [
