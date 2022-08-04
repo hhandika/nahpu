@@ -101,7 +101,7 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-      body: Center(
+      body: SafeArea(
         child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: SizedBox(
@@ -156,22 +156,24 @@ class _HomeState extends State<Home> {
               separatorBuilder: (BuildContext context, int index) =>
                   const Divider(),
               itemCount: snapshot.data!.length,
-              reverse: true,
               itemBuilder: (context, index) {
                 return Card(
                     child: ListTile(
                   leading: Icon(
-                    Icons.insert_drive_file_outlined,
+                    Icons.insert_drive_file_rounded,
                     size: 40,
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
                   title: Text(
-                    snapshot.data![index].projectName,
+                    snapshot // Reverse the list, so the newest projects are at the top.
+                        .data![_reverseIndex(index, snapshot.data!.length)]
+                        .projectName,
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   subtitle: Text(
-                    snapshot.data![index].projectUuid,
+                    snapshot.data![_reverseIndex(index, snapshot.data!.length)]
+                        .projectUuid,
                     style: const TextStyle(fontSize: 8),
                   ),
                   trailing: PopupMenuButton<MenuSelection>(
@@ -183,14 +185,22 @@ class _HomeState extends State<Home> {
                               child: const Text('Info'),
                               onTap: () async {
                                 _getProjectInfo(
-                                    context, snapshot.data![index].projectUuid);
+                                    context,
+                                    snapshot
+                                        .data![_reverseIndex(
+                                            index, snapshot.data!.length)]
+                                        .projectUuid);
                               },
                             ),
                             PopupMenuItem<MenuSelection>(
                               value: MenuSelection.deleteProject,
                               onTap: () async {
                                 _deleteProject(
-                                    context, snapshot.data![index].projectUuid);
+                                    context,
+                                    snapshot
+                                        .data![_reverseIndex(
+                                            index, snapshot.data!.length)]
+                                        .projectUuid);
                               },
                               child: const Text('Delete',
                                   style: TextStyle(color: Colors.red)),
@@ -201,7 +211,10 @@ class _HomeState extends State<Home> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => ProjectHome(
-                                projectUuid: snapshot.data![index].projectUuid,
+                                projectUuid: snapshot
+                                    .data![_reverseIndex(
+                                        index, snapshot.data!.length)]
+                                    .projectUuid,
                               )),
                     );
                   },
@@ -215,6 +228,10 @@ class _HomeState extends State<Home> {
         },
       ),
     );
+  }
+
+  int _reverseIndex(int index, int length) {
+    return (length - 1) - index;
   }
 
   Future<void> _deleteProject(BuildContext context, String projectUuid) async {
