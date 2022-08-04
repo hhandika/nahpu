@@ -20,10 +20,10 @@ class _NewNotesState extends State<NewNotes> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           IconButton(
-            icon: const Icon(Icons.add),
+            icon: const Icon(Icons.add_rounded),
             onPressed: () {
-              // Navigator.of(context)
-              //     .push(MaterialPageRoute(builder: (_) => const Search()));
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => const NewNotes()));
             },
           ),
           PopupMenuButton<MenuSelection>(
