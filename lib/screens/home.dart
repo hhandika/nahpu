@@ -111,7 +111,7 @@ class _HomeState extends State<Home> {
                     children: [
                       Row(children: [
                         Text('Existing projects:',
-                            style: Theme.of(context).textTheme.headlineSmall),
+                            style: Theme.of(context).textTheme.titleLarge),
                       ]),
                       Divider(
                         color: Theme.of(context).colorScheme.onSurface,
