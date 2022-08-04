@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 
 enum MenuSelection { newNote, pdfExport, deleteRecords, deleteAllRecords }
 
-class Notes extends StatefulWidget {
-  const Notes({Key? key}) : super(key: key);
+class NewNotes extends StatefulWidget {
+  const NewNotes({Key? key}) : super(key: key);
 
   @override
-  State<Notes> createState() => _NotesState();
+  State<NewNotes> createState() => _NewNotesState();
 }
 
-class _NotesState extends State<Notes> {
+class _NewNotesState extends State<NewNotes> {
   String _selectedMenu = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Field Notes"),
-        backgroundColor: const Color(0xFF2457C5),
+        title: const Text("Field NewNotes"),
+        backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
