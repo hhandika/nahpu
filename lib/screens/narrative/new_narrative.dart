@@ -11,8 +11,25 @@ class NewNarrative extends StatefulWidget {
   State<NewNarrative> createState() => _NewNarrativeState();
 }
 
-class _NewNarrativeState extends State<NewNarrative> {
+class _NewNarrativeState extends State<NewNarrative>
+    with TickerProviderStateMixin {
   final dateController = TextEditingController();
+
+  late TabController _tabController;
+  // final int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,6 +104,34 @@ class _NewNarrativeState extends State<NewNarrative> {
               labelText: 'Narrative',
               hintText: 'Enter narrative',
             ),
+          ),
+          Column(
+            children: [
+              DefaultTabController(
+                length: 2,
+                child: TabBar(
+                  controller: _tabController,
+                  tabs: [
+                    Tab(
+                        icon: Icon(Icons.photo_album_rounded,
+                            color: Theme.of(context).colorScheme.tertiary)),
+                    Tab(
+                        icon: Icon(Icons.video_library_rounded,
+                            color: Theme.of(context).colorScheme.tertiary)),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.5,
+                child: TabBarView(
+                  controller: _tabController,
+                  children: const [
+                    Text('Photos'),
+                    Text('Videos'),
+                  ],
+                ),
+              ),
+            ],
           ),
         ]),
       )),
