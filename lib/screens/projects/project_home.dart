@@ -68,7 +68,7 @@ class _ProjectHomeState extends State<ProjectHome> {
             },
           ),
           SpeedDialChild(
-            child: Icon(Icons.timeline_rounded,
+            child: Icon(Icons.timeline,
                 color: Theme.of(context).colorScheme.onInverseSurface),
             backgroundColor: Theme.of(context).colorScheme.secondary,
             label: 'New CollEvents',
@@ -254,7 +254,7 @@ class _ProjectHomeState extends State<ProjectHome> {
           ),
           TabItem(
             icon: Icon(
-              Icons.timeline_rounded,
+              Icons.timeline,
               color: Theme.of(context).colorScheme.surface,
             ),
             title: 'CollEvents',
