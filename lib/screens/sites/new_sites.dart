@@ -18,7 +18,7 @@ class _NewSitesState extends State<NewSites> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("NewSites"),
+        title: const Text("New Sites"),
         backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           IconButton(
