@@ -276,7 +276,7 @@ class _NewSpecimensState extends State<NewSpecimens>
                   ),
                   TextFormField(
                     decoration: const InputDecoration(
-                      labelText: 'Total legnth (mm)',
+                      labelText: 'Total length (mm)',
                       hintText: 'Enter TTL',
                     ),
                     keyboardType: TextInputType.number,
