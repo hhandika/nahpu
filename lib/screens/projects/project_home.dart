@@ -11,6 +11,7 @@ import 'package:nahpu/screens/collecting/coll_events.dart';
 import 'package:nahpu/screens/narrative/narrative.dart';
 import 'package:nahpu/screens/sites/new_sites.dart';
 import 'package:nahpu/screens/sites/sites.dart';
+import 'package:nahpu/screens/specimens/new_specimens.dart';
 import 'package:nahpu/screens/specimens/specimens.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/screens/projects/project_info.dart';
@@ -71,10 +72,10 @@ class _ProjectHomeState extends State<ProjectHome> {
             backgroundColor: Theme.of(context).colorScheme.secondary,
             label: 'New CollEvents',
             onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => const NewProjectForm()),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const NewSpecimens()),
+              );
             },
           ),
           SpeedDialChild(
@@ -83,10 +84,10 @@ class _ProjectHomeState extends State<ProjectHome> {
             backgroundColor: Theme.of(context).colorScheme.secondary,
             label: 'New Specimens',
             onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => const NewProjectForm()),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const NewSpecimens()),
+              );
             },
           ),
         ],
