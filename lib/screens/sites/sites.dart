@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nahpu/screens/sites/new_sites.dart';
 
 enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
 
@@ -22,8 +23,8 @@ class _SitesState extends State<Sites> {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
-              // Navigator.of(context)
-              //     .push(MaterialPageRoute(builder: (_) => const Search()));
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => const NewSites()));
             },
           ),
           PopupMenuButton<MenuSelection>(
@@ -33,7 +34,7 @@ class _SitesState extends State<Sites> {
                   <PopupMenuEntry<MenuSelection>>[
                     const PopupMenuItem<MenuSelection>(
                       value: MenuSelection.newSite,
-                      child: Text('Create a new record'),
+                      child: Text('Create a new site'),
                     ),
                     const PopupMenuItem<MenuSelection>(
                       value: MenuSelection.pdfExport,
