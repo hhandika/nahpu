@@ -4,6 +4,7 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import 'package:nahpu/models/project.dart';
+import 'package:nahpu/screens/collecting/new_coll_events.dart';
 import 'package:nahpu/screens/home.dart';
 import 'package:nahpu/screens/narrative/new_narrative.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
@@ -74,7 +75,7 @@ class _ProjectHomeState extends State<ProjectHome> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const NewSpecimens()),
+                MaterialPageRoute(builder: (context) => const NewCollEvent()),
               );
             },
           ),

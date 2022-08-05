@@ -4,14 +4,14 @@ import 'package:intl/intl.dart';
 
 enum MenuSelection { newNote, pdfExport, deleteRecords, deleteAllRecords }
 
-class NewSpecimens extends StatefulWidget {
-  const NewSpecimens({Key? key}) : super(key: key);
+class NewCollEvent extends StatefulWidget {
+  const NewCollEvent({Key? key}) : super(key: key);
 
   @override
-  State<NewSpecimens> createState() => _NewSpecimensState();
+  State<NewCollEvent> createState() => _NewCollEventState();
 }
 
-class _NewSpecimensState extends State<NewSpecimens>
+class _NewCollEventState extends State<NewCollEvent>
     with TickerProviderStateMixin {
   final dateController = TextEditingController();
 
@@ -21,7 +21,7 @@ class _NewSpecimensState extends State<NewSpecimens>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -34,14 +34,14 @@ class _NewSpecimensState extends State<NewSpecimens>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("New Specimens"),
+        title: const Text("New Coll. Events"),
         backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           IconButton(
             icon: const Icon(Icons.add_rounded),
             onPressed: () {
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const NewSpecimens()));
+                  MaterialPageRoute(builder: (_) => const NewCollEvent()));
             },
           ),
           PopupMenuButton<MenuSelection>(
@@ -51,7 +51,7 @@ class _NewSpecimensState extends State<NewSpecimens>
                   <PopupMenuEntry<MenuSelection>>[
                     const PopupMenuItem<MenuSelection>(
                       value: MenuSelection.newNote,
-                      child: Text('Create a new record'),
+                      child: Text('Create a new event'),
                     ),
                     const PopupMenuItem<MenuSelection>(
                       value: MenuSelection.pdfExport,
@@ -95,47 +95,15 @@ class _NewSpecimensState extends State<NewSpecimens>
           TextFormField(
             decoration: const InputDecoration(
               labelText: 'Site ID',
-              hintText: 'Enter a site',
+              hintText: 'Enter a new event',
             ),
           ),
           TextFormField(
             maxLines: 10,
             decoration: const InputDecoration(
-              labelText: 'Narrative',
+              labelText: 'CollEvent',
               hintText: 'Enter narrative',
             ),
-          ),
-          Column(
-            children: [
-              DefaultTabController(
-                length: 3,
-                child: TabBar(
-                  controller: _tabController,
-                  tabs: [
-                    Tab(
-                        icon: Icon(Icons.photo_album_rounded,
-                            color: Theme.of(context).colorScheme.tertiary)),
-                    Tab(
-                        icon: Icon(Icons.video_library_rounded,
-                            color: Theme.of(context).colorScheme.tertiary)),
-                    Tab(
-                        icon: Icon(Icons.audiotrack_rounded,
-                            color: Theme.of(context).colorScheme.tertiary)),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.5,
-                child: TabBarView(
-                  controller: _tabController,
-                  children: const [
-                    Text('Photos'),
-                    Text('Videos'),
-                    Text('Audio'),
-                  ],
-                ),
-              ),
-            ],
           ),
         ]),
       )),

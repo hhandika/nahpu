@@ -49,7 +49,7 @@ class _NewSitesState extends State<NewSites> with TickerProviderStateMixin {
                   <PopupMenuEntry<MenuSelection>>[
                     const PopupMenuItem<MenuSelection>(
                       value: MenuSelection.newSite,
-                      child: Text('Create a new record'),
+                      child: Text('Create a new site'),
                     ),
                     const PopupMenuItem<MenuSelection>(
                       value: MenuSelection.pdfExport,
