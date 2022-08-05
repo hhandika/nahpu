@@ -1,29 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:nahpu/screens/narrative/new_narrative.dart';
 
 enum MenuSelection { newNote, pdfExport, deleteRecords, deleteAllRecords }
 
-class NewNotes extends StatefulWidget {
-  const NewNotes({Key? key}) : super(key: key);
+class Narrative extends StatefulWidget {
+  const Narrative({Key? key}) : super(key: key);
 
   @override
-  State<NewNotes> createState() => _NewNotesState();
+  State<Narrative> createState() => _NarrativeState();
 }
 
-class _NewNotesState extends State<NewNotes> {
+class _NarrativeState extends State<Narrative> {
   String _selectedMenu = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Field NewNotes"),
+        title: const Text("Narrative"),
         backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           IconButton(
-            icon: const Icon(Icons.add_rounded),
+            icon: const Icon(Icons.add),
             onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => const NewNotes()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const NewNarrative()));
             },
           ),
           PopupMenuButton<MenuSelection>(
@@ -33,7 +34,7 @@ class _NewNotesState extends State<NewNotes> {
                   <PopupMenuEntry<MenuSelection>>[
                     const PopupMenuItem<MenuSelection>(
                       value: MenuSelection.newNote,
-                      child: Text('Create a new note'),
+                      child: Text('Create a new narrative'),
                     ),
                     const PopupMenuItem<MenuSelection>(
                       value: MenuSelection.pdfExport,

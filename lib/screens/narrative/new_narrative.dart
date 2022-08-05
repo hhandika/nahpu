@@ -1,29 +1,30 @@
 import 'package:flutter/material.dart';
 
+import 'package:intl/intl.dart';
+
 enum MenuSelection { newNote, pdfExport, deleteRecords, deleteAllRecords }
 
-class Notes extends StatefulWidget {
-  const Notes({Key? key}) : super(key: key);
+class NewNarrative extends StatefulWidget {
+  const NewNarrative({Key? key}) : super(key: key);
 
   @override
-  State<Notes> createState() => _NotesState();
+  State<NewNarrative> createState() => _NewNarrativeState();
 }
 
-class _NotesState extends State<Notes> {
-  String _selectedMenu = '';
-
+class _NewNarrativeState extends State<NewNarrative> {
+  final dateController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Field Notes"),
+        title: const Text("New Narrative"),
         backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           IconButton(
-            icon: const Icon(Icons.add),
+            icon: const Icon(Icons.add_rounded),
             onPressed: () {
-              // Navigator.of(context)
-              //     .push(MaterialPageRoute(builder: (_) => const Search()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const NewNarrative()));
             },
           ),
           PopupMenuButton<MenuSelection>(
@@ -33,7 +34,7 @@ class _NotesState extends State<Notes> {
                   <PopupMenuEntry<MenuSelection>>[
                     const PopupMenuItem<MenuSelection>(
                       value: MenuSelection.newNote,
-                      child: Text('Create a new note'),
+                      child: Text('Create a new narrative'),
                     ),
                     const PopupMenuItem<MenuSelection>(
                       value: MenuSelection.pdfExport,
@@ -52,33 +53,59 @@ class _NotesState extends State<Notes> {
                   ])
         ],
       ),
-      body: Center(
-        child: Text('Test popup menu: $_selectedMenu'),
-      ),
+      body: SafeArea(
+          child: SingleChildScrollView(
+        child: Column(children: [
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Date',
+              hintText: 'Enter date',
+            ),
+            controller: dateController,
+            onTap: () async {
+              showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime.now())
+                  .then((date) {
+                if (date != null) {
+                  dateController.text = DateFormat.yMMMd().format(date);
+                }
+              });
+            },
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Site ID',
+              hintText: 'Enter a site',
+            ),
+          ),
+          TextFormField(
+            maxLines: 10,
+            decoration: const InputDecoration(
+              labelText: 'Narrative',
+              hintText: 'Enter narrative',
+            ),
+          ),
+        ]),
+      )),
     );
   }
 
   void _onPopupMenuSelected(MenuSelection item) {
     switch (item) {
       case MenuSelection.newNote:
-        setState(() {
-          _selectedMenu = 'Create a new note';
-        });
+        setState(() {});
         break;
       case MenuSelection.pdfExport:
-        setState(() {
-          _selectedMenu = 'Export to pdf';
-        });
+        setState(() {});
         break;
       case MenuSelection.deleteRecords:
-        setState(() {
-          _selectedMenu = 'Delete current note record';
-        });
+        setState(() {});
         break;
       case MenuSelection.deleteAllRecords:
-        setState(() {
-          _selectedMenu = 'Delete all note records';
-        });
+        setState(() {});
         break;
     }
   }

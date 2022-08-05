@@ -8,7 +8,7 @@ import 'package:nahpu/screens/home.dart';
 import 'package:nahpu/screens/notes/new_notes.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/collecting/coll_events.dart';
-import 'package:nahpu/screens/notes/notes.dart';
+import 'package:nahpu/screens/narrative/narrative.dart';
 import 'package:nahpu/screens/sites/sites.dart';
 import 'package:nahpu/screens/specimens/specimens.dart';
 import 'package:nahpu/database/database.dart';
@@ -44,7 +44,7 @@ class _ProjectHomeState extends State<ProjectHome> {
             child: Icon(Icons.book_rounded,
                 color: Theme.of(context).colorScheme.onInverseSurface),
             backgroundColor: Theme.of(context).colorScheme.secondary,
-            label: 'New Notes',
+            label: 'New Narrative',
             onTap: () async {
               Navigator.push(
                 context,
@@ -232,7 +232,7 @@ class _ProjectHomeState extends State<ProjectHome> {
               Icons.book_rounded,
               color: Theme.of(context).colorScheme.surface,
             ),
-            title: 'Notes',
+            title: 'Narrative',
           ),
           TabItem(
             icon: Icon(
@@ -274,7 +274,7 @@ class _ProjectHomeState extends State<ProjectHome> {
       case 0:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const Notes()),
+          MaterialPageRoute(builder: (context) => const Narrative()),
         );
         break;
       case 1:

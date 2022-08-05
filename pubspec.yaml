@@ -44,6 +44,7 @@ dependencies:
   uuid: ^3.0.6
   dynamic_color: ^1.4.0
   url_launcher: ^6.1.5
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
