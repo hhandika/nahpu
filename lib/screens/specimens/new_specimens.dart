@@ -279,30 +279,35 @@ class _NewSpecimensState extends State<NewSpecimens>
                       labelText: 'Total legnth (mm)',
                       hintText: 'Enter TTL',
                     ),
+                    keyboardType: TextInputType.number,
                   ),
                   TextFormField(
                     decoration: const InputDecoration(
                       labelText: 'Tail length (mm)',
                       hintText: 'Enter TL',
                     ),
+                    keyboardType: TextInputType.number,
                   ),
                   TextFormField(
                     decoration: const InputDecoration(
                       labelText: 'Hind foot length (mm)',
                       hintText: 'Enter HF',
                     ),
+                    keyboardType: TextInputType.number,
                   ),
                   TextFormField(
                     decoration: const InputDecoration(
                       labelText: 'Ear length (mm)',
                       hintText: 'Enter ER',
                     ),
+                    keyboardType: TextInputType.number,
                   ),
                   TextFormField(
                     decoration: const InputDecoration(
                       labelText: 'Weight (grams)',
                       hintText: 'Enter specimen weight',
                     ),
+                    keyboardType: TextInputType.number,
                   ),
                   DropdownButtonFormField(
                       decoration: const InputDecoration(
