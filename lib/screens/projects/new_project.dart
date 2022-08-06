@@ -92,9 +92,23 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                           ),
                           ProjectFormField(
                             controller: collectorInitialController,
+                            maxLength: 5,
                             hintText:
                                 'Enter the collector name initial (required)',
                             labelText: 'Collector initial*',
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(5),
+                              FilteringTextInputFormatter.allow(
+                                RegExp(r'[a-zA-Z]+|\s'),
+                              ),
+                            ],
+                            onChanged: (value) {
+                              collectorInitialController.value =
+                                  TextEditingValue(
+                                      text: value!.toUpperCase(),
+                                      selection:
+                                          collectorInitialController.selection);
+                            },
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Collector initial is required';
@@ -112,6 +126,12 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                                 return 'Collector email is required';
                               }
                               return null;
+                            },
+                            onChanged: (value) {
+                              collectorEmailController.value = TextEditingValue(
+                                  text: value!.toLowerCase(),
+                                  selection:
+                                      collectorEmailController.selection);
                             },
                           ),
                           ProjectFormField(
@@ -213,25 +233,30 @@ class ProjectFormField extends StatelessWidget {
       required this.labelText,
       required this.hintText,
       required this.controller,
+      this.maxLength,
       this.keyboardType,
       this.inputFormatters,
       this.onSaved,
+      this.onChanged,
       this.validator})
       : super(key: key);
 
   final String labelText;
   final String hintText;
   final TextEditingController controller;
+  final int? maxLength;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final String? Function(String?)? validator;
   final String? Function(String?)? onSaved;
+  final Function(String?)? onChanged;
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.all(8.0),
         child: TextFormField(
           controller: controller,
+          maxLength: maxLength,
           decoration: InputDecoration(
             labelText: labelText,
             hintText: hintText,
@@ -240,6 +265,7 @@ class ProjectFormField extends StatelessWidget {
           inputFormatters: inputFormatters,
           validator: validator,
           onSaved: onSaved,
+          onChanged: onChanged,
         ));
   }
 }
