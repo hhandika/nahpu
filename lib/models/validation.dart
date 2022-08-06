@@ -70,6 +70,7 @@ class NewProjectProvider extends ChangeNotifier {
 
   bool get validate {
     return _projectName.error == null &&
+        _collName.error == null &&
         _collNum.error == null &&
         _email.error == null;
   }
