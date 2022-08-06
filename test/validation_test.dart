@@ -38,6 +38,15 @@ void main() {
     expect(email2.isValidEmail, isFalse);
   });
 
+  test('Test validation for name', () {
+    String name = 'Heru Handika';
+    String name2 = 'Bruná Encantada';
+    String name3 = 'Name 123';
+    expect(name.isValidName, isTrue);
+    expect(name2.isValidName, isTrue);
+    expect(name3.isValidName, isFalse);
+  });
+
   test('Test validation for project names', () {
     String projectName = 'Project Name';
     String projectName2 = 'Project Name2';
