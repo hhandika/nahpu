@@ -87,7 +87,6 @@ extension StringValidator on String {
   }
 
   bool get isValidName {
-    // final nameRegex = RegExp(r'^[a-zA-Z ]+$');
     final nameRegex = RegExp(r'^[\p{L}\p{Mn}\p{Pd}\s]+$', unicode: true);
     return nameRegex.hasMatch(this);
   }
