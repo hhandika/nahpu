@@ -63,7 +63,7 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                               onChanged: (value) {
                                 _newProjectProvider.validateProjectName(value);
                                 _newProjectProvider.checkProjectNameExists(
-                                    context, value);
+                                    context, value?.trim());
                               },
                               errorText: _newProjectProvider.projectName.error,
                             ),
