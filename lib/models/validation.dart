@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-// import 'package:nahpu/models/project.dart';
+import 'package:nahpu/models/project.dart';
 
 class NewProjectValidation {
   String? value;
@@ -12,25 +12,49 @@ class NewProjectValidation {
 class NewProjectProvider extends ChangeNotifier {
   NewProjectValidation _projectName = NewProjectValidation(null, null);
   NewProjectValidation _collNum = NewProjectValidation(null, null);
+  NewProjectValidation _collName = NewProjectValidation(null, null);
   NewProjectValidation _email = NewProjectValidation(null, null);
-  NewProjectValidation get email => _projectName;
-  NewProjectValidation get password => _collNum;
-  NewProjectValidation get phone => _email;
-
-  void validateCollNumber(String? value) {
-    if (value != null && value.isValidCollNum) {
-      _collNum = NewProjectValidation(value, null);
-    } else {
-      _collNum = NewProjectValidation(value, 'Enter a valid collection number');
-    }
-    notifyListeners();
-  }
+  NewProjectValidation get projectName => _projectName;
+  NewProjectValidation get collNum => _collNum;
+  NewProjectValidation get collName => _collName;
+  NewProjectValidation get email => _email;
 
   void validateProjectName(String? value) {
     if (value != null && value.isValidProjectName) {
       _projectName = NewProjectValidation(value, null);
     } else {
-      _projectName = NewProjectValidation(value, 'Enter a valid project name');
+      _projectName = NewProjectValidation(
+          value, 'Enter a valid project name (letter and numbers only)');
+    }
+    notifyListeners();
+  }
+
+  void checkProjectNameExists(BuildContext context, String? name) {
+    ProjectModel(context: context).isProjectExists(name).then((value) {
+      if (value) {
+        _projectName = NewProjectValidation(
+            name, 'Project name already exists, please choose another one');
+      } else {
+        _projectName = NewProjectValidation(name, null);
+      }
+      notifyListeners();
+    });
+  }
+
+  void validateCollNum(String? value) {
+    if (value != null && value.isValidCollNum) {
+      _collNum = NewProjectValidation(value, null);
+    } else {
+      _collNum = NewProjectValidation(value, 'Enter number only');
+    }
+    notifyListeners();
+  }
+
+  void validateCollName(String? value) {
+    if (value != null && value.isValidName) {
+      _collName = NewProjectValidation(value, null);
+    } else {
+      _collName = NewProjectValidation(value, 'Enter a valid name');
     }
     notifyListeners();
   }
@@ -44,29 +68,12 @@ class NewProjectProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Future _checkProjectName() async {
-  //   bool isExist = await ProjectModel(context: context)
-  //       .isProjectExists(projectNameController.text);
-  // }
+  bool get validate {
+    return _projectName.error == null &&
+        _collNum.error == null &&
+        _email.error == null;
+  }
 }
-
-// Future _checkProjectName() async {
-//   _validationMsg = null;
-//   setState(() {});
-
-//   if (projectNameController.text.isEmpty) {
-//     _validationMsg = 'Project name is required';
-//     setState(() {});
-//     return;
-//   }
-
-//   bool isExist = await ProjectModel(context: context)
-//       .isProjectExists(projectNameController.text);
-//   if (isExist) {
-//     _validationMsg = 'Project name already exists';
-//     return;
-//   }
-// }
 
 extension StringValidator on String {
   bool get isValidCollNum {
@@ -77,6 +84,11 @@ extension StringValidator on String {
   bool get isValidProjectName {
     final projectNameRegex = RegExp(r'^[a-zA-Z0-9-_ ]+$');
     return projectNameRegex.hasMatch(this);
+  }
+
+  bool get isValidName {
+    final nameRegex = RegExp(r'^[a-zA-Z ]+$');
+    return nameRegex.hasMatch(this);
   }
 
   bool get isValidEmail {

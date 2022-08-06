@@ -22,14 +22,14 @@ class ProjectModel {
     return db.getProjectByUuid(uuid);
   }
 
-  Future<String?> getProjectByName(String projectName) async {
+  Future<String?> getProjectByName(String? projectName) async {
     final String? query = await db
         .getProjectByName(projectName)
         .then((value) => value?.projectName);
     return query;
   }
 
-  Future<bool> isProjectExists(String projectName) async {
+  Future<bool> isProjectExists(String? projectName) {
     return getProjectByName(projectName).then((value) => value != null);
   }
 

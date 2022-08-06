@@ -3,9 +3,11 @@ import 'package:flutter/services.dart';
 
 import 'package:drift/drift.dart' as db;
 import 'package:uuid/uuid.dart';
+import 'package:provider/provider.dart';
 
 import 'project_home.dart';
 import 'package:nahpu/database/database.dart';
+import 'package:nahpu/models/validation.dart';
 import 'package:nahpu/models/project.dart';
 
 class CreateProjectForm extends StatefulWidget {
@@ -23,13 +25,15 @@ class _NewProjectFormState extends State<CreateProjectForm> {
   final collectorController = TextEditingController();
   final collectorInitialController = TextEditingController();
   final collectorEmailController = TextEditingController();
-  final catNumController = TextEditingController();
+  final collNumController = TextEditingController();
   final piController = TextEditingController();
   bool isInvalid = false;
   // dynamic _validationMsg;
+  late NewProjectProvider _newProjectProvider;
 
   @override
   Widget build(BuildContext context) {
+    _newProjectProvider = Provider.of<NewProjectProvider>(context);
     return Scaffold(
         // resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -43,9 +47,6 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                   child: ConstrainedBox(
                       constraints: const BoxConstraints(maxWidth: 400),
                       child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.center,
-                        // crossAxisAlignment: CrossAxisAlignment.center,
-
                         children: [
                           Focus(
                             child: ProjectFormField(
@@ -59,6 +60,12 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                                   RegExp(r'[a-zA-Z0-9-_]+|\s'),
                                 ),
                               ],
+                              onChanged: (value) {
+                                _newProjectProvider.validateProjectName(value);
+                                _newProjectProvider.checkProjectNameExists(
+                                    context, value);
+                              },
+                              errorText: _newProjectProvider.projectName.error,
                             ),
                           ),
                           ProjectFormField(
@@ -77,6 +84,8 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                             hintText:
                                 'Enter the name of the collector (required)',
                             labelText: 'Collector*',
+                            onChanged: _newProjectProvider.validateCollName,
+                            errorText: _newProjectProvider.collName.error,
                           ),
                           ProjectFormField(
                             controller: collectorInitialController,
@@ -104,23 +113,27 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                             hintText:
                                 'Enter the email of the collector (required)',
                             onChanged: (value) {
+                              _newProjectProvider.validateEmail(value);
                               collectorEmailController.value = TextEditingValue(
                                   text: value!.toLowerCase(),
                                   selection:
                                       collectorEmailController.selection);
                             },
+                            errorText: _newProjectProvider.email.error,
                           ),
                           ProjectFormField(
-                            controller: catNumController,
-                            labelText: 'Catalog number start*',
+                            controller: collNumController,
+                            labelText: 'Collector number start*',
                             hintText:
-                                'Enter the starting catalog number (required)',
+                                'Enter the starting collectors number (required)',
                             keyboardType: TextInputType.number,
                             inputFormatters: [
                               FilteringTextInputFormatter.allow(
                                 RegExp(r'[0-9]+'),
                               ),
                             ],
+                            onChanged: _newProjectProvider.validateCollNum,
+                            errorText: _newProjectProvider.collNum.error,
                           ),
                           Wrap(spacing: 10, children: [
                             ElevatedButton(
@@ -129,26 +142,29 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                                 Navigator.pop(context);
                               },
                             ),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                onPrimary: Theme.of(context)
-                                    .colorScheme
-                                    .onSecondaryContainer,
-                                primary: Theme.of(context)
-                                    .colorScheme
-                                    .secondaryContainer,
-                              ),
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  _formKey.currentState!.save();
-                                  _createProject();
-                                  _goToProjectHome();
-                                }
-                              },
-                              child: const Text(
-                                'Create',
-                              ),
-                            )
+                            Consumer<NewProjectProvider>(
+                                builder: (context, model, child) {
+                              return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  onPrimary: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondaryContainer,
+                                  primary: Theme.of(context)
+                                      .colorScheme
+                                      .secondaryContainer,
+                                ),
+                                onPressed: () {
+                                  if (model.validate) {
+                                    _formKey.currentState!.save();
+                                    _createProject();
+                                    _goToProjectHome();
+                                  }
+                                },
+                                child: const Text(
+                                  'Create',
+                                ),
+                              );
+                            })
                           ])
                         ],
                       )))),
@@ -163,7 +179,7 @@ class _NewProjectFormState extends State<CreateProjectForm> {
       collector: db.Value(collectorController.text),
       collectorInitial: db.Value(collectorInitialController.text),
       collectorEmail: db.Value(collectorEmailController.text),
-      catNumStart: db.Value(int.parse(catNumController.text)),
+      catNumStart: db.Value(int.parse(collNumController.text)),
       principalInvestigator: db.Value(piController.text),
     ));
   }
@@ -186,6 +202,7 @@ class ProjectFormField extends StatelessWidget {
     this.maxLength,
     this.keyboardType,
     this.inputFormatters,
+    this.errorText,
     this.onSaved,
     this.onChanged,
     // this.validator
@@ -200,6 +217,8 @@ class ProjectFormField extends StatelessWidget {
   // final String? Function(String?)? validator;
   final String? Function(String?)? onSaved;
   final Function(String?)? onChanged;
+  final String? errorText;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -208,9 +227,7 @@ class ProjectFormField extends StatelessWidget {
           controller: controller,
           maxLength: maxLength,
           decoration: InputDecoration(
-            labelText: labelText,
-            hintText: hintText,
-          ),
+              labelText: labelText, hintText: hintText, errorText: errorText),
           keyboardType: keyboardType,
           inputFormatters: inputFormatters,
           // validator: validator,

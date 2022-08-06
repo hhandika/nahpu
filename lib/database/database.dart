@@ -36,8 +36,8 @@ class Database extends _$Database {
         .getSingle();
   }
 
-  Future<ProjectData?> getProjectByName(String uuid) async {
-    return await (select(project)..where((t) => t.projectName.equals(uuid)))
+  Future<ProjectData?> getProjectByName(String? name) async {
+    return await (select(project)..where((t) => t.projectName.equals(name)))
         .getSingle();
   }
 
