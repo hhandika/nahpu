@@ -26,7 +26,7 @@ class _NewProjectFormState extends State<CreateProjectForm> {
   final catNumController = TextEditingController();
   final piController = TextEditingController();
   bool isInvalid = false;
-  dynamic _validationMsg;
+  // dynamic _validationMsg;
 
   @override
   Widget build(BuildContext context) {
@@ -59,13 +59,7 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                                   RegExp(r'[a-zA-Z0-9-_]+|\s'),
                                 ),
                               ],
-                              validator: (value) => _validationMsg,
                             ),
-                            onFocusChange: (hasFocus) {
-                              if (!hasFocus) {
-                                _checkProjectName();
-                              }
-                            },
                           ),
                           ProjectFormField(
                             controller: descriptionController,
@@ -83,12 +77,6 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                             hintText:
                                 'Enter the name of the collector (required)',
                             labelText: 'Collector*',
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Collector name is required';
-                              }
-                              return null;
-                            },
                           ),
                           ProjectFormField(
                             controller: collectorInitialController,
@@ -109,24 +97,12 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                                       selection:
                                           collectorInitialController.selection);
                             },
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Collector initial is required';
-                              }
-                              return null;
-                            },
                           ),
                           ProjectFormField(
                             controller: collectorEmailController,
                             labelText: 'Collector email*',
                             hintText:
                                 'Enter the email of the collector (required)',
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Collector email is required';
-                              }
-                              return null;
-                            },
                             onChanged: (value) {
                               collectorEmailController.value = TextEditingValue(
                                   text: value!.toLowerCase(),
@@ -145,14 +121,6 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                                 RegExp(r'[0-9]+'),
                               ),
                             ],
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Catalog number start is required';
-                              } else if (!value.isValidCatNum) {
-                                return 'Catalog number must be a number';
-                              }
-                              return null;
-                            },
                           ),
                           Wrap(spacing: 10, children: [
                             ElevatedButton(
@@ -200,24 +168,6 @@ class _NewProjectFormState extends State<CreateProjectForm> {
     ));
   }
 
-  Future _checkProjectName() async {
-    _validationMsg = null;
-    setState(() {});
-
-    if (projectNameController.text.isEmpty) {
-      _validationMsg = 'Project name is required';
-      setState(() {});
-      return;
-    }
-
-    bool isExist = await ProjectModel(context: context)
-        .isProjectExists(projectNameController.text);
-    if (isExist) {
-      _validationMsg = 'Project name already exists';
-      return;
-    }
-  }
-
   Future<void> _goToProjectHome() async {
     await Navigator.push(
       context,
@@ -228,18 +178,18 @@ class _NewProjectFormState extends State<CreateProjectForm> {
 }
 
 class ProjectFormField extends StatelessWidget {
-  const ProjectFormField(
-      {Key? key,
-      required this.labelText,
-      required this.hintText,
-      required this.controller,
-      this.maxLength,
-      this.keyboardType,
-      this.inputFormatters,
-      this.onSaved,
-      this.onChanged,
-      this.validator})
-      : super(key: key);
+  const ProjectFormField({
+    Key? key,
+    required this.labelText,
+    required this.hintText,
+    required this.controller,
+    this.maxLength,
+    this.keyboardType,
+    this.inputFormatters,
+    this.onSaved,
+    this.onChanged,
+    // this.validator
+  }) : super(key: key);
 
   final String labelText;
   final String hintText;
@@ -247,7 +197,7 @@ class ProjectFormField extends StatelessWidget {
   final int? maxLength;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
-  final String? Function(String?)? validator;
+  // final String? Function(String?)? validator;
   final String? Function(String?)? onSaved;
   final Function(String?)? onChanged;
   @override
@@ -263,27 +213,9 @@ class ProjectFormField extends StatelessWidget {
           ),
           keyboardType: keyboardType,
           inputFormatters: inputFormatters,
-          validator: validator,
+          // validator: validator,
           onSaved: onSaved,
           onChanged: onChanged,
         ));
-  }
-}
-
-extension StringValidator on String {
-  bool get isValidCatNum {
-    final catNumRegex = RegExp(r'^[0-9]+$');
-    return catNumRegex.hasMatch(this);
-  }
-
-  bool get isValidProjectName {
-    final projectNameRegex = RegExp(r'^[a-zA-Z0-9-_ ]+$');
-    return projectNameRegex.hasMatch(this);
-  }
-
-  bool get isValidEmail {
-    final emailRegex =
-        RegExp(r'^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$');
-    return emailRegex.hasMatch(this);
   }
 }

@@ -12,7 +12,7 @@
 import 'package:flutter_test/flutter_test.dart';
 
 // import 'package:nahpu/main.dart';
-import 'package:nahpu/screens/projects/new_project.dart';
+import 'package:nahpu/models/validation.dart';
 
 void main() {
   // testWidgets('Counter increments smoke test', (WidgetTester tester) async {
@@ -51,8 +51,8 @@ void main() {
     String catNum = '123456789';
     String catNum2 = '1234567890';
     String catNum3 = '12345678901wrw';
-    expect(catNum.isValidCatNum, isTrue);
-    expect(catNum2.isValidCatNum, isTrue);
-    expect(catNum3.isValidCatNum, isFalse);
+    expect(catNum.isValidCollNum, isTrue);
+    expect(catNum2.isValidCollNum, isTrue);
+    expect(catNum3.isValidCollNum, isFalse);
   }));
 }
