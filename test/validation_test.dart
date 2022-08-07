@@ -12,7 +12,7 @@
 import 'package:flutter_test/flutter_test.dart';
 
 // import 'package:nahpu/main.dart';
-import 'package:nahpu/models/validation.dart';
+import 'package:nahpu/providers/validation.dart';
 
 void main() {
   // testWidgets('Counter increments smoke test', (WidgetTester tester) async {

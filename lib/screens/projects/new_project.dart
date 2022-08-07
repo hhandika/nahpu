@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 import 'project_home.dart';
 import 'package:nahpu/database/database.dart';
-import 'package:nahpu/models/validation.dart';
+import 'package:nahpu/providers/validation.dart';
 import 'package:nahpu/models/project.dart';
 
 class CreateProjectForm extends StatefulWidget {

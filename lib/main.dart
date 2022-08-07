@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:dynamic_color/dynamic_color.dart';
-import 'package:nahpu/models/validation.dart';
+import 'package:nahpu/providers/validation.dart';
 import 'package:provider/provider.dart';
 
 import 'package:nahpu/configs/themes.dart';
