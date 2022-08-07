@@ -60,20 +60,9 @@ class _HomeState extends State<Home> {
         child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: SizedBox(
-                width: 600,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(children: [
-                        Text('Existing projects:',
-                            style: Theme.of(context).textTheme.titleLarge),
-                      ]),
-                      Divider(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        thickness: 1.5,
-                      ),
-                      _buildListView(),
-                    ]))),
+              width: 600,
+              child: _buildBody(),
+            )),
       )),
       floatingActionButton: SpeedDial(
         icon: Icons.add_rounded,
@@ -162,75 +151,102 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _buildListView() {
+  Widget _buildBody() {
     return Consumer<ProjectListNotifier>(
       builder: (context, projectList, child) {
         projectList.getProjectList(context);
         if (projectList.projectList.isEmpty) {
-          return const Text('No projects yet');
+          return Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'No projects found!',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                Text(
+                  'Create a new project to get started',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ],
+            ),
+          );
         } else {
-          return _drawListView(projectList.projectList);
+          return _buildListView(projectList.projectList);
         }
       },
     );
   }
 
-  Widget _drawListView(List<ListProjectResult> projectList) {
-    return Expanded(
-      child: ListView.separated(
-        separatorBuilder: (BuildContext context, int index) => const Divider(),
-        itemCount: projectList.length,
-        itemBuilder: (context, index) {
-          return Card(
-              child: ListTile(
-            leading: Icon(
-              Icons.insert_drive_file_rounded,
-              size: 40,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-            title: Text(
-              projectList[index].projectName,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            subtitle: Text(
-              projectList[index].projectUuid,
-              style: const TextStyle(fontSize: 8),
-            ),
-            trailing: PopupMenuButton<MenuSelection>(
-                onSelected: _onPopupMenuSelected,
-                itemBuilder: (BuildContext context) =>
-                    <PopupMenuEntry<MenuSelection>>[
-                      PopupMenuItem<MenuSelection>(
-                        value: MenuSelection.details,
-                        child: const Text('Info'),
-                        onTap: () async {
-                          _getProjectInfo(
-                              context, projectList[index].projectUuid);
-                        },
-                      ),
-                      PopupMenuItem<MenuSelection>(
-                        value: MenuSelection.deleteProject,
-                        onTap: () async {
-                          _deleteProject(
-                              context, projectList[index].projectUuid);
-                        },
-                        child: const Text('Delete',
-                            style: TextStyle(color: Colors.red)),
-                      ),
-                    ]),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ProjectHome(
-                          projectUuid: projectList[index].projectUuid,
-                        )),
-              );
-            },
-          ));
-        },
+  Widget _buildListView(List<ListProjectResult> projectList) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+      Row(children: [
+        Text('Existing projects:',
+            style: Theme.of(context).textTheme.titleLarge),
+      ]),
+      Divider(
+        color: Theme.of(context).colorScheme.onSurface,
+        thickness: 1.5,
       ),
-    );
+      Expanded(
+        child: ListView.separated(
+          separatorBuilder: (BuildContext context, int index) =>
+              const Divider(),
+          itemCount: projectList.length,
+          itemBuilder: (context, index) {
+            return Card(
+                child: ListTile(
+              leading: Icon(
+                Icons.insert_drive_file_rounded,
+                size: 40,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+              title: Text(
+                projectList[index].projectName,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+              subtitle: Text(
+                projectList[index].projectUuid,
+                style: const TextStyle(fontSize: 8),
+              ),
+              trailing: PopupMenuButton<MenuSelection>(
+                  onSelected: _onPopupMenuSelected,
+                  itemBuilder: (BuildContext context) =>
+                      <PopupMenuEntry<MenuSelection>>[
+                        PopupMenuItem<MenuSelection>(
+                          value: MenuSelection.details,
+                          child: const Text('Info'),
+                          onTap: () async {
+                            _getProjectInfo(
+                                context, projectList[index].projectUuid);
+                          },
+                        ),
+                        PopupMenuItem<MenuSelection>(
+                          value: MenuSelection.deleteProject,
+                          onTap: () async {
+                            _deleteProject(
+                                context, projectList[index].projectUuid);
+                          },
+                          child: const Text('Delete',
+                              style: TextStyle(color: Colors.red)),
+                        ),
+                      ]),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProjectHome(
+                            projectUuid: projectList[index].projectUuid,
+                          )),
+                );
+              },
+            ));
+          },
+        ),
+      )
+    ]);
   }
 
   Future<void> _launchHelpUrl(Uri url) async {
