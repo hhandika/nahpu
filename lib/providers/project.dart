@@ -13,13 +13,8 @@ class ProjectListNotifier extends ChangeNotifier {
     });
   }
 
-  // void addProject(String projectName) {
-  //   _projectList.add(projectName);
-  //   notifyListeners();
-  // }
-
-  // void removeProject(String projectName) {
-  //   _projectList.remove(projectName);
-  //   notifyListeners();
-  // }
+  void deleteProject(BuildContext context, String projectUuid) {
+    ProjectModel(context: context).deleteProject(projectUuid);
+    notifyListeners();
+  }
 }

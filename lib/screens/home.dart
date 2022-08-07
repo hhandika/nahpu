@@ -9,7 +9,6 @@ import 'package:nahpu/models/project.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/projects/project_home.dart';
 import 'package:nahpu/screens/projects/project_info.dart';
-import 'package:nahpu/database/database.dart';
 
 enum MenuSelection { details, deleteProject }
 
@@ -153,9 +152,9 @@ class _HomeState extends State<Home> {
 
   Widget _buildBody() {
     return Consumer<ProjectListNotifier>(
-      builder: (context, projectList, child) {
-        projectList.getProjectList(context);
-        if (projectList.projectList.isEmpty) {
+      builder: (context, projectNotif, child) {
+        projectNotif.getProjectList(context);
+        if (projectNotif.projectList.isEmpty) {
           return Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
@@ -173,13 +172,13 @@ class _HomeState extends State<Home> {
             ),
           );
         } else {
-          return _buildListView(projectList.projectList);
+          return _buildListView(projectNotif);
         }
       },
     );
   }
 
-  Widget _buildListView(List<ListProjectResult> projectList) {
+  Widget _buildListView(ProjectListNotifier projectNotif) {
     return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
       Row(children: [
         Text('Existing projects:',
@@ -193,7 +192,7 @@ class _HomeState extends State<Home> {
         child: ListView.separated(
           separatorBuilder: (BuildContext context, int index) =>
               const Divider(),
-          itemCount: projectList.length,
+          itemCount: projectNotif.projectList.length,
           itemBuilder: (context, index) {
             return Card(
                 child: ListTile(
@@ -203,12 +202,12 @@ class _HomeState extends State<Home> {
                 color: Theme.of(context).colorScheme.onSurface,
               ),
               title: Text(
-                projectList[index].projectName,
+                projectNotif.projectList[index].projectName,
                 style:
                     const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               subtitle: Text(
-                projectList[index].projectUuid,
+                projectNotif.projectList[index].projectUuid,
                 style: const TextStyle(fontSize: 8),
               ),
               trailing: PopupMenuButton<MenuSelection>(
@@ -219,15 +218,15 @@ class _HomeState extends State<Home> {
                           value: MenuSelection.details,
                           child: const Text('Info'),
                           onTap: () async {
-                            _getProjectInfo(
-                                context, projectList[index].projectUuid);
+                            _getProjectInfo(context,
+                                projectNotif.projectList[index].projectUuid);
                           },
                         ),
                         PopupMenuItem<MenuSelection>(
                           value: MenuSelection.deleteProject,
                           onTap: () async {
-                            _deleteProject(
-                                context, projectList[index].projectUuid);
+                            projectNotif.deleteProject(context,
+                                projectNotif.projectList[index].projectUuid);
                           },
                           child: const Text('Delete',
                               style: TextStyle(color: Colors.red)),
@@ -238,7 +237,8 @@ class _HomeState extends State<Home> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => ProjectHome(
-                            projectUuid: projectList[index].projectUuid,
+                            projectUuid:
+                                projectNotif.projectList[index].projectUuid,
                           )),
                 );
               },
@@ -256,10 +256,6 @@ class _HomeState extends State<Home> {
     )) {
       throw 'Could not launch $url';
     }
-  }
-
-  Future<void> _deleteProject(BuildContext context, String projectUuid) async {
-    ProjectModel(context: context).deleteProject(projectUuid);
   }
 
   void _onPopupMenuSelected(MenuSelection item) {
