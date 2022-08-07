@@ -9,7 +9,7 @@ class NewProjectValidation {
   NewProjectValidation(this.value, this.error);
 }
 
-class NewProjectProvider extends ChangeNotifier {
+class NewProjectNotifier extends ChangeNotifier {
   NewProjectValidation _projectName = NewProjectValidation(null, null);
   NewProjectValidation _collNum = NewProjectValidation(null, null);
   NewProjectValidation _collName = NewProjectValidation(null, null);

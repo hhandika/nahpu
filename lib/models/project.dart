@@ -4,11 +4,11 @@ import 'package:nahpu/database/database.dart';
 import 'package:provider/provider.dart';
 
 class ProjectModel {
-  final BuildContext context;
-  final Database db;
-
   ProjectModel({required this.context})
       : db = Provider.of<Database>(context, listen: false);
+
+  final BuildContext context;
+  final Database db;
 
   Future<void> createProject(ProjectCompanion project) async {
     return db.createProject(project);
@@ -18,15 +18,18 @@ class ProjectModel {
     return db.getAllProjects();
   }
 
+  Future<List<ListProjectResult>> getProjectList() async {
+    return db.getProjectList();
+  }
+
   Future<ProjectData> getProjectByUuid(String uuid) async {
     return db.getProjectByUuid(uuid);
   }
 
   Future<String?> getProjectByName(String? projectName) async {
-    final String? query = await db
+    return await db
         .getProjectByName(projectName)
         .then((value) => value?.projectName);
-    return query;
   }
 
   Future<bool> isProjectExists(String? projectName) {

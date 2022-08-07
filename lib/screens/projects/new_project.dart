@@ -29,11 +29,11 @@ class _NewProjectFormState extends State<CreateProjectForm> {
   final piController = TextEditingController();
   bool isInvalid = false;
   // dynamic _validationMsg;
-  late NewProjectProvider _newProjectProvider;
+  late NewProjectNotifier _newProjectNotifier;
 
   @override
   Widget build(BuildContext context) {
-    _newProjectProvider = Provider.of<NewProjectProvider>(context);
+    _newProjectNotifier = Provider.of<NewProjectNotifier>(context);
     return Scaffold(
         // resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -61,11 +61,11 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                                 ),
                               ],
                               onChanged: (value) {
-                                _newProjectProvider.validateProjectName(value);
-                                _newProjectProvider.checkProjectNameExists(
+                                _newProjectNotifier.validateProjectName(value);
+                                _newProjectNotifier.checkProjectNameExists(
                                     context, value?.trim());
                               },
-                              errorText: _newProjectProvider.projectName.error,
+                              errorText: _newProjectNotifier.projectName.error,
                             ),
                           ),
                           ProjectFormField(
@@ -84,8 +84,8 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                             hintText:
                                 'Enter the name of the collector (required)',
                             labelText: 'Collector*',
-                            onChanged: _newProjectProvider.validateCollName,
-                            errorText: _newProjectProvider.collName.error,
+                            onChanged: _newProjectNotifier.validateCollName,
+                            errorText: _newProjectNotifier.collName.error,
                           ),
                           ProjectFormField(
                             controller: collectorInitialController,
@@ -113,13 +113,13 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                             hintText:
                                 'Enter the email of the collector (required)',
                             onChanged: (value) {
-                              _newProjectProvider.validateEmail(value);
+                              _newProjectNotifier.validateEmail(value);
                               collectorEmailController.value = TextEditingValue(
                                   text: value!.toLowerCase(),
                                   selection:
                                       collectorEmailController.selection);
                             },
-                            errorText: _newProjectProvider.email.error,
+                            errorText: _newProjectNotifier.email.error,
                           ),
                           ProjectFormField(
                             controller: collNumController,
@@ -132,8 +132,8 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                                 RegExp(r'[0-9]+'),
                               ),
                             ],
-                            onChanged: _newProjectProvider.validateCollNum,
-                            errorText: _newProjectProvider.collNum.error,
+                            onChanged: _newProjectNotifier.validateCollNum,
+                            errorText: _newProjectNotifier.collNum.error,
                           ),
                           Wrap(spacing: 10, children: [
                             ElevatedButton(
@@ -142,7 +142,7 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                                 Navigator.pop(context);
                               },
                             ),
-                            Consumer<NewProjectProvider>(
+                            Consumer<NewProjectNotifier>(
                                 builder: (context, model, child) {
                               return ElevatedButton(
                                 style: ElevatedButton.styleFrom(

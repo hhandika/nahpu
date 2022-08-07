@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:nahpu/providers/project.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
@@ -20,8 +21,22 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final ProjectListNotifier _projectList = ProjectListNotifier();
+
   final Uri _helpUrl = Uri(
       scheme: 'https', host: 'www.github.com', path: 'hhandika/nahpu/issues');
+
+  @override
+  void initState() {
+    super.initState();
+    _projectList.getProjectList(context);
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +72,7 @@ class _HomeState extends State<Home> {
                         color: Theme.of(context).colorScheme.onSurface,
                         thickness: 1.5,
                       ),
-                      _drawListView(),
+                      _buildListView(),
                     ]))),
       )),
       floatingActionButton: SpeedDial(
@@ -147,88 +162,72 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _drawListView() {
-    Future<List<ListProjectResult>> projectList = _getProjectList();
+  Widget _buildListView() {
+    return Consumer<ProjectListNotifier>(
+      builder: (context, projectList, child) {
+        projectList.getProjectList(context);
+        if (projectList.projectList.isEmpty) {
+          return const Text('No projects yet');
+        } else {
+          return _drawListView(projectList.projectList);
+        }
+      },
+    );
+  }
+
+  Widget _drawListView(List<ListProjectResult> projectList) {
     return Expanded(
-      child: FutureBuilder<List<ListProjectResult>>(
-        future: projectList,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else if (snapshot.hasData) {
-            return ListView.separated(
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(),
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                return Card(
-                    child: ListTile(
-                  leading: Icon(
-                    Icons.insert_drive_file_rounded,
-                    size: 40,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                  title: Text(
-                    snapshot // Reverse the list, so the newest projects are at the top.
-                        .data![_reverseIndex(index, snapshot.data!.length)]
-                        .projectName,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                  subtitle: Text(
-                    snapshot.data![_reverseIndex(index, snapshot.data!.length)]
-                        .projectUuid,
-                    style: const TextStyle(fontSize: 8),
-                  ),
-                  trailing: PopupMenuButton<MenuSelection>(
-                      onSelected: _onPopupMenuSelected,
-                      itemBuilder: (BuildContext context) =>
-                          <PopupMenuEntry<MenuSelection>>[
-                            PopupMenuItem<MenuSelection>(
-                              value: MenuSelection.details,
-                              child: const Text('Info'),
-                              onTap: () async {
-                                _getProjectInfo(
-                                    context,
-                                    snapshot
-                                        .data![_reverseIndex(
-                                            index, snapshot.data!.length)]
-                                        .projectUuid);
-                              },
-                            ),
-                            PopupMenuItem<MenuSelection>(
-                              value: MenuSelection.deleteProject,
-                              onTap: () async {
-                                _deleteProject(
-                                    context,
-                                    snapshot
-                                        .data![_reverseIndex(
-                                            index, snapshot.data!.length)]
-                                        .projectUuid);
-                              },
-                              child: const Text('Delete',
-                                  style: TextStyle(color: Colors.red)),
-                            ),
-                          ]),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ProjectHome(
-                                projectUuid: snapshot
-                                    .data![_reverseIndex(
-                                        index, snapshot.data!.length)]
-                                    .projectUuid,
-                              )),
-                    );
-                  },
-                ));
-              },
-            );
-          }
-          return const Center(
-            child: Text('No projects found.'),
-          );
+      child: ListView.separated(
+        separatorBuilder: (BuildContext context, int index) => const Divider(),
+        itemCount: projectList.length,
+        itemBuilder: (context, index) {
+          return Card(
+              child: ListTile(
+            leading: Icon(
+              Icons.insert_drive_file_rounded,
+              size: 40,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+            title: Text(
+              projectList[index].projectName,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            subtitle: Text(
+              projectList[index].projectUuid,
+              style: const TextStyle(fontSize: 8),
+            ),
+            trailing: PopupMenuButton<MenuSelection>(
+                onSelected: _onPopupMenuSelected,
+                itemBuilder: (BuildContext context) =>
+                    <PopupMenuEntry<MenuSelection>>[
+                      PopupMenuItem<MenuSelection>(
+                        value: MenuSelection.details,
+                        child: const Text('Info'),
+                        onTap: () async {
+                          _getProjectInfo(
+                              context, projectList[index].projectUuid);
+                        },
+                      ),
+                      PopupMenuItem<MenuSelection>(
+                        value: MenuSelection.deleteProject,
+                        onTap: () async {
+                          _deleteProject(
+                              context, projectList[index].projectUuid);
+                        },
+                        child: const Text('Delete',
+                            style: TextStyle(color: Colors.red)),
+                      ),
+                    ]),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ProjectHome(
+                          projectUuid: projectList[index].projectUuid,
+                        )),
+              );
+            },
+          ));
         },
       ),
     );
@@ -243,9 +242,9 @@ class _HomeState extends State<Home> {
     }
   }
 
-  int _reverseIndex(int index, int length) {
-    return (length - 1) - index;
-  }
+  // int _reverseIndex(int index, int length) {
+  //   return (length - 1) - index;
+  // }
 
   Future<void> _deleteProject(BuildContext context, String projectUuid) async {
     ProjectModel(context: context).deleteProject(projectUuid);
@@ -262,9 +261,9 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Future<List<ListProjectResult>> _getProjectList() async {
-    return Provider.of<Database>(context, listen: false).getProjectList();
-  }
+  // Future<List<ListProjectResult>> _getProjectList() async {
+  //   return Provider.of<Database>(context, listen: false).getProjectList();
+  // }
 
   Future<void> _getProjectInfo(BuildContext context, projectUuid) async {
     final projectData = await ProjectModel(context: context).getProjectByUuid(

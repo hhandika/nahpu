@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:nahpu/providers/project.dart';
 import 'package:nahpu/providers/validation.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +26,10 @@ class MyApp extends StatelessWidget {
             dispose: (_, Database database) => database.close(),
           ),
           ChangeNotifierProvider(
-            create: (_) => NewProjectProvider(),
+            create: (_) => NewProjectNotifier(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => ProjectListNotifier(),
           )
         ],
         child: MaterialApp(
