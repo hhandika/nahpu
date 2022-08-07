@@ -39,67 +39,7 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              child: const CircleAvatar(
-                backgroundColor: Colors.white,
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.create_rounded),
-              title: const Text('Create a new project'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const CreateProjectForm()),
-                );
-              },
-            ),
-            const ListTile(
-              leading: Icon(Icons.settings_rounded),
-              title: Text('Settings'),
-              // onTap: () {
-              //   // Navigator.of(context).pop();
-              // },
-            ),
-            const Divider(
-              color: Colors.grey,
-            ),
-            ListTile(
-              leading: const Icon(Icons.info_rounded),
-              title: const Text('About'),
-              onTap: () {
-                return showAboutDialog(
-                  context: context,
-                  applicationName: 'Nahpu',
-                  applicationVersion: '0.0.1',
-                  applicationIcon: const Icon(Icons.info),
-                  children: [
-                    const Text(
-                        'A tool for cataloging natural history specimens.'),
-                    const Text('It is a work in progress.'),
-                    const Text('Please report any bugs or feature requests'),
-                  ],
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.help_rounded),
-              title: const Text('Help and feedback'),
-              onTap: () {
-                _launchHelpUrl(_helpUrl);
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: _drawProjectHomeMenu(),
       body: SafeArea(
           child: Center(
         child: Padding(
@@ -136,6 +76,70 @@ class _HomeState extends State<Home> {
                 MaterialPageRoute(
                     builder: (context) => const CreateProjectForm()),
               );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _drawProjectHomeMenu() {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            child: const CircleAvatar(
+              backgroundColor: Colors.white,
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.create_rounded),
+            title: const Text('Create a new project'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const CreateProjectForm()),
+              );
+            },
+          ),
+          const ListTile(
+            leading: Icon(Icons.settings_rounded),
+            title: Text('Settings'),
+            // onTap: () {
+            //   // Navigator.of(context).pop();
+            // },
+          ),
+          const Divider(
+            color: Colors.grey,
+          ),
+          ListTile(
+            leading: const Icon(Icons.info_rounded),
+            title: const Text('About'),
+            onTap: () {
+              return showAboutDialog(
+                context: context,
+                applicationName: 'Nahpu',
+                applicationVersion: '0.0.1',
+                applicationIcon: const Icon(Icons.info),
+                children: [
+                  const Text(
+                      'A tool for cataloging natural history specimens.'),
+                  const Text('It is a work in progress.'),
+                  const Text('Please report any bugs or feature requests'),
+                ],
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.help_rounded),
+            title: const Text('Help and feedback'),
+            onTap: () {
+              _launchHelpUrl(_helpUrl);
             },
           ),
         ],
@@ -230,6 +234,15 @@ class _HomeState extends State<Home> {
     );
   }
 
+  Future<void> _launchHelpUrl(Uri url) async {
+    if (!await launchUrl(
+      url,
+      mode: LaunchMode.externalApplication,
+    )) {
+      throw 'Could not launch $url';
+    }
+  }
+
   int _reverseIndex(int index, int length) {
     return (length - 1) - index;
   }
@@ -279,14 +292,5 @@ class _HomeState extends State<Home> {
         );
       },
     );
-  }
-
-  Future<void> _launchHelpUrl(Uri url) async {
-    if (!await launchUrl(
-      url,
-      mode: LaunchMode.externalApplication,
-    )) {
-      throw 'Could not launch $url';
-    }
   }
 }
