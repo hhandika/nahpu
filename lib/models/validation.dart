@@ -30,12 +30,12 @@ class NewProjectProvider extends ChangeNotifier {
   }
 
   void checkProjectNameExists(BuildContext context, String? name) {
-    ProjectModel(context: context).isProjectExists(name).then((value) {
-      if (value) {
+    ProjectModel(context: context).isProjectExists(name).then((isExists) {
+      if (!isExists) {
+        _projectName = NewProjectValidation(name, null);
+      } else {
         _projectName = NewProjectValidation(
             name, 'Project name already exists, please choose another one');
-      } else {
-        _projectName = NewProjectValidation(name, null);
       }
       notifyListeners();
     });
