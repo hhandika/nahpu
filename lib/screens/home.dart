@@ -258,10 +258,6 @@ class _HomeState extends State<Home> {
     }
   }
 
-  // int _reverseIndex(int index, int length) {
-  //   return (length - 1) - index;
-  // }
-
   Future<void> _deleteProject(BuildContext context, String projectUuid) async {
     ProjectModel(context: context).deleteProject(projectUuid);
   }
@@ -276,10 +272,6 @@ class _HomeState extends State<Home> {
         break;
     }
   }
-
-  // Future<List<ListProjectResult>> _getProjectList() async {
-  //   return Provider.of<Database>(context, listen: false).getProjectList();
-  // }
 
   Future<void> _getProjectInfo(BuildContext context, projectUuid) async {
     final projectData = await ProjectModel(context: context).getProjectByUuid(
