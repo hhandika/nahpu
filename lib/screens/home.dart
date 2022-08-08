@@ -29,7 +29,6 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     _projectList.getProjectList(context);
-    setState(() {});
   }
 
   @override
