@@ -13,7 +13,15 @@ class NewCollEvent extends StatefulWidget {
 
 class _NewCollEventState extends State<NewCollEvent>
     with TickerProviderStateMixin {
-  final dateController = TextEditingController();
+  final startDateController = TextEditingController();
+  final endDateController = TextEditingController();
+  final startTimeController = TextEditingController();
+  final endTimeController = TextEditingController();
+
+  final DateTime _initialStartDate =
+      DateTime.now().subtract(const Duration(days: 1));
+  final DateTime _initialEndDate = DateTime.now();
+  final TimeOfDay _initialStartTime = const TimeOfDay(hour: 8, minute: 0);
 
   late TabController _tabController;
   // final int _selectedIndex = 0;
@@ -72,41 +80,207 @@ class _NewCollEventState extends State<NewCollEvent>
       ),
       body: SafeArea(
           child: SingleChildScrollView(
-        child: Column(children: [
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Date',
-              hintText: 'Enter date',
-            ),
-            controller: dateController,
-            onTap: () async {
-              showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime.now())
-                  .then((date) {
-                if (date != null) {
-                  dateController.text = DateFormat.yMMMd().format(date);
-                }
-              });
-            },
+              child: Column(
+        children: [
+          _drawCollectingFields(),
+          _drawActivityFields(),
+          _drawTrappingFields(),
+          _drawMediaFields(),
+        ],
+      ))),
+    );
+  }
+
+  Widget _drawCollectingFields() {
+    return Card(
+        child: Container(
+            padding: const EdgeInsets.all(10),
+            child: Column(children: [
+              Text(
+                'Collecting Information',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Site ID',
+                  hintText: 'Enter a new event',
+                ),
+              ),
+              Row(children: [
+                Expanded(
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Start Date',
+                      hintText: 'Enter date',
+                    ),
+                    controller: startDateController,
+                    onTap: () async {
+                      showDatePicker(
+                              context: context,
+                              initialDate: _initialStartDate,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime.now())
+                          .then((date) {
+                        if (date != null) {
+                          startDateController.text =
+                              DateFormat.yMMMd().format(date);
+                        }
+                      });
+                    },
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Start time',
+                      hintText: 'Enter date',
+                    ),
+                    controller: startTimeController,
+                    onTap: () async {
+                      showTimePicker(
+                              context: context, initialTime: _initialStartTime)
+                          .then((time) {
+                        if (time != null) {
+                          startTimeController.text = time.format(context);
+                        }
+                      });
+                    },
+                  ),
+                ),
+              ]),
+              Row(
+                children: [
+                  Expanded(
+                      child: TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'End Date',
+                      hintText: 'Enter date',
+                    ),
+                    controller: endDateController,
+                    onTap: () async {
+                      showDatePicker(
+                              context: context,
+                              initialDate: _initialEndDate,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime.now())
+                          .then((date) {
+                        if (date != null) {
+                          endDateController.text =
+                              DateFormat.yMMMd().format(date);
+                        }
+                      });
+                    },
+                  )),
+                  const SizedBox(width: 10),
+                  Expanded(
+                      child: TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'End time',
+                      hintText: 'Enter date',
+                    ),
+                    controller: endTimeController,
+                    onTap: () async {
+                      showTimePicker(
+                              context: context, initialTime: _initialStartTime)
+                          .then((time) {
+                        if (time != null) {
+                          endTimeController.text = time.format(context);
+                        }
+                      });
+                    },
+                  )),
+                ],
+              ),
+            ])));
+  }
+
+  Widget _drawActivityFields() {
+    return Card(
+        child: Container(
+            padding: const EdgeInsets.all(10),
+            child: Column(children: [
+              Text(
+                'Collecting Activities',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              DropdownButtonFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Primary collection method',
+                    hintText: 'Choose a method',
+                  ),
+                  items: const [
+                    DropdownMenuItem(
+                      value: 'Trapping',
+                      child: Text('Trapping'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'Song meter',
+                      child: Text('Song meter'),
+                    ),
+                  ],
+                  onChanged: (String? newValue) {
+                    setState(() {});
+                  }),
+              TextFormField(
+                maxLines: 10,
+                decoration: const InputDecoration(
+                  labelText: 'Collecting method notes',
+                  hintText: 'Enter notes',
+                ),
+              ),
+            ])));
+  }
+
+  Widget _drawTrappingFields() {
+    return Card(
+        child: Container(
+      padding: const EdgeInsets.all(10),
+      child: Column(children: [
+        Text(
+          'Collecting Effort',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        TextFormField(
+          decoration: const InputDecoration(
+            labelText: 'Live traps',
+            hintText: 'Enter count',
           ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Site ID',
-              hintText: 'Enter a new event',
-            ),
+          keyboardType: TextInputType.number,
+        ),
+      ]),
+    ));
+  }
+
+  Widget _drawMediaFields() {
+    return Column(
+      // Media inputs
+      children: [
+        DefaultTabController(
+          length: 2,
+          child: TabBar(
+            controller: _tabController,
+            tabs: [
+              Tab(
+                  icon: Icon(Icons.wb_sunny_rounded,
+                      color: Theme.of(context).colorScheme.tertiary)),
+              Tab(
+                  icon: Icon(Icons.camera_alt_rounded,
+                      color: Theme.of(context).colorScheme.tertiary)),
+            ],
           ),
-          TextFormField(
-            maxLines: 10,
-            decoration: const InputDecoration(
-              labelText: 'CollEvent',
-              hintText: 'Enter narrative',
-            ),
+        ),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.5,
+          child: TabBarView(
+            controller: _tabController,
+            children: const [
+              Text('Weather'),
+              Text('Camera'),
+            ],
           ),
-        ]),
-      )),
+        ),
+      ],
     );
   }
 
