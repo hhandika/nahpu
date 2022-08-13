@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 import 'package:nahpu/models/project.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class NewProjectValidation {
   String? value;
@@ -9,7 +10,13 @@ class NewProjectValidation {
   NewProjectValidation(this.value, this.error);
 }
 
+final newProjectValidationProvider = ChangeNotifierProvider<NewProjectNotifier>(
+    (ref) => NewProjectNotifier(ref));
+
 class NewProjectNotifier extends ChangeNotifier {
+  NewProjectNotifier(this.ref);
+  final Ref ref;
+
   NewProjectValidation _projectName = NewProjectValidation(null, null);
   NewProjectValidation _collNum = NewProjectValidation(null, null);
   NewProjectValidation _collName = NewProjectValidation(null, null);
@@ -30,7 +37,7 @@ class NewProjectNotifier extends ChangeNotifier {
   }
 
   void checkProjectNameExists(BuildContext context, String? name) {
-    ProjectModel(context: context).isProjectExists(name).then((isExists) {
+    ProjectModel(ref).isProjectExists(name).then((isExists) {
       if (!isExists) {
         _projectName = NewProjectValidation(name, null);
       } else {

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:nahpu/providers/project.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:url_launcher/url_launcher.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 
 import 'package:nahpu/models/project.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
@@ -12,29 +13,16 @@ import 'package:nahpu/screens/projects/project_info.dart';
 
 enum MenuSelection { details, deleteProject }
 
-class Home extends StatefulWidget {
+class Home extends ConsumerStatefulWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
-  State<Home> createState() => _HomeState();
+  HomeState createState() => HomeState();
 }
 
-class _HomeState extends State<Home> {
-  final ProjectListNotifier _projectList = ProjectListNotifier();
-
+class HomeState extends ConsumerState<Home> {
   final Uri _helpUrl = Uri(
       scheme: 'https', host: 'www.github.com', path: 'hhandika/nahpu/issues');
-
-  @override
-  void initState() {
-    super.initState();
-    _projectList.getProjectList(context);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -150,9 +138,10 @@ class _HomeState extends State<Home> {
   }
 
   Widget _buildBody() {
+    final projectNotif = ref.watch(projectListNotifier);
     return Consumer<ProjectListNotifier>(
       builder: (context, projectNotif, child) {
-        projectNotif.getProjectList(context);
+        projectNotif.getProjectList();
         if (projectNotif.projectList.isEmpty) {
           return Padding(
             padding: const EdgeInsets.all(20.0),
@@ -268,8 +257,8 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Future<void> _getProjectInfo(BuildContext context, projectUuid) async {
-    final projectData = await ProjectModel(context: context).getProjectByUuid(
+  Future<void> _getProjectInfo(WidgetRef ref, projectUuid) async {
+    final projectData = await ProjectModel(ref).getProjectByUuid(
       projectUuid,
     );
 
