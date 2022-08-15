@@ -6,7 +6,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 // import 'package:provider/provider.dart';
 
-import 'package:nahpu/models/project.dart';
+// import 'package:nahpu/models/project.dart';
+import 'package:nahpu/database/database.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/projects/project_home.dart';
 import 'package:nahpu/screens/projects/project_info.dart';
@@ -138,35 +139,30 @@ class HomeState extends ConsumerState<Home> {
   }
 
   Widget _buildBody() {
-    final projectNotif = ref.watch(projectListNotifier);
-    return Consumer<ProjectListNotifier>(
-      builder: (context, projectNotif, child) {
-        projectNotif.getProjectList();
-        if (projectNotif.projectList.isEmpty) {
-          return Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'No projects found!',
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-                Text(
-                  'Create a new project to get started',
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ],
+    final projectList = ref.watch(projectListProvider);
+    if (projectList.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'No projects found!',
+              style: Theme.of(context).textTheme.headline6,
             ),
-          );
-        } else {
-          return _buildListView(projectNotif);
-        }
-      },
-    );
+            Text(
+              'Create a new project to get started',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+          ],
+        ),
+      );
+    } else {
+      return _buildListView(projectList);
+    }
   }
 
-  Widget _buildListView(ProjectListNotifier projectNotif) {
+  Widget _buildListView(List<ListProjectResult> projectList) {
     return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
       Row(children: [
         Text('Existing projects:',
@@ -180,7 +176,7 @@ class HomeState extends ConsumerState<Home> {
         child: ListView.separated(
           separatorBuilder: (BuildContext context, int index) =>
               const Divider(),
-          itemCount: projectNotif.projectList.length,
+          itemCount: projectList.length,
           itemBuilder: (context, index) {
             return Card(
                 child: ListTile(
@@ -190,12 +186,12 @@ class HomeState extends ConsumerState<Home> {
                 color: Theme.of(context).colorScheme.onSurface,
               ),
               title: Text(
-                projectNotif.projectList[index].projectName,
+                projectList[index].projectName,
                 style:
                     const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               subtitle: Text(
-                projectNotif.projectList[index].projectUuid,
+                projectList[index].projectUuid,
                 style: const TextStyle(fontSize: 8),
               ),
               trailing: PopupMenuButton<MenuSelection>(
@@ -206,15 +202,16 @@ class HomeState extends ConsumerState<Home> {
                           value: MenuSelection.details,
                           child: const Text('Info'),
                           onTap: () async {
-                            _getProjectInfo(context,
-                                projectNotif.projectList[index].projectUuid);
+                            _getProjectInfo(
+                                ref, projectList[index].projectUuid);
                           },
                         ),
                         PopupMenuItem<MenuSelection>(
                           value: MenuSelection.deleteProject,
-                          onTap: () async {
-                            projectNotif.deleteProject(context,
-                                projectNotif.projectList[index].projectUuid);
+                          onTap: () {
+                            ref
+                                .read(databaseProvider)
+                                .deleteProject(projectList[index].projectUuid);
                           },
                           child: const Text('Delete',
                               style: TextStyle(color: Colors.red)),
@@ -225,8 +222,7 @@ class HomeState extends ConsumerState<Home> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => ProjectHome(
-                            projectUuid:
-                                projectNotif.projectList[index].projectUuid,
+                            projectUuid: projectList[index].projectUuid,
                           )),
                 );
               },
@@ -249,18 +245,18 @@ class HomeState extends ConsumerState<Home> {
   void _onPopupMenuSelected(MenuSelection item) {
     switch (item) {
       case MenuSelection.details:
-        setState(() {});
+        // setState(() {});
         break;
       case MenuSelection.deleteProject:
-        setState(() {});
+        // setState(() {});
         break;
     }
   }
 
   Future<void> _getProjectInfo(WidgetRef ref, projectUuid) async {
-    final projectData = await ProjectModel(ref).getProjectByUuid(
-      projectUuid,
-    );
+    final projectData = ref.watch(databaseProvider).getProjectByUuid(
+          projectUuid,
+        );
 
     return showDialog<void>(
       context: context,

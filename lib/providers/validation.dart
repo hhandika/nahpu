@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
-import 'package:nahpu/models/project.dart';
+// import 'package:nahpu/models/project.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nahpu/providers/project.dart';
 
 class NewProjectValidation {
   String? value;
@@ -37,8 +38,8 @@ class NewProjectNotifier extends ChangeNotifier {
   }
 
   void checkProjectNameExists(BuildContext context, String? name) {
-    ProjectModel(ref).isProjectExists(name).then((isExists) {
-      if (!isExists) {
+    ref.watch(databaseProvider).getProjectByName(name).then((value) {
+      if (value != null) {
         _projectName = NewProjectValidation(name, null);
       } else {
         _projectName = NewProjectValidation(

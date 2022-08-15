@@ -2,22 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:drift/drift.dart' as db;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nahpu/providers/project.dart';
 import 'package:uuid/uuid.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 
 import 'project_home.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/providers/validation.dart';
-import 'package:nahpu/models/project.dart';
+// import 'package:nahpu/models/project.dart';
 
-class CreateProjectForm extends StatefulWidget {
+class CreateProjectForm extends ConsumerStatefulWidget {
   const CreateProjectForm({Key? key}) : super(key: key);
 
   @override
-  State<CreateProjectForm> createState() => _NewProjectFormState();
+  NewProjectFormState createState() => NewProjectFormState();
 }
 
-class _NewProjectFormState extends State<CreateProjectForm> {
+class NewProjectFormState extends ConsumerState<CreateProjectForm> {
   final _formKey = GlobalKey<FormState>();
   final _uuidKey = const Uuid().v4();
   final projectNameController = TextEditingController();
@@ -33,7 +35,7 @@ class _NewProjectFormState extends State<CreateProjectForm> {
 
   @override
   Widget build(BuildContext context) {
-    _newProjectNotifier = Provider.of<NewProjectNotifier>(context);
+    _newProjectNotifier = ref.watch(newProjectValidationProvider);
     return Scaffold(
         // resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -142,29 +144,26 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                                 Navigator.pop(context);
                               },
                             ),
-                            Consumer<NewProjectNotifier>(
-                                builder: (context, model, child) {
-                              return ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  onPrimary: Theme.of(context)
-                                      .colorScheme
-                                      .onSecondaryContainer,
-                                  primary: Theme.of(context)
-                                      .colorScheme
-                                      .secondaryContainer,
-                                ),
-                                onPressed: () {
-                                  if (model.validate) {
-                                    _formKey.currentState!.save();
-                                    _createProject();
-                                    _goToProjectHome();
-                                  }
-                                },
-                                child: const Text(
-                                  'Create',
-                                ),
-                              );
-                            })
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                onPrimary: Theme.of(context)
+                                    .colorScheme
+                                    .onSecondaryContainer,
+                                primary: Theme.of(context)
+                                    .colorScheme
+                                    .secondaryContainer,
+                              ),
+                              onPressed: () {
+                                if (_newProjectNotifier.validate) {
+                                  _formKey.currentState!.save();
+                                  _createProject();
+                                  _goToProjectHome();
+                                }
+                              },
+                              child: const Text(
+                                'Create',
+                              ),
+                            )
                           ])
                         ],
                       )))),
@@ -172,16 +171,16 @@ class _NewProjectFormState extends State<CreateProjectForm> {
   }
 
   Future<void> _createProject() async {
-    await ProjectModel(context: context).createProject(ProjectCompanion(
-      projectUuid: db.Value(_uuidKey),
-      projectName: db.Value(projectNameController.text),
-      projectDescription: db.Value(descriptionController.text),
-      collector: db.Value(collectorController.text),
-      collectorInitial: db.Value(collectorInitialController.text),
-      collectorEmail: db.Value(collectorEmailController.text),
-      catNumStart: db.Value(int.parse(collNumController.text)),
-      principalInvestigator: db.Value(piController.text),
-    ));
+    await ref.watch(databaseProvider).createProject(ProjectCompanion(
+          projectUuid: db.Value(_uuidKey),
+          projectName: db.Value(projectNameController.text),
+          projectDescription: db.Value(descriptionController.text),
+          collector: db.Value(collectorController.text),
+          collectorInitial: db.Value(collectorInitialController.text),
+          collectorEmail: db.Value(collectorEmailController.text),
+          catNumStart: db.Value(int.parse(collNumController.text)),
+          principalInvestigator: db.Value(piController.text),
+        ));
   }
 
   Future<void> _goToProjectHome() async {

@@ -3,25 +3,55 @@ import 'package:nahpu/database/database.dart';
 import 'package:nahpu/models/project.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final projectListNotifier = ChangeNotifierProvider<ProjectListNotifier>(
-    (ref) => ProjectListNotifier(ref));
+final databaseProvider = Provider<Database>((ref) {
+  return Database();
+});
 
-class ProjectListNotifier extends ChangeNotifier {
-  ProjectListNotifier(this.ref);
-  List<ListProjectResult> _projectList = [];
-  List<ListProjectResult> get projectList => _projectList;
+final projectListProvider = Provider<List<ListProjectResult>>((ref) {
+  final db = ref.watch(databaseProvider);
 
-  final Ref ref;
+  List<ListProjectResult> projectList = [];
+  db.getProjectList().then((value) {
+    projectList = value.reversed.toList();
+  });
+  return projectList;
+});
 
-  void getProjectList() {
-    ProjectModel(ref).getProjectList().then((value) {
-      _projectList = value.reversed.toList();
-      notifyListeners();
-    });
-  }
+final projectInfoProvider = Provider<ProjectData?>((ref, uuid) {
+  final db = ref.watch(databaseProvider);
+  final projectUuid = ref.watch(databaseProvider).getProjectByUuid(uuid);
 
-  void deleteProject(String projectUuid) {
-    ProjectModel(ref).deleteProject(projectUuid);
-    notifyListeners();
-  }
-}
+  ProjectData? projectInfo;
+  db.getProjectByUuid(projectUuid).then((value) {
+    projectInfo = value;
+  });
+  return projectInfo;
+});
+
+
+
+// final projectListNotifier = StreamProvider<List<ListProjectResult>>((ref) => ref
+//     .watch(databaseProvider)
+//     .getProjectList()
+//     .asStream()
+//     .map((event) => event.reversed.toList()));
+
+// class ProjectListNotifier extends StateNotifier<List<ListProjectResult>> {
+
+//   List<ListProjectResult> _projectList = [];
+//   get projectList => _projectList;
+
+//   final Ref ref;
+
+//   void getProjectList() {
+//     ProjectModel(ref).getProjectList().then((value) {
+//       _projectList = value.reversed.toList();
+//       notifyListeners();
+//     });
+//   }
+
+//   void deleteProject(String projectUuid) {
+//     ProjectModel(ref).deleteProject(projectUuid);
+//     notifyListeners();
+//   }
+// }
