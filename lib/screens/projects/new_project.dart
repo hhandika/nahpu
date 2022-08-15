@@ -171,7 +171,7 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
   }
 
   Future<void> _createProject() async {
-    await ref.watch(databaseProvider).createProject(ProjectCompanion(
+    await ref.read(databaseProvider).createProject(ProjectCompanion(
           projectUuid: db.Value(_uuidKey),
           projectName: db.Value(projectNameController.text),
           projectDescription: db.Value(descriptionController.text),

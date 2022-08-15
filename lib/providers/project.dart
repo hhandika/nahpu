@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:nahpu/database/database.dart';
-import 'package:nahpu/models/project.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final databaseProvider = Provider<Database>((ref) {
@@ -17,16 +15,12 @@ final projectListProvider = Provider<List<ListProjectResult>>((ref) {
   return projectList;
 });
 
-final projectInfoProvider = Provider<ProjectData?>((ref, uuid) {
-  final db = ref.watch(databaseProvider);
-  final projectUuid = ref.watch(databaseProvider).getProjectByUuid(uuid);
-
-  ProjectData? projectInfo;
-  db.getProjectByUuid(projectUuid).then((value) {
-    projectInfo = value;
-  });
+final projectInfoProvider =
+    FutureProvider.family<ProjectData?, String>((ref, uuid) {
+  final projectInfo = ref.watch(databaseProvider).getProjectByUuid(uuid);
   return projectInfo;
 });
+
 
 
 

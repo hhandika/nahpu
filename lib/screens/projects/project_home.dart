@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nahpu/providers/project.dart';
 
-import 'package:nahpu/models/project.dart';
 import 'package:nahpu/screens/collecting/new_coll_events.dart';
 import 'package:nahpu/screens/home.dart';
 import 'package:nahpu/screens/narrative/new_narrative.dart';
@@ -14,7 +15,6 @@ import 'package:nahpu/screens/sites/new_sites.dart';
 import 'package:nahpu/screens/sites/sites.dart';
 import 'package:nahpu/screens/specimens/new_specimens.dart';
 import 'package:nahpu/screens/specimens/specimens.dart';
-import 'package:nahpu/database/database.dart';
 import 'package:nahpu/screens/projects/project_info.dart';
 
 class ProjectHome extends StatefulWidget {
@@ -304,31 +304,27 @@ class _ProjectHomeState extends State<ProjectHome> {
   }
 }
 
-class ProjectOverview extends StatelessWidget {
+class ProjectOverview extends ConsumerWidget {
   const ProjectOverview({Key? key, required this.projectUuid})
       : super(key: key);
 
   final String projectUuid;
 
   @override
-  Widget build(BuildContext context) {
-    final data = ProjectModel(context: context).getProjectByUuid(
-      projectUuid,
-    );
+  Widget build(BuildContext context, WidgetRef ref) {
     return Card(
         color: Theme.of(context).colorScheme.surface,
         child: SingleChildScrollView(
-            child: FutureBuilder(
-                future: data,
-                builder: (context, AsyncSnapshot<ProjectData> snapshot) {
-                  if (snapshot.hasError) {
-                    return showAlert(context, 'Error: ${snapshot.error}');
-                  } else {
-                    return ListTile(
-                        title: const Text('Project Overview'),
-                        subtitle: ProjectInfo(projectData: snapshot.data));
-                  }
-                })));
+          child: ref.watch(projectInfoProvider(projectUuid)).when(
+                data: (data) {
+                  return ProjectInfo(
+                    projectData: data,
+                  );
+                },
+                loading: () => const CircularProgressIndicator(),
+                error: (error, stack) => Text(error.toString()),
+              ),
+        ));
   }
 
   Widget showAlert(BuildContext context, String error) {

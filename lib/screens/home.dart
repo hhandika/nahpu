@@ -202,8 +202,7 @@ class HomeState extends ConsumerState<Home> {
                           value: MenuSelection.details,
                           child: const Text('Info'),
                           onTap: () async {
-                            _getProjectInfo(
-                                ref, projectList[index].projectUuid);
+                            _getProjectInfo(projectList[index].projectUuid);
                           },
                         ),
                         PopupMenuItem<MenuSelection>(
@@ -253,20 +252,22 @@ class HomeState extends ConsumerState<Home> {
     }
   }
 
-  Future<void> _getProjectInfo(WidgetRef ref, projectUuid) async {
-    final projectData = ref.watch(databaseProvider).getProjectByUuid(
-          projectUuid,
-        );
-
+  Future<void> _getProjectInfo(projectUuid) async {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Project information'),
           content: SingleChildScrollView(
-            child: ProjectInfo(
-              projectData: projectData,
-            ),
+            child: ref.watch(projectInfoProvider(projectUuid)).when(
+                  data: (data) {
+                    return ProjectInfo(
+                      projectData: data,
+                    );
+                  },
+                  loading: () => const CircularProgressIndicator(),
+                  error: (error, stack) => Text(error.toString()),
+                ),
           ),
           actions: <Widget>[
             ElevatedButton(
