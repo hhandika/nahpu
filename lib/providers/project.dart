@@ -5,14 +5,8 @@ final databaseProvider = Provider<Database>((ref) {
   return Database();
 });
 
-final projectListProvider = Provider<List<ListProjectResult>>((ref) {
-  final db = ref.watch(databaseProvider);
-
-  List<ListProjectResult> projectList = [];
-  db.getProjectList().then((value) {
-    projectList = value.reversed.toList();
-  });
-  return projectList;
+final projectListProvider = FutureProvider<List<ListProjectResult>>((ref) {
+  return ref.read(databaseProvider).getProjectList();
 });
 
 final projectInfoProvider =

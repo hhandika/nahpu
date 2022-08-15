@@ -48,7 +48,17 @@ class HomeState extends ConsumerState<Home> {
             padding: const EdgeInsets.all(20.0),
             child: SizedBox(
               width: 600,
-              child: _buildBody(),
+              child: ref.watch(projectListProvider).when(
+                data: (data) {
+                  return _buildBody(data);
+                },
+                loading: () {
+                  return const CircularProgressIndicator();
+                },
+                error: (error, stackTrace) {
+                  return Text(error.toString());
+                },
+              ),
             )),
       )),
       floatingActionButton: SpeedDial(
@@ -138,8 +148,7 @@ class HomeState extends ConsumerState<Home> {
     );
   }
 
-  Widget _buildBody() {
-    final projectList = ref.watch(projectListProvider);
+  Widget _buildBody(List<ListProjectResult> projectList) {
     if (projectList.isEmpty) {
       return Padding(
         padding: const EdgeInsets.all(20.0),
@@ -211,6 +220,7 @@ class HomeState extends ConsumerState<Home> {
                             ref
                                 .read(databaseProvider)
                                 .deleteProject(projectList[index].projectUuid);
+                            ref.refresh(projectListProvider);
                           },
                           child: const Text('Delete',
                               style: TextStyle(color: Colors.red)),

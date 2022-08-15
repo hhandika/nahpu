@@ -158,6 +158,7 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                                   _formKey.currentState!.save();
                                   _createProject();
                                   _goToProjectHome();
+                                  ref.refresh(projectListProvider);
                                 }
                               },
                               child: const Text(
