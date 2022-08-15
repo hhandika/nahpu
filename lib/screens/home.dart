@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:nahpu/providers/project.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
 import 'package:url_launcher/url_launcher.dart';
-// import 'package:provider/provider.dart';
 
-// import 'package:nahpu/models/project.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/projects/project_home.dart';
