@@ -50,7 +50,7 @@ class HomeState extends ConsumerState<Home> {
               width: 600,
               child: ref.watch(projectListProvider).when(
                 data: (data) {
-                  return _buildBody(data);
+                  return _buildBody(data.reversed.toList());
                 },
                 loading: () {
                   return const CircularProgressIndicator();
