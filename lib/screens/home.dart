@@ -208,7 +208,18 @@ class HomeState extends ConsumerState<Home> {
                           value: MenuSelection.details,
                           child: const Text('Info'),
                           onTap: () async {
-                            _getProjectInfo(projectList[index].projectUuid);
+                            Future.delayed(const Duration(seconds: 0), () {
+                              ref
+                                  .read(projectInfoProvider(
+                                      projectList[index].projectUuid))
+                                  .when(data: (data) {
+                                return _getProjectInfo(data);
+                              }, loading: () {
+                                return const CircularProgressIndicator();
+                              }, error: (error, stackTrace) {
+                                return Text(error.toString());
+                              });
+                            });
                           },
                         ),
                         PopupMenuItem<MenuSelection>(
@@ -259,23 +270,14 @@ class HomeState extends ConsumerState<Home> {
     }
   }
 
-  Future<void> _getProjectInfo(projectUuid) async {
+  Future<void> _getProjectInfo(ProjectData? projectData) async {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Project information'),
           content: SingleChildScrollView(
-            child: ref.watch(projectInfoProvider(projectUuid)).when(
-                  data: (data) {
-                    return ProjectInfo(
-                      projectData: data,
-                    );
-                  },
-                  loading: () => const CircularProgressIndicator(),
-                  error: (error, stack) => Text(error.toString()),
-                ),
-          ),
+              child: ProjectInfo(projectData: projectData)),
           actions: <Widget>[
             ElevatedButton(
               child: const Text('Close'),

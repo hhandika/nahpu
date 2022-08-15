@@ -10,7 +10,7 @@ final projectListProvider = FutureProvider<List<ListProjectResult>>((ref) {
 });
 
 final projectInfoProvider =
-    FutureProvider.family<ProjectData?, String>((ref, uuid) {
+    FutureProvider.family<ProjectData?, String>((ref, uuid) async {
   final projectInfo = ref.watch(databaseProvider).getProjectByUuid(uuid);
-  return projectInfo;
+  return await projectInfo;
 });
