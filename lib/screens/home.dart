@@ -123,7 +123,7 @@ class HomeState extends ConsumerState<Home> {
                 context: context,
                 applicationName: 'Nahpu',
                 applicationVersion: '0.0.1',
-                applicationIcon: const Icon(Icons.info),
+                applicationIcon: const Icon(Icons.info_rounded),
                 children: [
                   const Text(
                       'A tool for cataloging natural history specimens.'),
