@@ -148,10 +148,10 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                               style: ElevatedButton.styleFrom(
                                 onPrimary: Theme.of(context)
                                     .colorScheme
-                                    .onSecondaryContainer,
+                                    .onPrimaryContainer,
                                 primary: Theme.of(context)
                                     .colorScheme
-                                    .secondaryContainer,
+                                    .primaryContainer,
                               ),
                               onPressed: () {
                                 if (_newProjectNotifier.validate) {

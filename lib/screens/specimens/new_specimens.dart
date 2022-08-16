@@ -387,8 +387,8 @@ class _NewSpecimensState extends State<NewSpecimens>
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             elevation: 0,
-            onPrimary: Theme.of(context).colorScheme.onTertiaryContainer,
-            primary: Theme.of(context).colorScheme.tertiaryContainer,
+            onPrimary: Theme.of(context).colorScheme.onPrimaryContainer,
+            primary: Theme.of(context).colorScheme.primaryContainer,
           ),
           onPressed: () {
             showDialog(
@@ -486,12 +486,121 @@ class _NewSpecimensState extends State<NewSpecimens>
           height: MediaQuery.of(context).size.height * 0.5,
           child: TabBarView(
             controller: _tabController,
-            children: const [
-              Text('Photos'),
-              Text('Videos'),
-              Text('Audio'),
+            children: [
+              Column(
+                children: [
+                  _addPhotoButton(),
+                ],
+              ),
+              Column(
+                children: [
+                  _addVideoButton(),
+                ],
+              ),
+              Column(
+                children: [
+                  _addAudioButton(),
+                ],
+              ),
             ],
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget _addPhotoButton() {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        elevation: 0,
+        onPrimary: Theme.of(context).colorScheme.onPrimaryContainer,
+        primary: Theme.of(context).colorScheme.primaryContainer,
+      ),
+      onPressed: () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return _showPhotoForm();
+            });
+      },
+      child: const Text(
+        'Add a photo',
+      ),
+    );
+  }
+
+  Widget _addVideoButton() {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        elevation: 0,
+        onPrimary: Theme.of(context).colorScheme.onPrimaryContainer,
+        primary: Theme.of(context).colorScheme.primaryContainer,
+      ),
+      onPressed: () {},
+      child: const Text(
+        'Add a video',
+      ),
+    );
+  }
+
+  Widget _addAudioButton() {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        elevation: 0,
+        onPrimary: Theme.of(context).colorScheme.onPrimaryContainer,
+        primary: Theme.of(context).colorScheme.primaryContainer,
+      ),
+      onPressed: () {},
+      child: const Text(
+        'Add an audio file',
+      ),
+    );
+  }
+
+  Widget _showPhotoForm() {
+    return AlertDialog(
+      title: const Text('Add a part'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Preparation type',
+              hintText: 'Enter prep type: e.g. "skin", "liver", etc."',
+            ),
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Counts',
+              hintText: 'Enter part counts',
+            ),
+            keyboardType: TextInputType.number,
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Treatment',
+              hintText: 'Enter part counts',
+            ),
+            keyboardType: TextInputType.number,
+          ),
+        ],
+      ),
+      actions: [
+        ElevatedButton(
+          child: const Text('Cancel'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            onPrimary: Theme.of(context).colorScheme.onTertiaryContainer,
+            primary: Theme.of(context).colorScheme.tertiaryContainer,
+          ),
+          child: const Text('Add'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
         ),
       ],
     );
