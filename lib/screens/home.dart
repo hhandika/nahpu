@@ -208,9 +208,7 @@ class HomeState extends ConsumerState<Home> {
                           value: MenuSelection.details,
                           child: const Text('Info'),
                           onTap: () async {
-                            Future.delayed(const Duration(milliseconds: 1), () {
-                              _getProjectInfo(projectList[index].projectUuid);
-                            });
+                            _getProjectInfo(projectList[index].projectUuid);
                           },
                         ),
                         PopupMenuItem<MenuSelection>(
