@@ -209,16 +209,7 @@ class HomeState extends ConsumerState<Home> {
                           child: const Text('Info'),
                           onTap: () async {
                             Future.delayed(const Duration(milliseconds: 1), () {
-                              ref
-                                  .read(projectInfoProvider(
-                                      projectList[index].projectUuid))
-                                  .when(data: (data) {
-                                return _getProjectInfo(data);
-                              }, loading: () {
-                                return const CircularProgressIndicator();
-                              }, error: (error, stackTrace) {
-                                return Text(error.toString());
-                              });
+                              _getProjectInfo(projectList[index].projectUuid);
                             });
                           },
                         ),
@@ -268,24 +259,29 @@ class HomeState extends ConsumerState<Home> {
     }
   }
 
-  Future<void> _getProjectInfo(ProjectData? projectData) async {
+  Future<void> _getProjectInfo(String projectUuid) async {
+    // We technically can directly call the projectInfoProvider here,
+    // but for the popup menu to work, we need to implement Future.delayed
+    // and call the provider from the onTap function of the popup menu.
+    // when we tested this, we have to tap twice to get the popup menu to work.
+    final projectInfo =
+        await ref.read(databaseProvider).getProjectByUuid(projectUuid);
     return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Project information'),
-          content: SingleChildScrollView(
-              child: ProjectInfo(projectData: projectData)),
-          actions: <Widget>[
-            ElevatedButton(
-              child: const Text('Close'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Project information'),
+            content: SingleChildScrollView(
+                child: ProjectInfo(projectData: projectInfo)),
+            actions: <Widget>[
+              ElevatedButton(
+                child: const Text('Close'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
   }
 }
