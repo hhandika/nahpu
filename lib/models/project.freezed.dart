@@ -144,9 +144,8 @@ abstract class _ProjectFormState implements ProjectFormState {
 
 /// @nodoc
 mixin _$ProjectFormField {
-  String? get fieldValue => throw _privateConstructorUsedError;
-  String get errMsg => throw _privateConstructorUsedError;
-  bool get isValid => throw _privateConstructorUsedError;
+  String? get value => throw _privateConstructorUsedError;
+  String? get errMsg => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ProjectFormFieldCopyWith<ProjectFormField> get copyWith =>
@@ -158,7 +157,7 @@ abstract class $ProjectFormFieldCopyWith<$Res> {
   factory $ProjectFormFieldCopyWith(
           ProjectFormField value, $Res Function(ProjectFormField) then) =
       _$ProjectFormFieldCopyWithImpl<$Res>;
-  $Res call({String? fieldValue, String errMsg, bool isValid});
+  $Res call({String? value, String? errMsg});
 }
 
 /// @nodoc
@@ -172,23 +171,18 @@ class _$ProjectFormFieldCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? fieldValue = freezed,
+    Object? value = freezed,
     Object? errMsg = freezed,
-    Object? isValid = freezed,
   }) {
     return _then(_value.copyWith(
-      fieldValue: fieldValue == freezed
-          ? _value.fieldValue
-          : fieldValue // ignore: cast_nullable_to_non_nullable
+      value: value == freezed
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
               as String?,
       errMsg: errMsg == freezed
           ? _value.errMsg
           : errMsg // ignore: cast_nullable_to_non_nullable
-              as String,
-      isValid: isValid == freezed
-          ? _value.isValid
-          : isValid // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as String?,
     ));
   }
 }
@@ -200,7 +194,7 @@ abstract class _$$_ProjectNameCopyWith<$Res>
           _$_ProjectName value, $Res Function(_$_ProjectName) then) =
       __$$_ProjectNameCopyWithImpl<$Res>;
   @override
-  $Res call({String? fieldValue, String errMsg, bool isValid});
+  $Res call({String? value, String? errMsg});
 }
 
 /// @nodoc
@@ -216,23 +210,18 @@ class __$$_ProjectNameCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? fieldValue = freezed,
+    Object? value = freezed,
     Object? errMsg = freezed,
-    Object? isValid = freezed,
   }) {
     return _then(_$_ProjectName(
-      fieldValue: fieldValue == freezed
-          ? _value.fieldValue
-          : fieldValue // ignore: cast_nullable_to_non_nullable
+      value: value == freezed
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
               as String?,
       errMsg: errMsg == freezed
           ? _value.errMsg
           : errMsg // ignore: cast_nullable_to_non_nullable
-              as String,
-      isValid: isValid == freezed
-          ? _value.isValid
-          : isValid // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as String?,
     ));
   }
 }
@@ -240,21 +229,16 @@ class __$$_ProjectNameCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_ProjectName implements _ProjectName {
-  _$_ProjectName(
-      {required this.fieldValue, this.errMsg = '', this.isValid = false});
+  _$_ProjectName({required this.value, required this.errMsg});
 
   @override
-  final String? fieldValue;
+  final String? value;
   @override
-  @JsonKey()
-  final String errMsg;
-  @override
-  @JsonKey()
-  final bool isValid;
+  final String? errMsg;
 
   @override
   String toString() {
-    return 'ProjectFormField(fieldValue: $fieldValue, errMsg: $errMsg, isValid: $isValid)';
+    return 'ProjectFormField(value: $value, errMsg: $errMsg)';
   }
 
   @override
@@ -262,18 +246,15 @@ class _$_ProjectName implements _ProjectName {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ProjectName &&
-            const DeepCollectionEquality()
-                .equals(other.fieldValue, fieldValue) &&
-            const DeepCollectionEquality().equals(other.errMsg, errMsg) &&
-            const DeepCollectionEquality().equals(other.isValid, isValid));
+            const DeepCollectionEquality().equals(other.value, value) &&
+            const DeepCollectionEquality().equals(other.errMsg, errMsg));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(fieldValue),
-      const DeepCollectionEquality().hash(errMsg),
-      const DeepCollectionEquality().hash(isValid));
+      const DeepCollectionEquality().hash(value),
+      const DeepCollectionEquality().hash(errMsg));
 
   @JsonKey(ignore: true)
   @override
@@ -283,16 +264,13 @@ class _$_ProjectName implements _ProjectName {
 
 abstract class _ProjectName implements ProjectFormField {
   factory _ProjectName(
-      {required final String? fieldValue,
-      final String errMsg,
-      final bool isValid}) = _$_ProjectName;
+      {required final String? value,
+      required final String? errMsg}) = _$_ProjectName;
 
   @override
-  String? get fieldValue;
+  String? get value;
   @override
-  String get errMsg;
-  @override
-  bool get isValid;
+  String? get errMsg;
   @override
   @JsonKey(ignore: true)
   _$$_ProjectNameCopyWith<_$_ProjectName> get copyWith =>

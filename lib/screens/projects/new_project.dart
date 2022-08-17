@@ -5,12 +5,10 @@ import 'package:drift/drift.dart' as db;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nahpu/providers/project.dart';
 import 'package:uuid/uuid.dart';
-// import 'package:provider/provider.dart';
 
 import 'project_home.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/providers/validation.dart';
-// import 'package:nahpu/models/project.dart';
 
 class CreateProjectForm extends ConsumerStatefulWidget {
   const CreateProjectForm({Key? key}) : super(key: key);
@@ -29,8 +27,6 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
   final collectorEmailController = TextEditingController();
   final collNumController = TextEditingController();
   final piController = TextEditingController();
-  bool isInvalid = false;
-  // dynamic _validationMsg;
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +89,7 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                             labelText: 'Collector*',
                             onChanged: ref
                                 .watch(projectFormNotifier.notifier)
-                                .validateName,
+                                .validateCollName,
                             errorText: ref
                                 .watch(projectFormNotifier)
                                 .form
@@ -170,7 +166,14 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                               },
                             ),
                             ElevatedButton(
-                              // s
+                              style: ElevatedButton.styleFrom(
+                                onPrimary: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimaryContainer,
+                                primary: Theme.of(context)
+                                    .colorScheme
+                                    .primaryContainer,
+                              ),
                               onPressed: () {
                                 if (!ref
                                     .read(projectFormNotifier)

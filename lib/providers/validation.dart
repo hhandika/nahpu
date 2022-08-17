@@ -14,57 +14,110 @@ class ProjectFormValidationNotifier extends StateNotifier<ProjectFormState> {
     state = state.copyWith(
         form: state.form.copyWith(
             projectName: state.form.projectName.copyWith(
-                fieldValue: value,
-                isValid: value != null && value.isNotEmpty,
-                errMsg: value == null || value.isEmpty
-                    ? 'Project name cannot be empty'
-                    : '')));
+                value: value,
+                errMsg:
+                    value == null || value.isEmpty || !value.isValidProjectName
+                        ? "Project name cannot be empty"
+                        : null)));
   }
 
-  void checkProjectNameExists(WidgetRef ref, String? value) {
-    ref.read(databaseProvider).getProjectByName(value).then((value) => state =
-        state.copyWith(
-            form: state.form.copyWith(
-                collName: state.form.projectName.copyWith(
-                    fieldValue: '',
-                    isValid: value == null,
-                    errMsg:
-                        value != null ? 'Project name already exists' : ''))));
+  void checkProjectNameExists(WidgetRef ref, String? name) {
+    ref.watch(databaseProvider).getProjectByName(name).then((value) => {
+          if (value != null)
+            {
+              state = state.copyWith(
+                  form: state.form.copyWith(
+                      projectName: state.form.projectName.copyWith(
+                          value: name, errMsg: "Project name already exists")))
+            }
+        });
   }
 
-  void validateName(String? value) {
+  void validateCollName(String? value) {
     state = state.copyWith(
         form: state.form.copyWith(
             collName: state.form.collName.copyWith(
-                fieldValue: value,
-                isValid: value != null && value.isNotEmpty,
+                value: value,
                 errMsg: value == null || value.isEmpty
-                    ? 'Collector name cannot be empty'
-                    : '')));
-  }
-
-  void validateCollNum(String? value) {
-    state = state.copyWith(
-        form: state.form.copyWith(
-            collNum: state.form.collNum.copyWith(
-                fieldValue: value,
-                isValid: value != null && value.isNotEmpty,
-                errMsg: value == null || value.isEmpty
-                    ? 'Catalog number cannot be empty'
-                    : '')));
+                    ? "Collector name is not valid"
+                    : null)));
   }
 
   void validateEmail(String? value) {
     state = state.copyWith(
         form: state.form.copyWith(
             email: state.form.email.copyWith(
-                fieldValue: value,
-                isValid: value != null && value.isNotEmpty,
-                errMsg: value == null || value.isEmpty
-                    ? 'Email cannot be empty'
-                    : '')));
+                value: value,
+                errMsg: value == null || value.isEmpty || !value.isValidEmail
+                    ? "Email is not valid"
+                    : null)));
+  }
+
+  void validateCollNum(String? value) {
+    state = state.copyWith(
+        form: state.form.copyWith(
+            collNum: state.form.collNum.copyWith(
+                value: value,
+                errMsg: value == null || value.isEmpty || !value.isValidCollNum
+                    ? "Collector number is not valid"
+                    : null)));
   }
 }
+
+// void validateProjectName(String? value) {
+//   state = state.copyWith(
+//       form: state.form.copyWith(
+//           projectName: state.form.projectName.copyWith(
+//               fieldValue: value,
+//               isValid: value != null && value.isNotEmpty,
+//               errMsg: value == null || value.isEmpty
+//                   ? 'Project name cannot be empty'
+//                   : '')));
+// }
+
+// void checkProjectNameExists(WidgetRef ref, String? value) {
+//   ref.read(databaseProvider).getProjectByName(value).then((value) => state =
+//       state.copyWith(
+//           form: state.form.copyWith(
+//               collName: state.form.projectName.copyWith(
+//                   fieldValue: '',
+//                   isValid: value == null,
+//                   errMsg:
+//                       value != null ? 'Project name already exists' : ''))));
+// }
+
+// void validateName(String? value) {
+//   state = state.copyWith(
+//       form: state.form.copyWith(
+//           collName: state.form.collName.copyWith(
+//               fieldValue: value,
+//               isValid: value != null && value.isNotEmpty,
+//               errMsg: value == null || value.isEmpty
+//                   ? 'Collector name cannot be empty'
+//                   : '')));
+// }
+
+// void validateCollNum(String? value) {
+//   state = state.copyWith(
+//       form: state.form.copyWith(
+//           collNum: state.form.collNum.copyWith(
+//               fieldValue: value,
+//               isValid: value != null && value.isNotEmpty,
+//               errMsg: value == null || value.isEmpty
+//                   ? 'Catalog number cannot be empty'
+//                   : '')));
+// }
+
+// void validateEmail(String? value) {
+//   state = state.copyWith(
+//       form: state.form.copyWith(
+//           email: state.form.email.copyWith(
+//               fieldValue: value,
+//               isValid: value != null && value.isNotEmpty,
+//               errMsg: value == null || value.isEmpty
+//                   ? 'Email cannot be empty'
+//                   : '')));
+// }
 
 // class NewProjectValidation {
 //   String? value;
