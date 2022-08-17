@@ -64,9 +64,9 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                                 ref
                                     .watch(projectFormNotifier.notifier)
                                     .validateProjectName(value);
-                                // ref
-                                //     .watch(projectFormNotifier.notifier)
-                                //     .checkProjectNameExists(ref, value?.trim());
+                                ref
+                                    .watch(projectFormNotifier.notifier)
+                                    .checkProjectNameExists(ref, value?.trim());
                               },
                               errorText: ref
                                   .watch(projectFormNotifier)
@@ -91,8 +91,14 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                             hintText:
                                 'Enter the name of the collector (required)',
                             labelText: 'Collector*',
-                            // onChanged: _newProjectNotifier.validateCollName,
-                            // errorText: _newProjectNotifier.collName.error,
+                            onChanged: ref
+                                .watch(projectFormNotifier.notifier)
+                                .validateName,
+                            errorText: ref
+                                .watch(projectFormNotifier)
+                                .form
+                                .collName
+                                .errMsg,
                           ),
                           ProjectFormField(
                             controller: collectorInitialController,
@@ -120,13 +126,21 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                             hintText:
                                 'Enter the email of the collector (required)',
                             onChanged: (value) {
-                              // _newProjectNotifier.validateEmail(value);
+                              ref
+                                  .watch(projectFormNotifier.notifier)
+                                  .validateEmail(
+                                    value,
+                                  );
                               collectorEmailController.value = TextEditingValue(
                                   text: value!.toLowerCase(),
                                   selection:
                                       collectorEmailController.selection);
                             },
-                            // errorText: _newProjectNotifier.email.error,
+                            errorText: ref
+                                .watch(projectFormNotifier)
+                                .form
+                                .email
+                                .errMsg,
                           ),
                           ProjectFormField(
                             controller: collNumController,
@@ -139,8 +153,14 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                                 RegExp(r'[0-9]+'),
                               ),
                             ],
-                            // onChanged: _newProjectNotifier.validateCollNum,
-                            // errorText: _newProjectNotifier.collNum.error,
+                            onChanged: ref
+                                .watch(projectFormNotifier.notifier)
+                                .validateCollNum,
+                            errorText: ref
+                                .watch(projectFormNotifier)
+                                .form
+                                .collNum
+                                .errMsg,
                           ),
                           Wrap(spacing: 10, children: [
                             ElevatedButton(
@@ -150,20 +170,14 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                               },
                             ),
                             ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                onPrimary: Theme.of(context)
-                                    .colorScheme
-                                    .onPrimaryContainer,
-                                primary: Theme.of(context)
-                                    .colorScheme
-                                    .primaryContainer,
-                              ),
+                              // s
                               onPressed: () {
-                                if (ref
+                                if (!ref
                                     .read(projectFormNotifier)
                                     .form
                                     .isValid) {
-                                  _formKey.currentState!.save();
+                                  null;
+                                } else {
                                   _createProject();
                                   _goToProjectHome();
                                   ref.refresh(projectListProvider);

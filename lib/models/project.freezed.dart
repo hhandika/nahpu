@@ -304,7 +304,7 @@ mixin _$ProjectFormValidation {
   ProjectFormField get projectName => throw _privateConstructorUsedError;
   ProjectFormField get collName => throw _privateConstructorUsedError;
   ProjectFormField get email => throw _privateConstructorUsedError;
-  ProjectFormField get catNum => throw _privateConstructorUsedError;
+  ProjectFormField get collNum => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ProjectFormValidationCopyWith<ProjectFormValidation> get copyWith =>
@@ -320,12 +320,12 @@ abstract class $ProjectFormValidationCopyWith<$Res> {
       {ProjectFormField projectName,
       ProjectFormField collName,
       ProjectFormField email,
-      ProjectFormField catNum});
+      ProjectFormField collNum});
 
   $ProjectFormFieldCopyWith<$Res> get projectName;
   $ProjectFormFieldCopyWith<$Res> get collName;
   $ProjectFormFieldCopyWith<$Res> get email;
-  $ProjectFormFieldCopyWith<$Res> get catNum;
+  $ProjectFormFieldCopyWith<$Res> get collNum;
 }
 
 /// @nodoc
@@ -342,7 +342,7 @@ class _$ProjectFormValidationCopyWithImpl<$Res>
     Object? projectName = freezed,
     Object? collName = freezed,
     Object? email = freezed,
-    Object? catNum = freezed,
+    Object? collNum = freezed,
   }) {
     return _then(_value.copyWith(
       projectName: projectName == freezed
@@ -357,9 +357,9 @@ class _$ProjectFormValidationCopyWithImpl<$Res>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as ProjectFormField,
-      catNum: catNum == freezed
-          ? _value.catNum
-          : catNum // ignore: cast_nullable_to_non_nullable
+      collNum: collNum == freezed
+          ? _value.collNum
+          : collNum // ignore: cast_nullable_to_non_nullable
               as ProjectFormField,
     ));
   }
@@ -386,9 +386,9 @@ class _$ProjectFormValidationCopyWithImpl<$Res>
   }
 
   @override
-  $ProjectFormFieldCopyWith<$Res> get catNum {
-    return $ProjectFormFieldCopyWith<$Res>(_value.catNum, (value) {
-      return _then(_value.copyWith(catNum: value));
+  $ProjectFormFieldCopyWith<$Res> get collNum {
+    return $ProjectFormFieldCopyWith<$Res>(_value.collNum, (value) {
+      return _then(_value.copyWith(collNum: value));
     });
   }
 }
@@ -404,7 +404,7 @@ abstract class _$$_ProjectFormValidationCopyWith<$Res>
       {ProjectFormField projectName,
       ProjectFormField collName,
       ProjectFormField email,
-      ProjectFormField catNum});
+      ProjectFormField collNum});
 
   @override
   $ProjectFormFieldCopyWith<$Res> get projectName;
@@ -413,7 +413,7 @@ abstract class _$$_ProjectFormValidationCopyWith<$Res>
   @override
   $ProjectFormFieldCopyWith<$Res> get email;
   @override
-  $ProjectFormFieldCopyWith<$Res> get catNum;
+  $ProjectFormFieldCopyWith<$Res> get collNum;
 }
 
 /// @nodoc
@@ -433,7 +433,7 @@ class __$$_ProjectFormValidationCopyWithImpl<$Res>
     Object? projectName = freezed,
     Object? collName = freezed,
     Object? email = freezed,
-    Object? catNum = freezed,
+    Object? collNum = freezed,
   }) {
     return _then(_$_ProjectFormValidation(
       projectName: projectName == freezed
@@ -448,9 +448,9 @@ class __$$_ProjectFormValidationCopyWithImpl<$Res>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as ProjectFormField,
-      catNum: catNum == freezed
-          ? _value.catNum
-          : catNum // ignore: cast_nullable_to_non_nullable
+      collNum: collNum == freezed
+          ? _value.collNum
+          : collNum // ignore: cast_nullable_to_non_nullable
               as ProjectFormField,
     ));
   }
@@ -463,7 +463,7 @@ class _$_ProjectFormValidation extends _ProjectFormValidation {
       {required this.projectName,
       required this.collName,
       required this.email,
-      required this.catNum})
+      required this.collNum})
       : super._();
 
   @override
@@ -473,11 +473,11 @@ class _$_ProjectFormValidation extends _ProjectFormValidation {
   @override
   final ProjectFormField email;
   @override
-  final ProjectFormField catNum;
+  final ProjectFormField collNum;
 
   @override
   String toString() {
-    return 'ProjectFormValidation(projectName: $projectName, collName: $collName, email: $email, catNum: $catNum)';
+    return 'ProjectFormValidation(projectName: $projectName, collName: $collName, email: $email, collNum: $collNum)';
   }
 
   @override
@@ -489,7 +489,7 @@ class _$_ProjectFormValidation extends _ProjectFormValidation {
                 .equals(other.projectName, projectName) &&
             const DeepCollectionEquality().equals(other.collName, collName) &&
             const DeepCollectionEquality().equals(other.email, email) &&
-            const DeepCollectionEquality().equals(other.catNum, catNum));
+            const DeepCollectionEquality().equals(other.collNum, collNum));
   }
 
   @override
@@ -498,7 +498,7 @@ class _$_ProjectFormValidation extends _ProjectFormValidation {
       const DeepCollectionEquality().hash(projectName),
       const DeepCollectionEquality().hash(collName),
       const DeepCollectionEquality().hash(email),
-      const DeepCollectionEquality().hash(catNum));
+      const DeepCollectionEquality().hash(collNum));
 
   @JsonKey(ignore: true)
   @override
@@ -512,7 +512,7 @@ abstract class _ProjectFormValidation extends ProjectFormValidation {
       {required final ProjectFormField projectName,
       required final ProjectFormField collName,
       required final ProjectFormField email,
-      required final ProjectFormField catNum}) = _$_ProjectFormValidation;
+      required final ProjectFormField collNum}) = _$_ProjectFormValidation;
   const _ProjectFormValidation._() : super._();
 
   @override
@@ -522,7 +522,7 @@ abstract class _ProjectFormValidation extends ProjectFormValidation {
   @override
   ProjectFormField get email;
   @override
-  ProjectFormField get catNum;
+  ProjectFormField get collNum;
   @override
   @JsonKey(ignore: true)
   _$$_ProjectFormValidationCopyWith<_$_ProjectFormValidation> get copyWith =>

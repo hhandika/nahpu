@@ -24,17 +24,17 @@ class ProjectFormValidation with _$ProjectFormValidation {
       {required ProjectFormField projectName,
       required ProjectFormField collName,
       required ProjectFormField email,
-      required ProjectFormField catNum}) = _ProjectFormValidation;
+      required ProjectFormField collNum}) = _ProjectFormValidation;
 
   factory ProjectFormValidation.empty() => ProjectFormValidation(
       projectName: ProjectFormField(fieldValue: ''),
       collName: ProjectFormField(fieldValue: ''),
       email: ProjectFormField(fieldValue: ''),
-      catNum: ProjectFormField(fieldValue: ''));
+      collNum: ProjectFormField(fieldValue: ''));
 
   bool get isValid =>
       projectName.isValid &&
       collName.isValid &&
       email.isValid &&
-      catNum.isValid;
+      collNum.isValid;
 }

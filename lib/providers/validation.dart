@@ -21,26 +21,48 @@ class ProjectFormValidationNotifier extends StateNotifier<ProjectFormState> {
                     : '')));
   }
 
-  // void checkProjectNameExists(String? value) {
-  //   state = state.copyWith(
-  //       form: state.form.copyWith(
-  //           projectName: state.form.projectName.copyWith(
-  //               fieldValue: value,
-  //               isValid: value != null && value.isNotEmpty,
-  //               errMsg: value == null || value.isEmpty
-  //                   ? 'Project name cannot be empty'
-  //                   : '')));
-  // }
-
   void checkProjectNameExists(WidgetRef ref, String? value) {
     ref.read(databaseProvider).getProjectByName(value).then((value) => state =
         state.copyWith(
             form: state.form.copyWith(
-                collName: state.form.collName.copyWith(
+                collName: state.form.projectName.copyWith(
                     fieldValue: '',
                     isValid: value == null,
                     errMsg:
                         value != null ? 'Project name already exists' : ''))));
+  }
+
+  void validateName(String? value) {
+    state = state.copyWith(
+        form: state.form.copyWith(
+            collName: state.form.collName.copyWith(
+                fieldValue: value,
+                isValid: value != null && value.isNotEmpty,
+                errMsg: value == null || value.isEmpty
+                    ? 'Collector name cannot be empty'
+                    : '')));
+  }
+
+  void validateCollNum(String? value) {
+    state = state.copyWith(
+        form: state.form.copyWith(
+            collNum: state.form.collNum.copyWith(
+                fieldValue: value,
+                isValid: value != null && value.isNotEmpty,
+                errMsg: value == null || value.isEmpty
+                    ? 'Catalog number cannot be empty'
+                    : '')));
+  }
+
+  void validateEmail(String? value) {
+    state = state.copyWith(
+        form: state.form.copyWith(
+            email: state.form.email.copyWith(
+                fieldValue: value,
+                isValid: value != null && value.isNotEmpty,
+                errMsg: value == null || value.isEmpty
+                    ? 'Email cannot be empty'
+                    : '')));
   }
 }
 
