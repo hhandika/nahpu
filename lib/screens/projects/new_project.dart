@@ -31,11 +31,9 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
   final piController = TextEditingController();
   bool isInvalid = false;
   // dynamic _validationMsg;
-  late NewProjectNotifier _newProjectNotifier;
 
   @override
   Widget build(BuildContext context) {
-    _newProjectNotifier = ref.watch(newProjectValidationProvider);
     return Scaffold(
         // resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -63,11 +61,18 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                                 ),
                               ],
                               onChanged: (value) {
-                                _newProjectNotifier.validateProjectName(value);
-                                _newProjectNotifier.checkProjectNameExists(
-                                    context, value?.trim());
+                                ref
+                                    .watch(projectFormNotifier.notifier)
+                                    .validateProjectName(value);
+                                // ref
+                                //     .watch(projectFormNotifier.notifier)
+                                //     .checkProjectNameExists(ref, value?.trim());
                               },
-                              errorText: _newProjectNotifier.projectName.error,
+                              errorText: ref
+                                  .watch(projectFormNotifier)
+                                  .form
+                                  .projectName
+                                  .errMsg,
                             ),
                           ),
                           ProjectFormField(
@@ -86,8 +91,8 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                             hintText:
                                 'Enter the name of the collector (required)',
                             labelText: 'Collector*',
-                            onChanged: _newProjectNotifier.validateCollName,
-                            errorText: _newProjectNotifier.collName.error,
+                            // onChanged: _newProjectNotifier.validateCollName,
+                            // errorText: _newProjectNotifier.collName.error,
                           ),
                           ProjectFormField(
                             controller: collectorInitialController,
@@ -115,13 +120,13 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                             hintText:
                                 'Enter the email of the collector (required)',
                             onChanged: (value) {
-                              _newProjectNotifier.validateEmail(value);
+                              // _newProjectNotifier.validateEmail(value);
                               collectorEmailController.value = TextEditingValue(
                                   text: value!.toLowerCase(),
                                   selection:
                                       collectorEmailController.selection);
                             },
-                            errorText: _newProjectNotifier.email.error,
+                            // errorText: _newProjectNotifier.email.error,
                           ),
                           ProjectFormField(
                             controller: collNumController,
@@ -134,8 +139,8 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                                 RegExp(r'[0-9]+'),
                               ),
                             ],
-                            onChanged: _newProjectNotifier.validateCollNum,
-                            errorText: _newProjectNotifier.collNum.error,
+                            // onChanged: _newProjectNotifier.validateCollNum,
+                            // errorText: _newProjectNotifier.collNum.error,
                           ),
                           Wrap(spacing: 10, children: [
                             ElevatedButton(
@@ -154,7 +159,10 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                                     .primaryContainer,
                               ),
                               onPressed: () {
-                                if (_newProjectNotifier.validate) {
+                                if (ref
+                                    .read(projectFormNotifier)
+                                    .form
+                                    .isValid) {
                                   _formKey.currentState!.save();
                                   _createProject();
                                   _goToProjectHome();
