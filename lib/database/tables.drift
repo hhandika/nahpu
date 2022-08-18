@@ -30,8 +30,8 @@ CREATE TABLE site (
     leadStuff TEXT,
     type TEXT,
     country TEXT,
-    state TEXT,
-    preciseLocality TEXT,
+    stateProvince TEXT,
+    preciseLocality TEXT, -- verbatim locality in DWC
     latitude REAL,
     longitude REAL,
     elevation INT
