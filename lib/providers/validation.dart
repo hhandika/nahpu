@@ -50,13 +50,14 @@ class ProjectFormValidationNotifier extends StateNotifier<ProjectFormState> {
         .copyWith(collName: state.form.collName.copyWith(value: value));
 
     if (value == null || value.isEmpty) {
-      collNameField =
-          form.collName.copyWith(errMsg: "Collector name is required");
+      collNameField = form.collName
+          .copyWith(errMsg: "Collector name is required", isValid: false);
     } else if (!value.isValidName) {
-      collNameField = form.collName.copyWith(errMsg: "Invalid name");
-    } else if (value.length < 3) {
       collNameField =
-          form.collName.copyWith(errMsg: "Collector name is too short");
+          form.collName.copyWith(errMsg: "Invalid name", isValid: false);
+    } else if (value.length < 3) {
+      collNameField = form.collName
+          .copyWith(errMsg: "Collector name is too short", isValid: false);
     } else {
       collNameField = form.collName.copyWith(errMsg: null, isValid: true);
     }
@@ -71,9 +72,10 @@ class ProjectFormValidationNotifier extends StateNotifier<ProjectFormState> {
         state.form.copyWith(email: state.form.email.copyWith(value: value));
 
     if (value == null || value.isEmpty) {
-      emailField = form.email.copyWith(errMsg: "Email is required");
+      emailField =
+          form.email.copyWith(errMsg: "Email is required", isValid: false);
     } else if (!value.isValidEmail) {
-      emailField = form.email.copyWith(errMsg: "Invalid email");
+      emailField = form.email.copyWith(errMsg: "Invalid email", isValid: false);
     } else {
       emailField = form.email.copyWith(errMsg: null, isValid: true);
     }
@@ -88,10 +90,11 @@ class ProjectFormValidationNotifier extends StateNotifier<ProjectFormState> {
         state.form.copyWith(collNum: state.form.collNum.copyWith(value: value));
 
     if (value == null || value.isEmpty) {
-      collNumField =
-          form.collNum.copyWith(errMsg: "Collector number is required");
+      collNumField = form.collNum
+          .copyWith(errMsg: "Collector number is required", isValid: false);
     } else if (!value.isValidCollNum) {
-      collNumField = form.collNum.copyWith(errMsg: "Invalid number");
+      collNumField =
+          form.collNum.copyWith(errMsg: "Invalid number", isValid: false);
     } else {
       collNumField = form.collNum.copyWith(errMsg: null, isValid: true);
     }
