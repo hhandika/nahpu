@@ -36,7 +36,9 @@ class ProjectFormValidationNotifier extends StateNotifier<ProjectFormState> {
               state = state.copyWith(
                   form: state.form.copyWith(
                       projectName: state.form.projectName.copyWith(
-                          value: name, errMsg: "Project name already exists")))
+                          value: name,
+                          errMsg: "Project name already exists",
+                          isValid: false)))
             }
         });
   }
