@@ -29,37 +29,3 @@ class NahpuApp extends StatelessWidget {
     });
   }
 }
-
-// void main() {
-//   runApp(const NahpuApp());
-// }
-
-// class NahpuApp extends StatelessWidget {
-//   const NahpuApp({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return DynamicColorBuilder(builder: (lightColorScheme, darkColorScheme) {
-//       return MultiProvider(
-//         providers: [
-//           Provider(
-//             create: (_) => Database(),
-//             dispose: (_, Database database) => database.close(),
-//           ),
-//           ChangeNotifierProvider(
-//             create: (_) => NewProjectNotifier(),
-//           ),
-//           ChangeNotifierProvider(
-//             create: (_) => ProjectListNotifier(),
-//           )
-//         ],
-//         child: MaterialApp(
-//           title: 'Nahpu',
-//           home: const Home(),
-//           theme: NahpuTheme.lightTheme(lightColorScheme),
-//           darkTheme: NahpuTheme.darkTheme(darkColorScheme),
-//         ),
-//       );
-//     });
-//   }
-// }
