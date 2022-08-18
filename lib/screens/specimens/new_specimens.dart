@@ -14,6 +14,7 @@ class NewSpecimens extends StatefulWidget {
 class _NewSpecimensState extends State<NewSpecimens>
     with TickerProviderStateMixin {
   final dateController = TextEditingController();
+  final timeController = TextEditingController();
 
   late TabController _tabController;
   // final int _selectedIndex = 0;
@@ -180,25 +181,51 @@ class _NewSpecimensState extends State<NewSpecimens>
                   onChanged: (String? newValue) {
                     setState(() {});
                   }),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Preparation date',
-                  hintText: 'Enter date',
-                ),
-                controller: dateController,
-                onTap: () async {
-                  showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime.now())
-                      .then((date) {
-                    if (date != null) {
-                      dateController.text = DateFormat.yMMMd().format(date);
-                    }
-                  });
-                },
-              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Preparation date',
+                        hintText: 'Enter date',
+                      ),
+                      controller: dateController,
+                      onTap: () async {
+                        showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime.now())
+                            .then((date) {
+                          if (date != null) {
+                            dateController.text =
+                                DateFormat.yMMMd().format(date);
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Prep. time',
+                        hintText: 'Enter time',
+                      ),
+                      controller: timeController,
+                      onTap: () async {
+                        showTimePicker(
+                                context: context, initialTime: TimeOfDay.now())
+                            .then((time) {
+                          if (time != null) {
+                            timeController.text = time.format(context);
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              )
             ],
           )),
     );

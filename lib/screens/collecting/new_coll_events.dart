@@ -24,7 +24,6 @@ class _NewCollEventState extends State<NewCollEvent>
   final TimeOfDay _initialStartTime = const TimeOfDay(hour: 8, minute: 0);
 
   late TabController _tabController;
-  // final int _selectedIndex = 0;
 
   @override
   void initState() {
