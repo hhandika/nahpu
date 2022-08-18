@@ -261,7 +261,8 @@ class HomeState extends ConsumerState<Home> {
     // We technically can directly call the projectInfoProvider here,
     // but for the popup menu to work, we need to implement Future.delayed
     // and call the provider from the onTap function of the popup menu.
-    // when we tested this, we have to tap twice to get the popup menu to work.
+    // when we tested this, users have to tap twice to get the popup menu to work.
+    // This solution works well.
     final projectInfo =
         await ref.read(databaseProvider).getProjectByUuid(projectUuid);
     return showDialog<void>(
