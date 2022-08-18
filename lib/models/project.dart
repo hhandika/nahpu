@@ -24,10 +24,10 @@ class ProjectFormValidation with _$ProjectFormValidation {
       collNum: ProjectFormField(value: null, errMsg: null));
 
   bool get isValid =>
-      projectName.errMsg == null &&
-      collName.errMsg == null &&
-      email.errMsg == null &&
-      collNum.errMsg == null;
+      projectName.isValid &&
+      collName.isValid &&
+      email.isValid &&
+      collNum.isValid;
 }
 
 @freezed
@@ -35,5 +35,6 @@ class ProjectFormField with _$ProjectFormField {
   factory ProjectFormField({
     required String? value,
     required String? errMsg,
+    @Default(false) bool isValid,
   }) = _ProjectName;
 }

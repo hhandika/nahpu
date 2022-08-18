@@ -169,7 +169,9 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                                 onPressed: () {
                                   _createProject();
                                   _goToProjectHome();
+                                  // Reset states to default
                                   ref.refresh(projectListProvider);
+                                  ref.refresh(projectFormNotifier.notifier);
                                 },
                                 text: 'Create',
                                 enabled:
