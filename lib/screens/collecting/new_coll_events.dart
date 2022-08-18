@@ -275,7 +275,7 @@ class _NewCollEventState extends State<NewCollEvent>
           child: TabBarView(
             controller: _tabController,
             children: const [
-              Text('Weather'),
+              Text('Environment Data'),
               Text('Camera'),
             ],
           ),
