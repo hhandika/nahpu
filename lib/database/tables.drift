@@ -37,7 +37,7 @@ CREATE TABLE site (
     elevation INT
 );
 
-CREATE TABLE coll_event (
+CREATE TABLE collEvent (
     siteID TEXT,
     startDate TEXT,
     startTime TEXT,
