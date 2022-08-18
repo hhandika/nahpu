@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:dynamic_color/dynamic_color.dart';
-// import 'package:nahpu/providers/project.dart';
-// import 'package:nahpu/providers/validation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-// import 'package:provider/provider.dart';
 
 import 'package:nahpu/configs/themes.dart';
-// import 'package:nahpu/database/database.dart';
 import 'package:nahpu/screens/home.dart';
 
 void main() {
