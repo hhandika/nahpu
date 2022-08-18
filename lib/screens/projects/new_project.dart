@@ -165,31 +165,15 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                                 Navigator.pop(context);
                               },
                             ),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                onPrimary: Theme.of(context)
-                                    .colorScheme
-                                    .onPrimaryContainer,
-                                primary: Theme.of(context)
-                                    .colorScheme
-                                    .primaryContainer,
-                              ),
-                              onPressed: () {
-                                if (!ref
-                                    .read(projectFormNotifier)
-                                    .form
-                                    .isValid) {
-                                  null;
-                                } else {
+                            CustomElevButton(
+                                onPressed: () {
                                   _createProject();
                                   _goToProjectHome();
                                   ref.refresh(projectListProvider);
-                                }
-                              },
-                              child: const Text(
-                                'Create',
-                              ),
-                            )
+                                },
+                                text: 'Create',
+                                enabled:
+                                    ref.read(projectFormNotifier).form.isValid)
                           ])
                         ],
                       )))),
@@ -215,6 +199,38 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
       MaterialPageRoute(
           builder: (context) => ProjectHome(projectUuid: _uuidKey)),
     );
+  }
+}
+
+class CustomElevButton extends StatelessWidget {
+  const CustomElevButton({
+    Key? key,
+    required this.onPressed,
+    required this.text,
+    required this.enabled,
+  }) : super(key: key);
+
+  final VoidCallback? onPressed;
+  final String text;
+  final bool enabled;
+
+  @override
+  Widget build(BuildContext context) {
+    if (enabled) {
+      return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          onPrimary: Theme.of(context).colorScheme.onPrimaryContainer,
+          primary: Theme.of(context).colorScheme.primaryContainer,
+        ),
+        onPressed: onPressed,
+        child: Text(text),
+      );
+    } else {
+      return ElevatedButton(
+        onPressed: null,
+        child: Text(text),
+      );
+    }
   }
 }
 

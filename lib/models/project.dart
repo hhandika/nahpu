@@ -9,14 +9,6 @@ class ProjectFormState with _$ProjectFormState {
 }
 
 @freezed
-class ProjectFormField with _$ProjectFormField {
-  factory ProjectFormField({
-    required String? value,
-    required String? errMsg,
-  }) = _ProjectName;
-}
-
-@freezed
 class ProjectFormValidation with _$ProjectFormValidation {
   const ProjectFormValidation._();
   const factory ProjectFormValidation(
@@ -31,7 +23,17 @@ class ProjectFormValidation with _$ProjectFormValidation {
       email: ProjectFormField(value: null, errMsg: null),
       collNum: ProjectFormField(value: null, errMsg: null));
 
-  bool get isValid => projectName.errMsg == null && collName.errMsg == null;
-  // email.errMsg == null &&
-  // collNum.errMsg == null;
+  bool get isValid =>
+      projectName.errMsg == null &&
+      collName.errMsg == null &&
+      email.errMsg == null &&
+      collNum.errMsg == null;
+}
+
+@freezed
+class ProjectFormField with _$ProjectFormField {
+  factory ProjectFormField({
+    required String? value,
+    required String? errMsg,
+  }) = _ProjectName;
 }
