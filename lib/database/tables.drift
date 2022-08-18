@@ -10,6 +10,12 @@ CREATE TABLE project (
     catNumEnd INT
 );
 
+CREATE TABLE narrative (
+    siteID TEXT,
+    date TEXT,
+    narrative TEXT
+);
+
 CREATE TABLE site (
     siteID TEXT NOT NULL PRIMARY KEY,
     projectUuid TEXT,
@@ -21,6 +27,16 @@ CREATE TABLE site (
     latitude REAL,
     longitude REAL,
     elevation INT
+);
+
+CREATE TABLE coll_event (
+    siteID TEXT,
+    startDate TEXT,
+    startTime TEXT,
+    endDate TEXT,
+    endTime TEXT,
+    primaryCollMethod TEXT,
+    collMethodNotes TEXT
 );
 
 listProject: SELECT projectUuid,projectName FROM project;
