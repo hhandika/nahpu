@@ -17,11 +17,11 @@ class ProjectFormValidationNotifier extends StateNotifier<ProjectFormState> {
         .copyWith(projectName: state.form.projectName.copyWith(value: value));
 
     if (value == null || value.isEmpty) {
-      projectNameField =
-          form.projectName.copyWith(errMsg: "Project name is required");
+      projectNameField = form.projectName
+          .copyWith(errMsg: "Project name is required", isValid: false);
     } else if (value.length < 3) {
-      projectNameField =
-          form.projectName.copyWith(errMsg: "Project name is too short");
+      projectNameField = form.projectName
+          .copyWith(errMsg: "Project name is too short", isValid: false);
     } else {
       projectNameField = form.projectName.copyWith(errMsg: null, isValid: true);
     }
