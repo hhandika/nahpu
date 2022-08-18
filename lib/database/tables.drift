@@ -13,7 +13,9 @@ CREATE TABLE project (
 CREATE TABLE narrative (
     siteID TEXT,
     date TEXT,
-    narrative TEXT
+    narrative TEXT,
+    PRIMARY KEY(projectUuid, siteID),
+    FOREIGN KEY(projectUuid) REFERENCES project(projectUuid)
 );
 
 CREATE TABLE site (
