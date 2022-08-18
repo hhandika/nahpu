@@ -11,14 +11,23 @@ class ProjectFormValidationNotifier extends StateNotifier<ProjectFormState> {
       : super(ProjectFormState(ProjectFormValidation.empty()));
 
   void validateProjectName(String? value) {
-    state = state.copyWith(
-        form: state.form.copyWith(
-            projectName: state.form.projectName.copyWith(
-                value: value,
-                errMsg:
-                    value == null || value.isEmpty || !value.isValidProjectName
-                        ? "Project name cannot be empty"
-                        : null)));
+    ProjectFormValidation form = state.form
+        .copyWith(projectName: state.form.projectName.copyWith(value: value));
+
+    if (value == null || value.isEmpty) {
+      form = form.copyWith(
+          projectName:
+              form.projectName.copyWith(errMsg: "Project name is required"));
+    } else if (value.length < 3) {
+      form = form.copyWith(
+          projectName:
+              form.projectName.copyWith(errMsg: "Project name is too short"));
+    } else {
+      form =
+          form.copyWith(projectName: form.projectName.copyWith(errMsg: null));
+    }
+
+    state = state.copyWith(form: form);
   }
 
   void checkProjectNameExists(WidgetRef ref, String? name) {
