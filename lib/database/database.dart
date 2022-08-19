@@ -52,6 +52,10 @@ class Database extends _$Database {
 
   Future<void> updateNarrative(NarrativeData entry) =>
       update(narrative).replace(entry);
+
+  Future updateNarrativeEntry(int id, NarrativeCompanion entry) {
+    return (update(narrative)..where((t) => t.id.equals(id))).write(entry);
+  }
 }
 
 LazyDatabase _openConnection() {

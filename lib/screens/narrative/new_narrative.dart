@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:drift/drift.dart' as db;
 
 import 'package:intl/intl.dart';
 import 'package:nahpu/database/database.dart';
@@ -113,9 +114,9 @@ class NewNarrativeState extends ConsumerState<NewNarrative>
               hintText: 'Enter narrative',
             ),
             onChanged: (value) {
-              ref.watch(databaseProvider).updateNarrative(
-                    NarrativeData(id: widget.narrativeId, narrative: value),
-                  );
+              ref.watch(databaseProvider).updateNarrativeEntry(
+                  widget.narrativeId,
+                  NarrativeCompanion(narrative: db.Value(value)));
             },
           ),
           Column(
