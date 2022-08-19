@@ -96,6 +96,9 @@ class NewNarrativeState extends ConsumerState<NewNarrative>
                   .then((date) {
                 if (date != null) {
                   dateController.text = DateFormat.yMMMd().format(date);
+                  ref.watch(databaseProvider).updateNarrativeEntry(
+                      widget.narrativeId,
+                      NarrativeCompanion(date: db.Value(dateController.text)));
                 }
               });
             },
@@ -105,6 +108,11 @@ class NewNarrativeState extends ConsumerState<NewNarrative>
               labelText: 'Site ID',
               hintText: 'Enter a site',
             ),
+            onChanged: (value) {
+              ref.watch(databaseProvider).updateNarrativeEntry(
+                  widget.narrativeId,
+                  NarrativeCompanion(siteID: db.Value(value)));
+            },
           ),
           TextFormField(
             maxLines: 10,
