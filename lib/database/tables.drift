@@ -15,36 +15,80 @@ CREATE TABLE project (
     catNumEnd INT
 );
 
-CREATE TABLE narrative (
-    date TEXT NOT NULL PRIMARY KEY,
-    siteID TEXT,
-    narrative TEXT,
-    PRIMARY KEY(date, projectUuid, siteID),
-    FOREIGN KEY(projectUuid) REFERENCES project(projectUuid),
-    FOREIGN KEY(siteID) REFERENCES site(siteID)
-);
-
 CREATE TABLE site (
     siteID TEXT NOT NULL PRIMARY KEY,
     projectUuid TEXT,
     leadStuff TEXT,
-    type TEXT,
+    siteType TEXT,
     country TEXT,
     stateProvince TEXT,
-    preciseLocality TEXT, -- verbatim locality in DWC
-    latitude REAL,
-    longitude REAL,
-    elevation INT
+    county TEXT,
+    municipality TEXT,
+    locality TEXT, -- verbatim locality in DWC
+    photoID INT REFERENCES photo(id)
 );
 
+CREATE TABLE coordinate (
+    id TEXT UNIQUE PRIMARY KEY,
+    decimalLatitude REAL,
+    decimalLongitude REAL,
+    elevationInMeter INT,
+    minimumElevationInMeters INT,
+    maximumElevationInMeters INT,
+    coordinateUncertaintyInMeters INT,
+    siteID TEXT REFERENCES site(siteID)
+)
+
 CREATE TABLE collEvent (
-    siteID TEXT,
+    id INT NOT NULL AUTOINCREMENT,
+    projectUuid TEXT,
     startDate TEXT,
     startTime TEXT,
     endDate TEXT,
     endTime TEXT,
     primaryCollMethod TEXT,
-    collMethodNotes TEXT
+    collMethodNotes TEXT,
+    siteID TEXT REFERENCES site(siteID)
+    PRIMARY KEY (id, projectUuid)
+    FOREIGN KEY(projectUuid) REFERENCES project(projectUuid)
 );
+
+CREATE TABLE narrative (
+    id INT NOT NULL AUTOINCREMENT,
+    projectUuid,
+    date TEXT,
+    siteID TEXT,
+    narrative TEXT,
+    photoID INT REFERENCES photo(id)
+    PRIMARY KEY(date, projectUuid, siteID),
+    FOREIGN KEY(projectUuid) REFERENCES project(projectUuid),
+    FOREIGN KEY(siteID) REFERENCES site(siteID)
+);
+
+CREATE TABLE taxonGroup (
+    id INT NOT NULL AUTOINCREMENT,
+    group TEXT UNIQUE
+)
+
+CREATE TABLE photo (
+    id INT PRIMARY KEY AUTOINCREMENT,
+    filename TEXT,
+    date TEXT,
+    photographerID INT REFERENCES personnel(id),
+    camera TEXT,
+    lenses TEXT
+)
+
+CREATE TABLE personnel (
+    id TEXT UNIQUE PRIMARY KEY,
+    name TEXT,
+    initial TEXT,
+    affiliation TEXT,
+    photoID INT REFERENCES photo(id)
+)
+
+CREATE TABLE specimen (
+
+)
 
 listProject: SELECT projectUuid,projectName FROM project;

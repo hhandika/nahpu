@@ -85,12 +85,6 @@ class _NewSitesState extends State<NewSites> with TickerProviderStateMixin {
           ),
           TextFormField(
             decoration: const InputDecoration(
-              labelText: 'Site Name',
-              hintText: 'Enter a site name',
-            ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
               labelText: 'Site Type',
               hintText: 'Enter a site type, e.g. "Camp", "City", "etc."',
             ),
@@ -103,14 +97,26 @@ class _NewSitesState extends State<NewSites> with TickerProviderStateMixin {
           ),
           TextFormField(
             decoration: const InputDecoration(
-              labelText: 'State/province',
+              labelText: 'State/Province',
               hintText: 'Enter a state/province location',
+            ),
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'County',
+              hintText: 'Enter a county name',
+            ),
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Municipality',
+              hintText: 'Enter a municipality name',
             ),
           ),
           TextFormField(
             maxLines: 5,
             decoration: const InputDecoration(
-              labelText: 'Precise locality',
+              labelText: 'Locality',
               hintText:
                   'Enter a complete locality, excluding country and state/province',
             ),
