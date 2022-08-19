@@ -47,7 +47,7 @@ class Database extends _$Database {
 
   Future updateEntry(ProjectData entry) => update(project).replace(entry);
 
-  Future<void> createNarrative(NarrativeCompanion form) =>
+  Future<int> createNarrative(NarrativeCompanion form) =>
       into(narrative).insert(form);
 
   Future<void> updateNarrative(NarrativeData entry) =>

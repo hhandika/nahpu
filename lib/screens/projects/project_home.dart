@@ -9,23 +9,22 @@ import 'package:nahpu/screens/home.dart';
 import 'package:nahpu/screens/narrative/new_narrative.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/collecting/coll_events.dart';
-import 'package:nahpu/screens/narrative/narrative.dart';
 import 'package:nahpu/screens/sites/new_sites.dart';
 import 'package:nahpu/screens/sites/sites.dart';
 import 'package:nahpu/screens/specimens/new_specimens.dart';
 import 'package:nahpu/screens/specimens/specimens.dart';
 import 'package:nahpu/screens/projects/project_info.dart';
 
-class ProjectHome extends StatefulWidget {
+class ProjectHome extends ConsumerStatefulWidget {
   const ProjectHome({Key? key, required this.projectUuid}) : super(key: key);
 
   final String projectUuid;
 
   @override
-  State<ProjectHome> createState() => _ProjectHomeState();
+  ProjectHomeState createState() => ProjectHomeState();
 }
 
-class _ProjectHomeState extends State<ProjectHome> {
+class ProjectHomeState extends ConsumerState<ProjectHome> {
   final int _defaultIndex = 0;
 
   @override
@@ -48,6 +47,9 @@ class _ProjectHomeState extends State<ProjectHome> {
             backgroundColor: Theme.of(context).colorScheme.secondary,
             label: 'New Narrative',
             onTap: () async {
+              // ref.read(databaseProvider).createNarrative(NarrativeCompanion(
+              //       projectUuid: Value(widget.projectUuid),
+              //     ));
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const NewNarrative()),
@@ -292,10 +294,10 @@ class _ProjectHomeState extends State<ProjectHome> {
         );
         break;
       case 4:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const Narrative()),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => const Narrative()),
+        // );
 
         break;
     }
