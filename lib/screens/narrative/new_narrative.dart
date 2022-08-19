@@ -46,10 +46,8 @@ class NewNarrativeState extends ConsumerState<NewNarrative>
         actions: [
           IconButton(
             icon: const Icon(Icons.add_rounded),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) =>
-                      NewNarrative(narrativeId: widget.narrativeId)));
+            onPressed: () async {
+              // createNewNarrative(projectUuid, context, ref);
             },
           ),
           PopupMenuButton<MenuSelection>(
@@ -176,4 +174,17 @@ class NewNarrativeState extends ConsumerState<NewNarrative>
         break;
     }
   }
+}
+
+Future<void> createNewNarrative(
+    String projectUuid, BuildContext context, WidgetRef ref) {
+  return ref
+      .read(databaseProvider)
+      .createNarrative(NarrativeCompanion(
+        projectUuid: db.Value(projectUuid),
+      ))
+      .then((value) => Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) => NewNarrative(
+                narrativeId: value,
+              ))));
 }

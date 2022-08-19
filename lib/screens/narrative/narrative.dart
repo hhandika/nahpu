@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 // ignore: unused_import
 import 'package:nahpu/screens/narrative/new_narrative.dart';
 
 enum MenuSelection { newNote, pdfExport, deleteRecords, deleteAllRecords }
 
-class Narrative extends StatefulWidget {
+class Narrative extends ConsumerStatefulWidget {
   const Narrative({Key? key}) : super(key: key);
 
   @override
-  State<Narrative> createState() => _NarrativeState();
+  NarrativeState createState() => NarrativeState();
 }
 
-class _NarrativeState extends State<Narrative> {
+class NarrativeState extends ConsumerState<Narrative> {
   String _selectedMenu = '';
 
   // @override
@@ -29,9 +30,8 @@ class _NarrativeState extends State<Narrative> {
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
-            onPressed: () {
-              // Navigator.of(context).push(MaterialPageRoute(
-              //     builder: (_) => NewNarrative(widget.narrativeId)));
+            onPressed: () async {
+              // await createNewNarrative(proj);
             },
           ),
           PopupMenuButton<MenuSelection>(

@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/project.dart';
-import 'package:drift/drift.dart' as db;
+// import 'package:drift/drift.dart' as db;
 
 import 'package:nahpu/screens/collecting/new_coll_events.dart';
 import 'package:nahpu/screens/home.dart';
-import 'package:nahpu/database/database.dart';
+// import 'package:nahpu/database/database.dart';
 import 'package:nahpu/screens/narrative/new_narrative.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/collecting/coll_events.dart';
@@ -51,22 +51,13 @@ class ProjectHomeState extends ConsumerState<ProjectHome> {
         direction: SpeedDialDirection.down,
         children: [
           SpeedDialChild(
-            child: Icon(Icons.book_rounded,
-                color: Theme.of(context).colorScheme.onInverseSurface),
-            backgroundColor: Theme.of(context).colorScheme.secondary,
-            label: 'New Narrative',
-            onTap: () async {
-              ref
-                  .read(databaseProvider)
-                  .createNarrative(NarrativeCompanion(
-                    projectUuid: db.Value(_projectUuid),
-                  ))
-                  .then((value) => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => NewNarrative(
-                            narrativeId: value,
-                          ))));
-            },
-          ),
+              child: Icon(Icons.book_rounded,
+                  color: Theme.of(context).colorScheme.onInverseSurface),
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+              label: 'New Narrative',
+              onTap: () async {
+                await createNewNarrative(_projectUuid, context, ref);
+              }),
           SpeedDialChild(
             child: Icon(Icons.place_rounded,
                 color: Theme.of(context).colorScheme.onInverseSurface),
