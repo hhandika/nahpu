@@ -9,8 +9,6 @@ import 'package:path/path.dart' as p;
 part 'database.g.dart';
 
 @DriftDatabase(
-  // relative import for the drift file. Drift also supports `package:`
-  // imports
   include: {'tables.drift'},
 )
 class Database extends _$Database {
