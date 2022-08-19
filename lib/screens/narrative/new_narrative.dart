@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:intl/intl.dart';
+import 'package:nahpu/database/database.dart';
+import 'package:nahpu/providers/project.dart';
 
 enum MenuSelection { newNote, pdfExport, deleteRecords, deleteAllRecords }
 
-class NewNarrative extends StatefulWidget {
+class NewNarrative extends ConsumerStatefulWidget {
   const NewNarrative({Key? key, required this.narrativeId}) : super(key: key);
 
   final int narrativeId;
 
   @override
-  State<NewNarrative> createState() => _NewNarrativeState();
+  NewNarrativeState createState() => NewNarrativeState();
 }
 
-class _NewNarrativeState extends State<NewNarrative>
+class NewNarrativeState extends ConsumerState<NewNarrative>
     with TickerProviderStateMixin {
   final dateController = TextEditingController();
   final _narrativeController = TextEditingController();
@@ -109,6 +112,11 @@ class _NewNarrativeState extends State<NewNarrative>
               labelText: 'Narrative',
               hintText: 'Enter narrative',
             ),
+            onChanged: (value) {
+              ref.watch(databaseProvider).updateNarrative(
+                    NarrativeData(id: widget.narrativeId, narrative: value),
+                  );
+            },
           ),
           Column(
             children: [

@@ -65,10 +65,6 @@ class ProjectHomeState extends ConsumerState<ProjectHome> {
                       builder: (_) => NewNarrative(
                             narrativeId: value,
                           ))));
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => const NewNarrative()),
-              // );
             },
           ),
           SpeedDialChild(
