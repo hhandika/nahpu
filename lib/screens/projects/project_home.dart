@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/project.dart';
 
 import 'package:nahpu/screens/collecting/new_coll_events.dart';
