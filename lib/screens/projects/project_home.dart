@@ -251,11 +251,11 @@ class _ProjectHomeState extends State<ProjectHome> {
               Icons.timeline,
             ),
             label: 'CollEvents',
+            tooltip: 'Collection Events',
           ),
           NavigationDestination(
             icon: Icon(
               Icons.pets_rounded,
-              // color: Theme.of(context).colorScheme.onSecondary,
             ),
             label: 'Specimens',
           ),
