@@ -88,7 +88,9 @@ CREATE TABLE personnel (
 )
 
 CREATE TABLE specimen (
-
+    specimenUuid TEXT,
+    projectUuid TEXT,
+    collectorID
 )
 
 listProject: SELECT projectUuid,projectName FROM project;
