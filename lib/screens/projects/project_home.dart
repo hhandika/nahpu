@@ -236,12 +236,6 @@ class _ProjectHomeState extends State<ProjectHome> {
           ),
           NavigationDestination(
             icon: Icon(
-              Icons.book_rounded,
-            ),
-            label: 'Narrative',
-          ),
-          NavigationDestination(
-            icon: Icon(
               Icons.place_rounded,
             ),
             label: 'Sites',
@@ -258,6 +252,12 @@ class _ProjectHomeState extends State<ProjectHome> {
               Icons.pets_rounded,
             ),
             label: 'Specimens',
+          ),
+          NavigationDestination(
+            icon: Icon(
+              Icons.book_rounded,
+            ),
+            label: 'Narrative',
           ),
         ],
         onDestinationSelected: (int index) {
@@ -276,7 +276,7 @@ class _ProjectHomeState extends State<ProjectHome> {
       case 1:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const Narrative()),
+          MaterialPageRoute(builder: (context) => const Specimens()),
         );
         break;
       case 2:
@@ -294,8 +294,9 @@ class _ProjectHomeState extends State<ProjectHome> {
       case 4:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const Specimens()),
+          MaterialPageRoute(builder: (context) => const Narrative()),
         );
+
         break;
     }
   }
