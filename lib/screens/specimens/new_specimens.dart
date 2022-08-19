@@ -376,20 +376,24 @@ class _NewSpecimensState extends State<NewSpecimens>
                 }),
             DropdownButtonFormField(
                 decoration: const InputDecoration(
-                  labelText: 'Age',
+                  labelText: 'Life stage',
                   hintText: 'Choose one',
                 ),
                 items: const [
                   DropdownMenuItem(
                     value: 'Adult',
-                    child: Text('Male'),
+                    child: Text('Adult'),
                   ),
                   DropdownMenuItem(
                     value: 'Subadult',
-                    child: Text('Female'),
+                    child: Text('Subadult'),
                   ),
                   DropdownMenuItem(
                     value: 'Juvenile',
+                    child: Text('Juvenile'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Unknown',
                     child: Text('Unknown'),
                   ),
                 ],

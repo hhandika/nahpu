@@ -40,7 +40,7 @@ CREATE TABLE coordinate (
 )
 
 CREATE TABLE collEvent (
-    id INT NOT NULL AUTOINCREMENT,
+    id TEXT NOT NULL AUTOINCREMENT,
     projectUuid TEXT,
     startDate TEXT,
     startTime TEXT,
@@ -87,10 +87,100 @@ CREATE TABLE personnel (
     photoID INT REFERENCES photo(id)
 )
 
-CREATE TABLE specimen (
+CREATE TABLE mammalSpecimen (
     specimenUuid TEXT,
     projectUuid TEXT,
-    collectorID
+    speciesID INT,
+    condition TEXT,
+    prepDate TEXT,
+    prepTime TEXT,
+    captureDate TEXT,
+    captureTime TEXT,
+    trapType TEXT,
+    collectorID INT REFERENCES personnel(id),
+    collEventID INT REFERENCES collEvent(id),
+    measureID INT REFERENCES mammalMeasurements(id)
+)
+
+CREATE TABLE mammalMeasurement (
+    id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
+    totalLength INT,
+    tailLength INT,
+    hindFootLength INT,
+    earLength INT,
+    forearm INT,
+    weight INT,
+    inaccurate TEXT,
+    inaccurateReason TEXT,
+    sex TEXT,
+    lifeStage TEXT,
+    testesPosition TEXT,
+    testesLength INT,
+    testesWidth INT,
+    reproductiveStage TEXT,
+    placentalScars TEXT,
+    mammaeInguinalCount INT,
+    mammaeAxilaryCount INT,
+    mammaeAbdominalCount INT,
+    embryoLeftCount INT,
+    embryoRightCount INT,
+    embryoCRLeft INT,
+    embryoCRRight INT
+)
+
+CREATE TABLE birdSpecimen (
+    specimenUuid TEXT,
+    projectUuid TEXT,
+    speciesID INT,
+    condition TEXT,
+    prepDate TEXT,
+    prepTime TEXT,
+    captureDate TEXT,
+    captureTime TEXT,
+    trapType TEXT,
+    collectorID INT REFERENCES personnel(id),
+    collEventID INT REFERENCES collEvent(id),
+    measureID INT REFERENCES birdMeasurement(id)
+)
+
+CREATE TABLE birdMeasurement (
+    id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
+    weight INT,
+    wingspan INT,
+    irisColor TEXT,
+    feetColor TEXT,
+    tarsusColor TEXT,
+    moltingWing TEXT,
+    moltingTail TEXT,
+    bodyFat TEXT,
+    bursaLength INT,
+    bursaWidth INT,
+    skullOssilation TEXT,
+    fat TEXT,
+    sex TEXT,
+    gonad TEXT,
+    stomach TEXT
+)
+
+CREATE TABLE part (
+    specimenUuid TEXT,
+    secondaryNumber TEXT, -- primary use prep number
+    barcodeID TEXT,
+    type TEXT,
+    count TEXT,
+    treatment TEXT,
+    additionalTreatment TEXT,
+    museumPermanent TEXT,
+    museumLoan TEXT 
+)
+
+CREATE TABLE taxonomy (
+    id INT PRIMARY KEY AUTOINCREMENT,
+    genus TEXT,
+    specificEpithet TEXT,
+    intraspecificEpithet TEXT,
+    family TEXT,
+    order TEXT
 )
 
 listProject: SELECT projectUuid,projectName FROM project;
