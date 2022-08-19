@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// ignore: unused_import
 import 'package:nahpu/screens/narrative/new_narrative.dart';
 
 enum MenuSelection { newNote, pdfExport, deleteRecords, deleteAllRecords }
@@ -13,6 +14,12 @@ class Narrative extends StatefulWidget {
 class _NarrativeState extends State<Narrative> {
   String _selectedMenu = '';
 
+  // @override
+  // void initState() {
+  //   _narrativeId = widget.
+  //   super.initState();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,8 +30,8 @@ class _NarrativeState extends State<Narrative> {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const NewNarrative()));
+              // Navigator.of(context).push(MaterialPageRoute(
+              //     builder: (_) => NewNarrative(widget.narrativeId)));
             },
           ),
           PopupMenuButton<MenuSelection>(

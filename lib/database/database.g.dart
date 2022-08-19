@@ -2575,7 +2575,7 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
 
 class NarrativeData extends DataClass implements Insertable<NarrativeData> {
   final int id;
-  final Uint8List? projectUuid;
+  final String? projectUuid;
   final String? date;
   final String? siteID;
   final String? narrative;
@@ -2592,7 +2592,7 @@ class NarrativeData extends DataClass implements Insertable<NarrativeData> {
     return NarrativeData(
       id: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      projectUuid: const BlobType()
+      projectUuid: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}projectUuid']),
       date: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}date']),
@@ -2609,7 +2609,7 @@ class NarrativeData extends DataClass implements Insertable<NarrativeData> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     if (!nullToAbsent || projectUuid != null) {
-      map['projectUuid'] = Variable<Uint8List?>(projectUuid);
+      map['projectUuid'] = Variable<String?>(projectUuid);
     }
     if (!nullToAbsent || date != null) {
       map['date'] = Variable<String?>(date);
@@ -2649,7 +2649,7 @@ class NarrativeData extends DataClass implements Insertable<NarrativeData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return NarrativeData(
       id: serializer.fromJson<int>(json['id']),
-      projectUuid: serializer.fromJson<Uint8List?>(json['projectUuid']),
+      projectUuid: serializer.fromJson<String?>(json['projectUuid']),
       date: serializer.fromJson<String?>(json['date']),
       siteID: serializer.fromJson<String?>(json['siteID']),
       narrative: serializer.fromJson<String?>(json['narrative']),
@@ -2661,7 +2661,7 @@ class NarrativeData extends DataClass implements Insertable<NarrativeData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'projectUuid': serializer.toJson<Uint8List?>(projectUuid),
+      'projectUuid': serializer.toJson<String?>(projectUuid),
       'date': serializer.toJson<String?>(date),
       'siteID': serializer.toJson<String?>(siteID),
       'narrative': serializer.toJson<String?>(narrative),
@@ -2671,7 +2671,7 @@ class NarrativeData extends DataClass implements Insertable<NarrativeData> {
 
   NarrativeData copyWith(
           {int? id,
-          Uint8List? projectUuid,
+          String? projectUuid,
           String? date,
           String? siteID,
           String? narrative,
@@ -2714,7 +2714,7 @@ class NarrativeData extends DataClass implements Insertable<NarrativeData> {
 
 class NarrativeCompanion extends UpdateCompanion<NarrativeData> {
   final Value<int> id;
-  final Value<Uint8List?> projectUuid;
+  final Value<String?> projectUuid;
   final Value<String?> date;
   final Value<String?> siteID;
   final Value<String?> narrative;
@@ -2737,7 +2737,7 @@ class NarrativeCompanion extends UpdateCompanion<NarrativeData> {
   });
   static Insertable<NarrativeData> custom({
     Expression<int>? id,
-    Expression<Uint8List?>? projectUuid,
+    Expression<String?>? projectUuid,
     Expression<String?>? date,
     Expression<String?>? siteID,
     Expression<String?>? narrative,
@@ -2755,7 +2755,7 @@ class NarrativeCompanion extends UpdateCompanion<NarrativeData> {
 
   NarrativeCompanion copyWith(
       {Value<int>? id,
-      Value<Uint8List?>? projectUuid,
+      Value<String?>? projectUuid,
       Value<String?>? date,
       Value<String?>? siteID,
       Value<String?>? narrative,
@@ -2777,7 +2777,7 @@ class NarrativeCompanion extends UpdateCompanion<NarrativeData> {
       map['id'] = Variable<int>(id.value);
     }
     if (projectUuid.present) {
-      map['projectUuid'] = Variable<Uint8List?>(projectUuid.value);
+      map['projectUuid'] = Variable<String?>(projectUuid.value);
     }
     if (date.present) {
       map['date'] = Variable<String?>(date.value);
@@ -2821,11 +2821,11 @@ class Narrative extends Table with TableInfo<Narrative, NarrativeData> {
       $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _projectUuidMeta =
       const VerificationMeta('projectUuid');
-  late final GeneratedColumn<Uint8List?> projectUuid =
-      GeneratedColumn<Uint8List?>('projectUuid', aliasedName, true,
-          type: const BlobType(),
-          requiredDuringInsert: false,
-          $customConstraints: '');
+  late final GeneratedColumn<String?> projectUuid = GeneratedColumn<String?>(
+      'projectUuid', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _dateMeta = const VerificationMeta('date');
   late final GeneratedColumn<String?> date = GeneratedColumn<String?>(
       'date', aliasedName, true,

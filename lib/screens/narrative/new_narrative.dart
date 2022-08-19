@@ -5,7 +5,9 @@ import 'package:intl/intl.dart';
 enum MenuSelection { newNote, pdfExport, deleteRecords, deleteAllRecords }
 
 class NewNarrative extends StatefulWidget {
-  const NewNarrative({Key? key}) : super(key: key);
+  const NewNarrative({Key? key, required this.narrativeId}) : super(key: key);
+
+  final int narrativeId;
 
   @override
   State<NewNarrative> createState() => _NewNarrativeState();
@@ -41,8 +43,9 @@ class _NewNarrativeState extends State<NewNarrative>
           IconButton(
             icon: const Icon(Icons.add_rounded),
             onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const NewNarrative()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) =>
+                      NewNarrative(narrativeId: widget.narrativeId)));
             },
           ),
           PopupMenuButton<MenuSelection>(

@@ -54,7 +54,7 @@ CREATE TABLE collEvent (
 
 CREATE TABLE narrative (
     id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
-    projectUuid,
+    projectUuid TEXT,
     date TEXT,
     siteID TEXT,
     narrative TEXT,

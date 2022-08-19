@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/project.dart';
+import 'package:drift/drift.dart' as db;
 
 import 'package:nahpu/screens/collecting/new_coll_events.dart';
 import 'package:nahpu/screens/home.dart';
+import 'package:nahpu/database/database.dart';
 import 'package:nahpu/screens/narrative/new_narrative.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/collecting/coll_events.dart';
@@ -26,6 +28,13 @@ class ProjectHome extends ConsumerStatefulWidget {
 
 class ProjectHomeState extends ConsumerState<ProjectHome> {
   final int _defaultIndex = 0;
+  late String _projectUuid;
+
+  @override
+  void initState() {
+    _projectUuid = widget.projectUuid;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +56,19 @@ class ProjectHomeState extends ConsumerState<ProjectHome> {
             backgroundColor: Theme.of(context).colorScheme.secondary,
             label: 'New Narrative',
             onTap: () async {
-              // ref.read(databaseProvider).createNarrative(NarrativeCompanion(
-              //       projectUuid: Value(widget.projectUuid),
-              //     ));
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const NewNarrative()),
-              );
+              ref
+                  .read(databaseProvider)
+                  .createNarrative(NarrativeCompanion(
+                    projectUuid: db.Value(_projectUuid),
+                  ))
+                  .then((value) => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => NewNarrative(
+                            narrativeId: value,
+                          ))));
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => const NewNarrative()),
+              // );
             },
           ),
           SpeedDialChild(
