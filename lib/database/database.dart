@@ -46,6 +46,12 @@ class Database extends _$Database {
   }
 
   Future updateEntry(ProjectData entry) => update(project).replace(entry);
+
+  Future<void> createNarrative(NarrativeCompanion form) =>
+      into(narrative).insert(form);
+
+  Future<void> updateNarrative(NarrativeData entry) =>
+      update(narrative).replace(entry);
 }
 
 LazyDatabase _openConnection() {

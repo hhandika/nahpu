@@ -14,6 +14,7 @@ class NewNarrative extends StatefulWidget {
 class _NewNarrativeState extends State<NewNarrative>
     with TickerProviderStateMixin {
   final dateController = TextEditingController();
+  final _narrativeController = TextEditingController();
 
   late TabController _tabController;
   // final int _selectedIndex = 0;
@@ -100,6 +101,7 @@ class _NewNarrativeState extends State<NewNarrative>
           ),
           TextFormField(
             maxLines: 10,
+            controller: _narrativeController,
             decoration: const InputDecoration(
               labelText: 'Narrative',
               hintText: 'Enter narrative',
