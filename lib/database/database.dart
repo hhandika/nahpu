@@ -24,8 +24,8 @@ class Database extends _$Database {
     });
   }
 
-  Future<void> createProject(ProjectCompanion name) =>
-      into(project).insert(name);
+  Future<void> createProject(ProjectCompanion form) =>
+      into(project).insert(form);
 
   Future<List<ProjectData>> getAllProjects() => select(project).get();
 
