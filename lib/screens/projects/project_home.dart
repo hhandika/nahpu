@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/project.dart';
@@ -27,7 +26,7 @@ class ProjectHome extends StatefulWidget {
 }
 
 class _ProjectHomeState extends State<ProjectHome> {
-  final int _defaultIndex = 2;
+  final int _defaultIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -223,51 +222,49 @@ class _ProjectHomeState extends State<ProjectHome> {
               projectUuid: widget.projectUuid,
             )
           ]),
-      bottomNavigationBar: ConvexAppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        style: TabStyle.fixedCircle,
+      bottomNavigationBar: NavigationBar(
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+        height: 65,
         elevation: 10,
-        color: Theme.of(context).colorScheme.surface,
-        initialActiveIndex: _defaultIndex,
-        items: [
-          TabItem(
-            icon: Icon(
-              Icons.book_rounded,
-              color: Theme.of(context).colorScheme.surface,
-            ),
-            title: 'Narrative',
-          ),
-          TabItem(
-            icon: Icon(
-              Icons.place_rounded,
-              color: Theme.of(context).colorScheme.surface,
-            ),
-            title: 'Sites',
-          ),
-          TabItem(
+        selectedIndex: _defaultIndex,
+        destinations: const [
+          NavigationDestination(
             icon: Icon(
               Icons.home_rounded,
-              color: Theme.of(context).colorScheme.primary,
-              size: 45,
             ),
-            title: 'Home',
+            label: 'Home',
           ),
-          TabItem(
+          NavigationDestination(
+            icon: Icon(
+              Icons.book_rounded,
+            ),
+            label: 'Narrative',
+          ),
+          NavigationDestination(
+            icon: Icon(
+              Icons.place_rounded,
+            ),
+            label: 'Sites',
+          ),
+          NavigationDestination(
             icon: Icon(
               Icons.timeline,
-              color: Theme.of(context).colorScheme.surface,
             ),
-            title: 'CollEvents',
+            label: 'CollEvents',
           ),
-          TabItem(
+          NavigationDestination(
             icon: Icon(
               Icons.pets_rounded,
-              color: Theme.of(context).colorScheme.surface,
+              // color: Theme.of(context).colorScheme.onSecondary,
             ),
-            title: 'Specimens',
+            label: 'Specimens',
           ),
         ],
-        onTap: _onItemTapped,
+        onDestinationSelected: (int index) {
+          setState(() {
+            _onItemTapped(index);
+          });
+        },
       ),
     );
   }
@@ -275,18 +272,18 @@ class _ProjectHomeState extends State<ProjectHome> {
   void _onItemTapped(int index) {
     switch (index) {
       case 0:
+        break;
+      case 1:
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const Narrative()),
         );
         break;
-      case 1:
+      case 2:
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const Sites()),
         );
-        break;
-      case 2:
         break;
       case 3:
         Navigator.push(

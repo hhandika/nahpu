@@ -35,7 +35,6 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.5
   flutter_speed_dial: ^6.0.0
-  convex_bottom_bar: ^3.0.0
   drift: ^1.7.1
   sqlite3_flutter_libs: ^0.5.9
   path_provider: ^2.0.11
