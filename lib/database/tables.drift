@@ -37,10 +37,10 @@ CREATE TABLE coordinate (
     maximumElevationInMeters INT,
     coordinateUncertaintyInMeters INT,
     siteID TEXT REFERENCES site(siteID)
-)
+);
 
 CREATE TABLE collEvent (
-    id TEXT NOT NULL AUTOINCREMENT,
+    id TEXT NOT NULL PRIMARY KEY,
     projectUuid TEXT,
     startDate TEXT,
     startTime TEXT,
@@ -48,27 +48,20 @@ CREATE TABLE collEvent (
     endTime TEXT,
     primaryCollMethod TEXT,
     collMethodNotes TEXT,
-    siteID TEXT REFERENCES site(siteID)
-    PRIMARY KEY (id, projectUuid)
+    siteID TEXT REFERENCES site(siteID),
     FOREIGN KEY(projectUuid) REFERENCES project(projectUuid)
 );
 
 CREATE TABLE narrative (
-    id INT NOT NULL AUTOINCREMENT,
+    id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
     projectUuid,
     date TEXT,
     siteID TEXT,
     narrative TEXT,
-    photoID INT REFERENCES photo(id)
-    PRIMARY KEY(date, projectUuid, siteID),
+    photoID INT REFERENCES photo(id),
     FOREIGN KEY(projectUuid) REFERENCES project(projectUuid),
     FOREIGN KEY(siteID) REFERENCES site(siteID)
 );
-
-CREATE TABLE taxonGroup (
-    id INT NOT NULL AUTOINCREMENT,
-    group TEXT UNIQUE
-)
 
 CREATE TABLE photo (
     id INT PRIMARY KEY AUTOINCREMENT,
@@ -77,15 +70,15 @@ CREATE TABLE photo (
     photographerID INT REFERENCES personnel(id),
     camera TEXT,
     lenses TEXT
-)
+);
 
 CREATE TABLE personnel (
     id TEXT UNIQUE PRIMARY KEY,
     name TEXT,
     initial TEXT,
     affiliation TEXT,
-    photoID INT REFERENCES photo(id)
-)
+    photoFileName TEXT
+);
 
 CREATE TABLE mammalSpecimen (
     specimenUuid TEXT,
@@ -99,8 +92,8 @@ CREATE TABLE mammalSpecimen (
     trapType TEXT,
     collectorID INT REFERENCES personnel(id),
     collEventID INT REFERENCES collEvent(id),
-    measureID INT REFERENCES mammalMeasurements(id)
-)
+    measureID INT REFERENCES mammalMeasurement(id)
+);
 
 CREATE TABLE mammalMeasurement (
     id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -126,7 +119,7 @@ CREATE TABLE mammalMeasurement (
     embryoRightCount INT,
     embryoCRLeft INT,
     embryoCRRight INT
-)
+);
 
 CREATE TABLE birdSpecimen (
     specimenUuid TEXT,
@@ -141,7 +134,7 @@ CREATE TABLE birdSpecimen (
     collectorID INT REFERENCES personnel(id),
     collEventID INT REFERENCES collEvent(id),
     measureID INT REFERENCES birdMeasurement(id)
-)
+);
 
 CREATE TABLE birdMeasurement (
     id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -160,7 +153,7 @@ CREATE TABLE birdMeasurement (
     sex TEXT,
     gonad TEXT,
     stomach TEXT
-)
+);
 
 CREATE TABLE part (
     specimenUuid TEXT,
@@ -172,15 +165,15 @@ CREATE TABLE part (
     additionalTreatment TEXT,
     museumPermanent TEXT,
     museumLoan TEXT 
-)
+);
 
 CREATE TABLE taxonomy (
     id INT PRIMARY KEY AUTOINCREMENT,
     genus TEXT,
     specificEpithet TEXT,
     intraspecificEpithet TEXT,
-    family TEXT,
-    order TEXT
-)
+    taxonFamily TEXT,
+    taxonOrder TEXT
+);
 
 listProject: SELECT projectUuid,projectName FROM project;
