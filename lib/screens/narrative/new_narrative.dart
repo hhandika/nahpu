@@ -39,6 +39,7 @@ class NewNarrativeState extends ConsumerState<NewNarrative>
 
   @override
   Widget build(BuildContext context) {
+    final narrative = ref.watch(databaseProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text("New Narrative"),
@@ -94,8 +95,7 @@ class NewNarrativeState extends ConsumerState<NewNarrative>
                   .then((date) {
                 if (date != null) {
                   dateController.text = DateFormat.yMMMd().format(date);
-                  ref.watch(databaseProvider).updateNarrativeEntry(
-                      widget.narrativeId,
+                  narrative.updateNarrativeEntry(widget.narrativeId,
                       NarrativeCompanion(date: db.Value(dateController.text)));
                 }
               });
@@ -107,8 +107,7 @@ class NewNarrativeState extends ConsumerState<NewNarrative>
               hintText: 'Enter a site',
             ),
             onChanged: (value) {
-              ref.watch(databaseProvider).updateNarrativeEntry(
-                  widget.narrativeId,
+              narrative.updateNarrativeEntry(widget.narrativeId,
                   NarrativeCompanion(siteID: db.Value(value)));
             },
           ),
@@ -120,8 +119,7 @@ class NewNarrativeState extends ConsumerState<NewNarrative>
               hintText: 'Enter narrative',
             ),
             onChanged: (value) {
-              ref.watch(databaseProvider).updateNarrativeEntry(
-                  widget.narrativeId,
+              narrative.updateNarrativeEntry(widget.narrativeId,
                   NarrativeCompanion(narrative: db.Value(value)));
             },
           ),
