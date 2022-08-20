@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/project.dart';
-// import 'package:drift/drift.dart' as db;
 
 import 'package:nahpu/screens/collecting/new_coll_events.dart';
 import 'package:nahpu/screens/home.dart';
-// import 'package:nahpu/database/database.dart';
+
 import 'package:nahpu/screens/narrative/new_narrative.dart';
+import 'package:nahpu/screens/narrative/narrative.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/collecting/coll_events.dart';
 import 'package:nahpu/screens/sites/new_sites.dart';
@@ -28,16 +28,15 @@ class ProjectHome extends ConsumerStatefulWidget {
 
 class ProjectHomeState extends ConsumerState<ProjectHome> {
   final int _defaultIndex = 0;
-  late String _projectUuid;
 
   @override
   void initState() {
-    _projectUuid = widget.projectUuid;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    ref.read(projectUuidProvider.state).state = widget.projectUuid;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Project Home"),
@@ -56,7 +55,7 @@ class ProjectHomeState extends ConsumerState<ProjectHome> {
               backgroundColor: Theme.of(context).colorScheme.secondary,
               label: 'New Narrative',
               onTap: () async {
-                await createNewNarrative(_projectUuid, context, ref);
+                await createNewNarrative(context, ref);
               }),
           SpeedDialChild(
             child: Icon(Icons.place_rounded,
@@ -296,10 +295,10 @@ class ProjectHomeState extends ConsumerState<ProjectHome> {
         );
         break;
       case 4:
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => const Narrative()),
-        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const Narrative()),
+        );
 
         break;
     }

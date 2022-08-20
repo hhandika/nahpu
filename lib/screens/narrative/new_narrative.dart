@@ -81,6 +81,7 @@ class NewNarrativeState extends ConsumerState<NewNarrative>
           child: SingleChildScrollView(
         child: Column(children: [
           NarrativeForm(
+            narrativeId: widget.narrativeId,
             dateController: dateController,
             narrativeController: narrativeController,
           ),
@@ -135,8 +136,8 @@ class NewNarrativeState extends ConsumerState<NewNarrative>
   }
 }
 
-Future<void> createNewNarrative(
-    String projectUuid, BuildContext context, WidgetRef ref) {
+Future<void> createNewNarrative(BuildContext context, WidgetRef ref) {
+  String projectUuid = ref.watch(projectUuidProvider.state).state;
   return ref
       .read(databaseProvider)
       .createNarrative(NarrativeCompanion(

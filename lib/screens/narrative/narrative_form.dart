@@ -3,18 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:intl/intl.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/providers/project.dart';
 
 class NarrativeForm extends ConsumerWidget {
   const NarrativeForm(
       {Key? key,
+      required this.narrativeId,
       required this.narrativeController,
       required this.dateController})
       : super(key: key);
 
   final TextEditingController dateController;
   final TextEditingController narrativeController;
+  final int narrativeId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,6 +29,7 @@ class NarrativeForm extends ConsumerWidget {
             labelText: 'Date',
             hintText: 'Enter date',
           ),
+          controller: dateController,
           onTap: () async {
             showDatePicker(
                     context: context,
@@ -34,8 +38,9 @@ class NarrativeForm extends ConsumerWidget {
                     lastDate: DateTime.now())
                 .then((date) {
               if (date != null) {
-                narrative.updateNarrativeEntry(
-                    1, NarrativeCompanion(date: db.Value(date.toString())));
+                dateController.text = DateFormat.yMMMd().format(date);
+                narrative.updateNarrativeEntry(narrativeId,
+                    NarrativeCompanion(date: db.Value(dateController.text)));
               }
             });
           },
@@ -47,7 +52,7 @@ class NarrativeForm extends ConsumerWidget {
           ),
           onChanged: (value) {
             narrative.updateNarrativeEntry(
-                1, NarrativeCompanion(siteID: db.Value(value)));
+                narrativeId, NarrativeCompanion(siteID: db.Value(value)));
           },
         ),
         TextFormField(

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// ignore: unused_import
-import 'package:nahpu/screens/narrative/new_narrative.dart';
+
+// import 'package:nahpu/screens/narrative/new_narrative.dart';
+import 'package:nahpu/providers/project.dart';
 
 enum MenuSelection { newNote, pdfExport, deleteRecords, deleteAllRecords }
 
@@ -13,16 +14,12 @@ class Narrative extends ConsumerStatefulWidget {
 }
 
 class NarrativeState extends ConsumerState<Narrative> {
-  String _selectedMenu = '';
-
-  // @override
-  // void initState() {
-  //   _narrativeId = widget.
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
+    final projectUuid = ref.watch(projectUuidProvider.state).state;
+    final narrativeEntries = ref.watch(narrativeEntriesProvider(projectUuid));
+
+    final PageController pageController = PageController();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Narrative"),
@@ -61,7 +58,19 @@ class NarrativeState extends ConsumerState<Narrative> {
         ],
       ),
       body: Center(
-        child: Text('Test popup menu: $_selectedMenu'),
+        child: narrativeEntries.when(
+          data: (narrativeEntries) {
+            return PageView.builder(
+              controller: pageController,
+              itemCount: narrativeEntries.length,
+              itemBuilder: (context, index) {
+                return Text(narrativeEntries[index].date!);
+              },
+            );
+          },
+          loading: () => const CircularProgressIndicator(),
+          error: (error, stack) => Text(error.toString()),
+        ),
       ),
     );
   }
@@ -69,24 +78,16 @@ class NarrativeState extends ConsumerState<Narrative> {
   void _onPopupMenuSelected(MenuSelection item) {
     switch (item) {
       case MenuSelection.newNote:
-        setState(() {
-          _selectedMenu = 'Create a new note';
-        });
+        setState(() {});
         break;
       case MenuSelection.pdfExport:
-        setState(() {
-          _selectedMenu = 'Export to pdf';
-        });
+        setState(() {});
         break;
       case MenuSelection.deleteRecords:
-        setState(() {
-          _selectedMenu = 'Delete current note record';
-        });
+        setState(() {});
         break;
       case MenuSelection.deleteAllRecords:
-        setState(() {
-          _selectedMenu = 'Delete all note records';
-        });
+        setState(() {});
         break;
     }
   }

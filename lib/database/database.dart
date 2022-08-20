@@ -53,6 +53,12 @@ class Database extends _$Database {
   Future updateNarrativeEntry(int id, NarrativeCompanion entry) {
     return (update(narrative)..where((t) => t.id.equals(id))).write(entry);
   }
+
+  Future<List<NarrativeData>> getAllNarrative(String projectUuid) async {
+    return await (select(narrative)
+          ..where((t) => t.projectUuid.equals(projectUuid)))
+        .get();
+  }
 }
 
 LazyDatabase _openConnection() {
