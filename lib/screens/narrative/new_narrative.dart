@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:drift/drift.dart' as db;
 
-import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/providers/project.dart';
+import 'package:nahpu/screens/narrative/narrative_form.dart';
 
 enum MenuSelection { newNote, pdfExport, deleteRecords, deleteAllRecords }
 
@@ -20,7 +21,7 @@ class NewNarrative extends ConsumerStatefulWidget {
 class NewNarrativeState extends ConsumerState<NewNarrative>
     with TickerProviderStateMixin {
   final dateController = TextEditingController();
-  final _narrativeController = TextEditingController();
+  final narrativeController = TextEditingController();
 
   late TabController _tabController;
   // final int _selectedIndex = 0;
@@ -39,7 +40,6 @@ class NewNarrativeState extends ConsumerState<NewNarrative>
 
   @override
   Widget build(BuildContext context) {
-    final narrative = ref.watch(databaseProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text("New Narrative"),
@@ -80,48 +80,9 @@ class NewNarrativeState extends ConsumerState<NewNarrative>
       body: SafeArea(
           child: SingleChildScrollView(
         child: Column(children: [
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Date',
-              hintText: 'Enter date',
-            ),
-            controller: dateController,
-            onTap: () async {
-              showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime.now())
-                  .then((date) {
-                if (date != null) {
-                  dateController.text = DateFormat.yMMMd().format(date);
-                  narrative.updateNarrativeEntry(widget.narrativeId,
-                      NarrativeCompanion(date: db.Value(dateController.text)));
-                }
-              });
-            },
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Site ID',
-              hintText: 'Enter a site',
-            ),
-            onChanged: (value) {
-              narrative.updateNarrativeEntry(widget.narrativeId,
-                  NarrativeCompanion(siteID: db.Value(value)));
-            },
-          ),
-          TextFormField(
-            maxLines: 10,
-            controller: _narrativeController,
-            decoration: const InputDecoration(
-              labelText: 'Narrative',
-              hintText: 'Enter narrative',
-            ),
-            onChanged: (value) {
-              narrative.updateNarrativeEntry(widget.narrativeId,
-                  NarrativeCompanion(narrative: db.Value(value)));
-            },
+          NarrativeForm(
+            dateController: dateController,
+            narrativeController: narrativeController,
           ),
           Column(
             children: [
