@@ -7,7 +7,7 @@ import 'package:nahpu/providers/project.dart';
 import 'package:nahpu/screens/collecting/new_coll_events.dart';
 import 'package:nahpu/screens/home.dart';
 
-import 'package:nahpu/screens/narrative/new_narrative.dart';
+import 'package:nahpu/screens/narrative/menu_bar.dart';
 import 'package:nahpu/screens/narrative/narrative.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/collecting/coll_events.dart';

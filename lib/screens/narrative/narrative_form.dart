@@ -8,14 +8,16 @@ import 'package:nahpu/database/database.dart';
 import 'package:nahpu/providers/project.dart';
 
 class NarrativeForm extends ConsumerStatefulWidget {
-  const NarrativeForm(
-      {Key? key,
-      required this.narrativeId,
-      required this.narrativeController,
-      required this.dateController})
-      : super(key: key);
+  const NarrativeForm({
+    Key? key,
+    required this.narrativeId,
+    required this.dateController,
+    required this.siteController,
+    required this.narrativeController,
+  }) : super(key: key);
 
   final TextEditingController dateController;
+  final TextEditingController siteController;
   final TextEditingController narrativeController;
   final int narrativeId;
 
@@ -42,7 +44,6 @@ class NarrativeFormState extends ConsumerState<NarrativeForm>
 
   @override
   Widget build(BuildContext context) {
-    final narrative = ref.watch(databaseProvider);
     return SingleChildScrollView(
         child: Column(
       children: [
@@ -61,33 +62,31 @@ class NarrativeFormState extends ConsumerState<NarrativeForm>
                 .then((date) {
               if (date != null) {
                 widget.dateController.text = DateFormat.yMMMd().format(date);
-                narrative.updateNarrativeEntry(
-                    widget.narrativeId,
-                    NarrativeCompanion(
-                        date: db.Value(widget.dateController.text)));
+                _updateNarrative(NarrativeCompanion(
+                    date: db.Value(widget.dateController.text)));
               }
             });
           },
         ),
         TextFormField(
+          controller: widget.siteController,
           decoration: const InputDecoration(
             labelText: 'Site ID',
             hintText: 'Enter a site',
           ),
           onChanged: (value) {
-            narrative.updateNarrativeEntry(widget.narrativeId,
-                NarrativeCompanion(siteID: db.Value(value)));
+            _updateNarrative(NarrativeCompanion(siteID: db.Value(value)));
           },
         ),
         TextFormField(
+          controller: widget.narrativeController,
           maxLines: 10,
           decoration: const InputDecoration(
             labelText: 'Narrative',
             hintText: 'Enter narrative',
           ),
           onChanged: (value) {
-            narrative.updateNarrativeEntry(
-                1, NarrativeCompanion(narrative: db.Value(value)));
+            _updateNarrative(NarrativeCompanion(narrative: db.Value(value)));
           },
         ),
         Column(
@@ -120,5 +119,11 @@ class NarrativeFormState extends ConsumerState<NarrativeForm>
         ),
       ],
     ));
+  }
+
+  void _updateNarrative(NarrativeCompanion entries) {
+    ref
+        .watch(databaseProvider)
+        .updateNarrativeEntry(widget.narrativeId, entries);
   }
 }

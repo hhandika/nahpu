@@ -54,10 +54,9 @@ class Database extends _$Database {
     return (update(narrative)..where((t) => t.id.equals(id))).write(entry);
   }
 
-  Future<List<NarrativeData>> getAllNarrative(String projectUuid) async {
-    return await (select(narrative)
-          ..where((t) => t.projectUuid.equals(projectUuid)))
-        .get();
+  Stream<List<NarrativeData>> watchAllNarrative(String projectUuid) {
+    return (select(narrative)..where((t) => t.projectUuid.equals(projectUuid)))
+        .watch();
   }
 
   Future<void> deleteNarrative(int id) {

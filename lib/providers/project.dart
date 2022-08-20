@@ -18,11 +18,3 @@ final projectInfoProvider =
 });
 
 final projectUuidProvider = StateProvider<String>((ref) => '');
-
-final narrativeEntriesProvider =
-    FutureProvider.family<List<NarrativeData>, String>(
-        (ref, projectUuid) async {
-  final narrativeEntries =
-      ref.read(databaseProvider).getAllNarrative(projectUuid);
-  return await narrativeEntries;
-});
