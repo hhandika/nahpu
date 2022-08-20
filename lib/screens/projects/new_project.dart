@@ -196,10 +196,10 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
   }
 
   Future<void> _goToProjectHome() async {
+    ref.read(projectUuidProvider.state).state = _uuidKey;
     await Navigator.push(
       context,
-      MaterialPageRoute(
-          builder: (context) => ProjectHome(projectUuid: _uuidKey)),
+      MaterialPageRoute(builder: (context) => const ProjectHome()),
     );
   }
 }

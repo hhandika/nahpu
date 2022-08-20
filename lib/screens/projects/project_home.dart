@@ -18,9 +18,9 @@ import 'package:nahpu/screens/specimens/specimens.dart';
 import 'package:nahpu/screens/projects/project_info.dart';
 
 class ProjectHome extends ConsumerStatefulWidget {
-  const ProjectHome({Key? key, required this.projectUuid}) : super(key: key);
-
-  final String projectUuid;
+  const ProjectHome({
+    Key? key,
+  }) : super(key: key);
 
   @override
   ProjectHomeState createState() => ProjectHomeState();
@@ -36,7 +36,7 @@ class ProjectHomeState extends ConsumerState<ProjectHome> {
 
   @override
   Widget build(BuildContext context) {
-    ref.read(projectUuidProvider.state).state = widget.projectUuid;
+    final projectUuid = ref.watch(projectUuidProvider.state).state;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Project Home"),
@@ -222,7 +222,7 @@ class ProjectHomeState extends ConsumerState<ProjectHome> {
           ),
           children: [
             ProjectOverview(
-              projectUuid: widget.projectUuid,
+              projectUuid: projectUuid,
             )
           ]),
       bottomNavigationBar: NavigationBar(

@@ -24,7 +24,6 @@ class NewNarrativeState extends ConsumerState<NewNarrative>
   final narrativeController = TextEditingController();
 
   late TabController _tabController;
-  // final int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -78,43 +77,12 @@ class NewNarrativeState extends ConsumerState<NewNarrative>
         ],
       ),
       body: SafeArea(
-          child: SingleChildScrollView(
-        child: Column(children: [
-          NarrativeForm(
-            narrativeId: widget.narrativeId,
-            dateController: dateController,
-            narrativeController: narrativeController,
-          ),
-          Column(
-            children: [
-              DefaultTabController(
-                length: 2,
-                child: TabBar(
-                  controller: _tabController,
-                  tabs: [
-                    Tab(
-                        icon: Icon(Icons.photo_album_rounded,
-                            color: Theme.of(context).colorScheme.tertiary)),
-                    Tab(
-                        icon: Icon(Icons.video_library_rounded,
-                            color: Theme.of(context).colorScheme.tertiary)),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.5,
-                child: TabBarView(
-                  controller: _tabController,
-                  children: const [
-                    Text('Photos'),
-                    Text('Videos'),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ]),
-      )),
+        child: NarrativeForm(
+          narrativeId: widget.narrativeId,
+          dateController: dateController,
+          narrativeController: narrativeController,
+        ),
+      ),
     );
   }
 

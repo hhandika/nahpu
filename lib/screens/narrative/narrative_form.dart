@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/providers/project.dart';
 
-class NarrativeForm extends ConsumerWidget {
+class NarrativeForm extends ConsumerStatefulWidget {
   const NarrativeForm(
       {Key? key,
       required this.narrativeId,
@@ -20,16 +20,38 @@ class NarrativeForm extends ConsumerWidget {
   final int narrativeId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  NarrativeFormState createState() => NarrativeFormState();
+}
+
+class NarrativeFormState extends ConsumerState<NarrativeForm>
+    with TickerProviderStateMixin {
+  late TabController _tabController;
+  // final int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final narrative = ref.watch(databaseProvider);
-    return Column(
+    return SingleChildScrollView(
+        child: Column(
       children: [
         TextFormField(
           decoration: const InputDecoration(
             labelText: 'Date',
             hintText: 'Enter date',
           ),
-          controller: dateController,
+          controller: widget.dateController,
           onTap: () async {
             showDatePicker(
                     context: context,
@@ -38,9 +60,11 @@ class NarrativeForm extends ConsumerWidget {
                     lastDate: DateTime.now())
                 .then((date) {
               if (date != null) {
-                dateController.text = DateFormat.yMMMd().format(date);
-                narrative.updateNarrativeEntry(narrativeId,
-                    NarrativeCompanion(date: db.Value(dateController.text)));
+                widget.dateController.text = DateFormat.yMMMd().format(date);
+                narrative.updateNarrativeEntry(
+                    widget.narrativeId,
+                    NarrativeCompanion(
+                        date: db.Value(widget.dateController.text)));
               }
             });
           },
@@ -51,8 +75,8 @@ class NarrativeForm extends ConsumerWidget {
             hintText: 'Enter a site',
           ),
           onChanged: (value) {
-            narrative.updateNarrativeEntry(
-                narrativeId, NarrativeCompanion(siteID: db.Value(value)));
+            narrative.updateNarrativeEntry(widget.narrativeId,
+                NarrativeCompanion(siteID: db.Value(value)));
           },
         ),
         TextFormField(
@@ -66,7 +90,35 @@ class NarrativeForm extends ConsumerWidget {
                 1, NarrativeCompanion(narrative: db.Value(value)));
           },
         ),
+        Column(
+          children: [
+            DefaultTabController(
+              length: 2,
+              child: TabBar(
+                controller: _tabController,
+                tabs: [
+                  Tab(
+                      icon: Icon(Icons.photo_album_rounded,
+                          color: Theme.of(context).colorScheme.tertiary)),
+                  Tab(
+                      icon: Icon(Icons.video_library_rounded,
+                          color: Theme.of(context).colorScheme.tertiary)),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.5,
+              child: TabBarView(
+                controller: _tabController,
+                children: const [
+                  Text('Photos'),
+                  Text('Videos'),
+                ],
+              ),
+            ),
+          ],
+        ),
       ],
-    );
+    ));
   }
 }

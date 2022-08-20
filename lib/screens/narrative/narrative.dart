@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // import 'package:nahpu/screens/narrative/new_narrative.dart';
 import 'package:nahpu/providers/project.dart';
+import 'package:nahpu/screens/narrative/narrative_form.dart';
 
 enum MenuSelection { newNote, pdfExport, deleteRecords, deleteAllRecords }
 
@@ -21,58 +22,65 @@ class NarrativeState extends ConsumerState<Narrative> {
 
     final PageController pageController = PageController();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Narrative"),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () async {
-              // await createNewNarrative(proj);
-            },
-          ),
-          PopupMenuButton<MenuSelection>(
-              // Callback that sets the selected popup menu item.
-              onSelected: _onPopupMenuSelected,
-              itemBuilder: (BuildContext context) =>
-                  <PopupMenuEntry<MenuSelection>>[
-                    const PopupMenuItem<MenuSelection>(
-                      value: MenuSelection.newNote,
-                      child: Text('Create a new narrative'),
-                    ),
-                    const PopupMenuItem<MenuSelection>(
-                      value: MenuSelection.pdfExport,
-                      child: Text('Export to PDF'),
-                    ),
-                    const PopupMenuItem<MenuSelection>(
-                      value: MenuSelection.deleteRecords,
-                      child: Text('Delete current record',
-                          style: TextStyle(color: Colors.red)),
-                    ),
-                    const PopupMenuItem<MenuSelection>(
-                      value: MenuSelection.deleteAllRecords,
-                      child: Text('Delete all note records',
-                          style: TextStyle(color: Colors.red)),
-                    ),
-                  ])
-        ],
-      ),
-      body: Center(
-        child: narrativeEntries.when(
-          data: (narrativeEntries) {
-            return PageView.builder(
-              controller: pageController,
-              itemCount: narrativeEntries.length,
-              itemBuilder: (context, index) {
-                return Text(narrativeEntries[index].date!);
+        appBar: AppBar(
+          title: const Text("Narrative"),
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () async {
+                // await createNewNarrative(proj);
               },
-            );
-          },
-          loading: () => const CircularProgressIndicator(),
-          error: (error, stack) => Text(error.toString()),
+            ),
+            PopupMenuButton<MenuSelection>(
+                // Callback that sets the selected popup menu item.
+                onSelected: _onPopupMenuSelected,
+                itemBuilder: (BuildContext context) =>
+                    <PopupMenuEntry<MenuSelection>>[
+                      const PopupMenuItem<MenuSelection>(
+                        value: MenuSelection.newNote,
+                        child: Text('Create a new narrative'),
+                      ),
+                      const PopupMenuItem<MenuSelection>(
+                        value: MenuSelection.pdfExport,
+                        child: Text('Export to PDF'),
+                      ),
+                      const PopupMenuItem<MenuSelection>(
+                        value: MenuSelection.deleteRecords,
+                        child: Text('Delete current record',
+                            style: TextStyle(color: Colors.red)),
+                      ),
+                      const PopupMenuItem<MenuSelection>(
+                        value: MenuSelection.deleteAllRecords,
+                        child: Text('Delete all note records',
+                            style: TextStyle(color: Colors.red)),
+                      ),
+                    ])
+          ],
         ),
-      ),
-    );
+        body: SafeArea(
+          child: Center(
+            child: narrativeEntries.when(
+              data: (narrativeEntries) {
+                return PageView.builder(
+                  controller: pageController,
+                  itemCount: narrativeEntries.length,
+                  itemBuilder: (context, index) {
+                    return NarrativeForm(
+                      narrativeId: narrativeEntries[index].id,
+                      dateController: TextEditingController(
+                          text: narrativeEntries[index].date),
+                      narrativeController: TextEditingController(
+                          text: narrativeEntries[index].narrative),
+                    );
+                  },
+                );
+              },
+              loading: () => const CircularProgressIndicator(),
+              error: (error, stack) => Text(error.toString()),
+            ),
+          ),
+        ));
   }
 
   void _onPopupMenuSelected(MenuSelection item) {

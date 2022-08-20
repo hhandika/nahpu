@@ -224,12 +224,11 @@ class HomeState extends ConsumerState<Home> {
                         ),
                       ]),
               onTap: () {
+                ref.read(projectUuidProvider.state).state =
+                    projectList[index].projectUuid;
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => ProjectHome(
-                            projectUuid: projectList[index].projectUuid,
-                          )),
+                  MaterialPageRoute(builder: (context) => const ProjectHome()),
                 );
               },
             ));

@@ -59,6 +59,15 @@ class Database extends _$Database {
           ..where((t) => t.projectUuid.equals(projectUuid)))
         .get();
   }
+
+  Future<void> deleteNarrative(int id) {
+    return (delete(narrative)..where((t) => t.id.equals(id))).go();
+  }
+
+  Future<void> deleteAllNarrative(String projectUuid) {
+    return (delete(narrative)..where((t) => t.projectUuid.equals(projectUuid)))
+        .go();
+  }
 }
 
 LazyDatabase _openConnection() {
