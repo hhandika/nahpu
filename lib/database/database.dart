@@ -67,6 +67,48 @@ class Database extends _$Database {
     return (delete(narrative)..where((t) => t.projectUuid.equals(projectUuid)))
         .go();
   }
+
+  // Site table
+  Future<int> createSite(SiteCompanion form) => into(site).insert(form);
+
+  Future updateSiteEntry(String siteId, SiteCompanion entry) {
+    return (update(site)..where((t) => t.siteID.equals(siteId))).write(entry);
+  }
+
+  Future<List<SiteData>> getAllSites(String projectUuid) {
+    return (select(site)..where((t) => t.projectUuid.equals(projectUuid)))
+        .get();
+  }
+
+  Future<void> deleteSite(String siteId) {
+    return (delete(site)..where((t) => t.siteID.equals(siteId))).go();
+  }
+
+  Future<void> deleteAllSites(String projectUuid) {
+    return (delete(site)..where((t) => t.projectUuid.equals(projectUuid))).go();
+  }
+
+  // Collecting event table
+  Future<int> createCollectingEvent(CollEventCompanion form) =>
+      into(collEvent).insert(form);
+
+  Future updateCollectingEventEntry(String id, CollEventCompanion entry) {
+    return (update(collEvent)..where((t) => t.id.equals(id))).write(entry);
+  }
+
+  Future<List<CollEventData>> getAllCollectingEvents(String projectUuid) {
+    return (select(collEvent)..where((t) => t.projectUuid.equals(projectUuid)))
+        .get();
+  }
+
+  Future<void> deleteCollectingEvent(String id) {
+    return (delete(collEvent)..where((t) => t.id.equals(id))).go();
+  }
+
+  Future<void> deleteAllCollectingEvents(String projectUuid) {
+    return (delete(collEvent)..where((t) => t.projectUuid.equals(projectUuid)))
+        .go();
+  }
 }
 
 LazyDatabase _openConnection() {
