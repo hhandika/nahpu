@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:nahpu/screens/narrative/narrative_form.dart';
 import 'package:nahpu/screens/narrative/menu_bar.dart';
+import 'package:nahpu/providers/narrative.dart';
 
 class NewNarrativeForm extends ConsumerStatefulWidget {
   const NewNarrativeForm({Key? key, required this.narrativeId})
@@ -44,6 +45,12 @@ class NewNarrativeFormState extends ConsumerState<NewNarrativeForm>
           NewNarrative(),
           NarrativeMenu(),
         ],
+        leading: BackButton(
+          onPressed: () {
+            Navigator.pop(context);
+            ref.refresh(narrativeEntryProvider);
+          },
+        ),
       ),
       body: SafeArea(
         child: NarrativeForm(

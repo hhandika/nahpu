@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// import 'package:nahpu/screens/narrative/new_narrative.dart';
 import 'package:nahpu/providers/narrative.dart';
 import 'package:nahpu/screens/narrative/menu_bar.dart';
 import 'package:nahpu/screens/narrative/narrative_form.dart';
@@ -29,6 +28,12 @@ class NarrativeState extends ConsumerState<Narrative> {
             NewNarrative(),
             NarrativeMenu(),
           ],
+          leading: BackButton(
+            onPressed: () {
+              Navigator.pop(context);
+              ref.refresh(narrativeEntryProvider);
+            },
+          ),
         ),
         body: SafeArea(
           child: Center(

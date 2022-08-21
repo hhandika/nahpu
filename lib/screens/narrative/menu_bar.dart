@@ -5,6 +5,7 @@ import 'package:nahpu/database/database.dart';
 import 'package:nahpu/providers/project.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/narrative/new_narrative.dart';
+import 'package:nahpu/providers/narrative.dart';
 
 enum MenuSelection { newNarrative, pdfExport, deleteRecords, deleteAllRecords }
 
@@ -84,6 +85,7 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
       case MenuSelection.deleteAllRecords:
         final projectUuid = ref.read(projectUuidProvider.state).state;
         ref.read(databaseProvider).deleteAllNarrative(projectUuid);
+        ref.refresh(narrativeEntryProvider);
         break;
     }
   }
