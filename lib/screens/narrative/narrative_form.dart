@@ -93,7 +93,6 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
     ref
         .watch(databaseProvider)
         .updateNarrativeEntry(widget.narrativeId, entries);
-    ref.refresh(narrativeEntryProvider.future);
   }
 }
 

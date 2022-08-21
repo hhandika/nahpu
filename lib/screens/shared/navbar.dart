@@ -6,6 +6,7 @@ import 'package:nahpu/providers/project.dart';
 
 import 'package:nahpu/screens/narrative/narrative.dart';
 import 'package:nahpu/screens/collecting/coll_events.dart';
+import 'package:nahpu/providers/narrative.dart';
 
 import 'package:nahpu/screens/sites/sites.dart';
 import 'package:nahpu/screens/specimens/specimens.dart';
@@ -62,6 +63,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
       ],
       onDestinationSelected: (int index) {
         ref.read(projectNavbarIndexProvider.state).state = index;
+        ref.refresh(narrativeEntryProvider);
         _onItemTapped(index);
       },
     );
