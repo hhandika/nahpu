@@ -27,9 +27,13 @@ class CustomNavButton extends ConsumerWidget {
   const CustomNavButton({
     Key? key,
     required this.pageController,
+    required this.count,
+    required this.indexPos,
   }) : super(key: key);
 
   final PageController pageController;
+  final int count;
+  final int indexPos;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -45,7 +49,10 @@ class CustomNavButton extends ConsumerWidget {
           },
           child: const Icon(Icons.navigate_before),
         ),
-        const SizedBox(width: 10),
+        SizedBox(
+          width: 50,
+          child: Text('$indexPos of $count'),
+        ),
         FloatingActionButton(
           heroTag: 'next',
           backgroundColor: Theme.of(context).colorScheme.primary,

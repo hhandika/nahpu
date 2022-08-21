@@ -20,6 +20,8 @@ class Narrative extends ConsumerStatefulWidget {
 class NarrativeState extends ConsumerState<Narrative> {
   bool isVisible = false;
   PageController pageController = PageController();
+  int count = 0;
+  int indexPos = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +51,10 @@ class NarrativeState extends ConsumerState<Narrative> {
                 int narrativeSize = narrativeEntries.length;
                 setState(() {
                   isVisible = true;
-                  pageController = PageController(
-                      initialPage: narrativeSize - 1); // view last page first
+                  count = narrativeSize;
+                  pageController =
+                      PageController(initialPage: narrativeSize - 1);
+                  // view last page first
                 });
                 return PageView.builder(
                   controller: pageController,
@@ -66,6 +70,9 @@ class NarrativeState extends ConsumerState<Narrative> {
                           text: narrativeEntries[index].narrative),
                     );
                   },
+                  onPageChanged: (value) => setState(() {
+                    indexPos = value + 1;
+                  }),
                 );
               }
             },
@@ -78,6 +85,8 @@ class NarrativeState extends ConsumerState<Narrative> {
         visible: isVisible,
         child: CustomNavButton(
           pageController: pageController,
+          count: count,
+          indexPos: indexPos,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,

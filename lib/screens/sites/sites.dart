@@ -16,6 +16,8 @@ class Sites extends StatefulWidget {
 
 class _SitesState extends State<Sites> {
   PageController pageController = PageController();
+  int count = 0;
+  int indexPos = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +45,8 @@ class _SitesState extends State<Sites> {
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
       floatingActionButton: CustomNavButton(
         pageController: pageController,
+        count: count,
+        indexPos: indexPos,
       ),
       bottomNavigationBar: const ProjectBottomNavbar(),
     );
