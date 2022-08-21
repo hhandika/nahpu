@@ -12,7 +12,7 @@ final projectListProvider = FutureProvider<List<ListProjectResult>>((ref) {
 });
 
 final projectInfoProvider =
-    FutureProvider.family<ProjectData?, String>((ref, uuid) async {
+    FutureProvider.autoDispose.family<ProjectData?, String>((ref, uuid) async {
   final projectInfo = ref.read(databaseProvider).getProjectByUuid(uuid);
   return await projectInfo;
 });

@@ -227,7 +227,7 @@ class ProjectHomeState extends ConsumerState<ProjectHome> {
           ]),
       bottomNavigationBar: NavigationBar(
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-        height: 60,
+        height: 65,
         elevation: 10,
         selectedIndex: _defaultIndex,
         destinations: const [

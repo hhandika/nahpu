@@ -27,11 +27,9 @@ class NarrativeForm extends ConsumerStatefulWidget {
   NarrativeFormState createState() => NarrativeFormState();
 }
 
-class NarrativeFormState extends ConsumerState<NarrativeForm>
-    with AutomaticKeepAliveClientMixin<NarrativeForm> {
+class NarrativeFormState extends ConsumerState<NarrativeForm> {
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return SingleChildScrollView(
         child: AdaptiveColumn(
       children: [
@@ -90,9 +88,6 @@ class NarrativeFormState extends ConsumerState<NarrativeForm>
       ],
     ));
   }
-
-  @override
-  bool get wantKeepAlive => true;
 
   void _updateNarrative(NarrativeCompanion entries) {
     ref
