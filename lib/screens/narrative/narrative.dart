@@ -40,6 +40,10 @@ class NarrativeState extends ConsumerState<Narrative> {
           child: narrativeEntries.when(
             data: (narrativeEntries) {
               if (narrativeEntries.isEmpty) {
+                setState(() {
+                  isVisible = false;
+                });
+
                 return const Text("No narrative entries");
               } else {
                 int narrativeSize = narrativeEntries.length;
