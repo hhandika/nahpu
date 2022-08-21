@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
+import 'package:nahpu/screens/sites/menu_bar.dart';
 import 'package:nahpu/screens/sites/new_sites.dart';
 
 enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
@@ -13,7 +15,7 @@ class Sites extends StatefulWidget {
 }
 
 class _SitesState extends State<Sites> {
-  String _selectedMenu = '';
+  PageController pageController = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,61 +32,30 @@ class _SitesState extends State<Sites> {
                   .push(MaterialPageRoute(builder: (_) => const NewSites()));
             },
           ),
-          PopupMenuButton<MenuSelection>(
-              // Callback that sets the selected popup menu item.
-              onSelected: _onPopupMenuSelected,
-              itemBuilder: (BuildContext context) =>
-                  <PopupMenuEntry<MenuSelection>>[
-                    const PopupMenuItem<MenuSelection>(
-                      value: MenuSelection.newSite,
-                      child: Text('Create a new site'),
-                    ),
-                    const PopupMenuItem<MenuSelection>(
-                      value: MenuSelection.pdfExport,
-                      child: Text('Export to PDF'),
-                    ),
-                    const PopupMenuItem<MenuSelection>(
-                      value: MenuSelection.deleteRecords,
-                      child: Text('Delete current record',
-                          style: TextStyle(color: Colors.red)),
-                    ),
-                    const PopupMenuItem<MenuSelection>(
-                      value: MenuSelection.deleteAllRecords,
-                      child: Text('Delete all note records',
-                          style: TextStyle(color: Colors.red)),
-                    ),
-                  ])
+          const SiteMenu(),
         ],
       ),
-      body: Center(
-        child: Text('Test popup menu: $_selectedMenu'),
+      body: SafeArea(
+        child: SiteViewer(
+          pageController: pageController,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
+      floatingActionButton: CustomNavButton(
+        pageController: pageController,
       ),
       bottomNavigationBar: const ProjectBottomNavbar(),
     );
   }
+}
 
-  void _onPopupMenuSelected(MenuSelection item) {
-    switch (item) {
-      case MenuSelection.newSite:
-        setState(() {
-          _selectedMenu = 'Create a new record';
-        });
-        break;
-      case MenuSelection.pdfExport:
-        setState(() {
-          _selectedMenu = 'Export to pdf';
-        });
-        break;
-      case MenuSelection.deleteRecords:
-        setState(() {
-          _selectedMenu = 'Delete current note record';
-        });
-        break;
-      case MenuSelection.deleteAllRecords:
-        setState(() {
-          _selectedMenu = 'Delete all note records';
-        });
-        break;
-    }
+class SiteViewer extends ConsumerWidget {
+  const SiteViewer({Key? key, required this.pageController}) : super(key: key);
+
+  final PageController pageController;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return const Text('');
   }
 }

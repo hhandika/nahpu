@@ -34,22 +34,19 @@ class NarrativeState extends ConsumerState<Narrative> {
         leading: const ProjectBackButton(),
       ),
       body: SafeArea(
-        child: ProjectOverview(
+        child: NarrativeViewer(
           pageController: pageController,
         ),
       ),
-      floatingActionButton: Visibility(
-        visible: true,
-        child: CustomNavButton(pageController: pageController),
-      ),
+      floatingActionButton: CustomNavButton(pageController: pageController),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
       bottomNavigationBar: const ProjectBottomNavbar(),
     );
   }
 }
 
-class ProjectOverview extends ConsumerWidget {
-  const ProjectOverview({Key? key, required this.pageController})
+class NarrativeViewer extends ConsumerWidget {
+  const NarrativeViewer({Key? key, required this.pageController})
       : super(key: key);
 
   final PageController pageController;
