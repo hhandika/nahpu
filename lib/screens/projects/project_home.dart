@@ -8,13 +8,10 @@ import 'package:nahpu/screens/collecting/new_coll_events.dart';
 import 'package:nahpu/screens/home.dart';
 
 import 'package:nahpu/screens/narrative/menu_bar.dart';
-import 'package:nahpu/screens/narrative/narrative.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
-import 'package:nahpu/screens/collecting/coll_events.dart';
+import 'package:nahpu/screens/shared/navbar.dart';
 import 'package:nahpu/screens/sites/new_sites.dart';
-import 'package:nahpu/screens/sites/sites.dart';
 import 'package:nahpu/screens/specimens/new_specimens.dart';
-import 'package:nahpu/screens/specimens/specimens.dart';
 import 'package:nahpu/screens/projects/project_info.dart';
 
 class ProjectHome extends ConsumerStatefulWidget {
@@ -27,11 +24,16 @@ class ProjectHome extends ConsumerStatefulWidget {
 }
 
 class ProjectHomeState extends ConsumerState<ProjectHome> {
-  final int _defaultIndex = 0;
+  // final int _defaultIndex = 0;
 
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -225,83 +227,8 @@ class ProjectHomeState extends ConsumerState<ProjectHome> {
               projectUuid: projectUuid,
             )
           ]),
-      bottomNavigationBar: NavigationBar(
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-        height: 65,
-        elevation: 10,
-        selectedIndex: _defaultIndex,
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(
-              Icons.home_rounded,
-            ),
-            label: 'Home',
-          ),
-          NavigationDestination(
-            icon: Icon(
-              Icons.place_rounded,
-            ),
-            label: 'Sites',
-          ),
-          NavigationDestination(
-            icon: Icon(
-              Icons.timeline,
-            ),
-            label: 'CollEvents',
-            tooltip: 'Collection Events',
-          ),
-          NavigationDestination(
-            icon: Icon(
-              Icons.pets_rounded,
-            ),
-            label: 'Specimens',
-          ),
-          NavigationDestination(
-            icon: Icon(
-              Icons.book_rounded,
-            ),
-            label: 'Narrative',
-          ),
-        ],
-        onDestinationSelected: (int index) {
-          setState(() {
-            _onItemTapped(index);
-          });
-        },
-      ),
+      bottomNavigationBar: const ProjectBottomNavbar(),
     );
-  }
-
-  void _onItemTapped(int index) {
-    switch (index) {
-      case 0:
-        break;
-      case 1:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const Specimens()),
-        );
-        break;
-      case 2:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const Sites()),
-        );
-        break;
-      case 3:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const CollEvents()),
-        );
-        break;
-      case 4:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const Narrative()),
-        );
-
-        break;
-    }
   }
 }
 
