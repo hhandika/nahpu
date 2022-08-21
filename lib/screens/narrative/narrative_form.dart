@@ -36,7 +36,7 @@ class NarrativeFormState extends ConsumerState<NarrativeForm>
         child: AdaptiveColumn(
       children: [
         AdaptiveContainer(
-            columnSpan: 4,
+            columnSpan: 12,
             child: Column(
               children: [
                 TextFormField(
