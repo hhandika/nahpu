@@ -18,3 +18,5 @@ final projectInfoProvider =
 });
 
 final projectUuidProvider = StateProvider<String>((ref) => '');
+
+final projectNavbarIndexProvider = StateProvider<int>((ref) => 0);

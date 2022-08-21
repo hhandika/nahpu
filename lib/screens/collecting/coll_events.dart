@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:nahpu/screens/shared/navbar.dart';
 
 enum MenuSelection { newEvent, pdfExport, deleteRecords, deleteAllRecords }
 
@@ -18,6 +20,7 @@ class _CollEventsState extends State<CollEvents> {
       appBar: AppBar(
         title: const Text("Collecting Events"),
         backgroundColor: Theme.of(context).colorScheme.primary,
+        leading: const ProjectBackButton(),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
@@ -55,6 +58,7 @@ class _CollEventsState extends State<CollEvents> {
       body: Center(
         child: Text('Test popup menu: $_selectedMenu'),
       ),
+      bottomNavigationBar: const ProjectBottomNavbar(),
     );
   }
 

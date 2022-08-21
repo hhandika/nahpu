@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:nahpu/screens/shared/navbar.dart';
 import 'package:nahpu/screens/sites/new_sites.dart';
 
 enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
@@ -19,6 +21,7 @@ class _SitesState extends State<Sites> {
       appBar: AppBar(
         title: const Text("Sites"),
         backgroundColor: Theme.of(context).colorScheme.primary,
+        leading: const ProjectBackButton(),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
@@ -56,6 +59,7 @@ class _SitesState extends State<Sites> {
       body: Center(
         child: Text('Test popup menu: $_selectedMenu'),
       ),
+      bottomNavigationBar: const ProjectBottomNavbar(),
     );
   }
 

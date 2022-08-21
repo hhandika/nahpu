@@ -1,28 +1,32 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:nahpu/providers/project.dart';
+
 import 'package:nahpu/screens/narrative/narrative.dart';
 import 'package:nahpu/screens/collecting/coll_events.dart';
 
 import 'package:nahpu/screens/sites/sites.dart';
 import 'package:nahpu/screens/specimens/specimens.dart';
+import 'package:nahpu/screens/projects/project_home.dart';
 
-class ProjectBottomNavbar extends StatefulWidget {
+class ProjectBottomNavbar extends ConsumerStatefulWidget {
   const ProjectBottomNavbar({Key? key}) : super(key: key);
 
   @override
-  State<ProjectBottomNavbar> createState() => _ProjectBottomNavbarState();
+  ProjectBottomNavbarState createState() => ProjectBottomNavbarState();
 }
 
-class _ProjectBottomNavbarState extends State<ProjectBottomNavbar> {
-  final int _defaultIndex = 0;
-
+class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
   @override
   Widget build(BuildContext context) {
+    int selectedIndex = ref.watch(projectNavbarIndexProvider.state).state;
     return NavigationBar(
       labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
       height: 65,
       elevation: 10,
-      selectedIndex: _defaultIndex,
+      selectedIndex: selectedIndex,
       destinations: const [
         NavigationDestination(
           icon: Icon(
@@ -57,9 +61,8 @@ class _ProjectBottomNavbarState extends State<ProjectBottomNavbar> {
         ),
       ],
       onDestinationSelected: (int index) {
-        setState(() {
-          _onItemTapped(index);
-        });
+        ref.read(projectNavbarIndexProvider.state).state = index;
+        _onItemTapped(index);
       },
     );
   }
@@ -67,23 +70,30 @@ class _ProjectBottomNavbarState extends State<ProjectBottomNavbar> {
   void _onItemTapped(int index) {
     switch (index) {
       case 0:
-        break;
-      case 1:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const Specimens()),
+          MaterialPageRoute(
+            builder: (context) => const ProjectHome(),
+          ),
         );
+
         break;
-      case 2:
+      case 1:
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const Sites()),
         );
         break;
-      case 3:
+      case 2:
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const CollEvents()),
+        );
+        break;
+      case 3:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const Specimens()),
         );
         break;
       case 4:
@@ -91,7 +101,6 @@ class _ProjectBottomNavbarState extends State<ProjectBottomNavbar> {
           context,
           MaterialPageRoute(builder: (context) => const Narrative()),
         );
-
         break;
     }
   }
