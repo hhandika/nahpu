@@ -39,7 +39,7 @@ class NarrativeState extends ConsumerState<Narrative> {
         ),
       ),
       floatingActionButton: Visibility(
-        visible: MediaQuery.of(context).size.width < 1200,
+        visible: true,
         child: CustomNavButton(pageController: pageController),
       ),
       bottomNavigationBar: const ProjectBottomNavbar(),

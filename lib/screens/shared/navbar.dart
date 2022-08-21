@@ -23,9 +23,9 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
   Widget build(BuildContext context) {
     int selectedIndex = ref.watch(projectNavbarIndexProvider.state).state;
     return NavigationBar(
-      labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-      height: 65,
+      labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
       elevation: 10,
+      animationDuration: const Duration(seconds: 2),
       selectedIndex: selectedIndex,
       destinations: const [
         NavigationDestination(
