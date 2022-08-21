@@ -42,6 +42,7 @@ class NarrativeState extends ConsumerState<Narrative> {
         visible: true,
         child: CustomNavButton(pageController: pageController),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
       bottomNavigationBar: const ProjectBottomNavbar(),
     );
   }

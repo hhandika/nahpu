@@ -34,7 +34,6 @@ class CustomNavButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         FloatingActionButton(
           heroTag: 'previous',
