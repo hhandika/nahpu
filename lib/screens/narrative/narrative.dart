@@ -2,15 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:nahpu/providers/narrative.dart';
-// import 'package:nahpu/providers/project.dart';
+import 'package:nahpu/providers/project.dart';
+
 import 'package:nahpu/screens/narrative/menu_bar.dart';
 import 'package:nahpu/screens/narrative/narrative_form.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
-// import 'package:nahpu/screens/sites/sites.dart';
-// import 'package:nahpu/screens/collecting/coll_events.dart';
-
-// import 'package:nahpu/screens/specimens/specimens.dart';
 
 enum MenuSelection { newNote, pdfExport, deleteRecords, deleteAllRecords }
 
@@ -22,6 +19,8 @@ class Narrative extends ConsumerStatefulWidget {
 }
 
 class NarrativeState extends ConsumerState<Narrative> {
+  PageController pageController = PageController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,8 +33,14 @@ class NarrativeState extends ConsumerState<Narrative> {
         ],
         leading: const ProjectBackButton(),
       ),
-      body: const SafeArea(
-        child: ProjectOverview(),
+      body: SafeArea(
+        child: ProjectOverview(
+          pageController: pageController,
+        ),
+      ),
+      floatingActionButton: Visibility(
+        visible: MediaQuery.of(context).size.width < 1200,
+        child: CustomNavButton(pageController: pageController),
       ),
       bottomNavigationBar: const ProjectBottomNavbar(),
     );
@@ -43,21 +48,26 @@ class NarrativeState extends ConsumerState<Narrative> {
 }
 
 class ProjectOverview extends ConsumerWidget {
-  const ProjectOverview({Key? key}) : super(key: key);
+  const ProjectOverview({Key? key, required this.pageController})
+      : super(key: key);
+
+  final PageController pageController;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final narrativeEntries = ref.watch(narrativeEntryProvider);
-    final PageController pageController = PageController();
+
     return Center(
       child: narrativeEntries.when(
         data: (narrativeEntries) {
           if (narrativeEntries.isEmpty) {
             return const Text("No narrative entries");
           } else {
+            int narrativeSize = narrativeEntries.length;
+            ref.watch(pageCountProvider.state).state = narrativeSize;
             return PageView.builder(
               controller: pageController,
-              itemCount: narrativeEntries.length,
+              itemCount: narrativeSize,
               itemBuilder: (context, index) {
                 return NarrativeForm(
                   narrativeId: narrativeEntries[index].id,
