@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:nahpu/providers/narrative.dart';
+import 'package:nahpu/providers/project.dart';
 
 import 'package:nahpu/screens/narrative/menu_bar.dart';
 import 'package:nahpu/screens/narrative/narrative_form.dart';
@@ -19,9 +20,11 @@ class Narrative extends ConsumerStatefulWidget {
 
 class NarrativeState extends ConsumerState<Narrative> {
   PageController pageController = PageController();
+  bool isVisible = false;
 
   @override
   Widget build(BuildContext context) {
+    final narrativeEntries = ref.watch(narrativeEntryProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Narrative"),
@@ -33,54 +36,46 @@ class NarrativeState extends ConsumerState<Narrative> {
         leading: const ProjectBackButton(),
       ),
       body: SafeArea(
-        child: NarrativeViewer(
+        child: Center(
+          child: narrativeEntries.when(
+            data: (narrativeEntries) {
+              if (narrativeEntries.isEmpty) {
+                return const Text("No narrative entries");
+              } else {
+                int narrativeSize = narrativeEntries.length;
+                setState(() {
+                  isVisible = true;
+                });
+                return PageView.builder(
+                  controller: pageController,
+                  itemCount: narrativeSize,
+                  itemBuilder: (context, index) {
+                    return NarrativeForm(
+                      narrativeId: narrativeEntries[index].id,
+                      dateController: TextEditingController(
+                          text: narrativeEntries[index].date),
+                      siteController: TextEditingController(
+                          text: narrativeEntries[index].siteID),
+                      narrativeController: TextEditingController(
+                          text: narrativeEntries[index].narrative),
+                    );
+                  },
+                );
+              }
+            },
+            loading: () => const CircularProgressIndicator(),
+            error: (error, stack) => Text(error.toString()),
+          ),
+        ),
+      ),
+      floatingActionButton: Visibility(
+        visible: isVisible,
+        child: CustomNavButton(
           pageController: pageController,
         ),
       ),
-      floatingActionButton: CustomNavButton(pageController: pageController),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
       bottomNavigationBar: const ProjectBottomNavbar(),
-    );
-  }
-}
-
-class NarrativeViewer extends ConsumerWidget {
-  const NarrativeViewer({Key? key, required this.pageController})
-      : super(key: key);
-
-  final PageController pageController;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final narrativeEntries = ref.watch(narrativeEntryProvider);
-
-    return Center(
-      child: narrativeEntries.when(
-        data: (narrativeEntries) {
-          if (narrativeEntries.isEmpty) {
-            return const Text("No narrative entries");
-          } else {
-            int narrativeSize = narrativeEntries.length;
-            return PageView.builder(
-              controller: pageController,
-              itemCount: narrativeSize,
-              itemBuilder: (context, index) {
-                return NarrativeForm(
-                  narrativeId: narrativeEntries[index].id,
-                  dateController:
-                      TextEditingController(text: narrativeEntries[index].date),
-                  siteController: TextEditingController(
-                      text: narrativeEntries[index].siteID),
-                  narrativeController: TextEditingController(
-                      text: narrativeEntries[index].narrative),
-                );
-              },
-            );
-          }
-        },
-        loading: () => const CircularProgressIndicator(),
-        error: (error, stack) => Text(error.toString()),
-      ),
     );
   }
 }
