@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:adaptive_components/adaptive_components.dart';
 
 import 'package:drift/drift.dart' as db;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,51 +33,60 @@ class NarrativeFormState extends ConsumerState<NarrativeForm>
   Widget build(BuildContext context) {
     super.build(context);
     return SingleChildScrollView(
-        child: Column(
+        child: AdaptiveColumn(
       children: [
-        TextFormField(
-          decoration: const InputDecoration(
-            labelText: 'Date',
-            hintText: 'Enter date',
-          ),
-          controller: widget.dateController,
-          onTap: () async {
-            showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime.now())
-                .then((date) {
-              if (date != null) {
-                widget.dateController.text = DateFormat.yMMMd().format(date);
-                _updateNarrative(NarrativeCompanion(
-                    date: db.Value(widget.dateController.text)));
-              }
-            });
-          },
-        ),
-        TextFormField(
-          controller: widget.siteController,
-          decoration: const InputDecoration(
-            labelText: 'Site ID',
-            hintText: 'Enter a site',
-          ),
-          onChanged: (value) {
-            _updateNarrative(NarrativeCompanion(siteID: db.Value(value)));
-          },
-        ),
-        TextFormField(
-          controller: widget.narrativeController,
-          maxLines: 10,
-          decoration: const InputDecoration(
-            labelText: 'Narrative',
-            hintText: 'Enter narrative',
-          ),
-          onChanged: (value) {
-            _updateNarrative(NarrativeCompanion(narrative: db.Value(value)));
-          },
-        ),
-        const MediaForm(),
+        AdaptiveContainer(
+            columnSpan: 4,
+            child: Column(
+              children: [
+                TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Date',
+                    hintText: 'Enter date',
+                  ),
+                  controller: widget.dateController,
+                  onTap: () async {
+                    showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime.now())
+                        .then((date) {
+                      if (date != null) {
+                        widget.dateController.text =
+                            DateFormat.yMMMd().format(date);
+                        _updateNarrative(NarrativeCompanion(
+                            date: db.Value(widget.dateController.text)));
+                      }
+                    });
+                  },
+                ),
+                TextFormField(
+                  controller: widget.siteController,
+                  decoration: const InputDecoration(
+                    labelText: 'Site ID',
+                    hintText: 'Enter a site',
+                  ),
+                  onChanged: (value) {
+                    _updateNarrative(
+                        NarrativeCompanion(siteID: db.Value(value)));
+                  },
+                ),
+                TextFormField(
+                  controller: widget.narrativeController,
+                  maxLines: 10,
+                  decoration: const InputDecoration(
+                    labelText: 'Narrative',
+                    hintText: 'Enter narrative',
+                  ),
+                  onChanged: (value) {
+                    _updateNarrative(
+                        NarrativeCompanion(narrative: db.Value(value)));
+                  },
+                ),
+                const MediaForm(),
+              ],
+            ))
       ],
     ));
   }
