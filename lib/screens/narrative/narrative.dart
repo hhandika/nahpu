@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:nahpu/providers/narrative.dart';
-import 'package:nahpu/providers/project.dart';
 
 import 'package:nahpu/screens/narrative/menu_bar.dart';
 import 'package:nahpu/screens/narrative/narrative_form.dart';
@@ -62,7 +61,6 @@ class NarrativeViewer extends ConsumerWidget {
             return const Text("No narrative entries");
           } else {
             int narrativeSize = narrativeEntries.length;
-            ref.watch(pageCountProvider.state).state = narrativeSize;
             return PageView.builder(
               controller: pageController,
               itemCount: narrativeSize,

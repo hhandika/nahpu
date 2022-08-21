@@ -20,5 +20,3 @@ final projectInfoProvider =
 final projectUuidProvider = StateProvider<String>((ref) => '');
 
 final projectNavbarIndexProvider = StateProvider<int>((ref) => 0);
-
-final pageCountProvider = StateProvider<int>((ref) => 0);
