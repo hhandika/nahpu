@@ -71,8 +71,8 @@ class Database extends _$Database {
   // Site table
   Future<int> createSite(SiteCompanion form) => into(site).insert(form);
 
-  Future updateSiteEntry(String siteId, SiteCompanion entry) {
-    return (update(site)..where((t) => t.siteID.equals(siteId))).write(entry);
+  Future updateSiteEntry(int id, SiteCompanion entry) {
+    return (update(site)..where((t) => t.id.equals(id))).write(entry);
   }
 
   Future<List<SiteData>> getAllSites(String projectUuid) {

@@ -4,7 +4,7 @@ import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
 import 'package:nahpu/screens/sites/menu_bar.dart';
-import 'package:nahpu/screens/sites/new_sites.dart';
+import 'package:nahpu/screens/sites/site_form.dart';
 
 enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
 
@@ -34,15 +34,9 @@ class SitesState extends ConsumerState<Sites> {
         title: const Text("Sites"),
         backgroundColor: Theme.of(context).colorScheme.primary,
         leading: const ProjectBackButton(),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => const NewSites()));
-            },
-          ),
-          const SiteMenu(),
+        actions: const [
+          NewSite(),
+          SiteMenu(),
         ],
       ),
       body: SafeArea(
@@ -67,10 +61,22 @@ class SitesState extends ConsumerState<Sites> {
                 controller: pageController,
                 itemCount: siteSize,
                 itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      Text(siteEntries[index].id.toString()),
-                    ],
+                  return SiteForm(
+                    id: siteEntries[index].id,
+                    siteIDController:
+                        TextEditingController(text: siteEntries[index].siteID),
+                    siteTypeController: TextEditingController(
+                        text: siteEntries[index].siteType),
+                    countryController:
+                        TextEditingController(text: siteEntries[index].country),
+                    stateProvinceController: TextEditingController(
+                        text: siteEntries[index].stateProvince),
+                    countyController:
+                        TextEditingController(text: siteEntries[index].county),
+                    municipalityController: TextEditingController(
+                        text: siteEntries[index].municipality),
+                    localityController: TextEditingController(
+                        text: siteEntries[index].locality),
                   );
                 },
                 onPageChanged: (value) => ref

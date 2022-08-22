@@ -1,15 +1,16 @@
 import 'package:adaptive_components/adaptive_components.dart';
 import 'package:flutter/material.dart';
-
+import 'package:drift/drift.dart' as db;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:nahpu/database/database.dart';
-// import 'package:nahpu/providers/project.dart';
+import 'package:nahpu/database/database.dart';
+import 'package:nahpu/providers/project.dart';
 
 enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
 
 class SiteForm extends ConsumerStatefulWidget {
   const SiteForm({
     Key? key,
+    required this.id,
     required this.siteIDController,
     required this.siteTypeController,
     required this.countryController,
@@ -19,6 +20,7 @@ class SiteForm extends ConsumerStatefulWidget {
     required this.localityController,
   }) : super(key: key);
 
+  final int id;
   final TextEditingController siteIDController;
   final TextEditingController siteTypeController;
   final TextEditingController countryController;
@@ -61,6 +63,9 @@ class SiteFormState extends ConsumerState<SiteForm>
                 labelText: 'Site ID',
                 hintText: 'Enter a site',
               ),
+              onChanged: (value) {
+                _updateSite(widget.id, SiteCompanion(siteID: db.Value(value)));
+              },
             ),
             TextFormField(
               decoration: const InputDecoration(
@@ -75,30 +80,35 @@ class SiteFormState extends ConsumerState<SiteForm>
               ),
             ),
             TextFormField(
+              controller: widget.countryController,
               decoration: const InputDecoration(
                 labelText: 'Country',
                 hintText: 'Enter a country location',
               ),
             ),
             TextFormField(
+              controller: widget.stateProvinceController,
               decoration: const InputDecoration(
                 labelText: 'State/Province',
                 hintText: 'Enter a state/province location',
               ),
             ),
             TextFormField(
+              controller: widget.countyController,
               decoration: const InputDecoration(
                 labelText: 'County',
                 hintText: 'Enter a county name',
               ),
             ),
             TextFormField(
+              controller: widget.municipalityController,
               decoration: const InputDecoration(
                 labelText: 'Municipality',
                 hintText: 'Enter a municipality name',
               ),
             ),
             TextFormField(
+              controller: widget.localityController,
               maxLines: 5,
               decoration: const InputDecoration(
                 labelText: 'Locality',
@@ -161,7 +171,7 @@ class SiteFormState extends ConsumerState<SiteForm>
     ));
   }
 
-  // void _updateSite(String siteID, SiteCompanion site) {
-  //   ref.read(databaseProvider).updateSiteEntry(siteID, site);
-  // }
+  void _updateSite(int id, SiteCompanion site) {
+    ref.read(databaseProvider).updateSiteEntry(id, site);
+  }
 }

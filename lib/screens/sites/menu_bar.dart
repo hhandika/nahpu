@@ -1,8 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:drift/drift.dart' as db;
 import 'package:nahpu/providers/project.dart';
+import 'package:nahpu/database/database.dart';
+import 'package:nahpu/screens/sites/new_sites.dart';
 
 enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
+
+Future<void> createNewSite(BuildContext context, WidgetRef ref) {
+  String projectUuid = ref.watch(projectUuidProvider.state).state;
+
+  return ref
+      .read(databaseProvider)
+      .createSite(SiteCompanion(
+        projectUuid: db.Value(projectUuid),
+      ))
+      .then((value) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => NewSites(
+              id: value,
+            )));
+  });
+}
 
 class NewSite extends ConsumerWidget {
   const NewSite({Key? key}) : super(key: key);
@@ -12,7 +31,7 @@ class NewSite extends ConsumerWidget {
     return IconButton(
       icon: const Icon(Icons.add_rounded),
       onPressed: () async {
-        // createNewNarrative(context, ref);
+        createNewSite(context, ref);
       },
     );
   }

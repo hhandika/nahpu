@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:nahpu/models/site_form.dart';
+import 'package:nahpu/screens/sites/menu_bar.dart';
 import 'package:nahpu/screens/sites/site_form.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/providers/page_viewer.dart';
+import 'package:nahpu/screens/sites/sites.dart';
 
 enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
 
-class NewSites extends StatefulWidget {
-  const NewSites({Key? key}) : super(key: key);
+class NewSites extends ConsumerStatefulWidget {
+  const NewSites({Key? key, required this.id}) : super(key: key);
+
+  final int id;
 
   @override
-  State<NewSites> createState() => _NewSitesState();
+  NewSitesState createState() => NewSitesState();
 }
 
-class _NewSitesState extends State<NewSites> with TickerProviderStateMixin {
-  // String _selectedMenu = '';
-
+class NewSitesState extends ConsumerState<NewSites>
+    with TickerProviderStateMixin {
   final siteIdController = TextEditingController();
   late TabController _tabController;
 
@@ -37,12 +42,19 @@ class _NewSitesState extends State<NewSites> with TickerProviderStateMixin {
       appBar: AppBar(
         title: const Text("New Sites"),
         backgroundColor: Theme.of(context).colorScheme.primary,
+        leading: BackButton(
+          onPressed: () {
+            ref.refresh(pageNavigationProvider);
+            ref.refresh(siteEntryProvider);
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const Sites()));
+          },
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
-              // Navigator.of(context)
-              //     .push(MaterialPageRoute(builder: (_) => const Search()));
+              createNewSite(context, ref);
             },
           ),
           PopupMenuButton<MenuSelection>(
@@ -73,6 +85,7 @@ class _NewSitesState extends State<NewSites> with TickerProviderStateMixin {
       ),
       body: SafeArea(
           child: SiteForm(
+              id: widget.id,
               siteIDController: siteFormCtrl.siteIDController,
               siteTypeController: siteFormCtrl.siteTypeController,
               countryController: siteFormCtrl.countryController,

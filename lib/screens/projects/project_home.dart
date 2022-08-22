@@ -7,10 +7,10 @@ import 'package:nahpu/providers/project.dart';
 import 'package:nahpu/screens/collecting/new_coll_events.dart';
 import 'package:nahpu/screens/home.dart';
 
-import 'package:nahpu/screens/narrative/menu_bar.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
-import 'package:nahpu/screens/sites/new_sites.dart';
+import 'package:nahpu/screens/sites/menu_bar.dart';
+import 'package:nahpu/screens/narrative/menu_bar.dart';
 import 'package:nahpu/screens/specimens/new_specimens.dart';
 import 'package:nahpu/screens/projects/project_info.dart';
 
@@ -24,8 +24,6 @@ class ProjectHome extends ConsumerStatefulWidget {
 }
 
 class ProjectHomeState extends ConsumerState<ProjectHome> {
-  // final int _defaultIndex = 0;
-
   @override
   void initState() {
     super.initState();
@@ -64,11 +62,8 @@ class ProjectHomeState extends ConsumerState<ProjectHome> {
                 color: Theme.of(context).colorScheme.onInverseSurface),
             backgroundColor: Theme.of(context).colorScheme.secondary,
             label: 'New Sites',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const NewSites()),
-              );
+            onTap: () async {
+              await createNewSite(context, ref);
             },
           ),
           SpeedDialChild(
