@@ -59,8 +59,7 @@ class NarrativeState extends ConsumerState<Narrative> {
                   }
                   ref.watch(pageNavigationProvider.notifier).state.pageCounts =
                       narrativeSize;
-                  pageController =
-                      PageController(initialPage: narrativeSize - 1);
+                  pageController = PageController(initialPage: narrativeSize);
                   // view last page first
                 });
                 return PageView.builder(

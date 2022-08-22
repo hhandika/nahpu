@@ -63,6 +63,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
       ],
       onDestinationSelected: (int index) {
         ref.read(projectNavbarIndexProvider.state).state = index;
+        ref.refresh(pageNavigationProvider);
         _onItemTapped(index);
       },
     );
@@ -81,7 +82,6 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
         break;
       case 1:
         ref.refresh(siteEntryProvider);
-        ref.refresh(pageNavigationProvider);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const Sites()),
@@ -101,7 +101,6 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
         break;
       case 4:
         ref.refresh(narrativeEntryProvider);
-        ref.refresh(pageNavigationProvider);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const Narrative()),
