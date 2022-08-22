@@ -42,7 +42,7 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
                     hintText: 'Enter date',
                   ),
                   controller: widget.dateController,
-                  onTap: () async {
+                  onTap: () {
                     showDatePicker(
                             context: context,
                             initialDate: DateTime.now(),
@@ -90,7 +90,7 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
 
   void _updateNarrative(NarrativeCompanion entries) {
     ref
-        .watch(databaseProvider)
+        .read(databaseProvider)
         .updateNarrativeEntry(widget.narrativeId, entries);
   }
 }
@@ -105,7 +105,6 @@ class MediaForm extends ConsumerStatefulWidget {
 class MediaFormState extends ConsumerState<MediaForm>
     with TickerProviderStateMixin {
   late TabController _tabController;
-  // final int _selectedIndex = 0;
 
   @override
   void initState() {

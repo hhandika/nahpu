@@ -2,6 +2,8 @@ import 'package:adaptive_components/adaptive_components.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'package:nahpu/database/database.dart';
+// import 'package:nahpu/providers/project.dart';
 
 enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
 
@@ -32,7 +34,6 @@ class SiteForm extends ConsumerStatefulWidget {
 class SiteFormState extends ConsumerState<SiteForm>
     with TickerProviderStateMixin {
   late TabController _tabController;
-  // final int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -55,6 +56,7 @@ class SiteFormState extends ConsumerState<SiteForm>
           columnSpan: 12,
           child: Column(children: [
             TextFormField(
+              controller: widget.siteIDController,
               decoration: const InputDecoration(
                 labelText: 'Site ID',
                 hintText: 'Enter a site',
@@ -158,4 +160,8 @@ class SiteFormState extends ConsumerState<SiteForm>
       ],
     ));
   }
+
+  // void _updateSite(String siteID, SiteCompanion site) {
+  //   ref.read(databaseProvider).updateSiteEntry(siteID, site);
+  // }
 }

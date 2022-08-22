@@ -16,7 +16,8 @@ CREATE TABLE project (
 );
 
 CREATE TABLE site (
-    siteID TEXT NOT NULL PRIMARY KEY,
+    id INT NOT NULL PRIMARY KEY,
+    siteID TEXT,
     projectUuid TEXT,
     leadStuff TEXT,
     siteType TEXT,
