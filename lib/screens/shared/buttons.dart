@@ -37,11 +37,11 @@ class CustomNavButton extends ConsumerWidget {
     return Container(
       decoration: BoxDecoration(
           border: Border.all(color: Colors.transparent),
-          color: Theme.of(context).colorScheme.primary,
+          color: Theme.of(context).colorScheme.tertiaryContainer,
           borderRadius: const BorderRadius.all(Radius.circular(20))),
-      constraints: const BoxConstraints(
-        maxHeight: 50,
-        maxWidth: 200,
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.05,
+        maxWidth: 220,
       ),
       child: Row(
         children: [
