@@ -1133,7 +1133,8 @@ class Photo extends Table with TableInfo<Photo, PhotoData> {
 }
 
 class SiteData extends DataClass implements Insertable<SiteData> {
-  final String siteID;
+  final int id;
+  final String? siteID;
   final String? projectUuid;
   final String? leadStuff;
   final String? siteType;
@@ -1144,7 +1145,8 @@ class SiteData extends DataClass implements Insertable<SiteData> {
   final String? locality;
   final int? photoID;
   SiteData(
-      {required this.siteID,
+      {required this.id,
+      this.siteID,
       this.projectUuid,
       this.leadStuff,
       this.siteType,
@@ -1157,8 +1159,10 @@ class SiteData extends DataClass implements Insertable<SiteData> {
   factory SiteData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return SiteData(
+      id: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       siteID: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}siteID'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}siteID']),
       projectUuid: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}projectUuid']),
       leadStuff: const StringType()
@@ -1182,7 +1186,10 @@ class SiteData extends DataClass implements Insertable<SiteData> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['siteID'] = Variable<String>(siteID);
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || siteID != null) {
+      map['siteID'] = Variable<String?>(siteID);
+    }
     if (!nullToAbsent || projectUuid != null) {
       map['projectUuid'] = Variable<String?>(projectUuid);
     }
@@ -1215,7 +1222,9 @@ class SiteData extends DataClass implements Insertable<SiteData> {
 
   SiteCompanion toCompanion(bool nullToAbsent) {
     return SiteCompanion(
-      siteID: Value(siteID),
+      id: Value(id),
+      siteID:
+          siteID == null && nullToAbsent ? const Value.absent() : Value(siteID),
       projectUuid: projectUuid == null && nullToAbsent
           ? const Value.absent()
           : Value(projectUuid),
@@ -1249,7 +1258,8 @@ class SiteData extends DataClass implements Insertable<SiteData> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return SiteData(
-      siteID: serializer.fromJson<String>(json['siteID']),
+      id: serializer.fromJson<int>(json['id']),
+      siteID: serializer.fromJson<String?>(json['siteID']),
       projectUuid: serializer.fromJson<String?>(json['projectUuid']),
       leadStuff: serializer.fromJson<String?>(json['leadStuff']),
       siteType: serializer.fromJson<String?>(json['siteType']),
@@ -1265,7 +1275,8 @@ class SiteData extends DataClass implements Insertable<SiteData> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'siteID': serializer.toJson<String>(siteID),
+      'id': serializer.toJson<int>(id),
+      'siteID': serializer.toJson<String?>(siteID),
       'projectUuid': serializer.toJson<String?>(projectUuid),
       'leadStuff': serializer.toJson<String?>(leadStuff),
       'siteType': serializer.toJson<String?>(siteType),
@@ -1279,7 +1290,8 @@ class SiteData extends DataClass implements Insertable<SiteData> {
   }
 
   SiteData copyWith(
-          {String? siteID,
+          {int? id,
+          String? siteID,
           String? projectUuid,
           String? leadStuff,
           String? siteType,
@@ -1290,6 +1302,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
           String? locality,
           int? photoID}) =>
       SiteData(
+        id: id ?? this.id,
         siteID: siteID ?? this.siteID,
         projectUuid: projectUuid ?? this.projectUuid,
         leadStuff: leadStuff ?? this.leadStuff,
@@ -1304,6 +1317,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
   @override
   String toString() {
     return (StringBuffer('SiteData(')
+          ..write('id: $id, ')
           ..write('siteID: $siteID, ')
           ..write('projectUuid: $projectUuid, ')
           ..write('leadStuff: $leadStuff, ')
@@ -1319,12 +1333,13 @@ class SiteData extends DataClass implements Insertable<SiteData> {
   }
 
   @override
-  int get hashCode => Object.hash(siteID, projectUuid, leadStuff, siteType,
+  int get hashCode => Object.hash(id, siteID, projectUuid, leadStuff, siteType,
       country, stateProvince, county, municipality, locality, photoID);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is SiteData &&
+          other.id == this.id &&
           other.siteID == this.siteID &&
           other.projectUuid == this.projectUuid &&
           other.leadStuff == this.leadStuff &&
@@ -1338,7 +1353,8 @@ class SiteData extends DataClass implements Insertable<SiteData> {
 }
 
 class SiteCompanion extends UpdateCompanion<SiteData> {
-  final Value<String> siteID;
+  final Value<int> id;
+  final Value<String?> siteID;
   final Value<String?> projectUuid;
   final Value<String?> leadStuff;
   final Value<String?> siteType;
@@ -1349,6 +1365,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
   final Value<String?> locality;
   final Value<int?> photoID;
   const SiteCompanion({
+    this.id = const Value.absent(),
     this.siteID = const Value.absent(),
     this.projectUuid = const Value.absent(),
     this.leadStuff = const Value.absent(),
@@ -1361,7 +1378,8 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
     this.photoID = const Value.absent(),
   });
   SiteCompanion.insert({
-    required String siteID,
+    this.id = const Value.absent(),
+    this.siteID = const Value.absent(),
     this.projectUuid = const Value.absent(),
     this.leadStuff = const Value.absent(),
     this.siteType = const Value.absent(),
@@ -1371,9 +1389,10 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
     this.municipality = const Value.absent(),
     this.locality = const Value.absent(),
     this.photoID = const Value.absent(),
-  }) : siteID = Value(siteID);
+  });
   static Insertable<SiteData> custom({
-    Expression<String>? siteID,
+    Expression<int>? id,
+    Expression<String?>? siteID,
     Expression<String?>? projectUuid,
     Expression<String?>? leadStuff,
     Expression<String?>? siteType,
@@ -1385,6 +1404,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
     Expression<int?>? photoID,
   }) {
     return RawValuesInsertable({
+      if (id != null) 'id': id,
       if (siteID != null) 'siteID': siteID,
       if (projectUuid != null) 'projectUuid': projectUuid,
       if (leadStuff != null) 'leadStuff': leadStuff,
@@ -1399,7 +1419,8 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
   }
 
   SiteCompanion copyWith(
-      {Value<String>? siteID,
+      {Value<int>? id,
+      Value<String?>? siteID,
       Value<String?>? projectUuid,
       Value<String?>? leadStuff,
       Value<String?>? siteType,
@@ -1410,6 +1431,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
       Value<String?>? locality,
       Value<int?>? photoID}) {
     return SiteCompanion(
+      id: id ?? this.id,
       siteID: siteID ?? this.siteID,
       projectUuid: projectUuid ?? this.projectUuid,
       leadStuff: leadStuff ?? this.leadStuff,
@@ -1426,8 +1448,11 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
     if (siteID.present) {
-      map['siteID'] = Variable<String>(siteID.value);
+      map['siteID'] = Variable<String?>(siteID.value);
     }
     if (projectUuid.present) {
       map['projectUuid'] = Variable<String?>(projectUuid.value);
@@ -1462,6 +1487,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
   @override
   String toString() {
     return (StringBuffer('SiteCompanion(')
+          ..write('id: $id, ')
           ..write('siteID: $siteID, ')
           ..write('projectUuid: $projectUuid, ')
           ..write('leadStuff: $leadStuff, ')
@@ -1482,12 +1508,18 @@ class Site extends Table with TableInfo<Site, SiteData> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   Site(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _siteIDMeta = const VerificationMeta('siteID');
   late final GeneratedColumn<String?> siteID = GeneratedColumn<String?>(
-      'siteID', aliasedName, false,
+      'siteID', aliasedName, true,
       type: const StringType(),
-      requiredDuringInsert: true,
-      $customConstraints: 'NOT NULL PRIMARY KEY');
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _projectUuidMeta =
       const VerificationMeta('projectUuid');
   late final GeneratedColumn<String?> projectUuid = GeneratedColumn<String?>(
@@ -1547,6 +1579,7 @@ class Site extends Table with TableInfo<Site, SiteData> {
       $customConstraints: 'REFERENCES photo(id)');
   @override
   List<GeneratedColumn> get $columns => [
+        id,
         siteID,
         projectUuid,
         leadStuff,
@@ -1567,11 +1600,12 @@ class Site extends Table with TableInfo<Site, SiteData> {
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
     if (data.containsKey('siteID')) {
       context.handle(_siteIDMeta,
           siteID.isAcceptableOrUnknown(data['siteID']!, _siteIDMeta));
-    } else if (isInserting) {
-      context.missing(_siteIDMeta);
     }
     if (data.containsKey('projectUuid')) {
       context.handle(
@@ -1619,7 +1653,7 @@ class Site extends Table with TableInfo<Site, SiteData> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {siteID};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   SiteData map(Map<String, dynamic> data, {String? tablePrefix}) {
     return SiteData.fromData(data,
@@ -2106,7 +2140,7 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
 }
 
 class CollEventData extends DataClass implements Insertable<CollEventData> {
-  final String id;
+  final int id;
   final String? projectUuid;
   final String? startDate;
   final String? startTime;
@@ -2128,7 +2162,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
   factory CollEventData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return CollEventData(
-      id: const StringType()
+      id: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       projectUuid: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}projectUuid']),
@@ -2151,7 +2185,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id'] = Variable<String>(id);
+    map['id'] = Variable<int>(id);
     if (!nullToAbsent || projectUuid != null) {
       map['projectUuid'] = Variable<String?>(projectUuid);
     }
@@ -2212,7 +2246,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return CollEventData(
-      id: serializer.fromJson<String>(json['id']),
+      id: serializer.fromJson<int>(json['id']),
       projectUuid: serializer.fromJson<String?>(json['projectUuid']),
       startDate: serializer.fromJson<String?>(json['startDate']),
       startTime: serializer.fromJson<String?>(json['startTime']),
@@ -2228,7 +2262,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<String>(id),
+      'id': serializer.toJson<int>(id),
       'projectUuid': serializer.toJson<String?>(projectUuid),
       'startDate': serializer.toJson<String?>(startDate),
       'startTime': serializer.toJson<String?>(startTime),
@@ -2241,7 +2275,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
   }
 
   CollEventData copyWith(
-          {String? id,
+          {int? id,
           String? projectUuid,
           String? startDate,
           String? startTime,
@@ -2296,7 +2330,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
 }
 
 class CollEventCompanion extends UpdateCompanion<CollEventData> {
-  final Value<String> id;
+  final Value<int> id;
   final Value<String?> projectUuid;
   final Value<String?> startDate;
   final Value<String?> startTime;
@@ -2317,7 +2351,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
     this.siteID = const Value.absent(),
   });
   CollEventCompanion.insert({
-    required String id,
+    this.id = const Value.absent(),
     this.projectUuid = const Value.absent(),
     this.startDate = const Value.absent(),
     this.startTime = const Value.absent(),
@@ -2326,9 +2360,9 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
     this.primaryCollMethod = const Value.absent(),
     this.collMethodNotes = const Value.absent(),
     this.siteID = const Value.absent(),
-  }) : id = Value(id);
+  });
   static Insertable<CollEventData> custom({
-    Expression<String>? id,
+    Expression<int>? id,
     Expression<String?>? projectUuid,
     Expression<String?>? startDate,
     Expression<String?>? startTime,
@@ -2352,7 +2386,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
   }
 
   CollEventCompanion copyWith(
-      {Value<String>? id,
+      {Value<int>? id,
       Value<String?>? projectUuid,
       Value<String?>? startDate,
       Value<String?>? startTime,
@@ -2378,7 +2412,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (id.present) {
-      map['id'] = Variable<String>(id.value);
+      map['id'] = Variable<int>(id.value);
     }
     if (projectUuid.present) {
       map['projectUuid'] = Variable<String?>(projectUuid.value);
@@ -2430,11 +2464,11 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
   final String? _alias;
   CollEvent(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
       'id', aliasedName, false,
-      type: const StringType(),
-      requiredDuringInsert: true,
-      $customConstraints: 'NOT NULL PRIMARY KEY');
+      type: const IntType(),
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _projectUuidMeta =
       const VerificationMeta('projectUuid');
   late final GeneratedColumn<String?> projectUuid = GeneratedColumn<String?>(
@@ -2509,8 +2543,6 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    } else if (isInserting) {
-      context.missing(_idMeta);
     }
     if (data.containsKey('projectUuid')) {
       context.handle(

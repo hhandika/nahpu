@@ -92,7 +92,7 @@ class Database extends _$Database {
   Future<int> createCollectingEvent(CollEventCompanion form) =>
       into(collEvent).insert(form);
 
-  Future updateCollectingEventEntry(String id, CollEventCompanion entry) {
+  Future updateCollectingEventEntry(int id, CollEventCompanion entry) {
     return (update(collEvent)..where((t) => t.id.equals(id))).write(entry);
   }
 
@@ -101,7 +101,7 @@ class Database extends _$Database {
         .get();
   }
 
-  Future<void> deleteCollectingEvent(String id) {
+  Future<void> deleteCollectingEvent(int id) {
     return (delete(collEvent)..where((t) => t.id.equals(id))).go();
   }
 

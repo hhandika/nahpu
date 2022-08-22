@@ -16,7 +16,7 @@ CREATE TABLE project (
 );
 
 CREATE TABLE site (
-    id INT NOT NULL PRIMARY KEY,
+    id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
     siteID TEXT,
     projectUuid TEXT,
     leadStuff TEXT,
@@ -41,7 +41,7 @@ CREATE TABLE coordinate (
 );
 
 CREATE TABLE collEvent (
-    id TEXT NOT NULL PRIMARY KEY,
+    id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
     projectUuid TEXT,
     startDate TEXT,
     startTime TEXT,
