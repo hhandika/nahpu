@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nahpu/models/site_form.dart';
+import 'package:nahpu/screens/sites/site_form.dart';
 
 enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
 
@@ -14,7 +16,8 @@ class _NewSitesState extends State<NewSites> with TickerProviderStateMixin {
 
   final siteIdController = TextEditingController();
   late TabController _tabController;
-  // final int _selectedIndex = 0;
+
+  final siteFormCtrl = SiteFormModel();
 
   @override
   void initState() {
@@ -69,109 +72,14 @@ class _NewSitesState extends State<NewSites> with TickerProviderStateMixin {
         ],
       ),
       body: SafeArea(
-          child: SingleChildScrollView(
-        child: Column(children: [
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Site ID',
-              hintText: 'Enter a site',
-            ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Lead staff',
-              hintText: 'Enter a name',
-            ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Site Type',
-              hintText: 'Enter a site type, e.g. "Camp", "City", "etc."',
-            ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Country',
-              hintText: 'Enter a country location',
-            ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'State/Province',
-              hintText: 'Enter a state/province location',
-            ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'County',
-              hintText: 'Enter a county name',
-            ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Municipality',
-              hintText: 'Enter a municipality name',
-            ),
-          ),
-          TextFormField(
-            maxLines: 5,
-            decoration: const InputDecoration(
-              labelText: 'Locality',
-              hintText:
-                  'Enter a complete locality, excluding country and state/province',
-            ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Habitat',
-              hintText: 'Enter a habitat type',
-            ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Habitat condition',
-              hintText:
-                  'Enter habitat condition, e.g. "Prestine", "Disturbed", "etc."',
-            ),
-          ),
-          TextFormField(
-            maxLines: 5,
-            decoration: const InputDecoration(
-              labelText: 'Site description',
-              hintText:
-                  'Describe the site, e.g. "A camp site in the middle of the forest."',
-            ),
-          ),
-          Column(
-            children: [
-              DefaultTabController(
-                length: 2,
-                child: TabBar(
-                  controller: _tabController,
-                  tabs: [
-                    Tab(
-                        icon: Icon(Icons.photo_album_rounded,
-                            color: Theme.of(context).colorScheme.tertiary)),
-                    Tab(
-                        icon: Icon(Icons.video_library_rounded,
-                            color: Theme.of(context).colorScheme.tertiary)),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.5,
-                child: TabBarView(
-                  controller: _tabController,
-                  children: const [
-                    Text('Photos'),
-                    Text('Videos'),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ]),
-      )),
+          child: SiteForm(
+              siteIDController: siteFormCtrl.siteIDController,
+              siteTypeController: siteFormCtrl.siteTypeController,
+              countryController: siteFormCtrl.countryController,
+              stateProvinceController: siteFormCtrl.stateProvinceController,
+              countyController: siteFormCtrl.countyController,
+              municipalityController: siteFormCtrl.municipalityController,
+              localityController: siteFormCtrl.localityController)),
     );
   }
 
