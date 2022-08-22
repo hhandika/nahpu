@@ -5,6 +5,7 @@ import 'package:nahpu/providers/project.dart';
 import 'package:nahpu/screens/narrative/narrative_form.dart';
 import 'package:nahpu/screens/narrative/menu_bar.dart';
 import 'package:nahpu/screens/narrative/narrative.dart';
+import 'package:nahpu/providers/narrative.dart';
 
 class NewNarrativeForm extends ConsumerStatefulWidget {
   const NewNarrativeForm({Key? key, required this.narrativeId})
@@ -47,9 +48,10 @@ class NewNarrativeFormState extends ConsumerState<NewNarrativeForm>
           NarrativeMenu(),
         ],
         leading: BackButton(
-          onPressed: () async {
+          onPressed: () {
             ref.refresh(pageNavigationProvider);
-            await Navigator.push(context,
+            ref.refresh(narrativeEntryProvider);
+            Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const Narrative()));
           },
         ),
