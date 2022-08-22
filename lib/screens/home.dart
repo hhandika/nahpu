@@ -90,8 +90,9 @@ class HomeState extends ConsumerState<Home> {
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primary,
             ),
-            child: const CircleAvatar(
-              backgroundColor: Colors.white,
+            child: Image.asset(
+              'assets/images/nahpu_logo_1024.png',
+              fit: BoxFit.contain,
             ),
           ),
           ListTile(
