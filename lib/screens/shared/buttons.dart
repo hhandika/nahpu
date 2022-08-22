@@ -35,32 +35,48 @@ class CustomNavButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final page = ref.watch(pageNavigationProvider);
     return Container(
-      color: Theme.of(context).colorScheme.primary,
-      width: double.infinity,
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.transparent),
+          color: Theme.of(context).colorScheme.primary,
+          borderRadius: const BorderRadius.all(Radius.circular(20))),
+      constraints: const BoxConstraints(
+        maxWidth: 250,
+      ),
       child: Row(
         children: [
-          FloatingActionButton(
-            heroTag: 'previous',
-            elevation: 0,
-            onPressed: () {
-              if (pageController.hasClients) {
-                pageController.previousPage(duration: _duration, curve: _curve);
-              }
-            },
-            child: const Icon(Icons.navigate_before),
+          Expanded(
+            child: FloatingActionButton(
+              backgroundColor: Colors.transparent,
+              heroTag: 'previous',
+              elevation: 0,
+              onPressed: () {
+                if (pageController.hasClients) {
+                  pageController.previousPage(
+                      duration: _duration, curve: _curve);
+                }
+              },
+              child: const Icon(Icons.navigate_before),
+            ),
           ),
-          Text(page.currentPage > 0
-              ? 'Page ${page.currentPage} of ${page.pageCounts}'
-              : 'Page counts: ${page.pageCounts}'),
-          FloatingActionButton(
-            heroTag: 'next',
-            elevation: 0,
-            onPressed: () {
-              if (pageController.hasClients) {
-                pageController.nextPage(duration: _duration, curve: _curve);
-              }
-            },
-            child: const Icon(Icons.navigate_next),
+          FittedBox(
+            child: Text(
+              page.currentPage > 0
+                  ? 'Page ${page.currentPage} of ${page.pageCounts}'
+                  : 'Page counts: ${page.pageCounts}',
+            ),
+          ),
+          Expanded(
+            child: FloatingActionButton(
+              backgroundColor: Colors.transparent,
+              heroTag: 'next',
+              elevation: 0,
+              onPressed: () {
+                if (pageController.hasClients) {
+                  pageController.nextPage(duration: _duration, curve: _curve);
+                }
+              },
+              child: const Icon(Icons.navigate_next),
+            ),
           ),
         ],
       ),
