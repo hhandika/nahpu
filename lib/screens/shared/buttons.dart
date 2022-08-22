@@ -21,11 +21,11 @@ class ProjectBackButton extends ConsumerWidget {
   }
 }
 
-class CustomNavButton extends ConsumerWidget {
+class CustomPageNavButton extends ConsumerWidget {
   final Duration _duration = const Duration(milliseconds: 300);
   final Curve _curve = Curves.easeInOut;
 
-  const CustomNavButton({
+  const CustomPageNavButton({
     Key? key,
     required this.pageController,
   }) : super(key: key);
@@ -38,7 +38,7 @@ class CustomNavButton extends ConsumerWidget {
     return Container(
       decoration: BoxDecoration(
           border: Border.all(color: Colors.transparent),
-          color: Theme.of(context).colorScheme.tertiaryContainer,
+          color: Theme.of(context).colorScheme.primary,
           borderRadius: const BorderRadius.all(Radius.circular(20))),
       constraints: BoxConstraints(
         maxHeight: MediaQuery.of(context).size.height * 0.05,

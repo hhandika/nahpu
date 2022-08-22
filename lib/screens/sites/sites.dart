@@ -90,7 +90,7 @@ class SitesState extends ConsumerState<Sites> {
           FloatingActionButtonLocation.miniCenterFloat,
       floatingActionButton: Visibility(
           visible: isVisible,
-          child: CustomNavButton(
+          child: CustomPageNavButton(
             pageController: pageController,
           )),
       bottomNavigationBar: const ProjectBottomNavbar(),

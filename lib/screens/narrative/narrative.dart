@@ -93,7 +93,7 @@ class NarrativeState extends ConsumerState<Narrative> {
       ),
       floatingActionButton: Visibility(
         visible: isVisible,
-        child: CustomNavButton(
+        child: CustomPageNavButton(
           pageController: pageController,
         ),
       ),
