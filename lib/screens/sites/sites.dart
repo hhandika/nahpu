@@ -79,10 +79,10 @@ class SitesState extends ConsumerState<Sites> {
                         text: siteEntries[index].locality),
                   );
                 },
-                onPageChanged: (value) => ref
-                    .watch(pageNavigationProvider.notifier)
-                    .state
-                    .currentPage = value,
+                onPageChanged: (value) => setState(() {
+                  ref.watch(pageNavigationProvider.notifier).state.currentPage =
+                      value + 1;
+                }),
               );
             }
           }, loading: () {

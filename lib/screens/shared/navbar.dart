@@ -80,6 +80,8 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
 
         break;
       case 1:
+        ref.refresh(siteEntryProvider);
+        ref.refresh(pageNavigationProvider);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const Sites()),

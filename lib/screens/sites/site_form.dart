@@ -85,6 +85,9 @@ class SiteFormState extends ConsumerState<SiteForm>
                 labelText: 'Country',
                 hintText: 'Enter a country location',
               ),
+              onChanged: (value) {
+                _updateSite(widget.id, SiteCompanion(country: db.Value(value)));
+              },
             ),
             TextFormField(
               controller: widget.stateProvinceController,
@@ -92,6 +95,10 @@ class SiteFormState extends ConsumerState<SiteForm>
                 labelText: 'State/Province',
                 hintText: 'Enter a state/province location',
               ),
+              onChanged: (value) {
+                _updateSite(
+                    widget.id, SiteCompanion(stateProvince: db.Value(value)));
+              },
             ),
             TextFormField(
               controller: widget.countyController,
@@ -99,6 +106,9 @@ class SiteFormState extends ConsumerState<SiteForm>
                 labelText: 'County',
                 hintText: 'Enter a county name',
               ),
+              onChanged: (value) {
+                _updateSite(widget.id, SiteCompanion(county: db.Value(value)));
+              },
             ),
             TextFormField(
               controller: widget.municipalityController,
@@ -106,6 +116,10 @@ class SiteFormState extends ConsumerState<SiteForm>
                 labelText: 'Municipality',
                 hintText: 'Enter a municipality name',
               ),
+              onChanged: (value) {
+                _updateSite(
+                    widget.id, SiteCompanion(municipality: db.Value(value)));
+              },
             ),
             TextFormField(
               controller: widget.localityController,
@@ -115,6 +129,10 @@ class SiteFormState extends ConsumerState<SiteForm>
                 hintText:
                     'Enter a complete locality, excluding country and state/province',
               ),
+              onChanged: (value) {
+                _updateSite(
+                    widget.id, SiteCompanion(locality: db.Value(value)));
+              },
             ),
             TextFormField(
               decoration: const InputDecoration(
