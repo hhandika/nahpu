@@ -27,43 +27,41 @@ class CustomNavButton extends ConsumerWidget {
   const CustomNavButton({
     Key? key,
     required this.pageController,
-    required this.count,
-    required this.indexPos,
   }) : super(key: key);
 
   final PageController pageController;
-  final int count;
-  final int indexPos;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Row(
-      children: [
-        FloatingActionButton(
-          heroTag: 'previous',
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          onPressed: () {
-            if (pageController.hasClients) {
-              pageController.previousPage(duration: _duration, curve: _curve);
-            }
-          },
-          child: const Icon(Icons.navigate_before),
-        ),
-        SizedBox(
-          width: 50,
-          child: Text('$indexPos of $count'),
-        ),
-        FloatingActionButton(
-          heroTag: 'next',
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          onPressed: () {
-            if (pageController.hasClients) {
-              pageController.nextPage(duration: _duration, curve: _curve);
-            }
-          },
-          child: const Icon(Icons.navigate_next),
-        ),
-      ],
+    final page = ref.watch(pageNavigationProvider);
+    return Container(
+      color: Theme.of(context).colorScheme.primary,
+      width: double.infinity,
+      child: Row(
+        children: [
+          FloatingActionButton(
+            heroTag: 'previous',
+            elevation: 0,
+            onPressed: () {
+              if (pageController.hasClients) {
+                pageController.previousPage(duration: _duration, curve: _curve);
+              }
+            },
+            child: const Icon(Icons.navigate_before),
+          ),
+          Text('Page ${page.currentPage} of ${page.pageCounts}'),
+          FloatingActionButton(
+            heroTag: 'next',
+            elevation: 0,
+            onPressed: () {
+              if (pageController.hasClients) {
+                pageController.nextPage(duration: _duration, curve: _curve);
+              }
+            },
+            child: const Icon(Icons.navigate_next),
+          ),
+        ],
+      ),
     );
   }
 }

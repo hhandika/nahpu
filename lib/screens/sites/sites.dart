@@ -45,8 +45,6 @@ class _SitesState extends State<Sites> {
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
       floatingActionButton: CustomNavButton(
         pageController: pageController,
-        count: count,
-        indexPos: indexPos,
       ),
       bottomNavigationBar: const ProjectBottomNavbar(),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:nahpu/providers/narrative.dart';
+import 'package:nahpu/providers/project.dart';
 
 import 'package:nahpu/screens/narrative/menu_bar.dart';
 import 'package:nahpu/screens/narrative/narrative_form.dart';
@@ -20,13 +21,27 @@ class Narrative extends ConsumerStatefulWidget {
 class NarrativeState extends ConsumerState<Narrative> {
   bool isVisible = false;
   PageController pageController = PageController();
-  int count = 0;
-  int indexPos = 0;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   pageController.addListener(() {
+  //     setState(() {
+  //       ref.watch(pageNavigationProvider);
+  //     });
+  //   });
+  // }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final narrativeEntries = ref.watch(narrativeEntryProvider);
-
+    ref.watch(pageNavigationProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Narrative"),
@@ -50,10 +65,14 @@ class NarrativeState extends ConsumerState<Narrative> {
               } else {
                 int narrativeSize = narrativeEntries.length;
                 setState(() {
-                  isVisible = true;
-                  count = narrativeSize;
+                  if (narrativeSize >= 2) {
+                    isVisible = true;
+                  }
+                  ref.watch(pageNavigationProvider.notifier).state.pageCounts =
+                      narrativeSize;
                   pageController =
                       PageController(initialPage: narrativeSize - 1);
+
                   // view last page first
                 });
                 return PageView.builder(
@@ -71,7 +90,10 @@ class NarrativeState extends ConsumerState<Narrative> {
                     );
                   },
                   onPageChanged: (value) => setState(() {
-                    indexPos = value + 1;
+                    ref
+                        .read(pageNavigationProvider.notifier)
+                        .state
+                        .currentPage = value + 1;
                   }),
                 );
               }
@@ -85,8 +107,6 @@ class NarrativeState extends ConsumerState<Narrative> {
         visible: isVisible,
         child: CustomNavButton(
           pageController: pageController,
-          count: count,
-          indexPos: indexPos,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
