@@ -49,7 +49,9 @@ class CustomNavButton extends ConsumerWidget {
             },
             child: const Icon(Icons.navigate_before),
           ),
-          Text('Page ${page.currentPage} of ${page.pageCounts}'),
+          Text(page.currentPage > 0
+              ? 'Page ${page.currentPage} of ${page.pageCounts}'
+              : 'Page ${page.pageCounts}'),
           FloatingActionButton(
             heroTag: 'next',
             elevation: 0,
