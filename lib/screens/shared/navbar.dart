@@ -26,7 +26,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
     return NavigationBar(
       labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
       elevation: 10,
-      animationDuration: const Duration(seconds: 2),
+      animationDuration: const Duration(seconds: 3),
       selectedIndex: selectedIndex,
       destinations: const [
         NavigationDestination(
