@@ -64,6 +64,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
       onDestinationSelected: (int index) {
         ref.read(projectNavbarIndexProvider.state).state = index;
         ref.refresh(narrativeEntryProvider);
+        ref.refresh(pageNavigationProvider);
         _onItemTapped(index);
       },
     );

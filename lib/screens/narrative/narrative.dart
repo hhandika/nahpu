@@ -22,16 +22,6 @@ class NarrativeState extends ConsumerState<Narrative> {
   bool isVisible = false;
   PageController pageController = PageController();
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   pageController.addListener(() {
-  //     setState(() {
-  //       ref.watch(pageNavigationProvider);
-  //     });
-  //   });
-  // }
-
   @override
   void dispose() {
     pageController.dispose();
@@ -72,7 +62,6 @@ class NarrativeState extends ConsumerState<Narrative> {
                       narrativeSize;
                   pageController =
                       PageController(initialPage: narrativeSize - 1);
-
                   // view last page first
                 });
                 return PageView.builder(

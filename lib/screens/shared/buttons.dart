@@ -51,7 +51,7 @@ class CustomNavButton extends ConsumerWidget {
           ),
           Text(page.currentPage > 0
               ? 'Page ${page.currentPage} of ${page.pageCounts}'
-              : 'Page ${page.pageCounts}'),
+              : 'Page counts: ${page.pageCounts}'),
           FloatingActionButton(
             heroTag: 'next',
             elevation: 0,
