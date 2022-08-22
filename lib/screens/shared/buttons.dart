@@ -40,7 +40,8 @@ class CustomNavButton extends ConsumerWidget {
           color: Theme.of(context).colorScheme.primary,
           borderRadius: const BorderRadius.all(Radius.circular(20))),
       constraints: const BoxConstraints(
-        maxWidth: 250,
+        maxHeight: 50,
+        maxWidth: 200,
       ),
       child: Row(
         children: [
@@ -63,6 +64,7 @@ class CustomNavButton extends ConsumerWidget {
               page.currentPage > 0
                   ? 'Page ${page.currentPage} of ${page.pageCounts}'
                   : 'Page counts: ${page.pageCounts}',
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
           Expanded(
