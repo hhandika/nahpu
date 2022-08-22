@@ -10,3 +10,17 @@ final narrativeEntryProvider =
       ref.read(databaseProvider).getAllNarrative(projectUuid);
   return narrativeEntries;
 });
+
+final siteEntryProvider = FutureProvider.autoDispose<List<SiteData>>((ref) {
+  final projectUuid = ref.watch(projectUuidProvider.state).state;
+  final siteEntries = ref.read(databaseProvider).getAllSites(projectUuid);
+  return siteEntries;
+});
+
+final pageNavigationProvider =
+    StateProvider.autoDispose<PageNavigation>((ref) => PageNavigation());
+
+class PageNavigation {
+  int currentPage = 0;
+  int pageCounts = 0;
+}

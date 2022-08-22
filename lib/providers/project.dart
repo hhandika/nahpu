@@ -20,11 +20,3 @@ final projectInfoProvider =
 final projectUuidProvider = StateProvider<String>((ref) => '');
 
 final projectNavbarIndexProvider = StateProvider<int>((ref) => 0);
-
-final pageNavigationProvider =
-    StateProvider.autoDispose<PageNavigation>((ref) => PageNavigation());
-
-class PageNavigation {
-  int currentPage = 0;
-  int pageCounts = 0;
-}

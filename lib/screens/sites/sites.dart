@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
 import 'package:nahpu/screens/sites/menu_bar.dart';
@@ -7,20 +8,27 @@ import 'package:nahpu/screens/sites/new_sites.dart';
 
 enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
 
-class Sites extends StatefulWidget {
+class Sites extends ConsumerStatefulWidget {
   const Sites({Key? key}) : super(key: key);
 
   @override
-  State<Sites> createState() => _SitesState();
+  SitesState createState() => SitesState();
 }
 
-class _SitesState extends State<Sites> {
+class SitesState extends ConsumerState<Sites> {
+  bool isVisible = false;
   PageController pageController = PageController();
-  int count = 0;
-  int indexPos = 0;
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final siteEntries = ref.watch(siteEntryProvider);
+    ref.watch(pageNavigationProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Sites"),
@@ -38,26 +46,54 @@ class _SitesState extends State<Sites> {
         ],
       ),
       body: SafeArea(
-        child: SiteViewer(
-          pageController: pageController,
+        child: Center(
+          child: siteEntries.when(data: (siteEntries) {
+            if (siteEntries.isEmpty) {
+              setState(() {
+                isVisible = false;
+              });
+              return const Text("No site entries");
+            } else {
+              int siteSize = siteEntries.length;
+              setState(() {
+                if (siteSize >= 2) {
+                  isVisible = true;
+                }
+                ref.watch(pageNavigationProvider.notifier).state.pageCounts =
+                    siteSize;
+                pageController = PageController(initialPage: siteSize);
+              });
+              return PageView.builder(
+                controller: pageController,
+                itemCount: siteSize,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      Text(siteEntries[index].siteID),
+                    ],
+                  );
+                },
+                onPageChanged: (value) => ref
+                    .watch(pageNavigationProvider.notifier)
+                    .state
+                    .currentPage = value,
+              );
+            }
+          }, loading: () {
+            return const CircularProgressIndicator();
+          }, error: (error, stackTrace) {
+            return Text(error.toString());
+          }),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
-      floatingActionButton: CustomNavButton(
-        pageController: pageController,
-      ),
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat,
+      floatingActionButton: Visibility(
+          visible: isVisible,
+          child: CustomNavButton(
+            pageController: pageController,
+          )),
       bottomNavigationBar: const ProjectBottomNavbar(),
     );
-  }
-}
-
-class SiteViewer extends ConsumerWidget {
-  const SiteViewer({Key? key, required this.pageController}) : super(key: key);
-
-  final PageController pageController;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return const Text('');
   }
 }

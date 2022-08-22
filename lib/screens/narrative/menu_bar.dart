@@ -5,7 +5,7 @@ import 'package:nahpu/database/database.dart';
 import 'package:nahpu/providers/project.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/narrative/new_narrative.dart';
-import 'package:nahpu/providers/narrative.dart';
+import 'package:nahpu/providers/page_viewer.dart';
 
 enum MenuSelection { newNarrative, pdfExport, deleteRecords, deleteAllRecords }
 
