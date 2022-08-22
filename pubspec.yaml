@@ -67,11 +67,11 @@ flutter_icons:
   ios: true
   android: true
   remove_alpha_ios: true
-  image_path_ios: "assets/launcher/nahpuIcon.png"
-  image_path_android: "assets/launcher/nahpuIcon.png"
+  image_path_ios: "assets/launcher/ic_nahpu_1024.png"
+  image_path_android: "assets/launcher/ic_nahpu_1024.png"
   windows:
     generate: true
-    image_path: "assets/launcher/nahpuIcon.png"
+    image_path: "assets/launcher/ic_nahpu_1024.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
