@@ -38,7 +38,8 @@ class CustomPageNavButton extends ConsumerWidget {
     return Container(
       decoration: BoxDecoration(
           border: Border.all(color: Colors.transparent),
-          color: Theme.of(context).colorScheme.primary,
+          color: Color.lerp(Theme.of(context).colorScheme.surface,
+              Theme.of(context).colorScheme.secondary, 0.1),
           borderRadius: const BorderRadius.all(Radius.circular(20))),
       constraints: BoxConstraints(
         maxHeight: MediaQuery.of(context).size.height * 0.05,
@@ -49,6 +50,7 @@ class CustomPageNavButton extends ConsumerWidget {
           Expanded(
             child: FloatingActionButton(
               backgroundColor: Colors.transparent,
+              foregroundColor: Theme.of(context).colorScheme.onSurface,
               heroTag: 'previous',
               elevation: 0,
               onPressed: () {
@@ -71,6 +73,7 @@ class CustomPageNavButton extends ConsumerWidget {
           Expanded(
             child: FloatingActionButton(
               backgroundColor: Colors.transparent,
+              foregroundColor: Theme.of(context).colorScheme.onSurface,
               heroTag: 'next',
               elevation: 0,
               onPressed: () {
