@@ -5,6 +5,7 @@ import 'package:drift/drift.dart' as db;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:intl/intl.dart';
+import 'package:nahpu/configs/colors.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/providers/project.dart';
 
@@ -149,6 +150,7 @@ class MediaFormState extends ConsumerState<MediaForm>
         DefaultTabController(
           length: 2,
           child: TabBar(
+            indicatorColor: NahpuColor.tabBarColor(context),
             controller: _tabController,
             tabs: [
               Tab(

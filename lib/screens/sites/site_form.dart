@@ -2,6 +2,7 @@ import 'package:adaptive_components/adaptive_components.dart';
 import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/configs/colors.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/providers/project.dart';
 
@@ -160,6 +161,7 @@ class SiteFormState extends ConsumerState<SiteForm>
                 DefaultTabController(
                   length: 2,
                   child: TabBar(
+                    indicatorColor: NahpuColor.tabBarColor(context),
                     controller: _tabController,
                     tabs: [
                       Tab(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/configs/colors.dart';
 
 import 'package:nahpu/providers/project.dart';
 
@@ -25,6 +26,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
     int selectedIndex = ref.watch(projectNavbarIndexProvider.state).state;
     return NavigationBar(
       labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+      backgroundColor: NahpuColor.navColor(context),
       elevation: 10,
       animationDuration: const Duration(seconds: 3),
       selectedIndex: selectedIndex,

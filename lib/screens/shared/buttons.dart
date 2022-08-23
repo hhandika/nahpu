@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/configs/colors.dart';
 
 import 'package:nahpu/providers/project.dart';
 import 'package:nahpu/screens/projects/project_home.dart';
@@ -38,8 +39,7 @@ class CustomPageNavButton extends ConsumerWidget {
     return Container(
       decoration: BoxDecoration(
           border: Border.all(color: Colors.transparent),
-          color: Color.lerp(Theme.of(context).colorScheme.surface,
-              Theme.of(context).colorScheme.secondary, 0.1),
+          color: NahpuColor.navColor(context),
           borderRadius: const BorderRadius.all(Radius.circular(20))),
       constraints: BoxConstraints(
         maxHeight: MediaQuery.of(context).size.height * 0.05,

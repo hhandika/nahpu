@@ -14,6 +14,7 @@ class NahpuTheme {
       colorScheme: lightColorScheme ?? _defaultLightColorScheme,
       useMaterial3: true,
       visualDensity: VisualDensity.adaptivePlatformDensity,
+      cardTheme: cardTheme,
     );
   }
 
@@ -22,6 +23,16 @@ class NahpuTheme {
       colorScheme: darkColorScheme ?? _defaultDarkColorScheme,
       useMaterial3: true,
       visualDensity: VisualDensity.adaptivePlatformDensity,
+      cardTheme: cardTheme,
+    );
+  }
+
+  static CardTheme get cardTheme {
+    return const CardTheme(
+      elevation: 1,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
     );
   }
 }
