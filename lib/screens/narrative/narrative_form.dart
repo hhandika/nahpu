@@ -1,3 +1,4 @@
+import 'package:adaptive_components/adaptive_components.dart';
 import 'package:flutter/material.dart';
 
 import 'package:drift/drift.dart' as db;
@@ -32,67 +33,83 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
         builder: (BuildContext context, BoxConstraints constraints) {
       bool useVerticalLayout = constraints.maxWidth < 400.0;
       return SingleChildScrollView(
-        child: Column(children: [
-          SizedBox(
-            width: double.infinity,
-            child: Flex(
-              direction: useVerticalLayout ? Axis.vertical : Axis.horizontal,
-              children: [
-                Flexible(
-                    child: TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Date',
-                    hintText: 'Enter date',
+        child: AdaptiveColumn(children: [
+          AdaptiveContainer(
+            columnSpan: 12,
+            child: useVerticalLayout
+                ? Column(
+                    children: [
+                      _buildDateForm(),
+                      _buildSiteIdForm(),
+                    ],
+                  )
+                : Row(
+                    children: [
+                      Expanded(child: _buildDateForm()),
+                      const SizedBox(width: 10),
+                      Expanded(child: _buildSiteIdForm()),
+                    ],
                   ),
-                  controller: widget.dateController,
-                  onTap: () {
-                    showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime.now())
-                        .then((date) {
-                      if (date != null) {
-                        widget.dateController.text =
-                            DateFormat.yMMMd().format(date);
-                        _updateNarrative(NarrativeCompanion(
-                            date: db.Value(widget.dateController.text)));
-                      }
-                    });
-                  },
-                )),
-                const SizedBox(width: 10.0),
-                Flexible(
-                  child: TextFormField(
-                    controller: widget.siteController,
-                    decoration: const InputDecoration(
-                      labelText: 'Site ID',
-                      hintText: 'Enter a site',
-                    ),
-                    onChanged: (value) {
-                      _updateNarrative(
-                          NarrativeCompanion(siteID: db.Value(value)));
-                    },
-                  ),
-                ),
-              ],
+          ),
+          AdaptiveContainer(
+            columnSpan: 12,
+            child: TextFormField(
+              controller: widget.narrativeController,
+              maxLines: 10,
+              decoration: const InputDecoration(
+                labelText: 'Narrative',
+                hintText: 'Enter narrative',
+              ),
+              onChanged: (value) {
+                _updateNarrative(
+                    NarrativeCompanion(narrative: db.Value(value)));
+              },
             ),
           ),
-          TextFormField(
-            controller: widget.narrativeController,
-            maxLines: 10,
-            decoration: const InputDecoration(
-              labelText: 'Narrative',
-              hintText: 'Enter narrative',
-            ),
-            onChanged: (value) {
-              _updateNarrative(NarrativeCompanion(narrative: db.Value(value)));
-            },
+          AdaptiveContainer(
+            columnSpan: 12,
+            child: const MediaForm(),
           ),
-          const MediaForm(),
         ]),
       );
     });
+  }
+
+  Widget _buildSiteIdForm() {
+    return TextFormField(
+      controller: widget.siteController,
+      decoration: const InputDecoration(
+        labelText: 'Site ID',
+        hintText: 'Enter a site',
+      ),
+      onChanged: (value) {
+        _updateNarrative(NarrativeCompanion(siteID: db.Value(value)));
+      },
+    );
+  }
+
+  Widget _buildDateForm() {
+    return TextFormField(
+      decoration: const InputDecoration(
+        labelText: 'Date',
+        hintText: 'Enter date',
+      ),
+      controller: widget.dateController,
+      onTap: () {
+        showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(2000),
+                lastDate: DateTime.now())
+            .then((date) {
+          if (date != null) {
+            widget.dateController.text = DateFormat.yMMMd().format(date);
+            _updateNarrative(
+                NarrativeCompanion(date: db.Value(widget.dateController.text)));
+          }
+        });
+      },
+    );
   }
 
   void _updateNarrative(NarrativeCompanion entries) {

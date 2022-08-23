@@ -9,7 +9,7 @@ packages:
     source: hosted
     version: "43.0.0"
   adaptive_breakpoints:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: adaptive_breakpoints
       url: "https://pub.dartlang.org"
