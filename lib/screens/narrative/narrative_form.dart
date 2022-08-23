@@ -31,23 +31,23 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-      bool useVerticalLayout = constraints.maxWidth < 400.0;
+      bool useHorizontalLayout = constraints.maxWidth > 400.0;
       return SingleChildScrollView(
         child: AdaptiveColumn(children: [
           AdaptiveContainer(
             columnSpan: 12,
-            child: useVerticalLayout
-                ? Column(
-                    children: [
-                      _buildDateForm(),
-                      _buildSiteIdForm(),
-                    ],
-                  )
-                : Row(
+            child: useHorizontalLayout
+                ? Row(
                     children: [
                       Expanded(child: _buildDateForm()),
                       const SizedBox(width: 10),
                       Expanded(child: _buildSiteIdForm()),
+                    ],
+                  )
+                : Column(
+                    children: [
+                      _buildDateForm(),
+                      _buildSiteIdForm(),
                     ],
                   ),
           ),
@@ -55,7 +55,7 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
             columnSpan: 12,
             child: TextFormField(
               controller: widget.narrativeController,
-              maxLines: 10,
+              maxLines: useHorizontalLayout ? 20 : 10,
               decoration: const InputDecoration(
                 labelText: 'Narrative',
                 hintText: 'Enter narrative',
