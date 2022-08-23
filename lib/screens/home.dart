@@ -87,14 +87,21 @@ class HomeState extends ConsumerState<Home> {
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            child: Image.asset(
-              'assets/images/nahpu_logo_1024.png',
-              fit: BoxFit.contain,
-            ),
-          ),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              child: Column(
+                children: [
+                  Image.asset(
+                    'assets/images/nahpu_logo_1024.png',
+                    fit: BoxFit.contain,
+                  ),
+                  Text(
+                    'NAHPU',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                ],
+              )),
           ListTile(
             leading: const Icon(Icons.create_rounded),
             title: const Text('Create a new project'),
