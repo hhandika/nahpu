@@ -35,7 +35,6 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
         child: Column(children: [
           SizedBox(
             width: double.infinity,
-            height: double.infinity,
             child: Flex(
               direction: useVerticalLayout ? Axis.vertical : Axis.horizontal,
               children: [
@@ -62,7 +61,7 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
                     });
                   },
                 )),
-                SizedBox(width: useVerticalLayout ? 0.0 : 10.0),
+                const SizedBox(width: 10.0),
                 Flexible(
                   child: TextFormField(
                     controller: widget.siteController,
