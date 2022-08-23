@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:adaptive_components/adaptive_components.dart';
 
 import 'package:drift/drift.dart' as db;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,14 +28,19 @@ class NarrativeForm extends ConsumerStatefulWidget {
 class NarrativeFormState extends ConsumerState<NarrativeForm> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        child: AdaptiveColumn(
-      children: [
-        AdaptiveContainer(
-            columnSpan: 12,
-            child: Column(
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      bool useVerticalLayout = constraints.maxWidth < 400.0;
+      return SingleChildScrollView(
+        child: Column(children: [
+          SizedBox(
+            width: double.infinity,
+            height: double.infinity,
+            child: Flex(
+              direction: useVerticalLayout ? Axis.vertical : Axis.horizontal,
               children: [
-                TextFormField(
+                Flexible(
+                    child: TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'Date',
                     hintText: 'Enter date',
@@ -57,35 +61,39 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
                       }
                     });
                   },
-                ),
-                TextFormField(
-                  controller: widget.siteController,
-                  decoration: const InputDecoration(
-                    labelText: 'Site ID',
-                    hintText: 'Enter a site',
+                )),
+                SizedBox(width: useVerticalLayout ? 0.0 : 10.0),
+                Flexible(
+                  child: TextFormField(
+                    controller: widget.siteController,
+                    decoration: const InputDecoration(
+                      labelText: 'Site ID',
+                      hintText: 'Enter a site',
+                    ),
+                    onChanged: (value) {
+                      _updateNarrative(
+                          NarrativeCompanion(siteID: db.Value(value)));
+                    },
                   ),
-                  onChanged: (value) {
-                    _updateNarrative(
-                        NarrativeCompanion(siteID: db.Value(value)));
-                  },
                 ),
-                TextFormField(
-                  controller: widget.narrativeController,
-                  maxLines: 10,
-                  decoration: const InputDecoration(
-                    labelText: 'Narrative',
-                    hintText: 'Enter narrative',
-                  ),
-                  onChanged: (value) {
-                    _updateNarrative(
-                        NarrativeCompanion(narrative: db.Value(value)));
-                  },
-                ),
-                const MediaForm(),
               ],
-            ))
-      ],
-    ));
+            ),
+          ),
+          TextFormField(
+            controller: widget.narrativeController,
+            maxLines: 10,
+            decoration: const InputDecoration(
+              labelText: 'Narrative',
+              hintText: 'Enter narrative',
+            ),
+            onChanged: (value) {
+              _updateNarrative(NarrativeCompanion(narrative: db.Value(value)));
+            },
+          ),
+          const MediaForm(),
+        ]),
+      );
+    });
   }
 
   void _updateNarrative(NarrativeCompanion entries) {
