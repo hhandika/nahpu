@@ -1,4 +1,4 @@
-![logo](/assets/launcher/ic_rounded.png=20x50)
+![logo](/assets/launcher/ic_rounded.png =20x50)
 
 # nahpu
 
