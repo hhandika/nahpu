@@ -92,9 +92,7 @@ class SitesState extends ConsumerState<Sites> {
           }),
         ),
       ),
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterFloat,
-      floatingActionButton: Visibility(
+      bottomSheet: Visibility(
           visible: isVisible,
           child: CustomPageNavButton(
             pageController: pageController,

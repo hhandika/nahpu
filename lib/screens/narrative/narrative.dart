@@ -93,14 +93,14 @@ class NarrativeState extends ConsumerState<Narrative> {
           ),
         ),
       ),
-      floatingActionButton: Visibility(
+      bottomSheet: Visibility(
         visible: isVisible,
         child: CustomPageNavButton(
           pageController: pageController,
         ),
       ),
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterFloat,
+      // floatingActionButtonLocation:
+      //     FloatingActionButtonLocation.miniCenterFloat,
       bottomNavigationBar: const ProjectBottomNavbar(),
     );
   }

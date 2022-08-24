@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/configs/colors.dart';
 
 import 'package:nahpu/providers/project.dart';
 import 'package:nahpu/screens/projects/project_home.dart';
@@ -37,30 +36,20 @@ class CustomPageNavButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final page = ref.watch(pageNavigationProvider);
     return Container(
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.transparent),
-          color: NahpuColor.navColor(context),
-          borderRadius: const BorderRadius.all(Radius.circular(20))),
       constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.05,
-        maxWidth: 220,
+        maxHeight: MediaQuery.of(context).size.height * 0.1,
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
-            child: FloatingActionButton(
-              backgroundColor: Colors.transparent,
-              foregroundColor: Theme.of(context).colorScheme.onSurface,
-              heroTag: 'previous',
-              elevation: 0,
-              onPressed: () {
-                if (pageController.hasClients) {
-                  pageController.previousPage(
-                      duration: _duration, curve: _curve);
-                }
-              },
-              child: const Icon(Icons.navigate_before),
-            ),
+          TextButton(
+            onPressed: () {
+              if (pageController.hasClients) {
+                pageController.previousPage(duration: _duration, curve: _curve);
+              }
+            },
+            child: const Icon(Icons.navigate_before),
           ),
           FittedBox(
             child: Text(
@@ -70,19 +59,13 @@ class CustomPageNavButton extends ConsumerWidget {
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
-          Expanded(
-            child: FloatingActionButton(
-              backgroundColor: Colors.transparent,
-              foregroundColor: Theme.of(context).colorScheme.onSurface,
-              heroTag: 'next',
-              elevation: 0,
-              onPressed: () {
-                if (pageController.hasClients) {
-                  pageController.nextPage(duration: _duration, curve: _curve);
-                }
-              },
-              child: const Icon(Icons.navigate_next),
-            ),
+          TextButton(
+            onPressed: () {
+              if (pageController.hasClients) {
+                pageController.nextPage(duration: _duration, curve: _curve);
+              }
+            },
+            child: const Icon(Icons.navigate_next),
           ),
         ],
       ),
