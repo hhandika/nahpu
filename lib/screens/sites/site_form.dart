@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/configs/colors.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/providers/project.dart';
+import 'package:nahpu/screens/shared/photos.dart';
 
 enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
 
@@ -178,7 +179,7 @@ class SiteFormState extends ConsumerState<SiteForm>
                   child: TabBarView(
                     controller: _tabController,
                     children: const [
-                      Text('Photos'),
+                      PhotoViewer(),
                       Text('Videos'),
                     ],
                   ),

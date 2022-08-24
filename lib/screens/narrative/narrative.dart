@@ -59,8 +59,9 @@ class NarrativeState extends ConsumerState<Narrative> {
                   }
                   ref.watch(pageNavigationProvider.notifier).state.pageCounts =
                       narrativeSize;
+                  // We want to view the last page first.
                   // Dart uses 0-based indexing. Technically, this is out-of-bound.
-                  // But, what happens here is that, it will trigger the PageView onPageChanged.
+                  // But, what happens here is that it will trigger the PageView onPageChanged.
                   // It fixes the issues that the curentPage state does not show the current page value.
                   pageController = PageController(initialPage: narrativeSize);
                 });

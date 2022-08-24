@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:nahpu/configs/colors.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/providers/project.dart';
+import 'package:nahpu/screens/shared/photos.dart';
 
 class NarrativeForm extends ConsumerStatefulWidget {
   const NarrativeForm({
@@ -167,7 +168,7 @@ class MediaFormState extends ConsumerState<MediaForm>
           child: TabBarView(
             controller: _tabController,
             children: const [
-              Text('Photos'),
+              PhotoViewer(),
               Text('Videos'),
             ],
           ),
