@@ -4,14 +4,29 @@
 
 ## Overview
 
-`nahpu` (NAtural History Project Utilities) is a lightweight cross-platform field cataloging app for natural history field data collection. The goal of nahpu is to help scientists working in the field or at the collection to catalog their specimens digitally. It is aimed to run on mobile devices (iOS and Android) and major desktop operating system (macOS, Linux, and Windows).
+`nahpu` (NAtural History Project Utilities, loosely named after greater Malay chevrotain, *Tragulus napu*) is a cross-platform cataloging app for natural history specimen collection. It leverages mobile revolution to better manage data collection in the field and beyond. It does not aim to replace museum database (at least not yet), but is more targeted to streamline data collection and curatorial processing of natural history specimens. Users can use `nahpu` as a standalone field catalog or to supplement conventional paper-based catalogs.
 
-Typically, scientists working on biological specimens for natural history collection use paper catalogs to record specimen data. The method requires entering the data manually into a spreadsheet to then being catalog and integrated into the natural history museum database. The task is tedious and is proned to data entry errors. It is also difficult to link the data recorded in the papers with other associated medias, such as photos, videos, and/or audio files of the associated species or their habitats. Often the data get lost when a project ended. `nahpu` will allow instant spreadsheet creation of the specimen data and easy management of their associated medias.
+## Planned Features
 
-`nahpu` will feature cataloging forms for natural history and their associated medias. Different kinds of charts to show statistics of the projects, e.g. specimen recorded per sites, trapping success, and several other relevant statistics to track progress and trend of your project. It will include fields to enter environment data (e.g., temperature, moon phase, etc.) whenever relevant.
+| Features                        | Progress       |
+| ------------------------------- | -------------- |
+| Project creation form           | Done           |
+| Field narrative form            | Done           |
+| Site form                       | Partially done |
+| Collecting event form           | Partially done |
+| Mammalian specimen form         | Partially done |
+| Bird specimen form              | Planned        |
+| Media management form           | Partially done |
+| Project statistics              | Planned        |
+| Project expense receipt manager | Planned        |
+| Project permit manager          | Planned        |
+| CSV export                      | Planned        |
+| Json export                     | Planned        |
+| Pdf export and printing support | Planned        |
+| Zip export                      | planned        |
+| Barcode reader                  | Planned        |
+| Document scanner                | Planned        |
 
-Have some more ideas? Let us know.
+## Status of the Development
 
-## Status of the code
-
-`nahpu` development is still at the early stage. Expect a lot of code changes.
+`nahpu` development is at an early stage. First working prototype is targeted for mmammalian and avian specimens. We welcome ideas and support for other taxon groups. Feel free to contact the maintainer of this project if you all interested.
