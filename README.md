@@ -1,6 +1,4 @@
-<img src="assets/launcher/ic_rounded.png" alt="nahpu logo" width="100"/>
-
-# nahpu
+# nahpu <img src="assets/launcher/ic_rounded.png" alt="nahpu logo" width="100"/>
 
 ![Nahpu-Tests](https://github.com/hhandika/nahpu/workflows/Nahpu-Tests/badge.svg)
 
