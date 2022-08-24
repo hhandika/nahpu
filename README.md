@@ -1,4 +1,4 @@
-![logo](/assets/launcher/ic_rounded.png =20x50)
+<img src="assets/launcher/ic_rounded.png" alt="nahpu logo" width="100"/>
 
 # nahpu
 
