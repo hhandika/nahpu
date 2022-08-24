@@ -1,3 +1,5 @@
+![logo](/assets/launchers/ic_rounded.png)
+
 # nahpu
 
 ![Nahpu-Tests](https://github.com/hhandika/nahpu/workflows/Nahpu-Tests/badge.svg)
