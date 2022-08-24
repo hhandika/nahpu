@@ -50,8 +50,7 @@ class _PhotoFormState extends State<PhotoForm> {
           child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const ElevatedButton(
-              onPressed: null, child: const Text('Browse Files')),
+          const ElevatedButton(onPressed: null, child: Text('Browse Files')),
           TextFormField(
             decoration: const InputDecoration(
               labelText: 'File name',
