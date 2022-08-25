@@ -8,6 +8,7 @@ import 'package:nahpu/screens/collecting/new_coll_events.dart';
 import 'package:nahpu/screens/home.dart';
 
 import 'package:nahpu/screens/projects/new_project.dart';
+import 'package:nahpu/screens/settings/project_settings.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
 import 'package:nahpu/screens/sites/menu_bar.dart';
 import 'package:nahpu/screens/narrative/menu_bar.dart';
@@ -176,12 +177,15 @@ class ProjectHomeState extends ConsumerState<ProjectHome> {
               },
             ),
             const Divider(color: Colors.grey),
-            const ListTile(
-              leading: Icon(Icons.settings_rounded),
-              title: Text('Settings'),
-              // onTap: () {
-              //   // Navigator.of(context).pop();
-              // },
+            ListTile(
+              leading: const Icon(Icons.settings_rounded),
+              title: const Text('Settings'),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ProjectSettings()));
+              },
             ),
             ListTile(
               leading: const Icon(Icons.exit_to_app_rounded),
