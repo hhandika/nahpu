@@ -44,11 +44,14 @@ class CustomPageNavButton extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextButton(
-            onPressed: () {
-              if (pageController.hasClients) {
-                pageController.previousPage(duration: _duration, curve: _curve);
-              }
-            },
+            onPressed: page.isFirstPage
+                ? null
+                : () {
+                    if (pageController.hasClients) {
+                      pageController.previousPage(
+                          duration: _duration, curve: _curve);
+                    }
+                  },
             child: const Icon(Icons.navigate_before),
           ),
           FittedBox(
@@ -60,11 +63,14 @@ class CustomPageNavButton extends ConsumerWidget {
             ),
           ),
           TextButton(
-            onPressed: () {
-              if (pageController.hasClients) {
-                pageController.nextPage(duration: _duration, curve: _curve);
-              }
-            },
+            onPressed: page.isLastPage
+                ? null
+                : () {
+                    if (pageController.hasClients) {
+                      pageController.nextPage(
+                          duration: _duration, curve: _curve);
+                    }
+                  },
             child: const Icon(Icons.navigate_next),
           ),
         ],

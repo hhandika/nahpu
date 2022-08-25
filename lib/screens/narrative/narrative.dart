@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/models/page_viewer.dart';
 
 import 'package:nahpu/providers/page_viewer.dart';
 
@@ -30,6 +31,7 @@ class NarrativeState extends ConsumerState<Narrative> {
   @override
   Widget build(BuildContext context) {
     final narrativeEntries = ref.watch(narrativeEntryProvider);
+    final pageNotifier = ref.watch(pageNavigationProvider.notifier);
     ref.watch(pageNavigationProvider);
     return Scaffold(
       appBar: AppBar(
@@ -80,10 +82,8 @@ class NarrativeState extends ConsumerState<Narrative> {
                     );
                   },
                   onPageChanged: (value) => setState(() {
-                    ref
-                        .read(pageNavigationProvider.notifier)
-                        .state
-                        .currentPage = value + 1;
+                    pageNotifier.state.currentPage = value + 1;
+                    checkPageNavigation(ref);
                   }),
                 );
               }

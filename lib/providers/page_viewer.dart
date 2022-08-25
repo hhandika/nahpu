@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:nahpu/providers/project.dart';
 
+import 'package:nahpu/models/page_viewer.dart';
+
 final narrativeEntryProvider =
     FutureProvider.autoDispose<List<NarrativeData>>((ref) {
   final projectUuid = ref.watch(projectUuidProvider.state).state;
@@ -19,8 +21,3 @@ final siteEntryProvider = FutureProvider.autoDispose<List<SiteData>>((ref) {
 
 final pageNavigationProvider =
     StateProvider.autoDispose<PageNavigation>((ref) => PageNavigation());
-
-class PageNavigation {
-  int currentPage = 0;
-  int pageCounts = 0;
-}
