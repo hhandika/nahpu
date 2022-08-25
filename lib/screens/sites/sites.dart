@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/models/page_viewer.dart';
 import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
@@ -29,6 +30,7 @@ class SitesState extends ConsumerState<Sites> {
   Widget build(BuildContext context) {
     final siteEntries = ref.watch(siteEntryProvider);
     ref.watch(pageNavigationProvider);
+    final pageNotifier = ref.watch(pageNavigationProvider.notifier);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Sites"),
@@ -80,8 +82,8 @@ class SitesState extends ConsumerState<Sites> {
                   );
                 },
                 onPageChanged: (value) => setState(() {
-                  ref.watch(pageNavigationProvider.notifier).state.currentPage =
-                      value + 1;
+                  pageNotifier.state.currentPage = value + 1;
+                  checkPageNavigation(ref);
                 }),
               );
             }
