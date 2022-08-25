@@ -77,6 +77,7 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
   void _onPopupMenuSelected(MenuSelection item) {
     switch (item) {
       case MenuSelection.newNarrative:
+        createNewNarrative(context, ref);
         break;
       case MenuSelection.pdfExport:
         break;

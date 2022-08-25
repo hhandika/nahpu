@@ -76,6 +76,7 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
   void _onPopupMenuSelected(MenuSelection item) {
     switch (item) {
       case MenuSelection.newSite:
+        createNewSite(context, ref);
         break;
       case MenuSelection.pdfExport:
         break;
