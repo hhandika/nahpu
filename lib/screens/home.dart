@@ -21,6 +21,7 @@ class Home extends ConsumerStatefulWidget {
 class HomeState extends ConsumerState<Home> {
   final Uri _helpUrl = Uri(
       scheme: 'https', host: 'www.github.com', path: 'hhandika/nahpu/issues');
+  List<bool> isSelected = [true, false];
 
   @override
   Widget build(BuildContext context) {
@@ -171,10 +172,33 @@ class HomeState extends ConsumerState<Home> {
 
   Widget _buildListView(List<ListProjectResult> projectList) {
     return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-      Row(children: [
-        Text('Existing projects:',
-            style: Theme.of(context).textTheme.titleLarge),
-      ]),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text('Existing projects:',
+              style: Theme.of(context).textTheme.titleLarge),
+          ToggleButtons(
+              isSelected: isSelected,
+              borderRadius: BorderRadius.circular(10),
+              onPressed: (int index) {
+                setState(() {
+                  for (int buttonIndex = 0;
+                      buttonIndex < isSelected.length;
+                      buttonIndex++) {
+                    if (buttonIndex == index) {
+                      isSelected[buttonIndex] = !isSelected[buttonIndex];
+                    } else {
+                      isSelected[buttonIndex] = false;
+                    }
+                  }
+                });
+              },
+              children: const [
+                Icon(Icons.list_rounded),
+                Icon(Icons.grid_view_rounded),
+              ]),
+        ],
+      ),
       Divider(
         color: Theme.of(context).colorScheme.onSurface,
         thickness: 1.5,
