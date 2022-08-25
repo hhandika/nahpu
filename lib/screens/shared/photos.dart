@@ -10,27 +10,29 @@ class PhotoViewer extends StatefulWidget {
 class _PhotoViewerState extends State<PhotoViewer> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            elevation: 0,
-            onPrimary: Theme.of(context).colorScheme.onPrimaryContainer,
-            primary: Theme.of(context).colorScheme.primaryContainer,
-          ),
-          onPressed: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return const PhotoForm();
-                });
-          },
-          child: const Text(
-            'Add photos',
-          ),
-        ),
-      ],
-    );
+    return Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                onPrimary: Theme.of(context).colorScheme.onPrimaryContainer,
+                primary: Theme.of(context).colorScheme.primaryContainer,
+              ),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const PhotoForm();
+                    });
+              },
+              child: const Text(
+                'Add photos',
+              ),
+            ),
+          ],
+        ));
   }
 }
 
