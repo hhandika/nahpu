@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:nahpu/providers/project.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/settings/settings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:nahpu/database/database.dart';
@@ -107,12 +108,15 @@ class HomeState extends ConsumerState<Home> {
               );
             },
           ),
-          const ListTile(
-            leading: Icon(Icons.settings_rounded),
-            title: Text('Settings'),
-            // onTap: () {
-            //   // Navigator.of(context).pop();
-            // },
+          ListTile(
+            leading: const Icon(Icons.settings_rounded),
+            title: const Text('Settings'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Settings()),
+              );
+            },
           ),
           const Divider(
             color: Colors.grey,
