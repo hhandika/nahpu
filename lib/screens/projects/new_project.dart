@@ -47,11 +47,12 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                           Focus(
                             child: ProjectFormField(
                               controller: projectNameController,
+                              maxLength: 25,
                               labelText: 'Project name*',
                               hintText:
                                   'Enter the name of the project (required)',
                               inputFormatters: [
-                                LengthLimitingTextInputFormatter(50),
+                                LengthLimitingTextInputFormatter(25),
                                 FilteringTextInputFormatter.allow(
                                   RegExp(r'[a-zA-Z0-9-_]+|\s'),
                                 ),

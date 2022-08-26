@@ -22,6 +22,9 @@ class ProjectFormValidationNotifier extends StateNotifier<ProjectFormState> {
     } else if (value.length < 3) {
       projectNameField = form.projectName
           .copyWith(errMsg: "Project name is too short", isValid: false);
+    } else if (value.length > 25) {
+      projectNameField = form.projectName
+          .copyWith(errMsg: "Project name is too long", isValid: false);
     } else {
       projectNameField = form.projectName.copyWith(errMsg: null, isValid: true);
     }
