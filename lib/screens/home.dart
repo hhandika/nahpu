@@ -250,10 +250,13 @@ class HomeState extends ConsumerState<Home> {
           ),
           Expanded(
             child: ListTile(
-              title: Text(
-                project.projectName,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
+              title: FittedBox(
+                fit: BoxFit.cover,
+                child: Text(
+                  project.projectName,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 10),
+                ),
               ),
               subtitle: FittedBox(
                 child: Text(
