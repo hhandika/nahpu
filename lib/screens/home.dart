@@ -241,17 +241,18 @@ class HomeState extends ConsumerState<Home> {
         child: Card(
       child: Column(
         children: [
-          Expanded(
+          FittedBox(
+            fit: BoxFit.scaleDown,
             child: Icon(
               Icons.insert_drive_file_rounded,
               color: Theme.of(context).colorScheme.onSurface,
-              size: 70,
+              size: 50,
             ),
           ),
           Expanded(
             child: ListTile(
               title: FittedBox(
-                fit: BoxFit.cover,
+                fit: BoxFit.scaleDown,
                 child: Text(
                   project.projectName,
                   style: const TextStyle(
