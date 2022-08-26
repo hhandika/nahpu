@@ -242,11 +242,12 @@ class HomeState extends ConsumerState<Home> {
       child: Column(
         children: [
           Expanded(
-              child: Icon(
-            Icons.insert_drive_file_rounded,
-            color: Theme.of(context).colorScheme.onSurface,
-            size: 50,
-          )),
+            child: Icon(
+              Icons.insert_drive_file_rounded,
+              color: Theme.of(context).colorScheme.onSurface,
+              size: 50,
+            ),
+          ),
           ListTile(
             title: Text(
               project.projectName,
