@@ -237,26 +237,25 @@ class HomeState extends ConsumerState<Home> {
   }
 
   Widget _buildGridProjectCard(ListProjectResult project) {
-    return Card(
+    return GridTile(
+        child: Card(
       child: Column(
         children: [
-          FittedBox(
-            child: Icon(
-              Icons.insert_drive_file_rounded,
-              size: 120,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-          ),
+          Expanded(
+              child: Icon(
+            Icons.insert_drive_file_rounded,
+            color: Theme.of(context).colorScheme.onSurface,
+            size: 50,
+          )),
           ListTile(
-            title: FittedBox(
-                child: Text(
+            title: Text(
               project.projectName,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            )),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
+            ),
             subtitle: FittedBox(
               child: Text(
                 project.projectUuid,
-                // style: const TextStyle(fontSize: 8),
+                style: const TextStyle(fontSize: 8),
               ),
             ),
             trailing: _buildPopupMenu(project),
@@ -266,7 +265,7 @@ class HomeState extends ConsumerState<Home> {
           ),
         ],
       ),
-    );
+    ));
   }
 
   Widget _buildListProjectCard(ListProjectResult project) {
