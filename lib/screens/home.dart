@@ -245,25 +245,28 @@ class HomeState extends ConsumerState<Home> {
             child: Icon(
               Icons.insert_drive_file_rounded,
               color: Theme.of(context).colorScheme.onSurface,
-              size: 50,
+              size: 70,
             ),
           ),
-          ListTile(
-            title: Text(
-              project.projectName,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
-            ),
-            subtitle: FittedBox(
-              child: Text(
-                project.projectUuid,
-                style: const TextStyle(fontSize: 8),
+          Expanded(
+            child: ListTile(
+              title: Text(
+                project.projectName,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
               ),
+              subtitle: FittedBox(
+                child: Text(
+                  project.projectUuid,
+                  style: const TextStyle(fontSize: 8),
+                ),
+              ),
+              trailing: _buildPopupMenu(project),
+              onTap: () {
+                _openProject(project.projectUuid);
+              },
             ),
-            trailing: _buildPopupMenu(project),
-            onTap: () {
-              _openProject(project.projectUuid);
-            },
-          ),
+          )
         ],
       ),
     ));
