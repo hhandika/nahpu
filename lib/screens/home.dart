@@ -23,6 +23,7 @@ class HomeState extends ConsumerState<Home> {
   final Uri _helpUrl = Uri(
       scheme: 'https', host: 'www.github.com', path: 'hhandika/nahpu/issues');
   List<bool> isSelected = [true, false];
+  bool isListViews = true;
 
   @override
   Widget build(BuildContext context) {
@@ -170,101 +171,157 @@ class HomeState extends ConsumerState<Home> {
         ),
       );
     } else {
-      return _buildListView(projectList);
+      return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Existing projects:',
+                style: Theme.of(context).textTheme.titleLarge),
+            ToggleButtons(
+                isSelected: isSelected,
+                borderRadius: BorderRadius.circular(10),
+                onPressed: (int index) {
+                  setState(() {
+                    for (int buttonIndex = 0;
+                        buttonIndex < isSelected.length;
+                        buttonIndex++) {
+                      if (buttonIndex == index) {
+                        isSelected[buttonIndex] = !isSelected[buttonIndex];
+                        isListViews = !isListViews;
+                      } else {
+                        isSelected[buttonIndex] = false;
+                      }
+                    }
+                  });
+                },
+                children: const [
+                  Icon(Icons.list_rounded),
+                  Icon(Icons.grid_view_rounded),
+                ]),
+          ],
+        ),
+        Divider(
+          color: Theme.of(context).colorScheme.onSurface,
+          thickness: 1.5,
+        ),
+        isListViews ? _buildListView(projectList) : _buildGridView(projectList),
+      ]);
     }
   }
 
+  Widget _buildGridView(List<ListProjectResult> projectList) {
+    return Expanded(
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 1.5,
+        ),
+        itemCount: projectList.length,
+        itemBuilder: (context, index) {
+          return _buildGridProjectCard(projectList[index]);
+        },
+      ),
+    );
+  }
+
   Widget _buildListView(List<ListProjectResult> projectList) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Expanded(
+      child: ListView.separated(
+        separatorBuilder: (BuildContext context, int index) => const Divider(),
+        itemCount: projectList.length,
+        itemBuilder: (context, index) {
+          return _buildListProjectCard(projectList[index]);
+        },
+      ),
+    );
+  }
+
+  Widget _buildGridProjectCard(ListProjectResult project) {
+    return Card(
+      child: Column(
         children: [
-          Text('Existing projects:',
-              style: Theme.of(context).textTheme.titleLarge),
-          ToggleButtons(
-              isSelected: isSelected,
-              borderRadius: BorderRadius.circular(10),
-              onPressed: (int index) {
-                setState(() {
-                  for (int buttonIndex = 0;
-                      buttonIndex < isSelected.length;
-                      buttonIndex++) {
-                    if (buttonIndex == index) {
-                      isSelected[buttonIndex] = !isSelected[buttonIndex];
-                    } else {
-                      isSelected[buttonIndex] = false;
-                    }
-                  }
-                });
-              },
-              children: const [
-                Icon(Icons.list_rounded),
-                Icon(Icons.grid_view_rounded),
-              ]),
+          FittedBox(
+            child: Icon(
+              Icons.insert_drive_file_rounded,
+              size: 120,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
+          ListTile(
+            title: FittedBox(
+                child: Text(
+              project.projectName,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            )),
+            subtitle: FittedBox(
+              child: Text(
+                project.projectUuid,
+                // style: const TextStyle(fontSize: 8),
+              ),
+            ),
+            trailing: _buildPopupMenu(project),
+            onTap: () {
+              _openProject(project.projectUuid);
+            },
+          ),
         ],
       ),
-      Divider(
-        color: Theme.of(context).colorScheme.onSurface,
-        thickness: 1.5,
-      ),
-      Expanded(
-        child: ListView.separated(
-          separatorBuilder: (BuildContext context, int index) =>
-              const Divider(),
-          itemCount: projectList.length,
-          itemBuilder: (context, index) {
-            return Card(
-                child: ListTile(
-              leading: Icon(
-                Icons.insert_drive_file_rounded,
-                size: 40,
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
-              title: Text(
-                projectList[index].projectName,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-              subtitle: Text(
-                projectList[index].projectUuid,
-                style: const TextStyle(fontSize: 8),
-              ),
-              trailing: PopupMenuButton<MenuSelection>(
-                  onSelected: _onPopupMenuSelected,
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<MenuSelection>>[
-                        PopupMenuItem<MenuSelection>(
-                          value: MenuSelection.details,
-                          child: const Text('Info'),
-                          onTap: () async {
-                            _getProjectInfo(projectList[index].projectUuid);
-                          },
-                        ),
-                        PopupMenuItem<MenuSelection>(
-                          value: MenuSelection.deleteProject,
-                          onTap: () {
-                            ref
-                                .read(databaseProvider)
-                                .deleteProject(projectList[index].projectUuid);
-                            ref.refresh(projectListProvider);
-                          },
-                          child: const Text('Delete',
-                              style: TextStyle(color: Colors.red)),
-                        ),
-                      ]),
-              onTap: () {
-                ref.read(projectUuidProvider.state).state =
-                    projectList[index].projectUuid;
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ProjectHome()),
-                );
-              },
-            ));
-          },
+    );
+  }
+
+  Widget _buildListProjectCard(ListProjectResult project) {
+    return Card(
+      child: ListTile(
+        leading: Icon(
+          Icons.insert_drive_file_rounded,
+          size: 40,
+          color: Theme.of(context).colorScheme.onSurface,
         ),
-      )
-    ]);
+        title: Text(
+          project.projectName,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+        subtitle: Text(
+          project.projectUuid,
+          style: const TextStyle(fontSize: 8),
+        ),
+        trailing: _buildPopupMenu(project),
+        onTap: () {
+          _openProject(project.projectUuid);
+        },
+      ),
+    );
+  }
+
+  Widget _buildPopupMenu(ListProjectResult project) {
+    return PopupMenuButton<MenuSelection>(
+        onSelected: _onPopupMenuSelected,
+        itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuSelection>>[
+              PopupMenuItem<MenuSelection>(
+                value: MenuSelection.details,
+                child: const Text('Info'),
+                onTap: () async {
+                  _getProjectInfo(project.projectUuid);
+                },
+              ),
+              PopupMenuItem<MenuSelection>(
+                value: MenuSelection.deleteProject,
+                onTap: () {
+                  ref.read(databaseProvider).deleteProject(project.projectUuid);
+                  ref.refresh(projectListProvider);
+                },
+                child:
+                    const Text('Delete', style: TextStyle(color: Colors.red)),
+              ),
+            ]);
+  }
+
+  void _openProject(String projectUuid) {
+    ref.read(projectUuidProvider.state).state = projectUuid;
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ProjectHome()),
+    );
   }
 
   Future<void> _launchHelpUrl(Uri url) async {
