@@ -19,5 +19,12 @@ final siteEntryProvider = FutureProvider.autoDispose<List<SiteData>>((ref) {
   return siteEntries;
 });
 
+final collEventEntryProvider =
+    FutureProvider.autoDispose<List<CollEventData>>((ref) {
+  final projectUuid = ref.watch(projectUuidProvider.state).state;
+  final collEvents = ref.read(databaseProvider).getAllCollEvents(projectUuid);
+  return collEvents;
+});
+
 final pageNavigationProvider =
     StateProvider.autoDispose<PageNavigation>((ref) => PageNavigation());

@@ -1,89 +1,97 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/models/page_viewer.dart';
+
+import 'package:nahpu/providers/page_viewer.dart';
+
+import 'package:nahpu/screens/collecting/coll_event_form.dart';
+import 'package:nahpu/screens/collecting/menu_bar.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
 
-enum MenuSelection { newEvent, pdfExport, deleteRecords, deleteAllRecords }
-
-class CollEvents extends StatefulWidget {
+class CollEvents extends ConsumerStatefulWidget {
   const CollEvents({Key? key}) : super(key: key);
 
   @override
-  State<CollEvents> createState() => _CollEventsState();
+  CollEventState createState() => CollEventState();
 }
 
-class _CollEventsState extends State<CollEvents> {
-  String _selectedMenu = '';
+class CollEventState extends ConsumerState<CollEvents> {
+  bool isVisible = false;
+  PageController pageController = PageController();
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final collEventEntries = ref.watch(collEventEntryProvider);
+    final pageNotifier = ref.watch(pageNavigationProvider.notifier);
+    ref.watch(pageNavigationProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Collecting Events"),
         backgroundColor: Theme.of(context).colorScheme.primary,
-        leading: const ProjectBackButton(),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {
-              // Navigator.of(context)
-              //     .push(MaterialPageRoute(builder: (_) => const Search()));
-            },
-          ),
-          PopupMenuButton<MenuSelection>(
-              // Callback that sets the selected popup menu item.
-              onSelected: _onPopupMenuSelected,
-              itemBuilder: (BuildContext context) =>
-                  <PopupMenuEntry<MenuSelection>>[
-                    const PopupMenuItem<MenuSelection>(
-                      value: MenuSelection.newEvent,
-                      child: Text('Create a new record'),
-                    ),
-                    const PopupMenuItem<MenuSelection>(
-                      value: MenuSelection.pdfExport,
-                      child: Text('Export to PDF'),
-                    ),
-                    const PopupMenuItem<MenuSelection>(
-                      value: MenuSelection.deleteRecords,
-                      child: Text('Delete current record',
-                          style: TextStyle(color: Colors.red)),
-                    ),
-                    const PopupMenuItem<MenuSelection>(
-                      value: MenuSelection.deleteAllRecords,
-                      child: Text('Delete all note records',
-                          style: TextStyle(color: Colors.red)),
-                    ),
-                  ])
+        actions: const [
+          NewCollEvents(),
+          CollEventMenu(),
         ],
+        leading: const ProjectBackButton(),
       ),
-      body: Center(
-        child: Text('Test popup menu: $_selectedMenu'),
+      body: SafeArea(
+        child: Center(
+          child: collEventEntries.when(
+            data: (collEventEntries) {
+              if (collEventEntries.isEmpty) {
+                setState(() {
+                  isVisible = false;
+                });
+
+                return const Text("No collecting event entries");
+              } else {
+                int narrativeSize = collEventEntries.length;
+                setState(() {
+                  if (narrativeSize >= 2) {
+                    isVisible = true;
+                  }
+                  ref.watch(pageNavigationProvider.notifier).state.pageCounts =
+                      narrativeSize;
+                  // We want to view the last page first.
+                  // Dart uses 0-based indexing. Technically, this is out-of-bound.
+                  // But, what happens here is that it will trigger the PageView onPageChanged.
+                  // It fixes the issues that the curentPage state does not show the current page value.
+                  pageController = PageController(initialPage: narrativeSize);
+                });
+                return PageView.builder(
+                  controller: pageController,
+                  itemCount: narrativeSize,
+                  itemBuilder: (context, index) {
+                    return const CollEventForm();
+                  },
+                  onPageChanged: (value) => setState(() {
+                    pageNotifier.state.currentPage = value + 1;
+                    checkPageNavigation(ref);
+                  }),
+                );
+              }
+            },
+            loading: () => const CircularProgressIndicator(),
+            error: (error, stack) => Text(error.toString()),
+          ),
+        ),
       ),
+      bottomSheet: Visibility(
+        visible: isVisible,
+        child: CustomPageNavButton(
+          pageController: pageController,
+        ),
+      ),
+      // floatingActionButtonLocation:
+      //     FloatingActionButtonLocation.miniCenterFloat,
       bottomNavigationBar: const ProjectBottomNavbar(),
     );
-  }
-
-  void _onPopupMenuSelected(MenuSelection item) {
-    switch (item) {
-      case MenuSelection.newEvent:
-        setState(() {
-          _selectedMenu = 'Create a new record';
-        });
-        break;
-      case MenuSelection.pdfExport:
-        setState(() {
-          _selectedMenu = 'Export to pdf';
-        });
-        break;
-      case MenuSelection.deleteRecords:
-        setState(() {
-          _selectedMenu = 'Delete current note record';
-        });
-        break;
-      case MenuSelection.deleteAllRecords:
-        setState(() {
-          _selectedMenu = 'Delete all note records';
-        });
-        break;
-    }
   }
 }

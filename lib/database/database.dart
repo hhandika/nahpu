@@ -89,23 +89,23 @@ class Database extends _$Database {
   }
 
   // Collecting event table
-  Future<int> createCollectingEvent(CollEventCompanion form) =>
+  Future<int> createCollEvent(CollEventCompanion form) =>
       into(collEvent).insert(form);
 
-  Future updateCollectingEventEntry(int id, CollEventCompanion entry) {
+  Future updateCollEventEntry(int id, CollEventCompanion entry) {
     return (update(collEvent)..where((t) => t.id.equals(id))).write(entry);
   }
 
-  Future<List<CollEventData>> getAllCollectingEvents(String projectUuid) {
+  Future<List<CollEventData>> getAllCollEvents(String projectUuid) {
     return (select(collEvent)..where((t) => t.projectUuid.equals(projectUuid)))
         .get();
   }
 
-  Future<void> deleteCollectingEvent(int id) {
+  Future<void> deleteCollEvent(int id) {
     return (delete(collEvent)..where((t) => t.id.equals(id))).go();
   }
 
-  Future<void> deleteAllCollectingEvents(String projectUuid) {
+  Future<void> deleteAllCollEvents(String projectUuid) {
     return (delete(collEvent)..where((t) => t.projectUuid.equals(projectUuid)))
         .go();
   }

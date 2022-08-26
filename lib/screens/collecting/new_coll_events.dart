@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:nahpu/screens/collecting/menu_bar.dart';
 
 enum MenuSelection { newNote, pdfExport, deleteRecords, deleteAllRecords }
 
-class NewCollEvent extends StatefulWidget {
-  const NewCollEvent({Key? key}) : super(key: key);
+class NewCollEventForm extends ConsumerStatefulWidget {
+  const NewCollEventForm({
+    Key? key,
+    required this.collEventId,
+  }) : super(key: key);
 
+  final int collEventId;
   @override
-  State<NewCollEvent> createState() => _NewCollEventState();
+  NewCollEventFormState createState() => NewCollEventFormState();
 }
 
-class _NewCollEventState extends State<NewCollEvent>
+class NewCollEventFormState extends ConsumerState<NewCollEventForm>
     with TickerProviderStateMixin {
   final startDateController = TextEditingController();
   final endDateController = TextEditingController();
@@ -47,8 +52,7 @@ class _NewCollEventState extends State<NewCollEvent>
           IconButton(
             icon: const Icon(Icons.add_rounded),
             onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const NewCollEvent()));
+              createNewCollEvents(context, ref);
             },
           ),
           PopupMenuButton<MenuSelection>(

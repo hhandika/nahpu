@@ -9,8 +9,6 @@ import 'package:nahpu/screens/narrative/narrative_form.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
 
-enum MenuSelection { newNote, pdfExport, deleteRecords, deleteAllRecords }
-
 class Narrative extends ConsumerStatefulWidget {
   const Narrative({Key? key}) : super(key: key);
 

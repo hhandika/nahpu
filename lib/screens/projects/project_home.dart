@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/project.dart';
+import 'package:nahpu/screens/collecting/menu_bar.dart';
 
-import 'package:nahpu/screens/collecting/new_coll_events.dart';
 import 'package:nahpu/screens/home.dart';
 
 import 'package:nahpu/screens/projects/new_project.dart';
@@ -73,10 +73,7 @@ class ProjectHomeState extends ConsumerState<ProjectHome> {
             backgroundColor: Theme.of(context).colorScheme.secondary,
             label: 'New CollEvents',
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const NewCollEvent()),
-              );
+              createNewCollEvents(context, ref);
             },
           ),
           SpeedDialChild(
