@@ -27,6 +27,7 @@ class HomeState extends ConsumerState<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isPhone = MediaQuery.of(context).size.width < 730; // Table size
     return Scaffold(
       appBar: AppBar(
         title: Text("HOME", style: Theme.of(context).textTheme.headline6),
@@ -43,14 +44,14 @@ class HomeState extends ConsumerState<Home> {
       ),
       drawer: _drawProjectHomeMenu(),
       body: SafeArea(
-          child: Center(
-        child: Padding(
+        child: Center(
+          child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: SizedBox(
-              width: 600,
+              width: isPhone ? 600 : 800,
               child: ref.watch(projectListProvider).when(
                 data: (data) {
-                  return _buildBody(data.reversed.toList());
+                  return _buildBody(data.reversed.toList(), isPhone);
                 },
                 loading: () {
                   return const CircularProgressIndicator();
@@ -59,8 +60,10 @@ class HomeState extends ConsumerState<Home> {
                   return Text(error.toString());
                 },
               ),
-            )),
-      )),
+            ),
+          ),
+        ),
+      ),
       floatingActionButton: SpeedDial(
         icon: Icons.add_rounded,
         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -152,7 +155,7 @@ class HomeState extends ConsumerState<Home> {
     );
   }
 
-  Widget _buildBody(List<ListProjectResult> projectList) {
+  Widget _buildBody(List<ListProjectResult> projectList, bool isPhone) {
     if (projectList.isEmpty) {
       return Padding(
         padding: const EdgeInsets.all(20.0),
@@ -204,16 +207,18 @@ class HomeState extends ConsumerState<Home> {
           color: Theme.of(context).colorScheme.onSurface,
           thickness: 1.5,
         ),
-        isListViews ? _buildListView(projectList) : _buildGridView(projectList),
+        isListViews
+            ? _buildListView(projectList)
+            : _buildGridView(projectList, isPhone),
       ]);
     }
   }
 
-  Widget _buildGridView(List<ListProjectResult> projectList) {
+  Widget _buildGridView(List<ListProjectResult> projectList, bool isPhone) {
     return Expanded(
       child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: isPhone ? 1 : 3,
           childAspectRatio: 1.5,
         ),
         itemCount: projectList.length,
@@ -239,28 +244,21 @@ class HomeState extends ConsumerState<Home> {
   Widget _buildGridProjectCard(ListProjectResult project) {
     return Card(
       child: GridTile(
-        footer: Row(
-          children: [
-            Column(
-              children: [
-                Text(
-                  project.projectName,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 10),
-                ),
-                Text(
-                  project.projectUuid,
-                  style: const TextStyle(fontSize: 8),
-                ),
-              ],
-            ),
-            _buildPopupMenu(project)
-          ],
+        footer: GridTileBar(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          title: Text(project.projectName),
+          subtitle: Text(project.projectUuid),
+          trailing: _showPopupMenu(project),
         ),
-        child: Icon(
-          Icons.insert_drive_file_rounded,
-          color: Theme.of(context).colorScheme.onSurface,
-          size: 50,
+        child: FittedBox(
+          alignment: Alignment.center,
+          fit: BoxFit.cover,
+          child: IconButton(
+            icon: const Icon(Icons.insert_drive_file_rounded),
+            onPressed: () {
+              _openProject(project.projectUuid);
+            },
+          ),
         ),
       ),
     );
@@ -282,7 +280,7 @@ class HomeState extends ConsumerState<Home> {
           project.projectUuid,
           style: const TextStyle(fontSize: 8),
         ),
-        trailing: _buildPopupMenu(project),
+        trailing: _showPopupMenu(project),
         onTap: () {
           _openProject(project.projectUuid);
         },
@@ -290,7 +288,7 @@ class HomeState extends ConsumerState<Home> {
     );
   }
 
-  Widget _buildPopupMenu(ListProjectResult project) {
+  Widget _showPopupMenu(ListProjectResult project) {
     return PopupMenuButton<MenuSelection>(
         onSelected: _onPopupMenuSelected,
         itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuSelection>>[
