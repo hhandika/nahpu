@@ -237,43 +237,33 @@ class HomeState extends ConsumerState<Home> {
   }
 
   Widget _buildGridProjectCard(ListProjectResult project) {
-    return GridTile(
-        child: Card(
-      child: Column(
-        children: [
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Icon(
-              Icons.insert_drive_file_rounded,
-              color: Theme.of(context).colorScheme.onSurface,
-              size: 50,
-            ),
-          ),
-          Expanded(
-            child: ListTile(
-              title: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
+    return Card(
+      child: GridTile(
+        footer: Row(
+          children: [
+            Column(
+              children: [
+                Text(
                   project.projectName,
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 10),
                 ),
-              ),
-              subtitle: FittedBox(
-                child: Text(
+                Text(
                   project.projectUuid,
                   style: const TextStyle(fontSize: 8),
                 ),
-              ),
-              trailing: _buildPopupMenu(project),
-              onTap: () {
-                _openProject(project.projectUuid);
-              },
+              ],
             ),
-          )
-        ],
+            _buildPopupMenu(project)
+          ],
+        ),
+        child: Icon(
+          Icons.insert_drive_file_rounded,
+          color: Theme.of(context).colorScheme.onSurface,
+          size: 50,
+        ),
       ),
-    ));
+    );
   }
 
   Widget _buildListProjectCard(ListProjectResult project) {
