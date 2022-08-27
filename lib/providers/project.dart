@@ -1,5 +1,6 @@
 import 'package:nahpu/database/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uuid/uuid.dart';
 
 final databaseProvider = Provider<Database>((ref) {
   final db = Database();
@@ -20,3 +21,9 @@ final projectInfoProvider =
 final projectUuidProvider = StateProvider<String>((ref) => '');
 
 final projectNavbarIndexProvider = StateProvider<int>((ref) => 0);
+
+Future<void> createProject(WidgetRef ref, ProjectCompanion form) async {
+  await ref.read(databaseProvider).createProject(form);
+}
+
+get uuid => const Uuid().v4();

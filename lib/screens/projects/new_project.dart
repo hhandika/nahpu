@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/project.dart';
-import 'package:uuid/uuid.dart';
 
 import 'project_home.dart';
 import 'package:nahpu/database/database.dart';
@@ -19,7 +18,7 @@ class CreateProjectForm extends ConsumerStatefulWidget {
 
 class NewProjectFormState extends ConsumerState<CreateProjectForm> {
   final _formKey = GlobalKey<FormState>();
-  final _uuidKey = const Uuid().v4();
+  final _uuidKey = uuid;
   final projectNameController = TextEditingController();
   final descriptionController = TextEditingController();
   final collectorController = TextEditingController();
@@ -31,7 +30,6 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text('Create a new project'),
           backgroundColor: Theme.of(context).colorScheme.primary,
@@ -184,7 +182,9 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
   }
 
   Future<void> _createProject() async {
-    await ref.read(databaseProvider).createProject(ProjectCompanion(
+    createProject(
+        ref,
+        ProjectCompanion(
           projectUuid: db.Value(_uuidKey),
           projectName: db.Value(projectNameController.text),
           projectDescription: db.Value(descriptionController.text),
