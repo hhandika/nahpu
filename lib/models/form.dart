@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class SiteFormCtrModel {
   SiteFormCtrModel(
-      this.siteIDCtr,
-      this.siteTypeCtr,
-      this.countryCtr,
-      this.stateProvinceCtr,
-      this.countyCtr,
-      this.municipalityCtr,
-      this.localityCtr);
+      {required this.siteIDCtr,
+      required this.siteTypeCtr,
+      required this.countryCtr,
+      required this.stateProvinceCtr,
+      required this.countyCtr,
+      required this.municipalityCtr,
+      required this.localityCtr});
   TextEditingController siteIDCtr;
   TextEditingController siteTypeCtr;
   TextEditingController countryCtr;
@@ -18,18 +18,23 @@ class SiteFormCtrModel {
   TextEditingController localityCtr;
 
   factory SiteFormCtrModel.empty() => SiteFormCtrModel(
-      TextEditingController(),
-      TextEditingController(),
-      TextEditingController(),
-      TextEditingController(),
-      TextEditingController(),
-      TextEditingController(),
-      TextEditingController());
+      siteIDCtr: TextEditingController(),
+      siteTypeCtr: TextEditingController(),
+      countryCtr: TextEditingController(),
+      stateProvinceCtr: TextEditingController(),
+      countyCtr: TextEditingController(),
+      municipalityCtr: TextEditingController(),
+      localityCtr: TextEditingController());
 }
 
 class CollEventFormCtrModel {
-  CollEventFormCtrModel(this.eventIDCtr, this.startDateCtr, this.endDateCtr,
-      this.startTimeCtr, this.endTimeCtr, this.primaryCollMethodCtr);
+  CollEventFormCtrModel(
+      {required this.eventIDCtr,
+      required this.startDateCtr,
+      required this.endDateCtr,
+      required this.startTimeCtr,
+      required this.endTimeCtr,
+      required this.primaryCollMethodCtr});
   TextEditingController eventIDCtr;
   TextEditingController startDateCtr;
   TextEditingController endDateCtr;
@@ -38,22 +43,25 @@ class CollEventFormCtrModel {
   TextEditingController primaryCollMethodCtr;
 
   factory CollEventFormCtrModel.empty() => CollEventFormCtrModel(
-      TextEditingController(),
-      TextEditingController(),
-      TextEditingController(),
-      TextEditingController(),
-      TextEditingController(),
-      TextEditingController());
+      eventIDCtr: TextEditingController(),
+      startDateCtr: TextEditingController(),
+      endDateCtr: TextEditingController(),
+      startTimeCtr: TextEditingController(),
+      endTimeCtr: TextEditingController(),
+      primaryCollMethodCtr: TextEditingController());
 }
 
 class NarrativeFormCtrModel {
-  NarrativeFormCtrModel(this.dateCtr, this.siteCtr, this.narrativeCtr);
+  NarrativeFormCtrModel(
+      {required this.dateCtr,
+      required this.siteCtr,
+      required this.narrativeCtr});
   TextEditingController dateCtr;
   TextEditingController siteCtr;
   TextEditingController narrativeCtr;
 
   factory NarrativeFormCtrModel.empty() => NarrativeFormCtrModel(
-      TextEditingController(),
-      TextEditingController(),
-      TextEditingController());
+      dateCtr: TextEditingController(),
+      siteCtr: TextEditingController(),
+      narrativeCtr: TextEditingController());
 }

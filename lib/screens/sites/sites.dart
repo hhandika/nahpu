@@ -65,15 +65,20 @@ class SitesState extends ConsumerState<Sites> {
                 itemCount: siteSize,
                 itemBuilder: (context, index) {
                   final siteForm = SiteFormCtrModel(
-                    TextEditingController(text: siteEntries[index].siteID),
-                    TextEditingController(text: siteEntries[index].siteType),
-                    TextEditingController(text: siteEntries[index].country),
-                    TextEditingController(
+                    siteIDCtr:
+                        TextEditingController(text: siteEntries[index].siteID),
+                    siteTypeCtr: TextEditingController(
+                        text: siteEntries[index].siteType),
+                    countryCtr:
+                        TextEditingController(text: siteEntries[index].country),
+                    stateProvinceCtr: TextEditingController(
                         text: siteEntries[index].stateProvince),
-                    TextEditingController(text: siteEntries[index].county),
-                    TextEditingController(
+                    countyCtr:
+                        TextEditingController(text: siteEntries[index].county),
+                    municipalityCtr: TextEditingController(
                         text: siteEntries[index].municipality),
-                    TextEditingController(text: siteEntries[index].locality),
+                    localityCtr: TextEditingController(
+                        text: siteEntries[index].locality),
                   );
                   return SiteForm(
                     id: siteEntries[index].id,

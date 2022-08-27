@@ -71,10 +71,11 @@ class NarrativeState extends ConsumerState<Narrative> {
                   itemCount: narrativeSize,
                   itemBuilder: (context, index) {
                     final narrativeCtr = NarrativeFormCtrModel(
-                      TextEditingController(text: narrativeEntries[index].date),
-                      TextEditingController(
+                      dateCtr: TextEditingController(
+                          text: narrativeEntries[index].date),
+                      siteCtr: TextEditingController(
                           text: narrativeEntries[index].siteID),
-                      TextEditingController(
+                      narrativeCtr: TextEditingController(
                           text: narrativeEntries[index].narrative),
                     );
                     return NarrativeForm(
