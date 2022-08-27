@@ -12,7 +12,7 @@ import 'package:nahpu/screens/settings/project_settings.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
 import 'package:nahpu/screens/sites/menu_bar.dart';
 import 'package:nahpu/screens/narrative/menu_bar.dart';
-import 'package:nahpu/screens/specimens/new_specimens.dart';
+import 'package:nahpu/screens/specimens/menu_bar.dart';
 import 'package:nahpu/screens/projects/project_info.dart';
 
 class ProjectHome extends ConsumerStatefulWidget {
@@ -72,8 +72,8 @@ class ProjectHomeState extends ConsumerState<ProjectHome> {
                 color: Theme.of(context).colorScheme.onInverseSurface),
             backgroundColor: Theme.of(context).colorScheme.secondary,
             label: 'New CollEvents',
-            onTap: () {
-              createNewCollEvents(context, ref);
+            onTap: () async {
+              await createNewCollEvents(context, ref);
             },
           ),
           SpeedDialChild(
@@ -81,11 +81,8 @@ class ProjectHomeState extends ConsumerState<ProjectHome> {
                 color: Theme.of(context).colorScheme.onInverseSurface),
             backgroundColor: Theme.of(context).colorScheme.secondary,
             label: 'New Specimens',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const NewSpecimens()),
-              );
+            onTap: () async {
+              await createNewSpecimens(context, ref);
             },
           ),
         ],

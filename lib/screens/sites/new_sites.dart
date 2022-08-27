@@ -17,22 +17,11 @@ class NewSites extends ConsumerStatefulWidget {
   NewSitesState createState() => NewSitesState();
 }
 
-class NewSitesState extends ConsumerState<NewSites>
-    with TickerProviderStateMixin {
-  final siteIdController = TextEditingController();
-  late TabController _tabController;
-
+class NewSitesState extends ConsumerState<NewSites> {
   final siteFormCtrl = SiteFormCtrModel.empty();
 
   @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-  }
-
-  @override
   void dispose() {
-    _tabController.dispose();
     super.dispose();
   }
 

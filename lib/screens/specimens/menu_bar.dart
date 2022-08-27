@@ -4,25 +4,23 @@ import 'package:drift/drift.dart' as db;
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/providers/project.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/screens/collecting/new_coll_events.dart';
+
 import 'package:nahpu/providers/page_viewer.dart';
+import 'package:nahpu/screens/specimens/new_specimens.dart';
 
 enum MenuSelection { newSpecimen, pdfExport, deleteRecords, deleteAllRecords }
 
 Future<void> createNewSpecimens(BuildContext context, WidgetRef ref) {
   String projectUuid = ref.watch(projectUuidProvider.state).state;
-
-  return ref
-      .read(databaseProvider)
-      .createSpecimen(SpecimenCompanion(
+  String specimenUuid = uuid;
+  ref.read(databaseProvider).createSpecimen(SpecimenCompanion(
+        specimenUuid: uuid,
         projectUuid: db.Value(projectUuid),
-      ))
-      .then((value) {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => NewCollEventForm(
-              collEventId: value,
-            )));
-  });
+      ));
+  return Navigator.of(context).push(MaterialPageRoute(
+      builder: (_) => NewSpecimenForm(
+            specimenUuid: specimenUuid,
+          )));
 }
 
 class NewSpecimens extends ConsumerWidget {
@@ -39,14 +37,14 @@ class NewSpecimens extends ConsumerWidget {
   }
 }
 
-class CollEventMenu extends ConsumerStatefulWidget {
-  const CollEventMenu({Key? key}) : super(key: key);
+class SpecimenMenu extends ConsumerStatefulWidget {
+  const SpecimenMenu({Key? key}) : super(key: key);
 
   @override
   NarrativeMenuState createState() => NarrativeMenuState();
 }
 
-class NarrativeMenuState extends ConsumerState<CollEventMenu> {
+class NarrativeMenuState extends ConsumerState<SpecimenMenu> {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<MenuSelection>(

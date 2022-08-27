@@ -71,6 +71,7 @@ class SpecimenFormCtrModel {
     required this.conditionCtr,
     required this.prepDateCtr,
     required this.prepTimeCtr,
+    required this.captureDateCtr,
     required this.captureTimeCtr,
     required this.trapTypeCtr,
   });
@@ -80,6 +81,7 @@ class SpecimenFormCtrModel {
   TextEditingController conditionCtr;
   TextEditingController prepDateCtr;
   TextEditingController prepTimeCtr;
+  TextEditingController captureDateCtr;
   TextEditingController captureTimeCtr;
   TextEditingController trapTypeCtr;
 
@@ -89,6 +91,7 @@ class SpecimenFormCtrModel {
       conditionCtr: TextEditingController(),
       prepDateCtr: TextEditingController(),
       prepTimeCtr: TextEditingController(),
+      captureDateCtr: TextEditingController(),
       captureTimeCtr: TextEditingController(),
       trapTypeCtr: TextEditingController());
 }

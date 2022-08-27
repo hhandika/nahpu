@@ -17,22 +17,11 @@ class NewNarrativeForm extends ConsumerStatefulWidget {
   NewNarrativeFormState createState() => NewNarrativeFormState();
 }
 
-class NewNarrativeFormState extends ConsumerState<NewNarrativeForm>
-    with TickerProviderStateMixin {
-  final dateController = TextEditingController();
+class NewNarrativeFormState extends ConsumerState<NewNarrativeForm> {
   final _narrativeCtr = NarrativeFormCtrModel.empty();
-
-  late TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-  }
 
   @override
   void dispose() {
-    _tabController.dispose();
     super.dispose();
   }
 

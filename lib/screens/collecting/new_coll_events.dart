@@ -20,9 +20,13 @@ class NewCollEventForm extends ConsumerStatefulWidget {
   NewCollEventFormState createState() => NewCollEventFormState();
 }
 
-class NewCollEventFormState extends ConsumerState<NewCollEventForm>
-    with TickerProviderStateMixin {
+class NewCollEventFormState extends ConsumerState<NewCollEventForm> {
   final _collEventCtr = CollEventFormCtrModel.empty();
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
