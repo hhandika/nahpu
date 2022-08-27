@@ -83,7 +83,7 @@ class NarrativeMenuState extends ConsumerState<SpecimenMenu> {
       case MenuSelection.deleteAllRecords:
         final projectUuid = ref.read(projectUuidProvider.state).state;
         ref.read(databaseProvider).deleteAllSpecimens(projectUuid);
-        ref.refresh(collEventEntryProvider);
+        ref.refresh(specimenEntryProvider);
         ref.refresh(pageNavigationProvider);
         break;
     }

@@ -22,6 +22,14 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
     with TickerProviderStateMixin {
   late TabController _tabController;
 
+  final List<String> conditions = [
+    'Freshy Euthanized',
+    'Good',
+    'Fair',
+    'Poor',
+    'Rotten'
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -120,7 +128,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
                     setState(() {});
                   }),
               DropdownButtonFormField(
-                value: 'Freshy Euthanized',
+                value: widget.specimenCtr.conditionCtr,
                 onChanged: (String? value) {
                   updateSpecimen(widget.specimenUuid,
                       SpecimenCompanion(condition: db.Value(value)), ref);
@@ -129,24 +137,12 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
                   labelText: 'Condition',
                   hintText: 'Choose a condition',
                 ),
-                items: const [
-                  DropdownMenuItem(
-                    value: 'Freshy Euthanized',
-                    child: Text('Freshy Euthanized'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Good',
-                    child: Text('Good'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Fair',
-                    child: Text('Fair'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Rotten',
-                    child: Text('Rotten'),
-                  ),
-                ],
+                items: conditions
+                    .map((String condition) => DropdownMenuItem(
+                          value: condition,
+                          child: Text(condition),
+                        ))
+                    .toList(),
               ),
               Row(
                 children: [

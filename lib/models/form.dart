@@ -78,7 +78,7 @@ class SpecimenFormCtrModel {
 
   // TextEditingController speciesIdCtr;
   // TextEditingController collectorCtr;
-  TextEditingController conditionCtr;
+  String? conditionCtr;
   TextEditingController prepDateCtr;
   TextEditingController prepTimeCtr;
   TextEditingController captureDateCtr;
@@ -88,7 +88,7 @@ class SpecimenFormCtrModel {
   factory SpecimenFormCtrModel.empty() => SpecimenFormCtrModel(
       // speciesIdCtr: TextEditingController(),
       // collectorCtr: TextEditingController(),
-      conditionCtr: TextEditingController(),
+      conditionCtr: null,
       prepDateCtr: TextEditingController(),
       prepTimeCtr: TextEditingController(),
       captureDateCtr: TextEditingController(),

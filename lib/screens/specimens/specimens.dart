@@ -48,7 +48,7 @@ class SpecimensState extends ConsumerState<Specimens> {
                   isVisible = false;
                 });
 
-                return const Text("No collecting event entries");
+                return const Text("No specimen records");
               } else {
                 int specimenSize = specimenEntry.length;
                 setState(() {
@@ -68,8 +68,7 @@ class SpecimensState extends ConsumerState<Specimens> {
                   itemCount: specimenSize,
                   itemBuilder: (context, index) {
                     final specimenFormCtr = SpecimenFormCtrModel(
-                      conditionCtr: TextEditingController(
-                          text: specimenEntry[index].condition),
+                      conditionCtr: specimenEntry[index].condition,
                       prepDateCtr: TextEditingController(
                           text: specimenEntry[index].prepDate),
                       prepTimeCtr: TextEditingController(
