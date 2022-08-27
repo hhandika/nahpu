@@ -58,7 +58,8 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
   }
 
   Widget _drawSpecimenDataFields() {
-    // final personnelEntry = ref.watch(personnelEntryProvider);
+    // ignore: unused_local_variable
+    final personnelEntry = ref.watch(personnelEntryProvider);
     return Card(
       // Specimen data card
       child: Container(
@@ -87,7 +88,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
               //   }),
               //   onChanged: (int? value) {
               //     updateSpecimen(widget.specimenUuid,
-              //         SpecimenCompanion(collector: db.Value(value)), ref);
+              //         SpecimenCompanion(collectorID: db.Value(value)), ref);
               //   },
               // ),
               TextFormField(
