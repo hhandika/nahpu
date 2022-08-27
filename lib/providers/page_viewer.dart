@@ -36,3 +36,9 @@ final specimenEntryProvider =
       ref.read(databaseProvider).getAllSpecimens(projectUuid);
   return specimenEntries;
 });
+
+final personnelEntryProvider =
+    FutureProvider.autoDispose<List<PersonnelData>>((ref) {
+  final personnelEntries = ref.read(databaseProvider).getAllPersonnel();
+  return personnelEntries;
+});

@@ -132,6 +132,18 @@ class Database extends _$Database {
     return (delete(specimen)..where((t) => t.projectUuid.equals(projectUuid)))
         .go();
   }
+
+  // Personnel table
+  Future<int> createPersonnel(PersonnelCompanion form) =>
+      into(personnel).insert(form);
+
+  Future updatePersonnelEntry(String id, PersonnelCompanion entry) {
+    return (update(personnel)..where((t) => t.id.equals(id))).write(entry);
+  }
+
+  Future<List<PersonnelData>> getAllPersonnel() {
+    return (select(personnel)).get();
+  }
 }
 
 LazyDatabase _openConnection() {

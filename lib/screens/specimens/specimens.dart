@@ -68,6 +68,8 @@ class SpecimensState extends ConsumerState<Specimens> {
                   itemCount: specimenSize,
                   itemBuilder: (context, index) {
                     final specimenFormCtr = SpecimenFormCtrModel(
+                      speciesIdCtr: specimenEntry[index].speciesID,
+                      collectorCtr: specimenEntry[index].collectorID,
                       conditionCtr: specimenEntry[index].condition,
                       prepDateCtr: TextEditingController(
                           text: specimenEntry[index].prepDate),

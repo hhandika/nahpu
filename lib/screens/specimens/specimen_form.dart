@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/providers/updater.dart';
+import 'package:nahpu/providers/page_viewer.dart';
 
 class SpecimenForm extends ConsumerStatefulWidget {
   const SpecimenForm(
@@ -57,6 +58,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
   }
 
   Widget _drawSpecimenDataFields() {
+    // final personnelEntry = ref.watch(personnelEntryProvider);
     return Card(
       // Specimen data card
       child: Container(
@@ -67,24 +69,27 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
                 'Specimen Data',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              DropdownButtonFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Collector',
-                    hintText: 'Choose a collector',
-                  ),
-                  items: const [
-                    DropdownMenuItem(
-                      value: 'One',
-                      child: Text('One'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Two',
-                      child: Text('Two'),
-                    ),
-                  ],
-                  onChanged: (String? newValue) {
-                    setState(() {});
-                  }),
+              // DropdownButtonFormField(
+              //   value: widget.specimenCtr.collectorCtr,
+              //   decoration: const InputDecoration(
+              //     labelText: 'Collector',
+              //     hintText: 'Choose a collector',
+              //   ),
+              //   items: personnelEntry.when(data: (entry) {
+              //     return entry.map((e) {
+              //       return DropdownMenuItem(
+              //           value: e.id, child: Text(e.name.toString()));
+              //     }).toList();
+              //   }, loading: () {
+              //     return const [];
+              //   }, error: (e, s) {
+              //     return const [];
+              //   }),
+              //   onChanged: (int? value) {
+              //     updateSpecimen(widget.specimenUuid,
+              //         SpecimenCompanion(collector: db.Value(value)), ref);
+              //   },
+              // ),
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: 'Collector Number',
