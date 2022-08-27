@@ -2944,9 +2944,573 @@ class Narrative extends Table with TableInfo<Narrative, NarrativeData> {
   bool get dontWriteConstraints => true;
 }
 
+class SpecimenData extends DataClass implements Insertable<SpecimenData> {
+  final String? specimenUuid;
+  final String? projectUuid;
+  final int? speciesID;
+  final String? condition;
+  final String? prepDate;
+  final String? prepTime;
+  final String? captureDate;
+  final String? captureTime;
+  final String? trapType;
+  final int? collectorID;
+  final int? collEventID;
+  SpecimenData(
+      {this.specimenUuid,
+      this.projectUuid,
+      this.speciesID,
+      this.condition,
+      this.prepDate,
+      this.prepTime,
+      this.captureDate,
+      this.captureTime,
+      this.trapType,
+      this.collectorID,
+      this.collEventID});
+  factory SpecimenData.fromData(Map<String, dynamic> data, {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return SpecimenData(
+      specimenUuid: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}specimenUuid']),
+      projectUuid: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}projectUuid']),
+      speciesID: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}speciesID']),
+      condition: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}condition']),
+      prepDate: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}prepDate']),
+      prepTime: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}prepTime']),
+      captureDate: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}captureDate']),
+      captureTime: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}captureTime']),
+      trapType: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}trapType']),
+      collectorID: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}collectorID']),
+      collEventID: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}collEventID']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || specimenUuid != null) {
+      map['specimenUuid'] = Variable<String?>(specimenUuid);
+    }
+    if (!nullToAbsent || projectUuid != null) {
+      map['projectUuid'] = Variable<String?>(projectUuid);
+    }
+    if (!nullToAbsent || speciesID != null) {
+      map['speciesID'] = Variable<int?>(speciesID);
+    }
+    if (!nullToAbsent || condition != null) {
+      map['condition'] = Variable<String?>(condition);
+    }
+    if (!nullToAbsent || prepDate != null) {
+      map['prepDate'] = Variable<String?>(prepDate);
+    }
+    if (!nullToAbsent || prepTime != null) {
+      map['prepTime'] = Variable<String?>(prepTime);
+    }
+    if (!nullToAbsent || captureDate != null) {
+      map['captureDate'] = Variable<String?>(captureDate);
+    }
+    if (!nullToAbsent || captureTime != null) {
+      map['captureTime'] = Variable<String?>(captureTime);
+    }
+    if (!nullToAbsent || trapType != null) {
+      map['trapType'] = Variable<String?>(trapType);
+    }
+    if (!nullToAbsent || collectorID != null) {
+      map['collectorID'] = Variable<int?>(collectorID);
+    }
+    if (!nullToAbsent || collEventID != null) {
+      map['collEventID'] = Variable<int?>(collEventID);
+    }
+    return map;
+  }
+
+  SpecimenCompanion toCompanion(bool nullToAbsent) {
+    return SpecimenCompanion(
+      specimenUuid: specimenUuid == null && nullToAbsent
+          ? const Value.absent()
+          : Value(specimenUuid),
+      projectUuid: projectUuid == null && nullToAbsent
+          ? const Value.absent()
+          : Value(projectUuid),
+      speciesID: speciesID == null && nullToAbsent
+          ? const Value.absent()
+          : Value(speciesID),
+      condition: condition == null && nullToAbsent
+          ? const Value.absent()
+          : Value(condition),
+      prepDate: prepDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(prepDate),
+      prepTime: prepTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(prepTime),
+      captureDate: captureDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(captureDate),
+      captureTime: captureTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(captureTime),
+      trapType: trapType == null && nullToAbsent
+          ? const Value.absent()
+          : Value(trapType),
+      collectorID: collectorID == null && nullToAbsent
+          ? const Value.absent()
+          : Value(collectorID),
+      collEventID: collEventID == null && nullToAbsent
+          ? const Value.absent()
+          : Value(collEventID),
+    );
+  }
+
+  factory SpecimenData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SpecimenData(
+      specimenUuid: serializer.fromJson<String?>(json['specimenUuid']),
+      projectUuid: serializer.fromJson<String?>(json['projectUuid']),
+      speciesID: serializer.fromJson<int?>(json['speciesID']),
+      condition: serializer.fromJson<String?>(json['condition']),
+      prepDate: serializer.fromJson<String?>(json['prepDate']),
+      prepTime: serializer.fromJson<String?>(json['prepTime']),
+      captureDate: serializer.fromJson<String?>(json['captureDate']),
+      captureTime: serializer.fromJson<String?>(json['captureTime']),
+      trapType: serializer.fromJson<String?>(json['trapType']),
+      collectorID: serializer.fromJson<int?>(json['collectorID']),
+      collEventID: serializer.fromJson<int?>(json['collEventID']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'specimenUuid': serializer.toJson<String?>(specimenUuid),
+      'projectUuid': serializer.toJson<String?>(projectUuid),
+      'speciesID': serializer.toJson<int?>(speciesID),
+      'condition': serializer.toJson<String?>(condition),
+      'prepDate': serializer.toJson<String?>(prepDate),
+      'prepTime': serializer.toJson<String?>(prepTime),
+      'captureDate': serializer.toJson<String?>(captureDate),
+      'captureTime': serializer.toJson<String?>(captureTime),
+      'trapType': serializer.toJson<String?>(trapType),
+      'collectorID': serializer.toJson<int?>(collectorID),
+      'collEventID': serializer.toJson<int?>(collEventID),
+    };
+  }
+
+  SpecimenData copyWith(
+          {String? specimenUuid,
+          String? projectUuid,
+          int? speciesID,
+          String? condition,
+          String? prepDate,
+          String? prepTime,
+          String? captureDate,
+          String? captureTime,
+          String? trapType,
+          int? collectorID,
+          int? collEventID}) =>
+      SpecimenData(
+        specimenUuid: specimenUuid ?? this.specimenUuid,
+        projectUuid: projectUuid ?? this.projectUuid,
+        speciesID: speciesID ?? this.speciesID,
+        condition: condition ?? this.condition,
+        prepDate: prepDate ?? this.prepDate,
+        prepTime: prepTime ?? this.prepTime,
+        captureDate: captureDate ?? this.captureDate,
+        captureTime: captureTime ?? this.captureTime,
+        trapType: trapType ?? this.trapType,
+        collectorID: collectorID ?? this.collectorID,
+        collEventID: collEventID ?? this.collEventID,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('SpecimenData(')
+          ..write('specimenUuid: $specimenUuid, ')
+          ..write('projectUuid: $projectUuid, ')
+          ..write('speciesID: $speciesID, ')
+          ..write('condition: $condition, ')
+          ..write('prepDate: $prepDate, ')
+          ..write('prepTime: $prepTime, ')
+          ..write('captureDate: $captureDate, ')
+          ..write('captureTime: $captureTime, ')
+          ..write('trapType: $trapType, ')
+          ..write('collectorID: $collectorID, ')
+          ..write('collEventID: $collEventID')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      specimenUuid,
+      projectUuid,
+      speciesID,
+      condition,
+      prepDate,
+      prepTime,
+      captureDate,
+      captureTime,
+      trapType,
+      collectorID,
+      collEventID);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SpecimenData &&
+          other.specimenUuid == this.specimenUuid &&
+          other.projectUuid == this.projectUuid &&
+          other.speciesID == this.speciesID &&
+          other.condition == this.condition &&
+          other.prepDate == this.prepDate &&
+          other.prepTime == this.prepTime &&
+          other.captureDate == this.captureDate &&
+          other.captureTime == this.captureTime &&
+          other.trapType == this.trapType &&
+          other.collectorID == this.collectorID &&
+          other.collEventID == this.collEventID);
+}
+
+class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
+  final Value<String?> specimenUuid;
+  final Value<String?> projectUuid;
+  final Value<int?> speciesID;
+  final Value<String?> condition;
+  final Value<String?> prepDate;
+  final Value<String?> prepTime;
+  final Value<String?> captureDate;
+  final Value<String?> captureTime;
+  final Value<String?> trapType;
+  final Value<int?> collectorID;
+  final Value<int?> collEventID;
+  const SpecimenCompanion({
+    this.specimenUuid = const Value.absent(),
+    this.projectUuid = const Value.absent(),
+    this.speciesID = const Value.absent(),
+    this.condition = const Value.absent(),
+    this.prepDate = const Value.absent(),
+    this.prepTime = const Value.absent(),
+    this.captureDate = const Value.absent(),
+    this.captureTime = const Value.absent(),
+    this.trapType = const Value.absent(),
+    this.collectorID = const Value.absent(),
+    this.collEventID = const Value.absent(),
+  });
+  SpecimenCompanion.insert({
+    this.specimenUuid = const Value.absent(),
+    this.projectUuid = const Value.absent(),
+    this.speciesID = const Value.absent(),
+    this.condition = const Value.absent(),
+    this.prepDate = const Value.absent(),
+    this.prepTime = const Value.absent(),
+    this.captureDate = const Value.absent(),
+    this.captureTime = const Value.absent(),
+    this.trapType = const Value.absent(),
+    this.collectorID = const Value.absent(),
+    this.collEventID = const Value.absent(),
+  });
+  static Insertable<SpecimenData> custom({
+    Expression<String?>? specimenUuid,
+    Expression<String?>? projectUuid,
+    Expression<int?>? speciesID,
+    Expression<String?>? condition,
+    Expression<String?>? prepDate,
+    Expression<String?>? prepTime,
+    Expression<String?>? captureDate,
+    Expression<String?>? captureTime,
+    Expression<String?>? trapType,
+    Expression<int?>? collectorID,
+    Expression<int?>? collEventID,
+  }) {
+    return RawValuesInsertable({
+      if (specimenUuid != null) 'specimenUuid': specimenUuid,
+      if (projectUuid != null) 'projectUuid': projectUuid,
+      if (speciesID != null) 'speciesID': speciesID,
+      if (condition != null) 'condition': condition,
+      if (prepDate != null) 'prepDate': prepDate,
+      if (prepTime != null) 'prepTime': prepTime,
+      if (captureDate != null) 'captureDate': captureDate,
+      if (captureTime != null) 'captureTime': captureTime,
+      if (trapType != null) 'trapType': trapType,
+      if (collectorID != null) 'collectorID': collectorID,
+      if (collEventID != null) 'collEventID': collEventID,
+    });
+  }
+
+  SpecimenCompanion copyWith(
+      {Value<String?>? specimenUuid,
+      Value<String?>? projectUuid,
+      Value<int?>? speciesID,
+      Value<String?>? condition,
+      Value<String?>? prepDate,
+      Value<String?>? prepTime,
+      Value<String?>? captureDate,
+      Value<String?>? captureTime,
+      Value<String?>? trapType,
+      Value<int?>? collectorID,
+      Value<int?>? collEventID}) {
+    return SpecimenCompanion(
+      specimenUuid: specimenUuid ?? this.specimenUuid,
+      projectUuid: projectUuid ?? this.projectUuid,
+      speciesID: speciesID ?? this.speciesID,
+      condition: condition ?? this.condition,
+      prepDate: prepDate ?? this.prepDate,
+      prepTime: prepTime ?? this.prepTime,
+      captureDate: captureDate ?? this.captureDate,
+      captureTime: captureTime ?? this.captureTime,
+      trapType: trapType ?? this.trapType,
+      collectorID: collectorID ?? this.collectorID,
+      collEventID: collEventID ?? this.collEventID,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (specimenUuid.present) {
+      map['specimenUuid'] = Variable<String?>(specimenUuid.value);
+    }
+    if (projectUuid.present) {
+      map['projectUuid'] = Variable<String?>(projectUuid.value);
+    }
+    if (speciesID.present) {
+      map['speciesID'] = Variable<int?>(speciesID.value);
+    }
+    if (condition.present) {
+      map['condition'] = Variable<String?>(condition.value);
+    }
+    if (prepDate.present) {
+      map['prepDate'] = Variable<String?>(prepDate.value);
+    }
+    if (prepTime.present) {
+      map['prepTime'] = Variable<String?>(prepTime.value);
+    }
+    if (captureDate.present) {
+      map['captureDate'] = Variable<String?>(captureDate.value);
+    }
+    if (captureTime.present) {
+      map['captureTime'] = Variable<String?>(captureTime.value);
+    }
+    if (trapType.present) {
+      map['trapType'] = Variable<String?>(trapType.value);
+    }
+    if (collectorID.present) {
+      map['collectorID'] = Variable<int?>(collectorID.value);
+    }
+    if (collEventID.present) {
+      map['collEventID'] = Variable<int?>(collEventID.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SpecimenCompanion(')
+          ..write('specimenUuid: $specimenUuid, ')
+          ..write('projectUuid: $projectUuid, ')
+          ..write('speciesID: $speciesID, ')
+          ..write('condition: $condition, ')
+          ..write('prepDate: $prepDate, ')
+          ..write('prepTime: $prepTime, ')
+          ..write('captureDate: $captureDate, ')
+          ..write('captureTime: $captureTime, ')
+          ..write('trapType: $trapType, ')
+          ..write('collectorID: $collectorID, ')
+          ..write('collEventID: $collEventID')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  Specimen(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _specimenUuidMeta =
+      const VerificationMeta('specimenUuid');
+  late final GeneratedColumn<String?> specimenUuid = GeneratedColumn<String?>(
+      'specimenUuid', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _projectUuidMeta =
+      const VerificationMeta('projectUuid');
+  late final GeneratedColumn<String?> projectUuid = GeneratedColumn<String?>(
+      'projectUuid', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _speciesIDMeta = const VerificationMeta('speciesID');
+  late final GeneratedColumn<int?> speciesID = GeneratedColumn<int?>(
+      'speciesID', aliasedName, true,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _conditionMeta = const VerificationMeta('condition');
+  late final GeneratedColumn<String?> condition = GeneratedColumn<String?>(
+      'condition', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _prepDateMeta = const VerificationMeta('prepDate');
+  late final GeneratedColumn<String?> prepDate = GeneratedColumn<String?>(
+      'prepDate', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _prepTimeMeta = const VerificationMeta('prepTime');
+  late final GeneratedColumn<String?> prepTime = GeneratedColumn<String?>(
+      'prepTime', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _captureDateMeta =
+      const VerificationMeta('captureDate');
+  late final GeneratedColumn<String?> captureDate = GeneratedColumn<String?>(
+      'captureDate', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _captureTimeMeta =
+      const VerificationMeta('captureTime');
+  late final GeneratedColumn<String?> captureTime = GeneratedColumn<String?>(
+      'captureTime', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _trapTypeMeta = const VerificationMeta('trapType');
+  late final GeneratedColumn<String?> trapType = GeneratedColumn<String?>(
+      'trapType', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _collectorIDMeta =
+      const VerificationMeta('collectorID');
+  late final GeneratedColumn<int?> collectorID = GeneratedColumn<int?>(
+      'collectorID', aliasedName, true,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      $customConstraints: 'REFERENCES personnel(id)');
+  final VerificationMeta _collEventIDMeta =
+      const VerificationMeta('collEventID');
+  late final GeneratedColumn<int?> collEventID = GeneratedColumn<int?>(
+      'collEventID', aliasedName, true,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      $customConstraints: 'REFERENCES collEvent(id)');
+  @override
+  List<GeneratedColumn> get $columns => [
+        specimenUuid,
+        projectUuid,
+        speciesID,
+        condition,
+        prepDate,
+        prepTime,
+        captureDate,
+        captureTime,
+        trapType,
+        collectorID,
+        collEventID
+      ];
+  @override
+  String get aliasedName => _alias ?? 'specimen';
+  @override
+  String get actualTableName => 'specimen';
+  @override
+  VerificationContext validateIntegrity(Insertable<SpecimenData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('specimenUuid')) {
+      context.handle(
+          _specimenUuidMeta,
+          specimenUuid.isAcceptableOrUnknown(
+              data['specimenUuid']!, _specimenUuidMeta));
+    }
+    if (data.containsKey('projectUuid')) {
+      context.handle(
+          _projectUuidMeta,
+          projectUuid.isAcceptableOrUnknown(
+              data['projectUuid']!, _projectUuidMeta));
+    }
+    if (data.containsKey('speciesID')) {
+      context.handle(_speciesIDMeta,
+          speciesID.isAcceptableOrUnknown(data['speciesID']!, _speciesIDMeta));
+    }
+    if (data.containsKey('condition')) {
+      context.handle(_conditionMeta,
+          condition.isAcceptableOrUnknown(data['condition']!, _conditionMeta));
+    }
+    if (data.containsKey('prepDate')) {
+      context.handle(_prepDateMeta,
+          prepDate.isAcceptableOrUnknown(data['prepDate']!, _prepDateMeta));
+    }
+    if (data.containsKey('prepTime')) {
+      context.handle(_prepTimeMeta,
+          prepTime.isAcceptableOrUnknown(data['prepTime']!, _prepTimeMeta));
+    }
+    if (data.containsKey('captureDate')) {
+      context.handle(
+          _captureDateMeta,
+          captureDate.isAcceptableOrUnknown(
+              data['captureDate']!, _captureDateMeta));
+    }
+    if (data.containsKey('captureTime')) {
+      context.handle(
+          _captureTimeMeta,
+          captureTime.isAcceptableOrUnknown(
+              data['captureTime']!, _captureTimeMeta));
+    }
+    if (data.containsKey('trapType')) {
+      context.handle(_trapTypeMeta,
+          trapType.isAcceptableOrUnknown(data['trapType']!, _trapTypeMeta));
+    }
+    if (data.containsKey('collectorID')) {
+      context.handle(
+          _collectorIDMeta,
+          collectorID.isAcceptableOrUnknown(
+              data['collectorID']!, _collectorIDMeta));
+    }
+    if (data.containsKey('collEventID')) {
+      context.handle(
+          _collEventIDMeta,
+          collEventID.isAcceptableOrUnknown(
+              data['collEventID']!, _collEventIDMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  @override
+  SpecimenData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return SpecimenData.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  Specimen createAlias(String alias) {
+    return Specimen(attachedDatabase, alias);
+  }
+
+  @override
+  bool get dontWriteConstraints => true;
+}
+
 class MammalMeasurementData extends DataClass
     implements Insertable<MammalMeasurementData> {
   final int id;
+  final String? specimenUuid;
   final int? totalLength;
   final int? tailLength;
   final int? hindFootLength;
@@ -2971,6 +3535,7 @@ class MammalMeasurementData extends DataClass
   final int? embryoCRRight;
   MammalMeasurementData(
       {required this.id,
+      this.specimenUuid,
       this.totalLength,
       this.tailLength,
       this.hindFootLength,
@@ -2999,6 +3564,8 @@ class MammalMeasurementData extends DataClass
     return MammalMeasurementData(
       id: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      specimenUuid: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}specimenUuid']),
       totalLength: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}totalLength']),
       tailLength: const IntType()
@@ -3049,6 +3616,9 @@ class MammalMeasurementData extends DataClass
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
+    if (!nullToAbsent || specimenUuid != null) {
+      map['specimenUuid'] = Variable<String?>(specimenUuid);
+    }
     if (!nullToAbsent || totalLength != null) {
       map['totalLength'] = Variable<int?>(totalLength);
     }
@@ -3121,6 +3691,9 @@ class MammalMeasurementData extends DataClass
   MammalMeasurementCompanion toCompanion(bool nullToAbsent) {
     return MammalMeasurementCompanion(
       id: Value(id),
+      specimenUuid: specimenUuid == null && nullToAbsent
+          ? const Value.absent()
+          : Value(specimenUuid),
       totalLength: totalLength == null && nullToAbsent
           ? const Value.absent()
           : Value(totalLength),
@@ -3192,6 +3765,7 @@ class MammalMeasurementData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return MammalMeasurementData(
       id: serializer.fromJson<int>(json['id']),
+      specimenUuid: serializer.fromJson<String?>(json['specimenUuid']),
       totalLength: serializer.fromJson<int?>(json['totalLength']),
       tailLength: serializer.fromJson<int?>(json['tailLength']),
       hindFootLength: serializer.fromJson<int?>(json['hindFootLength']),
@@ -3224,6 +3798,7 @@ class MammalMeasurementData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
+      'specimenUuid': serializer.toJson<String?>(specimenUuid),
       'totalLength': serializer.toJson<int?>(totalLength),
       'tailLength': serializer.toJson<int?>(tailLength),
       'hindFootLength': serializer.toJson<int?>(hindFootLength),
@@ -3251,6 +3826,7 @@ class MammalMeasurementData extends DataClass
 
   MammalMeasurementData copyWith(
           {int? id,
+          String? specimenUuid,
           int? totalLength,
           int? tailLength,
           int? hindFootLength,
@@ -3275,6 +3851,7 @@ class MammalMeasurementData extends DataClass
           int? embryoCRRight}) =>
       MammalMeasurementData(
         id: id ?? this.id,
+        specimenUuid: specimenUuid ?? this.specimenUuid,
         totalLength: totalLength ?? this.totalLength,
         tailLength: tailLength ?? this.tailLength,
         hindFootLength: hindFootLength ?? this.hindFootLength,
@@ -3302,6 +3879,7 @@ class MammalMeasurementData extends DataClass
   String toString() {
     return (StringBuffer('MammalMeasurementData(')
           ..write('id: $id, ')
+          ..write('specimenUuid: $specimenUuid, ')
           ..write('totalLength: $totalLength, ')
           ..write('tailLength: $tailLength, ')
           ..write('hindFootLength: $hindFootLength, ')
@@ -3331,6 +3909,7 @@ class MammalMeasurementData extends DataClass
   @override
   int get hashCode => Object.hashAll([
         id,
+        specimenUuid,
         totalLength,
         tailLength,
         hindFootLength,
@@ -3359,6 +3938,7 @@ class MammalMeasurementData extends DataClass
       identical(this, other) ||
       (other is MammalMeasurementData &&
           other.id == this.id &&
+          other.specimenUuid == this.specimenUuid &&
           other.totalLength == this.totalLength &&
           other.tailLength == this.tailLength &&
           other.hindFootLength == this.hindFootLength &&
@@ -3386,6 +3966,7 @@ class MammalMeasurementData extends DataClass
 class MammalMeasurementCompanion
     extends UpdateCompanion<MammalMeasurementData> {
   final Value<int> id;
+  final Value<String?> specimenUuid;
   final Value<int?> totalLength;
   final Value<int?> tailLength;
   final Value<int?> hindFootLength;
@@ -3410,6 +3991,7 @@ class MammalMeasurementCompanion
   final Value<int?> embryoCRRight;
   const MammalMeasurementCompanion({
     this.id = const Value.absent(),
+    this.specimenUuid = const Value.absent(),
     this.totalLength = const Value.absent(),
     this.tailLength = const Value.absent(),
     this.hindFootLength = const Value.absent(),
@@ -3435,6 +4017,7 @@ class MammalMeasurementCompanion
   });
   MammalMeasurementCompanion.insert({
     this.id = const Value.absent(),
+    this.specimenUuid = const Value.absent(),
     this.totalLength = const Value.absent(),
     this.tailLength = const Value.absent(),
     this.hindFootLength = const Value.absent(),
@@ -3460,6 +4043,7 @@ class MammalMeasurementCompanion
   });
   static Insertable<MammalMeasurementData> custom({
     Expression<int>? id,
+    Expression<String?>? specimenUuid,
     Expression<int?>? totalLength,
     Expression<int?>? tailLength,
     Expression<int?>? hindFootLength,
@@ -3485,6 +4069,7 @@ class MammalMeasurementCompanion
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (specimenUuid != null) 'specimenUuid': specimenUuid,
       if (totalLength != null) 'totalLength': totalLength,
       if (tailLength != null) 'tailLength': tailLength,
       if (hindFootLength != null) 'hindFootLength': hindFootLength,
@@ -3514,6 +4099,7 @@ class MammalMeasurementCompanion
 
   MammalMeasurementCompanion copyWith(
       {Value<int>? id,
+      Value<String?>? specimenUuid,
       Value<int?>? totalLength,
       Value<int?>? tailLength,
       Value<int?>? hindFootLength,
@@ -3538,6 +4124,7 @@ class MammalMeasurementCompanion
       Value<int?>? embryoCRRight}) {
     return MammalMeasurementCompanion(
       id: id ?? this.id,
+      specimenUuid: specimenUuid ?? this.specimenUuid,
       totalLength: totalLength ?? this.totalLength,
       tailLength: tailLength ?? this.tailLength,
       hindFootLength: hindFootLength ?? this.hindFootLength,
@@ -3568,6 +4155,9 @@ class MammalMeasurementCompanion
     final map = <String, Expression>{};
     if (id.present) {
       map['id'] = Variable<int>(id.value);
+    }
+    if (specimenUuid.present) {
+      map['specimenUuid'] = Variable<String?>(specimenUuid.value);
     }
     if (totalLength.present) {
       map['totalLength'] = Variable<int?>(totalLength.value);
@@ -3642,6 +4232,7 @@ class MammalMeasurementCompanion
   String toString() {
     return (StringBuffer('MammalMeasurementCompanion(')
           ..write('id: $id, ')
+          ..write('specimenUuid: $specimenUuid, ')
           ..write('totalLength: $totalLength, ')
           ..write('tailLength: $tailLength, ')
           ..write('hindFootLength: $hindFootLength, ')
@@ -3681,6 +4272,13 @@ class MammalMeasurement extends Table
       type: const IntType(),
       requiredDuringInsert: false,
       $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
+  final VerificationMeta _specimenUuidMeta =
+      const VerificationMeta('specimenUuid');
+  late final GeneratedColumn<String?> specimenUuid = GeneratedColumn<String?>(
+      'specimenUuid', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: 'REFERENCES specimen(specimenUuid)');
   final VerificationMeta _totalLengthMeta =
       const VerificationMeta('totalLength');
   late final GeneratedColumn<int?> totalLength = GeneratedColumn<int?>(
@@ -3831,6 +4429,7 @@ class MammalMeasurement extends Table
   @override
   List<GeneratedColumn> get $columns => [
         id,
+        specimenUuid,
         totalLength,
         tailLength,
         hindFootLength,
@@ -3866,6 +4465,12 @@ class MammalMeasurement extends Table
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('specimenUuid')) {
+      context.handle(
+          _specimenUuidMeta,
+          specimenUuid.isAcceptableOrUnknown(
+              data['specimenUuid']!, _specimenUuidMeta));
     }
     if (data.containsKey('totalLength')) {
       context.handle(
@@ -4009,614 +4614,10 @@ class MammalMeasurement extends Table
   bool get dontWriteConstraints => true;
 }
 
-class MammalSpecimenData extends DataClass
-    implements Insertable<MammalSpecimenData> {
-  final String? specimenUuid;
-  final String? projectUuid;
-  final int? speciesID;
-  final String? condition;
-  final String? prepDate;
-  final String? prepTime;
-  final String? captureDate;
-  final String? captureTime;
-  final String? trapType;
-  final int? collectorID;
-  final int? collEventID;
-  final int? measureID;
-  MammalSpecimenData(
-      {this.specimenUuid,
-      this.projectUuid,
-      this.speciesID,
-      this.condition,
-      this.prepDate,
-      this.prepTime,
-      this.captureDate,
-      this.captureTime,
-      this.trapType,
-      this.collectorID,
-      this.collEventID,
-      this.measureID});
-  factory MammalSpecimenData.fromData(Map<String, dynamic> data,
-      {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return MammalSpecimenData(
-      specimenUuid: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}specimenUuid']),
-      projectUuid: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}projectUuid']),
-      speciesID: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}speciesID']),
-      condition: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}condition']),
-      prepDate: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}prepDate']),
-      prepTime: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}prepTime']),
-      captureDate: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}captureDate']),
-      captureTime: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}captureTime']),
-      trapType: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}trapType']),
-      collectorID: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}collectorID']),
-      collEventID: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}collEventID']),
-      measureID: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}measureID']),
-    );
-  }
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (!nullToAbsent || specimenUuid != null) {
-      map['specimenUuid'] = Variable<String?>(specimenUuid);
-    }
-    if (!nullToAbsent || projectUuid != null) {
-      map['projectUuid'] = Variable<String?>(projectUuid);
-    }
-    if (!nullToAbsent || speciesID != null) {
-      map['speciesID'] = Variable<int?>(speciesID);
-    }
-    if (!nullToAbsent || condition != null) {
-      map['condition'] = Variable<String?>(condition);
-    }
-    if (!nullToAbsent || prepDate != null) {
-      map['prepDate'] = Variable<String?>(prepDate);
-    }
-    if (!nullToAbsent || prepTime != null) {
-      map['prepTime'] = Variable<String?>(prepTime);
-    }
-    if (!nullToAbsent || captureDate != null) {
-      map['captureDate'] = Variable<String?>(captureDate);
-    }
-    if (!nullToAbsent || captureTime != null) {
-      map['captureTime'] = Variable<String?>(captureTime);
-    }
-    if (!nullToAbsent || trapType != null) {
-      map['trapType'] = Variable<String?>(trapType);
-    }
-    if (!nullToAbsent || collectorID != null) {
-      map['collectorID'] = Variable<int?>(collectorID);
-    }
-    if (!nullToAbsent || collEventID != null) {
-      map['collEventID'] = Variable<int?>(collEventID);
-    }
-    if (!nullToAbsent || measureID != null) {
-      map['measureID'] = Variable<int?>(measureID);
-    }
-    return map;
-  }
-
-  MammalSpecimenCompanion toCompanion(bool nullToAbsent) {
-    return MammalSpecimenCompanion(
-      specimenUuid: specimenUuid == null && nullToAbsent
-          ? const Value.absent()
-          : Value(specimenUuid),
-      projectUuid: projectUuid == null && nullToAbsent
-          ? const Value.absent()
-          : Value(projectUuid),
-      speciesID: speciesID == null && nullToAbsent
-          ? const Value.absent()
-          : Value(speciesID),
-      condition: condition == null && nullToAbsent
-          ? const Value.absent()
-          : Value(condition),
-      prepDate: prepDate == null && nullToAbsent
-          ? const Value.absent()
-          : Value(prepDate),
-      prepTime: prepTime == null && nullToAbsent
-          ? const Value.absent()
-          : Value(prepTime),
-      captureDate: captureDate == null && nullToAbsent
-          ? const Value.absent()
-          : Value(captureDate),
-      captureTime: captureTime == null && nullToAbsent
-          ? const Value.absent()
-          : Value(captureTime),
-      trapType: trapType == null && nullToAbsent
-          ? const Value.absent()
-          : Value(trapType),
-      collectorID: collectorID == null && nullToAbsent
-          ? const Value.absent()
-          : Value(collectorID),
-      collEventID: collEventID == null && nullToAbsent
-          ? const Value.absent()
-          : Value(collEventID),
-      measureID: measureID == null && nullToAbsent
-          ? const Value.absent()
-          : Value(measureID),
-    );
-  }
-
-  factory MammalSpecimenData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return MammalSpecimenData(
-      specimenUuid: serializer.fromJson<String?>(json['specimenUuid']),
-      projectUuid: serializer.fromJson<String?>(json['projectUuid']),
-      speciesID: serializer.fromJson<int?>(json['speciesID']),
-      condition: serializer.fromJson<String?>(json['condition']),
-      prepDate: serializer.fromJson<String?>(json['prepDate']),
-      prepTime: serializer.fromJson<String?>(json['prepTime']),
-      captureDate: serializer.fromJson<String?>(json['captureDate']),
-      captureTime: serializer.fromJson<String?>(json['captureTime']),
-      trapType: serializer.fromJson<String?>(json['trapType']),
-      collectorID: serializer.fromJson<int?>(json['collectorID']),
-      collEventID: serializer.fromJson<int?>(json['collEventID']),
-      measureID: serializer.fromJson<int?>(json['measureID']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'specimenUuid': serializer.toJson<String?>(specimenUuid),
-      'projectUuid': serializer.toJson<String?>(projectUuid),
-      'speciesID': serializer.toJson<int?>(speciesID),
-      'condition': serializer.toJson<String?>(condition),
-      'prepDate': serializer.toJson<String?>(prepDate),
-      'prepTime': serializer.toJson<String?>(prepTime),
-      'captureDate': serializer.toJson<String?>(captureDate),
-      'captureTime': serializer.toJson<String?>(captureTime),
-      'trapType': serializer.toJson<String?>(trapType),
-      'collectorID': serializer.toJson<int?>(collectorID),
-      'collEventID': serializer.toJson<int?>(collEventID),
-      'measureID': serializer.toJson<int?>(measureID),
-    };
-  }
-
-  MammalSpecimenData copyWith(
-          {String? specimenUuid,
-          String? projectUuid,
-          int? speciesID,
-          String? condition,
-          String? prepDate,
-          String? prepTime,
-          String? captureDate,
-          String? captureTime,
-          String? trapType,
-          int? collectorID,
-          int? collEventID,
-          int? measureID}) =>
-      MammalSpecimenData(
-        specimenUuid: specimenUuid ?? this.specimenUuid,
-        projectUuid: projectUuid ?? this.projectUuid,
-        speciesID: speciesID ?? this.speciesID,
-        condition: condition ?? this.condition,
-        prepDate: prepDate ?? this.prepDate,
-        prepTime: prepTime ?? this.prepTime,
-        captureDate: captureDate ?? this.captureDate,
-        captureTime: captureTime ?? this.captureTime,
-        trapType: trapType ?? this.trapType,
-        collectorID: collectorID ?? this.collectorID,
-        collEventID: collEventID ?? this.collEventID,
-        measureID: measureID ?? this.measureID,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('MammalSpecimenData(')
-          ..write('specimenUuid: $specimenUuid, ')
-          ..write('projectUuid: $projectUuid, ')
-          ..write('speciesID: $speciesID, ')
-          ..write('condition: $condition, ')
-          ..write('prepDate: $prepDate, ')
-          ..write('prepTime: $prepTime, ')
-          ..write('captureDate: $captureDate, ')
-          ..write('captureTime: $captureTime, ')
-          ..write('trapType: $trapType, ')
-          ..write('collectorID: $collectorID, ')
-          ..write('collEventID: $collEventID, ')
-          ..write('measureID: $measureID')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(
-      specimenUuid,
-      projectUuid,
-      speciesID,
-      condition,
-      prepDate,
-      prepTime,
-      captureDate,
-      captureTime,
-      trapType,
-      collectorID,
-      collEventID,
-      measureID);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is MammalSpecimenData &&
-          other.specimenUuid == this.specimenUuid &&
-          other.projectUuid == this.projectUuid &&
-          other.speciesID == this.speciesID &&
-          other.condition == this.condition &&
-          other.prepDate == this.prepDate &&
-          other.prepTime == this.prepTime &&
-          other.captureDate == this.captureDate &&
-          other.captureTime == this.captureTime &&
-          other.trapType == this.trapType &&
-          other.collectorID == this.collectorID &&
-          other.collEventID == this.collEventID &&
-          other.measureID == this.measureID);
-}
-
-class MammalSpecimenCompanion extends UpdateCompanion<MammalSpecimenData> {
-  final Value<String?> specimenUuid;
-  final Value<String?> projectUuid;
-  final Value<int?> speciesID;
-  final Value<String?> condition;
-  final Value<String?> prepDate;
-  final Value<String?> prepTime;
-  final Value<String?> captureDate;
-  final Value<String?> captureTime;
-  final Value<String?> trapType;
-  final Value<int?> collectorID;
-  final Value<int?> collEventID;
-  final Value<int?> measureID;
-  const MammalSpecimenCompanion({
-    this.specimenUuid = const Value.absent(),
-    this.projectUuid = const Value.absent(),
-    this.speciesID = const Value.absent(),
-    this.condition = const Value.absent(),
-    this.prepDate = const Value.absent(),
-    this.prepTime = const Value.absent(),
-    this.captureDate = const Value.absent(),
-    this.captureTime = const Value.absent(),
-    this.trapType = const Value.absent(),
-    this.collectorID = const Value.absent(),
-    this.collEventID = const Value.absent(),
-    this.measureID = const Value.absent(),
-  });
-  MammalSpecimenCompanion.insert({
-    this.specimenUuid = const Value.absent(),
-    this.projectUuid = const Value.absent(),
-    this.speciesID = const Value.absent(),
-    this.condition = const Value.absent(),
-    this.prepDate = const Value.absent(),
-    this.prepTime = const Value.absent(),
-    this.captureDate = const Value.absent(),
-    this.captureTime = const Value.absent(),
-    this.trapType = const Value.absent(),
-    this.collectorID = const Value.absent(),
-    this.collEventID = const Value.absent(),
-    this.measureID = const Value.absent(),
-  });
-  static Insertable<MammalSpecimenData> custom({
-    Expression<String?>? specimenUuid,
-    Expression<String?>? projectUuid,
-    Expression<int?>? speciesID,
-    Expression<String?>? condition,
-    Expression<String?>? prepDate,
-    Expression<String?>? prepTime,
-    Expression<String?>? captureDate,
-    Expression<String?>? captureTime,
-    Expression<String?>? trapType,
-    Expression<int?>? collectorID,
-    Expression<int?>? collEventID,
-    Expression<int?>? measureID,
-  }) {
-    return RawValuesInsertable({
-      if (specimenUuid != null) 'specimenUuid': specimenUuid,
-      if (projectUuid != null) 'projectUuid': projectUuid,
-      if (speciesID != null) 'speciesID': speciesID,
-      if (condition != null) 'condition': condition,
-      if (prepDate != null) 'prepDate': prepDate,
-      if (prepTime != null) 'prepTime': prepTime,
-      if (captureDate != null) 'captureDate': captureDate,
-      if (captureTime != null) 'captureTime': captureTime,
-      if (trapType != null) 'trapType': trapType,
-      if (collectorID != null) 'collectorID': collectorID,
-      if (collEventID != null) 'collEventID': collEventID,
-      if (measureID != null) 'measureID': measureID,
-    });
-  }
-
-  MammalSpecimenCompanion copyWith(
-      {Value<String?>? specimenUuid,
-      Value<String?>? projectUuid,
-      Value<int?>? speciesID,
-      Value<String?>? condition,
-      Value<String?>? prepDate,
-      Value<String?>? prepTime,
-      Value<String?>? captureDate,
-      Value<String?>? captureTime,
-      Value<String?>? trapType,
-      Value<int?>? collectorID,
-      Value<int?>? collEventID,
-      Value<int?>? measureID}) {
-    return MammalSpecimenCompanion(
-      specimenUuid: specimenUuid ?? this.specimenUuid,
-      projectUuid: projectUuid ?? this.projectUuid,
-      speciesID: speciesID ?? this.speciesID,
-      condition: condition ?? this.condition,
-      prepDate: prepDate ?? this.prepDate,
-      prepTime: prepTime ?? this.prepTime,
-      captureDate: captureDate ?? this.captureDate,
-      captureTime: captureTime ?? this.captureTime,
-      trapType: trapType ?? this.trapType,
-      collectorID: collectorID ?? this.collectorID,
-      collEventID: collEventID ?? this.collEventID,
-      measureID: measureID ?? this.measureID,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (specimenUuid.present) {
-      map['specimenUuid'] = Variable<String?>(specimenUuid.value);
-    }
-    if (projectUuid.present) {
-      map['projectUuid'] = Variable<String?>(projectUuid.value);
-    }
-    if (speciesID.present) {
-      map['speciesID'] = Variable<int?>(speciesID.value);
-    }
-    if (condition.present) {
-      map['condition'] = Variable<String?>(condition.value);
-    }
-    if (prepDate.present) {
-      map['prepDate'] = Variable<String?>(prepDate.value);
-    }
-    if (prepTime.present) {
-      map['prepTime'] = Variable<String?>(prepTime.value);
-    }
-    if (captureDate.present) {
-      map['captureDate'] = Variable<String?>(captureDate.value);
-    }
-    if (captureTime.present) {
-      map['captureTime'] = Variable<String?>(captureTime.value);
-    }
-    if (trapType.present) {
-      map['trapType'] = Variable<String?>(trapType.value);
-    }
-    if (collectorID.present) {
-      map['collectorID'] = Variable<int?>(collectorID.value);
-    }
-    if (collEventID.present) {
-      map['collEventID'] = Variable<int?>(collEventID.value);
-    }
-    if (measureID.present) {
-      map['measureID'] = Variable<int?>(measureID.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('MammalSpecimenCompanion(')
-          ..write('specimenUuid: $specimenUuid, ')
-          ..write('projectUuid: $projectUuid, ')
-          ..write('speciesID: $speciesID, ')
-          ..write('condition: $condition, ')
-          ..write('prepDate: $prepDate, ')
-          ..write('prepTime: $prepTime, ')
-          ..write('captureDate: $captureDate, ')
-          ..write('captureTime: $captureTime, ')
-          ..write('trapType: $trapType, ')
-          ..write('collectorID: $collectorID, ')
-          ..write('collEventID: $collEventID, ')
-          ..write('measureID: $measureID')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class MammalSpecimen extends Table
-    with TableInfo<MammalSpecimen, MammalSpecimenData> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  MammalSpecimen(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _specimenUuidMeta =
-      const VerificationMeta('specimenUuid');
-  late final GeneratedColumn<String?> specimenUuid = GeneratedColumn<String?>(
-      'specimenUuid', aliasedName, true,
-      type: const StringType(),
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  final VerificationMeta _projectUuidMeta =
-      const VerificationMeta('projectUuid');
-  late final GeneratedColumn<String?> projectUuid = GeneratedColumn<String?>(
-      'projectUuid', aliasedName, true,
-      type: const StringType(),
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  final VerificationMeta _speciesIDMeta = const VerificationMeta('speciesID');
-  late final GeneratedColumn<int?> speciesID = GeneratedColumn<int?>(
-      'speciesID', aliasedName, true,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  final VerificationMeta _conditionMeta = const VerificationMeta('condition');
-  late final GeneratedColumn<String?> condition = GeneratedColumn<String?>(
-      'condition', aliasedName, true,
-      type: const StringType(),
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  final VerificationMeta _prepDateMeta = const VerificationMeta('prepDate');
-  late final GeneratedColumn<String?> prepDate = GeneratedColumn<String?>(
-      'prepDate', aliasedName, true,
-      type: const StringType(),
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  final VerificationMeta _prepTimeMeta = const VerificationMeta('prepTime');
-  late final GeneratedColumn<String?> prepTime = GeneratedColumn<String?>(
-      'prepTime', aliasedName, true,
-      type: const StringType(),
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  final VerificationMeta _captureDateMeta =
-      const VerificationMeta('captureDate');
-  late final GeneratedColumn<String?> captureDate = GeneratedColumn<String?>(
-      'captureDate', aliasedName, true,
-      type: const StringType(),
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  final VerificationMeta _captureTimeMeta =
-      const VerificationMeta('captureTime');
-  late final GeneratedColumn<String?> captureTime = GeneratedColumn<String?>(
-      'captureTime', aliasedName, true,
-      type: const StringType(),
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  final VerificationMeta _trapTypeMeta = const VerificationMeta('trapType');
-  late final GeneratedColumn<String?> trapType = GeneratedColumn<String?>(
-      'trapType', aliasedName, true,
-      type: const StringType(),
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  final VerificationMeta _collectorIDMeta =
-      const VerificationMeta('collectorID');
-  late final GeneratedColumn<int?> collectorID = GeneratedColumn<int?>(
-      'collectorID', aliasedName, true,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      $customConstraints: 'REFERENCES personnel(id)');
-  final VerificationMeta _collEventIDMeta =
-      const VerificationMeta('collEventID');
-  late final GeneratedColumn<int?> collEventID = GeneratedColumn<int?>(
-      'collEventID', aliasedName, true,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      $customConstraints: 'REFERENCES collEvent(id)');
-  final VerificationMeta _measureIDMeta = const VerificationMeta('measureID');
-  late final GeneratedColumn<int?> measureID = GeneratedColumn<int?>(
-      'measureID', aliasedName, true,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      $customConstraints: 'REFERENCES mammalMeasurement(id)');
-  @override
-  List<GeneratedColumn> get $columns => [
-        specimenUuid,
-        projectUuid,
-        speciesID,
-        condition,
-        prepDate,
-        prepTime,
-        captureDate,
-        captureTime,
-        trapType,
-        collectorID,
-        collEventID,
-        measureID
-      ];
-  @override
-  String get aliasedName => _alias ?? 'mammalSpecimen';
-  @override
-  String get actualTableName => 'mammalSpecimen';
-  @override
-  VerificationContext validateIntegrity(Insertable<MammalSpecimenData> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('specimenUuid')) {
-      context.handle(
-          _specimenUuidMeta,
-          specimenUuid.isAcceptableOrUnknown(
-              data['specimenUuid']!, _specimenUuidMeta));
-    }
-    if (data.containsKey('projectUuid')) {
-      context.handle(
-          _projectUuidMeta,
-          projectUuid.isAcceptableOrUnknown(
-              data['projectUuid']!, _projectUuidMeta));
-    }
-    if (data.containsKey('speciesID')) {
-      context.handle(_speciesIDMeta,
-          speciesID.isAcceptableOrUnknown(data['speciesID']!, _speciesIDMeta));
-    }
-    if (data.containsKey('condition')) {
-      context.handle(_conditionMeta,
-          condition.isAcceptableOrUnknown(data['condition']!, _conditionMeta));
-    }
-    if (data.containsKey('prepDate')) {
-      context.handle(_prepDateMeta,
-          prepDate.isAcceptableOrUnknown(data['prepDate']!, _prepDateMeta));
-    }
-    if (data.containsKey('prepTime')) {
-      context.handle(_prepTimeMeta,
-          prepTime.isAcceptableOrUnknown(data['prepTime']!, _prepTimeMeta));
-    }
-    if (data.containsKey('captureDate')) {
-      context.handle(
-          _captureDateMeta,
-          captureDate.isAcceptableOrUnknown(
-              data['captureDate']!, _captureDateMeta));
-    }
-    if (data.containsKey('captureTime')) {
-      context.handle(
-          _captureTimeMeta,
-          captureTime.isAcceptableOrUnknown(
-              data['captureTime']!, _captureTimeMeta));
-    }
-    if (data.containsKey('trapType')) {
-      context.handle(_trapTypeMeta,
-          trapType.isAcceptableOrUnknown(data['trapType']!, _trapTypeMeta));
-    }
-    if (data.containsKey('collectorID')) {
-      context.handle(
-          _collectorIDMeta,
-          collectorID.isAcceptableOrUnknown(
-              data['collectorID']!, _collectorIDMeta));
-    }
-    if (data.containsKey('collEventID')) {
-      context.handle(
-          _collEventIDMeta,
-          collEventID.isAcceptableOrUnknown(
-              data['collEventID']!, _collEventIDMeta));
-    }
-    if (data.containsKey('measureID')) {
-      context.handle(_measureIDMeta,
-          measureID.isAcceptableOrUnknown(data['measureID']!, _measureIDMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
-  @override
-  MammalSpecimenData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return MammalSpecimenData.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
-  }
-
-  @override
-  MammalSpecimen createAlias(String alias) {
-    return MammalSpecimen(attachedDatabase, alias);
-  }
-
-  @override
-  bool get dontWriteConstraints => true;
-}
-
 class BirdMeasurementData extends DataClass
     implements Insertable<BirdMeasurementData> {
   final int id;
+  final String? specimenUuid;
   final int? weight;
   final int? wingspan;
   final String? irisColor;
@@ -4634,6 +4635,7 @@ class BirdMeasurementData extends DataClass
   final String? stomach;
   BirdMeasurementData(
       {required this.id,
+      this.specimenUuid,
       this.weight,
       this.wingspan,
       this.irisColor,
@@ -4655,6 +4657,8 @@ class BirdMeasurementData extends DataClass
     return BirdMeasurementData(
       id: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      specimenUuid: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}specimenUuid']),
       weight: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}weight']),
       wingspan: const IntType()
@@ -4691,6 +4695,9 @@ class BirdMeasurementData extends DataClass
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
+    if (!nullToAbsent || specimenUuid != null) {
+      map['specimenUuid'] = Variable<String?>(specimenUuid);
+    }
     if (!nullToAbsent || weight != null) {
       map['weight'] = Variable<int?>(weight);
     }
@@ -4742,6 +4749,9 @@ class BirdMeasurementData extends DataClass
   BirdMeasurementCompanion toCompanion(bool nullToAbsent) {
     return BirdMeasurementCompanion(
       id: Value(id),
+      specimenUuid: specimenUuid == null && nullToAbsent
+          ? const Value.absent()
+          : Value(specimenUuid),
       weight:
           weight == null && nullToAbsent ? const Value.absent() : Value(weight),
       wingspan: wingspan == null && nullToAbsent
@@ -4789,6 +4799,7 @@ class BirdMeasurementData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return BirdMeasurementData(
       id: serializer.fromJson<int>(json['id']),
+      specimenUuid: serializer.fromJson<String?>(json['specimenUuid']),
       weight: serializer.fromJson<int?>(json['weight']),
       wingspan: serializer.fromJson<int?>(json['wingspan']),
       irisColor: serializer.fromJson<String?>(json['irisColor']),
@@ -4811,6 +4822,7 @@ class BirdMeasurementData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
+      'specimenUuid': serializer.toJson<String?>(specimenUuid),
       'weight': serializer.toJson<int?>(weight),
       'wingspan': serializer.toJson<int?>(wingspan),
       'irisColor': serializer.toJson<String?>(irisColor),
@@ -4831,6 +4843,7 @@ class BirdMeasurementData extends DataClass
 
   BirdMeasurementData copyWith(
           {int? id,
+          String? specimenUuid,
           int? weight,
           int? wingspan,
           String? irisColor,
@@ -4848,6 +4861,7 @@ class BirdMeasurementData extends DataClass
           String? stomach}) =>
       BirdMeasurementData(
         id: id ?? this.id,
+        specimenUuid: specimenUuid ?? this.specimenUuid,
         weight: weight ?? this.weight,
         wingspan: wingspan ?? this.wingspan,
         irisColor: irisColor ?? this.irisColor,
@@ -4868,6 +4882,7 @@ class BirdMeasurementData extends DataClass
   String toString() {
     return (StringBuffer('BirdMeasurementData(')
           ..write('id: $id, ')
+          ..write('specimenUuid: $specimenUuid, ')
           ..write('weight: $weight, ')
           ..write('wingspan: $wingspan, ')
           ..write('irisColor: $irisColor, ')
@@ -4890,6 +4905,7 @@ class BirdMeasurementData extends DataClass
   @override
   int get hashCode => Object.hash(
       id,
+      specimenUuid,
       weight,
       wingspan,
       irisColor,
@@ -4910,6 +4926,7 @@ class BirdMeasurementData extends DataClass
       identical(this, other) ||
       (other is BirdMeasurementData &&
           other.id == this.id &&
+          other.specimenUuid == this.specimenUuid &&
           other.weight == this.weight &&
           other.wingspan == this.wingspan &&
           other.irisColor == this.irisColor &&
@@ -4929,6 +4946,7 @@ class BirdMeasurementData extends DataClass
 
 class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
   final Value<int> id;
+  final Value<String?> specimenUuid;
   final Value<int?> weight;
   final Value<int?> wingspan;
   final Value<String?> irisColor;
@@ -4946,6 +4964,7 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
   final Value<String?> stomach;
   const BirdMeasurementCompanion({
     this.id = const Value.absent(),
+    this.specimenUuid = const Value.absent(),
     this.weight = const Value.absent(),
     this.wingspan = const Value.absent(),
     this.irisColor = const Value.absent(),
@@ -4964,6 +4983,7 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
   });
   BirdMeasurementCompanion.insert({
     this.id = const Value.absent(),
+    this.specimenUuid = const Value.absent(),
     this.weight = const Value.absent(),
     this.wingspan = const Value.absent(),
     this.irisColor = const Value.absent(),
@@ -4982,6 +5002,7 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
   });
   static Insertable<BirdMeasurementData> custom({
     Expression<int>? id,
+    Expression<String?>? specimenUuid,
     Expression<int?>? weight,
     Expression<int?>? wingspan,
     Expression<String?>? irisColor,
@@ -5000,6 +5021,7 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (specimenUuid != null) 'specimenUuid': specimenUuid,
       if (weight != null) 'weight': weight,
       if (wingspan != null) 'wingspan': wingspan,
       if (irisColor != null) 'irisColor': irisColor,
@@ -5020,6 +5042,7 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
 
   BirdMeasurementCompanion copyWith(
       {Value<int>? id,
+      Value<String?>? specimenUuid,
       Value<int?>? weight,
       Value<int?>? wingspan,
       Value<String?>? irisColor,
@@ -5037,6 +5060,7 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
       Value<String?>? stomach}) {
     return BirdMeasurementCompanion(
       id: id ?? this.id,
+      specimenUuid: specimenUuid ?? this.specimenUuid,
       weight: weight ?? this.weight,
       wingspan: wingspan ?? this.wingspan,
       irisColor: irisColor ?? this.irisColor,
@@ -5060,6 +5084,9 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
     final map = <String, Expression>{};
     if (id.present) {
       map['id'] = Variable<int>(id.value);
+    }
+    if (specimenUuid.present) {
+      map['specimenUuid'] = Variable<String?>(specimenUuid.value);
     }
     if (weight.present) {
       map['weight'] = Variable<int?>(weight.value);
@@ -5113,6 +5140,7 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
   String toString() {
     return (StringBuffer('BirdMeasurementCompanion(')
           ..write('id: $id, ')
+          ..write('specimenUuid: $specimenUuid, ')
           ..write('weight: $weight, ')
           ..write('wingspan: $wingspan, ')
           ..write('irisColor: $irisColor, ')
@@ -5145,6 +5173,13 @@ class BirdMeasurement extends Table
       type: const IntType(),
       requiredDuringInsert: false,
       $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
+  final VerificationMeta _specimenUuidMeta =
+      const VerificationMeta('specimenUuid');
+  late final GeneratedColumn<String?> specimenUuid = GeneratedColumn<String?>(
+      'specimenUuid', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: 'REFERENCES specimen(specimenUuid)');
   final VerificationMeta _weightMeta = const VerificationMeta('weight');
   late final GeneratedColumn<int?> weight = GeneratedColumn<int?>(
       'weight', aliasedName, true,
@@ -5243,6 +5278,7 @@ class BirdMeasurement extends Table
   @override
   List<GeneratedColumn> get $columns => [
         id,
+        specimenUuid,
         weight,
         wingspan,
         irisColor,
@@ -5271,6 +5307,12 @@ class BirdMeasurement extends Table
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('specimenUuid')) {
+      context.handle(
+          _specimenUuidMeta,
+          specimenUuid.isAcceptableOrUnknown(
+              data['specimenUuid']!, _specimenUuidMeta));
     }
     if (data.containsKey('weight')) {
       context.handle(_weightMeta,
@@ -5358,611 +5400,6 @@ class BirdMeasurement extends Table
   @override
   BirdMeasurement createAlias(String alias) {
     return BirdMeasurement(attachedDatabase, alias);
-  }
-
-  @override
-  bool get dontWriteConstraints => true;
-}
-
-class BirdSpecimenData extends DataClass
-    implements Insertable<BirdSpecimenData> {
-  final String? specimenUuid;
-  final String? projectUuid;
-  final int? speciesID;
-  final String? condition;
-  final String? prepDate;
-  final String? prepTime;
-  final String? captureDate;
-  final String? captureTime;
-  final String? trapType;
-  final int? collectorID;
-  final int? collEventID;
-  final int? measureID;
-  BirdSpecimenData(
-      {this.specimenUuid,
-      this.projectUuid,
-      this.speciesID,
-      this.condition,
-      this.prepDate,
-      this.prepTime,
-      this.captureDate,
-      this.captureTime,
-      this.trapType,
-      this.collectorID,
-      this.collEventID,
-      this.measureID});
-  factory BirdSpecimenData.fromData(Map<String, dynamic> data,
-      {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return BirdSpecimenData(
-      specimenUuid: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}specimenUuid']),
-      projectUuid: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}projectUuid']),
-      speciesID: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}speciesID']),
-      condition: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}condition']),
-      prepDate: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}prepDate']),
-      prepTime: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}prepTime']),
-      captureDate: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}captureDate']),
-      captureTime: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}captureTime']),
-      trapType: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}trapType']),
-      collectorID: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}collectorID']),
-      collEventID: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}collEventID']),
-      measureID: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}measureID']),
-    );
-  }
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (!nullToAbsent || specimenUuid != null) {
-      map['specimenUuid'] = Variable<String?>(specimenUuid);
-    }
-    if (!nullToAbsent || projectUuid != null) {
-      map['projectUuid'] = Variable<String?>(projectUuid);
-    }
-    if (!nullToAbsent || speciesID != null) {
-      map['speciesID'] = Variable<int?>(speciesID);
-    }
-    if (!nullToAbsent || condition != null) {
-      map['condition'] = Variable<String?>(condition);
-    }
-    if (!nullToAbsent || prepDate != null) {
-      map['prepDate'] = Variable<String?>(prepDate);
-    }
-    if (!nullToAbsent || prepTime != null) {
-      map['prepTime'] = Variable<String?>(prepTime);
-    }
-    if (!nullToAbsent || captureDate != null) {
-      map['captureDate'] = Variable<String?>(captureDate);
-    }
-    if (!nullToAbsent || captureTime != null) {
-      map['captureTime'] = Variable<String?>(captureTime);
-    }
-    if (!nullToAbsent || trapType != null) {
-      map['trapType'] = Variable<String?>(trapType);
-    }
-    if (!nullToAbsent || collectorID != null) {
-      map['collectorID'] = Variable<int?>(collectorID);
-    }
-    if (!nullToAbsent || collEventID != null) {
-      map['collEventID'] = Variable<int?>(collEventID);
-    }
-    if (!nullToAbsent || measureID != null) {
-      map['measureID'] = Variable<int?>(measureID);
-    }
-    return map;
-  }
-
-  BirdSpecimenCompanion toCompanion(bool nullToAbsent) {
-    return BirdSpecimenCompanion(
-      specimenUuid: specimenUuid == null && nullToAbsent
-          ? const Value.absent()
-          : Value(specimenUuid),
-      projectUuid: projectUuid == null && nullToAbsent
-          ? const Value.absent()
-          : Value(projectUuid),
-      speciesID: speciesID == null && nullToAbsent
-          ? const Value.absent()
-          : Value(speciesID),
-      condition: condition == null && nullToAbsent
-          ? const Value.absent()
-          : Value(condition),
-      prepDate: prepDate == null && nullToAbsent
-          ? const Value.absent()
-          : Value(prepDate),
-      prepTime: prepTime == null && nullToAbsent
-          ? const Value.absent()
-          : Value(prepTime),
-      captureDate: captureDate == null && nullToAbsent
-          ? const Value.absent()
-          : Value(captureDate),
-      captureTime: captureTime == null && nullToAbsent
-          ? const Value.absent()
-          : Value(captureTime),
-      trapType: trapType == null && nullToAbsent
-          ? const Value.absent()
-          : Value(trapType),
-      collectorID: collectorID == null && nullToAbsent
-          ? const Value.absent()
-          : Value(collectorID),
-      collEventID: collEventID == null && nullToAbsent
-          ? const Value.absent()
-          : Value(collEventID),
-      measureID: measureID == null && nullToAbsent
-          ? const Value.absent()
-          : Value(measureID),
-    );
-  }
-
-  factory BirdSpecimenData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return BirdSpecimenData(
-      specimenUuid: serializer.fromJson<String?>(json['specimenUuid']),
-      projectUuid: serializer.fromJson<String?>(json['projectUuid']),
-      speciesID: serializer.fromJson<int?>(json['speciesID']),
-      condition: serializer.fromJson<String?>(json['condition']),
-      prepDate: serializer.fromJson<String?>(json['prepDate']),
-      prepTime: serializer.fromJson<String?>(json['prepTime']),
-      captureDate: serializer.fromJson<String?>(json['captureDate']),
-      captureTime: serializer.fromJson<String?>(json['captureTime']),
-      trapType: serializer.fromJson<String?>(json['trapType']),
-      collectorID: serializer.fromJson<int?>(json['collectorID']),
-      collEventID: serializer.fromJson<int?>(json['collEventID']),
-      measureID: serializer.fromJson<int?>(json['measureID']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'specimenUuid': serializer.toJson<String?>(specimenUuid),
-      'projectUuid': serializer.toJson<String?>(projectUuid),
-      'speciesID': serializer.toJson<int?>(speciesID),
-      'condition': serializer.toJson<String?>(condition),
-      'prepDate': serializer.toJson<String?>(prepDate),
-      'prepTime': serializer.toJson<String?>(prepTime),
-      'captureDate': serializer.toJson<String?>(captureDate),
-      'captureTime': serializer.toJson<String?>(captureTime),
-      'trapType': serializer.toJson<String?>(trapType),
-      'collectorID': serializer.toJson<int?>(collectorID),
-      'collEventID': serializer.toJson<int?>(collEventID),
-      'measureID': serializer.toJson<int?>(measureID),
-    };
-  }
-
-  BirdSpecimenData copyWith(
-          {String? specimenUuid,
-          String? projectUuid,
-          int? speciesID,
-          String? condition,
-          String? prepDate,
-          String? prepTime,
-          String? captureDate,
-          String? captureTime,
-          String? trapType,
-          int? collectorID,
-          int? collEventID,
-          int? measureID}) =>
-      BirdSpecimenData(
-        specimenUuid: specimenUuid ?? this.specimenUuid,
-        projectUuid: projectUuid ?? this.projectUuid,
-        speciesID: speciesID ?? this.speciesID,
-        condition: condition ?? this.condition,
-        prepDate: prepDate ?? this.prepDate,
-        prepTime: prepTime ?? this.prepTime,
-        captureDate: captureDate ?? this.captureDate,
-        captureTime: captureTime ?? this.captureTime,
-        trapType: trapType ?? this.trapType,
-        collectorID: collectorID ?? this.collectorID,
-        collEventID: collEventID ?? this.collEventID,
-        measureID: measureID ?? this.measureID,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('BirdSpecimenData(')
-          ..write('specimenUuid: $specimenUuid, ')
-          ..write('projectUuid: $projectUuid, ')
-          ..write('speciesID: $speciesID, ')
-          ..write('condition: $condition, ')
-          ..write('prepDate: $prepDate, ')
-          ..write('prepTime: $prepTime, ')
-          ..write('captureDate: $captureDate, ')
-          ..write('captureTime: $captureTime, ')
-          ..write('trapType: $trapType, ')
-          ..write('collectorID: $collectorID, ')
-          ..write('collEventID: $collEventID, ')
-          ..write('measureID: $measureID')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(
-      specimenUuid,
-      projectUuid,
-      speciesID,
-      condition,
-      prepDate,
-      prepTime,
-      captureDate,
-      captureTime,
-      trapType,
-      collectorID,
-      collEventID,
-      measureID);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is BirdSpecimenData &&
-          other.specimenUuid == this.specimenUuid &&
-          other.projectUuid == this.projectUuid &&
-          other.speciesID == this.speciesID &&
-          other.condition == this.condition &&
-          other.prepDate == this.prepDate &&
-          other.prepTime == this.prepTime &&
-          other.captureDate == this.captureDate &&
-          other.captureTime == this.captureTime &&
-          other.trapType == this.trapType &&
-          other.collectorID == this.collectorID &&
-          other.collEventID == this.collEventID &&
-          other.measureID == this.measureID);
-}
-
-class BirdSpecimenCompanion extends UpdateCompanion<BirdSpecimenData> {
-  final Value<String?> specimenUuid;
-  final Value<String?> projectUuid;
-  final Value<int?> speciesID;
-  final Value<String?> condition;
-  final Value<String?> prepDate;
-  final Value<String?> prepTime;
-  final Value<String?> captureDate;
-  final Value<String?> captureTime;
-  final Value<String?> trapType;
-  final Value<int?> collectorID;
-  final Value<int?> collEventID;
-  final Value<int?> measureID;
-  const BirdSpecimenCompanion({
-    this.specimenUuid = const Value.absent(),
-    this.projectUuid = const Value.absent(),
-    this.speciesID = const Value.absent(),
-    this.condition = const Value.absent(),
-    this.prepDate = const Value.absent(),
-    this.prepTime = const Value.absent(),
-    this.captureDate = const Value.absent(),
-    this.captureTime = const Value.absent(),
-    this.trapType = const Value.absent(),
-    this.collectorID = const Value.absent(),
-    this.collEventID = const Value.absent(),
-    this.measureID = const Value.absent(),
-  });
-  BirdSpecimenCompanion.insert({
-    this.specimenUuid = const Value.absent(),
-    this.projectUuid = const Value.absent(),
-    this.speciesID = const Value.absent(),
-    this.condition = const Value.absent(),
-    this.prepDate = const Value.absent(),
-    this.prepTime = const Value.absent(),
-    this.captureDate = const Value.absent(),
-    this.captureTime = const Value.absent(),
-    this.trapType = const Value.absent(),
-    this.collectorID = const Value.absent(),
-    this.collEventID = const Value.absent(),
-    this.measureID = const Value.absent(),
-  });
-  static Insertable<BirdSpecimenData> custom({
-    Expression<String?>? specimenUuid,
-    Expression<String?>? projectUuid,
-    Expression<int?>? speciesID,
-    Expression<String?>? condition,
-    Expression<String?>? prepDate,
-    Expression<String?>? prepTime,
-    Expression<String?>? captureDate,
-    Expression<String?>? captureTime,
-    Expression<String?>? trapType,
-    Expression<int?>? collectorID,
-    Expression<int?>? collEventID,
-    Expression<int?>? measureID,
-  }) {
-    return RawValuesInsertable({
-      if (specimenUuid != null) 'specimenUuid': specimenUuid,
-      if (projectUuid != null) 'projectUuid': projectUuid,
-      if (speciesID != null) 'speciesID': speciesID,
-      if (condition != null) 'condition': condition,
-      if (prepDate != null) 'prepDate': prepDate,
-      if (prepTime != null) 'prepTime': prepTime,
-      if (captureDate != null) 'captureDate': captureDate,
-      if (captureTime != null) 'captureTime': captureTime,
-      if (trapType != null) 'trapType': trapType,
-      if (collectorID != null) 'collectorID': collectorID,
-      if (collEventID != null) 'collEventID': collEventID,
-      if (measureID != null) 'measureID': measureID,
-    });
-  }
-
-  BirdSpecimenCompanion copyWith(
-      {Value<String?>? specimenUuid,
-      Value<String?>? projectUuid,
-      Value<int?>? speciesID,
-      Value<String?>? condition,
-      Value<String?>? prepDate,
-      Value<String?>? prepTime,
-      Value<String?>? captureDate,
-      Value<String?>? captureTime,
-      Value<String?>? trapType,
-      Value<int?>? collectorID,
-      Value<int?>? collEventID,
-      Value<int?>? measureID}) {
-    return BirdSpecimenCompanion(
-      specimenUuid: specimenUuid ?? this.specimenUuid,
-      projectUuid: projectUuid ?? this.projectUuid,
-      speciesID: speciesID ?? this.speciesID,
-      condition: condition ?? this.condition,
-      prepDate: prepDate ?? this.prepDate,
-      prepTime: prepTime ?? this.prepTime,
-      captureDate: captureDate ?? this.captureDate,
-      captureTime: captureTime ?? this.captureTime,
-      trapType: trapType ?? this.trapType,
-      collectorID: collectorID ?? this.collectorID,
-      collEventID: collEventID ?? this.collEventID,
-      measureID: measureID ?? this.measureID,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (specimenUuid.present) {
-      map['specimenUuid'] = Variable<String?>(specimenUuid.value);
-    }
-    if (projectUuid.present) {
-      map['projectUuid'] = Variable<String?>(projectUuid.value);
-    }
-    if (speciesID.present) {
-      map['speciesID'] = Variable<int?>(speciesID.value);
-    }
-    if (condition.present) {
-      map['condition'] = Variable<String?>(condition.value);
-    }
-    if (prepDate.present) {
-      map['prepDate'] = Variable<String?>(prepDate.value);
-    }
-    if (prepTime.present) {
-      map['prepTime'] = Variable<String?>(prepTime.value);
-    }
-    if (captureDate.present) {
-      map['captureDate'] = Variable<String?>(captureDate.value);
-    }
-    if (captureTime.present) {
-      map['captureTime'] = Variable<String?>(captureTime.value);
-    }
-    if (trapType.present) {
-      map['trapType'] = Variable<String?>(trapType.value);
-    }
-    if (collectorID.present) {
-      map['collectorID'] = Variable<int?>(collectorID.value);
-    }
-    if (collEventID.present) {
-      map['collEventID'] = Variable<int?>(collEventID.value);
-    }
-    if (measureID.present) {
-      map['measureID'] = Variable<int?>(measureID.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('BirdSpecimenCompanion(')
-          ..write('specimenUuid: $specimenUuid, ')
-          ..write('projectUuid: $projectUuid, ')
-          ..write('speciesID: $speciesID, ')
-          ..write('condition: $condition, ')
-          ..write('prepDate: $prepDate, ')
-          ..write('prepTime: $prepTime, ')
-          ..write('captureDate: $captureDate, ')
-          ..write('captureTime: $captureTime, ')
-          ..write('trapType: $trapType, ')
-          ..write('collectorID: $collectorID, ')
-          ..write('collEventID: $collEventID, ')
-          ..write('measureID: $measureID')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class BirdSpecimen extends Table
-    with TableInfo<BirdSpecimen, BirdSpecimenData> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  BirdSpecimen(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _specimenUuidMeta =
-      const VerificationMeta('specimenUuid');
-  late final GeneratedColumn<String?> specimenUuid = GeneratedColumn<String?>(
-      'specimenUuid', aliasedName, true,
-      type: const StringType(),
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  final VerificationMeta _projectUuidMeta =
-      const VerificationMeta('projectUuid');
-  late final GeneratedColumn<String?> projectUuid = GeneratedColumn<String?>(
-      'projectUuid', aliasedName, true,
-      type: const StringType(),
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  final VerificationMeta _speciesIDMeta = const VerificationMeta('speciesID');
-  late final GeneratedColumn<int?> speciesID = GeneratedColumn<int?>(
-      'speciesID', aliasedName, true,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  final VerificationMeta _conditionMeta = const VerificationMeta('condition');
-  late final GeneratedColumn<String?> condition = GeneratedColumn<String?>(
-      'condition', aliasedName, true,
-      type: const StringType(),
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  final VerificationMeta _prepDateMeta = const VerificationMeta('prepDate');
-  late final GeneratedColumn<String?> prepDate = GeneratedColumn<String?>(
-      'prepDate', aliasedName, true,
-      type: const StringType(),
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  final VerificationMeta _prepTimeMeta = const VerificationMeta('prepTime');
-  late final GeneratedColumn<String?> prepTime = GeneratedColumn<String?>(
-      'prepTime', aliasedName, true,
-      type: const StringType(),
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  final VerificationMeta _captureDateMeta =
-      const VerificationMeta('captureDate');
-  late final GeneratedColumn<String?> captureDate = GeneratedColumn<String?>(
-      'captureDate', aliasedName, true,
-      type: const StringType(),
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  final VerificationMeta _captureTimeMeta =
-      const VerificationMeta('captureTime');
-  late final GeneratedColumn<String?> captureTime = GeneratedColumn<String?>(
-      'captureTime', aliasedName, true,
-      type: const StringType(),
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  final VerificationMeta _trapTypeMeta = const VerificationMeta('trapType');
-  late final GeneratedColumn<String?> trapType = GeneratedColumn<String?>(
-      'trapType', aliasedName, true,
-      type: const StringType(),
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  final VerificationMeta _collectorIDMeta =
-      const VerificationMeta('collectorID');
-  late final GeneratedColumn<int?> collectorID = GeneratedColumn<int?>(
-      'collectorID', aliasedName, true,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      $customConstraints: 'REFERENCES personnel(id)');
-  final VerificationMeta _collEventIDMeta =
-      const VerificationMeta('collEventID');
-  late final GeneratedColumn<int?> collEventID = GeneratedColumn<int?>(
-      'collEventID', aliasedName, true,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      $customConstraints: 'REFERENCES collEvent(id)');
-  final VerificationMeta _measureIDMeta = const VerificationMeta('measureID');
-  late final GeneratedColumn<int?> measureID = GeneratedColumn<int?>(
-      'measureID', aliasedName, true,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      $customConstraints: 'REFERENCES birdMeasurement(id)');
-  @override
-  List<GeneratedColumn> get $columns => [
-        specimenUuid,
-        projectUuid,
-        speciesID,
-        condition,
-        prepDate,
-        prepTime,
-        captureDate,
-        captureTime,
-        trapType,
-        collectorID,
-        collEventID,
-        measureID
-      ];
-  @override
-  String get aliasedName => _alias ?? 'birdSpecimen';
-  @override
-  String get actualTableName => 'birdSpecimen';
-  @override
-  VerificationContext validateIntegrity(Insertable<BirdSpecimenData> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('specimenUuid')) {
-      context.handle(
-          _specimenUuidMeta,
-          specimenUuid.isAcceptableOrUnknown(
-              data['specimenUuid']!, _specimenUuidMeta));
-    }
-    if (data.containsKey('projectUuid')) {
-      context.handle(
-          _projectUuidMeta,
-          projectUuid.isAcceptableOrUnknown(
-              data['projectUuid']!, _projectUuidMeta));
-    }
-    if (data.containsKey('speciesID')) {
-      context.handle(_speciesIDMeta,
-          speciesID.isAcceptableOrUnknown(data['speciesID']!, _speciesIDMeta));
-    }
-    if (data.containsKey('condition')) {
-      context.handle(_conditionMeta,
-          condition.isAcceptableOrUnknown(data['condition']!, _conditionMeta));
-    }
-    if (data.containsKey('prepDate')) {
-      context.handle(_prepDateMeta,
-          prepDate.isAcceptableOrUnknown(data['prepDate']!, _prepDateMeta));
-    }
-    if (data.containsKey('prepTime')) {
-      context.handle(_prepTimeMeta,
-          prepTime.isAcceptableOrUnknown(data['prepTime']!, _prepTimeMeta));
-    }
-    if (data.containsKey('captureDate')) {
-      context.handle(
-          _captureDateMeta,
-          captureDate.isAcceptableOrUnknown(
-              data['captureDate']!, _captureDateMeta));
-    }
-    if (data.containsKey('captureTime')) {
-      context.handle(
-          _captureTimeMeta,
-          captureTime.isAcceptableOrUnknown(
-              data['captureTime']!, _captureTimeMeta));
-    }
-    if (data.containsKey('trapType')) {
-      context.handle(_trapTypeMeta,
-          trapType.isAcceptableOrUnknown(data['trapType']!, _trapTypeMeta));
-    }
-    if (data.containsKey('collectorID')) {
-      context.handle(
-          _collectorIDMeta,
-          collectorID.isAcceptableOrUnknown(
-              data['collectorID']!, _collectorIDMeta));
-    }
-    if (data.containsKey('collEventID')) {
-      context.handle(
-          _collEventIDMeta,
-          collEventID.isAcceptableOrUnknown(
-              data['collEventID']!, _collEventIDMeta));
-    }
-    if (data.containsKey('measureID')) {
-      context.handle(_measureIDMeta,
-          measureID.isAcceptableOrUnknown(data['measureID']!, _measureIDMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
-  @override
-  BirdSpecimenData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return BirdSpecimenData.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
-  }
-
-  @override
-  BirdSpecimen createAlias(String alias) {
-    return BirdSpecimen(attachedDatabase, alias);
   }
 
   @override
@@ -6804,10 +6241,9 @@ abstract class _$Database extends GeneratedDatabase {
   late final Coordinate coordinate = Coordinate(this);
   late final CollEvent collEvent = CollEvent(this);
   late final Narrative narrative = Narrative(this);
+  late final Specimen specimen = Specimen(this);
   late final MammalMeasurement mammalMeasurement = MammalMeasurement(this);
-  late final MammalSpecimen mammalSpecimen = MammalSpecimen(this);
   late final BirdMeasurement birdMeasurement = BirdMeasurement(this);
-  late final BirdSpecimen birdSpecimen = BirdSpecimen(this);
   late final Part part = Part(this);
   late final Taxonomy taxonomy = Taxonomy(this);
   Selectable<ListProjectResult> listProject() {
@@ -6834,10 +6270,9 @@ abstract class _$Database extends GeneratedDatabase {
         coordinate,
         collEvent,
         narrative,
+        specimen,
         mammalMeasurement,
-        mammalSpecimen,
         birdMeasurement,
-        birdSpecimen,
         part,
         taxonomy
       ];

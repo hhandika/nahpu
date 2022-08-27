@@ -81,7 +81,7 @@ CREATE TABLE personnel (
     photoFileName TEXT
 );
 
-CREATE TABLE mammalSpecimen (
+CREATE TABLE specimen (
     specimenUuid TEXT,
     projectUuid TEXT,
     speciesID INT,
@@ -92,12 +92,12 @@ CREATE TABLE mammalSpecimen (
     captureTime TEXT,
     trapType TEXT,
     collectorID INT REFERENCES personnel(id),
-    collEventID INT REFERENCES collEvent(id),
-    measureID INT REFERENCES mammalMeasurement(id)
+    collEventID INT REFERENCES collEvent(id)
 );
 
 CREATE TABLE mammalMeasurement (
     id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
+    specimenUuid TEXT,
     totalLength INT,
     tailLength INT,
     hindFootLength INT,
@@ -119,26 +119,13 @@ CREATE TABLE mammalMeasurement (
     embryoLeftCount INT,
     embryoRightCount INT,
     embryoCRLeft INT,
-    embryoCRRight INT
-);
-
-CREATE TABLE birdSpecimen (
-    specimenUuid TEXT,
-    projectUuid TEXT,
-    speciesID INT,
-    condition TEXT,
-    prepDate TEXT,
-    prepTime TEXT,
-    captureDate TEXT,
-    captureTime TEXT,
-    trapType TEXT,
-    collectorID INT REFERENCES personnel(id),
-    collEventID INT REFERENCES collEvent(id),
-    measureID INT REFERENCES birdMeasurement(id)
+    embryoCRRight INT,
+    specimenUuid TEXT REFERENCES specimen(specimenUuid)
 );
 
 CREATE TABLE birdMeasurement (
     id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
+    specimenUuid TEXT,
     weight INT,
     wingspan INT,
     irisColor TEXT,
@@ -153,7 +140,8 @@ CREATE TABLE birdMeasurement (
     fat TEXT,
     sex TEXT,
     gonad TEXT,
-    stomach TEXT
+    stomach TEXT,
+    specimenUuid TEXT REFERENCES specimen(specimenUuid)
 );
 
 CREATE TABLE part (
