@@ -52,22 +52,22 @@ class CollEventState extends ConsumerState<CollEvents> {
 
                 return const Text("No collecting event entries");
               } else {
-                int narrativeSize = collEventEntries.length;
+                int collEventSize = collEventEntries.length;
                 setState(() {
-                  if (narrativeSize >= 2) {
+                  if (collEventSize >= 2) {
                     isVisible = true;
                   }
                   ref.watch(pageNavigationProvider.notifier).state.pageCounts =
-                      narrativeSize;
+                      collEventSize;
                   // We want to view the last page first.
                   // Dart uses 0-based indexing. Technically, this is out-of-bound.
                   // But, what happens here is that it will trigger the PageView onPageChanged.
                   // It fixes the issues that the curentPage state does not show the current page value.
-                  pageController = PageController(initialPage: narrativeSize);
+                  pageController = PageController(initialPage: collEventSize);
                 });
                 return PageView.builder(
                   controller: pageController,
-                  itemCount: narrativeSize,
+                  itemCount: collEventSize,
                   itemBuilder: (context, index) {
                     return const CollEventForm();
                   },
@@ -89,8 +89,6 @@ class CollEventState extends ConsumerState<CollEvents> {
           pageController: pageController,
         ),
       ),
-      // floatingActionButtonLocation:
-      //     FloatingActionButtonLocation.miniCenterFloat,
       bottomNavigationBar: const ProjectBottomNavbar(),
     );
   }

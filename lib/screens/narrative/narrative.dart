@@ -97,8 +97,6 @@ class NarrativeState extends ConsumerState<Narrative> {
           pageController: pageController,
         ),
       ),
-      // floatingActionButtonLocation:
-      //     FloatingActionButtonLocation.miniCenterFloat,
       bottomNavigationBar: const ProjectBottomNavbar(),
     );
   }
