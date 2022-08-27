@@ -9,3 +9,7 @@ void updateSite(int id, SiteCompanion site, WidgetRef ref) {
 void updateNarrative(int id, NarrativeCompanion entries, WidgetRef ref) {
   ref.read(databaseProvider).updateNarrativeEntry(id, entries);
 }
+
+void updateCollEvent(int id, CollEventCompanion entries, WidgetRef ref) {
+  ref.read(databaseProvider).updateCollEventEntry(id, entries);
+}
