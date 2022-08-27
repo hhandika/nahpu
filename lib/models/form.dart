@@ -77,7 +77,7 @@ class SpecimenFormCtrModel {
   });
 
   int? speciesIdCtr;
-  int? collectorCtr;
+  String? collectorCtr;
   String? conditionCtr;
   TextEditingController prepDateCtr;
   TextEditingController prepTimeCtr;

@@ -2954,7 +2954,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
   final String? captureDate;
   final String? captureTime;
   final String? trapType;
-  final int? collectorID;
+  final String? collectorID;
   final int? collEventID;
   SpecimenData(
       {required this.specimenUuid,
@@ -2989,7 +2989,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}captureTime']),
       trapType: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}trapType']),
-      collectorID: const IntType()
+      collectorID: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}collectorID']),
       collEventID: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}collEventID']),
@@ -3024,7 +3024,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       map['trapType'] = Variable<String?>(trapType);
     }
     if (!nullToAbsent || collectorID != null) {
-      map['collectorID'] = Variable<int?>(collectorID);
+      map['collectorID'] = Variable<String?>(collectorID);
     }
     if (!nullToAbsent || collEventID != null) {
       map['collEventID'] = Variable<int?>(collEventID);
@@ -3081,7 +3081,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       captureDate: serializer.fromJson<String?>(json['captureDate']),
       captureTime: serializer.fromJson<String?>(json['captureTime']),
       trapType: serializer.fromJson<String?>(json['trapType']),
-      collectorID: serializer.fromJson<int?>(json['collectorID']),
+      collectorID: serializer.fromJson<String?>(json['collectorID']),
       collEventID: serializer.fromJson<int?>(json['collEventID']),
     );
   }
@@ -3098,7 +3098,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       'captureDate': serializer.toJson<String?>(captureDate),
       'captureTime': serializer.toJson<String?>(captureTime),
       'trapType': serializer.toJson<String?>(trapType),
-      'collectorID': serializer.toJson<int?>(collectorID),
+      'collectorID': serializer.toJson<String?>(collectorID),
       'collEventID': serializer.toJson<int?>(collEventID),
     };
   }
@@ -3113,7 +3113,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           String? captureDate,
           String? captureTime,
           String? trapType,
-          int? collectorID,
+          String? collectorID,
           int? collEventID}) =>
       SpecimenData(
         specimenUuid: specimenUuid ?? this.specimenUuid,
@@ -3186,7 +3186,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
   final Value<String?> captureDate;
   final Value<String?> captureTime;
   final Value<String?> trapType;
-  final Value<int?> collectorID;
+  final Value<String?> collectorID;
   final Value<int?> collEventID;
   const SpecimenCompanion({
     this.specimenUuid = const Value.absent(),
@@ -3224,7 +3224,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     Expression<String?>? captureDate,
     Expression<String?>? captureTime,
     Expression<String?>? trapType,
-    Expression<int?>? collectorID,
+    Expression<String?>? collectorID,
     Expression<int?>? collEventID,
   }) {
     return RawValuesInsertable({
@@ -3252,7 +3252,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       Value<String?>? captureDate,
       Value<String?>? captureTime,
       Value<String?>? trapType,
-      Value<int?>? collectorID,
+      Value<String?>? collectorID,
       Value<int?>? collEventID}) {
     return SpecimenCompanion(
       specimenUuid: specimenUuid ?? this.specimenUuid,
@@ -3300,7 +3300,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       map['trapType'] = Variable<String?>(trapType.value);
     }
     if (collectorID.present) {
-      map['collectorID'] = Variable<int?>(collectorID.value);
+      map['collectorID'] = Variable<String?>(collectorID.value);
     }
     if (collEventID.present) {
       map['collEventID'] = Variable<int?>(collEventID.value);
@@ -3392,9 +3392,9 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
       $customConstraints: '');
   final VerificationMeta _collectorIDMeta =
       const VerificationMeta('collectorID');
-  late final GeneratedColumn<int?> collectorID = GeneratedColumn<int?>(
+  late final GeneratedColumn<String?> collectorID = GeneratedColumn<String?>(
       'collectorID', aliasedName, true,
-      type: const IntType(),
+      type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: 'REFERENCES personnel(id)');
   final VerificationMeta _collEventIDMeta =

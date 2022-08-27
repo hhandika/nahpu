@@ -58,8 +58,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
   }
 
   Widget _drawSpecimenDataFields() {
-    // ignore: unused_local_variable
-    final personnelEntry = ref.watch(personnelEntryProvider);
+    final personnelEntry = ref.watch(personnelListProvider);
     return Card(
       // Specimen data card
       child: Container(
@@ -70,27 +69,21 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
                 'Specimen Data',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              // DropdownButtonFormField(
-              //   value: widget.specimenCtr.collectorCtr,
-              //   decoration: const InputDecoration(
-              //     labelText: 'Collector',
-              //     hintText: 'Choose a collector',
-              //   ),
-              //   items: personnelEntry.when(data: (entry) {
-              //     return entry.map((e) {
-              //       return DropdownMenuItem(
-              //           value: e.id, child: Text(e.name.toString()));
-              //     }).toList();
-              //   }, loading: () {
-              //     return const [];
-              //   }, error: (e, s) {
-              //     return const [];
-              //   }),
-              //   onChanged: (int? value) {
-              //     updateSpecimen(widget.specimenUuid,
-              //         SpecimenCompanion(collectorID: db.Value(value)), ref);
-              //   },
-              // ),
+              DropdownButtonFormField(
+                value: widget.specimenCtr.collectorCtr,
+                decoration: const InputDecoration(
+                  labelText: 'Collector',
+                  hintText: 'Choose a collector',
+                ),
+                items: personnelEntry.map((e) {
+                  return DropdownMenuItem(
+                      value: e.id, child: Text(e.name.toString()));
+                }).toList(),
+                onChanged: (String? id) {
+                  updateSpecimen(widget.specimenUuid,
+                      SpecimenCompanion(collectorID: db.Value(id)), ref);
+                },
+              ),
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: 'Collector Number',

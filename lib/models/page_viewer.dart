@@ -22,3 +22,10 @@ void checkPageNavigation(WidgetRef ref) {
     pageState.isLastPage = false;
   }
 }
+
+class PersonnelInfo {
+  String? id;
+  String? name;
+  String? initial;
+  PersonnelInfo({required this.id, required this.name, required this.initial});
+}
