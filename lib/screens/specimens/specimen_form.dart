@@ -1,7 +1,10 @@
+import 'package:drift/drift.dart' as db;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:nahpu/database/database.dart';
 import 'package:nahpu/models/form.dart';
+import 'package:nahpu/providers/updater.dart';
 
 class SpecimenForm extends ConsumerStatefulWidget {
   const SpecimenForm(
@@ -117,31 +120,34 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
                     setState(() {});
                   }),
               DropdownButtonFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Condition',
-                    hintText: 'Choose a condition',
+                value: 'Freshy Euthanized',
+                onChanged: (String? value) {
+                  updateSpecimen(widget.specimenUuid,
+                      SpecimenCompanion(condition: db.Value(value)), ref);
+                },
+                decoration: const InputDecoration(
+                  labelText: 'Condition',
+                  hintText: 'Choose a condition',
+                ),
+                items: const [
+                  DropdownMenuItem(
+                    value: 'Freshy Euthanized',
+                    child: Text('Freshy Euthanized'),
                   ),
-                  items: const [
-                    DropdownMenuItem(
-                      value: 'Freshy Euthanized',
-                      child: Text('Freshy Euthanized'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Good',
-                      child: Text('Good'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Fair',
-                      child: Text('Fair'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Rotten',
-                      child: Text('Rotten'),
-                    ),
-                  ],
-                  onChanged: (String? newValue) {
-                    setState(() {});
-                  }),
+                  DropdownMenuItem(
+                    value: 'Good',
+                    child: Text('Good'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Fair',
+                    child: Text('Fair'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Rotten',
+                    child: Text('Rotten'),
+                  ),
+                ],
+              ),
               Row(
                 children: [
                   Expanded(
@@ -161,6 +167,12 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
                           if (date != null) {
                             widget.specimenCtr.prepDateCtr.text =
                                 DateFormat.yMMMd().format(date);
+                            updateSpecimen(
+                                widget.specimenUuid,
+                                SpecimenCompanion(
+                                    prepDate: db.Value(
+                                        widget.specimenCtr.prepDateCtr.text)),
+                                ref);
                           }
                         });
                       },
@@ -181,6 +193,13 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
                           if (time != null) {
                             widget.specimenCtr.prepTimeCtr.text =
                                 time.format(context);
+                            updateSpecimen(
+                                widget.specimenUuid,
+                                SpecimenCompanion(
+                                  prepDate: db.Value(
+                                      widget.specimenCtr.prepTimeCtr.text),
+                                ),
+                                ref);
                           }
                         });
                       },

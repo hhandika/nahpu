@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/screens/specimens/menu_bar.dart';
-
+import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/screens/specimens/specimen_form.dart';
+import 'package:nahpu/screens/specimens/specimens.dart';
 
 enum MenuSelection { newNote, pdfExport, deleteRecords, deleteAllRecords }
 
-class NewSpecimenForm extends StatefulWidget {
+class NewSpecimenForm extends ConsumerStatefulWidget {
   const NewSpecimenForm({Key? key, required this.specimenUuid})
       : super(key: key);
 
   final String specimenUuid;
 
   @override
-  State<NewSpecimenForm> createState() => NewSpecimenFormState();
+  NewSpecimenFormState createState() => NewSpecimenFormState();
 }
 
-class NewSpecimenFormState extends State<NewSpecimenForm> {
+class NewSpecimenFormState extends ConsumerState<NewSpecimenForm> {
   final dateController = TextEditingController();
   final timeController = TextEditingController();
 
@@ -33,6 +35,14 @@ class NewSpecimenFormState extends State<NewSpecimenForm> {
       appBar: AppBar(
         title: const Text("New Specimens"),
         backgroundColor: Theme.of(context).colorScheme.primary,
+        leading: BackButton(
+          onPressed: () {
+            ref.refresh(pageNavigationProvider);
+            ref.refresh(specimenEntryProvider);
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const Specimens()));
+          },
+        ),
         actions: const [
           NewSpecimens(),
           SpecimenMenu(),

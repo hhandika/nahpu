@@ -12,9 +12,9 @@ enum MenuSelection { newSpecimen, pdfExport, deleteRecords, deleteAllRecords }
 
 Future<void> createNewSpecimens(BuildContext context, WidgetRef ref) {
   String projectUuid = ref.watch(projectUuidProvider.state).state;
-  String specimenUuid = uuid;
+  final String specimenUuid = uuid;
   ref.read(databaseProvider).createSpecimen(SpecimenCompanion(
-        specimenUuid: uuid,
+        specimenUuid: db.Value(uuid),
         projectUuid: db.Value(projectUuid),
       ));
   return Navigator.of(context).push(MaterialPageRoute(
