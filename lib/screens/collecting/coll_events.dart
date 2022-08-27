@@ -14,10 +14,10 @@ class CollEvents extends ConsumerStatefulWidget {
   const CollEvents({Key? key}) : super(key: key);
 
   @override
-  CollEventState createState() => CollEventState();
+  CollEventsState createState() => CollEventsState();
 }
 
-class CollEventState extends ConsumerState<CollEvents> {
+class CollEventsState extends ConsumerState<CollEvents> {
   bool isVisible = false;
   PageController pageController = PageController();
 
