@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SiteFormModel {
-  SiteFormModel(
+class SiteFormCtrModel {
+  SiteFormCtrModel(
       this.siteIDCtr,
       this.siteTypeCtr,
       this.countryCtr,
@@ -17,7 +17,7 @@ class SiteFormModel {
   TextEditingController municipalityCtr;
   TextEditingController localityCtr;
 
-  factory SiteFormModel.empty() => SiteFormModel(
+  factory SiteFormCtrModel.empty() => SiteFormCtrModel(
       TextEditingController(),
       TextEditingController(),
       TextEditingController(),
@@ -27,8 +27,8 @@ class SiteFormModel {
       TextEditingController());
 }
 
-class CollEventFormModel {
-  CollEventFormModel(this.eventIDCtr, this.startDateCtr, this.endDateCtr,
+class CollEventFormCtrModel {
+  CollEventFormCtrModel(this.eventIDCtr, this.startDateCtr, this.endDateCtr,
       this.startTimeCtr, this.endTimeCtr, this.primaryCollMethodCtr);
   TextEditingController eventIDCtr;
   TextEditingController startDateCtr;
@@ -37,7 +37,7 @@ class CollEventFormModel {
   TextEditingController endTimeCtr;
   TextEditingController primaryCollMethodCtr;
 
-  factory CollEventFormModel.empty() => CollEventFormModel(
+  factory CollEventFormCtrModel.empty() => CollEventFormCtrModel(
       TextEditingController(),
       TextEditingController(),
       TextEditingController(),

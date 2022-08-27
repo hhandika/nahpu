@@ -22,7 +22,7 @@ class NewSitesState extends ConsumerState<NewSites>
   final siteIdController = TextEditingController();
   late TabController _tabController;
 
-  final siteFormCtrl = SiteFormModel.empty();
+  final siteFormCtrl = SiteFormCtrModel.empty();
 
   @override
   void initState() {

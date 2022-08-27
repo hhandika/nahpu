@@ -21,8 +21,8 @@ class CollEventState extends ConsumerState<CollEvents> {
   bool isVisible = false;
   PageController pageController = PageController();
 
-  final CollEventFormModel _collEventFormController =
-      CollEventFormModel.empty();
+  final CollEventFormCtrModel _collEventFormController =
+      CollEventFormCtrModel.empty();
 
   @override
   void dispose() {

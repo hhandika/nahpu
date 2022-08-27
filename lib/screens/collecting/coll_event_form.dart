@@ -6,7 +6,7 @@ class CollEventForm extends ConsumerStatefulWidget {
   const CollEventForm({Key? key, required this.collEventFormController})
       : super(key: key);
 
-  final CollEventFormModel collEventFormController;
+  final CollEventFormCtrModel collEventFormController;
 
   @override
   CollEventFormState createState() => CollEventFormState();

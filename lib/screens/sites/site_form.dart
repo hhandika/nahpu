@@ -13,7 +13,7 @@ class SiteForm extends ConsumerStatefulWidget {
       : super(key: key);
 
   final int id;
-  final SiteFormModel siteFormCtr;
+  final SiteFormCtrModel siteFormCtr;
 
   @override
   SiteFormState createState() => SiteFormState();

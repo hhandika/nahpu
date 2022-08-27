@@ -64,7 +64,7 @@ class SitesState extends ConsumerState<Sites> {
                 controller: pageController,
                 itemCount: siteSize,
                 itemBuilder: (context, index) {
-                  final siteForm = SiteFormModel(
+                  final siteForm = SiteFormCtrModel(
                     TextEditingController(text: siteEntries[index].siteID),
                     TextEditingController(text: siteEntries[index].siteType),
                     TextEditingController(text: siteEntries[index].country),
