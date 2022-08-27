@@ -14,9 +14,11 @@ Future<void> createNewSpecimens(BuildContext context, WidgetRef ref) {
   String projectUuid = ref.watch(projectUuidProvider.state).state;
   final String specimenUuid = uuid;
   ref.read(databaseProvider).createSpecimen(SpecimenCompanion(
-        specimenUuid: db.Value(uuid),
+        specimenUuid: db.Value(specimenUuid),
         projectUuid: db.Value(projectUuid),
       ));
+
+  print(specimenUuid);
   return Navigator.of(context).push(MaterialPageRoute(
       builder: (_) => NewSpecimenForm(
             specimenUuid: specimenUuid,
