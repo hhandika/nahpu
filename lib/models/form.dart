@@ -63,3 +63,32 @@ class NarrativeFormCtrModel {
       siteCtr: TextEditingController(),
       narrativeCtr: TextEditingController());
 }
+
+class SpecimenFormCtrModel {
+  SpecimenFormCtrModel({
+    required this.speciesIdCtr,
+    required this.collectorCtr,
+    required this.conditionCtr,
+    required this.prepDateCtr,
+    required this.prepTimeCtr,
+    required this.captureTimeCtr,
+    required this.trapTypeCtr,
+  });
+
+  TextEditingController speciesIdCtr;
+  TextEditingController collectorCtr;
+  TextEditingController conditionCtr;
+  TextEditingController prepDateCtr;
+  TextEditingController prepTimeCtr;
+  TextEditingController captureTimeCtr;
+  TextEditingController trapTypeCtr;
+
+  factory SpecimenFormCtrModel.empty() => SpecimenFormCtrModel(
+      speciesIdCtr: TextEditingController(),
+      collectorCtr: TextEditingController(),
+      conditionCtr: TextEditingController(),
+      prepDateCtr: TextEditingController(),
+      prepTimeCtr: TextEditingController(),
+      captureTimeCtr: TextEditingController(),
+      trapTypeCtr: TextEditingController());
+}

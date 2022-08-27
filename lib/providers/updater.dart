@@ -13,3 +13,7 @@ void updateNarrative(int id, NarrativeCompanion entries, WidgetRef ref) {
 void updateCollEvent(int id, CollEventCompanion entries, WidgetRef ref) {
   ref.read(databaseProvider).updateCollEventEntry(id, entries);
 }
+
+void updateSpecimen(String uuid, SpecimenCompanion entries, WidgetRef ref) {
+  ref.read(databaseProvider).updateSpecimenEntry(uuid, entries);
+}
