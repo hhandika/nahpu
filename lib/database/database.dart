@@ -109,6 +109,29 @@ class Database extends _$Database {
     return (delete(collEvent)..where((t) => t.projectUuid.equals(projectUuid)))
         .go();
   }
+
+  // Specimen General table
+  Future<int> createSpecimen(SpecimenCompanion form) =>
+      into(specimen).insert(form);
+
+  Future updateSpecimenEntry(String uuid, SpecimenCompanion entry) {
+    return (update(specimen)..where((t) => t.specimenUuid.equals(uuid)))
+        .write(entry);
+  }
+
+  Future<List<SpecimenData>> getAllSpecimens(String projectUuid) {
+    return (select(specimen)..where((t) => t.projectUuid.equals(projectUuid)))
+        .get();
+  }
+
+  Future<void> deleteSpecimen(String uuid) {
+    return (delete(specimen)..where((t) => t.specimenUuid.equals(uuid))).go();
+  }
+
+  Future<void> deleteAllSpecimens(String projectUuid) {
+    return (delete(specimen)..where((t) => t.projectUuid.equals(projectUuid)))
+        .go();
+  }
 }
 
 LazyDatabase _openConnection() {

@@ -28,3 +28,11 @@ final collEventEntryProvider =
 
 final pageNavigationProvider =
     StateProvider.autoDispose<PageNavigation>((ref) => PageNavigation());
+
+final specimenEntryProvider =
+    FutureProvider.autoDispose<List<SpecimenData>>((ref) {
+  final projectUuid = ref.watch(projectUuidProvider.state).state;
+  final specimenEntries =
+      ref.read(databaseProvider).getAllSpecimens(projectUuid);
+  return specimenEntries;
+});
