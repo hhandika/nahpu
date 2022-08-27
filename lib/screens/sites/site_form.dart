@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/configs/colors.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/models/form.dart';
-import 'package:nahpu/providers/project.dart';
+import 'package:nahpu/providers/updater.dart';
 import 'package:nahpu/screens/shared/photos.dart';
 
 class SiteForm extends ConsumerStatefulWidget {
@@ -50,7 +50,8 @@ class SiteFormState extends ConsumerState<SiteForm>
                 hintText: 'Enter a site',
               ),
               onChanged: (value) {
-                _updateSite(widget.id, SiteCompanion(siteID: db.Value(value)));
+                updateSite(
+                    widget.id, SiteCompanion(siteID: db.Value(value)), ref);
               },
             ),
             TextFormField(
@@ -72,7 +73,8 @@ class SiteFormState extends ConsumerState<SiteForm>
                 hintText: 'Enter a country location',
               ),
               onChanged: (value) {
-                _updateSite(widget.id, SiteCompanion(country: db.Value(value)));
+                updateSite(
+                    widget.id, SiteCompanion(country: db.Value(value)), ref);
               },
             ),
             TextFormField(
@@ -82,8 +84,8 @@ class SiteFormState extends ConsumerState<SiteForm>
                 hintText: 'Enter a state/province location',
               ),
               onChanged: (value) {
-                _updateSite(
-                    widget.id, SiteCompanion(stateProvince: db.Value(value)));
+                updateSite(widget.id,
+                    SiteCompanion(stateProvince: db.Value(value)), ref);
               },
             ),
             TextFormField(
@@ -93,7 +95,8 @@ class SiteFormState extends ConsumerState<SiteForm>
                 hintText: 'Enter a county name',
               ),
               onChanged: (value) {
-                _updateSite(widget.id, SiteCompanion(county: db.Value(value)));
+                updateSite(
+                    widget.id, SiteCompanion(county: db.Value(value)), ref);
               },
             ),
             TextFormField(
@@ -103,8 +106,8 @@ class SiteFormState extends ConsumerState<SiteForm>
                 hintText: 'Enter a municipality name',
               ),
               onChanged: (value) {
-                _updateSite(
-                    widget.id, SiteCompanion(municipality: db.Value(value)));
+                updateSite(widget.id,
+                    SiteCompanion(municipality: db.Value(value)), ref);
               },
             ),
             TextFormField(
@@ -116,8 +119,8 @@ class SiteFormState extends ConsumerState<SiteForm>
                     'Enter a complete locality, excluding country and state/province',
               ),
               onChanged: (value) {
-                _updateSite(
-                    widget.id, SiteCompanion(locality: db.Value(value)));
+                updateSite(
+                    widget.id, SiteCompanion(locality: db.Value(value)), ref);
               },
             ),
             TextFormField(
@@ -174,9 +177,5 @@ class SiteFormState extends ConsumerState<SiteForm>
         )
       ],
     ));
-  }
-
-  void _updateSite(int id, SiteCompanion site) {
-    ref.read(databaseProvider).updateSiteEntry(id, site);
   }
 }

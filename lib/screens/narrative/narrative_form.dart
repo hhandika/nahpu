@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:nahpu/configs/colors.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/models/form.dart';
-import 'package:nahpu/providers/project.dart';
+import 'package:nahpu/providers/updater.dart';
 import 'package:nahpu/screens/shared/photos.dart';
 
 class NarrativeForm extends ConsumerStatefulWidget {
@@ -60,8 +60,8 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
                 hintText: 'Enter narrative',
               ),
               onChanged: (value) {
-                _updateNarrative(
-                    NarrativeCompanion(narrative: db.Value(value)));
+                updateNarrative(widget.narrativeId,
+                    NarrativeCompanion(narrative: db.Value(value)), ref);
               },
             ),
           ),
@@ -82,7 +82,8 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
         hintText: 'Enter a site',
       ),
       onChanged: (value) {
-        _updateNarrative(NarrativeCompanion(siteID: db.Value(value)));
+        updateNarrative(widget.narrativeId,
+            NarrativeCompanion(siteID: db.Value(value)), ref);
       },
     );
   }
@@ -103,18 +104,15 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
             .then((date) {
           if (date != null) {
             widget.narrativeCtr.dateCtr.text = DateFormat.yMMMd().format(date);
-            _updateNarrative(NarrativeCompanion(
-                date: db.Value(widget.narrativeCtr.dateCtr.text)));
+            updateNarrative(
+                widget.narrativeId,
+                NarrativeCompanion(
+                    date: db.Value(widget.narrativeCtr.dateCtr.text)),
+                ref);
           }
         });
       },
     );
-  }
-
-  void _updateNarrative(NarrativeCompanion entries) {
-    ref
-        .read(databaseProvider)
-        .updateNarrativeEntry(widget.narrativeId, entries);
   }
 }
 
