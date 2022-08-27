@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/models/form.dart';
 
 import 'package:nahpu/screens/narrative/narrative_form.dart';
 import 'package:nahpu/screens/narrative/menu_bar.dart';
@@ -19,8 +20,7 @@ class NewNarrativeForm extends ConsumerStatefulWidget {
 class NewNarrativeFormState extends ConsumerState<NewNarrativeForm>
     with TickerProviderStateMixin {
   final dateController = TextEditingController();
-  final narrativeController = TextEditingController();
-  final siteController = TextEditingController();
+  final _narrativeCtr = NarrativeFormCtrModel.empty();
 
   late TabController _tabController;
 
@@ -58,9 +58,7 @@ class NewNarrativeFormState extends ConsumerState<NewNarrativeForm>
       body: SafeArea(
         child: NarrativeForm(
           narrativeId: widget.narrativeId,
-          dateController: dateController,
-          siteController: siteController,
-          narrativeController: narrativeController,
+          narrativeCtr: _narrativeCtr,
         ),
       ),
     );

@@ -4,30 +4,16 @@ import 'package:drift/drift.dart' as db;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/configs/colors.dart';
 import 'package:nahpu/database/database.dart';
+import 'package:nahpu/models/form.dart';
 import 'package:nahpu/providers/project.dart';
 import 'package:nahpu/screens/shared/photos.dart';
 
 class SiteForm extends ConsumerStatefulWidget {
-  const SiteForm({
-    Key? key,
-    required this.id,
-    required this.siteIDController,
-    required this.siteTypeController,
-    required this.countryController,
-    required this.stateProvinceController,
-    required this.countyController,
-    required this.municipalityController,
-    required this.localityController,
-  }) : super(key: key);
+  const SiteForm({Key? key, required this.id, required this.siteFormCtr})
+      : super(key: key);
 
   final int id;
-  final TextEditingController siteIDController;
-  final TextEditingController siteTypeController;
-  final TextEditingController countryController;
-  final TextEditingController stateProvinceController;
-  final TextEditingController countyController;
-  final TextEditingController municipalityController;
-  final TextEditingController localityController;
+  final SiteFormModel siteFormCtr;
 
   @override
   SiteFormState createState() => SiteFormState();
@@ -58,7 +44,7 @@ class SiteFormState extends ConsumerState<SiteForm>
           columnSpan: 12,
           child: Column(children: [
             TextFormField(
-              controller: widget.siteIDController,
+              controller: widget.siteFormCtr.siteIDCtr,
               decoration: const InputDecoration(
                 labelText: 'Site ID',
                 hintText: 'Enter a site',
@@ -80,7 +66,7 @@ class SiteFormState extends ConsumerState<SiteForm>
               ),
             ),
             TextFormField(
-              controller: widget.countryController,
+              controller: widget.siteFormCtr.countryCtr,
               decoration: const InputDecoration(
                 labelText: 'Country',
                 hintText: 'Enter a country location',
@@ -90,7 +76,7 @@ class SiteFormState extends ConsumerState<SiteForm>
               },
             ),
             TextFormField(
-              controller: widget.stateProvinceController,
+              controller: widget.siteFormCtr.stateProvinceCtr,
               decoration: const InputDecoration(
                 labelText: 'State/Province',
                 hintText: 'Enter a state/province location',
@@ -101,7 +87,7 @@ class SiteFormState extends ConsumerState<SiteForm>
               },
             ),
             TextFormField(
-              controller: widget.countyController,
+              controller: widget.siteFormCtr.countyCtr,
               decoration: const InputDecoration(
                 labelText: 'County',
                 hintText: 'Enter a county name',
@@ -111,7 +97,7 @@ class SiteFormState extends ConsumerState<SiteForm>
               },
             ),
             TextFormField(
-              controller: widget.municipalityController,
+              controller: widget.siteFormCtr.municipalityCtr,
               decoration: const InputDecoration(
                 labelText: 'Municipality',
                 hintText: 'Enter a municipality name',
@@ -122,7 +108,7 @@ class SiteFormState extends ConsumerState<SiteForm>
               },
             ),
             TextFormField(
-              controller: widget.localityController,
+              controller: widget.siteFormCtr.localityCtr,
               maxLines: 5,
               decoration: const InputDecoration(
                 labelText: 'Locality',

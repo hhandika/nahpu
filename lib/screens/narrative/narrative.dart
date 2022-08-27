@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/models/form.dart';
 import 'package:nahpu/models/page_viewer.dart';
 
 import 'package:nahpu/providers/page_viewer.dart';
@@ -69,14 +70,16 @@ class NarrativeState extends ConsumerState<Narrative> {
                   controller: pageController,
                   itemCount: narrativeSize,
                   itemBuilder: (context, index) {
+                    final narrativeCtr = NarrativeFormCtrModel(
+                      TextEditingController(text: narrativeEntries[index].date),
+                      TextEditingController(
+                          text: narrativeEntries[index].siteID),
+                      TextEditingController(
+                          text: narrativeEntries[index].narrative),
+                    );
                     return NarrativeForm(
                       narrativeId: narrativeEntries[index].id,
-                      dateController: TextEditingController(
-                          text: narrativeEntries[index].date),
-                      siteController: TextEditingController(
-                          text: narrativeEntries[index].siteID),
-                      narrativeController: TextEditingController(
-                          text: narrativeEntries[index].narrative),
+                      narrativeCtr: narrativeCtr,
                     );
                   },
                   onPageChanged: (value) => setState(() {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/models/form.dart';
 import 'package:nahpu/models/page_viewer.dart';
 import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
@@ -63,22 +64,20 @@ class SitesState extends ConsumerState<Sites> {
                 controller: pageController,
                 itemCount: siteSize,
                 itemBuilder: (context, index) {
+                  final siteForm = SiteFormModel(
+                    TextEditingController(text: siteEntries[index].siteID),
+                    TextEditingController(text: siteEntries[index].siteType),
+                    TextEditingController(text: siteEntries[index].country),
+                    TextEditingController(
+                        text: siteEntries[index].stateProvince),
+                    TextEditingController(text: siteEntries[index].county),
+                    TextEditingController(
+                        text: siteEntries[index].municipality),
+                    TextEditingController(text: siteEntries[index].locality),
+                  );
                   return SiteForm(
                     id: siteEntries[index].id,
-                    siteIDController:
-                        TextEditingController(text: siteEntries[index].siteID),
-                    siteTypeController: TextEditingController(
-                        text: siteEntries[index].siteType),
-                    countryController:
-                        TextEditingController(text: siteEntries[index].country),
-                    stateProvinceController: TextEditingController(
-                        text: siteEntries[index].stateProvince),
-                    countyController:
-                        TextEditingController(text: siteEntries[index].county),
-                    municipalityController: TextEditingController(
-                        text: siteEntries[index].municipality),
-                    localityController: TextEditingController(
-                        text: siteEntries[index].locality),
+                    siteFormCtr: siteForm,
                   );
                 },
                 onPageChanged: (value) => setState(() {

@@ -1,13 +1,18 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/models/form.dart';
 
-class CollEventForm extends StatefulWidget {
-  const CollEventForm({Key? key}) : super(key: key);
+class CollEventForm extends ConsumerStatefulWidget {
+  const CollEventForm({Key? key, required this.collEventFormController})
+      : super(key: key);
+
+  final CollEventFormModel collEventFormController;
 
   @override
-  State<CollEventForm> createState() => _CollEventFormState();
+  CollEventFormState createState() => CollEventFormState();
 }
 
-class _CollEventFormState extends State<CollEventForm> {
+class CollEventFormState extends ConsumerState<CollEventForm> {
   @override
   Widget build(BuildContext context) {
     return const Text("Collecting Event Form");

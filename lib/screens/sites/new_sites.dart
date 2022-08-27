@@ -22,7 +22,7 @@ class NewSitesState extends ConsumerState<NewSites>
   final siteIdController = TextEditingController();
   late TabController _tabController;
 
-  final siteFormCtrl = SiteFormModel();
+  final siteFormCtrl = SiteFormModel.empty();
 
   @override
   void initState() {
@@ -84,15 +84,11 @@ class NewSitesState extends ConsumerState<NewSites>
         ],
       ),
       body: SafeArea(
-          child: SiteForm(
-              id: widget.id,
-              siteIDController: siteFormCtrl.siteIDController,
-              siteTypeController: siteFormCtrl.siteTypeController,
-              countryController: siteFormCtrl.countryController,
-              stateProvinceController: siteFormCtrl.stateProvinceController,
-              countyController: siteFormCtrl.countyController,
-              municipalityController: siteFormCtrl.municipalityController,
-              localityController: siteFormCtrl.localityController)),
+        child: SiteForm(
+          id: widget.id,
+          siteFormCtr: siteFormCtrl,
+        ),
+      ),
     );
   }
 

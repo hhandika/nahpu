@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:nahpu/configs/colors.dart';
 import 'package:nahpu/database/database.dart';
+import 'package:nahpu/models/form.dart';
 import 'package:nahpu/providers/project.dart';
 import 'package:nahpu/screens/shared/photos.dart';
 
@@ -14,15 +15,11 @@ class NarrativeForm extends ConsumerStatefulWidget {
   const NarrativeForm({
     Key? key,
     required this.narrativeId,
-    required this.dateController,
-    required this.siteController,
-    required this.narrativeController,
+    required this.narrativeCtr,
   }) : super(key: key);
 
-  final TextEditingController dateController;
-  final TextEditingController siteController;
-  final TextEditingController narrativeController;
   final int narrativeId;
+  final NarrativeFormCtrModel narrativeCtr;
 
   @override
   NarrativeFormState createState() => NarrativeFormState();
@@ -56,7 +53,7 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
           AdaptiveContainer(
             columnSpan: 12,
             child: TextFormField(
-              controller: widget.narrativeController,
+              controller: widget.narrativeCtr.narrativeCtr,
               maxLines: useHorizontalLayout ? 20 : 10,
               decoration: const InputDecoration(
                 labelText: 'Narrative',
@@ -79,7 +76,7 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
 
   Widget _buildSiteIdForm() {
     return TextFormField(
-      controller: widget.siteController,
+      controller: widget.narrativeCtr.siteCtr,
       decoration: const InputDecoration(
         labelText: 'Site ID',
         hintText: 'Enter a site',
@@ -96,7 +93,7 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
         labelText: 'Date',
         hintText: 'Enter date',
       ),
-      controller: widget.dateController,
+      controller: widget.narrativeCtr.dateCtr,
       onTap: () {
         showDatePicker(
                 context: context,
@@ -105,9 +102,9 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
                 lastDate: DateTime.now())
             .then((date) {
           if (date != null) {
-            widget.dateController.text = DateFormat.yMMMd().format(date);
-            _updateNarrative(
-                NarrativeCompanion(date: db.Value(widget.dateController.text)));
+            widget.narrativeCtr.dateCtr.text = DateFormat.yMMMd().format(date);
+            _updateNarrative(NarrativeCompanion(
+                date: db.Value(widget.narrativeCtr.dateCtr.text)));
           }
         });
       },

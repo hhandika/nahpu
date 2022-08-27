@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/models/form.dart';
 import 'package:nahpu/models/page_viewer.dart';
 
 import 'package:nahpu/providers/page_viewer.dart';
@@ -19,6 +20,9 @@ class CollEvents extends ConsumerStatefulWidget {
 class CollEventState extends ConsumerState<CollEvents> {
   bool isVisible = false;
   PageController pageController = PageController();
+
+  final CollEventFormModel _collEventFormController =
+      CollEventFormModel.empty();
 
   @override
   void dispose() {
@@ -69,7 +73,9 @@ class CollEventState extends ConsumerState<CollEvents> {
                   controller: pageController,
                   itemCount: collEventSize,
                   itemBuilder: (context, index) {
-                    return const CollEventForm();
+                    return CollEventForm(
+                      collEventFormController: _collEventFormController,
+                    );
                   },
                   onPageChanged: (value) => setState(() {
                     pageNotifier.state.currentPage = value + 1;
