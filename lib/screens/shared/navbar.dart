@@ -90,12 +90,14 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
         );
         break;
       case 2:
+        ref.refresh(collEventEntryProvider);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const CollEvents()),
         );
         break;
       case 3:
+        ref.refresh(specimenEntryProvider);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const Specimens()),
