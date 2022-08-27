@@ -21,9 +21,6 @@ class CollEventState extends ConsumerState<CollEvents> {
   bool isVisible = false;
   PageController pageController = PageController();
 
-  final CollEventFormCtrModel _collEventFormController =
-      CollEventFormCtrModel.empty();
-
   @override
   void dispose() {
     pageController.dispose();
@@ -73,8 +70,22 @@ class CollEventState extends ConsumerState<CollEvents> {
                   controller: pageController,
                   itemCount: collEventSize,
                   itemBuilder: (context, index) {
+                    final collEventForm = CollEventFormCtrModel(
+                      startDateCtr: TextEditingController(
+                          text: collEventEntries[index].startDate),
+                      endDateCtr: TextEditingController(
+                          text: collEventEntries[index].endDate),
+                      startTimeCtr: TextEditingController(
+                          text: collEventEntries[index].startTime),
+                      endTimeCtr: TextEditingController(
+                          text: collEventEntries[index].endTime),
+                      primaryCollMethodCtr: TextEditingController(
+                          text: collEventEntries[index].primaryCollMethod),
+                    );
+
                     return CollEventForm(
-                      collEventFormController: _collEventFormController,
+                      id: collEventEntries[index].id,
+                      collEventCtr: collEventForm,
                     );
                   },
                   onPageChanged: (value) => setState(() {

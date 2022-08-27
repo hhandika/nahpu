@@ -29,13 +29,12 @@ class SiteFormCtrModel {
 
 class CollEventFormCtrModel {
   CollEventFormCtrModel(
-      {required this.eventIDCtr,
-      required this.startDateCtr,
+      {required this.startDateCtr,
       required this.endDateCtr,
       required this.startTimeCtr,
       required this.endTimeCtr,
       required this.primaryCollMethodCtr});
-  TextEditingController eventIDCtr;
+
   TextEditingController startDateCtr;
   TextEditingController endDateCtr;
   TextEditingController startTimeCtr;
@@ -43,7 +42,6 @@ class CollEventFormCtrModel {
   TextEditingController primaryCollMethodCtr;
 
   factory CollEventFormCtrModel.empty() => CollEventFormCtrModel(
-      eventIDCtr: TextEditingController(),
       startDateCtr: TextEditingController(),
       endDateCtr: TextEditingController(),
       startTimeCtr: TextEditingController(),
