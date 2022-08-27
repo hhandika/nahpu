@@ -7,8 +7,6 @@ import 'package:nahpu/database/database.dart';
 import 'package:nahpu/providers/project.dart';
 import 'package:nahpu/screens/shared/photos.dart';
 
-enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
-
 class SiteForm extends ConsumerStatefulWidget {
   const SiteForm({
     Key? key,
