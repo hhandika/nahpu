@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/database/database.dart';
 
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/providers/page_viewer.dart';
@@ -49,22 +48,5 @@ class NewCollEventFormState extends ConsumerState<NewCollEventForm>
             CollEventForm(id: widget.collEventId, collEventCtr: _collEventCtr),
       ),
     );
-  }
-
-  void _onPopupMenuSelected(MenuSelection item) {
-    switch (item) {
-      case MenuSelection.newNote:
-        setState(() {});
-        break;
-      case MenuSelection.pdfExport:
-        setState(() {});
-        break;
-      case MenuSelection.deleteRecords:
-        setState(() {});
-        break;
-      case MenuSelection.deleteAllRecords:
-        setState(() {});
-        break;
-    }
   }
 }
