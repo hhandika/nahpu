@@ -18,7 +18,6 @@ Future<void> createNewSpecimens(BuildContext context, WidgetRef ref) {
         projectUuid: db.Value(projectUuid),
       ));
 
-  print(specimenUuid);
   return Navigator.of(context).push(MaterialPageRoute(
       builder: (_) => NewSpecimenForm(
             specimenUuid: specimenUuid,

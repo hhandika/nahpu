@@ -192,7 +192,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
                             updateSpecimen(
                                 widget.specimenUuid,
                                 SpecimenCompanion(
-                                  prepDate: db.Value(
+                                  prepTime: db.Value(
                                       widget.specimenCtr.prepTimeCtr.text),
                                 ),
                                 ref);
