@@ -2945,7 +2945,7 @@ class Narrative extends Table with TableInfo<Narrative, NarrativeData> {
 }
 
 class SpecimenData extends DataClass implements Insertable<SpecimenData> {
-  final String? specimenUuid;
+  final String specimenUuid;
   final String? projectUuid;
   final int? speciesID;
   final String? condition;
@@ -2957,7 +2957,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
   final int? collectorID;
   final int? collEventID;
   SpecimenData(
-      {this.specimenUuid,
+      {required this.specimenUuid,
       this.projectUuid,
       this.speciesID,
       this.condition,
@@ -2972,7 +2972,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
     final effectivePrefix = prefix ?? '';
     return SpecimenData(
       specimenUuid: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}specimenUuid']),
+          .mapFromDatabaseResponse(data['${effectivePrefix}specimenUuid'])!,
       projectUuid: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}projectUuid']),
       speciesID: const IntType()
@@ -2998,9 +2998,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || specimenUuid != null) {
-      map['specimenUuid'] = Variable<String?>(specimenUuid);
-    }
+    map['specimenUuid'] = Variable<String>(specimenUuid);
     if (!nullToAbsent || projectUuid != null) {
       map['projectUuid'] = Variable<String?>(projectUuid);
     }
@@ -3036,9 +3034,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
 
   SpecimenCompanion toCompanion(bool nullToAbsent) {
     return SpecimenCompanion(
-      specimenUuid: specimenUuid == null && nullToAbsent
-          ? const Value.absent()
-          : Value(specimenUuid),
+      specimenUuid: Value(specimenUuid),
       projectUuid: projectUuid == null && nullToAbsent
           ? const Value.absent()
           : Value(projectUuid),
@@ -3076,7 +3072,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return SpecimenData(
-      specimenUuid: serializer.fromJson<String?>(json['specimenUuid']),
+      specimenUuid: serializer.fromJson<String>(json['specimenUuid']),
       projectUuid: serializer.fromJson<String?>(json['projectUuid']),
       speciesID: serializer.fromJson<int?>(json['speciesID']),
       condition: serializer.fromJson<String?>(json['condition']),
@@ -3093,7 +3089,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'specimenUuid': serializer.toJson<String?>(specimenUuid),
+      'specimenUuid': serializer.toJson<String>(specimenUuid),
       'projectUuid': serializer.toJson<String?>(projectUuid),
       'speciesID': serializer.toJson<int?>(speciesID),
       'condition': serializer.toJson<String?>(condition),
@@ -3181,7 +3177,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
 }
 
 class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
-  final Value<String?> specimenUuid;
+  final Value<String> specimenUuid;
   final Value<String?> projectUuid;
   final Value<int?> speciesID;
   final Value<String?> condition;
@@ -3206,7 +3202,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     this.collEventID = const Value.absent(),
   });
   SpecimenCompanion.insert({
-    this.specimenUuid = const Value.absent(),
+    required String specimenUuid,
     this.projectUuid = const Value.absent(),
     this.speciesID = const Value.absent(),
     this.condition = const Value.absent(),
@@ -3217,9 +3213,9 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     this.trapType = const Value.absent(),
     this.collectorID = const Value.absent(),
     this.collEventID = const Value.absent(),
-  });
+  }) : specimenUuid = Value(specimenUuid);
   static Insertable<SpecimenData> custom({
-    Expression<String?>? specimenUuid,
+    Expression<String>? specimenUuid,
     Expression<String?>? projectUuid,
     Expression<int?>? speciesID,
     Expression<String?>? condition,
@@ -3247,7 +3243,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
   }
 
   SpecimenCompanion copyWith(
-      {Value<String?>? specimenUuid,
+      {Value<String>? specimenUuid,
       Value<String?>? projectUuid,
       Value<int?>? speciesID,
       Value<String?>? condition,
@@ -3277,7 +3273,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (specimenUuid.present) {
-      map['specimenUuid'] = Variable<String?>(specimenUuid.value);
+      map['specimenUuid'] = Variable<String>(specimenUuid.value);
     }
     if (projectUuid.present) {
       map['projectUuid'] = Variable<String?>(projectUuid.value);
@@ -3339,10 +3335,10 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
   final VerificationMeta _specimenUuidMeta =
       const VerificationMeta('specimenUuid');
   late final GeneratedColumn<String?> specimenUuid = GeneratedColumn<String?>(
-      'specimenUuid', aliasedName, true,
+      'specimenUuid', aliasedName, false,
       type: const StringType(),
-      requiredDuringInsert: false,
-      $customConstraints: '');
+      requiredDuringInsert: true,
+      $customConstraints: 'UNIQUE NOT NULL PRIMARY KEY');
   final VerificationMeta _projectUuidMeta =
       const VerificationMeta('projectUuid');
   late final GeneratedColumn<String?> projectUuid = GeneratedColumn<String?>(
@@ -3436,6 +3432,8 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
           _specimenUuidMeta,
           specimenUuid.isAcceptableOrUnknown(
               data['specimenUuid']!, _specimenUuidMeta));
+    } else if (isInserting) {
+      context.missing(_specimenUuidMeta);
     }
     if (data.containsKey('projectUuid')) {
       context.handle(
@@ -3491,7 +3489,7 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => {specimenUuid};
   @override
   SpecimenData map(Map<String, dynamic> data, {String? tablePrefix}) {
     return SpecimenData.fromData(data,

@@ -82,7 +82,7 @@ CREATE TABLE personnel (
 );
 
 CREATE TABLE specimen (
-    specimenUuid TEXT,
+    specimenUuid TEXT UNIQUE NOT NULL PRIMARY KEY,
     projectUuid TEXT,
     speciesID INT,
     condition TEXT,
