@@ -39,7 +39,6 @@ class ProjectHomeState extends ConsumerState<ProjectHome> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isPhone = MediaQuery.of(context).size.width < 730;
     final projectUuid = ref.watch(projectUuidProvider.state).state;
     return Scaffold(
       appBar: AppBar(
@@ -215,24 +214,14 @@ class ProjectHomeState extends ConsumerState<ProjectHome> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: isPhone
-              ? Column(
-                  children: [
-                    ProjectOverview(
-                      projectUuid: projectUuid,
-                    ),
-                    const TeamMemberViewer(),
-                  ],
-                )
-              : Row(
-                  children: [
-                    ProjectOverview(
-                      projectUuid: projectUuid,
-                    ),
-                    const TeamMemberViewer(),
-                  ],
-                ),
-        ),
+            child: Column(
+          children: [
+            ProjectOverview(
+              projectUuid: projectUuid,
+            ),
+            const TeamMemberViewer(),
+          ],
+        )),
       ),
       bottomNavigationBar: const ProjectBottomNavbar(),
     );
