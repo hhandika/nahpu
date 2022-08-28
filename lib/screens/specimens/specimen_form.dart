@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart' as db;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -23,6 +24,9 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
     with TickerProviderStateMixin {
   late TabController _tabController;
 
+  List<PersonnelData> personnelList = [];
+  String? personnel;
+
   final List<String> conditions = [
     'Freshy Euthanized',
     'Good',
@@ -34,6 +38,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
   @override
   void initState() {
     super.initState();
+
     _tabController = TabController(length: 3, vsync: this);
   }
 
@@ -59,6 +64,13 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
 
   Widget _drawSpecimenDataFields() {
     final personnelEntry = ref.watch(personnelListProvider);
+    personnelEntry.when(
+      data: (personnelEntry) => setState(() {
+        personnelList = personnelEntry;
+      }),
+      loading: () => null,
+      error: (e, s) => null,
+    );
     return Card(
       // Specimen data card
       child: Container(
@@ -75,13 +87,18 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
                   labelText: 'Collector',
                   hintText: 'Choose a collector',
                 ),
-                items: personnelEntry.map((e) {
-                  return DropdownMenuItem(
-                      value: e.id, child: Text(e.name.toString()));
-                }).toList(),
+                items: personnelList
+                    .map((e) => DropdownMenuItem(
+                          value: e.id,
+                          child: Text(e.name ?? ''),
+                        ))
+                    .toList(),
                 onChanged: (String? id) {
-                  updateSpecimen(widget.specimenUuid,
-                      SpecimenCompanion(collectorID: db.Value(id)), ref);
+                  setState(() {
+                    personnel = id;
+                    updateSpecimen(widget.specimenUuid,
+                        SpecimenCompanion(collectorID: db.Value(id)), ref);
+                  });
                 },
               ),
               TextFormField(
@@ -91,23 +108,24 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
                 ),
               ),
               DropdownButtonFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Collector',
-                    hintText: 'Choose a collector',
-                  ),
-                  items: const [
-                    DropdownMenuItem(
-                      value: 'One',
-                      child: Text('One'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Two',
-                      child: Text('Two'),
-                    ),
-                  ],
-                  onChanged: (String? newValue) {
-                    setState(() {});
-                  }),
+                decoration: const InputDecoration(
+                  labelText: 'Preparator',
+                  hintText: 'Choose a preparator',
+                ),
+                items: personnelList
+                    .map((e) => DropdownMenuItem(
+                          value: e.id,
+                          child: Text(e.name ?? ''),
+                        ))
+                    .toList(),
+                onChanged: (String? id) {
+                  setState(() {
+                    personnel = id;
+                    updateSpecimen(widget.specimenUuid,
+                        SpecimenCompanion(collectorID: db.Value(id)), ref);
+                  });
+                },
+              ),
               DropdownButtonFormField(
                   decoration: const InputDecoration(
                     labelText: 'Species',

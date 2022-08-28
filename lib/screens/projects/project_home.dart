@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/providers/project.dart';
 import 'package:nahpu/screens/collecting/menu_bar.dart';
 
@@ -210,16 +211,14 @@ class ProjectHomeState extends ConsumerState<ProjectHome> {
           ],
         ),
       ),
-      body: GridView(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 1,
-            childAspectRatio: 1.0,
+      body: SafeArea(
+        child: Column(children: [
+          ProjectOverview(
+            projectUuid: projectUuid,
           ),
-          children: [
-            ProjectOverview(
-              projectUuid: projectUuid,
-            )
-          ]),
+          const TeamMemberList()
+        ]),
+      ),
       bottomNavigationBar: const ProjectBottomNavbar(),
     );
   }
@@ -233,8 +232,7 @@ class ProjectOverview extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SingleChildScrollView(
-        child: Card(
+    return Card(
       color: Theme.of(context).colorScheme.surface,
       child: ref.watch(projectInfoProvider(projectUuid)).when(
             data: (data) {
@@ -248,7 +246,7 @@ class ProjectOverview extends ConsumerWidget {
             loading: () => const CircularProgressIndicator(),
             error: (error, stack) => Text(error.toString()),
           ),
-    ));
+    );
   }
 
   Widget showAlert(BuildContext context, String error) {
@@ -258,5 +256,44 @@ class ProjectOverview extends ConsumerWidget {
           Text(
               'Failed fetching data from the database. Check if the project name exists. $error')
         ]));
+  }
+}
+
+class TeamMemberList extends ConsumerWidget {
+  const TeamMemberList({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final personnels = ref.watch(personnelListProvider);
+    return personnels.when(
+      data: (data) {
+        return Expanded(
+          child: ListView.builder(
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              return Card(
+                color: Theme.of(context).colorScheme.surface,
+                child: ListTile(
+                  leading: const Icon(Icons.person_rounded),
+                  title: Text(data[index].name ?? ''),
+                  subtitle: Text(data[index].id ?? ''),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete_rounded),
+                    onPressed: () {
+                      // ref.read(personnelListProvider.notifier).deletePersonnel(
+                      //     data[index].id, data[index].name, data[index].email);
+                    },
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
+      loading: () => const CircularProgressIndicator(),
+      error: (error, stack) => Text(error.toString()),
+    );
   }
 }

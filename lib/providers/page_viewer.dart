@@ -37,21 +37,5 @@ final specimenEntryProvider =
   return specimenEntries;
 });
 
-final personnelEntryProvider =
-    FutureProvider.autoDispose<List<PersonnelData>>((ref) {
-  final personnelEntries = ref.read(databaseProvider).getAllPersonnel();
-  return personnelEntries;
-});
-
-final personnelListProvider =
-    StateProvider.autoDispose<List<PersonnelInfo>>((ref) {
-  ref.watch(personnelEntryProvider).when(
-        data: (data) => data
-            .map((e) =>
-                PersonnelInfo(id: e.id, name: e.name, initial: e.initial))
-            .toList(),
-        loading: () => [],
-        error: (e, s) => [],
-      );
-  return [];
-});
+final personnelListProvider = FutureProvider.autoDispose<List<PersonnelData>>(
+    (ref) => ref.read(databaseProvider).getAllPersonnel());

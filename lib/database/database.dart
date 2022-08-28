@@ -142,7 +142,7 @@ class Database extends _$Database {
   }
 
   Future<List<PersonnelData>> getAllPersonnel() {
-    return (select(personnel)).get();
+    return select(personnel).get();
   }
 }
 
