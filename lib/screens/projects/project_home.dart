@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:drift/drift.dart' as db;
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/database/database.dart';
 import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/providers/project.dart';
 import 'package:nahpu/screens/collecting/menu_bar.dart';
@@ -212,12 +213,16 @@ class ProjectHomeState extends ConsumerState<ProjectHome> {
         ),
       ),
       body: SafeArea(
-        child: Column(children: [
-          ProjectOverview(
-            projectUuid: projectUuid,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              ProjectOverview(
+                projectUuid: projectUuid,
+              ),
+              const TeamMemberViewer(),
+            ],
           ),
-          const TeamMemberList()
-        ]),
+        ),
       ),
       bottomNavigationBar: const ProjectBottomNavbar(),
     );
@@ -259,8 +264,106 @@ class ProjectOverview extends ConsumerWidget {
   }
 }
 
-class TeamMemberList extends ConsumerWidget {
-  const TeamMemberList({
+class TeamMemberViewer extends ConsumerStatefulWidget {
+  const TeamMemberViewer({Key? key}) : super(key: key);
+
+  @override
+  TeamMemberViewerState createState() => TeamMemberViewerState();
+}
+
+class TeamMemberViewerState extends ConsumerState<TeamMemberViewer> {
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        children: [
+          Text(
+            'Team Members',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          SingleChildScrollView(
+            child: Container(
+                padding: const EdgeInsets.all(10),
+                height: 200,
+                child: const PersonnelList()),
+          ),
+          ElevatedButton(
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => _showPersonnelForm());
+              },
+              child: const Text('Add new member')),
+          const SizedBox(height: 10),
+        ],
+      ),
+    );
+  }
+
+  Widget _showPersonnelForm() {
+    final nameCtr = TextEditingController();
+    final initialCtr = TextEditingController();
+    final affilitationCtr = TextEditingController();
+    return AlertDialog(
+      title: const Text('Add a team member'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextFormField(
+            controller: nameCtr,
+            decoration: const InputDecoration(
+              labelText: 'Name',
+              hintText: 'Enter a name',
+            ),
+          ),
+          TextFormField(
+            controller: initialCtr,
+            decoration: const InputDecoration(
+              labelText: 'Initials',
+              hintText: 'Enter intials',
+            ),
+          ),
+          TextFormField(
+            controller: affilitationCtr,
+            decoration: const InputDecoration(
+              labelText: 'Affiliation',
+              hintText: 'Enter Affiliation',
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        ElevatedButton(
+          child: const Text('Cancel'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            onPrimary: Theme.of(context).colorScheme.onTertiaryContainer,
+            primary: Theme.of(context).colorScheme.tertiaryContainer,
+          ),
+          child: const Text('Add'),
+          onPressed: () {
+            createPersonnel(
+                ref,
+                PersonnelCompanion(
+                  name: db.Value(nameCtr.text),
+                  initial: db.Value(initialCtr.text),
+                  affiliation: db.Value(affilitationCtr.text),
+                ));
+            Navigator.of(context).pop();
+            ref.refresh(personnelListProvider);
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class PersonnelList extends ConsumerWidget {
+  const PersonnelList({
     Key? key,
   }) : super(key: key);
 
@@ -269,27 +372,22 @@ class TeamMemberList extends ConsumerWidget {
     final personnels = ref.watch(personnelListProvider);
     return personnels.when(
       data: (data) {
-        return Expanded(
-          child: ListView.builder(
-            itemCount: data.length,
-            itemBuilder: (context, index) {
-              return Card(
-                color: Theme.of(context).colorScheme.surface,
-                child: ListTile(
-                  leading: const Icon(Icons.person_rounded),
-                  title: Text(data[index].name ?? ''),
-                  subtitle: Text(data[index].id ?? ''),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete_rounded),
-                    onPressed: () {
-                      // ref.read(personnelListProvider.notifier).deletePersonnel(
-                      //     data[index].id, data[index].name, data[index].email);
-                    },
-                  ),
-                ),
-              );
-            },
-          ),
+        return ListView.builder(
+          itemCount: data.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              leading: const Icon(Icons.person_rounded),
+              title: Text(data[index].name ?? ''),
+              subtitle: Text(data[index].id ?? ''),
+              trailing: IconButton(
+                icon: const Icon(Icons.delete_rounded),
+                onPressed: () {
+                  // ref.read(personnelListProvider.notifier).deletePersonnel(
+                  //     data[index].id, data[index].name, data[index].email);
+                },
+              ),
+            );
+          },
         );
       },
       loading: () => const CircularProgressIndicator(),

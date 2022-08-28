@@ -25,11 +25,19 @@ final projectNavbarIndexProvider = StateProvider<int>((ref) => 0);
 
 Future<void> createProject(WidgetRef ref, ProjectCompanion form) async {
   final personnelUuid = uuid;
-  await ref.read(databaseProvider).createPersonnel(PersonnelCompanion(
-      id: Value(personnelUuid),
-      name: form.collector,
-      initial: form.collectorInitial));
+  createPersonnel(
+      ref,
+      PersonnelCompanion(
+          id: Value(personnelUuid),
+          name: form.collector,
+          initial: form.collectorInitial));
   await ref.read(databaseProvider).createProject(form);
+}
+
+Future<void> createPersonnel(WidgetRef ref, PersonnelCompanion form) async {
+  final personnelUuid = uuid;
+  await ref.read(databaseProvider).createPersonnel(PersonnelCompanion(
+      id: Value(personnelUuid), name: form.name, initial: form.initial));
 }
 
 get uuid => const Uuid().v4();
