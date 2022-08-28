@@ -237,20 +237,27 @@ class ProjectOverview extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Card(
-      color: Theme.of(context).colorScheme.surface,
-      child: ref.watch(projectInfoProvider(projectUuid)).when(
-            data: (data) {
-              return Container(
-                padding: const EdgeInsets.all(10),
-                child: ProjectInfo(
-                  projectData: data,
+        color: Theme.of(context).colorScheme.surface,
+        child: Column(
+          children: [
+            Text(
+              'Project Overview',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            ref.watch(projectInfoProvider(projectUuid)).when(
+                  data: (data) {
+                    return Container(
+                      padding: const EdgeInsets.all(10),
+                      child: ProjectInfo(
+                        projectData: data,
+                      ),
+                    );
+                  },
+                  loading: () => const CircularProgressIndicator(),
+                  error: (error, stack) => Text(error.toString()),
                 ),
-              );
-            },
-            loading: () => const CircularProgressIndicator(),
-            error: (error, stack) => Text(error.toString()),
-          ),
-    );
+          ],
+        ));
   }
 
   Widget showAlert(BuildContext context, String error) {
