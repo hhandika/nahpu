@@ -50,6 +50,7 @@ class Appearance extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final List<String> themes = ['dark', 'light', 'system'];
+    List<bool> isSelected = [false, false, false];
     return Scaffold(
       appBar: AppBar(
         title: const Text('Appearance'),
@@ -62,6 +63,9 @@ class Appearance extends ConsumerWidget {
             (e) {
               return SettingsTile(
                   title: Text(e),
+                  leading: isSelected[themes.indexOf(e)]
+                      ? const Icon(Icons.check)
+                      : null,
                   onPressed: (_) {
                     Navigator.of(context).pop();
                   });
