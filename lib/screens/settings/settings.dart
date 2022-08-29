@@ -67,8 +67,7 @@ class Appearance extends ConsumerStatefulWidget {
 }
 
 class AppearanceState extends ConsumerState<Appearance> {
-  final List<String> themes = ['dark', 'light', 'system'];
-
+  final List<String> themes = ['Dark', 'Light', 'System'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,13 +98,13 @@ class AppearanceState extends ConsumerState<Appearance> {
   void _setTheme(String theme) {
     final setTheme = ref.read(themeSettingProvider.notifier);
     switch (theme) {
-      case 'dark':
+      case 'Dark':
         setTheme.setDarkMode();
         break;
-      case 'light':
+      case 'Light':
         setTheme.setLightMode();
         break;
-      case 'system':
+      case 'System':
         setTheme.setSystemMode();
         break;
     }
