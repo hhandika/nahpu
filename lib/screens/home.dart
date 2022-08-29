@@ -23,7 +23,6 @@ class HomeState extends ConsumerState<Home> {
   final Uri _helpUrl = Uri(
       scheme: 'https', host: 'www.github.com', path: 'hhandika/nahpu/issues');
   List<bool> isSelected = [true, false];
-  bool isListViews = true;
 
   @override
   Widget build(BuildContext context) {
@@ -188,12 +187,7 @@ class HomeState extends ConsumerState<Home> {
                     for (int buttonIndex = 0;
                         buttonIndex < isSelected.length;
                         buttonIndex++) {
-                      if (buttonIndex == index) {
-                        isSelected[buttonIndex] = !isSelected[buttonIndex];
-                        isListViews = !isListViews;
-                      } else {
-                        isSelected[buttonIndex] = false;
-                      }
+                      isSelected[buttonIndex] = buttonIndex == index;
                     }
                   });
                 },
@@ -207,7 +201,7 @@ class HomeState extends ConsumerState<Home> {
           color: Theme.of(context).colorScheme.onSurface,
           thickness: 1.5,
         ),
-        isListViews
+        isSelected[0]
             ? _buildListView(projectList)
             : _buildGridView(projectList, isPhone),
       ]);
