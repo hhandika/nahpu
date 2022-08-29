@@ -198,7 +198,7 @@ class HomeState extends ConsumerState<Home> {
                   });
                 },
                 children: const [
-                  Icon(Icons.list_rounded),
+                  Icon(Icons.list),
                   Icon(Icons.grid_view_rounded),
                 ]),
           ],
