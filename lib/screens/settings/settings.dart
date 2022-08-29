@@ -18,13 +18,13 @@ class _AppSettingsState extends State<AppSettings> {
         title: const Text('Settings'),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
-      body: const SafeArea(child: MainSettings()),
+      body: const SafeArea(child: GeneralSettings()),
     );
   }
 }
 
-class MainSettings extends ConsumerWidget {
-  const MainSettings({Key? key}) : super(key: key);
+class GeneralSettings extends ConsumerWidget {
+  const GeneralSettings({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
