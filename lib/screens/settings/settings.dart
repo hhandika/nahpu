@@ -34,7 +34,7 @@ class GeneralSettings extends ConsumerWidget {
       SettingsSection(title: const Text('General'), tiles: [
         SettingsTile.navigation(
           leading: const Icon(Icons.color_lens_rounded),
-          title: const Text('Apperance'),
+          title: const Text('Appearance'),
           value: Text(themeValue),
           onPressed: (context) => Navigator.push(
             context,
@@ -68,6 +68,11 @@ class Appearance extends ConsumerStatefulWidget {
 
 class AppearanceState extends ConsumerState<Appearance> {
   final List<String> themes = ['Dark', 'Light', 'System'];
+  final List<IconData> icons = [
+    Icons.brightness_3_rounded,
+    Icons.wb_sunny_rounded,
+    Icons.computer_rounded
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,6 +86,7 @@ class AppearanceState extends ConsumerState<Appearance> {
           tiles: themes.map(
             (e) {
               return SettingsTile(
+                  leading: Icon(icons[themes.indexOf(e)]),
                   title: Text(e),
                   trailing:
                       widget.isSelected == e ? const Icon(Icons.check) : null,
