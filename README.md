@@ -29,4 +29,4 @@
 
 ## Status of the Development
 
-`nahpu` development is at an early stage. First working prototype is targeted for mmammalian and avian specimens. We welcome ideas and support for other taxon groups. Feel free to contact the maintainer of this project if you all interested.
+`nahpu` development is at an early stage. First working prototype is targeted for mammalian and avian specimens. We welcome ideas and support for other taxon groups. Feel free to contact the maintainer of this project if you all interested.
