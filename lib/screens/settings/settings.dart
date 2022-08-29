@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/models/setttings.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:settings_ui/settings_ui.dart';
 
@@ -71,7 +72,7 @@ class AppearanceState extends ConsumerState<Appearance> {
   final List<IconData> icons = [
     Icons.brightness_3_rounded,
     Icons.wb_sunny_rounded,
-    Icons.computer_rounded
+    systemIcon
   ];
   @override
   Widget build(BuildContext context) {
