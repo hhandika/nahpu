@@ -49,6 +49,7 @@ dependencies:
   flutter_launcher_icons: ^0.10.0
   adaptive_breakpoints: ^0.1.4
   shared_preferences: ^2.0.15
+  settings_ui: ^2.0.2
 
 dev_dependencies:
   flutter_test:

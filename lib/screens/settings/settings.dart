@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:settings_ui/settings_ui.dart';
 
-class Settings extends StatefulWidget {
-  const Settings({Key? key}) : super(key: key);
+class AppSettings extends StatefulWidget {
+  const AppSettings({Key? key}) : super(key: key);
 
   @override
-  State<Settings> createState() => _SettingsState();
+  State<AppSettings> createState() => _AppSettingsState();
 }
 
-class _SettingsState extends State<Settings> {
+class _AppSettingsState extends State<AppSettings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,9 +17,58 @@ class _SettingsState extends State<Settings> {
         title: const Text('Settings'),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
-      body: const Center(
-        child: Text('Settings'),
+      body: const SafeArea(child: MainSettings()),
+    );
+  }
+}
+
+class MainSettings extends ConsumerWidget {
+  const MainSettings({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return SettingsList(sections: [
+      SettingsSection(title: const Text('General'), tiles: [
+        SettingsTile.navigation(
+          leading: const Icon(Icons.color_lens_rounded),
+          title: const Text('Apperance'),
+          onPressed: (context) => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const Appearance(),
+            ),
+          ),
+        ),
+      ])
+    ]);
+  }
+}
+
+class Appearance extends ConsumerWidget {
+  const Appearance({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final List<String> themes = ['dark', 'light', 'system'];
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Appearance'),
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
+      body: SettingsList(sections: [
+        SettingsSection(
+          title: const Text('Themes'),
+          tiles: themes.map(
+            (e) {
+              return SettingsTile(
+                  title: Text(e),
+                  onPressed: (_) {
+                    Navigator.of(context).pop();
+                  });
+            },
+          ).toList(),
+        )
+      ]),
     );
   }
 }

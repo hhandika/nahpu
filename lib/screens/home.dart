@@ -117,7 +117,7 @@ class HomeState extends ConsumerState<Home> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const Settings()),
+                MaterialPageRoute(builder: (context) => const AppSettings()),
               );
             },
           ),
