@@ -108,6 +108,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
                 ),
               ),
               DropdownButtonFormField(
+                value: widget.specimenCtr.preparatorCtr,
                 decoration: const InputDecoration(
                   labelText: 'Preparator',
                   hintText: 'Choose a preparator',
@@ -122,7 +123,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
                   setState(() {
                     personnel = id;
                     updateSpecimen(widget.specimenUuid,
-                        SpecimenCompanion(collectorID: db.Value(id)), ref);
+                        SpecimenCompanion(preparatorID: db.Value(id)), ref);
                   });
                 },
               ),

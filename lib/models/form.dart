@@ -68,6 +68,7 @@ class SpecimenFormCtrModel {
   SpecimenFormCtrModel({
     required this.speciesIdCtr,
     required this.collectorCtr,
+    required this.preparatorCtr,
     required this.conditionCtr,
     required this.prepDateCtr,
     required this.prepTimeCtr,
@@ -78,6 +79,7 @@ class SpecimenFormCtrModel {
 
   int? speciesIdCtr;
   String? collectorCtr;
+  String? preparatorCtr;
   String? conditionCtr;
   TextEditingController prepDateCtr;
   TextEditingController prepTimeCtr;
@@ -88,6 +90,7 @@ class SpecimenFormCtrModel {
   factory SpecimenFormCtrModel.empty() => SpecimenFormCtrModel(
       speciesIdCtr: null,
       collectorCtr: null,
+      preparatorCtr: null,
       conditionCtr: null,
       prepDateCtr: TextEditingController(),
       prepTimeCtr: TextEditingController(),
