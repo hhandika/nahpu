@@ -91,6 +91,7 @@ CREATE TABLE specimen (
     captureDate TEXT,
     captureTime TEXT,
     trapType TEXT,
+    preparatorID TEXT REFERENCES personnel(id),
     collectorID TEXT REFERENCES personnel(id),
     collEventID INT REFERENCES collEvent(id)
 );

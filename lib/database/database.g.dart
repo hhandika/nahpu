@@ -2954,6 +2954,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
   final String? captureDate;
   final String? captureTime;
   final String? trapType;
+  final String? preparatorID;
   final String? collectorID;
   final int? collEventID;
   SpecimenData(
@@ -2966,6 +2967,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       this.captureDate,
       this.captureTime,
       this.trapType,
+      this.preparatorID,
       this.collectorID,
       this.collEventID});
   factory SpecimenData.fromData(Map<String, dynamic> data, {String? prefix}) {
@@ -2989,6 +2991,8 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}captureTime']),
       trapType: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}trapType']),
+      preparatorID: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}preparatorID']),
       collectorID: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}collectorID']),
       collEventID: const IntType()
@@ -3022,6 +3026,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
     }
     if (!nullToAbsent || trapType != null) {
       map['trapType'] = Variable<String?>(trapType);
+    }
+    if (!nullToAbsent || preparatorID != null) {
+      map['preparatorID'] = Variable<String?>(preparatorID);
     }
     if (!nullToAbsent || collectorID != null) {
       map['collectorID'] = Variable<String?>(collectorID);
@@ -3059,6 +3066,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       trapType: trapType == null && nullToAbsent
           ? const Value.absent()
           : Value(trapType),
+      preparatorID: preparatorID == null && nullToAbsent
+          ? const Value.absent()
+          : Value(preparatorID),
       collectorID: collectorID == null && nullToAbsent
           ? const Value.absent()
           : Value(collectorID),
@@ -3081,6 +3091,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       captureDate: serializer.fromJson<String?>(json['captureDate']),
       captureTime: serializer.fromJson<String?>(json['captureTime']),
       trapType: serializer.fromJson<String?>(json['trapType']),
+      preparatorID: serializer.fromJson<String?>(json['preparatorID']),
       collectorID: serializer.fromJson<String?>(json['collectorID']),
       collEventID: serializer.fromJson<int?>(json['collEventID']),
     );
@@ -3098,6 +3109,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       'captureDate': serializer.toJson<String?>(captureDate),
       'captureTime': serializer.toJson<String?>(captureTime),
       'trapType': serializer.toJson<String?>(trapType),
+      'preparatorID': serializer.toJson<String?>(preparatorID),
       'collectorID': serializer.toJson<String?>(collectorID),
       'collEventID': serializer.toJson<int?>(collEventID),
     };
@@ -3113,6 +3125,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           String? captureDate,
           String? captureTime,
           String? trapType,
+          String? preparatorID,
           String? collectorID,
           int? collEventID}) =>
       SpecimenData(
@@ -3125,6 +3138,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
         captureDate: captureDate ?? this.captureDate,
         captureTime: captureTime ?? this.captureTime,
         trapType: trapType ?? this.trapType,
+        preparatorID: preparatorID ?? this.preparatorID,
         collectorID: collectorID ?? this.collectorID,
         collEventID: collEventID ?? this.collEventID,
       );
@@ -3140,6 +3154,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           ..write('captureDate: $captureDate, ')
           ..write('captureTime: $captureTime, ')
           ..write('trapType: $trapType, ')
+          ..write('preparatorID: $preparatorID, ')
           ..write('collectorID: $collectorID, ')
           ..write('collEventID: $collEventID')
           ..write(')'))
@@ -3157,6 +3172,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       captureDate,
       captureTime,
       trapType,
+      preparatorID,
       collectorID,
       collEventID);
   @override
@@ -3172,6 +3188,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           other.captureDate == this.captureDate &&
           other.captureTime == this.captureTime &&
           other.trapType == this.trapType &&
+          other.preparatorID == this.preparatorID &&
           other.collectorID == this.collectorID &&
           other.collEventID == this.collEventID);
 }
@@ -3186,6 +3203,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
   final Value<String?> captureDate;
   final Value<String?> captureTime;
   final Value<String?> trapType;
+  final Value<String?> preparatorID;
   final Value<String?> collectorID;
   final Value<int?> collEventID;
   const SpecimenCompanion({
@@ -3198,6 +3216,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     this.captureDate = const Value.absent(),
     this.captureTime = const Value.absent(),
     this.trapType = const Value.absent(),
+    this.preparatorID = const Value.absent(),
     this.collectorID = const Value.absent(),
     this.collEventID = const Value.absent(),
   });
@@ -3211,6 +3230,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     this.captureDate = const Value.absent(),
     this.captureTime = const Value.absent(),
     this.trapType = const Value.absent(),
+    this.preparatorID = const Value.absent(),
     this.collectorID = const Value.absent(),
     this.collEventID = const Value.absent(),
   }) : specimenUuid = Value(specimenUuid);
@@ -3224,6 +3244,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     Expression<String?>? captureDate,
     Expression<String?>? captureTime,
     Expression<String?>? trapType,
+    Expression<String?>? preparatorID,
     Expression<String?>? collectorID,
     Expression<int?>? collEventID,
   }) {
@@ -3237,6 +3258,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       if (captureDate != null) 'captureDate': captureDate,
       if (captureTime != null) 'captureTime': captureTime,
       if (trapType != null) 'trapType': trapType,
+      if (preparatorID != null) 'preparatorID': preparatorID,
       if (collectorID != null) 'collectorID': collectorID,
       if (collEventID != null) 'collEventID': collEventID,
     });
@@ -3252,6 +3274,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       Value<String?>? captureDate,
       Value<String?>? captureTime,
       Value<String?>? trapType,
+      Value<String?>? preparatorID,
       Value<String?>? collectorID,
       Value<int?>? collEventID}) {
     return SpecimenCompanion(
@@ -3264,6 +3287,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       captureDate: captureDate ?? this.captureDate,
       captureTime: captureTime ?? this.captureTime,
       trapType: trapType ?? this.trapType,
+      preparatorID: preparatorID ?? this.preparatorID,
       collectorID: collectorID ?? this.collectorID,
       collEventID: collEventID ?? this.collEventID,
     );
@@ -3299,6 +3323,9 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     if (trapType.present) {
       map['trapType'] = Variable<String?>(trapType.value);
     }
+    if (preparatorID.present) {
+      map['preparatorID'] = Variable<String?>(preparatorID.value);
+    }
     if (collectorID.present) {
       map['collectorID'] = Variable<String?>(collectorID.value);
     }
@@ -3320,6 +3347,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
           ..write('captureDate: $captureDate, ')
           ..write('captureTime: $captureTime, ')
           ..write('trapType: $trapType, ')
+          ..write('preparatorID: $preparatorID, ')
           ..write('collectorID: $collectorID, ')
           ..write('collEventID: $collEventID')
           ..write(')'))
@@ -3390,6 +3418,13 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
       type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: '');
+  final VerificationMeta _preparatorIDMeta =
+      const VerificationMeta('preparatorID');
+  late final GeneratedColumn<String?> preparatorID = GeneratedColumn<String?>(
+      'preparatorID', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: 'REFERENCES personnel(id)');
   final VerificationMeta _collectorIDMeta =
       const VerificationMeta('collectorID');
   late final GeneratedColumn<String?> collectorID = GeneratedColumn<String?>(
@@ -3415,6 +3450,7 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
         captureDate,
         captureTime,
         trapType,
+        preparatorID,
         collectorID,
         collEventID
       ];
@@ -3472,6 +3508,12 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
     if (data.containsKey('trapType')) {
       context.handle(_trapTypeMeta,
           trapType.isAcceptableOrUnknown(data['trapType']!, _trapTypeMeta));
+    }
+    if (data.containsKey('preparatorID')) {
+      context.handle(
+          _preparatorIDMeta,
+          preparatorID.isAcceptableOrUnknown(
+              data['preparatorID']!, _preparatorIDMeta));
     }
     if (data.containsKey('collectorID')) {
       context.handle(
