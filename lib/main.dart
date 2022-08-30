@@ -16,6 +16,7 @@ class NahpuApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(themeSettingProvider.notifier).getThemeMode(ref);
     final themeSetting = ref.watch(themeSettingProvider);
     return DynamicColorBuilder(builder: (lightColorScheme, darkColorScheme) {
       return MaterialApp(

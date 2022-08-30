@@ -7,6 +7,22 @@ final settingProvider = FutureProvider<SharedPreferences>((ref) async {
   return await SharedPreferences.getInstance();
 });
 
+// final themeModeProvider = StateProvider<ThemeMode>((ref) {
+//   final setting = ref.watch(settingProvider);
+//   return setting.maybeWhen(
+//       data: (setting) {
+//         final themeMode = setting.getString('themeMode');
+//         if (themeMode == 'light') {
+//           return ThemeMode.light;
+//         } else if (themeMode == 'dark') {
+//           return ThemeMode.dark;
+//         } else {
+//           return ThemeMode.system;
+//         }
+//       },
+//       orElse: () => ThemeMode.system);
+// });
+
 final themeSettingProvider =
     StateNotifierProvider<ThemeSettingNotifier, ThemeMode>((ref) {
   return ThemeSettingNotifier();
@@ -14,6 +30,22 @@ final themeSettingProvider =
 
 class ThemeSettingNotifier extends StateNotifier<ThemeMode> {
   ThemeSettingNotifier() : super(ThemeMode.system);
+
+  void getThemeMode(WidgetRef ref) {
+    final setting = ref.watch(settingProvider);
+    setting.maybeWhen(
+        data: (setting) {
+          final themeMode = setting.getString('themeMode');
+          if (themeMode == 'light') {
+            state = ThemeMode.light;
+          } else if (themeMode == 'dark') {
+            state = ThemeMode.dark;
+          } else {
+            state = ThemeMode.system;
+          }
+        },
+        orElse: () => state = ThemeMode.system);
+  }
 
   void setDarkMode() {
     state = ThemeMode.dark;
@@ -25,5 +57,21 @@ class ThemeSettingNotifier extends StateNotifier<ThemeMode> {
 
   void setSystemMode() {
     state = ThemeMode.system;
+  }
+
+  void saveThemeMode(WidgetRef ref) {
+    final setting = ref.read(settingProvider);
+    setting.when(
+        data: (setting) {
+          if (state == ThemeMode.light) {
+            setting.setString('themeMode', 'light');
+          } else if (state == ThemeMode.dark) {
+            setting.setString('themeMode', 'dark');
+          } else {
+            setting.setString('themeMode', 'system');
+          }
+        },
+        loading: () {},
+        error: (error, stackTrace) {});
   }
 }

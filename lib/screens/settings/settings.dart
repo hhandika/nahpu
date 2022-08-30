@@ -93,6 +93,7 @@ class ThemeSettingState extends ConsumerState<ThemeSettings> {
                       widget.isSelected == e ? const Icon(Icons.check) : null,
                   onPressed: (_) {
                     _setTheme(e);
+                    ref.read(themeSettingProvider.notifier).saveThemeMode(ref);
                     Navigator.of(context).pop();
                   });
             },
