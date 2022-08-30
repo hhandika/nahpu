@@ -40,7 +40,7 @@ class GeneralSettings extends ConsumerWidget {
           onPressed: (context) => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ThemeSetting(isSelected: themeValue),
+              builder: (context) => ThemeSettings(isSelected: themeValue),
             ),
           ),
         ),
@@ -60,14 +60,14 @@ class GeneralSettings extends ConsumerWidget {
   }
 }
 
-class ThemeSetting extends ConsumerStatefulWidget {
-  const ThemeSetting({Key? key, required this.isSelected}) : super(key: key);
+class ThemeSettings extends ConsumerStatefulWidget {
+  const ThemeSettings({Key? key, required this.isSelected}) : super(key: key);
   final String isSelected;
   @override
   ThemeSettingState createState() => ThemeSettingState();
 }
 
-class ThemeSettingState extends ConsumerState<ThemeSetting> {
+class ThemeSettingState extends ConsumerState<ThemeSettings> {
   final List<String> themes = ['Dark', 'Light', 'System'];
   final List<IconData> icons = [
     Icons.brightness_3_rounded,
