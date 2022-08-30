@@ -7,21 +7,22 @@ final settingProvider = FutureProvider<SharedPreferences>((ref) async {
   return await SharedPreferences.getInstance();
 });
 
-// final themeModeProvider = StateProvider<ThemeMode>((ref) {
-//   final setting = ref.watch(settingProvider);
-//   return setting.maybeWhen(
-//       data: (setting) {
-//         final themeMode = setting.getString('themeMode');
-//         if (themeMode == 'light') {
-//           return ThemeMode.light;
-//         } else if (themeMode == 'dark') {
-//           return ThemeMode.dark;
-//         } else {
-//           return ThemeMode.system;
-//         }
-//       },
-//       orElse: () => ThemeMode.system);
-// });
+void getSavedTheme(WidgetRef ref) {
+  final setting = ref.read(settingProvider);
+  final theme = ref.read(themeSettingProvider.notifier);
+  setting.maybeWhen(
+      data: (prefs) {
+        final themeMode = prefs.getString('themeMode');
+        if (themeMode == 'light') {
+          theme.setLightMode();
+        } else if (themeMode == 'dark') {
+          theme.setDarkMode();
+        } else {
+          theme.setSystemMode();
+        }
+      },
+      orElse: () => ({}));
+}
 
 final themeSettingProvider =
     StateNotifierProvider<ThemeSettingNotifier, ThemeMode>((ref) {
@@ -30,22 +31,6 @@ final themeSettingProvider =
 
 class ThemeSettingNotifier extends StateNotifier<ThemeMode> {
   ThemeSettingNotifier() : super(ThemeMode.system);
-
-  void getThemeMode(WidgetRef ref) {
-    final setting = ref.watch(settingProvider);
-    setting.maybeWhen(
-        data: (setting) {
-          final themeMode = setting.getString('themeMode');
-          if (themeMode == 'light') {
-            state = ThemeMode.light;
-          } else if (themeMode == 'dark') {
-            state = ThemeMode.dark;
-          } else {
-            state = ThemeMode.system;
-          }
-        },
-        orElse: () => state = ThemeMode.system);
-  }
 
   void setDarkMode() {
     state = ThemeMode.dark;
