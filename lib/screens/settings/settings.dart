@@ -78,7 +78,7 @@ class AppearanceState extends ConsumerState<Appearance> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Appearance'),
+        title: const Text('Themes'),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: SettingsList(sections: [
