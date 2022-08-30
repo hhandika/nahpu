@@ -16,7 +16,7 @@ class NahpuApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    getSavedTheme(ref);
+    // getSavedTheme(ref);
     return DynamicColorBuilder(builder: (lightColorScheme, darkColorScheme) {
       return MaterialApp(
         title: 'Nahpu',
