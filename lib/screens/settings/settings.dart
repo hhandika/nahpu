@@ -35,7 +35,7 @@ class GeneralSettings extends ConsumerWidget {
       SettingsSection(title: const Text('General'), tiles: [
         SettingsTile.navigation(
           leading: const Icon(Icons.color_lens_rounded),
-          title: const Text('Appearance'),
+          title: const Text('Apearance'),
           value: Text(themeValue),
           onPressed: (context) => Navigator.push(
             context,
