@@ -212,7 +212,7 @@ class HomeState extends ConsumerState<Home> {
     return Expanded(
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: isPhone ? 1 : 3,
+          crossAxisCount: isPhone ? 2 : 4,
           childAspectRatio: 1.5,
         ),
         itemCount: projectList.length,
