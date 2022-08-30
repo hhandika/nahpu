@@ -287,12 +287,7 @@ class TeamMemberViewerState extends ConsumerState<TeamMemberViewer> {
             'Team Members',
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          SingleChildScrollView(
-            child: Container(
-                padding: const EdgeInsets.all(10),
-                height: 200,
-                child: const PersonnelList()),
-          ),
+          const SizedBox(height: 200, child: PersonnelList()),
           ElevatedButton(
               onPressed: () {
                 showDialog(
