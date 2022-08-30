@@ -7,23 +7,6 @@ final settingProvider = FutureProvider<SharedPreferences>((ref) async {
   return await SharedPreferences.getInstance();
 });
 
-// void getSavedTheme(WidgetRef ref) {
-//   final setting = ref.read(settingProvider);
-//   final theme = ref.read(themeSettingProvider.notifier);
-//   setting.maybeWhen(
-//       data: (prefs) {
-//         final themeMode = prefs.getString('themeMode');
-//         if (themeMode == 'light') {
-//           theme.setLightMode();
-//         } else if (themeMode == 'dark') {
-//           theme.setDarkMode();
-//         } else {
-//           theme.setSystemMode();
-//         }
-//       },
-//       orElse: () => ({print('nothing')}));
-// }
-
 final themeSettingProvider =
     StateNotifierProvider<ThemeSettingNotifier, ThemeMode>((ref) {
   return ThemeSettingNotifier();
