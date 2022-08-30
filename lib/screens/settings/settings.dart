@@ -35,12 +35,12 @@ class GeneralSettings extends ConsumerWidget {
       SettingsSection(title: const Text('General'), tiles: [
         SettingsTile.navigation(
           leading: const Icon(Icons.color_lens_rounded),
-          title: const Text('Apearance'),
+          title: const Text('Theme'),
           value: Text(themeValue),
           onPressed: (context) => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Appearance(isSelected: themeValue),
+              builder: (context) => ThemeSetting(isSelected: themeValue),
             ),
           ),
         ),
@@ -60,14 +60,14 @@ class GeneralSettings extends ConsumerWidget {
   }
 }
 
-class Appearance extends ConsumerStatefulWidget {
-  const Appearance({Key? key, required this.isSelected}) : super(key: key);
+class ThemeSetting extends ConsumerStatefulWidget {
+  const ThemeSetting({Key? key, required this.isSelected}) : super(key: key);
   final String isSelected;
   @override
-  AppearanceState createState() => AppearanceState();
+  ThemeSettingState createState() => ThemeSettingState();
 }
 
-class AppearanceState extends ConsumerState<Appearance> {
+class ThemeSettingState extends ConsumerState<ThemeSetting> {
   final List<String> themes = ['Dark', 'Light', 'System'];
   final List<IconData> icons = [
     Icons.brightness_3_rounded,
@@ -78,12 +78,12 @@ class AppearanceState extends ConsumerState<Appearance> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Themes'),
+        title: const Text('Theme'),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: SettingsList(sections: [
         SettingsSection(
-          title: const Text('Themes'),
+          title: const Text('Theme'),
           tiles: themes.map(
             (e) {
               return SettingsTile(
