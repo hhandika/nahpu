@@ -95,22 +95,21 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
         hintText: 'Enter date',
       ),
       controller: widget.narrativeCtr.dateCtr,
-      onTap: () {
-        showDatePicker(
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime(2000),
-                lastDate: DateTime.now())
-            .then((date) {
-          if (date != null) {
-            widget.narrativeCtr.dateCtr.text = DateFormat.yMMMd().format(date);
-            updateNarrative(
-                widget.narrativeId,
-                NarrativeCompanion(
-                    date: db.Value(widget.narrativeCtr.dateCtr.text)),
-                ref);
-          }
-        });
+      onTap: () async {
+        final selectedDate = await showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2000),
+            lastDate: DateTime.now());
+        if (selectedDate != null) {
+          widget.narrativeCtr.dateCtr.text =
+              DateFormat.yMMMd().format(selectedDate);
+          updateNarrative(
+              widget.narrativeId,
+              NarrativeCompanion(
+                  date: db.Value(widget.narrativeCtr.dateCtr.text)),
+              ref);
+        }
       },
     );
   }

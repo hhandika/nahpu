@@ -172,23 +172,22 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
                       ),
                       controller: widget.specimenCtr.prepDateCtr,
                       onTap: () async {
-                        showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime.now())
-                            .then((date) {
-                          if (date != null) {
-                            widget.specimenCtr.prepDateCtr.text =
-                                DateFormat.yMMMd().format(date);
-                            updateSpecimen(
-                                widget.specimenUuid,
-                                SpecimenCompanion(
-                                    prepDate: db.Value(
-                                        widget.specimenCtr.prepDateCtr.text)),
-                                ref);
-                          }
-                        });
+                        final selectedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime.now());
+
+                        if (selectedDate != null) {
+                          widget.specimenCtr.prepDateCtr.text =
+                              DateFormat.yMMMd().format(selectedDate);
+                          updateSpecimen(
+                              widget.specimenUuid,
+                              SpecimenCompanion(
+                                  prepDate: db.Value(
+                                      widget.specimenCtr.prepDateCtr.text)),
+                              ref);
+                        }
                       },
                     ),
                   ),
@@ -200,7 +199,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
                         hintText: 'Enter time',
                       ),
                       controller: widget.specimenCtr.prepTimeCtr,
-                      onTap: () async {
+                      onTap: () {
                         showTimePicker(
                                 context: context, initialTime: TimeOfDay.now())
                             .then((time) {
