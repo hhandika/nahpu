@@ -412,9 +412,9 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
+            foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
             elevation: 0,
-            onPrimary: Theme.of(context).colorScheme.onPrimaryContainer,
-            primary: Theme.of(context).colorScheme.primaryContainer,
           ),
           onPressed: () {
             showDialog(
@@ -475,8 +475,8 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            onPrimary: Theme.of(context).colorScheme.onTertiaryContainer,
-            primary: Theme.of(context).colorScheme.tertiaryContainer,
+            foregroundColor: Theme.of(context).colorScheme.onTertiaryContainer,
+            backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
           ),
           child: const Text('Add'),
           onPressed: () {
@@ -538,9 +538,9 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
   Widget _addPhotoButton() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
+        foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         elevation: 0,
-        onPrimary: Theme.of(context).colorScheme.onPrimaryContainer,
-        primary: Theme.of(context).colorScheme.primaryContainer,
       ),
       onPressed: () {
         showDialog(
@@ -558,9 +558,9 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
   Widget _addVideoButton() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
+        foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         elevation: 0,
-        onPrimary: Theme.of(context).colorScheme.onPrimaryContainer,
-        primary: Theme.of(context).colorScheme.primaryContainer,
       ),
       onPressed: () {},
       child: const Text(
@@ -572,9 +572,9 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
   Widget _addAudioButton() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
+        foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         elevation: 0,
-        onPrimary: Theme.of(context).colorScheme.onPrimaryContainer,
-        primary: Theme.of(context).colorScheme.primaryContainer,
       ),
       onPressed: () {},
       child: const Text(
@@ -620,8 +620,8 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            onPrimary: Theme.of(context).colorScheme.onTertiaryContainer,
-            primary: Theme.of(context).colorScheme.tertiaryContainer,
+            foregroundColor: Theme.of(context).colorScheme.onTertiaryContainer,
+            backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
           ),
           child: const Text('Add'),
           onPressed: () {

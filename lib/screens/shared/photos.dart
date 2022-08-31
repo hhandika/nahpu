@@ -16,9 +16,10 @@ class _PhotoViewerState extends State<PhotoViewer> {
           children: [
             ElevatedButton(
               style: ElevatedButton.styleFrom(
+                foregroundColor:
+                    Theme.of(context).colorScheme.onPrimaryContainer,
+                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
                 elevation: 0,
-                onPrimary: Theme.of(context).colorScheme.onPrimaryContainer,
-                primary: Theme.of(context).colorScheme.primaryContainer,
               ),
               onPressed: () {
                 showDialog(
@@ -84,8 +85,8 @@ class _PhotoFormState extends State<PhotoForm> {
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            onPrimary: Theme.of(context).colorScheme.onTertiaryContainer,
-            primary: Theme.of(context).colorScheme.tertiaryContainer,
+            foregroundColor: Theme.of(context).colorScheme.onTertiaryContainer,
+            backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
           ),
           child: const Text('Add'),
           onPressed: () {

@@ -222,8 +222,8 @@ class CustomElevButton extends StatelessWidget {
     if (enabled) {
       return ElevatedButton(
         style: ElevatedButton.styleFrom(
-          onPrimary: Theme.of(context).colorScheme.onPrimaryContainer,
-          primary: Theme.of(context).colorScheme.primaryContainer,
+          foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         ),
         onPressed: onPressed,
         child: Text(text),

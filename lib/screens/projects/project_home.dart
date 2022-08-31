@@ -342,8 +342,8 @@ class TeamMemberViewerState extends ConsumerState<TeamMemberViewer> {
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            onPrimary: Theme.of(context).colorScheme.onTertiaryContainer,
-            primary: Theme.of(context).colorScheme.tertiaryContainer,
+            foregroundColor: Theme.of(context).colorScheme.onTertiaryContainer,
+            backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
           ),
           child: const Text('Add'),
           onPressed: () {
