@@ -272,7 +272,10 @@ class HomeState extends ConsumerState<Home> {
         ),
         subtitle: Text(
           project.projectUuid,
-          style: const TextStyle(fontSize: 8),
+          style: const TextStyle(
+            fontSize: 8,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
         trailing: _showPopupMenu(project),
         onTap: () {
