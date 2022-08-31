@@ -6,11 +6,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/configs/themes.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/screens/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  initSettings();
-  runApp(const ProviderScope(child: NahpuApp()));
+  final prefs = await SharedPreferences.getInstance();
+  runApp(ProviderScope(
+      overrides: [settingProvider.overrideWithValue(prefs)],
+      child: const NahpuApp()));
 }
 
 class NahpuApp extends ConsumerWidget {
@@ -18,7 +21,7 @@ class NahpuApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // ref.watch(themeSettingProvider.notifier).initTheme();
+    ref.watch(themeSettingProvider.notifier).initTheme(ref);
     return DynamicColorBuilder(builder: (lightColorScheme, darkColorScheme) {
       return MaterialApp(
         title: 'Nahpu',

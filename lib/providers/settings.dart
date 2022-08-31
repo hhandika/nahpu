@@ -3,12 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-late Provider<SharedPreferences> settingProvider;
-
-Future<void> initSettings() async {
-  final prefsInstance = await SharedPreferences.getInstance();
-  settingProvider = Provider((_) => prefsInstance);
-}
+final settingProvider = Provider<SharedPreferences>((ref) {
+  throw UnimplementedError();
+});
 
 final themeSettingProvider =
     StateNotifierProvider<ThemeSettingNotifier, ThemeMode>((ref) {
@@ -20,7 +17,7 @@ class ThemeSettingNotifier extends StateNotifier<ThemeMode> {
 
   void initTheme(WidgetRef ref) {
     final prefs = ref.read(settingProvider);
-    final theme = prefs.getString('theme');
+    final theme = prefs.getString('themeMode');
     if (theme != null) {
       switch (theme) {
         case 'dark':
