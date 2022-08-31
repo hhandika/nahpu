@@ -7,7 +7,9 @@ import 'package:nahpu/configs/themes.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/screens/home.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  initSettings();
   runApp(const ProviderScope(child: NahpuApp()));
 }
 
@@ -16,6 +18,7 @@ class NahpuApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // ref.watch(themeSettingProvider.notifier).initTheme();
     return DynamicColorBuilder(builder: (lightColorScheme, darkColorScheme) {
       return MaterialApp(
         title: 'Nahpu',
