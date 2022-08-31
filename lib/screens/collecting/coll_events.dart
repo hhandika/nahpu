@@ -91,6 +91,7 @@ class CollEventsState extends ConsumerState<CollEvents> {
                   onPageChanged: (value) => setState(() {
                     pageNotifier.state.currentPage = value + 1;
                     checkPageNavigation(ref);
+                    ref.refresh(narrativeEntryProvider);
                   }),
                 );
               }
