@@ -1,1 +1,1 @@
-enum CatalogFormat { generalMammals, birds, bats }
+enum CatalogFmt { generalMammals, birds, bats }
