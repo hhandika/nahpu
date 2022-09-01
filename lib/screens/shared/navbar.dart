@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/configs/colors.dart';
 
 import 'package:nahpu/providers/project.dart';
-
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/screens/narrative/narrative.dart';
 import 'package:nahpu/screens/collecting/coll_events.dart';
 import 'package:nahpu/providers/page_viewer.dart';
@@ -52,7 +52,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
         ),
         NavigationDestination(
           icon: Icon(
-            Icons.pets_rounded,
+            MdiIcons.paw,
           ),
           label: 'Specimens',
         ),
