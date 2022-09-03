@@ -2948,6 +2948,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
   final String specimenUuid;
   final String? projectUuid;
   final int? speciesID;
+  final String? taxonGroup;
   final String? condition;
   final String? prepDate;
   final String? prepTime;
@@ -2961,6 +2962,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       {required this.specimenUuid,
       this.projectUuid,
       this.speciesID,
+      this.taxonGroup,
       this.condition,
       this.prepDate,
       this.prepTime,
@@ -2979,6 +2981,8 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}projectUuid']),
       speciesID: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}speciesID']),
+      taxonGroup: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}taxonGroup']),
       condition: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}condition']),
       prepDate: const StringType()
@@ -3008,6 +3012,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
     }
     if (!nullToAbsent || speciesID != null) {
       map['speciesID'] = Variable<int?>(speciesID);
+    }
+    if (!nullToAbsent || taxonGroup != null) {
+      map['taxonGroup'] = Variable<String?>(taxonGroup);
     }
     if (!nullToAbsent || condition != null) {
       map['condition'] = Variable<String?>(condition);
@@ -3048,6 +3055,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       speciesID: speciesID == null && nullToAbsent
           ? const Value.absent()
           : Value(speciesID),
+      taxonGroup: taxonGroup == null && nullToAbsent
+          ? const Value.absent()
+          : Value(taxonGroup),
       condition: condition == null && nullToAbsent
           ? const Value.absent()
           : Value(condition),
@@ -3085,6 +3095,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       specimenUuid: serializer.fromJson<String>(json['specimenUuid']),
       projectUuid: serializer.fromJson<String?>(json['projectUuid']),
       speciesID: serializer.fromJson<int?>(json['speciesID']),
+      taxonGroup: serializer.fromJson<String?>(json['taxonGroup']),
       condition: serializer.fromJson<String?>(json['condition']),
       prepDate: serializer.fromJson<String?>(json['prepDate']),
       prepTime: serializer.fromJson<String?>(json['prepTime']),
@@ -3103,6 +3114,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       'specimenUuid': serializer.toJson<String>(specimenUuid),
       'projectUuid': serializer.toJson<String?>(projectUuid),
       'speciesID': serializer.toJson<int?>(speciesID),
+      'taxonGroup': serializer.toJson<String?>(taxonGroup),
       'condition': serializer.toJson<String?>(condition),
       'prepDate': serializer.toJson<String?>(prepDate),
       'prepTime': serializer.toJson<String?>(prepTime),
@@ -3119,6 +3131,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           {String? specimenUuid,
           String? projectUuid,
           int? speciesID,
+          String? taxonGroup,
           String? condition,
           String? prepDate,
           String? prepTime,
@@ -3132,6 +3145,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
         specimenUuid: specimenUuid ?? this.specimenUuid,
         projectUuid: projectUuid ?? this.projectUuid,
         speciesID: speciesID ?? this.speciesID,
+        taxonGroup: taxonGroup ?? this.taxonGroup,
         condition: condition ?? this.condition,
         prepDate: prepDate ?? this.prepDate,
         prepTime: prepTime ?? this.prepTime,
@@ -3148,6 +3162,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           ..write('specimenUuid: $specimenUuid, ')
           ..write('projectUuid: $projectUuid, ')
           ..write('speciesID: $speciesID, ')
+          ..write('taxonGroup: $taxonGroup, ')
           ..write('condition: $condition, ')
           ..write('prepDate: $prepDate, ')
           ..write('prepTime: $prepTime, ')
@@ -3166,6 +3181,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       specimenUuid,
       projectUuid,
       speciesID,
+      taxonGroup,
       condition,
       prepDate,
       prepTime,
@@ -3182,6 +3198,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           other.specimenUuid == this.specimenUuid &&
           other.projectUuid == this.projectUuid &&
           other.speciesID == this.speciesID &&
+          other.taxonGroup == this.taxonGroup &&
           other.condition == this.condition &&
           other.prepDate == this.prepDate &&
           other.prepTime == this.prepTime &&
@@ -3197,6 +3214,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
   final Value<String> specimenUuid;
   final Value<String?> projectUuid;
   final Value<int?> speciesID;
+  final Value<String?> taxonGroup;
   final Value<String?> condition;
   final Value<String?> prepDate;
   final Value<String?> prepTime;
@@ -3210,6 +3228,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     this.specimenUuid = const Value.absent(),
     this.projectUuid = const Value.absent(),
     this.speciesID = const Value.absent(),
+    this.taxonGroup = const Value.absent(),
     this.condition = const Value.absent(),
     this.prepDate = const Value.absent(),
     this.prepTime = const Value.absent(),
@@ -3224,6 +3243,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     required String specimenUuid,
     this.projectUuid = const Value.absent(),
     this.speciesID = const Value.absent(),
+    this.taxonGroup = const Value.absent(),
     this.condition = const Value.absent(),
     this.prepDate = const Value.absent(),
     this.prepTime = const Value.absent(),
@@ -3238,6 +3258,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     Expression<String>? specimenUuid,
     Expression<String?>? projectUuid,
     Expression<int?>? speciesID,
+    Expression<String?>? taxonGroup,
     Expression<String?>? condition,
     Expression<String?>? prepDate,
     Expression<String?>? prepTime,
@@ -3252,6 +3273,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       if (specimenUuid != null) 'specimenUuid': specimenUuid,
       if (projectUuid != null) 'projectUuid': projectUuid,
       if (speciesID != null) 'speciesID': speciesID,
+      if (taxonGroup != null) 'taxonGroup': taxonGroup,
       if (condition != null) 'condition': condition,
       if (prepDate != null) 'prepDate': prepDate,
       if (prepTime != null) 'prepTime': prepTime,
@@ -3268,6 +3290,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       {Value<String>? specimenUuid,
       Value<String?>? projectUuid,
       Value<int?>? speciesID,
+      Value<String?>? taxonGroup,
       Value<String?>? condition,
       Value<String?>? prepDate,
       Value<String?>? prepTime,
@@ -3281,6 +3304,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       specimenUuid: specimenUuid ?? this.specimenUuid,
       projectUuid: projectUuid ?? this.projectUuid,
       speciesID: speciesID ?? this.speciesID,
+      taxonGroup: taxonGroup ?? this.taxonGroup,
       condition: condition ?? this.condition,
       prepDate: prepDate ?? this.prepDate,
       prepTime: prepTime ?? this.prepTime,
@@ -3304,6 +3328,9 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     }
     if (speciesID.present) {
       map['speciesID'] = Variable<int?>(speciesID.value);
+    }
+    if (taxonGroup.present) {
+      map['taxonGroup'] = Variable<String?>(taxonGroup.value);
     }
     if (condition.present) {
       map['condition'] = Variable<String?>(condition.value);
@@ -3341,6 +3368,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
           ..write('specimenUuid: $specimenUuid, ')
           ..write('projectUuid: $projectUuid, ')
           ..write('speciesID: $speciesID, ')
+          ..write('taxonGroup: $taxonGroup, ')
           ..write('condition: $condition, ')
           ..write('prepDate: $prepDate, ')
           ..write('prepTime: $prepTime, ')
@@ -3378,6 +3406,12 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
   late final GeneratedColumn<int?> speciesID = GeneratedColumn<int?>(
       'speciesID', aliasedName, true,
       type: const IntType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _taxonGroupMeta = const VerificationMeta('taxonGroup');
+  late final GeneratedColumn<String?> taxonGroup = GeneratedColumn<String?>(
+      'taxonGroup', aliasedName, true,
+      type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: '');
   final VerificationMeta _conditionMeta = const VerificationMeta('condition');
@@ -3444,6 +3478,7 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
         specimenUuid,
         projectUuid,
         speciesID,
+        taxonGroup,
         condition,
         prepDate,
         prepTime,
@@ -3480,6 +3515,12 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
     if (data.containsKey('speciesID')) {
       context.handle(_speciesIDMeta,
           speciesID.isAcceptableOrUnknown(data['speciesID']!, _speciesIDMeta));
+    }
+    if (data.containsKey('taxonGroup')) {
+      context.handle(
+          _taxonGroupMeta,
+          taxonGroup.isAcceptableOrUnknown(
+              data['taxonGroup']!, _taxonGroupMeta));
     }
     if (data.containsKey('condition')) {
       context.handle(_conditionMeta,

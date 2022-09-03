@@ -15,12 +15,16 @@ class Database extends _$Database {
   Database() : super(_openConnection());
 
   @override
-  int get schemaVersion => 1; // bump this when you change the schema
+  int get schemaVersion => 2; // bump this when you change the schema
 
   @override
   MigrationStrategy get migration {
     return MigrationStrategy(onCreate: (m) async {
-      await m.createAll(); // create all tables
+      await m.createAll();
+    }, onUpgrade: (Migrator m, int from, int to) async {
+      if (from == 1) {
+        await m.addColumn(specimen, specimen.taxonGroup);
+      }
     });
   }
 
