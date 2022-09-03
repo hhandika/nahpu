@@ -85,6 +85,7 @@ CREATE TABLE specimen (
     specimenUuid TEXT UNIQUE NOT NULL PRIMARY KEY,
     projectUuid TEXT,
     speciesID INT,
+    taxonGroup TEXT,
     condition TEXT,
     prepDate TEXT,
     prepTime TEXT,
