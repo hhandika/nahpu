@@ -139,7 +139,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: 'Collector Number',
-                  hintText: 'Enter narrative',
+                  hintText: 'Enter collector number',
                 ),
               ),
               DropdownButtonFormField(
