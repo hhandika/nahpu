@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart' as db;
+import 'package:adaptive_components/adaptive_components.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -51,14 +52,55 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (BuildContext context, BoxConstraints c) {
+      bool useHorizontalLayout = c.maxWidth > 600;
       return SafeArea(
           child: SingleChildScrollView(
-        child: Column(children: [
-          _drawSpecimenDataFields(),
-          _drawCaptureRecordFields(),
-          _drawMeasurementFields(),
-          _drawPartFields(),
-          _drawMediaFields(),
+        child: AdaptiveColumn(children: [
+          AdaptiveContainer(
+            columnSpan: 12,
+            child: useHorizontalLayout
+                ? Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(child: _drawSpecimenDataFields()),
+                      const SizedBox(width: 10),
+                      Expanded(child: _drawCaptureRecordFields()),
+                    ],
+                  )
+                : Column(
+                    children: [
+                      _drawSpecimenDataFields(),
+                      _drawCaptureRecordFields(),
+                    ],
+                  ),
+          ),
+          AdaptiveContainer(
+            columnSpan: 12,
+            child: useHorizontalLayout
+                ? Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(child: _drawMeasurementFields()),
+                      const SizedBox(width: 10),
+                      Expanded(child: _drawPartFields()),
+                    ],
+                  )
+                : Column(
+                    children: [
+                      _drawMeasurementFields(),
+                      _drawPartFields(),
+                    ],
+                  ),
+          ),
+          // _drawSpecimenDataFields(),
+          // _drawCaptureRecordFields(),
+          // _drawMeasurementFields(),
+          // _drawPartFields(),
+          AdaptiveContainer(
+            columnSpan: 12,
+            child: _drawMediaFields(),
+          )
+          // _drawMediaFields(),
         ]),
       ));
     });
