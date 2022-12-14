@@ -50,24 +50,24 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: SingleChildScrollView(
-      child: Column(children: [
-        _drawSpecimenDataFields(),
-        _drawCaptureRecordFields(),
-        _drawMeasurementFields(),
-        _drawPartFields(),
-        _drawMediaFields(),
-      ]),
-    ));
+    return LayoutBuilder(builder: (BuildContext context, BoxConstraints c) {
+      return SafeArea(
+          child: SingleChildScrollView(
+        child: Column(children: [
+          _drawSpecimenDataFields(),
+          _drawCaptureRecordFields(),
+          _drawMeasurementFields(),
+          _drawPartFields(),
+          _drawMediaFields(),
+        ]),
+      ));
+    });
   }
 
   Widget _drawSpecimenDataFields() {
     final personnelEntry = ref.watch(personnelListProvider);
     personnelEntry.when(
-      data: (personnelEntry) => setState(() {
-        personnelList = personnelEntry;
-      }),
+      data: (personnelEntry) => personnelList = personnelEntry,
       loading: () => null,
       error: (e, s) => null,
     );
@@ -94,11 +94,9 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
                         ))
                     .toList(),
                 onChanged: (String? id) {
-                  setState(() {
-                    personnel = id;
-                    updateSpecimen(widget.specimenUuid,
-                        SpecimenCompanion(collectorID: db.Value(id)), ref);
-                  });
+                  personnel = id;
+                  updateSpecimen(widget.specimenUuid,
+                      SpecimenCompanion(collectorID: db.Value(id)), ref);
                 },
               ),
               TextFormField(
@@ -120,11 +118,9 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
                         ))
                     .toList(),
                 onChanged: (String? id) {
-                  setState(() {
-                    personnel = id;
-                    updateSpecimen(widget.specimenUuid,
-                        SpecimenCompanion(preparatorID: db.Value(id)), ref);
-                  });
+                  personnel = id;
+                  updateSpecimen(widget.specimenUuid,
+                      SpecimenCompanion(preparatorID: db.Value(id)), ref);
                 },
               ),
               DropdownButtonFormField(
@@ -142,9 +138,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
                       child: Text('Two'),
                     ),
                   ],
-                  onChanged: (String? newValue) {
-                    setState(() {});
-                  }),
+                  onChanged: (String? newValue) {}),
               DropdownButtonFormField(
                 value: widget.specimenCtr.conditionCtr,
                 onChanged: (String? value) {
@@ -250,9 +244,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
                   child: Text('Two'),
                 ),
               ],
-              onChanged: (String? newValue) {
-                setState(() {});
-              }),
+              onChanged: (String? newValue) {}),
           DropdownButtonFormField(
               decoration: const InputDecoration(
                 labelText: 'Trap type',
@@ -268,9 +260,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
                   child: Text('Two'),
                 ),
               ],
-              onChanged: (String? newValue) {
-                setState(() {});
-              }),
+              onChanged: (String? newValue) {}),
           TextFormField(
             decoration: const InputDecoration(
               labelText: 'Capture date',
@@ -366,9 +356,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
                     child: Text('Unknown'),
                   ),
                 ],
-                onChanged: (String? newValue) {
-                  setState(() {});
-                }),
+                onChanged: (String? newValue) {}),
             DropdownButtonFormField(
                 decoration: const InputDecoration(
                   labelText: 'Life stage',
@@ -392,9 +380,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
                     child: Text('Unknown'),
                   ),
                 ],
-                onChanged: (String? newValue) {
-                  setState(() {});
-                }),
+                onChanged: (String? newValue) {}),
           ],
         ),
       ),
