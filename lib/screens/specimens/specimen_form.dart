@@ -92,15 +92,10 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
                     ],
                   ),
           ),
-          // _drawSpecimenDataFields(),
-          // _drawCaptureRecordFields(),
-          // _drawMeasurementFields(),
-          // _drawPartFields(),
           AdaptiveContainer(
             columnSpan: 12,
             child: _drawMediaFields(),
           )
-          // _drawMediaFields(),
         ]),
       ));
     });
