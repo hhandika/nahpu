@@ -59,13 +59,15 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
             AdaptiveContainer(
               columnSpan: 12,
               child: useHorizontalLayout
-                  ? Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(child: _drawSpecimenDataFields()),
-                        const SizedBox(width: 10),
-                        Expanded(child: _drawCaptureRecordFields()),
-                      ],
+                  ? IntrinsicHeight(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(child: _drawSpecimenDataFields()),
+                          const SizedBox(width: 10),
+                          Expanded(child: _drawCaptureRecordFields()),
+                        ],
+                      ),
                     )
                   : Column(
                       children: [
@@ -77,13 +79,15 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
             AdaptiveContainer(
               columnSpan: 12,
               child: useHorizontalLayout
-                  ? Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(child: _drawMeasurementFields()),
-                        const SizedBox(width: 10),
-                        Expanded(child: _drawPartFields()),
-                      ],
+                  ? IntrinsicHeight(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(child: _drawMeasurementFields()),
+                          const SizedBox(width: 10),
+                          Expanded(child: _drawPartFields()),
+                        ],
+                      ),
                     )
                   : Column(
                       children: [
@@ -112,7 +116,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
     return Card(
       // Specimen data card
       child: Container(
-          padding: const EdgeInsets.all(5),
+          padding: const EdgeInsets.all(10),
           child: Column(
             children: [
               Text(
@@ -261,7 +265,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
     return Card(
       // Capture record card
       child: Container(
-        padding: const EdgeInsets.all(5),
+        padding: const EdgeInsets.all(10),
         child: Column(children: [
           Text(
             'Capture Records',
@@ -333,7 +337,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
   Widget _drawMeasurementFields() {
     return Card(
       child: Container(
-        padding: const EdgeInsets.all(5),
+        padding: const EdgeInsets.all(10),
         child: Column(
           children: [
             Text(
@@ -428,7 +432,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
   Widget _drawPartFields() {
     return Card(
         child: Container(
-      padding: const EdgeInsets.all(5),
+      padding: const EdgeInsets.all(10),
       child: Column(children: [
         Text(
           'Specimen Parts',

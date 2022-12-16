@@ -247,7 +247,7 @@ class ProjectOverview extends ConsumerWidget {
             ref.watch(projectInfoProvider(projectUuid)).when(
                   data: (data) {
                     return Container(
-                      padding: const EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(10),
                       child: ProjectInfo(
                         projectData: data,
                       ),
@@ -289,6 +289,12 @@ class TeamMemberViewerState extends ConsumerState<TeamMemberViewer> {
           ),
           const SizedBox(height: 200, child: PersonnelList()),
           ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor:
+                    Theme.of(context).colorScheme.onPrimaryContainer,
+                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                elevation: 0,
+              ),
               onPressed: () {
                 showDialog(
                     context: context,
@@ -342,8 +348,9 @@ class TeamMemberViewerState extends ConsumerState<TeamMemberViewer> {
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            foregroundColor: Theme.of(context).colorScheme.onTertiaryContainer,
-            backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+            foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+            elevation: 0,
           ),
           child: const Text('Add'),
           onPressed: () {

@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/configs/colors.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/models/form.dart';
+import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/providers/updater.dart';
 import 'package:nahpu/screens/shared/photos.dart';
 
@@ -47,43 +48,39 @@ class SiteFormState extends ConsumerState<SiteForm>
                 columnSpan: 12,
                 child: Column(
                   children: [
+                    Card(
+                      color: Theme.of(context).colorScheme.secondaryContainer,
+                      child: AdaptiveLayout(
+                        useHorizontalLayout: useHorizontalLayout,
+                        children: _buildSiteID(),
+                      ),
+                    ),
+                    Card(
+                      child: Column(
+                        children: [
+                          AdaptiveLayout(
+                            useHorizontalLayout: useHorizontalLayout,
+                            children: _buildMainSiteLocality(),
+                          ),
+                          _buildPreciseLocalities(),
+                        ],
+                      ),
+                    ),
                     AdaptiveLayout(
                       useHorizontalLayout: useHorizontalLayout,
-                      children: _buildMainSiteLocality(),
-                    ),
-                    TextFormField(
-                      controller: widget.siteFormCtr.localityCtr,
-                      maxLines: 5,
-                      decoration: const InputDecoration(
-                        labelText: 'Locality',
-                        hintText:
-                            'Enter a complete locality, excluding country and state/province',
-                      ),
-                      onChanged: (value) {
-                        updateSite(widget.id,
-                            SiteCompanion(locality: db.Value(value)), ref);
-                      },
-                    ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Habitat',
-                        hintText: 'Enter a habitat type',
-                      ),
-                    ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Habitat condition',
-                        hintText:
-                            'Enter habitat condition, e.g. "Prestine", "Disturbed", "etc."',
-                      ),
-                    ),
-                    TextFormField(
-                      maxLines: 5,
-                      decoration: const InputDecoration(
-                        labelText: 'Site description',
-                        hintText:
-                            'Describe the site, e.g. "A camp site in the middle of the forest."',
-                      ),
+                      children: [
+                        _buildCordinateForm(),
+                        Card(
+                          child: Column(
+                            children: [
+                              for (var form in _buildHabitatInfo())
+                                Container(
+                                    padding: const EdgeInsets.all(10),
+                                    child: form),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                     Column(
                       children: [
@@ -128,7 +125,7 @@ class SiteFormState extends ConsumerState<SiteForm>
     );
   }
 
-  List<Widget> _buildMainSiteLocality() {
+  List<Widget> _buildSiteID() {
     return [
       TextFormField(
         controller: widget.siteFormCtr.siteIDCtr,
@@ -152,6 +149,11 @@ class SiteFormState extends ConsumerState<SiteForm>
           hintText: 'Enter a site type, e.g. "Camp", "City", "etc."',
         ),
       ),
+    ];
+  }
+
+  List<Widget> _buildMainSiteLocality() {
+    return [
       TextFormField(
         controller: widget.siteFormCtr.countryCtr,
         decoration: const InputDecoration(
@@ -173,7 +175,109 @@ class SiteFormState extends ConsumerState<SiteForm>
               widget.id, SiteCompanion(stateProvince: db.Value(value)), ref);
         },
       ),
+      TextFormField(
+        controller: widget.siteFormCtr.countyCtr,
+        decoration: const InputDecoration(
+          labelText: 'County/Parish/District',
+          hintText: 'Enter a county name',
+        ),
+        onChanged: (value) {
+          updateSite(widget.id, SiteCompanion(county: db.Value(value)), ref);
+        },
+      ),
+      TextFormField(
+        controller: widget.siteFormCtr.municipalityCtr,
+        decoration: const InputDecoration(
+          labelText: 'Municipality',
+          hintText: 'Enter a municipality name',
+        ),
+        onChanged: (value) {
+          updateSite(
+              widget.id, SiteCompanion(municipality: db.Value(value)), ref);
+        },
+      ),
     ];
+  }
+
+  Widget _buildPreciseLocalities() {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      child: TextFormField(
+        controller: widget.siteFormCtr.localityCtr,
+        maxLines: 3,
+        decoration: const InputDecoration(
+          labelText: 'Precise Locality',
+          hintText: 'Enter a precise locality lower than municipality',
+        ),
+        onChanged: (value) {
+          updateSite(widget.id, SiteCompanion(locality: db.Value(value)), ref);
+        },
+      ),
+    );
+  }
+
+  List<Widget> _buildHabitatInfo() {
+    return [
+      TextFormField(
+        decoration: const InputDecoration(
+          labelText: 'Habitat',
+          hintText: 'Enter a habitat type',
+        ),
+      ),
+      TextFormField(
+        decoration: const InputDecoration(
+          labelText: 'Habitat condition',
+          hintText:
+              'Enter habitat condition, e.g. "Prestine", "Disturbed", "etc."',
+        ),
+      ),
+      TextFormField(
+        maxLines: 5,
+        decoration: const InputDecoration(
+          labelText: 'Site description',
+          hintText:
+              'Describe the site, e.g. "A camp site in the middle of the forest."',
+        ),
+      ),
+    ];
+  }
+
+  Widget _buildCordinateForm() {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            Text(
+              'Coordinates',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(
+              height: 10,
+              child: CoordinateList(),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor:
+                    Theme.of(context).colorScheme.onPrimaryContainer,
+                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                elevation: 0,
+              ),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const PhotoForm();
+                    });
+              },
+              child: const Text(
+                'Add coordinates',
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -187,25 +291,60 @@ class AdaptiveLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: useHorizontalLayout
-          ? Row(
+    return useHorizontalLayout
+        ? IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 for (var textField in children)
                   Expanded(
                     child: Container(
-                      padding: const EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(10),
                       child: textField,
                     ),
                   ),
               ],
-            )
-          : Container(
-              padding: const EdgeInsets.all(5),
-              child: Column(
-                children: children,
-              ),
             ),
+          )
+        : Container(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              children: children,
+            ),
+          );
+  }
+}
+
+class CoordinateList extends ConsumerWidget {
+  const CoordinateList({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final coordinates = ref.watch(coordinateListProvider);
+    return coordinates.when(
+      data: (data) {
+        return ListView.builder(
+          itemCount: data.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              leading: const Icon(Icons.person_rounded),
+              title: Text(data[index].siteID ?? ''),
+              subtitle: Text(data[index].id ?? ''),
+              trailing: IconButton(
+                icon: const Icon(Icons.delete_rounded),
+                onPressed: () {
+                  // ref.read(personnelListProvider.notifier).deletePersonnel(
+                  //     data[index].id, data[index].name, data[index].email);
+                },
+              ),
+            );
+          },
+        );
+      },
+      loading: () => const CircularProgressIndicator(),
+      error: (error, stack) => Text(error.toString()),
     );
   }
 }

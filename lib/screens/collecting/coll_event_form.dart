@@ -52,7 +52,7 @@ class CollEventFormState extends ConsumerState<CollEventForm>
   Widget _drawCollectingFields() {
     return Card(
         child: Container(
-            padding: const EdgeInsets.all(5),
+            padding: const EdgeInsets.all(10),
             child: Column(children: [
               Text(
                 'Collecting Information',
@@ -158,7 +158,7 @@ class CollEventFormState extends ConsumerState<CollEventForm>
   Widget _drawActivityFields() {
     return Card(
         child: Container(
-            padding: const EdgeInsets.all(5),
+            padding: const EdgeInsets.all(10),
             child: Column(children: [
               Text(
                 'Collecting Activities',
@@ -195,7 +195,7 @@ class CollEventFormState extends ConsumerState<CollEventForm>
   Widget _drawTrappingFields() {
     return Card(
         child: Container(
-      padding: const EdgeInsets.all(5),
+      padding: const EdgeInsets.all(10),
       child: Column(children: [
         Text(
           'Collecting Effort',

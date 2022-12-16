@@ -39,3 +39,6 @@ final specimenEntryProvider =
 
 final personnelListProvider = FutureProvider.autoDispose<List<PersonnelData>>(
     (ref) => ref.read(databaseProvider).getAllPersonnel());
+
+final coordinateListProvider = FutureProvider.autoDispose<List<CoordinateData>>(
+    (ref) => ref.read(databaseProvider).getAllCoordinates());

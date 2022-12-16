@@ -56,7 +56,7 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
             columnSpan: 12,
             child: Card(
               child: Container(
-                padding: const EdgeInsets.all(5),
+                padding: const EdgeInsets.all(10),
                 child: TextFormField(
                   controller: widget.narrativeCtr.narrativeCtr,
                   maxLines: useHorizontalLayout ? 20 : 10,
@@ -83,7 +83,7 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
 
   Widget _buildSiteIdForm() {
     return Container(
-      padding: const EdgeInsets.all(5),
+      padding: const EdgeInsets.all(10),
       child: TextFormField(
         controller: widget.narrativeCtr.siteCtr,
         decoration: const InputDecoration(
@@ -100,7 +100,7 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
 
   Widget _buildDateForm() {
     return Container(
-      padding: const EdgeInsets.all(5),
+      padding: const EdgeInsets.all(10),
       child: TextFormField(
         decoration: const InputDecoration(
           labelText: 'Date',

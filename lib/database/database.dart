@@ -148,6 +148,10 @@ class Database extends _$Database {
   Future<List<PersonnelData>> getAllPersonnel() {
     return select(personnel).get();
   }
+
+  Future<List<CoordinateData>> getAllCoordinates() {
+    return select(coordinate).get();
+  }
 }
 
 LazyDatabase _openConnection() {
