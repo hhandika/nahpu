@@ -51,54 +51,55 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (BuildContext context, BoxConstraints c) {
-      bool useHorizontalLayout = c.maxWidth > 600;
-      return SafeArea(
-          child: SingleChildScrollView(
-        child: AdaptiveColumn(children: [
-          AdaptiveContainer(
-            columnSpan: 12,
-            child: useHorizontalLayout
-                ? Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(child: _drawSpecimenDataFields()),
-                      const SizedBox(width: 10),
-                      Expanded(child: _drawCaptureRecordFields()),
-                    ],
-                  )
-                : Column(
-                    children: [
-                      _drawSpecimenDataFields(),
-                      _drawCaptureRecordFields(),
-                    ],
-                  ),
-          ),
-          AdaptiveContainer(
-            columnSpan: 12,
-            child: useHorizontalLayout
-                ? Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(child: _drawMeasurementFields()),
-                      const SizedBox(width: 10),
-                      Expanded(child: _drawPartFields()),
-                    ],
-                  )
-                : Column(
-                    children: [
-                      _drawMeasurementFields(),
-                      _drawPartFields(),
-                    ],
-                  ),
-          ),
-          AdaptiveContainer(
-            columnSpan: 12,
-            child: _drawMediaFields(),
-          )
-        ]),
-      ));
-    });
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints c) {
+        bool useHorizontalLayout = c.maxWidth > 600;
+        return SingleChildScrollView(
+          child: AdaptiveColumn(children: [
+            AdaptiveContainer(
+              columnSpan: 12,
+              child: useHorizontalLayout
+                  ? Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(child: _drawSpecimenDataFields()),
+                        const SizedBox(width: 10),
+                        Expanded(child: _drawCaptureRecordFields()),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        _drawSpecimenDataFields(),
+                        _drawCaptureRecordFields(),
+                      ],
+                    ),
+            ),
+            AdaptiveContainer(
+              columnSpan: 12,
+              child: useHorizontalLayout
+                  ? Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(child: _drawMeasurementFields()),
+                        const SizedBox(width: 10),
+                        Expanded(child: _drawPartFields()),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        _drawMeasurementFields(),
+                        _drawPartFields(),
+                      ],
+                    ),
+            ),
+            AdaptiveContainer(
+              columnSpan: 12,
+              child: _drawMediaFields(),
+            )
+          ]),
+        );
+      },
+    );
   }
 
   Widget _drawSpecimenDataFields() {
