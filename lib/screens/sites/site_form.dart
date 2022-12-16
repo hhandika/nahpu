@@ -194,14 +194,14 @@ class AdaptiveLayout extends StatelessWidget {
                 for (var textField in children)
                   Expanded(
                     child: Container(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(5),
                       child: textField,
                     ),
                   ),
               ],
             )
           : Container(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(5),
               child: Column(
                 children: children,
               ),

@@ -112,7 +112,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
     return Card(
       // Specimen data card
       child: Container(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(5),
           child: Column(
             children: [
               Text(
@@ -261,7 +261,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
     return Card(
       // Capture record card
       child: Container(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(5),
         child: Column(children: [
           Text(
             'Capture Records',
@@ -333,7 +333,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
   Widget _drawMeasurementFields() {
     return Card(
       child: Container(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(5),
         child: Column(
           children: [
             Text(
@@ -428,7 +428,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
   Widget _drawPartFields() {
     return Card(
         child: Container(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(5),
       child: Column(children: [
         Text(
           'Specimen Parts',

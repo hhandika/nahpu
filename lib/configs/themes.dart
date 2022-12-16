@@ -29,7 +29,7 @@ class NahpuTheme {
 
   static CardTheme get cardTheme {
     return const CardTheme(
-      elevation: 1,
+      elevation: 0.5,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),

@@ -247,7 +247,7 @@ class ProjectOverview extends ConsumerWidget {
             ref.watch(projectInfoProvider(projectUuid)).when(
                   data: (data) {
                     return Container(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(5),
                       child: ProjectInfo(
                         projectData: data,
                       ),
