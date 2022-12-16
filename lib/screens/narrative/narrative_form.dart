@@ -35,34 +35,41 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
         child: AdaptiveColumn(children: [
           AdaptiveContainer(
             columnSpan: 12,
-            child: useHorizontalLayout
-                ? Row(
-                    children: [
-                      Expanded(child: _buildDateForm()),
-                      const SizedBox(width: 10),
-                      Expanded(child: _buildSiteIdForm()),
-                    ],
-                  )
-                : Column(
-                    children: [
-                      _buildDateForm(),
-                      _buildSiteIdForm(),
-                    ],
-                  ),
+            child: Card(
+              child: useHorizontalLayout
+                  ? Row(
+                      children: [
+                        Expanded(child: _buildDateForm()),
+                        const SizedBox(width: 10),
+                        Expanded(child: _buildSiteIdForm()),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        _buildDateForm(),
+                        _buildSiteIdForm(),
+                      ],
+                    ),
+            ),
           ),
           AdaptiveContainer(
             columnSpan: 12,
-            child: TextFormField(
-              controller: widget.narrativeCtr.narrativeCtr,
-              maxLines: useHorizontalLayout ? 20 : 10,
-              decoration: const InputDecoration(
-                labelText: 'Narrative',
-                hintText: 'Enter narrative',
+            child: Card(
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                child: TextFormField(
+                  controller: widget.narrativeCtr.narrativeCtr,
+                  maxLines: useHorizontalLayout ? 20 : 10,
+                  decoration: const InputDecoration(
+                    labelText: 'Narrative',
+                    hintText: 'Enter narrative',
+                  ),
+                  onChanged: (value) {
+                    updateNarrative(widget.narrativeId,
+                        NarrativeCompanion(narrative: db.Value(value)), ref);
+                  },
+                ),
               ),
-              onChanged: (value) {
-                updateNarrative(widget.narrativeId,
-                    NarrativeCompanion(narrative: db.Value(value)), ref);
-              },
             ),
           ),
           AdaptiveContainer(
@@ -75,42 +82,48 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
   }
 
   Widget _buildSiteIdForm() {
-    return TextFormField(
-      controller: widget.narrativeCtr.siteCtr,
-      decoration: const InputDecoration(
-        labelText: 'Site ID',
-        hintText: 'Enter a site',
+    return Container(
+      padding: const EdgeInsets.all(10),
+      child: TextFormField(
+        controller: widget.narrativeCtr.siteCtr,
+        decoration: const InputDecoration(
+          labelText: 'Site ID',
+          hintText: 'Enter a site',
+        ),
+        onChanged: (value) {
+          updateNarrative(widget.narrativeId,
+              NarrativeCompanion(siteID: db.Value(value)), ref);
+        },
       ),
-      onChanged: (value) {
-        updateNarrative(widget.narrativeId,
-            NarrativeCompanion(siteID: db.Value(value)), ref);
-      },
     );
   }
 
   Widget _buildDateForm() {
-    return TextFormField(
-      decoration: const InputDecoration(
-        labelText: 'Date',
-        hintText: 'Enter date',
+    return Container(
+      padding: const EdgeInsets.all(10),
+      child: TextFormField(
+        decoration: const InputDecoration(
+          labelText: 'Date',
+          hintText: 'Enter date',
+        ),
+        controller: widget.narrativeCtr.dateCtr,
+        onTap: () async {
+          final selectedDate = await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(2000),
+              lastDate: DateTime.now());
+          if (selectedDate != null) {
+            widget.narrativeCtr.dateCtr.text =
+                DateFormat.yMMMd().format(selectedDate);
+            updateNarrative(
+                widget.narrativeId,
+                NarrativeCompanion(
+                    date: db.Value(widget.narrativeCtr.dateCtr.text)),
+                ref);
+          }
+        },
       ),
-      controller: widget.narrativeCtr.dateCtr,
-      onTap: () async {
-        final selectedDate = await showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2000),
-            lastDate: DateTime.now());
-        if (selectedDate != null) {
-          widget.narrativeCtr.dateCtr.text =
-              DateFormat.yMMMd().format(selectedDate);
-          updateNarrative(
-              widget.narrativeId,
-              NarrativeCompanion(
-                  date: db.Value(widget.narrativeCtr.dateCtr.text)),
-              ref);
-        }
-      },
     );
   }
 }
