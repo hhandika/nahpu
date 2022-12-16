@@ -114,7 +114,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
       error: (e, s) => null,
     );
     return Card(
-      // Specimen data card
+      color: Theme.of(context).colorScheme.secondaryContainer,
       child: Container(
           padding: const EdgeInsets.all(10),
           child: Column(

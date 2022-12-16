@@ -36,6 +36,7 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
           AdaptiveContainer(
             columnSpan: 12,
             child: Card(
+              color: Theme.of(context).colorScheme.secondaryContainer,
               child: useHorizontalLayout
                   ? Row(
                       children: [

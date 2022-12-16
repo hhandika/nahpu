@@ -51,6 +51,7 @@ class CollEventFormState extends ConsumerState<CollEventForm>
 
   Widget _drawCollectingFields() {
     return Card(
+        color: Theme.of(context).colorScheme.secondaryContainer,
         child: Container(
             padding: const EdgeInsets.all(10),
             child: Column(children: [
