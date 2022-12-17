@@ -1,6 +1,5 @@
 import 'package:drift/drift.dart' as db;
 import 'package:adaptive_components/adaptive_components.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +9,7 @@ import 'package:nahpu/providers/updater.dart';
 import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
+import 'package:nahpu/screens/specimens/mammals/forms.dart';
 
 class SpecimenForm extends ConsumerStatefulWidget {
   const SpecimenForm(
@@ -73,7 +73,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
               child: AdaptiveLayout(
                 useHorizontalLayout: useHorizontalLayout,
                 children: [
-                  _buildMeasurementFields(),
+                  const MeasurementForms(),
                   _buildPartFields(),
                 ],
               ),
@@ -301,95 +301,6 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
               hintText: 'Enter collecting event ID',
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMeasurementFields() {
-    return FormCard(
-      title: 'Measurements',
-      child: Column(
-        children: [
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Total length (mm)',
-              hintText: 'Enter TTL',
-            ),
-            keyboardType: TextInputType.number,
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Tail length (mm)',
-              hintText: 'Enter TL',
-            ),
-            keyboardType: TextInputType.number,
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Hind foot length (mm)',
-              hintText: 'Enter HF',
-            ),
-            keyboardType: TextInputType.number,
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Ear length (mm)',
-              hintText: 'Enter ER',
-            ),
-            keyboardType: TextInputType.number,
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Weight (grams)',
-              hintText: 'Enter specimen weight',
-            ),
-            keyboardType: TextInputType.number,
-          ),
-          DropdownButtonFormField(
-              decoration: const InputDecoration(
-                labelText: 'Sex',
-                hintText: 'Choose one',
-              ),
-              items: const [
-                DropdownMenuItem(
-                  value: 'Male',
-                  child: Text('Male'),
-                ),
-                DropdownMenuItem(
-                  value: 'Female',
-                  child: Text('Female'),
-                ),
-                DropdownMenuItem(
-                  value: 'Unknown',
-                  child: Text('Unknown'),
-                ),
-              ],
-              onChanged: (String? newValue) {}),
-          DropdownButtonFormField(
-              decoration: const InputDecoration(
-                labelText: 'Life stage',
-                hintText: 'Choose one',
-              ),
-              items: const [
-                DropdownMenuItem(
-                  value: 'Adult',
-                  child: Text('Adult'),
-                ),
-                DropdownMenuItem(
-                  value: 'Subadult',
-                  child: Text('Subadult'),
-                ),
-                DropdownMenuItem(
-                  value: 'Juvenile',
-                  child: Text('Juvenile'),
-                ),
-                DropdownMenuItem(
-                  value: 'Unknown',
-                  child: Text('Unknown'),
-                ),
-              ],
-              onChanged: (String? newValue) {}),
         ],
       ),
     );
