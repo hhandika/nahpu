@@ -8,6 +8,7 @@ import 'package:nahpu/database/database.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/providers/updater.dart';
 import 'package:nahpu/providers/page_viewer.dart';
+import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 
 class SpecimenForm extends ConsumerStatefulWidget {
@@ -94,164 +95,154 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
       loading: () => null,
       error: (e, s) => null,
     );
-    return Card(
-      color: Theme.of(context).colorScheme.secondaryContainer,
-      child: Container(
-          padding: const EdgeInsets.all(10),
-          child: Column(
+    return FormCard(
+      title: 'Specimen Data',
+      isPrimary: true,
+      child: Column(
+        children: [
+          DropdownButtonFormField(
+            value: widget.specimenCtr.collectorCtr,
+            decoration: const InputDecoration(
+              labelText: 'Collector',
+              hintText: 'Choose a collector',
+            ),
+            items: personnelList
+                .map((e) => DropdownMenuItem(
+                      value: e.id,
+                      child: Text(e.name ?? ''),
+                    ))
+                .toList(),
+            onChanged: (String? id) {
+              personnel = id;
+              updateSpecimen(widget.specimenUuid,
+                  SpecimenCompanion(collectorID: db.Value(id)), ref);
+            },
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Collector Number',
+              hintText: 'Enter collector number',
+            ),
+          ),
+          DropdownButtonFormField(
+            value: widget.specimenCtr.preparatorCtr,
+            decoration: const InputDecoration(
+              labelText: 'Preparator',
+              hintText: 'Choose a preparator',
+            ),
+            items: personnelList
+                .map((e) => DropdownMenuItem(
+                      value: e.id,
+                      child: Text(e.name ?? ''),
+                    ))
+                .toList(),
+            onChanged: (String? id) {
+              personnel = id;
+              updateSpecimen(widget.specimenUuid,
+                  SpecimenCompanion(preparatorID: db.Value(id)), ref);
+            },
+          ),
+          DropdownButtonFormField(
+              decoration: const InputDecoration(
+                labelText: 'Species',
+                hintText: 'Choose a speciess',
+              ),
+              items: const [
+                DropdownMenuItem(
+                  value: 'One',
+                  child: Text('One'),
+                ),
+                DropdownMenuItem(
+                  value: 'Two',
+                  child: Text('Two'),
+                ),
+              ],
+              onChanged: (String? newValue) {}),
+          DropdownButtonFormField(
+            value: widget.specimenCtr.conditionCtr,
+            onChanged: (String? value) {
+              updateSpecimen(widget.specimenUuid,
+                  SpecimenCompanion(condition: db.Value(value)), ref);
+            },
+            decoration: const InputDecoration(
+              labelText: 'Condition',
+              hintText: 'Choose a condition',
+            ),
+            items: conditions
+                .map((String condition) => DropdownMenuItem(
+                      value: condition,
+                      child: Text(condition),
+                    ))
+                .toList(),
+          ),
+          Row(
             children: [
-              Text(
-                'Specimen Data',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              DropdownButtonFormField(
-                value: widget.specimenCtr.collectorCtr,
-                decoration: const InputDecoration(
-                  labelText: 'Collector',
-                  hintText: 'Choose a collector',
-                ),
-                items: personnelList
-                    .map((e) => DropdownMenuItem(
-                          value: e.id,
-                          child: Text(e.name ?? ''),
-                        ))
-                    .toList(),
-                onChanged: (String? id) {
-                  personnel = id;
-                  updateSpecimen(widget.specimenUuid,
-                      SpecimenCompanion(collectorID: db.Value(id)), ref);
-                },
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Collector Number',
-                  hintText: 'Enter collector number',
-                ),
-              ),
-              DropdownButtonFormField(
-                value: widget.specimenCtr.preparatorCtr,
-                decoration: const InputDecoration(
-                  labelText: 'Preparator',
-                  hintText: 'Choose a preparator',
-                ),
-                items: personnelList
-                    .map((e) => DropdownMenuItem(
-                          value: e.id,
-                          child: Text(e.name ?? ''),
-                        ))
-                    .toList(),
-                onChanged: (String? id) {
-                  personnel = id;
-                  updateSpecimen(widget.specimenUuid,
-                      SpecimenCompanion(preparatorID: db.Value(id)), ref);
-                },
-              ),
-              DropdownButtonFormField(
+              Expanded(
+                child: TextFormField(
                   decoration: const InputDecoration(
-                    labelText: 'Species',
-                    hintText: 'Choose a speciess',
+                    labelText: 'Preparation date',
+                    hintText: 'Enter date',
                   ),
-                  items: const [
-                    DropdownMenuItem(
-                      value: 'One',
-                      child: Text('One'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Two',
-                      child: Text('Two'),
-                    ),
-                  ],
-                  onChanged: (String? newValue) {}),
-              DropdownButtonFormField(
-                value: widget.specimenCtr.conditionCtr,
-                onChanged: (String? value) {
-                  updateSpecimen(widget.specimenUuid,
-                      SpecimenCompanion(condition: db.Value(value)), ref);
-                },
-                decoration: const InputDecoration(
-                  labelText: 'Condition',
-                  hintText: 'Choose a condition',
-                ),
-                items: conditions
-                    .map((String condition) => DropdownMenuItem(
-                          value: condition,
-                          child: Text(condition),
-                        ))
-                    .toList(),
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Preparation date',
-                        hintText: 'Enter date',
-                      ),
-                      controller: widget.specimenCtr.prepDateCtr,
-                      onTap: () async {
-                        final selectedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime.now());
+                  controller: widget.specimenCtr.prepDateCtr,
+                  onTap: () async {
+                    final selectedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime.now());
 
-                        if (selectedDate != null) {
-                          widget.specimenCtr.prepDateCtr.text =
-                              DateFormat.yMMMd().format(selectedDate);
-                          updateSpecimen(
-                              widget.specimenUuid,
-                              SpecimenCompanion(
-                                  prepDate: db.Value(
-                                      widget.specimenCtr.prepDateCtr.text)),
-                              ref);
-                        }
-                      },
-                    ),
+                    if (selectedDate != null) {
+                      widget.specimenCtr.prepDateCtr.text =
+                          DateFormat.yMMMd().format(selectedDate);
+                      updateSpecimen(
+                          widget.specimenUuid,
+                          SpecimenCompanion(
+                              prepDate: db.Value(
+                                  widget.specimenCtr.prepDateCtr.text)),
+                          ref);
+                    }
+                  },
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Prep. time',
+                    hintText: 'Enter time',
                   ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Prep. time',
-                        hintText: 'Enter time',
-                      ),
-                      controller: widget.specimenCtr.prepTimeCtr,
-                      onTap: () {
-                        showTimePicker(
-                                context: context, initialTime: TimeOfDay.now())
-                            .then((time) {
-                          if (time != null) {
-                            widget.specimenCtr.prepTimeCtr.text =
-                                time.format(context);
-                            updateSpecimen(
-                                widget.specimenUuid,
-                                SpecimenCompanion(
-                                  prepTime: db.Value(
-                                      widget.specimenCtr.prepTimeCtr.text),
-                                ),
-                                ref);
-                          }
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              )
+                  controller: widget.specimenCtr.prepTimeCtr,
+                  onTap: () {
+                    showTimePicker(
+                            context: context, initialTime: TimeOfDay.now())
+                        .then((time) {
+                      if (time != null) {
+                        widget.specimenCtr.prepTimeCtr.text =
+                            time.format(context);
+                        updateSpecimen(
+                            widget.specimenUuid,
+                            SpecimenCompanion(
+                              prepTime:
+                                  db.Value(widget.specimenCtr.prepTimeCtr.text),
+                            ),
+                            ref);
+                      }
+                    });
+                  },
+                ),
+              ),
             ],
-          )),
+          )
+        ],
+      ),
     );
   }
 
   Widget _buildCaptureRecordFields() {
-    return Card(
-      // Capture record card
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        child: Column(children: [
-          Text(
-            'Capture Records',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
+    return FormCard(
+      title: 'Capture Records',
+      child: Column(
+        children: [
           DropdownButtonFormField(
               decoration: const InputDecoration(
                 labelText: 'Site ID',
@@ -310,141 +301,132 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
               hintText: 'Enter collecting event ID',
             ),
           ),
-        ]),
+        ],
       ),
     );
   }
 
   Widget _buildMeasurementFields() {
-    return Card(
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Text(
-              'Measurements',
-              style: Theme.of(context).textTheme.titleLarge,
+    return FormCard(
+      title: 'Measurements',
+      child: Column(
+        children: [
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Total length (mm)',
+              hintText: 'Enter TTL',
             ),
-            TextFormField(
+            keyboardType: TextInputType.number,
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Tail length (mm)',
+              hintText: 'Enter TL',
+            ),
+            keyboardType: TextInputType.number,
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Hind foot length (mm)',
+              hintText: 'Enter HF',
+            ),
+            keyboardType: TextInputType.number,
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Ear length (mm)',
+              hintText: 'Enter ER',
+            ),
+            keyboardType: TextInputType.number,
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Weight (grams)',
+              hintText: 'Enter specimen weight',
+            ),
+            keyboardType: TextInputType.number,
+          ),
+          DropdownButtonFormField(
               decoration: const InputDecoration(
-                labelText: 'Total length (mm)',
-                hintText: 'Enter TTL',
+                labelText: 'Sex',
+                hintText: 'Choose one',
               ),
-              keyboardType: TextInputType.number,
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Tail length (mm)',
-                hintText: 'Enter TL',
-              ),
-              keyboardType: TextInputType.number,
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Hind foot length (mm)',
-                hintText: 'Enter HF',
-              ),
-              keyboardType: TextInputType.number,
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Ear length (mm)',
-                hintText: 'Enter ER',
-              ),
-              keyboardType: TextInputType.number,
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Weight (grams)',
-                hintText: 'Enter specimen weight',
-              ),
-              keyboardType: TextInputType.number,
-            ),
-            DropdownButtonFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Sex',
-                  hintText: 'Choose one',
+              items: const [
+                DropdownMenuItem(
+                  value: 'Male',
+                  child: Text('Male'),
                 ),
-                items: const [
-                  DropdownMenuItem(
-                    value: 'Male',
-                    child: Text('Male'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Female',
-                    child: Text('Female'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Unknown',
-                    child: Text('Unknown'),
-                  ),
-                ],
-                onChanged: (String? newValue) {}),
-            DropdownButtonFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Life stage',
-                  hintText: 'Choose one',
+                DropdownMenuItem(
+                  value: 'Female',
+                  child: Text('Female'),
                 ),
-                items: const [
-                  DropdownMenuItem(
-                    value: 'Adult',
-                    child: Text('Adult'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Subadult',
-                    child: Text('Subadult'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Juvenile',
-                    child: Text('Juvenile'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Unknown',
-                    child: Text('Unknown'),
-                  ),
-                ],
-                onChanged: (String? newValue) {}),
-          ],
-        ),
+                DropdownMenuItem(
+                  value: 'Unknown',
+                  child: Text('Unknown'),
+                ),
+              ],
+              onChanged: (String? newValue) {}),
+          DropdownButtonFormField(
+              decoration: const InputDecoration(
+                labelText: 'Life stage',
+                hintText: 'Choose one',
+              ),
+              items: const [
+                DropdownMenuItem(
+                  value: 'Adult',
+                  child: Text('Adult'),
+                ),
+                DropdownMenuItem(
+                  value: 'Subadult',
+                  child: Text('Subadult'),
+                ),
+                DropdownMenuItem(
+                  value: 'Juvenile',
+                  child: Text('Juvenile'),
+                ),
+                DropdownMenuItem(
+                  value: 'Unknown',
+                  child: Text('Unknown'),
+                ),
+              ],
+              onChanged: (String? newValue) {}),
+        ],
       ),
     );
   }
 
   Widget _buildPartFields() {
-    return Card(
-        child: Container(
-      padding: const EdgeInsets.all(10),
-      child: Column(children: [
-        Text(
-          'Specimen Parts',
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-            elevation: 0,
+    return FormCard(
+      title: 'Specimen Parts',
+      child: Column(
+        children: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+              elevation: 0,
+            ),
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return _showPartForm();
+                  });
+            },
+            child: const Text(
+              'Add a part',
+            ),
           ),
-          onPressed: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return _showPartForm();
-                });
-          },
-          child: const Text(
-            'Add a part',
+          TextFormField(
+            maxLines: 5,
+            decoration: const InputDecoration(
+              labelText: 'Part notes',
+              hintText: 'Add notes',
+            ),
           ),
-        ),
-        TextFormField(
-          maxLines: 5,
-          decoration: const InputDecoration(
-            labelText: 'Part notes',
-            hintText: 'Add notes',
-          ),
-        ),
-      ]),
-    ));
+        ],
+      ),
+    );
   }
 
   Widget _showPartForm() {

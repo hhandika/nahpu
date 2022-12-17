@@ -7,6 +7,7 @@ import 'package:nahpu/database/database.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/providers/updater.dart';
+import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/photos.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 
@@ -49,14 +50,16 @@ class SiteFormState extends ConsumerState<SiteForm>
                 columnSpan: 12,
                 child: Column(
                   children: [
-                    Card(
-                      color: Theme.of(context).colorScheme.secondaryContainer,
+                    FormCard(
+                      isPrimary: true,
+                      title: 'Site Info',
                       child: AdaptiveLayout(
                         useHorizontalLayout: useHorizontalLayout,
                         children: _buildSiteID(),
                       ),
                     ),
-                    Card(
+                    FormCard(
+                      title: 'Location',
                       child: Column(
                         children: [
                           AdaptiveLayout(
@@ -76,7 +79,8 @@ class SiteFormState extends ConsumerState<SiteForm>
                       useHorizontalLayout: useHorizontalLayout,
                       children: [
                         _buildCordinateForm(),
-                        Card(
+                        FormCard(
+                          title: 'Habitat',
                           child: Column(
                             children: [
                               for (var form in _buildHabitatInfo())
@@ -237,7 +241,7 @@ class SiteFormState extends ConsumerState<SiteForm>
     return [
       TextFormField(
         decoration: const InputDecoration(
-          labelText: 'Habitat',
+          labelText: 'Habitat type',
           hintText: 'Enter a habitat type',
         ),
       ),
@@ -260,39 +264,32 @@ class SiteFormState extends ConsumerState<SiteForm>
   }
 
   Widget _buildCordinateForm() {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Text(
-              'Coordinates',
-              style: Theme.of(context).textTheme.titleLarge,
+    return FormCard(
+      title: 'Coordinates',
+      child: Column(
+        children: [
+          const SizedBox(
+            height: 10,
+            child: CoordinateList(),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+              elevation: 0,
             ),
-            const SizedBox(
-              height: 10,
-              child: CoordinateList(),
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return const PhotoForm();
+                  });
+            },
+            child: const Text(
+              'Add coordinates',
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                foregroundColor:
-                    Theme.of(context).colorScheme.onPrimaryContainer,
-                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                elevation: 0,
-              ),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return const PhotoForm();
-                    });
-              },
-              child: const Text(
-                'Add coordinates',
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

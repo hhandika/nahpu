@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:intl/intl.dart';
 import 'package:nahpu/providers/page_viewer.dart';
+import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/screens/shared/photos.dart';
 
@@ -50,19 +51,26 @@ class CollEventFormState extends ConsumerState<CollEventForm>
               AdaptiveLayout(
                 useHorizontalLayout: useHorizontalLayout,
                 children: [
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Column(
-                        children: [
-                          _buildActivityFields(),
-                          _buildCollectionNotes(),
-                          _buildTrappingFields(),
-                        ],
+                  Column(
+                    children: [
+                      FormCard(
+                          title: 'Activity',
+                          child: Column(
+                            children: [
+                              _buildActivityFields(),
+                              _buildCollectionNotes(),
+                            ],
+                          )),
+                      FormCard(
+                        title: 'Collecting Effort',
+                        child: _buildTrappingFields(),
                       ),
-                    ),
+                    ],
                   ),
-                  _buildTrappingPersonnelFields(),
+                  FormCard(
+                    title: 'Trapping Personnel',
+                    child: _buildTrappingPersonnelFields(),
+                  ),
                 ],
               ),
               _buildMediaFields(),
@@ -189,10 +197,6 @@ class CollEventFormState extends ConsumerState<CollEventForm>
   Widget _buildActivityFields() {
     return Column(
       children: [
-        Text(
-          'Collecting Activities',
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
         DropdownButtonFormField(
           decoration: const InputDecoration(
             labelText: 'Primary collection method',
@@ -219,10 +223,6 @@ class CollEventFormState extends ConsumerState<CollEventForm>
   Widget _buildTrappingFields() {
     return Column(
       children: [
-        Text(
-          'Collecting Effort',
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
         const SizedBox(
           height: 10,
           child: TrapList(),
@@ -250,7 +250,7 @@ class CollEventFormState extends ConsumerState<CollEventForm>
 
   Widget _buildCollectionNotes() {
     return TextFormField(
-      maxLines: 10,
+      maxLines: 5,
       decoration: const InputDecoration(
         labelText: 'Collecting method notes',
         hintText: 'Enter notes',
@@ -259,40 +259,30 @@ class CollEventFormState extends ConsumerState<CollEventForm>
   }
 
   Widget _buildTrappingPersonnelFields() {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Text(
-              'Trapping Personnels',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            const SizedBox(
-              height: 10,
-              child: TrapList(),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                foregroundColor:
-                    Theme.of(context).colorScheme.onPrimaryContainer,
-                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                elevation: 0,
-              ),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return const PhotoForm();
-                    });
-              },
-              child: const Text(
-                'Add personnels',
-              ),
-            ),
-          ],
+    return Column(
+      children: [
+        const SizedBox(
+          height: 10,
+          child: TrapList(),
         ),
-      ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+            elevation: 0,
+          ),
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return const PhotoForm();
+                });
+          },
+          child: const Text(
+            'Add personnels',
+          ),
+        ),
+      ],
     );
   }
 
