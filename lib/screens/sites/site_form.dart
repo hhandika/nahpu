@@ -59,7 +59,7 @@ class SiteFormState extends ConsumerState<SiteForm>
                       ),
                     ),
                     FormCard(
-                      title: 'Location',
+                      title: 'Geography',
                       child: Column(
                         children: [
                           AdaptiveLayout(
