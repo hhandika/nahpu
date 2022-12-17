@@ -42,7 +42,7 @@ class GeneralSettings {
     final catalogFmt = ref.watch(catalogFmtProvider);
     final selectedFmt = _parseCatalogFmt(catalogFmt);
     return SettingsSection(
-      title: const Text('Project'),
+      title: const Text('General Settings'),
       tiles: [
         SettingsTile.navigation(
           leading: const Icon(MdiIcons.fileCabinet),
