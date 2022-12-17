@@ -62,8 +62,8 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
               child: AdaptiveLayout(
                 useHorizontalLayout: useHorizontalLayout,
                 children: [
-                  _drawSpecimenDataFields(),
-                  _drawCaptureRecordFields(),
+                  _buildSpecimenDataFields(),
+                  _buildCaptureRecordFields(),
                 ],
               ),
             ),
@@ -72,14 +72,14 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
               child: AdaptiveLayout(
                 useHorizontalLayout: useHorizontalLayout,
                 children: [
-                  _drawMeasurementFields(),
-                  _drawPartFields(),
+                  _buildMeasurementFields(),
+                  _buildPartFields(),
                 ],
               ),
             ),
             AdaptiveContainer(
               columnSpan: 12,
-              child: _drawMediaFields(),
+              child: _buildMediaFields(),
             )
           ]),
         );
@@ -87,7 +87,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
     );
   }
 
-  Widget _drawSpecimenDataFields() {
+  Widget _buildSpecimenDataFields() {
     final personnelEntry = ref.watch(personnelListProvider);
     personnelEntry.when(
       data: (personnelEntry) => personnelList = personnelEntry,
@@ -242,7 +242,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
     );
   }
 
-  Widget _drawCaptureRecordFields() {
+  Widget _buildCaptureRecordFields() {
     return Card(
       // Capture record card
       child: Container(
@@ -315,7 +315,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
     );
   }
 
-  Widget _drawMeasurementFields() {
+  Widget _buildMeasurementFields() {
     return Card(
       child: Container(
         padding: const EdgeInsets.all(10),
@@ -410,7 +410,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
     );
   }
 
-  Widget _drawPartFields() {
+  Widget _buildPartFields() {
     return Card(
         child: Container(
       padding: const EdgeInsets.all(10),
@@ -496,7 +496,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
     );
   }
 
-  Widget _drawMediaFields() {
+  Widget _buildMediaFields() {
     return Column(
       // Media inputs
       children: [

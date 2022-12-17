@@ -41,7 +41,7 @@ class HomeState extends ConsumerState<Home> {
           ),
         ],
       ),
-      drawer: _drawProjectHomeMenu(),
+      drawer: _buildProjectHomeMenu(),
       body: SafeArea(
         child: Center(
           child: Padding(
@@ -86,7 +86,7 @@ class HomeState extends ConsumerState<Home> {
     );
   }
 
-  Widget _drawProjectHomeMenu() {
+  Widget _buildProjectHomeMenu() {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
