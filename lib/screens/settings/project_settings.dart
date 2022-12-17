@@ -3,40 +3,47 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/models/catalogs.dart';
 import 'package:nahpu/providers/catalog.dart';
+import 'package:nahpu/screens/settings/shared.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-class ProjectSettings extends StatefulWidget {
+class ProjectSettings extends ConsumerStatefulWidget {
   const ProjectSettings({Key? key}) : super(key: key);
 
   @override
-  State<ProjectSettings> createState() => _ProjectSettingsState();
+  ProjectSettingState createState() => ProjectSettingState();
 }
 
-class _ProjectSettingsState extends State<ProjectSettings> {
+class ProjectSettingState extends ConsumerState<ProjectSettings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Project Settings'),
-          backgroundColor: Theme.of(context).colorScheme.primary,
+      appBar: AppBar(
+        title: const Text('Project Settings'),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+      ),
+      body: SafeArea(
+        child: SettingsList(
+          sections: [
+            GeneralSettings(ref: ref).getSetting(),
+            AppearanceSettings(ref: ref).getSetting(),
+          ],
         ),
-        body: const SafeArea(
-          child: Center(
-            child: CatalogSettings(),
-          ),
-        ));
+      ),
+    );
   }
 }
 
-class CatalogSettings extends ConsumerWidget {
-  const CatalogSettings({Key? key}) : super(key: key);
+class GeneralSettings {
+  GeneralSettings({required this.ref});
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  final WidgetRef ref;
+
+  SettingsSection getSetting() {
     final catalogFmt = ref.watch(catalogFmtProvider);
     final selectedFmt = _parseCatalogFmt(catalogFmt);
-    return SettingsList(sections: [
-      SettingsSection(title: const Text('Catalog'), tiles: [
+    return SettingsSection(
+      title: const Text('Project'),
+      tiles: [
         SettingsTile.navigation(
           leading: const Icon(MdiIcons.fileCabinet),
           title: const Text('Catalog Format'),
@@ -50,8 +57,8 @@ class CatalogSettings extends ConsumerWidget {
             ),
           ),
         ),
-      ])
-    ]);
+      ],
+    );
   }
 
   String _parseCatalogFmt(CatalogFmt fmt) {
