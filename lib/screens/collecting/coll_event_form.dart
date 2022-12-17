@@ -221,7 +221,7 @@ class CollEventFormState extends ConsumerState<CollEventForm>
       children: [
         Text(
           'Collecting Effort',
-          style: Theme.of(context).textTheme.titleMedium,
+          style: Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(
           height: 10,
@@ -266,7 +266,7 @@ class CollEventFormState extends ConsumerState<CollEventForm>
           children: [
             Text(
               'Trapping Personnels',
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(
               height: 10,
