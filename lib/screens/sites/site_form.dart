@@ -267,7 +267,7 @@ class SiteFormState extends ConsumerState<SiteForm>
           children: [
             Text(
               'Coordinates',
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(
               height: 10,
