@@ -63,7 +63,12 @@ class SiteFormState extends ConsumerState<SiteForm>
                             useHorizontalLayout: useHorizontalLayout,
                             children: _buildMainSiteLocality(),
                           ),
-                          _buildPreciseLocalities(),
+                          AdaptiveLayout(
+                              useHorizontalLayout: useHorizontalLayout,
+                              children: [
+                                _buildPreciseLocalities(),
+                                _buildLocalityNotes()
+                              ])
                         ],
                       ),
                     ),
@@ -201,19 +206,30 @@ class SiteFormState extends ConsumerState<SiteForm>
   }
 
   Widget _buildPreciseLocalities() {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      child: TextFormField(
-        controller: widget.siteFormCtr.localityCtr,
-        maxLines: 3,
-        decoration: const InputDecoration(
-          labelText: 'Precise Locality',
-          hintText: 'Enter a precise locality lower than municipality',
-        ),
-        onChanged: (value) {
-          updateSite(widget.id, SiteCompanion(locality: db.Value(value)), ref);
-        },
+    return TextFormField(
+      controller: widget.siteFormCtr.localityCtr,
+      maxLines: 3,
+      decoration: const InputDecoration(
+        labelText: 'Precise Locality',
+        hintText: 'Enter a precise locality lower than municipality',
       ),
+      onChanged: (value) {
+        updateSite(widget.id, SiteCompanion(locality: db.Value(value)), ref);
+      },
+    );
+  }
+
+  Widget _buildLocalityNotes() {
+    return TextFormField(
+      controller: widget.siteFormCtr.localityCtr,
+      maxLines: 3,
+      decoration: const InputDecoration(
+        labelText: 'Remark',
+        hintText: 'Enter more info about the trapping site',
+      ),
+      onChanged: (value) {
+        updateSite(widget.id, SiteCompanion(locality: db.Value(value)), ref);
+      },
     );
   }
 
