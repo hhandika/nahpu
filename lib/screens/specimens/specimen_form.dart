@@ -9,7 +9,8 @@ import 'package:nahpu/providers/updater.dart';
 import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
-import 'package:nahpu/screens/specimens/mammals/forms.dart';
+import 'package:nahpu/screens/specimens/mammals/measurements.dart';
+import 'package:nahpu/screens/specimens/shared/taxonomy.dart';
 
 class SpecimenForm extends ConsumerStatefulWidget {
   const SpecimenForm(
@@ -64,7 +65,17 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
                 useHorizontalLayout: useHorizontalLayout,
                 children: [
                   _buildSpecimenDataFields(),
-                  _buildCaptureRecordFields(),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildCaptureRecordFields(),
+                      TaxonomicForm(
+                          useHorizontalLayout: useHorizontalLayout,
+                          taxonClass: 'Mammalia',
+                          taxonOrder: 'Rodentia',
+                          taxonFamily: 'Muridae')
+                    ],
+                  ),
                 ],
               ),
             ),
