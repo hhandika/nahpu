@@ -11,6 +11,7 @@ import 'package:nahpu/screens/home.dart';
 
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/settings/project_settings.dart';
+import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
 import 'package:nahpu/screens/sites/menu_bar.dart';
 import 'package:nahpu/screens/narrative/menu_bar.dart';
@@ -101,10 +102,17 @@ class ProjectHomeState extends ConsumerState<ProjectHome> {
               child: AdaptiveLayout(
                 useHorizontalLayout: useHorizontalLayout,
                 children: [
-                  ProjectOverview(
-                    projectUuid: projectUuid,
+                  FormCard(
+                    title: 'Project Overview',
+                    isPrimary: true,
+                    child: ProjectOverview(
+                      projectUuid: projectUuid,
+                    ),
                   ),
-                  const TeamMemberViewer(),
+                  const FormCard(
+                    title: 'Team Members',
+                    child: TeamMemberViewer(),
+                  ),
                 ],
               ),
             ),
@@ -248,28 +256,22 @@ class ProjectOverview extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Card(
-        color: Theme.of(context).colorScheme.secondaryContainer,
-        child: Column(
-          children: [
-            Text(
-              'Project Overview',
-              style: Theme.of(context).textTheme.titleMedium,
+    return Column(
+      children: [
+        ref.watch(projectInfoProvider(projectUuid)).when(
+              data: (data) {
+                return Container(
+                  padding: const EdgeInsets.all(10),
+                  child: ProjectInfo(
+                    projectData: data,
+                  ),
+                );
+              },
+              loading: () => const CircularProgressIndicator(),
+              error: (error, stack) => Text(error.toString()),
             ),
-            ref.watch(projectInfoProvider(projectUuid)).when(
-                  data: (data) {
-                    return Container(
-                      padding: const EdgeInsets.all(10),
-                      child: ProjectInfo(
-                        projectData: data,
-                      ),
-                    );
-                  },
-                  loading: () => const CircularProgressIndicator(),
-                  error: (error, stack) => Text(error.toString()),
-                ),
-          ],
-        ));
+      ],
+    );
   }
 
   Widget showAlert(BuildContext context, String error) {
@@ -292,30 +294,22 @@ class TeamMemberViewer extends ConsumerStatefulWidget {
 class TeamMemberViewerState extends ConsumerState<TeamMemberViewer> {
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: [
-          Text(
-            'Team Members',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          const SizedBox(height: 200, child: PersonnelList()),
-          ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                foregroundColor:
-                    Theme.of(context).colorScheme.onPrimaryContainer,
-                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                elevation: 0,
-              ),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (context) => _showPersonnelForm());
-              },
-              child: const Text('Add new member')),
-          const SizedBox(height: 10),
-        ],
-      ),
+    return Column(
+      children: [
+        const SizedBox(height: 200, child: PersonnelList()),
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+              elevation: 0,
+            ),
+            onPressed: () {
+              showDialog(
+                  context: context, builder: (context) => _showPersonnelForm());
+            },
+            child: const Text('Add new member')),
+        const SizedBox(height: 10),
+      ],
     );
   }
 
