@@ -249,7 +249,7 @@ class ProjectOverview extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Card(
-        color: Theme.of(context).colorScheme.surface,
+        color: Theme.of(context).colorScheme.secondaryContainer,
         child: Column(
           children: [
             Text(
