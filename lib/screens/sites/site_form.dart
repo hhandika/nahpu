@@ -8,6 +8,7 @@ import 'package:nahpu/models/form.dart';
 import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/providers/updater.dart';
 import 'package:nahpu/screens/shared/photos.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 
 class SiteForm extends ConsumerStatefulWidget {
   const SiteForm({Key? key, required this.id, required this.siteFormCtr})
@@ -278,40 +279,6 @@ class SiteFormState extends ConsumerState<SiteForm>
         ),
       ),
     );
-  }
-}
-
-class AdaptiveLayout extends StatelessWidget {
-  const AdaptiveLayout(
-      {Key? key, required this.useHorizontalLayout, required this.children})
-      : super(key: key);
-
-  final List<Widget> children;
-  final bool useHorizontalLayout;
-
-  @override
-  Widget build(BuildContext context) {
-    return useHorizontalLayout
-        ? IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                for (var textField in children)
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      child: textField,
-                    ),
-                  ),
-              ],
-            ),
-          )
-        : Container(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              children: children,
-            ),
-          );
   }
 }
 

@@ -8,6 +8,7 @@ import 'package:nahpu/database/database.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/providers/updater.dart';
 import 'package:nahpu/providers/page_viewer.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 
 class SpecimenForm extends ConsumerStatefulWidget {
   const SpecimenForm(
@@ -58,43 +59,23 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
           child: AdaptiveColumn(children: [
             AdaptiveContainer(
               columnSpan: 12,
-              child: useHorizontalLayout
-                  ? IntrinsicHeight(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(child: _drawSpecimenDataFields()),
-                          const SizedBox(width: 10),
-                          Expanded(child: _drawCaptureRecordFields()),
-                        ],
-                      ),
-                    )
-                  : Column(
-                      children: [
-                        _drawSpecimenDataFields(),
-                        _drawCaptureRecordFields(),
-                      ],
-                    ),
+              child: AdaptiveLayout(
+                useHorizontalLayout: useHorizontalLayout,
+                children: [
+                  _drawSpecimenDataFields(),
+                  _drawCaptureRecordFields(),
+                ],
+              ),
             ),
             AdaptiveContainer(
               columnSpan: 12,
-              child: useHorizontalLayout
-                  ? IntrinsicHeight(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(child: _drawMeasurementFields()),
-                          const SizedBox(width: 10),
-                          Expanded(child: _drawPartFields()),
-                        ],
-                      ),
-                    )
-                  : Column(
-                      children: [
-                        _drawMeasurementFields(),
-                        _drawPartFields(),
-                      ],
-                    ),
+              child: AdaptiveLayout(
+                useHorizontalLayout: useHorizontalLayout,
+                children: [
+                  _drawMeasurementFields(),
+                  _drawPartFields(),
+                ],
+              ),
             ),
             AdaptiveContainer(
               columnSpan: 12,

@@ -9,6 +9,7 @@ import 'package:nahpu/configs/colors.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/providers/updater.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/screens/shared/photos.dart';
 
 class NarrativeForm extends ConsumerStatefulWidget {
@@ -37,20 +38,13 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
             columnSpan: 12,
             child: Card(
               color: Theme.of(context).colorScheme.secondaryContainer,
-              child: useHorizontalLayout
-                  ? Row(
-                      children: [
-                        Expanded(child: _buildDateForm()),
-                        const SizedBox(width: 10),
-                        Expanded(child: _buildSiteIdForm()),
-                      ],
-                    )
-                  : Column(
-                      children: [
-                        _buildDateForm(),
-                        _buildSiteIdForm(),
-                      ],
-                    ),
+              child: AdaptiveLayout(
+                useHorizontalLayout: useHorizontalLayout,
+                children: [
+                  _buildDateForm(),
+                  _buildSiteIdForm(),
+                ],
+              ),
             ),
           ),
           AdaptiveContainer(
