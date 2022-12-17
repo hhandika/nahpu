@@ -16,6 +16,7 @@ import 'package:nahpu/screens/sites/menu_bar.dart';
 import 'package:nahpu/screens/narrative/menu_bar.dart';
 import 'package:nahpu/screens/specimens/menu_bar.dart';
 import 'package:nahpu/screens/projects/project_info.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 
 class ProjectHome extends ConsumerStatefulWidget {
   const ProjectHome({
@@ -90,140 +91,151 @@ class ProjectHomeState extends ConsumerState<ProjectHome> {
         ],
       ),
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            UserAccountsDrawerHeader(
-              decoration:
-                  BoxDecoration(color: Theme.of(context).colorScheme.primary),
-              accountName: const Text(
-                "Heru Handika",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              accountEmail: const Text(
-                "handika@email.com",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.white,
-                child: Text(
-                  "H",
-                  style: TextStyle(
-                    fontSize: 45,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.create_rounded),
-              title: const Text('Create a new project'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const CreateProjectForm()),
-                );
-              },
-            ),
-            const Divider(color: Colors.grey),
-            ListTile(
-              leading: const Icon(Icons.add_box_rounded),
-              title: const Text('Bundle records'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Home()),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.save_rounded),
-              title: const Text('Save project as'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Home()),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.table_view_rounded),
-              title: const Text('Export to csv/tsv'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Home()),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.picture_as_pdf_rounded),
-              title: const Text('Export to pdf'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Home()),
-                );
-              },
-            ),
-            const Divider(color: Colors.grey),
-            ListTile(
-              leading: const Icon(Icons.settings_rounded),
-              title: const Text('Settings'),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ProjectSettings()));
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.exit_to_app_rounded),
-              title: const Text('Close project'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Home()),
-                );
-              },
-            ),
-            const Divider(
-              color: Colors.grey,
-            ),
-            ListTile(
-              leading: const Icon(Icons.delete_rounded),
-              title: const Text(
-                'Delete all records',
-                style: TextStyle(color: Colors.redAccent),
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Home()),
-                );
-              },
-            ),
-          ],
-        ),
+        child: _buildDrawer(),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-            child: Column(
-          children: [
-            ProjectOverview(
-              projectUuid: projectUuid,
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints c) {
+          bool useHorizontalLayout = c.maxWidth > 600;
+          return SafeArea(
+            child: SingleChildScrollView(
+              child: AdaptiveLayout(
+                useHorizontalLayout: useHorizontalLayout,
+                children: [
+                  ProjectOverview(
+                    projectUuid: projectUuid,
+                  ),
+                  const TeamMemberViewer(),
+                ],
+              ),
             ),
-            const TeamMemberViewer(),
-          ],
-        )),
+          );
+        },
       ),
       bottomNavigationBar: const ProjectBottomNavbar(),
+    );
+  }
+
+  Widget _buildDrawer() {
+    return ListView(
+      padding: EdgeInsets.zero,
+      children: [
+        UserAccountsDrawerHeader(
+          decoration:
+              BoxDecoration(color: Theme.of(context).colorScheme.primary),
+          accountName: const Text(
+            "Heru Handika",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          accountEmail: const Text(
+            "handika@email.com",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          currentAccountPicture: CircleAvatar(
+            backgroundColor: Colors.white,
+            child: Text(
+              "H",
+              style: TextStyle(
+                fontSize: 45,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          ),
+        ),
+        ListTile(
+          leading: const Icon(Icons.create_rounded),
+          title: const Text('Create a new project'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const CreateProjectForm()),
+            );
+          },
+        ),
+        const Divider(color: Colors.grey),
+        ListTile(
+          leading: const Icon(Icons.add_box_rounded),
+          title: const Text('Bundle records'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Home()),
+            );
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.save_rounded),
+          title: const Text('Save project as'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Home()),
+            );
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.table_view_rounded),
+          title: const Text('Export to csv/tsv'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Home()),
+            );
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.picture_as_pdf_rounded),
+          title: const Text('Export to pdf'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Home()),
+            );
+          },
+        ),
+        const Divider(color: Colors.grey),
+        ListTile(
+          leading: const Icon(Icons.settings_rounded),
+          title: const Text('Settings'),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ProjectSettings()));
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.exit_to_app_rounded),
+          title: const Text('Close project'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Home()),
+            );
+          },
+        ),
+        const Divider(
+          color: Colors.grey,
+        ),
+        ListTile(
+          leading: const Icon(Icons.delete_rounded),
+          title: const Text(
+            'Delete all records',
+            style: TextStyle(color: Colors.redAccent),
+          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Home()),
+            );
+          },
+        ),
+      ],
     );
   }
 }
