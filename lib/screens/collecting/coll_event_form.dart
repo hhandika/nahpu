@@ -47,25 +47,31 @@ class CollEventFormState extends ConsumerState<CollEventForm>
         return SingleChildScrollView(
           child: Column(
             children: [
-              _buildCollectingFields(useHorizontalLayout),
               AdaptiveLayout(
                 useHorizontalLayout: useHorizontalLayout,
                 children: [
-                  Column(
-                    children: [
-                      FormCard(
-                          title: 'Activity',
-                          child: Column(
-                            children: [
-                              _buildActivityFields(),
-                              _buildCollectionNotes(),
-                            ],
-                          )),
-                      FormCard(
-                        title: 'Collecting Effort',
-                        child: _buildTrappingFields(),
-                      ),
-                    ],
+                  FormCard(
+                    title: 'Collecting Info',
+                    isPrimary: true,
+                    child: _buildCollectingFields(useHorizontalLayout),
+                  ),
+                  FormCard(
+                    title: 'Activity',
+                    child: Column(
+                      children: [
+                        _buildActivityFields(),
+                        _buildCollectionNotes(),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              AdaptiveLayout(
+                useHorizontalLayout: useHorizontalLayout,
+                children: [
+                  FormCard(
+                    title: 'Collecting Effort',
+                    child: _buildTrappingFields(),
                   ),
                   FormCard(
                     title: 'Trapping Personnel',
@@ -82,115 +88,102 @@ class CollEventFormState extends ConsumerState<CollEventForm>
   }
 
   Widget _buildCollectingFields(bool useHorizontalLayout) {
-    return Card(
-      color: Theme.of(context).colorScheme.secondaryContainer,
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        child: Column(
+    return Column(
+      children: [
+        TextFormField(
+          decoration: const InputDecoration(
+            labelText: 'Site ID',
+            hintText: 'Enter a new event',
+          ),
+        ),
+        TextFormField(
+          decoration: const InputDecoration(
+            labelText: 'Collecting Event ID',
+            hintText: 'Autofill',
+          ),
+        ),
+        AdaptiveLayout(
+          useHorizontalLayout: useHorizontalLayout,
           children: [
-            Text(
-              'Collecting Information',
-              style: Theme.of(context).textTheme.titleLarge,
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Start Date',
+                hintText: 'Enter date',
+              ),
+              controller: widget.collEventCtr.startDateCtr,
+              onTap: () async {
+                showDatePicker(
+                        context: context,
+                        initialDate: _initialStartDate,
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime.now())
+                    .then((date) {
+                  if (date != null) {
+                    widget.collEventCtr.startDateCtr.text =
+                        DateFormat.yMMMd().format(date);
+                  }
+                });
+              },
             ),
-            AdaptiveLayout(
-              useHorizontalLayout: useHorizontalLayout,
-              children: [
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Site ID',
-                    hintText: 'Enter a new event',
-                  ),
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Collecting Event ID',
-                    hintText: 'Autofill',
-                  ),
-                ),
-              ],
-            ),
-            AdaptiveLayout(
-              useHorizontalLayout: useHorizontalLayout,
-              children: [
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Start Date',
-                    hintText: 'Enter date',
-                  ),
-                  controller: widget.collEventCtr.startDateCtr,
-                  onTap: () async {
-                    showDatePicker(
-                            context: context,
-                            initialDate: _initialStartDate,
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime.now())
-                        .then((date) {
-                      if (date != null) {
-                        widget.collEventCtr.startDateCtr.text =
-                            DateFormat.yMMMd().format(date);
-                      }
-                    });
-                  },
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Start time',
-                    hintText: 'Enter date',
-                  ),
-                  controller: widget.collEventCtr.startTimeCtr,
-                  onTap: () async {
-                    showTimePicker(
-                            context: context, initialTime: _initialStartTime)
-                        .then((time) {
-                      if (time != null) {
-                        widget.collEventCtr.startTimeCtr.text =
-                            time.format(context);
-                      }
-                    });
-                  },
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'End Date',
-                    hintText: 'Enter date',
-                  ),
-                  controller: widget.collEventCtr.endDateCtr,
-                  onTap: () async {
-                    showDatePicker(
-                            context: context,
-                            initialDate: _initialEndDate,
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime.now())
-                        .then((date) {
-                      if (date != null) {
-                        widget.collEventCtr.endDateCtr.text =
-                            DateFormat.yMMMd().format(date);
-                      }
-                    });
-                  },
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'End time',
-                    hintText: 'Enter date',
-                  ),
-                  controller: widget.collEventCtr.endTimeCtr,
-                  onTap: () async {
-                    showTimePicker(
-                            context: context, initialTime: _initialStartTime)
-                        .then((time) {
-                      if (time != null) {
-                        widget.collEventCtr.endTimeCtr.text =
-                            time.format(context);
-                      }
-                    });
-                  },
-                ),
-              ],
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Start time',
+                hintText: 'Enter date',
+              ),
+              controller: widget.collEventCtr.startTimeCtr,
+              onTap: () async {
+                showTimePicker(context: context, initialTime: _initialStartTime)
+                    .then((time) {
+                  if (time != null) {
+                    widget.collEventCtr.startTimeCtr.text =
+                        time.format(context);
+                  }
+                });
+              },
             ),
           ],
         ),
-      ),
+        AdaptiveLayout(
+          useHorizontalLayout: useHorizontalLayout,
+          children: [
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'End Date',
+                hintText: 'Enter date',
+              ),
+              controller: widget.collEventCtr.endDateCtr,
+              onTap: () async {
+                showDatePicker(
+                        context: context,
+                        initialDate: _initialEndDate,
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime.now())
+                    .then((date) {
+                  if (date != null) {
+                    widget.collEventCtr.endDateCtr.text =
+                        DateFormat.yMMMd().format(date);
+                  }
+                });
+              },
+            ),
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'End time',
+                hintText: 'Enter date',
+              ),
+              controller: widget.collEventCtr.endTimeCtr,
+              onTap: () async {
+                showTimePicker(context: context, initialTime: _initialStartTime)
+                    .then((time) {
+                  if (time != null) {
+                    widget.collEventCtr.endTimeCtr.text = time.format(context);
+                  }
+                });
+              },
+            ),
+          ],
+        ),
+      ],
     );
   }
 
