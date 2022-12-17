@@ -56,7 +56,7 @@ class CollEventFormState extends ConsumerState<CollEventForm>
                     child: _buildCollectingFields(useHorizontalLayout),
                   ),
                   FormCard(
-                    title: 'Activity',
+                    title: 'Collecting Activity',
                     child: Column(
                       children: [
                         _buildActivityFields(),
