@@ -255,7 +255,7 @@ class SiteFormState extends ConsumerState<SiteForm>
       TextFormField(
         maxLines: 5,
         decoration: const InputDecoration(
-          labelText: 'Site description',
+          labelText: 'Habitat description',
           hintText:
               'Describe the site, e.g. "A camp site in the middle of the forest."',
         ),
