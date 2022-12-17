@@ -90,16 +90,23 @@ class CollEventFormState extends ConsumerState<CollEventForm>
   Widget _buildCollectingFields(bool useHorizontalLayout) {
     return Column(
       children: [
-        TextFormField(
-          decoration: const InputDecoration(
-            labelText: 'Site ID',
-            hintText: 'Enter a new event',
+        Padding(
+          // Match adaptive layout padding
+          padding: const EdgeInsets.only(left: 5.0, right: 5.0, bottom: 5.0),
+          child: TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Site ID',
+              hintText: 'Enter a new event',
+            ),
           ),
         ),
-        TextFormField(
-          decoration: const InputDecoration(
-            labelText: 'Collecting Event ID',
-            hintText: 'Autofill',
+        Padding(
+          padding: const EdgeInsets.only(left: 5.0, right: 5.0, bottom: 5.0),
+          child: TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Collecting Event ID',
+              hintText: 'Autofill',
+            ),
           ),
         ),
         AdaptiveLayout(

@@ -18,7 +18,8 @@ class AdaptiveLayout extends StatelessWidget {
                 for (var textField in children)
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.only(
+                          left: 5.0, right: 5.0, bottom: 5.0),
                       child: textField,
                     ),
                   ),
@@ -26,7 +27,7 @@ class AdaptiveLayout extends StatelessWidget {
             ),
           )
         : Container(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.only(left: 5.0, right: 5.0, bottom: 5.0),
             child: Column(
               children: children,
             ),
