@@ -5,7 +5,7 @@ import 'package:drift/drift.dart' as db;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/project.dart';
 
-import 'project_home.dart';
+import 'dashboard.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/providers/validation.dart';
 
@@ -167,7 +167,7 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                             CustomElevButton(
                                 onPressed: () {
                                   _createProject();
-                                  _goToProjectHome();
+                                  _goToDashboard();
                                   // Reset states to default
                                   ref.refresh(projectListProvider);
                                   ref.refresh(projectFormNotifier.notifier);
@@ -196,11 +196,11 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
         ));
   }
 
-  Future<void> _goToProjectHome() async {
+  Future<void> _goToDashboard() async {
     ref.read(projectUuidProvider.state).state = _uuidKey;
     await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const ProjectHome()),
+      MaterialPageRoute(builder: (context) => const Dashboard()),
     );
   }
 }

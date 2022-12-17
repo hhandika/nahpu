@@ -11,7 +11,7 @@ import 'package:nahpu/providers/page_viewer.dart';
 
 import 'package:nahpu/screens/sites/sites.dart';
 import 'package:nahpu/screens/specimens/specimens.dart';
-import 'package:nahpu/screens/projects/project_home.dart';
+import 'package:nahpu/screens/projects/dashboard.dart';
 
 class ProjectBottomNavbar extends ConsumerStatefulWidget {
   const ProjectBottomNavbar({Key? key}) : super(key: key);
@@ -33,9 +33,9 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
       destinations: const [
         NavigationDestination(
           icon: Icon(
-            Icons.home_rounded,
+            Icons.dashboard_rounded,
           ),
-          label: 'Home',
+          label: 'Dahsboard',
         ),
         NavigationDestination(
           icon: Icon(
@@ -77,7 +77,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const ProjectHome(),
+            builder: (context) => const Dashboard(),
           ),
         );
 

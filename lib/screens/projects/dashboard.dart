@@ -19,16 +19,16 @@ import 'package:nahpu/screens/specimens/menu_bar.dart';
 import 'package:nahpu/screens/projects/project_info.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 
-class ProjectHome extends ConsumerStatefulWidget {
-  const ProjectHome({
+class Dashboard extends ConsumerStatefulWidget {
+  const Dashboard({
     Key? key,
   }) : super(key: key);
 
   @override
-  ProjectHomeState createState() => ProjectHomeState();
+  DashboardState createState() => DashboardState();
 }
 
-class ProjectHomeState extends ConsumerState<ProjectHome> {
+class DashboardState extends ConsumerState<Dashboard> {
   @override
   void initState() {
     super.initState();
@@ -44,7 +44,7 @@ class ProjectHomeState extends ConsumerState<ProjectHome> {
     final projectUuid = ref.watch(projectUuidProvider.state).state;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Project Home"),
+        title: const Text("Project Dashboard"),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,

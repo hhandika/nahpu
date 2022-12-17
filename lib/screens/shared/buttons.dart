@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:nahpu/providers/project.dart';
-import 'package:nahpu/screens/projects/project_home.dart';
+import 'package:nahpu/screens/projects/dashboard.dart';
 import 'package:nahpu/providers/page_viewer.dart';
 
 class ProjectBackButton extends ConsumerWidget {
@@ -13,7 +13,7 @@ class ProjectBackButton extends ConsumerWidget {
     return BackButton(
       onPressed: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return const ProjectHome();
+          return const Dashboard();
         }));
         ref.read(projectNavbarIndexProvider.state).state = 0;
       },

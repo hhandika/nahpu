@@ -4,10 +4,9 @@ import 'package:nahpu/providers/project.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/settings/settings.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
-import 'package:nahpu/screens/projects/project_home.dart';
+import 'package:nahpu/screens/projects/dashboard.dart';
 import 'package:nahpu/screens/projects/project_info.dart';
 
 enum MenuSelection { details, deleteProject }
@@ -41,7 +40,7 @@ class HomeState extends ConsumerState<Home> {
           ),
         ],
       ),
-      drawer: _buildProjectHomeMenu(),
+      drawer: _buildDashboardMenu(),
       body: SafeArea(
         child: Center(
           child: Padding(
@@ -86,7 +85,7 @@ class HomeState extends ConsumerState<Home> {
     );
   }
 
-  Widget _buildProjectHomeMenu() {
+  Widget _buildDashboardMenu() {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -312,7 +311,7 @@ class HomeState extends ConsumerState<Home> {
     ref.read(projectUuidProvider.state).state = projectUuid;
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const ProjectHome()),
+      MaterialPageRoute(builder: (context) => const Dashboard()),
     );
   }
 
