@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/forms.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 
 class MeasurementForms extends ConsumerStatefulWidget {
-  const MeasurementForms({Key? key}) : super(key: key);
+  const MeasurementForms({Key? key, required this.useHorizontalLayout})
+      : super(key: key);
+
+  final bool useHorizontalLayout;
 
   @override
   MeasurementFormsState createState() => MeasurementFormsState();
@@ -16,40 +20,50 @@ class MeasurementFormsState extends ConsumerState<MeasurementForms> {
       title: 'Measurements',
       child: Column(
         children: [
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Total length (mm)',
-              hintText: 'Enter TTL',
-            ),
-            keyboardType: TextInputType.number,
+          AdaptiveLayout(
+            useHorizontalLayout: widget.useHorizontalLayout,
+            children: [
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Total length (mm)',
+                  hintText: 'Enter TTL',
+                ),
+                keyboardType: TextInputType.number,
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Tail length (mm)',
+                  hintText: 'Enter TL',
+                ),
+                keyboardType: TextInputType.number,
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Hind foot length (mm)',
+                  hintText: 'Enter HF length',
+                ),
+                keyboardType: TextInputType.number,
+              ),
+            ],
           ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Tail length (mm)',
-              hintText: 'Enter TL',
-            ),
-            keyboardType: TextInputType.number,
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Hind foot length (mm)',
-              hintText: 'Enter HF',
-            ),
-            keyboardType: TextInputType.number,
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Ear length (mm)',
-              hintText: 'Enter ER',
-            ),
-            keyboardType: TextInputType.number,
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Weight (grams)',
-              hintText: 'Enter specimen weight',
-            ),
-            keyboardType: TextInputType.number,
+          AdaptiveLayout(
+            useHorizontalLayout: widget.useHorizontalLayout,
+            children: [
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Ear length (mm)',
+                  hintText: 'Enter ER length',
+                ),
+                keyboardType: TextInputType.number,
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Weight (grams)',
+                  hintText: 'Enter specimen weight',
+                ),
+                keyboardType: TextInputType.number,
+              ),
+            ],
           ),
           DropdownButtonFormField(
               decoration: const InputDecoration(
@@ -71,50 +85,67 @@ class MeasurementFormsState extends ConsumerState<MeasurementForms> {
                 ),
               ],
               onChanged: (String? newValue) {}),
-          DropdownButtonFormField(
-              decoration: const InputDecoration(
-                labelText: 'Sex',
-                hintText: 'Choose one',
-              ),
-              items: const [
-                DropdownMenuItem(
-                  value: 'Male',
-                  child: Text('Male'),
-                ),
-                DropdownMenuItem(
-                  value: 'Female',
-                  child: Text('Female'),
-                ),
-                DropdownMenuItem(
-                  value: 'Unknown',
-                  child: Text('Unknown'),
-                ),
-              ],
-              onChanged: (String? newValue) {}),
-          DropdownButtonFormField(
-              decoration: const InputDecoration(
-                labelText: 'Life stage',
-                hintText: 'Select specimen age',
-              ),
-              items: const [
-                DropdownMenuItem(
-                  value: 'Adult',
-                  child: Text('Adult'),
-                ),
-                DropdownMenuItem(
-                  value: 'Subadult',
-                  child: Text('Subadult'),
-                ),
-                DropdownMenuItem(
-                  value: 'Juvenile',
-                  child: Text('Juvenile'),
-                ),
-                DropdownMenuItem(
-                  value: 'Unknown',
-                  child: Text('Unknown'),
-                ),
-              ],
-              onChanged: (String? newValue) {}),
+          Divider(
+            color: Theme.of(context).dividerColor,
+          ),
+          AdaptiveLayout(
+            useHorizontalLayout: widget.useHorizontalLayout,
+            children: [
+              DropdownButtonFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Sex',
+                    hintText: 'Choose one',
+                  ),
+                  items: const [
+                    DropdownMenuItem(
+                      value: 'Male',
+                      child: Text('Male'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'Female',
+                      child: Text('Female'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'Unknown',
+                      child: Text('Unknown'),
+                    ),
+                  ],
+                  onChanged: (String? newValue) {}),
+              DropdownButtonFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Life stage',
+                    hintText: 'Select specimen age',
+                  ),
+                  items: const [
+                    DropdownMenuItem(
+                      value: 'Adult',
+                      child: Text('Adult'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'Subadult',
+                      child: Text('Subadult'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'Juvenile',
+                      child: Text('Juvenile'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'Unknown',
+                      child: Text('Unknown'),
+                    ),
+                  ],
+                  onChanged: (String? newValue) {}),
+            ],
+          ),
+          TextFormField(
+            enabled: false,
+            maxLines: 5,
+            decoration: const InputDecoration(
+              labelText: 'Measurements notes',
+              hintText: 'Write any notes about the measurements (optional)',
+            ),
+            keyboardType: TextInputType.number,
+          ),
         ],
       ),
     );

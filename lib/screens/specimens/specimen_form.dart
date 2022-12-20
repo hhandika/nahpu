@@ -84,7 +84,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
               child: AdaptiveLayout(
                 useHorizontalLayout: useHorizontalLayout,
                 children: [
-                  const MeasurementForms(),
+                  MeasurementForms(useHorizontalLayout: useHorizontalLayout),
                   _buildPartFields(),
                 ],
               ),
@@ -107,7 +107,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
       error: (e, s) => null,
     );
     return FormCard(
-      title: 'Specimen Data',
+      title: 'Collecting Records',
       isPrimary: true,
       child: Column(
         children: [
