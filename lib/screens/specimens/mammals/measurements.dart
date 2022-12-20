@@ -53,6 +53,26 @@ class MeasurementFormsState extends ConsumerState<MeasurementForms> {
           ),
           DropdownButtonFormField(
               decoration: const InputDecoration(
+                labelText: 'Measurement accuracy',
+                hintText: 'Select measurement accuracy',
+              ),
+              items: const [
+                DropdownMenuItem(
+                  value: 'Accurate',
+                  child: Text('Accurate'),
+                ),
+                DropdownMenuItem(
+                  value: 'Tail cropped',
+                  child: Text('Tail cropped'),
+                ),
+                DropdownMenuItem(
+                  value: 'Partially eaten',
+                  child: Text('Partially eaten'),
+                ),
+              ],
+              onChanged: (String? newValue) {}),
+          DropdownButtonFormField(
+              decoration: const InputDecoration(
                 labelText: 'Sex',
                 hintText: 'Choose one',
               ),
@@ -74,7 +94,7 @@ class MeasurementFormsState extends ConsumerState<MeasurementForms> {
           DropdownButtonFormField(
               decoration: const InputDecoration(
                 labelText: 'Life stage',
-                hintText: 'Choose one',
+                hintText: 'Select specimen age',
               ),
               items: const [
                 DropdownMenuItem(
