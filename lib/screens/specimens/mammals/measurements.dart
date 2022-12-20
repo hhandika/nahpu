@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/models/types.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 
@@ -14,6 +15,9 @@ class MeasurementForms extends ConsumerStatefulWidget {
 }
 
 class MeasurementFormsState extends ConsumerState<MeasurementForms> {
+  SpecimenSex _specimenSex = SpecimenSex.unknown;
+  bool _isScrotal = false;
+
   @override
   Widget build(BuildContext context) {
     return FormCard(
@@ -65,26 +69,29 @@ class MeasurementFormsState extends ConsumerState<MeasurementForms> {
               ),
             ],
           ),
-          DropdownButtonFormField(
-              decoration: const InputDecoration(
-                labelText: 'Measurement accuracy',
-                hintText: 'Select measurement accuracy',
-              ),
-              items: const [
-                DropdownMenuItem(
-                  value: 'Accurate',
-                  child: Text('Accurate'),
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: DropdownButtonFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Measurement accuracy',
+                  hintText: 'Select measurement accuracy',
                 ),
-                DropdownMenuItem(
-                  value: 'Tail cropped',
-                  child: Text('Tail cropped'),
-                ),
-                DropdownMenuItem(
-                  value: 'Partially eaten',
-                  child: Text('Partially eaten'),
-                ),
-              ],
-              onChanged: (String? newValue) {}),
+                items: const [
+                  DropdownMenuItem(
+                    value: 'Accurate',
+                    child: Text('Accurate'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Tail cropped',
+                    child: Text('Tail cropped'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Partially eaten',
+                    child: Text('Partially eaten'),
+                  ),
+                ],
+                onChanged: (String? newValue) {}),
+          ),
           Divider(
             color: Theme.of(context).dividerColor,
           ),
@@ -110,7 +117,11 @@ class MeasurementFormsState extends ConsumerState<MeasurementForms> {
                       child: Text('Unknown'),
                     ),
                   ],
-                  onChanged: (String? newValue) {}),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _specimenSex = matchSpecimenSex(newValue);
+                    });
+                  }),
               DropdownButtonFormField(
                   decoration: const InputDecoration(
                     labelText: 'Life stage',
@@ -136,6 +147,42 @@ class MeasurementFormsState extends ConsumerState<MeasurementForms> {
                   ],
                   onChanged: (String? newValue) {}),
             ],
+          ),
+          Visibility(
+            visible: _specimenSex == SpecimenSex.male,
+            child: AdaptiveLayout(
+              useHorizontalLayout: widget.useHorizontalLayout,
+              children: [
+                DropdownButtonFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Testes Position',
+                      hintText: 'Select specimen age',
+                    ),
+                    items: const [
+                      DropdownMenuItem(
+                        value: 'Scrotal',
+                        child: Text('Scrotal'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'Abdominal',
+                        child: Text('Abdominal'),
+                      ),
+                    ],
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _isScrotal = newValue == 'Scrotal';
+                      });
+                    }),
+                TextFormField(
+                  enabled: _isScrotal,
+                  decoration: const InputDecoration(
+                    labelText: 'Testes size (L x W mm)',
+                    hintText: 'Enter length and width of the right testes ',
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+              ],
+            ),
           ),
           TextFormField(
             enabled: false,
