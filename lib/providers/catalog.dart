@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/models/catalogs.dart';
+import 'package:nahpu/models/types.dart';
 
 final catalogFmtProvider =
     StateNotifierProvider<CatalogFmtNotifier, CatalogFmt>(
