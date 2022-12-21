@@ -9,6 +9,7 @@ import 'package:nahpu/providers/updater.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/photos.dart';
 import 'package:nahpu/screens/shared/layout.dart';
+import 'package:nahpu/screens/shared/videos.dart';
 import 'package:nahpu/screens/sites/components/coordinates.dart';
 
 class SiteForm extends ConsumerStatefulWidget {
@@ -117,7 +118,7 @@ class SiteFormState extends ConsumerState<SiteForm>
                           controller: _tabController,
                           children: const [
                             PhotoViewer(),
-                            Text('Videos'),
+                            VideoViewer(),
                           ],
                         ),
                       ),

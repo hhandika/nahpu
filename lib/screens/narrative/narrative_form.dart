@@ -8,6 +8,7 @@ import 'package:nahpu/models/form.dart';
 import 'package:nahpu/providers/updater.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/screens/shared/photos.dart';
+import 'package:nahpu/screens/shared/videos.dart';
 
 class NarrativeForm extends ConsumerStatefulWidget {
   const NarrativeForm({
@@ -161,7 +162,7 @@ class MediaFormState extends ConsumerState<MediaForm>
             controller: _tabController,
             children: const [
               PhotoViewer(),
-              Text('Videos'),
+              VideoViewer(),
             ],
           ),
         ),
