@@ -13,9 +13,9 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
 import 'package:nahpu/screens/sites/components/menu_bar.dart';
 import 'package:nahpu/screens/narrative/menu_bar.dart';
-import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
 import 'package:nahpu/screens/projects/project_info.dart';
 import 'package:nahpu/screens/shared/layout.dart';
+import 'package:nahpu/screens/specimens/new_specimens.dart';
 
 class Dashboard extends ConsumerStatefulWidget {
   const Dashboard({

@@ -5,8 +5,37 @@ import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
 import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/screens/specimens/specimen_form.dart';
 import 'package:nahpu/screens/specimens/specimen_view.dart';
+import 'package:drift/drift.dart' as db;
+import 'package:nahpu/database/database.dart';
+import 'package:nahpu/providers/project.dart';
 
-enum MenuSelection { newNote, pdfExport, deleteRecords, deleteAllRecords }
+Future<void> createNewSpecimens(BuildContext context, WidgetRef ref) {
+  String projectUuid = ref.watch(projectUuidProvider.state).state;
+  final String specimenUuid = uuid;
+  ref.read(databaseProvider).createSpecimen(SpecimenCompanion(
+        specimenUuid: db.Value(specimenUuid),
+        projectUuid: db.Value(projectUuid),
+      ));
+
+  return Navigator.of(context).push(MaterialPageRoute(
+      builder: (_) => NewSpecimenForm(
+            specimenUuid: specimenUuid,
+          )));
+}
+
+class NewSpecimens extends ConsumerWidget {
+  const NewSpecimens({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return IconButton(
+      icon: const Icon(Icons.add_rounded),
+      onPressed: () async {
+        createNewSpecimens(context, ref);
+      },
+    );
+  }
+}
 
 class NewSpecimenForm extends ConsumerStatefulWidget {
   const NewSpecimenForm({Key? key, required this.specimenUuid})
