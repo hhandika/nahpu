@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/models/page_viewer.dart';
+import 'package:nahpu/models/types.dart';
 
 import 'package:nahpu/providers/page_viewer.dart';
 
@@ -86,8 +87,11 @@ class SpecimensState extends ConsumerState<Specimens> {
                     );
 
                     return SpecimenForm(
-                        specimenUuid: specimenEntry[index].specimenUuid,
-                        specimenCtr: specimenFormCtr);
+                      specimenUuid: specimenEntry[index].specimenUuid,
+                      specimenCtr: specimenFormCtr,
+                      catalogFmt:
+                          matchTaxonGroup(specimenEntry[index].taxonGroup),
+                    );
                   },
                   onPageChanged: (value) => setState(() {
                     pageNotifier.state.currentPage = value + 1;

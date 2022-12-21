@@ -27,3 +27,16 @@ SpecimenAge matchSpecimenAge(String? age) {
       return SpecimenAge.unknown;
   }
 }
+
+CatalogFmt matchTaxonGroup(String? taxonGroup) {
+  switch (taxonGroup) {
+    case 'Birds':
+      return CatalogFmt.birds;
+    case 'Mammals':
+      return CatalogFmt.generalMammals;
+    case 'Bats':
+      return CatalogFmt.bats;
+    default:
+      return CatalogFmt.generalMammals;
+  }
+}
