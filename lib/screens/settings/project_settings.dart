@@ -40,7 +40,7 @@ class GeneralSettings {
 
   SettingsSection getSetting() {
     final catalogFmt = ref.watch(catalogFmtProvider);
-    final selectedFmt = _parseCatalogFmt(catalogFmt);
+    final selectedFmt = matchCatFmtToTaxonGroup(catalogFmt);
     return SettingsSection(
       title: const Text('General Settings'),
       tiles: [
@@ -59,17 +59,6 @@ class GeneralSettings {
         ),
       ],
     );
-  }
-
-  String _parseCatalogFmt(CatalogFmt fmt) {
-    switch (fmt) {
-      case CatalogFmt.generalMammals:
-        return 'General Mammals';
-      case CatalogFmt.bats:
-        return 'Bats';
-      case CatalogFmt.birds:
-        return 'Birds';
-    }
   }
 }
 
