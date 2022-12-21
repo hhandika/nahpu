@@ -10,7 +10,7 @@ import 'package:nahpu/screens/collecting/coll_events.dart';
 import 'package:nahpu/providers/page_viewer.dart';
 
 import 'package:nahpu/screens/sites/sites.dart';
-import 'package:nahpu/screens/specimens/specimens.dart';
+import 'package:nahpu/screens/specimens/specimen_view.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
 
 class ProjectBottomNavbar extends ConsumerStatefulWidget {

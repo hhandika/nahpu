@@ -4,7 +4,7 @@ import 'package:nahpu/models/form.dart';
 import 'package:nahpu/screens/specimens/menu_bar.dart';
 import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/screens/specimens/specimen_form.dart';
-import 'package:nahpu/screens/specimens/specimens.dart';
+import 'package:nahpu/screens/specimens/specimen_view.dart';
 
 enum MenuSelection { newNote, pdfExport, deleteRecords, deleteAllRecords }
 
