@@ -45,7 +45,6 @@ dependencies:
   intl: ^0.17.0
   freezed_annotation: ^2.1.0
   flutter_riverpod: ^1.0.4
-  adaptive_components: ^0.0.7
   flutter_launcher_icons: ^0.10.0
   adaptive_breakpoints: ^0.1.4
   shared_preferences: ^2.0.15

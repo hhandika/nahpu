@@ -1,4 +1,3 @@
-import 'package:adaptive_components/adaptive_components.dart';
 import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -44,89 +43,86 @@ class SiteFormState extends ConsumerState<SiteForm>
       builder: (BuildContext context, BoxConstraints c) {
         bool useHorizontalLayout = c.maxWidth > 600.0;
         return SingleChildScrollView(
-          child: AdaptiveColumn(
+          child: Column(
             children: [
-              AdaptiveContainer(
-                columnSpan: 12,
-                child: Column(
-                  children: [
-                    FormCard(
-                      isPrimary: true,
-                      title: 'Site Info',
-                      child: AdaptiveLayout(
-                        useHorizontalLayout: useHorizontalLayout,
-                        children: _buildSiteID(),
-                      ),
-                    ),
-                    FormCard(
-                      title: 'Geography',
-                      child: Column(
-                        children: [
-                          AdaptiveLayout(
-                            useHorizontalLayout: useHorizontalLayout,
-                            children: _buildMainSiteLocality(),
-                          ),
-                          AdaptiveLayout(
-                              useHorizontalLayout: useHorizontalLayout,
-                              children: [
-                                _buildPreciseLocalities(),
-                                _buildLocalityNotes()
-                              ])
-                        ],
-                      ),
-                    ),
-                    AdaptiveLayout(
+              Column(
+                children: [
+                  FormCard(
+                    isPrimary: true,
+                    title: 'Site Info',
+                    child: AdaptiveLayout(
                       useHorizontalLayout: useHorizontalLayout,
+                      children: _buildSiteID(),
+                    ),
+                  ),
+                  FormCard(
+                    title: 'Geography',
+                    child: Column(
                       children: [
-                        _buildCordinateForm(),
-                        FormCard(
-                          title: 'Habitat',
-                          child: Column(
+                        AdaptiveLayout(
+                          useHorizontalLayout: useHorizontalLayout,
+                          children: _buildMainSiteLocality(),
+                        ),
+                        AdaptiveLayout(
+                            useHorizontalLayout: useHorizontalLayout,
                             children: [
-                              for (var form in _buildHabitatInfo())
-                                Container(
-                                    padding: const EdgeInsets.all(10),
-                                    child: form),
-                            ],
-                          ),
-                        ),
+                              _buildPreciseLocalities(),
+                              _buildLocalityNotes()
+                            ])
                       ],
                     ),
-                    Column(
-                      children: [
-                        DefaultTabController(
-                          length: 2,
-                          child: TabBar(
-                            indicatorColor: NahpuColor.tabBarColor(context),
-                            controller: _tabController,
-                            tabs: [
-                              Tab(
-                                  icon: Icon(Icons.photo_album_rounded,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .tertiary)),
-                              Tab(
-                                  icon: Icon(Icons.video_library_rounded,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .tertiary)),
-                            ],
-                          ),
+                  ),
+                  AdaptiveLayout(
+                    useHorizontalLayout: useHorizontalLayout,
+                    children: [
+                      _buildCordinateForm(),
+                      FormCard(
+                        title: 'Habitat',
+                        child: Column(
+                          children: [
+                            for (var form in _buildHabitatInfo())
+                              Container(
+                                  padding: const EdgeInsets.all(10),
+                                  child: form),
+                          ],
                         ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.5,
-                          child: TabBarView(
-                            controller: _tabController,
-                            children: const [
-                              PhotoViewer(),
-                              Text('Videos'),
-                            ],
-                          ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      DefaultTabController(
+                        length: 2,
+                        child: TabBar(
+                          indicatorColor: NahpuColor.tabBarColor(context),
+                          controller: _tabController,
+                          tabs: [
+                            Tab(
+                                icon: Icon(Icons.photo_album_rounded,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .tertiary)),
+                            Tab(
+                                icon: Icon(Icons.video_library_rounded,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .tertiary)),
+                          ],
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        child: TabBarView(
+                          controller: _tabController,
+                          children: const [
+                            PhotoViewer(),
+                            Text('Videos'),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),

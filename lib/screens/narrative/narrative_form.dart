@@ -1,4 +1,3 @@
-import 'package:adaptive_components/adaptive_components.dart';
 import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,10 +30,9 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
         builder: (BuildContext context, BoxConstraints constraints) {
       bool useHorizontalLayout = constraints.maxWidth > 400.0;
       return SingleChildScrollView(
-        child: AdaptiveColumn(children: [
-          AdaptiveContainer(
-            columnSpan: 12,
-            child: Card(
+        child: Column(
+          children: [
+            Card(
               color: Theme.of(context).colorScheme.secondaryContainer,
               child: AdaptiveLayout(
                 useHorizontalLayout: useHorizontalLayout,
@@ -44,10 +42,7 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
                 ],
               ),
             ),
-          ),
-          AdaptiveContainer(
-            columnSpan: 12,
-            child: Card(
+            Card(
               child: Container(
                 padding: const EdgeInsets.all(10),
                 child: TextFormField(
@@ -64,12 +59,9 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
                 ),
               ),
             ),
-          ),
-          AdaptiveContainer(
-            columnSpan: 12,
-            child: const MediaForm(),
-          ),
-        ]),
+            const MediaForm(),
+          ],
+        ),
       );
     });
   }

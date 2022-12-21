@@ -1,5 +1,4 @@
 import 'package:drift/drift.dart' as db;
-import 'package:adaptive_components/adaptive_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -58,10 +57,9 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
       builder: (BuildContext context, BoxConstraints c) {
         bool useHorizontalLayout = c.maxWidth > 600;
         return SingleChildScrollView(
-          child: AdaptiveColumn(children: [
-            AdaptiveContainer(
-              columnSpan: 12,
-              child: AdaptiveLayout(
+          child: Column(
+            children: [
+              AdaptiveLayout(
                 useHorizontalLayout: useHorizontalLayout,
                 children: [
                   _buildSpecimenDataFields(),
@@ -78,22 +76,16 @@ class SpecimenFormState extends ConsumerState<SpecimenForm>
                   ),
                 ],
               ),
-            ),
-            AdaptiveContainer(
-              columnSpan: 12,
-              child: AdaptiveLayout(
+              AdaptiveLayout(
                 useHorizontalLayout: useHorizontalLayout,
                 children: [
                   MeasurementForms(useHorizontalLayout: useHorizontalLayout),
                   _buildPartFields(),
                 ],
               ),
-            ),
-            AdaptiveContainer(
-              columnSpan: 12,
-              child: _buildMediaFields(),
-            )
-          ]),
+              _buildMediaFields(),
+            ],
+          ),
         );
       },
     );
