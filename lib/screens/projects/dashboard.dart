@@ -11,9 +11,9 @@ import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/settings/project_settings.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
-import 'package:nahpu/screens/sites/menu_bar.dart';
+import 'package:nahpu/screens/sites/components/menu_bar.dart';
 import 'package:nahpu/screens/narrative/menu_bar.dart';
-import 'package:nahpu/screens/specimens/menu_bar.dart';
+import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
 import 'package:nahpu/screens/projects/project_info.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 

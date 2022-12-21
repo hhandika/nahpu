@@ -4,11 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/configs/colors.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/models/form.dart';
-import 'package:nahpu/providers/page_viewer.dart';
+
 import 'package:nahpu/providers/updater.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/photos.dart';
 import 'package:nahpu/screens/shared/layout.dart';
+import 'package:nahpu/screens/sites/components/coordinates.dart';
 
 class SiteForm extends ConsumerStatefulWidget {
   const SiteForm({Key? key, required this.id, required this.siteFormCtr})
@@ -75,7 +76,7 @@ class SiteFormState extends ConsumerState<SiteForm>
                   AdaptiveLayout(
                     useHorizontalLayout: useHorizontalLayout,
                     children: [
-                      _buildCordinateForm(),
+                      const CoordinateFields(),
                       FormCard(
                         title: 'Habitat',
                         child: Column(
@@ -257,70 +258,5 @@ class SiteFormState extends ConsumerState<SiteForm>
         ),
       ),
     ];
-  }
-
-  Widget _buildCordinateForm() {
-    return FormCard(
-      title: 'Coordinates',
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 10,
-            child: CoordinateList(),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-              elevation: 0,
-            ),
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return const PhotoForm();
-                  });
-            },
-            child: const Text(
-              'Add coordinates',
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class CoordinateList extends ConsumerWidget {
-  const CoordinateList({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final coordinates = ref.watch(coordinateListProvider);
-    return coordinates.when(
-      data: (data) {
-        return ListView.builder(
-          itemCount: data.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              leading: const Icon(Icons.person_rounded),
-              title: Text(data[index].siteID ?? ''),
-              subtitle: Text(data[index].id ?? ''),
-              trailing: IconButton(
-                icon: const Icon(Icons.delete_rounded),
-                onPressed: () {
-                  // ref.read(personnelListProvider.notifier).deletePersonnel(
-                  //     data[index].id, data[index].name, data[index].email);
-                },
-              ),
-            );
-          },
-        );
-      },
-      loading: () => const CircularProgressIndicator(),
-      error: (error, stack) => Text(error.toString()),
-    );
   }
 }

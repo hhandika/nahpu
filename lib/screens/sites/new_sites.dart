@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nahpu/models/form.dart';
-import 'package:nahpu/screens/sites/menu_bar.dart';
+import 'package:nahpu/screens/sites/components/menu_bar.dart';
 import 'package:nahpu/screens/sites/site_form.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/page_viewer.dart';
