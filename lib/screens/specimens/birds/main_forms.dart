@@ -9,8 +9,8 @@ import 'package:nahpu/screens/specimens/shared/media.dart';
 import 'package:nahpu/screens/specimens/shared/specimen_parts.dart';
 import 'package:nahpu/screens/specimens/shared/taxonomy.dart';
 
-class SpecimenForm extends ConsumerStatefulWidget {
-  const SpecimenForm(
+class BirdForms extends ConsumerStatefulWidget {
+  const BirdForms(
       {Key? key, required this.specimenUuid, required this.specimenCtr})
       : super(key: key);
 
@@ -18,10 +18,10 @@ class SpecimenForm extends ConsumerStatefulWidget {
   final SpecimenFormCtrModel specimenCtr;
 
   @override
-  SpecimenFormState createState() => SpecimenFormState();
+  BirdFormsState createState() => BirdFormsState();
 }
 
-class SpecimenFormState extends ConsumerState<SpecimenForm> {
+class BirdFormsState extends ConsumerState<BirdForms> {
   @override
   void initState() {
     super.initState();
@@ -51,9 +51,9 @@ class SpecimenFormState extends ConsumerState<SpecimenForm> {
                     children: [
                       TaxonomicForm(
                           useHorizontalLayout: useHorizontalLayout,
-                          taxonClass: 'Mammalia',
-                          taxonOrder: 'Rodentia',
-                          taxonFamily: 'Muridae'),
+                          taxonClass: 'Aves',
+                          taxonOrder: 'Passeriformes',
+                          taxonFamily: 'Fringillidae'),
                       CaptureRecordFields(specimenCtr: widget.specimenCtr),
                     ],
                   ),

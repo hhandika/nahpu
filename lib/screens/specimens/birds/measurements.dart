@@ -4,18 +4,17 @@ import 'package:nahpu/models/types.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 
-class MammalMeasurementForms extends ConsumerStatefulWidget {
-  const MammalMeasurementForms({Key? key, required this.useHorizontalLayout})
+class BirdMeasurementForms extends ConsumerStatefulWidget {
+  const BirdMeasurementForms({Key? key, required this.useHorizontalLayout})
       : super(key: key);
 
   final bool useHorizontalLayout;
 
   @override
-  MammalMeasurementFormsState createState() => MammalMeasurementFormsState();
+  BirdMeasurementFormsState createState() => BirdMeasurementFormsState();
 }
 
-class MammalMeasurementFormsState
-    extends ConsumerState<MammalMeasurementForms> {
+class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
   SpecimenSex _specimenSex = SpecimenSex.unknown;
   bool _isScrotal = false;
 
