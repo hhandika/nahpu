@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/form.dart';
+import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalog.dart';
 import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
 import 'package:nahpu/providers/page_viewer.dart';
@@ -12,10 +13,12 @@ import 'package:nahpu/providers/project.dart';
 
 Future<void> createNewSpecimens(BuildContext context, WidgetRef ref) {
   String projectUuid = ref.watch(projectUuidProvider.state).state;
+  CatalogFmt catalogFmt = ref.watch(catalogFmtProvider);
   final String specimenUuid = uuid;
   ref.read(databaseProvider).createSpecimen(SpecimenCompanion(
         specimenUuid: db.Value(specimenUuid),
         projectUuid: db.Value(projectUuid),
+        taxonGroup: db.Value(matchCatFmtToTaxonGroup(catalogFmt)),
       ));
 
   return Navigator.of(context).push(MaterialPageRoute(

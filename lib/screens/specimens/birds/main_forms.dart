@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/screens/shared/layout.dart';
-import 'package:nahpu/screens/specimens/mammals/measurements.dart';
+import 'package:nahpu/screens/specimens/birds/measurements.dart';
 import 'package:nahpu/screens/specimens/shared/capture_records.dart';
 import 'package:nahpu/screens/specimens/shared/collecting_records.dart';
 import 'package:nahpu/screens/specimens/shared/media.dart';
@@ -62,7 +62,7 @@ class BirdFormsState extends ConsumerState<BirdForms> {
               AdaptiveLayout(
                 useHorizontalLayout: useHorizontalLayout,
                 children: [
-                  MammalMeasurementForms(
+                  BirdMeasurementForms(
                       useHorizontalLayout: useHorizontalLayout),
                   SpecimenPartFields(specimenCtr: widget.specimenCtr),
                 ],

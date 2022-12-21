@@ -89,8 +89,8 @@ class SpecimensState extends ConsumerState<Specimens> {
                     return SpecimenForm(
                       specimenUuid: specimenEntry[index].specimenUuid,
                       specimenCtr: specimenFormCtr,
-                      catalogFmt:
-                          matchTaxonGroup(specimenEntry[index].taxonGroup),
+                      catalogFmt: matchTaxonGroupToCatFmt(
+                          specimenEntry[index].taxonGroup),
                     );
                   },
                   onPageChanged: (value) => setState(() {

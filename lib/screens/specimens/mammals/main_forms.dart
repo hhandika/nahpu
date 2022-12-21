@@ -11,11 +11,15 @@ import 'package:nahpu/screens/specimens/shared/taxonomy.dart';
 
 class MammalForms extends ConsumerStatefulWidget {
   const MammalForms(
-      {Key? key, required this.specimenUuid, required this.specimenCtr})
+      {Key? key,
+      required this.specimenUuid,
+      required this.specimenCtr,
+      this.isBats = false})
       : super(key: key);
 
   final String specimenUuid;
   final SpecimenFormCtrModel specimenCtr;
+  final bool isBats;
 
   @override
   MammalFormsState createState() => MammalFormsState();
@@ -63,7 +67,9 @@ class MammalFormsState extends ConsumerState<MammalForms> {
                 useHorizontalLayout: useHorizontalLayout,
                 children: [
                   MammalMeasurementForms(
-                      useHorizontalLayout: useHorizontalLayout),
+                    useHorizontalLayout: useHorizontalLayout,
+                    isBats: widget.isBats,
+                  ),
                   SpecimenPartFields(specimenCtr: widget.specimenCtr),
                 ],
               ),

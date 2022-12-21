@@ -41,6 +41,11 @@ class SpecimenFormState extends ConsumerState<SpecimenForm> {
       case CatalogFmt.generalMammals:
         return MammalForms(
             specimenUuid: widget.specimenUuid, specimenCtr: widget.specimenCtr);
+      case CatalogFmt.bats:
+        return MammalForms(
+            specimenUuid: widget.specimenUuid,
+            specimenCtr: widget.specimenCtr,
+            isBats: true);
       default:
         return MammalForms(
             specimenUuid: widget.specimenUuid, specimenCtr: widget.specimenCtr);

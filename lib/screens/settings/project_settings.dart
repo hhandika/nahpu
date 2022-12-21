@@ -82,7 +82,7 @@ class CatalogFmtSelection extends ConsumerStatefulWidget {
 }
 
 class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
-  final List<String> catalogFmtOpts = ['General Mammals', 'Birds'];
+  final List<String> catalogFmtOpts = ['General Mammals', 'Birds', 'Bats'];
 
   @override
   Widget build(BuildContext context) {
@@ -115,6 +115,18 @@ class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
               ref
                   .read(catalogFmtProvider.notifier)
                   .setCatalogFmt(CatalogFmt.birds);
+              Navigator.pop(context);
+            },
+          ),
+          SettingsTile(
+            title: const Text('Bats'),
+            leading: const Icon(MdiIcons.bat),
+            trailing:
+                widget.selectedFmt == 'Bats' ? const Icon(Icons.check) : null,
+            onPressed: (context) {
+              ref
+                  .read(catalogFmtProvider.notifier)
+                  .setCatalogFmt(CatalogFmt.bats);
               Navigator.pop(context);
             },
           ),
