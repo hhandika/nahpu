@@ -54,10 +54,12 @@ class MammalFormsState extends ConsumerState<MammalForms> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       TaxonomicForm(
-                          useHorizontalLayout: useHorizontalLayout,
-                          taxonClass: 'Mammalia',
-                          taxonOrder: 'Rodentia',
-                          taxonFamily: 'Muridae'),
+                        useHorizontalLayout: useHorizontalLayout,
+                        taxonClass: 'Mammalia',
+                        taxonOrder: widget.isBats ? 'Chiroptera' : 'Rodentia',
+                        taxonFamily:
+                            widget.isBats ? 'Vespertilionidae' : 'Muridae',
+                      ),
                       CaptureRecordFields(specimenCtr: widget.specimenCtr),
                     ],
                   ),

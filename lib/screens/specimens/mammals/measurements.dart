@@ -44,10 +44,22 @@ class MammalMeasurementFormsState
                 ),
                 keyboardType: TextInputType.number,
               ),
+            ],
+          ),
+          AdaptiveLayout(
+            useHorizontalLayout: widget.useHorizontalLayout,
+            children: [
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: 'Hind foot length (mm)',
                   hintText: 'Enter HF length',
+                ),
+                keyboardType: TextInputType.number,
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Ear length (mm)',
+                  hintText: 'Enter ER length',
                 ),
                 keyboardType: TextInputType.number,
               ),
@@ -58,18 +70,20 @@ class MammalMeasurementFormsState
             children: [
               TextFormField(
                 decoration: const InputDecoration(
-                  labelText: 'Ear length (mm)',
-                  hintText: 'Enter ER length',
-                ),
-                keyboardType: TextInputType.number,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
                   labelText: 'Weight (grams)',
                   hintText: 'Enter specimen weight',
                 ),
                 keyboardType: TextInputType.number,
               ),
+              Visibility(
+                  visible: widget.isBats,
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Forearm Length (mm)',
+                      hintText: 'Enter FL length',
+                    ),
+                    keyboardType: TextInputType.number,
+                  )),
             ],
           ),
           Padding(
