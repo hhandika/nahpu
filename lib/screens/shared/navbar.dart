@@ -5,11 +5,11 @@ import 'package:nahpu/configs/colors.dart';
 
 import 'package:nahpu/providers/project.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:nahpu/screens/narrative/narrative.dart';
-import 'package:nahpu/screens/collecting/coll_events.dart';
+import 'package:nahpu/screens/narrative/narrative_view.dart';
+import 'package:nahpu/screens/collecting_events/coll_event_view.dart';
 import 'package:nahpu/providers/page_viewer.dart';
 
-import 'package:nahpu/screens/sites/sites.dart';
+import 'package:nahpu/screens/sites/site_view.dart';
 import 'package:nahpu/screens/specimens/specimen_view.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
 

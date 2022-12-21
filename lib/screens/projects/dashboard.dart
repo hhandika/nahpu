@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/providers/project.dart';
-import 'package:nahpu/screens/collecting/menu_bar.dart';
+import 'package:nahpu/screens/collecting_events/menu_bar.dart';
 import 'package:nahpu/screens/home.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/settings/project_settings.dart';

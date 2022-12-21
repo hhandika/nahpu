@@ -4,7 +4,7 @@ import 'package:nahpu/models/form.dart';
 
 import 'package:nahpu/screens/narrative/narrative_form.dart';
 import 'package:nahpu/screens/narrative/menu_bar.dart';
-import 'package:nahpu/screens/narrative/narrative.dart';
+import 'package:nahpu/screens/narrative/narrative_view.dart';
 import 'package:nahpu/providers/page_viewer.dart';
 
 class NewNarrativeForm extends ConsumerStatefulWidget {

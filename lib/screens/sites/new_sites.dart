@@ -4,7 +4,7 @@ import 'package:nahpu/screens/sites/menu_bar.dart';
 import 'package:nahpu/screens/sites/site_form.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/page_viewer.dart';
-import 'package:nahpu/screens/sites/sites.dart';
+import 'package:nahpu/screens/sites/site_view.dart';
 
 enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
 
