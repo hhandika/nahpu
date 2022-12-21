@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/configs/colors.dart';
-
+import 'package:nahpu/models/types.dart';
+import 'package:nahpu/providers/catalog.dart';
 import 'package:nahpu/providers/project.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/screens/narrative/narrative_view.dart';
 import 'package:nahpu/screens/collecting_events/coll_event_view.dart';
 import 'package:nahpu/providers/page_viewer.dart';
-
 import 'package:nahpu/screens/sites/site_view.dart';
 import 'package:nahpu/screens/specimens/specimen_view.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
@@ -51,9 +50,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
           tooltip: 'Collection Events',
         ),
         NavigationDestination(
-          icon: Icon(
-            MdiIcons.paw,
-          ),
+          icon: SpecimenIcons(),
           label: 'Specimens',
         ),
         NavigationDestination(
@@ -110,6 +107,25 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
           MaterialPageRoute(builder: (context) => const Narrative()),
         );
         break;
+    }
+  }
+}
+
+class SpecimenIcons extends ConsumerWidget {
+  const SpecimenIcons({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    CatalogFmt catalogFmt = ref.watch(catalogFmtProvider);
+    switch (catalogFmt) {
+      case CatalogFmt.birds:
+        return const Icon(MdiIcons.feather);
+      case CatalogFmt.generalMammals:
+        return const Icon(MdiIcons.paw);
+      case CatalogFmt.bats:
+        return const Icon(MdiIcons.bat);
+      default:
+        return const Icon(MdiIcons.paw);
     }
   }
 }
