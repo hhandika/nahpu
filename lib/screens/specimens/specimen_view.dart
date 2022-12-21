@@ -7,7 +7,7 @@ import 'package:nahpu/providers/page_viewer.dart';
 
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
-import 'package:nahpu/screens/specimens/menu_bar.dart';
+import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
 import 'package:nahpu/screens/specimens/specimen_form.dart';
 
 class Specimens extends ConsumerStatefulWidget {
