@@ -9,6 +9,7 @@ import 'package:nahpu/screens/collecting_events/menu_bar.dart';
 import 'package:nahpu/screens/home.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/settings/project_settings.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
 import 'package:nahpu/screens/sites/components/menu_bar.dart';
@@ -108,8 +109,8 @@ class DashboardState extends ConsumerState<Dashboard> {
                     ),
                   ),
                   const FormCard(
-                    title: 'Team Members',
-                    child: TeamMemberViewer(),
+                    title: 'Personnel',
+                    child: PersonnelViewer(),
                   ),
                 ],
               ),
@@ -282,14 +283,14 @@ class ProjectOverview extends ConsumerWidget {
   }
 }
 
-class TeamMemberViewer extends ConsumerStatefulWidget {
-  const TeamMemberViewer({Key? key}) : super(key: key);
+class PersonnelViewer extends ConsumerStatefulWidget {
+  const PersonnelViewer({Key? key}) : super(key: key);
 
   @override
-  TeamMemberViewerState createState() => TeamMemberViewerState();
+  PersonnelViewerState createState() => PersonnelViewerState();
 }
 
-class TeamMemberViewerState extends ConsumerState<TeamMemberViewer> {
+class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -305,7 +306,7 @@ class TeamMemberViewerState extends ConsumerState<TeamMemberViewer> {
               showDialog(
                   context: context, builder: (context) => _showPersonnelForm());
             },
-            child: const Text('Add new member')),
+            child: const Text('Add personnel')),
         const SizedBox(height: 10),
       ],
     );
@@ -316,7 +317,7 @@ class TeamMemberViewerState extends ConsumerState<TeamMemberViewer> {
     final initialCtr = TextEditingController();
     final affilitationCtr = TextEditingController();
     return AlertDialog(
-      title: const Text('Add a team member'),
+      title: const Text('Add personnel'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -341,6 +342,29 @@ class TeamMemberViewerState extends ConsumerState<TeamMemberViewer> {
               hintText: 'Enter Affiliation',
             ),
           ),
+          DropdownButtonFormField(
+            decoration: const InputDecoration(
+              labelText: 'Role',
+              hintText: 'Enter role',
+            ),
+            items: const [
+              DropdownMenuItem(
+                value: 'Collector',
+                child: Text('Collector'),
+              ),
+              DropdownMenuItem(
+                value: 'Preparator',
+                child: Text('Preparator'),
+              ),
+              DropdownMenuItem(
+                value: 'Trapper',
+                child: Text('Trapper'),
+              ),
+            ],
+            onChanged: (String? newValue) {},
+          ),
+          const CustomTextField(
+              labelText: 'Collector Number', hintText: 'Enter number'),
         ],
       ),
       actions: [
@@ -392,7 +416,7 @@ class PersonnelList extends ConsumerWidget {
               title: Text(data[index].name ?? ''),
               subtitle: Text(data[index].id ?? ''),
               trailing: IconButton(
-                icon: const Icon(Icons.delete_rounded),
+                icon: const Icon(Icons.edit_rounded),
                 onPressed: () {
                   // ref.read(personnelListProvider.notifier).deletePersonnel(
                   //     data[index].id, data[index].name, data[index].email);
