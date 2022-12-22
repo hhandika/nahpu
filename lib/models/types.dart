@@ -32,7 +32,7 @@ CatalogFmt matchTaxonGroupToCatFmt(String? taxonGroup) {
   switch (taxonGroup) {
     case 'Birds':
       return CatalogFmt.birds;
-    case 'Mammals':
+    case 'General Mammals':
       return CatalogFmt.generalMammals;
     case 'Bats':
       return CatalogFmt.bats;
@@ -46,10 +46,10 @@ String matchCatFmtToTaxonGroup(CatalogFmt catalogFmt) {
     case CatalogFmt.birds:
       return 'Birds';
     case CatalogFmt.generalMammals:
-      return 'Mammals';
+      return 'General Mammals';
     case CatalogFmt.bats:
       return 'Bats';
     default:
-      return 'Mammals';
+      return 'General Mammals';
   }
 }

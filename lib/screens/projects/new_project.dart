@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/project.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 
 import 'dashboard.dart';
 import 'package:nahpu/database/database.dart';
@@ -81,6 +82,7 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                             labelText: 'Principal Investigator',
                             hintText: 'Enter PI name of the project (optional)',
                           ),
+                          const TaxonGroupFields(),
                           ProjectFormField(
                             controller: collectorController,
                             hintText:
@@ -157,6 +159,7 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                                 .collNum
                                 .errMsg,
                           ),
+                          const SizedBox(height: 20),
                           Wrap(spacing: 10, children: [
                             ElevatedButton(
                               child: const Text('Cancel'),
@@ -265,18 +268,16 @@ class ProjectFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: TextFormField(
-          controller: controller,
-          maxLength: maxLength,
-          decoration: InputDecoration(
-              labelText: labelText, hintText: hintText, errorText: errorText),
-          keyboardType: keyboardType,
-          inputFormatters: inputFormatters,
-          // validator: validator,
-          onSaved: onSaved,
-          onChanged: onChanged,
-        ));
+    return TextFormField(
+      controller: controller,
+      maxLength: maxLength,
+      decoration: InputDecoration(
+          labelText: labelText, hintText: hintText, errorText: errorText),
+      keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
+      // validator: validator,
+      onSaved: onSaved,
+      onChanged: onChanged,
+    );
   }
 }
