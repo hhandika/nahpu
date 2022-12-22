@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/forms.dart';
@@ -25,7 +26,9 @@ class SpecimenPartFields extends ConsumerWidget {
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return const PartForms();
+                    return PartForms(
+                      specimenCtr: specimenCtr,
+                    );
                   });
             },
             child: const Text(
@@ -46,7 +49,9 @@ class SpecimenPartFields extends ConsumerWidget {
 }
 
 class PartForms extends ConsumerWidget {
-  const PartForms({Key? key}) : super(key: key);
+  const PartForms({Key? key, required this.specimenCtr}) : super(key: key);
+
+  final SpecimenFormCtrModel specimenCtr;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -74,6 +79,40 @@ class PartForms extends ConsumerWidget {
               hintText: 'Enter part counts',
             ),
             keyboardType: TextInputType.number,
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Date taken',
+              hintText: 'Enter date',
+            ),
+            controller: specimenCtr.prepDateCtr,
+            onTap: () async {
+              final selectedDate = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime.now());
+
+              if (selectedDate != null) {
+                specimenCtr.prepDateCtr.text =
+                    DateFormat.yMMMd().format(selectedDate);
+              }
+            },
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Time taken',
+              hintText: 'Enter time',
+            ),
+            controller: specimenCtr.prepTimeCtr,
+            onTap: () {
+              showTimePicker(context: context, initialTime: TimeOfDay.now())
+                  .then((time) {
+                if (time != null) {
+                  specimenCtr.prepTimeCtr.text = time.format(context);
+                }
+              });
+            },
           ),
         ],
       ),
