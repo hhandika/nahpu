@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:intl/intl.dart';
 import 'package:nahpu/providers/page_viewer.dart';
+import 'package:nahpu/screens/collecting_events/components/environment_data.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/screens/shared/photos.dart';
@@ -79,7 +80,7 @@ class CollEventFormState extends ConsumerState<CollEventForm>
                   ),
                 ],
               ),
-              _buildMediaFields(),
+              _buildMediaFields(useHorizontalLayout),
             ],
           ),
         );
@@ -286,7 +287,7 @@ class CollEventFormState extends ConsumerState<CollEventForm>
     );
   }
 
-  Widget _buildMediaFields() {
+  Widget _buildMediaFields(bool useHorizontalLayout) {
     return Column(
       // Media inputs
       children: [
@@ -308,9 +309,11 @@ class CollEventFormState extends ConsumerState<CollEventForm>
           height: MediaQuery.of(context).size.height * 0.5,
           child: TabBarView(
             controller: _tabController,
-            children: const [
-              Text('Environment Data'),
-              Text('Camera'),
+            children: [
+              EnvironmentDataForm(
+                useHorizontalLayout: useHorizontalLayout,
+              ),
+              const Text('Camera'),
             ],
           ),
         ),
