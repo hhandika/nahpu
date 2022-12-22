@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/types.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 
@@ -26,78 +27,82 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
         children: [
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
-            children: [
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Total length (mm)',
-                  hintText: 'Enter TTL',
-                ),
-                keyboardType: TextInputType.number,
+            children: const [
+              NumberOnlyField(
+                labelText: 'Weight (grams)',
+                hintText: 'Enter weight',
               ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Tail length (mm)',
-                  hintText: 'Enter TL',
-                ),
-                keyboardType: TextInputType.number,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Hind foot length (mm)',
-                  hintText: 'Enter HF length',
-                ),
-                keyboardType: TextInputType.number,
+              NumberOnlyField(
+                labelText: 'Wingspan (mm)',
+                hintText: 'Enter TL',
               ),
             ],
           ),
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
-            children: [
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Ear length (mm)',
-                  hintText: 'Enter ER length',
-                ),
-                keyboardType: TextInputType.number,
+            children: const [
+              CustomTextField(
+                labelText: 'Iris color',
+                hintText: 'Enter iris color',
               ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Weight (grams)',
-                  hintText: 'Enter specimen weight',
-                ),
-                keyboardType: TextInputType.number,
+              CustomTextField(
+                labelText: 'Bill color',
+                hintText: 'Enter bill color',
               ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(5),
-            child: DropdownButtonFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Measurement accuracy',
-                  hintText: 'Select measurement accuracy',
-                ),
-                items: const [
-                  DropdownMenuItem(
-                    value: 'Accurate',
-                    child: Text('Accurate'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Tail cropped',
-                    child: Text('Tail cropped'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Partially eaten',
-                    child: Text('Partially eaten'),
-                  ),
-                ],
-                onChanged: (String? newValue) {}),
+          AdaptiveLayout(
+            useHorizontalLayout: widget.useHorizontalLayout,
+            children: const [
+              CustomTextField(
+                labelText: 'Foot color',
+                hintText: 'Enter foot color',
+              ),
+              CustomTextField(
+                labelText: 'Tarsus color',
+                hintText: 'Enter foot color',
+              ),
+            ],
           ),
-          Divider(
-            color: Theme.of(context).dividerColor,
+          const Divider(),
+          Text('Molt', style: Theme.of(context).textTheme.titleMedium),
+          AdaptiveLayout(
+            useHorizontalLayout: widget.useHorizontalLayout,
+            children: const [
+              CustomTextField(
+                labelText: 'Wing',
+                hintText: 'Enter wing molt',
+              ),
+              CustomTextField(
+                labelText: 'Tail',
+                hintText: 'Enter tail molt',
+              ),
+            ],
+          ),
+          const Divider(),
+          AdaptiveLayout(
+            useHorizontalLayout: widget.useHorizontalLayout,
+            children: const [
+              CustomTextField(
+                labelText: 'Body',
+                hintText: 'Enter body fat',
+              ),
+              NumberOnlyField(
+                labelText: 'Bursa (mm)',
+                hintText: 'Enter tail molt',
+              ),
+              CustomTextField(
+                  labelText: 'Skull ossification (%)',
+                  hintText: 'Enter percentage')
+            ],
           ),
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
+              const CustomTextField(
+                labelText: 'Fat',
+                hintText: 'Enter fat',
+              ),
               DropdownButtonFormField(
                   decoration: const InputDecoration(
                     labelText: 'Sex',
@@ -122,31 +127,14 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
                       _specimenSex = matchSpecimenSex(newValue);
                     });
                   }),
-              DropdownButtonFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Life stage',
-                    hintText: 'Select specimen age',
-                  ),
-                  items: const [
-                    DropdownMenuItem(
-                      value: 'Adult',
-                      child: Text('Adult'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Subadult',
-                      child: Text('Subadult'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Juvenile',
-                      child: Text('Juvenile'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Unknown',
-                      child: Text('Unknown'),
-                    ),
-                  ],
-                  onChanged: (String? newValue) {}),
             ],
+          ),
+          const Padding(
+            padding: EdgeInsets.all(5),
+            child: CustomTextField(
+              labelText: 'Gonads',
+              hintText: 'Enter gonads',
+            ),
           ),
           Visibility(
             visible: _specimenSex == SpecimenSex.male,
@@ -173,25 +161,20 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
                         _isScrotal = newValue == 'Scrotal';
                       });
                     }),
-                TextFormField(
+                CustomTextField(
                   enabled: _isScrotal,
-                  decoration: const InputDecoration(
-                    labelText: 'Testes size (L x W mm)',
-                    hintText: 'Enter length and width of the right testes ',
-                  ),
-                  keyboardType: TextInputType.number,
+                  labelText: 'Testes size (L x W mm)',
+                  hintText: 'Enter length and width of the right testes ',
                 ),
               ],
             ),
           ),
           TextFormField(
-            enabled: false,
-            maxLines: 5,
+            maxLines: 3,
             decoration: const InputDecoration(
-              labelText: 'Measurements notes',
-              hintText: 'Write any notes about the measurements (optional)',
+              labelText: 'Stomach contents',
+              hintText: 'Enter stomach contents',
             ),
-            keyboardType: TextInputType.number,
           ),
         ],
       ),

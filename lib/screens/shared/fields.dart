@@ -35,3 +35,50 @@ class TaxonGroupFields extends ConsumerWidget {
     );
   }
 }
+
+class NumberOnlyField extends ConsumerWidget {
+  const NumberOnlyField({
+    Key? key,
+    required this.labelText,
+    required this.hintText,
+  }) : super(key: key);
+
+  final String labelText;
+  final String hintText;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return CustomTextField(
+      labelText: labelText,
+      hintText: hintText,
+      keyboardType: TextInputType.number,
+    );
+  }
+}
+
+class CustomTextField extends ConsumerWidget {
+  const CustomTextField({
+    Key? key,
+    required this.labelText,
+    required this.hintText,
+    this.enabled = true,
+    this.keyboardType = TextInputType.text,
+  }) : super(key: key);
+
+  final bool enabled;
+  final String labelText;
+  final String hintText;
+  final TextInputType keyboardType;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return TextFormField(
+      enabled: enabled,
+      decoration: InputDecoration(
+        labelText: labelText,
+        hintText: hintText,
+      ),
+      keyboardType: keyboardType,
+    );
+  }
+}
