@@ -60,7 +60,10 @@ class MammalFormsState extends ConsumerState<MammalForms> {
                         taxonFamily:
                             widget.isBats ? 'Vespertilionidae' : 'Muridae',
                       ),
-                      CaptureRecordFields(specimenCtr: widget.specimenCtr),
+                      CaptureRecordFields(
+                        useHorizontalLayout: useHorizontalLayout,
+                        specimenCtr: widget.specimenCtr,
+                      ),
                     ],
                   ),
                 ],

@@ -54,7 +54,10 @@ class BirdFormsState extends ConsumerState<BirdForms> {
                           taxonClass: 'Aves',
                           taxonOrder: 'Passeriformes',
                           taxonFamily: 'Fringillidae'),
-                      CaptureRecordFields(specimenCtr: widget.specimenCtr),
+                      CaptureRecordFields(
+                        useHorizontalLayout: useHorizontalLayout,
+                        specimenCtr: widget.specimenCtr,
+                      ),
                     ],
                   ),
                 ],

@@ -3,11 +3,14 @@ import 'package:nahpu/models/form.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:intl/intl.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 
 class CaptureRecordFields extends ConsumerWidget {
-  const CaptureRecordFields({Key? key, required this.specimenCtr})
+  const CaptureRecordFields(
+      {Key? key, required this.useHorizontalLayout, required this.specimenCtr})
       : super(key: key);
 
+  final bool useHorizontalLayout;
   final SpecimenFormCtrModel specimenCtr;
 
   @override
@@ -16,22 +19,45 @@ class CaptureRecordFields extends ConsumerWidget {
       title: 'Capture Records',
       child: Column(
         children: [
-          DropdownButtonFormField(
-              decoration: const InputDecoration(
-                labelText: 'Collecting Event ID',
-                hintText: 'Choose a site ID',
+          AdaptiveLayout(
+            useHorizontalLayout: useHorizontalLayout,
+            children: [
+              DropdownButtonFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Collecting Event ID',
+                  hintText: 'Choose a collecting event ID',
+                ),
+                items: const [
+                  DropdownMenuItem(
+                    value: 'One',
+                    child: Text('One'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Two',
+                    child: Text('Two'),
+                  ),
+                ],
+                onChanged: (String? newValue) {},
               ),
-              items: const [
-                DropdownMenuItem(
-                  value: 'One',
-                  child: Text('One'),
+              DropdownButtonFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Site ID',
+                  hintText: 'Choose a site ID',
                 ),
-                DropdownMenuItem(
-                  value: 'Two',
-                  child: Text('Two'),
-                ),
-              ],
-              onChanged: (String? newValue) {}),
+                items: const [
+                  DropdownMenuItem(
+                    value: 'One',
+                    child: Text('One'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Two',
+                    child: Text('Two'),
+                  ),
+                ],
+                onChanged: (String? newValue) {},
+              ),
+            ],
+          ),
           DropdownButtonFormField(
               decoration: const InputDecoration(
                 labelText: 'Capture Method',
