@@ -181,4 +181,4 @@ CREATE TABLE taxonomy (
     taxonOrder TEXT
 );
 
-listProject: SELECT projectUuid,projectName FROM project;
+listProject: SELECT projectUuid,projectName,dateCreated,dateLastModified FROM project;

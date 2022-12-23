@@ -6677,7 +6677,8 @@ abstract class _$Database extends GeneratedDatabase {
   late final Part part = Part(this);
   late final Taxonomy taxonomy = Taxonomy(this);
   Selectable<ListProjectResult> listProject() {
-    return customSelect('SELECT projectUuid,projectName FROM project',
+    return customSelect(
+        'SELECT projectUuid,projectName,dateCreated,dateLastModified FROM project',
         variables: [],
         readsFrom: {
           project,
@@ -6685,6 +6686,8 @@ abstract class _$Database extends GeneratedDatabase {
       return ListProjectResult(
         projectUuid: row.read<String>('projectUuid'),
         projectName: row.read<String>('projectName'),
+        dateCreated: row.read<String?>('dateCreated'),
+        dateLastModified: row.read<String?>('dateLastModified'),
       );
     });
   }
@@ -6712,8 +6715,12 @@ abstract class _$Database extends GeneratedDatabase {
 class ListProjectResult {
   final String projectUuid;
   final String projectName;
+  final String? dateCreated;
+  final String? dateLastModified;
   ListProjectResult({
     required this.projectUuid,
     required this.projectName,
+    this.dateCreated,
+    this.dateLastModified,
   });
 }
