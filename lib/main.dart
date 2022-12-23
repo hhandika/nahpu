@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:nahpu/configs/themes.dart';
 import 'package:nahpu/providers/settings.dart';
-import 'package:nahpu/screens/home.dart';
+import 'package:nahpu/screens/home/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
