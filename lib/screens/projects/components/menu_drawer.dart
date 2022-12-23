@@ -4,6 +4,7 @@ import 'package:nahpu/providers/project.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/settings/project_settings.dart';
 import 'package:nahpu/screens/home.dart';
+import 'package:nahpu/screens/shared/forms.dart';
 
 class ProjectMenuDrawer extends ConsumerWidget {
   const ProjectMenuDrawer({Key? key}) : super(key: key);
@@ -100,11 +101,18 @@ class ProjectMenuDrawer extends ConsumerWidget {
               'Delete project',
               style: TextStyle(color: Colors.redAccent),
             ),
-            onTap: () {
-              deleteProject(ref, projectUuid);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Home()),
+            onTap: () async {
+              return showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return DeleteAlerts(
+                    projectUuid: projectUuid,
+                    onDelete: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Home()),
+                    ),
+                  );
+                },
               );
             },
           ),

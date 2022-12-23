@@ -3,6 +3,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:nahpu/providers/project.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/settings/settings.dart';
+import 'package:nahpu/screens/shared/forms.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
@@ -297,13 +298,24 @@ class HomeState extends ConsumerState<Home> {
               ),
               PopupMenuItem<MenuSelection>(
                 value: MenuSelection.deleteProject,
-                onTap: () {
-                  deleteProject(ref, project.projectUuid);
-                },
+                onTap: () => _deleteProject(project.projectUuid),
                 child:
                     const Text('Delete', style: TextStyle(color: Colors.red)),
               ),
             ]);
+  }
+
+  Future<void> _deleteProject(String projectUuid) async {
+    return Future.delayed(
+      const Duration(seconds: 0),
+      () => showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => DeleteAlerts(
+          projectUuid: projectUuid,
+          onDelete: () => Navigator.of(context).pop(),
+        ),
+      ),
+    );
   }
 
   void _openProject(String projectUuid) {

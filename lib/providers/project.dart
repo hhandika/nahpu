@@ -45,5 +45,4 @@ get uuid => const Uuid().v4();
 void deleteProject(WidgetRef ref, String uuid) {
   ref.read(databaseProvider).deleteProject(uuid);
   ref.refresh(projectListProvider);
-  ;
 }

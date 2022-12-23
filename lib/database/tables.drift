@@ -73,11 +73,20 @@ CREATE TABLE photo (
     lenses TEXT
 );
 
+CREATE TABLE personnelList (
+    projectUuid TEXT,
+    personnelId TEXT,
+    projectUuid REFERENCES project(projectUuid),
+    personnelId REFERENCES personnel(id)
+)
+
 CREATE TABLE personnel (
     id TEXT UNIQUE PRIMARY KEY,
     name TEXT,
     initial TEXT,
     affiliation TEXT,
+    role TEXT,
+    lastCollectorNumber INT,
     photoFileName TEXT
 );
 
