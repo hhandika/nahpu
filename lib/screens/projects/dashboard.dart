@@ -6,9 +6,7 @@ import 'package:nahpu/database/database.dart';
 import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/providers/project.dart';
 import 'package:nahpu/screens/collecting_events/menu_bar.dart';
-import 'package:nahpu/screens/home.dart';
-import 'package:nahpu/screens/projects/new_project.dart';
-import 'package:nahpu/screens/settings/project_settings.dart';
+import 'package:nahpu/screens/projects/components/menu_drawer.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
@@ -90,9 +88,7 @@ class DashboardState extends ConsumerState<Dashboard> {
           ),
         ],
       ),
-      drawer: Drawer(
-        child: _buildDrawer(),
-      ),
+      drawer: const ProjectMenuDrawer(),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints c) {
           bool useHorizontalLayout = c.maxWidth > 600;
@@ -119,130 +115,6 @@ class DashboardState extends ConsumerState<Dashboard> {
         },
       ),
       bottomNavigationBar: const ProjectBottomNavbar(),
-    );
-  }
-
-  Widget _buildDrawer() {
-    return ListView(
-      padding: EdgeInsets.zero,
-      children: [
-        UserAccountsDrawerHeader(
-          decoration:
-              BoxDecoration(color: Theme.of(context).colorScheme.primary),
-          accountName: const Text(
-            "Heru Handika",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          accountEmail: const Text(
-            "handika@email.com",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          currentAccountPicture: CircleAvatar(
-            backgroundColor: Colors.white,
-            child: Text(
-              "H",
-              style: TextStyle(
-                fontSize: 45,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-          ),
-        ),
-        ListTile(
-          leading: const Icon(Icons.create_rounded),
-          title: const Text('Create a new project'),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const CreateProjectForm()),
-            );
-          },
-        ),
-        const Divider(color: Colors.grey),
-        ListTile(
-          leading: const Icon(Icons.add_box_rounded),
-          title: const Text('Bundle records'),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const Home()),
-            );
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.save_rounded),
-          title: const Text('Save project as'),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const Home()),
-            );
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.table_view_rounded),
-          title: const Text('Export to csv/tsv'),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const Home()),
-            );
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.picture_as_pdf_rounded),
-          title: const Text('Export to pdf'),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const Home()),
-            );
-          },
-        ),
-        const Divider(color: Colors.grey),
-        ListTile(
-          leading: const Icon(Icons.settings_rounded),
-          title: const Text('Settings'),
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const ProjectSettings()));
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.exit_to_app_rounded),
-          title: const Text('Close project'),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const Home()),
-            );
-          },
-        ),
-        const Divider(
-          color: Colors.grey,
-        ),
-        ListTile(
-          leading: const Icon(Icons.delete_rounded),
-          title: const Text(
-            'Delete all records',
-            style: TextStyle(color: Colors.redAccent),
-          ),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const Home()),
-            );
-          },
-        ),
-      ],
     );
   }
 }
@@ -415,19 +287,32 @@ class PersonnelList extends ConsumerWidget {
               leading: const Icon(Icons.person_rounded),
               title: Text(data[index].name ?? ''),
               subtitle: Text(data[index].id ?? ''),
-              trailing: IconButton(
-                icon: const Icon(Icons.edit_rounded),
-                onPressed: () {
-                  // ref.read(personnelListProvider.notifier).deletePersonnel(
-                  //     data[index].id, data[index].name, data[index].email);
-                },
-              ),
+              trailing: const PersonnelListPopUpMenu(),
             );
           },
         );
       },
       loading: () => const CircularProgressIndicator(),
       error: (error, stack) => Text(error.toString()),
+    );
+  }
+}
+
+class PersonnelListPopUpMenu extends ConsumerWidget {
+  const PersonnelListPopUpMenu({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return PopupMenuButton(
+      icon: const Icon(Icons.more_vert_rounded),
+      itemBuilder: (context) => [
+        const PopupMenuItem(
+          child: Text('Edit'),
+        ),
+        const PopupMenuItem(
+          child: Text('Delete', style: TextStyle(color: Colors.red)),
+        ),
+      ],
     );
   }
 }

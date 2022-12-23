@@ -298,8 +298,7 @@ class HomeState extends ConsumerState<Home> {
               PopupMenuItem<MenuSelection>(
                 value: MenuSelection.deleteProject,
                 onTap: () {
-                  ref.read(databaseProvider).deleteProject(project.projectUuid);
-                  ref.refresh(projectListProvider);
+                  deleteProject(ref, project.projectUuid);
                 },
                 child:
                     const Text('Delete', style: TextStyle(color: Colors.red)),
