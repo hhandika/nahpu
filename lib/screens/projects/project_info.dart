@@ -24,13 +24,15 @@ class ProjectInfo extends StatelessWidget {
           'Project Description: ${projectData?.projectDescription ?? 'Empty!'}'),
       Text(
           'Principal Investigator: ${projectData?.principalInvestigator ?? 'No PI'}'),
-      Text('Collector Name: ${projectData?.collector ?? 'No Collector'}'),
+      Text('Main Collector: ${projectData?.collector ?? 'No Collector'}'),
       Text(
-          'Collector Email: ${projectData?.collectorEmail ?? 'No Collector Email'}'),
+          'Main Collector Email: ${projectData?.collectorEmail ?? 'No Collector Email'}'),
       Text(
-          'Start collector number at: ${projectData?.catNumStart ?? 'No CatNumStart'}'),
+          'First coll. number: ${projectData?.catNumStart ?? 'No CatNumStart'}'),
+      Text('Last coll. number: ${projectData?.catNumStart ?? 'No CatNumEnd'}'),
+      Text('Date Created: ${projectData?.dateCreated ?? 'No DateCreated'}'),
       Text(
-          'End collector number at: ${projectData?.catNumEnd ?? 'No CatNumEnd'}'),
+          'Date Modified: ${projectData?.dateLastModified ?? 'No DateModified'}'),
     ]);
   }
 }

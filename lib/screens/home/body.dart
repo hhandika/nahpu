@@ -234,9 +234,9 @@ class ListProjectCard extends StatelessWidget {
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
         subtitle: Text(
-          project.projectUuid,
+          'Date created: ${project.dateCreated}',
           style: const TextStyle(
-            fontSize: 8,
+            fontSize: 12,
             overflow: TextOverflow.ellipsis,
           ),
         ),
@@ -261,7 +261,7 @@ class GridProjectCard extends StatelessWidget {
         footer: GridTileBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
           title: Text(project.projectName),
-          subtitle: Text(project.projectUuid),
+          subtitle: Text('Date created: ${project.dateCreated}'),
           trailing: ProjectPopUpMenu(project: project),
         ),
         child: FittedBox(

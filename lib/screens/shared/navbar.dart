@@ -116,7 +116,7 @@ class SpecimenIcons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    CatalogFmt catalogFmt = ref.watch(catalogFmtProvider);
+    CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
     switch (catalogFmt) {
       case CatalogFmt.birds:
         return const Icon(MdiIcons.feather);

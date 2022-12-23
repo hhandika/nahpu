@@ -39,7 +39,7 @@ class GeneralSettings {
   final WidgetRef ref;
 
   SettingsSection getSetting() {
-    final catalogFmt = ref.watch(catalogFmtProvider);
+    final catalogFmt = ref.watch(catalogFmtNotifier);
     final selectedFmt = matchCatFmtToTaxonGroup(catalogFmt);
     return SettingsSection(
       title: const Text('General Settings'),
@@ -90,7 +90,7 @@ class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
                 : null,
             onPressed: (context) {
               ref
-                  .read(catalogFmtProvider.notifier)
+                  .read(catalogFmtNotifier.notifier)
                   .setCatalogFmt(CatalogFmt.generalMammals);
               Navigator.pop(context);
             },
@@ -102,7 +102,7 @@ class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
                 widget.selectedFmt == 'Birds' ? const Icon(Icons.check) : null,
             onPressed: (context) {
               ref
-                  .read(catalogFmtProvider.notifier)
+                  .read(catalogFmtNotifier.notifier)
                   .setCatalogFmt(CatalogFmt.birds);
               Navigator.pop(context);
             },
@@ -114,7 +114,7 @@ class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
                 widget.selectedFmt == 'Bats' ? const Icon(Icons.check) : null,
             onPressed: (context) {
               ref
-                  .read(catalogFmtProvider.notifier)
+                  .read(catalogFmtNotifier.notifier)
                   .setCatalogFmt(CatalogFmt.bats);
               Navigator.pop(context);
             },

@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/settings.dart';
 
-final catalogFmtProvider =
+final catalogFmtNotifier =
     StateNotifierProvider<CatalogFmtNotifier, CatalogFmt>(
         (ref) => CatalogFmtNotifier());
 
@@ -18,7 +18,7 @@ class CatalogFmtNotifier extends StateNotifier<CatalogFmt> {
 // so that we can retrieve it when the app is restarted.
 // and also we can use it to generate the catalog number for the
 // next project.
-final catalogNumberProvider =
+final catalogNumberNotifier =
     StateNotifierProvider<CatalogNumberNotifier, int>((ref) {
   return CatalogNumberNotifier();
 });

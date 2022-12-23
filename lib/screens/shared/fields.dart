@@ -14,7 +14,7 @@ class TaxonGroupFields extends ConsumerWidget {
       'General Mammals',
     ];
 
-    CatalogFmt catalogFmt = ref.watch(catalogFmtProvider);
+    CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
     return DropdownButtonFormField(
       decoration: const InputDecoration(
         labelText: 'Taxon Group',
@@ -30,7 +30,7 @@ class TaxonGroupFields extends ConsumerWidget {
       value: matchCatFmtToTaxonGroup(catalogFmt),
       onChanged: (String? newValue) {
         catalogFmt = matchTaxonGroupToCatFmt(newValue!);
-        ref.read(catalogFmtProvider.notifier).setCatalogFmt(catalogFmt);
+        ref.read(catalogFmtNotifier.notifier).setCatalogFmt(catalogFmt);
       },
     );
   }

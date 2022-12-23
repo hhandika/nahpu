@@ -13,7 +13,7 @@ import 'package:nahpu/providers/project.dart';
 
 Future<void> createNewSpecimens(BuildContext context, WidgetRef ref) {
   String projectUuid = ref.watch(projectUuidProvider.state).state;
-  CatalogFmt catalogFmt = ref.watch(catalogFmtProvider);
+  CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
   final String specimenUuid = uuid;
   ref.read(databaseProvider).createSpecimen(SpecimenCompanion(
         specimenUuid: db.Value(specimenUuid),
@@ -64,7 +64,7 @@ class NewSpecimenFormState extends ConsumerState<NewSpecimenForm> {
 
   @override
   Widget build(BuildContext context) {
-    final catalogFmt = ref.watch(catalogFmtProvider);
+    final catalogFmt = ref.watch(catalogFmtNotifier);
     return Scaffold(
       appBar: AppBar(
         title: const Text("New Specimens"),
