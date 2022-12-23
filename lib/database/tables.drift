@@ -12,7 +12,8 @@ CREATE TABLE project (
     collectorInitial TEXT,
     collectorEmail TEXT,
     catNumStart INT,
-    catNumEnd INT
+    dateCreated TEXT,
+    dateLastModified Text
 );
 
 CREATE TABLE site (
