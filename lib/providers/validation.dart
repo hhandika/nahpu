@@ -123,8 +123,7 @@ extension StringValidator on String {
   }
 
   bool get isValidEmail {
-    final emailRegex =
-        RegExp(r'^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$');
+    final emailRegex = RegExp(r'(^[a-zA-Z0-9_.]+[@]{1}[a-z0-9]+[\.][a-z]+$)');
     return emailRegex.hasMatch(this);
   }
 }
