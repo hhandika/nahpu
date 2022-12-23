@@ -75,9 +75,9 @@ CREATE TABLE photo (
 
 CREATE TABLE personnelList (
     projectUuid TEXT,
-    personnelId TEXT,
+    personnelUuid TEXT,
     projectUuid REFERENCES project(projectUuid),
-    personnelId REFERENCES personnel(id)
+    personnelUuid REFERENCES personnel(id)
 )
 
 CREATE TABLE personnel (
