@@ -26,8 +26,9 @@ CREATE TABLE site (
     stateProvince TEXT,
     county TEXT,
     municipality TEXT,
+    photoID TEXT,
     locality TEXT, -- verbatim locality in DWC
-    FOREIGN KEY(photoID) INT REFERENCES photo(id)
+    FOREIGN KEY(photoID) REFERENCES photo(id)
 );
 
 CREATE TABLE coordinate (
@@ -69,9 +70,10 @@ CREATE TABLE photo (
     id INT PRIMARY KEY AUTOINCREMENT,
     filename TEXT,
     date TEXT,
-    photographerID INT REFERENCES personnel(id),
     camera TEXT,
-    lenses TEXT
+    lenses TEXT,
+    photographerID TEXT,
+    FOREIGN KEY(photographerID) REFERENCES personnel(id)
 );
 
 CREATE TABLE personnelList (
@@ -79,7 +81,7 @@ CREATE TABLE personnelList (
     personnelUuid TEXT,
     FOREIGN KEY(projectUuid) REFERENCES project(projectUuid),
     FOREIGN KEY(personnelUuid) REFERENCES personnel(id)
-)
+);
 
 CREATE TABLE personnel (
     id TEXT UNIQUE PRIMARY KEY,
@@ -102,9 +104,11 @@ CREATE TABLE specimen (
     captureDate TEXT,
     captureTime TEXT,
     trapType TEXT,
+    collectorID TEXT,
+    collEventID INT,
     preparatorID TEXT REFERENCES personnel(id),
-    FOREIGN KEY(collectorID) TEXT REFERENCES personnel(id),
-    FOREIGN KEY(collEventID) INT REFERENCES collEvent(id)
+    FOREIGN KEY(collectorID) REFERENCES personnel(id),
+    FOREIGN KEY(collEventID) REFERENCES collEvent(id)
 );
 
 CREATE TABLE mammalMeasurement (
@@ -132,7 +136,7 @@ CREATE TABLE mammalMeasurement (
     embryoRightCount INT,
     embryoCRLeft INT,
     embryoCRRight INT,
-    FOREIGN KEY(specimenUuid) TEXT REFERENCES specimen(specimenUuid)
+    FOREIGN KEY(specimenUuid) REFERENCES specimen(specimenUuid)
 );
 
 CREATE TABLE birdMeasurement (
@@ -153,7 +157,7 @@ CREATE TABLE birdMeasurement (
     sex TEXT,
     gonad TEXT,
     stomach TEXT,
-    FOREIGN KEY(specimenUuid) TEXT REFERENCES specimen(specimenUuid)
+    FOREIGN KEY(specimenUuid) REFERENCES specimen(specimenUuid)
 );
 
 CREATE TABLE part (

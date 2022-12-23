@@ -16,7 +16,8 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
   final String? collectorInitial;
   final String? collectorEmail;
   final int? catNumStart;
-  final int? catNumEnd;
+  final String? dateCreated;
+  final String? dateLastModified;
   ProjectData(
       {required this.projectUuid,
       required this.projectName,
@@ -26,7 +27,8 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
       this.collectorInitial,
       this.collectorEmail,
       this.catNumStart,
-      this.catNumEnd});
+      this.dateCreated,
+      this.dateLastModified});
   factory ProjectData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return ProjectData(
@@ -46,8 +48,10 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}collectorEmail']),
       catNumStart: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}catNumStart']),
-      catNumEnd: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}catNumEnd']),
+      dateCreated: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}dateCreated']),
+      dateLastModified: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}dateLastModified']),
     );
   }
   @override
@@ -73,8 +77,11 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
     if (!nullToAbsent || catNumStart != null) {
       map['catNumStart'] = Variable<int?>(catNumStart);
     }
-    if (!nullToAbsent || catNumEnd != null) {
-      map['catNumEnd'] = Variable<int?>(catNumEnd);
+    if (!nullToAbsent || dateCreated != null) {
+      map['dateCreated'] = Variable<String?>(dateCreated);
+    }
+    if (!nullToAbsent || dateLastModified != null) {
+      map['dateLastModified'] = Variable<String?>(dateLastModified);
     }
     return map;
   }
@@ -101,9 +108,12 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
       catNumStart: catNumStart == null && nullToAbsent
           ? const Value.absent()
           : Value(catNumStart),
-      catNumEnd: catNumEnd == null && nullToAbsent
+      dateCreated: dateCreated == null && nullToAbsent
           ? const Value.absent()
-          : Value(catNumEnd),
+          : Value(dateCreated),
+      dateLastModified: dateLastModified == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dateLastModified),
     );
   }
 
@@ -121,7 +131,8 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
       collectorInitial: serializer.fromJson<String?>(json['collectorInitial']),
       collectorEmail: serializer.fromJson<String?>(json['collectorEmail']),
       catNumStart: serializer.fromJson<int?>(json['catNumStart']),
-      catNumEnd: serializer.fromJson<int?>(json['catNumEnd']),
+      dateCreated: serializer.fromJson<String?>(json['dateCreated']),
+      dateLastModified: serializer.fromJson<String?>(json['dateLastModified']),
     );
   }
   @override
@@ -137,7 +148,8 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
       'collectorInitial': serializer.toJson<String?>(collectorInitial),
       'collectorEmail': serializer.toJson<String?>(collectorEmail),
       'catNumStart': serializer.toJson<int?>(catNumStart),
-      'catNumEnd': serializer.toJson<int?>(catNumEnd),
+      'dateCreated': serializer.toJson<String?>(dateCreated),
+      'dateLastModified': serializer.toJson<String?>(dateLastModified),
     };
   }
 
@@ -150,7 +162,8 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
           String? collectorInitial,
           String? collectorEmail,
           int? catNumStart,
-          int? catNumEnd}) =>
+          String? dateCreated,
+          String? dateLastModified}) =>
       ProjectData(
         projectUuid: projectUuid ?? this.projectUuid,
         projectName: projectName ?? this.projectName,
@@ -161,7 +174,8 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
         collectorInitial: collectorInitial ?? this.collectorInitial,
         collectorEmail: collectorEmail ?? this.collectorEmail,
         catNumStart: catNumStart ?? this.catNumStart,
-        catNumEnd: catNumEnd ?? this.catNumEnd,
+        dateCreated: dateCreated ?? this.dateCreated,
+        dateLastModified: dateLastModified ?? this.dateLastModified,
       );
   @override
   String toString() {
@@ -174,7 +188,8 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
           ..write('collectorInitial: $collectorInitial, ')
           ..write('collectorEmail: $collectorEmail, ')
           ..write('catNumStart: $catNumStart, ')
-          ..write('catNumEnd: $catNumEnd')
+          ..write('dateCreated: $dateCreated, ')
+          ..write('dateLastModified: $dateLastModified')
           ..write(')'))
         .toString();
   }
@@ -189,7 +204,8 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
       collectorInitial,
       collectorEmail,
       catNumStart,
-      catNumEnd);
+      dateCreated,
+      dateLastModified);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -202,7 +218,8 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
           other.collectorInitial == this.collectorInitial &&
           other.collectorEmail == this.collectorEmail &&
           other.catNumStart == this.catNumStart &&
-          other.catNumEnd == this.catNumEnd);
+          other.dateCreated == this.dateCreated &&
+          other.dateLastModified == this.dateLastModified);
 }
 
 class ProjectCompanion extends UpdateCompanion<ProjectData> {
@@ -214,7 +231,8 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
   final Value<String?> collectorInitial;
   final Value<String?> collectorEmail;
   final Value<int?> catNumStart;
-  final Value<int?> catNumEnd;
+  final Value<String?> dateCreated;
+  final Value<String?> dateLastModified;
   const ProjectCompanion({
     this.projectUuid = const Value.absent(),
     this.projectName = const Value.absent(),
@@ -224,7 +242,8 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
     this.collectorInitial = const Value.absent(),
     this.collectorEmail = const Value.absent(),
     this.catNumStart = const Value.absent(),
-    this.catNumEnd = const Value.absent(),
+    this.dateCreated = const Value.absent(),
+    this.dateLastModified = const Value.absent(),
   });
   ProjectCompanion.insert({
     required String projectUuid,
@@ -235,7 +254,8 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
     this.collectorInitial = const Value.absent(),
     this.collectorEmail = const Value.absent(),
     this.catNumStart = const Value.absent(),
-    this.catNumEnd = const Value.absent(),
+    this.dateCreated = const Value.absent(),
+    this.dateLastModified = const Value.absent(),
   })  : projectUuid = Value(projectUuid),
         projectName = Value(projectName);
   static Insertable<ProjectData> custom({
@@ -247,7 +267,8 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
     Expression<String?>? collectorInitial,
     Expression<String?>? collectorEmail,
     Expression<int?>? catNumStart,
-    Expression<int?>? catNumEnd,
+    Expression<String?>? dateCreated,
+    Expression<String?>? dateLastModified,
   }) {
     return RawValuesInsertable({
       if (projectUuid != null) 'projectUuid': projectUuid,
@@ -259,7 +280,8 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
       if (collectorInitial != null) 'collectorInitial': collectorInitial,
       if (collectorEmail != null) 'collectorEmail': collectorEmail,
       if (catNumStart != null) 'catNumStart': catNumStart,
-      if (catNumEnd != null) 'catNumEnd': catNumEnd,
+      if (dateCreated != null) 'dateCreated': dateCreated,
+      if (dateLastModified != null) 'dateLastModified': dateLastModified,
     });
   }
 
@@ -272,7 +294,8 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
       Value<String?>? collectorInitial,
       Value<String?>? collectorEmail,
       Value<int?>? catNumStart,
-      Value<int?>? catNumEnd}) {
+      Value<String?>? dateCreated,
+      Value<String?>? dateLastModified}) {
     return ProjectCompanion(
       projectUuid: projectUuid ?? this.projectUuid,
       projectName: projectName ?? this.projectName,
@@ -283,7 +306,8 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
       collectorInitial: collectorInitial ?? this.collectorInitial,
       collectorEmail: collectorEmail ?? this.collectorEmail,
       catNumStart: catNumStart ?? this.catNumStart,
-      catNumEnd: catNumEnd ?? this.catNumEnd,
+      dateCreated: dateCreated ?? this.dateCreated,
+      dateLastModified: dateLastModified ?? this.dateLastModified,
     );
   }
 
@@ -315,8 +339,11 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
     if (catNumStart.present) {
       map['catNumStart'] = Variable<int?>(catNumStart.value);
     }
-    if (catNumEnd.present) {
-      map['catNumEnd'] = Variable<int?>(catNumEnd.value);
+    if (dateCreated.present) {
+      map['dateCreated'] = Variable<String?>(dateCreated.value);
+    }
+    if (dateLastModified.present) {
+      map['dateLastModified'] = Variable<String?>(dateLastModified.value);
     }
     return map;
   }
@@ -332,7 +359,8 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
           ..write('collectorInitial: $collectorInitial, ')
           ..write('collectorEmail: $collectorEmail, ')
           ..write('catNumStart: $catNumStart, ')
-          ..write('catNumEnd: $catNumEnd')
+          ..write('dateCreated: $dateCreated, ')
+          ..write('dateLastModified: $dateLastModified')
           ..write(')'))
         .toString();
   }
@@ -398,12 +426,20 @@ class Project extends Table with TableInfo<Project, ProjectData> {
       type: const IntType(),
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _catNumEndMeta = const VerificationMeta('catNumEnd');
-  late final GeneratedColumn<int?> catNumEnd = GeneratedColumn<int?>(
-      'catNumEnd', aliasedName, true,
-      type: const IntType(),
+  final VerificationMeta _dateCreatedMeta =
+      const VerificationMeta('dateCreated');
+  late final GeneratedColumn<String?> dateCreated = GeneratedColumn<String?>(
+      'dateCreated', aliasedName, true,
+      type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: '');
+  final VerificationMeta _dateLastModifiedMeta =
+      const VerificationMeta('dateLastModified');
+  late final GeneratedColumn<String?> dateLastModified =
+      GeneratedColumn<String?>('dateLastModified', aliasedName, true,
+          type: const StringType(),
+          requiredDuringInsert: false,
+          $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
         projectUuid,
@@ -414,7 +450,8 @@ class Project extends Table with TableInfo<Project, ProjectData> {
         collectorInitial,
         collectorEmail,
         catNumStart,
-        catNumEnd
+        dateCreated,
+        dateLastModified
       ];
   @override
   String get aliasedName => _alias ?? 'project';
@@ -475,9 +512,17 @@ class Project extends Table with TableInfo<Project, ProjectData> {
           catNumStart.isAcceptableOrUnknown(
               data['catNumStart']!, _catNumStartMeta));
     }
-    if (data.containsKey('catNumEnd')) {
-      context.handle(_catNumEndMeta,
-          catNumEnd.isAcceptableOrUnknown(data['catNumEnd']!, _catNumEndMeta));
+    if (data.containsKey('dateCreated')) {
+      context.handle(
+          _dateCreatedMeta,
+          dateCreated.isAcceptableOrUnknown(
+              data['dateCreated']!, _dateCreatedMeta));
+    }
+    if (data.containsKey('dateLastModified')) {
+      context.handle(
+          _dateLastModifiedMeta,
+          dateLastModified.isAcceptableOrUnknown(
+              data['dateLastModified']!, _dateLastModifiedMeta));
     }
     return context;
   }
@@ -504,9 +549,17 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
   final String? name;
   final String? initial;
   final String? affiliation;
+  final String? role;
+  final int? lastCollectorNumber;
   final String? photoFileName;
   PersonnelData(
-      {this.id, this.name, this.initial, this.affiliation, this.photoFileName});
+      {this.id,
+      this.name,
+      this.initial,
+      this.affiliation,
+      this.role,
+      this.lastCollectorNumber,
+      this.photoFileName});
   factory PersonnelData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return PersonnelData(
@@ -518,6 +571,10 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}initial']),
       affiliation: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}affiliation']),
+      role: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}role']),
+      lastCollectorNumber: const IntType().mapFromDatabaseResponse(
+          data['${effectivePrefix}lastCollectorNumber']),
       photoFileName: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}photoFileName']),
     );
@@ -537,6 +594,12 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
     if (!nullToAbsent || affiliation != null) {
       map['affiliation'] = Variable<String?>(affiliation);
     }
+    if (!nullToAbsent || role != null) {
+      map['role'] = Variable<String?>(role);
+    }
+    if (!nullToAbsent || lastCollectorNumber != null) {
+      map['lastCollectorNumber'] = Variable<int?>(lastCollectorNumber);
+    }
     if (!nullToAbsent || photoFileName != null) {
       map['photoFileName'] = Variable<String?>(photoFileName);
     }
@@ -553,6 +616,10 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
       affiliation: affiliation == null && nullToAbsent
           ? const Value.absent()
           : Value(affiliation),
+      role: role == null && nullToAbsent ? const Value.absent() : Value(role),
+      lastCollectorNumber: lastCollectorNumber == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastCollectorNumber),
       photoFileName: photoFileName == null && nullToAbsent
           ? const Value.absent()
           : Value(photoFileName),
@@ -567,6 +634,9 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
       name: serializer.fromJson<String?>(json['name']),
       initial: serializer.fromJson<String?>(json['initial']),
       affiliation: serializer.fromJson<String?>(json['affiliation']),
+      role: serializer.fromJson<String?>(json['role']),
+      lastCollectorNumber:
+          serializer.fromJson<int?>(json['lastCollectorNumber']),
       photoFileName: serializer.fromJson<String?>(json['photoFileName']),
     );
   }
@@ -578,6 +648,8 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
       'name': serializer.toJson<String?>(name),
       'initial': serializer.toJson<String?>(initial),
       'affiliation': serializer.toJson<String?>(affiliation),
+      'role': serializer.toJson<String?>(role),
+      'lastCollectorNumber': serializer.toJson<int?>(lastCollectorNumber),
       'photoFileName': serializer.toJson<String?>(photoFileName),
     };
   }
@@ -587,12 +659,16 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
           String? name,
           String? initial,
           String? affiliation,
+          String? role,
+          int? lastCollectorNumber,
           String? photoFileName}) =>
       PersonnelData(
         id: id ?? this.id,
         name: name ?? this.name,
         initial: initial ?? this.initial,
         affiliation: affiliation ?? this.affiliation,
+        role: role ?? this.role,
+        lastCollectorNumber: lastCollectorNumber ?? this.lastCollectorNumber,
         photoFileName: photoFileName ?? this.photoFileName,
       );
   @override
@@ -602,14 +678,16 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
           ..write('name: $name, ')
           ..write('initial: $initial, ')
           ..write('affiliation: $affiliation, ')
+          ..write('role: $role, ')
+          ..write('lastCollectorNumber: $lastCollectorNumber, ')
           ..write('photoFileName: $photoFileName')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, name, initial, affiliation, photoFileName);
+  int get hashCode => Object.hash(
+      id, name, initial, affiliation, role, lastCollectorNumber, photoFileName);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -618,6 +696,8 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
           other.name == this.name &&
           other.initial == this.initial &&
           other.affiliation == this.affiliation &&
+          other.role == this.role &&
+          other.lastCollectorNumber == this.lastCollectorNumber &&
           other.photoFileName == this.photoFileName);
 }
 
@@ -626,12 +706,16 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
   final Value<String?> name;
   final Value<String?> initial;
   final Value<String?> affiliation;
+  final Value<String?> role;
+  final Value<int?> lastCollectorNumber;
   final Value<String?> photoFileName;
   const PersonnelCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.initial = const Value.absent(),
     this.affiliation = const Value.absent(),
+    this.role = const Value.absent(),
+    this.lastCollectorNumber = const Value.absent(),
     this.photoFileName = const Value.absent(),
   });
   PersonnelCompanion.insert({
@@ -639,6 +723,8 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     this.name = const Value.absent(),
     this.initial = const Value.absent(),
     this.affiliation = const Value.absent(),
+    this.role = const Value.absent(),
+    this.lastCollectorNumber = const Value.absent(),
     this.photoFileName = const Value.absent(),
   });
   static Insertable<PersonnelData> custom({
@@ -646,6 +732,8 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     Expression<String?>? name,
     Expression<String?>? initial,
     Expression<String?>? affiliation,
+    Expression<String?>? role,
+    Expression<int?>? lastCollectorNumber,
     Expression<String?>? photoFileName,
   }) {
     return RawValuesInsertable({
@@ -653,6 +741,9 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
       if (name != null) 'name': name,
       if (initial != null) 'initial': initial,
       if (affiliation != null) 'affiliation': affiliation,
+      if (role != null) 'role': role,
+      if (lastCollectorNumber != null)
+        'lastCollectorNumber': lastCollectorNumber,
       if (photoFileName != null) 'photoFileName': photoFileName,
     });
   }
@@ -662,12 +753,16 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
       Value<String?>? name,
       Value<String?>? initial,
       Value<String?>? affiliation,
+      Value<String?>? role,
+      Value<int?>? lastCollectorNumber,
       Value<String?>? photoFileName}) {
     return PersonnelCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       initial: initial ?? this.initial,
       affiliation: affiliation ?? this.affiliation,
+      role: role ?? this.role,
+      lastCollectorNumber: lastCollectorNumber ?? this.lastCollectorNumber,
       photoFileName: photoFileName ?? this.photoFileName,
     );
   }
@@ -687,6 +782,12 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     if (affiliation.present) {
       map['affiliation'] = Variable<String?>(affiliation.value);
     }
+    if (role.present) {
+      map['role'] = Variable<String?>(role.value);
+    }
+    if (lastCollectorNumber.present) {
+      map['lastCollectorNumber'] = Variable<int?>(lastCollectorNumber.value);
+    }
     if (photoFileName.present) {
       map['photoFileName'] = Variable<String?>(photoFileName.value);
     }
@@ -700,6 +801,8 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
           ..write('name: $name, ')
           ..write('initial: $initial, ')
           ..write('affiliation: $affiliation, ')
+          ..write('role: $role, ')
+          ..write('lastCollectorNumber: $lastCollectorNumber, ')
           ..write('photoFileName: $photoFileName')
           ..write(')'))
         .toString();
@@ -736,6 +839,19 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
       type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: '');
+  final VerificationMeta _roleMeta = const VerificationMeta('role');
+  late final GeneratedColumn<String?> role = GeneratedColumn<String?>(
+      'role', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _lastCollectorNumberMeta =
+      const VerificationMeta('lastCollectorNumber');
+  late final GeneratedColumn<int?> lastCollectorNumber = GeneratedColumn<int?>(
+      'lastCollectorNumber', aliasedName, true,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _photoFileNameMeta =
       const VerificationMeta('photoFileName');
   late final GeneratedColumn<String?> photoFileName = GeneratedColumn<String?>(
@@ -744,8 +860,15 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, name, initial, affiliation, photoFileName];
+  List<GeneratedColumn> get $columns => [
+        id,
+        name,
+        initial,
+        affiliation,
+        role,
+        lastCollectorNumber,
+        photoFileName
+      ];
   @override
   String get aliasedName => _alias ?? 'personnel';
   @override
@@ -771,6 +894,16 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
           _affiliationMeta,
           affiliation.isAcceptableOrUnknown(
               data['affiliation']!, _affiliationMeta));
+    }
+    if (data.containsKey('role')) {
+      context.handle(
+          _roleMeta, role.isAcceptableOrUnknown(data['role']!, _roleMeta));
+    }
+    if (data.containsKey('lastCollectorNumber')) {
+      context.handle(
+          _lastCollectorNumberMeta,
+          lastCollectorNumber.isAcceptableOrUnknown(
+              data['lastCollectorNumber']!, _lastCollectorNumberMeta));
     }
     if (data.containsKey('photoFileName')) {
       context.handle(
@@ -802,16 +935,16 @@ class PhotoData extends DataClass implements Insertable<PhotoData> {
   final int? id;
   final String? filename;
   final String? date;
-  final int? photographerID;
   final String? camera;
   final String? lenses;
+  final String? photographerID;
   PhotoData(
       {this.id,
       this.filename,
       this.date,
-      this.photographerID,
       this.camera,
-      this.lenses});
+      this.lenses,
+      this.photographerID});
   factory PhotoData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return PhotoData(
@@ -820,12 +953,12 @@ class PhotoData extends DataClass implements Insertable<PhotoData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}filename']),
       date: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}date']),
-      photographerID: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}photographerID']),
       camera: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}camera']),
       lenses: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}lenses']),
+      photographerID: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}photographerID']),
     );
   }
   @override
@@ -840,14 +973,14 @@ class PhotoData extends DataClass implements Insertable<PhotoData> {
     if (!nullToAbsent || date != null) {
       map['date'] = Variable<String?>(date);
     }
-    if (!nullToAbsent || photographerID != null) {
-      map['photographerID'] = Variable<int?>(photographerID);
-    }
     if (!nullToAbsent || camera != null) {
       map['camera'] = Variable<String?>(camera);
     }
     if (!nullToAbsent || lenses != null) {
       map['lenses'] = Variable<String?>(lenses);
+    }
+    if (!nullToAbsent || photographerID != null) {
+      map['photographerID'] = Variable<String?>(photographerID);
     }
     return map;
   }
@@ -859,13 +992,13 @@ class PhotoData extends DataClass implements Insertable<PhotoData> {
           ? const Value.absent()
           : Value(filename),
       date: date == null && nullToAbsent ? const Value.absent() : Value(date),
-      photographerID: photographerID == null && nullToAbsent
-          ? const Value.absent()
-          : Value(photographerID),
       camera:
           camera == null && nullToAbsent ? const Value.absent() : Value(camera),
       lenses:
           lenses == null && nullToAbsent ? const Value.absent() : Value(lenses),
+      photographerID: photographerID == null && nullToAbsent
+          ? const Value.absent()
+          : Value(photographerID),
     );
   }
 
@@ -876,9 +1009,9 @@ class PhotoData extends DataClass implements Insertable<PhotoData> {
       id: serializer.fromJson<int?>(json['id']),
       filename: serializer.fromJson<String?>(json['filename']),
       date: serializer.fromJson<String?>(json['date']),
-      photographerID: serializer.fromJson<int?>(json['photographerID']),
       camera: serializer.fromJson<String?>(json['camera']),
       lenses: serializer.fromJson<String?>(json['lenses']),
+      photographerID: serializer.fromJson<String?>(json['photographerID']),
     );
   }
   @override
@@ -888,9 +1021,9 @@ class PhotoData extends DataClass implements Insertable<PhotoData> {
       'id': serializer.toJson<int?>(id),
       'filename': serializer.toJson<String?>(filename),
       'date': serializer.toJson<String?>(date),
-      'photographerID': serializer.toJson<int?>(photographerID),
       'camera': serializer.toJson<String?>(camera),
       'lenses': serializer.toJson<String?>(lenses),
+      'photographerID': serializer.toJson<String?>(photographerID),
     };
   }
 
@@ -898,16 +1031,16 @@ class PhotoData extends DataClass implements Insertable<PhotoData> {
           {int? id,
           String? filename,
           String? date,
-          int? photographerID,
           String? camera,
-          String? lenses}) =>
+          String? lenses,
+          String? photographerID}) =>
       PhotoData(
         id: id ?? this.id,
         filename: filename ?? this.filename,
         date: date ?? this.date,
-        photographerID: photographerID ?? this.photographerID,
         camera: camera ?? this.camera,
         lenses: lenses ?? this.lenses,
+        photographerID: photographerID ?? this.photographerID,
       );
   @override
   String toString() {
@@ -915,16 +1048,16 @@ class PhotoData extends DataClass implements Insertable<PhotoData> {
           ..write('id: $id, ')
           ..write('filename: $filename, ')
           ..write('date: $date, ')
-          ..write('photographerID: $photographerID, ')
           ..write('camera: $camera, ')
-          ..write('lenses: $lenses')
+          ..write('lenses: $lenses, ')
+          ..write('photographerID: $photographerID')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode =>
-      Object.hash(id, filename, date, photographerID, camera, lenses);
+      Object.hash(id, filename, date, camera, lenses, photographerID);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -932,49 +1065,49 @@ class PhotoData extends DataClass implements Insertable<PhotoData> {
           other.id == this.id &&
           other.filename == this.filename &&
           other.date == this.date &&
-          other.photographerID == this.photographerID &&
           other.camera == this.camera &&
-          other.lenses == this.lenses);
+          other.lenses == this.lenses &&
+          other.photographerID == this.photographerID);
 }
 
 class PhotoCompanion extends UpdateCompanion<PhotoData> {
   final Value<int?> id;
   final Value<String?> filename;
   final Value<String?> date;
-  final Value<int?> photographerID;
   final Value<String?> camera;
   final Value<String?> lenses;
+  final Value<String?> photographerID;
   const PhotoCompanion({
     this.id = const Value.absent(),
     this.filename = const Value.absent(),
     this.date = const Value.absent(),
-    this.photographerID = const Value.absent(),
     this.camera = const Value.absent(),
     this.lenses = const Value.absent(),
+    this.photographerID = const Value.absent(),
   });
   PhotoCompanion.insert({
     this.id = const Value.absent(),
     this.filename = const Value.absent(),
     this.date = const Value.absent(),
-    this.photographerID = const Value.absent(),
     this.camera = const Value.absent(),
     this.lenses = const Value.absent(),
+    this.photographerID = const Value.absent(),
   });
   static Insertable<PhotoData> custom({
     Expression<int?>? id,
     Expression<String?>? filename,
     Expression<String?>? date,
-    Expression<int?>? photographerID,
     Expression<String?>? camera,
     Expression<String?>? lenses,
+    Expression<String?>? photographerID,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (filename != null) 'filename': filename,
       if (date != null) 'date': date,
-      if (photographerID != null) 'photographerID': photographerID,
       if (camera != null) 'camera': camera,
       if (lenses != null) 'lenses': lenses,
+      if (photographerID != null) 'photographerID': photographerID,
     });
   }
 
@@ -982,16 +1115,16 @@ class PhotoCompanion extends UpdateCompanion<PhotoData> {
       {Value<int?>? id,
       Value<String?>? filename,
       Value<String?>? date,
-      Value<int?>? photographerID,
       Value<String?>? camera,
-      Value<String?>? lenses}) {
+      Value<String?>? lenses,
+      Value<String?>? photographerID}) {
     return PhotoCompanion(
       id: id ?? this.id,
       filename: filename ?? this.filename,
       date: date ?? this.date,
-      photographerID: photographerID ?? this.photographerID,
       camera: camera ?? this.camera,
       lenses: lenses ?? this.lenses,
+      photographerID: photographerID ?? this.photographerID,
     );
   }
 
@@ -1007,14 +1140,14 @@ class PhotoCompanion extends UpdateCompanion<PhotoData> {
     if (date.present) {
       map['date'] = Variable<String?>(date.value);
     }
-    if (photographerID.present) {
-      map['photographerID'] = Variable<int?>(photographerID.value);
-    }
     if (camera.present) {
       map['camera'] = Variable<String?>(camera.value);
     }
     if (lenses.present) {
       map['lenses'] = Variable<String?>(lenses.value);
+    }
+    if (photographerID.present) {
+      map['photographerID'] = Variable<String?>(photographerID.value);
     }
     return map;
   }
@@ -1025,9 +1158,9 @@ class PhotoCompanion extends UpdateCompanion<PhotoData> {
           ..write('id: $id, ')
           ..write('filename: $filename, ')
           ..write('date: $date, ')
-          ..write('photographerID: $photographerID, ')
           ..write('camera: $camera, ')
-          ..write('lenses: $lenses')
+          ..write('lenses: $lenses, ')
+          ..write('photographerID: $photographerID')
           ..write(')'))
         .toString();
   }
@@ -1056,13 +1189,6 @@ class Photo extends Table with TableInfo<Photo, PhotoData> {
       type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _photographerIDMeta =
-      const VerificationMeta('photographerID');
-  late final GeneratedColumn<int?> photographerID = GeneratedColumn<int?>(
-      'photographerID', aliasedName, true,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      $customConstraints: 'REFERENCES personnel(id)');
   final VerificationMeta _cameraMeta = const VerificationMeta('camera');
   late final GeneratedColumn<String?> camera = GeneratedColumn<String?>(
       'camera', aliasedName, true,
@@ -1075,9 +1201,16 @@ class Photo extends Table with TableInfo<Photo, PhotoData> {
       type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: '');
+  final VerificationMeta _photographerIDMeta =
+      const VerificationMeta('photographerID');
+  late final GeneratedColumn<String?> photographerID = GeneratedColumn<String?>(
+      'photographerID', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns =>
-      [id, filename, date, photographerID, camera, lenses];
+      [id, filename, date, camera, lenses, photographerID];
   @override
   String get aliasedName => _alias ?? 'photo';
   @override
@@ -1098,12 +1231,6 @@ class Photo extends Table with TableInfo<Photo, PhotoData> {
       context.handle(
           _dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
     }
-    if (data.containsKey('photographerID')) {
-      context.handle(
-          _photographerIDMeta,
-          photographerID.isAcceptableOrUnknown(
-              data['photographerID']!, _photographerIDMeta));
-    }
     if (data.containsKey('camera')) {
       context.handle(_cameraMeta,
           camera.isAcceptableOrUnknown(data['camera']!, _cameraMeta));
@@ -1111,6 +1238,12 @@ class Photo extends Table with TableInfo<Photo, PhotoData> {
     if (data.containsKey('lenses')) {
       context.handle(_lensesMeta,
           lenses.isAcceptableOrUnknown(data['lenses']!, _lensesMeta));
+    }
+    if (data.containsKey('photographerID')) {
+      context.handle(
+          _photographerIDMeta,
+          photographerID.isAcceptableOrUnknown(
+              data['photographerID']!, _photographerIDMeta));
     }
     return context;
   }
@@ -1129,6 +1262,9 @@ class Photo extends Table with TableInfo<Photo, PhotoData> {
   }
 
   @override
+  List<String> get customConstraints =>
+      const ['FOREIGN KEY(photographerID) REFERENCES personnel(id)'];
+  @override
   bool get dontWriteConstraints => true;
 }
 
@@ -1142,8 +1278,8 @@ class SiteData extends DataClass implements Insertable<SiteData> {
   final String? stateProvince;
   final String? county;
   final String? municipality;
+  final String? photoID;
   final String? locality;
-  final int? photoID;
   SiteData(
       {required this.id,
       this.siteID,
@@ -1154,8 +1290,8 @@ class SiteData extends DataClass implements Insertable<SiteData> {
       this.stateProvince,
       this.county,
       this.municipality,
-      this.locality,
-      this.photoID});
+      this.photoID,
+      this.locality});
   factory SiteData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return SiteData(
@@ -1177,10 +1313,10 @@ class SiteData extends DataClass implements Insertable<SiteData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}county']),
       municipality: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}municipality']),
+      photoID: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}photoID']),
       locality: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}locality']),
-      photoID: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}photoID']),
     );
   }
   @override
@@ -1211,11 +1347,11 @@ class SiteData extends DataClass implements Insertable<SiteData> {
     if (!nullToAbsent || municipality != null) {
       map['municipality'] = Variable<String?>(municipality);
     }
+    if (!nullToAbsent || photoID != null) {
+      map['photoID'] = Variable<String?>(photoID);
+    }
     if (!nullToAbsent || locality != null) {
       map['locality'] = Variable<String?>(locality);
-    }
-    if (!nullToAbsent || photoID != null) {
-      map['photoID'] = Variable<int?>(photoID);
     }
     return map;
   }
@@ -1245,12 +1381,12 @@ class SiteData extends DataClass implements Insertable<SiteData> {
       municipality: municipality == null && nullToAbsent
           ? const Value.absent()
           : Value(municipality),
-      locality: locality == null && nullToAbsent
-          ? const Value.absent()
-          : Value(locality),
       photoID: photoID == null && nullToAbsent
           ? const Value.absent()
           : Value(photoID),
+      locality: locality == null && nullToAbsent
+          ? const Value.absent()
+          : Value(locality),
     );
   }
 
@@ -1267,8 +1403,8 @@ class SiteData extends DataClass implements Insertable<SiteData> {
       stateProvince: serializer.fromJson<String?>(json['stateProvince']),
       county: serializer.fromJson<String?>(json['county']),
       municipality: serializer.fromJson<String?>(json['municipality']),
+      photoID: serializer.fromJson<String?>(json['photoID']),
       locality: serializer.fromJson<String?>(json['locality']),
-      photoID: serializer.fromJson<int?>(json['photoID']),
     );
   }
   @override
@@ -1284,8 +1420,8 @@ class SiteData extends DataClass implements Insertable<SiteData> {
       'stateProvince': serializer.toJson<String?>(stateProvince),
       'county': serializer.toJson<String?>(county),
       'municipality': serializer.toJson<String?>(municipality),
+      'photoID': serializer.toJson<String?>(photoID),
       'locality': serializer.toJson<String?>(locality),
-      'photoID': serializer.toJson<int?>(photoID),
     };
   }
 
@@ -1299,8 +1435,8 @@ class SiteData extends DataClass implements Insertable<SiteData> {
           String? stateProvince,
           String? county,
           String? municipality,
-          String? locality,
-          int? photoID}) =>
+          String? photoID,
+          String? locality}) =>
       SiteData(
         id: id ?? this.id,
         siteID: siteID ?? this.siteID,
@@ -1311,8 +1447,8 @@ class SiteData extends DataClass implements Insertable<SiteData> {
         stateProvince: stateProvince ?? this.stateProvince,
         county: county ?? this.county,
         municipality: municipality ?? this.municipality,
-        locality: locality ?? this.locality,
         photoID: photoID ?? this.photoID,
+        locality: locality ?? this.locality,
       );
   @override
   String toString() {
@@ -1326,15 +1462,15 @@ class SiteData extends DataClass implements Insertable<SiteData> {
           ..write('stateProvince: $stateProvince, ')
           ..write('county: $county, ')
           ..write('municipality: $municipality, ')
-          ..write('locality: $locality, ')
-          ..write('photoID: $photoID')
+          ..write('photoID: $photoID, ')
+          ..write('locality: $locality')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(id, siteID, projectUuid, leadStuff, siteType,
-      country, stateProvince, county, municipality, locality, photoID);
+      country, stateProvince, county, municipality, photoID, locality);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1348,8 +1484,8 @@ class SiteData extends DataClass implements Insertable<SiteData> {
           other.stateProvince == this.stateProvince &&
           other.county == this.county &&
           other.municipality == this.municipality &&
-          other.locality == this.locality &&
-          other.photoID == this.photoID);
+          other.photoID == this.photoID &&
+          other.locality == this.locality);
 }
 
 class SiteCompanion extends UpdateCompanion<SiteData> {
@@ -1362,8 +1498,8 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
   final Value<String?> stateProvince;
   final Value<String?> county;
   final Value<String?> municipality;
+  final Value<String?> photoID;
   final Value<String?> locality;
-  final Value<int?> photoID;
   const SiteCompanion({
     this.id = const Value.absent(),
     this.siteID = const Value.absent(),
@@ -1374,8 +1510,8 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
     this.stateProvince = const Value.absent(),
     this.county = const Value.absent(),
     this.municipality = const Value.absent(),
-    this.locality = const Value.absent(),
     this.photoID = const Value.absent(),
+    this.locality = const Value.absent(),
   });
   SiteCompanion.insert({
     this.id = const Value.absent(),
@@ -1387,8 +1523,8 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
     this.stateProvince = const Value.absent(),
     this.county = const Value.absent(),
     this.municipality = const Value.absent(),
-    this.locality = const Value.absent(),
     this.photoID = const Value.absent(),
+    this.locality = const Value.absent(),
   });
   static Insertable<SiteData> custom({
     Expression<int>? id,
@@ -1400,8 +1536,8 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
     Expression<String?>? stateProvince,
     Expression<String?>? county,
     Expression<String?>? municipality,
+    Expression<String?>? photoID,
     Expression<String?>? locality,
-    Expression<int?>? photoID,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -1413,8 +1549,8 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
       if (stateProvince != null) 'stateProvince': stateProvince,
       if (county != null) 'county': county,
       if (municipality != null) 'municipality': municipality,
-      if (locality != null) 'locality': locality,
       if (photoID != null) 'photoID': photoID,
+      if (locality != null) 'locality': locality,
     });
   }
 
@@ -1428,8 +1564,8 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
       Value<String?>? stateProvince,
       Value<String?>? county,
       Value<String?>? municipality,
-      Value<String?>? locality,
-      Value<int?>? photoID}) {
+      Value<String?>? photoID,
+      Value<String?>? locality}) {
     return SiteCompanion(
       id: id ?? this.id,
       siteID: siteID ?? this.siteID,
@@ -1440,8 +1576,8 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
       stateProvince: stateProvince ?? this.stateProvince,
       county: county ?? this.county,
       municipality: municipality ?? this.municipality,
-      locality: locality ?? this.locality,
       photoID: photoID ?? this.photoID,
+      locality: locality ?? this.locality,
     );
   }
 
@@ -1475,11 +1611,11 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
     if (municipality.present) {
       map['municipality'] = Variable<String?>(municipality.value);
     }
+    if (photoID.present) {
+      map['photoID'] = Variable<String?>(photoID.value);
+    }
     if (locality.present) {
       map['locality'] = Variable<String?>(locality.value);
-    }
-    if (photoID.present) {
-      map['photoID'] = Variable<int?>(photoID.value);
     }
     return map;
   }
@@ -1496,8 +1632,8 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
           ..write('stateProvince: $stateProvince, ')
           ..write('county: $county, ')
           ..write('municipality: $municipality, ')
-          ..write('locality: $locality, ')
-          ..write('photoID: $photoID')
+          ..write('photoID: $photoID, ')
+          ..write('locality: $locality')
           ..write(')'))
         .toString();
   }
@@ -1565,18 +1701,18 @@ class Site extends Table with TableInfo<Site, SiteData> {
       type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: '');
+  final VerificationMeta _photoIDMeta = const VerificationMeta('photoID');
+  late final GeneratedColumn<String?> photoID = GeneratedColumn<String?>(
+      'photoID', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _localityMeta = const VerificationMeta('locality');
   late final GeneratedColumn<String?> locality = GeneratedColumn<String?>(
       'locality', aliasedName, true,
       type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _photoIDMeta = const VerificationMeta('photoID');
-  late final GeneratedColumn<int?> photoID = GeneratedColumn<int?>(
-      'photoID', aliasedName, true,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      $customConstraints: 'REFERENCES photo(id)');
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -1588,8 +1724,8 @@ class Site extends Table with TableInfo<Site, SiteData> {
         stateProvince,
         county,
         municipality,
-        locality,
-        photoID
+        photoID,
+        locality
       ];
   @override
   String get aliasedName => _alias ?? 'site';
@@ -1641,13 +1777,13 @@ class Site extends Table with TableInfo<Site, SiteData> {
           municipality.isAcceptableOrUnknown(
               data['municipality']!, _municipalityMeta));
     }
-    if (data.containsKey('locality')) {
-      context.handle(_localityMeta,
-          locality.isAcceptableOrUnknown(data['locality']!, _localityMeta));
-    }
     if (data.containsKey('photoID')) {
       context.handle(_photoIDMeta,
           photoID.isAcceptableOrUnknown(data['photoID']!, _photoIDMeta));
+    }
+    if (data.containsKey('locality')) {
+      context.handle(_localityMeta,
+          locality.isAcceptableOrUnknown(data['locality']!, _localityMeta));
     }
     return context;
   }
@@ -1665,6 +1801,9 @@ class Site extends Table with TableInfo<Site, SiteData> {
     return Site(attachedDatabase, alias);
   }
 
+  @override
+  List<String> get customConstraints =>
+      const ['FOREIGN KEY(photoID) REFERENCES photo(id)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -2944,6 +3083,204 @@ class Narrative extends Table with TableInfo<Narrative, NarrativeData> {
   bool get dontWriteConstraints => true;
 }
 
+class PersonnelListData extends DataClass
+    implements Insertable<PersonnelListData> {
+  final String? projectUuid;
+  final String? personnelUuid;
+  PersonnelListData({this.projectUuid, this.personnelUuid});
+  factory PersonnelListData.fromData(Map<String, dynamic> data,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return PersonnelListData(
+      projectUuid: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}projectUuid']),
+      personnelUuid: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}personnelUuid']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || projectUuid != null) {
+      map['projectUuid'] = Variable<String?>(projectUuid);
+    }
+    if (!nullToAbsent || personnelUuid != null) {
+      map['personnelUuid'] = Variable<String?>(personnelUuid);
+    }
+    return map;
+  }
+
+  PersonnelListCompanion toCompanion(bool nullToAbsent) {
+    return PersonnelListCompanion(
+      projectUuid: projectUuid == null && nullToAbsent
+          ? const Value.absent()
+          : Value(projectUuid),
+      personnelUuid: personnelUuid == null && nullToAbsent
+          ? const Value.absent()
+          : Value(personnelUuid),
+    );
+  }
+
+  factory PersonnelListData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PersonnelListData(
+      projectUuid: serializer.fromJson<String?>(json['projectUuid']),
+      personnelUuid: serializer.fromJson<String?>(json['personnelUuid']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'projectUuid': serializer.toJson<String?>(projectUuid),
+      'personnelUuid': serializer.toJson<String?>(personnelUuid),
+    };
+  }
+
+  PersonnelListData copyWith({String? projectUuid, String? personnelUuid}) =>
+      PersonnelListData(
+        projectUuid: projectUuid ?? this.projectUuid,
+        personnelUuid: personnelUuid ?? this.personnelUuid,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('PersonnelListData(')
+          ..write('projectUuid: $projectUuid, ')
+          ..write('personnelUuid: $personnelUuid')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(projectUuid, personnelUuid);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PersonnelListData &&
+          other.projectUuid == this.projectUuid &&
+          other.personnelUuid == this.personnelUuid);
+}
+
+class PersonnelListCompanion extends UpdateCompanion<PersonnelListData> {
+  final Value<String?> projectUuid;
+  final Value<String?> personnelUuid;
+  const PersonnelListCompanion({
+    this.projectUuid = const Value.absent(),
+    this.personnelUuid = const Value.absent(),
+  });
+  PersonnelListCompanion.insert({
+    this.projectUuid = const Value.absent(),
+    this.personnelUuid = const Value.absent(),
+  });
+  static Insertable<PersonnelListData> custom({
+    Expression<String?>? projectUuid,
+    Expression<String?>? personnelUuid,
+  }) {
+    return RawValuesInsertable({
+      if (projectUuid != null) 'projectUuid': projectUuid,
+      if (personnelUuid != null) 'personnelUuid': personnelUuid,
+    });
+  }
+
+  PersonnelListCompanion copyWith(
+      {Value<String?>? projectUuid, Value<String?>? personnelUuid}) {
+    return PersonnelListCompanion(
+      projectUuid: projectUuid ?? this.projectUuid,
+      personnelUuid: personnelUuid ?? this.personnelUuid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (projectUuid.present) {
+      map['projectUuid'] = Variable<String?>(projectUuid.value);
+    }
+    if (personnelUuid.present) {
+      map['personnelUuid'] = Variable<String?>(personnelUuid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PersonnelListCompanion(')
+          ..write('projectUuid: $projectUuid, ')
+          ..write('personnelUuid: $personnelUuid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class PersonnelList extends Table
+    with TableInfo<PersonnelList, PersonnelListData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  PersonnelList(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _projectUuidMeta =
+      const VerificationMeta('projectUuid');
+  late final GeneratedColumn<String?> projectUuid = GeneratedColumn<String?>(
+      'projectUuid', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _personnelUuidMeta =
+      const VerificationMeta('personnelUuid');
+  late final GeneratedColumn<String?> personnelUuid = GeneratedColumn<String?>(
+      'personnelUuid', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  @override
+  List<GeneratedColumn> get $columns => [projectUuid, personnelUuid];
+  @override
+  String get aliasedName => _alias ?? 'personnelList';
+  @override
+  String get actualTableName => 'personnelList';
+  @override
+  VerificationContext validateIntegrity(Insertable<PersonnelListData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('projectUuid')) {
+      context.handle(
+          _projectUuidMeta,
+          projectUuid.isAcceptableOrUnknown(
+              data['projectUuid']!, _projectUuidMeta));
+    }
+    if (data.containsKey('personnelUuid')) {
+      context.handle(
+          _personnelUuidMeta,
+          personnelUuid.isAcceptableOrUnknown(
+              data['personnelUuid']!, _personnelUuidMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  @override
+  PersonnelListData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return PersonnelListData.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  PersonnelList createAlias(String alias) {
+    return PersonnelList(attachedDatabase, alias);
+  }
+
+  @override
+  List<String> get customConstraints => const [
+        'FOREIGN KEY(projectUuid) REFERENCES project(projectUuid)',
+        'FOREIGN KEY(personnelUuid) REFERENCES personnel(id)'
+      ];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
 class SpecimenData extends DataClass implements Insertable<SpecimenData> {
   final String specimenUuid;
   final String? projectUuid;
@@ -2955,9 +3292,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
   final String? captureDate;
   final String? captureTime;
   final String? trapType;
-  final String? preparatorID;
   final String? collectorID;
   final int? collEventID;
+  final String? preparatorID;
   SpecimenData(
       {required this.specimenUuid,
       this.projectUuid,
@@ -2969,9 +3306,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       this.captureDate,
       this.captureTime,
       this.trapType,
-      this.preparatorID,
       this.collectorID,
-      this.collEventID});
+      this.collEventID,
+      this.preparatorID});
   factory SpecimenData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return SpecimenData(
@@ -2995,12 +3332,12 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}captureTime']),
       trapType: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}trapType']),
-      preparatorID: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}preparatorID']),
       collectorID: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}collectorID']),
       collEventID: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}collEventID']),
+      preparatorID: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}preparatorID']),
     );
   }
   @override
@@ -3034,14 +3371,14 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
     if (!nullToAbsent || trapType != null) {
       map['trapType'] = Variable<String?>(trapType);
     }
-    if (!nullToAbsent || preparatorID != null) {
-      map['preparatorID'] = Variable<String?>(preparatorID);
-    }
     if (!nullToAbsent || collectorID != null) {
       map['collectorID'] = Variable<String?>(collectorID);
     }
     if (!nullToAbsent || collEventID != null) {
       map['collEventID'] = Variable<int?>(collEventID);
+    }
+    if (!nullToAbsent || preparatorID != null) {
+      map['preparatorID'] = Variable<String?>(preparatorID);
     }
     return map;
   }
@@ -3076,15 +3413,15 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       trapType: trapType == null && nullToAbsent
           ? const Value.absent()
           : Value(trapType),
-      preparatorID: preparatorID == null && nullToAbsent
-          ? const Value.absent()
-          : Value(preparatorID),
       collectorID: collectorID == null && nullToAbsent
           ? const Value.absent()
           : Value(collectorID),
       collEventID: collEventID == null && nullToAbsent
           ? const Value.absent()
           : Value(collEventID),
+      preparatorID: preparatorID == null && nullToAbsent
+          ? const Value.absent()
+          : Value(preparatorID),
     );
   }
 
@@ -3102,9 +3439,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       captureDate: serializer.fromJson<String?>(json['captureDate']),
       captureTime: serializer.fromJson<String?>(json['captureTime']),
       trapType: serializer.fromJson<String?>(json['trapType']),
-      preparatorID: serializer.fromJson<String?>(json['preparatorID']),
       collectorID: serializer.fromJson<String?>(json['collectorID']),
       collEventID: serializer.fromJson<int?>(json['collEventID']),
+      preparatorID: serializer.fromJson<String?>(json['preparatorID']),
     );
   }
   @override
@@ -3121,9 +3458,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       'captureDate': serializer.toJson<String?>(captureDate),
       'captureTime': serializer.toJson<String?>(captureTime),
       'trapType': serializer.toJson<String?>(trapType),
-      'preparatorID': serializer.toJson<String?>(preparatorID),
       'collectorID': serializer.toJson<String?>(collectorID),
       'collEventID': serializer.toJson<int?>(collEventID),
+      'preparatorID': serializer.toJson<String?>(preparatorID),
     };
   }
 
@@ -3138,9 +3475,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           String? captureDate,
           String? captureTime,
           String? trapType,
-          String? preparatorID,
           String? collectorID,
-          int? collEventID}) =>
+          int? collEventID,
+          String? preparatorID}) =>
       SpecimenData(
         specimenUuid: specimenUuid ?? this.specimenUuid,
         projectUuid: projectUuid ?? this.projectUuid,
@@ -3152,9 +3489,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
         captureDate: captureDate ?? this.captureDate,
         captureTime: captureTime ?? this.captureTime,
         trapType: trapType ?? this.trapType,
-        preparatorID: preparatorID ?? this.preparatorID,
         collectorID: collectorID ?? this.collectorID,
         collEventID: collEventID ?? this.collEventID,
+        preparatorID: preparatorID ?? this.preparatorID,
       );
   @override
   String toString() {
@@ -3169,9 +3506,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           ..write('captureDate: $captureDate, ')
           ..write('captureTime: $captureTime, ')
           ..write('trapType: $trapType, ')
-          ..write('preparatorID: $preparatorID, ')
           ..write('collectorID: $collectorID, ')
-          ..write('collEventID: $collEventID')
+          ..write('collEventID: $collEventID, ')
+          ..write('preparatorID: $preparatorID')
           ..write(')'))
         .toString();
   }
@@ -3188,9 +3525,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       captureDate,
       captureTime,
       trapType,
-      preparatorID,
       collectorID,
-      collEventID);
+      collEventID,
+      preparatorID);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -3205,9 +3542,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           other.captureDate == this.captureDate &&
           other.captureTime == this.captureTime &&
           other.trapType == this.trapType &&
-          other.preparatorID == this.preparatorID &&
           other.collectorID == this.collectorID &&
-          other.collEventID == this.collEventID);
+          other.collEventID == this.collEventID &&
+          other.preparatorID == this.preparatorID);
 }
 
 class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
@@ -3221,9 +3558,9 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
   final Value<String?> captureDate;
   final Value<String?> captureTime;
   final Value<String?> trapType;
-  final Value<String?> preparatorID;
   final Value<String?> collectorID;
   final Value<int?> collEventID;
+  final Value<String?> preparatorID;
   const SpecimenCompanion({
     this.specimenUuid = const Value.absent(),
     this.projectUuid = const Value.absent(),
@@ -3235,9 +3572,9 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     this.captureDate = const Value.absent(),
     this.captureTime = const Value.absent(),
     this.trapType = const Value.absent(),
-    this.preparatorID = const Value.absent(),
     this.collectorID = const Value.absent(),
     this.collEventID = const Value.absent(),
+    this.preparatorID = const Value.absent(),
   });
   SpecimenCompanion.insert({
     required String specimenUuid,
@@ -3250,9 +3587,9 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     this.captureDate = const Value.absent(),
     this.captureTime = const Value.absent(),
     this.trapType = const Value.absent(),
-    this.preparatorID = const Value.absent(),
     this.collectorID = const Value.absent(),
     this.collEventID = const Value.absent(),
+    this.preparatorID = const Value.absent(),
   }) : specimenUuid = Value(specimenUuid);
   static Insertable<SpecimenData> custom({
     Expression<String>? specimenUuid,
@@ -3265,9 +3602,9 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     Expression<String?>? captureDate,
     Expression<String?>? captureTime,
     Expression<String?>? trapType,
-    Expression<String?>? preparatorID,
     Expression<String?>? collectorID,
     Expression<int?>? collEventID,
+    Expression<String?>? preparatorID,
   }) {
     return RawValuesInsertable({
       if (specimenUuid != null) 'specimenUuid': specimenUuid,
@@ -3280,9 +3617,9 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       if (captureDate != null) 'captureDate': captureDate,
       if (captureTime != null) 'captureTime': captureTime,
       if (trapType != null) 'trapType': trapType,
-      if (preparatorID != null) 'preparatorID': preparatorID,
       if (collectorID != null) 'collectorID': collectorID,
       if (collEventID != null) 'collEventID': collEventID,
+      if (preparatorID != null) 'preparatorID': preparatorID,
     });
   }
 
@@ -3297,9 +3634,9 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       Value<String?>? captureDate,
       Value<String?>? captureTime,
       Value<String?>? trapType,
-      Value<String?>? preparatorID,
       Value<String?>? collectorID,
-      Value<int?>? collEventID}) {
+      Value<int?>? collEventID,
+      Value<String?>? preparatorID}) {
     return SpecimenCompanion(
       specimenUuid: specimenUuid ?? this.specimenUuid,
       projectUuid: projectUuid ?? this.projectUuid,
@@ -3311,9 +3648,9 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       captureDate: captureDate ?? this.captureDate,
       captureTime: captureTime ?? this.captureTime,
       trapType: trapType ?? this.trapType,
-      preparatorID: preparatorID ?? this.preparatorID,
       collectorID: collectorID ?? this.collectorID,
       collEventID: collEventID ?? this.collEventID,
+      preparatorID: preparatorID ?? this.preparatorID,
     );
   }
 
@@ -3350,14 +3687,14 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     if (trapType.present) {
       map['trapType'] = Variable<String?>(trapType.value);
     }
-    if (preparatorID.present) {
-      map['preparatorID'] = Variable<String?>(preparatorID.value);
-    }
     if (collectorID.present) {
       map['collectorID'] = Variable<String?>(collectorID.value);
     }
     if (collEventID.present) {
       map['collEventID'] = Variable<int?>(collEventID.value);
+    }
+    if (preparatorID.present) {
+      map['preparatorID'] = Variable<String?>(preparatorID.value);
     }
     return map;
   }
@@ -3375,9 +3712,9 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
           ..write('captureDate: $captureDate, ')
           ..write('captureTime: $captureTime, ')
           ..write('trapType: $trapType, ')
-          ..write('preparatorID: $preparatorID, ')
           ..write('collectorID: $collectorID, ')
-          ..write('collEventID: $collEventID')
+          ..write('collEventID: $collEventID, ')
+          ..write('preparatorID: $preparatorID')
           ..write(')'))
         .toString();
   }
@@ -3452,6 +3789,20 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
       type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: '');
+  final VerificationMeta _collectorIDMeta =
+      const VerificationMeta('collectorID');
+  late final GeneratedColumn<String?> collectorID = GeneratedColumn<String?>(
+      'collectorID', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _collEventIDMeta =
+      const VerificationMeta('collEventID');
+  late final GeneratedColumn<int?> collEventID = GeneratedColumn<int?>(
+      'collEventID', aliasedName, true,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _preparatorIDMeta =
       const VerificationMeta('preparatorID');
   late final GeneratedColumn<String?> preparatorID = GeneratedColumn<String?>(
@@ -3459,20 +3810,6 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
       type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: 'REFERENCES personnel(id)');
-  final VerificationMeta _collectorIDMeta =
-      const VerificationMeta('collectorID');
-  late final GeneratedColumn<String?> collectorID = GeneratedColumn<String?>(
-      'collectorID', aliasedName, true,
-      type: const StringType(),
-      requiredDuringInsert: false,
-      $customConstraints: 'REFERENCES personnel(id)');
-  final VerificationMeta _collEventIDMeta =
-      const VerificationMeta('collEventID');
-  late final GeneratedColumn<int?> collEventID = GeneratedColumn<int?>(
-      'collEventID', aliasedName, true,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      $customConstraints: 'REFERENCES collEvent(id)');
   @override
   List<GeneratedColumn> get $columns => [
         specimenUuid,
@@ -3485,9 +3822,9 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
         captureDate,
         captureTime,
         trapType,
-        preparatorID,
         collectorID,
-        collEventID
+        collEventID,
+        preparatorID
       ];
   @override
   String get aliasedName => _alias ?? 'specimen';
@@ -3550,12 +3887,6 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
       context.handle(_trapTypeMeta,
           trapType.isAcceptableOrUnknown(data['trapType']!, _trapTypeMeta));
     }
-    if (data.containsKey('preparatorID')) {
-      context.handle(
-          _preparatorIDMeta,
-          preparatorID.isAcceptableOrUnknown(
-              data['preparatorID']!, _preparatorIDMeta));
-    }
     if (data.containsKey('collectorID')) {
       context.handle(
           _collectorIDMeta,
@@ -3567,6 +3898,12 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
           _collEventIDMeta,
           collEventID.isAcceptableOrUnknown(
               data['collEventID']!, _collEventIDMeta));
+    }
+    if (data.containsKey('preparatorID')) {
+      context.handle(
+          _preparatorIDMeta,
+          preparatorID.isAcceptableOrUnknown(
+              data['preparatorID']!, _preparatorIDMeta));
     }
     return context;
   }
@@ -3584,6 +3921,11 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
     return Specimen(attachedDatabase, alias);
   }
 
+  @override
+  List<String> get customConstraints => const [
+        'FOREIGN KEY(collectorID) REFERENCES personnel(id)',
+        'FOREIGN KEY(collEventID) REFERENCES collEvent(id)'
+      ];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -4359,7 +4701,7 @@ class MammalMeasurement extends Table
       'specimenUuid', aliasedName, true,
       type: const StringType(),
       requiredDuringInsert: false,
-      $customConstraints: 'REFERENCES specimen(specimenUuid)');
+      $customConstraints: '');
   final VerificationMeta _totalLengthMeta =
       const VerificationMeta('totalLength');
   late final GeneratedColumn<int?> totalLength = GeneratedColumn<int?>(
@@ -4691,6 +5033,9 @@ class MammalMeasurement extends Table
     return MammalMeasurement(attachedDatabase, alias);
   }
 
+  @override
+  List<String> get customConstraints =>
+      const ['FOREIGN KEY(specimenUuid) REFERENCES specimen(specimenUuid)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -5260,7 +5605,7 @@ class BirdMeasurement extends Table
       'specimenUuid', aliasedName, true,
       type: const StringType(),
       requiredDuringInsert: false,
-      $customConstraints: 'REFERENCES specimen(specimenUuid)');
+      $customConstraints: '');
   final VerificationMeta _weightMeta = const VerificationMeta('weight');
   late final GeneratedColumn<int?> weight = GeneratedColumn<int?>(
       'weight', aliasedName, true,
@@ -5483,6 +5828,9 @@ class BirdMeasurement extends Table
     return BirdMeasurement(attachedDatabase, alias);
   }
 
+  @override
+  List<String> get customConstraints =>
+      const ['FOREIGN KEY(specimenUuid) REFERENCES specimen(specimenUuid)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -6322,6 +6670,7 @@ abstract class _$Database extends GeneratedDatabase {
   late final Coordinate coordinate = Coordinate(this);
   late final CollEvent collEvent = CollEvent(this);
   late final Narrative narrative = Narrative(this);
+  late final PersonnelList personnelList = PersonnelList(this);
   late final Specimen specimen = Specimen(this);
   late final MammalMeasurement mammalMeasurement = MammalMeasurement(this);
   late final BirdMeasurement birdMeasurement = BirdMeasurement(this);
@@ -6351,6 +6700,7 @@ abstract class _$Database extends GeneratedDatabase {
         coordinate,
         collEvent,
         narrative,
+        personnelList,
         specimen,
         mammalMeasurement,
         birdMeasurement,
