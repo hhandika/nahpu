@@ -89,8 +89,8 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                   const TaxonGroupFields(),
                   ProjectFormField(
                     controller: collectorController,
-                    hintText: 'Enter the name of the collector (required)',
-                    labelText: 'Main Collector*',
+                    hintText: 'Enter the name of the main collector (required)',
+                    labelText: 'Collector Name*',
                     onChanged: ref
                         .watch(projectFormNotifier.notifier)
                         .validateCollName,
@@ -101,7 +101,7 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                     controller: collectorInitialController,
                     maxLength: 5,
                     hintText: 'Enter the collector name initial (required)',
-                    labelText: 'Main Collector initial*',
+                    labelText: 'Collector initial*',
                     inputFormatters: [
                       LengthLimitingTextInputFormatter(5),
                       FilteringTextInputFormatter.allow(
@@ -116,7 +116,7 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                   ),
                   ProjectFormField(
                     controller: collectorEmailController,
-                    labelText: 'Main Collector email*',
+                    labelText: 'Collector email*',
                     hintText: 'Enter the email of the collector (required)',
                     onChanged: (value) {
                       ref.watch(projectFormNotifier.notifier).validateEmail(

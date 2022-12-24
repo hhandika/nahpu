@@ -13,7 +13,7 @@ class ProjectInfo extends StatelessWidget {
       Text('Project Name: ${projectData?.projectName ?? 'Empty!'}'),
       RichText(
           text: TextSpan(
-              text: 'Project UUID: ',
+              text: 'UUID: ',
               style: DefaultTextStyle.of(context).style,
               children: [
             TextSpan(
@@ -24,12 +24,6 @@ class ProjectInfo extends StatelessWidget {
           'Project Description: ${projectData?.projectDescription ?? 'Empty!'}'),
       Text(
           'Principal Investigator: ${projectData?.principalInvestigator ?? 'No PI'}'),
-      Text('Main Collector: ${projectData?.collector ?? 'No Collector'}'),
-      Text(
-          'Main Collector Email: ${projectData?.collectorEmail ?? 'No Collector Email'}'),
-      Text(
-          'First coll. number: ${projectData?.catNumStart ?? 'No CatNumStart'}'),
-      Text('Last coll. number: ${projectData?.catNumStart ?? 'No CatNumEnd'}'),
       Text('Date Created: ${projectData?.dateCreated ?? 'No DateCreated'}'),
       Text(
           'Date Modified: ${projectData?.dateLastModified ?? 'No DateModified'}'),

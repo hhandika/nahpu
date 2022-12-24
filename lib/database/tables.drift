@@ -8,10 +8,6 @@ CREATE TABLE project (
     projectName TEXT NOT NULL UNIQUE,
     projectDescription TEXT,
     principalInvestigator TEXT,
-    collector TEXT,
-    collectorInitial TEXT,
-    collectorEmail TEXT,
-    catNumStart INT,
     dateCreated TEXT,
     dateLastModified Text
 );
