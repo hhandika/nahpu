@@ -225,12 +225,16 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
                 child: Text('Collector'),
               ),
               DropdownMenuItem(
-                value: 'Preparator',
-                child: Text('Preparator'),
+                value: 'Local helper',
+                child: Text('Local helper'),
               ),
               DropdownMenuItem(
-                value: 'Trapper',
-                child: Text('Trapper'),
+                value: 'Preparator only',
+                child: Text('Preparator only'),
+              ),
+              DropdownMenuItem(
+                value: 'Photographer only',
+                child: Text('Photographer only'),
               ),
             ],
             onChanged: (String? newValue) {},
