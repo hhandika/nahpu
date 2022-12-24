@@ -2,9 +2,11 @@ import 'package:nahpu/database/database.dart';
 import 'package:nahpu/providers/page_viewer.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/providers/project.dart';
+import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:nahpu/screens/shared/forms.dart';
 
 class PersonnelViewer extends ConsumerStatefulWidget {
   const PersonnelViewer({Key? key}) : super(key: key);
@@ -16,22 +18,21 @@ class PersonnelViewer extends ConsumerStatefulWidget {
 class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: 200, child: PersonnelList()),
-        ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-              elevation: 0,
-            ),
+    return FormCard(
+      title: 'Personnel',
+      child: Column(
+        children: [
+          const SizedBox(height: 200, child: PersonnelList()),
+          CommonButton(
             onPressed: () {
               showDialog(
                   context: context, builder: (context) => _showPersonnelForm());
             },
-            child: const Text('Add personnel')),
-        const SizedBox(height: 10),
-      ],
+            text: 'Add personnel',
+          ),
+          const SizedBox(height: 10),
+        ],
+      ),
     );
   }
 
@@ -107,13 +108,8 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
             Navigator.of(context).pop();
           },
         ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-            elevation: 0,
-          ),
-          child: const Text('Add'),
+        CommonButton(
+          text: 'Add',
           onPressed: () {
             createPersonnel(
                 ref,

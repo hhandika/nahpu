@@ -21,6 +21,26 @@ class ProjectBackButton extends ConsumerWidget {
   }
 }
 
+class CommonButton extends StatelessWidget {
+  const CommonButton({super.key, required this.text, required this.onPressed});
+
+  final String text;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        elevation: 0,
+      ),
+      onPressed: onPressed,
+      child: Text(text),
+    );
+  }
+}
+
 class CustomPageNavButton extends ConsumerWidget {
   final Duration _duration = const Duration(milliseconds: 300);
   final Curve _curve = Curves.easeInOut;

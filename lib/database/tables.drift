@@ -23,9 +23,9 @@ CREATE TABLE site (
     stateProvince TEXT,
     county TEXT,
     municipality TEXT,
-    photoID TEXT,
+    mediaID TEXT,
     locality TEXT, -- verbatim locality in DWC
-    FOREIGN KEY(photoID) REFERENCES photo(id)
+    FOREIGN KEY(mediaID) REFERENCES media(primaryId)
 );
 
 CREATE TABLE coordinate (
@@ -58,19 +58,39 @@ CREATE TABLE narrative (
     date TEXT,
     siteID TEXT,
     narrative TEXT,
-    photoID INT REFERENCES photo(id),
+    mediaID INT REFERENCES media(primaryId),
     FOREIGN KEY(projectUuid) REFERENCES project(uuid),
     FOREIGN KEY(siteID) REFERENCES site(siteID)
 );
 
-CREATE TABLE photo (
-    id INT PRIMARY KEY AUTOINCREMENT,
-    filename TEXT,
-    date TEXT,
+CREATE TABLE media (
+    primaryId INT PRIMARY KEY AUTOINCREMENT,
+    secondaryId TEXT,
+    secondaryIdRef TEXT,
+    fileId INT,
+    taken TEXT,
     camera TEXT,
     lenses TEXT,
-    photographerID TEXT,
-    FOREIGN KEY(photographerID) REFERENCES personnel(uuid)
+    personnelId TEXT,
+    FOREIGN KEY(personnelId) REFERENCES personnel(uuid),
+    FOREIGN KEY(fileId) REFERENCES fileMetadata(id)
+);
+
+CREATE TABLE associatedData (
+    primaryId INT PRIMARY KEY AUTOINCREMENT,
+    secondaryId TEXT,
+    secondaryIdRef,
+    type,
+    description TEXT,
+    fileId TEXT
+);
+
+CREATE TABLE fileMetadata (
+    id INT PRIMARY KEY AUTOINCREMENT,
+    filename TEXT,
+    sizeKb REAL,
+    relativePath,
+    created TEXT
 );
 
 CREATE TABLE personnelList (
@@ -78,6 +98,12 @@ CREATE TABLE personnelList (
     personnelUuid TEXT,
     FOREIGN KEY(projectUuid) REFERENCES project(uuid),
     FOREIGN KEY(personnelUuid) REFERENCES personnel(uuid)
+);
+
+CREATE TABLE personnelPhoto (
+    id INT PRIMARY KEY AUTOINCREMENT,
+    fileId INT,
+    FOREIGN KEY(fileId) REFERENCES fileMetadata(id)
 );
 
 CREATE TABLE personnel (
@@ -88,7 +114,8 @@ CREATE TABLE personnel (
     affiliation TEXT,
     role TEXT,
     nextCollectorNumber INT,
-    photoFileName TEXT
+    personnelPhoto INT,
+    FOREIGN KEY(personnelPhoto) REFERENCES personnelPhoto(id)
 );
 
 CREATE TABLE specimen (
@@ -174,11 +201,16 @@ CREATE TABLE part (
 
 CREATE TABLE taxonomy (
     id INT PRIMARY KEY AUTOINCREMENT,
+    taxonClass TEXT,
+    taxonOrder TEXT,
+    taxonFamily TEXT,
     genus TEXT,
     specificEpithet TEXT,
     intraspecificEpithet TEXT,
-    taxonFamily TEXT,
-    taxonOrder TEXT
+    commonName,
+    note TEXT,
+    mediaId INT,
+    FOREIGN KEY(mediaId) REFERENCES media(primaryId)
 );
 
 CREATE TABLE spending (

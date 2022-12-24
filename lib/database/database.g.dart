@@ -401,6 +401,487 @@ class Project extends Table with TableInfo<Project, ProjectData> {
   bool get dontWriteConstraints => true;
 }
 
+class FileMetadataData extends DataClass
+    implements Insertable<FileMetadataData> {
+  final int? id;
+  final String? filename;
+  final double? sizeKb;
+  final Uint8List? relativePath;
+  final String? created;
+  FileMetadataData(
+      {this.id, this.filename, this.sizeKb, this.relativePath, this.created});
+  factory FileMetadataData.fromData(Map<String, dynamic> data,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return FileMetadataData(
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      filename: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}filename']),
+      sizeKb: const RealType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}sizeKb']),
+      relativePath: const BlobType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}relativePath']),
+      created: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}created']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int?>(id);
+    }
+    if (!nullToAbsent || filename != null) {
+      map['filename'] = Variable<String?>(filename);
+    }
+    if (!nullToAbsent || sizeKb != null) {
+      map['sizeKb'] = Variable<double?>(sizeKb);
+    }
+    if (!nullToAbsent || relativePath != null) {
+      map['relativePath'] = Variable<Uint8List?>(relativePath);
+    }
+    if (!nullToAbsent || created != null) {
+      map['created'] = Variable<String?>(created);
+    }
+    return map;
+  }
+
+  FileMetadataCompanion toCompanion(bool nullToAbsent) {
+    return FileMetadataCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      filename: filename == null && nullToAbsent
+          ? const Value.absent()
+          : Value(filename),
+      sizeKb:
+          sizeKb == null && nullToAbsent ? const Value.absent() : Value(sizeKb),
+      relativePath: relativePath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(relativePath),
+      created: created == null && nullToAbsent
+          ? const Value.absent()
+          : Value(created),
+    );
+  }
+
+  factory FileMetadataData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return FileMetadataData(
+      id: serializer.fromJson<int?>(json['id']),
+      filename: serializer.fromJson<String?>(json['filename']),
+      sizeKb: serializer.fromJson<double?>(json['sizeKb']),
+      relativePath: serializer.fromJson<Uint8List?>(json['relativePath']),
+      created: serializer.fromJson<String?>(json['created']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int?>(id),
+      'filename': serializer.toJson<String?>(filename),
+      'sizeKb': serializer.toJson<double?>(sizeKb),
+      'relativePath': serializer.toJson<Uint8List?>(relativePath),
+      'created': serializer.toJson<String?>(created),
+    };
+  }
+
+  FileMetadataData copyWith(
+          {int? id,
+          String? filename,
+          double? sizeKb,
+          Uint8List? relativePath,
+          String? created}) =>
+      FileMetadataData(
+        id: id ?? this.id,
+        filename: filename ?? this.filename,
+        sizeKb: sizeKb ?? this.sizeKb,
+        relativePath: relativePath ?? this.relativePath,
+        created: created ?? this.created,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('FileMetadataData(')
+          ..write('id: $id, ')
+          ..write('filename: $filename, ')
+          ..write('sizeKb: $sizeKb, ')
+          ..write('relativePath: $relativePath, ')
+          ..write('created: $created')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, filename, sizeKb, relativePath, created);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is FileMetadataData &&
+          other.id == this.id &&
+          other.filename == this.filename &&
+          other.sizeKb == this.sizeKb &&
+          other.relativePath == this.relativePath &&
+          other.created == this.created);
+}
+
+class FileMetadataCompanion extends UpdateCompanion<FileMetadataData> {
+  final Value<int?> id;
+  final Value<String?> filename;
+  final Value<double?> sizeKb;
+  final Value<Uint8List?> relativePath;
+  final Value<String?> created;
+  const FileMetadataCompanion({
+    this.id = const Value.absent(),
+    this.filename = const Value.absent(),
+    this.sizeKb = const Value.absent(),
+    this.relativePath = const Value.absent(),
+    this.created = const Value.absent(),
+  });
+  FileMetadataCompanion.insert({
+    this.id = const Value.absent(),
+    this.filename = const Value.absent(),
+    this.sizeKb = const Value.absent(),
+    this.relativePath = const Value.absent(),
+    this.created = const Value.absent(),
+  });
+  static Insertable<FileMetadataData> custom({
+    Expression<int?>? id,
+    Expression<String?>? filename,
+    Expression<double?>? sizeKb,
+    Expression<Uint8List?>? relativePath,
+    Expression<String?>? created,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (filename != null) 'filename': filename,
+      if (sizeKb != null) 'sizeKb': sizeKb,
+      if (relativePath != null) 'relativePath': relativePath,
+      if (created != null) 'created': created,
+    });
+  }
+
+  FileMetadataCompanion copyWith(
+      {Value<int?>? id,
+      Value<String?>? filename,
+      Value<double?>? sizeKb,
+      Value<Uint8List?>? relativePath,
+      Value<String?>? created}) {
+    return FileMetadataCompanion(
+      id: id ?? this.id,
+      filename: filename ?? this.filename,
+      sizeKb: sizeKb ?? this.sizeKb,
+      relativePath: relativePath ?? this.relativePath,
+      created: created ?? this.created,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int?>(id.value);
+    }
+    if (filename.present) {
+      map['filename'] = Variable<String?>(filename.value);
+    }
+    if (sizeKb.present) {
+      map['sizeKb'] = Variable<double?>(sizeKb.value);
+    }
+    if (relativePath.present) {
+      map['relativePath'] = Variable<Uint8List?>(relativePath.value);
+    }
+    if (created.present) {
+      map['created'] = Variable<String?>(created.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FileMetadataCompanion(')
+          ..write('id: $id, ')
+          ..write('filename: $filename, ')
+          ..write('sizeKb: $sizeKb, ')
+          ..write('relativePath: $relativePath, ')
+          ..write('created: $created')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class FileMetadata extends Table
+    with TableInfo<FileMetadata, FileMetadataData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  FileMetadata(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, true,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  final VerificationMeta _filenameMeta = const VerificationMeta('filename');
+  late final GeneratedColumn<String?> filename = GeneratedColumn<String?>(
+      'filename', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _sizeKbMeta = const VerificationMeta('sizeKb');
+  late final GeneratedColumn<double?> sizeKb = GeneratedColumn<double?>(
+      'sizeKb', aliasedName, true,
+      type: const RealType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _relativePathMeta =
+      const VerificationMeta('relativePath');
+  late final GeneratedColumn<Uint8List?> relativePath =
+      GeneratedColumn<Uint8List?>('relativePath', aliasedName, true,
+          type: const BlobType(),
+          requiredDuringInsert: false,
+          $customConstraints: '');
+  final VerificationMeta _createdMeta = const VerificationMeta('created');
+  late final GeneratedColumn<String?> created = GeneratedColumn<String?>(
+      'created', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, filename, sizeKb, relativePath, created];
+  @override
+  String get aliasedName => _alias ?? 'fileMetadata';
+  @override
+  String get actualTableName => 'fileMetadata';
+  @override
+  VerificationContext validateIntegrity(Insertable<FileMetadataData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('filename')) {
+      context.handle(_filenameMeta,
+          filename.isAcceptableOrUnknown(data['filename']!, _filenameMeta));
+    }
+    if (data.containsKey('sizeKb')) {
+      context.handle(_sizeKbMeta,
+          sizeKb.isAcceptableOrUnknown(data['sizeKb']!, _sizeKbMeta));
+    }
+    if (data.containsKey('relativePath')) {
+      context.handle(
+          _relativePathMeta,
+          relativePath.isAcceptableOrUnknown(
+              data['relativePath']!, _relativePathMeta));
+    }
+    if (data.containsKey('created')) {
+      context.handle(_createdMeta,
+          created.isAcceptableOrUnknown(data['created']!, _createdMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  FileMetadataData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return FileMetadataData.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  FileMetadata createAlias(String alias) {
+    return FileMetadata(attachedDatabase, alias);
+  }
+
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class PersonnelPhotoData extends DataClass
+    implements Insertable<PersonnelPhotoData> {
+  final int? id;
+  final int? fileId;
+  PersonnelPhotoData({this.id, this.fileId});
+  factory PersonnelPhotoData.fromData(Map<String, dynamic> data,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return PersonnelPhotoData(
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      fileId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}fileId']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int?>(id);
+    }
+    if (!nullToAbsent || fileId != null) {
+      map['fileId'] = Variable<int?>(fileId);
+    }
+    return map;
+  }
+
+  PersonnelPhotoCompanion toCompanion(bool nullToAbsent) {
+    return PersonnelPhotoCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      fileId:
+          fileId == null && nullToAbsent ? const Value.absent() : Value(fileId),
+    );
+  }
+
+  factory PersonnelPhotoData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PersonnelPhotoData(
+      id: serializer.fromJson<int?>(json['id']),
+      fileId: serializer.fromJson<int?>(json['fileId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int?>(id),
+      'fileId': serializer.toJson<int?>(fileId),
+    };
+  }
+
+  PersonnelPhotoData copyWith({int? id, int? fileId}) => PersonnelPhotoData(
+        id: id ?? this.id,
+        fileId: fileId ?? this.fileId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('PersonnelPhotoData(')
+          ..write('id: $id, ')
+          ..write('fileId: $fileId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, fileId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PersonnelPhotoData &&
+          other.id == this.id &&
+          other.fileId == this.fileId);
+}
+
+class PersonnelPhotoCompanion extends UpdateCompanion<PersonnelPhotoData> {
+  final Value<int?> id;
+  final Value<int?> fileId;
+  const PersonnelPhotoCompanion({
+    this.id = const Value.absent(),
+    this.fileId = const Value.absent(),
+  });
+  PersonnelPhotoCompanion.insert({
+    this.id = const Value.absent(),
+    this.fileId = const Value.absent(),
+  });
+  static Insertable<PersonnelPhotoData> custom({
+    Expression<int?>? id,
+    Expression<int?>? fileId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (fileId != null) 'fileId': fileId,
+    });
+  }
+
+  PersonnelPhotoCompanion copyWith({Value<int?>? id, Value<int?>? fileId}) {
+    return PersonnelPhotoCompanion(
+      id: id ?? this.id,
+      fileId: fileId ?? this.fileId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int?>(id.value);
+    }
+    if (fileId.present) {
+      map['fileId'] = Variable<int?>(fileId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PersonnelPhotoCompanion(')
+          ..write('id: $id, ')
+          ..write('fileId: $fileId')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class PersonnelPhoto extends Table
+    with TableInfo<PersonnelPhoto, PersonnelPhotoData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  PersonnelPhoto(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, true,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  final VerificationMeta _fileIdMeta = const VerificationMeta('fileId');
+  late final GeneratedColumn<int?> fileId = GeneratedColumn<int?>(
+      'fileId', aliasedName, true,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  @override
+  List<GeneratedColumn> get $columns => [id, fileId];
+  @override
+  String get aliasedName => _alias ?? 'personnelPhoto';
+  @override
+  String get actualTableName => 'personnelPhoto';
+  @override
+  VerificationContext validateIntegrity(Insertable<PersonnelPhotoData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('fileId')) {
+      context.handle(_fileIdMeta,
+          fileId.isAcceptableOrUnknown(data['fileId']!, _fileIdMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  PersonnelPhotoData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return PersonnelPhotoData.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  PersonnelPhoto createAlias(String alias) {
+    return PersonnelPhoto(attachedDatabase, alias);
+  }
+
+  @override
+  List<String> get customConstraints =>
+      const ['FOREIGN KEY(fileId) REFERENCES fileMetadata(id)'];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
 class PersonnelData extends DataClass implements Insertable<PersonnelData> {
   final String? uuid;
   final String? name;
@@ -409,7 +890,7 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
   final String? affiliation;
   final String? role;
   final int? nextCollectorNumber;
-  final String? photoFileName;
+  final int? personnelPhoto;
   PersonnelData(
       {this.uuid,
       this.name,
@@ -418,7 +899,7 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
       this.affiliation,
       this.role,
       this.nextCollectorNumber,
-      this.photoFileName});
+      this.personnelPhoto});
   factory PersonnelData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return PersonnelData(
@@ -436,8 +917,8 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}role']),
       nextCollectorNumber: const IntType().mapFromDatabaseResponse(
           data['${effectivePrefix}nextCollectorNumber']),
-      photoFileName: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}photoFileName']),
+      personnelPhoto: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}personnelPhoto']),
     );
   }
   @override
@@ -464,8 +945,8 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
     if (!nullToAbsent || nextCollectorNumber != null) {
       map['nextCollectorNumber'] = Variable<int?>(nextCollectorNumber);
     }
-    if (!nullToAbsent || photoFileName != null) {
-      map['photoFileName'] = Variable<String?>(photoFileName);
+    if (!nullToAbsent || personnelPhoto != null) {
+      map['personnelPhoto'] = Variable<int?>(personnelPhoto);
     }
     return map;
   }
@@ -486,9 +967,9 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
       nextCollectorNumber: nextCollectorNumber == null && nullToAbsent
           ? const Value.absent()
           : Value(nextCollectorNumber),
-      photoFileName: photoFileName == null && nullToAbsent
+      personnelPhoto: personnelPhoto == null && nullToAbsent
           ? const Value.absent()
-          : Value(photoFileName),
+          : Value(personnelPhoto),
     );
   }
 
@@ -504,7 +985,7 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
       role: serializer.fromJson<String?>(json['role']),
       nextCollectorNumber:
           serializer.fromJson<int?>(json['nextCollectorNumber']),
-      photoFileName: serializer.fromJson<String?>(json['photoFileName']),
+      personnelPhoto: serializer.fromJson<int?>(json['personnelPhoto']),
     );
   }
   @override
@@ -518,7 +999,7 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
       'affiliation': serializer.toJson<String?>(affiliation),
       'role': serializer.toJson<String?>(role),
       'nextCollectorNumber': serializer.toJson<int?>(nextCollectorNumber),
-      'photoFileName': serializer.toJson<String?>(photoFileName),
+      'personnelPhoto': serializer.toJson<int?>(personnelPhoto),
     };
   }
 
@@ -530,7 +1011,7 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
           String? affiliation,
           String? role,
           int? nextCollectorNumber,
-          String? photoFileName}) =>
+          int? personnelPhoto}) =>
       PersonnelData(
         uuid: uuid ?? this.uuid,
         name: name ?? this.name,
@@ -539,7 +1020,7 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
         affiliation: affiliation ?? this.affiliation,
         role: role ?? this.role,
         nextCollectorNumber: nextCollectorNumber ?? this.nextCollectorNumber,
-        photoFileName: photoFileName ?? this.photoFileName,
+        personnelPhoto: personnelPhoto ?? this.personnelPhoto,
       );
   @override
   String toString() {
@@ -551,14 +1032,14 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
           ..write('affiliation: $affiliation, ')
           ..write('role: $role, ')
           ..write('nextCollectorNumber: $nextCollectorNumber, ')
-          ..write('photoFileName: $photoFileName')
+          ..write('personnelPhoto: $personnelPhoto')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(uuid, name, initial, email, affiliation, role,
-      nextCollectorNumber, photoFileName);
+      nextCollectorNumber, personnelPhoto);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -570,7 +1051,7 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
           other.affiliation == this.affiliation &&
           other.role == this.role &&
           other.nextCollectorNumber == this.nextCollectorNumber &&
-          other.photoFileName == this.photoFileName);
+          other.personnelPhoto == this.personnelPhoto);
 }
 
 class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
@@ -581,7 +1062,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
   final Value<String?> affiliation;
   final Value<String?> role;
   final Value<int?> nextCollectorNumber;
-  final Value<String?> photoFileName;
+  final Value<int?> personnelPhoto;
   const PersonnelCompanion({
     this.uuid = const Value.absent(),
     this.name = const Value.absent(),
@@ -590,7 +1071,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     this.affiliation = const Value.absent(),
     this.role = const Value.absent(),
     this.nextCollectorNumber = const Value.absent(),
-    this.photoFileName = const Value.absent(),
+    this.personnelPhoto = const Value.absent(),
   });
   PersonnelCompanion.insert({
     this.uuid = const Value.absent(),
@@ -600,7 +1081,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     this.affiliation = const Value.absent(),
     this.role = const Value.absent(),
     this.nextCollectorNumber = const Value.absent(),
-    this.photoFileName = const Value.absent(),
+    this.personnelPhoto = const Value.absent(),
   });
   static Insertable<PersonnelData> custom({
     Expression<String?>? uuid,
@@ -610,7 +1091,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     Expression<String?>? affiliation,
     Expression<String?>? role,
     Expression<int?>? nextCollectorNumber,
-    Expression<String?>? photoFileName,
+    Expression<int?>? personnelPhoto,
   }) {
     return RawValuesInsertable({
       if (uuid != null) 'uuid': uuid,
@@ -621,7 +1102,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
       if (role != null) 'role': role,
       if (nextCollectorNumber != null)
         'nextCollectorNumber': nextCollectorNumber,
-      if (photoFileName != null) 'photoFileName': photoFileName,
+      if (personnelPhoto != null) 'personnelPhoto': personnelPhoto,
     });
   }
 
@@ -633,7 +1114,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
       Value<String?>? affiliation,
       Value<String?>? role,
       Value<int?>? nextCollectorNumber,
-      Value<String?>? photoFileName}) {
+      Value<int?>? personnelPhoto}) {
     return PersonnelCompanion(
       uuid: uuid ?? this.uuid,
       name: name ?? this.name,
@@ -642,7 +1123,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
       affiliation: affiliation ?? this.affiliation,
       role: role ?? this.role,
       nextCollectorNumber: nextCollectorNumber ?? this.nextCollectorNumber,
-      photoFileName: photoFileName ?? this.photoFileName,
+      personnelPhoto: personnelPhoto ?? this.personnelPhoto,
     );
   }
 
@@ -670,8 +1151,8 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     if (nextCollectorNumber.present) {
       map['nextCollectorNumber'] = Variable<int?>(nextCollectorNumber.value);
     }
-    if (photoFileName.present) {
-      map['photoFileName'] = Variable<String?>(photoFileName.value);
+    if (personnelPhoto.present) {
+      map['personnelPhoto'] = Variable<int?>(personnelPhoto.value);
     }
     return map;
   }
@@ -686,7 +1167,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
           ..write('affiliation: $affiliation, ')
           ..write('role: $role, ')
           ..write('nextCollectorNumber: $nextCollectorNumber, ')
-          ..write('photoFileName: $photoFileName')
+          ..write('personnelPhoto: $personnelPhoto')
           ..write(')'))
         .toString();
   }
@@ -741,11 +1222,11 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
       type: const IntType(),
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _photoFileNameMeta =
-      const VerificationMeta('photoFileName');
-  late final GeneratedColumn<String?> photoFileName = GeneratedColumn<String?>(
-      'photoFileName', aliasedName, true,
-      type: const StringType(),
+  final VerificationMeta _personnelPhotoMeta =
+      const VerificationMeta('personnelPhoto');
+  late final GeneratedColumn<int?> personnelPhoto = GeneratedColumn<int?>(
+      'personnelPhoto', aliasedName, true,
+      type: const IntType(),
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
@@ -757,7 +1238,7 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
         affiliation,
         role,
         nextCollectorNumber,
-        photoFileName
+        personnelPhoto
       ];
   @override
   String get aliasedName => _alias ?? 'personnel';
@@ -800,11 +1281,11 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
           nextCollectorNumber.isAcceptableOrUnknown(
               data['nextCollectorNumber']!, _nextCollectorNumberMeta));
     }
-    if (data.containsKey('photoFileName')) {
+    if (data.containsKey('personnelPhoto')) {
       context.handle(
-          _photoFileNameMeta,
-          photoFileName.isAcceptableOrUnknown(
-              data['photoFileName']!, _photoFileNameMeta));
+          _personnelPhotoMeta,
+          personnelPhoto.isAcceptableOrUnknown(
+              data['personnelPhoto']!, _personnelPhotoMeta));
     }
     return context;
   }
@@ -823,50 +1304,68 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
   }
 
   @override
+  List<String> get customConstraints =>
+      const ['FOREIGN KEY(personnelPhoto) REFERENCES personnelPhoto(id)'];
+  @override
   bool get dontWriteConstraints => true;
 }
 
-class PhotoData extends DataClass implements Insertable<PhotoData> {
-  final int? id;
-  final String? filename;
-  final String? date;
+class MediaData extends DataClass implements Insertable<MediaData> {
+  final int? primaryId;
+  final String? secondaryId;
+  final String? secondaryIdRef;
+  final int? fileId;
+  final String? taken;
   final String? camera;
   final String? lenses;
-  final String? photographerID;
-  PhotoData(
-      {this.id,
-      this.filename,
-      this.date,
+  final String? personnelId;
+  MediaData(
+      {this.primaryId,
+      this.secondaryId,
+      this.secondaryIdRef,
+      this.fileId,
+      this.taken,
       this.camera,
       this.lenses,
-      this.photographerID});
-  factory PhotoData.fromData(Map<String, dynamic> data, {String? prefix}) {
+      this.personnelId});
+  factory MediaData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    return PhotoData(
-      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      filename: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}filename']),
-      date: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}date']),
+    return MediaData(
+      primaryId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}primaryId']),
+      secondaryId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}secondaryId']),
+      secondaryIdRef: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}secondaryIdRef']),
+      fileId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}fileId']),
+      taken: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}taken']),
       camera: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}camera']),
       lenses: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}lenses']),
-      photographerID: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}photographerID']),
+      personnelId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}personnelId']),
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || id != null) {
-      map['id'] = Variable<int?>(id);
+    if (!nullToAbsent || primaryId != null) {
+      map['primaryId'] = Variable<int?>(primaryId);
     }
-    if (!nullToAbsent || filename != null) {
-      map['filename'] = Variable<String?>(filename);
+    if (!nullToAbsent || secondaryId != null) {
+      map['secondaryId'] = Variable<String?>(secondaryId);
     }
-    if (!nullToAbsent || date != null) {
-      map['date'] = Variable<String?>(date);
+    if (!nullToAbsent || secondaryIdRef != null) {
+      map['secondaryIdRef'] = Variable<String?>(secondaryIdRef);
+    }
+    if (!nullToAbsent || fileId != null) {
+      map['fileId'] = Variable<int?>(fileId);
+    }
+    if (!nullToAbsent || taken != null) {
+      map['taken'] = Variable<String?>(taken);
     }
     if (!nullToAbsent || camera != null) {
       map['camera'] = Variable<String?>(camera);
@@ -874,166 +1373,206 @@ class PhotoData extends DataClass implements Insertable<PhotoData> {
     if (!nullToAbsent || lenses != null) {
       map['lenses'] = Variable<String?>(lenses);
     }
-    if (!nullToAbsent || photographerID != null) {
-      map['photographerID'] = Variable<String?>(photographerID);
+    if (!nullToAbsent || personnelId != null) {
+      map['personnelId'] = Variable<String?>(personnelId);
     }
     return map;
   }
 
-  PhotoCompanion toCompanion(bool nullToAbsent) {
-    return PhotoCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      filename: filename == null && nullToAbsent
+  MediaCompanion toCompanion(bool nullToAbsent) {
+    return MediaCompanion(
+      primaryId: primaryId == null && nullToAbsent
           ? const Value.absent()
-          : Value(filename),
-      date: date == null && nullToAbsent ? const Value.absent() : Value(date),
+          : Value(primaryId),
+      secondaryId: secondaryId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(secondaryId),
+      secondaryIdRef: secondaryIdRef == null && nullToAbsent
+          ? const Value.absent()
+          : Value(secondaryIdRef),
+      fileId:
+          fileId == null && nullToAbsent ? const Value.absent() : Value(fileId),
+      taken:
+          taken == null && nullToAbsent ? const Value.absent() : Value(taken),
       camera:
           camera == null && nullToAbsent ? const Value.absent() : Value(camera),
       lenses:
           lenses == null && nullToAbsent ? const Value.absent() : Value(lenses),
-      photographerID: photographerID == null && nullToAbsent
+      personnelId: personnelId == null && nullToAbsent
           ? const Value.absent()
-          : Value(photographerID),
+          : Value(personnelId),
     );
   }
 
-  factory PhotoData.fromJson(Map<String, dynamic> json,
+  factory MediaData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return PhotoData(
-      id: serializer.fromJson<int?>(json['id']),
-      filename: serializer.fromJson<String?>(json['filename']),
-      date: serializer.fromJson<String?>(json['date']),
+    return MediaData(
+      primaryId: serializer.fromJson<int?>(json['primaryId']),
+      secondaryId: serializer.fromJson<String?>(json['secondaryId']),
+      secondaryIdRef: serializer.fromJson<String?>(json['secondaryIdRef']),
+      fileId: serializer.fromJson<int?>(json['fileId']),
+      taken: serializer.fromJson<String?>(json['taken']),
       camera: serializer.fromJson<String?>(json['camera']),
       lenses: serializer.fromJson<String?>(json['lenses']),
-      photographerID: serializer.fromJson<String?>(json['photographerID']),
+      personnelId: serializer.fromJson<String?>(json['personnelId']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int?>(id),
-      'filename': serializer.toJson<String?>(filename),
-      'date': serializer.toJson<String?>(date),
+      'primaryId': serializer.toJson<int?>(primaryId),
+      'secondaryId': serializer.toJson<String?>(secondaryId),
+      'secondaryIdRef': serializer.toJson<String?>(secondaryIdRef),
+      'fileId': serializer.toJson<int?>(fileId),
+      'taken': serializer.toJson<String?>(taken),
       'camera': serializer.toJson<String?>(camera),
       'lenses': serializer.toJson<String?>(lenses),
-      'photographerID': serializer.toJson<String?>(photographerID),
+      'personnelId': serializer.toJson<String?>(personnelId),
     };
   }
 
-  PhotoData copyWith(
-          {int? id,
-          String? filename,
-          String? date,
+  MediaData copyWith(
+          {int? primaryId,
+          String? secondaryId,
+          String? secondaryIdRef,
+          int? fileId,
+          String? taken,
           String? camera,
           String? lenses,
-          String? photographerID}) =>
-      PhotoData(
-        id: id ?? this.id,
-        filename: filename ?? this.filename,
-        date: date ?? this.date,
+          String? personnelId}) =>
+      MediaData(
+        primaryId: primaryId ?? this.primaryId,
+        secondaryId: secondaryId ?? this.secondaryId,
+        secondaryIdRef: secondaryIdRef ?? this.secondaryIdRef,
+        fileId: fileId ?? this.fileId,
+        taken: taken ?? this.taken,
         camera: camera ?? this.camera,
         lenses: lenses ?? this.lenses,
-        photographerID: photographerID ?? this.photographerID,
+        personnelId: personnelId ?? this.personnelId,
       );
   @override
   String toString() {
-    return (StringBuffer('PhotoData(')
-          ..write('id: $id, ')
-          ..write('filename: $filename, ')
-          ..write('date: $date, ')
+    return (StringBuffer('MediaData(')
+          ..write('primaryId: $primaryId, ')
+          ..write('secondaryId: $secondaryId, ')
+          ..write('secondaryIdRef: $secondaryIdRef, ')
+          ..write('fileId: $fileId, ')
+          ..write('taken: $taken, ')
           ..write('camera: $camera, ')
           ..write('lenses: $lenses, ')
-          ..write('photographerID: $photographerID')
+          ..write('personnelId: $personnelId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, filename, date, camera, lenses, photographerID);
+  int get hashCode => Object.hash(primaryId, secondaryId, secondaryIdRef,
+      fileId, taken, camera, lenses, personnelId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is PhotoData &&
-          other.id == this.id &&
-          other.filename == this.filename &&
-          other.date == this.date &&
+      (other is MediaData &&
+          other.primaryId == this.primaryId &&
+          other.secondaryId == this.secondaryId &&
+          other.secondaryIdRef == this.secondaryIdRef &&
+          other.fileId == this.fileId &&
+          other.taken == this.taken &&
           other.camera == this.camera &&
           other.lenses == this.lenses &&
-          other.photographerID == this.photographerID);
+          other.personnelId == this.personnelId);
 }
 
-class PhotoCompanion extends UpdateCompanion<PhotoData> {
-  final Value<int?> id;
-  final Value<String?> filename;
-  final Value<String?> date;
+class MediaCompanion extends UpdateCompanion<MediaData> {
+  final Value<int?> primaryId;
+  final Value<String?> secondaryId;
+  final Value<String?> secondaryIdRef;
+  final Value<int?> fileId;
+  final Value<String?> taken;
   final Value<String?> camera;
   final Value<String?> lenses;
-  final Value<String?> photographerID;
-  const PhotoCompanion({
-    this.id = const Value.absent(),
-    this.filename = const Value.absent(),
-    this.date = const Value.absent(),
+  final Value<String?> personnelId;
+  const MediaCompanion({
+    this.primaryId = const Value.absent(),
+    this.secondaryId = const Value.absent(),
+    this.secondaryIdRef = const Value.absent(),
+    this.fileId = const Value.absent(),
+    this.taken = const Value.absent(),
     this.camera = const Value.absent(),
     this.lenses = const Value.absent(),
-    this.photographerID = const Value.absent(),
+    this.personnelId = const Value.absent(),
   });
-  PhotoCompanion.insert({
-    this.id = const Value.absent(),
-    this.filename = const Value.absent(),
-    this.date = const Value.absent(),
+  MediaCompanion.insert({
+    this.primaryId = const Value.absent(),
+    this.secondaryId = const Value.absent(),
+    this.secondaryIdRef = const Value.absent(),
+    this.fileId = const Value.absent(),
+    this.taken = const Value.absent(),
     this.camera = const Value.absent(),
     this.lenses = const Value.absent(),
-    this.photographerID = const Value.absent(),
+    this.personnelId = const Value.absent(),
   });
-  static Insertable<PhotoData> custom({
-    Expression<int?>? id,
-    Expression<String?>? filename,
-    Expression<String?>? date,
+  static Insertable<MediaData> custom({
+    Expression<int?>? primaryId,
+    Expression<String?>? secondaryId,
+    Expression<String?>? secondaryIdRef,
+    Expression<int?>? fileId,
+    Expression<String?>? taken,
     Expression<String?>? camera,
     Expression<String?>? lenses,
-    Expression<String?>? photographerID,
+    Expression<String?>? personnelId,
   }) {
     return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (filename != null) 'filename': filename,
-      if (date != null) 'date': date,
+      if (primaryId != null) 'primaryId': primaryId,
+      if (secondaryId != null) 'secondaryId': secondaryId,
+      if (secondaryIdRef != null) 'secondaryIdRef': secondaryIdRef,
+      if (fileId != null) 'fileId': fileId,
+      if (taken != null) 'taken': taken,
       if (camera != null) 'camera': camera,
       if (lenses != null) 'lenses': lenses,
-      if (photographerID != null) 'photographerID': photographerID,
+      if (personnelId != null) 'personnelId': personnelId,
     });
   }
 
-  PhotoCompanion copyWith(
-      {Value<int?>? id,
-      Value<String?>? filename,
-      Value<String?>? date,
+  MediaCompanion copyWith(
+      {Value<int?>? primaryId,
+      Value<String?>? secondaryId,
+      Value<String?>? secondaryIdRef,
+      Value<int?>? fileId,
+      Value<String?>? taken,
       Value<String?>? camera,
       Value<String?>? lenses,
-      Value<String?>? photographerID}) {
-    return PhotoCompanion(
-      id: id ?? this.id,
-      filename: filename ?? this.filename,
-      date: date ?? this.date,
+      Value<String?>? personnelId}) {
+    return MediaCompanion(
+      primaryId: primaryId ?? this.primaryId,
+      secondaryId: secondaryId ?? this.secondaryId,
+      secondaryIdRef: secondaryIdRef ?? this.secondaryIdRef,
+      fileId: fileId ?? this.fileId,
+      taken: taken ?? this.taken,
       camera: camera ?? this.camera,
       lenses: lenses ?? this.lenses,
-      photographerID: photographerID ?? this.photographerID,
+      personnelId: personnelId ?? this.personnelId,
     );
   }
 
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int?>(id.value);
+    if (primaryId.present) {
+      map['primaryId'] = Variable<int?>(primaryId.value);
     }
-    if (filename.present) {
-      map['filename'] = Variable<String?>(filename.value);
+    if (secondaryId.present) {
+      map['secondaryId'] = Variable<String?>(secondaryId.value);
     }
-    if (date.present) {
-      map['date'] = Variable<String?>(date.value);
+    if (secondaryIdRef.present) {
+      map['secondaryIdRef'] = Variable<String?>(secondaryIdRef.value);
+    }
+    if (fileId.present) {
+      map['fileId'] = Variable<int?>(fileId.value);
+    }
+    if (taken.present) {
+      map['taken'] = Variable<String?>(taken.value);
     }
     if (camera.present) {
       map['camera'] = Variable<String?>(camera.value);
@@ -1041,46 +1580,62 @@ class PhotoCompanion extends UpdateCompanion<PhotoData> {
     if (lenses.present) {
       map['lenses'] = Variable<String?>(lenses.value);
     }
-    if (photographerID.present) {
-      map['photographerID'] = Variable<String?>(photographerID.value);
+    if (personnelId.present) {
+      map['personnelId'] = Variable<String?>(personnelId.value);
     }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('PhotoCompanion(')
-          ..write('id: $id, ')
-          ..write('filename: $filename, ')
-          ..write('date: $date, ')
+    return (StringBuffer('MediaCompanion(')
+          ..write('primaryId: $primaryId, ')
+          ..write('secondaryId: $secondaryId, ')
+          ..write('secondaryIdRef: $secondaryIdRef, ')
+          ..write('fileId: $fileId, ')
+          ..write('taken: $taken, ')
           ..write('camera: $camera, ')
           ..write('lenses: $lenses, ')
-          ..write('photographerID: $photographerID')
+          ..write('personnelId: $personnelId')
           ..write(')'))
         .toString();
   }
 }
 
-class Photo extends Table with TableInfo<Photo, PhotoData> {
+class Media extends Table with TableInfo<Media, MediaData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Photo(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
-      'id', aliasedName, true,
+  Media(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _primaryIdMeta = const VerificationMeta('primaryId');
+  late final GeneratedColumn<int?> primaryId = GeneratedColumn<int?>(
+      'primaryId', aliasedName, true,
       type: const IntType(),
       requiredDuringInsert: false,
       $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  final VerificationMeta _filenameMeta = const VerificationMeta('filename');
-  late final GeneratedColumn<String?> filename = GeneratedColumn<String?>(
-      'filename', aliasedName, true,
+  final VerificationMeta _secondaryIdMeta =
+      const VerificationMeta('secondaryId');
+  late final GeneratedColumn<String?> secondaryId = GeneratedColumn<String?>(
+      'secondaryId', aliasedName, true,
       type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _dateMeta = const VerificationMeta('date');
-  late final GeneratedColumn<String?> date = GeneratedColumn<String?>(
-      'date', aliasedName, true,
+  final VerificationMeta _secondaryIdRefMeta =
+      const VerificationMeta('secondaryIdRef');
+  late final GeneratedColumn<String?> secondaryIdRef = GeneratedColumn<String?>(
+      'secondaryIdRef', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _fileIdMeta = const VerificationMeta('fileId');
+  late final GeneratedColumn<int?> fileId = GeneratedColumn<int?>(
+      'fileId', aliasedName, true,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _takenMeta = const VerificationMeta('taken');
+  late final GeneratedColumn<String?> taken = GeneratedColumn<String?>(
+      'taken', aliasedName, true,
       type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -1096,35 +1651,56 @@ class Photo extends Table with TableInfo<Photo, PhotoData> {
       type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _photographerIDMeta =
-      const VerificationMeta('photographerID');
-  late final GeneratedColumn<String?> photographerID = GeneratedColumn<String?>(
-      'photographerID', aliasedName, true,
+  final VerificationMeta _personnelIdMeta =
+      const VerificationMeta('personnelId');
+  late final GeneratedColumn<String?> personnelId = GeneratedColumn<String?>(
+      'personnelId', aliasedName, true,
       type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, filename, date, camera, lenses, photographerID];
+  List<GeneratedColumn> get $columns => [
+        primaryId,
+        secondaryId,
+        secondaryIdRef,
+        fileId,
+        taken,
+        camera,
+        lenses,
+        personnelId
+      ];
   @override
-  String get aliasedName => _alias ?? 'photo';
+  String get aliasedName => _alias ?? 'media';
   @override
-  String get actualTableName => 'photo';
+  String get actualTableName => 'media';
   @override
-  VerificationContext validateIntegrity(Insertable<PhotoData> instance,
+  VerificationContext validateIntegrity(Insertable<MediaData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    if (data.containsKey('primaryId')) {
+      context.handle(_primaryIdMeta,
+          primaryId.isAcceptableOrUnknown(data['primaryId']!, _primaryIdMeta));
     }
-    if (data.containsKey('filename')) {
-      context.handle(_filenameMeta,
-          filename.isAcceptableOrUnknown(data['filename']!, _filenameMeta));
-    }
-    if (data.containsKey('date')) {
+    if (data.containsKey('secondaryId')) {
       context.handle(
-          _dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
+          _secondaryIdMeta,
+          secondaryId.isAcceptableOrUnknown(
+              data['secondaryId']!, _secondaryIdMeta));
+    }
+    if (data.containsKey('secondaryIdRef')) {
+      context.handle(
+          _secondaryIdRefMeta,
+          secondaryIdRef.isAcceptableOrUnknown(
+              data['secondaryIdRef']!, _secondaryIdRefMeta));
+    }
+    if (data.containsKey('fileId')) {
+      context.handle(_fileIdMeta,
+          fileId.isAcceptableOrUnknown(data['fileId']!, _fileIdMeta));
+    }
+    if (data.containsKey('taken')) {
+      context.handle(
+          _takenMeta, taken.isAcceptableOrUnknown(data['taken']!, _takenMeta));
     }
     if (data.containsKey('camera')) {
       context.handle(_cameraMeta,
@@ -1134,31 +1710,33 @@ class Photo extends Table with TableInfo<Photo, PhotoData> {
       context.handle(_lensesMeta,
           lenses.isAcceptableOrUnknown(data['lenses']!, _lensesMeta));
     }
-    if (data.containsKey('photographerID')) {
+    if (data.containsKey('personnelId')) {
       context.handle(
-          _photographerIDMeta,
-          photographerID.isAcceptableOrUnknown(
-              data['photographerID']!, _photographerIDMeta));
+          _personnelIdMeta,
+          personnelId.isAcceptableOrUnknown(
+              data['personnelId']!, _personnelIdMeta));
     }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => {primaryId};
   @override
-  PhotoData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return PhotoData.fromData(data,
+  MediaData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return MediaData.fromData(data,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
-  Photo createAlias(String alias) {
-    return Photo(attachedDatabase, alias);
+  Media createAlias(String alias) {
+    return Media(attachedDatabase, alias);
   }
 
   @override
-  List<String> get customConstraints =>
-      const ['FOREIGN KEY(photographerID) REFERENCES personnel(uuid)'];
+  List<String> get customConstraints => const [
+        'FOREIGN KEY(personnelId) REFERENCES personnel(uuid)',
+        'FOREIGN KEY(fileId) REFERENCES fileMetadata(id)'
+      ];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -1173,7 +1751,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
   final String? stateProvince;
   final String? county;
   final String? municipality;
-  final String? photoID;
+  final String? mediaID;
   final String? locality;
   SiteData(
       {required this.id,
@@ -1185,7 +1763,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
       this.stateProvince,
       this.county,
       this.municipality,
-      this.photoID,
+      this.mediaID,
       this.locality});
   factory SiteData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -1208,8 +1786,8 @@ class SiteData extends DataClass implements Insertable<SiteData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}county']),
       municipality: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}municipality']),
-      photoID: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}photoID']),
+      mediaID: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}mediaID']),
       locality: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}locality']),
     );
@@ -1242,8 +1820,8 @@ class SiteData extends DataClass implements Insertable<SiteData> {
     if (!nullToAbsent || municipality != null) {
       map['municipality'] = Variable<String?>(municipality);
     }
-    if (!nullToAbsent || photoID != null) {
-      map['photoID'] = Variable<String?>(photoID);
+    if (!nullToAbsent || mediaID != null) {
+      map['mediaID'] = Variable<String?>(mediaID);
     }
     if (!nullToAbsent || locality != null) {
       map['locality'] = Variable<String?>(locality);
@@ -1276,9 +1854,9 @@ class SiteData extends DataClass implements Insertable<SiteData> {
       municipality: municipality == null && nullToAbsent
           ? const Value.absent()
           : Value(municipality),
-      photoID: photoID == null && nullToAbsent
+      mediaID: mediaID == null && nullToAbsent
           ? const Value.absent()
-          : Value(photoID),
+          : Value(mediaID),
       locality: locality == null && nullToAbsent
           ? const Value.absent()
           : Value(locality),
@@ -1298,7 +1876,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
       stateProvince: serializer.fromJson<String?>(json['stateProvince']),
       county: serializer.fromJson<String?>(json['county']),
       municipality: serializer.fromJson<String?>(json['municipality']),
-      photoID: serializer.fromJson<String?>(json['photoID']),
+      mediaID: serializer.fromJson<String?>(json['mediaID']),
       locality: serializer.fromJson<String?>(json['locality']),
     );
   }
@@ -1315,7 +1893,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
       'stateProvince': serializer.toJson<String?>(stateProvince),
       'county': serializer.toJson<String?>(county),
       'municipality': serializer.toJson<String?>(municipality),
-      'photoID': serializer.toJson<String?>(photoID),
+      'mediaID': serializer.toJson<String?>(mediaID),
       'locality': serializer.toJson<String?>(locality),
     };
   }
@@ -1330,7 +1908,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
           String? stateProvince,
           String? county,
           String? municipality,
-          String? photoID,
+          String? mediaID,
           String? locality}) =>
       SiteData(
         id: id ?? this.id,
@@ -1342,7 +1920,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
         stateProvince: stateProvince ?? this.stateProvince,
         county: county ?? this.county,
         municipality: municipality ?? this.municipality,
-        photoID: photoID ?? this.photoID,
+        mediaID: mediaID ?? this.mediaID,
         locality: locality ?? this.locality,
       );
   @override
@@ -1357,7 +1935,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
           ..write('stateProvince: $stateProvince, ')
           ..write('county: $county, ')
           ..write('municipality: $municipality, ')
-          ..write('photoID: $photoID, ')
+          ..write('mediaID: $mediaID, ')
           ..write('locality: $locality')
           ..write(')'))
         .toString();
@@ -1365,7 +1943,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
 
   @override
   int get hashCode => Object.hash(id, siteID, projectUuid, leadStuff, siteType,
-      country, stateProvince, county, municipality, photoID, locality);
+      country, stateProvince, county, municipality, mediaID, locality);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1379,7 +1957,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
           other.stateProvince == this.stateProvince &&
           other.county == this.county &&
           other.municipality == this.municipality &&
-          other.photoID == this.photoID &&
+          other.mediaID == this.mediaID &&
           other.locality == this.locality);
 }
 
@@ -1393,7 +1971,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
   final Value<String?> stateProvince;
   final Value<String?> county;
   final Value<String?> municipality;
-  final Value<String?> photoID;
+  final Value<String?> mediaID;
   final Value<String?> locality;
   const SiteCompanion({
     this.id = const Value.absent(),
@@ -1405,7 +1983,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
     this.stateProvince = const Value.absent(),
     this.county = const Value.absent(),
     this.municipality = const Value.absent(),
-    this.photoID = const Value.absent(),
+    this.mediaID = const Value.absent(),
     this.locality = const Value.absent(),
   });
   SiteCompanion.insert({
@@ -1418,7 +1996,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
     this.stateProvince = const Value.absent(),
     this.county = const Value.absent(),
     this.municipality = const Value.absent(),
-    this.photoID = const Value.absent(),
+    this.mediaID = const Value.absent(),
     this.locality = const Value.absent(),
   });
   static Insertable<SiteData> custom({
@@ -1431,7 +2009,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
     Expression<String?>? stateProvince,
     Expression<String?>? county,
     Expression<String?>? municipality,
-    Expression<String?>? photoID,
+    Expression<String?>? mediaID,
     Expression<String?>? locality,
   }) {
     return RawValuesInsertable({
@@ -1444,7 +2022,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
       if (stateProvince != null) 'stateProvince': stateProvince,
       if (county != null) 'county': county,
       if (municipality != null) 'municipality': municipality,
-      if (photoID != null) 'photoID': photoID,
+      if (mediaID != null) 'mediaID': mediaID,
       if (locality != null) 'locality': locality,
     });
   }
@@ -1459,7 +2037,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
       Value<String?>? stateProvince,
       Value<String?>? county,
       Value<String?>? municipality,
-      Value<String?>? photoID,
+      Value<String?>? mediaID,
       Value<String?>? locality}) {
     return SiteCompanion(
       id: id ?? this.id,
@@ -1471,7 +2049,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
       stateProvince: stateProvince ?? this.stateProvince,
       county: county ?? this.county,
       municipality: municipality ?? this.municipality,
-      photoID: photoID ?? this.photoID,
+      mediaID: mediaID ?? this.mediaID,
       locality: locality ?? this.locality,
     );
   }
@@ -1506,8 +2084,8 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
     if (municipality.present) {
       map['municipality'] = Variable<String?>(municipality.value);
     }
-    if (photoID.present) {
-      map['photoID'] = Variable<String?>(photoID.value);
+    if (mediaID.present) {
+      map['mediaID'] = Variable<String?>(mediaID.value);
     }
     if (locality.present) {
       map['locality'] = Variable<String?>(locality.value);
@@ -1527,7 +2105,7 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
           ..write('stateProvince: $stateProvince, ')
           ..write('county: $county, ')
           ..write('municipality: $municipality, ')
-          ..write('photoID: $photoID, ')
+          ..write('mediaID: $mediaID, ')
           ..write('locality: $locality')
           ..write(')'))
         .toString();
@@ -1596,9 +2174,9 @@ class Site extends Table with TableInfo<Site, SiteData> {
       type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _photoIDMeta = const VerificationMeta('photoID');
-  late final GeneratedColumn<String?> photoID = GeneratedColumn<String?>(
-      'photoID', aliasedName, true,
+  final VerificationMeta _mediaIDMeta = const VerificationMeta('mediaID');
+  late final GeneratedColumn<String?> mediaID = GeneratedColumn<String?>(
+      'mediaID', aliasedName, true,
       type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -1619,7 +2197,7 @@ class Site extends Table with TableInfo<Site, SiteData> {
         stateProvince,
         county,
         municipality,
-        photoID,
+        mediaID,
         locality
       ];
   @override
@@ -1672,9 +2250,9 @@ class Site extends Table with TableInfo<Site, SiteData> {
           municipality.isAcceptableOrUnknown(
               data['municipality']!, _municipalityMeta));
     }
-    if (data.containsKey('photoID')) {
-      context.handle(_photoIDMeta,
-          photoID.isAcceptableOrUnknown(data['photoID']!, _photoIDMeta));
+    if (data.containsKey('mediaID')) {
+      context.handle(_mediaIDMeta,
+          mediaID.isAcceptableOrUnknown(data['mediaID']!, _mediaIDMeta));
     }
     if (data.containsKey('locality')) {
       context.handle(_localityMeta,
@@ -1698,7 +2276,7 @@ class Site extends Table with TableInfo<Site, SiteData> {
 
   @override
   List<String> get customConstraints =>
-      const ['FOREIGN KEY(photoID) REFERENCES photo(id)'];
+      const ['FOREIGN KEY(mediaID) REFERENCES media(primaryId)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -2645,14 +3223,14 @@ class NarrativeData extends DataClass implements Insertable<NarrativeData> {
   final String? date;
   final String? siteID;
   final String? narrative;
-  final int? photoID;
+  final int? mediaID;
   NarrativeData(
       {required this.id,
       this.projectUuid,
       this.date,
       this.siteID,
       this.narrative,
-      this.photoID});
+      this.mediaID});
   factory NarrativeData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return NarrativeData(
@@ -2666,8 +3244,8 @@ class NarrativeData extends DataClass implements Insertable<NarrativeData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}siteID']),
       narrative: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}narrative']),
-      photoID: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}photoID']),
+      mediaID: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}mediaID']),
     );
   }
   @override
@@ -2686,8 +3264,8 @@ class NarrativeData extends DataClass implements Insertable<NarrativeData> {
     if (!nullToAbsent || narrative != null) {
       map['narrative'] = Variable<String?>(narrative);
     }
-    if (!nullToAbsent || photoID != null) {
-      map['photoID'] = Variable<int?>(photoID);
+    if (!nullToAbsent || mediaID != null) {
+      map['mediaID'] = Variable<int?>(mediaID);
     }
     return map;
   }
@@ -2704,9 +3282,9 @@ class NarrativeData extends DataClass implements Insertable<NarrativeData> {
       narrative: narrative == null && nullToAbsent
           ? const Value.absent()
           : Value(narrative),
-      photoID: photoID == null && nullToAbsent
+      mediaID: mediaID == null && nullToAbsent
           ? const Value.absent()
-          : Value(photoID),
+          : Value(mediaID),
     );
   }
 
@@ -2719,7 +3297,7 @@ class NarrativeData extends DataClass implements Insertable<NarrativeData> {
       date: serializer.fromJson<String?>(json['date']),
       siteID: serializer.fromJson<String?>(json['siteID']),
       narrative: serializer.fromJson<String?>(json['narrative']),
-      photoID: serializer.fromJson<int?>(json['photoID']),
+      mediaID: serializer.fromJson<int?>(json['mediaID']),
     );
   }
   @override
@@ -2731,7 +3309,7 @@ class NarrativeData extends DataClass implements Insertable<NarrativeData> {
       'date': serializer.toJson<String?>(date),
       'siteID': serializer.toJson<String?>(siteID),
       'narrative': serializer.toJson<String?>(narrative),
-      'photoID': serializer.toJson<int?>(photoID),
+      'mediaID': serializer.toJson<int?>(mediaID),
     };
   }
 
@@ -2741,14 +3319,14 @@ class NarrativeData extends DataClass implements Insertable<NarrativeData> {
           String? date,
           String? siteID,
           String? narrative,
-          int? photoID}) =>
+          int? mediaID}) =>
       NarrativeData(
         id: id ?? this.id,
         projectUuid: projectUuid ?? this.projectUuid,
         date: date ?? this.date,
         siteID: siteID ?? this.siteID,
         narrative: narrative ?? this.narrative,
-        photoID: photoID ?? this.photoID,
+        mediaID: mediaID ?? this.mediaID,
       );
   @override
   String toString() {
@@ -2758,14 +3336,14 @@ class NarrativeData extends DataClass implements Insertable<NarrativeData> {
           ..write('date: $date, ')
           ..write('siteID: $siteID, ')
           ..write('narrative: $narrative, ')
-          ..write('photoID: $photoID')
+          ..write('mediaID: $mediaID')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode =>
-      Object.hash(id, projectUuid, date, siteID, narrative, photoID);
+      Object.hash(id, projectUuid, date, siteID, narrative, mediaID);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2775,7 +3353,7 @@ class NarrativeData extends DataClass implements Insertable<NarrativeData> {
           other.date == this.date &&
           other.siteID == this.siteID &&
           other.narrative == this.narrative &&
-          other.photoID == this.photoID);
+          other.mediaID == this.mediaID);
 }
 
 class NarrativeCompanion extends UpdateCompanion<NarrativeData> {
@@ -2784,14 +3362,14 @@ class NarrativeCompanion extends UpdateCompanion<NarrativeData> {
   final Value<String?> date;
   final Value<String?> siteID;
   final Value<String?> narrative;
-  final Value<int?> photoID;
+  final Value<int?> mediaID;
   const NarrativeCompanion({
     this.id = const Value.absent(),
     this.projectUuid = const Value.absent(),
     this.date = const Value.absent(),
     this.siteID = const Value.absent(),
     this.narrative = const Value.absent(),
-    this.photoID = const Value.absent(),
+    this.mediaID = const Value.absent(),
   });
   NarrativeCompanion.insert({
     this.id = const Value.absent(),
@@ -2799,7 +3377,7 @@ class NarrativeCompanion extends UpdateCompanion<NarrativeData> {
     this.date = const Value.absent(),
     this.siteID = const Value.absent(),
     this.narrative = const Value.absent(),
-    this.photoID = const Value.absent(),
+    this.mediaID = const Value.absent(),
   });
   static Insertable<NarrativeData> custom({
     Expression<int>? id,
@@ -2807,7 +3385,7 @@ class NarrativeCompanion extends UpdateCompanion<NarrativeData> {
     Expression<String?>? date,
     Expression<String?>? siteID,
     Expression<String?>? narrative,
-    Expression<int?>? photoID,
+    Expression<int?>? mediaID,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2815,7 +3393,7 @@ class NarrativeCompanion extends UpdateCompanion<NarrativeData> {
       if (date != null) 'date': date,
       if (siteID != null) 'siteID': siteID,
       if (narrative != null) 'narrative': narrative,
-      if (photoID != null) 'photoID': photoID,
+      if (mediaID != null) 'mediaID': mediaID,
     });
   }
 
@@ -2825,14 +3403,14 @@ class NarrativeCompanion extends UpdateCompanion<NarrativeData> {
       Value<String?>? date,
       Value<String?>? siteID,
       Value<String?>? narrative,
-      Value<int?>? photoID}) {
+      Value<int?>? mediaID}) {
     return NarrativeCompanion(
       id: id ?? this.id,
       projectUuid: projectUuid ?? this.projectUuid,
       date: date ?? this.date,
       siteID: siteID ?? this.siteID,
       narrative: narrative ?? this.narrative,
-      photoID: photoID ?? this.photoID,
+      mediaID: mediaID ?? this.mediaID,
     );
   }
 
@@ -2854,8 +3432,8 @@ class NarrativeCompanion extends UpdateCompanion<NarrativeData> {
     if (narrative.present) {
       map['narrative'] = Variable<String?>(narrative.value);
     }
-    if (photoID.present) {
-      map['photoID'] = Variable<int?>(photoID.value);
+    if (mediaID.present) {
+      map['mediaID'] = Variable<int?>(mediaID.value);
     }
     return map;
   }
@@ -2868,7 +3446,7 @@ class NarrativeCompanion extends UpdateCompanion<NarrativeData> {
           ..write('date: $date, ')
           ..write('siteID: $siteID, ')
           ..write('narrative: $narrative, ')
-          ..write('photoID: $photoID')
+          ..write('mediaID: $mediaID')
           ..write(')'))
         .toString();
   }
@@ -2910,15 +3488,15 @@ class Narrative extends Table with TableInfo<Narrative, NarrativeData> {
       type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _photoIDMeta = const VerificationMeta('photoID');
-  late final GeneratedColumn<int?> photoID = GeneratedColumn<int?>(
-      'photoID', aliasedName, true,
+  final VerificationMeta _mediaIDMeta = const VerificationMeta('mediaID');
+  late final GeneratedColumn<int?> mediaID = GeneratedColumn<int?>(
+      'mediaID', aliasedName, true,
       type: const IntType(),
       requiredDuringInsert: false,
-      $customConstraints: 'REFERENCES photo(id)');
+      $customConstraints: 'REFERENCES media(primaryId)');
   @override
   List<GeneratedColumn> get $columns =>
-      [id, projectUuid, date, siteID, narrative, photoID];
+      [id, projectUuid, date, siteID, narrative, mediaID];
   @override
   String get aliasedName => _alias ?? 'narrative';
   @override
@@ -2949,9 +3527,9 @@ class Narrative extends Table with TableInfo<Narrative, NarrativeData> {
       context.handle(_narrativeMeta,
           narrative.isAcceptableOrUnknown(data['narrative']!, _narrativeMeta));
     }
-    if (data.containsKey('photoID')) {
-      context.handle(_photoIDMeta,
-          photoID.isAcceptableOrUnknown(data['photoID']!, _photoIDMeta));
+    if (data.containsKey('mediaID')) {
+      context.handle(_mediaIDMeta,
+          mediaID.isAcceptableOrUnknown(data['mediaID']!, _mediaIDMeta));
     }
     return context;
   }
@@ -2974,6 +3552,354 @@ class Narrative extends Table with TableInfo<Narrative, NarrativeData> {
         'FOREIGN KEY(projectUuid) REFERENCES project(uuid)',
         'FOREIGN KEY(siteID) REFERENCES site(siteID)'
       ];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class AssociatedDataData extends DataClass
+    implements Insertable<AssociatedDataData> {
+  final int? primaryId;
+  final String? secondaryId;
+  final Uint8List? secondaryIdRef;
+  final Uint8List? type;
+  final String? description;
+  final String? fileId;
+  AssociatedDataData(
+      {this.primaryId,
+      this.secondaryId,
+      this.secondaryIdRef,
+      this.type,
+      this.description,
+      this.fileId});
+  factory AssociatedDataData.fromData(Map<String, dynamic> data,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return AssociatedDataData(
+      primaryId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}primaryId']),
+      secondaryId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}secondaryId']),
+      secondaryIdRef: const BlobType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}secondaryIdRef']),
+      type: const BlobType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}type']),
+      description: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}description']),
+      fileId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}fileId']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || primaryId != null) {
+      map['primaryId'] = Variable<int?>(primaryId);
+    }
+    if (!nullToAbsent || secondaryId != null) {
+      map['secondaryId'] = Variable<String?>(secondaryId);
+    }
+    if (!nullToAbsent || secondaryIdRef != null) {
+      map['secondaryIdRef'] = Variable<Uint8List?>(secondaryIdRef);
+    }
+    if (!nullToAbsent || type != null) {
+      map['type'] = Variable<Uint8List?>(type);
+    }
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String?>(description);
+    }
+    if (!nullToAbsent || fileId != null) {
+      map['fileId'] = Variable<String?>(fileId);
+    }
+    return map;
+  }
+
+  AssociatedDataCompanion toCompanion(bool nullToAbsent) {
+    return AssociatedDataCompanion(
+      primaryId: primaryId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(primaryId),
+      secondaryId: secondaryId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(secondaryId),
+      secondaryIdRef: secondaryIdRef == null && nullToAbsent
+          ? const Value.absent()
+          : Value(secondaryIdRef),
+      type: type == null && nullToAbsent ? const Value.absent() : Value(type),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      fileId:
+          fileId == null && nullToAbsent ? const Value.absent() : Value(fileId),
+    );
+  }
+
+  factory AssociatedDataData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AssociatedDataData(
+      primaryId: serializer.fromJson<int?>(json['primaryId']),
+      secondaryId: serializer.fromJson<String?>(json['secondaryId']),
+      secondaryIdRef: serializer.fromJson<Uint8List?>(json['secondaryIdRef']),
+      type: serializer.fromJson<Uint8List?>(json['type']),
+      description: serializer.fromJson<String?>(json['description']),
+      fileId: serializer.fromJson<String?>(json['fileId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'primaryId': serializer.toJson<int?>(primaryId),
+      'secondaryId': serializer.toJson<String?>(secondaryId),
+      'secondaryIdRef': serializer.toJson<Uint8List?>(secondaryIdRef),
+      'type': serializer.toJson<Uint8List?>(type),
+      'description': serializer.toJson<String?>(description),
+      'fileId': serializer.toJson<String?>(fileId),
+    };
+  }
+
+  AssociatedDataData copyWith(
+          {int? primaryId,
+          String? secondaryId,
+          Uint8List? secondaryIdRef,
+          Uint8List? type,
+          String? description,
+          String? fileId}) =>
+      AssociatedDataData(
+        primaryId: primaryId ?? this.primaryId,
+        secondaryId: secondaryId ?? this.secondaryId,
+        secondaryIdRef: secondaryIdRef ?? this.secondaryIdRef,
+        type: type ?? this.type,
+        description: description ?? this.description,
+        fileId: fileId ?? this.fileId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('AssociatedDataData(')
+          ..write('primaryId: $primaryId, ')
+          ..write('secondaryId: $secondaryId, ')
+          ..write('secondaryIdRef: $secondaryIdRef, ')
+          ..write('type: $type, ')
+          ..write('description: $description, ')
+          ..write('fileId: $fileId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      primaryId, secondaryId, secondaryIdRef, type, description, fileId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AssociatedDataData &&
+          other.primaryId == this.primaryId &&
+          other.secondaryId == this.secondaryId &&
+          other.secondaryIdRef == this.secondaryIdRef &&
+          other.type == this.type &&
+          other.description == this.description &&
+          other.fileId == this.fileId);
+}
+
+class AssociatedDataCompanion extends UpdateCompanion<AssociatedDataData> {
+  final Value<int?> primaryId;
+  final Value<String?> secondaryId;
+  final Value<Uint8List?> secondaryIdRef;
+  final Value<Uint8List?> type;
+  final Value<String?> description;
+  final Value<String?> fileId;
+  const AssociatedDataCompanion({
+    this.primaryId = const Value.absent(),
+    this.secondaryId = const Value.absent(),
+    this.secondaryIdRef = const Value.absent(),
+    this.type = const Value.absent(),
+    this.description = const Value.absent(),
+    this.fileId = const Value.absent(),
+  });
+  AssociatedDataCompanion.insert({
+    this.primaryId = const Value.absent(),
+    this.secondaryId = const Value.absent(),
+    this.secondaryIdRef = const Value.absent(),
+    this.type = const Value.absent(),
+    this.description = const Value.absent(),
+    this.fileId = const Value.absent(),
+  });
+  static Insertable<AssociatedDataData> custom({
+    Expression<int?>? primaryId,
+    Expression<String?>? secondaryId,
+    Expression<Uint8List?>? secondaryIdRef,
+    Expression<Uint8List?>? type,
+    Expression<String?>? description,
+    Expression<String?>? fileId,
+  }) {
+    return RawValuesInsertable({
+      if (primaryId != null) 'primaryId': primaryId,
+      if (secondaryId != null) 'secondaryId': secondaryId,
+      if (secondaryIdRef != null) 'secondaryIdRef': secondaryIdRef,
+      if (type != null) 'type': type,
+      if (description != null) 'description': description,
+      if (fileId != null) 'fileId': fileId,
+    });
+  }
+
+  AssociatedDataCompanion copyWith(
+      {Value<int?>? primaryId,
+      Value<String?>? secondaryId,
+      Value<Uint8List?>? secondaryIdRef,
+      Value<Uint8List?>? type,
+      Value<String?>? description,
+      Value<String?>? fileId}) {
+    return AssociatedDataCompanion(
+      primaryId: primaryId ?? this.primaryId,
+      secondaryId: secondaryId ?? this.secondaryId,
+      secondaryIdRef: secondaryIdRef ?? this.secondaryIdRef,
+      type: type ?? this.type,
+      description: description ?? this.description,
+      fileId: fileId ?? this.fileId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (primaryId.present) {
+      map['primaryId'] = Variable<int?>(primaryId.value);
+    }
+    if (secondaryId.present) {
+      map['secondaryId'] = Variable<String?>(secondaryId.value);
+    }
+    if (secondaryIdRef.present) {
+      map['secondaryIdRef'] = Variable<Uint8List?>(secondaryIdRef.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<Uint8List?>(type.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String?>(description.value);
+    }
+    if (fileId.present) {
+      map['fileId'] = Variable<String?>(fileId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AssociatedDataCompanion(')
+          ..write('primaryId: $primaryId, ')
+          ..write('secondaryId: $secondaryId, ')
+          ..write('secondaryIdRef: $secondaryIdRef, ')
+          ..write('type: $type, ')
+          ..write('description: $description, ')
+          ..write('fileId: $fileId')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class AssociatedData extends Table
+    with TableInfo<AssociatedData, AssociatedDataData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  AssociatedData(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _primaryIdMeta = const VerificationMeta('primaryId');
+  late final GeneratedColumn<int?> primaryId = GeneratedColumn<int?>(
+      'primaryId', aliasedName, true,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  final VerificationMeta _secondaryIdMeta =
+      const VerificationMeta('secondaryId');
+  late final GeneratedColumn<String?> secondaryId = GeneratedColumn<String?>(
+      'secondaryId', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _secondaryIdRefMeta =
+      const VerificationMeta('secondaryIdRef');
+  late final GeneratedColumn<Uint8List?> secondaryIdRef =
+      GeneratedColumn<Uint8List?>('secondaryIdRef', aliasedName, true,
+          type: const BlobType(),
+          requiredDuringInsert: false,
+          $customConstraints: '');
+  final VerificationMeta _typeMeta = const VerificationMeta('type');
+  late final GeneratedColumn<Uint8List?> type = GeneratedColumn<Uint8List?>(
+      'type', aliasedName, true,
+      type: const BlobType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  late final GeneratedColumn<String?> description = GeneratedColumn<String?>(
+      'description', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _fileIdMeta = const VerificationMeta('fileId');
+  late final GeneratedColumn<String?> fileId = GeneratedColumn<String?>(
+      'fileId', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  @override
+  List<GeneratedColumn> get $columns =>
+      [primaryId, secondaryId, secondaryIdRef, type, description, fileId];
+  @override
+  String get aliasedName => _alias ?? 'associatedData';
+  @override
+  String get actualTableName => 'associatedData';
+  @override
+  VerificationContext validateIntegrity(Insertable<AssociatedDataData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('primaryId')) {
+      context.handle(_primaryIdMeta,
+          primaryId.isAcceptableOrUnknown(data['primaryId']!, _primaryIdMeta));
+    }
+    if (data.containsKey('secondaryId')) {
+      context.handle(
+          _secondaryIdMeta,
+          secondaryId.isAcceptableOrUnknown(
+              data['secondaryId']!, _secondaryIdMeta));
+    }
+    if (data.containsKey('secondaryIdRef')) {
+      context.handle(
+          _secondaryIdRefMeta,
+          secondaryIdRef.isAcceptableOrUnknown(
+              data['secondaryIdRef']!, _secondaryIdRefMeta));
+    }
+    if (data.containsKey('type')) {
+      context.handle(
+          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description']!, _descriptionMeta));
+    }
+    if (data.containsKey('fileId')) {
+      context.handle(_fileIdMeta,
+          fileId.isAcceptableOrUnknown(data['fileId']!, _fileIdMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {primaryId};
+  @override
+  AssociatedDataData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return AssociatedDataData.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  AssociatedData createAlias(String alias) {
+    return AssociatedData(attachedDatabase, alias);
+  }
+
   @override
   bool get dontWriteConstraints => true;
 }
@@ -6244,32 +7170,48 @@ class Part extends Table with TableInfo<Part, PartData> {
 
 class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
   final int? id;
+  final String? taxonClass;
+  final String? taxonOrder;
+  final String? taxonFamily;
   final String? genus;
   final String? specificEpithet;
   final String? intraspecificEpithet;
-  final String? taxonFamily;
-  final String? taxonOrder;
+  final Uint8List? commonName;
+  final String? note;
+  final int? mediaId;
   TaxonomyData(
       {this.id,
+      this.taxonClass,
+      this.taxonOrder,
+      this.taxonFamily,
       this.genus,
       this.specificEpithet,
       this.intraspecificEpithet,
-      this.taxonFamily,
-      this.taxonOrder});
+      this.commonName,
+      this.note,
+      this.mediaId});
   factory TaxonomyData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return TaxonomyData(
       id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      taxonClass: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}taxonClass']),
+      taxonOrder: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}taxonOrder']),
+      taxonFamily: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}taxonFamily']),
       genus: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}genus']),
       specificEpithet: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}specificEpithet']),
       intraspecificEpithet: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}intraspecificEpithet']),
-      taxonFamily: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}taxonFamily']),
-      taxonOrder: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}taxonOrder']),
+      commonName: const BlobType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}commonName']),
+      note: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}note']),
+      mediaId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}mediaId']),
     );
   }
   @override
@@ -6277,6 +7219,15 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
     final map = <String, Expression>{};
     if (!nullToAbsent || id != null) {
       map['id'] = Variable<int?>(id);
+    }
+    if (!nullToAbsent || taxonClass != null) {
+      map['taxonClass'] = Variable<String?>(taxonClass);
+    }
+    if (!nullToAbsent || taxonOrder != null) {
+      map['taxonOrder'] = Variable<String?>(taxonOrder);
+    }
+    if (!nullToAbsent || taxonFamily != null) {
+      map['taxonFamily'] = Variable<String?>(taxonFamily);
     }
     if (!nullToAbsent || genus != null) {
       map['genus'] = Variable<String?>(genus);
@@ -6287,11 +7238,14 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
     if (!nullToAbsent || intraspecificEpithet != null) {
       map['intraspecificEpithet'] = Variable<String?>(intraspecificEpithet);
     }
-    if (!nullToAbsent || taxonFamily != null) {
-      map['taxonFamily'] = Variable<String?>(taxonFamily);
+    if (!nullToAbsent || commonName != null) {
+      map['commonName'] = Variable<Uint8List?>(commonName);
     }
-    if (!nullToAbsent || taxonOrder != null) {
-      map['taxonOrder'] = Variable<String?>(taxonOrder);
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String?>(note);
+    }
+    if (!nullToAbsent || mediaId != null) {
+      map['mediaId'] = Variable<int?>(mediaId);
     }
     return map;
   }
@@ -6299,6 +7253,15 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
   TaxonomyCompanion toCompanion(bool nullToAbsent) {
     return TaxonomyCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      taxonClass: taxonClass == null && nullToAbsent
+          ? const Value.absent()
+          : Value(taxonClass),
+      taxonOrder: taxonOrder == null && nullToAbsent
+          ? const Value.absent()
+          : Value(taxonOrder),
+      taxonFamily: taxonFamily == null && nullToAbsent
+          ? const Value.absent()
+          : Value(taxonFamily),
       genus:
           genus == null && nullToAbsent ? const Value.absent() : Value(genus),
       specificEpithet: specificEpithet == null && nullToAbsent
@@ -6307,12 +7270,13 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
       intraspecificEpithet: intraspecificEpithet == null && nullToAbsent
           ? const Value.absent()
           : Value(intraspecificEpithet),
-      taxonFamily: taxonFamily == null && nullToAbsent
+      commonName: commonName == null && nullToAbsent
           ? const Value.absent()
-          : Value(taxonFamily),
-      taxonOrder: taxonOrder == null && nullToAbsent
+          : Value(commonName),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      mediaId: mediaId == null && nullToAbsent
           ? const Value.absent()
-          : Value(taxonOrder),
+          : Value(mediaId),
     );
   }
 
@@ -6321,12 +7285,16 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return TaxonomyData(
       id: serializer.fromJson<int?>(json['id']),
+      taxonClass: serializer.fromJson<String?>(json['taxonClass']),
+      taxonOrder: serializer.fromJson<String?>(json['taxonOrder']),
+      taxonFamily: serializer.fromJson<String?>(json['taxonFamily']),
       genus: serializer.fromJson<String?>(json['genus']),
       specificEpithet: serializer.fromJson<String?>(json['specificEpithet']),
       intraspecificEpithet:
           serializer.fromJson<String?>(json['intraspecificEpithet']),
-      taxonFamily: serializer.fromJson<String?>(json['taxonFamily']),
-      taxonOrder: serializer.fromJson<String?>(json['taxonOrder']),
+      commonName: serializer.fromJson<Uint8List?>(json['commonName']),
+      note: serializer.fromJson<String?>(json['note']),
+      mediaId: serializer.fromJson<int?>(json['mediaId']),
     );
   }
   @override
@@ -6334,113 +7302,161 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int?>(id),
+      'taxonClass': serializer.toJson<String?>(taxonClass),
+      'taxonOrder': serializer.toJson<String?>(taxonOrder),
+      'taxonFamily': serializer.toJson<String?>(taxonFamily),
       'genus': serializer.toJson<String?>(genus),
       'specificEpithet': serializer.toJson<String?>(specificEpithet),
       'intraspecificEpithet': serializer.toJson<String?>(intraspecificEpithet),
-      'taxonFamily': serializer.toJson<String?>(taxonFamily),
-      'taxonOrder': serializer.toJson<String?>(taxonOrder),
+      'commonName': serializer.toJson<Uint8List?>(commonName),
+      'note': serializer.toJson<String?>(note),
+      'mediaId': serializer.toJson<int?>(mediaId),
     };
   }
 
   TaxonomyData copyWith(
           {int? id,
+          String? taxonClass,
+          String? taxonOrder,
+          String? taxonFamily,
           String? genus,
           String? specificEpithet,
           String? intraspecificEpithet,
-          String? taxonFamily,
-          String? taxonOrder}) =>
+          Uint8List? commonName,
+          String? note,
+          int? mediaId}) =>
       TaxonomyData(
         id: id ?? this.id,
+        taxonClass: taxonClass ?? this.taxonClass,
+        taxonOrder: taxonOrder ?? this.taxonOrder,
+        taxonFamily: taxonFamily ?? this.taxonFamily,
         genus: genus ?? this.genus,
         specificEpithet: specificEpithet ?? this.specificEpithet,
         intraspecificEpithet: intraspecificEpithet ?? this.intraspecificEpithet,
-        taxonFamily: taxonFamily ?? this.taxonFamily,
-        taxonOrder: taxonOrder ?? this.taxonOrder,
+        commonName: commonName ?? this.commonName,
+        note: note ?? this.note,
+        mediaId: mediaId ?? this.mediaId,
       );
   @override
   String toString() {
     return (StringBuffer('TaxonomyData(')
           ..write('id: $id, ')
+          ..write('taxonClass: $taxonClass, ')
+          ..write('taxonOrder: $taxonOrder, ')
+          ..write('taxonFamily: $taxonFamily, ')
           ..write('genus: $genus, ')
           ..write('specificEpithet: $specificEpithet, ')
           ..write('intraspecificEpithet: $intraspecificEpithet, ')
-          ..write('taxonFamily: $taxonFamily, ')
-          ..write('taxonOrder: $taxonOrder')
+          ..write('commonName: $commonName, ')
+          ..write('note: $note, ')
+          ..write('mediaId: $mediaId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, genus, specificEpithet,
-      intraspecificEpithet, taxonFamily, taxonOrder);
+  int get hashCode => Object.hash(id, taxonClass, taxonOrder, taxonFamily,
+      genus, specificEpithet, intraspecificEpithet, commonName, note, mediaId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is TaxonomyData &&
           other.id == this.id &&
+          other.taxonClass == this.taxonClass &&
+          other.taxonOrder == this.taxonOrder &&
+          other.taxonFamily == this.taxonFamily &&
           other.genus == this.genus &&
           other.specificEpithet == this.specificEpithet &&
           other.intraspecificEpithet == this.intraspecificEpithet &&
-          other.taxonFamily == this.taxonFamily &&
-          other.taxonOrder == this.taxonOrder);
+          other.commonName == this.commonName &&
+          other.note == this.note &&
+          other.mediaId == this.mediaId);
 }
 
 class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
   final Value<int?> id;
+  final Value<String?> taxonClass;
+  final Value<String?> taxonOrder;
+  final Value<String?> taxonFamily;
   final Value<String?> genus;
   final Value<String?> specificEpithet;
   final Value<String?> intraspecificEpithet;
-  final Value<String?> taxonFamily;
-  final Value<String?> taxonOrder;
+  final Value<Uint8List?> commonName;
+  final Value<String?> note;
+  final Value<int?> mediaId;
   const TaxonomyCompanion({
     this.id = const Value.absent(),
+    this.taxonClass = const Value.absent(),
+    this.taxonOrder = const Value.absent(),
+    this.taxonFamily = const Value.absent(),
     this.genus = const Value.absent(),
     this.specificEpithet = const Value.absent(),
     this.intraspecificEpithet = const Value.absent(),
-    this.taxonFamily = const Value.absent(),
-    this.taxonOrder = const Value.absent(),
+    this.commonName = const Value.absent(),
+    this.note = const Value.absent(),
+    this.mediaId = const Value.absent(),
   });
   TaxonomyCompanion.insert({
     this.id = const Value.absent(),
+    this.taxonClass = const Value.absent(),
+    this.taxonOrder = const Value.absent(),
+    this.taxonFamily = const Value.absent(),
     this.genus = const Value.absent(),
     this.specificEpithet = const Value.absent(),
     this.intraspecificEpithet = const Value.absent(),
-    this.taxonFamily = const Value.absent(),
-    this.taxonOrder = const Value.absent(),
+    this.commonName = const Value.absent(),
+    this.note = const Value.absent(),
+    this.mediaId = const Value.absent(),
   });
   static Insertable<TaxonomyData> custom({
     Expression<int?>? id,
+    Expression<String?>? taxonClass,
+    Expression<String?>? taxonOrder,
+    Expression<String?>? taxonFamily,
     Expression<String?>? genus,
     Expression<String?>? specificEpithet,
     Expression<String?>? intraspecificEpithet,
-    Expression<String?>? taxonFamily,
-    Expression<String?>? taxonOrder,
+    Expression<Uint8List?>? commonName,
+    Expression<String?>? note,
+    Expression<int?>? mediaId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (taxonClass != null) 'taxonClass': taxonClass,
+      if (taxonOrder != null) 'taxonOrder': taxonOrder,
+      if (taxonFamily != null) 'taxonFamily': taxonFamily,
       if (genus != null) 'genus': genus,
       if (specificEpithet != null) 'specificEpithet': specificEpithet,
       if (intraspecificEpithet != null)
         'intraspecificEpithet': intraspecificEpithet,
-      if (taxonFamily != null) 'taxonFamily': taxonFamily,
-      if (taxonOrder != null) 'taxonOrder': taxonOrder,
+      if (commonName != null) 'commonName': commonName,
+      if (note != null) 'note': note,
+      if (mediaId != null) 'mediaId': mediaId,
     });
   }
 
   TaxonomyCompanion copyWith(
       {Value<int?>? id,
+      Value<String?>? taxonClass,
+      Value<String?>? taxonOrder,
+      Value<String?>? taxonFamily,
       Value<String?>? genus,
       Value<String?>? specificEpithet,
       Value<String?>? intraspecificEpithet,
-      Value<String?>? taxonFamily,
-      Value<String?>? taxonOrder}) {
+      Value<Uint8List?>? commonName,
+      Value<String?>? note,
+      Value<int?>? mediaId}) {
     return TaxonomyCompanion(
       id: id ?? this.id,
+      taxonClass: taxonClass ?? this.taxonClass,
+      taxonOrder: taxonOrder ?? this.taxonOrder,
+      taxonFamily: taxonFamily ?? this.taxonFamily,
       genus: genus ?? this.genus,
       specificEpithet: specificEpithet ?? this.specificEpithet,
       intraspecificEpithet: intraspecificEpithet ?? this.intraspecificEpithet,
-      taxonFamily: taxonFamily ?? this.taxonFamily,
-      taxonOrder: taxonOrder ?? this.taxonOrder,
+      commonName: commonName ?? this.commonName,
+      note: note ?? this.note,
+      mediaId: mediaId ?? this.mediaId,
     );
   }
 
@@ -6449,6 +7465,15 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
     final map = <String, Expression>{};
     if (id.present) {
       map['id'] = Variable<int?>(id.value);
+    }
+    if (taxonClass.present) {
+      map['taxonClass'] = Variable<String?>(taxonClass.value);
+    }
+    if (taxonOrder.present) {
+      map['taxonOrder'] = Variable<String?>(taxonOrder.value);
+    }
+    if (taxonFamily.present) {
+      map['taxonFamily'] = Variable<String?>(taxonFamily.value);
     }
     if (genus.present) {
       map['genus'] = Variable<String?>(genus.value);
@@ -6460,11 +7485,14 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
       map['intraspecificEpithet'] =
           Variable<String?>(intraspecificEpithet.value);
     }
-    if (taxonFamily.present) {
-      map['taxonFamily'] = Variable<String?>(taxonFamily.value);
+    if (commonName.present) {
+      map['commonName'] = Variable<Uint8List?>(commonName.value);
     }
-    if (taxonOrder.present) {
-      map['taxonOrder'] = Variable<String?>(taxonOrder.value);
+    if (note.present) {
+      map['note'] = Variable<String?>(note.value);
+    }
+    if (mediaId.present) {
+      map['mediaId'] = Variable<int?>(mediaId.value);
     }
     return map;
   }
@@ -6473,11 +7501,15 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
   String toString() {
     return (StringBuffer('TaxonomyCompanion(')
           ..write('id: $id, ')
+          ..write('taxonClass: $taxonClass, ')
+          ..write('taxonOrder: $taxonOrder, ')
+          ..write('taxonFamily: $taxonFamily, ')
           ..write('genus: $genus, ')
           ..write('specificEpithet: $specificEpithet, ')
           ..write('intraspecificEpithet: $intraspecificEpithet, ')
-          ..write('taxonFamily: $taxonFamily, ')
-          ..write('taxonOrder: $taxonOrder')
+          ..write('commonName: $commonName, ')
+          ..write('note: $note, ')
+          ..write('mediaId: $mediaId')
           ..write(')'))
         .toString();
   }
@@ -6494,6 +7526,25 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
       type: const IntType(),
       requiredDuringInsert: false,
       $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  final VerificationMeta _taxonClassMeta = const VerificationMeta('taxonClass');
+  late final GeneratedColumn<String?> taxonClass = GeneratedColumn<String?>(
+      'taxonClass', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _taxonOrderMeta = const VerificationMeta('taxonOrder');
+  late final GeneratedColumn<String?> taxonOrder = GeneratedColumn<String?>(
+      'taxonOrder', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _taxonFamilyMeta =
+      const VerificationMeta('taxonFamily');
+  late final GeneratedColumn<String?> taxonFamily = GeneratedColumn<String?>(
+      'taxonFamily', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _genusMeta = const VerificationMeta('genus');
   late final GeneratedColumn<String?> genus = GeneratedColumn<String?>(
       'genus', aliasedName, true,
@@ -6514,27 +7565,36 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
           type: const StringType(),
           requiredDuringInsert: false,
           $customConstraints: '');
-  final VerificationMeta _taxonFamilyMeta =
-      const VerificationMeta('taxonFamily');
-  late final GeneratedColumn<String?> taxonFamily = GeneratedColumn<String?>(
-      'taxonFamily', aliasedName, true,
+  final VerificationMeta _commonNameMeta = const VerificationMeta('commonName');
+  late final GeneratedColumn<Uint8List?> commonName =
+      GeneratedColumn<Uint8List?>('commonName', aliasedName, true,
+          type: const BlobType(),
+          requiredDuringInsert: false,
+          $customConstraints: '');
+  final VerificationMeta _noteMeta = const VerificationMeta('note');
+  late final GeneratedColumn<String?> note = GeneratedColumn<String?>(
+      'note', aliasedName, true,
       type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _taxonOrderMeta = const VerificationMeta('taxonOrder');
-  late final GeneratedColumn<String?> taxonOrder = GeneratedColumn<String?>(
-      'taxonOrder', aliasedName, true,
-      type: const StringType(),
+  final VerificationMeta _mediaIdMeta = const VerificationMeta('mediaId');
+  late final GeneratedColumn<int?> mediaId = GeneratedColumn<int?>(
+      'mediaId', aliasedName, true,
+      type: const IntType(),
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
         id,
+        taxonClass,
+        taxonOrder,
+        taxonFamily,
         genus,
         specificEpithet,
         intraspecificEpithet,
-        taxonFamily,
-        taxonOrder
+        commonName,
+        note,
+        mediaId
       ];
   @override
   String get aliasedName => _alias ?? 'taxonomy';
@@ -6547,6 +7607,24 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('taxonClass')) {
+      context.handle(
+          _taxonClassMeta,
+          taxonClass.isAcceptableOrUnknown(
+              data['taxonClass']!, _taxonClassMeta));
+    }
+    if (data.containsKey('taxonOrder')) {
+      context.handle(
+          _taxonOrderMeta,
+          taxonOrder.isAcceptableOrUnknown(
+              data['taxonOrder']!, _taxonOrderMeta));
+    }
+    if (data.containsKey('taxonFamily')) {
+      context.handle(
+          _taxonFamilyMeta,
+          taxonFamily.isAcceptableOrUnknown(
+              data['taxonFamily']!, _taxonFamilyMeta));
     }
     if (data.containsKey('genus')) {
       context.handle(
@@ -6564,17 +7642,19 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
           intraspecificEpithet.isAcceptableOrUnknown(
               data['intraspecificEpithet']!, _intraspecificEpithetMeta));
     }
-    if (data.containsKey('taxonFamily')) {
+    if (data.containsKey('commonName')) {
       context.handle(
-          _taxonFamilyMeta,
-          taxonFamily.isAcceptableOrUnknown(
-              data['taxonFamily']!, _taxonFamilyMeta));
+          _commonNameMeta,
+          commonName.isAcceptableOrUnknown(
+              data['commonName']!, _commonNameMeta));
     }
-    if (data.containsKey('taxonOrder')) {
+    if (data.containsKey('note')) {
       context.handle(
-          _taxonOrderMeta,
-          taxonOrder.isAcceptableOrUnknown(
-              data['taxonOrder']!, _taxonOrderMeta));
+          _noteMeta, note.isAcceptableOrUnknown(data['note']!, _noteMeta));
+    }
+    if (data.containsKey('mediaId')) {
+      context.handle(_mediaIdMeta,
+          mediaId.isAcceptableOrUnknown(data['mediaId']!, _mediaIdMeta));
     }
     return context;
   }
@@ -6592,6 +7672,9 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
     return Taxonomy(attachedDatabase, alias);
   }
 
+  @override
+  List<String> get customConstraints =>
+      const ['FOREIGN KEY(mediaId) REFERENCES media(primaryId)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -6976,12 +8059,15 @@ class Spending extends Table with TableInfo<Spending, SpendingData> {
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   late final Project project = Project(this);
+  late final FileMetadata fileMetadata = FileMetadata(this);
+  late final PersonnelPhoto personnelPhoto = PersonnelPhoto(this);
   late final Personnel personnel = Personnel(this);
-  late final Photo photo = Photo(this);
+  late final Media media = Media(this);
   late final Site site = Site(this);
   late final Coordinate coordinate = Coordinate(this);
   late final CollEvent collEvent = CollEvent(this);
   late final Narrative narrative = Narrative(this);
+  late final AssociatedData associatedData = AssociatedData(this);
   late final PersonnelList personnelList = PersonnelList(this);
   late final Specimen specimen = Specimen(this);
   late final MammalMeasurement mammalMeasurement = MammalMeasurement(this);
@@ -7009,12 +8095,15 @@ abstract class _$Database extends GeneratedDatabase {
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
         project,
+        fileMetadata,
+        personnelPhoto,
         personnel,
-        photo,
+        media,
         site,
         coordinate,
         collEvent,
         narrative,
+        associatedData,
         personnelList,
         specimen,
         mammalMeasurement,
