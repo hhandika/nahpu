@@ -38,6 +38,7 @@ class TaxonRegistryForm extends StatelessWidget {
     return AlertDialog(
       title: const Text('Add taxon'),
       content: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           TextFormField(
             decoration: const InputDecoration(
@@ -59,14 +60,20 @@ class TaxonRegistryForm extends StatelessWidget {
           ),
           TextFormField(
             decoration: const InputDecoration(
-              labelText: 'Notes',
-              hintText: 'Enter notes',
+              labelText: 'Genus',
+              hintText: 'Enter a genus',
             ),
           ),
           TextFormField(
             decoration: const InputDecoration(
-              labelText: 'Taxon',
-              hintText: 'Enter a taxon',
+              labelText: 'Specific epithet',
+              hintText: 'Enter specific epithet',
+            ),
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Intraspecific epithet',
+              hintText: 'Enter intraspecific epithet',
             ),
           ),
           TextFormField(
@@ -75,8 +82,28 @@ class TaxonRegistryForm extends StatelessWidget {
               hintText: 'Enter a common name',
             ),
           ),
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Notes',
+              hintText: 'Enter notes',
+            ),
+          ),
         ],
       ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Save'),
+        ),
+      ],
     );
   }
 }

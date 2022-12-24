@@ -102,14 +102,14 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
         ],
       ),
       actions: [
-        ElevatedButton(
+        TextButton(
           child: const Text('Cancel'),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
-        CommonButton(
-          text: 'Add',
+        TextButton(
+          child: const Text('Save'),
           onPressed: () {
             createPersonnel(
                 ref,
