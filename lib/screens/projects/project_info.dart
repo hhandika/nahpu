@@ -23,7 +23,7 @@ class ProjectInfo extends StatelessWidget {
       Text('Project Description: ${projectData?.description ?? 'Empty!'}'),
       Text(
           'Principal Investigator: ${projectData?.principalInvestigator ?? 'No PI'}'),
-      Text('Budget: ${projectData?.budget ?? 'No Budget'}'),
+      Text('Budget: ${projectData?.budget ?? 'No budget'}'),
       Text('Date Created: ${projectData?.created ?? 'No DateCreated'}'),
       Text('Date Modified: ${projectData?.lastModified ?? 'No DateModified'}'),
     ]);

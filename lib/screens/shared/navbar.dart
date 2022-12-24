@@ -5,7 +5,7 @@ import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalog.dart';
 import 'package:nahpu/providers/project.dart';
 import 'package:nahpu/screens/narrative/narrative_view.dart';
-import 'package:nahpu/screens/collecting_events/coll_event_view.dart';
+import 'package:nahpu/screens/collecting/coll_event_view.dart';
 import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/screens/sites/site_view.dart';
 import 'package:nahpu/screens/specimens/specimen_view.dart';
