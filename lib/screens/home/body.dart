@@ -204,7 +204,7 @@ class ProjectViewState extends ConsumerState<ProjectView> {
 
   VoidCallback _openProject() {
     return () {
-      ref.read(projectUuidProvider.state).state = widget.project.projectUuid;
+      ref.read(projectUuidProvider.state).state = widget.project.uuid;
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const Dashboard()),
@@ -230,11 +230,11 @@ class ListProjectCard extends StatelessWidget {
           color: Theme.of(context).colorScheme.onSurface,
         ),
         title: Text(
-          project.projectName,
+          project.name,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
         subtitle: Text(
-          'Date created: ${project.dateCreated}',
+          'Date created: ${project.created}',
           style: const TextStyle(
             fontSize: 12,
             overflow: TextOverflow.ellipsis,
@@ -260,8 +260,8 @@ class GridProjectCard extends StatelessWidget {
       child: GridTile(
         footer: GridTileBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
-          title: Text(project.projectName),
-          subtitle: Text('Date created: ${project.dateCreated}'),
+          title: Text(project.name),
+          subtitle: Text('Date created: ${project.created}'),
           trailing: ProjectPopUpMenu(project: project),
         ),
         child: FittedBox(
@@ -296,12 +296,12 @@ class ProjectPopUpMenuState extends ConsumerState<ProjectPopUpMenu> {
           value: MenuSelection.details,
           child: const Text('Info'),
           onTap: () async {
-            _getProjectInfo(widget.project.projectUuid);
+            _getProjectInfo(widget.project.uuid);
           },
         ),
         PopupMenuItem<MenuSelection>(
           value: MenuSelection.deleteProject,
-          onTap: () => _deleteProject(widget.project.projectUuid),
+          onTap: () => _deleteProject(widget.project.uuid),
           child: const Text('Delete', style: TextStyle(color: Colors.red)),
         ),
       ],

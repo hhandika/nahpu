@@ -136,13 +136,13 @@ class MenuAvatar extends ConsumerWidget {
           decoration:
               BoxDecoration(color: Theme.of(context).colorScheme.primary),
           accountName: Text(
-            data?.projectName ?? 'No Project',
+            data?.name ?? 'No Project',
             style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
           accountEmail: Text(
-            data?.projectUuid ?? 'No Project',
+            data?.uuid ?? 'No Project',
             style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),

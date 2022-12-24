@@ -8,72 +8,81 @@ part of 'database.dart';
 
 // ignore_for_file: type=lint
 class ProjectData extends DataClass implements Insertable<ProjectData> {
-  final String projectUuid;
-  final String projectName;
-  final String? projectDescription;
+  final String uuid;
+  final String name;
+  final String? description;
   final String? principalInvestigator;
-  final String? dateCreated;
-  final String? dateLastModified;
+  final String? budget;
+  final String? created;
+  final String? lastModified;
   ProjectData(
-      {required this.projectUuid,
-      required this.projectName,
-      this.projectDescription,
+      {required this.uuid,
+      required this.name,
+      this.description,
       this.principalInvestigator,
-      this.dateCreated,
-      this.dateLastModified});
+      this.budget,
+      this.created,
+      this.lastModified});
   factory ProjectData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return ProjectData(
-      projectUuid: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}projectUuid'])!,
-      projectName: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}projectName'])!,
-      projectDescription: const StringType().mapFromDatabaseResponse(
-          data['${effectivePrefix}projectDescription']),
+      uuid: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}uuid'])!,
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
+      description: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}description']),
       principalInvestigator: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}principalInvestigator']),
-      dateCreated: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}dateCreated']),
-      dateLastModified: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}dateLastModified']),
+      budget: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}budget']),
+      created: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}created']),
+      lastModified: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}lastModified']),
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['projectUuid'] = Variable<String>(projectUuid);
-    map['projectName'] = Variable<String>(projectName);
-    if (!nullToAbsent || projectDescription != null) {
-      map['projectDescription'] = Variable<String?>(projectDescription);
+    map['uuid'] = Variable<String>(uuid);
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String?>(description);
     }
     if (!nullToAbsent || principalInvestigator != null) {
       map['principalInvestigator'] = Variable<String?>(principalInvestigator);
     }
-    if (!nullToAbsent || dateCreated != null) {
-      map['dateCreated'] = Variable<String?>(dateCreated);
+    if (!nullToAbsent || budget != null) {
+      map['budget'] = Variable<String?>(budget);
     }
-    if (!nullToAbsent || dateLastModified != null) {
-      map['dateLastModified'] = Variable<String?>(dateLastModified);
+    if (!nullToAbsent || created != null) {
+      map['created'] = Variable<String?>(created);
+    }
+    if (!nullToAbsent || lastModified != null) {
+      map['lastModified'] = Variable<String?>(lastModified);
     }
     return map;
   }
 
   ProjectCompanion toCompanion(bool nullToAbsent) {
     return ProjectCompanion(
-      projectUuid: Value(projectUuid),
-      projectName: Value(projectName),
-      projectDescription: projectDescription == null && nullToAbsent
+      uuid: Value(uuid),
+      name: Value(name),
+      description: description == null && nullToAbsent
           ? const Value.absent()
-          : Value(projectDescription),
+          : Value(description),
       principalInvestigator: principalInvestigator == null && nullToAbsent
           ? const Value.absent()
           : Value(principalInvestigator),
-      dateCreated: dateCreated == null && nullToAbsent
+      budget:
+          budget == null && nullToAbsent ? const Value.absent() : Value(budget),
+      created: created == null && nullToAbsent
           ? const Value.absent()
-          : Value(dateCreated),
-      dateLastModified: dateLastModified == null && nullToAbsent
+          : Value(created),
+      lastModified: lastModified == null && nullToAbsent
           ? const Value.absent()
-          : Value(dateLastModified),
+          : Value(lastModified),
     );
   }
 
@@ -81,156 +90,171 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return ProjectData(
-      projectUuid: serializer.fromJson<String>(json['projectUuid']),
-      projectName: serializer.fromJson<String>(json['projectName']),
-      projectDescription:
-          serializer.fromJson<String?>(json['projectDescription']),
+      uuid: serializer.fromJson<String>(json['uuid']),
+      name: serializer.fromJson<String>(json['name']),
+      description: serializer.fromJson<String?>(json['description']),
       principalInvestigator:
           serializer.fromJson<String?>(json['principalInvestigator']),
-      dateCreated: serializer.fromJson<String?>(json['dateCreated']),
-      dateLastModified: serializer.fromJson<String?>(json['dateLastModified']),
+      budget: serializer.fromJson<String?>(json['budget']),
+      created: serializer.fromJson<String?>(json['created']),
+      lastModified: serializer.fromJson<String?>(json['lastModified']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'projectUuid': serializer.toJson<String>(projectUuid),
-      'projectName': serializer.toJson<String>(projectName),
-      'projectDescription': serializer.toJson<String?>(projectDescription),
+      'uuid': serializer.toJson<String>(uuid),
+      'name': serializer.toJson<String>(name),
+      'description': serializer.toJson<String?>(description),
       'principalInvestigator':
           serializer.toJson<String?>(principalInvestigator),
-      'dateCreated': serializer.toJson<String?>(dateCreated),
-      'dateLastModified': serializer.toJson<String?>(dateLastModified),
+      'budget': serializer.toJson<String?>(budget),
+      'created': serializer.toJson<String?>(created),
+      'lastModified': serializer.toJson<String?>(lastModified),
     };
   }
 
   ProjectData copyWith(
-          {String? projectUuid,
-          String? projectName,
-          String? projectDescription,
+          {String? uuid,
+          String? name,
+          String? description,
           String? principalInvestigator,
-          String? dateCreated,
-          String? dateLastModified}) =>
+          String? budget,
+          String? created,
+          String? lastModified}) =>
       ProjectData(
-        projectUuid: projectUuid ?? this.projectUuid,
-        projectName: projectName ?? this.projectName,
-        projectDescription: projectDescription ?? this.projectDescription,
+        uuid: uuid ?? this.uuid,
+        name: name ?? this.name,
+        description: description ?? this.description,
         principalInvestigator:
             principalInvestigator ?? this.principalInvestigator,
-        dateCreated: dateCreated ?? this.dateCreated,
-        dateLastModified: dateLastModified ?? this.dateLastModified,
+        budget: budget ?? this.budget,
+        created: created ?? this.created,
+        lastModified: lastModified ?? this.lastModified,
       );
   @override
   String toString() {
     return (StringBuffer('ProjectData(')
-          ..write('projectUuid: $projectUuid, ')
-          ..write('projectName: $projectName, ')
-          ..write('projectDescription: $projectDescription, ')
+          ..write('uuid: $uuid, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
           ..write('principalInvestigator: $principalInvestigator, ')
-          ..write('dateCreated: $dateCreated, ')
-          ..write('dateLastModified: $dateLastModified')
+          ..write('budget: $budget, ')
+          ..write('created: $created, ')
+          ..write('lastModified: $lastModified')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(projectUuid, projectName, projectDescription,
-      principalInvestigator, dateCreated, dateLastModified);
+  int get hashCode => Object.hash(uuid, name, description,
+      principalInvestigator, budget, created, lastModified);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is ProjectData &&
-          other.projectUuid == this.projectUuid &&
-          other.projectName == this.projectName &&
-          other.projectDescription == this.projectDescription &&
+          other.uuid == this.uuid &&
+          other.name == this.name &&
+          other.description == this.description &&
           other.principalInvestigator == this.principalInvestigator &&
-          other.dateCreated == this.dateCreated &&
-          other.dateLastModified == this.dateLastModified);
+          other.budget == this.budget &&
+          other.created == this.created &&
+          other.lastModified == this.lastModified);
 }
 
 class ProjectCompanion extends UpdateCompanion<ProjectData> {
-  final Value<String> projectUuid;
-  final Value<String> projectName;
-  final Value<String?> projectDescription;
+  final Value<String> uuid;
+  final Value<String> name;
+  final Value<String?> description;
   final Value<String?> principalInvestigator;
-  final Value<String?> dateCreated;
-  final Value<String?> dateLastModified;
+  final Value<String?> budget;
+  final Value<String?> created;
+  final Value<String?> lastModified;
   const ProjectCompanion({
-    this.projectUuid = const Value.absent(),
-    this.projectName = const Value.absent(),
-    this.projectDescription = const Value.absent(),
+    this.uuid = const Value.absent(),
+    this.name = const Value.absent(),
+    this.description = const Value.absent(),
     this.principalInvestigator = const Value.absent(),
-    this.dateCreated = const Value.absent(),
-    this.dateLastModified = const Value.absent(),
+    this.budget = const Value.absent(),
+    this.created = const Value.absent(),
+    this.lastModified = const Value.absent(),
   });
   ProjectCompanion.insert({
-    required String projectUuid,
-    required String projectName,
-    this.projectDescription = const Value.absent(),
+    required String uuid,
+    required String name,
+    this.description = const Value.absent(),
     this.principalInvestigator = const Value.absent(),
-    this.dateCreated = const Value.absent(),
-    this.dateLastModified = const Value.absent(),
-  })  : projectUuid = Value(projectUuid),
-        projectName = Value(projectName);
+    this.budget = const Value.absent(),
+    this.created = const Value.absent(),
+    this.lastModified = const Value.absent(),
+  })  : uuid = Value(uuid),
+        name = Value(name);
   static Insertable<ProjectData> custom({
-    Expression<String>? projectUuid,
-    Expression<String>? projectName,
-    Expression<String?>? projectDescription,
+    Expression<String>? uuid,
+    Expression<String>? name,
+    Expression<String?>? description,
     Expression<String?>? principalInvestigator,
-    Expression<String?>? dateCreated,
-    Expression<String?>? dateLastModified,
+    Expression<String?>? budget,
+    Expression<String?>? created,
+    Expression<String?>? lastModified,
   }) {
     return RawValuesInsertable({
-      if (projectUuid != null) 'projectUuid': projectUuid,
-      if (projectName != null) 'projectName': projectName,
-      if (projectDescription != null) 'projectDescription': projectDescription,
+      if (uuid != null) 'uuid': uuid,
+      if (name != null) 'name': name,
+      if (description != null) 'description': description,
       if (principalInvestigator != null)
         'principalInvestigator': principalInvestigator,
-      if (dateCreated != null) 'dateCreated': dateCreated,
-      if (dateLastModified != null) 'dateLastModified': dateLastModified,
+      if (budget != null) 'budget': budget,
+      if (created != null) 'created': created,
+      if (lastModified != null) 'lastModified': lastModified,
     });
   }
 
   ProjectCompanion copyWith(
-      {Value<String>? projectUuid,
-      Value<String>? projectName,
-      Value<String?>? projectDescription,
+      {Value<String>? uuid,
+      Value<String>? name,
+      Value<String?>? description,
       Value<String?>? principalInvestigator,
-      Value<String?>? dateCreated,
-      Value<String?>? dateLastModified}) {
+      Value<String?>? budget,
+      Value<String?>? created,
+      Value<String?>? lastModified}) {
     return ProjectCompanion(
-      projectUuid: projectUuid ?? this.projectUuid,
-      projectName: projectName ?? this.projectName,
-      projectDescription: projectDescription ?? this.projectDescription,
+      uuid: uuid ?? this.uuid,
+      name: name ?? this.name,
+      description: description ?? this.description,
       principalInvestigator:
           principalInvestigator ?? this.principalInvestigator,
-      dateCreated: dateCreated ?? this.dateCreated,
-      dateLastModified: dateLastModified ?? this.dateLastModified,
+      budget: budget ?? this.budget,
+      created: created ?? this.created,
+      lastModified: lastModified ?? this.lastModified,
     );
   }
 
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (projectUuid.present) {
-      map['projectUuid'] = Variable<String>(projectUuid.value);
+    if (uuid.present) {
+      map['uuid'] = Variable<String>(uuid.value);
     }
-    if (projectName.present) {
-      map['projectName'] = Variable<String>(projectName.value);
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
     }
-    if (projectDescription.present) {
-      map['projectDescription'] = Variable<String?>(projectDescription.value);
+    if (description.present) {
+      map['description'] = Variable<String?>(description.value);
     }
     if (principalInvestigator.present) {
       map['principalInvestigator'] =
           Variable<String?>(principalInvestigator.value);
     }
-    if (dateCreated.present) {
-      map['dateCreated'] = Variable<String?>(dateCreated.value);
+    if (budget.present) {
+      map['budget'] = Variable<String?>(budget.value);
     }
-    if (dateLastModified.present) {
-      map['dateLastModified'] = Variable<String?>(dateLastModified.value);
+    if (created.present) {
+      map['created'] = Variable<String?>(created.value);
+    }
+    if (lastModified.present) {
+      map['lastModified'] = Variable<String?>(lastModified.value);
     }
     return map;
   }
@@ -238,12 +262,13 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
   @override
   String toString() {
     return (StringBuffer('ProjectCompanion(')
-          ..write('projectUuid: $projectUuid, ')
-          ..write('projectName: $projectName, ')
-          ..write('projectDescription: $projectDescription, ')
+          ..write('uuid: $uuid, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
           ..write('principalInvestigator: $principalInvestigator, ')
-          ..write('dateCreated: $dateCreated, ')
-          ..write('dateLastModified: $dateLastModified')
+          ..write('budget: $budget, ')
+          ..write('created: $created, ')
+          ..write('lastModified: $lastModified')
           ..write(')'))
         .toString();
   }
@@ -254,27 +279,25 @@ class Project extends Table with TableInfo<Project, ProjectData> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   Project(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _projectUuidMeta =
-      const VerificationMeta('projectUuid');
-  late final GeneratedColumn<String?> projectUuid = GeneratedColumn<String?>(
-      'projectUuid', aliasedName, false,
+  final VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  late final GeneratedColumn<String?> uuid = GeneratedColumn<String?>(
+      'uuid', aliasedName, false,
       type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL PRIMARY KEY');
-  final VerificationMeta _projectNameMeta =
-      const VerificationMeta('projectName');
-  late final GeneratedColumn<String?> projectName = GeneratedColumn<String?>(
-      'projectName', aliasedName, false,
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+      'name', aliasedName, false,
       type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL UNIQUE');
-  final VerificationMeta _projectDescriptionMeta =
-      const VerificationMeta('projectDescription');
-  late final GeneratedColumn<String?> projectDescription =
-      GeneratedColumn<String?>('projectDescription', aliasedName, true,
-          type: const StringType(),
-          requiredDuringInsert: false,
-          $customConstraints: '');
+  final VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  late final GeneratedColumn<String?> description = GeneratedColumn<String?>(
+      'description', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _principalInvestigatorMeta =
       const VerificationMeta('principalInvestigator');
   late final GeneratedColumn<String?> principalInvestigator =
@@ -282,28 +305,34 @@ class Project extends Table with TableInfo<Project, ProjectData> {
           type: const StringType(),
           requiredDuringInsert: false,
           $customConstraints: '');
-  final VerificationMeta _dateCreatedMeta =
-      const VerificationMeta('dateCreated');
-  late final GeneratedColumn<String?> dateCreated = GeneratedColumn<String?>(
-      'dateCreated', aliasedName, true,
+  final VerificationMeta _budgetMeta = const VerificationMeta('budget');
+  late final GeneratedColumn<String?> budget = GeneratedColumn<String?>(
+      'budget', aliasedName, true,
       type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _dateLastModifiedMeta =
-      const VerificationMeta('dateLastModified');
-  late final GeneratedColumn<String?> dateLastModified =
-      GeneratedColumn<String?>('dateLastModified', aliasedName, true,
-          type: const StringType(),
-          requiredDuringInsert: false,
-          $customConstraints: '');
+  final VerificationMeta _createdMeta = const VerificationMeta('created');
+  late final GeneratedColumn<String?> created = GeneratedColumn<String?>(
+      'created', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _lastModifiedMeta =
+      const VerificationMeta('lastModified');
+  late final GeneratedColumn<String?> lastModified = GeneratedColumn<String?>(
+      'lastModified', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
-        projectUuid,
-        projectName,
-        projectDescription,
+        uuid,
+        name,
+        description,
         principalInvestigator,
-        dateCreated,
-        dateLastModified
+        budget,
+        created,
+        lastModified
       ];
   @override
   String get aliasedName => _alias ?? 'project';
@@ -314,27 +343,23 @@ class Project extends Table with TableInfo<Project, ProjectData> {
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('projectUuid')) {
+    if (data.containsKey('uuid')) {
       context.handle(
-          _projectUuidMeta,
-          projectUuid.isAcceptableOrUnknown(
-              data['projectUuid']!, _projectUuidMeta));
+          _uuidMeta, uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta));
     } else if (isInserting) {
-      context.missing(_projectUuidMeta);
+      context.missing(_uuidMeta);
     }
-    if (data.containsKey('projectName')) {
+    if (data.containsKey('name')) {
       context.handle(
-          _projectNameMeta,
-          projectName.isAcceptableOrUnknown(
-              data['projectName']!, _projectNameMeta));
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
     } else if (isInserting) {
-      context.missing(_projectNameMeta);
+      context.missing(_nameMeta);
     }
-    if (data.containsKey('projectDescription')) {
+    if (data.containsKey('description')) {
       context.handle(
-          _projectDescriptionMeta,
-          projectDescription.isAcceptableOrUnknown(
-              data['projectDescription']!, _projectDescriptionMeta));
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description']!, _descriptionMeta));
     }
     if (data.containsKey('principalInvestigator')) {
       context.handle(
@@ -342,23 +367,25 @@ class Project extends Table with TableInfo<Project, ProjectData> {
           principalInvestigator.isAcceptableOrUnknown(
               data['principalInvestigator']!, _principalInvestigatorMeta));
     }
-    if (data.containsKey('dateCreated')) {
-      context.handle(
-          _dateCreatedMeta,
-          dateCreated.isAcceptableOrUnknown(
-              data['dateCreated']!, _dateCreatedMeta));
+    if (data.containsKey('budget')) {
+      context.handle(_budgetMeta,
+          budget.isAcceptableOrUnknown(data['budget']!, _budgetMeta));
     }
-    if (data.containsKey('dateLastModified')) {
+    if (data.containsKey('created')) {
+      context.handle(_createdMeta,
+          created.isAcceptableOrUnknown(data['created']!, _createdMeta));
+    }
+    if (data.containsKey('lastModified')) {
       context.handle(
-          _dateLastModifiedMeta,
-          dateLastModified.isAcceptableOrUnknown(
-              data['dateLastModified']!, _dateLastModifiedMeta));
+          _lastModifiedMeta,
+          lastModified.isAcceptableOrUnknown(
+              data['lastModified']!, _lastModifiedMeta));
     }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {projectUuid};
+  Set<GeneratedColumn> get $primaryKey => {uuid};
   @override
   ProjectData map(Map<String, dynamic> data, {String? tablePrefix}) {
     return ProjectData.fromData(data,
@@ -375,7 +402,7 @@ class Project extends Table with TableInfo<Project, ProjectData> {
 }
 
 class PersonnelData extends DataClass implements Insertable<PersonnelData> {
-  final String? id;
+  final String? uuid;
   final String? name;
   final String? initial;
   final String? email;
@@ -384,7 +411,7 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
   final int? nextCollectorNumber;
   final String? photoFileName;
   PersonnelData(
-      {this.id,
+      {this.uuid,
       this.name,
       this.initial,
       this.email,
@@ -395,8 +422,8 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
   factory PersonnelData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return PersonnelData(
-      id: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      uuid: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}uuid']),
       name: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}name']),
       initial: const StringType()
@@ -416,8 +443,8 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || id != null) {
-      map['id'] = Variable<String?>(id);
+    if (!nullToAbsent || uuid != null) {
+      map['uuid'] = Variable<String?>(uuid);
     }
     if (!nullToAbsent || name != null) {
       map['name'] = Variable<String?>(name);
@@ -445,7 +472,7 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
 
   PersonnelCompanion toCompanion(bool nullToAbsent) {
     return PersonnelCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      uuid: uuid == null && nullToAbsent ? const Value.absent() : Value(uuid),
       name: name == null && nullToAbsent ? const Value.absent() : Value(name),
       initial: initial == null && nullToAbsent
           ? const Value.absent()
@@ -469,7 +496,7 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return PersonnelData(
-      id: serializer.fromJson<String?>(json['id']),
+      uuid: serializer.fromJson<String?>(json['uuid']),
       name: serializer.fromJson<String?>(json['name']),
       initial: serializer.fromJson<String?>(json['initial']),
       email: serializer.fromJson<String?>(json['email']),
@@ -484,7 +511,7 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<String?>(id),
+      'uuid': serializer.toJson<String?>(uuid),
       'name': serializer.toJson<String?>(name),
       'initial': serializer.toJson<String?>(initial),
       'email': serializer.toJson<String?>(email),
@@ -496,7 +523,7 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
   }
 
   PersonnelData copyWith(
-          {String? id,
+          {String? uuid,
           String? name,
           String? initial,
           String? email,
@@ -505,7 +532,7 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
           int? nextCollectorNumber,
           String? photoFileName}) =>
       PersonnelData(
-        id: id ?? this.id,
+        uuid: uuid ?? this.uuid,
         name: name ?? this.name,
         initial: initial ?? this.initial,
         email: email ?? this.email,
@@ -517,7 +544,7 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
   @override
   String toString() {
     return (StringBuffer('PersonnelData(')
-          ..write('id: $id, ')
+          ..write('uuid: $uuid, ')
           ..write('name: $name, ')
           ..write('initial: $initial, ')
           ..write('email: $email, ')
@@ -530,13 +557,13 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
   }
 
   @override
-  int get hashCode => Object.hash(id, name, initial, email, affiliation, role,
+  int get hashCode => Object.hash(uuid, name, initial, email, affiliation, role,
       nextCollectorNumber, photoFileName);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is PersonnelData &&
-          other.id == this.id &&
+          other.uuid == this.uuid &&
           other.name == this.name &&
           other.initial == this.initial &&
           other.email == this.email &&
@@ -547,7 +574,7 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
 }
 
 class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
-  final Value<String?> id;
+  final Value<String?> uuid;
   final Value<String?> name;
   final Value<String?> initial;
   final Value<String?> email;
@@ -556,7 +583,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
   final Value<int?> nextCollectorNumber;
   final Value<String?> photoFileName;
   const PersonnelCompanion({
-    this.id = const Value.absent(),
+    this.uuid = const Value.absent(),
     this.name = const Value.absent(),
     this.initial = const Value.absent(),
     this.email = const Value.absent(),
@@ -566,7 +593,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     this.photoFileName = const Value.absent(),
   });
   PersonnelCompanion.insert({
-    this.id = const Value.absent(),
+    this.uuid = const Value.absent(),
     this.name = const Value.absent(),
     this.initial = const Value.absent(),
     this.email = const Value.absent(),
@@ -576,7 +603,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     this.photoFileName = const Value.absent(),
   });
   static Insertable<PersonnelData> custom({
-    Expression<String?>? id,
+    Expression<String?>? uuid,
     Expression<String?>? name,
     Expression<String?>? initial,
     Expression<String?>? email,
@@ -586,7 +613,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     Expression<String?>? photoFileName,
   }) {
     return RawValuesInsertable({
-      if (id != null) 'id': id,
+      if (uuid != null) 'uuid': uuid,
       if (name != null) 'name': name,
       if (initial != null) 'initial': initial,
       if (email != null) 'email': email,
@@ -599,7 +626,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
   }
 
   PersonnelCompanion copyWith(
-      {Value<String?>? id,
+      {Value<String?>? uuid,
       Value<String?>? name,
       Value<String?>? initial,
       Value<String?>? email,
@@ -608,7 +635,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
       Value<int?>? nextCollectorNumber,
       Value<String?>? photoFileName}) {
     return PersonnelCompanion(
-      id: id ?? this.id,
+      uuid: uuid ?? this.uuid,
       name: name ?? this.name,
       initial: initial ?? this.initial,
       email: email ?? this.email,
@@ -622,8 +649,8 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<String?>(id.value);
+    if (uuid.present) {
+      map['uuid'] = Variable<String?>(uuid.value);
     }
     if (name.present) {
       map['name'] = Variable<String?>(name.value);
@@ -652,7 +679,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
   @override
   String toString() {
     return (StringBuffer('PersonnelCompanion(')
-          ..write('id: $id, ')
+          ..write('uuid: $uuid, ')
           ..write('name: $name, ')
           ..write('initial: $initial, ')
           ..write('email: $email, ')
@@ -670,9 +697,9 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   Personnel(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
-      'id', aliasedName, true,
+  final VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  late final GeneratedColumn<String?> uuid = GeneratedColumn<String?>(
+      'uuid', aliasedName, true,
       type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: 'UNIQUE PRIMARY KEY');
@@ -723,7 +750,7 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
       $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
-        id,
+        uuid,
         name,
         initial,
         email,
@@ -741,8 +768,9 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    if (data.containsKey('uuid')) {
+      context.handle(
+          _uuidMeta, uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta));
     }
     if (data.containsKey('name')) {
       context.handle(
@@ -782,7 +810,7 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => {uuid};
   @override
   PersonnelData map(Map<String, dynamic> data, {String? tablePrefix}) {
     return PersonnelData.fromData(data,
@@ -1130,7 +1158,7 @@ class Photo extends Table with TableInfo<Photo, PhotoData> {
 
   @override
   List<String> get customConstraints =>
-      const ['FOREIGN KEY(photographerID) REFERENCES personnel(id)'];
+      const ['FOREIGN KEY(photographerID) REFERENCES personnel(uuid)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -2606,7 +2634,7 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
 
   @override
   List<String> get customConstraints =>
-      const ['FOREIGN KEY(projectUuid) REFERENCES project(projectUuid)'];
+      const ['FOREIGN KEY(projectUuid) REFERENCES project(uuid)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -2943,7 +2971,7 @@ class Narrative extends Table with TableInfo<Narrative, NarrativeData> {
 
   @override
   List<String> get customConstraints => const [
-        'FOREIGN KEY(projectUuid) REFERENCES project(projectUuid)',
+        'FOREIGN KEY(projectUuid) REFERENCES project(uuid)',
         'FOREIGN KEY(siteID) REFERENCES site(siteID)'
       ];
   @override
@@ -3141,15 +3169,15 @@ class PersonnelList extends Table
 
   @override
   List<String> get customConstraints => const [
-        'FOREIGN KEY(projectUuid) REFERENCES project(projectUuid)',
-        'FOREIGN KEY(personnelUuid) REFERENCES personnel(id)'
+        'FOREIGN KEY(projectUuid) REFERENCES project(uuid)',
+        'FOREIGN KEY(personnelUuid) REFERENCES personnel(uuid)'
       ];
   @override
   bool get dontWriteConstraints => true;
 }
 
 class SpecimenData extends DataClass implements Insertable<SpecimenData> {
-  final String specimenUuid;
+  final String uuid;
   final String? projectUuid;
   final int? speciesID;
   final String? taxonGroup;
@@ -3160,10 +3188,11 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
   final String? captureTime;
   final String? trapType;
   final String? collectorID;
+  final int? collectorNumber;
   final int? collEventID;
   final String? preparatorID;
   SpecimenData(
-      {required this.specimenUuid,
+      {required this.uuid,
       this.projectUuid,
       this.speciesID,
       this.taxonGroup,
@@ -3174,13 +3203,14 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       this.captureTime,
       this.trapType,
       this.collectorID,
+      this.collectorNumber,
       this.collEventID,
       this.preparatorID});
   factory SpecimenData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return SpecimenData(
-      specimenUuid: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}specimenUuid'])!,
+      uuid: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}uuid'])!,
       projectUuid: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}projectUuid']),
       speciesID: const IntType()
@@ -3201,6 +3231,8 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}trapType']),
       collectorID: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}collectorID']),
+      collectorNumber: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}collectorNumber']),
       collEventID: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}collEventID']),
       preparatorID: const StringType()
@@ -3210,7 +3242,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['specimenUuid'] = Variable<String>(specimenUuid);
+    map['uuid'] = Variable<String>(uuid);
     if (!nullToAbsent || projectUuid != null) {
       map['projectUuid'] = Variable<String?>(projectUuid);
     }
@@ -3241,6 +3273,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
     if (!nullToAbsent || collectorID != null) {
       map['collectorID'] = Variable<String?>(collectorID);
     }
+    if (!nullToAbsent || collectorNumber != null) {
+      map['collectorNumber'] = Variable<int?>(collectorNumber);
+    }
     if (!nullToAbsent || collEventID != null) {
       map['collEventID'] = Variable<int?>(collEventID);
     }
@@ -3252,7 +3287,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
 
   SpecimenCompanion toCompanion(bool nullToAbsent) {
     return SpecimenCompanion(
-      specimenUuid: Value(specimenUuid),
+      uuid: Value(uuid),
       projectUuid: projectUuid == null && nullToAbsent
           ? const Value.absent()
           : Value(projectUuid),
@@ -3283,6 +3318,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       collectorID: collectorID == null && nullToAbsent
           ? const Value.absent()
           : Value(collectorID),
+      collectorNumber: collectorNumber == null && nullToAbsent
+          ? const Value.absent()
+          : Value(collectorNumber),
       collEventID: collEventID == null && nullToAbsent
           ? const Value.absent()
           : Value(collEventID),
@@ -3296,7 +3334,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return SpecimenData(
-      specimenUuid: serializer.fromJson<String>(json['specimenUuid']),
+      uuid: serializer.fromJson<String>(json['uuid']),
       projectUuid: serializer.fromJson<String?>(json['projectUuid']),
       speciesID: serializer.fromJson<int?>(json['speciesID']),
       taxonGroup: serializer.fromJson<String?>(json['taxonGroup']),
@@ -3307,6 +3345,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       captureTime: serializer.fromJson<String?>(json['captureTime']),
       trapType: serializer.fromJson<String?>(json['trapType']),
       collectorID: serializer.fromJson<String?>(json['collectorID']),
+      collectorNumber: serializer.fromJson<int?>(json['collectorNumber']),
       collEventID: serializer.fromJson<int?>(json['collEventID']),
       preparatorID: serializer.fromJson<String?>(json['preparatorID']),
     );
@@ -3315,7 +3354,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'specimenUuid': serializer.toJson<String>(specimenUuid),
+      'uuid': serializer.toJson<String>(uuid),
       'projectUuid': serializer.toJson<String?>(projectUuid),
       'speciesID': serializer.toJson<int?>(speciesID),
       'taxonGroup': serializer.toJson<String?>(taxonGroup),
@@ -3326,13 +3365,14 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       'captureTime': serializer.toJson<String?>(captureTime),
       'trapType': serializer.toJson<String?>(trapType),
       'collectorID': serializer.toJson<String?>(collectorID),
+      'collectorNumber': serializer.toJson<int?>(collectorNumber),
       'collEventID': serializer.toJson<int?>(collEventID),
       'preparatorID': serializer.toJson<String?>(preparatorID),
     };
   }
 
   SpecimenData copyWith(
-          {String? specimenUuid,
+          {String? uuid,
           String? projectUuid,
           int? speciesID,
           String? taxonGroup,
@@ -3343,10 +3383,11 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           String? captureTime,
           String? trapType,
           String? collectorID,
+          int? collectorNumber,
           int? collEventID,
           String? preparatorID}) =>
       SpecimenData(
-        specimenUuid: specimenUuid ?? this.specimenUuid,
+        uuid: uuid ?? this.uuid,
         projectUuid: projectUuid ?? this.projectUuid,
         speciesID: speciesID ?? this.speciesID,
         taxonGroup: taxonGroup ?? this.taxonGroup,
@@ -3357,13 +3398,14 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
         captureTime: captureTime ?? this.captureTime,
         trapType: trapType ?? this.trapType,
         collectorID: collectorID ?? this.collectorID,
+        collectorNumber: collectorNumber ?? this.collectorNumber,
         collEventID: collEventID ?? this.collEventID,
         preparatorID: preparatorID ?? this.preparatorID,
       );
   @override
   String toString() {
     return (StringBuffer('SpecimenData(')
-          ..write('specimenUuid: $specimenUuid, ')
+          ..write('uuid: $uuid, ')
           ..write('projectUuid: $projectUuid, ')
           ..write('speciesID: $speciesID, ')
           ..write('taxonGroup: $taxonGroup, ')
@@ -3374,6 +3416,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           ..write('captureTime: $captureTime, ')
           ..write('trapType: $trapType, ')
           ..write('collectorID: $collectorID, ')
+          ..write('collectorNumber: $collectorNumber, ')
           ..write('collEventID: $collEventID, ')
           ..write('preparatorID: $preparatorID')
           ..write(')'))
@@ -3382,7 +3425,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
 
   @override
   int get hashCode => Object.hash(
-      specimenUuid,
+      uuid,
       projectUuid,
       speciesID,
       taxonGroup,
@@ -3393,13 +3436,14 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       captureTime,
       trapType,
       collectorID,
+      collectorNumber,
       collEventID,
       preparatorID);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is SpecimenData &&
-          other.specimenUuid == this.specimenUuid &&
+          other.uuid == this.uuid &&
           other.projectUuid == this.projectUuid &&
           other.speciesID == this.speciesID &&
           other.taxonGroup == this.taxonGroup &&
@@ -3410,12 +3454,13 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           other.captureTime == this.captureTime &&
           other.trapType == this.trapType &&
           other.collectorID == this.collectorID &&
+          other.collectorNumber == this.collectorNumber &&
           other.collEventID == this.collEventID &&
           other.preparatorID == this.preparatorID);
 }
 
 class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
-  final Value<String> specimenUuid;
+  final Value<String> uuid;
   final Value<String?> projectUuid;
   final Value<int?> speciesID;
   final Value<String?> taxonGroup;
@@ -3426,10 +3471,11 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
   final Value<String?> captureTime;
   final Value<String?> trapType;
   final Value<String?> collectorID;
+  final Value<int?> collectorNumber;
   final Value<int?> collEventID;
   final Value<String?> preparatorID;
   const SpecimenCompanion({
-    this.specimenUuid = const Value.absent(),
+    this.uuid = const Value.absent(),
     this.projectUuid = const Value.absent(),
     this.speciesID = const Value.absent(),
     this.taxonGroup = const Value.absent(),
@@ -3440,11 +3486,12 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     this.captureTime = const Value.absent(),
     this.trapType = const Value.absent(),
     this.collectorID = const Value.absent(),
+    this.collectorNumber = const Value.absent(),
     this.collEventID = const Value.absent(),
     this.preparatorID = const Value.absent(),
   });
   SpecimenCompanion.insert({
-    required String specimenUuid,
+    required String uuid,
     this.projectUuid = const Value.absent(),
     this.speciesID = const Value.absent(),
     this.taxonGroup = const Value.absent(),
@@ -3455,11 +3502,12 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     this.captureTime = const Value.absent(),
     this.trapType = const Value.absent(),
     this.collectorID = const Value.absent(),
+    this.collectorNumber = const Value.absent(),
     this.collEventID = const Value.absent(),
     this.preparatorID = const Value.absent(),
-  }) : specimenUuid = Value(specimenUuid);
+  }) : uuid = Value(uuid);
   static Insertable<SpecimenData> custom({
-    Expression<String>? specimenUuid,
+    Expression<String>? uuid,
     Expression<String?>? projectUuid,
     Expression<int?>? speciesID,
     Expression<String?>? taxonGroup,
@@ -3470,11 +3518,12 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     Expression<String?>? captureTime,
     Expression<String?>? trapType,
     Expression<String?>? collectorID,
+    Expression<int?>? collectorNumber,
     Expression<int?>? collEventID,
     Expression<String?>? preparatorID,
   }) {
     return RawValuesInsertable({
-      if (specimenUuid != null) 'specimenUuid': specimenUuid,
+      if (uuid != null) 'uuid': uuid,
       if (projectUuid != null) 'projectUuid': projectUuid,
       if (speciesID != null) 'speciesID': speciesID,
       if (taxonGroup != null) 'taxonGroup': taxonGroup,
@@ -3485,13 +3534,14 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       if (captureTime != null) 'captureTime': captureTime,
       if (trapType != null) 'trapType': trapType,
       if (collectorID != null) 'collectorID': collectorID,
+      if (collectorNumber != null) 'collectorNumber': collectorNumber,
       if (collEventID != null) 'collEventID': collEventID,
       if (preparatorID != null) 'preparatorID': preparatorID,
     });
   }
 
   SpecimenCompanion copyWith(
-      {Value<String>? specimenUuid,
+      {Value<String>? uuid,
       Value<String?>? projectUuid,
       Value<int?>? speciesID,
       Value<String?>? taxonGroup,
@@ -3502,10 +3552,11 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       Value<String?>? captureTime,
       Value<String?>? trapType,
       Value<String?>? collectorID,
+      Value<int?>? collectorNumber,
       Value<int?>? collEventID,
       Value<String?>? preparatorID}) {
     return SpecimenCompanion(
-      specimenUuid: specimenUuid ?? this.specimenUuid,
+      uuid: uuid ?? this.uuid,
       projectUuid: projectUuid ?? this.projectUuid,
       speciesID: speciesID ?? this.speciesID,
       taxonGroup: taxonGroup ?? this.taxonGroup,
@@ -3516,6 +3567,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       captureTime: captureTime ?? this.captureTime,
       trapType: trapType ?? this.trapType,
       collectorID: collectorID ?? this.collectorID,
+      collectorNumber: collectorNumber ?? this.collectorNumber,
       collEventID: collEventID ?? this.collEventID,
       preparatorID: preparatorID ?? this.preparatorID,
     );
@@ -3524,8 +3576,8 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (specimenUuid.present) {
-      map['specimenUuid'] = Variable<String>(specimenUuid.value);
+    if (uuid.present) {
+      map['uuid'] = Variable<String>(uuid.value);
     }
     if (projectUuid.present) {
       map['projectUuid'] = Variable<String?>(projectUuid.value);
@@ -3557,6 +3609,9 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     if (collectorID.present) {
       map['collectorID'] = Variable<String?>(collectorID.value);
     }
+    if (collectorNumber.present) {
+      map['collectorNumber'] = Variable<int?>(collectorNumber.value);
+    }
     if (collEventID.present) {
       map['collEventID'] = Variable<int?>(collEventID.value);
     }
@@ -3569,7 +3624,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
   @override
   String toString() {
     return (StringBuffer('SpecimenCompanion(')
-          ..write('specimenUuid: $specimenUuid, ')
+          ..write('uuid: $uuid, ')
           ..write('projectUuid: $projectUuid, ')
           ..write('speciesID: $speciesID, ')
           ..write('taxonGroup: $taxonGroup, ')
@@ -3580,6 +3635,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
           ..write('captureTime: $captureTime, ')
           ..write('trapType: $trapType, ')
           ..write('collectorID: $collectorID, ')
+          ..write('collectorNumber: $collectorNumber, ')
           ..write('collEventID: $collEventID, ')
           ..write('preparatorID: $preparatorID')
           ..write(')'))
@@ -3592,10 +3648,9 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   Specimen(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _specimenUuidMeta =
-      const VerificationMeta('specimenUuid');
-  late final GeneratedColumn<String?> specimenUuid = GeneratedColumn<String?>(
-      'specimenUuid', aliasedName, false,
+  final VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  late final GeneratedColumn<String?> uuid = GeneratedColumn<String?>(
+      'uuid', aliasedName, false,
       type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'UNIQUE NOT NULL PRIMARY KEY');
@@ -3663,6 +3718,13 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
       type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: '');
+  final VerificationMeta _collectorNumberMeta =
+      const VerificationMeta('collectorNumber');
+  late final GeneratedColumn<int?> collectorNumber = GeneratedColumn<int?>(
+      'collectorNumber', aliasedName, true,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _collEventIDMeta =
       const VerificationMeta('collEventID');
   late final GeneratedColumn<int?> collEventID = GeneratedColumn<int?>(
@@ -3676,10 +3738,10 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
       'preparatorID', aliasedName, true,
       type: const StringType(),
       requiredDuringInsert: false,
-      $customConstraints: 'REFERENCES personnel(id)');
+      $customConstraints: 'REFERENCES personnel(uuid)');
   @override
   List<GeneratedColumn> get $columns => [
-        specimenUuid,
+        uuid,
         projectUuid,
         speciesID,
         taxonGroup,
@@ -3690,6 +3752,7 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
         captureTime,
         trapType,
         collectorID,
+        collectorNumber,
         collEventID,
         preparatorID
       ];
@@ -3702,13 +3765,11 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('specimenUuid')) {
+    if (data.containsKey('uuid')) {
       context.handle(
-          _specimenUuidMeta,
-          specimenUuid.isAcceptableOrUnknown(
-              data['specimenUuid']!, _specimenUuidMeta));
+          _uuidMeta, uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta));
     } else if (isInserting) {
-      context.missing(_specimenUuidMeta);
+      context.missing(_uuidMeta);
     }
     if (data.containsKey('projectUuid')) {
       context.handle(
@@ -3760,6 +3821,12 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
           collectorID.isAcceptableOrUnknown(
               data['collectorID']!, _collectorIDMeta));
     }
+    if (data.containsKey('collectorNumber')) {
+      context.handle(
+          _collectorNumberMeta,
+          collectorNumber.isAcceptableOrUnknown(
+              data['collectorNumber']!, _collectorNumberMeta));
+    }
     if (data.containsKey('collEventID')) {
       context.handle(
           _collEventIDMeta,
@@ -3776,7 +3843,7 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {specimenUuid};
+  Set<GeneratedColumn> get $primaryKey => {uuid};
   @override
   SpecimenData map(Map<String, dynamic> data, {String? tablePrefix}) {
     return SpecimenData.fromData(data,
@@ -3790,7 +3857,8 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
 
   @override
   List<String> get customConstraints => const [
-        'FOREIGN KEY(collectorID) REFERENCES personnel(id)',
+        'FOREIGN KEY(projectUuid) REFERENCES project(uuid)',
+        'FOREIGN KEY(collectorID) REFERENCES personnel(uuid)',
         'FOREIGN KEY(collEventID) REFERENCES collEvent(id)'
       ];
   @override
@@ -4902,7 +4970,7 @@ class MammalMeasurement extends Table
 
   @override
   List<String> get customConstraints =>
-      const ['FOREIGN KEY(specimenUuid) REFERENCES specimen(specimenUuid)'];
+      const ['FOREIGN KEY(specimenUuid) REFERENCES specimen(uuid)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -5697,7 +5765,7 @@ class BirdMeasurement extends Table
 
   @override
   List<String> get customConstraints =>
-      const ['FOREIGN KEY(specimenUuid) REFERENCES specimen(specimenUuid)'];
+      const ['FOREIGN KEY(specimenUuid) REFERENCES specimen(uuid)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -6528,6 +6596,383 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
   bool get dontWriteConstraints => true;
 }
 
+class SpendingData extends DataClass implements Insertable<SpendingData> {
+  final int? id;
+  final String? category;
+  final String? item;
+  final String? description;
+  final double? budget;
+  final double? actual;
+  final String? projectUuid;
+  SpendingData(
+      {this.id,
+      this.category,
+      this.item,
+      this.description,
+      this.budget,
+      this.actual,
+      this.projectUuid});
+  factory SpendingData.fromData(Map<String, dynamic> data, {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return SpendingData(
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      category: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}category']),
+      item: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}item']),
+      description: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}description']),
+      budget: const RealType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}budget']),
+      actual: const RealType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}actual']),
+      projectUuid: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}projectUuid']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int?>(id);
+    }
+    if (!nullToAbsent || category != null) {
+      map['category'] = Variable<String?>(category);
+    }
+    if (!nullToAbsent || item != null) {
+      map['item'] = Variable<String?>(item);
+    }
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String?>(description);
+    }
+    if (!nullToAbsent || budget != null) {
+      map['budget'] = Variable<double?>(budget);
+    }
+    if (!nullToAbsent || actual != null) {
+      map['actual'] = Variable<double?>(actual);
+    }
+    if (!nullToAbsent || projectUuid != null) {
+      map['projectUuid'] = Variable<String?>(projectUuid);
+    }
+    return map;
+  }
+
+  SpendingCompanion toCompanion(bool nullToAbsent) {
+    return SpendingCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      category: category == null && nullToAbsent
+          ? const Value.absent()
+          : Value(category),
+      item: item == null && nullToAbsent ? const Value.absent() : Value(item),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      budget:
+          budget == null && nullToAbsent ? const Value.absent() : Value(budget),
+      actual:
+          actual == null && nullToAbsent ? const Value.absent() : Value(actual),
+      projectUuid: projectUuid == null && nullToAbsent
+          ? const Value.absent()
+          : Value(projectUuid),
+    );
+  }
+
+  factory SpendingData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SpendingData(
+      id: serializer.fromJson<int?>(json['id']),
+      category: serializer.fromJson<String?>(json['category']),
+      item: serializer.fromJson<String?>(json['item']),
+      description: serializer.fromJson<String?>(json['description']),
+      budget: serializer.fromJson<double?>(json['budget']),
+      actual: serializer.fromJson<double?>(json['actual']),
+      projectUuid: serializer.fromJson<String?>(json['projectUuid']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int?>(id),
+      'category': serializer.toJson<String?>(category),
+      'item': serializer.toJson<String?>(item),
+      'description': serializer.toJson<String?>(description),
+      'budget': serializer.toJson<double?>(budget),
+      'actual': serializer.toJson<double?>(actual),
+      'projectUuid': serializer.toJson<String?>(projectUuid),
+    };
+  }
+
+  SpendingData copyWith(
+          {int? id,
+          String? category,
+          String? item,
+          String? description,
+          double? budget,
+          double? actual,
+          String? projectUuid}) =>
+      SpendingData(
+        id: id ?? this.id,
+        category: category ?? this.category,
+        item: item ?? this.item,
+        description: description ?? this.description,
+        budget: budget ?? this.budget,
+        actual: actual ?? this.actual,
+        projectUuid: projectUuid ?? this.projectUuid,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('SpendingData(')
+          ..write('id: $id, ')
+          ..write('category: $category, ')
+          ..write('item: $item, ')
+          ..write('description: $description, ')
+          ..write('budget: $budget, ')
+          ..write('actual: $actual, ')
+          ..write('projectUuid: $projectUuid')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, category, item, description, budget, actual, projectUuid);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SpendingData &&
+          other.id == this.id &&
+          other.category == this.category &&
+          other.item == this.item &&
+          other.description == this.description &&
+          other.budget == this.budget &&
+          other.actual == this.actual &&
+          other.projectUuid == this.projectUuid);
+}
+
+class SpendingCompanion extends UpdateCompanion<SpendingData> {
+  final Value<int?> id;
+  final Value<String?> category;
+  final Value<String?> item;
+  final Value<String?> description;
+  final Value<double?> budget;
+  final Value<double?> actual;
+  final Value<String?> projectUuid;
+  const SpendingCompanion({
+    this.id = const Value.absent(),
+    this.category = const Value.absent(),
+    this.item = const Value.absent(),
+    this.description = const Value.absent(),
+    this.budget = const Value.absent(),
+    this.actual = const Value.absent(),
+    this.projectUuid = const Value.absent(),
+  });
+  SpendingCompanion.insert({
+    this.id = const Value.absent(),
+    this.category = const Value.absent(),
+    this.item = const Value.absent(),
+    this.description = const Value.absent(),
+    this.budget = const Value.absent(),
+    this.actual = const Value.absent(),
+    this.projectUuid = const Value.absent(),
+  });
+  static Insertable<SpendingData> custom({
+    Expression<int?>? id,
+    Expression<String?>? category,
+    Expression<String?>? item,
+    Expression<String?>? description,
+    Expression<double?>? budget,
+    Expression<double?>? actual,
+    Expression<String?>? projectUuid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (category != null) 'category': category,
+      if (item != null) 'item': item,
+      if (description != null) 'description': description,
+      if (budget != null) 'budget': budget,
+      if (actual != null) 'actual': actual,
+      if (projectUuid != null) 'projectUuid': projectUuid,
+    });
+  }
+
+  SpendingCompanion copyWith(
+      {Value<int?>? id,
+      Value<String?>? category,
+      Value<String?>? item,
+      Value<String?>? description,
+      Value<double?>? budget,
+      Value<double?>? actual,
+      Value<String?>? projectUuid}) {
+    return SpendingCompanion(
+      id: id ?? this.id,
+      category: category ?? this.category,
+      item: item ?? this.item,
+      description: description ?? this.description,
+      budget: budget ?? this.budget,
+      actual: actual ?? this.actual,
+      projectUuid: projectUuid ?? this.projectUuid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int?>(id.value);
+    }
+    if (category.present) {
+      map['category'] = Variable<String?>(category.value);
+    }
+    if (item.present) {
+      map['item'] = Variable<String?>(item.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String?>(description.value);
+    }
+    if (budget.present) {
+      map['budget'] = Variable<double?>(budget.value);
+    }
+    if (actual.present) {
+      map['actual'] = Variable<double?>(actual.value);
+    }
+    if (projectUuid.present) {
+      map['projectUuid'] = Variable<String?>(projectUuid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SpendingCompanion(')
+          ..write('id: $id, ')
+          ..write('category: $category, ')
+          ..write('item: $item, ')
+          ..write('description: $description, ')
+          ..write('budget: $budget, ')
+          ..write('actual: $actual, ')
+          ..write('projectUuid: $projectUuid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class Spending extends Table with TableInfo<Spending, SpendingData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  Spending(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, true,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  final VerificationMeta _categoryMeta = const VerificationMeta('category');
+  late final GeneratedColumn<String?> category = GeneratedColumn<String?>(
+      'category', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _itemMeta = const VerificationMeta('item');
+  late final GeneratedColumn<String?> item = GeneratedColumn<String?>(
+      'item', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  late final GeneratedColumn<String?> description = GeneratedColumn<String?>(
+      'description', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _budgetMeta = const VerificationMeta('budget');
+  late final GeneratedColumn<double?> budget = GeneratedColumn<double?>(
+      'budget', aliasedName, true,
+      type: const RealType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _actualMeta = const VerificationMeta('actual');
+  late final GeneratedColumn<double?> actual = GeneratedColumn<double?>(
+      'actual', aliasedName, true,
+      type: const RealType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _projectUuidMeta =
+      const VerificationMeta('projectUuid');
+  late final GeneratedColumn<String?> projectUuid = GeneratedColumn<String?>(
+      'projectUuid', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, category, item, description, budget, actual, projectUuid];
+  @override
+  String get aliasedName => _alias ?? 'spending';
+  @override
+  String get actualTableName => 'spending';
+  @override
+  VerificationContext validateIntegrity(Insertable<SpendingData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('category')) {
+      context.handle(_categoryMeta,
+          category.isAcceptableOrUnknown(data['category']!, _categoryMeta));
+    }
+    if (data.containsKey('item')) {
+      context.handle(
+          _itemMeta, item.isAcceptableOrUnknown(data['item']!, _itemMeta));
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description']!, _descriptionMeta));
+    }
+    if (data.containsKey('budget')) {
+      context.handle(_budgetMeta,
+          budget.isAcceptableOrUnknown(data['budget']!, _budgetMeta));
+    }
+    if (data.containsKey('actual')) {
+      context.handle(_actualMeta,
+          actual.isAcceptableOrUnknown(data['actual']!, _actualMeta));
+    }
+    if (data.containsKey('projectUuid')) {
+      context.handle(
+          _projectUuidMeta,
+          projectUuid.isAcceptableOrUnknown(
+              data['projectUuid']!, _projectUuidMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  SpendingData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return SpendingData.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  Spending createAlias(String alias) {
+    return Spending(attachedDatabase, alias);
+  }
+
+  @override
+  List<String> get customConstraints =>
+      const ['FOREIGN KEY(projectUuid) REFERENCES project(uuid)'];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   late final Project project = Project(this);
@@ -6543,18 +6988,18 @@ abstract class _$Database extends GeneratedDatabase {
   late final BirdMeasurement birdMeasurement = BirdMeasurement(this);
   late final Part part = Part(this);
   late final Taxonomy taxonomy = Taxonomy(this);
+  late final Spending spending = Spending(this);
   Selectable<ListProjectResult> listProject() {
-    return customSelect(
-        'SELECT projectUuid,projectName,dateCreated,dateLastModified FROM project',
+    return customSelect('SELECT uuid,name,created,lastModified FROM project',
         variables: [],
         readsFrom: {
           project,
         }).map((QueryRow row) {
       return ListProjectResult(
-        projectUuid: row.read<String>('projectUuid'),
-        projectName: row.read<String>('projectName'),
-        dateCreated: row.read<String?>('dateCreated'),
-        dateLastModified: row.read<String?>('dateLastModified'),
+        uuid: row.read<String>('uuid'),
+        name: row.read<String>('name'),
+        created: row.read<String?>('created'),
+        lastModified: row.read<String?>('lastModified'),
       );
     });
   }
@@ -6575,19 +7020,20 @@ abstract class _$Database extends GeneratedDatabase {
         mammalMeasurement,
         birdMeasurement,
         part,
-        taxonomy
+        taxonomy,
+        spending
       ];
 }
 
 class ListProjectResult {
-  final String projectUuid;
-  final String projectName;
-  final String? dateCreated;
-  final String? dateLastModified;
+  final String uuid;
+  final String name;
+  final String? created;
+  final String? lastModified;
   ListProjectResult({
-    required this.projectUuid,
-    required this.projectName,
-    this.dateCreated,
-    this.dateLastModified,
+    required this.uuid,
+    required this.name,
+    this.created,
+    this.lastModified,
   });
 }

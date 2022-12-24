@@ -16,7 +16,7 @@ Future<void> createNewSpecimens(BuildContext context, WidgetRef ref) {
   CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
   final String specimenUuid = uuid;
   ref.read(databaseProvider).createSpecimen(SpecimenCompanion(
-        specimenUuid: db.Value(specimenUuid),
+        uuid: db.Value(specimenUuid),
         projectUuid: db.Value(projectUuid),
         taxonGroup: db.Value(matchCatFmtToTaxonGroup(catalogFmt)),
       ));

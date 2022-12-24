@@ -47,13 +47,13 @@ class CollectingRecordFields extends ConsumerWidget {
             ),
             items: personnelList
                 .map((e) => DropdownMenuItem(
-                      value: e.id,
+                      value: e.uuid,
                       child: Text(e.name ?? ''),
                     ))
                 .toList(),
-            onChanged: (String? id) {
+            onChanged: (String? uuid) {
               updateSpecimen(specimenUuid,
-                  SpecimenCompanion(collectorID: db.Value(id)), ref);
+                  SpecimenCompanion(collectorID: db.Value(uuid)), ref);
             },
           ),
           TextFormField(
@@ -70,13 +70,13 @@ class CollectingRecordFields extends ConsumerWidget {
             ),
             items: personnelList
                 .map((e) => DropdownMenuItem(
-                      value: e.id,
+                      value: e.uuid,
                       child: Text(e.name ?? ''),
                     ))
                 .toList(),
-            onChanged: (String? id) {
+            onChanged: (String? uuid) {
               updateSpecimen(specimenUuid,
-                  SpecimenCompanion(preparatorID: db.Value(id)), ref);
+                  SpecimenCompanion(preparatorID: db.Value(uuid)), ref);
             },
           ),
           DropdownButtonFormField(

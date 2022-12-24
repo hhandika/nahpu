@@ -44,6 +44,7 @@ class DashboardState extends ConsumerState<Dashboard> {
         title: const Text("Project Dashboard"),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
+      resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       floatingActionButton: SpeedDial(
         icon: Icons.add,
@@ -296,7 +297,7 @@ class PersonnelList extends ConsumerWidget {
             return ListTile(
               leading: const Icon(Icons.person_rounded),
               title: Text(data[index].name ?? ''),
-              subtitle: Text(data[index].id ?? ''),
+              subtitle: Text(data[index].uuid ?? ''),
               trailing: const PersonnelListPopUpMenu(),
             );
           },

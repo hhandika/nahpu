@@ -10,23 +10,22 @@ class ProjectInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListBody(children: <Widget>[
-      Text('Project Name: ${projectData?.projectName ?? 'Empty!'}'),
+      Text('Project Name: ${projectData?.name ?? 'Empty!'}'),
       RichText(
           text: TextSpan(
               text: 'UUID: ',
               style: DefaultTextStyle.of(context).style,
               children: [
             TextSpan(
-                text: '${projectData?.projectUuid}',
+                text: '${projectData?.uuid}',
                 style: const TextStyle(fontSize: 12))
           ])),
-      Text(
-          'Project Description: ${projectData?.projectDescription ?? 'Empty!'}'),
+      Text('Project Description: ${projectData?.description ?? 'Empty!'}'),
       Text(
           'Principal Investigator: ${projectData?.principalInvestigator ?? 'No PI'}'),
-      Text('Date Created: ${projectData?.dateCreated ?? 'No DateCreated'}'),
-      Text(
-          'Date Modified: ${projectData?.dateLastModified ?? 'No DateModified'}'),
+      Text('Budget: ${projectData?.budget ?? 'No Budget'}'),
+      Text('Date Created: ${projectData?.created ?? 'No DateCreated'}'),
+      Text('Date Modified: ${projectData?.lastModified ?? 'No DateModified'}'),
     ]);
   }
 }

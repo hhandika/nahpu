@@ -87,7 +87,7 @@ class SpecimensState extends ConsumerState<Specimens> {
                     );
 
                     return SpecimenForm(
-                      specimenUuid: specimenEntry[index].specimenUuid,
+                      specimenUuid: specimenEntry[index].uuid,
                       specimenCtr: specimenFormCtr,
                       catalogFmt: matchTaxonGroupToCatFmt(
                           specimenEntry[index].taxonGroup),

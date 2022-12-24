@@ -34,13 +34,13 @@ class Database extends _$Database {
   Future<List<ProjectData>> getAllProjects() => select(project).get();
 
   Future<ProjectData> getProjectByUuid(String uuid) async {
-    return await (select(project)..where((t) => t.projectUuid.equals(uuid)))
+    return await (select(project)..where((t) => t.uuid.equals(uuid)))
         .getSingle();
   }
 
   Future<ProjectData?> getProjectByName(String? name) async {
     try {
-      return await (select(project)..where((t) => t.projectName.equals(name)))
+      return await (select(project)..where((t) => t.name.equals(name)))
           .getSingle();
     } catch (e) {
       return null;
@@ -50,7 +50,7 @@ class Database extends _$Database {
   Future<List<ListProjectResult>> getProjectList() => listProject().get();
 
   Future<void> deleteProject(String id) {
-    return (delete(project)..where((t) => t.projectUuid.equals(id))).go();
+    return (delete(project)..where((t) => t.uuid.equals(id))).go();
   }
 
   Future updateEntry(ProjectData entry) => update(project).replace(entry);
@@ -123,8 +123,7 @@ class Database extends _$Database {
       into(specimen).insert(form);
 
   Future updateSpecimenEntry(String uuid, SpecimenCompanion entry) {
-    return (update(specimen)..where((t) => t.specimenUuid.equals(uuid)))
-        .write(entry);
+    return (update(specimen)..where((t) => t.uuid.equals(uuid))).write(entry);
   }
 
   Future<List<SpecimenData>> getAllSpecimens(String projectUuid) {
@@ -133,7 +132,7 @@ class Database extends _$Database {
   }
 
   Future<void> deleteSpecimen(String uuid) {
-    return (delete(specimen)..where((t) => t.specimenUuid.equals(uuid))).go();
+    return (delete(specimen)..where((t) => t.uuid.equals(uuid))).go();
   }
 
   Future<void> deleteAllSpecimens(String projectUuid) {
@@ -146,7 +145,7 @@ class Database extends _$Database {
       into(personnel).insert(form);
 
   Future updatePersonnelEntry(String id, PersonnelCompanion entry) {
-    return (update(personnel)..where((t) => t.id.equals(id))).write(entry);
+    return (update(personnel)..where((t) => t.uuid.equals(id))).write(entry);
   }
 
   Future<List<PersonnelData>> getAllPersonnel() {

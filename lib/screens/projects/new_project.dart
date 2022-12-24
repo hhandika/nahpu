@@ -181,12 +181,12 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
 
   Future<void> _createProject() async {
     final projectData = ProjectCompanion(
-      projectUuid: db.Value(_uuidKey),
-      projectName: db.Value(projectNameController.text),
-      projectDescription: db.Value(descriptionController.text),
+      uuid: db.Value(_uuidKey),
+      name: db.Value(projectNameController.text),
+      description: db.Value(descriptionController.text),
       principalInvestigator: db.Value(piController.text),
-      dateCreated: db.Value(getSystemDateTime()),
-      dateLastModified: db.Value(getSystemDateTime()),
+      created: db.Value(getSystemDateTime()),
+      lastModified: db.Value(getSystemDateTime()),
     );
 
     final personnel = PersonnelCompanion(
