@@ -42,6 +42,7 @@ class NarrativeState extends ConsumerState<Narrative> {
         ],
         leading: const ProjectBackButton(),
       ),
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Center(
           child: narrativeEntries.when(

@@ -41,6 +41,7 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
         title: const Text('Create a new project'),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
+      resizeToAvoidBottomInset: false,
       body: Center(
         child: Form(
           key: _formKey,

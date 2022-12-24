@@ -41,6 +41,7 @@ class SpecimensState extends ConsumerState<Specimens> {
         actions: const [NewSpecimens(), SpecimenMenu()],
         leading: const ProjectBackButton(),
       ),
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Center(
           child: specimenEntries.when(

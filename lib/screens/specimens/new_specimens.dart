@@ -82,6 +82,7 @@ class NewSpecimenFormState extends ConsumerState<NewSpecimenForm> {
           SpecimenMenu(),
         ],
       ),
+      resizeToAvoidBottomInset: false,
       body: SpecimenForm(
         specimenUuid: widget.specimenUuid,
         specimenCtr: _specimenCtr,

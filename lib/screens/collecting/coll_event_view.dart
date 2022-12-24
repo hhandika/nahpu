@@ -5,8 +5,8 @@ import 'package:nahpu/models/page_viewer.dart';
 
 import 'package:nahpu/providers/page_viewer.dart';
 
-import 'package:nahpu/screens/collecting_events/coll_event_form.dart';
-import 'package:nahpu/screens/collecting_events/menu_bar.dart';
+import 'package:nahpu/screens/collecting/coll_event_form.dart';
+import 'package:nahpu/screens/collecting/menu_bar.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
 
@@ -42,6 +42,7 @@ class CollEventsState extends ConsumerState<CollEvents> {
         ],
         leading: const ProjectBackButton(),
       ),
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Center(
           child: collEventEntries.when(

@@ -42,6 +42,7 @@ class SitesState extends ConsumerState<Sites> {
           SiteMenu(),
         ],
       ),
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Center(
           child: siteEntries.when(data: (siteEntries) {

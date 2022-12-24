@@ -44,6 +44,7 @@ class NewNarrativeFormState extends ConsumerState<NewNarrativeForm> {
           },
         ),
       ),
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: NarrativeForm(
           narrativeId: widget.narrativeId,

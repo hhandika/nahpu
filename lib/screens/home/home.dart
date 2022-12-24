@@ -29,6 +29,7 @@ class HomeState extends ConsumerState<Home> {
           ),
         ],
       ),
+      resizeToAvoidBottomInset: false,
       drawer: const HomeMenuDrawer(),
       body: const HomeBody(),
       floatingActionButton: SpeedDial(

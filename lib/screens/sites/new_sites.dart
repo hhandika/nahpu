@@ -72,6 +72,7 @@ class NewSitesState extends ConsumerState<NewSites> {
                   ])
         ],
       ),
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: SiteForm(
           id: widget.id,

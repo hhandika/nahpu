@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/providers/page_viewer.dart';
-import 'package:nahpu/screens/collecting_events/coll_event_form.dart';
-import 'package:nahpu/screens/collecting_events/coll_event_view.dart';
-import 'package:nahpu/screens/collecting_events/menu_bar.dart';
+import 'package:nahpu/screens/collecting/coll_event_form.dart';
+import 'package:nahpu/screens/collecting/coll_event_view.dart';
+import 'package:nahpu/screens/collecting/menu_bar.dart';
 
 enum MenuSelection { newNote, pdfExport, deleteRecords, deleteAllRecords }
 
@@ -47,6 +47,7 @@ class NewCollEventFormState extends ConsumerState<NewCollEventForm> {
           CollEventMenu(),
         ],
       ),
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child:
             CollEventForm(id: widget.collEventId, collEventCtr: _collEventCtr),
