@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:nahpu/screens/shared/associated_data.dart';
 import 'package:nahpu/screens/shared/audios.dart';
 import 'package:nahpu/screens/shared/photos.dart';
 import 'package:nahpu/screens/shared/videos.dart';
@@ -21,7 +23,7 @@ class MediaFormsState extends ConsumerState<MediaForms>
   void initState() {
     super.initState();
 
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
   }
 
   @override
@@ -38,10 +40,11 @@ class MediaFormsState extends ConsumerState<MediaForms>
         DefaultTabController(
           length: 3,
           child: TabBar(
+            indicatorColor: Theme.of(context).colorScheme.tertiary,
             controller: _tabController,
             tabs: [
               Tab(
-                  icon: Icon(Icons.photo_album_rounded,
+                  icon: Icon(Icons.photo_library_rounded,
                       color: Theme.of(context).colorScheme.tertiary)),
               Tab(
                   icon: Icon(Icons.video_library_rounded,
@@ -49,6 +52,9 @@ class MediaFormsState extends ConsumerState<MediaForms>
               Tab(
                   icon: Icon(Icons.audiotrack_rounded,
                       color: Theme.of(context).colorScheme.tertiary)),
+              Tab(
+                  icon: Icon(MdiIcons.database,
+                      color: Theme.of(context).colorScheme.tertiary))
             ],
           ),
         ),
@@ -60,6 +66,7 @@ class MediaFormsState extends ConsumerState<MediaForms>
               PhotoViewer(),
               VideoViewer(),
               AudioViewer(),
+              AssociatedDataViewer(),
             ],
           ),
         ),
