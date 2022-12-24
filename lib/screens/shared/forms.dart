@@ -71,3 +71,42 @@ class DeleteAlerts extends ConsumerWidget {
     );
   }
 }
+
+class MediaTabBars extends ConsumerWidget {
+  const MediaTabBars({
+    super.key,
+    required this.tabController,
+    required this.length,
+    required this.tabs,
+    required this.children,
+  });
+
+  final TabController tabController;
+  final int length;
+  final List<Tab> tabs;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Column(
+      // Media inputs
+      children: [
+        DefaultTabController(
+          length: length,
+          child: TabBar(
+            indicatorColor: Theme.of(context).colorScheme.tertiary,
+            controller: tabController,
+            tabs: tabs,
+          ),
+        ),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.5,
+          child: TabBarView(
+            controller: tabController,
+            children: children,
+          ),
+        ),
+      ],
+    );
+  }
+}
