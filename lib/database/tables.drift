@@ -83,9 +83,10 @@ CREATE TABLE personnel (
     id TEXT UNIQUE PRIMARY KEY,
     name TEXT,
     initial TEXT,
+    email TEXT,
     affiliation TEXT,
     role TEXT,
-    lastCollectorNumber INT,
+    nextCollectorNumber INT,
     photoFileName TEXT
 );
 

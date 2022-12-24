@@ -12,10 +12,6 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
   final String projectName;
   final String? projectDescription;
   final String? principalInvestigator;
-  final String? collector;
-  final String? collectorInitial;
-  final String? collectorEmail;
-  final int? catNumStart;
   final String? dateCreated;
   final String? dateLastModified;
   ProjectData(
@@ -23,10 +19,6 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
       required this.projectName,
       this.projectDescription,
       this.principalInvestigator,
-      this.collector,
-      this.collectorInitial,
-      this.collectorEmail,
-      this.catNumStart,
       this.dateCreated,
       this.dateLastModified});
   factory ProjectData.fromData(Map<String, dynamic> data, {String? prefix}) {
@@ -40,14 +32,6 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
           data['${effectivePrefix}projectDescription']),
       principalInvestigator: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}principalInvestigator']),
-      collector: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}collector']),
-      collectorInitial: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}collectorInitial']),
-      collectorEmail: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}collectorEmail']),
-      catNumStart: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}catNumStart']),
       dateCreated: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}dateCreated']),
       dateLastModified: const StringType()
@@ -64,18 +48,6 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
     }
     if (!nullToAbsent || principalInvestigator != null) {
       map['principalInvestigator'] = Variable<String?>(principalInvestigator);
-    }
-    if (!nullToAbsent || collector != null) {
-      map['collector'] = Variable<String?>(collector);
-    }
-    if (!nullToAbsent || collectorInitial != null) {
-      map['collectorInitial'] = Variable<String?>(collectorInitial);
-    }
-    if (!nullToAbsent || collectorEmail != null) {
-      map['collectorEmail'] = Variable<String?>(collectorEmail);
-    }
-    if (!nullToAbsent || catNumStart != null) {
-      map['catNumStart'] = Variable<int?>(catNumStart);
     }
     if (!nullToAbsent || dateCreated != null) {
       map['dateCreated'] = Variable<String?>(dateCreated);
@@ -96,18 +68,6 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
       principalInvestigator: principalInvestigator == null && nullToAbsent
           ? const Value.absent()
           : Value(principalInvestigator),
-      collector: collector == null && nullToAbsent
-          ? const Value.absent()
-          : Value(collector),
-      collectorInitial: collectorInitial == null && nullToAbsent
-          ? const Value.absent()
-          : Value(collectorInitial),
-      collectorEmail: collectorEmail == null && nullToAbsent
-          ? const Value.absent()
-          : Value(collectorEmail),
-      catNumStart: catNumStart == null && nullToAbsent
-          ? const Value.absent()
-          : Value(catNumStart),
       dateCreated: dateCreated == null && nullToAbsent
           ? const Value.absent()
           : Value(dateCreated),
@@ -127,10 +87,6 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
           serializer.fromJson<String?>(json['projectDescription']),
       principalInvestigator:
           serializer.fromJson<String?>(json['principalInvestigator']),
-      collector: serializer.fromJson<String?>(json['collector']),
-      collectorInitial: serializer.fromJson<String?>(json['collectorInitial']),
-      collectorEmail: serializer.fromJson<String?>(json['collectorEmail']),
-      catNumStart: serializer.fromJson<int?>(json['catNumStart']),
       dateCreated: serializer.fromJson<String?>(json['dateCreated']),
       dateLastModified: serializer.fromJson<String?>(json['dateLastModified']),
     );
@@ -144,10 +100,6 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
       'projectDescription': serializer.toJson<String?>(projectDescription),
       'principalInvestigator':
           serializer.toJson<String?>(principalInvestigator),
-      'collector': serializer.toJson<String?>(collector),
-      'collectorInitial': serializer.toJson<String?>(collectorInitial),
-      'collectorEmail': serializer.toJson<String?>(collectorEmail),
-      'catNumStart': serializer.toJson<int?>(catNumStart),
       'dateCreated': serializer.toJson<String?>(dateCreated),
       'dateLastModified': serializer.toJson<String?>(dateLastModified),
     };
@@ -158,10 +110,6 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
           String? projectName,
           String? projectDescription,
           String? principalInvestigator,
-          String? collector,
-          String? collectorInitial,
-          String? collectorEmail,
-          int? catNumStart,
           String? dateCreated,
           String? dateLastModified}) =>
       ProjectData(
@@ -170,10 +118,6 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
         projectDescription: projectDescription ?? this.projectDescription,
         principalInvestigator:
             principalInvestigator ?? this.principalInvestigator,
-        collector: collector ?? this.collector,
-        collectorInitial: collectorInitial ?? this.collectorInitial,
-        collectorEmail: collectorEmail ?? this.collectorEmail,
-        catNumStart: catNumStart ?? this.catNumStart,
         dateCreated: dateCreated ?? this.dateCreated,
         dateLastModified: dateLastModified ?? this.dateLastModified,
       );
@@ -184,10 +128,6 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
           ..write('projectName: $projectName, ')
           ..write('projectDescription: $projectDescription, ')
           ..write('principalInvestigator: $principalInvestigator, ')
-          ..write('collector: $collector, ')
-          ..write('collectorInitial: $collectorInitial, ')
-          ..write('collectorEmail: $collectorEmail, ')
-          ..write('catNumStart: $catNumStart, ')
           ..write('dateCreated: $dateCreated, ')
           ..write('dateLastModified: $dateLastModified')
           ..write(')'))
@@ -195,17 +135,8 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
   }
 
   @override
-  int get hashCode => Object.hash(
-      projectUuid,
-      projectName,
-      projectDescription,
-      principalInvestigator,
-      collector,
-      collectorInitial,
-      collectorEmail,
-      catNumStart,
-      dateCreated,
-      dateLastModified);
+  int get hashCode => Object.hash(projectUuid, projectName, projectDescription,
+      principalInvestigator, dateCreated, dateLastModified);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -214,10 +145,6 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
           other.projectName == this.projectName &&
           other.projectDescription == this.projectDescription &&
           other.principalInvestigator == this.principalInvestigator &&
-          other.collector == this.collector &&
-          other.collectorInitial == this.collectorInitial &&
-          other.collectorEmail == this.collectorEmail &&
-          other.catNumStart == this.catNumStart &&
           other.dateCreated == this.dateCreated &&
           other.dateLastModified == this.dateLastModified);
 }
@@ -227,10 +154,6 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
   final Value<String> projectName;
   final Value<String?> projectDescription;
   final Value<String?> principalInvestigator;
-  final Value<String?> collector;
-  final Value<String?> collectorInitial;
-  final Value<String?> collectorEmail;
-  final Value<int?> catNumStart;
   final Value<String?> dateCreated;
   final Value<String?> dateLastModified;
   const ProjectCompanion({
@@ -238,10 +161,6 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
     this.projectName = const Value.absent(),
     this.projectDescription = const Value.absent(),
     this.principalInvestigator = const Value.absent(),
-    this.collector = const Value.absent(),
-    this.collectorInitial = const Value.absent(),
-    this.collectorEmail = const Value.absent(),
-    this.catNumStart = const Value.absent(),
     this.dateCreated = const Value.absent(),
     this.dateLastModified = const Value.absent(),
   });
@@ -250,10 +169,6 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
     required String projectName,
     this.projectDescription = const Value.absent(),
     this.principalInvestigator = const Value.absent(),
-    this.collector = const Value.absent(),
-    this.collectorInitial = const Value.absent(),
-    this.collectorEmail = const Value.absent(),
-    this.catNumStart = const Value.absent(),
     this.dateCreated = const Value.absent(),
     this.dateLastModified = const Value.absent(),
   })  : projectUuid = Value(projectUuid),
@@ -263,10 +178,6 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
     Expression<String>? projectName,
     Expression<String?>? projectDescription,
     Expression<String?>? principalInvestigator,
-    Expression<String?>? collector,
-    Expression<String?>? collectorInitial,
-    Expression<String?>? collectorEmail,
-    Expression<int?>? catNumStart,
     Expression<String?>? dateCreated,
     Expression<String?>? dateLastModified,
   }) {
@@ -276,10 +187,6 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
       if (projectDescription != null) 'projectDescription': projectDescription,
       if (principalInvestigator != null)
         'principalInvestigator': principalInvestigator,
-      if (collector != null) 'collector': collector,
-      if (collectorInitial != null) 'collectorInitial': collectorInitial,
-      if (collectorEmail != null) 'collectorEmail': collectorEmail,
-      if (catNumStart != null) 'catNumStart': catNumStart,
       if (dateCreated != null) 'dateCreated': dateCreated,
       if (dateLastModified != null) 'dateLastModified': dateLastModified,
     });
@@ -290,10 +197,6 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
       Value<String>? projectName,
       Value<String?>? projectDescription,
       Value<String?>? principalInvestigator,
-      Value<String?>? collector,
-      Value<String?>? collectorInitial,
-      Value<String?>? collectorEmail,
-      Value<int?>? catNumStart,
       Value<String?>? dateCreated,
       Value<String?>? dateLastModified}) {
     return ProjectCompanion(
@@ -302,10 +205,6 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
       projectDescription: projectDescription ?? this.projectDescription,
       principalInvestigator:
           principalInvestigator ?? this.principalInvestigator,
-      collector: collector ?? this.collector,
-      collectorInitial: collectorInitial ?? this.collectorInitial,
-      collectorEmail: collectorEmail ?? this.collectorEmail,
-      catNumStart: catNumStart ?? this.catNumStart,
       dateCreated: dateCreated ?? this.dateCreated,
       dateLastModified: dateLastModified ?? this.dateLastModified,
     );
@@ -327,18 +226,6 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
       map['principalInvestigator'] =
           Variable<String?>(principalInvestigator.value);
     }
-    if (collector.present) {
-      map['collector'] = Variable<String?>(collector.value);
-    }
-    if (collectorInitial.present) {
-      map['collectorInitial'] = Variable<String?>(collectorInitial.value);
-    }
-    if (collectorEmail.present) {
-      map['collectorEmail'] = Variable<String?>(collectorEmail.value);
-    }
-    if (catNumStart.present) {
-      map['catNumStart'] = Variable<int?>(catNumStart.value);
-    }
     if (dateCreated.present) {
       map['dateCreated'] = Variable<String?>(dateCreated.value);
     }
@@ -355,10 +242,6 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
           ..write('projectName: $projectName, ')
           ..write('projectDescription: $projectDescription, ')
           ..write('principalInvestigator: $principalInvestigator, ')
-          ..write('collector: $collector, ')
-          ..write('collectorInitial: $collectorInitial, ')
-          ..write('collectorEmail: $collectorEmail, ')
-          ..write('catNumStart: $catNumStart, ')
           ..write('dateCreated: $dateCreated, ')
           ..write('dateLastModified: $dateLastModified')
           ..write(')'))
@@ -399,33 +282,6 @@ class Project extends Table with TableInfo<Project, ProjectData> {
           type: const StringType(),
           requiredDuringInsert: false,
           $customConstraints: '');
-  final VerificationMeta _collectorMeta = const VerificationMeta('collector');
-  late final GeneratedColumn<String?> collector = GeneratedColumn<String?>(
-      'collector', aliasedName, true,
-      type: const StringType(),
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  final VerificationMeta _collectorInitialMeta =
-      const VerificationMeta('collectorInitial');
-  late final GeneratedColumn<String?> collectorInitial =
-      GeneratedColumn<String?>('collectorInitial', aliasedName, true,
-          type: const StringType(),
-          requiredDuringInsert: false,
-          $customConstraints: '');
-  final VerificationMeta _collectorEmailMeta =
-      const VerificationMeta('collectorEmail');
-  late final GeneratedColumn<String?> collectorEmail = GeneratedColumn<String?>(
-      'collectorEmail', aliasedName, true,
-      type: const StringType(),
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  final VerificationMeta _catNumStartMeta =
-      const VerificationMeta('catNumStart');
-  late final GeneratedColumn<int?> catNumStart = GeneratedColumn<int?>(
-      'catNumStart', aliasedName, true,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      $customConstraints: '');
   final VerificationMeta _dateCreatedMeta =
       const VerificationMeta('dateCreated');
   late final GeneratedColumn<String?> dateCreated = GeneratedColumn<String?>(
@@ -446,10 +302,6 @@ class Project extends Table with TableInfo<Project, ProjectData> {
         projectName,
         projectDescription,
         principalInvestigator,
-        collector,
-        collectorInitial,
-        collectorEmail,
-        catNumStart,
         dateCreated,
         dateLastModified
       ];
@@ -490,28 +342,6 @@ class Project extends Table with TableInfo<Project, ProjectData> {
           principalInvestigator.isAcceptableOrUnknown(
               data['principalInvestigator']!, _principalInvestigatorMeta));
     }
-    if (data.containsKey('collector')) {
-      context.handle(_collectorMeta,
-          collector.isAcceptableOrUnknown(data['collector']!, _collectorMeta));
-    }
-    if (data.containsKey('collectorInitial')) {
-      context.handle(
-          _collectorInitialMeta,
-          collectorInitial.isAcceptableOrUnknown(
-              data['collectorInitial']!, _collectorInitialMeta));
-    }
-    if (data.containsKey('collectorEmail')) {
-      context.handle(
-          _collectorEmailMeta,
-          collectorEmail.isAcceptableOrUnknown(
-              data['collectorEmail']!, _collectorEmailMeta));
-    }
-    if (data.containsKey('catNumStart')) {
-      context.handle(
-          _catNumStartMeta,
-          catNumStart.isAcceptableOrUnknown(
-              data['catNumStart']!, _catNumStartMeta));
-    }
     if (data.containsKey('dateCreated')) {
       context.handle(
           _dateCreatedMeta,
@@ -548,17 +378,19 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
   final String? id;
   final String? name;
   final String? initial;
+  final String? email;
   final String? affiliation;
   final String? role;
-  final int? lastCollectorNumber;
+  final int? nextCollectorNumber;
   final String? photoFileName;
   PersonnelData(
       {this.id,
       this.name,
       this.initial,
+      this.email,
       this.affiliation,
       this.role,
-      this.lastCollectorNumber,
+      this.nextCollectorNumber,
       this.photoFileName});
   factory PersonnelData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -569,12 +401,14 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}name']),
       initial: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}initial']),
+      email: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}email']),
       affiliation: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}affiliation']),
       role: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}role']),
-      lastCollectorNumber: const IntType().mapFromDatabaseResponse(
-          data['${effectivePrefix}lastCollectorNumber']),
+      nextCollectorNumber: const IntType().mapFromDatabaseResponse(
+          data['${effectivePrefix}nextCollectorNumber']),
       photoFileName: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}photoFileName']),
     );
@@ -591,14 +425,17 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
     if (!nullToAbsent || initial != null) {
       map['initial'] = Variable<String?>(initial);
     }
+    if (!nullToAbsent || email != null) {
+      map['email'] = Variable<String?>(email);
+    }
     if (!nullToAbsent || affiliation != null) {
       map['affiliation'] = Variable<String?>(affiliation);
     }
     if (!nullToAbsent || role != null) {
       map['role'] = Variable<String?>(role);
     }
-    if (!nullToAbsent || lastCollectorNumber != null) {
-      map['lastCollectorNumber'] = Variable<int?>(lastCollectorNumber);
+    if (!nullToAbsent || nextCollectorNumber != null) {
+      map['nextCollectorNumber'] = Variable<int?>(nextCollectorNumber);
     }
     if (!nullToAbsent || photoFileName != null) {
       map['photoFileName'] = Variable<String?>(photoFileName);
@@ -613,13 +450,15 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
       initial: initial == null && nullToAbsent
           ? const Value.absent()
           : Value(initial),
+      email:
+          email == null && nullToAbsent ? const Value.absent() : Value(email),
       affiliation: affiliation == null && nullToAbsent
           ? const Value.absent()
           : Value(affiliation),
       role: role == null && nullToAbsent ? const Value.absent() : Value(role),
-      lastCollectorNumber: lastCollectorNumber == null && nullToAbsent
+      nextCollectorNumber: nextCollectorNumber == null && nullToAbsent
           ? const Value.absent()
-          : Value(lastCollectorNumber),
+          : Value(nextCollectorNumber),
       photoFileName: photoFileName == null && nullToAbsent
           ? const Value.absent()
           : Value(photoFileName),
@@ -633,10 +472,11 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
       id: serializer.fromJson<String?>(json['id']),
       name: serializer.fromJson<String?>(json['name']),
       initial: serializer.fromJson<String?>(json['initial']),
+      email: serializer.fromJson<String?>(json['email']),
       affiliation: serializer.fromJson<String?>(json['affiliation']),
       role: serializer.fromJson<String?>(json['role']),
-      lastCollectorNumber:
-          serializer.fromJson<int?>(json['lastCollectorNumber']),
+      nextCollectorNumber:
+          serializer.fromJson<int?>(json['nextCollectorNumber']),
       photoFileName: serializer.fromJson<String?>(json['photoFileName']),
     );
   }
@@ -647,9 +487,10 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
       'id': serializer.toJson<String?>(id),
       'name': serializer.toJson<String?>(name),
       'initial': serializer.toJson<String?>(initial),
+      'email': serializer.toJson<String?>(email),
       'affiliation': serializer.toJson<String?>(affiliation),
       'role': serializer.toJson<String?>(role),
-      'lastCollectorNumber': serializer.toJson<int?>(lastCollectorNumber),
+      'nextCollectorNumber': serializer.toJson<int?>(nextCollectorNumber),
       'photoFileName': serializer.toJson<String?>(photoFileName),
     };
   }
@@ -658,17 +499,19 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
           {String? id,
           String? name,
           String? initial,
+          String? email,
           String? affiliation,
           String? role,
-          int? lastCollectorNumber,
+          int? nextCollectorNumber,
           String? photoFileName}) =>
       PersonnelData(
         id: id ?? this.id,
         name: name ?? this.name,
         initial: initial ?? this.initial,
+        email: email ?? this.email,
         affiliation: affiliation ?? this.affiliation,
         role: role ?? this.role,
-        lastCollectorNumber: lastCollectorNumber ?? this.lastCollectorNumber,
+        nextCollectorNumber: nextCollectorNumber ?? this.nextCollectorNumber,
         photoFileName: photoFileName ?? this.photoFileName,
       );
   @override
@@ -677,17 +520,18 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('initial: $initial, ')
+          ..write('email: $email, ')
           ..write('affiliation: $affiliation, ')
           ..write('role: $role, ')
-          ..write('lastCollectorNumber: $lastCollectorNumber, ')
+          ..write('nextCollectorNumber: $nextCollectorNumber, ')
           ..write('photoFileName: $photoFileName')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      id, name, initial, affiliation, role, lastCollectorNumber, photoFileName);
+  int get hashCode => Object.hash(id, name, initial, email, affiliation, role,
+      nextCollectorNumber, photoFileName);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -695,9 +539,10 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
           other.id == this.id &&
           other.name == this.name &&
           other.initial == this.initial &&
+          other.email == this.email &&
           other.affiliation == this.affiliation &&
           other.role == this.role &&
-          other.lastCollectorNumber == this.lastCollectorNumber &&
+          other.nextCollectorNumber == this.nextCollectorNumber &&
           other.photoFileName == this.photoFileName);
 }
 
@@ -705,45 +550,50 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
   final Value<String?> id;
   final Value<String?> name;
   final Value<String?> initial;
+  final Value<String?> email;
   final Value<String?> affiliation;
   final Value<String?> role;
-  final Value<int?> lastCollectorNumber;
+  final Value<int?> nextCollectorNumber;
   final Value<String?> photoFileName;
   const PersonnelCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.initial = const Value.absent(),
+    this.email = const Value.absent(),
     this.affiliation = const Value.absent(),
     this.role = const Value.absent(),
-    this.lastCollectorNumber = const Value.absent(),
+    this.nextCollectorNumber = const Value.absent(),
     this.photoFileName = const Value.absent(),
   });
   PersonnelCompanion.insert({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.initial = const Value.absent(),
+    this.email = const Value.absent(),
     this.affiliation = const Value.absent(),
     this.role = const Value.absent(),
-    this.lastCollectorNumber = const Value.absent(),
+    this.nextCollectorNumber = const Value.absent(),
     this.photoFileName = const Value.absent(),
   });
   static Insertable<PersonnelData> custom({
     Expression<String?>? id,
     Expression<String?>? name,
     Expression<String?>? initial,
+    Expression<String?>? email,
     Expression<String?>? affiliation,
     Expression<String?>? role,
-    Expression<int?>? lastCollectorNumber,
+    Expression<int?>? nextCollectorNumber,
     Expression<String?>? photoFileName,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (initial != null) 'initial': initial,
+      if (email != null) 'email': email,
       if (affiliation != null) 'affiliation': affiliation,
       if (role != null) 'role': role,
-      if (lastCollectorNumber != null)
-        'lastCollectorNumber': lastCollectorNumber,
+      if (nextCollectorNumber != null)
+        'nextCollectorNumber': nextCollectorNumber,
       if (photoFileName != null) 'photoFileName': photoFileName,
     });
   }
@@ -752,17 +602,19 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
       {Value<String?>? id,
       Value<String?>? name,
       Value<String?>? initial,
+      Value<String?>? email,
       Value<String?>? affiliation,
       Value<String?>? role,
-      Value<int?>? lastCollectorNumber,
+      Value<int?>? nextCollectorNumber,
       Value<String?>? photoFileName}) {
     return PersonnelCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       initial: initial ?? this.initial,
+      email: email ?? this.email,
       affiliation: affiliation ?? this.affiliation,
       role: role ?? this.role,
-      lastCollectorNumber: lastCollectorNumber ?? this.lastCollectorNumber,
+      nextCollectorNumber: nextCollectorNumber ?? this.nextCollectorNumber,
       photoFileName: photoFileName ?? this.photoFileName,
     );
   }
@@ -779,14 +631,17 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     if (initial.present) {
       map['initial'] = Variable<String?>(initial.value);
     }
+    if (email.present) {
+      map['email'] = Variable<String?>(email.value);
+    }
     if (affiliation.present) {
       map['affiliation'] = Variable<String?>(affiliation.value);
     }
     if (role.present) {
       map['role'] = Variable<String?>(role.value);
     }
-    if (lastCollectorNumber.present) {
-      map['lastCollectorNumber'] = Variable<int?>(lastCollectorNumber.value);
+    if (nextCollectorNumber.present) {
+      map['nextCollectorNumber'] = Variable<int?>(nextCollectorNumber.value);
     }
     if (photoFileName.present) {
       map['photoFileName'] = Variable<String?>(photoFileName.value);
@@ -800,9 +655,10 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('initial: $initial, ')
+          ..write('email: $email, ')
           ..write('affiliation: $affiliation, ')
           ..write('role: $role, ')
-          ..write('lastCollectorNumber: $lastCollectorNumber, ')
+          ..write('nextCollectorNumber: $nextCollectorNumber, ')
           ..write('photoFileName: $photoFileName')
           ..write(')'))
         .toString();
@@ -832,6 +688,12 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
       type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: '');
+  final VerificationMeta _emailMeta = const VerificationMeta('email');
+  late final GeneratedColumn<String?> email = GeneratedColumn<String?>(
+      'email', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _affiliationMeta =
       const VerificationMeta('affiliation');
   late final GeneratedColumn<String?> affiliation = GeneratedColumn<String?>(
@@ -845,10 +707,10 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
       type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _lastCollectorNumberMeta =
-      const VerificationMeta('lastCollectorNumber');
-  late final GeneratedColumn<int?> lastCollectorNumber = GeneratedColumn<int?>(
-      'lastCollectorNumber', aliasedName, true,
+  final VerificationMeta _nextCollectorNumberMeta =
+      const VerificationMeta('nextCollectorNumber');
+  late final GeneratedColumn<int?> nextCollectorNumber = GeneratedColumn<int?>(
+      'nextCollectorNumber', aliasedName, true,
       type: const IntType(),
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -864,9 +726,10 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
         id,
         name,
         initial,
+        email,
         affiliation,
         role,
-        lastCollectorNumber,
+        nextCollectorNumber,
         photoFileName
       ];
   @override
@@ -889,6 +752,10 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
       context.handle(_initialMeta,
           initial.isAcceptableOrUnknown(data['initial']!, _initialMeta));
     }
+    if (data.containsKey('email')) {
+      context.handle(
+          _emailMeta, email.isAcceptableOrUnknown(data['email']!, _emailMeta));
+    }
     if (data.containsKey('affiliation')) {
       context.handle(
           _affiliationMeta,
@@ -899,11 +766,11 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
       context.handle(
           _roleMeta, role.isAcceptableOrUnknown(data['role']!, _roleMeta));
     }
-    if (data.containsKey('lastCollectorNumber')) {
+    if (data.containsKey('nextCollectorNumber')) {
       context.handle(
-          _lastCollectorNumberMeta,
-          lastCollectorNumber.isAcceptableOrUnknown(
-              data['lastCollectorNumber']!, _lastCollectorNumberMeta));
+          _nextCollectorNumberMeta,
+          nextCollectorNumber.isAcceptableOrUnknown(
+              data['nextCollectorNumber']!, _nextCollectorNumberMeta));
     }
     if (data.containsKey('photoFileName')) {
       context.handle(

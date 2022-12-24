@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
 enum CatalogFmt { generalMammals, birds, bats }
 
 enum SpecimenSex { male, female, unknown }
@@ -51,5 +54,18 @@ String matchCatFmtToTaxonGroup(CatalogFmt catalogFmt) {
       return 'Bats';
     default:
       return 'General Mammals';
+  }
+}
+
+Icon matchCatFmtToIcon(CatalogFmt catalogFmt) {
+  switch (catalogFmt) {
+    case CatalogFmt.birds:
+      return const Icon(MdiIcons.feather);
+    case CatalogFmt.generalMammals:
+      return const Icon(MdiIcons.paw);
+    case CatalogFmt.bats:
+      return const Icon(MdiIcons.bat);
+    default:
+      return const Icon(MdiIcons.paw);
   }
 }

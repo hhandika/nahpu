@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:drift/drift.dart' as db;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/setttings.dart';
@@ -27,6 +26,7 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
   final collectorController = TextEditingController();
   final collectorInitialController = TextEditingController();
   final collectorEmailController = TextEditingController();
+  final collectorAffiliationController = TextEditingController();
   final collNumController = TextEditingController();
   final piController = TextEditingController();
 
@@ -129,8 +129,14 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                     errorText: ref.watch(projectFormNotifier).form.email.errMsg,
                   ),
                   ProjectFormField(
+                    controller: collectorAffiliationController,
+                    labelText: 'Collector affiliation',
+                    hintText:
+                        'Enter the affiliation of the collector (optional)',
+                  ),
+                  ProjectFormField(
                     controller: collNumController,
-                    labelText: 'Collector number start*',
+                    labelText: 'First collector number*',
                     hintText: 'Enter the starting collectors number (required)',
                     keyboardType: TextInputType.number,
                     inputFormatters: [
@@ -174,20 +180,27 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
   }
 
   Future<void> _createProject() async {
+    final projectData = ProjectCompanion(
+      projectUuid: db.Value(_uuidKey),
+      projectName: db.Value(projectNameController.text),
+      projectDescription: db.Value(descriptionController.text),
+      principalInvestigator: db.Value(piController.text),
+      dateCreated: db.Value(getSystemDateTime()),
+      dateLastModified: db.Value(getSystemDateTime()),
+    );
+
+    final personnel = PersonnelCompanion(
+      name: db.Value(collectorController.text),
+      initial: db.Value(collectorInitialController.text),
+      email: db.Value(collectorEmailController.text),
+      affiliation: db.Value(collectorAffiliationController.text),
+      role: const db.Value('Collector'),
+      nextCollectorNumber: db.Value(int.parse(collNumController.text)),
+    );
     createProject(
       ref,
-      ProjectCompanion(
-        projectUuid: db.Value(_uuidKey),
-        projectName: db.Value(projectNameController.text),
-        projectDescription: db.Value(descriptionController.text),
-        collector: db.Value(collectorController.text),
-        collectorInitial: db.Value(collectorInitialController.text),
-        collectorEmail: db.Value(collectorEmailController.text),
-        catNumStart: db.Value(int.parse(collNumController.text)),
-        principalInvestigator: db.Value(piController.text),
-        dateCreated: db.Value(getSystemDateTime()),
-        dateLastModified: db.Value(getSystemDateTime()),
-      ),
+      projectData,
+      personnel,
     );
   }
 

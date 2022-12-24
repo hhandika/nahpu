@@ -208,6 +208,12 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
             ),
           ),
           TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Email',
+              hintText: 'Enter email',
+            ),
+          ),
+          TextFormField(
             controller: affilitationCtr,
             decoration: const InputDecoration(
               labelText: 'Affiliation',
@@ -240,7 +246,7 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
             onChanged: (String? newValue) {},
           ),
           const CustomTextField(
-              labelText: 'Collector Number', hintText: 'Enter number'),
+              labelText: 'First collector Number', hintText: 'Enter number'),
         ],
       ),
       actions: [

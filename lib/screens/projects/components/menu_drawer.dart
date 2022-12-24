@@ -136,28 +136,20 @@ class MenuAvatar extends ConsumerWidget {
           decoration:
               BoxDecoration(color: Theme.of(context).colorScheme.primary),
           accountName: Text(
-            data?.collector ?? 'No Collector',
+            data?.projectName ?? 'No Project',
             style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
           accountEmail: Text(
-            data?.collectorEmail ?? 'No Project',
+            data?.projectUuid ?? 'No Project',
             style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
-          currentAccountPicture: CircleAvatar(
-            backgroundColor: Colors.white,
-            child: Text(
-              data?.collectorInitial ?? 'N/A',
-              style: TextStyle(
-                fontSize: 45,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-          ),
+          // currentAccountPicture: CircleAvatar(
+          //     backgroundColor: Colors.white,
+          //     child: matchCatFmtToIcon(catalogFmt)),
         );
       },
       loading: () => const CircularProgressIndicator(),

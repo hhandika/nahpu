@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/configs/colors.dart';
 import 'package:nahpu/models/types.dart';
@@ -117,15 +116,6 @@ class SpecimenIcons extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
-    switch (catalogFmt) {
-      case CatalogFmt.birds:
-        return const Icon(MdiIcons.feather);
-      case CatalogFmt.generalMammals:
-        return const Icon(MdiIcons.paw);
-      case CatalogFmt.bats:
-        return const Icon(MdiIcons.bat);
-      default:
-        return const Icon(MdiIcons.paw);
-    }
+    return matchCatFmtToIcon(catalogFmt);
   }
 }

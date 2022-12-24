@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
+import 'package:drift/drift.dart' as db;
 
 final databaseProvider = Provider<Database>((ref) {
   final db = Database();
@@ -23,14 +24,21 @@ final projectUuidProvider = StateProvider<String>((ref) => '');
 
 final projectNavbarIndexProvider = StateProvider<int>((ref) => 0);
 
-Future<void> createProject(WidgetRef ref, ProjectCompanion form) async {
+Future<void> createProject(
+  WidgetRef ref,
+  ProjectCompanion form,
+  PersonnelCompanion personnel,
+) async {
   final personnelUuid = uuid;
   createPersonnel(
-      ref,
-      PersonnelCompanion(
-          id: Value(personnelUuid),
-          name: form.collector,
-          initial: form.collectorInitial));
+    ref,
+    PersonnelCompanion(
+      id: Value(personnelUuid),
+      name: personnel.name,
+      initial: personnel.initial,
+      role: const db.Value('Collector'),
+    ),
+  );
   await ref.read(databaseProvider).createProject(form);
 }
 
