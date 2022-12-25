@@ -18,7 +18,8 @@ class FormCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: isPrimary
-          ? Theme.of(context).colorScheme.secondary
+          ? Color.lerp(Theme.of(context).colorScheme.surface,
+              Theme.of(context).colorScheme.secondary, 0.2)
           : Theme.of(context).colorScheme.surface,
       child: Padding(
         padding: const EdgeInsets.all(10.0),

@@ -13,8 +13,8 @@ class ActionButtons extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return SpeedDial(
       icon: Icons.add,
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      foregroundColor: Theme.of(context).colorScheme.onInverseSurface,
+      backgroundColor: Theme.of(context).colorScheme.secondary,
+      foregroundColor: Theme.of(context).colorScheme.onSecondary,
       direction: SpeedDialDirection.down,
       children: [
         SpeedDialChild(
