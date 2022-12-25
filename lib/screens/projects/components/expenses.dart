@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
-import 'package:nahpu/screens/shared/forms.dart';
 
 class ReceiptViewer extends ConsumerStatefulWidget {
   const ReceiptViewer({Key? key}) : super(key: key);
@@ -13,22 +12,23 @@ class ReceiptViewer extends ConsumerStatefulWidget {
 class ReceiptViewerState extends ConsumerState<ReceiptViewer> {
   @override
   Widget build(BuildContext context) {
-    return FormCard(
-      title: 'Expenses',
-      child: Column(
-        children: [
-          const SizedBox(height: 100),
-          CommonButton(
-            text: 'Add expense',
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => const ExpenseForm(),
-              );
-            },
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Text(
+          'Expenses',
+          style: Theme.of(context).textTheme.headline6,
+        ),
+        const SizedBox(height: 100),
+        CommonButton(
+          text: 'Add expense',
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) => const ExpenseForm(),
+            );
+          },
+        ),
+      ],
     );
   }
 }

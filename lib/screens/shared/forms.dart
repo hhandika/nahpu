@@ -16,28 +16,22 @@ class FormCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      elevation: 5,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: isPrimary
-              ? Theme.of(context).colorScheme.secondary
-              : Theme.of(context).colorScheme.surface,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.stretch,
-            // mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                title,
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              child,
-            ],
-          ),
+    return Card(
+      color: isPrimary
+          ? Theme.of(context).colorScheme.secondary
+          : Theme.of(context).colorScheme.surface,
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          // crossAxisAlignment: CrossAxisAlignment.stretch,
+          // mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              title,
+              style: Theme.of(context).textTheme.headline6,
+            ),
+            child,
+          ],
         ),
       ),
     );

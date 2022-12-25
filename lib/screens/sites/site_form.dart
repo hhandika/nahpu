@@ -43,79 +43,66 @@ class SiteFormState extends ConsumerState<SiteForm>
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints c) {
         bool useHorizontalLayout = c.maxWidth > 600.0;
-        return SingleChildScrollView(
-          child: Column(
-            children: [
-              Column(
+        return ListView(
+          children: [
+            FormCard(
+              isPrimary: true,
+              title: 'Site Info',
+              child: AdaptiveLayout(
+                useHorizontalLayout: useHorizontalLayout,
+                children: _buildSiteID(),
+              ),
+            ),
+            FormCard(
+              title: 'Geography',
+              child: Column(
                 children: [
-                  FormCard(
-                    isPrimary: true,
-                    title: 'Site Info',
-                    child: AdaptiveLayout(
-                      useHorizontalLayout: useHorizontalLayout,
-                      children: _buildSiteID(),
-                    ),
-                  ),
-                  FormCard(
-                    title: 'Geography',
-                    child: Column(
-                      children: [
-                        AdaptiveLayout(
-                          useHorizontalLayout: useHorizontalLayout,
-                          children: _buildMainSiteLocality(),
-                        ),
-                        AdaptiveLayout(
-                            useHorizontalLayout: useHorizontalLayout,
-                            children: [
-                              _buildPreciseLocalities(),
-                              _buildLocalityNotes()
-                            ])
-                      ],
-                    ),
-                  ),
                   AdaptiveLayout(
                     useHorizontalLayout: useHorizontalLayout,
-                    children: [
-                      const CoordinateFields(),
-                      FormCard(
-                        title: 'Habitat',
-                        child: Column(
-                          children: [
-                            for (var form in _buildHabitatInfo())
-                              Container(
-                                  padding: const EdgeInsets.all(10),
-                                  child: form),
-                          ],
-                        ),
-                      ),
-                    ],
+                    children: _buildMainSiteLocality(),
                   ),
-                  Column(
-                    children: [
-                      MediaTabBars(
-                        tabController: _tabController,
-                        length: 2,
-                        tabs: [
-                          Tab(
-                              icon: Icon(Icons.photo_album_rounded,
-                                  color:
-                                      Theme.of(context).colorScheme.tertiary)),
-                          Tab(
-                              icon: Icon(Icons.video_library_rounded,
-                                  color:
-                                      Theme.of(context).colorScheme.tertiary)),
-                        ],
-                        children: const [
-                          PhotoViewer(),
-                          VideoViewer(),
-                        ],
-                      ),
-                    ],
-                  ),
+                  AdaptiveLayout(
+                      useHorizontalLayout: useHorizontalLayout,
+                      children: [
+                        _buildPreciseLocalities(),
+                        _buildLocalityNotes()
+                      ])
                 ],
               ),
-            ],
-          ),
+            ),
+            AdaptiveLayout(
+              useHorizontalLayout: useHorizontalLayout,
+              children: [
+                const CoordinateFields(),
+                FormCard(
+                  title: 'Habitat',
+                  child: Column(
+                    children: [
+                      for (var form in _buildHabitatInfo())
+                        Container(
+                            padding: const EdgeInsets.all(10), child: form),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            MediaTabBars(
+              tabController: _tabController,
+              length: 2,
+              tabs: [
+                Tab(
+                    icon: Icon(Icons.photo_album_rounded,
+                        color: Theme.of(context).colorScheme.tertiary)),
+                Tab(
+                    icon: Icon(Icons.video_library_rounded,
+                        color: Theme.of(context).colorScheme.tertiary)),
+              ],
+              children: const [
+                PhotoViewer(),
+                VideoViewer(),
+              ],
+            ),
+          ],
         );
       },
     );

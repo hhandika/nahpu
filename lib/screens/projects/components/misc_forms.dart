@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/screens/projects/components/receipts.dart';
+import 'package:nahpu/screens/projects/components/expenses.dart';
 import 'package:nahpu/screens/projects/components/statistics.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 
@@ -31,28 +31,30 @@ class MiscFormState extends ConsumerState<MiscForm>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Theme.of(context).colorScheme.surface,
-      ),
-      child: MediaTabBars(
-        tabController: _tabController,
-        length: _length,
-        height: 0.3,
-        tabs: [
-          Tab(
-              icon: Icon(Icons.bar_chart_rounded,
-                  color: Theme.of(context).colorScheme.tertiary)),
-          Tab(
-              icon: Icon(Icons.receipt_long_rounded,
-                  color: Theme.of(context).colorScheme.tertiary)),
-        ],
-        children: const [
-          StatisticViewer(),
-          ReceiptViewer(),
-        ],
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.only(
+          left: 10,
+          right: 10,
+          bottom: 10,
+        ),
+        child: MediaTabBars(
+          tabController: _tabController,
+          length: _length,
+          height: 0.3,
+          tabs: [
+            Tab(
+                icon: Icon(Icons.bar_chart_rounded,
+                    color: Theme.of(context).colorScheme.tertiary)),
+            Tab(
+                icon: Icon(Icons.receipt_long_rounded,
+                    color: Theme.of(context).colorScheme.tertiary)),
+          ],
+          children: const [
+            StatisticViewer(),
+            ReceiptViewer(),
+          ],
+        ),
       ),
     );
   }
