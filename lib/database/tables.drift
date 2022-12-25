@@ -213,7 +213,7 @@ CREATE TABLE taxonomy (
     FOREIGN KEY(mediaId) REFERENCES media(primaryId)
 );
 
-CREATE TABLE spending (
+CREATE TABLE expense (
     id INT PRIMARY KEY AUTOINCREMENT,
     category TEXT,
     item TEXT,

@@ -50,6 +50,7 @@ dependencies:
   shared_preferences: ^2.0.15
   settings_ui: ^2.0.2
   material_design_icons_flutter: 5.0.6996
+  fl_chart: ^0.55.2
 
 dev_dependencies:
   flutter_test:
