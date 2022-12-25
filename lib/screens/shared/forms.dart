@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/project.dart';
@@ -16,10 +18,13 @@ class FormCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: isPrimary
-          ? Theme.of(context).colorScheme.secondaryContainer
-          : Theme.of(context).colorScheme.surface,
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: isPrimary
+            ? Theme.of(context).colorScheme.secondaryContainer
+            : Theme.of(context).colorScheme.surface,
+      ),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
@@ -79,12 +84,14 @@ class MediaTabBars extends ConsumerWidget {
     required this.length,
     required this.tabs,
     required this.children,
+    this.height = 0.5,
   });
 
   final TabController tabController;
   final int length;
   final List<Tab> tabs;
   final List<Widget> children;
+  final double height;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -100,7 +107,7 @@ class MediaTabBars extends ConsumerWidget {
           ),
         ),
         SizedBox(
-          height: MediaQuery.of(context).size.height * 0.5,
+          height: MediaQuery.of(context).size.height * height,
           child: TabBarView(
             controller: tabController,
             children: children,
