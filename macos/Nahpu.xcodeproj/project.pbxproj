@@ -173,9 +173,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		33CC10EC2044A3C60003C045 /* Runner */ = {
+		33CC10EC2044A3C60003C045 /* Nahpu */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 33CC10FB2044A3C60003C045 /* Build configuration list for PBXNativeTarget "Runner" */;
+			buildConfigurationList = 33CC10FB2044A3C60003C045 /* Build configuration list for PBXNativeTarget "Nahpu" */;
 			buildPhases = (
 				DFF5D4989003272241E03897 /* [CP] Check Pods Manifest.lock */,
 				33CC10E92044A3C60003C045 /* Sources */,
@@ -190,7 +190,7 @@
 			dependencies = (
 				33CC11202044C79F0003C045 /* PBXTargetDependency */,
 			);
-			name = Runner;
+			name = Nahpu;
 			productName = Runner;
 			productReference = 33CC10ED2044A3C60003C045 /* nahpu.app */;
 			productType = "com.apple.product-type.application";
@@ -221,7 +221,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 33CC10E82044A3C60003C045 /* Build configuration list for PBXProject "Runner" */;
+			buildConfigurationList = 33CC10E82044A3C60003C045 /* Build configuration list for PBXProject "Nahpu" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -234,7 +234,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				33CC10EC2044A3C60003C045 /* Runner */,
+				33CC10EC2044A3C60003C045 /* Nahpu */,
 				33CC111A2044C6BA0003C045 /* Flutter Assemble */,
 			);
 		};
@@ -613,7 +613,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		33CC10E82044A3C60003C045 /* Build configuration list for PBXProject "Runner" */ = {
+		33CC10E82044A3C60003C045 /* Build configuration list for PBXProject "Nahpu" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				33CC10F92044A3C60003C045 /* Debug */,
@@ -623,7 +623,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		33CC10FB2044A3C60003C045 /* Build configuration list for PBXNativeTarget "Runner" */ = {
+		33CC10FB2044A3C60003C045 /* Build configuration list for PBXNativeTarget "Nahpu" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				33CC10FC2044A3C60003C045 /* Debug */,
