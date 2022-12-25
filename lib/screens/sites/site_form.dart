@@ -93,34 +93,23 @@ class SiteFormState extends ConsumerState<SiteForm>
                   ),
                   Column(
                     children: [
-                      DefaultTabController(
+                      MediaTabBars(
+                        tabController: _tabController,
                         length: 2,
-                        child: TabBar(
-                          indicatorColor: NahpuColor.tabBarColor(context),
-                          controller: _tabController,
-                          tabs: [
-                            Tab(
-                                icon: Icon(Icons.photo_album_rounded,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .tertiary)),
-                            Tab(
-                                icon: Icon(Icons.video_library_rounded,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .tertiary)),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.5,
-                        child: TabBarView(
-                          controller: _tabController,
-                          children: const [
-                            PhotoViewer(),
-                            VideoViewer(),
-                          ],
-                        ),
+                        tabs: [
+                          Tab(
+                              icon: Icon(Icons.photo_album_rounded,
+                                  color:
+                                      Theme.of(context).colorScheme.tertiary)),
+                          Tab(
+                              icon: Icon(Icons.video_library_rounded,
+                                  color:
+                                      Theme.of(context).colorScheme.tertiary)),
+                        ],
+                        children: const [
+                          PhotoViewer(),
+                          VideoViewer(),
+                        ],
                       ),
                     ],
                   ),
@@ -239,13 +228,14 @@ class SiteFormState extends ConsumerState<SiteForm>
     return [
       TextFormField(
         decoration: const InputDecoration(
-          labelText: 'Habitat type',
-          hintText: 'Enter a habitat type',
+          labelText: 'Type',
+          hintText:
+              'Enter a habitat type, e.g. "Urban", "Montane Forest", "Desert", "etc."',
         ),
       ),
       TextFormField(
         decoration: const InputDecoration(
-          labelText: 'Habitat condition',
+          labelText: 'Condition',
           hintText:
               'Enter habitat condition, e.g. "Prestine", "Disturbed", "etc."',
         ),
@@ -253,7 +243,7 @@ class SiteFormState extends ConsumerState<SiteForm>
       TextFormField(
         maxLines: 5,
         decoration: const InputDecoration(
-          labelText: 'Habitat description',
+          labelText: 'Description',
           hintText:
               'Describe the site, e.g. "A camp site in the middle of the forest."',
         ),
