@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/database/database.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/screens/specimens/mammals/measurements.dart';
@@ -75,7 +76,7 @@ class MammalFormsState extends ConsumerState<MammalForms> {
                     useHorizontalLayout: useHorizontalLayout,
                     isBats: widget.isBats,
                   ),
-                  SpecimenPartFields(specimenCtr: widget.specimenCtr),
+                  PartDataForm(specimenCtr: widget.specimenCtr),
                 ],
               ),
               MediaForms(

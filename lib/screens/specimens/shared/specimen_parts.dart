@@ -1,49 +1,100 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/forms.dart';
+import 'package:nahpu/screens/shared/associated_data.dart';
+
+class PartDataForm extends ConsumerStatefulWidget {
+  const PartDataForm({super.key, required this.specimenCtr});
+
+  final SpecimenFormCtrModel specimenCtr;
+
+  @override
+  PartDataFormState createState() => PartDataFormState();
+}
+
+class PartDataFormState extends ConsumerState<PartDataForm>
+    with TickerProviderStateMixin {
+  late TabController _tabController;
+  final int _length = 2;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _tabController = TabController(length: _length, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FormCard(
+      withTitle: false,
+      child: MediaTabBars(
+        tabController: _tabController,
+        length: _length,
+        tabs: [
+          Tab(
+              icon:
+                  Text('Parts', style: Theme.of(context).textTheme.titleSmall)),
+          Tab(
+              icon: Icon(MdiIcons.database,
+                  color: Theme.of(context).colorScheme.tertiary))
+        ],
+        children: [
+          SpecimenPartFields(specimenCtr: widget.specimenCtr),
+          const AssociatedDataViewer(),
+        ],
+      ),
+    );
+  }
+}
 
 class SpecimenPartFields extends ConsumerWidget {
-  const SpecimenPartFields({Key? key, required this.specimenCtr})
-      : super(key: key);
+  const SpecimenPartFields({super.key, required this.specimenCtr});
 
   final SpecimenFormCtrModel specimenCtr;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return FormCard(
-      title: 'Specimen Parts',
-      child: Column(
-        children: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-              elevation: 0,
-            ),
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return PartForms(
-                      specimenCtr: specimenCtr,
-                    );
-                  });
-            },
-            child: const Text(
-              'Add a part',
-            ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const SizedBox(height: 100),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+            elevation: 0,
           ),
-          TextFormField(
-            maxLines: 5,
-            decoration: const InputDecoration(
-              labelText: 'Part notes',
-              hintText: 'Add notes',
-            ),
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return PartForms(
+                    specimenCtr: specimenCtr,
+                  );
+                });
+          },
+          child: const Text(
+            'Add part',
           ),
-        ],
-      ),
+        ),
+        TextFormField(
+          maxLines: 5,
+          decoration: const InputDecoration(
+            labelText: 'Part notes',
+            hintText: 'Add notes',
+          ),
+        ),
+      ],
     );
   }
 }

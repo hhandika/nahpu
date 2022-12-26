@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:nahpu/screens/shared/associated_data.dart';
 import 'package:nahpu/screens/shared/audios.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/photos.dart';
@@ -19,7 +17,7 @@ class MediaForms extends ConsumerStatefulWidget {
 class MediaFormsState extends ConsumerState<MediaForms>
     with TickerProviderStateMixin {
   late TabController _tabController;
-  final int _length = 4;
+  final int _length = 3;
 
   @override
   void initState() {
@@ -47,17 +45,13 @@ class MediaFormsState extends ConsumerState<MediaForms>
             icon: Icon(Icons.video_library_rounded,
                 color: Theme.of(context).colorScheme.tertiary)),
         Tab(
-            icon: Icon(Icons.audiotrack_rounded,
+            icon: Icon(Icons.library_music_rounded,
                 color: Theme.of(context).colorScheme.tertiary)),
-        Tab(
-            icon: Icon(MdiIcons.database,
-                color: Theme.of(context).colorScheme.tertiary))
       ],
       children: const [
         PhotoViewer(),
         VideoViewer(),
         AudioViewer(),
-        AssociatedDataViewer(),
       ],
     );
   }

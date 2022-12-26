@@ -67,7 +67,7 @@ class BirdFormsState extends ConsumerState<BirdForms> {
                 children: [
                   BirdMeasurementForms(
                       useHorizontalLayout: useHorizontalLayout),
-                  SpecimenPartFields(specimenCtr: widget.specimenCtr),
+                  PartDataForm(specimenCtr: widget.specimenCtr),
                 ],
               ),
               MediaForms(
