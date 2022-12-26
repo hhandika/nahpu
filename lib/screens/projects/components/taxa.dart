@@ -14,9 +14,13 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
   @override
   Widget build(BuildContext context) {
     return FormCard(
-        title: 'Taxon Registry',
-        child: Column(children: [
-          const SizedBox(height: 200, child: TaxonRegistryList()),
+      title: 'Taxon Registry',
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+              height: MediaQuery.of(context).size.height * 0.3,
+              child: const TaxonRegistryList()),
           Wrap(
             spacing: 10,
             children: [
@@ -31,7 +35,9 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
               ),
             ],
           ),
-        ]));
+        ],
+      ),
+    );
   }
 }
 
