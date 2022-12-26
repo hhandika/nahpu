@@ -5,14 +5,16 @@ import 'package:nahpu/providers/project.dart';
 class FormCard extends StatelessWidget {
   const FormCard(
       {Key? key,
-      required this.title,
       required this.child,
-      this.isPrimary = false})
+      this.title = '',
+      this.isPrimary = false,
+      this.withTitle = true})
       : super(key: key);
 
   final Widget child;
   final String title;
   final bool isPrimary;
+  final bool withTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +26,13 @@ class FormCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.stretch,
-          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              title,
-              style: Theme.of(context).textTheme.headline6,
-            ),
+            withTitle
+                ? Text(
+                    title,
+                    style: Theme.of(context).textTheme.headline6,
+                  )
+                : const SizedBox.shrink(),
             child,
           ],
         ),
