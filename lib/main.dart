@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
+  // ref.watch(themeSettingProvider.notifier).initTheme(ref);
   runApp(ProviderScope(
       overrides: [settingProvider.overrideWithValue(prefs)],
       child: const NahpuApp()));
@@ -21,7 +22,6 @@ class NahpuApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(themeSettingProvider.notifier).initTheme(ref);
     return DynamicColorBuilder(builder: (lightColorScheme, darkColorScheme) {
       return MaterialApp(
         title: 'Nahpu',
