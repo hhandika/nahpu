@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:nahpu/providers/project.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/forms.dart';
+import 'package:nahpu/screens/shared/indicators.dart';
 
 class ProjectOverview extends ConsumerWidget {
   const ProjectOverview({Key? key, required this.projectUuid})
@@ -26,7 +27,7 @@ class ProjectOverview extends ConsumerWidget {
                     ),
                   );
                 },
-                loading: () => const CircularProgressIndicator(),
+                loading: () => const CommmonProgressIndicator(),
                 error: (error, stack) => Text(error.toString()),
               ),
         ],

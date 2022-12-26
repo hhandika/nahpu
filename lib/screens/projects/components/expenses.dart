@@ -19,7 +19,7 @@ class ReceiptViewerState extends ConsumerState<ReceiptViewer> {
           style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 100),
-        CommonButton(
+        PrimaryButton(
           text: 'Add expense',
           onPressed: () {
             showDialog(

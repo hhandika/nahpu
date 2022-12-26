@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/setttings.dart';
 import 'package:nahpu/providers/catalog.dart';
 import 'package:nahpu/providers/project.dart';
+import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 
 import 'dashboard.dart';
@@ -38,7 +39,6 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Create a new project'),
-          backgroundColor: Theme.of(context).colorScheme.primary,
         ),
         body: Center(
           child: SingleChildScrollView(
@@ -153,8 +153,8 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                       ),
                       const SizedBox(height: 20),
                       Wrap(spacing: 10, children: [
-                        ElevatedButton(
-                          child: const Text('Cancel'),
+                        SecondaryButton(
+                          text: 'Cancel',
                           onPressed: () {
                             Navigator.pop(context);
                           },
@@ -228,25 +228,21 @@ class CustomElevButton extends StatelessWidget {
     required this.enabled,
   }) : super(key: key);
 
-  final VoidCallback? onPressed;
+  final VoidCallback onPressed;
   final String text;
   final bool enabled;
 
   @override
   Widget build(BuildContext context) {
     if (enabled) {
-      return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-        ),
+      return PrimaryButton(
         onPressed: onPressed,
-        child: Text(text),
+        text: text,
       );
     } else {
-      return ElevatedButton(
+      return PrimaryButton(
         onPressed: null,
-        child: Text(text),
+        text: text,
       );
     }
   }

@@ -20,8 +20,8 @@ class FormCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: isPrimary
-          ? Color.lerp(Theme.of(context).colorScheme.surface,
-              Theme.of(context).colorScheme.secondary, 0.2)
+          ? Color.lerp(Theme.of(context).colorScheme.secondaryContainer,
+              Theme.of(context).colorScheme.surface, 0.1)
           : Theme.of(context).colorScheme.surface,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -68,7 +68,7 @@ class DeleteAlerts extends ConsumerWidget {
             deleteProject(ref, projectUuid);
             onDelete();
           },
-          child: const Text('Delete'),
+          child: const Text('Delete', style: TextStyle(color: Colors.red)),
         ),
       ],
     );

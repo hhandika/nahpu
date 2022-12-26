@@ -21,11 +21,11 @@ class ProjectBackButton extends ConsumerWidget {
   }
 }
 
-class CommonButton extends StatelessWidget {
-  const CommonButton({super.key, required this.text, required this.onPressed});
+class PrimaryButton extends StatelessWidget {
+  const PrimaryButton({super.key, required this.text, required this.onPressed});
 
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +34,30 @@ class CommonButton extends StatelessWidget {
         foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         elevation: 0,
+      ),
+      onPressed: onPressed,
+      child: Text(text),
+    );
+  }
+}
+
+class SecondaryButton extends StatelessWidget {
+  const SecondaryButton(
+      {super.key, required this.text, required this.onPressed});
+
+  final String text;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton(
+      style: OutlinedButton.styleFrom(
+        side: BorderSide(
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+        foregroundColor: Theme.of(context).colorScheme.secondary,
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        // elevation: 0,
       ),
       onPressed: onPressed,
       child: Text(text),

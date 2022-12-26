@@ -19,7 +19,6 @@ class ProjectSettingState extends ConsumerState<ProjectSettings> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Project Settings'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: SafeArea(
         child: SettingsList(
@@ -78,7 +77,6 @@ class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Catalog Format'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: SettingsList(sections: [
         SettingsSection(title: const Text('Catalog Format'), tiles: [

@@ -4,6 +4,7 @@ import 'package:nahpu/models/form.dart';
 import 'package:nahpu/models/page_viewer.dart';
 import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:nahpu/screens/shared/indicators.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
 import 'package:nahpu/screens/sites/components/menu_bar.dart';
 import 'package:nahpu/screens/sites/site_form.dart';
@@ -35,7 +36,6 @@ class SitesState extends ConsumerState<Sites> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Sites"),
-        backgroundColor: Theme.of(context).colorScheme.primary,
         leading: const ProjectBackButton(),
         actions: const [
           NewSite(),
@@ -94,7 +94,7 @@ class SitesState extends ConsumerState<Sites> {
               );
             }
           }, loading: () {
-            return const CircularProgressIndicator();
+            return const CommmonProgressIndicator();
           }, error: (error, stackTrace) {
             return Text(error.toString());
           }),

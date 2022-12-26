@@ -16,7 +16,6 @@ class AppSettingsState extends ConsumerState<AppSettings> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: SafeArea(
         child: SettingsList(

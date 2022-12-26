@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/screens/collecting/components/environment_data.dart';
 import 'package:nahpu/screens/shared/forms.dart';
+import 'package:nahpu/screens/shared/indicators.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/screens/shared/photos.dart';
 
@@ -350,7 +351,7 @@ class TrapList extends ConsumerWidget {
           },
         );
       },
-      loading: () => const CircularProgressIndicator(),
+      loading: () => const CommmonProgressIndicator(),
       error: (error, stack) => Text(error.toString()),
     );
   }
@@ -384,7 +385,7 @@ class TrappingPersonnelList extends ConsumerWidget {
           },
         );
       },
-      loading: () => const CircularProgressIndicator(),
+      loading: () => const CommmonProgressIndicator(),
       error: (error, stack) => Text(error.toString()),
     );
   }

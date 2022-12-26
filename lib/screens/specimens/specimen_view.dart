@@ -7,6 +7,7 @@ import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/page_viewer.dart';
 
 import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:nahpu/screens/shared/indicators.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
 import 'package:nahpu/screens/specimens/new_specimens.dart';
 import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
@@ -37,7 +38,6 @@ class SpecimensState extends ConsumerState<Specimens> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Specimen Records"),
-        backgroundColor: Theme.of(context).colorScheme.primary,
         actions: const [NewSpecimens(), SpecimenMenu()],
         leading: const ProjectBackButton(),
       ),
@@ -102,7 +102,7 @@ class SpecimensState extends ConsumerState<Specimens> {
                 );
               }
             },
-            loading: () => const CircularProgressIndicator(),
+            loading: () => const CommmonProgressIndicator(),
             error: (error, stack) => Text(error.toString()),
           ),
         ),

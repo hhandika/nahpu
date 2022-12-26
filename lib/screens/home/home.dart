@@ -18,7 +18,6 @@ class HomeState extends ConsumerState<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Text("HOME", style: Theme.of(context).textTheme.headline6),
-        backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           IconButton(
             icon: const Icon(Icons.search_rounded),
@@ -34,13 +33,13 @@ class HomeState extends ConsumerState<Home> {
       body: const HomeBody(),
       floatingActionButton: SpeedDial(
         icon: Icons.add_rounded,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.onInverseSurface,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
         children: [
           SpeedDialChild(
             child: Icon(Icons.create_rounded,
-                color: Theme.of(context).colorScheme.onInverseSurface),
-            backgroundColor: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.onSecondary),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
             label: 'New Project',
             onTap: () {
               Navigator.push(

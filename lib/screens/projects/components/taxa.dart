@@ -17,15 +17,20 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
         title: 'Taxon Registry',
         child: Column(children: [
           const SizedBox(height: 200, child: TaxonRegistryList()),
-          CommonButton(
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (context) => const TaxonRegistryForm());
-            },
-            text: 'Add taxon',
+          Wrap(
+            spacing: 10,
+            children: [
+              SecondaryButton(text: 'Show', onPressed: () {}),
+              PrimaryButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) => const TaxonRegistryForm());
+                },
+                text: 'Add taxon',
+              ),
+            ],
           ),
-          const SizedBox(height: 10),
         ]));
   }
 }

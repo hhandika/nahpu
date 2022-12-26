@@ -33,7 +33,6 @@ class NewCollEventFormState extends ConsumerState<NewCollEventForm> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("New Coll. Events"),
-        backgroundColor: Theme.of(context).colorScheme.primary,
         leading: BackButton(
           onPressed: () {
             ref.refresh(pageNavigationProvider);

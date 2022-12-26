@@ -13,6 +13,7 @@ class NahpuTheme {
     return ThemeData(
       colorScheme: lightColorScheme ?? _defaultLightColorScheme,
       useMaterial3: true,
+      // primaryColor: primaryColor,
       visualDensity: VisualDensity.adaptivePlatformDensity,
       cardTheme: cardTheme,
     );

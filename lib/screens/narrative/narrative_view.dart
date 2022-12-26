@@ -5,9 +5,10 @@ import 'package:nahpu/models/page_viewer.dart';
 
 import 'package:nahpu/providers/page_viewer.dart';
 
-import 'package:nahpu/screens/narrative/menu_bar.dart';
+import 'package:nahpu/screens/narrative/components/menu_bar.dart';
 import 'package:nahpu/screens/narrative/narrative_form.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:nahpu/screens/shared/indicators.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
 
 class Narrative extends ConsumerStatefulWidget {
@@ -35,7 +36,6 @@ class NarrativeState extends ConsumerState<Narrative> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Narrative"),
-        backgroundColor: Theme.of(context).colorScheme.primary,
         actions: const [
           NewNarrative(),
           NarrativeMenu(),
@@ -92,7 +92,7 @@ class NarrativeState extends ConsumerState<Narrative> {
                 );
               }
             },
-            loading: () => const CircularProgressIndicator(),
+            loading: () => const CommmonProgressIndicator(),
             error: (error, stack) => Text(error.toString()),
           ),
         ),

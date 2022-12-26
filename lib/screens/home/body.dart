@@ -5,6 +5,7 @@ import 'package:nahpu/providers/project.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
 import 'package:nahpu/screens/projects/project_info.dart';
 import 'package:nahpu/screens/shared/forms.dart';
+import 'package:nahpu/screens/shared/indicators.dart';
 
 enum MenuSelection { details, deleteProject }
 
@@ -31,7 +32,7 @@ class HomeBodyState extends ConsumerState<HomeBody> {
                 return _buildBody(data.reversed.toList(), isSmallScreen);
               },
               loading: () {
-                return const CircularProgressIndicator();
+                return const CommmonProgressIndicator();
               },
               error: (error, stackTrace) {
                 return Text(error.toString());
@@ -234,7 +235,7 @@ class ListProjectCard extends StatelessWidget {
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
         subtitle: Text(
-          'Date created: ${project.created}',
+          'Created: ${project.created}',
           style: const TextStyle(
             fontSize: 12,
             overflow: TextOverflow.ellipsis,
@@ -259,9 +260,9 @@ class GridProjectCard extends StatelessWidget {
     return Card(
       child: GridTile(
         footer: GridTileBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: Theme.of(context).colorScheme.secondary,
           title: Text(project.name),
-          subtitle: Text('Date created: ${project.created}'),
+          subtitle: Text('Created: ${project.created}'),
           trailing: ProjectPopUpMenu(project: project),
         ),
         child: FittedBox(

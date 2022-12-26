@@ -36,7 +36,6 @@ class DashboardState extends ConsumerState<Dashboard> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Project Dashboard"),
-        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,

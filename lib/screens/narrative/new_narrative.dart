@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/form.dart';
 
 import 'package:nahpu/screens/narrative/narrative_form.dart';
-import 'package:nahpu/screens/narrative/menu_bar.dart';
+import 'package:nahpu/screens/narrative/components/menu_bar.dart';
 import 'package:nahpu/screens/narrative/narrative_view.dart';
 import 'package:nahpu/providers/page_viewer.dart';
 
@@ -30,7 +30,6 @@ class NewNarrativeFormState extends ConsumerState<NewNarrativeForm> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("New Narrative"),
-        backgroundColor: Theme.of(context).colorScheme.primary,
         actions: const [
           NewNarrative(),
           NarrativeMenu(),

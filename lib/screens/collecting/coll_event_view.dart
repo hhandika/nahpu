@@ -8,6 +8,7 @@ import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/screens/collecting/coll_event_form.dart';
 import 'package:nahpu/screens/collecting/menu_bar.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:nahpu/screens/shared/indicators.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
 
 class CollEvents extends ConsumerStatefulWidget {
@@ -35,7 +36,6 @@ class CollEventsState extends ConsumerState<CollEvents> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Collecting Events"),
-        backgroundColor: Theme.of(context).colorScheme.primary,
         actions: const [
           NewCollEvents(),
           CollEventMenu(),
@@ -97,7 +97,7 @@ class CollEventsState extends ConsumerState<CollEvents> {
                 );
               }
             },
-            loading: () => const CircularProgressIndicator(),
+            loading: () => const CommmonProgressIndicator(),
             error: (error, stack) => Text(error.toString()),
           ),
         ),

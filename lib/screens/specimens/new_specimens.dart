@@ -68,7 +68,6 @@ class NewSpecimenFormState extends ConsumerState<NewSpecimenForm> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("New Specimens"),
-        backgroundColor: Theme.of(context).colorScheme.primary,
         leading: BackButton(
           onPressed: () {
             ref.refresh(pageNavigationProvider);

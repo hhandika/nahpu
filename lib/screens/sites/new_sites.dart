@@ -30,7 +30,6 @@ class NewSitesState extends ConsumerState<NewSites> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("New Sites"),
-        backgroundColor: Theme.of(context).colorScheme.primary,
         leading: BackButton(
           onPressed: () {
             ref.refresh(pageNavigationProvider);

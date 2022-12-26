@@ -5,6 +5,7 @@ import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/settings/project_settings.dart';
 import 'package:nahpu/screens/home/home.dart';
 import 'package:nahpu/screens/shared/forms.dart';
+import 'package:nahpu/screens/shared/indicators.dart';
 
 class ProjectMenuDrawer extends ConsumerWidget {
   const ProjectMenuDrawer({Key? key}) : super(key: key);
@@ -134,7 +135,7 @@ class MenuAvatar extends ConsumerWidget {
       data: (data) {
         return UserAccountsDrawerHeader(
           decoration:
-              BoxDecoration(color: Theme.of(context).colorScheme.primary),
+              BoxDecoration(color: Theme.of(context).colorScheme.secondary),
           accountName: Text(
             data?.name ?? 'No Project',
             style: const TextStyle(
@@ -142,17 +143,14 @@ class MenuAvatar extends ConsumerWidget {
             ),
           ),
           accountEmail: Text(
-            data?.uuid ?? 'No Project',
+            data?.uuid ?? '',
             style: const TextStyle(
-              fontWeight: FontWeight.bold,
+              fontSize: 10,
             ),
           ),
-          // currentAccountPicture: CircleAvatar(
-          //     backgroundColor: Colors.white,
-          //     child: matchCatFmtToIcon(catalogFmt)),
         );
       },
-      loading: () => const CircularProgressIndicator(),
+      loading: () => const CommmonProgressIndicator(),
       error: (error, stack) => Text(
         error.toString(),
       ),

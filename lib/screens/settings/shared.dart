@@ -61,7 +61,6 @@ class ThemeSettingState extends ConsumerState<ThemeSettings> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Theme'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: SettingsList(sections: [
         SettingsSection(

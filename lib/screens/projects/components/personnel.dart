@@ -7,6 +7,7 @@ import 'package:nahpu/screens/shared/fields.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/forms.dart';
+import 'package:nahpu/screens/shared/indicators.dart';
 
 class PersonnelViewer extends ConsumerStatefulWidget {
   const PersonnelViewer({Key? key}) : super(key: key);
@@ -23,7 +24,7 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
       child: Column(
         children: [
           const SizedBox(height: 200, child: PersonnelList()),
-          CommonButton(
+          PrimaryButton(
             onPressed: () {
               showDialog(
                   context: context, builder: (context) => _showPersonnelForm());
@@ -149,7 +150,7 @@ class PersonnelList extends ConsumerWidget {
           },
         );
       },
-      loading: () => const CircularProgressIndicator(),
+      loading: () => const CommmonProgressIndicator(),
       error: (error, stack) => Text(error.toString()),
     );
   }
