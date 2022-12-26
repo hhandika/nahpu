@@ -65,7 +65,7 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                               .validateProjectName(value);
                           ref
                               .watch(projectFormNotifier.notifier)
-                              .checkProjectNameExists(ref, value?.trim());
+                              .checkProjectNameExists(ref, value ?? '');
                         },
                         errorText: ref
                             .watch(projectFormNotifier)
@@ -166,8 +166,8 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                               _updateMainCollectorCatNum();
                               _goToDashboard();
                               // Reset states to default
-                              ref.refresh(projectListProvider);
-                              ref.refresh(projectFormNotifier.notifier);
+                              // ref.refresh(projectListProvider);
+                              // ref.refresh(projectFormNotifier.notifier);
                             },
                             text: 'Create',
                             enabled: ref.read(projectFormNotifier).form.isValid)
@@ -205,7 +205,7 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
   }
 
   void _updateProjectUuid() {
-    ref.read(projectUuidProvider.state).state = _uuidKey;
+    ref.read(projectUuidProvider.notifier).state = _uuidKey;
   }
 
   void _updateMainCollectorCatNum() {

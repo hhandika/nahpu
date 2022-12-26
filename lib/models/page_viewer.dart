@@ -10,7 +10,7 @@ class PageNavigation {
 }
 
 void checkPageNavigation(WidgetRef ref) {
-  final pageState = ref.watch(pageNavigationProvider.state).state;
+  final pageState = ref.watch(pageNavigationProvider);
   if (pageState.currentPage == 1) {
     pageState.isFirstPage = true;
     pageState.isLastPage = false;

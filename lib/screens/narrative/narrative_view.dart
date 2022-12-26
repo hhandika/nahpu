@@ -87,7 +87,7 @@ class NarrativeState extends ConsumerState<Narrative> {
                   onPageChanged: (value) => setState(() {
                     pageNotifier.state.currentPage = value + 1;
                     checkPageNavigation(ref);
-                    ref.refresh(narrativeEntryProvider);
+                    // ref.refresh(narrativeEntryProvider);
                   }),
                 );
               }

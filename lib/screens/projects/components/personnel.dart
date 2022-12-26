@@ -122,7 +122,7 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
                   affiliation: db.Value(affilitationCtr.text),
                 ));
             Navigator.of(context).pop();
-            ref.refresh(personnelListProvider);
+            // ref.refresh(personnelListProvider);
           },
         ),
       ],

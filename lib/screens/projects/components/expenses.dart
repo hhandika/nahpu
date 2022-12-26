@@ -16,7 +16,7 @@ class ReceiptViewerState extends ConsumerState<ReceiptViewer> {
       children: [
         Text(
           'Expenses',
-          style: Theme.of(context).textTheme.headline6,
+          style: Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(height: 100),
         PrimaryButton(

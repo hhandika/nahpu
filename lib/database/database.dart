@@ -38,7 +38,7 @@ class Database extends _$Database {
         .getSingle();
   }
 
-  Future<ProjectData?> getProjectByName(String? name) async {
+  Future<ProjectData?> getProjectByName(String name) async {
     try {
       return await (select(project)..where((t) => t.name.equals(name)))
           .getSingle();

@@ -7,21 +7,21 @@ import 'package:nahpu/models/page_viewer.dart';
 
 final narrativeEntryProvider =
     FutureProvider.autoDispose<List<NarrativeData>>((ref) {
-  final projectUuid = ref.watch(projectUuidProvider.state).state;
+  final projectUuid = ref.watch(projectUuidProvider);
   final narrativeEntries =
       ref.read(databaseProvider).getAllNarrative(projectUuid);
   return narrativeEntries;
 });
 
 final siteEntryProvider = FutureProvider.autoDispose<List<SiteData>>((ref) {
-  final projectUuid = ref.watch(projectUuidProvider.state).state;
+  final projectUuid = ref.watch(projectUuidProvider.notifier).state;
   final siteEntries = ref.read(databaseProvider).getAllSites(projectUuid);
   return siteEntries;
 });
 
 final collEventEntryProvider =
     FutureProvider.autoDispose<List<CollEventData>>((ref) {
-  final projectUuid = ref.watch(projectUuidProvider.state).state;
+  final projectUuid = ref.watch(projectUuidProvider);
   final collEvents = ref.read(databaseProvider).getAllCollEvents(projectUuid);
   return collEvents;
 });
@@ -31,7 +31,7 @@ final pageNavigationProvider =
 
 final specimenEntryProvider =
     FutureProvider.autoDispose<List<SpecimenData>>((ref) {
-  final projectUuid = ref.watch(projectUuidProvider.state).state;
+  final projectUuid = ref.watch(projectUuidProvider);
   final specimenEntries =
       ref.read(databaseProvider).getAllSpecimens(projectUuid);
   return specimenEntries;

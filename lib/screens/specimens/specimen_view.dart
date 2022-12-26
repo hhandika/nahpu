@@ -97,7 +97,7 @@ class SpecimensState extends ConsumerState<Specimens> {
                   onPageChanged: (value) => setState(() {
                     pageNotifier.state.currentPage = value + 1;
                     checkPageNavigation(ref);
-                    ref.refresh(specimenEntryProvider);
+                    // ref.refresh(specimenEntryProvider);
                   }),
                 );
               }
