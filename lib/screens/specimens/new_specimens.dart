@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/models/types.dart';
-import 'package:nahpu/providers/catalog.dart';
+import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
 // import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/screens/specimens/specimen_form.dart';

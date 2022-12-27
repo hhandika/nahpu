@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/setttings.dart';
-import 'package:nahpu/providers/catalog.dart';
 import 'package:nahpu/providers/project.dart';
+import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 

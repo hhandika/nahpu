@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/models/types.dart';
-import 'package:nahpu/providers/catalog.dart';
+import 'package:nahpu/providers/settings.dart';
 
 class TaxonGroupFields extends ConsumerWidget {
   const TaxonGroupFields({Key? key}) : super(key: key);
