@@ -21,11 +21,14 @@ Future<void> createNewSpecimens(BuildContext context, WidgetRef ref) {
         projectUuid: db.Value(projectUuid),
         taxonGroup: db.Value(matchCatFmtToTaxonGroup(catalogFmt)),
       ));
-
-  return Navigator.of(context).push(MaterialPageRoute(
+  ref.invalidate(specimenEntryProvider);
+  return Navigator.of(context).push(
+    MaterialPageRoute(
       builder: (_) => NewSpecimenForm(
-            specimenUuid: specimenUuid,
-          )));
+        specimenUuid: specimenUuid,
+      ),
+    ),
+  );
 }
 
 class NewSpecimens extends ConsumerWidget {

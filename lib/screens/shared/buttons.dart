@@ -4,7 +4,6 @@ import 'package:nahpu/models/catalogs.dart';
 
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
-import 'package:nahpu/providers/catalogs.dart';
 
 class ProjectBackButton extends ConsumerWidget {
   const ProjectBackButton({Key? key}) : super(key: key);

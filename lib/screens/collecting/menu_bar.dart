@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as db;
+import 'package:nahpu/providers/catalogs.dart';
 
 import 'package:nahpu/services/database.dart';
 import 'package:nahpu/providers/projects.dart';
@@ -18,6 +19,7 @@ Future<void> createNewCollEvents(BuildContext context, WidgetRef ref) {
         projectUuid: db.Value(projectUuid),
       ))
       .then((value) {
+    ref.invalidate(collEventEntryProvider);
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => NewCollEventForm(
               collEventId: value,
