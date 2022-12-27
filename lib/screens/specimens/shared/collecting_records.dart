@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:intl/intl.dart';
 import 'package:nahpu/providers/catalogs.dart';
-import 'package:nahpu/providers/catalogs.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/database.dart';
 

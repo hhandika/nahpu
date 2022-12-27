@@ -312,7 +312,7 @@ class ProjectPopUpMenuState extends ConsumerState<ProjectPopUpMenu> {
         builder: (BuildContext context) => DeleteAlerts(
           projectUuid: projectUuid,
           onDelete: () => {
-            ref.refresh(projectListProvider),
+            ref.invalidate(projectListProvider),
             Navigator.of(context).pop(),
           },
         ),

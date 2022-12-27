@@ -1,7 +1,7 @@
 import 'package:nahpu/services/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
-import 'package:nahpu/models/page_viewer.dart';
+import 'package:nahpu/models/catalogs.dart';
 
 final narrativeEntryProvider =
     FutureProvider.autoDispose<List<NarrativeData>>((ref) {
@@ -26,6 +26,29 @@ final collEventEntryProvider =
 
 final pageNavigationProvider =
     StateProvider.autoDispose<PageNavigation>((ref) => PageNavigation());
+
+final narrativeNavProvider =
+    StateProvider.autoDispose<PageNavigation>((ref) => PageNavigation());
+
+final collEventNavProvider =
+    StateProvider.autoDispose<PageNavigation>((ref) => PageNavigation());
+
+final specimenNavProvider =
+    StateProvider.autoDispose<PageNavigation>((ref) => PageNavigation());
+
+void checkPageNavigation(WidgetRef ref) {
+  final pageState = ref.watch(pageNavigationProvider);
+  if (pageState.currentPage == 1) {
+    pageState.isFirstPage = true;
+    pageState.isLastPage = false;
+  } else if (pageState.currentPage == pageState.pageCounts) {
+    pageState.isFirstPage = false;
+    pageState.isLastPage = true;
+  } else {
+    pageState.isFirstPage = false;
+    pageState.isLastPage = false;
+  }
+}
 
 final specimenEntryProvider =
     FutureProvider.autoDispose<List<SpecimenData>>((ref) {

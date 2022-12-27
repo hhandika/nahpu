@@ -5,6 +5,8 @@ import 'package:nahpu/models/form.dart';
 import 'package:nahpu/screens/narrative/narrative_form.dart';
 import 'package:nahpu/screens/narrative/components/menu_bar.dart';
 import 'package:nahpu/screens/narrative/narrative_view.dart';
+
+import '../../providers/catalogs.dart';
 // import 'package:nahpu/providers/page_viewer.dart';
 
 class NewNarrativeForm extends ConsumerStatefulWidget {
@@ -36,8 +38,8 @@ class NewNarrativeFormState extends ConsumerState<NewNarrativeForm> {
         ],
         leading: BackButton(
           onPressed: () {
-            // ref.refresh(pageNavigationProvider);
-            // ref.refresh(narrativeEntryProvider);
+            ref.invalidate(pageNavigationProvider);
+            ref.invalidate(narrativeEntryProvider);
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const Narrative()));
           },

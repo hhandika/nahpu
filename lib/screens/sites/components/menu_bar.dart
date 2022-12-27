@@ -85,8 +85,8 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
       case MenuSelection.deleteAllRecords:
         final projectUuid = ref.read(projectUuidProvider.notifier).state;
         ref.read(databaseProvider).deleteAllSites(projectUuid);
-        // ref.refresh(siteEntryProvider);
-        // ref.refresh(pageNavigationProvider);
+        //ref.invalidate(siteEntryProvider);
+        //ref.invalidate(pageNavigationProvider);
         break;
     }
   }

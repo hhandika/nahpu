@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/form.dart';
-import 'package:nahpu/models/page_viewer.dart';
 
 import 'package:nahpu/providers/catalogs.dart';
 
@@ -19,7 +18,7 @@ class CollEvents extends ConsumerStatefulWidget {
 }
 
 class CollEventsState extends ConsumerState<CollEvents> {
-  bool isVisible = false;
+  bool _isVisible = false;
   PageController pageController = PageController();
 
   @override
@@ -49,7 +48,7 @@ class CollEventsState extends ConsumerState<CollEvents> {
             data: (collEventEntries) {
               if (collEventEntries.isEmpty) {
                 setState(() {
-                  isVisible = false;
+                  _isVisible = false;
                 });
 
                 return const Text("No collecting event entries");
@@ -57,7 +56,7 @@ class CollEventsState extends ConsumerState<CollEvents> {
                 int collEventSize = collEventEntries.length;
                 setState(() {
                   if (collEventSize >= 2) {
-                    isVisible = true;
+                    _isVisible = true;
                   }
                   ref.watch(pageNavigationProvider.notifier).state.pageCounts =
                       collEventSize;
@@ -92,7 +91,7 @@ class CollEventsState extends ConsumerState<CollEvents> {
                   onPageChanged: (value) => setState(() {
                     pageNotifier.state.currentPage = value + 1;
                     checkPageNavigation(ref);
-                    // ref.refresh(narrativeEntryProvider);
+                    //ref.invalidate(narrativeEntryProvider);
                   }),
                 );
               }
@@ -103,7 +102,7 @@ class CollEventsState extends ConsumerState<CollEvents> {
         ),
       ),
       bottomSheet: Visibility(
-        visible: isVisible,
+        visible: _isVisible,
         child: CustomPageNavButton(
           pageController: pageController,
         ),

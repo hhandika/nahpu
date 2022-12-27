@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/form.dart';
-import 'package:nahpu/models/page_viewer.dart';
 
 import 'package:nahpu/providers/catalogs.dart';
 
@@ -87,7 +86,7 @@ class NarrativeState extends ConsumerState<Narrative> {
                   onPageChanged: (value) => setState(() {
                     pageNotifier.state.currentPage = value + 1;
                     checkPageNavigation(ref);
-                    // ref.refresh(narrativeEntryProvider);
+                    ref.invalidate(narrativeEntryProvider);
                   }),
                 );
               }

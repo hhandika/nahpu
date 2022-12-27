@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/form.dart';
-import 'package:nahpu/models/page_viewer.dart';
 import 'package:nahpu/models/types.dart';
 
 import 'package:nahpu/providers/catalogs.dart';
@@ -32,9 +31,6 @@ class SpecimensState extends ConsumerState<Specimens> {
 
   @override
   Widget build(BuildContext context) {
-    final specimenEntries = ref.watch(specimenEntryProvider);
-    final pageNotifier = ref.watch(pageNavigationProvider.notifier);
-    ref.watch(pageNavigationProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Specimen Records"),
@@ -44,67 +40,71 @@ class SpecimensState extends ConsumerState<Specimens> {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Center(
-          child: specimenEntries.when(
-            data: (specimenEntry) {
-              if (specimenEntry.isEmpty) {
-                setState(() {
-                  isVisible = false;
-                });
+          child: ref.watch(specimenEntryProvider).when(
+                data: (specimenEntry) {
+                  if (specimenEntry.isEmpty) {
+                    setState(() {
+                      isVisible = false;
+                    });
 
-                return const Text("No specimen records");
-              } else {
-                int specimenSize = specimenEntry.length;
-                setState(() {
-                  if (specimenSize >= 2) {
-                    isVisible = true;
+                    return const Text("No specimen records");
+                  } else {
+                    int specimenSize = specimenEntry.length;
+                    setState(() {
+                      if (specimenSize >= 2) {
+                        isVisible = true;
+                      }
+                      ref.watch(specimenNavProvider.notifier).state.pageCounts =
+                          specimenSize;
+                      // We want to view the last page first.
+                      // Dart uses 0-based indexing. Technically, this is out-of-bound.
+                      // But, what happens here is that it will trigger the PageView onPageChanged.
+                      // It fixes the issues that the curentPage state does not show the current page value.
+                      pageController =
+                          PageController(initialPage: specimenSize);
+                    });
+                    return PageView.builder(
+                      controller: pageController,
+                      itemCount: specimenSize,
+                      itemBuilder: (context, index) {
+                        final specimenFormCtr = SpecimenFormCtrModel(
+                          speciesIdCtr: specimenEntry[index].speciesID,
+                          collectorCtr: specimenEntry[index].collectorID,
+                          preparatorCtr: specimenEntry[index].preparatorID,
+                          conditionCtr: specimenEntry[index].condition,
+                          prepDateCtr: TextEditingController(
+                              text: specimenEntry[index].prepDate),
+                          prepTimeCtr: TextEditingController(
+                              text: specimenEntry[index].prepTime),
+                          captureDateCtr: TextEditingController(
+                              text: specimenEntry[index].captureDate),
+                          captureTimeCtr: TextEditingController(
+                              text: specimenEntry[index].captureTime),
+                          trapTypeCtr: TextEditingController(
+                              text: specimenEntry[index].trapType),
+                        );
+
+                        return SpecimenForm(
+                          specimenUuid: specimenEntry[index].uuid,
+                          specimenCtr: specimenFormCtr,
+                          catalogFmt: matchTaxonGroupToCatFmt(
+                              specimenEntry[index].taxonGroup),
+                        );
+                      },
+                      onPageChanged: (value) => setState(() {
+                        ref
+                            .read(specimenNavProvider.notifier)
+                            .state
+                            .currentPage = value + 1;
+                        checkPageNavigation(ref);
+                        ref.invalidate(specimenEntryProvider);
+                      }),
+                    );
                   }
-                  ref.watch(pageNavigationProvider.notifier).state.pageCounts =
-                      specimenSize;
-                  // We want to view the last page first.
-                  // Dart uses 0-based indexing. Technically, this is out-of-bound.
-                  // But, what happens here is that it will trigger the PageView onPageChanged.
-                  // It fixes the issues that the curentPage state does not show the current page value.
-                  pageController = PageController(initialPage: specimenSize);
-                });
-                return PageView.builder(
-                  controller: pageController,
-                  itemCount: specimenSize,
-                  itemBuilder: (context, index) {
-                    final specimenFormCtr = SpecimenFormCtrModel(
-                      speciesIdCtr: specimenEntry[index].speciesID,
-                      collectorCtr: specimenEntry[index].collectorID,
-                      preparatorCtr: specimenEntry[index].preparatorID,
-                      conditionCtr: specimenEntry[index].condition,
-                      prepDateCtr: TextEditingController(
-                          text: specimenEntry[index].prepDate),
-                      prepTimeCtr: TextEditingController(
-                          text: specimenEntry[index].prepTime),
-                      captureDateCtr: TextEditingController(
-                          text: specimenEntry[index].captureDate),
-                      captureTimeCtr: TextEditingController(
-                          text: specimenEntry[index].captureTime),
-                      trapTypeCtr: TextEditingController(
-                          text: specimenEntry[index].trapType),
-                    );
-
-                    return SpecimenForm(
-                      specimenUuid: specimenEntry[index].uuid,
-                      specimenCtr: specimenFormCtr,
-                      catalogFmt: matchTaxonGroupToCatFmt(
-                          specimenEntry[index].taxonGroup),
-                    );
-                  },
-                  onPageChanged: (value) => setState(() {
-                    pageNotifier.state.currentPage = value + 1;
-                    checkPageNavigation(ref);
-                    // ref.refresh(specimenEntryProvider);
-                  }),
-                );
-              }
-            },
-            loading: () => const CommmonProgressIndicator(),
-            error: (error, stack) => Text(error.toString()),
-          ),
+                },
+                loading: () => const CommmonProgressIndicator(),
+                error: (error, stack) => Text(error.toString()),
+              ),
         ),
       ),
       bottomSheet: Visibility(

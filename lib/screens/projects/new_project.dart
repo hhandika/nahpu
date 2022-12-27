@@ -7,7 +7,6 @@ import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
-
 import 'dashboard.dart';
 import 'package:nahpu/services/database.dart';
 import 'package:nahpu/providers/validation.dart';
@@ -166,8 +165,7 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                               _updateMainCollectorCatNum();
                               _goToDashboard();
                               // Reset states to default
-                              ref.refresh(projectListProvider);
-                              ref.refresh(projectFormNotifier.notifier);
+                              ref.invalidate(projectListProvider);
                             },
                             text: 'Create',
                             enabled: ref.read(projectFormNotifier).form.isValid)

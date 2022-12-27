@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/models/types.dart';
+import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
 // import 'package:nahpu/providers/page_viewer.dart';
@@ -70,8 +71,8 @@ class NewSpecimenFormState extends ConsumerState<NewSpecimenForm> {
         title: const Text("New Specimens"),
         leading: BackButton(
           onPressed: () {
-            // ref.refresh(pageNavigationProvider);
-            // ref.refresh(specimenEntryProvider);
+            ref.invalidate(specimenNavProvider);
+            ref.invalidate(specimenEntryProvider);
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const Specimens()));
           },

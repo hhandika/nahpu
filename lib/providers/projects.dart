@@ -1,3 +1,6 @@
+/// Project module providers contain all the providers related to the project,
+/// Except for the project form validation provider, which is in the validation.dart file.
+
 import 'package:drift/drift.dart';
 import 'package:nahpu/services/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -52,5 +55,5 @@ get uuid => const Uuid().v4();
 
 void deleteProject(WidgetRef ref, String uuid) {
   ref.read(databaseProvider).deleteProject(uuid);
-  // ref.refresh(projectListProvider);
+  ref.invalidate(projectListProvider);
 }

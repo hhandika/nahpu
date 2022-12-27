@@ -7,6 +7,8 @@ import 'package:nahpu/screens/collecting/coll_event_form.dart';
 import 'package:nahpu/screens/collecting/coll_event_view.dart';
 import 'package:nahpu/screens/collecting/menu_bar.dart';
 
+import '../../providers/catalogs.dart';
+
 enum MenuSelection { newNote, pdfExport, deleteRecords, deleteAllRecords }
 
 class NewCollEventForm extends ConsumerStatefulWidget {
@@ -35,8 +37,8 @@ class NewCollEventFormState extends ConsumerState<NewCollEventForm> {
         title: const Text("New Coll. Events"),
         leading: BackButton(
           onPressed: () {
-            // ref.refresh(pageNavigationProvider);
-            // ref.refresh(collEventEntryProvider);
+            ref.invalidate(pageNavigationProvider);
+            ref.invalidate(collEventEntryProvider);
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const CollEvents()));
           },

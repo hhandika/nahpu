@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/screens/sites/site_view.dart';
 
+import '../../providers/catalogs.dart';
+
 enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
 
 class NewSites extends ConsumerStatefulWidget {
@@ -32,8 +34,8 @@ class NewSitesState extends ConsumerState<NewSites> {
         title: const Text("New Sites"),
         leading: BackButton(
           onPressed: () {
-            // ref.refresh(pageNavigationProvider);
-            // ref.refresh(siteEntryProvider);
+            ref.invalidate(pageNavigationProvider);
+            ref.invalidate(siteEntryProvider);
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const Sites()));
           },
