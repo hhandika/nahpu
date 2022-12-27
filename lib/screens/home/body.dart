@@ -329,31 +329,31 @@ class ProjectPopUpMenuState extends ConsumerState<ProjectPopUpMenu> {
     }
   }
 
-  Future<void> _getProjectInfo(String projectUuid) async {
+  void _getProjectInfo(String projectUuid) {
     // We technically can directly call the projectInfoProvider here,
     // but for the popup menu to work, we need to implement Future.delayed
     // and call the provider from the onTap function of the popup menu.
     // when we tested this, users have to tap twice to get the popup menu to work.
     // This solution works well.
-    final projectInfo =
-        await ref.read(databaseProvider).getProjectByUuid(projectUuid);
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Project information'),
-          content: SingleChildScrollView(
-              child: ProjectInfo(projectData: projectInfo)),
-          actions: <Widget>[
-            ElevatedButton(
-              child: const Text('Close'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+    ref.read(databaseProvider).getProjectByUuid(projectUuid).then(
+          (value) => showDialog<void>(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Project information'),
+                content: SingleChildScrollView(
+                    child: ProjectInfo(projectData: value)),
+                actions: <Widget>[
+                  ElevatedButton(
+                    child: const Text('Close'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          ),
         );
-      },
-    );
   }
 }
