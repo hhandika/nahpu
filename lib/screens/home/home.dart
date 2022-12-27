@@ -17,7 +17,7 @@ class HomeState extends ConsumerState<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("HOME", style: Theme.of(context).textTheme.headline6),
+        title: Text("HOME", style: Theme.of(context).textTheme.titleLarge),
         actions: [
           IconButton(
             icon: const Icon(Icons.search_rounded),

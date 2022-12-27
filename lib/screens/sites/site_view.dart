@@ -89,7 +89,7 @@ class SitesState extends ConsumerState<Sites> {
                 onPageChanged: (value) => setState(() {
                   pageNotifier.state.currentPage = value + 1;
                   checkPageNavigation(ref);
-                  ref.refresh(siteEntryProvider);
+                  // ref.refresh(siteEntryProvider);
                 }),
               );
             }

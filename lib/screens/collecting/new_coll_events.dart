@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:nahpu/models/form.dart';
-import 'package:nahpu/providers/page_viewer.dart';
+// import 'package:nahpu/providers/page_viewer.dart';s
 import 'package:nahpu/screens/collecting/coll_event_form.dart';
 import 'package:nahpu/screens/collecting/coll_event_view.dart';
 import 'package:nahpu/screens/collecting/menu_bar.dart';
@@ -35,8 +35,8 @@ class NewCollEventFormState extends ConsumerState<NewCollEventForm> {
         title: const Text("New Coll. Events"),
         leading: BackButton(
           onPressed: () {
-            ref.refresh(pageNavigationProvider);
-            ref.refresh(collEventEntryProvider);
+            // ref.refresh(pageNavigationProvider);
+            // ref.refresh(collEventEntryProvider);
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const CollEvents()));
           },

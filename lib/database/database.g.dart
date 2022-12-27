@@ -2,10 +2,6 @@
 
 part of 'database.dart';
 
-// **************************************************************************
-// MoorGenerator
-// **************************************************************************
-
 // ignore_for_file: type=lint
 class ProjectData extends DataClass implements Insertable<ProjectData> {
   final String uuid;
@@ -15,7 +11,7 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
   final String? budget;
   final String? created;
   final String? lastModified;
-  ProjectData(
+  const ProjectData(
       {required this.uuid,
       required this.name,
       this.description,
@@ -23,44 +19,25 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
       this.budget,
       this.created,
       this.lastModified});
-  factory ProjectData.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return ProjectData(
-      uuid: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}uuid'])!,
-      name: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
-      description: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}description']),
-      principalInvestigator: const StringType().mapFromDatabaseResponse(
-          data['${effectivePrefix}principalInvestigator']),
-      budget: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}budget']),
-      created: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}created']),
-      lastModified: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}lastModified']),
-    );
-  }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['uuid'] = Variable<String>(uuid);
     map['name'] = Variable<String>(name);
     if (!nullToAbsent || description != null) {
-      map['description'] = Variable<String?>(description);
+      map['description'] = Variable<String>(description);
     }
     if (!nullToAbsent || principalInvestigator != null) {
-      map['principalInvestigator'] = Variable<String?>(principalInvestigator);
+      map['principalInvestigator'] = Variable<String>(principalInvestigator);
     }
     if (!nullToAbsent || budget != null) {
-      map['budget'] = Variable<String?>(budget);
+      map['budget'] = Variable<String>(budget);
     }
     if (!nullToAbsent || created != null) {
-      map['created'] = Variable<String?>(created);
+      map['created'] = Variable<String>(created);
     }
     if (!nullToAbsent || lastModified != null) {
-      map['lastModified'] = Variable<String?>(lastModified);
+      map['lastModified'] = Variable<String>(lastModified);
     }
     return map;
   }
@@ -118,20 +95,22 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
   ProjectData copyWith(
           {String? uuid,
           String? name,
-          String? description,
-          String? principalInvestigator,
-          String? budget,
-          String? created,
-          String? lastModified}) =>
+          Value<String?> description = const Value.absent(),
+          Value<String?> principalInvestigator = const Value.absent(),
+          Value<String?> budget = const Value.absent(),
+          Value<String?> created = const Value.absent(),
+          Value<String?> lastModified = const Value.absent()}) =>
       ProjectData(
         uuid: uuid ?? this.uuid,
         name: name ?? this.name,
-        description: description ?? this.description,
-        principalInvestigator:
-            principalInvestigator ?? this.principalInvestigator,
-        budget: budget ?? this.budget,
-        created: created ?? this.created,
-        lastModified: lastModified ?? this.lastModified,
+        description: description.present ? description.value : this.description,
+        principalInvestigator: principalInvestigator.present
+            ? principalInvestigator.value
+            : this.principalInvestigator,
+        budget: budget.present ? budget.value : this.budget,
+        created: created.present ? created.value : this.created,
+        lastModified:
+            lastModified.present ? lastModified.value : this.lastModified,
       );
   @override
   String toString() {
@@ -193,11 +172,11 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
   static Insertable<ProjectData> custom({
     Expression<String>? uuid,
     Expression<String>? name,
-    Expression<String?>? description,
-    Expression<String?>? principalInvestigator,
-    Expression<String?>? budget,
-    Expression<String?>? created,
-    Expression<String?>? lastModified,
+    Expression<String>? description,
+    Expression<String>? principalInvestigator,
+    Expression<String>? budget,
+    Expression<String>? created,
+    Expression<String>? lastModified,
   }) {
     return RawValuesInsertable({
       if (uuid != null) 'uuid': uuid,
@@ -241,20 +220,20 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
       map['name'] = Variable<String>(name.value);
     }
     if (description.present) {
-      map['description'] = Variable<String?>(description.value);
+      map['description'] = Variable<String>(description.value);
     }
     if (principalInvestigator.present) {
       map['principalInvestigator'] =
-          Variable<String?>(principalInvestigator.value);
+          Variable<String>(principalInvestigator.value);
     }
     if (budget.present) {
-      map['budget'] = Variable<String?>(budget.value);
+      map['budget'] = Variable<String>(budget.value);
     }
     if (created.present) {
-      map['created'] = Variable<String?>(created.value);
+      map['created'] = Variable<String>(created.value);
     }
     if (lastModified.present) {
-      map['lastModified'] = Variable<String?>(lastModified.value);
+      map['lastModified'] = Variable<String>(lastModified.value);
     }
     return map;
   }
@@ -279,49 +258,50 @@ class Project extends Table with TableInfo<Project, ProjectData> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   Project(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _uuidMeta = const VerificationMeta('uuid');
-  late final GeneratedColumn<String?> uuid = GeneratedColumn<String?>(
+  static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
       'uuid', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL PRIMARY KEY');
-  final VerificationMeta _nameMeta = const VerificationMeta('name');
-  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
       'name', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL UNIQUE');
-  final VerificationMeta _descriptionMeta =
+  static const VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
-  late final GeneratedColumn<String?> description = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
       'description', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _principalInvestigatorMeta =
+  static const VerificationMeta _principalInvestigatorMeta =
       const VerificationMeta('principalInvestigator');
-  late final GeneratedColumn<String?> principalInvestigator =
-      GeneratedColumn<String?>('principalInvestigator', aliasedName, true,
-          type: const StringType(),
+  late final GeneratedColumn<String> principalInvestigator =
+      GeneratedColumn<String>('principalInvestigator', aliasedName, true,
+          type: DriftSqlType.string,
           requiredDuringInsert: false,
           $customConstraints: '');
-  final VerificationMeta _budgetMeta = const VerificationMeta('budget');
-  late final GeneratedColumn<String?> budget = GeneratedColumn<String?>(
+  static const VerificationMeta _budgetMeta = const VerificationMeta('budget');
+  late final GeneratedColumn<String> budget = GeneratedColumn<String>(
       'budget', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _createdMeta = const VerificationMeta('created');
-  late final GeneratedColumn<String?> created = GeneratedColumn<String?>(
+  static const VerificationMeta _createdMeta =
+      const VerificationMeta('created');
+  late final GeneratedColumn<String> created = GeneratedColumn<String>(
       'created', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _lastModifiedMeta =
+  static const VerificationMeta _lastModifiedMeta =
       const VerificationMeta('lastModified');
-  late final GeneratedColumn<String?> lastModified = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> lastModified = GeneratedColumn<String>(
       'lastModified', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
@@ -388,8 +368,23 @@ class Project extends Table with TableInfo<Project, ProjectData> {
   Set<GeneratedColumn> get $primaryKey => {uuid};
   @override
   ProjectData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return ProjectData.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ProjectData(
+      uuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}uuid'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      description: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}description']),
+      principalInvestigator: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}principalInvestigator']),
+      budget: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}budget']),
+      created: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}created']),
+      lastModified: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}lastModified']),
+    );
   }
 
   @override
@@ -397,6 +392,8 @@ class Project extends Table with TableInfo<Project, ProjectData> {
     return Project(attachedDatabase, alias);
   }
 
+  @override
+  List<String> get customConstraints => const [];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -408,40 +405,25 @@ class FileMetadataData extends DataClass
   final double? sizeKb;
   final Uint8List? relativePath;
   final String? created;
-  FileMetadataData(
+  const FileMetadataData(
       {this.id, this.filename, this.sizeKb, this.relativePath, this.created});
-  factory FileMetadataData.fromData(Map<String, dynamic> data,
-      {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return FileMetadataData(
-      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      filename: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}filename']),
-      sizeKb: const RealType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}sizeKb']),
-      relativePath: const BlobType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}relativePath']),
-      created: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}created']),
-    );
-  }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (!nullToAbsent || id != null) {
-      map['id'] = Variable<int?>(id);
+      map['id'] = Variable<int>(id);
     }
     if (!nullToAbsent || filename != null) {
-      map['filename'] = Variable<String?>(filename);
+      map['filename'] = Variable<String>(filename);
     }
     if (!nullToAbsent || sizeKb != null) {
-      map['sizeKb'] = Variable<double?>(sizeKb);
+      map['sizeKb'] = Variable<double>(sizeKb);
     }
     if (!nullToAbsent || relativePath != null) {
-      map['relativePath'] = Variable<Uint8List?>(relativePath);
+      map['relativePath'] = Variable<Uint8List>(relativePath);
     }
     if (!nullToAbsent || created != null) {
-      map['created'] = Variable<String?>(created);
+      map['created'] = Variable<String>(created);
     }
     return map;
   }
@@ -487,17 +469,18 @@ class FileMetadataData extends DataClass
   }
 
   FileMetadataData copyWith(
-          {int? id,
-          String? filename,
-          double? sizeKb,
-          Uint8List? relativePath,
-          String? created}) =>
+          {Value<int?> id = const Value.absent(),
+          Value<String?> filename = const Value.absent(),
+          Value<double?> sizeKb = const Value.absent(),
+          Value<Uint8List?> relativePath = const Value.absent(),
+          Value<String?> created = const Value.absent()}) =>
       FileMetadataData(
-        id: id ?? this.id,
-        filename: filename ?? this.filename,
-        sizeKb: sizeKb ?? this.sizeKb,
-        relativePath: relativePath ?? this.relativePath,
-        created: created ?? this.created,
+        id: id.present ? id.value : this.id,
+        filename: filename.present ? filename.value : this.filename,
+        sizeKb: sizeKb.present ? sizeKb.value : this.sizeKb,
+        relativePath:
+            relativePath.present ? relativePath.value : this.relativePath,
+        created: created.present ? created.value : this.created,
       );
   @override
   String toString() {
@@ -512,7 +495,8 @@ class FileMetadataData extends DataClass
   }
 
   @override
-  int get hashCode => Object.hash(id, filename, sizeKb, relativePath, created);
+  int get hashCode => Object.hash(
+      id, filename, sizeKb, $driftBlobEquality.hash(relativePath), created);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -520,7 +504,7 @@ class FileMetadataData extends DataClass
           other.id == this.id &&
           other.filename == this.filename &&
           other.sizeKb == this.sizeKb &&
-          other.relativePath == this.relativePath &&
+          $driftBlobEquality.equals(other.relativePath, this.relativePath) &&
           other.created == this.created);
 }
 
@@ -545,11 +529,11 @@ class FileMetadataCompanion extends UpdateCompanion<FileMetadataData> {
     this.created = const Value.absent(),
   });
   static Insertable<FileMetadataData> custom({
-    Expression<int?>? id,
-    Expression<String?>? filename,
-    Expression<double?>? sizeKb,
-    Expression<Uint8List?>? relativePath,
-    Expression<String?>? created,
+    Expression<int>? id,
+    Expression<String>? filename,
+    Expression<double>? sizeKb,
+    Expression<Uint8List>? relativePath,
+    Expression<String>? created,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -579,19 +563,19 @@ class FileMetadataCompanion extends UpdateCompanion<FileMetadataData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (id.present) {
-      map['id'] = Variable<int?>(id.value);
+      map['id'] = Variable<int>(id.value);
     }
     if (filename.present) {
-      map['filename'] = Variable<String?>(filename.value);
+      map['filename'] = Variable<String>(filename.value);
     }
     if (sizeKb.present) {
-      map['sizeKb'] = Variable<double?>(sizeKb.value);
+      map['sizeKb'] = Variable<double>(sizeKb.value);
     }
     if (relativePath.present) {
-      map['relativePath'] = Variable<Uint8List?>(relativePath.value);
+      map['relativePath'] = Variable<Uint8List>(relativePath.value);
     }
     if (created.present) {
-      map['created'] = Variable<String?>(created.value);
+      map['created'] = Variable<String>(created.value);
     }
     return map;
   }
@@ -615,35 +599,38 @@ class FileMetadata extends Table
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   FileMetadata(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, true,
-      type: const IntType(),
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  final VerificationMeta _filenameMeta = const VerificationMeta('filename');
-  late final GeneratedColumn<String?> filename = GeneratedColumn<String?>(
+  static const VerificationMeta _filenameMeta =
+      const VerificationMeta('filename');
+  late final GeneratedColumn<String> filename = GeneratedColumn<String>(
       'filename', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _sizeKbMeta = const VerificationMeta('sizeKb');
-  late final GeneratedColumn<double?> sizeKb = GeneratedColumn<double?>(
+  static const VerificationMeta _sizeKbMeta = const VerificationMeta('sizeKb');
+  late final GeneratedColumn<double> sizeKb = GeneratedColumn<double>(
       'sizeKb', aliasedName, true,
-      type: const RealType(),
+      type: DriftSqlType.double,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _relativePathMeta =
+  static const VerificationMeta _relativePathMeta =
       const VerificationMeta('relativePath');
-  late final GeneratedColumn<Uint8List?> relativePath =
-      GeneratedColumn<Uint8List?>('relativePath', aliasedName, true,
-          type: const BlobType(),
+  late final GeneratedColumn<Uint8List> relativePath =
+      GeneratedColumn<Uint8List>('relativePath', aliasedName, true,
+          type: DriftSqlType.blob,
           requiredDuringInsert: false,
           $customConstraints: '');
-  final VerificationMeta _createdMeta = const VerificationMeta('created');
-  late final GeneratedColumn<String?> created = GeneratedColumn<String?>(
+  static const VerificationMeta _createdMeta =
+      const VerificationMeta('created');
+  late final GeneratedColumn<String> created = GeneratedColumn<String>(
       'created', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
@@ -686,8 +673,19 @@ class FileMetadata extends Table
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   FileMetadataData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return FileMetadataData.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return FileMetadataData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id']),
+      filename: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}filename']),
+      sizeKb: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}sizeKb']),
+      relativePath: attachedDatabase.typeMapping
+          .read(DriftSqlType.blob, data['${effectivePrefix}relativePath']),
+      created: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}created']),
+    );
   }
 
   @override
@@ -696,6 +694,8 @@ class FileMetadata extends Table
   }
 
   @override
+  List<String> get customConstraints => const [];
+  @override
   bool get dontWriteConstraints => true;
 }
 
@@ -703,24 +703,15 @@ class PersonnelPhotoData extends DataClass
     implements Insertable<PersonnelPhotoData> {
   final int? id;
   final int? fileId;
-  PersonnelPhotoData({this.id, this.fileId});
-  factory PersonnelPhotoData.fromData(Map<String, dynamic> data,
-      {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return PersonnelPhotoData(
-      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      fileId: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}fileId']),
-    );
-  }
+  const PersonnelPhotoData({this.id, this.fileId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (!nullToAbsent || id != null) {
-      map['id'] = Variable<int?>(id);
+      map['id'] = Variable<int>(id);
     }
     if (!nullToAbsent || fileId != null) {
-      map['fileId'] = Variable<int?>(fileId);
+      map['fileId'] = Variable<int>(fileId);
     }
     return map;
   }
@@ -750,9 +741,12 @@ class PersonnelPhotoData extends DataClass
     };
   }
 
-  PersonnelPhotoData copyWith({int? id, int? fileId}) => PersonnelPhotoData(
-        id: id ?? this.id,
-        fileId: fileId ?? this.fileId,
+  PersonnelPhotoData copyWith(
+          {Value<int?> id = const Value.absent(),
+          Value<int?> fileId = const Value.absent()}) =>
+      PersonnelPhotoData(
+        id: id.present ? id.value : this.id,
+        fileId: fileId.present ? fileId.value : this.fileId,
       );
   @override
   String toString() {
@@ -785,8 +779,8 @@ class PersonnelPhotoCompanion extends UpdateCompanion<PersonnelPhotoData> {
     this.fileId = const Value.absent(),
   });
   static Insertable<PersonnelPhotoData> custom({
-    Expression<int?>? id,
-    Expression<int?>? fileId,
+    Expression<int>? id,
+    Expression<int>? fileId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -805,10 +799,10 @@ class PersonnelPhotoCompanion extends UpdateCompanion<PersonnelPhotoData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (id.present) {
-      map['id'] = Variable<int?>(id.value);
+      map['id'] = Variable<int>(id.value);
     }
     if (fileId.present) {
-      map['fileId'] = Variable<int?>(fileId.value);
+      map['fileId'] = Variable<int>(fileId.value);
     }
     return map;
   }
@@ -829,16 +823,17 @@ class PersonnelPhoto extends Table
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   PersonnelPhoto(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, true,
-      type: const IntType(),
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  final VerificationMeta _fileIdMeta = const VerificationMeta('fileId');
-  late final GeneratedColumn<int?> fileId = GeneratedColumn<int?>(
+  static const VerificationMeta _fileIdMeta = const VerificationMeta('fileId');
+  late final GeneratedColumn<int> fileId = GeneratedColumn<int>(
       'fileId', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
@@ -866,8 +861,13 @@ class PersonnelPhoto extends Table
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   PersonnelPhotoData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return PersonnelPhotoData.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PersonnelPhotoData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id']),
+      fileId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}fileId']),
+    );
   }
 
   @override
@@ -877,7 +877,7 @@ class PersonnelPhoto extends Table
 
   @override
   List<String> get customConstraints =>
-      const ['FOREIGN KEY(fileId) REFERENCES fileMetadata(id)'];
+      const ['FOREIGN KEY(fileId)REFERENCES fileMetadata(id)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -891,7 +891,7 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
   final String? role;
   final int? nextCollectorNumber;
   final int? personnelPhoto;
-  PersonnelData(
+  const PersonnelData(
       {this.uuid,
       this.name,
       this.initial,
@@ -900,53 +900,32 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
       this.role,
       this.nextCollectorNumber,
       this.personnelPhoto});
-  factory PersonnelData.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return PersonnelData(
-      uuid: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}uuid']),
-      name: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}name']),
-      initial: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}initial']),
-      email: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}email']),
-      affiliation: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}affiliation']),
-      role: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}role']),
-      nextCollectorNumber: const IntType().mapFromDatabaseResponse(
-          data['${effectivePrefix}nextCollectorNumber']),
-      personnelPhoto: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}personnelPhoto']),
-    );
-  }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (!nullToAbsent || uuid != null) {
-      map['uuid'] = Variable<String?>(uuid);
+      map['uuid'] = Variable<String>(uuid);
     }
     if (!nullToAbsent || name != null) {
-      map['name'] = Variable<String?>(name);
+      map['name'] = Variable<String>(name);
     }
     if (!nullToAbsent || initial != null) {
-      map['initial'] = Variable<String?>(initial);
+      map['initial'] = Variable<String>(initial);
     }
     if (!nullToAbsent || email != null) {
-      map['email'] = Variable<String?>(email);
+      map['email'] = Variable<String>(email);
     }
     if (!nullToAbsent || affiliation != null) {
-      map['affiliation'] = Variable<String?>(affiliation);
+      map['affiliation'] = Variable<String>(affiliation);
     }
     if (!nullToAbsent || role != null) {
-      map['role'] = Variable<String?>(role);
+      map['role'] = Variable<String>(role);
     }
     if (!nullToAbsent || nextCollectorNumber != null) {
-      map['nextCollectorNumber'] = Variable<int?>(nextCollectorNumber);
+      map['nextCollectorNumber'] = Variable<int>(nextCollectorNumber);
     }
     if (!nullToAbsent || personnelPhoto != null) {
-      map['personnelPhoto'] = Variable<int?>(personnelPhoto);
+      map['personnelPhoto'] = Variable<int>(personnelPhoto);
     }
     return map;
   }
@@ -1004,23 +983,26 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
   }
 
   PersonnelData copyWith(
-          {String? uuid,
-          String? name,
-          String? initial,
-          String? email,
-          String? affiliation,
-          String? role,
-          int? nextCollectorNumber,
-          int? personnelPhoto}) =>
+          {Value<String?> uuid = const Value.absent(),
+          Value<String?> name = const Value.absent(),
+          Value<String?> initial = const Value.absent(),
+          Value<String?> email = const Value.absent(),
+          Value<String?> affiliation = const Value.absent(),
+          Value<String?> role = const Value.absent(),
+          Value<int?> nextCollectorNumber = const Value.absent(),
+          Value<int?> personnelPhoto = const Value.absent()}) =>
       PersonnelData(
-        uuid: uuid ?? this.uuid,
-        name: name ?? this.name,
-        initial: initial ?? this.initial,
-        email: email ?? this.email,
-        affiliation: affiliation ?? this.affiliation,
-        role: role ?? this.role,
-        nextCollectorNumber: nextCollectorNumber ?? this.nextCollectorNumber,
-        personnelPhoto: personnelPhoto ?? this.personnelPhoto,
+        uuid: uuid.present ? uuid.value : this.uuid,
+        name: name.present ? name.value : this.name,
+        initial: initial.present ? initial.value : this.initial,
+        email: email.present ? email.value : this.email,
+        affiliation: affiliation.present ? affiliation.value : this.affiliation,
+        role: role.present ? role.value : this.role,
+        nextCollectorNumber: nextCollectorNumber.present
+            ? nextCollectorNumber.value
+            : this.nextCollectorNumber,
+        personnelPhoto:
+            personnelPhoto.present ? personnelPhoto.value : this.personnelPhoto,
       );
   @override
   String toString() {
@@ -1084,14 +1066,14 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     this.personnelPhoto = const Value.absent(),
   });
   static Insertable<PersonnelData> custom({
-    Expression<String?>? uuid,
-    Expression<String?>? name,
-    Expression<String?>? initial,
-    Expression<String?>? email,
-    Expression<String?>? affiliation,
-    Expression<String?>? role,
-    Expression<int?>? nextCollectorNumber,
-    Expression<int?>? personnelPhoto,
+    Expression<String>? uuid,
+    Expression<String>? name,
+    Expression<String>? initial,
+    Expression<String>? email,
+    Expression<String>? affiliation,
+    Expression<String>? role,
+    Expression<int>? nextCollectorNumber,
+    Expression<int>? personnelPhoto,
   }) {
     return RawValuesInsertable({
       if (uuid != null) 'uuid': uuid,
@@ -1131,28 +1113,28 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (uuid.present) {
-      map['uuid'] = Variable<String?>(uuid.value);
+      map['uuid'] = Variable<String>(uuid.value);
     }
     if (name.present) {
-      map['name'] = Variable<String?>(name.value);
+      map['name'] = Variable<String>(name.value);
     }
     if (initial.present) {
-      map['initial'] = Variable<String?>(initial.value);
+      map['initial'] = Variable<String>(initial.value);
     }
     if (email.present) {
-      map['email'] = Variable<String?>(email.value);
+      map['email'] = Variable<String>(email.value);
     }
     if (affiliation.present) {
-      map['affiliation'] = Variable<String?>(affiliation.value);
+      map['affiliation'] = Variable<String>(affiliation.value);
     }
     if (role.present) {
-      map['role'] = Variable<String?>(role.value);
+      map['role'] = Variable<String>(role.value);
     }
     if (nextCollectorNumber.present) {
-      map['nextCollectorNumber'] = Variable<int?>(nextCollectorNumber.value);
+      map['nextCollectorNumber'] = Variable<int>(nextCollectorNumber.value);
     }
     if (personnelPhoto.present) {
-      map['personnelPhoto'] = Variable<int?>(personnelPhoto.value);
+      map['personnelPhoto'] = Variable<int>(personnelPhoto.value);
     }
     return map;
   }
@@ -1178,55 +1160,56 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   Personnel(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _uuidMeta = const VerificationMeta('uuid');
-  late final GeneratedColumn<String?> uuid = GeneratedColumn<String?>(
+  static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
       'uuid', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: 'UNIQUE PRIMARY KEY');
-  final VerificationMeta _nameMeta = const VerificationMeta('name');
-  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
       'name', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _initialMeta = const VerificationMeta('initial');
-  late final GeneratedColumn<String?> initial = GeneratedColumn<String?>(
+  static const VerificationMeta _initialMeta =
+      const VerificationMeta('initial');
+  late final GeneratedColumn<String> initial = GeneratedColumn<String>(
       'initial', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _emailMeta = const VerificationMeta('email');
-  late final GeneratedColumn<String?> email = GeneratedColumn<String?>(
+  static const VerificationMeta _emailMeta = const VerificationMeta('email');
+  late final GeneratedColumn<String> email = GeneratedColumn<String>(
       'email', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _affiliationMeta =
+  static const VerificationMeta _affiliationMeta =
       const VerificationMeta('affiliation');
-  late final GeneratedColumn<String?> affiliation = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> affiliation = GeneratedColumn<String>(
       'affiliation', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _roleMeta = const VerificationMeta('role');
-  late final GeneratedColumn<String?> role = GeneratedColumn<String?>(
+  static const VerificationMeta _roleMeta = const VerificationMeta('role');
+  late final GeneratedColumn<String> role = GeneratedColumn<String>(
       'role', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _nextCollectorNumberMeta =
+  static const VerificationMeta _nextCollectorNumberMeta =
       const VerificationMeta('nextCollectorNumber');
-  late final GeneratedColumn<int?> nextCollectorNumber = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> nextCollectorNumber = GeneratedColumn<int>(
       'nextCollectorNumber', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _personnelPhotoMeta =
+  static const VerificationMeta _personnelPhotoMeta =
       const VerificationMeta('personnelPhoto');
-  late final GeneratedColumn<int?> personnelPhoto = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> personnelPhoto = GeneratedColumn<int>(
       'personnelPhoto', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
@@ -1294,8 +1277,25 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
   Set<GeneratedColumn> get $primaryKey => {uuid};
   @override
   PersonnelData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return PersonnelData.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PersonnelData(
+      uuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}uuid']),
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name']),
+      initial: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}initial']),
+      email: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}email']),
+      affiliation: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}affiliation']),
+      role: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}role']),
+      nextCollectorNumber: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}nextCollectorNumber']),
+      personnelPhoto: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}personnelPhoto']),
+    );
   }
 
   @override
@@ -1305,7 +1305,7 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
 
   @override
   List<String> get customConstraints =>
-      const ['FOREIGN KEY(personnelPhoto) REFERENCES personnelPhoto(id)'];
+      const ['FOREIGN KEY(personnelPhoto)REFERENCES personnelPhoto(id)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -1319,7 +1319,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
   final String? camera;
   final String? lenses;
   final String? personnelId;
-  MediaData(
+  const MediaData(
       {this.primaryId,
       this.secondaryId,
       this.secondaryIdRef,
@@ -1328,53 +1328,32 @@ class MediaData extends DataClass implements Insertable<MediaData> {
       this.camera,
       this.lenses,
       this.personnelId});
-  factory MediaData.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return MediaData(
-      primaryId: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}primaryId']),
-      secondaryId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}secondaryId']),
-      secondaryIdRef: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}secondaryIdRef']),
-      fileId: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}fileId']),
-      taken: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}taken']),
-      camera: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}camera']),
-      lenses: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}lenses']),
-      personnelId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}personnelId']),
-    );
-  }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (!nullToAbsent || primaryId != null) {
-      map['primaryId'] = Variable<int?>(primaryId);
+      map['primaryId'] = Variable<int>(primaryId);
     }
     if (!nullToAbsent || secondaryId != null) {
-      map['secondaryId'] = Variable<String?>(secondaryId);
+      map['secondaryId'] = Variable<String>(secondaryId);
     }
     if (!nullToAbsent || secondaryIdRef != null) {
-      map['secondaryIdRef'] = Variable<String?>(secondaryIdRef);
+      map['secondaryIdRef'] = Variable<String>(secondaryIdRef);
     }
     if (!nullToAbsent || fileId != null) {
-      map['fileId'] = Variable<int?>(fileId);
+      map['fileId'] = Variable<int>(fileId);
     }
     if (!nullToAbsent || taken != null) {
-      map['taken'] = Variable<String?>(taken);
+      map['taken'] = Variable<String>(taken);
     }
     if (!nullToAbsent || camera != null) {
-      map['camera'] = Variable<String?>(camera);
+      map['camera'] = Variable<String>(camera);
     }
     if (!nullToAbsent || lenses != null) {
-      map['lenses'] = Variable<String?>(lenses);
+      map['lenses'] = Variable<String>(lenses);
     }
     if (!nullToAbsent || personnelId != null) {
-      map['personnelId'] = Variable<String?>(personnelId);
+      map['personnelId'] = Variable<String>(personnelId);
     }
     return map;
   }
@@ -1434,23 +1413,24 @@ class MediaData extends DataClass implements Insertable<MediaData> {
   }
 
   MediaData copyWith(
-          {int? primaryId,
-          String? secondaryId,
-          String? secondaryIdRef,
-          int? fileId,
-          String? taken,
-          String? camera,
-          String? lenses,
-          String? personnelId}) =>
+          {Value<int?> primaryId = const Value.absent(),
+          Value<String?> secondaryId = const Value.absent(),
+          Value<String?> secondaryIdRef = const Value.absent(),
+          Value<int?> fileId = const Value.absent(),
+          Value<String?> taken = const Value.absent(),
+          Value<String?> camera = const Value.absent(),
+          Value<String?> lenses = const Value.absent(),
+          Value<String?> personnelId = const Value.absent()}) =>
       MediaData(
-        primaryId: primaryId ?? this.primaryId,
-        secondaryId: secondaryId ?? this.secondaryId,
-        secondaryIdRef: secondaryIdRef ?? this.secondaryIdRef,
-        fileId: fileId ?? this.fileId,
-        taken: taken ?? this.taken,
-        camera: camera ?? this.camera,
-        lenses: lenses ?? this.lenses,
-        personnelId: personnelId ?? this.personnelId,
+        primaryId: primaryId.present ? primaryId.value : this.primaryId,
+        secondaryId: secondaryId.present ? secondaryId.value : this.secondaryId,
+        secondaryIdRef:
+            secondaryIdRef.present ? secondaryIdRef.value : this.secondaryIdRef,
+        fileId: fileId.present ? fileId.value : this.fileId,
+        taken: taken.present ? taken.value : this.taken,
+        camera: camera.present ? camera.value : this.camera,
+        lenses: lenses.present ? lenses.value : this.lenses,
+        personnelId: personnelId.present ? personnelId.value : this.personnelId,
       );
   @override
   String toString() {
@@ -1514,14 +1494,14 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
     this.personnelId = const Value.absent(),
   });
   static Insertable<MediaData> custom({
-    Expression<int?>? primaryId,
-    Expression<String?>? secondaryId,
-    Expression<String?>? secondaryIdRef,
-    Expression<int?>? fileId,
-    Expression<String?>? taken,
-    Expression<String?>? camera,
-    Expression<String?>? lenses,
-    Expression<String?>? personnelId,
+    Expression<int>? primaryId,
+    Expression<String>? secondaryId,
+    Expression<String>? secondaryIdRef,
+    Expression<int>? fileId,
+    Expression<String>? taken,
+    Expression<String>? camera,
+    Expression<String>? lenses,
+    Expression<String>? personnelId,
   }) {
     return RawValuesInsertable({
       if (primaryId != null) 'primaryId': primaryId,
@@ -1560,28 +1540,28 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (primaryId.present) {
-      map['primaryId'] = Variable<int?>(primaryId.value);
+      map['primaryId'] = Variable<int>(primaryId.value);
     }
     if (secondaryId.present) {
-      map['secondaryId'] = Variable<String?>(secondaryId.value);
+      map['secondaryId'] = Variable<String>(secondaryId.value);
     }
     if (secondaryIdRef.present) {
-      map['secondaryIdRef'] = Variable<String?>(secondaryIdRef.value);
+      map['secondaryIdRef'] = Variable<String>(secondaryIdRef.value);
     }
     if (fileId.present) {
-      map['fileId'] = Variable<int?>(fileId.value);
+      map['fileId'] = Variable<int>(fileId.value);
     }
     if (taken.present) {
-      map['taken'] = Variable<String?>(taken.value);
+      map['taken'] = Variable<String>(taken.value);
     }
     if (camera.present) {
-      map['camera'] = Variable<String?>(camera.value);
+      map['camera'] = Variable<String>(camera.value);
     }
     if (lenses.present) {
-      map['lenses'] = Variable<String?>(lenses.value);
+      map['lenses'] = Variable<String>(lenses.value);
     }
     if (personnelId.present) {
-      map['personnelId'] = Variable<String?>(personnelId.value);
+      map['personnelId'] = Variable<String>(personnelId.value);
     }
     return map;
   }
@@ -1607,55 +1587,57 @@ class Media extends Table with TableInfo<Media, MediaData> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   Media(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _primaryIdMeta = const VerificationMeta('primaryId');
-  late final GeneratedColumn<int?> primaryId = GeneratedColumn<int?>(
+  static const VerificationMeta _primaryIdMeta =
+      const VerificationMeta('primaryId');
+  late final GeneratedColumn<int> primaryId = GeneratedColumn<int>(
       'primaryId', aliasedName, true,
-      type: const IntType(),
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  final VerificationMeta _secondaryIdMeta =
+  static const VerificationMeta _secondaryIdMeta =
       const VerificationMeta('secondaryId');
-  late final GeneratedColumn<String?> secondaryId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> secondaryId = GeneratedColumn<String>(
       'secondaryId', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _secondaryIdRefMeta =
+  static const VerificationMeta _secondaryIdRefMeta =
       const VerificationMeta('secondaryIdRef');
-  late final GeneratedColumn<String?> secondaryIdRef = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> secondaryIdRef = GeneratedColumn<String>(
       'secondaryIdRef', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _fileIdMeta = const VerificationMeta('fileId');
-  late final GeneratedColumn<int?> fileId = GeneratedColumn<int?>(
+  static const VerificationMeta _fileIdMeta = const VerificationMeta('fileId');
+  late final GeneratedColumn<int> fileId = GeneratedColumn<int>(
       'fileId', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _takenMeta = const VerificationMeta('taken');
-  late final GeneratedColumn<String?> taken = GeneratedColumn<String?>(
+  static const VerificationMeta _takenMeta = const VerificationMeta('taken');
+  late final GeneratedColumn<String> taken = GeneratedColumn<String>(
       'taken', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _cameraMeta = const VerificationMeta('camera');
-  late final GeneratedColumn<String?> camera = GeneratedColumn<String?>(
+  static const VerificationMeta _cameraMeta = const VerificationMeta('camera');
+  late final GeneratedColumn<String> camera = GeneratedColumn<String>(
       'camera', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _lensesMeta = const VerificationMeta('lenses');
-  late final GeneratedColumn<String?> lenses = GeneratedColumn<String?>(
+  static const VerificationMeta _lensesMeta = const VerificationMeta('lenses');
+  late final GeneratedColumn<String> lenses = GeneratedColumn<String>(
       'lenses', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _personnelIdMeta =
+  static const VerificationMeta _personnelIdMeta =
       const VerificationMeta('personnelId');
-  late final GeneratedColumn<String?> personnelId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> personnelId = GeneratedColumn<String>(
       'personnelId', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
@@ -1723,8 +1705,25 @@ class Media extends Table with TableInfo<Media, MediaData> {
   Set<GeneratedColumn> get $primaryKey => {primaryId};
   @override
   MediaData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return MediaData.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MediaData(
+      primaryId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}primaryId']),
+      secondaryId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}secondaryId']),
+      secondaryIdRef: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}secondaryIdRef']),
+      fileId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}fileId']),
+      taken: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}taken']),
+      camera: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}camera']),
+      lenses: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}lenses']),
+      personnelId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}personnelId']),
+    );
   }
 
   @override
@@ -1734,8 +1733,8 @@ class Media extends Table with TableInfo<Media, MediaData> {
 
   @override
   List<String> get customConstraints => const [
-        'FOREIGN KEY(personnelId) REFERENCES personnel(uuid)',
-        'FOREIGN KEY(fileId) REFERENCES fileMetadata(id)'
+        'FOREIGN KEY(personnelId)REFERENCES personnel(uuid)',
+        'FOREIGN KEY(fileId)REFERENCES fileMetadata(id)'
       ];
   @override
   bool get dontWriteConstraints => true;
@@ -1753,7 +1752,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
   final String? municipality;
   final String? mediaID;
   final String? locality;
-  SiteData(
+  const SiteData(
       {required this.id,
       this.siteID,
       this.projectUuid,
@@ -1765,66 +1764,39 @@ class SiteData extends DataClass implements Insertable<SiteData> {
       this.municipality,
       this.mediaID,
       this.locality});
-  factory SiteData.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return SiteData(
-      id: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      siteID: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}siteID']),
-      projectUuid: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}projectUuid']),
-      leadStuff: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}leadStuff']),
-      siteType: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}siteType']),
-      country: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}country']),
-      stateProvince: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}stateProvince']),
-      county: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}county']),
-      municipality: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}municipality']),
-      mediaID: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}mediaID']),
-      locality: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}locality']),
-    );
-  }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     if (!nullToAbsent || siteID != null) {
-      map['siteID'] = Variable<String?>(siteID);
+      map['siteID'] = Variable<String>(siteID);
     }
     if (!nullToAbsent || projectUuid != null) {
-      map['projectUuid'] = Variable<String?>(projectUuid);
+      map['projectUuid'] = Variable<String>(projectUuid);
     }
     if (!nullToAbsent || leadStuff != null) {
-      map['leadStuff'] = Variable<String?>(leadStuff);
+      map['leadStuff'] = Variable<String>(leadStuff);
     }
     if (!nullToAbsent || siteType != null) {
-      map['siteType'] = Variable<String?>(siteType);
+      map['siteType'] = Variable<String>(siteType);
     }
     if (!nullToAbsent || country != null) {
-      map['country'] = Variable<String?>(country);
+      map['country'] = Variable<String>(country);
     }
     if (!nullToAbsent || stateProvince != null) {
-      map['stateProvince'] = Variable<String?>(stateProvince);
+      map['stateProvince'] = Variable<String>(stateProvince);
     }
     if (!nullToAbsent || county != null) {
-      map['county'] = Variable<String?>(county);
+      map['county'] = Variable<String>(county);
     }
     if (!nullToAbsent || municipality != null) {
-      map['municipality'] = Variable<String?>(municipality);
+      map['municipality'] = Variable<String>(municipality);
     }
     if (!nullToAbsent || mediaID != null) {
-      map['mediaID'] = Variable<String?>(mediaID);
+      map['mediaID'] = Variable<String>(mediaID);
     }
     if (!nullToAbsent || locality != null) {
-      map['locality'] = Variable<String?>(locality);
+      map['locality'] = Variable<String>(locality);
     }
     return map;
   }
@@ -1900,28 +1872,30 @@ class SiteData extends DataClass implements Insertable<SiteData> {
 
   SiteData copyWith(
           {int? id,
-          String? siteID,
-          String? projectUuid,
-          String? leadStuff,
-          String? siteType,
-          String? country,
-          String? stateProvince,
-          String? county,
-          String? municipality,
-          String? mediaID,
-          String? locality}) =>
+          Value<String?> siteID = const Value.absent(),
+          Value<String?> projectUuid = const Value.absent(),
+          Value<String?> leadStuff = const Value.absent(),
+          Value<String?> siteType = const Value.absent(),
+          Value<String?> country = const Value.absent(),
+          Value<String?> stateProvince = const Value.absent(),
+          Value<String?> county = const Value.absent(),
+          Value<String?> municipality = const Value.absent(),
+          Value<String?> mediaID = const Value.absent(),
+          Value<String?> locality = const Value.absent()}) =>
       SiteData(
         id: id ?? this.id,
-        siteID: siteID ?? this.siteID,
-        projectUuid: projectUuid ?? this.projectUuid,
-        leadStuff: leadStuff ?? this.leadStuff,
-        siteType: siteType ?? this.siteType,
-        country: country ?? this.country,
-        stateProvince: stateProvince ?? this.stateProvince,
-        county: county ?? this.county,
-        municipality: municipality ?? this.municipality,
-        mediaID: mediaID ?? this.mediaID,
-        locality: locality ?? this.locality,
+        siteID: siteID.present ? siteID.value : this.siteID,
+        projectUuid: projectUuid.present ? projectUuid.value : this.projectUuid,
+        leadStuff: leadStuff.present ? leadStuff.value : this.leadStuff,
+        siteType: siteType.present ? siteType.value : this.siteType,
+        country: country.present ? country.value : this.country,
+        stateProvince:
+            stateProvince.present ? stateProvince.value : this.stateProvince,
+        county: county.present ? county.value : this.county,
+        municipality:
+            municipality.present ? municipality.value : this.municipality,
+        mediaID: mediaID.present ? mediaID.value : this.mediaID,
+        locality: locality.present ? locality.value : this.locality,
       );
   @override
   String toString() {
@@ -2001,16 +1975,16 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
   });
   static Insertable<SiteData> custom({
     Expression<int>? id,
-    Expression<String?>? siteID,
-    Expression<String?>? projectUuid,
-    Expression<String?>? leadStuff,
-    Expression<String?>? siteType,
-    Expression<String?>? country,
-    Expression<String?>? stateProvince,
-    Expression<String?>? county,
-    Expression<String?>? municipality,
-    Expression<String?>? mediaID,
-    Expression<String?>? locality,
+    Expression<String>? siteID,
+    Expression<String>? projectUuid,
+    Expression<String>? leadStuff,
+    Expression<String>? siteType,
+    Expression<String>? country,
+    Expression<String>? stateProvince,
+    Expression<String>? county,
+    Expression<String>? municipality,
+    Expression<String>? mediaID,
+    Expression<String>? locality,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2061,34 +2035,34 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
       map['id'] = Variable<int>(id.value);
     }
     if (siteID.present) {
-      map['siteID'] = Variable<String?>(siteID.value);
+      map['siteID'] = Variable<String>(siteID.value);
     }
     if (projectUuid.present) {
-      map['projectUuid'] = Variable<String?>(projectUuid.value);
+      map['projectUuid'] = Variable<String>(projectUuid.value);
     }
     if (leadStuff.present) {
-      map['leadStuff'] = Variable<String?>(leadStuff.value);
+      map['leadStuff'] = Variable<String>(leadStuff.value);
     }
     if (siteType.present) {
-      map['siteType'] = Variable<String?>(siteType.value);
+      map['siteType'] = Variable<String>(siteType.value);
     }
     if (country.present) {
-      map['country'] = Variable<String?>(country.value);
+      map['country'] = Variable<String>(country.value);
     }
     if (stateProvince.present) {
-      map['stateProvince'] = Variable<String?>(stateProvince.value);
+      map['stateProvince'] = Variable<String>(stateProvince.value);
     }
     if (county.present) {
-      map['county'] = Variable<String?>(county.value);
+      map['county'] = Variable<String>(county.value);
     }
     if (municipality.present) {
-      map['municipality'] = Variable<String?>(municipality.value);
+      map['municipality'] = Variable<String>(municipality.value);
     }
     if (mediaID.present) {
-      map['mediaID'] = Variable<String?>(mediaID.value);
+      map['mediaID'] = Variable<String>(mediaID.value);
     }
     if (locality.present) {
-      map['locality'] = Variable<String?>(locality.value);
+      map['locality'] = Variable<String>(locality.value);
     }
     return map;
   }
@@ -2117,73 +2091,79 @@ class Site extends Table with TableInfo<Site, SiteData> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   Site(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
-      type: const IntType(),
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
-  final VerificationMeta _siteIDMeta = const VerificationMeta('siteID');
-  late final GeneratedColumn<String?> siteID = GeneratedColumn<String?>(
+  static const VerificationMeta _siteIDMeta = const VerificationMeta('siteID');
+  late final GeneratedColumn<String> siteID = GeneratedColumn<String>(
       'siteID', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _projectUuidMeta =
+  static const VerificationMeta _projectUuidMeta =
       const VerificationMeta('projectUuid');
-  late final GeneratedColumn<String?> projectUuid = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> projectUuid = GeneratedColumn<String>(
       'projectUuid', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _leadStuffMeta = const VerificationMeta('leadStuff');
-  late final GeneratedColumn<String?> leadStuff = GeneratedColumn<String?>(
+  static const VerificationMeta _leadStuffMeta =
+      const VerificationMeta('leadStuff');
+  late final GeneratedColumn<String> leadStuff = GeneratedColumn<String>(
       'leadStuff', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _siteTypeMeta = const VerificationMeta('siteType');
-  late final GeneratedColumn<String?> siteType = GeneratedColumn<String?>(
+  static const VerificationMeta _siteTypeMeta =
+      const VerificationMeta('siteType');
+  late final GeneratedColumn<String> siteType = GeneratedColumn<String>(
       'siteType', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _countryMeta = const VerificationMeta('country');
-  late final GeneratedColumn<String?> country = GeneratedColumn<String?>(
+  static const VerificationMeta _countryMeta =
+      const VerificationMeta('country');
+  late final GeneratedColumn<String> country = GeneratedColumn<String>(
       'country', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _stateProvinceMeta =
+  static const VerificationMeta _stateProvinceMeta =
       const VerificationMeta('stateProvince');
-  late final GeneratedColumn<String?> stateProvince = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> stateProvince = GeneratedColumn<String>(
       'stateProvince', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _countyMeta = const VerificationMeta('county');
-  late final GeneratedColumn<String?> county = GeneratedColumn<String?>(
+  static const VerificationMeta _countyMeta = const VerificationMeta('county');
+  late final GeneratedColumn<String> county = GeneratedColumn<String>(
       'county', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _municipalityMeta =
+  static const VerificationMeta _municipalityMeta =
       const VerificationMeta('municipality');
-  late final GeneratedColumn<String?> municipality = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> municipality = GeneratedColumn<String>(
       'municipality', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _mediaIDMeta = const VerificationMeta('mediaID');
-  late final GeneratedColumn<String?> mediaID = GeneratedColumn<String?>(
+  static const VerificationMeta _mediaIDMeta =
+      const VerificationMeta('mediaID');
+  late final GeneratedColumn<String> mediaID = GeneratedColumn<String>(
       'mediaID', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _localityMeta = const VerificationMeta('locality');
-  late final GeneratedColumn<String?> locality = GeneratedColumn<String?>(
+  static const VerificationMeta _localityMeta =
+      const VerificationMeta('locality');
+  late final GeneratedColumn<String> locality = GeneratedColumn<String>(
       'locality', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
@@ -2265,8 +2245,31 @@ class Site extends Table with TableInfo<Site, SiteData> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   SiteData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return SiteData.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SiteData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      siteID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}siteID']),
+      projectUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
+      leadStuff: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}leadStuff']),
+      siteType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}siteType']),
+      country: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}country']),
+      stateProvince: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}stateProvince']),
+      county: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}county']),
+      municipality: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}municipality']),
+      mediaID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}mediaID']),
+      locality: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}locality']),
+    );
   }
 
   @override
@@ -2276,7 +2279,7 @@ class Site extends Table with TableInfo<Site, SiteData> {
 
   @override
   List<String> get customConstraints =>
-      const ['FOREIGN KEY(mediaID) REFERENCES media(primaryId)'];
+      const ['FOREIGN KEY(mediaID)REFERENCES media(primaryId)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -2290,7 +2293,7 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
   final int? maximumElevationInMeters;
   final int? coordinateUncertaintyInMeters;
   final String? siteID;
-  CoordinateData(
+  const CoordinateData(
       {this.id,
       this.decimalLatitude,
       this.decimalLongitude,
@@ -2299,56 +2302,33 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
       this.maximumElevationInMeters,
       this.coordinateUncertaintyInMeters,
       this.siteID});
-  factory CoordinateData.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return CoordinateData(
-      id: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      decimalLatitude: const RealType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}decimalLatitude']),
-      decimalLongitude: const RealType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}decimalLongitude']),
-      elevationInMeter: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}elevationInMeter']),
-      minimumElevationInMeters: const IntType().mapFromDatabaseResponse(
-          data['${effectivePrefix}minimumElevationInMeters']),
-      maximumElevationInMeters: const IntType().mapFromDatabaseResponse(
-          data['${effectivePrefix}maximumElevationInMeters']),
-      coordinateUncertaintyInMeters: const IntType().mapFromDatabaseResponse(
-          data['${effectivePrefix}coordinateUncertaintyInMeters']),
-      siteID: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}siteID']),
-    );
-  }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (!nullToAbsent || id != null) {
-      map['id'] = Variable<String?>(id);
+      map['id'] = Variable<String>(id);
     }
     if (!nullToAbsent || decimalLatitude != null) {
-      map['decimalLatitude'] = Variable<double?>(decimalLatitude);
+      map['decimalLatitude'] = Variable<double>(decimalLatitude);
     }
     if (!nullToAbsent || decimalLongitude != null) {
-      map['decimalLongitude'] = Variable<double?>(decimalLongitude);
+      map['decimalLongitude'] = Variable<double>(decimalLongitude);
     }
     if (!nullToAbsent || elevationInMeter != null) {
-      map['elevationInMeter'] = Variable<int?>(elevationInMeter);
+      map['elevationInMeter'] = Variable<int>(elevationInMeter);
     }
     if (!nullToAbsent || minimumElevationInMeters != null) {
-      map['minimumElevationInMeters'] =
-          Variable<int?>(minimumElevationInMeters);
+      map['minimumElevationInMeters'] = Variable<int>(minimumElevationInMeters);
     }
     if (!nullToAbsent || maximumElevationInMeters != null) {
-      map['maximumElevationInMeters'] =
-          Variable<int?>(maximumElevationInMeters);
+      map['maximumElevationInMeters'] = Variable<int>(maximumElevationInMeters);
     }
     if (!nullToAbsent || coordinateUncertaintyInMeters != null) {
       map['coordinateUncertaintyInMeters'] =
-          Variable<int?>(coordinateUncertaintyInMeters);
+          Variable<int>(coordinateUncertaintyInMeters);
     }
     if (!nullToAbsent || siteID != null) {
-      map['siteID'] = Variable<String?>(siteID);
+      map['siteID'] = Variable<String>(siteID);
     }
     return map;
   }
@@ -2416,26 +2396,35 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
   }
 
   CoordinateData copyWith(
-          {String? id,
-          double? decimalLatitude,
-          double? decimalLongitude,
-          int? elevationInMeter,
-          int? minimumElevationInMeters,
-          int? maximumElevationInMeters,
-          int? coordinateUncertaintyInMeters,
-          String? siteID}) =>
+          {Value<String?> id = const Value.absent(),
+          Value<double?> decimalLatitude = const Value.absent(),
+          Value<double?> decimalLongitude = const Value.absent(),
+          Value<int?> elevationInMeter = const Value.absent(),
+          Value<int?> minimumElevationInMeters = const Value.absent(),
+          Value<int?> maximumElevationInMeters = const Value.absent(),
+          Value<int?> coordinateUncertaintyInMeters = const Value.absent(),
+          Value<String?> siteID = const Value.absent()}) =>
       CoordinateData(
-        id: id ?? this.id,
-        decimalLatitude: decimalLatitude ?? this.decimalLatitude,
-        decimalLongitude: decimalLongitude ?? this.decimalLongitude,
-        elevationInMeter: elevationInMeter ?? this.elevationInMeter,
-        minimumElevationInMeters:
-            minimumElevationInMeters ?? this.minimumElevationInMeters,
-        maximumElevationInMeters:
-            maximumElevationInMeters ?? this.maximumElevationInMeters,
-        coordinateUncertaintyInMeters:
-            coordinateUncertaintyInMeters ?? this.coordinateUncertaintyInMeters,
-        siteID: siteID ?? this.siteID,
+        id: id.present ? id.value : this.id,
+        decimalLatitude: decimalLatitude.present
+            ? decimalLatitude.value
+            : this.decimalLatitude,
+        decimalLongitude: decimalLongitude.present
+            ? decimalLongitude.value
+            : this.decimalLongitude,
+        elevationInMeter: elevationInMeter.present
+            ? elevationInMeter.value
+            : this.elevationInMeter,
+        minimumElevationInMeters: minimumElevationInMeters.present
+            ? minimumElevationInMeters.value
+            : this.minimumElevationInMeters,
+        maximumElevationInMeters: maximumElevationInMeters.present
+            ? maximumElevationInMeters.value
+            : this.maximumElevationInMeters,
+        coordinateUncertaintyInMeters: coordinateUncertaintyInMeters.present
+            ? coordinateUncertaintyInMeters.value
+            : this.coordinateUncertaintyInMeters,
+        siteID: siteID.present ? siteID.value : this.siteID,
       );
   @override
   String toString() {
@@ -2508,14 +2497,14 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
     this.siteID = const Value.absent(),
   });
   static Insertable<CoordinateData> custom({
-    Expression<String?>? id,
-    Expression<double?>? decimalLatitude,
-    Expression<double?>? decimalLongitude,
-    Expression<int?>? elevationInMeter,
-    Expression<int?>? minimumElevationInMeters,
-    Expression<int?>? maximumElevationInMeters,
-    Expression<int?>? coordinateUncertaintyInMeters,
-    Expression<String?>? siteID,
+    Expression<String>? id,
+    Expression<double>? decimalLatitude,
+    Expression<double>? decimalLongitude,
+    Expression<int>? elevationInMeter,
+    Expression<int>? minimumElevationInMeters,
+    Expression<int>? maximumElevationInMeters,
+    Expression<int>? coordinateUncertaintyInMeters,
+    Expression<String>? siteID,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2560,31 +2549,31 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (id.present) {
-      map['id'] = Variable<String?>(id.value);
+      map['id'] = Variable<String>(id.value);
     }
     if (decimalLatitude.present) {
-      map['decimalLatitude'] = Variable<double?>(decimalLatitude.value);
+      map['decimalLatitude'] = Variable<double>(decimalLatitude.value);
     }
     if (decimalLongitude.present) {
-      map['decimalLongitude'] = Variable<double?>(decimalLongitude.value);
+      map['decimalLongitude'] = Variable<double>(decimalLongitude.value);
     }
     if (elevationInMeter.present) {
-      map['elevationInMeter'] = Variable<int?>(elevationInMeter.value);
+      map['elevationInMeter'] = Variable<int>(elevationInMeter.value);
     }
     if (minimumElevationInMeters.present) {
       map['minimumElevationInMeters'] =
-          Variable<int?>(minimumElevationInMeters.value);
+          Variable<int>(minimumElevationInMeters.value);
     }
     if (maximumElevationInMeters.present) {
       map['maximumElevationInMeters'] =
-          Variable<int?>(maximumElevationInMeters.value);
+          Variable<int>(maximumElevationInMeters.value);
     }
     if (coordinateUncertaintyInMeters.present) {
       map['coordinateUncertaintyInMeters'] =
-          Variable<int?>(coordinateUncertaintyInMeters.value);
+          Variable<int>(coordinateUncertaintyInMeters.value);
     }
     if (siteID.present) {
-      map['siteID'] = Variable<String?>(siteID.value);
+      map['siteID'] = Variable<String>(siteID.value);
     }
     return map;
   }
@@ -2611,58 +2600,58 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   Coordinate(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
       'id', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: 'UNIQUE PRIMARY KEY');
-  final VerificationMeta _decimalLatitudeMeta =
+  static const VerificationMeta _decimalLatitudeMeta =
       const VerificationMeta('decimalLatitude');
-  late final GeneratedColumn<double?> decimalLatitude =
-      GeneratedColumn<double?>('decimalLatitude', aliasedName, true,
-          type: const RealType(),
-          requiredDuringInsert: false,
-          $customConstraints: '');
-  final VerificationMeta _decimalLongitudeMeta =
-      const VerificationMeta('decimalLongitude');
-  late final GeneratedColumn<double?> decimalLongitude =
-      GeneratedColumn<double?>('decimalLongitude', aliasedName, true,
-          type: const RealType(),
-          requiredDuringInsert: false,
-          $customConstraints: '');
-  final VerificationMeta _elevationInMeterMeta =
-      const VerificationMeta('elevationInMeter');
-  late final GeneratedColumn<int?> elevationInMeter = GeneratedColumn<int?>(
-      'elevationInMeter', aliasedName, true,
-      type: const IntType(),
+  late final GeneratedColumn<double> decimalLatitude = GeneratedColumn<double>(
+      'decimalLatitude', aliasedName, true,
+      type: DriftSqlType.double,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _minimumElevationInMetersMeta =
+  static const VerificationMeta _decimalLongitudeMeta =
+      const VerificationMeta('decimalLongitude');
+  late final GeneratedColumn<double> decimalLongitude = GeneratedColumn<double>(
+      'decimalLongitude', aliasedName, true,
+      type: DriftSqlType.double,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _elevationInMeterMeta =
+      const VerificationMeta('elevationInMeter');
+  late final GeneratedColumn<int> elevationInMeter = GeneratedColumn<int>(
+      'elevationInMeter', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _minimumElevationInMetersMeta =
       const VerificationMeta('minimumElevationInMeters');
-  late final GeneratedColumn<int?> minimumElevationInMeters =
-      GeneratedColumn<int?>('minimumElevationInMeters', aliasedName, true,
-          type: const IntType(),
+  late final GeneratedColumn<int> minimumElevationInMeters =
+      GeneratedColumn<int>('minimumElevationInMeters', aliasedName, true,
+          type: DriftSqlType.int,
           requiredDuringInsert: false,
           $customConstraints: '');
-  final VerificationMeta _maximumElevationInMetersMeta =
+  static const VerificationMeta _maximumElevationInMetersMeta =
       const VerificationMeta('maximumElevationInMeters');
-  late final GeneratedColumn<int?> maximumElevationInMeters =
-      GeneratedColumn<int?>('maximumElevationInMeters', aliasedName, true,
-          type: const IntType(),
+  late final GeneratedColumn<int> maximumElevationInMeters =
+      GeneratedColumn<int>('maximumElevationInMeters', aliasedName, true,
+          type: DriftSqlType.int,
           requiredDuringInsert: false,
           $customConstraints: '');
-  final VerificationMeta _coordinateUncertaintyInMetersMeta =
+  static const VerificationMeta _coordinateUncertaintyInMetersMeta =
       const VerificationMeta('coordinateUncertaintyInMeters');
-  late final GeneratedColumn<int?> coordinateUncertaintyInMeters =
-      GeneratedColumn<int?>('coordinateUncertaintyInMeters', aliasedName, true,
-          type: const IntType(),
+  late final GeneratedColumn<int> coordinateUncertaintyInMeters =
+      GeneratedColumn<int>('coordinateUncertaintyInMeters', aliasedName, true,
+          type: DriftSqlType.int,
           requiredDuringInsert: false,
           $customConstraints: '');
-  final VerificationMeta _siteIDMeta = const VerificationMeta('siteID');
-  late final GeneratedColumn<String?> siteID = GeneratedColumn<String?>(
+  static const VerificationMeta _siteIDMeta = const VerificationMeta('siteID');
+  late final GeneratedColumn<String> siteID = GeneratedColumn<String>(
       'siteID', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: 'REFERENCES site(siteID)');
   @override
@@ -2738,8 +2727,26 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   CoordinateData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return CoordinateData.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return CoordinateData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id']),
+      decimalLatitude: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}decimalLatitude']),
+      decimalLongitude: attachedDatabase.typeMapping.read(
+          DriftSqlType.double, data['${effectivePrefix}decimalLongitude']),
+      elevationInMeter: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}elevationInMeter']),
+      minimumElevationInMeters: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}minimumElevationInMeters']),
+      maximumElevationInMeters: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}maximumElevationInMeters']),
+      coordinateUncertaintyInMeters: attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}coordinateUncertaintyInMeters']),
+      siteID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}siteID']),
+    );
   }
 
   @override
@@ -2747,6 +2754,8 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
     return Coordinate(attachedDatabase, alias);
   }
 
+  @override
+  List<String> get customConstraints => const [];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -2761,7 +2770,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
   final String? primaryCollMethod;
   final String? collMethodNotes;
   final String? siteID;
-  CollEventData(
+  const CollEventData(
       {required this.id,
       this.projectUuid,
       this.startDate,
@@ -2771,56 +2780,33 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
       this.primaryCollMethod,
       this.collMethodNotes,
       this.siteID});
-  factory CollEventData.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return CollEventData(
-      id: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      projectUuid: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}projectUuid']),
-      startDate: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}startDate']),
-      startTime: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}startTime']),
-      endDate: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}endDate']),
-      endTime: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}endTime']),
-      primaryCollMethod: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}primaryCollMethod']),
-      collMethodNotes: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}collMethodNotes']),
-      siteID: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}siteID']),
-    );
-  }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     if (!nullToAbsent || projectUuid != null) {
-      map['projectUuid'] = Variable<String?>(projectUuid);
+      map['projectUuid'] = Variable<String>(projectUuid);
     }
     if (!nullToAbsent || startDate != null) {
-      map['startDate'] = Variable<String?>(startDate);
+      map['startDate'] = Variable<String>(startDate);
     }
     if (!nullToAbsent || startTime != null) {
-      map['startTime'] = Variable<String?>(startTime);
+      map['startTime'] = Variable<String>(startTime);
     }
     if (!nullToAbsent || endDate != null) {
-      map['endDate'] = Variable<String?>(endDate);
+      map['endDate'] = Variable<String>(endDate);
     }
     if (!nullToAbsent || endTime != null) {
-      map['endTime'] = Variable<String?>(endTime);
+      map['endTime'] = Variable<String>(endTime);
     }
     if (!nullToAbsent || primaryCollMethod != null) {
-      map['primaryCollMethod'] = Variable<String?>(primaryCollMethod);
+      map['primaryCollMethod'] = Variable<String>(primaryCollMethod);
     }
     if (!nullToAbsent || collMethodNotes != null) {
-      map['collMethodNotes'] = Variable<String?>(collMethodNotes);
+      map['collMethodNotes'] = Variable<String>(collMethodNotes);
     }
     if (!nullToAbsent || siteID != null) {
-      map['siteID'] = Variable<String?>(siteID);
+      map['siteID'] = Variable<String>(siteID);
     }
     return map;
   }
@@ -2888,24 +2874,28 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
 
   CollEventData copyWith(
           {int? id,
-          String? projectUuid,
-          String? startDate,
-          String? startTime,
-          String? endDate,
-          String? endTime,
-          String? primaryCollMethod,
-          String? collMethodNotes,
-          String? siteID}) =>
+          Value<String?> projectUuid = const Value.absent(),
+          Value<String?> startDate = const Value.absent(),
+          Value<String?> startTime = const Value.absent(),
+          Value<String?> endDate = const Value.absent(),
+          Value<String?> endTime = const Value.absent(),
+          Value<String?> primaryCollMethod = const Value.absent(),
+          Value<String?> collMethodNotes = const Value.absent(),
+          Value<String?> siteID = const Value.absent()}) =>
       CollEventData(
         id: id ?? this.id,
-        projectUuid: projectUuid ?? this.projectUuid,
-        startDate: startDate ?? this.startDate,
-        startTime: startTime ?? this.startTime,
-        endDate: endDate ?? this.endDate,
-        endTime: endTime ?? this.endTime,
-        primaryCollMethod: primaryCollMethod ?? this.primaryCollMethod,
-        collMethodNotes: collMethodNotes ?? this.collMethodNotes,
-        siteID: siteID ?? this.siteID,
+        projectUuid: projectUuid.present ? projectUuid.value : this.projectUuid,
+        startDate: startDate.present ? startDate.value : this.startDate,
+        startTime: startTime.present ? startTime.value : this.startTime,
+        endDate: endDate.present ? endDate.value : this.endDate,
+        endTime: endTime.present ? endTime.value : this.endTime,
+        primaryCollMethod: primaryCollMethod.present
+            ? primaryCollMethod.value
+            : this.primaryCollMethod,
+        collMethodNotes: collMethodNotes.present
+            ? collMethodNotes.value
+            : this.collMethodNotes,
+        siteID: siteID.present ? siteID.value : this.siteID,
       );
   @override
   String toString() {
@@ -2975,14 +2965,14 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
   });
   static Insertable<CollEventData> custom({
     Expression<int>? id,
-    Expression<String?>? projectUuid,
-    Expression<String?>? startDate,
-    Expression<String?>? startTime,
-    Expression<String?>? endDate,
-    Expression<String?>? endTime,
-    Expression<String?>? primaryCollMethod,
-    Expression<String?>? collMethodNotes,
-    Expression<String?>? siteID,
+    Expression<String>? projectUuid,
+    Expression<String>? startDate,
+    Expression<String>? startTime,
+    Expression<String>? endDate,
+    Expression<String>? endTime,
+    Expression<String>? primaryCollMethod,
+    Expression<String>? collMethodNotes,
+    Expression<String>? siteID,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -3027,28 +3017,28 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
       map['id'] = Variable<int>(id.value);
     }
     if (projectUuid.present) {
-      map['projectUuid'] = Variable<String?>(projectUuid.value);
+      map['projectUuid'] = Variable<String>(projectUuid.value);
     }
     if (startDate.present) {
-      map['startDate'] = Variable<String?>(startDate.value);
+      map['startDate'] = Variable<String>(startDate.value);
     }
     if (startTime.present) {
-      map['startTime'] = Variable<String?>(startTime.value);
+      map['startTime'] = Variable<String>(startTime.value);
     }
     if (endDate.present) {
-      map['endDate'] = Variable<String?>(endDate.value);
+      map['endDate'] = Variable<String>(endDate.value);
     }
     if (endTime.present) {
-      map['endTime'] = Variable<String?>(endTime.value);
+      map['endTime'] = Variable<String>(endTime.value);
     }
     if (primaryCollMethod.present) {
-      map['primaryCollMethod'] = Variable<String?>(primaryCollMethod.value);
+      map['primaryCollMethod'] = Variable<String>(primaryCollMethod.value);
     }
     if (collMethodNotes.present) {
-      map['collMethodNotes'] = Variable<String?>(collMethodNotes.value);
+      map['collMethodNotes'] = Variable<String>(collMethodNotes.value);
     }
     if (siteID.present) {
-      map['siteID'] = Variable<String?>(siteID.value);
+      map['siteID'] = Variable<String>(siteID.value);
     }
     return map;
   }
@@ -3075,61 +3065,66 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   CollEvent(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
-      type: const IntType(),
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
-  final VerificationMeta _projectUuidMeta =
+  static const VerificationMeta _projectUuidMeta =
       const VerificationMeta('projectUuid');
-  late final GeneratedColumn<String?> projectUuid = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> projectUuid = GeneratedColumn<String>(
       'projectUuid', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _startDateMeta = const VerificationMeta('startDate');
-  late final GeneratedColumn<String?> startDate = GeneratedColumn<String?>(
+  static const VerificationMeta _startDateMeta =
+      const VerificationMeta('startDate');
+  late final GeneratedColumn<String> startDate = GeneratedColumn<String>(
       'startDate', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _startTimeMeta = const VerificationMeta('startTime');
-  late final GeneratedColumn<String?> startTime = GeneratedColumn<String?>(
+  static const VerificationMeta _startTimeMeta =
+      const VerificationMeta('startTime');
+  late final GeneratedColumn<String> startTime = GeneratedColumn<String>(
       'startTime', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _endDateMeta = const VerificationMeta('endDate');
-  late final GeneratedColumn<String?> endDate = GeneratedColumn<String?>(
+  static const VerificationMeta _endDateMeta =
+      const VerificationMeta('endDate');
+  late final GeneratedColumn<String> endDate = GeneratedColumn<String>(
       'endDate', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _endTimeMeta = const VerificationMeta('endTime');
-  late final GeneratedColumn<String?> endTime = GeneratedColumn<String?>(
+  static const VerificationMeta _endTimeMeta =
+      const VerificationMeta('endTime');
+  late final GeneratedColumn<String> endTime = GeneratedColumn<String>(
       'endTime', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _primaryCollMethodMeta =
+  static const VerificationMeta _primaryCollMethodMeta =
       const VerificationMeta('primaryCollMethod');
-  late final GeneratedColumn<String?> primaryCollMethod =
-      GeneratedColumn<String?>('primaryCollMethod', aliasedName, true,
-          type: const StringType(),
+  late final GeneratedColumn<String> primaryCollMethod =
+      GeneratedColumn<String>('primaryCollMethod', aliasedName, true,
+          type: DriftSqlType.string,
           requiredDuringInsert: false,
           $customConstraints: '');
-  final VerificationMeta _collMethodNotesMeta =
+  static const VerificationMeta _collMethodNotesMeta =
       const VerificationMeta('collMethodNotes');
-  late final GeneratedColumn<String?> collMethodNotes =
-      GeneratedColumn<String?>('collMethodNotes', aliasedName, true,
-          type: const StringType(),
-          requiredDuringInsert: false,
-          $customConstraints: '');
-  final VerificationMeta _siteIDMeta = const VerificationMeta('siteID');
-  late final GeneratedColumn<String?> siteID = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> collMethodNotes = GeneratedColumn<String>(
+      'collMethodNotes', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _siteIDMeta = const VerificationMeta('siteID');
+  late final GeneratedColumn<String> siteID = GeneratedColumn<String>(
       'siteID', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: 'REFERENCES site(siteID)');
   @override
@@ -3201,8 +3196,27 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   CollEventData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return CollEventData.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return CollEventData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      projectUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
+      startDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}startDate']),
+      startTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}startTime']),
+      endDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}endDate']),
+      endTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}endTime']),
+      primaryCollMethod: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}primaryCollMethod']),
+      collMethodNotes: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}collMethodNotes']),
+      siteID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}siteID']),
+    );
   }
 
   @override
@@ -3212,7 +3226,7 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
 
   @override
   List<String> get customConstraints =>
-      const ['FOREIGN KEY(projectUuid) REFERENCES project(uuid)'];
+      const ['FOREIGN KEY(projectUuid)REFERENCES project(uuid)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -3224,48 +3238,31 @@ class NarrativeData extends DataClass implements Insertable<NarrativeData> {
   final String? siteID;
   final String? narrative;
   final int? mediaID;
-  NarrativeData(
+  const NarrativeData(
       {required this.id,
       this.projectUuid,
       this.date,
       this.siteID,
       this.narrative,
       this.mediaID});
-  factory NarrativeData.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return NarrativeData(
-      id: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      projectUuid: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}projectUuid']),
-      date: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}date']),
-      siteID: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}siteID']),
-      narrative: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}narrative']),
-      mediaID: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}mediaID']),
-    );
-  }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     if (!nullToAbsent || projectUuid != null) {
-      map['projectUuid'] = Variable<String?>(projectUuid);
+      map['projectUuid'] = Variable<String>(projectUuid);
     }
     if (!nullToAbsent || date != null) {
-      map['date'] = Variable<String?>(date);
+      map['date'] = Variable<String>(date);
     }
     if (!nullToAbsent || siteID != null) {
-      map['siteID'] = Variable<String?>(siteID);
+      map['siteID'] = Variable<String>(siteID);
     }
     if (!nullToAbsent || narrative != null) {
-      map['narrative'] = Variable<String?>(narrative);
+      map['narrative'] = Variable<String>(narrative);
     }
     if (!nullToAbsent || mediaID != null) {
-      map['mediaID'] = Variable<int?>(mediaID);
+      map['mediaID'] = Variable<int>(mediaID);
     }
     return map;
   }
@@ -3315,18 +3312,18 @@ class NarrativeData extends DataClass implements Insertable<NarrativeData> {
 
   NarrativeData copyWith(
           {int? id,
-          String? projectUuid,
-          String? date,
-          String? siteID,
-          String? narrative,
-          int? mediaID}) =>
+          Value<String?> projectUuid = const Value.absent(),
+          Value<String?> date = const Value.absent(),
+          Value<String?> siteID = const Value.absent(),
+          Value<String?> narrative = const Value.absent(),
+          Value<int?> mediaID = const Value.absent()}) =>
       NarrativeData(
         id: id ?? this.id,
-        projectUuid: projectUuid ?? this.projectUuid,
-        date: date ?? this.date,
-        siteID: siteID ?? this.siteID,
-        narrative: narrative ?? this.narrative,
-        mediaID: mediaID ?? this.mediaID,
+        projectUuid: projectUuid.present ? projectUuid.value : this.projectUuid,
+        date: date.present ? date.value : this.date,
+        siteID: siteID.present ? siteID.value : this.siteID,
+        narrative: narrative.present ? narrative.value : this.narrative,
+        mediaID: mediaID.present ? mediaID.value : this.mediaID,
       );
   @override
   String toString() {
@@ -3381,11 +3378,11 @@ class NarrativeCompanion extends UpdateCompanion<NarrativeData> {
   });
   static Insertable<NarrativeData> custom({
     Expression<int>? id,
-    Expression<String?>? projectUuid,
-    Expression<String?>? date,
-    Expression<String?>? siteID,
-    Expression<String?>? narrative,
-    Expression<int?>? mediaID,
+    Expression<String>? projectUuid,
+    Expression<String>? date,
+    Expression<String>? siteID,
+    Expression<String>? narrative,
+    Expression<int>? mediaID,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -3421,19 +3418,19 @@ class NarrativeCompanion extends UpdateCompanion<NarrativeData> {
       map['id'] = Variable<int>(id.value);
     }
     if (projectUuid.present) {
-      map['projectUuid'] = Variable<String?>(projectUuid.value);
+      map['projectUuid'] = Variable<String>(projectUuid.value);
     }
     if (date.present) {
-      map['date'] = Variable<String?>(date.value);
+      map['date'] = Variable<String>(date.value);
     }
     if (siteID.present) {
-      map['siteID'] = Variable<String?>(siteID.value);
+      map['siteID'] = Variable<String>(siteID.value);
     }
     if (narrative.present) {
-      map['narrative'] = Variable<String?>(narrative.value);
+      map['narrative'] = Variable<String>(narrative.value);
     }
     if (mediaID.present) {
-      map['mediaID'] = Variable<int?>(mediaID.value);
+      map['mediaID'] = Variable<int>(mediaID.value);
     }
     return map;
   }
@@ -3457,41 +3454,44 @@ class Narrative extends Table with TableInfo<Narrative, NarrativeData> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   Narrative(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
-      type: const IntType(),
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
-  final VerificationMeta _projectUuidMeta =
+  static const VerificationMeta _projectUuidMeta =
       const VerificationMeta('projectUuid');
-  late final GeneratedColumn<String?> projectUuid = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> projectUuid = GeneratedColumn<String>(
       'projectUuid', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _dateMeta = const VerificationMeta('date');
-  late final GeneratedColumn<String?> date = GeneratedColumn<String?>(
+  static const VerificationMeta _dateMeta = const VerificationMeta('date');
+  late final GeneratedColumn<String> date = GeneratedColumn<String>(
       'date', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _siteIDMeta = const VerificationMeta('siteID');
-  late final GeneratedColumn<String?> siteID = GeneratedColumn<String?>(
+  static const VerificationMeta _siteIDMeta = const VerificationMeta('siteID');
+  late final GeneratedColumn<String> siteID = GeneratedColumn<String>(
       'siteID', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _narrativeMeta = const VerificationMeta('narrative');
-  late final GeneratedColumn<String?> narrative = GeneratedColumn<String?>(
+  static const VerificationMeta _narrativeMeta =
+      const VerificationMeta('narrative');
+  late final GeneratedColumn<String> narrative = GeneratedColumn<String>(
       'narrative', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _mediaIDMeta = const VerificationMeta('mediaID');
-  late final GeneratedColumn<int?> mediaID = GeneratedColumn<int?>(
+  static const VerificationMeta _mediaIDMeta =
+      const VerificationMeta('mediaID');
+  late final GeneratedColumn<int> mediaID = GeneratedColumn<int>(
       'mediaID', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: 'REFERENCES media(primaryId)');
   @override
@@ -3538,8 +3538,21 @@ class Narrative extends Table with TableInfo<Narrative, NarrativeData> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   NarrativeData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return NarrativeData.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return NarrativeData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      projectUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
+      date: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}date']),
+      siteID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}siteID']),
+      narrative: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}narrative']),
+      mediaID: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}mediaID']),
+    );
   }
 
   @override
@@ -3549,8 +3562,8 @@ class Narrative extends Table with TableInfo<Narrative, NarrativeData> {
 
   @override
   List<String> get customConstraints => const [
-        'FOREIGN KEY(projectUuid) REFERENCES project(uuid)',
-        'FOREIGN KEY(siteID) REFERENCES site(siteID)'
+        'FOREIGN KEY(projectUuid)REFERENCES project(uuid)',
+        'FOREIGN KEY(siteID)REFERENCES site(siteID)'
       ];
   @override
   bool get dontWriteConstraints => true;
@@ -3564,51 +3577,33 @@ class AssociatedDataData extends DataClass
   final Uint8List? type;
   final String? description;
   final String? fileId;
-  AssociatedDataData(
+  const AssociatedDataData(
       {this.primaryId,
       this.secondaryId,
       this.secondaryIdRef,
       this.type,
       this.description,
       this.fileId});
-  factory AssociatedDataData.fromData(Map<String, dynamic> data,
-      {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return AssociatedDataData(
-      primaryId: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}primaryId']),
-      secondaryId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}secondaryId']),
-      secondaryIdRef: const BlobType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}secondaryIdRef']),
-      type: const BlobType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}type']),
-      description: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}description']),
-      fileId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}fileId']),
-    );
-  }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (!nullToAbsent || primaryId != null) {
-      map['primaryId'] = Variable<int?>(primaryId);
+      map['primaryId'] = Variable<int>(primaryId);
     }
     if (!nullToAbsent || secondaryId != null) {
-      map['secondaryId'] = Variable<String?>(secondaryId);
+      map['secondaryId'] = Variable<String>(secondaryId);
     }
     if (!nullToAbsent || secondaryIdRef != null) {
-      map['secondaryIdRef'] = Variable<Uint8List?>(secondaryIdRef);
+      map['secondaryIdRef'] = Variable<Uint8List>(secondaryIdRef);
     }
     if (!nullToAbsent || type != null) {
-      map['type'] = Variable<Uint8List?>(type);
+      map['type'] = Variable<Uint8List>(type);
     }
     if (!nullToAbsent || description != null) {
-      map['description'] = Variable<String?>(description);
+      map['description'] = Variable<String>(description);
     }
     if (!nullToAbsent || fileId != null) {
-      map['fileId'] = Variable<String?>(fileId);
+      map['fileId'] = Variable<String>(fileId);
     }
     return map;
   }
@@ -3659,19 +3654,20 @@ class AssociatedDataData extends DataClass
   }
 
   AssociatedDataData copyWith(
-          {int? primaryId,
-          String? secondaryId,
-          Uint8List? secondaryIdRef,
-          Uint8List? type,
-          String? description,
-          String? fileId}) =>
+          {Value<int?> primaryId = const Value.absent(),
+          Value<String?> secondaryId = const Value.absent(),
+          Value<Uint8List?> secondaryIdRef = const Value.absent(),
+          Value<Uint8List?> type = const Value.absent(),
+          Value<String?> description = const Value.absent(),
+          Value<String?> fileId = const Value.absent()}) =>
       AssociatedDataData(
-        primaryId: primaryId ?? this.primaryId,
-        secondaryId: secondaryId ?? this.secondaryId,
-        secondaryIdRef: secondaryIdRef ?? this.secondaryIdRef,
-        type: type ?? this.type,
-        description: description ?? this.description,
-        fileId: fileId ?? this.fileId,
+        primaryId: primaryId.present ? primaryId.value : this.primaryId,
+        secondaryId: secondaryId.present ? secondaryId.value : this.secondaryId,
+        secondaryIdRef:
+            secondaryIdRef.present ? secondaryIdRef.value : this.secondaryIdRef,
+        type: type.present ? type.value : this.type,
+        description: description.present ? description.value : this.description,
+        fileId: fileId.present ? fileId.value : this.fileId,
       );
   @override
   String toString() {
@@ -3688,15 +3684,21 @@ class AssociatedDataData extends DataClass
 
   @override
   int get hashCode => Object.hash(
-      primaryId, secondaryId, secondaryIdRef, type, description, fileId);
+      primaryId,
+      secondaryId,
+      $driftBlobEquality.hash(secondaryIdRef),
+      $driftBlobEquality.hash(type),
+      description,
+      fileId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is AssociatedDataData &&
           other.primaryId == this.primaryId &&
           other.secondaryId == this.secondaryId &&
-          other.secondaryIdRef == this.secondaryIdRef &&
-          other.type == this.type &&
+          $driftBlobEquality.equals(
+              other.secondaryIdRef, this.secondaryIdRef) &&
+          $driftBlobEquality.equals(other.type, this.type) &&
           other.description == this.description &&
           other.fileId == this.fileId);
 }
@@ -3725,12 +3727,12 @@ class AssociatedDataCompanion extends UpdateCompanion<AssociatedDataData> {
     this.fileId = const Value.absent(),
   });
   static Insertable<AssociatedDataData> custom({
-    Expression<int?>? primaryId,
-    Expression<String?>? secondaryId,
-    Expression<Uint8List?>? secondaryIdRef,
-    Expression<Uint8List?>? type,
-    Expression<String?>? description,
-    Expression<String?>? fileId,
+    Expression<int>? primaryId,
+    Expression<String>? secondaryId,
+    Expression<Uint8List>? secondaryIdRef,
+    Expression<Uint8List>? type,
+    Expression<String>? description,
+    Expression<String>? fileId,
   }) {
     return RawValuesInsertable({
       if (primaryId != null) 'primaryId': primaryId,
@@ -3763,22 +3765,22 @@ class AssociatedDataCompanion extends UpdateCompanion<AssociatedDataData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (primaryId.present) {
-      map['primaryId'] = Variable<int?>(primaryId.value);
+      map['primaryId'] = Variable<int>(primaryId.value);
     }
     if (secondaryId.present) {
-      map['secondaryId'] = Variable<String?>(secondaryId.value);
+      map['secondaryId'] = Variable<String>(secondaryId.value);
     }
     if (secondaryIdRef.present) {
-      map['secondaryIdRef'] = Variable<Uint8List?>(secondaryIdRef.value);
+      map['secondaryIdRef'] = Variable<Uint8List>(secondaryIdRef.value);
     }
     if (type.present) {
-      map['type'] = Variable<Uint8List?>(type.value);
+      map['type'] = Variable<Uint8List>(type.value);
     }
     if (description.present) {
-      map['description'] = Variable<String?>(description.value);
+      map['description'] = Variable<String>(description.value);
     }
     if (fileId.present) {
-      map['fileId'] = Variable<String?>(fileId.value);
+      map['fileId'] = Variable<String>(fileId.value);
     }
     return map;
   }
@@ -3803,43 +3805,45 @@ class AssociatedData extends Table
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   AssociatedData(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _primaryIdMeta = const VerificationMeta('primaryId');
-  late final GeneratedColumn<int?> primaryId = GeneratedColumn<int?>(
+  static const VerificationMeta _primaryIdMeta =
+      const VerificationMeta('primaryId');
+  late final GeneratedColumn<int> primaryId = GeneratedColumn<int>(
       'primaryId', aliasedName, true,
-      type: const IntType(),
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  final VerificationMeta _secondaryIdMeta =
+  static const VerificationMeta _secondaryIdMeta =
       const VerificationMeta('secondaryId');
-  late final GeneratedColumn<String?> secondaryId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> secondaryId = GeneratedColumn<String>(
       'secondaryId', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _secondaryIdRefMeta =
+  static const VerificationMeta _secondaryIdRefMeta =
       const VerificationMeta('secondaryIdRef');
-  late final GeneratedColumn<Uint8List?> secondaryIdRef =
-      GeneratedColumn<Uint8List?>('secondaryIdRef', aliasedName, true,
-          type: const BlobType(),
+  late final GeneratedColumn<Uint8List> secondaryIdRef =
+      GeneratedColumn<Uint8List>('secondaryIdRef', aliasedName, true,
+          type: DriftSqlType.blob,
           requiredDuringInsert: false,
           $customConstraints: '');
-  final VerificationMeta _typeMeta = const VerificationMeta('type');
-  late final GeneratedColumn<Uint8List?> type = GeneratedColumn<Uint8List?>(
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  late final GeneratedColumn<Uint8List> type = GeneratedColumn<Uint8List>(
       'type', aliasedName, true,
-      type: const BlobType(),
+      type: DriftSqlType.blob,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _descriptionMeta =
+  static const VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
-  late final GeneratedColumn<String?> description = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
       'description', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _fileIdMeta = const VerificationMeta('fileId');
-  late final GeneratedColumn<String?> fileId = GeneratedColumn<String?>(
+  static const VerificationMeta _fileIdMeta = const VerificationMeta('fileId');
+  late final GeneratedColumn<String> fileId = GeneratedColumn<String>(
       'fileId', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
@@ -3891,8 +3895,21 @@ class AssociatedData extends Table
   Set<GeneratedColumn> get $primaryKey => {primaryId};
   @override
   AssociatedDataData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return AssociatedDataData.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return AssociatedDataData(
+      primaryId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}primaryId']),
+      secondaryId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}secondaryId']),
+      secondaryIdRef: attachedDatabase.typeMapping
+          .read(DriftSqlType.blob, data['${effectivePrefix}secondaryIdRef']),
+      type: attachedDatabase.typeMapping
+          .read(DriftSqlType.blob, data['${effectivePrefix}type']),
+      description: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}description']),
+      fileId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}fileId']),
+    );
   }
 
   @override
@@ -3901,6 +3918,8 @@ class AssociatedData extends Table
   }
 
   @override
+  List<String> get customConstraints => const [];
+  @override
   bool get dontWriteConstraints => true;
 }
 
@@ -3908,25 +3927,15 @@ class PersonnelListData extends DataClass
     implements Insertable<PersonnelListData> {
   final String? projectUuid;
   final String? personnelUuid;
-  PersonnelListData({this.projectUuid, this.personnelUuid});
-  factory PersonnelListData.fromData(Map<String, dynamic> data,
-      {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return PersonnelListData(
-      projectUuid: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}projectUuid']),
-      personnelUuid: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}personnelUuid']),
-    );
-  }
+  const PersonnelListData({this.projectUuid, this.personnelUuid});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (!nullToAbsent || projectUuid != null) {
-      map['projectUuid'] = Variable<String?>(projectUuid);
+      map['projectUuid'] = Variable<String>(projectUuid);
     }
     if (!nullToAbsent || personnelUuid != null) {
-      map['personnelUuid'] = Variable<String?>(personnelUuid);
+      map['personnelUuid'] = Variable<String>(personnelUuid);
     }
     return map;
   }
@@ -3959,10 +3968,13 @@ class PersonnelListData extends DataClass
     };
   }
 
-  PersonnelListData copyWith({String? projectUuid, String? personnelUuid}) =>
+  PersonnelListData copyWith(
+          {Value<String?> projectUuid = const Value.absent(),
+          Value<String?> personnelUuid = const Value.absent()}) =>
       PersonnelListData(
-        projectUuid: projectUuid ?? this.projectUuid,
-        personnelUuid: personnelUuid ?? this.personnelUuid,
+        projectUuid: projectUuid.present ? projectUuid.value : this.projectUuid,
+        personnelUuid:
+            personnelUuid.present ? personnelUuid.value : this.personnelUuid,
       );
   @override
   String toString() {
@@ -3995,8 +4007,8 @@ class PersonnelListCompanion extends UpdateCompanion<PersonnelListData> {
     this.personnelUuid = const Value.absent(),
   });
   static Insertable<PersonnelListData> custom({
-    Expression<String?>? projectUuid,
-    Expression<String?>? personnelUuid,
+    Expression<String>? projectUuid,
+    Expression<String>? personnelUuid,
   }) {
     return RawValuesInsertable({
       if (projectUuid != null) 'projectUuid': projectUuid,
@@ -4016,10 +4028,10 @@ class PersonnelListCompanion extends UpdateCompanion<PersonnelListData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (projectUuid.present) {
-      map['projectUuid'] = Variable<String?>(projectUuid.value);
+      map['projectUuid'] = Variable<String>(projectUuid.value);
     }
     if (personnelUuid.present) {
-      map['personnelUuid'] = Variable<String?>(personnelUuid.value);
+      map['personnelUuid'] = Variable<String>(personnelUuid.value);
     }
     return map;
   }
@@ -4040,18 +4052,18 @@ class PersonnelList extends Table
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   PersonnelList(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _projectUuidMeta =
+  static const VerificationMeta _projectUuidMeta =
       const VerificationMeta('projectUuid');
-  late final GeneratedColumn<String?> projectUuid = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> projectUuid = GeneratedColumn<String>(
       'projectUuid', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _personnelUuidMeta =
+  static const VerificationMeta _personnelUuidMeta =
       const VerificationMeta('personnelUuid');
-  late final GeneratedColumn<String?> personnelUuid = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> personnelUuid = GeneratedColumn<String>(
       'personnelUuid', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
@@ -4081,11 +4093,16 @@ class PersonnelList extends Table
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => const {};
   @override
   PersonnelListData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return PersonnelListData.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PersonnelListData(
+      projectUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
+      personnelUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}personnelUuid']),
+    );
   }
 
   @override
@@ -4095,8 +4112,8 @@ class PersonnelList extends Table
 
   @override
   List<String> get customConstraints => const [
-        'FOREIGN KEY(projectUuid) REFERENCES project(uuid)',
-        'FOREIGN KEY(personnelUuid) REFERENCES personnel(uuid)'
+        'FOREIGN KEY(projectUuid)REFERENCES project(uuid)',
+        'FOREIGN KEY(personnelUuid)REFERENCES personnel(uuid)'
       ];
   @override
   bool get dontWriteConstraints => true;
@@ -4117,7 +4134,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
   final int? collectorNumber;
   final int? collEventID;
   final String? preparatorID;
-  SpecimenData(
+  const SpecimenData(
       {required this.uuid,
       this.projectUuid,
       this.speciesID,
@@ -4132,81 +4149,48 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       this.collectorNumber,
       this.collEventID,
       this.preparatorID});
-  factory SpecimenData.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return SpecimenData(
-      uuid: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}uuid'])!,
-      projectUuid: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}projectUuid']),
-      speciesID: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}speciesID']),
-      taxonGroup: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}taxonGroup']),
-      condition: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}condition']),
-      prepDate: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}prepDate']),
-      prepTime: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}prepTime']),
-      captureDate: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}captureDate']),
-      captureTime: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}captureTime']),
-      trapType: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}trapType']),
-      collectorID: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}collectorID']),
-      collectorNumber: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}collectorNumber']),
-      collEventID: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}collEventID']),
-      preparatorID: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}preparatorID']),
-    );
-  }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['uuid'] = Variable<String>(uuid);
     if (!nullToAbsent || projectUuid != null) {
-      map['projectUuid'] = Variable<String?>(projectUuid);
+      map['projectUuid'] = Variable<String>(projectUuid);
     }
     if (!nullToAbsent || speciesID != null) {
-      map['speciesID'] = Variable<int?>(speciesID);
+      map['speciesID'] = Variable<int>(speciesID);
     }
     if (!nullToAbsent || taxonGroup != null) {
-      map['taxonGroup'] = Variable<String?>(taxonGroup);
+      map['taxonGroup'] = Variable<String>(taxonGroup);
     }
     if (!nullToAbsent || condition != null) {
-      map['condition'] = Variable<String?>(condition);
+      map['condition'] = Variable<String>(condition);
     }
     if (!nullToAbsent || prepDate != null) {
-      map['prepDate'] = Variable<String?>(prepDate);
+      map['prepDate'] = Variable<String>(prepDate);
     }
     if (!nullToAbsent || prepTime != null) {
-      map['prepTime'] = Variable<String?>(prepTime);
+      map['prepTime'] = Variable<String>(prepTime);
     }
     if (!nullToAbsent || captureDate != null) {
-      map['captureDate'] = Variable<String?>(captureDate);
+      map['captureDate'] = Variable<String>(captureDate);
     }
     if (!nullToAbsent || captureTime != null) {
-      map['captureTime'] = Variable<String?>(captureTime);
+      map['captureTime'] = Variable<String>(captureTime);
     }
     if (!nullToAbsent || trapType != null) {
-      map['trapType'] = Variable<String?>(trapType);
+      map['trapType'] = Variable<String>(trapType);
     }
     if (!nullToAbsent || collectorID != null) {
-      map['collectorID'] = Variable<String?>(collectorID);
+      map['collectorID'] = Variable<String>(collectorID);
     }
     if (!nullToAbsent || collectorNumber != null) {
-      map['collectorNumber'] = Variable<int?>(collectorNumber);
+      map['collectorNumber'] = Variable<int>(collectorNumber);
     }
     if (!nullToAbsent || collEventID != null) {
-      map['collEventID'] = Variable<int?>(collEventID);
+      map['collEventID'] = Variable<int>(collEventID);
     }
     if (!nullToAbsent || preparatorID != null) {
-      map['preparatorID'] = Variable<String?>(preparatorID);
+      map['preparatorID'] = Variable<String>(preparatorID);
     }
     return map;
   }
@@ -4299,34 +4283,37 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
 
   SpecimenData copyWith(
           {String? uuid,
-          String? projectUuid,
-          int? speciesID,
-          String? taxonGroup,
-          String? condition,
-          String? prepDate,
-          String? prepTime,
-          String? captureDate,
-          String? captureTime,
-          String? trapType,
-          String? collectorID,
-          int? collectorNumber,
-          int? collEventID,
-          String? preparatorID}) =>
+          Value<String?> projectUuid = const Value.absent(),
+          Value<int?> speciesID = const Value.absent(),
+          Value<String?> taxonGroup = const Value.absent(),
+          Value<String?> condition = const Value.absent(),
+          Value<String?> prepDate = const Value.absent(),
+          Value<String?> prepTime = const Value.absent(),
+          Value<String?> captureDate = const Value.absent(),
+          Value<String?> captureTime = const Value.absent(),
+          Value<String?> trapType = const Value.absent(),
+          Value<String?> collectorID = const Value.absent(),
+          Value<int?> collectorNumber = const Value.absent(),
+          Value<int?> collEventID = const Value.absent(),
+          Value<String?> preparatorID = const Value.absent()}) =>
       SpecimenData(
         uuid: uuid ?? this.uuid,
-        projectUuid: projectUuid ?? this.projectUuid,
-        speciesID: speciesID ?? this.speciesID,
-        taxonGroup: taxonGroup ?? this.taxonGroup,
-        condition: condition ?? this.condition,
-        prepDate: prepDate ?? this.prepDate,
-        prepTime: prepTime ?? this.prepTime,
-        captureDate: captureDate ?? this.captureDate,
-        captureTime: captureTime ?? this.captureTime,
-        trapType: trapType ?? this.trapType,
-        collectorID: collectorID ?? this.collectorID,
-        collectorNumber: collectorNumber ?? this.collectorNumber,
-        collEventID: collEventID ?? this.collEventID,
-        preparatorID: preparatorID ?? this.preparatorID,
+        projectUuid: projectUuid.present ? projectUuid.value : this.projectUuid,
+        speciesID: speciesID.present ? speciesID.value : this.speciesID,
+        taxonGroup: taxonGroup.present ? taxonGroup.value : this.taxonGroup,
+        condition: condition.present ? condition.value : this.condition,
+        prepDate: prepDate.present ? prepDate.value : this.prepDate,
+        prepTime: prepTime.present ? prepTime.value : this.prepTime,
+        captureDate: captureDate.present ? captureDate.value : this.captureDate,
+        captureTime: captureTime.present ? captureTime.value : this.captureTime,
+        trapType: trapType.present ? trapType.value : this.trapType,
+        collectorID: collectorID.present ? collectorID.value : this.collectorID,
+        collectorNumber: collectorNumber.present
+            ? collectorNumber.value
+            : this.collectorNumber,
+        collEventID: collEventID.present ? collEventID.value : this.collEventID,
+        preparatorID:
+            preparatorID.present ? preparatorID.value : this.preparatorID,
       );
   @override
   String toString() {
@@ -4434,19 +4421,19 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
   }) : uuid = Value(uuid);
   static Insertable<SpecimenData> custom({
     Expression<String>? uuid,
-    Expression<String?>? projectUuid,
-    Expression<int?>? speciesID,
-    Expression<String?>? taxonGroup,
-    Expression<String?>? condition,
-    Expression<String?>? prepDate,
-    Expression<String?>? prepTime,
-    Expression<String?>? captureDate,
-    Expression<String?>? captureTime,
-    Expression<String?>? trapType,
-    Expression<String?>? collectorID,
-    Expression<int?>? collectorNumber,
-    Expression<int?>? collEventID,
-    Expression<String?>? preparatorID,
+    Expression<String>? projectUuid,
+    Expression<int>? speciesID,
+    Expression<String>? taxonGroup,
+    Expression<String>? condition,
+    Expression<String>? prepDate,
+    Expression<String>? prepTime,
+    Expression<String>? captureDate,
+    Expression<String>? captureTime,
+    Expression<String>? trapType,
+    Expression<String>? collectorID,
+    Expression<int>? collectorNumber,
+    Expression<int>? collEventID,
+    Expression<String>? preparatorID,
   }) {
     return RawValuesInsertable({
       if (uuid != null) 'uuid': uuid,
@@ -4506,43 +4493,43 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       map['uuid'] = Variable<String>(uuid.value);
     }
     if (projectUuid.present) {
-      map['projectUuid'] = Variable<String?>(projectUuid.value);
+      map['projectUuid'] = Variable<String>(projectUuid.value);
     }
     if (speciesID.present) {
-      map['speciesID'] = Variable<int?>(speciesID.value);
+      map['speciesID'] = Variable<int>(speciesID.value);
     }
     if (taxonGroup.present) {
-      map['taxonGroup'] = Variable<String?>(taxonGroup.value);
+      map['taxonGroup'] = Variable<String>(taxonGroup.value);
     }
     if (condition.present) {
-      map['condition'] = Variable<String?>(condition.value);
+      map['condition'] = Variable<String>(condition.value);
     }
     if (prepDate.present) {
-      map['prepDate'] = Variable<String?>(prepDate.value);
+      map['prepDate'] = Variable<String>(prepDate.value);
     }
     if (prepTime.present) {
-      map['prepTime'] = Variable<String?>(prepTime.value);
+      map['prepTime'] = Variable<String>(prepTime.value);
     }
     if (captureDate.present) {
-      map['captureDate'] = Variable<String?>(captureDate.value);
+      map['captureDate'] = Variable<String>(captureDate.value);
     }
     if (captureTime.present) {
-      map['captureTime'] = Variable<String?>(captureTime.value);
+      map['captureTime'] = Variable<String>(captureTime.value);
     }
     if (trapType.present) {
-      map['trapType'] = Variable<String?>(trapType.value);
+      map['trapType'] = Variable<String>(trapType.value);
     }
     if (collectorID.present) {
-      map['collectorID'] = Variable<String?>(collectorID.value);
+      map['collectorID'] = Variable<String>(collectorID.value);
     }
     if (collectorNumber.present) {
-      map['collectorNumber'] = Variable<int?>(collectorNumber.value);
+      map['collectorNumber'] = Variable<int>(collectorNumber.value);
     }
     if (collEventID.present) {
-      map['collEventID'] = Variable<int?>(collEventID.value);
+      map['collEventID'] = Variable<int>(collEventID.value);
     }
     if (preparatorID.present) {
-      map['preparatorID'] = Variable<String?>(preparatorID.value);
+      map['preparatorID'] = Variable<String>(preparatorID.value);
     }
     return map;
   }
@@ -4574,95 +4561,101 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   Specimen(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _uuidMeta = const VerificationMeta('uuid');
-  late final GeneratedColumn<String?> uuid = GeneratedColumn<String?>(
+  static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
       'uuid', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'UNIQUE NOT NULL PRIMARY KEY');
-  final VerificationMeta _projectUuidMeta =
+  static const VerificationMeta _projectUuidMeta =
       const VerificationMeta('projectUuid');
-  late final GeneratedColumn<String?> projectUuid = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> projectUuid = GeneratedColumn<String>(
       'projectUuid', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _speciesIDMeta = const VerificationMeta('speciesID');
-  late final GeneratedColumn<int?> speciesID = GeneratedColumn<int?>(
+  static const VerificationMeta _speciesIDMeta =
+      const VerificationMeta('speciesID');
+  late final GeneratedColumn<int> speciesID = GeneratedColumn<int>(
       'speciesID', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _taxonGroupMeta = const VerificationMeta('taxonGroup');
-  late final GeneratedColumn<String?> taxonGroup = GeneratedColumn<String?>(
+  static const VerificationMeta _taxonGroupMeta =
+      const VerificationMeta('taxonGroup');
+  late final GeneratedColumn<String> taxonGroup = GeneratedColumn<String>(
       'taxonGroup', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _conditionMeta = const VerificationMeta('condition');
-  late final GeneratedColumn<String?> condition = GeneratedColumn<String?>(
+  static const VerificationMeta _conditionMeta =
+      const VerificationMeta('condition');
+  late final GeneratedColumn<String> condition = GeneratedColumn<String>(
       'condition', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _prepDateMeta = const VerificationMeta('prepDate');
-  late final GeneratedColumn<String?> prepDate = GeneratedColumn<String?>(
+  static const VerificationMeta _prepDateMeta =
+      const VerificationMeta('prepDate');
+  late final GeneratedColumn<String> prepDate = GeneratedColumn<String>(
       'prepDate', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _prepTimeMeta = const VerificationMeta('prepTime');
-  late final GeneratedColumn<String?> prepTime = GeneratedColumn<String?>(
+  static const VerificationMeta _prepTimeMeta =
+      const VerificationMeta('prepTime');
+  late final GeneratedColumn<String> prepTime = GeneratedColumn<String>(
       'prepTime', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _captureDateMeta =
+  static const VerificationMeta _captureDateMeta =
       const VerificationMeta('captureDate');
-  late final GeneratedColumn<String?> captureDate = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> captureDate = GeneratedColumn<String>(
       'captureDate', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _captureTimeMeta =
+  static const VerificationMeta _captureTimeMeta =
       const VerificationMeta('captureTime');
-  late final GeneratedColumn<String?> captureTime = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> captureTime = GeneratedColumn<String>(
       'captureTime', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _trapTypeMeta = const VerificationMeta('trapType');
-  late final GeneratedColumn<String?> trapType = GeneratedColumn<String?>(
+  static const VerificationMeta _trapTypeMeta =
+      const VerificationMeta('trapType');
+  late final GeneratedColumn<String> trapType = GeneratedColumn<String>(
       'trapType', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _collectorIDMeta =
+  static const VerificationMeta _collectorIDMeta =
       const VerificationMeta('collectorID');
-  late final GeneratedColumn<String?> collectorID = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> collectorID = GeneratedColumn<String>(
       'collectorID', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _collectorNumberMeta =
+  static const VerificationMeta _collectorNumberMeta =
       const VerificationMeta('collectorNumber');
-  late final GeneratedColumn<int?> collectorNumber = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> collectorNumber = GeneratedColumn<int>(
       'collectorNumber', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _collEventIDMeta =
+  static const VerificationMeta _collEventIDMeta =
       const VerificationMeta('collEventID');
-  late final GeneratedColumn<int?> collEventID = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> collEventID = GeneratedColumn<int>(
       'collEventID', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _preparatorIDMeta =
+  static const VerificationMeta _preparatorIDMeta =
       const VerificationMeta('preparatorID');
-  late final GeneratedColumn<String?> preparatorID = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> preparatorID = GeneratedColumn<String>(
       'preparatorID', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: 'REFERENCES personnel(uuid)');
   @override
@@ -4772,8 +4765,37 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
   Set<GeneratedColumn> get $primaryKey => {uuid};
   @override
   SpecimenData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return SpecimenData.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SpecimenData(
+      uuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}uuid'])!,
+      projectUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
+      speciesID: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}speciesID']),
+      taxonGroup: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}taxonGroup']),
+      condition: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}condition']),
+      prepDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}prepDate']),
+      prepTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}prepTime']),
+      captureDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}captureDate']),
+      captureTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}captureTime']),
+      trapType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}trapType']),
+      collectorID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}collectorID']),
+      collectorNumber: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}collectorNumber']),
+      collEventID: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}collEventID']),
+      preparatorID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}preparatorID']),
+    );
   }
 
   @override
@@ -4783,9 +4805,9 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
 
   @override
   List<String> get customConstraints => const [
-        'FOREIGN KEY(projectUuid) REFERENCES project(uuid)',
-        'FOREIGN KEY(collectorID) REFERENCES personnel(uuid)',
-        'FOREIGN KEY(collEventID) REFERENCES collEvent(id)'
+        'FOREIGN KEY(projectUuid)REFERENCES project(uuid)',
+        'FOREIGN KEY(collectorID)REFERENCES personnel(uuid)',
+        'FOREIGN KEY(collEventID)REFERENCES collEvent(id)'
       ];
   @override
   bool get dontWriteConstraints => true;
@@ -4817,7 +4839,7 @@ class MammalMeasurementData extends DataClass
   final int? embryoRightCount;
   final int? embryoCRLeft;
   final int? embryoCRRight;
-  MammalMeasurementData(
+  const MammalMeasurementData(
       {required this.id,
       this.specimenUuid,
       this.totalLength,
@@ -4842,132 +4864,78 @@ class MammalMeasurementData extends DataClass
       this.embryoRightCount,
       this.embryoCRLeft,
       this.embryoCRRight});
-  factory MammalMeasurementData.fromData(Map<String, dynamic> data,
-      {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return MammalMeasurementData(
-      id: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      specimenUuid: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}specimenUuid']),
-      totalLength: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}totalLength']),
-      tailLength: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}tailLength']),
-      hindFootLength: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}hindFootLength']),
-      earLength: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}earLength']),
-      forearm: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}forearm']),
-      weight: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}weight']),
-      inaccurate: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}inaccurate']),
-      inaccurateReason: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}inaccurateReason']),
-      sex: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}sex']),
-      lifeStage: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}lifeStage']),
-      testesPosition: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}testesPosition']),
-      testesLength: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}testesLength']),
-      testesWidth: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}testesWidth']),
-      reproductiveStage: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}reproductiveStage']),
-      placentalScars: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}placentalScars']),
-      mammaeInguinalCount: const IntType().mapFromDatabaseResponse(
-          data['${effectivePrefix}mammaeInguinalCount']),
-      mammaeAxilaryCount: const IntType().mapFromDatabaseResponse(
-          data['${effectivePrefix}mammaeAxilaryCount']),
-      mammaeAbdominalCount: const IntType().mapFromDatabaseResponse(
-          data['${effectivePrefix}mammaeAbdominalCount']),
-      embryoLeftCount: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}embryoLeftCount']),
-      embryoRightCount: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}embryoRightCount']),
-      embryoCRLeft: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}embryoCRLeft']),
-      embryoCRRight: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}embryoCRRight']),
-    );
-  }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     if (!nullToAbsent || specimenUuid != null) {
-      map['specimenUuid'] = Variable<String?>(specimenUuid);
+      map['specimenUuid'] = Variable<String>(specimenUuid);
     }
     if (!nullToAbsent || totalLength != null) {
-      map['totalLength'] = Variable<int?>(totalLength);
+      map['totalLength'] = Variable<int>(totalLength);
     }
     if (!nullToAbsent || tailLength != null) {
-      map['tailLength'] = Variable<int?>(tailLength);
+      map['tailLength'] = Variable<int>(tailLength);
     }
     if (!nullToAbsent || hindFootLength != null) {
-      map['hindFootLength'] = Variable<int?>(hindFootLength);
+      map['hindFootLength'] = Variable<int>(hindFootLength);
     }
     if (!nullToAbsent || earLength != null) {
-      map['earLength'] = Variable<int?>(earLength);
+      map['earLength'] = Variable<int>(earLength);
     }
     if (!nullToAbsent || forearm != null) {
-      map['forearm'] = Variable<int?>(forearm);
+      map['forearm'] = Variable<int>(forearm);
     }
     if (!nullToAbsent || weight != null) {
-      map['weight'] = Variable<int?>(weight);
+      map['weight'] = Variable<int>(weight);
     }
     if (!nullToAbsent || inaccurate != null) {
-      map['inaccurate'] = Variable<String?>(inaccurate);
+      map['inaccurate'] = Variable<String>(inaccurate);
     }
     if (!nullToAbsent || inaccurateReason != null) {
-      map['inaccurateReason'] = Variable<String?>(inaccurateReason);
+      map['inaccurateReason'] = Variable<String>(inaccurateReason);
     }
     if (!nullToAbsent || sex != null) {
-      map['sex'] = Variable<String?>(sex);
+      map['sex'] = Variable<String>(sex);
     }
     if (!nullToAbsent || lifeStage != null) {
-      map['lifeStage'] = Variable<String?>(lifeStage);
+      map['lifeStage'] = Variable<String>(lifeStage);
     }
     if (!nullToAbsent || testesPosition != null) {
-      map['testesPosition'] = Variable<String?>(testesPosition);
+      map['testesPosition'] = Variable<String>(testesPosition);
     }
     if (!nullToAbsent || testesLength != null) {
-      map['testesLength'] = Variable<int?>(testesLength);
+      map['testesLength'] = Variable<int>(testesLength);
     }
     if (!nullToAbsent || testesWidth != null) {
-      map['testesWidth'] = Variable<int?>(testesWidth);
+      map['testesWidth'] = Variable<int>(testesWidth);
     }
     if (!nullToAbsent || reproductiveStage != null) {
-      map['reproductiveStage'] = Variable<String?>(reproductiveStage);
+      map['reproductiveStage'] = Variable<String>(reproductiveStage);
     }
     if (!nullToAbsent || placentalScars != null) {
-      map['placentalScars'] = Variable<String?>(placentalScars);
+      map['placentalScars'] = Variable<String>(placentalScars);
     }
     if (!nullToAbsent || mammaeInguinalCount != null) {
-      map['mammaeInguinalCount'] = Variable<int?>(mammaeInguinalCount);
+      map['mammaeInguinalCount'] = Variable<int>(mammaeInguinalCount);
     }
     if (!nullToAbsent || mammaeAxilaryCount != null) {
-      map['mammaeAxilaryCount'] = Variable<int?>(mammaeAxilaryCount);
+      map['mammaeAxilaryCount'] = Variable<int>(mammaeAxilaryCount);
     }
     if (!nullToAbsent || mammaeAbdominalCount != null) {
-      map['mammaeAbdominalCount'] = Variable<int?>(mammaeAbdominalCount);
+      map['mammaeAbdominalCount'] = Variable<int>(mammaeAbdominalCount);
     }
     if (!nullToAbsent || embryoLeftCount != null) {
-      map['embryoLeftCount'] = Variable<int?>(embryoLeftCount);
+      map['embryoLeftCount'] = Variable<int>(embryoLeftCount);
     }
     if (!nullToAbsent || embryoRightCount != null) {
-      map['embryoRightCount'] = Variable<int?>(embryoRightCount);
+      map['embryoRightCount'] = Variable<int>(embryoRightCount);
     }
     if (!nullToAbsent || embryoCRLeft != null) {
-      map['embryoCRLeft'] = Variable<int?>(embryoCRLeft);
+      map['embryoCRLeft'] = Variable<int>(embryoCRLeft);
     }
     if (!nullToAbsent || embryoCRRight != null) {
-      map['embryoCRRight'] = Variable<int?>(embryoCRRight);
+      map['embryoCRRight'] = Variable<int>(embryoCRRight);
     }
     return map;
   }
@@ -5110,54 +5078,75 @@ class MammalMeasurementData extends DataClass
 
   MammalMeasurementData copyWith(
           {int? id,
-          String? specimenUuid,
-          int? totalLength,
-          int? tailLength,
-          int? hindFootLength,
-          int? earLength,
-          int? forearm,
-          int? weight,
-          String? inaccurate,
-          String? inaccurateReason,
-          String? sex,
-          String? lifeStage,
-          String? testesPosition,
-          int? testesLength,
-          int? testesWidth,
-          String? reproductiveStage,
-          String? placentalScars,
-          int? mammaeInguinalCount,
-          int? mammaeAxilaryCount,
-          int? mammaeAbdominalCount,
-          int? embryoLeftCount,
-          int? embryoRightCount,
-          int? embryoCRLeft,
-          int? embryoCRRight}) =>
+          Value<String?> specimenUuid = const Value.absent(),
+          Value<int?> totalLength = const Value.absent(),
+          Value<int?> tailLength = const Value.absent(),
+          Value<int?> hindFootLength = const Value.absent(),
+          Value<int?> earLength = const Value.absent(),
+          Value<int?> forearm = const Value.absent(),
+          Value<int?> weight = const Value.absent(),
+          Value<String?> inaccurate = const Value.absent(),
+          Value<String?> inaccurateReason = const Value.absent(),
+          Value<String?> sex = const Value.absent(),
+          Value<String?> lifeStage = const Value.absent(),
+          Value<String?> testesPosition = const Value.absent(),
+          Value<int?> testesLength = const Value.absent(),
+          Value<int?> testesWidth = const Value.absent(),
+          Value<String?> reproductiveStage = const Value.absent(),
+          Value<String?> placentalScars = const Value.absent(),
+          Value<int?> mammaeInguinalCount = const Value.absent(),
+          Value<int?> mammaeAxilaryCount = const Value.absent(),
+          Value<int?> mammaeAbdominalCount = const Value.absent(),
+          Value<int?> embryoLeftCount = const Value.absent(),
+          Value<int?> embryoRightCount = const Value.absent(),
+          Value<int?> embryoCRLeft = const Value.absent(),
+          Value<int?> embryoCRRight = const Value.absent()}) =>
       MammalMeasurementData(
         id: id ?? this.id,
-        specimenUuid: specimenUuid ?? this.specimenUuid,
-        totalLength: totalLength ?? this.totalLength,
-        tailLength: tailLength ?? this.tailLength,
-        hindFootLength: hindFootLength ?? this.hindFootLength,
-        earLength: earLength ?? this.earLength,
-        forearm: forearm ?? this.forearm,
-        weight: weight ?? this.weight,
-        inaccurate: inaccurate ?? this.inaccurate,
-        inaccurateReason: inaccurateReason ?? this.inaccurateReason,
-        sex: sex ?? this.sex,
-        lifeStage: lifeStage ?? this.lifeStage,
-        testesPosition: testesPosition ?? this.testesPosition,
-        testesLength: testesLength ?? this.testesLength,
-        testesWidth: testesWidth ?? this.testesWidth,
-        reproductiveStage: reproductiveStage ?? this.reproductiveStage,
-        placentalScars: placentalScars ?? this.placentalScars,
-        mammaeInguinalCount: mammaeInguinalCount ?? this.mammaeInguinalCount,
-        mammaeAxilaryCount: mammaeAxilaryCount ?? this.mammaeAxilaryCount,
-        mammaeAbdominalCount: mammaeAbdominalCount ?? this.mammaeAbdominalCount,
-        embryoLeftCount: embryoLeftCount ?? this.embryoLeftCount,
-        embryoRightCount: embryoRightCount ?? this.embryoRightCount,
-        embryoCRLeft: embryoCRLeft ?? this.embryoCRLeft,
-        embryoCRRight: embryoCRRight ?? this.embryoCRRight,
+        specimenUuid:
+            specimenUuid.present ? specimenUuid.value : this.specimenUuid,
+        totalLength: totalLength.present ? totalLength.value : this.totalLength,
+        tailLength: tailLength.present ? tailLength.value : this.tailLength,
+        hindFootLength:
+            hindFootLength.present ? hindFootLength.value : this.hindFootLength,
+        earLength: earLength.present ? earLength.value : this.earLength,
+        forearm: forearm.present ? forearm.value : this.forearm,
+        weight: weight.present ? weight.value : this.weight,
+        inaccurate: inaccurate.present ? inaccurate.value : this.inaccurate,
+        inaccurateReason: inaccurateReason.present
+            ? inaccurateReason.value
+            : this.inaccurateReason,
+        sex: sex.present ? sex.value : this.sex,
+        lifeStage: lifeStage.present ? lifeStage.value : this.lifeStage,
+        testesPosition:
+            testesPosition.present ? testesPosition.value : this.testesPosition,
+        testesLength:
+            testesLength.present ? testesLength.value : this.testesLength,
+        testesWidth: testesWidth.present ? testesWidth.value : this.testesWidth,
+        reproductiveStage: reproductiveStage.present
+            ? reproductiveStage.value
+            : this.reproductiveStage,
+        placentalScars:
+            placentalScars.present ? placentalScars.value : this.placentalScars,
+        mammaeInguinalCount: mammaeInguinalCount.present
+            ? mammaeInguinalCount.value
+            : this.mammaeInguinalCount,
+        mammaeAxilaryCount: mammaeAxilaryCount.present
+            ? mammaeAxilaryCount.value
+            : this.mammaeAxilaryCount,
+        mammaeAbdominalCount: mammaeAbdominalCount.present
+            ? mammaeAbdominalCount.value
+            : this.mammaeAbdominalCount,
+        embryoLeftCount: embryoLeftCount.present
+            ? embryoLeftCount.value
+            : this.embryoLeftCount,
+        embryoRightCount: embryoRightCount.present
+            ? embryoRightCount.value
+            : this.embryoRightCount,
+        embryoCRLeft:
+            embryoCRLeft.present ? embryoCRLeft.value : this.embryoCRLeft,
+        embryoCRRight:
+            embryoCRRight.present ? embryoCRRight.value : this.embryoCRRight,
       );
   @override
   String toString() {
@@ -5327,29 +5316,29 @@ class MammalMeasurementCompanion
   });
   static Insertable<MammalMeasurementData> custom({
     Expression<int>? id,
-    Expression<String?>? specimenUuid,
-    Expression<int?>? totalLength,
-    Expression<int?>? tailLength,
-    Expression<int?>? hindFootLength,
-    Expression<int?>? earLength,
-    Expression<int?>? forearm,
-    Expression<int?>? weight,
-    Expression<String?>? inaccurate,
-    Expression<String?>? inaccurateReason,
-    Expression<String?>? sex,
-    Expression<String?>? lifeStage,
-    Expression<String?>? testesPosition,
-    Expression<int?>? testesLength,
-    Expression<int?>? testesWidth,
-    Expression<String?>? reproductiveStage,
-    Expression<String?>? placentalScars,
-    Expression<int?>? mammaeInguinalCount,
-    Expression<int?>? mammaeAxilaryCount,
-    Expression<int?>? mammaeAbdominalCount,
-    Expression<int?>? embryoLeftCount,
-    Expression<int?>? embryoRightCount,
-    Expression<int?>? embryoCRLeft,
-    Expression<int?>? embryoCRRight,
+    Expression<String>? specimenUuid,
+    Expression<int>? totalLength,
+    Expression<int>? tailLength,
+    Expression<int>? hindFootLength,
+    Expression<int>? earLength,
+    Expression<int>? forearm,
+    Expression<int>? weight,
+    Expression<String>? inaccurate,
+    Expression<String>? inaccurateReason,
+    Expression<String>? sex,
+    Expression<String>? lifeStage,
+    Expression<String>? testesPosition,
+    Expression<int>? testesLength,
+    Expression<int>? testesWidth,
+    Expression<String>? reproductiveStage,
+    Expression<String>? placentalScars,
+    Expression<int>? mammaeInguinalCount,
+    Expression<int>? mammaeAxilaryCount,
+    Expression<int>? mammaeAbdominalCount,
+    Expression<int>? embryoLeftCount,
+    Expression<int>? embryoRightCount,
+    Expression<int>? embryoCRLeft,
+    Expression<int>? embryoCRRight,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -5441,73 +5430,73 @@ class MammalMeasurementCompanion
       map['id'] = Variable<int>(id.value);
     }
     if (specimenUuid.present) {
-      map['specimenUuid'] = Variable<String?>(specimenUuid.value);
+      map['specimenUuid'] = Variable<String>(specimenUuid.value);
     }
     if (totalLength.present) {
-      map['totalLength'] = Variable<int?>(totalLength.value);
+      map['totalLength'] = Variable<int>(totalLength.value);
     }
     if (tailLength.present) {
-      map['tailLength'] = Variable<int?>(tailLength.value);
+      map['tailLength'] = Variable<int>(tailLength.value);
     }
     if (hindFootLength.present) {
-      map['hindFootLength'] = Variable<int?>(hindFootLength.value);
+      map['hindFootLength'] = Variable<int>(hindFootLength.value);
     }
     if (earLength.present) {
-      map['earLength'] = Variable<int?>(earLength.value);
+      map['earLength'] = Variable<int>(earLength.value);
     }
     if (forearm.present) {
-      map['forearm'] = Variable<int?>(forearm.value);
+      map['forearm'] = Variable<int>(forearm.value);
     }
     if (weight.present) {
-      map['weight'] = Variable<int?>(weight.value);
+      map['weight'] = Variable<int>(weight.value);
     }
     if (inaccurate.present) {
-      map['inaccurate'] = Variable<String?>(inaccurate.value);
+      map['inaccurate'] = Variable<String>(inaccurate.value);
     }
     if (inaccurateReason.present) {
-      map['inaccurateReason'] = Variable<String?>(inaccurateReason.value);
+      map['inaccurateReason'] = Variable<String>(inaccurateReason.value);
     }
     if (sex.present) {
-      map['sex'] = Variable<String?>(sex.value);
+      map['sex'] = Variable<String>(sex.value);
     }
     if (lifeStage.present) {
-      map['lifeStage'] = Variable<String?>(lifeStage.value);
+      map['lifeStage'] = Variable<String>(lifeStage.value);
     }
     if (testesPosition.present) {
-      map['testesPosition'] = Variable<String?>(testesPosition.value);
+      map['testesPosition'] = Variable<String>(testesPosition.value);
     }
     if (testesLength.present) {
-      map['testesLength'] = Variable<int?>(testesLength.value);
+      map['testesLength'] = Variable<int>(testesLength.value);
     }
     if (testesWidth.present) {
-      map['testesWidth'] = Variable<int?>(testesWidth.value);
+      map['testesWidth'] = Variable<int>(testesWidth.value);
     }
     if (reproductiveStage.present) {
-      map['reproductiveStage'] = Variable<String?>(reproductiveStage.value);
+      map['reproductiveStage'] = Variable<String>(reproductiveStage.value);
     }
     if (placentalScars.present) {
-      map['placentalScars'] = Variable<String?>(placentalScars.value);
+      map['placentalScars'] = Variable<String>(placentalScars.value);
     }
     if (mammaeInguinalCount.present) {
-      map['mammaeInguinalCount'] = Variable<int?>(mammaeInguinalCount.value);
+      map['mammaeInguinalCount'] = Variable<int>(mammaeInguinalCount.value);
     }
     if (mammaeAxilaryCount.present) {
-      map['mammaeAxilaryCount'] = Variable<int?>(mammaeAxilaryCount.value);
+      map['mammaeAxilaryCount'] = Variable<int>(mammaeAxilaryCount.value);
     }
     if (mammaeAbdominalCount.present) {
-      map['mammaeAbdominalCount'] = Variable<int?>(mammaeAbdominalCount.value);
+      map['mammaeAbdominalCount'] = Variable<int>(mammaeAbdominalCount.value);
     }
     if (embryoLeftCount.present) {
-      map['embryoLeftCount'] = Variable<int?>(embryoLeftCount.value);
+      map['embryoLeftCount'] = Variable<int>(embryoLeftCount.value);
     }
     if (embryoRightCount.present) {
-      map['embryoRightCount'] = Variable<int?>(embryoRightCount.value);
+      map['embryoRightCount'] = Variable<int>(embryoRightCount.value);
     }
     if (embryoCRLeft.present) {
-      map['embryoCRLeft'] = Variable<int?>(embryoCRLeft.value);
+      map['embryoCRLeft'] = Variable<int>(embryoCRLeft.value);
     }
     if (embryoCRRight.present) {
-      map['embryoCRRight'] = Variable<int?>(embryoCRRight.value);
+      map['embryoCRRight'] = Variable<int>(embryoCRRight.value);
     }
     return map;
   }
@@ -5550,164 +5539,170 @@ class MammalMeasurement extends Table
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   MammalMeasurement(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
-      type: const IntType(),
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
-  final VerificationMeta _specimenUuidMeta =
+  static const VerificationMeta _specimenUuidMeta =
       const VerificationMeta('specimenUuid');
-  late final GeneratedColumn<String?> specimenUuid = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> specimenUuid = GeneratedColumn<String>(
       'specimenUuid', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _totalLengthMeta =
+  static const VerificationMeta _totalLengthMeta =
       const VerificationMeta('totalLength');
-  late final GeneratedColumn<int?> totalLength = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> totalLength = GeneratedColumn<int>(
       'totalLength', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _tailLengthMeta = const VerificationMeta('tailLength');
-  late final GeneratedColumn<int?> tailLength = GeneratedColumn<int?>(
+  static const VerificationMeta _tailLengthMeta =
+      const VerificationMeta('tailLength');
+  late final GeneratedColumn<int> tailLength = GeneratedColumn<int>(
       'tailLength', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _hindFootLengthMeta =
+  static const VerificationMeta _hindFootLengthMeta =
       const VerificationMeta('hindFootLength');
-  late final GeneratedColumn<int?> hindFootLength = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> hindFootLength = GeneratedColumn<int>(
       'hindFootLength', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _earLengthMeta = const VerificationMeta('earLength');
-  late final GeneratedColumn<int?> earLength = GeneratedColumn<int?>(
+  static const VerificationMeta _earLengthMeta =
+      const VerificationMeta('earLength');
+  late final GeneratedColumn<int> earLength = GeneratedColumn<int>(
       'earLength', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _forearmMeta = const VerificationMeta('forearm');
-  late final GeneratedColumn<int?> forearm = GeneratedColumn<int?>(
+  static const VerificationMeta _forearmMeta =
+      const VerificationMeta('forearm');
+  late final GeneratedColumn<int> forearm = GeneratedColumn<int>(
       'forearm', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _weightMeta = const VerificationMeta('weight');
-  late final GeneratedColumn<int?> weight = GeneratedColumn<int?>(
+  static const VerificationMeta _weightMeta = const VerificationMeta('weight');
+  late final GeneratedColumn<int> weight = GeneratedColumn<int>(
       'weight', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _inaccurateMeta = const VerificationMeta('inaccurate');
-  late final GeneratedColumn<String?> inaccurate = GeneratedColumn<String?>(
+  static const VerificationMeta _inaccurateMeta =
+      const VerificationMeta('inaccurate');
+  late final GeneratedColumn<String> inaccurate = GeneratedColumn<String>(
       'inaccurate', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _inaccurateReasonMeta =
+  static const VerificationMeta _inaccurateReasonMeta =
       const VerificationMeta('inaccurateReason');
-  late final GeneratedColumn<String?> inaccurateReason =
-      GeneratedColumn<String?>('inaccurateReason', aliasedName, true,
-          type: const StringType(),
-          requiredDuringInsert: false,
-          $customConstraints: '');
-  final VerificationMeta _sexMeta = const VerificationMeta('sex');
-  late final GeneratedColumn<String?> sex = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> inaccurateReason = GeneratedColumn<String>(
+      'inaccurateReason', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _sexMeta = const VerificationMeta('sex');
+  late final GeneratedColumn<String> sex = GeneratedColumn<String>(
       'sex', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _lifeStageMeta = const VerificationMeta('lifeStage');
-  late final GeneratedColumn<String?> lifeStage = GeneratedColumn<String?>(
+  static const VerificationMeta _lifeStageMeta =
+      const VerificationMeta('lifeStage');
+  late final GeneratedColumn<String> lifeStage = GeneratedColumn<String>(
       'lifeStage', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _testesPositionMeta =
+  static const VerificationMeta _testesPositionMeta =
       const VerificationMeta('testesPosition');
-  late final GeneratedColumn<String?> testesPosition = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> testesPosition = GeneratedColumn<String>(
       'testesPosition', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _testesLengthMeta =
+  static const VerificationMeta _testesLengthMeta =
       const VerificationMeta('testesLength');
-  late final GeneratedColumn<int?> testesLength = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> testesLength = GeneratedColumn<int>(
       'testesLength', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _testesWidthMeta =
+  static const VerificationMeta _testesWidthMeta =
       const VerificationMeta('testesWidth');
-  late final GeneratedColumn<int?> testesWidth = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> testesWidth = GeneratedColumn<int>(
       'testesWidth', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _reproductiveStageMeta =
+  static const VerificationMeta _reproductiveStageMeta =
       const VerificationMeta('reproductiveStage');
-  late final GeneratedColumn<String?> reproductiveStage =
-      GeneratedColumn<String?>('reproductiveStage', aliasedName, true,
-          type: const StringType(),
+  late final GeneratedColumn<String> reproductiveStage =
+      GeneratedColumn<String>('reproductiveStage', aliasedName, true,
+          type: DriftSqlType.string,
           requiredDuringInsert: false,
           $customConstraints: '');
-  final VerificationMeta _placentalScarsMeta =
+  static const VerificationMeta _placentalScarsMeta =
       const VerificationMeta('placentalScars');
-  late final GeneratedColumn<String?> placentalScars = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> placentalScars = GeneratedColumn<String>(
       'placentalScars', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _mammaeInguinalCountMeta =
+  static const VerificationMeta _mammaeInguinalCountMeta =
       const VerificationMeta('mammaeInguinalCount');
-  late final GeneratedColumn<int?> mammaeInguinalCount = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> mammaeInguinalCount = GeneratedColumn<int>(
       'mammaeInguinalCount', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _mammaeAxilaryCountMeta =
+  static const VerificationMeta _mammaeAxilaryCountMeta =
       const VerificationMeta('mammaeAxilaryCount');
-  late final GeneratedColumn<int?> mammaeAxilaryCount = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> mammaeAxilaryCount = GeneratedColumn<int>(
       'mammaeAxilaryCount', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _mammaeAbdominalCountMeta =
+  static const VerificationMeta _mammaeAbdominalCountMeta =
       const VerificationMeta('mammaeAbdominalCount');
-  late final GeneratedColumn<int?> mammaeAbdominalCount = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> mammaeAbdominalCount = GeneratedColumn<int>(
       'mammaeAbdominalCount', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _embryoLeftCountMeta =
+  static const VerificationMeta _embryoLeftCountMeta =
       const VerificationMeta('embryoLeftCount');
-  late final GeneratedColumn<int?> embryoLeftCount = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> embryoLeftCount = GeneratedColumn<int>(
       'embryoLeftCount', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _embryoRightCountMeta =
+  static const VerificationMeta _embryoRightCountMeta =
       const VerificationMeta('embryoRightCount');
-  late final GeneratedColumn<int?> embryoRightCount = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> embryoRightCount = GeneratedColumn<int>(
       'embryoRightCount', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _embryoCRLeftMeta =
+  static const VerificationMeta _embryoCRLeftMeta =
       const VerificationMeta('embryoCRLeft');
-  late final GeneratedColumn<int?> embryoCRLeft = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> embryoCRLeft = GeneratedColumn<int>(
       'embryoCRLeft', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _embryoCRRightMeta =
+  static const VerificationMeta _embryoCRRightMeta =
       const VerificationMeta('embryoCRRight');
-  late final GeneratedColumn<int?> embryoCRRight = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> embryoCRRight = GeneratedColumn<int>(
       'embryoCRRight', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
@@ -5885,8 +5880,57 @@ class MammalMeasurement extends Table
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   MammalMeasurementData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return MammalMeasurementData.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MammalMeasurementData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      specimenUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}specimenUuid']),
+      totalLength: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}totalLength']),
+      tailLength: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}tailLength']),
+      hindFootLength: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}hindFootLength']),
+      earLength: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}earLength']),
+      forearm: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}forearm']),
+      weight: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}weight']),
+      inaccurate: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}inaccurate']),
+      inaccurateReason: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}inaccurateReason']),
+      sex: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}sex']),
+      lifeStage: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}lifeStage']),
+      testesPosition: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}testesPosition']),
+      testesLength: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}testesLength']),
+      testesWidth: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}testesWidth']),
+      reproductiveStage: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}reproductiveStage']),
+      placentalScars: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}placentalScars']),
+      mammaeInguinalCount: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}mammaeInguinalCount']),
+      mammaeAxilaryCount: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}mammaeAxilaryCount']),
+      mammaeAbdominalCount: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}mammaeAbdominalCount']),
+      embryoLeftCount: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}embryoLeftCount']),
+      embryoRightCount: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}embryoRightCount']),
+      embryoCRLeft: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}embryoCRLeft']),
+      embryoCRRight: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}embryoCRRight']),
+    );
   }
 
   @override
@@ -5896,7 +5940,7 @@ class MammalMeasurement extends Table
 
   @override
   List<String> get customConstraints =>
-      const ['FOREIGN KEY(specimenUuid) REFERENCES specimen(uuid)'];
+      const ['FOREIGN KEY(specimenUuid)REFERENCES specimen(uuid)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -5920,7 +5964,7 @@ class BirdMeasurementData extends DataClass
   final String? sex;
   final String? gonad;
   final String? stomach;
-  BirdMeasurementData(
+  const BirdMeasurementData(
       {required this.id,
       this.specimenUuid,
       this.weight,
@@ -5938,97 +5982,57 @@ class BirdMeasurementData extends DataClass
       this.sex,
       this.gonad,
       this.stomach});
-  factory BirdMeasurementData.fromData(Map<String, dynamic> data,
-      {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return BirdMeasurementData(
-      id: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      specimenUuid: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}specimenUuid']),
-      weight: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}weight']),
-      wingspan: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}wingspan']),
-      irisColor: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}irisColor']),
-      feetColor: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}feetColor']),
-      tarsusColor: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}tarsusColor']),
-      moltingWing: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}moltingWing']),
-      moltingTail: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}moltingTail']),
-      bodyFat: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}bodyFat']),
-      bursaLength: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}bursaLength']),
-      bursaWidth: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}bursaWidth']),
-      skullOssilation: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}skullOssilation']),
-      fat: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}fat']),
-      sex: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}sex']),
-      gonad: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}gonad']),
-      stomach: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}stomach']),
-    );
-  }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     if (!nullToAbsent || specimenUuid != null) {
-      map['specimenUuid'] = Variable<String?>(specimenUuid);
+      map['specimenUuid'] = Variable<String>(specimenUuid);
     }
     if (!nullToAbsent || weight != null) {
-      map['weight'] = Variable<int?>(weight);
+      map['weight'] = Variable<int>(weight);
     }
     if (!nullToAbsent || wingspan != null) {
-      map['wingspan'] = Variable<int?>(wingspan);
+      map['wingspan'] = Variable<int>(wingspan);
     }
     if (!nullToAbsent || irisColor != null) {
-      map['irisColor'] = Variable<String?>(irisColor);
+      map['irisColor'] = Variable<String>(irisColor);
     }
     if (!nullToAbsent || feetColor != null) {
-      map['feetColor'] = Variable<String?>(feetColor);
+      map['feetColor'] = Variable<String>(feetColor);
     }
     if (!nullToAbsent || tarsusColor != null) {
-      map['tarsusColor'] = Variable<String?>(tarsusColor);
+      map['tarsusColor'] = Variable<String>(tarsusColor);
     }
     if (!nullToAbsent || moltingWing != null) {
-      map['moltingWing'] = Variable<String?>(moltingWing);
+      map['moltingWing'] = Variable<String>(moltingWing);
     }
     if (!nullToAbsent || moltingTail != null) {
-      map['moltingTail'] = Variable<String?>(moltingTail);
+      map['moltingTail'] = Variable<String>(moltingTail);
     }
     if (!nullToAbsent || bodyFat != null) {
-      map['bodyFat'] = Variable<String?>(bodyFat);
+      map['bodyFat'] = Variable<String>(bodyFat);
     }
     if (!nullToAbsent || bursaLength != null) {
-      map['bursaLength'] = Variable<int?>(bursaLength);
+      map['bursaLength'] = Variable<int>(bursaLength);
     }
     if (!nullToAbsent || bursaWidth != null) {
-      map['bursaWidth'] = Variable<int?>(bursaWidth);
+      map['bursaWidth'] = Variable<int>(bursaWidth);
     }
     if (!nullToAbsent || skullOssilation != null) {
-      map['skullOssilation'] = Variable<String?>(skullOssilation);
+      map['skullOssilation'] = Variable<String>(skullOssilation);
     }
     if (!nullToAbsent || fat != null) {
-      map['fat'] = Variable<String?>(fat);
+      map['fat'] = Variable<String>(fat);
     }
     if (!nullToAbsent || sex != null) {
-      map['sex'] = Variable<String?>(sex);
+      map['sex'] = Variable<String>(sex);
     }
     if (!nullToAbsent || gonad != null) {
-      map['gonad'] = Variable<String?>(gonad);
+      map['gonad'] = Variable<String>(gonad);
     }
     if (!nullToAbsent || stomach != null) {
-      map['stomach'] = Variable<String?>(stomach);
+      map['stomach'] = Variable<String>(stomach);
     }
     return map;
   }
@@ -6130,40 +6134,43 @@ class BirdMeasurementData extends DataClass
 
   BirdMeasurementData copyWith(
           {int? id,
-          String? specimenUuid,
-          int? weight,
-          int? wingspan,
-          String? irisColor,
-          String? feetColor,
-          String? tarsusColor,
-          String? moltingWing,
-          String? moltingTail,
-          String? bodyFat,
-          int? bursaLength,
-          int? bursaWidth,
-          String? skullOssilation,
-          String? fat,
-          String? sex,
-          String? gonad,
-          String? stomach}) =>
+          Value<String?> specimenUuid = const Value.absent(),
+          Value<int?> weight = const Value.absent(),
+          Value<int?> wingspan = const Value.absent(),
+          Value<String?> irisColor = const Value.absent(),
+          Value<String?> feetColor = const Value.absent(),
+          Value<String?> tarsusColor = const Value.absent(),
+          Value<String?> moltingWing = const Value.absent(),
+          Value<String?> moltingTail = const Value.absent(),
+          Value<String?> bodyFat = const Value.absent(),
+          Value<int?> bursaLength = const Value.absent(),
+          Value<int?> bursaWidth = const Value.absent(),
+          Value<String?> skullOssilation = const Value.absent(),
+          Value<String?> fat = const Value.absent(),
+          Value<String?> sex = const Value.absent(),
+          Value<String?> gonad = const Value.absent(),
+          Value<String?> stomach = const Value.absent()}) =>
       BirdMeasurementData(
         id: id ?? this.id,
-        specimenUuid: specimenUuid ?? this.specimenUuid,
-        weight: weight ?? this.weight,
-        wingspan: wingspan ?? this.wingspan,
-        irisColor: irisColor ?? this.irisColor,
-        feetColor: feetColor ?? this.feetColor,
-        tarsusColor: tarsusColor ?? this.tarsusColor,
-        moltingWing: moltingWing ?? this.moltingWing,
-        moltingTail: moltingTail ?? this.moltingTail,
-        bodyFat: bodyFat ?? this.bodyFat,
-        bursaLength: bursaLength ?? this.bursaLength,
-        bursaWidth: bursaWidth ?? this.bursaWidth,
-        skullOssilation: skullOssilation ?? this.skullOssilation,
-        fat: fat ?? this.fat,
-        sex: sex ?? this.sex,
-        gonad: gonad ?? this.gonad,
-        stomach: stomach ?? this.stomach,
+        specimenUuid:
+            specimenUuid.present ? specimenUuid.value : this.specimenUuid,
+        weight: weight.present ? weight.value : this.weight,
+        wingspan: wingspan.present ? wingspan.value : this.wingspan,
+        irisColor: irisColor.present ? irisColor.value : this.irisColor,
+        feetColor: feetColor.present ? feetColor.value : this.feetColor,
+        tarsusColor: tarsusColor.present ? tarsusColor.value : this.tarsusColor,
+        moltingWing: moltingWing.present ? moltingWing.value : this.moltingWing,
+        moltingTail: moltingTail.present ? moltingTail.value : this.moltingTail,
+        bodyFat: bodyFat.present ? bodyFat.value : this.bodyFat,
+        bursaLength: bursaLength.present ? bursaLength.value : this.bursaLength,
+        bursaWidth: bursaWidth.present ? bursaWidth.value : this.bursaWidth,
+        skullOssilation: skullOssilation.present
+            ? skullOssilation.value
+            : this.skullOssilation,
+        fat: fat.present ? fat.value : this.fat,
+        sex: sex.present ? sex.value : this.sex,
+        gonad: gonad.present ? gonad.value : this.gonad,
+        stomach: stomach.present ? stomach.value : this.stomach,
       );
   @override
   String toString() {
@@ -6289,22 +6296,22 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
   });
   static Insertable<BirdMeasurementData> custom({
     Expression<int>? id,
-    Expression<String?>? specimenUuid,
-    Expression<int?>? weight,
-    Expression<int?>? wingspan,
-    Expression<String?>? irisColor,
-    Expression<String?>? feetColor,
-    Expression<String?>? tarsusColor,
-    Expression<String?>? moltingWing,
-    Expression<String?>? moltingTail,
-    Expression<String?>? bodyFat,
-    Expression<int?>? bursaLength,
-    Expression<int?>? bursaWidth,
-    Expression<String?>? skullOssilation,
-    Expression<String?>? fat,
-    Expression<String?>? sex,
-    Expression<String?>? gonad,
-    Expression<String?>? stomach,
+    Expression<String>? specimenUuid,
+    Expression<int>? weight,
+    Expression<int>? wingspan,
+    Expression<String>? irisColor,
+    Expression<String>? feetColor,
+    Expression<String>? tarsusColor,
+    Expression<String>? moltingWing,
+    Expression<String>? moltingTail,
+    Expression<String>? bodyFat,
+    Expression<int>? bursaLength,
+    Expression<int>? bursaWidth,
+    Expression<String>? skullOssilation,
+    Expression<String>? fat,
+    Expression<String>? sex,
+    Expression<String>? gonad,
+    Expression<String>? stomach,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -6373,52 +6380,52 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
       map['id'] = Variable<int>(id.value);
     }
     if (specimenUuid.present) {
-      map['specimenUuid'] = Variable<String?>(specimenUuid.value);
+      map['specimenUuid'] = Variable<String>(specimenUuid.value);
     }
     if (weight.present) {
-      map['weight'] = Variable<int?>(weight.value);
+      map['weight'] = Variable<int>(weight.value);
     }
     if (wingspan.present) {
-      map['wingspan'] = Variable<int?>(wingspan.value);
+      map['wingspan'] = Variable<int>(wingspan.value);
     }
     if (irisColor.present) {
-      map['irisColor'] = Variable<String?>(irisColor.value);
+      map['irisColor'] = Variable<String>(irisColor.value);
     }
     if (feetColor.present) {
-      map['feetColor'] = Variable<String?>(feetColor.value);
+      map['feetColor'] = Variable<String>(feetColor.value);
     }
     if (tarsusColor.present) {
-      map['tarsusColor'] = Variable<String?>(tarsusColor.value);
+      map['tarsusColor'] = Variable<String>(tarsusColor.value);
     }
     if (moltingWing.present) {
-      map['moltingWing'] = Variable<String?>(moltingWing.value);
+      map['moltingWing'] = Variable<String>(moltingWing.value);
     }
     if (moltingTail.present) {
-      map['moltingTail'] = Variable<String?>(moltingTail.value);
+      map['moltingTail'] = Variable<String>(moltingTail.value);
     }
     if (bodyFat.present) {
-      map['bodyFat'] = Variable<String?>(bodyFat.value);
+      map['bodyFat'] = Variable<String>(bodyFat.value);
     }
     if (bursaLength.present) {
-      map['bursaLength'] = Variable<int?>(bursaLength.value);
+      map['bursaLength'] = Variable<int>(bursaLength.value);
     }
     if (bursaWidth.present) {
-      map['bursaWidth'] = Variable<int?>(bursaWidth.value);
+      map['bursaWidth'] = Variable<int>(bursaWidth.value);
     }
     if (skullOssilation.present) {
-      map['skullOssilation'] = Variable<String?>(skullOssilation.value);
+      map['skullOssilation'] = Variable<String>(skullOssilation.value);
     }
     if (fat.present) {
-      map['fat'] = Variable<String?>(fat.value);
+      map['fat'] = Variable<String>(fat.value);
     }
     if (sex.present) {
-      map['sex'] = Variable<String?>(sex.value);
+      map['sex'] = Variable<String>(sex.value);
     }
     if (gonad.present) {
-      map['gonad'] = Variable<String?>(gonad.value);
+      map['gonad'] = Variable<String>(gonad.value);
     }
     if (stomach.present) {
-      map['stomach'] = Variable<String?>(stomach.value);
+      map['stomach'] = Variable<String>(stomach.value);
     }
     return map;
   }
@@ -6454,112 +6461,119 @@ class BirdMeasurement extends Table
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   BirdMeasurement(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
-      type: const IntType(),
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
-  final VerificationMeta _specimenUuidMeta =
+  static const VerificationMeta _specimenUuidMeta =
       const VerificationMeta('specimenUuid');
-  late final GeneratedColumn<String?> specimenUuid = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> specimenUuid = GeneratedColumn<String>(
       'specimenUuid', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _weightMeta = const VerificationMeta('weight');
-  late final GeneratedColumn<int?> weight = GeneratedColumn<int?>(
+  static const VerificationMeta _weightMeta = const VerificationMeta('weight');
+  late final GeneratedColumn<int> weight = GeneratedColumn<int>(
       'weight', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _wingspanMeta = const VerificationMeta('wingspan');
-  late final GeneratedColumn<int?> wingspan = GeneratedColumn<int?>(
+  static const VerificationMeta _wingspanMeta =
+      const VerificationMeta('wingspan');
+  late final GeneratedColumn<int> wingspan = GeneratedColumn<int>(
       'wingspan', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _irisColorMeta = const VerificationMeta('irisColor');
-  late final GeneratedColumn<String?> irisColor = GeneratedColumn<String?>(
+  static const VerificationMeta _irisColorMeta =
+      const VerificationMeta('irisColor');
+  late final GeneratedColumn<String> irisColor = GeneratedColumn<String>(
       'irisColor', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _feetColorMeta = const VerificationMeta('feetColor');
-  late final GeneratedColumn<String?> feetColor = GeneratedColumn<String?>(
+  static const VerificationMeta _feetColorMeta =
+      const VerificationMeta('feetColor');
+  late final GeneratedColumn<String> feetColor = GeneratedColumn<String>(
       'feetColor', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _tarsusColorMeta =
+  static const VerificationMeta _tarsusColorMeta =
       const VerificationMeta('tarsusColor');
-  late final GeneratedColumn<String?> tarsusColor = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> tarsusColor = GeneratedColumn<String>(
       'tarsusColor', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _moltingWingMeta =
+  static const VerificationMeta _moltingWingMeta =
       const VerificationMeta('moltingWing');
-  late final GeneratedColumn<String?> moltingWing = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> moltingWing = GeneratedColumn<String>(
       'moltingWing', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _moltingTailMeta =
+  static const VerificationMeta _moltingTailMeta =
       const VerificationMeta('moltingTail');
-  late final GeneratedColumn<String?> moltingTail = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> moltingTail = GeneratedColumn<String>(
       'moltingTail', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _bodyFatMeta = const VerificationMeta('bodyFat');
-  late final GeneratedColumn<String?> bodyFat = GeneratedColumn<String?>(
+  static const VerificationMeta _bodyFatMeta =
+      const VerificationMeta('bodyFat');
+  late final GeneratedColumn<String> bodyFat = GeneratedColumn<String>(
       'bodyFat', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _bursaLengthMeta =
+  static const VerificationMeta _bursaLengthMeta =
       const VerificationMeta('bursaLength');
-  late final GeneratedColumn<int?> bursaLength = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> bursaLength = GeneratedColumn<int>(
       'bursaLength', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _bursaWidthMeta = const VerificationMeta('bursaWidth');
-  late final GeneratedColumn<int?> bursaWidth = GeneratedColumn<int?>(
+  static const VerificationMeta _bursaWidthMeta =
+      const VerificationMeta('bursaWidth');
+  late final GeneratedColumn<int> bursaWidth = GeneratedColumn<int>(
       'bursaWidth', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _skullOssilationMeta =
+  static const VerificationMeta _skullOssilationMeta =
       const VerificationMeta('skullOssilation');
-  late final GeneratedColumn<String?> skullOssilation =
-      GeneratedColumn<String?>('skullOssilation', aliasedName, true,
-          type: const StringType(),
-          requiredDuringInsert: false,
-          $customConstraints: '');
-  final VerificationMeta _fatMeta = const VerificationMeta('fat');
-  late final GeneratedColumn<String?> fat = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> skullOssilation = GeneratedColumn<String>(
+      'skullOssilation', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _fatMeta = const VerificationMeta('fat');
+  late final GeneratedColumn<String> fat = GeneratedColumn<String>(
       'fat', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _sexMeta = const VerificationMeta('sex');
-  late final GeneratedColumn<String?> sex = GeneratedColumn<String?>(
+  static const VerificationMeta _sexMeta = const VerificationMeta('sex');
+  late final GeneratedColumn<String> sex = GeneratedColumn<String>(
       'sex', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _gonadMeta = const VerificationMeta('gonad');
-  late final GeneratedColumn<String?> gonad = GeneratedColumn<String?>(
+  static const VerificationMeta _gonadMeta = const VerificationMeta('gonad');
+  late final GeneratedColumn<String> gonad = GeneratedColumn<String>(
       'gonad', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _stomachMeta = const VerificationMeta('stomach');
-  late final GeneratedColumn<String?> stomach = GeneratedColumn<String?>(
+  static const VerificationMeta _stomachMeta =
+      const VerificationMeta('stomach');
+  late final GeneratedColumn<String> stomach = GeneratedColumn<String>(
       'stomach', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
@@ -6680,8 +6694,43 @@ class BirdMeasurement extends Table
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   BirdMeasurementData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return BirdMeasurementData.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return BirdMeasurementData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      specimenUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}specimenUuid']),
+      weight: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}weight']),
+      wingspan: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}wingspan']),
+      irisColor: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}irisColor']),
+      feetColor: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}feetColor']),
+      tarsusColor: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}tarsusColor']),
+      moltingWing: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}moltingWing']),
+      moltingTail: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}moltingTail']),
+      bodyFat: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}bodyFat']),
+      bursaLength: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}bursaLength']),
+      bursaWidth: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}bursaWidth']),
+      skullOssilation: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}skullOssilation']),
+      fat: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}fat']),
+      sex: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}sex']),
+      gonad: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}gonad']),
+      stomach: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}stomach']),
+    );
   }
 
   @override
@@ -6691,7 +6740,7 @@ class BirdMeasurement extends Table
 
   @override
   List<String> get customConstraints =>
-      const ['FOREIGN KEY(specimenUuid) REFERENCES specimen(uuid)'];
+      const ['FOREIGN KEY(specimenUuid)REFERENCES specimen(uuid)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -6706,7 +6755,7 @@ class PartData extends DataClass implements Insertable<PartData> {
   final String? additionalTreatment;
   final String? museumPermanent;
   final String? museumLoan;
-  PartData(
+  const PartData(
       {this.specimenUuid,
       this.secondaryNumber,
       this.barcodeID,
@@ -6716,58 +6765,35 @@ class PartData extends DataClass implements Insertable<PartData> {
       this.additionalTreatment,
       this.museumPermanent,
       this.museumLoan});
-  factory PartData.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return PartData(
-      specimenUuid: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}specimenUuid']),
-      secondaryNumber: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}secondaryNumber']),
-      barcodeID: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}barcodeID']),
-      type: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}type']),
-      count: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}count']),
-      treatment: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}treatment']),
-      additionalTreatment: const StringType().mapFromDatabaseResponse(
-          data['${effectivePrefix}additionalTreatment']),
-      museumPermanent: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}museumPermanent']),
-      museumLoan: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}museumLoan']),
-    );
-  }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (!nullToAbsent || specimenUuid != null) {
-      map['specimenUuid'] = Variable<String?>(specimenUuid);
+      map['specimenUuid'] = Variable<String>(specimenUuid);
     }
     if (!nullToAbsent || secondaryNumber != null) {
-      map['secondaryNumber'] = Variable<String?>(secondaryNumber);
+      map['secondaryNumber'] = Variable<String>(secondaryNumber);
     }
     if (!nullToAbsent || barcodeID != null) {
-      map['barcodeID'] = Variable<String?>(barcodeID);
+      map['barcodeID'] = Variable<String>(barcodeID);
     }
     if (!nullToAbsent || type != null) {
-      map['type'] = Variable<String?>(type);
+      map['type'] = Variable<String>(type);
     }
     if (!nullToAbsent || count != null) {
-      map['count'] = Variable<String?>(count);
+      map['count'] = Variable<String>(count);
     }
     if (!nullToAbsent || treatment != null) {
-      map['treatment'] = Variable<String?>(treatment);
+      map['treatment'] = Variable<String>(treatment);
     }
     if (!nullToAbsent || additionalTreatment != null) {
-      map['additionalTreatment'] = Variable<String?>(additionalTreatment);
+      map['additionalTreatment'] = Variable<String>(additionalTreatment);
     }
     if (!nullToAbsent || museumPermanent != null) {
-      map['museumPermanent'] = Variable<String?>(museumPermanent);
+      map['museumPermanent'] = Variable<String>(museumPermanent);
     }
     if (!nullToAbsent || museumLoan != null) {
-      map['museumLoan'] = Variable<String?>(museumLoan);
+      map['museumLoan'] = Variable<String>(museumLoan);
     }
     return map;
   }
@@ -6834,25 +6860,32 @@ class PartData extends DataClass implements Insertable<PartData> {
   }
 
   PartData copyWith(
-          {String? specimenUuid,
-          String? secondaryNumber,
-          String? barcodeID,
-          String? type,
-          String? count,
-          String? treatment,
-          String? additionalTreatment,
-          String? museumPermanent,
-          String? museumLoan}) =>
+          {Value<String?> specimenUuid = const Value.absent(),
+          Value<String?> secondaryNumber = const Value.absent(),
+          Value<String?> barcodeID = const Value.absent(),
+          Value<String?> type = const Value.absent(),
+          Value<String?> count = const Value.absent(),
+          Value<String?> treatment = const Value.absent(),
+          Value<String?> additionalTreatment = const Value.absent(),
+          Value<String?> museumPermanent = const Value.absent(),
+          Value<String?> museumLoan = const Value.absent()}) =>
       PartData(
-        specimenUuid: specimenUuid ?? this.specimenUuid,
-        secondaryNumber: secondaryNumber ?? this.secondaryNumber,
-        barcodeID: barcodeID ?? this.barcodeID,
-        type: type ?? this.type,
-        count: count ?? this.count,
-        treatment: treatment ?? this.treatment,
-        additionalTreatment: additionalTreatment ?? this.additionalTreatment,
-        museumPermanent: museumPermanent ?? this.museumPermanent,
-        museumLoan: museumLoan ?? this.museumLoan,
+        specimenUuid:
+            specimenUuid.present ? specimenUuid.value : this.specimenUuid,
+        secondaryNumber: secondaryNumber.present
+            ? secondaryNumber.value
+            : this.secondaryNumber,
+        barcodeID: barcodeID.present ? barcodeID.value : this.barcodeID,
+        type: type.present ? type.value : this.type,
+        count: count.present ? count.value : this.count,
+        treatment: treatment.present ? treatment.value : this.treatment,
+        additionalTreatment: additionalTreatment.present
+            ? additionalTreatment.value
+            : this.additionalTreatment,
+        museumPermanent: museumPermanent.present
+            ? museumPermanent.value
+            : this.museumPermanent,
+        museumLoan: museumLoan.present ? museumLoan.value : this.museumLoan,
       );
   @override
   String toString() {
@@ -6921,15 +6954,15 @@ class PartCompanion extends UpdateCompanion<PartData> {
     this.museumLoan = const Value.absent(),
   });
   static Insertable<PartData> custom({
-    Expression<String?>? specimenUuid,
-    Expression<String?>? secondaryNumber,
-    Expression<String?>? barcodeID,
-    Expression<String?>? type,
-    Expression<String?>? count,
-    Expression<String?>? treatment,
-    Expression<String?>? additionalTreatment,
-    Expression<String?>? museumPermanent,
-    Expression<String?>? museumLoan,
+    Expression<String>? specimenUuid,
+    Expression<String>? secondaryNumber,
+    Expression<String>? barcodeID,
+    Expression<String>? type,
+    Expression<String>? count,
+    Expression<String>? treatment,
+    Expression<String>? additionalTreatment,
+    Expression<String>? museumPermanent,
+    Expression<String>? museumLoan,
   }) {
     return RawValuesInsertable({
       if (specimenUuid != null) 'specimenUuid': specimenUuid,
@@ -6972,31 +7005,31 @@ class PartCompanion extends UpdateCompanion<PartData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (specimenUuid.present) {
-      map['specimenUuid'] = Variable<String?>(specimenUuid.value);
+      map['specimenUuid'] = Variable<String>(specimenUuid.value);
     }
     if (secondaryNumber.present) {
-      map['secondaryNumber'] = Variable<String?>(secondaryNumber.value);
+      map['secondaryNumber'] = Variable<String>(secondaryNumber.value);
     }
     if (barcodeID.present) {
-      map['barcodeID'] = Variable<String?>(barcodeID.value);
+      map['barcodeID'] = Variable<String>(barcodeID.value);
     }
     if (type.present) {
-      map['type'] = Variable<String?>(type.value);
+      map['type'] = Variable<String>(type.value);
     }
     if (count.present) {
-      map['count'] = Variable<String?>(count.value);
+      map['count'] = Variable<String>(count.value);
     }
     if (treatment.present) {
-      map['treatment'] = Variable<String?>(treatment.value);
+      map['treatment'] = Variable<String>(treatment.value);
     }
     if (additionalTreatment.present) {
-      map['additionalTreatment'] = Variable<String?>(additionalTreatment.value);
+      map['additionalTreatment'] = Variable<String>(additionalTreatment.value);
     }
     if (museumPermanent.present) {
-      map['museumPermanent'] = Variable<String?>(museumPermanent.value);
+      map['museumPermanent'] = Variable<String>(museumPermanent.value);
     }
     if (museumLoan.present) {
-      map['museumLoan'] = Variable<String?>(museumLoan.value);
+      map['museumLoan'] = Variable<String>(museumLoan.value);
     }
     return map;
   }
@@ -7023,62 +7056,65 @@ class Part extends Table with TableInfo<Part, PartData> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   Part(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _specimenUuidMeta =
+  static const VerificationMeta _specimenUuidMeta =
       const VerificationMeta('specimenUuid');
-  late final GeneratedColumn<String?> specimenUuid = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> specimenUuid = GeneratedColumn<String>(
       'specimenUuid', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _secondaryNumberMeta =
+  static const VerificationMeta _secondaryNumberMeta =
       const VerificationMeta('secondaryNumber');
-  late final GeneratedColumn<String?> secondaryNumber =
-      GeneratedColumn<String?>('secondaryNumber', aliasedName, true,
-          type: const StringType(),
-          requiredDuringInsert: false,
-          $customConstraints: '');
-  final VerificationMeta _barcodeIDMeta = const VerificationMeta('barcodeID');
-  late final GeneratedColumn<String?> barcodeID = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> secondaryNumber = GeneratedColumn<String>(
+      'secondaryNumber', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _barcodeIDMeta =
+      const VerificationMeta('barcodeID');
+  late final GeneratedColumn<String> barcodeID = GeneratedColumn<String>(
       'barcodeID', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _typeMeta = const VerificationMeta('type');
-  late final GeneratedColumn<String?> type = GeneratedColumn<String?>(
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
       'type', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _countMeta = const VerificationMeta('count');
-  late final GeneratedColumn<String?> count = GeneratedColumn<String?>(
+  static const VerificationMeta _countMeta = const VerificationMeta('count');
+  late final GeneratedColumn<String> count = GeneratedColumn<String>(
       'count', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _treatmentMeta = const VerificationMeta('treatment');
-  late final GeneratedColumn<String?> treatment = GeneratedColumn<String?>(
+  static const VerificationMeta _treatmentMeta =
+      const VerificationMeta('treatment');
+  late final GeneratedColumn<String> treatment = GeneratedColumn<String>(
       'treatment', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _additionalTreatmentMeta =
+  static const VerificationMeta _additionalTreatmentMeta =
       const VerificationMeta('additionalTreatment');
-  late final GeneratedColumn<String?> additionalTreatment =
-      GeneratedColumn<String?>('additionalTreatment', aliasedName, true,
-          type: const StringType(),
+  late final GeneratedColumn<String> additionalTreatment =
+      GeneratedColumn<String>('additionalTreatment', aliasedName, true,
+          type: DriftSqlType.string,
           requiredDuringInsert: false,
           $customConstraints: '');
-  final VerificationMeta _museumPermanentMeta =
+  static const VerificationMeta _museumPermanentMeta =
       const VerificationMeta('museumPermanent');
-  late final GeneratedColumn<String?> museumPermanent =
-      GeneratedColumn<String?>('museumPermanent', aliasedName, true,
-          type: const StringType(),
-          requiredDuringInsert: false,
-          $customConstraints: '');
-  final VerificationMeta _museumLoanMeta = const VerificationMeta('museumLoan');
-  late final GeneratedColumn<String?> museumLoan = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> museumPermanent = GeneratedColumn<String>(
+      'museumPermanent', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _museumLoanMeta =
+      const VerificationMeta('museumLoan');
+  late final GeneratedColumn<String> museumLoan = GeneratedColumn<String>(
       'museumLoan', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
@@ -7152,11 +7188,30 @@ class Part extends Table with TableInfo<Part, PartData> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => const {};
   @override
   PartData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return PartData.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PartData(
+      specimenUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}specimenUuid']),
+      secondaryNumber: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}secondaryNumber']),
+      barcodeID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}barcodeID']),
+      type: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}type']),
+      count: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}count']),
+      treatment: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}treatment']),
+      additionalTreatment: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}additionalTreatment']),
+      museumPermanent: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}museumPermanent']),
+      museumLoan: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}museumLoan']),
+    );
   }
 
   @override
@@ -7164,6 +7219,8 @@ class Part extends Table with TableInfo<Part, PartData> {
     return Part(attachedDatabase, alias);
   }
 
+  @override
+  List<String> get customConstraints => const [];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -7179,7 +7236,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
   final Uint8List? commonName;
   final String? note;
   final int? mediaId;
-  TaxonomyData(
+  const TaxonomyData(
       {this.id,
       this.taxonClass,
       this.taxonOrder,
@@ -7190,62 +7247,38 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
       this.commonName,
       this.note,
       this.mediaId});
-  factory TaxonomyData.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return TaxonomyData(
-      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      taxonClass: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}taxonClass']),
-      taxonOrder: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}taxonOrder']),
-      taxonFamily: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}taxonFamily']),
-      genus: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}genus']),
-      specificEpithet: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}specificEpithet']),
-      intraspecificEpithet: const StringType().mapFromDatabaseResponse(
-          data['${effectivePrefix}intraspecificEpithet']),
-      commonName: const BlobType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}commonName']),
-      note: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}note']),
-      mediaId: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}mediaId']),
-    );
-  }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (!nullToAbsent || id != null) {
-      map['id'] = Variable<int?>(id);
+      map['id'] = Variable<int>(id);
     }
     if (!nullToAbsent || taxonClass != null) {
-      map['taxonClass'] = Variable<String?>(taxonClass);
+      map['taxonClass'] = Variable<String>(taxonClass);
     }
     if (!nullToAbsent || taxonOrder != null) {
-      map['taxonOrder'] = Variable<String?>(taxonOrder);
+      map['taxonOrder'] = Variable<String>(taxonOrder);
     }
     if (!nullToAbsent || taxonFamily != null) {
-      map['taxonFamily'] = Variable<String?>(taxonFamily);
+      map['taxonFamily'] = Variable<String>(taxonFamily);
     }
     if (!nullToAbsent || genus != null) {
-      map['genus'] = Variable<String?>(genus);
+      map['genus'] = Variable<String>(genus);
     }
     if (!nullToAbsent || specificEpithet != null) {
-      map['specificEpithet'] = Variable<String?>(specificEpithet);
+      map['specificEpithet'] = Variable<String>(specificEpithet);
     }
     if (!nullToAbsent || intraspecificEpithet != null) {
-      map['intraspecificEpithet'] = Variable<String?>(intraspecificEpithet);
+      map['intraspecificEpithet'] = Variable<String>(intraspecificEpithet);
     }
     if (!nullToAbsent || commonName != null) {
-      map['commonName'] = Variable<Uint8List?>(commonName);
+      map['commonName'] = Variable<Uint8List>(commonName);
     }
     if (!nullToAbsent || note != null) {
-      map['note'] = Variable<String?>(note);
+      map['note'] = Variable<String>(note);
     }
     if (!nullToAbsent || mediaId != null) {
-      map['mediaId'] = Variable<int?>(mediaId);
+      map['mediaId'] = Variable<int>(mediaId);
     }
     return map;
   }
@@ -7315,27 +7348,31 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
   }
 
   TaxonomyData copyWith(
-          {int? id,
-          String? taxonClass,
-          String? taxonOrder,
-          String? taxonFamily,
-          String? genus,
-          String? specificEpithet,
-          String? intraspecificEpithet,
-          Uint8List? commonName,
-          String? note,
-          int? mediaId}) =>
+          {Value<int?> id = const Value.absent(),
+          Value<String?> taxonClass = const Value.absent(),
+          Value<String?> taxonOrder = const Value.absent(),
+          Value<String?> taxonFamily = const Value.absent(),
+          Value<String?> genus = const Value.absent(),
+          Value<String?> specificEpithet = const Value.absent(),
+          Value<String?> intraspecificEpithet = const Value.absent(),
+          Value<Uint8List?> commonName = const Value.absent(),
+          Value<String?> note = const Value.absent(),
+          Value<int?> mediaId = const Value.absent()}) =>
       TaxonomyData(
-        id: id ?? this.id,
-        taxonClass: taxonClass ?? this.taxonClass,
-        taxonOrder: taxonOrder ?? this.taxonOrder,
-        taxonFamily: taxonFamily ?? this.taxonFamily,
-        genus: genus ?? this.genus,
-        specificEpithet: specificEpithet ?? this.specificEpithet,
-        intraspecificEpithet: intraspecificEpithet ?? this.intraspecificEpithet,
-        commonName: commonName ?? this.commonName,
-        note: note ?? this.note,
-        mediaId: mediaId ?? this.mediaId,
+        id: id.present ? id.value : this.id,
+        taxonClass: taxonClass.present ? taxonClass.value : this.taxonClass,
+        taxonOrder: taxonOrder.present ? taxonOrder.value : this.taxonOrder,
+        taxonFamily: taxonFamily.present ? taxonFamily.value : this.taxonFamily,
+        genus: genus.present ? genus.value : this.genus,
+        specificEpithet: specificEpithet.present
+            ? specificEpithet.value
+            : this.specificEpithet,
+        intraspecificEpithet: intraspecificEpithet.present
+            ? intraspecificEpithet.value
+            : this.intraspecificEpithet,
+        commonName: commonName.present ? commonName.value : this.commonName,
+        note: note.present ? note.value : this.note,
+        mediaId: mediaId.present ? mediaId.value : this.mediaId,
       );
   @override
   String toString() {
@@ -7355,8 +7392,17 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
   }
 
   @override
-  int get hashCode => Object.hash(id, taxonClass, taxonOrder, taxonFamily,
-      genus, specificEpithet, intraspecificEpithet, commonName, note, mediaId);
+  int get hashCode => Object.hash(
+      id,
+      taxonClass,
+      taxonOrder,
+      taxonFamily,
+      genus,
+      specificEpithet,
+      intraspecificEpithet,
+      $driftBlobEquality.hash(commonName),
+      note,
+      mediaId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -7368,7 +7414,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
           other.genus == this.genus &&
           other.specificEpithet == this.specificEpithet &&
           other.intraspecificEpithet == this.intraspecificEpithet &&
-          other.commonName == this.commonName &&
+          $driftBlobEquality.equals(other.commonName, this.commonName) &&
           other.note == this.note &&
           other.mediaId == this.mediaId);
 }
@@ -7409,16 +7455,16 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
     this.mediaId = const Value.absent(),
   });
   static Insertable<TaxonomyData> custom({
-    Expression<int?>? id,
-    Expression<String?>? taxonClass,
-    Expression<String?>? taxonOrder,
-    Expression<String?>? taxonFamily,
-    Expression<String?>? genus,
-    Expression<String?>? specificEpithet,
-    Expression<String?>? intraspecificEpithet,
-    Expression<Uint8List?>? commonName,
-    Expression<String?>? note,
-    Expression<int?>? mediaId,
+    Expression<int>? id,
+    Expression<String>? taxonClass,
+    Expression<String>? taxonOrder,
+    Expression<String>? taxonFamily,
+    Expression<String>? genus,
+    Expression<String>? specificEpithet,
+    Expression<String>? intraspecificEpithet,
+    Expression<Uint8List>? commonName,
+    Expression<String>? note,
+    Expression<int>? mediaId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -7464,35 +7510,35 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (id.present) {
-      map['id'] = Variable<int?>(id.value);
+      map['id'] = Variable<int>(id.value);
     }
     if (taxonClass.present) {
-      map['taxonClass'] = Variable<String?>(taxonClass.value);
+      map['taxonClass'] = Variable<String>(taxonClass.value);
     }
     if (taxonOrder.present) {
-      map['taxonOrder'] = Variable<String?>(taxonOrder.value);
+      map['taxonOrder'] = Variable<String>(taxonOrder.value);
     }
     if (taxonFamily.present) {
-      map['taxonFamily'] = Variable<String?>(taxonFamily.value);
+      map['taxonFamily'] = Variable<String>(taxonFamily.value);
     }
     if (genus.present) {
-      map['genus'] = Variable<String?>(genus.value);
+      map['genus'] = Variable<String>(genus.value);
     }
     if (specificEpithet.present) {
-      map['specificEpithet'] = Variable<String?>(specificEpithet.value);
+      map['specificEpithet'] = Variable<String>(specificEpithet.value);
     }
     if (intraspecificEpithet.present) {
       map['intraspecificEpithet'] =
-          Variable<String?>(intraspecificEpithet.value);
+          Variable<String>(intraspecificEpithet.value);
     }
     if (commonName.present) {
-      map['commonName'] = Variable<Uint8List?>(commonName.value);
+      map['commonName'] = Variable<Uint8List>(commonName.value);
     }
     if (note.present) {
-      map['note'] = Variable<String?>(note.value);
+      map['note'] = Variable<String>(note.value);
     }
     if (mediaId.present) {
-      map['mediaId'] = Variable<int?>(mediaId.value);
+      map['mediaId'] = Variable<int>(mediaId.value);
     }
     return map;
   }
@@ -7520,67 +7566,72 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   Taxonomy(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, true,
-      type: const IntType(),
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  final VerificationMeta _taxonClassMeta = const VerificationMeta('taxonClass');
-  late final GeneratedColumn<String?> taxonClass = GeneratedColumn<String?>(
+  static const VerificationMeta _taxonClassMeta =
+      const VerificationMeta('taxonClass');
+  late final GeneratedColumn<String> taxonClass = GeneratedColumn<String>(
       'taxonClass', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _taxonOrderMeta = const VerificationMeta('taxonOrder');
-  late final GeneratedColumn<String?> taxonOrder = GeneratedColumn<String?>(
+  static const VerificationMeta _taxonOrderMeta =
+      const VerificationMeta('taxonOrder');
+  late final GeneratedColumn<String> taxonOrder = GeneratedColumn<String>(
       'taxonOrder', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _taxonFamilyMeta =
+  static const VerificationMeta _taxonFamilyMeta =
       const VerificationMeta('taxonFamily');
-  late final GeneratedColumn<String?> taxonFamily = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> taxonFamily = GeneratedColumn<String>(
       'taxonFamily', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _genusMeta = const VerificationMeta('genus');
-  late final GeneratedColumn<String?> genus = GeneratedColumn<String?>(
+  static const VerificationMeta _genusMeta = const VerificationMeta('genus');
+  late final GeneratedColumn<String> genus = GeneratedColumn<String>(
       'genus', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _specificEpithetMeta =
+  static const VerificationMeta _specificEpithetMeta =
       const VerificationMeta('specificEpithet');
-  late final GeneratedColumn<String?> specificEpithet =
-      GeneratedColumn<String?>('specificEpithet', aliasedName, true,
-          type: const StringType(),
-          requiredDuringInsert: false,
-          $customConstraints: '');
-  final VerificationMeta _intraspecificEpithetMeta =
-      const VerificationMeta('intraspecificEpithet');
-  late final GeneratedColumn<String?> intraspecificEpithet =
-      GeneratedColumn<String?>('intraspecificEpithet', aliasedName, true,
-          type: const StringType(),
-          requiredDuringInsert: false,
-          $customConstraints: '');
-  final VerificationMeta _commonNameMeta = const VerificationMeta('commonName');
-  late final GeneratedColumn<Uint8List?> commonName =
-      GeneratedColumn<Uint8List?>('commonName', aliasedName, true,
-          type: const BlobType(),
-          requiredDuringInsert: false,
-          $customConstraints: '');
-  final VerificationMeta _noteMeta = const VerificationMeta('note');
-  late final GeneratedColumn<String?> note = GeneratedColumn<String?>(
-      'note', aliasedName, true,
-      type: const StringType(),
+  late final GeneratedColumn<String> specificEpithet = GeneratedColumn<String>(
+      'specificEpithet', aliasedName, true,
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _mediaIdMeta = const VerificationMeta('mediaId');
-  late final GeneratedColumn<int?> mediaId = GeneratedColumn<int?>(
+  static const VerificationMeta _intraspecificEpithetMeta =
+      const VerificationMeta('intraspecificEpithet');
+  late final GeneratedColumn<String> intraspecificEpithet =
+      GeneratedColumn<String>('intraspecificEpithet', aliasedName, true,
+          type: DriftSqlType.string,
+          requiredDuringInsert: false,
+          $customConstraints: '');
+  static const VerificationMeta _commonNameMeta =
+      const VerificationMeta('commonName');
+  late final GeneratedColumn<Uint8List> commonName = GeneratedColumn<Uint8List>(
+      'commonName', aliasedName, true,
+      type: DriftSqlType.blob,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+      'note', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _mediaIdMeta =
+      const VerificationMeta('mediaId');
+  late final GeneratedColumn<int> mediaId = GeneratedColumn<int>(
       'mediaId', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
@@ -7663,8 +7714,29 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   TaxonomyData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return TaxonomyData.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return TaxonomyData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id']),
+      taxonClass: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}taxonClass']),
+      taxonOrder: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}taxonOrder']),
+      taxonFamily: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}taxonFamily']),
+      genus: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}genus']),
+      specificEpithet: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}specificEpithet']),
+      intraspecificEpithet: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}intraspecificEpithet']),
+      commonName: attachedDatabase.typeMapping
+          .read(DriftSqlType.blob, data['${effectivePrefix}commonName']),
+      note: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}note']),
+      mediaId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}mediaId']),
+    );
   }
 
   @override
@@ -7674,12 +7746,12 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
 
   @override
   List<String> get customConstraints =>
-      const ['FOREIGN KEY(mediaId) REFERENCES media(primaryId)'];
+      const ['FOREIGN KEY(mediaId)REFERENCES media(primaryId)'];
   @override
   bool get dontWriteConstraints => true;
 }
 
-class SpendingData extends DataClass implements Insertable<SpendingData> {
+class ExpenseData extends DataClass implements Insertable<ExpenseData> {
   final int? id;
   final String? category;
   final String? item;
@@ -7687,7 +7759,7 @@ class SpendingData extends DataClass implements Insertable<SpendingData> {
   final double? budget;
   final double? actual;
   final String? projectUuid;
-  SpendingData(
+  const ExpenseData(
       {this.id,
       this.category,
       this.item,
@@ -7695,53 +7767,35 @@ class SpendingData extends DataClass implements Insertable<SpendingData> {
       this.budget,
       this.actual,
       this.projectUuid});
-  factory SpendingData.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return SpendingData(
-      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      category: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}category']),
-      item: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}item']),
-      description: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}description']),
-      budget: const RealType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}budget']),
-      actual: const RealType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}actual']),
-      projectUuid: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}projectUuid']),
-    );
-  }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (!nullToAbsent || id != null) {
-      map['id'] = Variable<int?>(id);
+      map['id'] = Variable<int>(id);
     }
     if (!nullToAbsent || category != null) {
-      map['category'] = Variable<String?>(category);
+      map['category'] = Variable<String>(category);
     }
     if (!nullToAbsent || item != null) {
-      map['item'] = Variable<String?>(item);
+      map['item'] = Variable<String>(item);
     }
     if (!nullToAbsent || description != null) {
-      map['description'] = Variable<String?>(description);
+      map['description'] = Variable<String>(description);
     }
     if (!nullToAbsent || budget != null) {
-      map['budget'] = Variable<double?>(budget);
+      map['budget'] = Variable<double>(budget);
     }
     if (!nullToAbsent || actual != null) {
-      map['actual'] = Variable<double?>(actual);
+      map['actual'] = Variable<double>(actual);
     }
     if (!nullToAbsent || projectUuid != null) {
-      map['projectUuid'] = Variable<String?>(projectUuid);
+      map['projectUuid'] = Variable<String>(projectUuid);
     }
     return map;
   }
 
-  SpendingCompanion toCompanion(bool nullToAbsent) {
-    return SpendingCompanion(
+  ExpenseCompanion toCompanion(bool nullToAbsent) {
+    return ExpenseCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       category: category == null && nullToAbsent
           ? const Value.absent()
@@ -7760,10 +7814,10 @@ class SpendingData extends DataClass implements Insertable<SpendingData> {
     );
   }
 
-  factory SpendingData.fromJson(Map<String, dynamic> json,
+  factory ExpenseData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return SpendingData(
+    return ExpenseData(
       id: serializer.fromJson<int?>(json['id']),
       category: serializer.fromJson<String?>(json['category']),
       item: serializer.fromJson<String?>(json['item']),
@@ -7787,26 +7841,26 @@ class SpendingData extends DataClass implements Insertable<SpendingData> {
     };
   }
 
-  SpendingData copyWith(
-          {int? id,
-          String? category,
-          String? item,
-          String? description,
-          double? budget,
-          double? actual,
-          String? projectUuid}) =>
-      SpendingData(
-        id: id ?? this.id,
-        category: category ?? this.category,
-        item: item ?? this.item,
-        description: description ?? this.description,
-        budget: budget ?? this.budget,
-        actual: actual ?? this.actual,
-        projectUuid: projectUuid ?? this.projectUuid,
+  ExpenseData copyWith(
+          {Value<int?> id = const Value.absent(),
+          Value<String?> category = const Value.absent(),
+          Value<String?> item = const Value.absent(),
+          Value<String?> description = const Value.absent(),
+          Value<double?> budget = const Value.absent(),
+          Value<double?> actual = const Value.absent(),
+          Value<String?> projectUuid = const Value.absent()}) =>
+      ExpenseData(
+        id: id.present ? id.value : this.id,
+        category: category.present ? category.value : this.category,
+        item: item.present ? item.value : this.item,
+        description: description.present ? description.value : this.description,
+        budget: budget.present ? budget.value : this.budget,
+        actual: actual.present ? actual.value : this.actual,
+        projectUuid: projectUuid.present ? projectUuid.value : this.projectUuid,
       );
   @override
   String toString() {
-    return (StringBuffer('SpendingData(')
+    return (StringBuffer('ExpenseData(')
           ..write('id: $id, ')
           ..write('category: $category, ')
           ..write('item: $item, ')
@@ -7824,7 +7878,7 @@ class SpendingData extends DataClass implements Insertable<SpendingData> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is SpendingData &&
+      (other is ExpenseData &&
           other.id == this.id &&
           other.category == this.category &&
           other.item == this.item &&
@@ -7834,7 +7888,7 @@ class SpendingData extends DataClass implements Insertable<SpendingData> {
           other.projectUuid == this.projectUuid);
 }
 
-class SpendingCompanion extends UpdateCompanion<SpendingData> {
+class ExpenseCompanion extends UpdateCompanion<ExpenseData> {
   final Value<int?> id;
   final Value<String?> category;
   final Value<String?> item;
@@ -7842,7 +7896,7 @@ class SpendingCompanion extends UpdateCompanion<SpendingData> {
   final Value<double?> budget;
   final Value<double?> actual;
   final Value<String?> projectUuid;
-  const SpendingCompanion({
+  const ExpenseCompanion({
     this.id = const Value.absent(),
     this.category = const Value.absent(),
     this.item = const Value.absent(),
@@ -7851,7 +7905,7 @@ class SpendingCompanion extends UpdateCompanion<SpendingData> {
     this.actual = const Value.absent(),
     this.projectUuid = const Value.absent(),
   });
-  SpendingCompanion.insert({
+  ExpenseCompanion.insert({
     this.id = const Value.absent(),
     this.category = const Value.absent(),
     this.item = const Value.absent(),
@@ -7860,14 +7914,14 @@ class SpendingCompanion extends UpdateCompanion<SpendingData> {
     this.actual = const Value.absent(),
     this.projectUuid = const Value.absent(),
   });
-  static Insertable<SpendingData> custom({
-    Expression<int?>? id,
-    Expression<String?>? category,
-    Expression<String?>? item,
-    Expression<String?>? description,
-    Expression<double?>? budget,
-    Expression<double?>? actual,
-    Expression<String?>? projectUuid,
+  static Insertable<ExpenseData> custom({
+    Expression<int>? id,
+    Expression<String>? category,
+    Expression<String>? item,
+    Expression<String>? description,
+    Expression<double>? budget,
+    Expression<double>? actual,
+    Expression<String>? projectUuid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -7880,7 +7934,7 @@ class SpendingCompanion extends UpdateCompanion<SpendingData> {
     });
   }
 
-  SpendingCompanion copyWith(
+  ExpenseCompanion copyWith(
       {Value<int?>? id,
       Value<String?>? category,
       Value<String?>? item,
@@ -7888,7 +7942,7 @@ class SpendingCompanion extends UpdateCompanion<SpendingData> {
       Value<double?>? budget,
       Value<double?>? actual,
       Value<String?>? projectUuid}) {
-    return SpendingCompanion(
+    return ExpenseCompanion(
       id: id ?? this.id,
       category: category ?? this.category,
       item: item ?? this.item,
@@ -7903,32 +7957,32 @@ class SpendingCompanion extends UpdateCompanion<SpendingData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (id.present) {
-      map['id'] = Variable<int?>(id.value);
+      map['id'] = Variable<int>(id.value);
     }
     if (category.present) {
-      map['category'] = Variable<String?>(category.value);
+      map['category'] = Variable<String>(category.value);
     }
     if (item.present) {
-      map['item'] = Variable<String?>(item.value);
+      map['item'] = Variable<String>(item.value);
     }
     if (description.present) {
-      map['description'] = Variable<String?>(description.value);
+      map['description'] = Variable<String>(description.value);
     }
     if (budget.present) {
-      map['budget'] = Variable<double?>(budget.value);
+      map['budget'] = Variable<double>(budget.value);
     }
     if (actual.present) {
-      map['actual'] = Variable<double?>(actual.value);
+      map['actual'] = Variable<double>(actual.value);
     }
     if (projectUuid.present) {
-      map['projectUuid'] = Variable<String?>(projectUuid.value);
+      map['projectUuid'] = Variable<String>(projectUuid.value);
     }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('SpendingCompanion(')
+    return (StringBuffer('ExpenseCompanion(')
           ..write('id: $id, ')
           ..write('category: $category, ')
           ..write('item: $item, ')
@@ -7941,64 +7995,66 @@ class SpendingCompanion extends UpdateCompanion<SpendingData> {
   }
 }
 
-class Spending extends Table with TableInfo<Spending, SpendingData> {
+class Expense extends Table with TableInfo<Expense, ExpenseData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Spending(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+  Expense(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, true,
-      type: const IntType(),
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  final VerificationMeta _categoryMeta = const VerificationMeta('category');
-  late final GeneratedColumn<String?> category = GeneratedColumn<String?>(
+  static const VerificationMeta _categoryMeta =
+      const VerificationMeta('category');
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
       'category', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _itemMeta = const VerificationMeta('item');
-  late final GeneratedColumn<String?> item = GeneratedColumn<String?>(
+  static const VerificationMeta _itemMeta = const VerificationMeta('item');
+  late final GeneratedColumn<String> item = GeneratedColumn<String>(
       'item', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _descriptionMeta =
+  static const VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
-  late final GeneratedColumn<String?> description = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
       'description', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _budgetMeta = const VerificationMeta('budget');
-  late final GeneratedColumn<double?> budget = GeneratedColumn<double?>(
+  static const VerificationMeta _budgetMeta = const VerificationMeta('budget');
+  late final GeneratedColumn<double> budget = GeneratedColumn<double>(
       'budget', aliasedName, true,
-      type: const RealType(),
+      type: DriftSqlType.double,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _actualMeta = const VerificationMeta('actual');
-  late final GeneratedColumn<double?> actual = GeneratedColumn<double?>(
+  static const VerificationMeta _actualMeta = const VerificationMeta('actual');
+  late final GeneratedColumn<double> actual = GeneratedColumn<double>(
       'actual', aliasedName, true,
-      type: const RealType(),
+      type: DriftSqlType.double,
       requiredDuringInsert: false,
       $customConstraints: '');
-  final VerificationMeta _projectUuidMeta =
+  static const VerificationMeta _projectUuidMeta =
       const VerificationMeta('projectUuid');
-  late final GeneratedColumn<String?> projectUuid = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> projectUuid = GeneratedColumn<String>(
       'projectUuid', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns =>
       [id, category, item, description, budget, actual, projectUuid];
   @override
-  String get aliasedName => _alias ?? 'spending';
+  String get aliasedName => _alias ?? 'expense';
   @override
-  String get actualTableName => 'spending';
+  String get actualTableName => 'expense';
   @override
-  VerificationContext validateIntegrity(Insertable<SpendingData> instance,
+  VerificationContext validateIntegrity(Insertable<ExpenseData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -8039,25 +8095,40 @@ class Spending extends Table with TableInfo<Spending, SpendingData> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  SpendingData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return SpendingData.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  ExpenseData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ExpenseData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id']),
+      category: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}category']),
+      item: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}item']),
+      description: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}description']),
+      budget: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}budget']),
+      actual: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}actual']),
+      projectUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
+    );
   }
 
   @override
-  Spending createAlias(String alias) {
-    return Spending(attachedDatabase, alias);
+  Expense createAlias(String alias) {
+    return Expense(attachedDatabase, alias);
   }
 
   @override
   List<String> get customConstraints =>
-      const ['FOREIGN KEY(projectUuid) REFERENCES project(uuid)'];
+      const ['FOREIGN KEY(projectUuid)REFERENCES project(uuid)'];
   @override
   bool get dontWriteConstraints => true;
 }
 
 abstract class _$Database extends GeneratedDatabase {
-  _$Database(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
+  _$Database(QueryExecutor e) : super(e);
   late final Project project = Project(this);
   late final FileMetadata fileMetadata = FileMetadata(this);
   late final PersonnelPhoto personnelPhoto = PersonnelPhoto(this);
@@ -8074,9 +8145,9 @@ abstract class _$Database extends GeneratedDatabase {
   late final BirdMeasurement birdMeasurement = BirdMeasurement(this);
   late final Part part = Part(this);
   late final Taxonomy taxonomy = Taxonomy(this);
-  late final Spending spending = Spending(this);
+  late final Expense expense = Expense(this);
   Selectable<ListProjectResult> listProject() {
-    return customSelect('SELECT uuid,name,created,lastModified FROM project',
+    return customSelect('SELECT uuid, name, created, lastModified FROM project',
         variables: [],
         readsFrom: {
           project,
@@ -8084,14 +8155,15 @@ abstract class _$Database extends GeneratedDatabase {
       return ListProjectResult(
         uuid: row.read<String>('uuid'),
         name: row.read<String>('name'),
-        created: row.read<String?>('created'),
-        lastModified: row.read<String?>('lastModified'),
+        created: row.readNullable<String>('created'),
+        lastModified: row.readNullable<String>('lastModified'),
       );
     });
   }
 
   @override
-  Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
+  Iterable<TableInfo<Table, Object?>> get allTables =>
+      allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
         project,
@@ -8110,7 +8182,7 @@ abstract class _$Database extends GeneratedDatabase {
         birdMeasurement,
         part,
         taxonomy,
-        spending
+        expense
       ];
 }
 

@@ -32,7 +32,7 @@ class DashboardState extends ConsumerState<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    final projectUuid = ref.watch(projectUuidProvider.state).state;
+    final projectUuid = ref.watch(projectUuidProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Project Dashboard"),

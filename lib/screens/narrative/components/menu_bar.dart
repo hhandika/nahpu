@@ -5,12 +5,12 @@ import 'package:nahpu/database/database.dart';
 import 'package:nahpu/providers/project.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/narrative/new_narrative.dart';
-import 'package:nahpu/providers/page_viewer.dart';
+// import 'package:nahpu/providers/page_viewer.dart';
 
 enum MenuSelection { newNarrative, pdfExport, deleteRecords, deleteAllRecords }
 
 Future<void> createNewNarrative(BuildContext context, WidgetRef ref) {
-  String projectUuid = ref.watch(projectUuidProvider.state).state;
+  String projectUuid = ref.watch(projectUuidProvider);
 
   return ref
       .read(databaseProvider)
@@ -84,10 +84,10 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
       case MenuSelection.deleteRecords:
         break;
       case MenuSelection.deleteAllRecords:
-        final projectUuid = ref.read(projectUuidProvider.state).state;
+        final projectUuid = ref.read(projectUuidProvider.notifier).state;
         ref.read(databaseProvider).deleteAllNarrative(projectUuid);
-        ref.refresh(narrativeEntryProvider);
-        ref.refresh(pageNavigationProvider);
+        // ref.refresh(narrativeEntryProvider);
+        // ref.refresh(pageNavigationProvider);
         break;
     }
   }

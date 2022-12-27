@@ -32,7 +32,7 @@ class ProjectFormValidationNotifier extends StateNotifier<ProjectFormState> {
     state = state.copyWith(form: form.copyWith(projectName: projectNameField));
   }
 
-  void checkProjectNameExists(WidgetRef ref, String? name) {
+  void checkProjectNameExists(WidgetRef ref, String name) {
     ref.watch(databaseProvider).getProjectByName(name).then((value) => {
           if (value != null)
             {

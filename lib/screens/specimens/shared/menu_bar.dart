@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nahpu/providers/project.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/providers/page_viewer.dart';
+// import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/screens/specimens/new_specimens.dart';
 
 enum MenuSelection { newSpecimen, pdfExport, deleteRecords, deleteAllRecords }
@@ -50,10 +50,10 @@ class NarrativeMenuState extends ConsumerState<SpecimenMenu> {
       case MenuSelection.deleteRecords:
         break;
       case MenuSelection.deleteAllRecords:
-        final projectUuid = ref.read(projectUuidProvider.state).state;
+        final projectUuid = ref.read(projectUuidProvider.notifier).state;
         ref.read(databaseProvider).deleteAllSpecimens(projectUuid);
-        ref.refresh(specimenEntryProvider);
-        ref.refresh(pageNavigationProvider);
+        // ref.refresh(specimenEntryProvider);
+        // ref.refresh(pageNavigationProvider);
         break;
     }
   }

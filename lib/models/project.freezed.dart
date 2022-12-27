@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'project.dart';
 
@@ -27,37 +27,41 @@ mixin _$ProjectFormState {
 abstract class $ProjectFormStateCopyWith<$Res> {
   factory $ProjectFormStateCopyWith(
           ProjectFormState value, $Res Function(ProjectFormState) then) =
-      _$ProjectFormStateCopyWithImpl<$Res>;
+      _$ProjectFormStateCopyWithImpl<$Res, ProjectFormState>;
+  @useResult
   $Res call({ProjectFormValidation form});
 
   $ProjectFormValidationCopyWith<$Res> get form;
 }
 
 /// @nodoc
-class _$ProjectFormStateCopyWithImpl<$Res>
+class _$ProjectFormStateCopyWithImpl<$Res, $Val extends ProjectFormState>
     implements $ProjectFormStateCopyWith<$Res> {
   _$ProjectFormStateCopyWithImpl(this._value, this._then);
 
-  final ProjectFormState _value;
   // ignore: unused_field
-  final $Res Function(ProjectFormState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? form = freezed,
+    Object? form = null,
   }) {
     return _then(_value.copyWith(
-      form: form == freezed
+      form: null == form
           ? _value.form
           : form // ignore: cast_nullable_to_non_nullable
               as ProjectFormValidation,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $ProjectFormValidationCopyWith<$Res> get form {
     return $ProjectFormValidationCopyWith<$Res>(_value.form, (value) {
-      return _then(_value.copyWith(form: value));
+      return _then(_value.copyWith(form: value) as $Val);
     });
   }
 }
@@ -69,6 +73,7 @@ abstract class _$$_ProjectFormStateCopyWith<$Res>
           _$_ProjectFormState value, $Res Function(_$_ProjectFormState) then) =
       __$$_ProjectFormStateCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({ProjectFormValidation form});
 
   @override
@@ -77,21 +82,19 @@ abstract class _$$_ProjectFormStateCopyWith<$Res>
 
 /// @nodoc
 class __$$_ProjectFormStateCopyWithImpl<$Res>
-    extends _$ProjectFormStateCopyWithImpl<$Res>
+    extends _$ProjectFormStateCopyWithImpl<$Res, _$_ProjectFormState>
     implements _$$_ProjectFormStateCopyWith<$Res> {
   __$$_ProjectFormStateCopyWithImpl(
       _$_ProjectFormState _value, $Res Function(_$_ProjectFormState) _then)
-      : super(_value, (v) => _then(v as _$_ProjectFormState));
+      : super(_value, _then);
 
-  @override
-  _$_ProjectFormState get _value => super._value as _$_ProjectFormState;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? form = freezed,
+    Object? form = null,
   }) {
     return _then(_$_ProjectFormState(
-      form == freezed
+      null == form
           ? _value.form
           : form // ignore: cast_nullable_to_non_nullable
               as ProjectFormValidation,
@@ -117,15 +120,15 @@ class _$_ProjectFormState implements _ProjectFormState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ProjectFormState &&
-            const DeepCollectionEquality().equals(other.form, form));
+            (identical(other.form, form) || other.form == form));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(form));
+  int get hashCode => Object.hash(runtimeType, form);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_ProjectFormStateCopyWith<_$_ProjectFormState> get copyWith =>
       __$$_ProjectFormStateCopyWithImpl<_$_ProjectFormState>(this, _$identity);
 }
@@ -158,7 +161,8 @@ mixin _$ProjectFormValidation {
 abstract class $ProjectFormValidationCopyWith<$Res> {
   factory $ProjectFormValidationCopyWith(ProjectFormValidation value,
           $Res Function(ProjectFormValidation) then) =
-      _$ProjectFormValidationCopyWithImpl<$Res>;
+      _$ProjectFormValidationCopyWithImpl<$Res, ProjectFormValidation>;
+  @useResult
   $Res call(
       {ProjectFormField projectName,
       ProjectFormField collName,
@@ -172,66 +176,73 @@ abstract class $ProjectFormValidationCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ProjectFormValidationCopyWithImpl<$Res>
+class _$ProjectFormValidationCopyWithImpl<$Res,
+        $Val extends ProjectFormValidation>
     implements $ProjectFormValidationCopyWith<$Res> {
   _$ProjectFormValidationCopyWithImpl(this._value, this._then);
 
-  final ProjectFormValidation _value;
   // ignore: unused_field
-  final $Res Function(ProjectFormValidation) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? projectName = freezed,
-    Object? collName = freezed,
-    Object? email = freezed,
-    Object? collNum = freezed,
+    Object? projectName = null,
+    Object? collName = null,
+    Object? email = null,
+    Object? collNum = null,
   }) {
     return _then(_value.copyWith(
-      projectName: projectName == freezed
+      projectName: null == projectName
           ? _value.projectName
           : projectName // ignore: cast_nullable_to_non_nullable
               as ProjectFormField,
-      collName: collName == freezed
+      collName: null == collName
           ? _value.collName
           : collName // ignore: cast_nullable_to_non_nullable
               as ProjectFormField,
-      email: email == freezed
+      email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as ProjectFormField,
-      collNum: collNum == freezed
+      collNum: null == collNum
           ? _value.collNum
           : collNum // ignore: cast_nullable_to_non_nullable
               as ProjectFormField,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $ProjectFormFieldCopyWith<$Res> get projectName {
     return $ProjectFormFieldCopyWith<$Res>(_value.projectName, (value) {
-      return _then(_value.copyWith(projectName: value));
+      return _then(_value.copyWith(projectName: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $ProjectFormFieldCopyWith<$Res> get collName {
     return $ProjectFormFieldCopyWith<$Res>(_value.collName, (value) {
-      return _then(_value.copyWith(collName: value));
+      return _then(_value.copyWith(collName: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $ProjectFormFieldCopyWith<$Res> get email {
     return $ProjectFormFieldCopyWith<$Res>(_value.email, (value) {
-      return _then(_value.copyWith(email: value));
+      return _then(_value.copyWith(email: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $ProjectFormFieldCopyWith<$Res> get collNum {
     return $ProjectFormFieldCopyWith<$Res>(_value.collNum, (value) {
-      return _then(_value.copyWith(collNum: value));
+      return _then(_value.copyWith(collNum: value) as $Val);
     });
   }
 }
@@ -243,6 +254,7 @@ abstract class _$$_ProjectFormValidationCopyWith<$Res>
           $Res Function(_$_ProjectFormValidation) then) =
       __$$_ProjectFormValidationCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {ProjectFormField projectName,
       ProjectFormField collName,
@@ -261,37 +273,34 @@ abstract class _$$_ProjectFormValidationCopyWith<$Res>
 
 /// @nodoc
 class __$$_ProjectFormValidationCopyWithImpl<$Res>
-    extends _$ProjectFormValidationCopyWithImpl<$Res>
+    extends _$ProjectFormValidationCopyWithImpl<$Res, _$_ProjectFormValidation>
     implements _$$_ProjectFormValidationCopyWith<$Res> {
   __$$_ProjectFormValidationCopyWithImpl(_$_ProjectFormValidation _value,
       $Res Function(_$_ProjectFormValidation) _then)
-      : super(_value, (v) => _then(v as _$_ProjectFormValidation));
+      : super(_value, _then);
 
-  @override
-  _$_ProjectFormValidation get _value =>
-      super._value as _$_ProjectFormValidation;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? projectName = freezed,
-    Object? collName = freezed,
-    Object? email = freezed,
-    Object? collNum = freezed,
+    Object? projectName = null,
+    Object? collName = null,
+    Object? email = null,
+    Object? collNum = null,
   }) {
     return _then(_$_ProjectFormValidation(
-      projectName: projectName == freezed
+      projectName: null == projectName
           ? _value.projectName
           : projectName // ignore: cast_nullable_to_non_nullable
               as ProjectFormField,
-      collName: collName == freezed
+      collName: null == collName
           ? _value.collName
           : collName // ignore: cast_nullable_to_non_nullable
               as ProjectFormField,
-      email: email == freezed
+      email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as ProjectFormField,
-      collNum: collNum == freezed
+      collNum: null == collNum
           ? _value.collNum
           : collNum // ignore: cast_nullable_to_non_nullable
               as ProjectFormField,
@@ -328,23 +337,21 @@ class _$_ProjectFormValidation extends _ProjectFormValidation {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ProjectFormValidation &&
-            const DeepCollectionEquality()
-                .equals(other.projectName, projectName) &&
-            const DeepCollectionEquality().equals(other.collName, collName) &&
-            const DeepCollectionEquality().equals(other.email, email) &&
-            const DeepCollectionEquality().equals(other.collNum, collNum));
+            (identical(other.projectName, projectName) ||
+                other.projectName == projectName) &&
+            (identical(other.collName, collName) ||
+                other.collName == collName) &&
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.collNum, collNum) || other.collNum == collNum));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(projectName),
-      const DeepCollectionEquality().hash(collName),
-      const DeepCollectionEquality().hash(email),
-      const DeepCollectionEquality().hash(collNum));
+  int get hashCode =>
+      Object.hash(runtimeType, projectName, collName, email, collNum);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_ProjectFormValidationCopyWith<_$_ProjectFormValidation> get copyWith =>
       __$$_ProjectFormValidationCopyWithImpl<_$_ProjectFormValidation>(
           this, _$identity);
@@ -387,39 +394,42 @@ mixin _$ProjectFormField {
 abstract class $ProjectFormFieldCopyWith<$Res> {
   factory $ProjectFormFieldCopyWith(
           ProjectFormField value, $Res Function(ProjectFormField) then) =
-      _$ProjectFormFieldCopyWithImpl<$Res>;
+      _$ProjectFormFieldCopyWithImpl<$Res, ProjectFormField>;
+  @useResult
   $Res call({String? value, String? errMsg, bool isValid});
 }
 
 /// @nodoc
-class _$ProjectFormFieldCopyWithImpl<$Res>
+class _$ProjectFormFieldCopyWithImpl<$Res, $Val extends ProjectFormField>
     implements $ProjectFormFieldCopyWith<$Res> {
   _$ProjectFormFieldCopyWithImpl(this._value, this._then);
 
-  final ProjectFormField _value;
   // ignore: unused_field
-  final $Res Function(ProjectFormField) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? value = freezed,
     Object? errMsg = freezed,
-    Object? isValid = freezed,
+    Object? isValid = null,
   }) {
     return _then(_value.copyWith(
-      value: value == freezed
+      value: freezed == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
               as String?,
-      errMsg: errMsg == freezed
+      errMsg: freezed == errMsg
           ? _value.errMsg
           : errMsg // ignore: cast_nullable_to_non_nullable
               as String?,
-      isValid: isValid == freezed
+      isValid: null == isValid
           ? _value.isValid
           : isValid // ignore: cast_nullable_to_non_nullable
               as bool,
-    ));
+    ) as $Val);
   }
 }
 
@@ -430,36 +440,35 @@ abstract class _$$_ProjectNameCopyWith<$Res>
           _$_ProjectName value, $Res Function(_$_ProjectName) then) =
       __$$_ProjectNameCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({String? value, String? errMsg, bool isValid});
 }
 
 /// @nodoc
 class __$$_ProjectNameCopyWithImpl<$Res>
-    extends _$ProjectFormFieldCopyWithImpl<$Res>
+    extends _$ProjectFormFieldCopyWithImpl<$Res, _$_ProjectName>
     implements _$$_ProjectNameCopyWith<$Res> {
   __$$_ProjectNameCopyWithImpl(
       _$_ProjectName _value, $Res Function(_$_ProjectName) _then)
-      : super(_value, (v) => _then(v as _$_ProjectName));
+      : super(_value, _then);
 
-  @override
-  _$_ProjectName get _value => super._value as _$_ProjectName;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? value = freezed,
     Object? errMsg = freezed,
-    Object? isValid = freezed,
+    Object? isValid = null,
   }) {
     return _then(_$_ProjectName(
-      value: value == freezed
+      value: freezed == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
               as String?,
-      errMsg: errMsg == freezed
+      errMsg: freezed == errMsg
           ? _value.errMsg
           : errMsg // ignore: cast_nullable_to_non_nullable
               as String?,
-      isValid: isValid == freezed
+      isValid: null == isValid
           ? _value.isValid
           : isValid // ignore: cast_nullable_to_non_nullable
               as bool,
@@ -491,20 +500,17 @@ class _$_ProjectName implements _ProjectName {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ProjectName &&
-            const DeepCollectionEquality().equals(other.value, value) &&
-            const DeepCollectionEquality().equals(other.errMsg, errMsg) &&
-            const DeepCollectionEquality().equals(other.isValid, isValid));
+            (identical(other.value, value) || other.value == value) &&
+            (identical(other.errMsg, errMsg) || other.errMsg == errMsg) &&
+            (identical(other.isValid, isValid) || other.isValid == isValid));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(value),
-      const DeepCollectionEquality().hash(errMsg),
-      const DeepCollectionEquality().hash(isValid));
+  int get hashCode => Object.hash(runtimeType, value, errMsg, isValid);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_ProjectNameCopyWith<_$_ProjectName> get copyWith =>
       __$$_ProjectNameCopyWithImpl<_$_ProjectName>(this, _$identity);
 }

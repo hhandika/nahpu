@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:drift/drift.dart' as db;
-import 'package:nahpu/providers/page_viewer.dart';
+// import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/providers/project.dart';
 import 'package:nahpu/database/database.dart';
 import 'package:nahpu/screens/sites/new_sites.dart';
@@ -9,7 +9,7 @@ import 'package:nahpu/screens/sites/new_sites.dart';
 enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
 
 Future<void> createNewSite(BuildContext context, WidgetRef ref) {
-  String projectUuid = ref.watch(projectUuidProvider.state).state;
+  String projectUuid = ref.watch(projectUuidProvider);
 
   return ref
       .read(databaseProvider)
@@ -83,10 +83,10 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
       case MenuSelection.deleteRecords:
         break;
       case MenuSelection.deleteAllRecords:
-        final projectUuid = ref.read(projectUuidProvider.state).state;
+        final projectUuid = ref.read(projectUuidProvider.notifier).state;
         ref.read(databaseProvider).deleteAllSites(projectUuid);
-        ref.refresh(siteEntryProvider);
-        ref.refresh(pageNavigationProvider);
+        // ref.refresh(siteEntryProvider);
+        // ref.refresh(pageNavigationProvider);
         break;
     }
   }

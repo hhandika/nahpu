@@ -4,7 +4,7 @@ import 'package:nahpu/models/form.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalog.dart';
 import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
-import 'package:nahpu/providers/page_viewer.dart';
+// import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/screens/specimens/specimen_form.dart';
 import 'package:nahpu/screens/specimens/specimen_view.dart';
 import 'package:drift/drift.dart' as db;
@@ -12,7 +12,7 @@ import 'package:nahpu/database/database.dart';
 import 'package:nahpu/providers/project.dart';
 
 Future<void> createNewSpecimens(BuildContext context, WidgetRef ref) {
-  String projectUuid = ref.watch(projectUuidProvider.state).state;
+  String projectUuid = ref.watch(projectUuidProvider);
   CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
   final String specimenUuid = uuid;
   ref.read(databaseProvider).createSpecimen(SpecimenCompanion(
@@ -70,8 +70,8 @@ class NewSpecimenFormState extends ConsumerState<NewSpecimenForm> {
         title: const Text("New Specimens"),
         leading: BackButton(
           onPressed: () {
-            ref.refresh(pageNavigationProvider);
-            ref.refresh(specimenEntryProvider);
+            // ref.refresh(pageNavigationProvider);
+            // ref.refresh(specimenEntryProvider);
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const Specimens()));
           },

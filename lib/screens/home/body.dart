@@ -121,11 +121,11 @@ class ProjectNotFound extends StatelessWidget {
         children: [
           Text(
             'No projects found!',
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
           Text(
             'Create a new project to get started',
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
         ],
       ),
@@ -205,7 +205,7 @@ class ProjectViewState extends ConsumerState<ProjectView> {
 
   VoidCallback _openProject() {
     return () {
-      ref.read(projectUuidProvider.state).state = widget.project.uuid;
+      ref.read(projectUuidProvider.notifier).state = widget.project.uuid;
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const Dashboard()),
@@ -316,7 +316,10 @@ class ProjectPopUpMenuState extends ConsumerState<ProjectPopUpMenu> {
         context: context,
         builder: (BuildContext context) => DeleteAlerts(
           projectUuid: projectUuid,
-          onDelete: () => Navigator.of(context).pop(),
+          onDelete: () => {
+            ref.refresh(projectListProvider),
+            Navigator.of(context).pop(),
+          },
         ),
       ),
     );
