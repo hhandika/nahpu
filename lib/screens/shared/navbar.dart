@@ -6,7 +6,7 @@ import 'package:nahpu/providers/catalog.dart';
 import 'package:nahpu/providers/project.dart';
 import 'package:nahpu/screens/narrative/narrative_view.dart';
 import 'package:nahpu/screens/collecting/coll_event_view.dart';
-// import 'package:nahpu/providers/page_viewer.dart';
+import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/screens/sites/site_view.dart';
 import 'package:nahpu/screens/specimens/specimen_view.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
@@ -61,7 +61,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
       ],
       onDestinationSelected: (int index) {
         ref.read(projectNavbarIndexProvider.notifier).state = index;
-        // ref.refresh(pageNavigationProvider);
+        ref.refresh(pageNavigationProvider);
         _onItemTapped(index);
       },
     );
@@ -79,28 +79,28 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
 
         break;
       case 1:
-        // ref.refresh(siteEntryProvider);
+        ref.refresh(siteEntryProvider);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const Sites()),
         );
         break;
       case 2:
-        // ref.refresh(collEventEntryProvider);
+        ref.refresh(collEventEntryProvider);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const CollEvents()),
         );
         break;
       case 3:
-        // ref.refresh(specimenEntryProvider);
+        ref.refresh(specimenEntryProvider);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const Specimens()),
         );
         break;
       case 4:
-        // ref.refresh(narrativeEntryProvider);
+        ref.refresh(narrativeEntryProvider);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const Narrative()),

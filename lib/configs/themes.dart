@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class NahpuTheme {
-  static final _defaultLightColorScheme =
-      ColorScheme.fromSwatch(primarySwatch: Colors.teal);
+  static final _defaultLightColorScheme = ColorScheme.fromSwatch(
+    primarySwatch: Colors.teal,
+  );
 
   static final _defaultDarkColorScheme = ColorScheme.fromSwatch(
     primarySwatch: Colors.teal,
@@ -15,16 +16,20 @@ class NahpuTheme {
       useMaterial3: true,
       visualDensity: VisualDensity.adaptivePlatformDensity,
       cardTheme: cardTheme,
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.teal,
+        foregroundColor: Colors.white,
+        titleTextStyle: TextStyle(color: Colors.white),
+      ),
     );
   }
 
   static ThemeData darkTheme(ColorScheme? darkColorScheme) {
     return ThemeData(
-      colorScheme: darkColorScheme ?? _defaultDarkColorScheme,
-      useMaterial3: true,
-      visualDensity: VisualDensity.adaptivePlatformDensity,
-      cardTheme: cardTheme,
-    );
+        colorScheme: darkColorScheme ?? _defaultDarkColorScheme,
+        useMaterial3: true,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        cardTheme: cardTheme);
   }
 
   static CardTheme get cardTheme {

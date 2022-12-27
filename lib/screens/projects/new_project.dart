@@ -166,8 +166,8 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                               _updateMainCollectorCatNum();
                               _goToDashboard();
                               // Reset states to default
-                              // ref.refresh(projectListProvider);
-                              // ref.refresh(projectFormNotifier.notifier);
+                              ref.refresh(projectListProvider);
+                              ref.refresh(projectFormNotifier.notifier);
                             },
                             text: 'Create',
                             enabled: ref.read(projectFormNotifier).form.isValid)

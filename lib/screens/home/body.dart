@@ -20,16 +20,15 @@ class HomeBodyState extends ConsumerState<HomeBody> {
   // Table size
   @override
   Widget build(BuildContext context) {
-    final bool isSmallScreen = MediaQuery.of(context).size.width < 730;
     return SafeArea(
       child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: SizedBox(
-            width: isSmallScreen ? 600 : 800,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 800),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
             child: ref.watch(projectListProvider).when(
               data: (data) {
-                return _buildBody(data.reversed.toList(), isSmallScreen);
+                return _buildBody(data.reversed.toList());
               },
               loading: () {
                 return const CommmonProgressIndicator();
@@ -44,21 +43,19 @@ class HomeBodyState extends ConsumerState<HomeBody> {
     );
   }
 
-  Widget _buildBody(List<ListProjectResult> projectList, bool isSmallScreen) {
+  Widget _buildBody(List<ListProjectResult> projectList) {
     if (projectList.isEmpty) {
       return const ProjectNotFound();
     } else {
-      return ToggleView(projectList: projectList, isSmallScreen: isSmallScreen);
+      return ToggleView(projectList: projectList);
     }
   }
 }
 
 class ToggleView extends StatefulWidget {
-  const ToggleView(
-      {super.key, required this.projectList, required this.isSmallScreen});
+  const ToggleView({super.key, required this.projectList});
 
   final List<ListProjectResult> projectList;
-  final bool isSmallScreen;
 
   @override
   State<ToggleView> createState() => _ToggleViewState();
@@ -103,7 +100,7 @@ class _ToggleViewState extends State<ToggleView> {
             ? ProjectListView(projectList: widget.projectList)
             : ProjectGridView(
                 projectList: widget.projectList,
-                isSmallScreen: widget.isSmallScreen),
+              ),
       ],
     );
   }
@@ -158,18 +155,16 @@ class ProjectGridView extends StatelessWidget {
   const ProjectGridView({
     super.key,
     required this.projectList,
-    required this.isSmallScreen,
   });
 
   final List<ListProjectResult> projectList;
-  final bool isSmallScreen;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: isSmallScreen ? 2 : 4,
+          crossAxisCount: MediaQuery.of(context).size.width < 800 ? 2 : 4,
           childAspectRatio: 1.5,
         ),
         itemCount: projectList.length,

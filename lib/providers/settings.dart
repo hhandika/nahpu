@@ -9,14 +9,17 @@ final settingProvider = Provider<SharedPreferences>((ref) {
 
 final themeSettingProvider =
     StateNotifierProvider<ThemeSettingNotifier, ThemeMode>((ref) {
-  return ThemeSettingNotifier();
+  return ThemeSettingNotifier(ref.read(settingProvider));
 });
 
 class ThemeSettingNotifier extends StateNotifier<ThemeMode> {
-  ThemeSettingNotifier() : super(ThemeMode.system);
+  ThemeSettingNotifier(this.prefs) : super(ThemeMode.system) {
+    initTheme();
+  }
 
-  void initTheme(WidgetRef ref) {
-    final prefs = ref.read(settingProvider);
+  final SharedPreferences prefs;
+
+  void initTheme() {
     final theme = prefs.getString('themeMode');
     if (theme != null) {
       switch (theme) {
