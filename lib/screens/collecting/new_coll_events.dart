@@ -37,7 +37,6 @@ class NewCollEventFormState extends ConsumerState<NewCollEventForm> {
         title: const Text("New Coll. Events"),
         leading: BackButton(
           onPressed: () {
-            ref.invalidate(pageNavigationProvider);
             ref.invalidate(collEventEntryProvider);
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const CollEvents()));

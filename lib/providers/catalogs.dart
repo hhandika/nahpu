@@ -24,20 +24,19 @@ final collEventEntryProvider =
   return collEvents;
 });
 
-final pageNavigationProvider =
-    StateProvider.autoDispose<PageNavigation>((ref) => PageNavigation());
+// final pageNavigationProvider =
+//     StateProvider.autoDispose<PageNavigation>((ref) => PageNavigation());
 
-final narrativeNavProvider =
-    StateProvider.autoDispose<PageNavigation>((ref) => PageNavigation());
+// final siteNavProvider =
+//     StateProvider.autoDispose<SiteNavigation>((ref) => SiteNavigation());
 
-final collEventNavProvider =
-    StateProvider.autoDispose<PageNavigation>((ref) => PageNavigation());
+// final collEventNavProvider =
+//     StateProvider.autoDispose<PageNavigation>((ref) => PageNavigation());
 
-final specimenNavProvider =
-    StateProvider.autoDispose<PageNavigation>((ref) => PageNavigation());
+// final specimenNavProvider =
+//     StateProvider.autoDispose<PageNavigation>((ref) => PageNavigation());
 
-void checkPageNavigation(WidgetRef ref) {
-  final pageState = ref.watch(pageNavigationProvider);
+PageNavigation updatePageNavigation(PageNavigation pageState) {
   if (pageState.currentPage == 1) {
     pageState.isFirstPage = true;
     pageState.isLastPage = false;
@@ -48,6 +47,8 @@ void checkPageNavigation(WidgetRef ref) {
     pageState.isFirstPage = false;
     pageState.isLastPage = false;
   }
+
+  return pageState;
 }
 
 final specimenEntryProvider =

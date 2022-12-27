@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/models/catalogs.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
@@ -7,6 +8,7 @@ import 'package:nahpu/screens/shared/indicators.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
 import 'package:nahpu/screens/sites/components/menu_bar.dart';
 import 'package:nahpu/screens/sites/site_form.dart';
+import 'package:nahpu/services/database.dart';
 
 enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
 
@@ -18,8 +20,9 @@ class Sites extends ConsumerStatefulWidget {
 }
 
 class SitesState extends ConsumerState<Sites> {
-  bool isVisible = false;
+  bool _isVisible = false;
   PageController pageController = PageController();
+  PageNavigation _pageNav = PageNavigation();
 
   @override
   void dispose() {
@@ -30,8 +33,6 @@ class SitesState extends ConsumerState<Sites> {
   @override
   Widget build(BuildContext context) {
     final siteEntries = ref.watch(siteEntryProvider);
-    ref.watch(pageNavigationProvider);
-    final pageNotifier = ref.watch(pageNavigationProvider.notifier);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Sites"),
@@ -47,48 +48,33 @@ class SitesState extends ConsumerState<Sites> {
           child: siteEntries.when(data: (siteEntries) {
             if (siteEntries.isEmpty) {
               setState(() {
-                isVisible = false;
+                _isVisible = false;
               });
               return const Text("No site entries");
             } else {
               int siteSize = siteEntries.length;
               setState(() {
                 if (siteSize >= 2) {
-                  isVisible = true;
+                  _isVisible = true;
+                } else {
+                  _isVisible = false;
                 }
-                ref.watch(pageNavigationProvider.notifier).state.pageCounts =
-                    siteSize;
+                _pageNav.pageCounts = siteSize;
                 pageController = PageController(initialPage: siteSize);
               });
               return PageView.builder(
                 controller: pageController,
                 itemCount: siteSize,
                 itemBuilder: (context, index) {
-                  final siteForm = SiteFormCtrModel(
-                    siteIDCtr:
-                        TextEditingController(text: siteEntries[index].siteID),
-                    siteTypeCtr: TextEditingController(
-                        text: siteEntries[index].siteType),
-                    countryCtr:
-                        TextEditingController(text: siteEntries[index].country),
-                    stateProvinceCtr: TextEditingController(
-                        text: siteEntries[index].stateProvince),
-                    countyCtr:
-                        TextEditingController(text: siteEntries[index].county),
-                    municipalityCtr: TextEditingController(
-                        text: siteEntries[index].municipality),
-                    localityCtr: TextEditingController(
-                        text: siteEntries[index].locality),
-                  );
+                  final siteForm = _updateController(siteEntries, index);
                   return SiteForm(
                     id: siteEntries[index].id,
                     siteFormCtr: siteForm,
                   );
                 },
                 onPageChanged: (value) => setState(() {
-                  pageNotifier.state.currentPage = value + 1;
-                  checkPageNavigation(ref);
-                  //ref.invalidate(siteEntryProvider);
+                  _pageNav.currentPage = value + 1;
+                  _pageNav = updatePageNavigation(_pageNav);
                 }),
               );
             }
@@ -100,11 +86,26 @@ class SitesState extends ConsumerState<Sites> {
         ),
       ),
       bottomSheet: Visibility(
-          visible: isVisible,
+          visible: _isVisible,
           child: CustomPageNavButton(
             pageController: pageController,
+            pageNav: _pageNav,
           )),
       bottomNavigationBar: const ProjectBottomNavbar(),
+    );
+  }
+
+  SiteFormCtrModel _updateController(List<SiteData> siteEntries, int index) {
+    return SiteFormCtrModel(
+      siteIDCtr: TextEditingController(text: siteEntries[index].siteID),
+      siteTypeCtr: TextEditingController(text: siteEntries[index].siteType),
+      countryCtr: TextEditingController(text: siteEntries[index].country),
+      stateProvinceCtr:
+          TextEditingController(text: siteEntries[index].stateProvince),
+      countyCtr: TextEditingController(text: siteEntries[index].county),
+      municipalityCtr:
+          TextEditingController(text: siteEntries[index].municipality),
+      localityCtr: TextEditingController(text: siteEntries[index].locality),
     );
   }
 }

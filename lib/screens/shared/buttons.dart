@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/models/catalogs.dart';
 
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
@@ -72,13 +73,15 @@ class CustomPageNavButton extends ConsumerWidget {
   const CustomPageNavButton({
     Key? key,
     required this.pageController,
+    required this.pageNav,
   }) : super(key: key);
 
   final PageController pageController;
+  final PageNavigation pageNav;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final page = ref.watch(pageNavigationProvider);
+    // final page = ref.watch(pageNavigationProvider);
     return Container(
       constraints: BoxConstraints(
         maxHeight: MediaQuery.of(context).size.height * 0.1,
@@ -88,7 +91,7 @@ class CustomPageNavButton extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextButton(
-            onPressed: page.isFirstPage
+            onPressed: pageNav.isFirstPage
                 ? null
                 : () {
                     if (pageController.hasClients) {
@@ -100,14 +103,12 @@ class CustomPageNavButton extends ConsumerWidget {
           ),
           FittedBox(
             child: Text(
-              page.currentPage > 0
-                  ? 'Page ${page.currentPage} of ${page.pageCounts}'
-                  : 'Page counts: ${page.pageCounts}',
+              'Page ${pageNav.currentPage} of ${pageNav.pageCounts}',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
           TextButton(
-            onPressed: page.isLastPage
+            onPressed: pageNav.isLastPage
                 ? null
                 : () {
                     if (pageController.hasClients) {

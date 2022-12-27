@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/models/catalogs.dart';
 import 'package:nahpu/models/form.dart';
 
 import 'package:nahpu/providers/catalogs.dart';
@@ -20,6 +21,7 @@ class CollEvents extends ConsumerStatefulWidget {
 class CollEventsState extends ConsumerState<CollEvents> {
   bool _isVisible = false;
   PageController pageController = PageController();
+  PageNavigation _pageNav = PageNavigation();
 
   @override
   void dispose() {
@@ -29,9 +31,6 @@ class CollEventsState extends ConsumerState<CollEvents> {
 
   @override
   Widget build(BuildContext context) {
-    final collEventEntries = ref.watch(collEventEntryProvider);
-    final pageNotifier = ref.watch(pageNavigationProvider.notifier);
-    ref.watch(pageNavigationProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Collecting Events"),
@@ -44,67 +43,68 @@ class CollEventsState extends ConsumerState<CollEvents> {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Center(
-          child: collEventEntries.when(
-            data: (collEventEntries) {
-              if (collEventEntries.isEmpty) {
-                setState(() {
-                  _isVisible = false;
-                });
+          child: ref.watch(collEventEntryProvider).when(
+                data: (collEventEntries) {
+                  if (collEventEntries.isEmpty) {
+                    setState(() {
+                      _isVisible = false;
+                    });
 
-                return const Text("No collecting event entries");
-              } else {
-                int collEventSize = collEventEntries.length;
-                setState(() {
-                  if (collEventSize >= 2) {
-                    _isVisible = true;
+                    return const Text("No collecting event entries");
+                  } else {
+                    int collEventSize = collEventEntries.length;
+                    setState(() {
+                      if (collEventSize >= 2) {
+                        _isVisible = true;
+                      }
+                      _pageNav.pageCounts = collEventSize;
+                      // We want to view the last page first.
+                      // Dart uses 0-based indexing. Technically, this is out-of-bound.
+                      // But, what happens here is that it will trigger the PageView onPageChanged.
+                      // It fixes the issues that the curentPage state does not show the current page value.
+                      pageController =
+                          PageController(initialPage: collEventSize);
+                    });
+                    return PageView.builder(
+                      controller: pageController,
+                      itemCount: collEventSize,
+                      itemBuilder: (context, index) {
+                        final collEventForm = CollEventFormCtrModel(
+                          startDateCtr: TextEditingController(
+                              text: collEventEntries[index].startDate),
+                          endDateCtr: TextEditingController(
+                              text: collEventEntries[index].endDate),
+                          startTimeCtr: TextEditingController(
+                              text: collEventEntries[index].startTime),
+                          endTimeCtr: TextEditingController(
+                              text: collEventEntries[index].endTime),
+                          primaryCollMethodCtr: TextEditingController(
+                              text: collEventEntries[index].primaryCollMethod),
+                        );
+
+                        return CollEventForm(
+                          id: collEventEntries[index].id,
+                          collEventCtr: collEventForm,
+                        );
+                      },
+                      onPageChanged: (value) => setState(() {
+                        _pageNav.currentPage = value + 1;
+                        _pageNav = updatePageNavigation(_pageNav);
+                        ref.invalidate(collEventEntryProvider);
+                      }),
+                    );
                   }
-                  ref.watch(pageNavigationProvider.notifier).state.pageCounts =
-                      collEventSize;
-                  // We want to view the last page first.
-                  // Dart uses 0-based indexing. Technically, this is out-of-bound.
-                  // But, what happens here is that it will trigger the PageView onPageChanged.
-                  // It fixes the issues that the curentPage state does not show the current page value.
-                  pageController = PageController(initialPage: collEventSize);
-                });
-                return PageView.builder(
-                  controller: pageController,
-                  itemCount: collEventSize,
-                  itemBuilder: (context, index) {
-                    final collEventForm = CollEventFormCtrModel(
-                      startDateCtr: TextEditingController(
-                          text: collEventEntries[index].startDate),
-                      endDateCtr: TextEditingController(
-                          text: collEventEntries[index].endDate),
-                      startTimeCtr: TextEditingController(
-                          text: collEventEntries[index].startTime),
-                      endTimeCtr: TextEditingController(
-                          text: collEventEntries[index].endTime),
-                      primaryCollMethodCtr: TextEditingController(
-                          text: collEventEntries[index].primaryCollMethod),
-                    );
-
-                    return CollEventForm(
-                      id: collEventEntries[index].id,
-                      collEventCtr: collEventForm,
-                    );
-                  },
-                  onPageChanged: (value) => setState(() {
-                    pageNotifier.state.currentPage = value + 1;
-                    checkPageNavigation(ref);
-                    //ref.invalidate(narrativeEntryProvider);
-                  }),
-                );
-              }
-            },
-            loading: () => const CommmonProgressIndicator(),
-            error: (error, stack) => Text(error.toString()),
-          ),
+                },
+                loading: () => const CommmonProgressIndicator(),
+                error: (error, stack) => Text(error.toString()),
+              ),
         ),
       ),
       bottomSheet: Visibility(
         visible: _isVisible,
         child: CustomPageNavButton(
           pageController: pageController,
+          pageNav: _pageNav,
         ),
       ),
       bottomNavigationBar: const ProjectBottomNavbar(),

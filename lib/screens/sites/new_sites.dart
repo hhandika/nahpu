@@ -34,7 +34,6 @@ class NewSitesState extends ConsumerState<NewSites> {
         title: const Text("New Sites"),
         leading: BackButton(
           onPressed: () {
-            ref.invalidate(pageNavigationProvider);
             ref.invalidate(siteEntryProvider);
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const Sites()));

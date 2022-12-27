@@ -71,7 +71,6 @@ class NewSpecimenFormState extends ConsumerState<NewSpecimenForm> {
         title: const Text("New Specimens"),
         leading: BackButton(
           onPressed: () {
-            ref.invalidate(specimenNavProvider);
             ref.invalidate(specimenEntryProvider);
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const Specimens()));

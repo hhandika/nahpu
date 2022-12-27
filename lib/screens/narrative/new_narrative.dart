@@ -38,7 +38,6 @@ class NewNarrativeFormState extends ConsumerState<NewNarrativeForm> {
         ],
         leading: BackButton(
           onPressed: () {
-            ref.invalidate(pageNavigationProvider);
             ref.invalidate(narrativeEntryProvider);
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const Narrative()));

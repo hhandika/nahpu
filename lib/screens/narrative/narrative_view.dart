@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/models/catalogs.dart';
 import 'package:nahpu/models/form.dart';
 
 import 'package:nahpu/providers/catalogs.dart';
@@ -9,6 +10,7 @@ import 'package:nahpu/screens/narrative/narrative_form.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/indicators.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
+import 'package:nahpu/services/database.dart';
 
 class Narrative extends ConsumerStatefulWidget {
   const Narrative({Key? key}) : super(key: key);
@@ -20,6 +22,7 @@ class Narrative extends ConsumerStatefulWidget {
 class NarrativeState extends ConsumerState<Narrative> {
   bool isVisible = false;
   PageController pageController = PageController();
+  PageNavigation _pageNav = PageNavigation();
 
   @override
   void dispose() {
@@ -30,8 +33,7 @@ class NarrativeState extends ConsumerState<Narrative> {
   @override
   Widget build(BuildContext context) {
     final narrativeEntries = ref.watch(narrativeEntryProvider);
-    final pageNotifier = ref.watch(pageNavigationProvider.notifier);
-    ref.watch(pageNavigationProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Narrative"),
@@ -58,8 +60,7 @@ class NarrativeState extends ConsumerState<Narrative> {
                   if (narrativeSize >= 2) {
                     isVisible = true;
                   }
-                  ref.watch(pageNavigationProvider.notifier).state.pageCounts =
-                      narrativeSize;
+                  _pageNav.pageCounts = narrativeSize;
                   // We want to view the last page first.
                   // Dart uses 0-based indexing. Technically, this is out-of-bound.
                   // But, what happens here is that it will trigger the PageView onPageChanged.
@@ -70,22 +71,16 @@ class NarrativeState extends ConsumerState<Narrative> {
                   controller: pageController,
                   itemCount: narrativeSize,
                   itemBuilder: (context, index) {
-                    final narrativeCtr = NarrativeFormCtrModel(
-                      dateCtr: TextEditingController(
-                          text: narrativeEntries[index].date),
-                      siteCtr: TextEditingController(
-                          text: narrativeEntries[index].siteID),
-                      narrativeCtr: TextEditingController(
-                          text: narrativeEntries[index].narrative),
-                    );
+                    final narrativeCtr =
+                        _updateController(narrativeEntries, index);
                     return NarrativeForm(
                       narrativeId: narrativeEntries[index].id,
                       narrativeCtr: narrativeCtr,
                     );
                   },
                   onPageChanged: (value) => setState(() {
-                    pageNotifier.state.currentPage = value + 1;
-                    checkPageNavigation(ref);
+                    _pageNav.currentPage = value + 1;
+                    _pageNav = updatePageNavigation(_pageNav);
                     ref.invalidate(narrativeEntryProvider);
                   }),
                 );
@@ -100,9 +95,20 @@ class NarrativeState extends ConsumerState<Narrative> {
         visible: isVisible,
         child: CustomPageNavButton(
           pageController: pageController,
+          pageNav: _pageNav,
         ),
       ),
       bottomNavigationBar: const ProjectBottomNavbar(),
+    );
+  }
+
+  NarrativeFormCtrModel _updateController(
+      List<NarrativeData> narrativeEntries, int index) {
+    return NarrativeFormCtrModel(
+      dateCtr: TextEditingController(text: narrativeEntries[index].date),
+      siteCtr: TextEditingController(text: narrativeEntries[index].siteID),
+      narrativeCtr:
+          TextEditingController(text: narrativeEntries[index].narrative),
     );
   }
 }
