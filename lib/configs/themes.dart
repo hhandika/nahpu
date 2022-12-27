@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class NahpuTheme {
@@ -16,11 +18,6 @@ class NahpuTheme {
       useMaterial3: true,
       visualDensity: VisualDensity.adaptivePlatformDensity,
       cardTheme: cardTheme,
-      appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.teal,
-        foregroundColor: Colors.white,
-        titleTextStyle: TextStyle(color: Colors.white),
-      ),
     );
   }
 
