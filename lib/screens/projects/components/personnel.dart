@@ -1,4 +1,4 @@
-import 'package:nahpu/database/database.dart';
+import 'package:nahpu/services/database.dart';
 import 'package:nahpu/providers/page_viewer.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/providers/project.dart';

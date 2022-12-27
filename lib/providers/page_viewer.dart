@@ -1,4 +1,4 @@
-import 'package:nahpu/database/database.dart';
+import 'package:nahpu/services/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:nahpu/providers/project.dart';

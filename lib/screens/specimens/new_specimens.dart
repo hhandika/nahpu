@@ -8,7 +8,7 @@ import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
 import 'package:nahpu/screens/specimens/specimen_form.dart';
 import 'package:nahpu/screens/specimens/specimen_view.dart';
 import 'package:drift/drift.dart' as db;
-import 'package:nahpu/database/database.dart';
+import 'package:nahpu/services/database.dart';
 import 'package:nahpu/providers/project.dart';
 
 Future<void> createNewSpecimens(BuildContext context, WidgetRef ref) {

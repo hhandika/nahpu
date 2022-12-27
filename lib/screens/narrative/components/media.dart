@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/photos.dart';
 import 'package:nahpu/screens/shared/videos.dart';
-import 'package:nahpu/configs/colors.dart';
+import 'package:nahpu/styles/colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MediaForm extends ConsumerStatefulWidget {

@@ -1,5 +1,5 @@
 import 'package:drift/drift.dart';
-import 'package:nahpu/database/database.dart';
+import 'package:nahpu/services/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import 'package:drift/drift.dart' as db;

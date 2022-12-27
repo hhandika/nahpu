@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/configs/colors.dart';
+import 'package:nahpu/styles/colors.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalog.dart';
 import 'package:nahpu/providers/project.dart';

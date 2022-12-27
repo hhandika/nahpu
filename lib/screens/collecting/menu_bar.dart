@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as db;
 
-import 'package:nahpu/database/database.dart';
+import 'package:nahpu/services/database.dart';
 import 'package:nahpu/providers/project.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/collecting/new_coll_events.dart';

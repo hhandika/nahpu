@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/database/database.dart';
+import 'package:nahpu/services/database.dart';
 import 'package:nahpu/providers/project.dart';
 
 void updateSite(int id, SiteCompanion site, WidgetRef ref) {
