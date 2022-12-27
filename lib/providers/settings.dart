@@ -14,12 +14,12 @@ final themeSettingProvider =
 
 class ThemeSettingNotifier extends StateNotifier<ThemeMode> {
   ThemeSettingNotifier(this.prefs) : super(ThemeMode.system) {
-    initTheme();
+    _initTheme();
   }
 
   final SharedPreferences prefs;
 
-  void initTheme() {
+  void _initTheme() {
     final theme = prefs.getString('themeMode');
     if (theme != null) {
       switch (theme) {
