@@ -4,7 +4,7 @@ import 'package:nahpu/models/form.dart';
 import 'package:nahpu/models/page_viewer.dart';
 import 'package:nahpu/models/types.dart';
 
-import 'package:nahpu/providers/page_viewer.dart';
+import 'package:nahpu/providers/catalogs.dart';
 
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/indicators.dart';

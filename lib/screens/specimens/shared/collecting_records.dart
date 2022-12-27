@@ -3,8 +3,8 @@ import 'package:nahpu/models/form.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:intl/intl.dart';
-import 'package:nahpu/providers/updater.dart';
-import 'package:nahpu/providers/page_viewer.dart';
+import 'package:nahpu/providers/catalogs.dart';
+import 'package:nahpu/providers/catalogs.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/database.dart';
 

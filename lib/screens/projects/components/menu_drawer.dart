@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/providers/project.dart';
+import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/settings/project_settings.dart';
 import 'package:nahpu/screens/home/home.dart';

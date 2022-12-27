@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:nahpu/providers/page_viewer.dart';
+import 'package:nahpu/providers/catalogs.dart';
 
 class PageNavigation {
   int currentPage = 0;

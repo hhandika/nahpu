@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/project.dart';
-import 'package:nahpu/providers/project.dart';
+import 'package:nahpu/providers/projects.dart';
 
 final projectFormNotifier =
     StateNotifierProvider<ProjectFormValidationNotifier, ProjectFormState>(

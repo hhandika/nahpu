@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/providers/project.dart';
+import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/projects/components/action_buttons.dart';
 import 'package:nahpu/screens/projects/components/menu_drawer.dart';
 import 'package:nahpu/screens/projects/components/misc_forms.dart';

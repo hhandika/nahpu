@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:drift/drift.dart' as db;
 // import 'package:nahpu/providers/page_viewer.dart';
-import 'package:nahpu/providers/project.dart';
+import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database.dart';
 import 'package:nahpu/screens/sites/new_sites.dart';
 
