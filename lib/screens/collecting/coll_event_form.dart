@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/form.dart';
-import 'package:intl/intl.dart';
 import 'package:nahpu/providers/catalogs.dart';
-import 'package:nahpu/screens/collecting/components/environment_data.dart';
+import 'package:nahpu/screens/collecting/components/collecting_activities.dart';
+import 'package:nahpu/screens/collecting/components/collecting_info.dart';
+import 'package:nahpu/screens/collecting/components/media.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/indicators.dart';
 import 'package:nahpu/screens/shared/layout.dart';
@@ -20,27 +21,7 @@ class CollEventForm extends ConsumerStatefulWidget {
   CollEventFormState createState() => CollEventFormState();
 }
 
-class CollEventFormState extends ConsumerState<CollEventForm>
-    with TickerProviderStateMixin {
-  final DateTime _initialStartDate =
-      DateTime.now().subtract(const Duration(days: 1));
-  final DateTime _initialEndDate = DateTime.now();
-  final TimeOfDay _initialStartTime = const TimeOfDay(hour: 8, minute: 0);
-
-  late TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
+class CollEventFormState extends ConsumerState<CollEventForm> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -52,19 +33,13 @@ class CollEventFormState extends ConsumerState<CollEventForm>
               AdaptiveLayout(
                 useHorizontalLayout: useHorizontalLayout,
                 children: [
-                  FormCard(
-                    title: 'Collecting Info',
-                    isPrimary: true,
-                    child: _buildCollectingFields(useHorizontalLayout),
-                  ),
-                  FormCard(
-                    title: 'Collecting Activity',
-                    child: Column(
-                      children: [
-                        _buildActivityFields(),
-                        _buildCollectionNotes(),
-                      ],
-                    ),
+                  CollectingInfoFields(
+                      collEventId: widget.id,
+                      useHorizontalLayout: useHorizontalLayout,
+                      collEventCtr: widget.collEventCtr),
+                  CollActivityFields(
+                    collEventId: widget.id,
+                    collEventCtr: widget.collEventCtr,
                   ),
                 ],
               ),
@@ -81,144 +56,11 @@ class CollEventFormState extends ConsumerState<CollEventForm>
                   ),
                 ],
               ),
-              _buildMediaFields(useHorizontalLayout),
+              CollEventMediaTabBar(useHorizontalLayout: useHorizontalLayout),
             ],
           ),
         );
       },
-    );
-  }
-
-  Widget _buildCollectingFields(bool useHorizontalLayout) {
-    return Column(
-      children: [
-        Padding(
-          // Match adaptive layout padding
-          padding: const EdgeInsets.only(left: 5.0, right: 5.0, bottom: 5.0),
-          child: TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Site ID',
-              hintText: 'Enter a new event',
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 5.0, right: 5.0, bottom: 5.0),
-          child: TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Collecting Event ID',
-              hintText: 'Autofill',
-            ),
-          ),
-        ),
-        AdaptiveLayout(
-          useHorizontalLayout: useHorizontalLayout,
-          children: [
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Start Date',
-                hintText: 'Enter date',
-              ),
-              controller: widget.collEventCtr.startDateCtr,
-              onTap: () async {
-                showDatePicker(
-                        context: context,
-                        initialDate: _initialStartDate,
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime.now())
-                    .then((date) {
-                  if (date != null) {
-                    widget.collEventCtr.startDateCtr.text =
-                        DateFormat.yMMMd().format(date);
-                  }
-                });
-              },
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Start time',
-                hintText: 'Enter date',
-              ),
-              controller: widget.collEventCtr.startTimeCtr,
-              onTap: () async {
-                showTimePicker(context: context, initialTime: _initialStartTime)
-                    .then((time) {
-                  if (time != null) {
-                    widget.collEventCtr.startTimeCtr.text =
-                        time.format(context);
-                  }
-                });
-              },
-            ),
-          ],
-        ),
-        AdaptiveLayout(
-          useHorizontalLayout: useHorizontalLayout,
-          children: [
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'End Date',
-                hintText: 'Enter date',
-              ),
-              controller: widget.collEventCtr.endDateCtr,
-              onTap: () async {
-                showDatePicker(
-                        context: context,
-                        initialDate: _initialEndDate,
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime.now())
-                    .then((date) {
-                  if (date != null) {
-                    widget.collEventCtr.endDateCtr.text =
-                        DateFormat.yMMMd().format(date);
-                  }
-                });
-              },
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'End time',
-                hintText: 'Enter date',
-              ),
-              controller: widget.collEventCtr.endTimeCtr,
-              onTap: () async {
-                showTimePicker(context: context, initialTime: _initialStartTime)
-                    .then((time) {
-                  if (time != null) {
-                    widget.collEventCtr.endTimeCtr.text = time.format(context);
-                  }
-                });
-              },
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildActivityFields() {
-    return Column(
-      children: [
-        DropdownButtonFormField(
-          decoration: const InputDecoration(
-            labelText: 'Primary collection method',
-            hintText: 'Choose a method',
-          ),
-          items: const [
-            DropdownMenuItem(
-              value: 'Trapping',
-              child: Text('Trapping'),
-            ),
-            DropdownMenuItem(
-              value: 'Song meter',
-              child: Text('Song meter'),
-            ),
-          ],
-          onChanged: (String? newValue) {
-            setState(() {});
-          },
-        ),
-      ],
     );
   }
 
@@ -250,16 +92,6 @@ class CollEventFormState extends ConsumerState<CollEventForm>
     );
   }
 
-  Widget _buildCollectionNotes() {
-    return TextFormField(
-      maxLines: 5,
-      decoration: const InputDecoration(
-        labelText: 'Collecting method notes',
-        hintText: 'Enter notes',
-      ),
-    );
-  }
-
   Widget _buildTrappingPersonnelFields() {
     return Column(
       children: [
@@ -282,40 +114,6 @@ class CollEventFormState extends ConsumerState<CollEventForm>
           },
           child: const Text(
             'Add personnels',
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildMediaFields(bool useHorizontalLayout) {
-    return Column(
-      // Media inputs
-      children: [
-        DefaultTabController(
-          length: 2,
-          child: TabBar(
-            controller: _tabController,
-            tabs: [
-              Tab(
-                  icon: Icon(Icons.wb_sunny_rounded,
-                      color: Theme.of(context).colorScheme.tertiary)),
-              Tab(
-                  icon: Icon(Icons.camera_alt_rounded,
-                      color: Theme.of(context).colorScheme.tertiary)),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.5,
-          child: TabBarView(
-            controller: _tabController,
-            children: [
-              EnvironmentDataForm(
-                useHorizontalLayout: useHorizontalLayout,
-              ),
-              const Text('Camera'),
-            ],
           ),
         ),
       ],

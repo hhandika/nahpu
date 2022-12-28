@@ -45,25 +45,32 @@ class SiteFormCtrModel {
 }
 
 class CollEventFormCtrModel {
-  CollEventFormCtrModel(
-      {required this.startDateCtr,
-      required this.endDateCtr,
-      required this.startTimeCtr,
-      required this.endTimeCtr,
-      required this.primaryCollMethodCtr});
+  CollEventFormCtrModel({
+    required this.eventIDCtr,
+    required this.startDateCtr,
+    required this.endDateCtr,
+    required this.startTimeCtr,
+    required this.endTimeCtr,
+    required this.primaryCollMethodCtr,
+    required this.noteCtr,
+  });
 
+  TextEditingController eventIDCtr;
   TextEditingController startDateCtr;
   TextEditingController endDateCtr;
   TextEditingController startTimeCtr;
   TextEditingController endTimeCtr;
-  TextEditingController primaryCollMethodCtr;
+  String? primaryCollMethodCtr;
+  TextEditingController noteCtr;
 
   factory CollEventFormCtrModel.empty() => CollEventFormCtrModel(
+      eventIDCtr: TextEditingController(),
       startDateCtr: TextEditingController(),
       endDateCtr: TextEditingController(),
       startTimeCtr: TextEditingController(),
       endTimeCtr: TextEditingController(),
-      primaryCollMethodCtr: TextEditingController());
+      primaryCollMethodCtr: null,
+      noteCtr: TextEditingController());
 }
 
 class NarrativeFormCtrModel {

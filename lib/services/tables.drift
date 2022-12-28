@@ -8,7 +8,6 @@ CREATE TABLE project (
     name TEXT NOT NULL UNIQUE,
     description TEXT,
     principalInvestigator TEXT,
-    budget TEXT,
     created TEXT,
     lastModified Text
 );
@@ -49,6 +48,7 @@ CREATE TABLE coordinate (
 
 CREATE TABLE collEvent (
     id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
+    eventID TEXT,
     projectUuid TEXT,
     startDate TEXT,
     startTime TEXT,
@@ -57,6 +57,25 @@ CREATE TABLE collEvent (
     primaryCollMethod TEXT,
     collMethodNotes TEXT,
     siteID TEXT REFERENCES site(siteID),
+    FOREIGN KEY(projectUuid) REFERENCES project(uuid)
+);
+
+CREATE TABLE collectingPersonnel (
+    id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
+    personnelId TEXT,
+    role TEXT, -- referring to collecting role, not project role
+    FOREIGN KEY(personnelId) REFERENCES personnel(uuid)
+);
+
+CREATE TABLE collEffort (
+    id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
+    eventID TEXT,
+    projectUuid TEXT,
+    type TEXT,
+    brand TEXT,
+    count INT,
+    size TEXT,
+    FOREIGN KEY(eventID) REFERENCES collEvent(eventID),
     FOREIGN KEY(projectUuid) REFERENCES project(uuid)
 );
 
