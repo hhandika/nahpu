@@ -49,8 +49,14 @@ class SiteInfo extends ConsumerWidget {
               hintText: 'Enter a site ID, e.g. "CAMP-01", "LINE-1"',
             ),
             onChanged: (value) {
-              updateSite(id,
-                  SiteCompanion(siteID: db.Value(value.toUpperCase())), ref);
+              siteFormCtr.siteIDCtr.value = TextEditingValue(
+                text: value.toUpperCase(),
+                selection: siteFormCtr.siteIDCtr.selection,
+              );
+              updateSite(
+                  id,
+                  SiteCompanion(siteID: db.Value(siteFormCtr.siteIDCtr.text)),
+                  ref);
             },
           ),
           DropdownButtonFormField(

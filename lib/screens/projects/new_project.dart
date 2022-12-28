@@ -258,7 +258,6 @@ class ProjectFormField extends StatelessWidget {
     this.errorText,
     this.onSaved,
     this.onChanged,
-    // this.validator
   }) : super(key: key);
 
   final String labelText;
@@ -267,7 +266,7 @@ class ProjectFormField extends StatelessWidget {
   final int? maxLength;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
-  // final String? Function(String?)? validator;
+
   final String? Function(String?)? onSaved;
   final Function(String?)? onChanged;
   final String? errorText;
@@ -281,7 +280,6 @@ class ProjectFormField extends StatelessWidget {
           labelText: labelText, hintText: hintText, errorText: errorText),
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
-      // validator: validator,
       onSaved: onSaved,
       onChanged: onChanged,
     );
