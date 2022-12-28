@@ -57,7 +57,9 @@ class SiteFormState extends ConsumerState<SiteForm>
             AdaptiveLayout(
               useHorizontalLayout: useHorizontalLayout,
               children: [
-                const CoordinateFields(),
+                CoordinateFields(
+                  siteId: widget.id,
+                ),
                 Habitat(
                     id: widget.id,
                     useHorizontalLayout: useHorizontalLayout,

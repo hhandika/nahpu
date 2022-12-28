@@ -89,7 +89,7 @@ class MainSiteLocality extends ConsumerWidget {
           controller: siteFormCtr.countyCtr,
           decoration: const InputDecoration(
             labelText: 'County/Parish/District',
-            hintText: 'Enter a county name',
+            hintText: 'Enter a county/parish/district location',
           ),
           onChanged: (value) {
             updateSite(id, SiteCompanion(county: db.Value(value)), ref);
@@ -98,8 +98,8 @@ class MainSiteLocality extends ConsumerWidget {
         TextFormField(
           controller: siteFormCtr.municipalityCtr,
           decoration: const InputDecoration(
-            labelText: 'Municipality',
-            hintText: 'Enter a municipality name',
+            labelText: 'Municipality/City/Town',
+            hintText: 'Enter municipality/city/town name',
           ),
           onChanged: (value) {
             updateSite(id, SiteCompanion(municipality: db.Value(value)), ref);
@@ -151,11 +151,11 @@ class LocalityNote extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TextFormField(
-      controller: siteFormCtr.localityCtr,
+      controller: siteFormCtr.remarkCtr,
       maxLines: 3,
       decoration: const InputDecoration(
         labelText: 'Remark',
-        hintText: 'Enter more info about the trapping site',
+        hintText: 'Enter more info about the site (optional)',
       ),
       onChanged: (value) {
         updateSite(id, SiteCompanion(locality: db.Value(value)), ref);

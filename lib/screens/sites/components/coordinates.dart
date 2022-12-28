@@ -5,7 +5,9 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/indicators.dart';
 
 class CoordinateFields extends StatelessWidget {
-  const CoordinateFields({Key? key}) : super(key: key);
+  const CoordinateFields({Key? key, required this.siteId}) : super(key: key);
+
+  final int siteId;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class CoordinateFields extends StatelessWidget {
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return const CoordinateForms();
+                    return CoordinateForms(siteId: siteId);
                   });
             },
             child: const Text(
@@ -41,7 +43,9 @@ class CoordinateFields extends StatelessWidget {
 }
 
 class CoordinateForms extends ConsumerWidget {
-  const CoordinateForms({Key? key}) : super(key: key);
+  const CoordinateForms({Key? key, required this.siteId}) : super(key: key);
+
+  final int siteId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

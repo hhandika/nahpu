@@ -43,6 +43,7 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
     final nameCtr = TextEditingController();
     final initialCtr = TextEditingController();
     final affilitationCtr = TextEditingController();
+
     return AlertDialog(
       title: const Text('Add personnel'),
       content: Column(
