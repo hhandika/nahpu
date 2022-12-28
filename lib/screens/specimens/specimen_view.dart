@@ -3,9 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/catalogs.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/models/types.dart';
-
 import 'package:nahpu/providers/catalogs.dart';
-
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/indicators.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
@@ -13,6 +11,7 @@ import 'package:nahpu/screens/specimens/new_specimens.dart';
 import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
 import 'package:nahpu/screens/specimens/specimen_form.dart';
 import 'package:nahpu/services/database.dart';
+import 'package:nahpu/controller/navigation.dart';
 
 class Specimens extends ConsumerStatefulWidget {
   const Specimens({Key? key}) : super(key: key);

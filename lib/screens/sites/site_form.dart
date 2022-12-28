@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:drift/drift.dart' as db;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/services/database.dart';
+import 'package:nahpu/screens/sites/components/habitats.dart';
+import 'package:nahpu/screens/sites/components/geography.dart';
+import 'package:nahpu/screens/sites/components/site_info.dart';
 import 'package:nahpu/models/form.dart';
-
-import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/photos.dart';
 import 'package:nahpu/screens/shared/layout.dart';
@@ -45,45 +44,24 @@ class SiteFormState extends ConsumerState<SiteForm>
         bool useHorizontalLayout = c.maxWidth > 600.0;
         return ListView(
           children: [
-            FormCard(
-              isPrimary: true,
-              title: 'Site Info',
-              child: AdaptiveLayout(
-                useHorizontalLayout: useHorizontalLayout,
-                children: _buildSiteID(),
-              ),
+            SiteInfo(
+              id: widget.id,
+              useHorizontalLayout: useHorizontalLayout,
+              siteFormCtr: widget.siteFormCtr,
             ),
-            FormCard(
-              title: 'Geography',
-              child: Column(
-                children: [
-                  AdaptiveLayout(
-                    useHorizontalLayout: useHorizontalLayout,
-                    children: _buildMainSiteLocality(),
-                  ),
-                  AdaptiveLayout(
-                      useHorizontalLayout: useHorizontalLayout,
-                      children: [
-                        _buildPreciseLocalities(),
-                        _buildLocalityNotes()
-                      ])
-                ],
-              ),
+            Geography(
+              id: widget.id,
+              useHorizontalLayout: useHorizontalLayout,
+              siteFormCtr: widget.siteFormCtr,
             ),
             AdaptiveLayout(
               useHorizontalLayout: useHorizontalLayout,
               children: [
                 const CoordinateFields(),
-                FormCard(
-                  title: 'Habitat',
-                  child: Column(
-                    children: [
-                      for (var form in _buildHabitatInfo())
-                        Container(
-                            padding: const EdgeInsets.all(10), child: form),
-                    ],
-                  ),
-                ),
+                Habitat(
+                    id: widget.id,
+                    useHorizontalLayout: useHorizontalLayout,
+                    siteFormCtr: widget.siteFormCtr),
               ],
             ),
             MediaTabBars(
@@ -106,134 +84,5 @@ class SiteFormState extends ConsumerState<SiteForm>
         );
       },
     );
-  }
-
-  List<Widget> _buildSiteID() {
-    return [
-      TextFormField(
-        controller: widget.siteFormCtr.siteIDCtr,
-        decoration: const InputDecoration(
-          labelText: 'Site ID',
-          hintText: 'Enter a site',
-        ),
-        onChanged: (value) {
-          updateSite(widget.id, SiteCompanion(siteID: db.Value(value)), ref);
-        },
-      ),
-      TextFormField(
-        decoration: const InputDecoration(
-          labelText: 'Lead staff',
-          hintText: 'Enter a name',
-        ),
-      ),
-      TextFormField(
-        decoration: const InputDecoration(
-          labelText: 'Site Type',
-          hintText: 'Enter a site type, e.g. "Camp", "City", "etc."',
-        ),
-      ),
-    ];
-  }
-
-  List<Widget> _buildMainSiteLocality() {
-    return [
-      TextFormField(
-        controller: widget.siteFormCtr.countryCtr,
-        decoration: const InputDecoration(
-          labelText: 'Country',
-          hintText: 'Enter a country location',
-        ),
-        onChanged: (value) {
-          updateSite(widget.id, SiteCompanion(country: db.Value(value)), ref);
-        },
-      ),
-      TextFormField(
-        controller: widget.siteFormCtr.stateProvinceCtr,
-        decoration: const InputDecoration(
-          labelText: 'State/Province',
-          hintText: 'Enter a state/province location',
-        ),
-        onChanged: (value) {
-          updateSite(
-              widget.id, SiteCompanion(stateProvince: db.Value(value)), ref);
-        },
-      ),
-      TextFormField(
-        controller: widget.siteFormCtr.countyCtr,
-        decoration: const InputDecoration(
-          labelText: 'County/Parish/District',
-          hintText: 'Enter a county name',
-        ),
-        onChanged: (value) {
-          updateSite(widget.id, SiteCompanion(county: db.Value(value)), ref);
-        },
-      ),
-      TextFormField(
-        controller: widget.siteFormCtr.municipalityCtr,
-        decoration: const InputDecoration(
-          labelText: 'Municipality',
-          hintText: 'Enter a municipality name',
-        ),
-        onChanged: (value) {
-          updateSite(
-              widget.id, SiteCompanion(municipality: db.Value(value)), ref);
-        },
-      ),
-    ];
-  }
-
-  Widget _buildPreciseLocalities() {
-    return TextFormField(
-      controller: widget.siteFormCtr.localityCtr,
-      maxLines: 3,
-      decoration: const InputDecoration(
-        labelText: 'Precise Locality',
-        hintText: 'Enter a precise locality lower than municipality',
-      ),
-      onChanged: (value) {
-        updateSite(widget.id, SiteCompanion(locality: db.Value(value)), ref);
-      },
-    );
-  }
-
-  Widget _buildLocalityNotes() {
-    return TextFormField(
-      controller: widget.siteFormCtr.localityCtr,
-      maxLines: 3,
-      decoration: const InputDecoration(
-        labelText: 'Remark',
-        hintText: 'Enter more info about the trapping site',
-      ),
-      onChanged: (value) {
-        updateSite(widget.id, SiteCompanion(locality: db.Value(value)), ref);
-      },
-    );
-  }
-
-  List<Widget> _buildHabitatInfo() {
-    return [
-      TextFormField(
-        decoration: const InputDecoration(
-          labelText: 'Type',
-          hintText:
-              'Enter a habitat type, e.g. "Urban", "Montane Forest", "Desert", "etc."',
-        ),
-      ),
-      TextFormField(
-        decoration: const InputDecoration(
-          labelText: 'Condition',
-          hintText:
-              'Enter habitat condition, e.g. "Prestine", "Disturbed", "etc."',
-        ),
-      ),
-      TextFormField(
-        maxLines: 5,
-        decoration: const InputDecoration(
-          labelText: 'Description',
-          hintText:
-              'Describe the site, e.g. "A camp site in the middle of the forest."',
-        ),
-      ),
-    ];
   }
 }

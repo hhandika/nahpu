@@ -1,30 +1,47 @@
 import 'package:flutter/material.dart';
 
 class SiteFormCtrModel {
-  SiteFormCtrModel(
-      {required this.siteIDCtr,
-      required this.siteTypeCtr,
-      required this.countryCtr,
-      required this.stateProvinceCtr,
-      required this.countyCtr,
-      required this.municipalityCtr,
-      required this.localityCtr});
+  SiteFormCtrModel({
+    required this.siteIDCtr,
+    required this.leadStaffCtr,
+    required this.siteTypeCtr,
+    required this.countryCtr,
+    required this.stateProvinceCtr,
+    required this.countyCtr,
+    required this.municipalityCtr,
+    required this.localityCtr,
+    required this.remarkCtr,
+    required this.habitatTypeCtr,
+    required this.habitatDescriptionCtr,
+    required this.habitatConditionCtr,
+  });
   TextEditingController siteIDCtr;
+  String? leadStaffCtr;
   TextEditingController siteTypeCtr;
   TextEditingController countryCtr;
   TextEditingController stateProvinceCtr;
   TextEditingController countyCtr;
   TextEditingController municipalityCtr;
   TextEditingController localityCtr;
+  TextEditingController remarkCtr;
+  TextEditingController habitatTypeCtr;
+  TextEditingController habitatDescriptionCtr;
+  TextEditingController habitatConditionCtr;
 
   factory SiteFormCtrModel.empty() => SiteFormCtrModel(
-      siteIDCtr: TextEditingController(),
-      siteTypeCtr: TextEditingController(),
-      countryCtr: TextEditingController(),
-      stateProvinceCtr: TextEditingController(),
-      countyCtr: TextEditingController(),
-      municipalityCtr: TextEditingController(),
-      localityCtr: TextEditingController());
+        siteIDCtr: TextEditingController(),
+        leadStaffCtr: null,
+        siteTypeCtr: TextEditingController(),
+        countryCtr: TextEditingController(),
+        stateProvinceCtr: TextEditingController(),
+        countyCtr: TextEditingController(),
+        municipalityCtr: TextEditingController(),
+        localityCtr: TextEditingController(),
+        remarkCtr: TextEditingController(),
+        habitatTypeCtr: TextEditingController(),
+        habitatDescriptionCtr: TextEditingController(),
+        habitatConditionCtr: TextEditingController(),
+      );
 }
 
 class CollEventFormCtrModel {

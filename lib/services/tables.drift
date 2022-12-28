@@ -17,7 +17,7 @@ CREATE TABLE site (
     id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
     siteID TEXT,
     projectUuid TEXT,
-    leadStuff TEXT,
+    leadStaffId TEXT,
     siteType TEXT,
     country TEXT,
     stateProvince TEXT,
@@ -25,7 +25,12 @@ CREATE TABLE site (
     municipality TEXT,
     mediaID TEXT,
     locality TEXT, -- verbatim locality in DWC
-    FOREIGN KEY(mediaID) REFERENCES media(primaryId)
+    remark TEXT,
+    habitatType TEXT,
+    habitatCondition TEXT,
+    habitatDescription TEXT,
+    FOREIGN KEY(mediaID) REFERENCES media(primaryId),
+    FOREIGN KEY(leadStaffId) REFERENCES personnel(uuid)
 );
 
 CREATE TABLE coordinate (
@@ -35,7 +40,10 @@ CREATE TABLE coordinate (
     elevationInMeter INT,
     minimumElevationInMeters INT,
     maximumElevationInMeters INT,
+    datum TEXT,
     coordinateUncertaintyInMeters INT,
+    gpsUnit TEXT,
+    notes TEXT,
     siteID TEXT REFERENCES site(siteID)
 );
 

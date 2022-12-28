@@ -1744,7 +1744,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
   final int id;
   final String? siteID;
   final String? projectUuid;
-  final String? leadStuff;
+  final String? leadStaffId;
   final String? siteType;
   final String? country;
   final String? stateProvince;
@@ -1752,18 +1752,26 @@ class SiteData extends DataClass implements Insertable<SiteData> {
   final String? municipality;
   final String? mediaID;
   final String? locality;
+  final String? remark;
+  final String? habitatType;
+  final String? habitatCondition;
+  final String? habitatDescription;
   const SiteData(
       {required this.id,
       this.siteID,
       this.projectUuid,
-      this.leadStuff,
+      this.leadStaffId,
       this.siteType,
       this.country,
       this.stateProvince,
       this.county,
       this.municipality,
       this.mediaID,
-      this.locality});
+      this.locality,
+      this.remark,
+      this.habitatType,
+      this.habitatCondition,
+      this.habitatDescription});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1774,8 +1782,8 @@ class SiteData extends DataClass implements Insertable<SiteData> {
     if (!nullToAbsent || projectUuid != null) {
       map['projectUuid'] = Variable<String>(projectUuid);
     }
-    if (!nullToAbsent || leadStuff != null) {
-      map['leadStuff'] = Variable<String>(leadStuff);
+    if (!nullToAbsent || leadStaffId != null) {
+      map['leadStaffId'] = Variable<String>(leadStaffId);
     }
     if (!nullToAbsent || siteType != null) {
       map['siteType'] = Variable<String>(siteType);
@@ -1798,6 +1806,18 @@ class SiteData extends DataClass implements Insertable<SiteData> {
     if (!nullToAbsent || locality != null) {
       map['locality'] = Variable<String>(locality);
     }
+    if (!nullToAbsent || remark != null) {
+      map['remark'] = Variable<String>(remark);
+    }
+    if (!nullToAbsent || habitatType != null) {
+      map['habitatType'] = Variable<String>(habitatType);
+    }
+    if (!nullToAbsent || habitatCondition != null) {
+      map['habitatCondition'] = Variable<String>(habitatCondition);
+    }
+    if (!nullToAbsent || habitatDescription != null) {
+      map['habitatDescription'] = Variable<String>(habitatDescription);
+    }
     return map;
   }
 
@@ -1809,9 +1829,9 @@ class SiteData extends DataClass implements Insertable<SiteData> {
       projectUuid: projectUuid == null && nullToAbsent
           ? const Value.absent()
           : Value(projectUuid),
-      leadStuff: leadStuff == null && nullToAbsent
+      leadStaffId: leadStaffId == null && nullToAbsent
           ? const Value.absent()
-          : Value(leadStuff),
+          : Value(leadStaffId),
       siteType: siteType == null && nullToAbsent
           ? const Value.absent()
           : Value(siteType),
@@ -1832,6 +1852,17 @@ class SiteData extends DataClass implements Insertable<SiteData> {
       locality: locality == null && nullToAbsent
           ? const Value.absent()
           : Value(locality),
+      remark:
+          remark == null && nullToAbsent ? const Value.absent() : Value(remark),
+      habitatType: habitatType == null && nullToAbsent
+          ? const Value.absent()
+          : Value(habitatType),
+      habitatCondition: habitatCondition == null && nullToAbsent
+          ? const Value.absent()
+          : Value(habitatCondition),
+      habitatDescription: habitatDescription == null && nullToAbsent
+          ? const Value.absent()
+          : Value(habitatDescription),
     );
   }
 
@@ -1842,7 +1873,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
       id: serializer.fromJson<int>(json['id']),
       siteID: serializer.fromJson<String?>(json['siteID']),
       projectUuid: serializer.fromJson<String?>(json['projectUuid']),
-      leadStuff: serializer.fromJson<String?>(json['leadStuff']),
+      leadStaffId: serializer.fromJson<String?>(json['leadStaffId']),
       siteType: serializer.fromJson<String?>(json['siteType']),
       country: serializer.fromJson<String?>(json['country']),
       stateProvince: serializer.fromJson<String?>(json['stateProvince']),
@@ -1850,6 +1881,11 @@ class SiteData extends DataClass implements Insertable<SiteData> {
       municipality: serializer.fromJson<String?>(json['municipality']),
       mediaID: serializer.fromJson<String?>(json['mediaID']),
       locality: serializer.fromJson<String?>(json['locality']),
+      remark: serializer.fromJson<String?>(json['remark']),
+      habitatType: serializer.fromJson<String?>(json['habitatType']),
+      habitatCondition: serializer.fromJson<String?>(json['habitatCondition']),
+      habitatDescription:
+          serializer.fromJson<String?>(json['habitatDescription']),
     );
   }
   @override
@@ -1859,7 +1895,7 @@ class SiteData extends DataClass implements Insertable<SiteData> {
       'id': serializer.toJson<int>(id),
       'siteID': serializer.toJson<String?>(siteID),
       'projectUuid': serializer.toJson<String?>(projectUuid),
-      'leadStuff': serializer.toJson<String?>(leadStuff),
+      'leadStaffId': serializer.toJson<String?>(leadStaffId),
       'siteType': serializer.toJson<String?>(siteType),
       'country': serializer.toJson<String?>(country),
       'stateProvince': serializer.toJson<String?>(stateProvince),
@@ -1867,6 +1903,10 @@ class SiteData extends DataClass implements Insertable<SiteData> {
       'municipality': serializer.toJson<String?>(municipality),
       'mediaID': serializer.toJson<String?>(mediaID),
       'locality': serializer.toJson<String?>(locality),
+      'remark': serializer.toJson<String?>(remark),
+      'habitatType': serializer.toJson<String?>(habitatType),
+      'habitatCondition': serializer.toJson<String?>(habitatCondition),
+      'habitatDescription': serializer.toJson<String?>(habitatDescription),
     };
   }
 
@@ -1874,19 +1914,23 @@ class SiteData extends DataClass implements Insertable<SiteData> {
           {int? id,
           Value<String?> siteID = const Value.absent(),
           Value<String?> projectUuid = const Value.absent(),
-          Value<String?> leadStuff = const Value.absent(),
+          Value<String?> leadStaffId = const Value.absent(),
           Value<String?> siteType = const Value.absent(),
           Value<String?> country = const Value.absent(),
           Value<String?> stateProvince = const Value.absent(),
           Value<String?> county = const Value.absent(),
           Value<String?> municipality = const Value.absent(),
           Value<String?> mediaID = const Value.absent(),
-          Value<String?> locality = const Value.absent()}) =>
+          Value<String?> locality = const Value.absent(),
+          Value<String?> remark = const Value.absent(),
+          Value<String?> habitatType = const Value.absent(),
+          Value<String?> habitatCondition = const Value.absent(),
+          Value<String?> habitatDescription = const Value.absent()}) =>
       SiteData(
         id: id ?? this.id,
         siteID: siteID.present ? siteID.value : this.siteID,
         projectUuid: projectUuid.present ? projectUuid.value : this.projectUuid,
-        leadStuff: leadStuff.present ? leadStuff.value : this.leadStuff,
+        leadStaffId: leadStaffId.present ? leadStaffId.value : this.leadStaffId,
         siteType: siteType.present ? siteType.value : this.siteType,
         country: country.present ? country.value : this.country,
         stateProvince:
@@ -1896,6 +1940,14 @@ class SiteData extends DataClass implements Insertable<SiteData> {
             municipality.present ? municipality.value : this.municipality,
         mediaID: mediaID.present ? mediaID.value : this.mediaID,
         locality: locality.present ? locality.value : this.locality,
+        remark: remark.present ? remark.value : this.remark,
+        habitatType: habitatType.present ? habitatType.value : this.habitatType,
+        habitatCondition: habitatCondition.present
+            ? habitatCondition.value
+            : this.habitatCondition,
+        habitatDescription: habitatDescription.present
+            ? habitatDescription.value
+            : this.habitatDescription,
       );
   @override
   String toString() {
@@ -1903,21 +1955,39 @@ class SiteData extends DataClass implements Insertable<SiteData> {
           ..write('id: $id, ')
           ..write('siteID: $siteID, ')
           ..write('projectUuid: $projectUuid, ')
-          ..write('leadStuff: $leadStuff, ')
+          ..write('leadStaffId: $leadStaffId, ')
           ..write('siteType: $siteType, ')
           ..write('country: $country, ')
           ..write('stateProvince: $stateProvince, ')
           ..write('county: $county, ')
           ..write('municipality: $municipality, ')
           ..write('mediaID: $mediaID, ')
-          ..write('locality: $locality')
+          ..write('locality: $locality, ')
+          ..write('remark: $remark, ')
+          ..write('habitatType: $habitatType, ')
+          ..write('habitatCondition: $habitatCondition, ')
+          ..write('habitatDescription: $habitatDescription')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, siteID, projectUuid, leadStuff, siteType,
-      country, stateProvince, county, municipality, mediaID, locality);
+  int get hashCode => Object.hash(
+      id,
+      siteID,
+      projectUuid,
+      leadStaffId,
+      siteType,
+      country,
+      stateProvince,
+      county,
+      municipality,
+      mediaID,
+      locality,
+      remark,
+      habitatType,
+      habitatCondition,
+      habitatDescription);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1925,21 +1995,25 @@ class SiteData extends DataClass implements Insertable<SiteData> {
           other.id == this.id &&
           other.siteID == this.siteID &&
           other.projectUuid == this.projectUuid &&
-          other.leadStuff == this.leadStuff &&
+          other.leadStaffId == this.leadStaffId &&
           other.siteType == this.siteType &&
           other.country == this.country &&
           other.stateProvince == this.stateProvince &&
           other.county == this.county &&
           other.municipality == this.municipality &&
           other.mediaID == this.mediaID &&
-          other.locality == this.locality);
+          other.locality == this.locality &&
+          other.remark == this.remark &&
+          other.habitatType == this.habitatType &&
+          other.habitatCondition == this.habitatCondition &&
+          other.habitatDescription == this.habitatDescription);
 }
 
 class SiteCompanion extends UpdateCompanion<SiteData> {
   final Value<int> id;
   final Value<String?> siteID;
   final Value<String?> projectUuid;
-  final Value<String?> leadStuff;
+  final Value<String?> leadStaffId;
   final Value<String?> siteType;
   final Value<String?> country;
   final Value<String?> stateProvince;
@@ -1947,11 +2021,15 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
   final Value<String?> municipality;
   final Value<String?> mediaID;
   final Value<String?> locality;
+  final Value<String?> remark;
+  final Value<String?> habitatType;
+  final Value<String?> habitatCondition;
+  final Value<String?> habitatDescription;
   const SiteCompanion({
     this.id = const Value.absent(),
     this.siteID = const Value.absent(),
     this.projectUuid = const Value.absent(),
-    this.leadStuff = const Value.absent(),
+    this.leadStaffId = const Value.absent(),
     this.siteType = const Value.absent(),
     this.country = const Value.absent(),
     this.stateProvince = const Value.absent(),
@@ -1959,12 +2037,16 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
     this.municipality = const Value.absent(),
     this.mediaID = const Value.absent(),
     this.locality = const Value.absent(),
+    this.remark = const Value.absent(),
+    this.habitatType = const Value.absent(),
+    this.habitatCondition = const Value.absent(),
+    this.habitatDescription = const Value.absent(),
   });
   SiteCompanion.insert({
     this.id = const Value.absent(),
     this.siteID = const Value.absent(),
     this.projectUuid = const Value.absent(),
-    this.leadStuff = const Value.absent(),
+    this.leadStaffId = const Value.absent(),
     this.siteType = const Value.absent(),
     this.country = const Value.absent(),
     this.stateProvince = const Value.absent(),
@@ -1972,12 +2054,16 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
     this.municipality = const Value.absent(),
     this.mediaID = const Value.absent(),
     this.locality = const Value.absent(),
+    this.remark = const Value.absent(),
+    this.habitatType = const Value.absent(),
+    this.habitatCondition = const Value.absent(),
+    this.habitatDescription = const Value.absent(),
   });
   static Insertable<SiteData> custom({
     Expression<int>? id,
     Expression<String>? siteID,
     Expression<String>? projectUuid,
-    Expression<String>? leadStuff,
+    Expression<String>? leadStaffId,
     Expression<String>? siteType,
     Expression<String>? country,
     Expression<String>? stateProvince,
@@ -1985,12 +2071,16 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
     Expression<String>? municipality,
     Expression<String>? mediaID,
     Expression<String>? locality,
+    Expression<String>? remark,
+    Expression<String>? habitatType,
+    Expression<String>? habitatCondition,
+    Expression<String>? habitatDescription,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (siteID != null) 'siteID': siteID,
       if (projectUuid != null) 'projectUuid': projectUuid,
-      if (leadStuff != null) 'leadStuff': leadStuff,
+      if (leadStaffId != null) 'leadStaffId': leadStaffId,
       if (siteType != null) 'siteType': siteType,
       if (country != null) 'country': country,
       if (stateProvince != null) 'stateProvince': stateProvince,
@@ -1998,6 +2088,10 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
       if (municipality != null) 'municipality': municipality,
       if (mediaID != null) 'mediaID': mediaID,
       if (locality != null) 'locality': locality,
+      if (remark != null) 'remark': remark,
+      if (habitatType != null) 'habitatType': habitatType,
+      if (habitatCondition != null) 'habitatCondition': habitatCondition,
+      if (habitatDescription != null) 'habitatDescription': habitatDescription,
     });
   }
 
@@ -2005,19 +2099,23 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
       {Value<int>? id,
       Value<String?>? siteID,
       Value<String?>? projectUuid,
-      Value<String?>? leadStuff,
+      Value<String?>? leadStaffId,
       Value<String?>? siteType,
       Value<String?>? country,
       Value<String?>? stateProvince,
       Value<String?>? county,
       Value<String?>? municipality,
       Value<String?>? mediaID,
-      Value<String?>? locality}) {
+      Value<String?>? locality,
+      Value<String?>? remark,
+      Value<String?>? habitatType,
+      Value<String?>? habitatCondition,
+      Value<String?>? habitatDescription}) {
     return SiteCompanion(
       id: id ?? this.id,
       siteID: siteID ?? this.siteID,
       projectUuid: projectUuid ?? this.projectUuid,
-      leadStuff: leadStuff ?? this.leadStuff,
+      leadStaffId: leadStaffId ?? this.leadStaffId,
       siteType: siteType ?? this.siteType,
       country: country ?? this.country,
       stateProvince: stateProvince ?? this.stateProvince,
@@ -2025,6 +2123,10 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
       municipality: municipality ?? this.municipality,
       mediaID: mediaID ?? this.mediaID,
       locality: locality ?? this.locality,
+      remark: remark ?? this.remark,
+      habitatType: habitatType ?? this.habitatType,
+      habitatCondition: habitatCondition ?? this.habitatCondition,
+      habitatDescription: habitatDescription ?? this.habitatDescription,
     );
   }
 
@@ -2040,8 +2142,8 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
     if (projectUuid.present) {
       map['projectUuid'] = Variable<String>(projectUuid.value);
     }
-    if (leadStuff.present) {
-      map['leadStuff'] = Variable<String>(leadStuff.value);
+    if (leadStaffId.present) {
+      map['leadStaffId'] = Variable<String>(leadStaffId.value);
     }
     if (siteType.present) {
       map['siteType'] = Variable<String>(siteType.value);
@@ -2064,6 +2166,18 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
     if (locality.present) {
       map['locality'] = Variable<String>(locality.value);
     }
+    if (remark.present) {
+      map['remark'] = Variable<String>(remark.value);
+    }
+    if (habitatType.present) {
+      map['habitatType'] = Variable<String>(habitatType.value);
+    }
+    if (habitatCondition.present) {
+      map['habitatCondition'] = Variable<String>(habitatCondition.value);
+    }
+    if (habitatDescription.present) {
+      map['habitatDescription'] = Variable<String>(habitatDescription.value);
+    }
     return map;
   }
 
@@ -2073,14 +2187,18 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
           ..write('id: $id, ')
           ..write('siteID: $siteID, ')
           ..write('projectUuid: $projectUuid, ')
-          ..write('leadStuff: $leadStuff, ')
+          ..write('leadStaffId: $leadStaffId, ')
           ..write('siteType: $siteType, ')
           ..write('country: $country, ')
           ..write('stateProvince: $stateProvince, ')
           ..write('county: $county, ')
           ..write('municipality: $municipality, ')
           ..write('mediaID: $mediaID, ')
-          ..write('locality: $locality')
+          ..write('locality: $locality, ')
+          ..write('remark: $remark, ')
+          ..write('habitatType: $habitatType, ')
+          ..write('habitatCondition: $habitatCondition, ')
+          ..write('habitatDescription: $habitatDescription')
           ..write(')'))
         .toString();
   }
@@ -2111,10 +2229,10 @@ class Site extends Table with TableInfo<Site, SiteData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _leadStuffMeta =
-      const VerificationMeta('leadStuff');
-  late final GeneratedColumn<String> leadStuff = GeneratedColumn<String>(
-      'leadStuff', aliasedName, true,
+  static const VerificationMeta _leadStaffIdMeta =
+      const VerificationMeta('leadStaffId');
+  late final GeneratedColumn<String> leadStaffId = GeneratedColumn<String>(
+      'leadStaffId', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -2166,19 +2284,50 @@ class Site extends Table with TableInfo<Site, SiteData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _remarkMeta = const VerificationMeta('remark');
+  late final GeneratedColumn<String> remark = GeneratedColumn<String>(
+      'remark', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _habitatTypeMeta =
+      const VerificationMeta('habitatType');
+  late final GeneratedColumn<String> habitatType = GeneratedColumn<String>(
+      'habitatType', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _habitatConditionMeta =
+      const VerificationMeta('habitatCondition');
+  late final GeneratedColumn<String> habitatCondition = GeneratedColumn<String>(
+      'habitatCondition', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _habitatDescriptionMeta =
+      const VerificationMeta('habitatDescription');
+  late final GeneratedColumn<String> habitatDescription =
+      GeneratedColumn<String>('habitatDescription', aliasedName, true,
+          type: DriftSqlType.string,
+          requiredDuringInsert: false,
+          $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
         id,
         siteID,
         projectUuid,
-        leadStuff,
+        leadStaffId,
         siteType,
         country,
         stateProvince,
         county,
         municipality,
         mediaID,
-        locality
+        locality,
+        remark,
+        habitatType,
+        habitatCondition,
+        habitatDescription
       ];
   @override
   String get aliasedName => _alias ?? 'site';
@@ -2202,9 +2351,11 @@ class Site extends Table with TableInfo<Site, SiteData> {
           projectUuid.isAcceptableOrUnknown(
               data['projectUuid']!, _projectUuidMeta));
     }
-    if (data.containsKey('leadStuff')) {
-      context.handle(_leadStuffMeta,
-          leadStuff.isAcceptableOrUnknown(data['leadStuff']!, _leadStuffMeta));
+    if (data.containsKey('leadStaffId')) {
+      context.handle(
+          _leadStaffIdMeta,
+          leadStaffId.isAcceptableOrUnknown(
+              data['leadStaffId']!, _leadStaffIdMeta));
     }
     if (data.containsKey('siteType')) {
       context.handle(_siteTypeMeta,
@@ -2238,6 +2389,28 @@ class Site extends Table with TableInfo<Site, SiteData> {
       context.handle(_localityMeta,
           locality.isAcceptableOrUnknown(data['locality']!, _localityMeta));
     }
+    if (data.containsKey('remark')) {
+      context.handle(_remarkMeta,
+          remark.isAcceptableOrUnknown(data['remark']!, _remarkMeta));
+    }
+    if (data.containsKey('habitatType')) {
+      context.handle(
+          _habitatTypeMeta,
+          habitatType.isAcceptableOrUnknown(
+              data['habitatType']!, _habitatTypeMeta));
+    }
+    if (data.containsKey('habitatCondition')) {
+      context.handle(
+          _habitatConditionMeta,
+          habitatCondition.isAcceptableOrUnknown(
+              data['habitatCondition']!, _habitatConditionMeta));
+    }
+    if (data.containsKey('habitatDescription')) {
+      context.handle(
+          _habitatDescriptionMeta,
+          habitatDescription.isAcceptableOrUnknown(
+              data['habitatDescription']!, _habitatDescriptionMeta));
+    }
     return context;
   }
 
@@ -2253,8 +2426,8 @@ class Site extends Table with TableInfo<Site, SiteData> {
           .read(DriftSqlType.string, data['${effectivePrefix}siteID']),
       projectUuid: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
-      leadStuff: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}leadStuff']),
+      leadStaffId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}leadStaffId']),
       siteType: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}siteType']),
       country: attachedDatabase.typeMapping
@@ -2269,6 +2442,14 @@ class Site extends Table with TableInfo<Site, SiteData> {
           .read(DriftSqlType.string, data['${effectivePrefix}mediaID']),
       locality: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}locality']),
+      remark: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}remark']),
+      habitatType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}habitatType']),
+      habitatCondition: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}habitatCondition']),
+      habitatDescription: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}habitatDescription']),
     );
   }
 
@@ -2278,8 +2459,10 @@ class Site extends Table with TableInfo<Site, SiteData> {
   }
 
   @override
-  List<String> get customConstraints =>
-      const ['FOREIGN KEY(mediaID)REFERENCES media(primaryId)'];
+  List<String> get customConstraints => const [
+        'FOREIGN KEY(mediaID)REFERENCES media(primaryId)',
+        'FOREIGN KEY(leadStaffId)REFERENCES personnel(uuid)'
+      ];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -2291,7 +2474,10 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
   final int? elevationInMeter;
   final int? minimumElevationInMeters;
   final int? maximumElevationInMeters;
+  final String? datum;
   final int? coordinateUncertaintyInMeters;
+  final String? gpsUnit;
+  final String? notes;
   final String? siteID;
   const CoordinateData(
       {this.id,
@@ -2300,7 +2486,10 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
       this.elevationInMeter,
       this.minimumElevationInMeters,
       this.maximumElevationInMeters,
+      this.datum,
       this.coordinateUncertaintyInMeters,
+      this.gpsUnit,
+      this.notes,
       this.siteID});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -2323,9 +2512,18 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
     if (!nullToAbsent || maximumElevationInMeters != null) {
       map['maximumElevationInMeters'] = Variable<int>(maximumElevationInMeters);
     }
+    if (!nullToAbsent || datum != null) {
+      map['datum'] = Variable<String>(datum);
+    }
     if (!nullToAbsent || coordinateUncertaintyInMeters != null) {
       map['coordinateUncertaintyInMeters'] =
           Variable<int>(coordinateUncertaintyInMeters);
+    }
+    if (!nullToAbsent || gpsUnit != null) {
+      map['gpsUnit'] = Variable<String>(gpsUnit);
+    }
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
     }
     if (!nullToAbsent || siteID != null) {
       map['siteID'] = Variable<String>(siteID);
@@ -2351,10 +2549,17 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
       maximumElevationInMeters: maximumElevationInMeters == null && nullToAbsent
           ? const Value.absent()
           : Value(maximumElevationInMeters),
+      datum:
+          datum == null && nullToAbsent ? const Value.absent() : Value(datum),
       coordinateUncertaintyInMeters:
           coordinateUncertaintyInMeters == null && nullToAbsent
               ? const Value.absent()
               : Value(coordinateUncertaintyInMeters),
+      gpsUnit: gpsUnit == null && nullToAbsent
+          ? const Value.absent()
+          : Value(gpsUnit),
+      notes:
+          notes == null && nullToAbsent ? const Value.absent() : Value(notes),
       siteID:
           siteID == null && nullToAbsent ? const Value.absent() : Value(siteID),
     );
@@ -2372,8 +2577,11 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
           serializer.fromJson<int?>(json['minimumElevationInMeters']),
       maximumElevationInMeters:
           serializer.fromJson<int?>(json['maximumElevationInMeters']),
+      datum: serializer.fromJson<String?>(json['datum']),
       coordinateUncertaintyInMeters:
           serializer.fromJson<int?>(json['coordinateUncertaintyInMeters']),
+      gpsUnit: serializer.fromJson<String?>(json['gpsUnit']),
+      notes: serializer.fromJson<String?>(json['notes']),
       siteID: serializer.fromJson<String?>(json['siteID']),
     );
   }
@@ -2389,8 +2597,11 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
           serializer.toJson<int?>(minimumElevationInMeters),
       'maximumElevationInMeters':
           serializer.toJson<int?>(maximumElevationInMeters),
+      'datum': serializer.toJson<String?>(datum),
       'coordinateUncertaintyInMeters':
           serializer.toJson<int?>(coordinateUncertaintyInMeters),
+      'gpsUnit': serializer.toJson<String?>(gpsUnit),
+      'notes': serializer.toJson<String?>(notes),
       'siteID': serializer.toJson<String?>(siteID),
     };
   }
@@ -2402,7 +2613,10 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
           Value<int?> elevationInMeter = const Value.absent(),
           Value<int?> minimumElevationInMeters = const Value.absent(),
           Value<int?> maximumElevationInMeters = const Value.absent(),
+          Value<String?> datum = const Value.absent(),
           Value<int?> coordinateUncertaintyInMeters = const Value.absent(),
+          Value<String?> gpsUnit = const Value.absent(),
+          Value<String?> notes = const Value.absent(),
           Value<String?> siteID = const Value.absent()}) =>
       CoordinateData(
         id: id.present ? id.value : this.id,
@@ -2421,9 +2635,12 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
         maximumElevationInMeters: maximumElevationInMeters.present
             ? maximumElevationInMeters.value
             : this.maximumElevationInMeters,
+        datum: datum.present ? datum.value : this.datum,
         coordinateUncertaintyInMeters: coordinateUncertaintyInMeters.present
             ? coordinateUncertaintyInMeters.value
             : this.coordinateUncertaintyInMeters,
+        gpsUnit: gpsUnit.present ? gpsUnit.value : this.gpsUnit,
+        notes: notes.present ? notes.value : this.notes,
         siteID: siteID.present ? siteID.value : this.siteID,
       );
   @override
@@ -2435,8 +2652,11 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
           ..write('elevationInMeter: $elevationInMeter, ')
           ..write('minimumElevationInMeters: $minimumElevationInMeters, ')
           ..write('maximumElevationInMeters: $maximumElevationInMeters, ')
+          ..write('datum: $datum, ')
           ..write(
               'coordinateUncertaintyInMeters: $coordinateUncertaintyInMeters, ')
+          ..write('gpsUnit: $gpsUnit, ')
+          ..write('notes: $notes, ')
           ..write('siteID: $siteID')
           ..write(')'))
         .toString();
@@ -2450,7 +2670,10 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
       elevationInMeter,
       minimumElevationInMeters,
       maximumElevationInMeters,
+      datum,
       coordinateUncertaintyInMeters,
+      gpsUnit,
+      notes,
       siteID);
   @override
   bool operator ==(Object other) =>
@@ -2462,8 +2685,11 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
           other.elevationInMeter == this.elevationInMeter &&
           other.minimumElevationInMeters == this.minimumElevationInMeters &&
           other.maximumElevationInMeters == this.maximumElevationInMeters &&
+          other.datum == this.datum &&
           other.coordinateUncertaintyInMeters ==
               this.coordinateUncertaintyInMeters &&
+          other.gpsUnit == this.gpsUnit &&
+          other.notes == this.notes &&
           other.siteID == this.siteID);
 }
 
@@ -2474,7 +2700,10 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
   final Value<int?> elevationInMeter;
   final Value<int?> minimumElevationInMeters;
   final Value<int?> maximumElevationInMeters;
+  final Value<String?> datum;
   final Value<int?> coordinateUncertaintyInMeters;
+  final Value<String?> gpsUnit;
+  final Value<String?> notes;
   final Value<String?> siteID;
   const CoordinateCompanion({
     this.id = const Value.absent(),
@@ -2483,7 +2712,10 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
     this.elevationInMeter = const Value.absent(),
     this.minimumElevationInMeters = const Value.absent(),
     this.maximumElevationInMeters = const Value.absent(),
+    this.datum = const Value.absent(),
     this.coordinateUncertaintyInMeters = const Value.absent(),
+    this.gpsUnit = const Value.absent(),
+    this.notes = const Value.absent(),
     this.siteID = const Value.absent(),
   });
   CoordinateCompanion.insert({
@@ -2493,7 +2725,10 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
     this.elevationInMeter = const Value.absent(),
     this.minimumElevationInMeters = const Value.absent(),
     this.maximumElevationInMeters = const Value.absent(),
+    this.datum = const Value.absent(),
     this.coordinateUncertaintyInMeters = const Value.absent(),
+    this.gpsUnit = const Value.absent(),
+    this.notes = const Value.absent(),
     this.siteID = const Value.absent(),
   });
   static Insertable<CoordinateData> custom({
@@ -2503,7 +2738,10 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
     Expression<int>? elevationInMeter,
     Expression<int>? minimumElevationInMeters,
     Expression<int>? maximumElevationInMeters,
+    Expression<String>? datum,
     Expression<int>? coordinateUncertaintyInMeters,
+    Expression<String>? gpsUnit,
+    Expression<String>? notes,
     Expression<String>? siteID,
   }) {
     return RawValuesInsertable({
@@ -2515,8 +2753,11 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
         'minimumElevationInMeters': minimumElevationInMeters,
       if (maximumElevationInMeters != null)
         'maximumElevationInMeters': maximumElevationInMeters,
+      if (datum != null) 'datum': datum,
       if (coordinateUncertaintyInMeters != null)
         'coordinateUncertaintyInMeters': coordinateUncertaintyInMeters,
+      if (gpsUnit != null) 'gpsUnit': gpsUnit,
+      if (notes != null) 'notes': notes,
       if (siteID != null) 'siteID': siteID,
     });
   }
@@ -2528,7 +2769,10 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
       Value<int?>? elevationInMeter,
       Value<int?>? minimumElevationInMeters,
       Value<int?>? maximumElevationInMeters,
+      Value<String?>? datum,
       Value<int?>? coordinateUncertaintyInMeters,
+      Value<String?>? gpsUnit,
+      Value<String?>? notes,
       Value<String?>? siteID}) {
     return CoordinateCompanion(
       id: id ?? this.id,
@@ -2539,8 +2783,11 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
           minimumElevationInMeters ?? this.minimumElevationInMeters,
       maximumElevationInMeters:
           maximumElevationInMeters ?? this.maximumElevationInMeters,
+      datum: datum ?? this.datum,
       coordinateUncertaintyInMeters:
           coordinateUncertaintyInMeters ?? this.coordinateUncertaintyInMeters,
+      gpsUnit: gpsUnit ?? this.gpsUnit,
+      notes: notes ?? this.notes,
       siteID: siteID ?? this.siteID,
     );
   }
@@ -2568,9 +2815,18 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
       map['maximumElevationInMeters'] =
           Variable<int>(maximumElevationInMeters.value);
     }
+    if (datum.present) {
+      map['datum'] = Variable<String>(datum.value);
+    }
     if (coordinateUncertaintyInMeters.present) {
       map['coordinateUncertaintyInMeters'] =
           Variable<int>(coordinateUncertaintyInMeters.value);
+    }
+    if (gpsUnit.present) {
+      map['gpsUnit'] = Variable<String>(gpsUnit.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
     }
     if (siteID.present) {
       map['siteID'] = Variable<String>(siteID.value);
@@ -2587,8 +2843,11 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
           ..write('elevationInMeter: $elevationInMeter, ')
           ..write('minimumElevationInMeters: $minimumElevationInMeters, ')
           ..write('maximumElevationInMeters: $maximumElevationInMeters, ')
+          ..write('datum: $datum, ')
           ..write(
               'coordinateUncertaintyInMeters: $coordinateUncertaintyInMeters, ')
+          ..write('gpsUnit: $gpsUnit, ')
+          ..write('notes: $notes, ')
           ..write('siteID: $siteID')
           ..write(')'))
         .toString();
@@ -2641,6 +2900,12 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
           type: DriftSqlType.int,
           requiredDuringInsert: false,
           $customConstraints: '');
+  static const VerificationMeta _datumMeta = const VerificationMeta('datum');
+  late final GeneratedColumn<String> datum = GeneratedColumn<String>(
+      'datum', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _coordinateUncertaintyInMetersMeta =
       const VerificationMeta('coordinateUncertaintyInMeters');
   late final GeneratedColumn<int> coordinateUncertaintyInMeters =
@@ -2648,6 +2913,19 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
           type: DriftSqlType.int,
           requiredDuringInsert: false,
           $customConstraints: '');
+  static const VerificationMeta _gpsUnitMeta =
+      const VerificationMeta('gpsUnit');
+  late final GeneratedColumn<String> gpsUnit = GeneratedColumn<String>(
+      'gpsUnit', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+      'notes', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _siteIDMeta = const VerificationMeta('siteID');
   late final GeneratedColumn<String> siteID = GeneratedColumn<String>(
       'siteID', aliasedName, true,
@@ -2662,7 +2940,10 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
         elevationInMeter,
         minimumElevationInMeters,
         maximumElevationInMeters,
+        datum,
         coordinateUncertaintyInMeters,
+        gpsUnit,
+        notes,
         siteID
       ];
   @override
@@ -2709,12 +2990,24 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
               data['maximumElevationInMeters']!,
               _maximumElevationInMetersMeta));
     }
+    if (data.containsKey('datum')) {
+      context.handle(
+          _datumMeta, datum.isAcceptableOrUnknown(data['datum']!, _datumMeta));
+    }
     if (data.containsKey('coordinateUncertaintyInMeters')) {
       context.handle(
           _coordinateUncertaintyInMetersMeta,
           coordinateUncertaintyInMeters.isAcceptableOrUnknown(
               data['coordinateUncertaintyInMeters']!,
               _coordinateUncertaintyInMetersMeta));
+    }
+    if (data.containsKey('gpsUnit')) {
+      context.handle(_gpsUnitMeta,
+          gpsUnit.isAcceptableOrUnknown(data['gpsUnit']!, _gpsUnitMeta));
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+          _notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
     }
     if (data.containsKey('siteID')) {
       context.handle(_siteIDMeta,
@@ -2741,9 +3034,15 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
           DriftSqlType.int, data['${effectivePrefix}minimumElevationInMeters']),
       maximumElevationInMeters: attachedDatabase.typeMapping.read(
           DriftSqlType.int, data['${effectivePrefix}maximumElevationInMeters']),
+      datum: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}datum']),
       coordinateUncertaintyInMeters: attachedDatabase.typeMapping.read(
           DriftSqlType.int,
           data['${effectivePrefix}coordinateUncertaintyInMeters']),
+      gpsUnit: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}gpsUnit']),
+      notes: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}notes']),
       siteID: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}siteID']),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/controller/navigation.dart';
 import 'package:nahpu/models/catalogs.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/providers/catalogs.dart';
@@ -98,6 +99,7 @@ class SitesState extends ConsumerState<Sites> {
   SiteFormCtrModel _updateController(List<SiteData> siteEntries, int index) {
     return SiteFormCtrModel(
       siteIDCtr: TextEditingController(text: siteEntries[index].siteID),
+      leadStaffCtr: siteEntries[index].leadStaffId,
       siteTypeCtr: TextEditingController(text: siteEntries[index].siteType),
       countryCtr: TextEditingController(text: siteEntries[index].country),
       stateProvinceCtr:
@@ -106,6 +108,13 @@ class SitesState extends ConsumerState<Sites> {
       municipalityCtr:
           TextEditingController(text: siteEntries[index].municipality),
       localityCtr: TextEditingController(text: siteEntries[index].locality),
+      remarkCtr: TextEditingController(text: siteEntries[index].remark),
+      habitatTypeCtr:
+          TextEditingController(text: siteEntries[index].habitatType),
+      habitatDescriptionCtr:
+          TextEditingController(text: siteEntries[index].habitatDescription),
+      habitatConditionCtr:
+          TextEditingController(text: siteEntries[index].habitatCondition),
     );
   }
 }
