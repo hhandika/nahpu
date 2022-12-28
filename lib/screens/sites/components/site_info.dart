@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as db;
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/controller/updaters.dart';
 import 'package:nahpu/providers/catalogs.dart';
@@ -38,12 +39,18 @@ class SiteInfo extends ConsumerWidget {
         children: [
           TextFormField(
             controller: siteFormCtr.siteIDCtr,
+            maxLength: 10,
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(10),
+              FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9-_]+'))
+            ],
             decoration: const InputDecoration(
               labelText: 'Site ID',
-              hintText: 'Enter a site',
+              hintText: 'Enter a site ID, e.g. "CAMP-01", "LINE-1"',
             ),
             onChanged: (value) {
-              updateSite(id, SiteCompanion(siteID: db.Value(value)), ref);
+              updateSite(id,
+                  SiteCompanion(siteID: db.Value(value.toUpperCase())), ref);
             },
           ),
           DropdownButtonFormField(
