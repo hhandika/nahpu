@@ -126,6 +126,13 @@ class Database extends _$Database {
     return (update(specimen)..where((t) => t.uuid.equals(uuid))).write(entry);
   }
 
+  Future updateBirdMeasurements(
+      String specimenUuid, BirdMeasurementCompanion entry) {
+    return (update(birdMeasurement)
+          ..where((t) => t.specimenUuid.equals(specimenUuid)))
+        .write(entry);
+  }
+
   Future<List<SpecimenData>> getAllSpecimens(String projectUuid) {
     return (select(specimen)..where((t) => t.projectUuid.equals(projectUuid)))
         .get();
@@ -154,6 +161,10 @@ class Database extends _$Database {
 
   Future<List<CoordinateData>> getAllCoordinates() {
     return select(coordinate).get();
+  }
+
+  Future<List<BirdMeasurementData>> getAllBirdMeasurements() {
+    return select(birdMeasurement).get();
   }
 }
 
