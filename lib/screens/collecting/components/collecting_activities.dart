@@ -42,7 +42,7 @@ class CollActivityFields extends ConsumerWidget {
                   ref);
             },
           ),
-          TextFormField(
+          TextField(
             maxLines: 5,
             controller: collEventCtr.noteCtr,
             decoration: const InputDecoration(
