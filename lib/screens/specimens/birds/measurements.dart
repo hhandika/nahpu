@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/controller/updaters.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/models/types.dart';
+import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
@@ -29,7 +30,18 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
       BirdMeasurementCtrModel.empty();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    _updateController();
     return FormCard(
       title: 'Measurements',
       child: Column(
@@ -211,5 +223,18 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
         ],
       ),
     );
+  }
+
+  void _updateController() {
+    ref
+        .watch(databaseProvider)
+        .getBirdMeasurementByUuid(widget.specimenUuid)
+        .then((value) => {
+              birdMeasurementCtrModel.weightCtr.text = value.weight.toString(),
+              birdMeasurementCtrModel.wingspanCtr.text =
+                  value.wingspan.toString(),
+              birdMeasurementCtrModel.irisCtr.text = value.irisColor ?? '',
+              birdMeasurementCtrModel.billCtr.text = value.feetColor ?? '',
+            });
   }
 }

@@ -163,8 +163,10 @@ class Database extends _$Database {
     return select(coordinate).get();
   }
 
-  Future<List<BirdMeasurementData>> getAllBirdMeasurements() {
-    return select(birdMeasurement).get();
+  Future<BirdMeasurementData> getBirdMeasurementByUuid(String specimenUuid) {
+    return (select(birdMeasurement)
+          ..where((t) => t.specimenUuid.equals(specimenUuid)))
+        .getSingle();
   }
 }
 

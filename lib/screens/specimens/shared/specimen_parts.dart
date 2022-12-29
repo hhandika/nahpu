@@ -42,8 +42,8 @@ class PartDataFormState extends ConsumerState<PartDataForm>
         length: _length,
         tabs: [
           Tab(
-              icon:
-                  Text('Parts', style: Theme.of(context).textTheme.titleSmall)),
+              icon: Text('Parts',
+                  style: Theme.of(context).textTheme.titleMedium)),
           Tab(
               icon: Icon(MdiIcons.database,
                   color: Theme.of(context).colorScheme.tertiary))
