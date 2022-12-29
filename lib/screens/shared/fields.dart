@@ -72,7 +72,7 @@ class CustomTextField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return TextFormField(
+    return TextField(
       enabled: enabled,
       decoration: InputDecoration(
         labelText: labelText,
