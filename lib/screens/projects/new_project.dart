@@ -31,154 +31,174 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
   final piController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    projectNameController.dispose();
+    descriptionController.dispose();
+    collectorController.dispose();
+    collectorInitialController.dispose();
+    collectorEmailController.dispose();
+    collectorAffiliationController.dispose();
+    collNumController.dispose();
+    piController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final catNum = ref.watch(catalogNumberNotifier);
     if (catNum != 0) {
       collNumController.text = catNum.toString();
     }
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Create a new project'),
-        ),
-        body: Center(
-          child: Form(
-            key: _formKey,
-            child:
-          SingleChildScrollView(
+      appBar: AppBar(
+        title: const Text('Create a new project'),
+      ),
+      body: Center(
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
             child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 500),
-                  child: Column(
-                    children: [
-                      ProjectFormField(
-                        controller: projectNameController,
-                        maxLength: 25,
-                        labelText: 'Project name*',
-                        hintText: 'Enter the name of the project (required)',
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(25),
-                          FilteringTextInputFormatter.allow(
-                            RegExp(r'[a-zA-Z0-9-_]+|\s'),
-                          ),
-                        ],
-                        onChanged: (value) {
-                          ref
-                              .watch(projectFormNotifier.notifier)
-                              .validateProjectName(value);
-                          ref
-                              .watch(projectFormNotifier.notifier)
-                              .checkProjectNameExists(ref, value ?? '');
-                        },
-                        errorText: ref
-                            .watch(projectFormNotifier)
-                            .form
-                            .projectName
-                            .errMsg,
-                      ),
-                      ProjectFormField(
-                        controller: descriptionController,
-                        labelText: 'Project description',
-                        hintText:
-                            'Enter a description of the project (optional)',
-                      ),
-                      ProjectFormField(
-                        controller: piController,
-                        labelText: 'Principal Investigator',
-                        hintText: 'Enter PI name of the project (optional)',
-                      ),
-                      const TaxonGroupFields(),
-                      ProjectFormField(
-                        controller: collectorController,
-                        hintText:
-                            'Enter the name of the main collector (required)',
-                        labelText: 'Collector Name*',
-                        onChanged: ref
-                            .watch(projectFormNotifier.notifier)
-                            .validateCollName,
-                        errorText:
-                            ref.watch(projectFormNotifier).form.collName.errMsg,
-                      ),
-                      ProjectFormField(
-                        controller: collectorInitialController,
-                        maxLength: 5,
-                        hintText: 'Enter the collector name initial (required)',
-                        labelText: 'Collector initial*',
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(5),
-                          FilteringTextInputFormatter.allow(
-                            RegExp(r'[a-zA-Z]+|\s'),
-                          ),
-                        ],
-                        onChanged: (value) {
-                          collectorInitialController.value = TextEditingValue(
-                              text: value!.toUpperCase(),
-                              selection: collectorInitialController.selection);
-                        },
-                      ),
-                      ProjectFormField(
-                        controller: collectorEmailController,
-                        labelText: 'Collector email*',
-                        hintText: 'Enter the email of the collector (required)',
-                        onChanged: (value) {
-                          ref.watch(projectFormNotifier.notifier).validateEmail(
-                                value,
-                              );
-                          collectorEmailController.value = TextEditingValue(
-                              text: value!.toLowerCase(),
-                              selection: collectorEmailController.selection);
-                        },
-                        errorText:
-                            ref.watch(projectFormNotifier).form.email.errMsg,
-                      ),
-                      ProjectFormField(
-                        controller: collectorAffiliationController,
-                        labelText: 'Collector affiliation',
-                        hintText:
-                            'Enter the affiliation of the collector (optional)',
-                      ),
-                      ProjectFormField(
-                        controller: collNumController,
-                        labelText: 'First collector number*',
-                        hintText:
-                            'Enter the starting collectors number (required)',
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(
-                            RegExp(r'[0-9]+'),
-                          ),
-                        ],
-                        onChanged: ref
-                            .watch(projectFormNotifier.notifier)
-                            .validateCollNum,
-                        errorText:
-                            ref.watch(projectFormNotifier).form.collNum.errMsg,
-                      ),
-                      const SizedBox(height: 20),
-                      Wrap(spacing: 10, children: [
-                        SecondaryButton(
-                          text: 'Cancel',
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
+              padding: const EdgeInsets.all(10),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 500),
+                child: Column(
+                  children: [
+                    ProjectFormField(
+                      controller: projectNameController,
+                      maxLength: 25,
+                      labelText: 'Project name*',
+                      hintText: 'Enter the name of the project (required)',
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(25),
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r'[a-zA-Z0-9-_]+|\s'),
                         ),
-                        CustomElevButton(
-                            onPressed: () {
-                              _createProject();
-                              _updateProjectUuid();
-                              _updateMainCollectorCatNum();
-                              _goToDashboard();
-                              // Reset states to default
-                              ref.invalidate(projectListProvider);
-                            },
-                            text: 'Create',
-                            enabled: ref.read(projectFormNotifier).form.isValid)
-                      ])
-                    ],
-                  ),
-                ),),),
+                      ],
+                      onChanged: (value) {
+                        ref
+                            .watch(projectFormNotifier.notifier)
+                            .validateProjectName(value);
+                        ref
+                            .watch(projectFormNotifier.notifier)
+                            .checkProjectNameExists(ref, value?.trim() ?? '');
+                      },
+                      errorText: ref
+                          .watch(projectFormNotifier)
+                          .form
+                          .projectName
+                          .errMsg,
+                    ),
+                    ProjectFormField(
+                      controller: descriptionController,
+                      labelText: 'Project description',
+                      hintText: 'Enter a description of the project (optional)',
+                    ),
+                    ProjectFormField(
+                      controller: piController,
+                      labelText: 'Principal Investigator',
+                      hintText: 'Enter PI name of the project (optional)',
+                    ),
+                    const TaxonGroupFields(),
+                    ProjectFormField(
+                      controller: collectorController,
+                      hintText:
+                          'Enter the name of the main collector (required)',
+                      labelText: 'Collector Name*',
+                      onChanged: ref
+                          .watch(projectFormNotifier.notifier)
+                          .validateCollName,
+                      errorText:
+                          ref.watch(projectFormNotifier).form.collName.errMsg,
+                    ),
+                    ProjectFormField(
+                      controller: collectorInitialController,
+                      maxLength: 5,
+                      hintText: 'Enter the collector name initial (required)',
+                      labelText: 'Collector initial*',
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(5),
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r'[a-zA-Z]+|\s'),
+                        ),
+                      ],
+                      onChanged: (value) {
+                        collectorInitialController.value = TextEditingValue(
+                            text: value!.toUpperCase(),
+                            selection: collectorInitialController.selection);
+                      },
+                    ),
+                    ProjectFormField(
+                      controller: collectorEmailController,
+                      labelText: 'Collector email*',
+                      hintText: 'Enter the email of the collector (required)',
+                      onChanged: (value) {
+                        ref.watch(projectFormNotifier.notifier).validateEmail(
+                              value,
+                            );
+                        collectorEmailController.value = TextEditingValue(
+                            text: value!.toLowerCase(),
+                            selection: collectorEmailController.selection);
+                      },
+                      errorText:
+                          ref.watch(projectFormNotifier).form.email.errMsg,
+                    ),
+                    ProjectFormField(
+                      controller: collectorAffiliationController,
+                      labelText: 'Collector affiliation',
+                      hintText:
+                          'Enter the affiliation of the collector (optional)',
+                    ),
+                    ProjectFormField(
+                      controller: collNumController,
+                      labelText: 'First collector number*',
+                      hintText:
+                          'Enter the starting collectors number (required)',
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r'[0-9]+'),
+                        ),
+                      ],
+                      onChanged: ref
+                          .watch(projectFormNotifier.notifier)
+                          .validateCollNum,
+                      errorText:
+                          ref.watch(projectFormNotifier).form.collNum.errMsg,
+                    ),
+                    const SizedBox(height: 20),
+                    Wrap(spacing: 10, children: [
+                      SecondaryButton(
+                        text: 'Cancel',
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      CustomElevButton(
+                          onPressed: () {
+                            _createProject();
+                            _updateProjectUuid();
+                            _updateMainCollectorCatNum();
+                            _goToDashboard();
+                            // Reset states to default
+                            ref.invalidate(projectListProvider);
+                            ref.invalidate(projectFormNotifier);
+                          },
+                          text: 'Create',
+                          enabled: ref.read(projectFormNotifier).form.isValid)
+                    ])
+                  ],
+                ),
+              ),
+            ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Future<void> _createProject() async {
