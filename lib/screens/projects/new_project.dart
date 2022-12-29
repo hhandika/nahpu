@@ -19,6 +19,7 @@ class CreateProjectForm extends ConsumerStatefulWidget {
 }
 
 class NewProjectFormState extends ConsumerState<CreateProjectForm> {
+  final _formKey = GlobalKey<FormState>();
   final _uuidKey = uuid;
   final projectNameController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -40,7 +41,10 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
           title: const Text('Create a new project'),
         ),
         body: Center(
-          child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child:
+          SingleChildScrollView(
             child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: ConstrainedBox(
@@ -172,7 +176,7 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                       ])
                     ],
                   ),
-                )),
+                ),),),
           ),
         ));
   }
