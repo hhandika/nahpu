@@ -17,3 +17,8 @@ void updateCollEvent(int id, CollEventCompanion entries, WidgetRef ref) {
 void updateSpecimen(String uuid, SpecimenCompanion entries, WidgetRef ref) {
   ref.read(databaseProvider).updateSpecimenEntry(uuid, entries);
 }
+
+void updateBirdMeasurement(
+    String specimenUuid, BirdMeasurementCompanion entries, WidgetRef ref) {
+  ref.read(databaseProvider).updateBirdMeasurements(specimenUuid, entries);
+}
