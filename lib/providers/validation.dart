@@ -2,9 +2,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/project.dart';
 import 'package:nahpu/providers/projects.dart';
 
-final projectFormNotifier =
-    StateNotifierProvider<ProjectFormValidationNotifier, ProjectFormState>(
-        (ref) => ProjectFormValidationNotifier());
+final projectFormNotifier = StateNotifierProvider.autoDispose<
+    ProjectFormValidationNotifier,
+    ProjectFormState>((ref) => ProjectFormValidationNotifier());
 
 class ProjectFormValidationNotifier extends StateNotifier<ProjectFormState> {
   ProjectFormValidationNotifier()
