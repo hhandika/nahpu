@@ -21,6 +21,37 @@ Future<void> createNewSpecimens(BuildContext context, WidgetRef ref) {
         projectUuid: db.Value(projectUuid),
         taxonGroup: db.Value(matchCatFmtToTaxonGroup(catalogFmt)),
       ));
+  switch (catalogFmt) {
+    case CatalogFmt.birds:
+      ref.read(databaseProvider).createBirdMeasurements(
+            BirdMeasurementCompanion(
+              specimenUuid: db.Value(specimenUuid),
+            ),
+          );
+      break;
+    case CatalogFmt.bats:
+      ref.read(databaseProvider).createMammalMeasurements(
+            MammalMeasurementCompanion(
+              specimenUuid: db.Value(specimenUuid),
+            ),
+          );
+      break;
+    case CatalogFmt.generalMammals:
+      ref.read(databaseProvider).createMammalMeasurements(
+            MammalMeasurementCompanion(
+              specimenUuid: db.Value(specimenUuid),
+            ),
+          );
+      break;
+    default:
+      ref.read(databaseProvider).createMammalMeasurements(
+            MammalMeasurementCompanion(
+              specimenUuid: db.Value(specimenUuid),
+            ),
+          );
+      break;
+  }
+
   ref.invalidate(specimenEntryProvider);
   return Navigator.of(context).push(
     MaterialPageRoute(

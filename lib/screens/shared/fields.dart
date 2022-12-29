@@ -63,7 +63,7 @@ class CustomTextField extends ConsumerWidget {
   const CustomTextField({
     Key? key,
     required this.labelText,
-    required this.controller,
+    this.controller,
     required this.hintText,
     this.enabled = true,
     this.keyboardType = TextInputType.text,
@@ -71,7 +71,7 @@ class CustomTextField extends ConsumerWidget {
   }) : super(key: key);
 
   final bool enabled;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final String labelText;
   final String hintText;
   final TextInputType keyboardType;

@@ -115,60 +115,66 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
                 labelText: 'Tail',
                 hintText: 'Enter tail molt',
               ),
+              CustomTextField(
+                controller: birdMeasurementCtrModel.bodyMoltCtr,
+                labelText: 'Body',
+                hintText: 'Enter body molt',
+              ),
             ],
           ),
           const Divider(),
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
-              CustomTextField(
-                controller: birdMeasurementCtrModel.bodyMoltCtr,
-                labelText: 'Body',
-                hintText: 'Enter body molt',
-              ),
               NumberOnlyField(
                 controller: birdMeasurementCtrModel.bursaCtr,
                 labelText: 'Bursa (mm)',
                 hintText: 'Enter tail molt',
               ),
               CustomTextField(
-                  controller: birdMeasurementCtrModel.skullOssCtr,
-                  labelText: 'Skull ossification (%)',
-                  hintText: 'Enter percentage')
-            ],
-          ),
-          AdaptiveLayout(
-            useHorizontalLayout: widget.useHorizontalLayout,
-            children: [
+                controller: birdMeasurementCtrModel.skullOssCtr,
+                labelText: 'Skull ossification (%)',
+                hintText: 'Enter percentage',
+              ),
               CustomTextField(
                 controller: birdMeasurementCtrModel.fatCtr,
                 labelText: 'Fat',
                 hintText: 'Enter fat',
               ),
+            ],
+          ),
+          AdaptiveLayout(
+            useHorizontalLayout: widget.useHorizontalLayout,
+            children: [
               DropdownButtonFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Sex',
-                    hintText: 'Choose one',
+                decoration: const InputDecoration(
+                  labelText: 'Sex',
+                  hintText: 'Choose one',
+                ),
+                items: const [
+                  DropdownMenuItem(
+                    value: 'Male',
+                    child: Text('Male'),
                   ),
-                  items: const [
-                    DropdownMenuItem(
-                      value: 'Male',
-                      child: Text('Male'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Female',
-                      child: Text('Female'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Unknown',
-                      child: Text('Unknown'),
-                    ),
-                  ],
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _specimenSex = matchSpecimenSex(newValue);
-                    });
-                  }),
+                  DropdownMenuItem(
+                    value: 'Female',
+                    child: Text('Female'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Unknown',
+                    child: Text('Unknown'),
+                  ),
+                ],
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _specimenSex = matchSpecimenSex(newValue);
+                  });
+                },
+              ),
+              GonadMaleForm(
+                  specimenUuid: widget.specimenUuid,
+                  useHorizontalLayout: widget.useHorizontalLayout,
+                  sex: _specimenSex)
             ],
           ),
           Padding(
@@ -229,12 +235,42 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
     ref
         .watch(databaseProvider)
         .getBirdMeasurementByUuid(widget.specimenUuid)
-        .then((value) => {
-              birdMeasurementCtrModel.weightCtr.text = value.weight.toString(),
-              birdMeasurementCtrModel.wingspanCtr.text =
-                  value.wingspan.toString(),
-              birdMeasurementCtrModel.irisCtr.text = value.irisColor ?? '',
-              birdMeasurementCtrModel.billCtr.text = value.feetColor ?? '',
-            });
+        .then(
+          (value) => {
+            if (value != null)
+              {
+                birdMeasurementCtrModel.weightCtr.text =
+                    value.weight.toString(),
+                birdMeasurementCtrModel.wingspanCtr.text =
+                    value.wingspan.toString(),
+                birdMeasurementCtrModel.irisCtr.text = value.irisColor ?? '',
+                birdMeasurementCtrModel.billCtr.text = value.feetColor ?? '',
+              }
+          },
+        );
+  }
+}
+
+class GonadMaleForm extends ConsumerWidget {
+  const GonadMaleForm({
+    Key? key,
+    required this.specimenUuid,
+    required this.useHorizontalLayout,
+    required this.sex,
+  }) : super(key: key);
+
+  final String specimenUuid;
+  final bool useHorizontalLayout;
+  final SpecimenSex sex;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Visibility(
+      visible: sex == SpecimenSex.male,
+      child: const CustomTextField(
+        labelText: 'Testes size (L x W mm)',
+        hintText: 'Enter length and width of the right testes ',
+      ),
+    );
   }
 }

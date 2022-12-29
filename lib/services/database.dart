@@ -122,6 +122,12 @@ class Database extends _$Database {
   Future<int> createSpecimen(SpecimenCompanion form) =>
       into(specimen).insert(form);
 
+  Future<int> createBirdMeasurements(BirdMeasurementCompanion form) =>
+      into(birdMeasurement).insert(form);
+
+  Future<int> createMammalMeasurements(MammalMeasurementCompanion form) =>
+      into(mammalMeasurement).insert(form);
+
   Future updateSpecimenEntry(String uuid, SpecimenCompanion entry) {
     return (update(specimen)..where((t) => t.uuid.equals(uuid))).write(entry);
   }
@@ -163,10 +169,15 @@ class Database extends _$Database {
     return select(coordinate).get();
   }
 
-  Future<BirdMeasurementData> getBirdMeasurementByUuid(String specimenUuid) {
-    return (select(birdMeasurement)
-          ..where((t) => t.specimenUuid.equals(specimenUuid)))
-        .getSingle();
+  Future<BirdMeasurementData?> getBirdMeasurementByUuid(
+      String specimenUuid) async {
+    try {
+      return (select(birdMeasurement)
+            ..where((t) => t.specimenUuid.equals(specimenUuid)))
+          .getSingle();
+    } catch (e) {
+      return null;
+    }
   }
 }
 
