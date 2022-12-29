@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 
@@ -22,20 +21,27 @@ class EnvironmentDataForm extends ConsumerWidget {
                 child: AdaptiveLayout(
                     useHorizontalLayout: useHorizontalLayout,
                     children: const [
-                      CustomTextField(
-                          labelText: 'Lowest', hintText: 'Enter lowest'),
-                      CustomTextField(
-                          labelText: 'Highest', hintText: 'Enter highest'),
+                      TextField(
+                        decoration: InputDecoration(
+                            labelText: 'Lowest', hintText: 'Enter lowest'),
+                      ),
+                      TextField(
+                        decoration: InputDecoration(
+                            labelText: 'Highest', hintText: 'Enter highest'),
+                      )
                     ])),
             FormCard(
               title: 'Precipitation',
               child: AdaptiveLayout(
                 useHorizontalLayout: useHorizontalLayout,
                 children: const [
-                  CustomTextField(
-                      labelText: 'Lowest', hintText: 'Enter lowest'),
-                  CustomTextField(
-                      labelText: 'Highest', hintText: 'Enter highest')
+                  TextField(
+                    decoration: InputDecoration(
+                        labelText: 'Lowest', hintText: 'Enter lowest'),
+                  ),
+                  TextField(
+                      decoration: InputDecoration(
+                          labelText: 'Highest', hintText: 'Enter highest'))
                 ],
               ),
             ),
@@ -44,12 +50,18 @@ class EnvironmentDataForm extends ConsumerWidget {
               child: AdaptiveLayout(
                 useHorizontalLayout: useHorizontalLayout,
                 children: const [
-                  CustomTextField(
-                      labelText: 'Sunrise', hintText: 'Enter sunrise'),
-                  CustomTextField(
-                      labelText: 'Sunset', hintText: 'Enter sunset'),
-                  CustomTextField(
-                      labelText: 'Moon phase', hintText: 'Enter moon phase'),
+                  TextField(
+                    decoration: InputDecoration(
+                        labelText: 'Sunrise', hintText: 'Enter sunrise'),
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                        labelText: 'Sunset', hintText: 'Enter sunset'),
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                        labelText: 'Moon phase', hintText: 'Enter moon phase'),
+                  )
                 ],
               ),
             )

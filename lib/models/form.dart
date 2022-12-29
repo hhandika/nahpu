@@ -122,3 +122,54 @@ class SpecimenFormCtrModel {
       captureTimeCtr: TextEditingController(),
       trapTypeCtr: TextEditingController());
 }
+
+class BirdMeasurementCtrModel {
+  BirdMeasurementCtrModel({
+    required this.weightCtr,
+    required this.wingspanCtr,
+    required this.irisCtr,
+    required this.billCtr,
+    required this.tarsusCtr,
+    required this.footCtr,
+    required this.wingMoltCtr,
+    required this.tailMoltCtr,
+    required this.bodyMoltCtr,
+    required this.bursaCtr,
+    required this.skullOssCtr,
+    required this.fatCtr,
+    required this.gonadCtr,
+    required this.testisCtr,
+  });
+
+  TextEditingController weightCtr;
+  TextEditingController wingspanCtr;
+  TextEditingController irisCtr;
+  TextEditingController billCtr;
+  TextEditingController tarsusCtr;
+  TextEditingController footCtr;
+  TextEditingController wingMoltCtr;
+  TextEditingController tailMoltCtr;
+  TextEditingController bodyMoltCtr;
+  TextEditingController bursaCtr;
+  TextEditingController skullOssCtr;
+  TextEditingController fatCtr;
+  TextEditingController gonadCtr;
+  TextEditingController testisCtr;
+
+  factory BirdMeasurementCtrModel.empty() => BirdMeasurementCtrModel(
+        weightCtr: TextEditingController(),
+        wingspanCtr: TextEditingController(),
+        irisCtr: TextEditingController(),
+        billCtr: TextEditingController(),
+        tarsusCtr: TextEditingController(),
+        footCtr: TextEditingController(),
+        wingMoltCtr: TextEditingController(),
+        tailMoltCtr: TextEditingController(),
+        bodyMoltCtr: TextEditingController(),
+        bursaCtr: TextEditingController(),
+        skullOssCtr: TextEditingController(),
+        fatCtr: TextEditingController(),
+        gonadCtr: TextEditingController(),
+        testisCtr: TextEditingController(),
+      );
+}

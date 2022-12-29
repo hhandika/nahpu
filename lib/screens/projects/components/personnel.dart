@@ -3,7 +3,6 @@ import 'package:nahpu/providers/catalogs.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
-import 'package:nahpu/screens/shared/fields.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/forms.dart';
@@ -101,8 +100,12 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
             ],
             onChanged: (String? newValue) {},
           ),
-          const CustomTextField(
-              labelText: 'First collector Number', hintText: 'Enter number'),
+          const TextField(
+            decoration: InputDecoration(
+              labelText: 'First collector Number',
+              hintText: 'Enter number',
+            ),
+          )
         ],
       ),
       actions: [

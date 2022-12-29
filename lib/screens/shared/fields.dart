@@ -41,15 +41,18 @@ class NumberOnlyField extends ConsumerWidget {
     Key? key,
     required this.labelText,
     required this.hintText,
+    required this.controller,
   }) : super(key: key);
 
   final String labelText;
   final String hintText;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return CustomTextField(
       labelText: labelText,
+      controller: controller,
       hintText: hintText,
       keyboardType: TextInputType.number,
     );
@@ -60,25 +63,31 @@ class CustomTextField extends ConsumerWidget {
   const CustomTextField({
     Key? key,
     required this.labelText,
+    required this.controller,
     required this.hintText,
     this.enabled = true,
     this.keyboardType = TextInputType.text,
+    this.onChanged,
   }) : super(key: key);
 
   final bool enabled;
+  final TextEditingController controller;
   final String labelText;
   final String hintText;
   final TextInputType keyboardType;
+  final ValueChanged? onChanged;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TextField(
       enabled: enabled,
+      controller: controller,
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
       ),
       keyboardType: keyboardType,
+      onChanged: onChanged,
     );
   }
 }
