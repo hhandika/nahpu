@@ -23,28 +23,28 @@ Future<void> createNewSpecimens(BuildContext context, WidgetRef ref) {
       ));
   switch (catalogFmt) {
     case CatalogFmt.birds:
-      ref.read(databaseProvider).createBirdMeasurements(
+      ref.read(specimenProvider).createBirdMeasurements(
             BirdMeasurementCompanion(
               specimenUuid: db.Value(specimenUuid),
             ),
           );
       break;
     case CatalogFmt.bats:
-      ref.read(databaseProvider).createMammalMeasurements(
+      ref.read(specimenProvider).createMammalMeasurements(
             MammalMeasurementCompanion(
               specimenUuid: db.Value(specimenUuid),
             ),
           );
       break;
     case CatalogFmt.generalMammals:
-      ref.read(databaseProvider).createMammalMeasurements(
+      ref.read(specimenProvider).createMammalMeasurements(
             MammalMeasurementCompanion(
               specimenUuid: db.Value(specimenUuid),
             ),
           );
       break;
     default:
-      ref.read(databaseProvider).createMammalMeasurements(
+      ref.read(specimenProvider).createMammalMeasurements(
             MammalMeasurementCompanion(
               specimenUuid: db.Value(specimenUuid),
             ),

@@ -122,23 +122,6 @@ class Database extends _$Database {
   Future<int> createSpecimen(SpecimenCompanion form) =>
       into(specimen).insert(form);
 
-  Future<int> createBirdMeasurements(BirdMeasurementCompanion form) =>
-      into(birdMeasurement).insert(form);
-
-  Future<int> createMammalMeasurements(MammalMeasurementCompanion form) =>
-      into(mammalMeasurement).insert(form);
-
-  Future updateSpecimenEntry(String uuid, SpecimenCompanion entry) {
-    return (update(specimen)..where((t) => t.uuid.equals(uuid))).write(entry);
-  }
-
-  Future updateBirdMeasurements(
-      String specimenUuid, BirdMeasurementCompanion entry) {
-    return (update(birdMeasurement)
-          ..where((t) => t.specimenUuid.equals(specimenUuid)))
-        .write(entry);
-  }
-
   Future<List<SpecimenData>> getAllSpecimens(String projectUuid) {
     return (select(specimen)..where((t) => t.projectUuid.equals(projectUuid)))
         .get();
@@ -167,17 +150,6 @@ class Database extends _$Database {
 
   Future<List<CoordinateData>> getAllCoordinates() {
     return select(coordinate).get();
-  }
-
-  Future<BirdMeasurementData?> getBirdMeasurementByUuid(
-      String specimenUuid) async {
-    try {
-      return (select(birdMeasurement)
-            ..where((t) => t.specimenUuid.equals(specimenUuid)))
-          .getSingle();
-    } catch (e) {
-      return null;
-    }
   }
 }
 

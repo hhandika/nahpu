@@ -1,6 +1,12 @@
 import 'package:nahpu/services/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/services/specimen_queries.dart';
+
+final specimenProvider = Provider<SpecimenQuery>((ref) {
+  final specimenTable = SpecimenQuery(ref.read(databaseProvider));
+  return specimenTable;
+});
 
 final narrativeEntryProvider =
     FutureProvider.autoDispose<List<NarrativeData>>((ref) {

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/controller/updaters.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/models/types.dart';
-import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
@@ -233,7 +233,7 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
 
   void _updateController() {
     ref
-        .watch(databaseProvider)
+        .watch(specimenProvider)
         .getBirdMeasurementByUuid(widget.specimenUuid)
         .then(
           (value) => {
