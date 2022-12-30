@@ -1,5 +1,5 @@
 name: nahpu
-description: A new Flutter project.
+description: Nahpu is a cross-platform cataloging app for natural history specimen collection.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -105,10 +105,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: 'Merriweather'
+      fonts:
+        - asset: assets/fonts/Merriweather-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

@@ -39,7 +39,7 @@ class CollEventsState extends ConsumerState<CollEvents> {
           NewCollEvents(),
           CollEventMenu(),
         ],
-        leading: const ProjectBackButton(),
+        automaticallyImplyLeading: false,
       ),
       resizeToAvoidBottomInset: false,
       body: SafeArea(
