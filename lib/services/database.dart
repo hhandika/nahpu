@@ -154,10 +154,8 @@ class Database extends _$Database {
 }
 
 LazyDatabase _openConnection() {
-  // the LazyDatabase util lets us find the right location for the file async.
   return LazyDatabase(() async {
-    // put the database file, called db.sqlite here, into the documents folder
-    // for your app.
+    // We save database to the default document directory locations.
     final dbDir = await getApplicationDocumentsDirectory();
     final file = File(p.join(dbDir.path, 'nahpu/nahpu.db'));
     if (kDebugMode) {
