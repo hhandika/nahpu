@@ -24,7 +24,7 @@ class BirdMeasurementForms extends ConsumerStatefulWidget {
 
 class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
   SpecimenSex _specimenSex = SpecimenSex.unknown;
-  bool _isScrotal = false;
+  bool _molting = false;
 
   final BirdMeasurementCtrModel birdMeasurementCtrModel =
       BirdMeasurementCtrModel.empty();
@@ -53,11 +53,13 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
                 controller: birdMeasurementCtrModel.weightCtr,
                 labelText: 'Weight (grams)',
                 hintText: 'Enter weight',
+                isLastField: false,
               ),
               NumberOnlyField(
                 controller: birdMeasurementCtrModel.wingspanCtr,
                 labelText: 'Wingspan (mm)',
                 hintText: 'Enter TL',
+                isLastField: false,
               ),
             ],
           ),
@@ -68,11 +70,13 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
                 controller: birdMeasurementCtrModel.irisCtr,
                 labelText: 'Iris color',
                 hintText: 'Enter iris color',
+                isLastField: false,
               ),
               CustomTextField(
                 controller: birdMeasurementCtrModel.billCtr,
                 labelText: 'Bill color',
                 hintText: 'Enter bill color',
+                isLastField: false,
               ),
             ],
           ),
@@ -83,16 +87,16 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
                 controller: birdMeasurementCtrModel.footCtr,
                 labelText: 'Foot color',
                 hintText: 'Enter foot color',
+                isLastField: false,
               ),
               CustomTextField(
                 controller: birdMeasurementCtrModel.tarsusCtr,
                 labelText: 'Tarsus color',
                 hintText: 'Enter foot color',
+                isLastField: true,
               ),
             ],
           ),
-          const Divider(),
-          Text('Molt', style: Theme.of(context).textTheme.titleMedium),
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
@@ -109,37 +113,19 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
                         ref);
                   });
                 },
+                isLastField: false,
               ),
               CustomTextField(
                 controller: birdMeasurementCtrModel.tailMoltCtr,
                 labelText: 'Tail',
                 hintText: 'Enter tail molt',
+                isLastField: false,
               ),
               CustomTextField(
                 controller: birdMeasurementCtrModel.bodyMoltCtr,
                 labelText: 'Body',
                 hintText: 'Enter body molt',
-              ),
-            ],
-          ),
-          const Divider(),
-          AdaptiveLayout(
-            useHorizontalLayout: widget.useHorizontalLayout,
-            children: [
-              NumberOnlyField(
-                controller: birdMeasurementCtrModel.bursaCtr,
-                labelText: 'Bursa (mm)',
-                hintText: 'Enter tail molt',
-              ),
-              CustomTextField(
-                controller: birdMeasurementCtrModel.skullOssCtr,
-                labelText: 'Skull ossification (%)',
-                hintText: 'Enter percentage',
-              ),
-              CustomTextField(
-                controller: birdMeasurementCtrModel.fatCtr,
-                labelText: 'Fat',
-                hintText: 'Enter fat',
+                isLastField: false,
               ),
             ],
           ),
@@ -171,8 +157,55 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
                   });
                 },
               ),
+              DropdownButtonFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Molting',
+                  hintText: 'Choose one',
+                ),
+                items: const [
+                  DropdownMenuItem(
+                    value: 'Yes',
+                    child: Text('Yes'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'No',
+                    child: Text('No'),
+                  ),
+                ],
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _molting = newValue == 'Yes' ? true : false;
+                  });
+                },
+              ),
             ],
           ),
+          AdaptiveLayout(
+            useHorizontalLayout: widget.useHorizontalLayout,
+            children: [
+              DropdownButtonFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Brood patch',
+                  hintText: 'Choose one',
+                ),
+                items: const [
+                  DropdownMenuItem(
+                    value: 'Yes',
+                    child: Text('Yes'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'No',
+                    child: Text('No'),
+                  ),
+                ],
+                onChanged: (String? newValue) {
+                  setState(() {});
+                },
+              ),
+            ],
+          ),
+          const Divider(),
+          Text('Gonads', style: Theme.of(context).textTheme.titleLarge),
           MaleGonadForm(
             specimenUuid: widget.specimenUuid,
             useHorizontalLayout: widget.useHorizontalLayout,
@@ -183,55 +216,48 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
             useHorizontalLayout: widget.useHorizontalLayout,
             sex: _specimenSex,
           ),
+          const Divider(),
+          AdaptiveLayout(
+            useHorizontalLayout: widget.useHorizontalLayout,
+            children: [
+              NumberOnlyField(
+                controller: birdMeasurementCtrModel.bursaCtr,
+                labelText: 'Bursa (mm)',
+                hintText: 'Enter tail molt',
+                isLastField: false,
+              ),
+              CustomTextField(
+                controller: birdMeasurementCtrModel.skullOssCtr,
+                labelText: 'Skull ossification (%)',
+                hintText: 'Enter percentage',
+                isLastField: false,
+              ),
+              CustomTextField(
+                controller: birdMeasurementCtrModel.fatCtr,
+                labelText: 'Fat',
+                hintText: 'Enter fat',
+                isLastField: false,
+              ),
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.all(5),
             child: CustomTextField(
               controller: birdMeasurementCtrModel.gonadCtr,
               labelText: 'Gonads',
               hintText: 'Enter gonads',
+              isLastField: false,
             ),
           ),
-          Visibility(
-            visible: _specimenSex == SpecimenSex.male,
-            child: AdaptiveLayout(
-              useHorizontalLayout: widget.useHorizontalLayout,
-              children: [
-                DropdownButtonFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'Testes Position',
-                      hintText: 'Select specimen age',
-                    ),
-                    items: const [
-                      DropdownMenuItem(
-                        value: 'Scrotal',
-                        child: Text('Scrotal'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'Abdominal',
-                        child: Text('Abdominal'),
-                      ),
-                    ],
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _isScrotal = newValue == 'Scrotal';
-                      });
-                    }),
-                CustomTextField(
-                  controller: birdMeasurementCtrModel.testisCtr,
-                  enabled: _isScrotal,
-                  labelText: 'Testes size (L x W mm)',
-                  hintText: 'Enter length and width of the right testes ',
-                ),
-              ],
-            ),
-          ),
-          TextFormField(
-            maxLines: 3,
-            decoration: const InputDecoration(
+          const Padding(
+            padding: EdgeInsets.all(5),
+            child: CustomTextField(
+              maxLines: 3,
               labelText: 'Stomach contents',
               hintText: 'Enter stomach contents',
+              isLastField: false,
             ),
-          ),
+          )
         ],
       ),
     );
@@ -246,9 +272,9 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
             if (value != null)
               {
                 birdMeasurementCtrModel.weightCtr.text =
-                    value.weight.toString(),
+                    value.weight?.toString() ?? '',
                 birdMeasurementCtrModel.wingspanCtr.text =
-                    value.wingspan.toString(),
+                    value.wingspan?.toString() ?? '',
                 birdMeasurementCtrModel.irisCtr.text = value.irisColor ?? '',
                 birdMeasurementCtrModel.billCtr.text = value.feetColor ?? '',
               }
@@ -276,12 +302,13 @@ class MaleGonadForm extends ConsumerWidget {
       child: const CustomTextField(
         labelText: 'Testes size (L x W mm)',
         hintText: 'Enter length and width of the right testes ',
+        isLastField: false,
       ),
     );
   }
 }
 
-class FemaleGonadForm extends ConsumerWidget {
+class FemaleGonadForm extends ConsumerStatefulWidget {
   const FemaleGonadForm({
     super.key,
     required this.specimenUuid,
@@ -294,13 +321,149 @@ class FemaleGonadForm extends ConsumerWidget {
   final SpecimenSex sex;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  FemaleGonadFormState createState() => FemaleGonadFormState();
+}
+
+class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
+  bool _isLargOvum = false;
+
+  @override
+  Widget build(BuildContext context) {
     return Visibility(
-      visible: sex == SpecimenSex.female,
-      child: const CustomTextField(
-        labelText: 'Ovaries size (L x W mm)',
-        hintText: 'Enter length and width of the right ovary ',
+      visible: widget.sex == SpecimenSex.female,
+      child: Column(
+        children: [
+          Text(
+            'Ovaries',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          AdaptiveLayout(
+            useHorizontalLayout: widget.useHorizontalLayout,
+            children: const [
+              CustomTextField(
+                labelText: 'Length (mm)',
+                hintText: 'Enter length',
+                isLastField: false,
+              ),
+              CustomTextField(
+                labelText: 'Width (mm)',
+                hintText: 'Enter width',
+                isLastField: false,
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: DropdownButtonFormField(
+              decoration: const InputDecoration(
+                labelText: 'Appearance',
+                hintText: 'Choose one',
+              ),
+              items: const [
+                DropdownMenuItem(
+                  value: 'Smooth',
+                  child: Text('Smooth'),
+                ),
+                DropdownMenuItem(
+                  value: 'small',
+                  child: Text('All ova <1 mm'),
+                ),
+                DropdownMenuItem(
+                  value: 'large',
+                  child: Text('At least one ovum >1 mm'),
+                ),
+              ],
+              onChanged: (String? newValue) {
+                setState(() {
+                  _isLargOvum = newValue == 'large' ? true : false;
+                });
+              },
+            ),
+          ),
+          Visibility(
+            visible: _isLargOvum,
+            child: OvumSizeForm(
+              useHorizontalLayout: widget.useHorizontalLayout,
+            ),
+          ),
+          Text(
+            'Oviduct',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          OviductForm(useHorizontalLayout: widget.useHorizontalLayout),
+        ],
       ),
     );
+  }
+}
+
+class OvumSizeForm extends StatelessWidget {
+  const OvumSizeForm({super.key, required this.useHorizontalLayout});
+  final bool useHorizontalLayout;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          'Third Largest Ovum Size (mm)',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        AdaptiveLayout(
+          useHorizontalLayout: useHorizontalLayout,
+          children: const [
+            NumberOnlyField(
+              labelText: 'First',
+              hintText: 'Enter size',
+              isLastField: false,
+            ),
+            NumberOnlyField(
+              labelText: 'Second',
+              hintText: 'Enter size',
+              isLastField: false,
+            ),
+            NumberOnlyField(
+              labelText: 'Third',
+              hintText: 'Enter size',
+              isLastField: false,
+            ),
+          ],
+        )
+      ],
+    );
+  }
+}
+
+class OviductForm extends StatelessWidget {
+  const OviductForm({super.key, required this.useHorizontalLayout});
+
+  final bool useHorizontalLayout;
+
+  @override
+  Widget build(BuildContext context) {
+    return AdaptiveLayout(useHorizontalLayout: useHorizontalLayout, children: [
+      const NumberOnlyField(
+        labelText: 'Width (mm)',
+        hintText: 'Enter width',
+        isLastField: false,
+      ),
+      DropdownButtonFormField(
+        decoration: const InputDecoration(
+          labelText: 'Appearance',
+          hintText: 'Choose one',
+        ),
+        items: const [
+          DropdownMenuItem(
+            value: 'Straight',
+            child: Text('Straight'),
+          ),
+          DropdownMenuItem(
+            value: 'Convoluted',
+            child: Text('Convoluted'),
+          ),
+        ],
+        onChanged: (String? newValue) {},
+      ),
+    ]);
   }
 }
