@@ -163,6 +163,6 @@ LazyDatabase _openConnection() {
     if (kDebugMode) {
       print('App database path: ${file.path}');
     }
-    return NativeDatabase(file, logStatements: true);
+    return NativeDatabase.createInBackground(file, logStatements: true);
   });
 }
