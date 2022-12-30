@@ -68,7 +68,7 @@ class NewSpecimens extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return IconButton(
-      icon: const Icon(Icons.add_rounded),
+      icon: const Icon(Icons.add_circle_outline_rounded),
       onPressed: () async {
         createNewSpecimens(context, ref);
       },

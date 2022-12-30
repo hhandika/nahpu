@@ -40,7 +40,7 @@ class NewSitesState extends ConsumerState<NewSites> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.add),
+            icon: const Icon(Icons.add_circle_outline_rounded),
             onPressed: () {
               createNewSite(context, ref);
             },
