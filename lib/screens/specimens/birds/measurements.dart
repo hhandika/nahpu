@@ -171,11 +171,17 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
                   });
                 },
               ),
-              GonadMaleForm(
-                  specimenUuid: widget.specimenUuid,
-                  useHorizontalLayout: widget.useHorizontalLayout,
-                  sex: _specimenSex)
             ],
+          ),
+          MaleGonadForm(
+            specimenUuid: widget.specimenUuid,
+            useHorizontalLayout: widget.useHorizontalLayout,
+            sex: _specimenSex,
+          ),
+          FemaleGonadForm(
+            specimenUuid: widget.specimenUuid,
+            useHorizontalLayout: widget.useHorizontalLayout,
+            sex: _specimenSex,
           ),
           Padding(
             padding: const EdgeInsets.all(5),
@@ -251,13 +257,13 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
   }
 }
 
-class GonadMaleForm extends ConsumerWidget {
-  const GonadMaleForm({
-    Key? key,
+class MaleGonadForm extends ConsumerWidget {
+  const MaleGonadForm({
+    super.key,
     required this.specimenUuid,
     required this.useHorizontalLayout,
     required this.sex,
-  }) : super(key: key);
+  });
 
   final String specimenUuid;
   final bool useHorizontalLayout;
@@ -270,6 +276,30 @@ class GonadMaleForm extends ConsumerWidget {
       child: const CustomTextField(
         labelText: 'Testes size (L x W mm)',
         hintText: 'Enter length and width of the right testes ',
+      ),
+    );
+  }
+}
+
+class FemaleGonadForm extends ConsumerWidget {
+  const FemaleGonadForm({
+    super.key,
+    required this.specimenUuid,
+    required this.useHorizontalLayout,
+    required this.sex,
+  });
+
+  final String specimenUuid;
+  final bool useHorizontalLayout;
+  final SpecimenSex sex;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Visibility(
+      visible: sex == SpecimenSex.female,
+      child: const CustomTextField(
+        labelText: 'Ovaries size (L x W mm)',
+        hintText: 'Enter length and width of the right ovary ',
       ),
     );
   }
