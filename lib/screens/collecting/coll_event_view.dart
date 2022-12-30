@@ -7,7 +7,7 @@ import 'package:nahpu/models/form.dart';
 import 'package:nahpu/providers/catalogs.dart';
 
 import 'package:nahpu/screens/collecting/coll_event_form.dart';
-import 'package:nahpu/screens/collecting/menu_bar.dart';
+import 'package:nahpu/screens/collecting/components/menu_bar.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/indicators.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
