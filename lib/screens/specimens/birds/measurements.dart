@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/controller/updaters.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
-import 'package:nahpu/services/database.dart';
-import 'package:drift/drift.dart' as db;
 
 class BirdMeasurementForms extends ConsumerStatefulWidget {
   const BirdMeasurementForms(
@@ -100,38 +97,6 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
-              CustomTextField(
-                controller: birdMeasurementCtrModel.wingMoltCtr,
-                labelText: 'Wing',
-                hintText: 'Enter wing molt',
-                onChanged: (newValue) {
-                  setState(() {
-                    updateBirdMeasurement(
-                        widget.specimenUuid,
-                        BirdMeasurementCompanion(
-                            moltingWing: db.Value(newValue)),
-                        ref);
-                  });
-                },
-                isLastField: false,
-              ),
-              CustomTextField(
-                controller: birdMeasurementCtrModel.tailMoltCtr,
-                labelText: 'Tail',
-                hintText: 'Enter tail molt',
-                isLastField: false,
-              ),
-              CustomTextField(
-                controller: birdMeasurementCtrModel.bodyMoltCtr,
-                labelText: 'Body',
-                hintText: 'Enter body molt',
-                isLastField: false,
-              ),
-            ],
-          ),
-          AdaptiveLayout(
-            useHorizontalLayout: widget.useHorizontalLayout,
-            children: [
               DropdownButtonFormField(
                 decoration: const InputDecoration(
                   labelText: 'Sex',
@@ -202,10 +167,31 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
                   setState(() {});
                 },
               ),
+              const SkullOssField(),
             ],
           ),
+          AdaptiveLayout(
+            useHorizontalLayout: widget.useHorizontalLayout,
+            children: [
+              NumberOnlyField(
+                controller: birdMeasurementCtrModel.bursaCtr,
+                labelText: 'Bursa (mm)',
+                hintText: 'Enter tail molt',
+                isLastField: false,
+              ),
+              const FatField(),
+            ],
+          ),
+          const Padding(
+            padding: EdgeInsets.all(5),
+            child: CustomTextField(
+              maxLines: 3,
+              labelText: 'Stomach contents',
+              hintText: 'Enter stomach contents',
+              isLastField: false,
+            ),
+          ),
           const Divider(),
-          Text('Gonads', style: Theme.of(context).textTheme.titleLarge),
           MaleGonadForm(
             specimenUuid: widget.specimenUuid,
             useHorizontalLayout: widget.useHorizontalLayout,
@@ -217,47 +203,10 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
             sex: _specimenSex,
           ),
           const Divider(),
-          AdaptiveLayout(
+          MoltingForm(
             useHorizontalLayout: widget.useHorizontalLayout,
-            children: [
-              NumberOnlyField(
-                controller: birdMeasurementCtrModel.bursaCtr,
-                labelText: 'Bursa (mm)',
-                hintText: 'Enter tail molt',
-                isLastField: false,
-              ),
-              CustomTextField(
-                controller: birdMeasurementCtrModel.skullOssCtr,
-                labelText: 'Skull ossification (%)',
-                hintText: 'Enter percentage',
-                isLastField: false,
-              ),
-              CustomTextField(
-                controller: birdMeasurementCtrModel.fatCtr,
-                labelText: 'Fat',
-                hintText: 'Enter fat',
-                isLastField: false,
-              ),
-            ],
+            visible: _molting,
           ),
-          Padding(
-            padding: const EdgeInsets.all(5),
-            child: CustomTextField(
-              controller: birdMeasurementCtrModel.gonadCtr,
-              labelText: 'Gonads',
-              hintText: 'Enter gonads',
-              isLastField: false,
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.all(5),
-            child: CustomTextField(
-              maxLines: 3,
-              labelText: 'Stomach contents',
-              hintText: 'Enter stomach contents',
-              isLastField: false,
-            ),
-          )
         ],
       ),
     );
@@ -298,13 +247,39 @@ class MaleGonadForm extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Visibility(
-      visible: sex == SpecimenSex.male,
-      child: const CustomTextField(
-        labelText: 'Testes size (L x W mm)',
-        hintText: 'Enter length and width of the right testes ',
-        isLastField: false,
-      ),
-    );
+        visible: sex == SpecimenSex.male,
+        child: Column(
+          children: [
+            Text('Male Gonads', style: Theme.of(context).textTheme.titleLarge),
+            Text('Testis size (mm)',
+                style: Theme.of(context).textTheme.titleSmall),
+            AdaptiveLayout(
+              useHorizontalLayout: useHorizontalLayout,
+              children: const [
+                NumberOnlyField(
+                  labelText: 'Length',
+                  hintText: 'Enter length',
+                  isLastField: false,
+                ),
+                NumberOnlyField(
+                  labelText: 'Width',
+                  hintText: 'Enter width',
+                  isLastField: false,
+                ),
+              ],
+            ),
+            // Remarks
+            const Padding(
+              padding: EdgeInsets.all(5),
+              child: CustomTextField(
+                maxLines: 3,
+                labelText: 'Remarks',
+                hintText: 'Enter remarks',
+                isLastField: false,
+              ),
+            ),
+          ],
+        ));
   }
 }
 
@@ -391,15 +366,67 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           OviductForm(useHorizontalLayout: widget.useHorizontalLayout),
-          const CustomTextField(
-            maxLines: 3,
-            labelText: 'Remarks',
-            hintText: 'Add additional information about the gonads',
-            isLastField: true,
+          const Padding(
+            padding: EdgeInsets.all(5),
+            child: CustomTextField(
+              maxLines: 3,
+              labelText: 'Remarks',
+              hintText: 'Add additional information about the gonads',
+              isLastField: true,
+            ),
           )
         ],
       ),
     );
+  }
+}
+
+class SkullOssField extends StatelessWidget {
+  const SkullOssField({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    List<int> skullOss = [5, 10, 25, 50, 75, 90, 95, 99];
+    return DropdownButtonFormField(
+        decoration: const InputDecoration(
+          labelText: 'Skull ossification (%)',
+          hintText: 'Enter percentage',
+        ),
+        items: skullOss.reversed
+            .map((e) => DropdownMenuItem(
+                  value: e,
+                  child: Text('$e %'),
+                ))
+            .toList(),
+        onChanged: (int? newValue) {});
+  }
+}
+
+class FatField extends StatelessWidget {
+  const FatField({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    List<String> fatClass = [
+      'No fat',
+      'Trace',
+      'Light',
+      'Moderate',
+      'Heavy',
+      'Extremely heavy'
+    ];
+    return DropdownButtonFormField(
+        decoration: const InputDecoration(
+          labelText: 'Fat',
+          hintText: 'Enter amount of fat',
+        ),
+        items: fatClass
+            .map((e) => DropdownMenuItem(
+                  value: e,
+                  child: Text(e),
+                ))
+            .toList(),
+        onChanged: (String? newValue) {});
   }
 }
 
@@ -471,5 +498,162 @@ class OviductForm extends StatelessWidget {
         onChanged: (String? newValue) {},
       ),
     ]);
+  }
+}
+
+class MoltingForm extends StatelessWidget {
+  const MoltingForm({
+    super.key,
+    required this.useHorizontalLayout,
+    required this.visible,
+  });
+
+  final bool useHorizontalLayout;
+  final bool visible;
+
+  @override
+  Widget build(BuildContext context) {
+    return Visibility(
+      visible: visible,
+      child: Column(
+        children: [
+          Text(
+            'Molt',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          WingMoltForm(useHorizontalLayout: useHorizontalLayout),
+          TailMoltForm(useHorizontalLayout: useHorizontalLayout),
+          const BodyMoltForm(),
+          const Padding(
+            padding: EdgeInsets.all(5),
+            child: CustomTextField(
+              maxLines: 3,
+              labelText: 'Remarks',
+              hintText: 'Add additional information about the molting',
+              isLastField: true,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class WingMoltForm extends StatelessWidget {
+  const WingMoltForm({
+    super.key,
+    required this.useHorizontalLayout,
+  });
+
+  final bool useHorizontalLayout;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          'Wing Molt',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        AdaptiveLayout(
+          useHorizontalLayout: useHorizontalLayout,
+          children: const [
+            NumberOnlyField(
+              labelText: 'Right primaries',
+              hintText: 'Enter right primaries molt',
+              isLastField: false,
+            ),
+            NumberOnlyField(
+              labelText: 'Left primaries',
+              hintText: 'Enter left primaries molt',
+              isLastField: false,
+            ),
+          ],
+        ),
+        AdaptiveLayout(
+          useHorizontalLayout: useHorizontalLayout,
+          children: const [
+            NumberOnlyField(
+              labelText: 'Right secondaries',
+              hintText: 'Enter right secondaries molt',
+              isLastField: false,
+            ),
+            NumberOnlyField(
+              labelText: 'Left secondaries',
+              hintText: 'Enter left secondaries molt',
+              isLastField: false,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class TailMoltForm extends StatelessWidget {
+  const TailMoltForm({
+    super.key,
+    required this.useHorizontalLayout,
+  });
+
+  final bool useHorizontalLayout;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          'Tail Molt',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        AdaptiveLayout(
+          useHorizontalLayout: useHorizontalLayout,
+          children: const [
+            NumberOnlyField(
+              labelText: 'Right rectrices',
+              hintText: 'Enter right rectrices molt',
+              isLastField: false,
+            ),
+            NumberOnlyField(
+              labelText: 'Left retrices',
+              hintText: 'Enter left retrices molt',
+              isLastField: false,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class BodyMoltForm extends StatelessWidget {
+  const BodyMoltForm({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(5),
+      child: DropdownButtonFormField(
+        decoration: const InputDecoration(
+          labelText: 'Body Molt',
+          hintText: 'Choose one',
+        ),
+        items: const [
+          DropdownMenuItem(
+            value: 'Trace',
+            child: Text('Trace'),
+          ),
+          DropdownMenuItem(
+            value: 'Moderate',
+            child: Text('Moderate'),
+          ),
+          DropdownMenuItem(
+            value: 'Heavy',
+            child: Text('Heavy'),
+          ),
+        ],
+        onChanged: (String? newValue) {},
+      ),
+    );
   }
 }
