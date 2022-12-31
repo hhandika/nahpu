@@ -308,6 +308,7 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
       visible: widget.sex == SpecimenSex.female,
       child: Column(
         children: [
+          Text('Female Gonads', style: Theme.of(context).textTheme.titleLarge),
           Text(
             'Ovaries',
             style: Theme.of(context).textTheme.titleMedium,
