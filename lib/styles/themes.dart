@@ -42,22 +42,22 @@ class NahpuTheme {
   }
 
   static AppBarTheme get appBarLightTheme {
-    return AppBarTheme(
+    return const AppBarTheme(
       elevation: 0,
       titleTextStyle: TextStyle(
         fontFamily: 'Merriweather',
-        color: Colors.grey[800],
+        color: Colors.black,
         fontSize: 24,
       ),
     );
   }
 
   static AppBarTheme get appBarDarkTheme {
-    return AppBarTheme(
+    return const AppBarTheme(
       elevation: 0,
       titleTextStyle: TextStyle(
         fontFamily: 'Merriweather',
-        color: Colors.grey[50],
+        color: Colors.white,
         fontSize: 24,
       ),
     );
