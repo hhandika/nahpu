@@ -391,6 +391,12 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           OviductForm(useHorizontalLayout: widget.useHorizontalLayout),
+          const CustomTextField(
+            maxLines: 3,
+            labelText: 'Remarks',
+            hintText: 'Add additional information about the gonads',
+            isLastField: true,
+          )
         ],
       ),
     );
