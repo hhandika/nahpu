@@ -100,7 +100,7 @@ class CustomTextField extends ConsumerWidget {
       keyboardType: keyboardType,
       onChanged: onChanged,
       textInputAction:
-          isLastField ? TextInputAction.next : TextInputAction.done,
+          isLastField ? TextInputAction.done : TextInputAction.next,
     );
   }
 }
