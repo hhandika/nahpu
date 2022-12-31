@@ -58,41 +58,47 @@ class CaptureRecordFields extends ConsumerWidget {
               ),
             ],
           ),
-          DropdownButtonFormField(
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: DropdownButtonFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Capture Method',
+                  hintText: 'Choose a trap type',
+                ),
+                items: const [
+                  DropdownMenuItem(
+                    value: 'One',
+                    child: Text('One'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Two',
+                    child: Text('Two'),
+                  ),
+                ],
+                onChanged: (String? newValue) {}),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: TextFormField(
               decoration: const InputDecoration(
-                labelText: 'Capture Method',
-                hintText: 'Choose a trap type',
+                labelText: 'Capture date',
+                hintText: 'Enter date',
               ),
-              items: const [
-                DropdownMenuItem(
-                  value: 'One',
-                  child: Text('One'),
-                ),
-                DropdownMenuItem(
-                  value: 'Two',
-                  child: Text('Two'),
-                ),
-              ],
-              onChanged: (String? newValue) {}),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Capture date',
-              hintText: 'Enter date',
+              controller: specimenCtr.captureDateCtr,
+              onTap: () async {
+                showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime.now())
+                    .then((date) {
+                  if (date != null) {
+                    specimenCtr.captureDateCtr.text =
+                        DateFormat.yMMMd().format(date);
+                  }
+                });
+              },
             ),
-            controller: specimenCtr.captureDateCtr,
-            onTap: () async {
-              showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime.now())
-                  .then((date) {
-                if (date != null) {
-                  specimenCtr.captureDateCtr.text =
-                      DateFormat.yMMMd().format(date);
-                }
-              });
-            },
           ),
         ],
       ),
