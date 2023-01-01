@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/types.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 
@@ -19,7 +20,6 @@ class MammalMeasurementForms extends ConsumerStatefulWidget {
 class MammalMeasurementFormsState
     extends ConsumerState<MammalMeasurementForms> {
   SpecimenSex _specimenSex = SpecimenSex.unknown;
-  bool _isScrotal = false;
 
   @override
   Widget build(BuildContext context) {
@@ -29,68 +29,57 @@ class MammalMeasurementFormsState
         children: [
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
-            children: [
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Total length (mm)',
-                  hintText: 'Enter TTL',
-                ),
-                keyboardType: TextInputType.number,
+            children: const [
+              NumberOnlyField(
+                labelText: 'Total length (mm)',
+                hintText: 'Enter TTL',
+                isLastField: false,
               ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Tail length (mm)',
-                  hintText: 'Enter TL',
-                ),
-                keyboardType: TextInputType.number,
+              NumberOnlyField(
+                labelText: 'Tail length (mm)',
+                hintText: 'Enter TL',
+                isLastField: false,
+              ),
+            ],
+          ),
+          AdaptiveLayout(
+            useHorizontalLayout: widget.useHorizontalLayout,
+            children: const [
+              NumberOnlyField(
+                labelText: 'Hind foot length (mm)',
+                hintText: 'Enter HF length',
+                isLastField: false,
+              ),
+              NumberOnlyField(
+                labelText: 'Ear length (mm)',
+                hintText: 'Enter ER length',
+                isLastField: false,
               ),
             ],
           ),
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Hind foot length (mm)',
-                  hintText: 'Enter HF length',
-                ),
-                keyboardType: TextInputType.number,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Ear length (mm)',
-                  hintText: 'Enter ER length',
-                ),
-                keyboardType: TextInputType.number,
-              ),
-            ],
-          ),
-          AdaptiveLayout(
-            useHorizontalLayout: widget.useHorizontalLayout,
-            children: [
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Weight (grams)',
-                  hintText: 'Enter specimen weight',
-                ),
-                keyboardType: TextInputType.number,
+              const NumberOnlyField(
+                labelText: 'Weight (grams)',
+                hintText: 'Enter specimen weight',
+                isLastField: false,
               ),
               Visibility(
-                  visible: widget.isBats,
-                  child: TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'Forearm Length (mm)',
-                      hintText: 'Enter FL length',
-                    ),
-                    keyboardType: TextInputType.number,
-                  )),
+                visible: widget.isBats,
+                child: const NumberOnlyField(
+                  labelText: 'Forearm Length (mm)',
+                  hintText: 'Enter FL length',
+                  isLastField: true,
+                ),
+              ),
             ],
           ),
           Padding(
             padding: const EdgeInsets.all(5),
             child: DropdownButtonFormField(
                 decoration: const InputDecoration(
-                  labelText: 'Measurement accuracy',
+                  labelText: 'Accuracy',
                   hintText: 'Select measurement accuracy',
                 ),
                 items: const [
@@ -141,7 +130,7 @@ class MammalMeasurementFormsState
                   }),
               DropdownButtonFormField(
                   decoration: const InputDecoration(
-                    labelText: 'Life stage',
+                    labelText: 'Age',
                     hintText: 'Select specimen age',
                   ),
                   items: const [
@@ -165,53 +154,335 @@ class MammalMeasurementFormsState
                   onChanged: (String? newValue) {}),
             ],
           ),
-          Visibility(
-            visible: _specimenSex == SpecimenSex.male,
-            child: AdaptiveLayout(
-              useHorizontalLayout: widget.useHorizontalLayout,
-              children: [
-                DropdownButtonFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'Testes Position',
-                      hintText: 'Select specimen age',
-                    ),
-                    items: const [
-                      DropdownMenuItem(
-                        value: 'Scrotal',
-                        child: Text('Scrotal'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'Abdominal',
-                        child: Text('Abdominal'),
-                      ),
-                    ],
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _isScrotal = newValue == 'Scrotal';
-                      });
-                    }),
-                TextFormField(
-                  enabled: _isScrotal,
-                  decoration: const InputDecoration(
-                    labelText: 'Testes size (L x W mm)',
-                    hintText: 'Enter length and width of the right testes ',
-                  ),
-                  keyboardType: TextInputType.number,
-                ),
-              ],
-            ),
+          MaleGonadForm(
+            specimenSex: _specimenSex,
+            useHorizontalLayout: widget.useHorizontalLayout,
           ),
-          TextFormField(
-            enabled: false,
-            maxLines: 5,
-            decoration: const InputDecoration(
-              labelText: 'Measurements notes',
-              hintText: 'Write any notes about the measurements (optional)',
+          FemaleGonadForm(
+            specimenSex: _specimenSex,
+            useHorizontalLayout: widget.useHorizontalLayout,
+          ),
+          const Padding(
+            padding: EdgeInsets.all(5),
+            child: CustomTextField(
+              maxLines: 5,
+              labelText: 'Remarks',
+              hintText: 'Write notes about the measurements (optional)',
+              isLastField: true,
             ),
-            keyboardType: TextInputType.number,
           ),
         ],
       ),
     );
+  }
+}
+
+class MaleGonadForm extends StatefulWidget {
+  const MaleGonadForm({
+    super.key,
+    required this.specimenSex,
+    required this.useHorizontalLayout,
+  });
+
+  final SpecimenSex specimenSex;
+  final bool useHorizontalLayout;
+
+  @override
+  State<MaleGonadForm> createState() => _MaleGonadFormState();
+}
+
+class _MaleGonadFormState extends State<MaleGonadForm> {
+  bool _isScrotal = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Visibility(
+      visible: widget.specimenSex == SpecimenSex.male,
+      child: Column(
+        children: [
+          const Divider(),
+          Text('Testes', style: Theme.of(context).textTheme.titleMedium),
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: DropdownButtonFormField(
+              decoration: const InputDecoration(
+                labelText: 'Position',
+                hintText: 'Select testis position',
+              ),
+              items: const [
+                DropdownMenuItem(
+                  value: 'Scrotal',
+                  child: Text('Scrotal'),
+                ),
+                DropdownMenuItem(
+                  value: 'Abdominal',
+                  child: Text('Abdominal'),
+                ),
+              ],
+              onChanged: (String? newValue) {
+                setState(() {
+                  _isScrotal = newValue == 'Scrotal';
+                });
+              },
+            ),
+          ),
+          ScrotalMaleForm(
+            visible: _isScrotal,
+            useHorizontalLayout: widget.useHorizontalLayout,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: DropdownButtonFormField(
+              decoration: const InputDecoration(
+                labelText: 'Epididymis',
+                hintText: 'Select epididymis appearance',
+              ),
+              items: const [
+                DropdownMenuItem(
+                  value: 'Tubular',
+                  child: Text('Tubular'),
+                ),
+                DropdownMenuItem(
+                  value: 'Partial',
+                  child: Text('Partial'),
+                ),
+                DropdownMenuItem(
+                  value: 'Not tubular',
+                  child: Text('Not tubular'),
+                ),
+              ],
+              onChanged: (value) {},
+            ),
+          ),
+          const Divider(),
+        ],
+      ),
+    );
+  }
+}
+
+class ScrotalMaleForm extends StatelessWidget {
+  const ScrotalMaleForm(
+      {super.key, required this.visible, required this.useHorizontalLayout});
+
+  final bool visible;
+  final bool useHorizontalLayout;
+
+  @override
+  Widget build(BuildContext context) {
+    return Visibility(
+        visible: visible,
+        child: AdaptiveLayout(
+          useHorizontalLayout: useHorizontalLayout,
+          children: const [
+            NumberOnlyField(
+              labelText: 'Length (mm)',
+              hintText: 'Enter the length of the right testes ',
+              isLastField: false,
+            ),
+            NumberOnlyField(
+              labelText: 'Width (mm)',
+              hintText: 'Enter the width of the right testes ',
+              isLastField: true,
+            ),
+          ],
+        ));
+  }
+}
+
+class FemaleGonadForm extends StatefulWidget {
+  const FemaleGonadForm({
+    super.key,
+    required this.specimenSex,
+    required this.useHorizontalLayout,
+  });
+
+  final SpecimenSex specimenSex;
+  final bool useHorizontalLayout;
+  @override
+  State<FemaleGonadForm> createState() => _FemaleGonadFormState();
+}
+
+class _FemaleGonadFormState extends State<FemaleGonadForm> {
+  @override
+  Widget build(BuildContext context) {
+    return Visibility(
+      visible: widget.specimenSex == SpecimenSex.female,
+      child: Column(
+        children: [
+          const Divider(),
+          AdaptiveLayout(
+            useHorizontalLayout: widget.useHorizontalLayout,
+            children: [
+              DropdownButtonFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Vagina',
+                  hintText: 'Select vagina condition',
+                ),
+                items: const [
+                  DropdownMenuItem(
+                    value: 'Imperforate',
+                    child: Text('Imperforate'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Perforate',
+                    child: Text('Perforate'),
+                  ),
+                ],
+                onChanged: (String? newValue) {},
+              ),
+              DropdownButtonFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Pubic symphysis',
+                  hintText: 'Select pubic symphysis condition',
+                ),
+                items: const [
+                  DropdownMenuItem(
+                    value: 'Closed',
+                    child: Text('Closed'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Small open',
+                    child: Text('Small open'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Open',
+                    child: Text('Open'),
+                  ),
+                ],
+                onChanged: (String? newValue) {},
+              ),
+              DropdownButtonFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Reproductive stage',
+                  hintText: 'Select reproductive stage',
+                ),
+                items: const [
+                  DropdownMenuItem(
+                    value: 'Nulliparous',
+                    child: Text('Nulliparous'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Primiparous',
+                    child: Text('Primiparous'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Multiparous',
+                    child: Text('Multiparous'),
+                  ),
+                ],
+                onChanged: (String? newValue) {},
+              ),
+              Text('Mammae Counts',
+                  style: Theme.of(context).textTheme.titleMedium),
+              MammaeForm(useHorizontalLayout: widget.useHorizontalLayout),
+              DropdownButtonFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Mammae condition',
+                  hintText: 'Select mammae condition',
+                ),
+                items: const [
+                  DropdownMenuItem(
+                    value: 'Small',
+                    child: Text('Small'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Large',
+                    child: Text('Large'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Lactating',
+                    child: Text('Lactating'),
+                  ),
+                ],
+                onChanged: (String? newValue) {},
+              ),
+              Text(
+                'Embryo',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              EmbryoForm(
+                useHorizontalLayout: widget.useHorizontalLayout,
+              ),
+              const NumberOnlyField(
+                labelText: 'CR length (mm)',
+                hintText: 'Enter crown-rump length',
+                isLastField: true,
+              ),
+              Text('Placental Scars',
+                  style: Theme.of(context).textTheme.titleMedium),
+              PlacentalScarForm(
+                useHorizontalLayout: widget.useHorizontalLayout,
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class MammaeForm extends StatelessWidget {
+  const MammaeForm({super.key, required this.useHorizontalLayout});
+
+  final bool useHorizontalLayout;
+
+  @override
+  Widget build(BuildContext context) {
+    return AdaptiveLayout(
+        useHorizontalLayout: useHorizontalLayout,
+        children: const [
+          NumberOnlyField(
+            labelText: 'Axillary',
+            hintText: 'Enter the axillary pair number',
+            isLastField: false,
+          ),
+          NumberOnlyField(
+            labelText: 'Abdominal',
+            hintText: 'Enter the abdominal pair number',
+            isLastField: false,
+          ),
+          NumberOnlyField(
+            labelText: 'Inguinal',
+            hintText: 'Enter the inguinal pair number',
+            isLastField: false,
+          ),
+        ]);
+  }
+}
+
+class EmbryoForm extends StatelessWidget {
+  const EmbryoForm({super.key, required this.useHorizontalLayout});
+
+  final bool useHorizontalLayout;
+
+  @override
+  Widget build(BuildContext context) {
+    return AdaptiveLayout(
+        useHorizontalLayout: useHorizontalLayout,
+        children: const [
+          NumberOnlyField(
+              labelText: 'Left', hintText: 'Left', isLastField: false),
+          NumberOnlyField(
+              labelText: 'Right', hintText: 'Right', isLastField: true),
+        ]);
+  }
+}
+
+class PlacentalScarForm extends StatelessWidget {
+  const PlacentalScarForm({super.key, required this.useHorizontalLayout});
+
+  final bool useHorizontalLayout;
+
+  @override
+  Widget build(BuildContext context) {
+    return AdaptiveLayout(
+        useHorizontalLayout: useHorizontalLayout,
+        children: const [
+          NumberOnlyField(
+              labelText: 'Left', hintText: 'Left', isLastField: false),
+          NumberOnlyField(
+              labelText: 'Right', hintText: 'Right', isLastField: true),
+        ]);
   }
 }
