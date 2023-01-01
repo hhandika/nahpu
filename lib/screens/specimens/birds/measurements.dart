@@ -440,7 +440,7 @@ class OvumSizeForm extends StatelessWidget {
     return Column(
       children: [
         Text(
-          'Third Largest Ovum Size (mm)',
+          'The Size of Three Largest Ova (mm)',
           style: Theme.of(context).textTheme.titleMedium,
         ),
         AdaptiveLayout(
