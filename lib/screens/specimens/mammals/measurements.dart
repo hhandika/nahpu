@@ -352,70 +352,69 @@ class _FemaleGonadFormState extends State<FemaleGonadForm> {
                 ],
                 onChanged: (String? newValue) {},
               ),
-              DropdownButtonFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Reproductive stage',
-                  hintText: 'Select reproductive stage',
-                ),
-                items: const [
-                  DropdownMenuItem(
-                    value: 'Nulliparous',
-                    child: Text('Nulliparous'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Primiparous',
-                    child: Text('Primiparous'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Multiparous',
-                    child: Text('Multiparous'),
-                  ),
-                ],
-                onChanged: (String? newValue) {},
+            ],
+          ),
+          DropdownButtonFormField(
+            decoration: const InputDecoration(
+              labelText: 'Reproductive stage',
+              hintText: 'Select reproductive stage',
+            ),
+            items: const [
+              DropdownMenuItem(
+                value: 'Nulliparous',
+                child: Text('Nulliparous'),
               ),
-              Text('Mammae Counts',
-                  style: Theme.of(context).textTheme.titleMedium),
-              MammaeForm(useHorizontalLayout: widget.useHorizontalLayout),
-              DropdownButtonFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Mammae condition',
-                  hintText: 'Select mammae condition',
-                ),
-                items: const [
-                  DropdownMenuItem(
-                    value: 'Small',
-                    child: Text('Small'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Large',
-                    child: Text('Large'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Lactating',
-                    child: Text('Lactating'),
-                  ),
-                ],
-                onChanged: (String? newValue) {},
+              DropdownMenuItem(
+                value: 'Primiparous',
+                child: Text('Primiparous'),
               ),
-              Text(
-                'Embryo',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              EmbryoForm(
-                useHorizontalLayout: widget.useHorizontalLayout,
-              ),
-              const NumberOnlyField(
-                labelText: 'CR length (mm)',
-                hintText: 'Enter crown-rump length',
-                isLastField: true,
-              ),
-              Text('Placental Scars',
-                  style: Theme.of(context).textTheme.titleMedium),
-              PlacentalScarForm(
-                useHorizontalLayout: widget.useHorizontalLayout,
+              DropdownMenuItem(
+                value: 'Multiparous',
+                child: Text('Multiparous'),
               ),
             ],
-          )
+            onChanged: (String? newValue) {},
+          ),
+          Text('Mammae Counts', style: Theme.of(context).textTheme.titleMedium),
+          MammaeForm(useHorizontalLayout: widget.useHorizontalLayout),
+          DropdownButtonFormField(
+            decoration: const InputDecoration(
+              labelText: 'Mammae condition',
+              hintText: 'Select mammae condition',
+            ),
+            items: const [
+              DropdownMenuItem(
+                value: 'Small',
+                child: Text('Small'),
+              ),
+              DropdownMenuItem(
+                value: 'Large',
+                child: Text('Large'),
+              ),
+              DropdownMenuItem(
+                value: 'Lactating',
+                child: Text('Lactating'),
+              ),
+            ],
+            onChanged: (String? newValue) {},
+          ),
+          Text(
+            'Embryo',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          EmbryoForm(
+            useHorizontalLayout: widget.useHorizontalLayout,
+          ),
+          const NumberOnlyField(
+            labelText: 'CR length (mm)',
+            hintText: 'Enter crown-rump length',
+            isLastField: true,
+          ),
+          Text('Placental Scars',
+              style: Theme.of(context).textTheme.titleMedium),
+          PlacentalScarForm(
+            useHorizontalLayout: widget.useHorizontalLayout,
+          ),
         ],
       ),
     );
