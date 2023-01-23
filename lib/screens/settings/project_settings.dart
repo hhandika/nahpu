@@ -1,42 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:nahpu/models/catalogs.dart';
-import 'package:nahpu/providers/catalog.dart';
+import 'package:nahpu/models/types.dart';
+import 'package:nahpu/providers/settings.dart';
+import 'package:nahpu/screens/settings/shared.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-class ProjectSettings extends StatefulWidget {
+class ProjectSettings extends ConsumerStatefulWidget {
   const ProjectSettings({Key? key}) : super(key: key);
 
   @override
-  State<ProjectSettings> createState() => _ProjectSettingsState();
+  ProjectSettingState createState() => ProjectSettingState();
 }
 
-class _ProjectSettingsState extends State<ProjectSettings> {
+class ProjectSettingState extends ConsumerState<ProjectSettings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Project Settings'),
-          backgroundColor: Theme.of(context).colorScheme.primary,
+      appBar: AppBar(
+        title: const Text('Project Settings'),
+      ),
+      body: SafeArea(
+        child: SettingsList(
+          sections: [
+            GeneralSettings(ref: ref).getSetting(),
+            AppearanceSettings(ref: ref).getSetting(),
+          ],
         ),
-        body: const SafeArea(
-          child: Center(
-            child: CatalogSettings(),
-          ),
-        ));
+      ),
+    );
   }
 }
 
-class CatalogSettings extends ConsumerWidget {
-  const CatalogSettings({Key? key}) : super(key: key);
+class GeneralSettings {
+  GeneralSettings({required this.ref});
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final catalogFmt = ref.watch(catalogFmtProvider);
-    final selectedFmt = _parseCatalogFmt(catalogFmt);
-    return SettingsList(sections: [
-      SettingsSection(title: const Text('Catalog'), tiles: [
+  final WidgetRef ref;
+
+  SettingsSection getSetting() {
+    final catalogFmt = ref.watch(catalogFmtNotifier);
+    final selectedFmt = matchCatFmtToTaxonGroup(catalogFmt);
+    return SettingsSection(
+      title: const Text('General Settings'),
+      tiles: [
         SettingsTile.navigation(
           leading: const Icon(MdiIcons.fileCabinet),
           title: const Text('Catalog Format'),
@@ -50,19 +56,8 @@ class CatalogSettings extends ConsumerWidget {
             ),
           ),
         ),
-      ])
-    ]);
-  }
-
-  String _parseCatalogFmt(CatalogFmt fmt) {
-    switch (fmt) {
-      case CatalogFmt.generalMammals:
-        return 'General Mammals';
-      case CatalogFmt.bats:
-        return 'Bats';
-      case CatalogFmt.birds:
-        return 'Birds';
-    }
+      ],
+    );
   }
 }
 
@@ -75,14 +70,13 @@ class CatalogFmtSelection extends ConsumerStatefulWidget {
 }
 
 class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
-  final List<String> catalogFmtOpts = ['General Mammals', 'Birds'];
+  final List<String> catalogFmtOpts = ['General Mammals', 'Birds', 'Bats'];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Catalog Format'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: SettingsList(sections: [
         SettingsSection(title: const Text('Catalog Format'), tiles: [
@@ -94,7 +88,7 @@ class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
                 : null,
             onPressed: (context) {
               ref
-                  .read(catalogFmtProvider.notifier)
+                  .read(catalogFmtNotifier.notifier)
                   .setCatalogFmt(CatalogFmt.generalMammals);
               Navigator.pop(context);
             },
@@ -106,8 +100,20 @@ class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
                 widget.selectedFmt == 'Birds' ? const Icon(Icons.check) : null,
             onPressed: (context) {
               ref
-                  .read(catalogFmtProvider.notifier)
+                  .read(catalogFmtNotifier.notifier)
                   .setCatalogFmt(CatalogFmt.birds);
+              Navigator.pop(context);
+            },
+          ),
+          SettingsTile(
+            title: const Text('Bats'),
+            leading: const Icon(MdiIcons.bat),
+            trailing:
+                widget.selectedFmt == 'Bats' ? const Icon(Icons.check) : null,
+            onPressed: (context) {
+              ref
+                  .read(catalogFmtNotifier.notifier)
+                  .setCatalogFmt(CatalogFmt.bats);
               Navigator.pop(context);
             },
           ),

@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/configs/colors.dart';
-
-import 'package:nahpu/providers/project.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:nahpu/screens/narrative/narrative.dart';
-import 'package:nahpu/screens/collecting/coll_events.dart';
-import 'package:nahpu/providers/page_viewer.dart';
-
-import 'package:nahpu/screens/sites/sites.dart';
-import 'package:nahpu/screens/specimens/specimens.dart';
-import 'package:nahpu/screens/projects/project_home.dart';
+import 'package:nahpu/styles/colors.dart';
+import 'package:nahpu/models/types.dart';
+import 'package:nahpu/providers/settings.dart';
+import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/screens/narrative/narrative_view.dart';
+import 'package:nahpu/screens/collecting/coll_event_view.dart';
+import 'package:nahpu/providers/catalogs.dart';
+import 'package:nahpu/screens/sites/site_view.dart';
+import 'package:nahpu/screens/specimens/specimen_view.dart';
+import 'package:nahpu/screens/projects/dashboard.dart';
 
 class ProjectBottomNavbar extends ConsumerStatefulWidget {
   const ProjectBottomNavbar({Key? key}) : super(key: key);
@@ -23,7 +21,7 @@ class ProjectBottomNavbar extends ConsumerStatefulWidget {
 class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
   @override
   Widget build(BuildContext context) {
-    int selectedIndex = ref.watch(projectNavbarIndexProvider.state).state;
+    int selectedIndex = ref.watch(projectNavbarIndexProvider);
     return NavigationBar(
       labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
       backgroundColor: NahpuColor.navColor(context),
@@ -33,9 +31,9 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
       destinations: const [
         NavigationDestination(
           icon: Icon(
-            Icons.home_rounded,
+            Icons.dashboard_rounded,
           ),
-          label: 'Home',
+          label: 'Dahsboard',
         ),
         NavigationDestination(
           icon: Icon(
@@ -51,9 +49,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
           tooltip: 'Collection Events',
         ),
         NavigationDestination(
-          icon: Icon(
-            MdiIcons.paw,
-          ),
+          icon: SpecimenIcons(),
           label: 'Specimens',
         ),
         NavigationDestination(
@@ -64,8 +60,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
         ),
       ],
       onDestinationSelected: (int index) {
-        ref.read(projectNavbarIndexProvider.state).state = index;
-        ref.refresh(pageNavigationProvider);
+        ref.read(projectNavbarIndexProvider.notifier).state = index;
         _onItemTapped(index);
       },
     );
@@ -77,39 +72,49 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const ProjectHome(),
+            builder: (context) => const Dashboard(),
           ),
         );
 
         break;
       case 1:
-        ref.refresh(siteEntryProvider);
+        ref.invalidate(siteEntryProvider);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const Sites()),
         );
         break;
       case 2:
-        ref.refresh(collEventEntryProvider);
+        ref.invalidate(collEventEntryProvider);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const CollEvents()),
         );
         break;
       case 3:
-        ref.refresh(specimenEntryProvider);
+        ref.invalidate(specimenEntryProvider);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const Specimens()),
         );
         break;
       case 4:
-        ref.refresh(narrativeEntryProvider);
+        ref.invalidate(narrativeEntryProvider);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const Narrative()),
         );
         break;
     }
+  }
+}
+
+class SpecimenIcons extends ConsumerWidget {
+  const SpecimenIcons({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
+    return matchCatFmtToIcon(catalogFmt);
   }
 }

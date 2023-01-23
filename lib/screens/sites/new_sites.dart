@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:nahpu/models/form.dart';
-import 'package:nahpu/screens/sites/menu_bar.dart';
+import 'package:nahpu/screens/sites/components/menu_bar.dart';
 import 'package:nahpu/screens/sites/site_form.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/providers/page_viewer.dart';
-import 'package:nahpu/screens/sites/sites.dart';
+import 'package:nahpu/screens/sites/site_view.dart';
+
+import '../../providers/catalogs.dart';
 
 enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
 
@@ -30,11 +31,9 @@ class NewSitesState extends ConsumerState<NewSites> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("New Sites"),
-        backgroundColor: Theme.of(context).colorScheme.primary,
         leading: BackButton(
           onPressed: () {
-            ref.refresh(pageNavigationProvider);
-            ref.refresh(siteEntryProvider);
+            ref.invalidate(siteEntryProvider);
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const Sites()));
           },
@@ -72,6 +71,7 @@ class NewSitesState extends ConsumerState<NewSites> {
                   ])
         ],
       ),
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: SiteForm(
           id: widget.id,

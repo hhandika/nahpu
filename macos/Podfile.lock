@@ -4,6 +4,8 @@ PODS:
   - FlutterMacOS (1.0.0)
   - path_provider_macos (0.0.1):
     - FlutterMacOS
+  - shared_preferences_macos (0.0.1):
+    - FlutterMacOS
   - sqlite3 (3.39.2):
     - sqlite3/common (= 3.39.2)
   - sqlite3/common (3.39.2)
@@ -29,6 +31,7 @@ DEPENDENCIES:
   - dynamic_color (from `Flutter/ephemeral/.symlinks/plugins/dynamic_color/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
   - path_provider_macos (from `Flutter/ephemeral/.symlinks/plugins/path_provider_macos/macos`)
+  - shared_preferences_macos (from `Flutter/ephemeral/.symlinks/plugins/shared_preferences_macos/macos`)
   - sqlite3_flutter_libs (from `Flutter/ephemeral/.symlinks/plugins/sqlite3_flutter_libs/macos`)
   - url_launcher_macos (from `Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos`)
 
@@ -43,6 +46,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral
   path_provider_macos:
     :path: Flutter/ephemeral/.symlinks/plugins/path_provider_macos/macos
+  shared_preferences_macos:
+    :path: Flutter/ephemeral/.symlinks/plugins/shared_preferences_macos/macos
   sqlite3_flutter_libs:
     :path: Flutter/ephemeral/.symlinks/plugins/sqlite3_flutter_libs/macos
   url_launcher_macos:
@@ -50,8 +55,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   dynamic_color: 394d6a888650f8534e029b27d2f8bc5c64e44008
-  FlutterMacOS: 57701585bf7de1b3fc2bb61f6378d73bbdea8424
+  FlutterMacOS: ae6af50a8ea7d6103d888583d46bd8328a7e9811
   path_provider_macos: 3c0c3b4b0d4a76d2bf989a913c2de869c5641a19
+  shared_preferences_macos: a64dc611287ed6cbe28fd1297898db1336975727
   sqlite3: d115522c740c457b805c018b0296b5ba003da280
   sqlite3_flutter_libs: a6cde3e3d07ea676a888099c9cd7a6bb439b7822
   url_launcher_macos: 597e05b8e514239626bcf4a850fcf9ef5c856ec3

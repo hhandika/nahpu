@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:nahpu/database/database.dart';
+import 'package:nahpu/services/database.dart';
 
 class ProjectInfo extends StatelessWidget {
   const ProjectInfo({Key? key, required this.projectData}) : super(key: key);
@@ -9,28 +9,82 @@ class ProjectInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListBody(children: <Widget>[
-      Text('Project Name: ${projectData?.projectName ?? 'Empty!'}'),
-      RichText(
+    return Column(
+      children: [
+        RichText(
           text: TextSpan(
-              text: 'Project UUID: ',
-              style: DefaultTextStyle.of(context).style,
-              children: [
-            TextSpan(
-                text: '${projectData?.projectUuid}',
-                style: const TextStyle(fontSize: 12))
-          ])),
-      Text(
-          'Project Description: ${projectData?.projectDescription ?? 'Empty!'}'),
-      Text(
-          'Principal Investigator: ${projectData?.principalInvestigator ?? 'No PI'}'),
-      Text('Collector Name: ${projectData?.collector ?? 'No Collector'}'),
-      Text(
-          'Collector Email: ${projectData?.collectorEmail ?? 'No Collector Email'}'),
-      Text(
-          'Start collector number at: ${projectData?.catNumStart ?? 'No CatNumStart'}'),
-      Text(
-          'End collector number at: ${projectData?.catNumEnd ?? 'No CatNumEnd'}'),
-    ]);
+            text: 'Project Name: ',
+            style: Theme.of(context).textTheme.titleSmall,
+            children: [
+              TextSpan(
+                text: projectData?.name ?? 'Empty!',
+                style: Theme.of(context).textTheme.bodyLarge,
+              )
+            ],
+          ),
+        ),
+        RichText(
+          overflow: TextOverflow.ellipsis,
+          text: TextSpan(
+            text: 'UUID: ',
+            style: Theme.of(context).textTheme.titleSmall,
+            children: [
+              TextSpan(
+                text: '${projectData?.uuid}',
+                style: Theme.of(context).textTheme.bodyMedium,
+              )
+            ],
+          ),
+        ),
+        RichText(
+          text: TextSpan(
+            text: 'Project Description: ',
+            style: Theme.of(context).textTheme.titleSmall,
+            children: [
+              TextSpan(
+                text: projectData?.description ?? 'Empty!',
+                style: Theme.of(context).textTheme.bodyLarge,
+              )
+            ],
+          ),
+        ),
+        RichText(
+          text: TextSpan(
+            text: 'Principal Investigator: ',
+            style: Theme.of(context).textTheme.titleSmall,
+            children: [
+              TextSpan(
+                text: projectData?.principalInvestigator ?? 'No PI name found!',
+                style: Theme.of(context).textTheme.bodyLarge,
+              )
+            ],
+          ),
+        ),
+        RichText(
+          text: TextSpan(
+            text: 'Created: ',
+            style: Theme.of(context).textTheme.titleSmall,
+            children: [
+              TextSpan(
+                text: projectData?.created ?? 'No DateCreated',
+                style: Theme.of(context).textTheme.bodyLarge,
+              )
+            ],
+          ),
+        ),
+        RichText(
+          text: TextSpan(
+            text: 'Modified: ',
+            style: Theme.of(context).textTheme.titleSmall,
+            children: [
+              TextSpan(
+                text: projectData?.lastModified ?? 'No DateModified',
+                style: Theme.of(context).textTheme.bodyLarge,
+              )
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ProjectSettings {
   String defaultCatalog = 'general-mammals';
@@ -19,4 +20,9 @@ get systemIcon {
   } else {
     return Icons.device_unknown_rounded;
   }
+}
+
+String getSystemDateTime() {
+  DateTime currentDate = DateTime.now();
+  return DateFormat('yyyy-MM-dd HH:mm:ss').format(currentDate);
 }

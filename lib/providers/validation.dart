@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/project.dart';
-import 'package:nahpu/providers/project.dart';
+import 'package:nahpu/providers/projects.dart';
 
-final projectFormNotifier =
-    StateNotifierProvider<ProjectFormValidationNotifier, ProjectFormState>(
-        (ref) => ProjectFormValidationNotifier());
+final projectFormNotifier = StateNotifierProvider.autoDispose<
+    ProjectFormValidationNotifier,
+    ProjectFormState>((ref) => ProjectFormValidationNotifier());
 
 class ProjectFormValidationNotifier extends StateNotifier<ProjectFormState> {
   ProjectFormValidationNotifier()
@@ -32,7 +32,7 @@ class ProjectFormValidationNotifier extends StateNotifier<ProjectFormState> {
     state = state.copyWith(form: form.copyWith(projectName: projectNameField));
   }
 
-  void checkProjectNameExists(WidgetRef ref, String? name) {
+  void checkProjectNameExists(WidgetRef ref, String name) {
     ref.watch(databaseProvider).getProjectByName(name).then((value) => {
           if (value != null)
             {
@@ -123,8 +123,7 @@ extension StringValidator on String {
   }
 
   bool get isValidEmail {
-    final emailRegex =
-        RegExp(r'^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$');
+    final emailRegex = RegExp(r'(^[a-zA-Z0-9_.]+[@]{1}[a-z0-9]+[\.][a-z]+$)');
     return emailRegex.hasMatch(this);
   }
 }

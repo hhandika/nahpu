@@ -1,52 +1,76 @@
 import 'package:flutter/material.dart';
 
 class SiteFormCtrModel {
-  SiteFormCtrModel(
-      {required this.siteIDCtr,
-      required this.siteTypeCtr,
-      required this.countryCtr,
-      required this.stateProvinceCtr,
-      required this.countyCtr,
-      required this.municipalityCtr,
-      required this.localityCtr});
+  SiteFormCtrModel({
+    required this.siteIDCtr,
+    required this.leadStaffCtr,
+    required this.siteTypeCtr,
+    required this.countryCtr,
+    required this.stateProvinceCtr,
+    required this.countyCtr,
+    required this.municipalityCtr,
+    required this.localityCtr,
+    required this.remarkCtr,
+    required this.habitatTypeCtr,
+    required this.habitatDescriptionCtr,
+    required this.habitatConditionCtr,
+  });
   TextEditingController siteIDCtr;
+  String? leadStaffCtr;
   TextEditingController siteTypeCtr;
   TextEditingController countryCtr;
   TextEditingController stateProvinceCtr;
   TextEditingController countyCtr;
   TextEditingController municipalityCtr;
   TextEditingController localityCtr;
+  TextEditingController remarkCtr;
+  TextEditingController habitatTypeCtr;
+  TextEditingController habitatDescriptionCtr;
+  TextEditingController habitatConditionCtr;
 
   factory SiteFormCtrModel.empty() => SiteFormCtrModel(
-      siteIDCtr: TextEditingController(),
-      siteTypeCtr: TextEditingController(),
-      countryCtr: TextEditingController(),
-      stateProvinceCtr: TextEditingController(),
-      countyCtr: TextEditingController(),
-      municipalityCtr: TextEditingController(),
-      localityCtr: TextEditingController());
+        siteIDCtr: TextEditingController(),
+        leadStaffCtr: null,
+        siteTypeCtr: TextEditingController(),
+        countryCtr: TextEditingController(),
+        stateProvinceCtr: TextEditingController(),
+        countyCtr: TextEditingController(),
+        municipalityCtr: TextEditingController(),
+        localityCtr: TextEditingController(),
+        remarkCtr: TextEditingController(),
+        habitatTypeCtr: TextEditingController(),
+        habitatDescriptionCtr: TextEditingController(),
+        habitatConditionCtr: TextEditingController(),
+      );
 }
 
 class CollEventFormCtrModel {
-  CollEventFormCtrModel(
-      {required this.startDateCtr,
-      required this.endDateCtr,
-      required this.startTimeCtr,
-      required this.endTimeCtr,
-      required this.primaryCollMethodCtr});
+  CollEventFormCtrModel({
+    required this.eventIDCtr,
+    required this.startDateCtr,
+    required this.endDateCtr,
+    required this.startTimeCtr,
+    required this.endTimeCtr,
+    required this.primaryCollMethodCtr,
+    required this.noteCtr,
+  });
 
+  TextEditingController eventIDCtr;
   TextEditingController startDateCtr;
   TextEditingController endDateCtr;
   TextEditingController startTimeCtr;
   TextEditingController endTimeCtr;
-  TextEditingController primaryCollMethodCtr;
+  String? primaryCollMethodCtr;
+  TextEditingController noteCtr;
 
   factory CollEventFormCtrModel.empty() => CollEventFormCtrModel(
+      eventIDCtr: TextEditingController(),
       startDateCtr: TextEditingController(),
       endDateCtr: TextEditingController(),
       startTimeCtr: TextEditingController(),
       endTimeCtr: TextEditingController(),
-      primaryCollMethodCtr: TextEditingController());
+      primaryCollMethodCtr: null,
+      noteCtr: TextEditingController());
 }
 
 class NarrativeFormCtrModel {
@@ -97,4 +121,55 @@ class SpecimenFormCtrModel {
       captureDateCtr: TextEditingController(),
       captureTimeCtr: TextEditingController(),
       trapTypeCtr: TextEditingController());
+}
+
+class BirdMeasurementCtrModel {
+  BirdMeasurementCtrModel({
+    required this.weightCtr,
+    required this.wingspanCtr,
+    required this.irisCtr,
+    required this.billCtr,
+    required this.tarsusCtr,
+    required this.footCtr,
+    required this.wingMoltCtr,
+    required this.tailMoltCtr,
+    required this.bodyMoltCtr,
+    required this.bursaCtr,
+    required this.skullOssCtr,
+    required this.fatCtr,
+    required this.gonadCtr,
+    required this.testisCtr,
+  });
+
+  TextEditingController weightCtr;
+  TextEditingController wingspanCtr;
+  TextEditingController irisCtr;
+  TextEditingController billCtr;
+  TextEditingController tarsusCtr;
+  TextEditingController footCtr;
+  TextEditingController wingMoltCtr;
+  TextEditingController tailMoltCtr;
+  TextEditingController bodyMoltCtr;
+  TextEditingController bursaCtr;
+  TextEditingController skullOssCtr;
+  TextEditingController fatCtr;
+  TextEditingController gonadCtr;
+  TextEditingController testisCtr;
+
+  factory BirdMeasurementCtrModel.empty() => BirdMeasurementCtrModel(
+        weightCtr: TextEditingController(),
+        wingspanCtr: TextEditingController(),
+        irisCtr: TextEditingController(),
+        billCtr: TextEditingController(),
+        tarsusCtr: TextEditingController(),
+        footCtr: TextEditingController(),
+        wingMoltCtr: TextEditingController(),
+        tailMoltCtr: TextEditingController(),
+        bodyMoltCtr: TextEditingController(),
+        bursaCtr: TextEditingController(),
+        skullOssCtr: TextEditingController(),
+        fatCtr: TextEditingController(),
+        gonadCtr: TextEditingController(),
+        testisCtr: TextEditingController(),
+      );
 }
