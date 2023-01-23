@@ -1,3 +1,4 @@
+import 'package:nahpu/models/form.dart';
 import 'package:nahpu/services/database.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:drift/drift.dart' as db;
@@ -7,6 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/indicators.dart';
+
+enum PersonnelMenuAction { edit, delete }
 
 class PersonnelViewer extends ConsumerStatefulWidget {
   const PersonnelViewer({Key? key}) : super(key: key);
@@ -27,109 +30,18 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
               child: const PersonnelList()),
           PrimaryButton(
             onPressed: () {
-              showDialog(
-                  context: context, builder: (context) => _showPersonnelForm());
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NewPersonnel(),
+                ),
+              );
             },
             text: 'Add personnel',
           ),
           const SizedBox(height: 10),
         ],
       ),
-    );
-  }
-
-  Widget _showPersonnelForm() {
-    final nameCtr = TextEditingController();
-    final initialCtr = TextEditingController();
-    final affilitationCtr = TextEditingController();
-
-    return AlertDialog(
-      title: const Text('Add personnel'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextFormField(
-            controller: nameCtr,
-            decoration: const InputDecoration(
-              labelText: 'Name',
-              hintText: 'Enter a name',
-            ),
-          ),
-          TextFormField(
-            controller: initialCtr,
-            decoration: const InputDecoration(
-              labelText: 'Initials',
-              hintText: 'Enter intials',
-            ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Email',
-              hintText: 'Enter email',
-            ),
-          ),
-          TextFormField(
-            controller: affilitationCtr,
-            decoration: const InputDecoration(
-              labelText: 'Affiliation',
-              hintText: 'Enter Affiliation',
-            ),
-          ),
-          DropdownButtonFormField(
-            decoration: const InputDecoration(
-              labelText: 'Role',
-              hintText: 'Enter role',
-            ),
-            items: const [
-              DropdownMenuItem(
-                value: 'Collector',
-                child: Text('Collector'),
-              ),
-              DropdownMenuItem(
-                value: 'Local helper',
-                child: Text('Local helper'),
-              ),
-              DropdownMenuItem(
-                value: 'Preparator only',
-                child: Text('Preparator only'),
-              ),
-              DropdownMenuItem(
-                value: 'Photographer only',
-                child: Text('Photographer only'),
-              ),
-            ],
-            onChanged: (String? newValue) {},
-          ),
-          const TextField(
-            decoration: InputDecoration(
-              labelText: 'First collector Number',
-              hintText: 'Enter number',
-            ),
-          )
-        ],
-      ),
-      actions: [
-        TextButton(
-          child: const Text('Cancel'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        TextButton(
-          child: const Text('Save'),
-          onPressed: () {
-            createPersonnel(
-                ref,
-                PersonnelCompanion(
-                  name: db.Value(nameCtr.text),
-                  initial: db.Value(initialCtr.text),
-                  affiliation: db.Value(affilitationCtr.text),
-                ));
-            Navigator.of(context).pop();
-            //ref.invalidate(personnelListProvider);
-          },
-        ),
-      ],
     );
   }
 }
@@ -147,11 +59,11 @@ class PersonnelList extends ConsumerWidget {
         return ListView.builder(
           itemCount: data.length,
           itemBuilder: (context, index) {
-            return ListTile(
-              leading: const Icon(Icons.person_rounded),
-              title: Text(data[index].name ?? ''),
-              subtitle: Text(data[index].uuid ?? ''),
-              trailing: const PersonnelListPopUpMenu(),
+            return PersonalListTile(
+              personnelData: data[index],
+              trailing: PersonnelMenu(
+                data: data[index],
+              ),
             );
           },
         );
@@ -162,19 +74,321 @@ class PersonnelList extends ConsumerWidget {
   }
 }
 
-class PersonnelListPopUpMenu extends ConsumerWidget {
-  const PersonnelListPopUpMenu({Key? key}) : super(key: key);
+class PersonalListTile extends StatelessWidget {
+  const PersonalListTile({
+    super.key,
+    required this.personnelData,
+    required this.trailing,
+  });
+
+  final PersonnelData personnelData;
+  final Widget trailing;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: const Icon(Icons.person_rounded),
+      title: Text(_getTitle(personnelData.name, personnelData.initial)),
+      subtitle:
+          Text(_getSubtitle(personnelData.affiliation, personnelData.role)),
+      trailing: trailing,
+    );
+  }
+
+  String _getTitle(String? name, String? personInitial) {
+    if (name != null && personInitial != null) {
+      return '$name | $personInitial';
+    } else if (name != null) {
+      return name;
+    } else if (personInitial != null) {
+      return personInitial;
+    } else {
+      return '';
+    }
+  }
+
+  String _getSubtitle(String? affiliation, String? role) {
+    if (affiliation != null && role != null) {
+      return '$affiliation | $role';
+    } else if (affiliation != null) {
+      return affiliation;
+    } else if (role != null) {
+      return role;
+    } else {
+      return '';
+    }
+  }
+}
+
+class PersonnelMenu extends ConsumerStatefulWidget {
+  const PersonnelMenu({super.key, required this.data});
+
+  final PersonnelData data;
+
+  @override
+  PersonnelMenuState createState() => PersonnelMenuState();
+}
+
+class PersonnelMenuState extends ConsumerState<PersonnelMenu> {
+  @override
+  Widget build(BuildContext context) {
     return PopupMenuButton(
+      onSelected: _onPopUpMenuSelected,
       icon: const Icon(Icons.more_vert_rounded),
       itemBuilder: (context) => [
         const PopupMenuItem(
+          value: PersonnelMenuAction.edit,
           child: Text('Edit'),
         ),
         const PopupMenuItem(
+          value: PersonnelMenuAction.delete,
           child: Text('Delete', style: TextStyle(color: Colors.red)),
+        ),
+      ],
+    );
+  }
+
+  void _onPopUpMenuSelected(PersonnelMenuAction item) {
+    switch (item) {
+      case PersonnelMenuAction.edit:
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => EditPersonnelForm(
+              personnelData: widget.data,
+            ),
+          ),
+        );
+        break;
+      case PersonnelMenuAction.delete:
+        break;
+    }
+  }
+}
+
+class NewPersonnel extends ConsumerStatefulWidget {
+  const NewPersonnel({Key? key}) : super(key: key);
+
+  @override
+  NewPersonnelState createState() => NewPersonnelState();
+}
+
+class NewPersonnelState extends ConsumerState<NewPersonnel> {
+  final PersonnelFormCtrModel ctr = PersonnelFormCtrModel.empty();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Add personnel'),
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              PersonnelForm(ctr: ctr),
+              const SizedBox(
+                height: 20,
+              ),
+              Wrap(
+                spacing: 10,
+                children: [
+                  TextButton(
+                    child: const Text('Cancel'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  TextButton(
+                    child: const Text('Add'),
+                    onPressed: () {
+                      _createPersonnel();
+                      Navigator.of(context).pop();
+                      ref.invalidate(personnelListProvider);
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _createPersonnel() {
+    return createPersonnel(
+        ref,
+        PersonnelCompanion(
+          name: db.Value(ctr.nameCtr.text),
+          initial: db.Value(ctr.initialCtr.text),
+          affiliation: db.Value(ctr.affiliationCtr.text),
+          email: db.Value(ctr.emailCtr.text),
+          role: db.Value(ctr.roleCtr),
+          nextCollectorNumber:
+              db.Value(int.parse(ctr.nextCollectorNumCtr.text)),
+        ));
+  }
+}
+
+class EditPersonnelForm extends ConsumerWidget {
+  const EditPersonnelForm({super.key, required this.personnelData});
+
+  final PersonnelData personnelData;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Edit personnel'),
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              PersonnelForm(ctr: ctr),
+              const SizedBox(
+                height: 20,
+              ),
+              Wrap(
+                spacing: 10,
+                children: [
+                  TextButton(
+                    child: const Text('Cancel'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  TextButton(
+                    child: const Text('Update'),
+                    onPressed: () {
+                      ref.read(databaseProvider).updatePersonnelEntry(
+                            personnelData.uuid!,
+                            PersonnelCompanion(
+                              name: db.Value(ctr.nameCtr.text),
+                              initial: db.Value(ctr.initialCtr.text),
+                              affiliation: db.Value(ctr.affiliationCtr.text),
+                              email: db.Value(ctr.emailCtr.text),
+                              role: db.Value(ctr.roleCtr),
+                              nextCollectorNumber: db.Value(
+                                  int.parse(ctr.nextCollectorNumCtr.text)),
+                            ),
+                          );
+                      ref.invalidate(personnelListProvider);
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  PersonnelFormCtrModel get ctr {
+    return PersonnelFormCtrModel(
+      uuidCtr: TextEditingController(text: personnelData.uuid),
+      nameCtr: TextEditingController(text: personnelData.name),
+      initialCtr: TextEditingController(text: personnelData.initial),
+      affiliationCtr: TextEditingController(text: personnelData.affiliation),
+      emailCtr: TextEditingController(text: personnelData.email),
+      roleCtr: personnelData.role,
+      nextCollectorNumCtr:
+          TextEditingController(text: '${personnelData.nextCollectorNumber}'),
+      photoIdCtr:
+          TextEditingController(text: '${personnelData.personnelPhoto}'),
+      noteCtr: TextEditingController(text: ''),
+    );
+  }
+}
+
+class PersonnelForm extends ConsumerStatefulWidget {
+  const PersonnelForm({super.key, required this.ctr});
+
+  final PersonnelFormCtrModel ctr;
+
+  @override
+  PersonnelFormState createState() => PersonnelFormState();
+}
+
+class PersonnelFormState extends ConsumerState<PersonnelForm> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        TextFormField(
+          controller: widget.ctr.nameCtr,
+          decoration: const InputDecoration(
+            labelText: 'Name',
+            hintText: 'Enter a name',
+          ),
+        ),
+        TextFormField(
+          controller: widget.ctr.initialCtr,
+          decoration: const InputDecoration(
+            labelText: 'Initials',
+            hintText: 'Enter intials',
+          ),
+        ),
+        TextFormField(
+          decoration: const InputDecoration(
+            labelText: 'Email',
+            hintText: 'Enter email',
+          ),
+        ),
+        TextFormField(
+          controller: widget.ctr.affiliationCtr,
+          decoration: const InputDecoration(
+            labelText: 'Affiliation',
+            hintText: 'Enter Affiliation',
+          ),
+        ),
+        DropdownButtonFormField(
+          value: widget.ctr.roleCtr,
+          decoration: const InputDecoration(
+            labelText: 'Role',
+            hintText: 'Enter role',
+          ),
+          items: const [
+            DropdownMenuItem(
+              value: 'Collector',
+              child: Text('Collector'),
+            ),
+            DropdownMenuItem(
+              value: 'Local helper',
+              child: Text('Local helper'),
+            ),
+            DropdownMenuItem(
+              value: 'Preparator only',
+              child: Text('Preparator only'),
+            ),
+            DropdownMenuItem(
+              value: 'Photographer only',
+              child: Text('Photographer only'),
+            ),
+          ],
+          onChanged: (String? newValue) {},
+        ),
+        TextField(
+          controller: widget.ctr.nextCollectorNumCtr,
+          decoration: const InputDecoration(
+            labelText: 'First collector Number',
+            hintText: 'Enter number',
+          ),
+        ),
+        TextField(
+          controller: widget.ctr.noteCtr,
+          decoration: const InputDecoration(
+            labelText: 'Notes',
+            hintText: 'Write notes',
+          ),
+        ),
+        const SizedBox(
+          height: 20,
         ),
       ],
     );

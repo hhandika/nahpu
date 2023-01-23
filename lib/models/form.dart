@@ -173,3 +173,38 @@ class BirdMeasurementCtrModel {
         testisCtr: TextEditingController(),
       );
 }
+
+class PersonnelFormCtrModel {
+  PersonnelFormCtrModel({
+    required this.uuidCtr,
+    required this.nameCtr,
+    required this.initialCtr,
+    required this.emailCtr,
+    required this.affiliationCtr,
+    required this.roleCtr,
+    required this.nextCollectorNumCtr,
+    required this.photoIdCtr,
+    required this.noteCtr,
+  });
+
+  TextEditingController uuidCtr;
+  TextEditingController nameCtr;
+  TextEditingController initialCtr;
+  TextEditingController emailCtr;
+  TextEditingController affiliationCtr;
+  String? roleCtr;
+  TextEditingController nextCollectorNumCtr;
+  TextEditingController photoIdCtr;
+  TextEditingController noteCtr;
+
+  factory PersonnelFormCtrModel.empty() => PersonnelFormCtrModel(
+      uuidCtr: TextEditingController(),
+      nameCtr: TextEditingController(),
+      initialCtr: TextEditingController(),
+      emailCtr: TextEditingController(),
+      affiliationCtr: TextEditingController(),
+      roleCtr: null,
+      nextCollectorNumCtr: TextEditingController(),
+      photoIdCtr: TextEditingController(),
+      noteCtr: TextEditingController());
+}
