@@ -176,7 +176,6 @@ class BirdMeasurementCtrModel {
 
 class PersonnelFormCtrModel {
   PersonnelFormCtrModel({
-    required this.uuidCtr,
     required this.nameCtr,
     required this.initialCtr,
     required this.emailCtr,
@@ -187,7 +186,6 @@ class PersonnelFormCtrModel {
     required this.noteCtr,
   });
 
-  TextEditingController uuidCtr;
   TextEditingController nameCtr;
   TextEditingController initialCtr;
   TextEditingController emailCtr;
@@ -198,7 +196,6 @@ class PersonnelFormCtrModel {
   TextEditingController noteCtr;
 
   factory PersonnelFormCtrModel.empty() => PersonnelFormCtrModel(
-      uuidCtr: TextEditingController(),
       nameCtr: TextEditingController(),
       initialCtr: TextEditingController(),
       emailCtr: TextEditingController(),

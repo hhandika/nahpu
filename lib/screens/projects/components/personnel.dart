@@ -1,4 +1,5 @@
 import 'package:nahpu/models/form.dart';
+import 'package:nahpu/screens/projects/dashboard.dart';
 import 'package:nahpu/services/database.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:drift/drift.dart' as db;
@@ -8,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/indicators.dart';
+import 'package:uuid/uuid.dart';
 
 enum PersonnelMenuAction { edit, delete }
 
@@ -174,6 +176,7 @@ class NewPersonnel extends ConsumerStatefulWidget {
 
 class NewPersonnelState extends ConsumerState<NewPersonnel> {
   final PersonnelFormCtrModel ctr = PersonnelFormCtrModel.empty();
+  final String _uuid = uuid;
 
   @override
   Widget build(BuildContext context) {
@@ -183,51 +186,14 @@ class NewPersonnelState extends ConsumerState<NewPersonnel> {
       ),
       body: Center(
         child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              PersonnelForm(ctr: ctr),
-              const SizedBox(
-                height: 20,
-              ),
-              Wrap(
-                spacing: 10,
-                children: [
-                  TextButton(
-                    child: const Text('Cancel'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  TextButton(
-                    child: const Text('Add'),
-                    onPressed: () {
-                      _createPersonnel();
-                      Navigator.of(context).pop();
-                      ref.invalidate(personnelListProvider);
-                    },
-                  ),
-                ],
-              ),
-            ],
+          child: PersonnelForm(
+            ctr: ctr,
+            personnelUuid: _uuid,
+            isAddNew: true,
           ),
         ),
       ),
     );
-  }
-
-  Future<void> _createPersonnel() {
-    return createPersonnel(
-        ref,
-        PersonnelCompanion(
-          name: db.Value(ctr.nameCtr.text),
-          initial: db.Value(ctr.initialCtr.text),
-          affiliation: db.Value(ctr.affiliationCtr.text),
-          email: db.Value(ctr.emailCtr.text),
-          role: db.Value(ctr.roleCtr),
-          nextCollectorNumber:
-              db.Value(int.parse(ctr.nextCollectorNumCtr.text)),
-        ));
   }
 }
 
@@ -238,6 +204,7 @@ class EditPersonnelForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    PersonnelFormCtrModel ctr = _getController(personnelData);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit personnel'),
@@ -247,39 +214,10 @@ class EditPersonnelForm extends ConsumerWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              PersonnelForm(ctr: ctr),
-              const SizedBox(
-                height: 20,
-              ),
-              Wrap(
-                spacing: 10,
-                children: [
-                  TextButton(
-                    child: const Text('Cancel'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  TextButton(
-                    child: const Text('Update'),
-                    onPressed: () {
-                      ref.read(databaseProvider).updatePersonnelEntry(
-                            personnelData.uuid!,
-                            PersonnelCompanion(
-                              name: db.Value(ctr.nameCtr.text),
-                              initial: db.Value(ctr.initialCtr.text),
-                              affiliation: db.Value(ctr.affiliationCtr.text),
-                              email: db.Value(ctr.emailCtr.text),
-                              role: db.Value(ctr.roleCtr),
-                              nextCollectorNumber: db.Value(
-                                  int.parse(ctr.nextCollectorNumCtr.text)),
-                            ),
-                          );
-                      ref.invalidate(personnelListProvider);
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
+              PersonnelForm(
+                ctr: ctr,
+                personnelUuid: personnelData.uuid!,
+                isAddNew: false,
               ),
             ],
           ),
@@ -288,9 +226,8 @@ class EditPersonnelForm extends ConsumerWidget {
     );
   }
 
-  PersonnelFormCtrModel get ctr {
+  PersonnelFormCtrModel _getController(PersonnelData personnelData) {
     return PersonnelFormCtrModel(
-      uuidCtr: TextEditingController(text: personnelData.uuid),
       nameCtr: TextEditingController(text: personnelData.name),
       initialCtr: TextEditingController(text: personnelData.initial),
       affiliationCtr: TextEditingController(text: personnelData.affiliation),
@@ -306,9 +243,16 @@ class EditPersonnelForm extends ConsumerWidget {
 }
 
 class PersonnelForm extends ConsumerStatefulWidget {
-  const PersonnelForm({super.key, required this.ctr});
+  const PersonnelForm({
+    super.key,
+    required this.ctr,
+    required this.personnelUuid,
+    required this.isAddNew,
+  });
 
   final PersonnelFormCtrModel ctr;
+  final String personnelUuid;
+  final bool isAddNew;
 
   @override
   PersonnelFormState createState() => PersonnelFormState();
@@ -335,6 +279,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
           ),
         ),
         TextFormField(
+          controller: widget.ctr.emailCtr,
           decoration: const InputDecoration(
             labelText: 'Email',
             hintText: 'Enter email',
@@ -371,7 +316,11 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
               child: Text('Photographer only'),
             ),
           ],
-          onChanged: (String? newValue) {},
+          onChanged: (String? newValue) {
+            setState(() {
+              widget.ctr.roleCtr = newValue!;
+            });
+          },
         ),
         TextField(
           controller: widget.ctr.nextCollectorNumCtr,
@@ -390,7 +339,61 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
         const SizedBox(
           height: 20,
         ),
+        Wrap(
+          spacing: 10,
+          children: [
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(widget.isAddNew ? 'Add' : 'Update'),
+              onPressed: () {
+                widget.isAddNew ? _addPersonnel() : _updatePersonnel();
+                ref.invalidate(personnelListProvider);
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const Dashboard(),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ],
+    );
+  }
+
+  Future<void> _updatePersonnel() {
+    return ref.read(databaseProvider).updatePersonnelEntry(
+          widget.personnelUuid,
+          PersonnelCompanion(
+            name: db.Value(widget.ctr.nameCtr.text),
+            initial: db.Value(widget.ctr.initialCtr.text),
+            affiliation: db.Value(widget.ctr.affiliationCtr.text),
+            email: db.Value(widget.ctr.emailCtr.text),
+            role: db.Value(widget.ctr.roleCtr),
+            nextCollectorNumber:
+                db.Value(int.parse(widget.ctr.nextCollectorNumCtr.text)),
+          ),
+        );
+  }
+
+  Future<void> _addPersonnel() {
+    return createPersonnel(
+      ref,
+      PersonnelCompanion(
+        uuid: db.Value(widget.personnelUuid),
+        name: db.Value(widget.ctr.nameCtr.text),
+        initial: db.Value(widget.ctr.initialCtr.text),
+        affiliation: db.Value(widget.ctr.affiliationCtr.text),
+        email: db.Value(widget.ctr.emailCtr.text),
+        role: db.Value(widget.ctr.roleCtr),
+        nextCollectorNumber:
+            db.Value(int.parse(widget.ctr.nextCollectorNumCtr.text)),
+      ),
     );
   }
 }

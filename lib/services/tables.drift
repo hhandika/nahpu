@@ -134,7 +134,7 @@ CREATE TABLE personnelPhoto (
 );
 
 CREATE TABLE personnel (
-    uuid TEXT UNIQUE PRIMARY KEY,
+    uuid TEXT UNIQUE NOT NULL PRIMARY KEY,
     name TEXT,
     initial TEXT,
     email TEXT,

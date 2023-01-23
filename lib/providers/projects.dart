@@ -46,9 +46,7 @@ Future<void> createProject(
 }
 
 Future<void> createPersonnel(WidgetRef ref, PersonnelCompanion form) async {
-  final personnelUuid = uuid;
-  await ref.read(databaseProvider).createPersonnel(PersonnelCompanion(
-      uuid: Value(personnelUuid), name: form.name, initial: form.initial));
+  await ref.read(databaseProvider).createPersonnel(form);
 }
 
 get uuid => const Uuid().v4();
