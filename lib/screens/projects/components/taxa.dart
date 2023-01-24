@@ -149,6 +149,7 @@ class TaxonEntryFormState extends ConsumerState<TaxonEntryForm> {
                     ),
                     PrimaryButton(
                       onPressed: () {
+                        _saveTaxon();
                         Navigator.of(context).pop();
                       },
                       text: 'Save',
