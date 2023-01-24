@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/forms.dart';
+import 'package:nahpu/services/database.dart';
 
 class TaxonRegistryViewer extends ConsumerStatefulWidget {
   const TaxonRegistryViewer({super.key});
@@ -14,22 +16,32 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
   @override
   Widget build(BuildContext context) {
     return FormCard(
-      title: 'Taxon Registry',
+      title: 'Taxon registry',
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
               height: MediaQuery.of(context).size.height * 0.3,
-              child: const TaxonRegistryList()),
+              child: const TaxonRegistryInfo()),
           Wrap(
             spacing: 10,
             children: [
-              SecondaryButton(text: 'Show', onPressed: () {}),
+              SecondaryButton(
+                  text: 'Show',
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const TaxonRegistryList(),
+                      ),
+                    );
+                  }),
               PrimaryButton(
                 onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) => const TaxonRegistryForm());
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const TaxonEntryForm(),
+                    ),
+                  );
                 },
                 text: 'Add taxon',
               ),
@@ -41,80 +53,105 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
   }
 }
 
-class TaxonRegistryForm extends StatelessWidget {
-  const TaxonRegistryForm({super.key});
+class TaxonRegistryInfo extends ConsumerWidget {
+  const TaxonRegistryInfo({super.key});
 
   @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Column(children: []);
+  }
+}
+
+class TaxonEntryForm extends ConsumerStatefulWidget {
+  const TaxonEntryForm({super.key});
+
+  @override
+  TaxonEntryFormState createState() => TaxonEntryFormState();
+}
+
+class TaxonEntryFormState extends ConsumerState<TaxonEntryForm> {
+  @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Add taxon'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Class',
-              hintText: 'Enter a class',
-            ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Order',
-              hintText: 'Enter an order',
-            ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Family',
-              hintText: 'Enter a family',
-            ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Genus',
-              hintText: 'Enter a genus',
-            ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Specific epithet',
-              hintText: 'Enter specific epithet',
-            ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Intraspecific epithet',
-              hintText: 'Enter intraspecific epithet',
-            ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Common name',
-              hintText: 'Enter a common name',
-            ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Notes',
-              hintText: 'Enter notes',
-            ),
-          ),
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Taxon entry'),
+        automaticallyImplyLeading: false,
       ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Cancel'),
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Class',
+                  hintText: 'Enter a class',
+                ),
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Order',
+                  hintText: 'Enter an order',
+                ),
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Family',
+                  hintText: 'Enter a family',
+                ),
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Genus',
+                  hintText: 'Enter a genus',
+                ),
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Specific epithet',
+                  hintText: 'Enter specific epithet',
+                ),
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Intraspecific epithet',
+                  hintText: 'Enter intraspecific epithet',
+                ),
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Common name',
+                  hintText: 'Enter a common name',
+                ),
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Notes',
+                  hintText: 'Enter notes',
+                ),
+              ),
+              const SizedBox(height: 20),
+              Wrap(
+                spacing: 10,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Save'),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Save'),
-        ),
-      ],
+      ),
     );
   }
 }
@@ -129,12 +166,44 @@ class TaxonRegistryList extends ConsumerStatefulWidget {
 class TaxonRegistryListState extends ConsumerState<TaxonRegistryList> {
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Taxon registry'),
+      ),
+      body: ListView.builder(
+        itemCount: 10,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text('Taxon $index'),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const TaxonEntryForm(),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+class TaxonList extends ConsumerWidget {
+  const TaxonList({super.key, required this.taxonList});
+
+  final List<TaxonomyData> taxonList;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     return ListView.builder(
-      itemCount: 10,
+      itemCount: taxonList.length,
       itemBuilder: (context, index) {
         return ListTile(
-          title: Text('Taxon $index'),
-          subtitle: Text('Class $index'),
+          title: Text(taxonList[index].taxonFamily ?? 'Unknown family'),
+          subtitle: Text(
+              '${taxonList[index].genus} ${taxonList[index].specificEpithet}'),
+          onTap: () {},
         );
       },
     );
