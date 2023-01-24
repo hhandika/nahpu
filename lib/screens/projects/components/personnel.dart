@@ -161,7 +161,7 @@ class PersonnelMenuState extends ConsumerState<PersonnelMenu> {
         );
         break;
       case PersonnelMenuAction.delete:
-        ref.read(databaseProvider).deletePersonnel(widget.data.uuid!);
+        ref.read(databaseProvider).deletePersonnel(widget.data.uuid);
         ref.invalidate(personnelListProvider);
         break;
     }
@@ -219,7 +219,7 @@ class EditPersonnelForm extends ConsumerWidget {
             children: [
               PersonnelForm(
                 ctr: ctr,
-                personnelUuid: personnelData.uuid!,
+                personnelUuid: personnelData.uuid,
                 isAddNew: false,
               ),
             ],

@@ -3,6 +3,130 @@
 part of 'database.dart';
 
 // ignore_for_file: type=lint
+class Project extends Table with TableInfo<Project, ProjectData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  Project(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
+      'uuid', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL PRIMARY KEY');
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL UNIQUE');
+  static const VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+      'description', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _principalInvestigatorMeta =
+      const VerificationMeta('principalInvestigator');
+  late final GeneratedColumn<String> principalInvestigator =
+      GeneratedColumn<String>('principalInvestigator', aliasedName, true,
+          type: DriftSqlType.string,
+          requiredDuringInsert: false,
+          $customConstraints: '');
+  static const VerificationMeta _createdMeta =
+      const VerificationMeta('created');
+  late final GeneratedColumn<String> created = GeneratedColumn<String>(
+      'created', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _lastModifiedMeta =
+      const VerificationMeta('lastModified');
+  late final GeneratedColumn<String> lastModified = GeneratedColumn<String>(
+      'lastModified', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  @override
+  List<GeneratedColumn> get $columns =>
+      [uuid, name, description, principalInvestigator, created, lastModified];
+  @override
+  String get aliasedName => _alias ?? 'project';
+  @override
+  String get actualTableName => 'project';
+  @override
+  VerificationContext validateIntegrity(Insertable<ProjectData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('uuid')) {
+      context.handle(
+          _uuidMeta, uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta));
+    } else if (isInserting) {
+      context.missing(_uuidMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description']!, _descriptionMeta));
+    }
+    if (data.containsKey('principalInvestigator')) {
+      context.handle(
+          _principalInvestigatorMeta,
+          principalInvestigator.isAcceptableOrUnknown(
+              data['principalInvestigator']!, _principalInvestigatorMeta));
+    }
+    if (data.containsKey('created')) {
+      context.handle(_createdMeta,
+          created.isAcceptableOrUnknown(data['created']!, _createdMeta));
+    }
+    if (data.containsKey('lastModified')) {
+      context.handle(
+          _lastModifiedMeta,
+          lastModified.isAcceptableOrUnknown(
+              data['lastModified']!, _lastModifiedMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {uuid};
+  @override
+  ProjectData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ProjectData(
+      uuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}uuid'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      description: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}description']),
+      principalInvestigator: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}principalInvestigator']),
+      created: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}created']),
+      lastModified: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}lastModified']),
+    );
+  }
+
+  @override
+  Project createAlias(String alias) {
+    return Project(attachedDatabase, alias);
+  }
+
+  @override
+  bool get dontWriteConstraints => true;
+}
+
 class ProjectData extends DataClass implements Insertable<ProjectData> {
   final String uuid;
   final String name;
@@ -229,35 +353,37 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
   }
 }
 
-class Project extends Table with TableInfo<Project, ProjectData> {
+class FileMetadata extends Table
+    with TableInfo<FileMetadata, FileMetadataData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Project(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
-  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
-      'uuid', aliasedName, false,
-      type: DriftSqlType.string,
-      requiredDuringInsert: true,
-      $customConstraints: 'NOT NULL PRIMARY KEY');
-  static const VerificationMeta _nameMeta = const VerificationMeta('name');
-  late final GeneratedColumn<String> name = GeneratedColumn<String>(
-      'name', aliasedName, false,
-      type: DriftSqlType.string,
-      requiredDuringInsert: true,
-      $customConstraints: 'NOT NULL UNIQUE');
-  static const VerificationMeta _descriptionMeta =
-      const VerificationMeta('description');
-  late final GeneratedColumn<String> description = GeneratedColumn<String>(
-      'description', aliasedName, true,
+  FileMetadata(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, true,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  static const VerificationMeta _filenameMeta =
+      const VerificationMeta('filename');
+  late final GeneratedColumn<String> filename = GeneratedColumn<String>(
+      'filename', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _principalInvestigatorMeta =
-      const VerificationMeta('principalInvestigator');
-  late final GeneratedColumn<String> principalInvestigator =
-      GeneratedColumn<String>('principalInvestigator', aliasedName, true,
-          type: DriftSqlType.string,
+  static const VerificationMeta _sizeKbMeta = const VerificationMeta('sizeKb');
+  late final GeneratedColumn<double> sizeKb = GeneratedColumn<double>(
+      'sizeKb', aliasedName, true,
+      type: DriftSqlType.double,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _relativePathMeta =
+      const VerificationMeta('relativePath');
+  late final GeneratedColumn<Uint8List> relativePath =
+      GeneratedColumn<Uint8List>('relativePath', aliasedName, true,
+          type: DriftSqlType.blob,
           requiredDuringInsert: false,
           $customConstraints: '');
   static const VerificationMeta _createdMeta =
@@ -267,90 +393,66 @@ class Project extends Table with TableInfo<Project, ProjectData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _lastModifiedMeta =
-      const VerificationMeta('lastModified');
-  late final GeneratedColumn<String> lastModified = GeneratedColumn<String>(
-      'lastModified', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns =>
-      [uuid, name, description, principalInvestigator, created, lastModified];
+      [id, filename, sizeKb, relativePath, created];
   @override
-  String get aliasedName => _alias ?? 'project';
+  String get aliasedName => _alias ?? 'fileMetadata';
   @override
-  String get actualTableName => 'project';
+  String get actualTableName => 'fileMetadata';
   @override
-  VerificationContext validateIntegrity(Insertable<ProjectData> instance,
+  VerificationContext validateIntegrity(Insertable<FileMetadataData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('uuid')) {
-      context.handle(
-          _uuidMeta, uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta));
-    } else if (isInserting) {
-      context.missing(_uuidMeta);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('name')) {
-      context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
-    } else if (isInserting) {
-      context.missing(_nameMeta);
+    if (data.containsKey('filename')) {
+      context.handle(_filenameMeta,
+          filename.isAcceptableOrUnknown(data['filename']!, _filenameMeta));
     }
-    if (data.containsKey('description')) {
-      context.handle(
-          _descriptionMeta,
-          description.isAcceptableOrUnknown(
-              data['description']!, _descriptionMeta));
+    if (data.containsKey('sizeKb')) {
+      context.handle(_sizeKbMeta,
+          sizeKb.isAcceptableOrUnknown(data['sizeKb']!, _sizeKbMeta));
     }
-    if (data.containsKey('principalInvestigator')) {
+    if (data.containsKey('relativePath')) {
       context.handle(
-          _principalInvestigatorMeta,
-          principalInvestigator.isAcceptableOrUnknown(
-              data['principalInvestigator']!, _principalInvestigatorMeta));
+          _relativePathMeta,
+          relativePath.isAcceptableOrUnknown(
+              data['relativePath']!, _relativePathMeta));
     }
     if (data.containsKey('created')) {
       context.handle(_createdMeta,
           created.isAcceptableOrUnknown(data['created']!, _createdMeta));
     }
-    if (data.containsKey('lastModified')) {
-      context.handle(
-          _lastModifiedMeta,
-          lastModified.isAcceptableOrUnknown(
-              data['lastModified']!, _lastModifiedMeta));
-    }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {uuid};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  ProjectData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  FileMetadataData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return ProjectData(
-      uuid: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}uuid'])!,
-      name: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
-      description: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}description']),
-      principalInvestigator: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}principalInvestigator']),
+    return FileMetadataData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id']),
+      filename: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}filename']),
+      sizeKb: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}sizeKb']),
+      relativePath: attachedDatabase.typeMapping
+          .read(DriftSqlType.blob, data['${effectivePrefix}relativePath']),
       created: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}created']),
-      lastModified: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}lastModified']),
     );
   }
 
   @override
-  Project createAlias(String alias) {
-    return Project(attachedDatabase, alias);
+  FileMetadata createAlias(String alias) {
+    return FileMetadata(attachedDatabase, alias);
   }
 
-  @override
-  List<String> get customConstraints => const [];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -550,12 +652,12 @@ class FileMetadataCompanion extends UpdateCompanion<FileMetadataData> {
   }
 }
 
-class FileMetadata extends Table
-    with TableInfo<FileMetadata, FileMetadataData> {
+class PersonnelPhoto extends Table
+    with TableInfo<PersonnelPhoto, PersonnelPhotoData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  FileMetadata(this.attachedDatabase, [this._alias]);
+  PersonnelPhoto(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, true,
@@ -563,65 +665,29 @@ class FileMetadata extends Table
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  static const VerificationMeta _filenameMeta =
-      const VerificationMeta('filename');
-  late final GeneratedColumn<String> filename = GeneratedColumn<String>(
-      'filename', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _sizeKbMeta = const VerificationMeta('sizeKb');
-  late final GeneratedColumn<double> sizeKb = GeneratedColumn<double>(
-      'sizeKb', aliasedName, true,
-      type: DriftSqlType.double,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _relativePathMeta =
-      const VerificationMeta('relativePath');
-  late final GeneratedColumn<Uint8List> relativePath =
-      GeneratedColumn<Uint8List>('relativePath', aliasedName, true,
-          type: DriftSqlType.blob,
-          requiredDuringInsert: false,
-          $customConstraints: '');
-  static const VerificationMeta _createdMeta =
-      const VerificationMeta('created');
-  late final GeneratedColumn<String> created = GeneratedColumn<String>(
-      'created', aliasedName, true,
-      type: DriftSqlType.string,
+  static const VerificationMeta _fileIdMeta = const VerificationMeta('fileId');
+  late final GeneratedColumn<int> fileId = GeneratedColumn<int>(
+      'fileId', aliasedName, true,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, filename, sizeKb, relativePath, created];
+  List<GeneratedColumn> get $columns => [id, fileId];
   @override
-  String get aliasedName => _alias ?? 'fileMetadata';
+  String get aliasedName => _alias ?? 'personnelPhoto';
   @override
-  String get actualTableName => 'fileMetadata';
+  String get actualTableName => 'personnelPhoto';
   @override
-  VerificationContext validateIntegrity(Insertable<FileMetadataData> instance,
+  VerificationContext validateIntegrity(Insertable<PersonnelPhotoData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('filename')) {
-      context.handle(_filenameMeta,
-          filename.isAcceptableOrUnknown(data['filename']!, _filenameMeta));
-    }
-    if (data.containsKey('sizeKb')) {
-      context.handle(_sizeKbMeta,
-          sizeKb.isAcceptableOrUnknown(data['sizeKb']!, _sizeKbMeta));
-    }
-    if (data.containsKey('relativePath')) {
-      context.handle(
-          _relativePathMeta,
-          relativePath.isAcceptableOrUnknown(
-              data['relativePath']!, _relativePathMeta));
-    }
-    if (data.containsKey('created')) {
-      context.handle(_createdMeta,
-          created.isAcceptableOrUnknown(data['created']!, _createdMeta));
+    if (data.containsKey('fileId')) {
+      context.handle(_fileIdMeta,
+          fileId.isAcceptableOrUnknown(data['fileId']!, _fileIdMeta));
     }
     return context;
   }
@@ -629,29 +695,24 @@ class FileMetadata extends Table
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  FileMetadataData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  PersonnelPhotoData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return FileMetadataData(
+    return PersonnelPhotoData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id']),
-      filename: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}filename']),
-      sizeKb: attachedDatabase.typeMapping
-          .read(DriftSqlType.double, data['${effectivePrefix}sizeKb']),
-      relativePath: attachedDatabase.typeMapping
-          .read(DriftSqlType.blob, data['${effectivePrefix}relativePath']),
-      created: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}created']),
+      fileId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}fileId']),
     );
   }
 
   @override
-  FileMetadata createAlias(String alias) {
-    return FileMetadata(attachedDatabase, alias);
+  PersonnelPhoto createAlias(String alias) {
+    return PersonnelPhoto(attachedDatabase, alias);
   }
 
   @override
-  List<String> get customConstraints => const [];
+  List<String> get customConstraints =>
+      const ['FOREIGN KEY(fileId)REFERENCES fileMetadata(id)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -774,344 +835,6 @@ class PersonnelPhotoCompanion extends UpdateCompanion<PersonnelPhotoData> {
   }
 }
 
-class PersonnelPhoto extends Table
-    with TableInfo<PersonnelPhoto, PersonnelPhotoData> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  PersonnelPhoto(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, true,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  static const VerificationMeta _fileIdMeta = const VerificationMeta('fileId');
-  late final GeneratedColumn<int> fileId = GeneratedColumn<int>(
-      'fileId', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  @override
-  List<GeneratedColumn> get $columns => [id, fileId];
-  @override
-  String get aliasedName => _alias ?? 'personnelPhoto';
-  @override
-  String get actualTableName => 'personnelPhoto';
-  @override
-  VerificationContext validateIntegrity(Insertable<PersonnelPhotoData> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('fileId')) {
-      context.handle(_fileIdMeta,
-          fileId.isAcceptableOrUnknown(data['fileId']!, _fileIdMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  PersonnelPhotoData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return PersonnelPhotoData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id']),
-      fileId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}fileId']),
-    );
-  }
-
-  @override
-  PersonnelPhoto createAlias(String alias) {
-    return PersonnelPhoto(attachedDatabase, alias);
-  }
-
-  @override
-  List<String> get customConstraints =>
-      const ['FOREIGN KEY(fileId)REFERENCES fileMetadata(id)'];
-  @override
-  bool get dontWriteConstraints => true;
-}
-
-class PersonnelData extends DataClass implements Insertable<PersonnelData> {
-  final String? uuid;
-  final String? name;
-  final String? initial;
-  final String? email;
-  final String? affiliation;
-  final String? role;
-  final int? nextCollectorNumber;
-  final int? personnelPhoto;
-  const PersonnelData(
-      {this.uuid,
-      this.name,
-      this.initial,
-      this.email,
-      this.affiliation,
-      this.role,
-      this.nextCollectorNumber,
-      this.personnelPhoto});
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (!nullToAbsent || uuid != null) {
-      map['uuid'] = Variable<String>(uuid);
-    }
-    if (!nullToAbsent || name != null) {
-      map['name'] = Variable<String>(name);
-    }
-    if (!nullToAbsent || initial != null) {
-      map['initial'] = Variable<String>(initial);
-    }
-    if (!nullToAbsent || email != null) {
-      map['email'] = Variable<String>(email);
-    }
-    if (!nullToAbsent || affiliation != null) {
-      map['affiliation'] = Variable<String>(affiliation);
-    }
-    if (!nullToAbsent || role != null) {
-      map['role'] = Variable<String>(role);
-    }
-    if (!nullToAbsent || nextCollectorNumber != null) {
-      map['nextCollectorNumber'] = Variable<int>(nextCollectorNumber);
-    }
-    if (!nullToAbsent || personnelPhoto != null) {
-      map['personnelPhoto'] = Variable<int>(personnelPhoto);
-    }
-    return map;
-  }
-
-  PersonnelCompanion toCompanion(bool nullToAbsent) {
-    return PersonnelCompanion(
-      uuid: uuid == null && nullToAbsent ? const Value.absent() : Value(uuid),
-      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
-      initial: initial == null && nullToAbsent
-          ? const Value.absent()
-          : Value(initial),
-      email:
-          email == null && nullToAbsent ? const Value.absent() : Value(email),
-      affiliation: affiliation == null && nullToAbsent
-          ? const Value.absent()
-          : Value(affiliation),
-      role: role == null && nullToAbsent ? const Value.absent() : Value(role),
-      nextCollectorNumber: nextCollectorNumber == null && nullToAbsent
-          ? const Value.absent()
-          : Value(nextCollectorNumber),
-      personnelPhoto: personnelPhoto == null && nullToAbsent
-          ? const Value.absent()
-          : Value(personnelPhoto),
-    );
-  }
-
-  factory PersonnelData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return PersonnelData(
-      uuid: serializer.fromJson<String?>(json['uuid']),
-      name: serializer.fromJson<String?>(json['name']),
-      initial: serializer.fromJson<String?>(json['initial']),
-      email: serializer.fromJson<String?>(json['email']),
-      affiliation: serializer.fromJson<String?>(json['affiliation']),
-      role: serializer.fromJson<String?>(json['role']),
-      nextCollectorNumber:
-          serializer.fromJson<int?>(json['nextCollectorNumber']),
-      personnelPhoto: serializer.fromJson<int?>(json['personnelPhoto']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'uuid': serializer.toJson<String?>(uuid),
-      'name': serializer.toJson<String?>(name),
-      'initial': serializer.toJson<String?>(initial),
-      'email': serializer.toJson<String?>(email),
-      'affiliation': serializer.toJson<String?>(affiliation),
-      'role': serializer.toJson<String?>(role),
-      'nextCollectorNumber': serializer.toJson<int?>(nextCollectorNumber),
-      'personnelPhoto': serializer.toJson<int?>(personnelPhoto),
-    };
-  }
-
-  PersonnelData copyWith(
-          {Value<String?> uuid = const Value.absent(),
-          Value<String?> name = const Value.absent(),
-          Value<String?> initial = const Value.absent(),
-          Value<String?> email = const Value.absent(),
-          Value<String?> affiliation = const Value.absent(),
-          Value<String?> role = const Value.absent(),
-          Value<int?> nextCollectorNumber = const Value.absent(),
-          Value<int?> personnelPhoto = const Value.absent()}) =>
-      PersonnelData(
-        uuid: uuid.present ? uuid.value : this.uuid,
-        name: name.present ? name.value : this.name,
-        initial: initial.present ? initial.value : this.initial,
-        email: email.present ? email.value : this.email,
-        affiliation: affiliation.present ? affiliation.value : this.affiliation,
-        role: role.present ? role.value : this.role,
-        nextCollectorNumber: nextCollectorNumber.present
-            ? nextCollectorNumber.value
-            : this.nextCollectorNumber,
-        personnelPhoto:
-            personnelPhoto.present ? personnelPhoto.value : this.personnelPhoto,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('PersonnelData(')
-          ..write('uuid: $uuid, ')
-          ..write('name: $name, ')
-          ..write('initial: $initial, ')
-          ..write('email: $email, ')
-          ..write('affiliation: $affiliation, ')
-          ..write('role: $role, ')
-          ..write('nextCollectorNumber: $nextCollectorNumber, ')
-          ..write('personnelPhoto: $personnelPhoto')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(uuid, name, initial, email, affiliation, role,
-      nextCollectorNumber, personnelPhoto);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is PersonnelData &&
-          other.uuid == this.uuid &&
-          other.name == this.name &&
-          other.initial == this.initial &&
-          other.email == this.email &&
-          other.affiliation == this.affiliation &&
-          other.role == this.role &&
-          other.nextCollectorNumber == this.nextCollectorNumber &&
-          other.personnelPhoto == this.personnelPhoto);
-}
-
-class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
-  final Value<String?> uuid;
-  final Value<String?> name;
-  final Value<String?> initial;
-  final Value<String?> email;
-  final Value<String?> affiliation;
-  final Value<String?> role;
-  final Value<int?> nextCollectorNumber;
-  final Value<int?> personnelPhoto;
-  const PersonnelCompanion({
-    this.uuid = const Value.absent(),
-    this.name = const Value.absent(),
-    this.initial = const Value.absent(),
-    this.email = const Value.absent(),
-    this.affiliation = const Value.absent(),
-    this.role = const Value.absent(),
-    this.nextCollectorNumber = const Value.absent(),
-    this.personnelPhoto = const Value.absent(),
-  });
-  PersonnelCompanion.insert({
-    this.uuid = const Value.absent(),
-    this.name = const Value.absent(),
-    this.initial = const Value.absent(),
-    this.email = const Value.absent(),
-    this.affiliation = const Value.absent(),
-    this.role = const Value.absent(),
-    this.nextCollectorNumber = const Value.absent(),
-    this.personnelPhoto = const Value.absent(),
-  });
-  static Insertable<PersonnelData> custom({
-    Expression<String>? uuid,
-    Expression<String>? name,
-    Expression<String>? initial,
-    Expression<String>? email,
-    Expression<String>? affiliation,
-    Expression<String>? role,
-    Expression<int>? nextCollectorNumber,
-    Expression<int>? personnelPhoto,
-  }) {
-    return RawValuesInsertable({
-      if (uuid != null) 'uuid': uuid,
-      if (name != null) 'name': name,
-      if (initial != null) 'initial': initial,
-      if (email != null) 'email': email,
-      if (affiliation != null) 'affiliation': affiliation,
-      if (role != null) 'role': role,
-      if (nextCollectorNumber != null)
-        'nextCollectorNumber': nextCollectorNumber,
-      if (personnelPhoto != null) 'personnelPhoto': personnelPhoto,
-    });
-  }
-
-  PersonnelCompanion copyWith(
-      {Value<String?>? uuid,
-      Value<String?>? name,
-      Value<String?>? initial,
-      Value<String?>? email,
-      Value<String?>? affiliation,
-      Value<String?>? role,
-      Value<int?>? nextCollectorNumber,
-      Value<int?>? personnelPhoto}) {
-    return PersonnelCompanion(
-      uuid: uuid ?? this.uuid,
-      name: name ?? this.name,
-      initial: initial ?? this.initial,
-      email: email ?? this.email,
-      affiliation: affiliation ?? this.affiliation,
-      role: role ?? this.role,
-      nextCollectorNumber: nextCollectorNumber ?? this.nextCollectorNumber,
-      personnelPhoto: personnelPhoto ?? this.personnelPhoto,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (uuid.present) {
-      map['uuid'] = Variable<String>(uuid.value);
-    }
-    if (name.present) {
-      map['name'] = Variable<String>(name.value);
-    }
-    if (initial.present) {
-      map['initial'] = Variable<String>(initial.value);
-    }
-    if (email.present) {
-      map['email'] = Variable<String>(email.value);
-    }
-    if (affiliation.present) {
-      map['affiliation'] = Variable<String>(affiliation.value);
-    }
-    if (role.present) {
-      map['role'] = Variable<String>(role.value);
-    }
-    if (nextCollectorNumber.present) {
-      map['nextCollectorNumber'] = Variable<int>(nextCollectorNumber.value);
-    }
-    if (personnelPhoto.present) {
-      map['personnelPhoto'] = Variable<int>(personnelPhoto.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('PersonnelCompanion(')
-          ..write('uuid: $uuid, ')
-          ..write('name: $name, ')
-          ..write('initial: $initial, ')
-          ..write('email: $email, ')
-          ..write('affiliation: $affiliation, ')
-          ..write('role: $role, ')
-          ..write('nextCollectorNumber: $nextCollectorNumber, ')
-          ..write('personnelPhoto: $personnelPhoto')
-          ..write(')'))
-        .toString();
-  }
-}
-
 class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -1119,10 +842,10 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
   Personnel(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
   late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
-      'uuid', aliasedName, true,
+      'uuid', aliasedName, false,
       type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: 'UNIQUE PRIMARY KEY');
+      requiredDuringInsert: true,
+      $customConstraints: 'UNIQUE NOT NULL PRIMARY KEY');
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
       'name', aliasedName, true,
@@ -1192,6 +915,8 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
     if (data.containsKey('uuid')) {
       context.handle(
           _uuidMeta, uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta));
+    } else if (isInserting) {
+      context.missing(_uuidMeta);
     }
     if (data.containsKey('name')) {
       context.handle(
@@ -1237,7 +962,7 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return PersonnelData(
       uuid: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}uuid']),
+          .read(DriftSqlType.string, data['${effectivePrefix}uuid'])!,
       name: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}name']),
       initial: attachedDatabase.typeMapping
@@ -1263,6 +988,435 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
   @override
   List<String> get customConstraints =>
       const ['FOREIGN KEY(personnelPhoto)REFERENCES personnelPhoto(id)'];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class PersonnelData extends DataClass implements Insertable<PersonnelData> {
+  final String uuid;
+  final String? name;
+  final String? initial;
+  final String? email;
+  final String? affiliation;
+  final String? role;
+  final int? nextCollectorNumber;
+  final int? personnelPhoto;
+  const PersonnelData(
+      {required this.uuid,
+      this.name,
+      this.initial,
+      this.email,
+      this.affiliation,
+      this.role,
+      this.nextCollectorNumber,
+      this.personnelPhoto});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['uuid'] = Variable<String>(uuid);
+    if (!nullToAbsent || name != null) {
+      map['name'] = Variable<String>(name);
+    }
+    if (!nullToAbsent || initial != null) {
+      map['initial'] = Variable<String>(initial);
+    }
+    if (!nullToAbsent || email != null) {
+      map['email'] = Variable<String>(email);
+    }
+    if (!nullToAbsent || affiliation != null) {
+      map['affiliation'] = Variable<String>(affiliation);
+    }
+    if (!nullToAbsent || role != null) {
+      map['role'] = Variable<String>(role);
+    }
+    if (!nullToAbsent || nextCollectorNumber != null) {
+      map['nextCollectorNumber'] = Variable<int>(nextCollectorNumber);
+    }
+    if (!nullToAbsent || personnelPhoto != null) {
+      map['personnelPhoto'] = Variable<int>(personnelPhoto);
+    }
+    return map;
+  }
+
+  PersonnelCompanion toCompanion(bool nullToAbsent) {
+    return PersonnelCompanion(
+      uuid: Value(uuid),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+      initial: initial == null && nullToAbsent
+          ? const Value.absent()
+          : Value(initial),
+      email:
+          email == null && nullToAbsent ? const Value.absent() : Value(email),
+      affiliation: affiliation == null && nullToAbsent
+          ? const Value.absent()
+          : Value(affiliation),
+      role: role == null && nullToAbsent ? const Value.absent() : Value(role),
+      nextCollectorNumber: nextCollectorNumber == null && nullToAbsent
+          ? const Value.absent()
+          : Value(nextCollectorNumber),
+      personnelPhoto: personnelPhoto == null && nullToAbsent
+          ? const Value.absent()
+          : Value(personnelPhoto),
+    );
+  }
+
+  factory PersonnelData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PersonnelData(
+      uuid: serializer.fromJson<String>(json['uuid']),
+      name: serializer.fromJson<String?>(json['name']),
+      initial: serializer.fromJson<String?>(json['initial']),
+      email: serializer.fromJson<String?>(json['email']),
+      affiliation: serializer.fromJson<String?>(json['affiliation']),
+      role: serializer.fromJson<String?>(json['role']),
+      nextCollectorNumber:
+          serializer.fromJson<int?>(json['nextCollectorNumber']),
+      personnelPhoto: serializer.fromJson<int?>(json['personnelPhoto']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'uuid': serializer.toJson<String>(uuid),
+      'name': serializer.toJson<String?>(name),
+      'initial': serializer.toJson<String?>(initial),
+      'email': serializer.toJson<String?>(email),
+      'affiliation': serializer.toJson<String?>(affiliation),
+      'role': serializer.toJson<String?>(role),
+      'nextCollectorNumber': serializer.toJson<int?>(nextCollectorNumber),
+      'personnelPhoto': serializer.toJson<int?>(personnelPhoto),
+    };
+  }
+
+  PersonnelData copyWith(
+          {String? uuid,
+          Value<String?> name = const Value.absent(),
+          Value<String?> initial = const Value.absent(),
+          Value<String?> email = const Value.absent(),
+          Value<String?> affiliation = const Value.absent(),
+          Value<String?> role = const Value.absent(),
+          Value<int?> nextCollectorNumber = const Value.absent(),
+          Value<int?> personnelPhoto = const Value.absent()}) =>
+      PersonnelData(
+        uuid: uuid ?? this.uuid,
+        name: name.present ? name.value : this.name,
+        initial: initial.present ? initial.value : this.initial,
+        email: email.present ? email.value : this.email,
+        affiliation: affiliation.present ? affiliation.value : this.affiliation,
+        role: role.present ? role.value : this.role,
+        nextCollectorNumber: nextCollectorNumber.present
+            ? nextCollectorNumber.value
+            : this.nextCollectorNumber,
+        personnelPhoto:
+            personnelPhoto.present ? personnelPhoto.value : this.personnelPhoto,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('PersonnelData(')
+          ..write('uuid: $uuid, ')
+          ..write('name: $name, ')
+          ..write('initial: $initial, ')
+          ..write('email: $email, ')
+          ..write('affiliation: $affiliation, ')
+          ..write('role: $role, ')
+          ..write('nextCollectorNumber: $nextCollectorNumber, ')
+          ..write('personnelPhoto: $personnelPhoto')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(uuid, name, initial, email, affiliation, role,
+      nextCollectorNumber, personnelPhoto);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PersonnelData &&
+          other.uuid == this.uuid &&
+          other.name == this.name &&
+          other.initial == this.initial &&
+          other.email == this.email &&
+          other.affiliation == this.affiliation &&
+          other.role == this.role &&
+          other.nextCollectorNumber == this.nextCollectorNumber &&
+          other.personnelPhoto == this.personnelPhoto);
+}
+
+class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
+  final Value<String> uuid;
+  final Value<String?> name;
+  final Value<String?> initial;
+  final Value<String?> email;
+  final Value<String?> affiliation;
+  final Value<String?> role;
+  final Value<int?> nextCollectorNumber;
+  final Value<int?> personnelPhoto;
+  const PersonnelCompanion({
+    this.uuid = const Value.absent(),
+    this.name = const Value.absent(),
+    this.initial = const Value.absent(),
+    this.email = const Value.absent(),
+    this.affiliation = const Value.absent(),
+    this.role = const Value.absent(),
+    this.nextCollectorNumber = const Value.absent(),
+    this.personnelPhoto = const Value.absent(),
+  });
+  PersonnelCompanion.insert({
+    required String uuid,
+    this.name = const Value.absent(),
+    this.initial = const Value.absent(),
+    this.email = const Value.absent(),
+    this.affiliation = const Value.absent(),
+    this.role = const Value.absent(),
+    this.nextCollectorNumber = const Value.absent(),
+    this.personnelPhoto = const Value.absent(),
+  }) : uuid = Value(uuid);
+  static Insertable<PersonnelData> custom({
+    Expression<String>? uuid,
+    Expression<String>? name,
+    Expression<String>? initial,
+    Expression<String>? email,
+    Expression<String>? affiliation,
+    Expression<String>? role,
+    Expression<int>? nextCollectorNumber,
+    Expression<int>? personnelPhoto,
+  }) {
+    return RawValuesInsertable({
+      if (uuid != null) 'uuid': uuid,
+      if (name != null) 'name': name,
+      if (initial != null) 'initial': initial,
+      if (email != null) 'email': email,
+      if (affiliation != null) 'affiliation': affiliation,
+      if (role != null) 'role': role,
+      if (nextCollectorNumber != null)
+        'nextCollectorNumber': nextCollectorNumber,
+      if (personnelPhoto != null) 'personnelPhoto': personnelPhoto,
+    });
+  }
+
+  PersonnelCompanion copyWith(
+      {Value<String>? uuid,
+      Value<String?>? name,
+      Value<String?>? initial,
+      Value<String?>? email,
+      Value<String?>? affiliation,
+      Value<String?>? role,
+      Value<int?>? nextCollectorNumber,
+      Value<int?>? personnelPhoto}) {
+    return PersonnelCompanion(
+      uuid: uuid ?? this.uuid,
+      name: name ?? this.name,
+      initial: initial ?? this.initial,
+      email: email ?? this.email,
+      affiliation: affiliation ?? this.affiliation,
+      role: role ?? this.role,
+      nextCollectorNumber: nextCollectorNumber ?? this.nextCollectorNumber,
+      personnelPhoto: personnelPhoto ?? this.personnelPhoto,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (uuid.present) {
+      map['uuid'] = Variable<String>(uuid.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (initial.present) {
+      map['initial'] = Variable<String>(initial.value);
+    }
+    if (email.present) {
+      map['email'] = Variable<String>(email.value);
+    }
+    if (affiliation.present) {
+      map['affiliation'] = Variable<String>(affiliation.value);
+    }
+    if (role.present) {
+      map['role'] = Variable<String>(role.value);
+    }
+    if (nextCollectorNumber.present) {
+      map['nextCollectorNumber'] = Variable<int>(nextCollectorNumber.value);
+    }
+    if (personnelPhoto.present) {
+      map['personnelPhoto'] = Variable<int>(personnelPhoto.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PersonnelCompanion(')
+          ..write('uuid: $uuid, ')
+          ..write('name: $name, ')
+          ..write('initial: $initial, ')
+          ..write('email: $email, ')
+          ..write('affiliation: $affiliation, ')
+          ..write('role: $role, ')
+          ..write('nextCollectorNumber: $nextCollectorNumber, ')
+          ..write('personnelPhoto: $personnelPhoto')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class Media extends Table with TableInfo<Media, MediaData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  Media(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _primaryIdMeta =
+      const VerificationMeta('primaryId');
+  late final GeneratedColumn<int> primaryId = GeneratedColumn<int>(
+      'primaryId', aliasedName, true,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  static const VerificationMeta _secondaryIdMeta =
+      const VerificationMeta('secondaryId');
+  late final GeneratedColumn<String> secondaryId = GeneratedColumn<String>(
+      'secondaryId', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _secondaryIdRefMeta =
+      const VerificationMeta('secondaryIdRef');
+  late final GeneratedColumn<String> secondaryIdRef = GeneratedColumn<String>(
+      'secondaryIdRef', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _fileIdMeta = const VerificationMeta('fileId');
+  late final GeneratedColumn<int> fileId = GeneratedColumn<int>(
+      'fileId', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _takenMeta = const VerificationMeta('taken');
+  late final GeneratedColumn<String> taken = GeneratedColumn<String>(
+      'taken', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _cameraMeta = const VerificationMeta('camera');
+  late final GeneratedColumn<String> camera = GeneratedColumn<String>(
+      'camera', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _lensesMeta = const VerificationMeta('lenses');
+  late final GeneratedColumn<String> lenses = GeneratedColumn<String>(
+      'lenses', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _personnelIdMeta =
+      const VerificationMeta('personnelId');
+  late final GeneratedColumn<String> personnelId = GeneratedColumn<String>(
+      'personnelId', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  @override
+  List<GeneratedColumn> get $columns => [
+        primaryId,
+        secondaryId,
+        secondaryIdRef,
+        fileId,
+        taken,
+        camera,
+        lenses,
+        personnelId
+      ];
+  @override
+  String get aliasedName => _alias ?? 'media';
+  @override
+  String get actualTableName => 'media';
+  @override
+  VerificationContext validateIntegrity(Insertable<MediaData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('primaryId')) {
+      context.handle(_primaryIdMeta,
+          primaryId.isAcceptableOrUnknown(data['primaryId']!, _primaryIdMeta));
+    }
+    if (data.containsKey('secondaryId')) {
+      context.handle(
+          _secondaryIdMeta,
+          secondaryId.isAcceptableOrUnknown(
+              data['secondaryId']!, _secondaryIdMeta));
+    }
+    if (data.containsKey('secondaryIdRef')) {
+      context.handle(
+          _secondaryIdRefMeta,
+          secondaryIdRef.isAcceptableOrUnknown(
+              data['secondaryIdRef']!, _secondaryIdRefMeta));
+    }
+    if (data.containsKey('fileId')) {
+      context.handle(_fileIdMeta,
+          fileId.isAcceptableOrUnknown(data['fileId']!, _fileIdMeta));
+    }
+    if (data.containsKey('taken')) {
+      context.handle(
+          _takenMeta, taken.isAcceptableOrUnknown(data['taken']!, _takenMeta));
+    }
+    if (data.containsKey('camera')) {
+      context.handle(_cameraMeta,
+          camera.isAcceptableOrUnknown(data['camera']!, _cameraMeta));
+    }
+    if (data.containsKey('lenses')) {
+      context.handle(_lensesMeta,
+          lenses.isAcceptableOrUnknown(data['lenses']!, _lensesMeta));
+    }
+    if (data.containsKey('personnelId')) {
+      context.handle(
+          _personnelIdMeta,
+          personnelId.isAcceptableOrUnknown(
+              data['personnelId']!, _personnelIdMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {primaryId};
+  @override
+  MediaData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MediaData(
+      primaryId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}primaryId']),
+      secondaryId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}secondaryId']),
+      secondaryIdRef: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}secondaryIdRef']),
+      fileId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}fileId']),
+      taken: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}taken']),
+      camera: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}camera']),
+      lenses: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}lenses']),
+      personnelId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}personnelId']),
+    );
+  }
+
+  @override
+  Media createAlias(String alias) {
+    return Media(attachedDatabase, alias);
+  }
+
+  @override
+  List<String> get customConstraints => const [
+        'FOREIGN KEY(personnelId)REFERENCES personnel(uuid)',
+        'FOREIGN KEY(fileId)REFERENCES fileMetadata(id)'
+      ];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -1539,159 +1693,264 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
   }
 }
 
-class Media extends Table with TableInfo<Media, MediaData> {
+class Site extends Table with TableInfo<Site, SiteData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Media(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _primaryIdMeta =
-      const VerificationMeta('primaryId');
-  late final GeneratedColumn<int> primaryId = GeneratedColumn<int>(
-      'primaryId', aliasedName, true,
+  Site(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
       hasAutoIncrement: true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
-      $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  static const VerificationMeta _secondaryIdMeta =
-      const VerificationMeta('secondaryId');
-  late final GeneratedColumn<String> secondaryId = GeneratedColumn<String>(
-      'secondaryId', aliasedName, true,
+      $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
+  static const VerificationMeta _siteIDMeta = const VerificationMeta('siteID');
+  late final GeneratedColumn<String> siteID = GeneratedColumn<String>(
+      'siteID', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _secondaryIdRefMeta =
-      const VerificationMeta('secondaryIdRef');
-  late final GeneratedColumn<String> secondaryIdRef = GeneratedColumn<String>(
-      'secondaryIdRef', aliasedName, true,
+  static const VerificationMeta _projectUuidMeta =
+      const VerificationMeta('projectUuid');
+  late final GeneratedColumn<String> projectUuid = GeneratedColumn<String>(
+      'projectUuid', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _fileIdMeta = const VerificationMeta('fileId');
-  late final GeneratedColumn<int> fileId = GeneratedColumn<int>(
-      'fileId', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _takenMeta = const VerificationMeta('taken');
-  late final GeneratedColumn<String> taken = GeneratedColumn<String>(
-      'taken', aliasedName, true,
+  static const VerificationMeta _leadStaffIdMeta =
+      const VerificationMeta('leadStaffId');
+  late final GeneratedColumn<String> leadStaffId = GeneratedColumn<String>(
+      'leadStaffId', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _cameraMeta = const VerificationMeta('camera');
-  late final GeneratedColumn<String> camera = GeneratedColumn<String>(
-      'camera', aliasedName, true,
+  static const VerificationMeta _siteTypeMeta =
+      const VerificationMeta('siteType');
+  late final GeneratedColumn<String> siteType = GeneratedColumn<String>(
+      'siteType', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _lensesMeta = const VerificationMeta('lenses');
-  late final GeneratedColumn<String> lenses = GeneratedColumn<String>(
-      'lenses', aliasedName, true,
+  static const VerificationMeta _countryMeta =
+      const VerificationMeta('country');
+  late final GeneratedColumn<String> country = GeneratedColumn<String>(
+      'country', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _personnelIdMeta =
-      const VerificationMeta('personnelId');
-  late final GeneratedColumn<String> personnelId = GeneratedColumn<String>(
-      'personnelId', aliasedName, true,
+  static const VerificationMeta _stateProvinceMeta =
+      const VerificationMeta('stateProvince');
+  late final GeneratedColumn<String> stateProvince = GeneratedColumn<String>(
+      'stateProvince', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _countyMeta = const VerificationMeta('county');
+  late final GeneratedColumn<String> county = GeneratedColumn<String>(
+      'county', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _municipalityMeta =
+      const VerificationMeta('municipality');
+  late final GeneratedColumn<String> municipality = GeneratedColumn<String>(
+      'municipality', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _mediaIDMeta =
+      const VerificationMeta('mediaID');
+  late final GeneratedColumn<String> mediaID = GeneratedColumn<String>(
+      'mediaID', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _localityMeta =
+      const VerificationMeta('locality');
+  late final GeneratedColumn<String> locality = GeneratedColumn<String>(
+      'locality', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _remarkMeta = const VerificationMeta('remark');
+  late final GeneratedColumn<String> remark = GeneratedColumn<String>(
+      'remark', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _habitatTypeMeta =
+      const VerificationMeta('habitatType');
+  late final GeneratedColumn<String> habitatType = GeneratedColumn<String>(
+      'habitatType', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _habitatConditionMeta =
+      const VerificationMeta('habitatCondition');
+  late final GeneratedColumn<String> habitatCondition = GeneratedColumn<String>(
+      'habitatCondition', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _habitatDescriptionMeta =
+      const VerificationMeta('habitatDescription');
+  late final GeneratedColumn<String> habitatDescription =
+      GeneratedColumn<String>('habitatDescription', aliasedName, true,
+          type: DriftSqlType.string,
+          requiredDuringInsert: false,
+          $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
-        primaryId,
-        secondaryId,
-        secondaryIdRef,
-        fileId,
-        taken,
-        camera,
-        lenses,
-        personnelId
+        id,
+        siteID,
+        projectUuid,
+        leadStaffId,
+        siteType,
+        country,
+        stateProvince,
+        county,
+        municipality,
+        mediaID,
+        locality,
+        remark,
+        habitatType,
+        habitatCondition,
+        habitatDescription
       ];
   @override
-  String get aliasedName => _alias ?? 'media';
+  String get aliasedName => _alias ?? 'site';
   @override
-  String get actualTableName => 'media';
+  String get actualTableName => 'site';
   @override
-  VerificationContext validateIntegrity(Insertable<MediaData> instance,
+  VerificationContext validateIntegrity(Insertable<SiteData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('primaryId')) {
-      context.handle(_primaryIdMeta,
-          primaryId.isAcceptableOrUnknown(data['primaryId']!, _primaryIdMeta));
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('secondaryId')) {
+    if (data.containsKey('siteID')) {
+      context.handle(_siteIDMeta,
+          siteID.isAcceptableOrUnknown(data['siteID']!, _siteIDMeta));
+    }
+    if (data.containsKey('projectUuid')) {
       context.handle(
-          _secondaryIdMeta,
-          secondaryId.isAcceptableOrUnknown(
-              data['secondaryId']!, _secondaryIdMeta));
+          _projectUuidMeta,
+          projectUuid.isAcceptableOrUnknown(
+              data['projectUuid']!, _projectUuidMeta));
     }
-    if (data.containsKey('secondaryIdRef')) {
+    if (data.containsKey('leadStaffId')) {
       context.handle(
-          _secondaryIdRefMeta,
-          secondaryIdRef.isAcceptableOrUnknown(
-              data['secondaryIdRef']!, _secondaryIdRefMeta));
+          _leadStaffIdMeta,
+          leadStaffId.isAcceptableOrUnknown(
+              data['leadStaffId']!, _leadStaffIdMeta));
     }
-    if (data.containsKey('fileId')) {
-      context.handle(_fileIdMeta,
-          fileId.isAcceptableOrUnknown(data['fileId']!, _fileIdMeta));
+    if (data.containsKey('siteType')) {
+      context.handle(_siteTypeMeta,
+          siteType.isAcceptableOrUnknown(data['siteType']!, _siteTypeMeta));
     }
-    if (data.containsKey('taken')) {
+    if (data.containsKey('country')) {
+      context.handle(_countryMeta,
+          country.isAcceptableOrUnknown(data['country']!, _countryMeta));
+    }
+    if (data.containsKey('stateProvince')) {
       context.handle(
-          _takenMeta, taken.isAcceptableOrUnknown(data['taken']!, _takenMeta));
+          _stateProvinceMeta,
+          stateProvince.isAcceptableOrUnknown(
+              data['stateProvince']!, _stateProvinceMeta));
     }
-    if (data.containsKey('camera')) {
-      context.handle(_cameraMeta,
-          camera.isAcceptableOrUnknown(data['camera']!, _cameraMeta));
+    if (data.containsKey('county')) {
+      context.handle(_countyMeta,
+          county.isAcceptableOrUnknown(data['county']!, _countyMeta));
     }
-    if (data.containsKey('lenses')) {
-      context.handle(_lensesMeta,
-          lenses.isAcceptableOrUnknown(data['lenses']!, _lensesMeta));
-    }
-    if (data.containsKey('personnelId')) {
+    if (data.containsKey('municipality')) {
       context.handle(
-          _personnelIdMeta,
-          personnelId.isAcceptableOrUnknown(
-              data['personnelId']!, _personnelIdMeta));
+          _municipalityMeta,
+          municipality.isAcceptableOrUnknown(
+              data['municipality']!, _municipalityMeta));
+    }
+    if (data.containsKey('mediaID')) {
+      context.handle(_mediaIDMeta,
+          mediaID.isAcceptableOrUnknown(data['mediaID']!, _mediaIDMeta));
+    }
+    if (data.containsKey('locality')) {
+      context.handle(_localityMeta,
+          locality.isAcceptableOrUnknown(data['locality']!, _localityMeta));
+    }
+    if (data.containsKey('remark')) {
+      context.handle(_remarkMeta,
+          remark.isAcceptableOrUnknown(data['remark']!, _remarkMeta));
+    }
+    if (data.containsKey('habitatType')) {
+      context.handle(
+          _habitatTypeMeta,
+          habitatType.isAcceptableOrUnknown(
+              data['habitatType']!, _habitatTypeMeta));
+    }
+    if (data.containsKey('habitatCondition')) {
+      context.handle(
+          _habitatConditionMeta,
+          habitatCondition.isAcceptableOrUnknown(
+              data['habitatCondition']!, _habitatConditionMeta));
+    }
+    if (data.containsKey('habitatDescription')) {
+      context.handle(
+          _habitatDescriptionMeta,
+          habitatDescription.isAcceptableOrUnknown(
+              data['habitatDescription']!, _habitatDescriptionMeta));
     }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {primaryId};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  MediaData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  SiteData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return MediaData(
-      primaryId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}primaryId']),
-      secondaryId: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}secondaryId']),
-      secondaryIdRef: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}secondaryIdRef']),
-      fileId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}fileId']),
-      taken: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}taken']),
-      camera: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}camera']),
-      lenses: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}lenses']),
-      personnelId: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}personnelId']),
+    return SiteData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      siteID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}siteID']),
+      projectUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
+      leadStaffId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}leadStaffId']),
+      siteType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}siteType']),
+      country: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}country']),
+      stateProvince: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}stateProvince']),
+      county: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}county']),
+      municipality: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}municipality']),
+      mediaID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}mediaID']),
+      locality: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}locality']),
+      remark: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}remark']),
+      habitatType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}habitatType']),
+      habitatCondition: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}habitatCondition']),
+      habitatDescription: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}habitatDescription']),
     );
   }
 
   @override
-  Media createAlias(String alias) {
-    return Media(attachedDatabase, alias);
+  Site createAlias(String alias) {
+    return Site(attachedDatabase, alias);
   }
 
   @override
   List<String> get customConstraints => const [
-        'FOREIGN KEY(personnelId)REFERENCES personnel(uuid)',
-        'FOREIGN KEY(fileId)REFERENCES fileMetadata(id)'
+        'FOREIGN KEY(mediaID)REFERENCES media(primaryId)',
+        'FOREIGN KEY(leadStaffId)REFERENCES personnel(uuid)'
       ];
   @override
   bool get dontWriteConstraints => true;
@@ -2161,212 +2420,164 @@ class SiteCompanion extends UpdateCompanion<SiteData> {
   }
 }
 
-class Site extends Table with TableInfo<Site, SiteData> {
+class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Site(this.attachedDatabase, [this._alias]);
+  Coordinate(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: 'UNIQUE PRIMARY KEY');
+  static const VerificationMeta _decimalLatitudeMeta =
+      const VerificationMeta('decimalLatitude');
+  late final GeneratedColumn<double> decimalLatitude = GeneratedColumn<double>(
+      'decimalLatitude', aliasedName, true,
+      type: DriftSqlType.double,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _decimalLongitudeMeta =
+      const VerificationMeta('decimalLongitude');
+  late final GeneratedColumn<double> decimalLongitude = GeneratedColumn<double>(
+      'decimalLongitude', aliasedName, true,
+      type: DriftSqlType.double,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _elevationInMeterMeta =
+      const VerificationMeta('elevationInMeter');
+  late final GeneratedColumn<int> elevationInMeter = GeneratedColumn<int>(
+      'elevationInMeter', aliasedName, true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
-      $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
+      $customConstraints: '');
+  static const VerificationMeta _minimumElevationInMetersMeta =
+      const VerificationMeta('minimumElevationInMeters');
+  late final GeneratedColumn<int> minimumElevationInMeters =
+      GeneratedColumn<int>('minimumElevationInMeters', aliasedName, true,
+          type: DriftSqlType.int,
+          requiredDuringInsert: false,
+          $customConstraints: '');
+  static const VerificationMeta _maximumElevationInMetersMeta =
+      const VerificationMeta('maximumElevationInMeters');
+  late final GeneratedColumn<int> maximumElevationInMeters =
+      GeneratedColumn<int>('maximumElevationInMeters', aliasedName, true,
+          type: DriftSqlType.int,
+          requiredDuringInsert: false,
+          $customConstraints: '');
+  static const VerificationMeta _datumMeta = const VerificationMeta('datum');
+  late final GeneratedColumn<String> datum = GeneratedColumn<String>(
+      'datum', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _coordinateUncertaintyInMetersMeta =
+      const VerificationMeta('coordinateUncertaintyInMeters');
+  late final GeneratedColumn<int> coordinateUncertaintyInMeters =
+      GeneratedColumn<int>('coordinateUncertaintyInMeters', aliasedName, true,
+          type: DriftSqlType.int,
+          requiredDuringInsert: false,
+          $customConstraints: '');
+  static const VerificationMeta _gpsUnitMeta =
+      const VerificationMeta('gpsUnit');
+  late final GeneratedColumn<String> gpsUnit = GeneratedColumn<String>(
+      'gpsUnit', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+      'notes', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _siteIDMeta = const VerificationMeta('siteID');
   late final GeneratedColumn<String> siteID = GeneratedColumn<String>(
       'siteID', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _projectUuidMeta =
-      const VerificationMeta('projectUuid');
-  late final GeneratedColumn<String> projectUuid = GeneratedColumn<String>(
-      'projectUuid', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _leadStaffIdMeta =
-      const VerificationMeta('leadStaffId');
-  late final GeneratedColumn<String> leadStaffId = GeneratedColumn<String>(
-      'leadStaffId', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _siteTypeMeta =
-      const VerificationMeta('siteType');
-  late final GeneratedColumn<String> siteType = GeneratedColumn<String>(
-      'siteType', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _countryMeta =
-      const VerificationMeta('country');
-  late final GeneratedColumn<String> country = GeneratedColumn<String>(
-      'country', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _stateProvinceMeta =
-      const VerificationMeta('stateProvince');
-  late final GeneratedColumn<String> stateProvince = GeneratedColumn<String>(
-      'stateProvince', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _countyMeta = const VerificationMeta('county');
-  late final GeneratedColumn<String> county = GeneratedColumn<String>(
-      'county', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _municipalityMeta =
-      const VerificationMeta('municipality');
-  late final GeneratedColumn<String> municipality = GeneratedColumn<String>(
-      'municipality', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _mediaIDMeta =
-      const VerificationMeta('mediaID');
-  late final GeneratedColumn<String> mediaID = GeneratedColumn<String>(
-      'mediaID', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _localityMeta =
-      const VerificationMeta('locality');
-  late final GeneratedColumn<String> locality = GeneratedColumn<String>(
-      'locality', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _remarkMeta = const VerificationMeta('remark');
-  late final GeneratedColumn<String> remark = GeneratedColumn<String>(
-      'remark', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _habitatTypeMeta =
-      const VerificationMeta('habitatType');
-  late final GeneratedColumn<String> habitatType = GeneratedColumn<String>(
-      'habitatType', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _habitatConditionMeta =
-      const VerificationMeta('habitatCondition');
-  late final GeneratedColumn<String> habitatCondition = GeneratedColumn<String>(
-      'habitatCondition', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _habitatDescriptionMeta =
-      const VerificationMeta('habitatDescription');
-  late final GeneratedColumn<String> habitatDescription =
-      GeneratedColumn<String>('habitatDescription', aliasedName, true,
-          type: DriftSqlType.string,
-          requiredDuringInsert: false,
-          $customConstraints: '');
+      $customConstraints: 'REFERENCES site(siteID)');
   @override
   List<GeneratedColumn> get $columns => [
         id,
-        siteID,
-        projectUuid,
-        leadStaffId,
-        siteType,
-        country,
-        stateProvince,
-        county,
-        municipality,
-        mediaID,
-        locality,
-        remark,
-        habitatType,
-        habitatCondition,
-        habitatDescription
+        decimalLatitude,
+        decimalLongitude,
+        elevationInMeter,
+        minimumElevationInMeters,
+        maximumElevationInMeters,
+        datum,
+        coordinateUncertaintyInMeters,
+        gpsUnit,
+        notes,
+        siteID
       ];
   @override
-  String get aliasedName => _alias ?? 'site';
+  String get aliasedName => _alias ?? 'coordinate';
   @override
-  String get actualTableName => 'site';
+  String get actualTableName => 'coordinate';
   @override
-  VerificationContext validateIntegrity(Insertable<SiteData> instance,
+  VerificationContext validateIntegrity(Insertable<CoordinateData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
+    if (data.containsKey('decimalLatitude')) {
+      context.handle(
+          _decimalLatitudeMeta,
+          decimalLatitude.isAcceptableOrUnknown(
+              data['decimalLatitude']!, _decimalLatitudeMeta));
+    }
+    if (data.containsKey('decimalLongitude')) {
+      context.handle(
+          _decimalLongitudeMeta,
+          decimalLongitude.isAcceptableOrUnknown(
+              data['decimalLongitude']!, _decimalLongitudeMeta));
+    }
+    if (data.containsKey('elevationInMeter')) {
+      context.handle(
+          _elevationInMeterMeta,
+          elevationInMeter.isAcceptableOrUnknown(
+              data['elevationInMeter']!, _elevationInMeterMeta));
+    }
+    if (data.containsKey('minimumElevationInMeters')) {
+      context.handle(
+          _minimumElevationInMetersMeta,
+          minimumElevationInMeters.isAcceptableOrUnknown(
+              data['minimumElevationInMeters']!,
+              _minimumElevationInMetersMeta));
+    }
+    if (data.containsKey('maximumElevationInMeters')) {
+      context.handle(
+          _maximumElevationInMetersMeta,
+          maximumElevationInMeters.isAcceptableOrUnknown(
+              data['maximumElevationInMeters']!,
+              _maximumElevationInMetersMeta));
+    }
+    if (data.containsKey('datum')) {
+      context.handle(
+          _datumMeta, datum.isAcceptableOrUnknown(data['datum']!, _datumMeta));
+    }
+    if (data.containsKey('coordinateUncertaintyInMeters')) {
+      context.handle(
+          _coordinateUncertaintyInMetersMeta,
+          coordinateUncertaintyInMeters.isAcceptableOrUnknown(
+              data['coordinateUncertaintyInMeters']!,
+              _coordinateUncertaintyInMetersMeta));
+    }
+    if (data.containsKey('gpsUnit')) {
+      context.handle(_gpsUnitMeta,
+          gpsUnit.isAcceptableOrUnknown(data['gpsUnit']!, _gpsUnitMeta));
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+          _notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
+    }
     if (data.containsKey('siteID')) {
       context.handle(_siteIDMeta,
           siteID.isAcceptableOrUnknown(data['siteID']!, _siteIDMeta));
-    }
-    if (data.containsKey('projectUuid')) {
-      context.handle(
-          _projectUuidMeta,
-          projectUuid.isAcceptableOrUnknown(
-              data['projectUuid']!, _projectUuidMeta));
-    }
-    if (data.containsKey('leadStaffId')) {
-      context.handle(
-          _leadStaffIdMeta,
-          leadStaffId.isAcceptableOrUnknown(
-              data['leadStaffId']!, _leadStaffIdMeta));
-    }
-    if (data.containsKey('siteType')) {
-      context.handle(_siteTypeMeta,
-          siteType.isAcceptableOrUnknown(data['siteType']!, _siteTypeMeta));
-    }
-    if (data.containsKey('country')) {
-      context.handle(_countryMeta,
-          country.isAcceptableOrUnknown(data['country']!, _countryMeta));
-    }
-    if (data.containsKey('stateProvince')) {
-      context.handle(
-          _stateProvinceMeta,
-          stateProvince.isAcceptableOrUnknown(
-              data['stateProvince']!, _stateProvinceMeta));
-    }
-    if (data.containsKey('county')) {
-      context.handle(_countyMeta,
-          county.isAcceptableOrUnknown(data['county']!, _countyMeta));
-    }
-    if (data.containsKey('municipality')) {
-      context.handle(
-          _municipalityMeta,
-          municipality.isAcceptableOrUnknown(
-              data['municipality']!, _municipalityMeta));
-    }
-    if (data.containsKey('mediaID')) {
-      context.handle(_mediaIDMeta,
-          mediaID.isAcceptableOrUnknown(data['mediaID']!, _mediaIDMeta));
-    }
-    if (data.containsKey('locality')) {
-      context.handle(_localityMeta,
-          locality.isAcceptableOrUnknown(data['locality']!, _localityMeta));
-    }
-    if (data.containsKey('remark')) {
-      context.handle(_remarkMeta,
-          remark.isAcceptableOrUnknown(data['remark']!, _remarkMeta));
-    }
-    if (data.containsKey('habitatType')) {
-      context.handle(
-          _habitatTypeMeta,
-          habitatType.isAcceptableOrUnknown(
-              data['habitatType']!, _habitatTypeMeta));
-    }
-    if (data.containsKey('habitatCondition')) {
-      context.handle(
-          _habitatConditionMeta,
-          habitatCondition.isAcceptableOrUnknown(
-              data['habitatCondition']!, _habitatConditionMeta));
-    }
-    if (data.containsKey('habitatDescription')) {
-      context.handle(
-          _habitatDescriptionMeta,
-          habitatDescription.isAcceptableOrUnknown(
-              data['habitatDescription']!, _habitatDescriptionMeta));
     }
     return context;
   }
@@ -2374,52 +2585,40 @@ class Site extends Table with TableInfo<Site, SiteData> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  SiteData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  CoordinateData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return SiteData(
+    return CoordinateData(
       id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}id']),
+      decimalLatitude: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}decimalLatitude']),
+      decimalLongitude: attachedDatabase.typeMapping.read(
+          DriftSqlType.double, data['${effectivePrefix}decimalLongitude']),
+      elevationInMeter: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}elevationInMeter']),
+      minimumElevationInMeters: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}minimumElevationInMeters']),
+      maximumElevationInMeters: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}maximumElevationInMeters']),
+      datum: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}datum']),
+      coordinateUncertaintyInMeters: attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}coordinateUncertaintyInMeters']),
+      gpsUnit: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}gpsUnit']),
+      notes: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}notes']),
       siteID: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}siteID']),
-      projectUuid: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
-      leadStaffId: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}leadStaffId']),
-      siteType: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}siteType']),
-      country: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}country']),
-      stateProvince: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}stateProvince']),
-      county: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}county']),
-      municipality: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}municipality']),
-      mediaID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}mediaID']),
-      locality: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}locality']),
-      remark: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}remark']),
-      habitatType: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}habitatType']),
-      habitatCondition: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}habitatCondition']),
-      habitatDescription: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}habitatDescription']),
     );
   }
 
   @override
-  Site createAlias(String alias) {
-    return Site(attachedDatabase, alias);
+  Coordinate createAlias(String alias) {
+    return Coordinate(attachedDatabase, alias);
   }
 
-  @override
-  List<String> get customConstraints => const [
-        'FOREIGN KEY(mediaID)REFERENCES media(primaryId)',
-        'FOREIGN KEY(leadStaffId)REFERENCES personnel(uuid)'
-      ];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -2811,75 +3010,71 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
   }
 }
 
-class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
+class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Coordinate(this.attachedDatabase, [this._alias]);
+  CollEvent(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<String> id = GeneratedColumn<String>(
-      'id', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: 'UNIQUE PRIMARY KEY');
-  static const VerificationMeta _decimalLatitudeMeta =
-      const VerificationMeta('decimalLatitude');
-  late final GeneratedColumn<double> decimalLatitude = GeneratedColumn<double>(
-      'decimalLatitude', aliasedName, true,
-      type: DriftSqlType.double,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _decimalLongitudeMeta =
-      const VerificationMeta('decimalLongitude');
-  late final GeneratedColumn<double> decimalLongitude = GeneratedColumn<double>(
-      'decimalLongitude', aliasedName, true,
-      type: DriftSqlType.double,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _elevationInMeterMeta =
-      const VerificationMeta('elevationInMeter');
-  late final GeneratedColumn<int> elevationInMeter = GeneratedColumn<int>(
-      'elevationInMeter', aliasedName, true,
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _minimumElevationInMetersMeta =
-      const VerificationMeta('minimumElevationInMeters');
-  late final GeneratedColumn<int> minimumElevationInMeters =
-      GeneratedColumn<int>('minimumElevationInMeters', aliasedName, true,
-          type: DriftSqlType.int,
-          requiredDuringInsert: false,
-          $customConstraints: '');
-  static const VerificationMeta _maximumElevationInMetersMeta =
-      const VerificationMeta('maximumElevationInMeters');
-  late final GeneratedColumn<int> maximumElevationInMeters =
-      GeneratedColumn<int>('maximumElevationInMeters', aliasedName, true,
-          type: DriftSqlType.int,
-          requiredDuringInsert: false,
-          $customConstraints: '');
-  static const VerificationMeta _datumMeta = const VerificationMeta('datum');
-  late final GeneratedColumn<String> datum = GeneratedColumn<String>(
-      'datum', aliasedName, true,
+      $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
+  static const VerificationMeta _eventIDMeta =
+      const VerificationMeta('eventID');
+  late final GeneratedColumn<String> eventID = GeneratedColumn<String>(
+      'eventID', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _coordinateUncertaintyInMetersMeta =
-      const VerificationMeta('coordinateUncertaintyInMeters');
-  late final GeneratedColumn<int> coordinateUncertaintyInMeters =
-      GeneratedColumn<int>('coordinateUncertaintyInMeters', aliasedName, true,
-          type: DriftSqlType.int,
-          requiredDuringInsert: false,
-          $customConstraints: '');
-  static const VerificationMeta _gpsUnitMeta =
-      const VerificationMeta('gpsUnit');
-  late final GeneratedColumn<String> gpsUnit = GeneratedColumn<String>(
-      'gpsUnit', aliasedName, true,
+  static const VerificationMeta _projectUuidMeta =
+      const VerificationMeta('projectUuid');
+  late final GeneratedColumn<String> projectUuid = GeneratedColumn<String>(
+      'projectUuid', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
-  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
-      'notes', aliasedName, true,
+  static const VerificationMeta _startDateMeta =
+      const VerificationMeta('startDate');
+  late final GeneratedColumn<String> startDate = GeneratedColumn<String>(
+      'startDate', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _startTimeMeta =
+      const VerificationMeta('startTime');
+  late final GeneratedColumn<String> startTime = GeneratedColumn<String>(
+      'startTime', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _endDateMeta =
+      const VerificationMeta('endDate');
+  late final GeneratedColumn<String> endDate = GeneratedColumn<String>(
+      'endDate', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _endTimeMeta =
+      const VerificationMeta('endTime');
+  late final GeneratedColumn<String> endTime = GeneratedColumn<String>(
+      'endTime', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _primaryCollMethodMeta =
+      const VerificationMeta('primaryCollMethod');
+  late final GeneratedColumn<String> primaryCollMethod =
+      GeneratedColumn<String>('primaryCollMethod', aliasedName, true,
+          type: DriftSqlType.string,
+          requiredDuringInsert: false,
+          $customConstraints: '');
+  static const VerificationMeta _collMethodNotesMeta =
+      const VerificationMeta('collMethodNotes');
+  late final GeneratedColumn<String> collMethodNotes = GeneratedColumn<String>(
+      'collMethodNotes', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -2892,79 +3087,65 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
   @override
   List<GeneratedColumn> get $columns => [
         id,
-        decimalLatitude,
-        decimalLongitude,
-        elevationInMeter,
-        minimumElevationInMeters,
-        maximumElevationInMeters,
-        datum,
-        coordinateUncertaintyInMeters,
-        gpsUnit,
-        notes,
+        eventID,
+        projectUuid,
+        startDate,
+        startTime,
+        endDate,
+        endTime,
+        primaryCollMethod,
+        collMethodNotes,
         siteID
       ];
   @override
-  String get aliasedName => _alias ?? 'coordinate';
+  String get aliasedName => _alias ?? 'collEvent';
   @override
-  String get actualTableName => 'coordinate';
+  String get actualTableName => 'collEvent';
   @override
-  VerificationContext validateIntegrity(Insertable<CoordinateData> instance,
+  VerificationContext validateIntegrity(Insertable<CollEventData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('decimalLatitude')) {
-      context.handle(
-          _decimalLatitudeMeta,
-          decimalLatitude.isAcceptableOrUnknown(
-              data['decimalLatitude']!, _decimalLatitudeMeta));
+    if (data.containsKey('eventID')) {
+      context.handle(_eventIDMeta,
+          eventID.isAcceptableOrUnknown(data['eventID']!, _eventIDMeta));
     }
-    if (data.containsKey('decimalLongitude')) {
+    if (data.containsKey('projectUuid')) {
       context.handle(
-          _decimalLongitudeMeta,
-          decimalLongitude.isAcceptableOrUnknown(
-              data['decimalLongitude']!, _decimalLongitudeMeta));
+          _projectUuidMeta,
+          projectUuid.isAcceptableOrUnknown(
+              data['projectUuid']!, _projectUuidMeta));
     }
-    if (data.containsKey('elevationInMeter')) {
+    if (data.containsKey('startDate')) {
+      context.handle(_startDateMeta,
+          startDate.isAcceptableOrUnknown(data['startDate']!, _startDateMeta));
+    }
+    if (data.containsKey('startTime')) {
+      context.handle(_startTimeMeta,
+          startTime.isAcceptableOrUnknown(data['startTime']!, _startTimeMeta));
+    }
+    if (data.containsKey('endDate')) {
+      context.handle(_endDateMeta,
+          endDate.isAcceptableOrUnknown(data['endDate']!, _endDateMeta));
+    }
+    if (data.containsKey('endTime')) {
+      context.handle(_endTimeMeta,
+          endTime.isAcceptableOrUnknown(data['endTime']!, _endTimeMeta));
+    }
+    if (data.containsKey('primaryCollMethod')) {
       context.handle(
-          _elevationInMeterMeta,
-          elevationInMeter.isAcceptableOrUnknown(
-              data['elevationInMeter']!, _elevationInMeterMeta));
+          _primaryCollMethodMeta,
+          primaryCollMethod.isAcceptableOrUnknown(
+              data['primaryCollMethod']!, _primaryCollMethodMeta));
     }
-    if (data.containsKey('minimumElevationInMeters')) {
+    if (data.containsKey('collMethodNotes')) {
       context.handle(
-          _minimumElevationInMetersMeta,
-          minimumElevationInMeters.isAcceptableOrUnknown(
-              data['minimumElevationInMeters']!,
-              _minimumElevationInMetersMeta));
-    }
-    if (data.containsKey('maximumElevationInMeters')) {
-      context.handle(
-          _maximumElevationInMetersMeta,
-          maximumElevationInMeters.isAcceptableOrUnknown(
-              data['maximumElevationInMeters']!,
-              _maximumElevationInMetersMeta));
-    }
-    if (data.containsKey('datum')) {
-      context.handle(
-          _datumMeta, datum.isAcceptableOrUnknown(data['datum']!, _datumMeta));
-    }
-    if (data.containsKey('coordinateUncertaintyInMeters')) {
-      context.handle(
-          _coordinateUncertaintyInMetersMeta,
-          coordinateUncertaintyInMeters.isAcceptableOrUnknown(
-              data['coordinateUncertaintyInMeters']!,
-              _coordinateUncertaintyInMetersMeta));
-    }
-    if (data.containsKey('gpsUnit')) {
-      context.handle(_gpsUnitMeta,
-          gpsUnit.isAcceptableOrUnknown(data['gpsUnit']!, _gpsUnitMeta));
-    }
-    if (data.containsKey('notes')) {
-      context.handle(
-          _notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
+          _collMethodNotesMeta,
+          collMethodNotes.isAcceptableOrUnknown(
+              data['collMethodNotes']!, _collMethodNotesMeta));
     }
     if (data.containsKey('siteID')) {
       context.handle(_siteIDMeta,
@@ -2976,42 +3157,40 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  CoordinateData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  CollEventData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return CoordinateData(
+    return CollEventData(
       id: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}id']),
-      decimalLatitude: attachedDatabase.typeMapping
-          .read(DriftSqlType.double, data['${effectivePrefix}decimalLatitude']),
-      decimalLongitude: attachedDatabase.typeMapping.read(
-          DriftSqlType.double, data['${effectivePrefix}decimalLongitude']),
-      elevationInMeter: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}elevationInMeter']),
-      minimumElevationInMeters: attachedDatabase.typeMapping.read(
-          DriftSqlType.int, data['${effectivePrefix}minimumElevationInMeters']),
-      maximumElevationInMeters: attachedDatabase.typeMapping.read(
-          DriftSqlType.int, data['${effectivePrefix}maximumElevationInMeters']),
-      datum: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}datum']),
-      coordinateUncertaintyInMeters: attachedDatabase.typeMapping.read(
-          DriftSqlType.int,
-          data['${effectivePrefix}coordinateUncertaintyInMeters']),
-      gpsUnit: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}gpsUnit']),
-      notes: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}notes']),
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      eventID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}eventID']),
+      projectUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
+      startDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}startDate']),
+      startTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}startTime']),
+      endDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}endDate']),
+      endTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}endTime']),
+      primaryCollMethod: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}primaryCollMethod']),
+      collMethodNotes: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}collMethodNotes']),
       siteID: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}siteID']),
     );
   }
 
   @override
-  Coordinate createAlias(String alias) {
-    return Coordinate(attachedDatabase, alias);
+  CollEvent createAlias(String alias) {
+    return CollEvent(attachedDatabase, alias);
   }
 
   @override
-  List<String> get customConstraints => const [];
+  List<String> get customConstraints =>
+      const ['FOREIGN KEY(projectUuid)REFERENCES project(uuid)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -3341,11 +3520,12 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
   }
 }
 
-class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
+class CollectingPersonnel extends Table
+    with TableInfo<CollectingPersonnel, CollectingPersonnelData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  CollEvent(this.attachedDatabase, [this._alias]);
+  CollectingPersonnel(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
@@ -3353,134 +3533,43 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
-  static const VerificationMeta _eventIDMeta =
-      const VerificationMeta('eventID');
-  late final GeneratedColumn<String> eventID = GeneratedColumn<String>(
-      'eventID', aliasedName, true,
+  static const VerificationMeta _personnelIdMeta =
+      const VerificationMeta('personnelId');
+  late final GeneratedColumn<String> personnelId = GeneratedColumn<String>(
+      'personnelId', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _projectUuidMeta =
-      const VerificationMeta('projectUuid');
-  late final GeneratedColumn<String> projectUuid = GeneratedColumn<String>(
-      'projectUuid', aliasedName, true,
+  static const VerificationMeta _roleMeta = const VerificationMeta('role');
+  late final GeneratedColumn<String> role = GeneratedColumn<String>(
+      'role', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _startDateMeta =
-      const VerificationMeta('startDate');
-  late final GeneratedColumn<String> startDate = GeneratedColumn<String>(
-      'startDate', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _startTimeMeta =
-      const VerificationMeta('startTime');
-  late final GeneratedColumn<String> startTime = GeneratedColumn<String>(
-      'startTime', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _endDateMeta =
-      const VerificationMeta('endDate');
-  late final GeneratedColumn<String> endDate = GeneratedColumn<String>(
-      'endDate', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _endTimeMeta =
-      const VerificationMeta('endTime');
-  late final GeneratedColumn<String> endTime = GeneratedColumn<String>(
-      'endTime', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _primaryCollMethodMeta =
-      const VerificationMeta('primaryCollMethod');
-  late final GeneratedColumn<String> primaryCollMethod =
-      GeneratedColumn<String>('primaryCollMethod', aliasedName, true,
-          type: DriftSqlType.string,
-          requiredDuringInsert: false,
-          $customConstraints: '');
-  static const VerificationMeta _collMethodNotesMeta =
-      const VerificationMeta('collMethodNotes');
-  late final GeneratedColumn<String> collMethodNotes = GeneratedColumn<String>(
-      'collMethodNotes', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _siteIDMeta = const VerificationMeta('siteID');
-  late final GeneratedColumn<String> siteID = GeneratedColumn<String>(
-      'siteID', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: 'REFERENCES site(siteID)');
   @override
-  List<GeneratedColumn> get $columns => [
-        id,
-        eventID,
-        projectUuid,
-        startDate,
-        startTime,
-        endDate,
-        endTime,
-        primaryCollMethod,
-        collMethodNotes,
-        siteID
-      ];
+  List<GeneratedColumn> get $columns => [id, personnelId, role];
   @override
-  String get aliasedName => _alias ?? 'collEvent';
+  String get aliasedName => _alias ?? 'collectingPersonnel';
   @override
-  String get actualTableName => 'collEvent';
+  String get actualTableName => 'collectingPersonnel';
   @override
-  VerificationContext validateIntegrity(Insertable<CollEventData> instance,
+  VerificationContext validateIntegrity(
+      Insertable<CollectingPersonnelData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('eventID')) {
-      context.handle(_eventIDMeta,
-          eventID.isAcceptableOrUnknown(data['eventID']!, _eventIDMeta));
-    }
-    if (data.containsKey('projectUuid')) {
+    if (data.containsKey('personnelId')) {
       context.handle(
-          _projectUuidMeta,
-          projectUuid.isAcceptableOrUnknown(
-              data['projectUuid']!, _projectUuidMeta));
+          _personnelIdMeta,
+          personnelId.isAcceptableOrUnknown(
+              data['personnelId']!, _personnelIdMeta));
     }
-    if (data.containsKey('startDate')) {
-      context.handle(_startDateMeta,
-          startDate.isAcceptableOrUnknown(data['startDate']!, _startDateMeta));
-    }
-    if (data.containsKey('startTime')) {
-      context.handle(_startTimeMeta,
-          startTime.isAcceptableOrUnknown(data['startTime']!, _startTimeMeta));
-    }
-    if (data.containsKey('endDate')) {
-      context.handle(_endDateMeta,
-          endDate.isAcceptableOrUnknown(data['endDate']!, _endDateMeta));
-    }
-    if (data.containsKey('endTime')) {
-      context.handle(_endTimeMeta,
-          endTime.isAcceptableOrUnknown(data['endTime']!, _endTimeMeta));
-    }
-    if (data.containsKey('primaryCollMethod')) {
+    if (data.containsKey('role')) {
       context.handle(
-          _primaryCollMethodMeta,
-          primaryCollMethod.isAcceptableOrUnknown(
-              data['primaryCollMethod']!, _primaryCollMethodMeta));
-    }
-    if (data.containsKey('collMethodNotes')) {
-      context.handle(
-          _collMethodNotesMeta,
-          collMethodNotes.isAcceptableOrUnknown(
-              data['collMethodNotes']!, _collMethodNotesMeta));
-    }
-    if (data.containsKey('siteID')) {
-      context.handle(_siteIDMeta,
-          siteID.isAcceptableOrUnknown(data['siteID']!, _siteIDMeta));
+          _roleMeta, role.isAcceptableOrUnknown(data['role']!, _roleMeta));
     }
     return context;
   }
@@ -3488,40 +3577,27 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  CollEventData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  CollectingPersonnelData map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return CollEventData(
+    return CollectingPersonnelData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      eventID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}eventID']),
-      projectUuid: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
-      startDate: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}startDate']),
-      startTime: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}startTime']),
-      endDate: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}endDate']),
-      endTime: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}endTime']),
-      primaryCollMethod: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}primaryCollMethod']),
-      collMethodNotes: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}collMethodNotes']),
-      siteID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}siteID']),
+      personnelId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}personnelId']),
+      role: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}role']),
     );
   }
 
   @override
-  CollEvent createAlias(String alias) {
-    return CollEvent(attachedDatabase, alias);
+  CollectingPersonnel createAlias(String alias) {
+    return CollectingPersonnel(attachedDatabase, alias);
   }
 
   @override
   List<String> get customConstraints =>
-      const ['FOREIGN KEY(projectUuid)REFERENCES project(uuid)'];
+      const ['FOREIGN KEY(personnelId)REFERENCES personnel(uuid)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -3667,12 +3743,11 @@ class CollectingPersonnelCompanion
   }
 }
 
-class CollectingPersonnel extends Table
-    with TableInfo<CollectingPersonnel, CollectingPersonnelData> {
+class CollEffort extends Table with TableInfo<CollEffort, CollEffortData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  CollectingPersonnel(this.attachedDatabase, [this._alias]);
+  CollEffort(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
@@ -3680,43 +3755,84 @@ class CollectingPersonnel extends Table
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
-  static const VerificationMeta _personnelIdMeta =
-      const VerificationMeta('personnelId');
-  late final GeneratedColumn<String> personnelId = GeneratedColumn<String>(
-      'personnelId', aliasedName, true,
+  static const VerificationMeta _eventIDMeta =
+      const VerificationMeta('eventID');
+  late final GeneratedColumn<String> eventID = GeneratedColumn<String>(
+      'eventID', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _roleMeta = const VerificationMeta('role');
-  late final GeneratedColumn<String> role = GeneratedColumn<String>(
-      'role', aliasedName, true,
+  static const VerificationMeta _projectUuidMeta =
+      const VerificationMeta('projectUuid');
+  late final GeneratedColumn<String> projectUuid = GeneratedColumn<String>(
+      'projectUuid', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+      'type', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _brandMeta = const VerificationMeta('brand');
+  late final GeneratedColumn<String> brand = GeneratedColumn<String>(
+      'brand', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _countMeta = const VerificationMeta('count');
+  late final GeneratedColumn<int> count = GeneratedColumn<int>(
+      'count', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _sizeMeta = const VerificationMeta('size');
+  late final GeneratedColumn<String> size = GeneratedColumn<String>(
+      'size', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
-  List<GeneratedColumn> get $columns => [id, personnelId, role];
+  List<GeneratedColumn> get $columns =>
+      [id, eventID, projectUuid, type, brand, count, size];
   @override
-  String get aliasedName => _alias ?? 'collectingPersonnel';
+  String get aliasedName => _alias ?? 'collEffort';
   @override
-  String get actualTableName => 'collectingPersonnel';
+  String get actualTableName => 'collEffort';
   @override
-  VerificationContext validateIntegrity(
-      Insertable<CollectingPersonnelData> instance,
+  VerificationContext validateIntegrity(Insertable<CollEffortData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('personnelId')) {
-      context.handle(
-          _personnelIdMeta,
-          personnelId.isAcceptableOrUnknown(
-              data['personnelId']!, _personnelIdMeta));
+    if (data.containsKey('eventID')) {
+      context.handle(_eventIDMeta,
+          eventID.isAcceptableOrUnknown(data['eventID']!, _eventIDMeta));
     }
-    if (data.containsKey('role')) {
+    if (data.containsKey('projectUuid')) {
       context.handle(
-          _roleMeta, role.isAcceptableOrUnknown(data['role']!, _roleMeta));
+          _projectUuidMeta,
+          projectUuid.isAcceptableOrUnknown(
+              data['projectUuid']!, _projectUuidMeta));
+    }
+    if (data.containsKey('type')) {
+      context.handle(
+          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
+    }
+    if (data.containsKey('brand')) {
+      context.handle(
+          _brandMeta, brand.isAcceptableOrUnknown(data['brand']!, _brandMeta));
+    }
+    if (data.containsKey('count')) {
+      context.handle(
+          _countMeta, count.isAcceptableOrUnknown(data['count']!, _countMeta));
+    }
+    if (data.containsKey('size')) {
+      context.handle(
+          _sizeMeta, size.isAcceptableOrUnknown(data['size']!, _sizeMeta));
     }
     return context;
   }
@@ -3724,27 +3840,36 @@ class CollectingPersonnel extends Table
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  CollectingPersonnelData map(Map<String, dynamic> data,
-      {String? tablePrefix}) {
+  CollEffortData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return CollectingPersonnelData(
+    return CollEffortData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      personnelId: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}personnelId']),
-      role: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}role']),
+      eventID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}eventID']),
+      projectUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
+      type: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}type']),
+      brand: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}brand']),
+      count: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}count']),
+      size: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}size']),
     );
   }
 
   @override
-  CollectingPersonnel createAlias(String alias) {
-    return CollectingPersonnel(attachedDatabase, alias);
+  CollEffort createAlias(String alias) {
+    return CollEffort(attachedDatabase, alias);
   }
 
   @override
-  List<String> get customConstraints =>
-      const ['FOREIGN KEY(personnelId)REFERENCES personnel(uuid)'];
+  List<String> get customConstraints => const [
+        'FOREIGN KEY(eventID)REFERENCES collEvent(eventID)',
+        'FOREIGN KEY(projectUuid)REFERENCES project(uuid)'
+      ];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -3989,11 +4114,11 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
   }
 }
 
-class CollEffort extends Table with TableInfo<CollEffort, CollEffortData> {
+class Narrative extends Table with TableInfo<Narrative, NarrativeData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  CollEffort(this.attachedDatabase, [this._alias]);
+  Narrative(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
@@ -4001,13 +4126,6 @@ class CollEffort extends Table with TableInfo<CollEffort, CollEffortData> {
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
-  static const VerificationMeta _eventIDMeta =
-      const VerificationMeta('eventID');
-  late final GeneratedColumn<String> eventID = GeneratedColumn<String>(
-      'eventID', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
   static const VerificationMeta _projectUuidMeta =
       const VerificationMeta('projectUuid');
   late final GeneratedColumn<String> projectUuid = GeneratedColumn<String>(
@@ -4015,48 +4133,46 @@ class CollEffort extends Table with TableInfo<CollEffort, CollEffortData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _typeMeta = const VerificationMeta('type');
-  late final GeneratedColumn<String> type = GeneratedColumn<String>(
-      'type', aliasedName, true,
+  static const VerificationMeta _dateMeta = const VerificationMeta('date');
+  late final GeneratedColumn<String> date = GeneratedColumn<String>(
+      'date', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _brandMeta = const VerificationMeta('brand');
-  late final GeneratedColumn<String> brand = GeneratedColumn<String>(
-      'brand', aliasedName, true,
+  static const VerificationMeta _siteIDMeta = const VerificationMeta('siteID');
+  late final GeneratedColumn<String> siteID = GeneratedColumn<String>(
+      'siteID', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _countMeta = const VerificationMeta('count');
-  late final GeneratedColumn<int> count = GeneratedColumn<int>(
-      'count', aliasedName, true,
+  static const VerificationMeta _narrativeMeta =
+      const VerificationMeta('narrative');
+  late final GeneratedColumn<String> narrative = GeneratedColumn<String>(
+      'narrative', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _mediaIDMeta =
+      const VerificationMeta('mediaID');
+  late final GeneratedColumn<int> mediaID = GeneratedColumn<int>(
+      'mediaID', aliasedName, true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _sizeMeta = const VerificationMeta('size');
-  late final GeneratedColumn<String> size = GeneratedColumn<String>(
-      'size', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
+      $customConstraints: 'REFERENCES media(primaryId)');
   @override
   List<GeneratedColumn> get $columns =>
-      [id, eventID, projectUuid, type, brand, count, size];
+      [id, projectUuid, date, siteID, narrative, mediaID];
   @override
-  String get aliasedName => _alias ?? 'collEffort';
+  String get aliasedName => _alias ?? 'narrative';
   @override
-  String get actualTableName => 'collEffort';
+  String get actualTableName => 'narrative';
   @override
-  VerificationContext validateIntegrity(Insertable<CollEffortData> instance,
+  VerificationContext validateIntegrity(Insertable<NarrativeData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('eventID')) {
-      context.handle(_eventIDMeta,
-          eventID.isAcceptableOrUnknown(data['eventID']!, _eventIDMeta));
     }
     if (data.containsKey('projectUuid')) {
       context.handle(
@@ -4064,21 +4180,21 @@ class CollEffort extends Table with TableInfo<CollEffort, CollEffortData> {
           projectUuid.isAcceptableOrUnknown(
               data['projectUuid']!, _projectUuidMeta));
     }
-    if (data.containsKey('type')) {
+    if (data.containsKey('date')) {
       context.handle(
-          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
+          _dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
     }
-    if (data.containsKey('brand')) {
-      context.handle(
-          _brandMeta, brand.isAcceptableOrUnknown(data['brand']!, _brandMeta));
+    if (data.containsKey('siteID')) {
+      context.handle(_siteIDMeta,
+          siteID.isAcceptableOrUnknown(data['siteID']!, _siteIDMeta));
     }
-    if (data.containsKey('count')) {
-      context.handle(
-          _countMeta, count.isAcceptableOrUnknown(data['count']!, _countMeta));
+    if (data.containsKey('narrative')) {
+      context.handle(_narrativeMeta,
+          narrative.isAcceptableOrUnknown(data['narrative']!, _narrativeMeta));
     }
-    if (data.containsKey('size')) {
-      context.handle(
-          _sizeMeta, size.isAcceptableOrUnknown(data['size']!, _sizeMeta));
+    if (data.containsKey('mediaID')) {
+      context.handle(_mediaIDMeta,
+          mediaID.isAcceptableOrUnknown(data['mediaID']!, _mediaIDMeta));
     }
     return context;
   }
@@ -4086,35 +4202,33 @@ class CollEffort extends Table with TableInfo<CollEffort, CollEffortData> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  CollEffortData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  NarrativeData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return CollEffortData(
+    return NarrativeData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      eventID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}eventID']),
       projectUuid: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
-      type: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}type']),
-      brand: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}brand']),
-      count: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}count']),
-      size: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}size']),
+      date: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}date']),
+      siteID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}siteID']),
+      narrative: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}narrative']),
+      mediaID: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}mediaID']),
     );
   }
 
   @override
-  CollEffort createAlias(String alias) {
-    return CollEffort(attachedDatabase, alias);
+  Narrative createAlias(String alias) {
+    return Narrative(attachedDatabase, alias);
   }
 
   @override
   List<String> get customConstraints => const [
-        'FOREIGN KEY(eventID)REFERENCES collEvent(eventID)',
-        'FOREIGN KEY(projectUuid)REFERENCES project(uuid)'
+        'FOREIGN KEY(projectUuid)REFERENCES project(uuid)',
+        'FOREIGN KEY(siteID)REFERENCES site(siteID)'
       ];
   @override
   bool get dontWriteConstraints => true;
@@ -4338,122 +4452,124 @@ class NarrativeCompanion extends UpdateCompanion<NarrativeData> {
   }
 }
 
-class Narrative extends Table with TableInfo<Narrative, NarrativeData> {
+class AssociatedData extends Table
+    with TableInfo<AssociatedData, AssociatedDataData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Narrative(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
+  AssociatedData(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _primaryIdMeta =
+      const VerificationMeta('primaryId');
+  late final GeneratedColumn<int> primaryId = GeneratedColumn<int>(
+      'primaryId', aliasedName, true,
       hasAutoIncrement: true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
-      $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
-  static const VerificationMeta _projectUuidMeta =
-      const VerificationMeta('projectUuid');
-  late final GeneratedColumn<String> projectUuid = GeneratedColumn<String>(
-      'projectUuid', aliasedName, true,
+      $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  static const VerificationMeta _secondaryIdMeta =
+      const VerificationMeta('secondaryId');
+  late final GeneratedColumn<String> secondaryId = GeneratedColumn<String>(
+      'secondaryId', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _dateMeta = const VerificationMeta('date');
-  late final GeneratedColumn<String> date = GeneratedColumn<String>(
-      'date', aliasedName, true,
+  static const VerificationMeta _secondaryIdRefMeta =
+      const VerificationMeta('secondaryIdRef');
+  late final GeneratedColumn<Uint8List> secondaryIdRef =
+      GeneratedColumn<Uint8List>('secondaryIdRef', aliasedName, true,
+          type: DriftSqlType.blob,
+          requiredDuringInsert: false,
+          $customConstraints: '');
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  late final GeneratedColumn<Uint8List> type = GeneratedColumn<Uint8List>(
+      'type', aliasedName, true,
+      type: DriftSqlType.blob,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+      'description', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _siteIDMeta = const VerificationMeta('siteID');
-  late final GeneratedColumn<String> siteID = GeneratedColumn<String>(
-      'siteID', aliasedName, true,
+  static const VerificationMeta _fileIdMeta = const VerificationMeta('fileId');
+  late final GeneratedColumn<String> fileId = GeneratedColumn<String>(
+      'fileId', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _narrativeMeta =
-      const VerificationMeta('narrative');
-  late final GeneratedColumn<String> narrative = GeneratedColumn<String>(
-      'narrative', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _mediaIDMeta =
-      const VerificationMeta('mediaID');
-  late final GeneratedColumn<int> mediaID = GeneratedColumn<int>(
-      'mediaID', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: 'REFERENCES media(primaryId)');
   @override
   List<GeneratedColumn> get $columns =>
-      [id, projectUuid, date, siteID, narrative, mediaID];
+      [primaryId, secondaryId, secondaryIdRef, type, description, fileId];
   @override
-  String get aliasedName => _alias ?? 'narrative';
+  String get aliasedName => _alias ?? 'associatedData';
   @override
-  String get actualTableName => 'narrative';
+  String get actualTableName => 'associatedData';
   @override
-  VerificationContext validateIntegrity(Insertable<NarrativeData> instance,
+  VerificationContext validateIntegrity(Insertable<AssociatedDataData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    if (data.containsKey('primaryId')) {
+      context.handle(_primaryIdMeta,
+          primaryId.isAcceptableOrUnknown(data['primaryId']!, _primaryIdMeta));
     }
-    if (data.containsKey('projectUuid')) {
+    if (data.containsKey('secondaryId')) {
       context.handle(
-          _projectUuidMeta,
-          projectUuid.isAcceptableOrUnknown(
-              data['projectUuid']!, _projectUuidMeta));
+          _secondaryIdMeta,
+          secondaryId.isAcceptableOrUnknown(
+              data['secondaryId']!, _secondaryIdMeta));
     }
-    if (data.containsKey('date')) {
+    if (data.containsKey('secondaryIdRef')) {
       context.handle(
-          _dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
+          _secondaryIdRefMeta,
+          secondaryIdRef.isAcceptableOrUnknown(
+              data['secondaryIdRef']!, _secondaryIdRefMeta));
     }
-    if (data.containsKey('siteID')) {
-      context.handle(_siteIDMeta,
-          siteID.isAcceptableOrUnknown(data['siteID']!, _siteIDMeta));
+    if (data.containsKey('type')) {
+      context.handle(
+          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
     }
-    if (data.containsKey('narrative')) {
-      context.handle(_narrativeMeta,
-          narrative.isAcceptableOrUnknown(data['narrative']!, _narrativeMeta));
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description']!, _descriptionMeta));
     }
-    if (data.containsKey('mediaID')) {
-      context.handle(_mediaIDMeta,
-          mediaID.isAcceptableOrUnknown(data['mediaID']!, _mediaIDMeta));
+    if (data.containsKey('fileId')) {
+      context.handle(_fileIdMeta,
+          fileId.isAcceptableOrUnknown(data['fileId']!, _fileIdMeta));
     }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => {primaryId};
   @override
-  NarrativeData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  AssociatedDataData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return NarrativeData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      projectUuid: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
-      date: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}date']),
-      siteID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}siteID']),
-      narrative: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}narrative']),
-      mediaID: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}mediaID']),
+    return AssociatedDataData(
+      primaryId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}primaryId']),
+      secondaryId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}secondaryId']),
+      secondaryIdRef: attachedDatabase.typeMapping
+          .read(DriftSqlType.blob, data['${effectivePrefix}secondaryIdRef']),
+      type: attachedDatabase.typeMapping
+          .read(DriftSqlType.blob, data['${effectivePrefix}type']),
+      description: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}description']),
+      fileId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}fileId']),
     );
   }
 
   @override
-  Narrative createAlias(String alias) {
-    return Narrative(attachedDatabase, alias);
+  AssociatedData createAlias(String alias) {
+    return AssociatedData(attachedDatabase, alias);
   }
 
-  @override
-  List<String> get customConstraints => const [
-        'FOREIGN KEY(projectUuid)REFERENCES project(uuid)',
-        'FOREIGN KEY(siteID)REFERENCES site(siteID)'
-      ];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -4688,126 +4804,75 @@ class AssociatedDataCompanion extends UpdateCompanion<AssociatedDataData> {
   }
 }
 
-class AssociatedData extends Table
-    with TableInfo<AssociatedData, AssociatedDataData> {
+class PersonnelList extends Table
+    with TableInfo<PersonnelList, PersonnelListData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  AssociatedData(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _primaryIdMeta =
-      const VerificationMeta('primaryId');
-  late final GeneratedColumn<int> primaryId = GeneratedColumn<int>(
-      'primaryId', aliasedName, true,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  static const VerificationMeta _secondaryIdMeta =
-      const VerificationMeta('secondaryId');
-  late final GeneratedColumn<String> secondaryId = GeneratedColumn<String>(
-      'secondaryId', aliasedName, true,
+  PersonnelList(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _projectUuidMeta =
+      const VerificationMeta('projectUuid');
+  late final GeneratedColumn<String> projectUuid = GeneratedColumn<String>(
+      'projectUuid', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _secondaryIdRefMeta =
-      const VerificationMeta('secondaryIdRef');
-  late final GeneratedColumn<Uint8List> secondaryIdRef =
-      GeneratedColumn<Uint8List>('secondaryIdRef', aliasedName, true,
-          type: DriftSqlType.blob,
-          requiredDuringInsert: false,
-          $customConstraints: '');
-  static const VerificationMeta _typeMeta = const VerificationMeta('type');
-  late final GeneratedColumn<Uint8List> type = GeneratedColumn<Uint8List>(
-      'type', aliasedName, true,
-      type: DriftSqlType.blob,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _descriptionMeta =
-      const VerificationMeta('description');
-  late final GeneratedColumn<String> description = GeneratedColumn<String>(
-      'description', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _fileIdMeta = const VerificationMeta('fileId');
-  late final GeneratedColumn<String> fileId = GeneratedColumn<String>(
-      'fileId', aliasedName, true,
+  static const VerificationMeta _personnelUuidMeta =
+      const VerificationMeta('personnelUuid');
+  late final GeneratedColumn<String> personnelUuid = GeneratedColumn<String>(
+      'personnelUuid', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
-  List<GeneratedColumn> get $columns =>
-      [primaryId, secondaryId, secondaryIdRef, type, description, fileId];
+  List<GeneratedColumn> get $columns => [projectUuid, personnelUuid];
   @override
-  String get aliasedName => _alias ?? 'associatedData';
+  String get aliasedName => _alias ?? 'personnelList';
   @override
-  String get actualTableName => 'associatedData';
+  String get actualTableName => 'personnelList';
   @override
-  VerificationContext validateIntegrity(Insertable<AssociatedDataData> instance,
+  VerificationContext validateIntegrity(Insertable<PersonnelListData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('primaryId')) {
-      context.handle(_primaryIdMeta,
-          primaryId.isAcceptableOrUnknown(data['primaryId']!, _primaryIdMeta));
-    }
-    if (data.containsKey('secondaryId')) {
+    if (data.containsKey('projectUuid')) {
       context.handle(
-          _secondaryIdMeta,
-          secondaryId.isAcceptableOrUnknown(
-              data['secondaryId']!, _secondaryIdMeta));
+          _projectUuidMeta,
+          projectUuid.isAcceptableOrUnknown(
+              data['projectUuid']!, _projectUuidMeta));
     }
-    if (data.containsKey('secondaryIdRef')) {
+    if (data.containsKey('personnelUuid')) {
       context.handle(
-          _secondaryIdRefMeta,
-          secondaryIdRef.isAcceptableOrUnknown(
-              data['secondaryIdRef']!, _secondaryIdRefMeta));
-    }
-    if (data.containsKey('type')) {
-      context.handle(
-          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
-    }
-    if (data.containsKey('description')) {
-      context.handle(
-          _descriptionMeta,
-          description.isAcceptableOrUnknown(
-              data['description']!, _descriptionMeta));
-    }
-    if (data.containsKey('fileId')) {
-      context.handle(_fileIdMeta,
-          fileId.isAcceptableOrUnknown(data['fileId']!, _fileIdMeta));
+          _personnelUuidMeta,
+          personnelUuid.isAcceptableOrUnknown(
+              data['personnelUuid']!, _personnelUuidMeta));
     }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {primaryId};
+  Set<GeneratedColumn> get $primaryKey => const {};
   @override
-  AssociatedDataData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  PersonnelListData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return AssociatedDataData(
-      primaryId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}primaryId']),
-      secondaryId: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}secondaryId']),
-      secondaryIdRef: attachedDatabase.typeMapping
-          .read(DriftSqlType.blob, data['${effectivePrefix}secondaryIdRef']),
-      type: attachedDatabase.typeMapping
-          .read(DriftSqlType.blob, data['${effectivePrefix}type']),
-      description: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}description']),
-      fileId: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}fileId']),
+    return PersonnelListData(
+      projectUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
+      personnelUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}personnelUuid']),
     );
   }
 
   @override
-  AssociatedData createAlias(String alias) {
-    return AssociatedData(attachedDatabase, alias);
+  PersonnelList createAlias(String alias) {
+    return PersonnelList(attachedDatabase, alias);
   }
 
   @override
-  List<String> get customConstraints => const [];
+  List<String> get customConstraints => const [
+        'FOREIGN KEY(projectUuid)REFERENCES project(uuid)',
+        'FOREIGN KEY(personnelUuid)REFERENCES personnel(uuid)'
+      ];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -4935,12 +5000,17 @@ class PersonnelListCompanion extends UpdateCompanion<PersonnelListData> {
   }
 }
 
-class PersonnelList extends Table
-    with TableInfo<PersonnelList, PersonnelListData> {
+class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  PersonnelList(this.attachedDatabase, [this._alias]);
+  Specimen(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
+      'uuid', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'UNIQUE NOT NULL PRIMARY KEY');
   static const VerificationMeta _projectUuidMeta =
       const VerificationMeta('projectUuid');
   late final GeneratedColumn<String> projectUuid = GeneratedColumn<String>(
@@ -4948,61 +5018,240 @@ class PersonnelList extends Table
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _personnelUuidMeta =
-      const VerificationMeta('personnelUuid');
-  late final GeneratedColumn<String> personnelUuid = GeneratedColumn<String>(
-      'personnelUuid', aliasedName, true,
+  static const VerificationMeta _speciesIDMeta =
+      const VerificationMeta('speciesID');
+  late final GeneratedColumn<int> speciesID = GeneratedColumn<int>(
+      'speciesID', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _taxonGroupMeta =
+      const VerificationMeta('taxonGroup');
+  late final GeneratedColumn<String> taxonGroup = GeneratedColumn<String>(
+      'taxonGroup', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _conditionMeta =
+      const VerificationMeta('condition');
+  late final GeneratedColumn<String> condition = GeneratedColumn<String>(
+      'condition', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _prepDateMeta =
+      const VerificationMeta('prepDate');
+  late final GeneratedColumn<String> prepDate = GeneratedColumn<String>(
+      'prepDate', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _prepTimeMeta =
+      const VerificationMeta('prepTime');
+  late final GeneratedColumn<String> prepTime = GeneratedColumn<String>(
+      'prepTime', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _captureDateMeta =
+      const VerificationMeta('captureDate');
+  late final GeneratedColumn<String> captureDate = GeneratedColumn<String>(
+      'captureDate', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _captureTimeMeta =
+      const VerificationMeta('captureTime');
+  late final GeneratedColumn<String> captureTime = GeneratedColumn<String>(
+      'captureTime', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _trapTypeMeta =
+      const VerificationMeta('trapType');
+  late final GeneratedColumn<String> trapType = GeneratedColumn<String>(
+      'trapType', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _collectorIDMeta =
+      const VerificationMeta('collectorID');
+  late final GeneratedColumn<String> collectorID = GeneratedColumn<String>(
+      'collectorID', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _collectorNumberMeta =
+      const VerificationMeta('collectorNumber');
+  late final GeneratedColumn<int> collectorNumber = GeneratedColumn<int>(
+      'collectorNumber', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _collEventIDMeta =
+      const VerificationMeta('collEventID');
+  late final GeneratedColumn<int> collEventID = GeneratedColumn<int>(
+      'collEventID', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _preparatorIDMeta =
+      const VerificationMeta('preparatorID');
+  late final GeneratedColumn<String> preparatorID = GeneratedColumn<String>(
+      'preparatorID', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: 'REFERENCES personnel(uuid)');
   @override
-  List<GeneratedColumn> get $columns => [projectUuid, personnelUuid];
+  List<GeneratedColumn> get $columns => [
+        uuid,
+        projectUuid,
+        speciesID,
+        taxonGroup,
+        condition,
+        prepDate,
+        prepTime,
+        captureDate,
+        captureTime,
+        trapType,
+        collectorID,
+        collectorNumber,
+        collEventID,
+        preparatorID
+      ];
   @override
-  String get aliasedName => _alias ?? 'personnelList';
+  String get aliasedName => _alias ?? 'specimen';
   @override
-  String get actualTableName => 'personnelList';
+  String get actualTableName => 'specimen';
   @override
-  VerificationContext validateIntegrity(Insertable<PersonnelListData> instance,
+  VerificationContext validateIntegrity(Insertable<SpecimenData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
+    if (data.containsKey('uuid')) {
+      context.handle(
+          _uuidMeta, uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta));
+    } else if (isInserting) {
+      context.missing(_uuidMeta);
+    }
     if (data.containsKey('projectUuid')) {
       context.handle(
           _projectUuidMeta,
           projectUuid.isAcceptableOrUnknown(
               data['projectUuid']!, _projectUuidMeta));
     }
-    if (data.containsKey('personnelUuid')) {
+    if (data.containsKey('speciesID')) {
+      context.handle(_speciesIDMeta,
+          speciesID.isAcceptableOrUnknown(data['speciesID']!, _speciesIDMeta));
+    }
+    if (data.containsKey('taxonGroup')) {
       context.handle(
-          _personnelUuidMeta,
-          personnelUuid.isAcceptableOrUnknown(
-              data['personnelUuid']!, _personnelUuidMeta));
+          _taxonGroupMeta,
+          taxonGroup.isAcceptableOrUnknown(
+              data['taxonGroup']!, _taxonGroupMeta));
+    }
+    if (data.containsKey('condition')) {
+      context.handle(_conditionMeta,
+          condition.isAcceptableOrUnknown(data['condition']!, _conditionMeta));
+    }
+    if (data.containsKey('prepDate')) {
+      context.handle(_prepDateMeta,
+          prepDate.isAcceptableOrUnknown(data['prepDate']!, _prepDateMeta));
+    }
+    if (data.containsKey('prepTime')) {
+      context.handle(_prepTimeMeta,
+          prepTime.isAcceptableOrUnknown(data['prepTime']!, _prepTimeMeta));
+    }
+    if (data.containsKey('captureDate')) {
+      context.handle(
+          _captureDateMeta,
+          captureDate.isAcceptableOrUnknown(
+              data['captureDate']!, _captureDateMeta));
+    }
+    if (data.containsKey('captureTime')) {
+      context.handle(
+          _captureTimeMeta,
+          captureTime.isAcceptableOrUnknown(
+              data['captureTime']!, _captureTimeMeta));
+    }
+    if (data.containsKey('trapType')) {
+      context.handle(_trapTypeMeta,
+          trapType.isAcceptableOrUnknown(data['trapType']!, _trapTypeMeta));
+    }
+    if (data.containsKey('collectorID')) {
+      context.handle(
+          _collectorIDMeta,
+          collectorID.isAcceptableOrUnknown(
+              data['collectorID']!, _collectorIDMeta));
+    }
+    if (data.containsKey('collectorNumber')) {
+      context.handle(
+          _collectorNumberMeta,
+          collectorNumber.isAcceptableOrUnknown(
+              data['collectorNumber']!, _collectorNumberMeta));
+    }
+    if (data.containsKey('collEventID')) {
+      context.handle(
+          _collEventIDMeta,
+          collEventID.isAcceptableOrUnknown(
+              data['collEventID']!, _collEventIDMeta));
+    }
+    if (data.containsKey('preparatorID')) {
+      context.handle(
+          _preparatorIDMeta,
+          preparatorID.isAcceptableOrUnknown(
+              data['preparatorID']!, _preparatorIDMeta));
     }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => const {};
+  Set<GeneratedColumn> get $primaryKey => {uuid};
   @override
-  PersonnelListData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  SpecimenData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return PersonnelListData(
+    return SpecimenData(
+      uuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}uuid'])!,
       projectUuid: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
-      personnelUuid: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}personnelUuid']),
+      speciesID: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}speciesID']),
+      taxonGroup: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}taxonGroup']),
+      condition: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}condition']),
+      prepDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}prepDate']),
+      prepTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}prepTime']),
+      captureDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}captureDate']),
+      captureTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}captureTime']),
+      trapType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}trapType']),
+      collectorID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}collectorID']),
+      collectorNumber: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}collectorNumber']),
+      collEventID: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}collEventID']),
+      preparatorID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}preparatorID']),
     );
   }
 
   @override
-  PersonnelList createAlias(String alias) {
-    return PersonnelList(attachedDatabase, alias);
+  Specimen createAlias(String alias) {
+    return Specimen(attachedDatabase, alias);
   }
 
   @override
   List<String> get customConstraints => const [
         'FOREIGN KEY(projectUuid)REFERENCES project(uuid)',
-        'FOREIGN KEY(personnelUuid)REFERENCES personnel(uuid)'
+        'FOREIGN KEY(collectorID)REFERENCES personnel(uuid)',
+        'FOREIGN KEY(collEventID)REFERENCES collEvent(id)'
       ];
   @override
   bool get dontWriteConstraints => true;
@@ -5445,259 +5694,414 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
   }
 }
 
-class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
+class MammalMeasurement extends Table
+    with TableInfo<MammalMeasurement, MammalMeasurementData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Specimen(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
-  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
-      'uuid', aliasedName, false,
-      type: DriftSqlType.string,
-      requiredDuringInsert: true,
-      $customConstraints: 'UNIQUE NOT NULL PRIMARY KEY');
-  static const VerificationMeta _projectUuidMeta =
-      const VerificationMeta('projectUuid');
-  late final GeneratedColumn<String> projectUuid = GeneratedColumn<String>(
-      'projectUuid', aliasedName, true,
+  MammalMeasurement(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
+  static const VerificationMeta _specimenUuidMeta =
+      const VerificationMeta('specimenUuid');
+  late final GeneratedColumn<String> specimenUuid = GeneratedColumn<String>(
+      'specimenUuid', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _speciesIDMeta =
-      const VerificationMeta('speciesID');
-  late final GeneratedColumn<int> speciesID = GeneratedColumn<int>(
-      'speciesID', aliasedName, true,
+  static const VerificationMeta _totalLengthMeta =
+      const VerificationMeta('totalLength');
+  late final GeneratedColumn<int> totalLength = GeneratedColumn<int>(
+      'totalLength', aliasedName, true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _taxonGroupMeta =
-      const VerificationMeta('taxonGroup');
-  late final GeneratedColumn<String> taxonGroup = GeneratedColumn<String>(
-      'taxonGroup', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _conditionMeta =
-      const VerificationMeta('condition');
-  late final GeneratedColumn<String> condition = GeneratedColumn<String>(
-      'condition', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _prepDateMeta =
-      const VerificationMeta('prepDate');
-  late final GeneratedColumn<String> prepDate = GeneratedColumn<String>(
-      'prepDate', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _prepTimeMeta =
-      const VerificationMeta('prepTime');
-  late final GeneratedColumn<String> prepTime = GeneratedColumn<String>(
-      'prepTime', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _captureDateMeta =
-      const VerificationMeta('captureDate');
-  late final GeneratedColumn<String> captureDate = GeneratedColumn<String>(
-      'captureDate', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _captureTimeMeta =
-      const VerificationMeta('captureTime');
-  late final GeneratedColumn<String> captureTime = GeneratedColumn<String>(
-      'captureTime', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _trapTypeMeta =
-      const VerificationMeta('trapType');
-  late final GeneratedColumn<String> trapType = GeneratedColumn<String>(
-      'trapType', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _collectorIDMeta =
-      const VerificationMeta('collectorID');
-  late final GeneratedColumn<String> collectorID = GeneratedColumn<String>(
-      'collectorID', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _collectorNumberMeta =
-      const VerificationMeta('collectorNumber');
-  late final GeneratedColumn<int> collectorNumber = GeneratedColumn<int>(
-      'collectorNumber', aliasedName, true,
+  static const VerificationMeta _tailLengthMeta =
+      const VerificationMeta('tailLength');
+  late final GeneratedColumn<int> tailLength = GeneratedColumn<int>(
+      'tailLength', aliasedName, true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _collEventIDMeta =
-      const VerificationMeta('collEventID');
-  late final GeneratedColumn<int> collEventID = GeneratedColumn<int>(
-      'collEventID', aliasedName, true,
+  static const VerificationMeta _hindFootLengthMeta =
+      const VerificationMeta('hindFootLength');
+  late final GeneratedColumn<int> hindFootLength = GeneratedColumn<int>(
+      'hindFootLength', aliasedName, true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _preparatorIDMeta =
-      const VerificationMeta('preparatorID');
-  late final GeneratedColumn<String> preparatorID = GeneratedColumn<String>(
-      'preparatorID', aliasedName, true,
+  static const VerificationMeta _earLengthMeta =
+      const VerificationMeta('earLength');
+  late final GeneratedColumn<int> earLength = GeneratedColumn<int>(
+      'earLength', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _forearmMeta =
+      const VerificationMeta('forearm');
+  late final GeneratedColumn<int> forearm = GeneratedColumn<int>(
+      'forearm', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _weightMeta = const VerificationMeta('weight');
+  late final GeneratedColumn<int> weight = GeneratedColumn<int>(
+      'weight', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _inaccurateMeta =
+      const VerificationMeta('inaccurate');
+  late final GeneratedColumn<String> inaccurate = GeneratedColumn<String>(
+      'inaccurate', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      $customConstraints: 'REFERENCES personnel(uuid)');
+      $customConstraints: '');
+  static const VerificationMeta _inaccurateReasonMeta =
+      const VerificationMeta('inaccurateReason');
+  late final GeneratedColumn<String> inaccurateReason = GeneratedColumn<String>(
+      'inaccurateReason', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _sexMeta = const VerificationMeta('sex');
+  late final GeneratedColumn<String> sex = GeneratedColumn<String>(
+      'sex', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _lifeStageMeta =
+      const VerificationMeta('lifeStage');
+  late final GeneratedColumn<String> lifeStage = GeneratedColumn<String>(
+      'lifeStage', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _testesPositionMeta =
+      const VerificationMeta('testesPosition');
+  late final GeneratedColumn<String> testesPosition = GeneratedColumn<String>(
+      'testesPosition', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _testesLengthMeta =
+      const VerificationMeta('testesLength');
+  late final GeneratedColumn<int> testesLength = GeneratedColumn<int>(
+      'testesLength', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _testesWidthMeta =
+      const VerificationMeta('testesWidth');
+  late final GeneratedColumn<int> testesWidth = GeneratedColumn<int>(
+      'testesWidth', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _reproductiveStageMeta =
+      const VerificationMeta('reproductiveStage');
+  late final GeneratedColumn<String> reproductiveStage =
+      GeneratedColumn<String>('reproductiveStage', aliasedName, true,
+          type: DriftSqlType.string,
+          requiredDuringInsert: false,
+          $customConstraints: '');
+  static const VerificationMeta _placentalScarsMeta =
+      const VerificationMeta('placentalScars');
+  late final GeneratedColumn<String> placentalScars = GeneratedColumn<String>(
+      'placentalScars', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _mammaeInguinalCountMeta =
+      const VerificationMeta('mammaeInguinalCount');
+  late final GeneratedColumn<int> mammaeInguinalCount = GeneratedColumn<int>(
+      'mammaeInguinalCount', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _mammaeAxilaryCountMeta =
+      const VerificationMeta('mammaeAxilaryCount');
+  late final GeneratedColumn<int> mammaeAxilaryCount = GeneratedColumn<int>(
+      'mammaeAxilaryCount', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _mammaeAbdominalCountMeta =
+      const VerificationMeta('mammaeAbdominalCount');
+  late final GeneratedColumn<int> mammaeAbdominalCount = GeneratedColumn<int>(
+      'mammaeAbdominalCount', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _embryoLeftCountMeta =
+      const VerificationMeta('embryoLeftCount');
+  late final GeneratedColumn<int> embryoLeftCount = GeneratedColumn<int>(
+      'embryoLeftCount', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _embryoRightCountMeta =
+      const VerificationMeta('embryoRightCount');
+  late final GeneratedColumn<int> embryoRightCount = GeneratedColumn<int>(
+      'embryoRightCount', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _embryoCRLeftMeta =
+      const VerificationMeta('embryoCRLeft');
+  late final GeneratedColumn<int> embryoCRLeft = GeneratedColumn<int>(
+      'embryoCRLeft', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _embryoCRRightMeta =
+      const VerificationMeta('embryoCRRight');
+  late final GeneratedColumn<int> embryoCRRight = GeneratedColumn<int>(
+      'embryoCRRight', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
-        uuid,
-        projectUuid,
-        speciesID,
-        taxonGroup,
-        condition,
-        prepDate,
-        prepTime,
-        captureDate,
-        captureTime,
-        trapType,
-        collectorID,
-        collectorNumber,
-        collEventID,
-        preparatorID
+        id,
+        specimenUuid,
+        totalLength,
+        tailLength,
+        hindFootLength,
+        earLength,
+        forearm,
+        weight,
+        inaccurate,
+        inaccurateReason,
+        sex,
+        lifeStage,
+        testesPosition,
+        testesLength,
+        testesWidth,
+        reproductiveStage,
+        placentalScars,
+        mammaeInguinalCount,
+        mammaeAxilaryCount,
+        mammaeAbdominalCount,
+        embryoLeftCount,
+        embryoRightCount,
+        embryoCRLeft,
+        embryoCRRight
       ];
   @override
-  String get aliasedName => _alias ?? 'specimen';
+  String get aliasedName => _alias ?? 'mammalMeasurement';
   @override
-  String get actualTableName => 'specimen';
+  String get actualTableName => 'mammalMeasurement';
   @override
-  VerificationContext validateIntegrity(Insertable<SpecimenData> instance,
+  VerificationContext validateIntegrity(
+      Insertable<MammalMeasurementData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('uuid')) {
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('specimenUuid')) {
       context.handle(
-          _uuidMeta, uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta));
-    } else if (isInserting) {
-      context.missing(_uuidMeta);
+          _specimenUuidMeta,
+          specimenUuid.isAcceptableOrUnknown(
+              data['specimenUuid']!, _specimenUuidMeta));
     }
-    if (data.containsKey('projectUuid')) {
+    if (data.containsKey('totalLength')) {
       context.handle(
-          _projectUuidMeta,
-          projectUuid.isAcceptableOrUnknown(
-              data['projectUuid']!, _projectUuidMeta));
+          _totalLengthMeta,
+          totalLength.isAcceptableOrUnknown(
+              data['totalLength']!, _totalLengthMeta));
     }
-    if (data.containsKey('speciesID')) {
-      context.handle(_speciesIDMeta,
-          speciesID.isAcceptableOrUnknown(data['speciesID']!, _speciesIDMeta));
-    }
-    if (data.containsKey('taxonGroup')) {
+    if (data.containsKey('tailLength')) {
       context.handle(
-          _taxonGroupMeta,
-          taxonGroup.isAcceptableOrUnknown(
-              data['taxonGroup']!, _taxonGroupMeta));
+          _tailLengthMeta,
+          tailLength.isAcceptableOrUnknown(
+              data['tailLength']!, _tailLengthMeta));
     }
-    if (data.containsKey('condition')) {
-      context.handle(_conditionMeta,
-          condition.isAcceptableOrUnknown(data['condition']!, _conditionMeta));
-    }
-    if (data.containsKey('prepDate')) {
-      context.handle(_prepDateMeta,
-          prepDate.isAcceptableOrUnknown(data['prepDate']!, _prepDateMeta));
-    }
-    if (data.containsKey('prepTime')) {
-      context.handle(_prepTimeMeta,
-          prepTime.isAcceptableOrUnknown(data['prepTime']!, _prepTimeMeta));
-    }
-    if (data.containsKey('captureDate')) {
+    if (data.containsKey('hindFootLength')) {
       context.handle(
-          _captureDateMeta,
-          captureDate.isAcceptableOrUnknown(
-              data['captureDate']!, _captureDateMeta));
+          _hindFootLengthMeta,
+          hindFootLength.isAcceptableOrUnknown(
+              data['hindFootLength']!, _hindFootLengthMeta));
     }
-    if (data.containsKey('captureTime')) {
+    if (data.containsKey('earLength')) {
+      context.handle(_earLengthMeta,
+          earLength.isAcceptableOrUnknown(data['earLength']!, _earLengthMeta));
+    }
+    if (data.containsKey('forearm')) {
+      context.handle(_forearmMeta,
+          forearm.isAcceptableOrUnknown(data['forearm']!, _forearmMeta));
+    }
+    if (data.containsKey('weight')) {
+      context.handle(_weightMeta,
+          weight.isAcceptableOrUnknown(data['weight']!, _weightMeta));
+    }
+    if (data.containsKey('inaccurate')) {
       context.handle(
-          _captureTimeMeta,
-          captureTime.isAcceptableOrUnknown(
-              data['captureTime']!, _captureTimeMeta));
+          _inaccurateMeta,
+          inaccurate.isAcceptableOrUnknown(
+              data['inaccurate']!, _inaccurateMeta));
     }
-    if (data.containsKey('trapType')) {
-      context.handle(_trapTypeMeta,
-          trapType.isAcceptableOrUnknown(data['trapType']!, _trapTypeMeta));
-    }
-    if (data.containsKey('collectorID')) {
+    if (data.containsKey('inaccurateReason')) {
       context.handle(
-          _collectorIDMeta,
-          collectorID.isAcceptableOrUnknown(
-              data['collectorID']!, _collectorIDMeta));
+          _inaccurateReasonMeta,
+          inaccurateReason.isAcceptableOrUnknown(
+              data['inaccurateReason']!, _inaccurateReasonMeta));
     }
-    if (data.containsKey('collectorNumber')) {
+    if (data.containsKey('sex')) {
       context.handle(
-          _collectorNumberMeta,
-          collectorNumber.isAcceptableOrUnknown(
-              data['collectorNumber']!, _collectorNumberMeta));
+          _sexMeta, sex.isAcceptableOrUnknown(data['sex']!, _sexMeta));
     }
-    if (data.containsKey('collEventID')) {
-      context.handle(
-          _collEventIDMeta,
-          collEventID.isAcceptableOrUnknown(
-              data['collEventID']!, _collEventIDMeta));
+    if (data.containsKey('lifeStage')) {
+      context.handle(_lifeStageMeta,
+          lifeStage.isAcceptableOrUnknown(data['lifeStage']!, _lifeStageMeta));
     }
-    if (data.containsKey('preparatorID')) {
+    if (data.containsKey('testesPosition')) {
       context.handle(
-          _preparatorIDMeta,
-          preparatorID.isAcceptableOrUnknown(
-              data['preparatorID']!, _preparatorIDMeta));
+          _testesPositionMeta,
+          testesPosition.isAcceptableOrUnknown(
+              data['testesPosition']!, _testesPositionMeta));
+    }
+    if (data.containsKey('testesLength')) {
+      context.handle(
+          _testesLengthMeta,
+          testesLength.isAcceptableOrUnknown(
+              data['testesLength']!, _testesLengthMeta));
+    }
+    if (data.containsKey('testesWidth')) {
+      context.handle(
+          _testesWidthMeta,
+          testesWidth.isAcceptableOrUnknown(
+              data['testesWidth']!, _testesWidthMeta));
+    }
+    if (data.containsKey('reproductiveStage')) {
+      context.handle(
+          _reproductiveStageMeta,
+          reproductiveStage.isAcceptableOrUnknown(
+              data['reproductiveStage']!, _reproductiveStageMeta));
+    }
+    if (data.containsKey('placentalScars')) {
+      context.handle(
+          _placentalScarsMeta,
+          placentalScars.isAcceptableOrUnknown(
+              data['placentalScars']!, _placentalScarsMeta));
+    }
+    if (data.containsKey('mammaeInguinalCount')) {
+      context.handle(
+          _mammaeInguinalCountMeta,
+          mammaeInguinalCount.isAcceptableOrUnknown(
+              data['mammaeInguinalCount']!, _mammaeInguinalCountMeta));
+    }
+    if (data.containsKey('mammaeAxilaryCount')) {
+      context.handle(
+          _mammaeAxilaryCountMeta,
+          mammaeAxilaryCount.isAcceptableOrUnknown(
+              data['mammaeAxilaryCount']!, _mammaeAxilaryCountMeta));
+    }
+    if (data.containsKey('mammaeAbdominalCount')) {
+      context.handle(
+          _mammaeAbdominalCountMeta,
+          mammaeAbdominalCount.isAcceptableOrUnknown(
+              data['mammaeAbdominalCount']!, _mammaeAbdominalCountMeta));
+    }
+    if (data.containsKey('embryoLeftCount')) {
+      context.handle(
+          _embryoLeftCountMeta,
+          embryoLeftCount.isAcceptableOrUnknown(
+              data['embryoLeftCount']!, _embryoLeftCountMeta));
+    }
+    if (data.containsKey('embryoRightCount')) {
+      context.handle(
+          _embryoRightCountMeta,
+          embryoRightCount.isAcceptableOrUnknown(
+              data['embryoRightCount']!, _embryoRightCountMeta));
+    }
+    if (data.containsKey('embryoCRLeft')) {
+      context.handle(
+          _embryoCRLeftMeta,
+          embryoCRLeft.isAcceptableOrUnknown(
+              data['embryoCRLeft']!, _embryoCRLeftMeta));
+    }
+    if (data.containsKey('embryoCRRight')) {
+      context.handle(
+          _embryoCRRightMeta,
+          embryoCRRight.isAcceptableOrUnknown(
+              data['embryoCRRight']!, _embryoCRRightMeta));
     }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {uuid};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  SpecimenData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  MammalMeasurementData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return SpecimenData(
-      uuid: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}uuid'])!,
-      projectUuid: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
-      speciesID: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}speciesID']),
-      taxonGroup: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}taxonGroup']),
-      condition: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}condition']),
-      prepDate: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}prepDate']),
-      prepTime: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}prepTime']),
-      captureDate: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}captureDate']),
-      captureTime: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}captureTime']),
-      trapType: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}trapType']),
-      collectorID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}collectorID']),
-      collectorNumber: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}collectorNumber']),
-      collEventID: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}collEventID']),
-      preparatorID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}preparatorID']),
+    return MammalMeasurementData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      specimenUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}specimenUuid']),
+      totalLength: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}totalLength']),
+      tailLength: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}tailLength']),
+      hindFootLength: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}hindFootLength']),
+      earLength: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}earLength']),
+      forearm: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}forearm']),
+      weight: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}weight']),
+      inaccurate: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}inaccurate']),
+      inaccurateReason: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}inaccurateReason']),
+      sex: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}sex']),
+      lifeStage: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}lifeStage']),
+      testesPosition: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}testesPosition']),
+      testesLength: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}testesLength']),
+      testesWidth: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}testesWidth']),
+      reproductiveStage: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}reproductiveStage']),
+      placentalScars: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}placentalScars']),
+      mammaeInguinalCount: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}mammaeInguinalCount']),
+      mammaeAxilaryCount: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}mammaeAxilaryCount']),
+      mammaeAbdominalCount: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}mammaeAbdominalCount']),
+      embryoLeftCount: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}embryoLeftCount']),
+      embryoRightCount: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}embryoRightCount']),
+      embryoCRLeft: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}embryoCRLeft']),
+      embryoCRRight: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}embryoCRRight']),
     );
   }
 
   @override
-  Specimen createAlias(String alias) {
-    return Specimen(attachedDatabase, alias);
+  MammalMeasurement createAlias(String alias) {
+    return MammalMeasurement(attachedDatabase, alias);
   }
 
   @override
-  List<String> get customConstraints => const [
-        'FOREIGN KEY(projectUuid)REFERENCES project(uuid)',
-        'FOREIGN KEY(collectorID)REFERENCES personnel(uuid)',
-        'FOREIGN KEY(collEventID)REFERENCES collEvent(id)'
-      ];
+  List<String> get customConstraints =>
+      const ['FOREIGN KEY(specimenUuid)REFERENCES specimen(uuid)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -6422,12 +6826,12 @@ class MammalMeasurementCompanion
   }
 }
 
-class MammalMeasurement extends Table
-    with TableInfo<MammalMeasurement, MammalMeasurementData> {
+class BirdMeasurement extends Table
+    with TableInfo<BirdMeasurement, BirdMeasurementData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  MammalMeasurement(this.attachedDatabase, [this._alias]);
+  BirdMeasurement(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
@@ -6442,58 +6846,85 @@ class MammalMeasurement extends Table
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _totalLengthMeta =
-      const VerificationMeta('totalLength');
-  late final GeneratedColumn<int> totalLength = GeneratedColumn<int>(
-      'totalLength', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _tailLengthMeta =
-      const VerificationMeta('tailLength');
-  late final GeneratedColumn<int> tailLength = GeneratedColumn<int>(
-      'tailLength', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _hindFootLengthMeta =
-      const VerificationMeta('hindFootLength');
-  late final GeneratedColumn<int> hindFootLength = GeneratedColumn<int>(
-      'hindFootLength', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _earLengthMeta =
-      const VerificationMeta('earLength');
-  late final GeneratedColumn<int> earLength = GeneratedColumn<int>(
-      'earLength', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _forearmMeta =
-      const VerificationMeta('forearm');
-  late final GeneratedColumn<int> forearm = GeneratedColumn<int>(
-      'forearm', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
   static const VerificationMeta _weightMeta = const VerificationMeta('weight');
   late final GeneratedColumn<int> weight = GeneratedColumn<int>(
       'weight', aliasedName, true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _inaccurateMeta =
-      const VerificationMeta('inaccurate');
-  late final GeneratedColumn<String> inaccurate = GeneratedColumn<String>(
-      'inaccurate', aliasedName, true,
+  static const VerificationMeta _wingspanMeta =
+      const VerificationMeta('wingspan');
+  late final GeneratedColumn<int> wingspan = GeneratedColumn<int>(
+      'wingspan', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _irisColorMeta =
+      const VerificationMeta('irisColor');
+  late final GeneratedColumn<String> irisColor = GeneratedColumn<String>(
+      'irisColor', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _inaccurateReasonMeta =
-      const VerificationMeta('inaccurateReason');
-  late final GeneratedColumn<String> inaccurateReason = GeneratedColumn<String>(
-      'inaccurateReason', aliasedName, true,
+  static const VerificationMeta _feetColorMeta =
+      const VerificationMeta('feetColor');
+  late final GeneratedColumn<String> feetColor = GeneratedColumn<String>(
+      'feetColor', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _tarsusColorMeta =
+      const VerificationMeta('tarsusColor');
+  late final GeneratedColumn<String> tarsusColor = GeneratedColumn<String>(
+      'tarsusColor', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _moltingWingMeta =
+      const VerificationMeta('moltingWing');
+  late final GeneratedColumn<String> moltingWing = GeneratedColumn<String>(
+      'moltingWing', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _moltingTailMeta =
+      const VerificationMeta('moltingTail');
+  late final GeneratedColumn<String> moltingTail = GeneratedColumn<String>(
+      'moltingTail', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _bodyFatMeta =
+      const VerificationMeta('bodyFat');
+  late final GeneratedColumn<String> bodyFat = GeneratedColumn<String>(
+      'bodyFat', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _bursaLengthMeta =
+      const VerificationMeta('bursaLength');
+  late final GeneratedColumn<int> bursaLength = GeneratedColumn<int>(
+      'bursaLength', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _bursaWidthMeta =
+      const VerificationMeta('bursaWidth');
+  late final GeneratedColumn<int> bursaWidth = GeneratedColumn<int>(
+      'bursaWidth', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _skullOssilationMeta =
+      const VerificationMeta('skullOssilation');
+  late final GeneratedColumn<String> skullOssilation = GeneratedColumn<String>(
+      'skullOssilation', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _fatMeta = const VerificationMeta('fat');
+  late final GeneratedColumn<String> fat = GeneratedColumn<String>(
+      'fat', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -6503,131 +6934,46 @@ class MammalMeasurement extends Table
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _lifeStageMeta =
-      const VerificationMeta('lifeStage');
-  late final GeneratedColumn<String> lifeStage = GeneratedColumn<String>(
-      'lifeStage', aliasedName, true,
+  static const VerificationMeta _gonadMeta = const VerificationMeta('gonad');
+  late final GeneratedColumn<String> gonad = GeneratedColumn<String>(
+      'gonad', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _testesPositionMeta =
-      const VerificationMeta('testesPosition');
-  late final GeneratedColumn<String> testesPosition = GeneratedColumn<String>(
-      'testesPosition', aliasedName, true,
+  static const VerificationMeta _stomachMeta =
+      const VerificationMeta('stomach');
+  late final GeneratedColumn<String> stomach = GeneratedColumn<String>(
+      'stomach', aliasedName, true,
       type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _testesLengthMeta =
-      const VerificationMeta('testesLength');
-  late final GeneratedColumn<int> testesLength = GeneratedColumn<int>(
-      'testesLength', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _testesWidthMeta =
-      const VerificationMeta('testesWidth');
-  late final GeneratedColumn<int> testesWidth = GeneratedColumn<int>(
-      'testesWidth', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _reproductiveStageMeta =
-      const VerificationMeta('reproductiveStage');
-  late final GeneratedColumn<String> reproductiveStage =
-      GeneratedColumn<String>('reproductiveStage', aliasedName, true,
-          type: DriftSqlType.string,
-          requiredDuringInsert: false,
-          $customConstraints: '');
-  static const VerificationMeta _placentalScarsMeta =
-      const VerificationMeta('placentalScars');
-  late final GeneratedColumn<String> placentalScars = GeneratedColumn<String>(
-      'placentalScars', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _mammaeInguinalCountMeta =
-      const VerificationMeta('mammaeInguinalCount');
-  late final GeneratedColumn<int> mammaeInguinalCount = GeneratedColumn<int>(
-      'mammaeInguinalCount', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _mammaeAxilaryCountMeta =
-      const VerificationMeta('mammaeAxilaryCount');
-  late final GeneratedColumn<int> mammaeAxilaryCount = GeneratedColumn<int>(
-      'mammaeAxilaryCount', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _mammaeAbdominalCountMeta =
-      const VerificationMeta('mammaeAbdominalCount');
-  late final GeneratedColumn<int> mammaeAbdominalCount = GeneratedColumn<int>(
-      'mammaeAbdominalCount', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _embryoLeftCountMeta =
-      const VerificationMeta('embryoLeftCount');
-  late final GeneratedColumn<int> embryoLeftCount = GeneratedColumn<int>(
-      'embryoLeftCount', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _embryoRightCountMeta =
-      const VerificationMeta('embryoRightCount');
-  late final GeneratedColumn<int> embryoRightCount = GeneratedColumn<int>(
-      'embryoRightCount', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _embryoCRLeftMeta =
-      const VerificationMeta('embryoCRLeft');
-  late final GeneratedColumn<int> embryoCRLeft = GeneratedColumn<int>(
-      'embryoCRLeft', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _embryoCRRightMeta =
-      const VerificationMeta('embryoCRRight');
-  late final GeneratedColumn<int> embryoCRRight = GeneratedColumn<int>(
-      'embryoCRRight', aliasedName, true,
-      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
         id,
         specimenUuid,
-        totalLength,
-        tailLength,
-        hindFootLength,
-        earLength,
-        forearm,
         weight,
-        inaccurate,
-        inaccurateReason,
+        wingspan,
+        irisColor,
+        feetColor,
+        tarsusColor,
+        moltingWing,
+        moltingTail,
+        bodyFat,
+        bursaLength,
+        bursaWidth,
+        skullOssilation,
+        fat,
         sex,
-        lifeStage,
-        testesPosition,
-        testesLength,
-        testesWidth,
-        reproductiveStage,
-        placentalScars,
-        mammaeInguinalCount,
-        mammaeAxilaryCount,
-        mammaeAbdominalCount,
-        embryoLeftCount,
-        embryoRightCount,
-        embryoCRLeft,
-        embryoCRRight
+        gonad,
+        stomach
       ];
   @override
-  String get aliasedName => _alias ?? 'mammalMeasurement';
+  String get aliasedName => _alias ?? 'birdMeasurement';
   @override
-  String get actualTableName => 'mammalMeasurement';
+  String get actualTableName => 'birdMeasurement';
   @override
   VerificationContext validateIntegrity(
-      Insertable<MammalMeasurementData> instance,
+      Insertable<BirdMeasurementData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -6640,127 +6986,77 @@ class MammalMeasurement extends Table
           specimenUuid.isAcceptableOrUnknown(
               data['specimenUuid']!, _specimenUuidMeta));
     }
-    if (data.containsKey('totalLength')) {
-      context.handle(
-          _totalLengthMeta,
-          totalLength.isAcceptableOrUnknown(
-              data['totalLength']!, _totalLengthMeta));
-    }
-    if (data.containsKey('tailLength')) {
-      context.handle(
-          _tailLengthMeta,
-          tailLength.isAcceptableOrUnknown(
-              data['tailLength']!, _tailLengthMeta));
-    }
-    if (data.containsKey('hindFootLength')) {
-      context.handle(
-          _hindFootLengthMeta,
-          hindFootLength.isAcceptableOrUnknown(
-              data['hindFootLength']!, _hindFootLengthMeta));
-    }
-    if (data.containsKey('earLength')) {
-      context.handle(_earLengthMeta,
-          earLength.isAcceptableOrUnknown(data['earLength']!, _earLengthMeta));
-    }
-    if (data.containsKey('forearm')) {
-      context.handle(_forearmMeta,
-          forearm.isAcceptableOrUnknown(data['forearm']!, _forearmMeta));
-    }
     if (data.containsKey('weight')) {
       context.handle(_weightMeta,
           weight.isAcceptableOrUnknown(data['weight']!, _weightMeta));
     }
-    if (data.containsKey('inaccurate')) {
-      context.handle(
-          _inaccurateMeta,
-          inaccurate.isAcceptableOrUnknown(
-              data['inaccurate']!, _inaccurateMeta));
+    if (data.containsKey('wingspan')) {
+      context.handle(_wingspanMeta,
+          wingspan.isAcceptableOrUnknown(data['wingspan']!, _wingspanMeta));
     }
-    if (data.containsKey('inaccurateReason')) {
+    if (data.containsKey('irisColor')) {
+      context.handle(_irisColorMeta,
+          irisColor.isAcceptableOrUnknown(data['irisColor']!, _irisColorMeta));
+    }
+    if (data.containsKey('feetColor')) {
+      context.handle(_feetColorMeta,
+          feetColor.isAcceptableOrUnknown(data['feetColor']!, _feetColorMeta));
+    }
+    if (data.containsKey('tarsusColor')) {
       context.handle(
-          _inaccurateReasonMeta,
-          inaccurateReason.isAcceptableOrUnknown(
-              data['inaccurateReason']!, _inaccurateReasonMeta));
+          _tarsusColorMeta,
+          tarsusColor.isAcceptableOrUnknown(
+              data['tarsusColor']!, _tarsusColorMeta));
+    }
+    if (data.containsKey('moltingWing')) {
+      context.handle(
+          _moltingWingMeta,
+          moltingWing.isAcceptableOrUnknown(
+              data['moltingWing']!, _moltingWingMeta));
+    }
+    if (data.containsKey('moltingTail')) {
+      context.handle(
+          _moltingTailMeta,
+          moltingTail.isAcceptableOrUnknown(
+              data['moltingTail']!, _moltingTailMeta));
+    }
+    if (data.containsKey('bodyFat')) {
+      context.handle(_bodyFatMeta,
+          bodyFat.isAcceptableOrUnknown(data['bodyFat']!, _bodyFatMeta));
+    }
+    if (data.containsKey('bursaLength')) {
+      context.handle(
+          _bursaLengthMeta,
+          bursaLength.isAcceptableOrUnknown(
+              data['bursaLength']!, _bursaLengthMeta));
+    }
+    if (data.containsKey('bursaWidth')) {
+      context.handle(
+          _bursaWidthMeta,
+          bursaWidth.isAcceptableOrUnknown(
+              data['bursaWidth']!, _bursaWidthMeta));
+    }
+    if (data.containsKey('skullOssilation')) {
+      context.handle(
+          _skullOssilationMeta,
+          skullOssilation.isAcceptableOrUnknown(
+              data['skullOssilation']!, _skullOssilationMeta));
+    }
+    if (data.containsKey('fat')) {
+      context.handle(
+          _fatMeta, fat.isAcceptableOrUnknown(data['fat']!, _fatMeta));
     }
     if (data.containsKey('sex')) {
       context.handle(
           _sexMeta, sex.isAcceptableOrUnknown(data['sex']!, _sexMeta));
     }
-    if (data.containsKey('lifeStage')) {
-      context.handle(_lifeStageMeta,
-          lifeStage.isAcceptableOrUnknown(data['lifeStage']!, _lifeStageMeta));
-    }
-    if (data.containsKey('testesPosition')) {
+    if (data.containsKey('gonad')) {
       context.handle(
-          _testesPositionMeta,
-          testesPosition.isAcceptableOrUnknown(
-              data['testesPosition']!, _testesPositionMeta));
+          _gonadMeta, gonad.isAcceptableOrUnknown(data['gonad']!, _gonadMeta));
     }
-    if (data.containsKey('testesLength')) {
-      context.handle(
-          _testesLengthMeta,
-          testesLength.isAcceptableOrUnknown(
-              data['testesLength']!, _testesLengthMeta));
-    }
-    if (data.containsKey('testesWidth')) {
-      context.handle(
-          _testesWidthMeta,
-          testesWidth.isAcceptableOrUnknown(
-              data['testesWidth']!, _testesWidthMeta));
-    }
-    if (data.containsKey('reproductiveStage')) {
-      context.handle(
-          _reproductiveStageMeta,
-          reproductiveStage.isAcceptableOrUnknown(
-              data['reproductiveStage']!, _reproductiveStageMeta));
-    }
-    if (data.containsKey('placentalScars')) {
-      context.handle(
-          _placentalScarsMeta,
-          placentalScars.isAcceptableOrUnknown(
-              data['placentalScars']!, _placentalScarsMeta));
-    }
-    if (data.containsKey('mammaeInguinalCount')) {
-      context.handle(
-          _mammaeInguinalCountMeta,
-          mammaeInguinalCount.isAcceptableOrUnknown(
-              data['mammaeInguinalCount']!, _mammaeInguinalCountMeta));
-    }
-    if (data.containsKey('mammaeAxilaryCount')) {
-      context.handle(
-          _mammaeAxilaryCountMeta,
-          mammaeAxilaryCount.isAcceptableOrUnknown(
-              data['mammaeAxilaryCount']!, _mammaeAxilaryCountMeta));
-    }
-    if (data.containsKey('mammaeAbdominalCount')) {
-      context.handle(
-          _mammaeAbdominalCountMeta,
-          mammaeAbdominalCount.isAcceptableOrUnknown(
-              data['mammaeAbdominalCount']!, _mammaeAbdominalCountMeta));
-    }
-    if (data.containsKey('embryoLeftCount')) {
-      context.handle(
-          _embryoLeftCountMeta,
-          embryoLeftCount.isAcceptableOrUnknown(
-              data['embryoLeftCount']!, _embryoLeftCountMeta));
-    }
-    if (data.containsKey('embryoRightCount')) {
-      context.handle(
-          _embryoRightCountMeta,
-          embryoRightCount.isAcceptableOrUnknown(
-              data['embryoRightCount']!, _embryoRightCountMeta));
-    }
-    if (data.containsKey('embryoCRLeft')) {
-      context.handle(
-          _embryoCRLeftMeta,
-          embryoCRLeft.isAcceptableOrUnknown(
-              data['embryoCRLeft']!, _embryoCRLeftMeta));
-    }
-    if (data.containsKey('embryoCRRight')) {
-      context.handle(
-          _embryoCRRightMeta,
-          embryoCRRight.isAcceptableOrUnknown(
-              data['embryoCRRight']!, _embryoCRRightMeta));
+    if (data.containsKey('stomach')) {
+      context.handle(_stomachMeta,
+          stomach.isAcceptableOrUnknown(data['stomach']!, _stomachMeta));
     }
     return context;
   }
@@ -6768,63 +7064,49 @@ class MammalMeasurement extends Table
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  MammalMeasurementData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  BirdMeasurementData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return MammalMeasurementData(
+    return BirdMeasurementData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       specimenUuid: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}specimenUuid']),
-      totalLength: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}totalLength']),
-      tailLength: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}tailLength']),
-      hindFootLength: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}hindFootLength']),
-      earLength: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}earLength']),
-      forearm: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}forearm']),
       weight: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}weight']),
-      inaccurate: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}inaccurate']),
-      inaccurateReason: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}inaccurateReason']),
+      wingspan: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}wingspan']),
+      irisColor: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}irisColor']),
+      feetColor: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}feetColor']),
+      tarsusColor: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}tarsusColor']),
+      moltingWing: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}moltingWing']),
+      moltingTail: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}moltingTail']),
+      bodyFat: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}bodyFat']),
+      bursaLength: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}bursaLength']),
+      bursaWidth: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}bursaWidth']),
+      skullOssilation: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}skullOssilation']),
+      fat: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}fat']),
       sex: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}sex']),
-      lifeStage: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}lifeStage']),
-      testesPosition: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}testesPosition']),
-      testesLength: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}testesLength']),
-      testesWidth: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}testesWidth']),
-      reproductiveStage: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}reproductiveStage']),
-      placentalScars: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}placentalScars']),
-      mammaeInguinalCount: attachedDatabase.typeMapping.read(
-          DriftSqlType.int, data['${effectivePrefix}mammaeInguinalCount']),
-      mammaeAxilaryCount: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}mammaeAxilaryCount']),
-      mammaeAbdominalCount: attachedDatabase.typeMapping.read(
-          DriftSqlType.int, data['${effectivePrefix}mammaeAbdominalCount']),
-      embryoLeftCount: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}embryoLeftCount']),
-      embryoRightCount: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}embryoRightCount']),
-      embryoCRLeft: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}embryoCRLeft']),
-      embryoCRRight: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}embryoCRRight']),
+      gonad: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}gonad']),
+      stomach: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}stomach']),
     );
   }
 
   @override
-  MammalMeasurement createAlias(String alias) {
-    return MammalMeasurement(attachedDatabase, alias);
+  BirdMeasurement createAlias(String alias) {
+    return BirdMeasurement(attachedDatabase, alias);
   }
 
   @override
@@ -7344,19 +7626,11 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
   }
 }
 
-class BirdMeasurement extends Table
-    with TableInfo<BirdMeasurement, BirdMeasurementData> {
+class Part extends Table with TableInfo<Part, PartData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  BirdMeasurement(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
+  Part(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _specimenUuidMeta =
       const VerificationMeta('specimenUuid');
   late final GeneratedColumn<String> specimenUuid = GeneratedColumn<String>(
@@ -7364,272 +7638,162 @@ class BirdMeasurement extends Table
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _weightMeta = const VerificationMeta('weight');
-  late final GeneratedColumn<int> weight = GeneratedColumn<int>(
-      'weight', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _wingspanMeta =
-      const VerificationMeta('wingspan');
-  late final GeneratedColumn<int> wingspan = GeneratedColumn<int>(
-      'wingspan', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _irisColorMeta =
-      const VerificationMeta('irisColor');
-  late final GeneratedColumn<String> irisColor = GeneratedColumn<String>(
-      'irisColor', aliasedName, true,
+  static const VerificationMeta _secondaryNumberMeta =
+      const VerificationMeta('secondaryNumber');
+  late final GeneratedColumn<String> secondaryNumber = GeneratedColumn<String>(
+      'secondaryNumber', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _feetColorMeta =
-      const VerificationMeta('feetColor');
-  late final GeneratedColumn<String> feetColor = GeneratedColumn<String>(
-      'feetColor', aliasedName, true,
+  static const VerificationMeta _barcodeIDMeta =
+      const VerificationMeta('barcodeID');
+  late final GeneratedColumn<String> barcodeID = GeneratedColumn<String>(
+      'barcodeID', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _tarsusColorMeta =
-      const VerificationMeta('tarsusColor');
-  late final GeneratedColumn<String> tarsusColor = GeneratedColumn<String>(
-      'tarsusColor', aliasedName, true,
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+      'type', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _moltingWingMeta =
-      const VerificationMeta('moltingWing');
-  late final GeneratedColumn<String> moltingWing = GeneratedColumn<String>(
-      'moltingWing', aliasedName, true,
+  static const VerificationMeta _countMeta = const VerificationMeta('count');
+  late final GeneratedColumn<String> count = GeneratedColumn<String>(
+      'count', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _moltingTailMeta =
-      const VerificationMeta('moltingTail');
-  late final GeneratedColumn<String> moltingTail = GeneratedColumn<String>(
-      'moltingTail', aliasedName, true,
+  static const VerificationMeta _treatmentMeta =
+      const VerificationMeta('treatment');
+  late final GeneratedColumn<String> treatment = GeneratedColumn<String>(
+      'treatment', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _bodyFatMeta =
-      const VerificationMeta('bodyFat');
-  late final GeneratedColumn<String> bodyFat = GeneratedColumn<String>(
-      'bodyFat', aliasedName, true,
+  static const VerificationMeta _additionalTreatmentMeta =
+      const VerificationMeta('additionalTreatment');
+  late final GeneratedColumn<String> additionalTreatment =
+      GeneratedColumn<String>('additionalTreatment', aliasedName, true,
+          type: DriftSqlType.string,
+          requiredDuringInsert: false,
+          $customConstraints: '');
+  static const VerificationMeta _museumPermanentMeta =
+      const VerificationMeta('museumPermanent');
+  late final GeneratedColumn<String> museumPermanent = GeneratedColumn<String>(
+      'museumPermanent', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _bursaLengthMeta =
-      const VerificationMeta('bursaLength');
-  late final GeneratedColumn<int> bursaLength = GeneratedColumn<int>(
-      'bursaLength', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _bursaWidthMeta =
-      const VerificationMeta('bursaWidth');
-  late final GeneratedColumn<int> bursaWidth = GeneratedColumn<int>(
-      'bursaWidth', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _skullOssilationMeta =
-      const VerificationMeta('skullOssilation');
-  late final GeneratedColumn<String> skullOssilation = GeneratedColumn<String>(
-      'skullOssilation', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _fatMeta = const VerificationMeta('fat');
-  late final GeneratedColumn<String> fat = GeneratedColumn<String>(
-      'fat', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _sexMeta = const VerificationMeta('sex');
-  late final GeneratedColumn<String> sex = GeneratedColumn<String>(
-      'sex', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _gonadMeta = const VerificationMeta('gonad');
-  late final GeneratedColumn<String> gonad = GeneratedColumn<String>(
-      'gonad', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _stomachMeta =
-      const VerificationMeta('stomach');
-  late final GeneratedColumn<String> stomach = GeneratedColumn<String>(
-      'stomach', aliasedName, true,
+  static const VerificationMeta _museumLoanMeta =
+      const VerificationMeta('museumLoan');
+  late final GeneratedColumn<String> museumLoan = GeneratedColumn<String>(
+      'museumLoan', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
-        id,
         specimenUuid,
-        weight,
-        wingspan,
-        irisColor,
-        feetColor,
-        tarsusColor,
-        moltingWing,
-        moltingTail,
-        bodyFat,
-        bursaLength,
-        bursaWidth,
-        skullOssilation,
-        fat,
-        sex,
-        gonad,
-        stomach
+        secondaryNumber,
+        barcodeID,
+        type,
+        count,
+        treatment,
+        additionalTreatment,
+        museumPermanent,
+        museumLoan
       ];
   @override
-  String get aliasedName => _alias ?? 'birdMeasurement';
+  String get aliasedName => _alias ?? 'part';
   @override
-  String get actualTableName => 'birdMeasurement';
+  String get actualTableName => 'part';
   @override
-  VerificationContext validateIntegrity(
-      Insertable<BirdMeasurementData> instance,
+  VerificationContext validateIntegrity(Insertable<PartData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
     if (data.containsKey('specimenUuid')) {
       context.handle(
           _specimenUuidMeta,
           specimenUuid.isAcceptableOrUnknown(
               data['specimenUuid']!, _specimenUuidMeta));
     }
-    if (data.containsKey('weight')) {
-      context.handle(_weightMeta,
-          weight.isAcceptableOrUnknown(data['weight']!, _weightMeta));
-    }
-    if (data.containsKey('wingspan')) {
-      context.handle(_wingspanMeta,
-          wingspan.isAcceptableOrUnknown(data['wingspan']!, _wingspanMeta));
-    }
-    if (data.containsKey('irisColor')) {
-      context.handle(_irisColorMeta,
-          irisColor.isAcceptableOrUnknown(data['irisColor']!, _irisColorMeta));
-    }
-    if (data.containsKey('feetColor')) {
-      context.handle(_feetColorMeta,
-          feetColor.isAcceptableOrUnknown(data['feetColor']!, _feetColorMeta));
-    }
-    if (data.containsKey('tarsusColor')) {
+    if (data.containsKey('secondaryNumber')) {
       context.handle(
-          _tarsusColorMeta,
-          tarsusColor.isAcceptableOrUnknown(
-              data['tarsusColor']!, _tarsusColorMeta));
+          _secondaryNumberMeta,
+          secondaryNumber.isAcceptableOrUnknown(
+              data['secondaryNumber']!, _secondaryNumberMeta));
     }
-    if (data.containsKey('moltingWing')) {
+    if (data.containsKey('barcodeID')) {
+      context.handle(_barcodeIDMeta,
+          barcodeID.isAcceptableOrUnknown(data['barcodeID']!, _barcodeIDMeta));
+    }
+    if (data.containsKey('type')) {
       context.handle(
-          _moltingWingMeta,
-          moltingWing.isAcceptableOrUnknown(
-              data['moltingWing']!, _moltingWingMeta));
+          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
     }
-    if (data.containsKey('moltingTail')) {
+    if (data.containsKey('count')) {
       context.handle(
-          _moltingTailMeta,
-          moltingTail.isAcceptableOrUnknown(
-              data['moltingTail']!, _moltingTailMeta));
+          _countMeta, count.isAcceptableOrUnknown(data['count']!, _countMeta));
     }
-    if (data.containsKey('bodyFat')) {
-      context.handle(_bodyFatMeta,
-          bodyFat.isAcceptableOrUnknown(data['bodyFat']!, _bodyFatMeta));
+    if (data.containsKey('treatment')) {
+      context.handle(_treatmentMeta,
+          treatment.isAcceptableOrUnknown(data['treatment']!, _treatmentMeta));
     }
-    if (data.containsKey('bursaLength')) {
+    if (data.containsKey('additionalTreatment')) {
       context.handle(
-          _bursaLengthMeta,
-          bursaLength.isAcceptableOrUnknown(
-              data['bursaLength']!, _bursaLengthMeta));
+          _additionalTreatmentMeta,
+          additionalTreatment.isAcceptableOrUnknown(
+              data['additionalTreatment']!, _additionalTreatmentMeta));
     }
-    if (data.containsKey('bursaWidth')) {
+    if (data.containsKey('museumPermanent')) {
       context.handle(
-          _bursaWidthMeta,
-          bursaWidth.isAcceptableOrUnknown(
-              data['bursaWidth']!, _bursaWidthMeta));
+          _museumPermanentMeta,
+          museumPermanent.isAcceptableOrUnknown(
+              data['museumPermanent']!, _museumPermanentMeta));
     }
-    if (data.containsKey('skullOssilation')) {
+    if (data.containsKey('museumLoan')) {
       context.handle(
-          _skullOssilationMeta,
-          skullOssilation.isAcceptableOrUnknown(
-              data['skullOssilation']!, _skullOssilationMeta));
-    }
-    if (data.containsKey('fat')) {
-      context.handle(
-          _fatMeta, fat.isAcceptableOrUnknown(data['fat']!, _fatMeta));
-    }
-    if (data.containsKey('sex')) {
-      context.handle(
-          _sexMeta, sex.isAcceptableOrUnknown(data['sex']!, _sexMeta));
-    }
-    if (data.containsKey('gonad')) {
-      context.handle(
-          _gonadMeta, gonad.isAcceptableOrUnknown(data['gonad']!, _gonadMeta));
-    }
-    if (data.containsKey('stomach')) {
-      context.handle(_stomachMeta,
-          stomach.isAcceptableOrUnknown(data['stomach']!, _stomachMeta));
+          _museumLoanMeta,
+          museumLoan.isAcceptableOrUnknown(
+              data['museumLoan']!, _museumLoanMeta));
     }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => const {};
   @override
-  BirdMeasurementData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  PartData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return BirdMeasurementData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+    return PartData(
       specimenUuid: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}specimenUuid']),
-      weight: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}weight']),
-      wingspan: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}wingspan']),
-      irisColor: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}irisColor']),
-      feetColor: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}feetColor']),
-      tarsusColor: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}tarsusColor']),
-      moltingWing: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}moltingWing']),
-      moltingTail: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}moltingTail']),
-      bodyFat: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}bodyFat']),
-      bursaLength: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}bursaLength']),
-      bursaWidth: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}bursaWidth']),
-      skullOssilation: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}skullOssilation']),
-      fat: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}fat']),
-      sex: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}sex']),
-      gonad: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}gonad']),
-      stomach: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}stomach']),
+      secondaryNumber: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}secondaryNumber']),
+      barcodeID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}barcodeID']),
+      type: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}type']),
+      count: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}count']),
+      treatment: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}treatment']),
+      additionalTreatment: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}additionalTreatment']),
+      museumPermanent: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}museumPermanent']),
+      museumLoan: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}museumLoan']),
     );
   }
 
   @override
-  BirdMeasurement createAlias(String alias) {
-    return BirdMeasurement(attachedDatabase, alias);
+  Part createAlias(String alias) {
+    return Part(attachedDatabase, alias);
   }
 
-  @override
-  List<String> get customConstraints =>
-      const ['FOREIGN KEY(specimenUuid)REFERENCES specimen(uuid)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -7940,176 +8104,192 @@ class PartCompanion extends UpdateCompanion<PartData> {
   }
 }
 
-class Part extends Table with TableInfo<Part, PartData> {
+class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Part(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _specimenUuidMeta =
-      const VerificationMeta('specimenUuid');
-  late final GeneratedColumn<String> specimenUuid = GeneratedColumn<String>(
-      'specimenUuid', aliasedName, true,
+  Taxonomy(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, true,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  static const VerificationMeta _taxonClassMeta =
+      const VerificationMeta('taxonClass');
+  late final GeneratedColumn<String> taxonClass = GeneratedColumn<String>(
+      'taxonClass', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _secondaryNumberMeta =
-      const VerificationMeta('secondaryNumber');
-  late final GeneratedColumn<String> secondaryNumber = GeneratedColumn<String>(
-      'secondaryNumber', aliasedName, true,
+  static const VerificationMeta _taxonOrderMeta =
+      const VerificationMeta('taxonOrder');
+  late final GeneratedColumn<String> taxonOrder = GeneratedColumn<String>(
+      'taxonOrder', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _barcodeIDMeta =
-      const VerificationMeta('barcodeID');
-  late final GeneratedColumn<String> barcodeID = GeneratedColumn<String>(
-      'barcodeID', aliasedName, true,
+  static const VerificationMeta _taxonFamilyMeta =
+      const VerificationMeta('taxonFamily');
+  late final GeneratedColumn<String> taxonFamily = GeneratedColumn<String>(
+      'taxonFamily', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _typeMeta = const VerificationMeta('type');
-  late final GeneratedColumn<String> type = GeneratedColumn<String>(
-      'type', aliasedName, true,
+  static const VerificationMeta _genusMeta = const VerificationMeta('genus');
+  late final GeneratedColumn<String> genus = GeneratedColumn<String>(
+      'genus', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _countMeta = const VerificationMeta('count');
-  late final GeneratedColumn<String> count = GeneratedColumn<String>(
-      'count', aliasedName, true,
+  static const VerificationMeta _specificEpithetMeta =
+      const VerificationMeta('specificEpithet');
+  late final GeneratedColumn<String> specificEpithet = GeneratedColumn<String>(
+      'specificEpithet', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _treatmentMeta =
-      const VerificationMeta('treatment');
-  late final GeneratedColumn<String> treatment = GeneratedColumn<String>(
-      'treatment', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _additionalTreatmentMeta =
-      const VerificationMeta('additionalTreatment');
-  late final GeneratedColumn<String> additionalTreatment =
-      GeneratedColumn<String>('additionalTreatment', aliasedName, true,
+  static const VerificationMeta _intraspecificEpithetMeta =
+      const VerificationMeta('intraspecificEpithet');
+  late final GeneratedColumn<String> intraspecificEpithet =
+      GeneratedColumn<String>('intraspecificEpithet', aliasedName, true,
           type: DriftSqlType.string,
           requiredDuringInsert: false,
           $customConstraints: '');
-  static const VerificationMeta _museumPermanentMeta =
-      const VerificationMeta('museumPermanent');
-  late final GeneratedColumn<String> museumPermanent = GeneratedColumn<String>(
-      'museumPermanent', aliasedName, true,
+  static const VerificationMeta _commonNameMeta =
+      const VerificationMeta('commonName');
+  late final GeneratedColumn<Uint8List> commonName = GeneratedColumn<Uint8List>(
+      'commonName', aliasedName, true,
+      type: DriftSqlType.blob,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+      'note', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _museumLoanMeta =
-      const VerificationMeta('museumLoan');
-  late final GeneratedColumn<String> museumLoan = GeneratedColumn<String>(
-      'museumLoan', aliasedName, true,
-      type: DriftSqlType.string,
+  static const VerificationMeta _mediaIdMeta =
+      const VerificationMeta('mediaId');
+  late final GeneratedColumn<int> mediaId = GeneratedColumn<int>(
+      'mediaId', aliasedName, true,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
-        specimenUuid,
-        secondaryNumber,
-        barcodeID,
-        type,
-        count,
-        treatment,
-        additionalTreatment,
-        museumPermanent,
-        museumLoan
+        id,
+        taxonClass,
+        taxonOrder,
+        taxonFamily,
+        genus,
+        specificEpithet,
+        intraspecificEpithet,
+        commonName,
+        note,
+        mediaId
       ];
   @override
-  String get aliasedName => _alias ?? 'part';
+  String get aliasedName => _alias ?? 'taxonomy';
   @override
-  String get actualTableName => 'part';
+  String get actualTableName => 'taxonomy';
   @override
-  VerificationContext validateIntegrity(Insertable<PartData> instance,
+  VerificationContext validateIntegrity(Insertable<TaxonomyData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('specimenUuid')) {
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('taxonClass')) {
       context.handle(
-          _specimenUuidMeta,
-          specimenUuid.isAcceptableOrUnknown(
-              data['specimenUuid']!, _specimenUuidMeta));
+          _taxonClassMeta,
+          taxonClass.isAcceptableOrUnknown(
+              data['taxonClass']!, _taxonClassMeta));
     }
-    if (data.containsKey('secondaryNumber')) {
+    if (data.containsKey('taxonOrder')) {
       context.handle(
-          _secondaryNumberMeta,
-          secondaryNumber.isAcceptableOrUnknown(
-              data['secondaryNumber']!, _secondaryNumberMeta));
+          _taxonOrderMeta,
+          taxonOrder.isAcceptableOrUnknown(
+              data['taxonOrder']!, _taxonOrderMeta));
     }
-    if (data.containsKey('barcodeID')) {
-      context.handle(_barcodeIDMeta,
-          barcodeID.isAcceptableOrUnknown(data['barcodeID']!, _barcodeIDMeta));
-    }
-    if (data.containsKey('type')) {
+    if (data.containsKey('taxonFamily')) {
       context.handle(
-          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
+          _taxonFamilyMeta,
+          taxonFamily.isAcceptableOrUnknown(
+              data['taxonFamily']!, _taxonFamilyMeta));
     }
-    if (data.containsKey('count')) {
+    if (data.containsKey('genus')) {
       context.handle(
-          _countMeta, count.isAcceptableOrUnknown(data['count']!, _countMeta));
+          _genusMeta, genus.isAcceptableOrUnknown(data['genus']!, _genusMeta));
     }
-    if (data.containsKey('treatment')) {
-      context.handle(_treatmentMeta,
-          treatment.isAcceptableOrUnknown(data['treatment']!, _treatmentMeta));
-    }
-    if (data.containsKey('additionalTreatment')) {
+    if (data.containsKey('specificEpithet')) {
       context.handle(
-          _additionalTreatmentMeta,
-          additionalTreatment.isAcceptableOrUnknown(
-              data['additionalTreatment']!, _additionalTreatmentMeta));
+          _specificEpithetMeta,
+          specificEpithet.isAcceptableOrUnknown(
+              data['specificEpithet']!, _specificEpithetMeta));
     }
-    if (data.containsKey('museumPermanent')) {
+    if (data.containsKey('intraspecificEpithet')) {
       context.handle(
-          _museumPermanentMeta,
-          museumPermanent.isAcceptableOrUnknown(
-              data['museumPermanent']!, _museumPermanentMeta));
+          _intraspecificEpithetMeta,
+          intraspecificEpithet.isAcceptableOrUnknown(
+              data['intraspecificEpithet']!, _intraspecificEpithetMeta));
     }
-    if (data.containsKey('museumLoan')) {
+    if (data.containsKey('commonName')) {
       context.handle(
-          _museumLoanMeta,
-          museumLoan.isAcceptableOrUnknown(
-              data['museumLoan']!, _museumLoanMeta));
+          _commonNameMeta,
+          commonName.isAcceptableOrUnknown(
+              data['commonName']!, _commonNameMeta));
+    }
+    if (data.containsKey('note')) {
+      context.handle(
+          _noteMeta, note.isAcceptableOrUnknown(data['note']!, _noteMeta));
+    }
+    if (data.containsKey('mediaId')) {
+      context.handle(_mediaIdMeta,
+          mediaId.isAcceptableOrUnknown(data['mediaId']!, _mediaIdMeta));
     }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => const {};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  PartData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  TaxonomyData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return PartData(
-      specimenUuid: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}specimenUuid']),
-      secondaryNumber: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}secondaryNumber']),
-      barcodeID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}barcodeID']),
-      type: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}type']),
-      count: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}count']),
-      treatment: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}treatment']),
-      additionalTreatment: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}additionalTreatment']),
-      museumPermanent: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}museumPermanent']),
-      museumLoan: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}museumLoan']),
+    return TaxonomyData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id']),
+      taxonClass: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}taxonClass']),
+      taxonOrder: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}taxonOrder']),
+      taxonFamily: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}taxonFamily']),
+      genus: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}genus']),
+      specificEpithet: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}specificEpithet']),
+      intraspecificEpithet: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}intraspecificEpithet']),
+      commonName: attachedDatabase.typeMapping
+          .read(DriftSqlType.blob, data['${effectivePrefix}commonName']),
+      note: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}note']),
+      mediaId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}mediaId']),
     );
   }
 
   @override
-  Part createAlias(String alias) {
-    return Part(attachedDatabase, alias);
+  Taxonomy createAlias(String alias) {
+    return Taxonomy(attachedDatabase, alias);
   }
 
   @override
-  List<String> get customConstraints => const [];
+  List<String> get customConstraints =>
+      const ['FOREIGN KEY(mediaId)REFERENCES media(primaryId)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -8450,11 +8630,11 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
   }
 }
 
-class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
+class Expense extends Table with TableInfo<Expense, ExpenseData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Taxonomy(this.attachedDatabase, [this._alias]);
+  Expense(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, true,
@@ -8462,139 +8642,87 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  static const VerificationMeta _taxonClassMeta =
-      const VerificationMeta('taxonClass');
-  late final GeneratedColumn<String> taxonClass = GeneratedColumn<String>(
-      'taxonClass', aliasedName, true,
+  static const VerificationMeta _categoryMeta =
+      const VerificationMeta('category');
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
+      'category', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _taxonOrderMeta =
-      const VerificationMeta('taxonOrder');
-  late final GeneratedColumn<String> taxonOrder = GeneratedColumn<String>(
-      'taxonOrder', aliasedName, true,
+  static const VerificationMeta _itemMeta = const VerificationMeta('item');
+  late final GeneratedColumn<String> item = GeneratedColumn<String>(
+      'item', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _taxonFamilyMeta =
-      const VerificationMeta('taxonFamily');
-  late final GeneratedColumn<String> taxonFamily = GeneratedColumn<String>(
-      'taxonFamily', aliasedName, true,
+  static const VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+      'description', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _genusMeta = const VerificationMeta('genus');
-  late final GeneratedColumn<String> genus = GeneratedColumn<String>(
-      'genus', aliasedName, true,
+  static const VerificationMeta _budgetMeta = const VerificationMeta('budget');
+  late final GeneratedColumn<double> budget = GeneratedColumn<double>(
+      'budget', aliasedName, true,
+      type: DriftSqlType.double,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _actualMeta = const VerificationMeta('actual');
+  late final GeneratedColumn<double> actual = GeneratedColumn<double>(
+      'actual', aliasedName, true,
+      type: DriftSqlType.double,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _projectUuidMeta =
+      const VerificationMeta('projectUuid');
+  late final GeneratedColumn<String> projectUuid = GeneratedColumn<String>(
+      'projectUuid', aliasedName, true,
       type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _specificEpithetMeta =
-      const VerificationMeta('specificEpithet');
-  late final GeneratedColumn<String> specificEpithet = GeneratedColumn<String>(
-      'specificEpithet', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _intraspecificEpithetMeta =
-      const VerificationMeta('intraspecificEpithet');
-  late final GeneratedColumn<String> intraspecificEpithet =
-      GeneratedColumn<String>('intraspecificEpithet', aliasedName, true,
-          type: DriftSqlType.string,
-          requiredDuringInsert: false,
-          $customConstraints: '');
-  static const VerificationMeta _commonNameMeta =
-      const VerificationMeta('commonName');
-  late final GeneratedColumn<Uint8List> commonName = GeneratedColumn<Uint8List>(
-      'commonName', aliasedName, true,
-      type: DriftSqlType.blob,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _noteMeta = const VerificationMeta('note');
-  late final GeneratedColumn<String> note = GeneratedColumn<String>(
-      'note', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _mediaIdMeta =
-      const VerificationMeta('mediaId');
-  late final GeneratedColumn<int> mediaId = GeneratedColumn<int>(
-      'mediaId', aliasedName, true,
-      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
-  List<GeneratedColumn> get $columns => [
-        id,
-        taxonClass,
-        taxonOrder,
-        taxonFamily,
-        genus,
-        specificEpithet,
-        intraspecificEpithet,
-        commonName,
-        note,
-        mediaId
-      ];
+  List<GeneratedColumn> get $columns =>
+      [id, category, item, description, budget, actual, projectUuid];
   @override
-  String get aliasedName => _alias ?? 'taxonomy';
+  String get aliasedName => _alias ?? 'expense';
   @override
-  String get actualTableName => 'taxonomy';
+  String get actualTableName => 'expense';
   @override
-  VerificationContext validateIntegrity(Insertable<TaxonomyData> instance,
+  VerificationContext validateIntegrity(Insertable<ExpenseData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('taxonClass')) {
-      context.handle(
-          _taxonClassMeta,
-          taxonClass.isAcceptableOrUnknown(
-              data['taxonClass']!, _taxonClassMeta));
+    if (data.containsKey('category')) {
+      context.handle(_categoryMeta,
+          category.isAcceptableOrUnknown(data['category']!, _categoryMeta));
     }
-    if (data.containsKey('taxonOrder')) {
+    if (data.containsKey('item')) {
       context.handle(
-          _taxonOrderMeta,
-          taxonOrder.isAcceptableOrUnknown(
-              data['taxonOrder']!, _taxonOrderMeta));
+          _itemMeta, item.isAcceptableOrUnknown(data['item']!, _itemMeta));
     }
-    if (data.containsKey('taxonFamily')) {
+    if (data.containsKey('description')) {
       context.handle(
-          _taxonFamilyMeta,
-          taxonFamily.isAcceptableOrUnknown(
-              data['taxonFamily']!, _taxonFamilyMeta));
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description']!, _descriptionMeta));
     }
-    if (data.containsKey('genus')) {
+    if (data.containsKey('budget')) {
+      context.handle(_budgetMeta,
+          budget.isAcceptableOrUnknown(data['budget']!, _budgetMeta));
+    }
+    if (data.containsKey('actual')) {
+      context.handle(_actualMeta,
+          actual.isAcceptableOrUnknown(data['actual']!, _actualMeta));
+    }
+    if (data.containsKey('projectUuid')) {
       context.handle(
-          _genusMeta, genus.isAcceptableOrUnknown(data['genus']!, _genusMeta));
-    }
-    if (data.containsKey('specificEpithet')) {
-      context.handle(
-          _specificEpithetMeta,
-          specificEpithet.isAcceptableOrUnknown(
-              data['specificEpithet']!, _specificEpithetMeta));
-    }
-    if (data.containsKey('intraspecificEpithet')) {
-      context.handle(
-          _intraspecificEpithetMeta,
-          intraspecificEpithet.isAcceptableOrUnknown(
-              data['intraspecificEpithet']!, _intraspecificEpithetMeta));
-    }
-    if (data.containsKey('commonName')) {
-      context.handle(
-          _commonNameMeta,
-          commonName.isAcceptableOrUnknown(
-              data['commonName']!, _commonNameMeta));
-    }
-    if (data.containsKey('note')) {
-      context.handle(
-          _noteMeta, note.isAcceptableOrUnknown(data['note']!, _noteMeta));
-    }
-    if (data.containsKey('mediaId')) {
-      context.handle(_mediaIdMeta,
-          mediaId.isAcceptableOrUnknown(data['mediaId']!, _mediaIdMeta));
+          _projectUuidMeta,
+          projectUuid.isAcceptableOrUnknown(
+              data['projectUuid']!, _projectUuidMeta));
     }
     return context;
   }
@@ -8602,40 +8730,34 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  TaxonomyData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  ExpenseData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return TaxonomyData(
+    return ExpenseData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id']),
-      taxonClass: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}taxonClass']),
-      taxonOrder: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}taxonOrder']),
-      taxonFamily: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}taxonFamily']),
-      genus: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}genus']),
-      specificEpithet: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}specificEpithet']),
-      intraspecificEpithet: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}intraspecificEpithet']),
-      commonName: attachedDatabase.typeMapping
-          .read(DriftSqlType.blob, data['${effectivePrefix}commonName']),
-      note: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}note']),
-      mediaId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}mediaId']),
+      category: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}category']),
+      item: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}item']),
+      description: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}description']),
+      budget: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}budget']),
+      actual: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}actual']),
+      projectUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
     );
   }
 
   @override
-  Taxonomy createAlias(String alias) {
-    return Taxonomy(attachedDatabase, alias);
+  Expense createAlias(String alias) {
+    return Expense(attachedDatabase, alias);
   }
 
   @override
   List<String> get customConstraints =>
-      const ['FOREIGN KEY(mediaId)REFERENCES media(primaryId)'];
+      const ['FOREIGN KEY(projectUuid)REFERENCES project(uuid)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -8882,138 +9004,6 @@ class ExpenseCompanion extends UpdateCompanion<ExpenseData> {
           ..write(')'))
         .toString();
   }
-}
-
-class Expense extends Table with TableInfo<Expense, ExpenseData> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  Expense(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, true,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  static const VerificationMeta _categoryMeta =
-      const VerificationMeta('category');
-  late final GeneratedColumn<String> category = GeneratedColumn<String>(
-      'category', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _itemMeta = const VerificationMeta('item');
-  late final GeneratedColumn<String> item = GeneratedColumn<String>(
-      'item', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _descriptionMeta =
-      const VerificationMeta('description');
-  late final GeneratedColumn<String> description = GeneratedColumn<String>(
-      'description', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _budgetMeta = const VerificationMeta('budget');
-  late final GeneratedColumn<double> budget = GeneratedColumn<double>(
-      'budget', aliasedName, true,
-      type: DriftSqlType.double,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _actualMeta = const VerificationMeta('actual');
-  late final GeneratedColumn<double> actual = GeneratedColumn<double>(
-      'actual', aliasedName, true,
-      type: DriftSqlType.double,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _projectUuidMeta =
-      const VerificationMeta('projectUuid');
-  late final GeneratedColumn<String> projectUuid = GeneratedColumn<String>(
-      'projectUuid', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  @override
-  List<GeneratedColumn> get $columns =>
-      [id, category, item, description, budget, actual, projectUuid];
-  @override
-  String get aliasedName => _alias ?? 'expense';
-  @override
-  String get actualTableName => 'expense';
-  @override
-  VerificationContext validateIntegrity(Insertable<ExpenseData> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('category')) {
-      context.handle(_categoryMeta,
-          category.isAcceptableOrUnknown(data['category']!, _categoryMeta));
-    }
-    if (data.containsKey('item')) {
-      context.handle(
-          _itemMeta, item.isAcceptableOrUnknown(data['item']!, _itemMeta));
-    }
-    if (data.containsKey('description')) {
-      context.handle(
-          _descriptionMeta,
-          description.isAcceptableOrUnknown(
-              data['description']!, _descriptionMeta));
-    }
-    if (data.containsKey('budget')) {
-      context.handle(_budgetMeta,
-          budget.isAcceptableOrUnknown(data['budget']!, _budgetMeta));
-    }
-    if (data.containsKey('actual')) {
-      context.handle(_actualMeta,
-          actual.isAcceptableOrUnknown(data['actual']!, _actualMeta));
-    }
-    if (data.containsKey('projectUuid')) {
-      context.handle(
-          _projectUuidMeta,
-          projectUuid.isAcceptableOrUnknown(
-              data['projectUuid']!, _projectUuidMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  ExpenseData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return ExpenseData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id']),
-      category: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}category']),
-      item: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}item']),
-      description: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}description']),
-      budget: attachedDatabase.typeMapping
-          .read(DriftSqlType.double, data['${effectivePrefix}budget']),
-      actual: attachedDatabase.typeMapping
-          .read(DriftSqlType.double, data['${effectivePrefix}actual']),
-      projectUuid: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
-    );
-  }
-
-  @override
-  Expense createAlias(String alias) {
-    return Expense(attachedDatabase, alias);
-  }
-
-  @override
-  List<String> get customConstraints =>
-      const ['FOREIGN KEY(projectUuid)REFERENCES project(uuid)'];
-  @override
-  bool get dontWriteConstraints => true;
 }
 
 abstract class _$Database extends GeneratedDatabase {
