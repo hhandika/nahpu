@@ -261,6 +261,9 @@ class PersonnelForm extends ConsumerStatefulWidget {
   PersonnelFormState createState() => PersonnelFormState();
 }
 
+// TODO:
+// 1. Add photo
+// 2. Add validation
 class PersonnelFormState extends ConsumerState<PersonnelForm> {
   @override
   Widget build(BuildContext context) {
