@@ -23,8 +23,7 @@ final projectInfoProvider =
   return await projectInfo;
 });
 
-final projectTaxonProvider =
-    FutureProvider.autoDispose<List<TaxonomyData>>((ref) async {
+final taxonRegistryProvider = FutureProvider<List<TaxonomyData>>((ref) async {
   final projectTaxon = ref.read(databaseProvider).getTaxonList();
   return await projectTaxon;
 });

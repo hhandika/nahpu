@@ -4,6 +4,7 @@ import 'package:nahpu/models/form.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/forms.dart';
+import 'package:nahpu/screens/shared/indicators.dart';
 import 'package:nahpu/services/database.dart';
 import 'package:drift/drift.dart' as db;
 
@@ -24,7 +25,10 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
         children: [
           SizedBox(
               height: MediaQuery.of(context).size.height * 0.3,
-              child: const TaxonRegistryInfo()),
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                child: const TaxonRegistryInfo(),
+              )),
           Wrap(
             spacing: 10,
             children: [
@@ -60,7 +64,26 @@ class TaxonRegistryInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(children: const []);
+    return ref.watch(taxonRegistryProvider).when(
+          data: (data) => data.isEmpty
+              ? const Text('No taxon found')
+              : RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'Taxon registered: ',
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                      TextSpan(
+                        text: '${data.length} taxa',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ],
+                  ),
+                ),
+          loading: () => const CommmonProgressIndicator(),
+          error: (error, stack) => Text('Error: $error'),
+        );
   }
 }
 
@@ -72,7 +95,7 @@ class TaxonEntryForm extends ConsumerStatefulWidget {
 }
 
 class TaxonEntryFormState extends ConsumerState<TaxonEntryForm> {
-  late TaxonRegistryCtrModel _ctr;
+  final TaxonRegistryCtrModel _ctr = TaxonRegistryCtrModel.empty();
 
   @override
   Widget build(BuildContext context) {
@@ -150,6 +173,7 @@ class TaxonEntryFormState extends ConsumerState<TaxonEntryForm> {
                     PrimaryButton(
                       onPressed: () {
                         _saveTaxon();
+                        ref.invalidate(taxonRegistryProvider);
                         Navigator.of(context).pop();
                       },
                       text: 'Save',
@@ -192,7 +216,7 @@ class TaxonRegistryListState extends ConsumerState<TaxonRegistryList> {
       appBar: AppBar(
         title: const Text('Taxon registry'),
       ),
-      body: ref.watch(projectTaxonProvider).when(
+      body: ref.watch(taxonRegistryProvider).when(
             data: (taxonList) {
               return TaxonList(taxonList: taxonList);
             },
