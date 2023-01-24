@@ -240,8 +240,7 @@ CREATE TABLE taxonomy (
     taxonFamily TEXT,
     genus TEXT,
     specificEpithet TEXT,
-    intraspecificEpithet TEXT,
-    commonName,
+    commonName TEXT,
     note TEXT,
     mediaId INT,
     FOREIGN KEY(mediaId) REFERENCES media(primaryId)

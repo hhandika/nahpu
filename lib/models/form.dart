@@ -205,3 +205,32 @@ class PersonnelFormCtrModel {
       photoIdCtr: TextEditingController(),
       noteCtr: TextEditingController());
 }
+
+class TaxonRegistryCtrModel {
+  TaxonRegistryCtrModel({
+    required this.taxonClassCtr,
+    required this.taxonOrderCtr,
+    required this.taxonFamilyCtr,
+    required this.genusCtr,
+    required this.specificEpithetCtr,
+    required this.commonNameCtr,
+    required this.noteCtr,
+  });
+
+  TextEditingController taxonClassCtr;
+  TextEditingController taxonOrderCtr;
+  TextEditingController taxonFamilyCtr;
+  TextEditingController genusCtr;
+  TextEditingController specificEpithetCtr;
+  TextEditingController commonNameCtr;
+  TextEditingController noteCtr;
+
+  factory TaxonRegistryCtrModel.empty() => TaxonRegistryCtrModel(
+      taxonClassCtr: TextEditingController(),
+      taxonOrderCtr: TextEditingController(),
+      taxonFamilyCtr: TextEditingController(),
+      genusCtr: TextEditingController(),
+      specificEpithetCtr: TextEditingController(),
+      commonNameCtr: TextEditingController(),
+      noteCtr: TextEditingController());
+}

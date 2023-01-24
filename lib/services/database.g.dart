@@ -8346,18 +8346,11 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _intraspecificEpithetMeta =
-      const VerificationMeta('intraspecificEpithet');
-  late final GeneratedColumn<String> intraspecificEpithet =
-      GeneratedColumn<String>('intraspecificEpithet', aliasedName, true,
-          type: DriftSqlType.string,
-          requiredDuringInsert: false,
-          $customConstraints: '');
   static const VerificationMeta _commonNameMeta =
       const VerificationMeta('commonName');
-  late final GeneratedColumn<Uint8List> commonName = GeneratedColumn<Uint8List>(
+  late final GeneratedColumn<String> commonName = GeneratedColumn<String>(
       'commonName', aliasedName, true,
-      type: DriftSqlType.blob,
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _noteMeta = const VerificationMeta('note');
@@ -8381,7 +8374,6 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
         taxonFamily,
         genus,
         specificEpithet,
-        intraspecificEpithet,
         commonName,
         note,
         mediaId
@@ -8426,12 +8418,6 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
           specificEpithet.isAcceptableOrUnknown(
               data['specificEpithet']!, _specificEpithetMeta));
     }
-    if (data.containsKey('intraspecificEpithet')) {
-      context.handle(
-          _intraspecificEpithetMeta,
-          intraspecificEpithet.isAcceptableOrUnknown(
-              data['intraspecificEpithet']!, _intraspecificEpithetMeta));
-    }
     if (data.containsKey('commonName')) {
       context.handle(
           _commonNameMeta,
@@ -8467,10 +8453,8 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
           .read(DriftSqlType.string, data['${effectivePrefix}genus']),
       specificEpithet: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}specificEpithet']),
-      intraspecificEpithet: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}intraspecificEpithet']),
       commonName: attachedDatabase.typeMapping
-          .read(DriftSqlType.blob, data['${effectivePrefix}commonName']),
+          .read(DriftSqlType.string, data['${effectivePrefix}commonName']),
       note: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}note']),
       mediaId: attachedDatabase.typeMapping
@@ -8497,8 +8481,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
   final String? taxonFamily;
   final String? genus;
   final String? specificEpithet;
-  final String? intraspecificEpithet;
-  final Uint8List? commonName;
+  final String? commonName;
   final String? note;
   final int? mediaId;
   const TaxonomyData(
@@ -8508,7 +8491,6 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
       this.taxonFamily,
       this.genus,
       this.specificEpithet,
-      this.intraspecificEpithet,
       this.commonName,
       this.note,
       this.mediaId});
@@ -8533,11 +8515,8 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
     if (!nullToAbsent || specificEpithet != null) {
       map['specificEpithet'] = Variable<String>(specificEpithet);
     }
-    if (!nullToAbsent || intraspecificEpithet != null) {
-      map['intraspecificEpithet'] = Variable<String>(intraspecificEpithet);
-    }
     if (!nullToAbsent || commonName != null) {
-      map['commonName'] = Variable<Uint8List>(commonName);
+      map['commonName'] = Variable<String>(commonName);
     }
     if (!nullToAbsent || note != null) {
       map['note'] = Variable<String>(note);
@@ -8565,9 +8544,6 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
       specificEpithet: specificEpithet == null && nullToAbsent
           ? const Value.absent()
           : Value(specificEpithet),
-      intraspecificEpithet: intraspecificEpithet == null && nullToAbsent
-          ? const Value.absent()
-          : Value(intraspecificEpithet),
       commonName: commonName == null && nullToAbsent
           ? const Value.absent()
           : Value(commonName),
@@ -8588,9 +8564,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
       taxonFamily: serializer.fromJson<String?>(json['taxonFamily']),
       genus: serializer.fromJson<String?>(json['genus']),
       specificEpithet: serializer.fromJson<String?>(json['specificEpithet']),
-      intraspecificEpithet:
-          serializer.fromJson<String?>(json['intraspecificEpithet']),
-      commonName: serializer.fromJson<Uint8List?>(json['commonName']),
+      commonName: serializer.fromJson<String?>(json['commonName']),
       note: serializer.fromJson<String?>(json['note']),
       mediaId: serializer.fromJson<int?>(json['mediaId']),
     );
@@ -8605,8 +8579,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
       'taxonFamily': serializer.toJson<String?>(taxonFamily),
       'genus': serializer.toJson<String?>(genus),
       'specificEpithet': serializer.toJson<String?>(specificEpithet),
-      'intraspecificEpithet': serializer.toJson<String?>(intraspecificEpithet),
-      'commonName': serializer.toJson<Uint8List?>(commonName),
+      'commonName': serializer.toJson<String?>(commonName),
       'note': serializer.toJson<String?>(note),
       'mediaId': serializer.toJson<int?>(mediaId),
     };
@@ -8619,8 +8592,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
           Value<String?> taxonFamily = const Value.absent(),
           Value<String?> genus = const Value.absent(),
           Value<String?> specificEpithet = const Value.absent(),
-          Value<String?> intraspecificEpithet = const Value.absent(),
-          Value<Uint8List?> commonName = const Value.absent(),
+          Value<String?> commonName = const Value.absent(),
           Value<String?> note = const Value.absent(),
           Value<int?> mediaId = const Value.absent()}) =>
       TaxonomyData(
@@ -8632,9 +8604,6 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
         specificEpithet: specificEpithet.present
             ? specificEpithet.value
             : this.specificEpithet,
-        intraspecificEpithet: intraspecificEpithet.present
-            ? intraspecificEpithet.value
-            : this.intraspecificEpithet,
         commonName: commonName.present ? commonName.value : this.commonName,
         note: note.present ? note.value : this.note,
         mediaId: mediaId.present ? mediaId.value : this.mediaId,
@@ -8648,7 +8617,6 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
           ..write('taxonFamily: $taxonFamily, ')
           ..write('genus: $genus, ')
           ..write('specificEpithet: $specificEpithet, ')
-          ..write('intraspecificEpithet: $intraspecificEpithet, ')
           ..write('commonName: $commonName, ')
           ..write('note: $note, ')
           ..write('mediaId: $mediaId')
@@ -8657,17 +8625,8 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
   }
 
   @override
-  int get hashCode => Object.hash(
-      id,
-      taxonClass,
-      taxonOrder,
-      taxonFamily,
-      genus,
-      specificEpithet,
-      intraspecificEpithet,
-      $driftBlobEquality.hash(commonName),
-      note,
-      mediaId);
+  int get hashCode => Object.hash(id, taxonClass, taxonOrder, taxonFamily,
+      genus, specificEpithet, commonName, note, mediaId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -8678,8 +8637,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
           other.taxonFamily == this.taxonFamily &&
           other.genus == this.genus &&
           other.specificEpithet == this.specificEpithet &&
-          other.intraspecificEpithet == this.intraspecificEpithet &&
-          $driftBlobEquality.equals(other.commonName, this.commonName) &&
+          other.commonName == this.commonName &&
           other.note == this.note &&
           other.mediaId == this.mediaId);
 }
@@ -8691,8 +8649,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
   final Value<String?> taxonFamily;
   final Value<String?> genus;
   final Value<String?> specificEpithet;
-  final Value<String?> intraspecificEpithet;
-  final Value<Uint8List?> commonName;
+  final Value<String?> commonName;
   final Value<String?> note;
   final Value<int?> mediaId;
   const TaxonomyCompanion({
@@ -8702,7 +8659,6 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
     this.taxonFamily = const Value.absent(),
     this.genus = const Value.absent(),
     this.specificEpithet = const Value.absent(),
-    this.intraspecificEpithet = const Value.absent(),
     this.commonName = const Value.absent(),
     this.note = const Value.absent(),
     this.mediaId = const Value.absent(),
@@ -8714,7 +8670,6 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
     this.taxonFamily = const Value.absent(),
     this.genus = const Value.absent(),
     this.specificEpithet = const Value.absent(),
-    this.intraspecificEpithet = const Value.absent(),
     this.commonName = const Value.absent(),
     this.note = const Value.absent(),
     this.mediaId = const Value.absent(),
@@ -8726,8 +8681,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
     Expression<String>? taxonFamily,
     Expression<String>? genus,
     Expression<String>? specificEpithet,
-    Expression<String>? intraspecificEpithet,
-    Expression<Uint8List>? commonName,
+    Expression<String>? commonName,
     Expression<String>? note,
     Expression<int>? mediaId,
   }) {
@@ -8738,8 +8692,6 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
       if (taxonFamily != null) 'taxonFamily': taxonFamily,
       if (genus != null) 'genus': genus,
       if (specificEpithet != null) 'specificEpithet': specificEpithet,
-      if (intraspecificEpithet != null)
-        'intraspecificEpithet': intraspecificEpithet,
       if (commonName != null) 'commonName': commonName,
       if (note != null) 'note': note,
       if (mediaId != null) 'mediaId': mediaId,
@@ -8753,8 +8705,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
       Value<String?>? taxonFamily,
       Value<String?>? genus,
       Value<String?>? specificEpithet,
-      Value<String?>? intraspecificEpithet,
-      Value<Uint8List?>? commonName,
+      Value<String?>? commonName,
       Value<String?>? note,
       Value<int?>? mediaId}) {
     return TaxonomyCompanion(
@@ -8764,7 +8715,6 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
       taxonFamily: taxonFamily ?? this.taxonFamily,
       genus: genus ?? this.genus,
       specificEpithet: specificEpithet ?? this.specificEpithet,
-      intraspecificEpithet: intraspecificEpithet ?? this.intraspecificEpithet,
       commonName: commonName ?? this.commonName,
       note: note ?? this.note,
       mediaId: mediaId ?? this.mediaId,
@@ -8792,12 +8742,8 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
     if (specificEpithet.present) {
       map['specificEpithet'] = Variable<String>(specificEpithet.value);
     }
-    if (intraspecificEpithet.present) {
-      map['intraspecificEpithet'] =
-          Variable<String>(intraspecificEpithet.value);
-    }
     if (commonName.present) {
-      map['commonName'] = Variable<Uint8List>(commonName.value);
+      map['commonName'] = Variable<String>(commonName.value);
     }
     if (note.present) {
       map['note'] = Variable<String>(note.value);
@@ -8817,7 +8763,6 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
           ..write('taxonFamily: $taxonFamily, ')
           ..write('genus: $genus, ')
           ..write('specificEpithet: $specificEpithet, ')
-          ..write('intraspecificEpithet: $intraspecificEpithet, ')
           ..write('commonName: $commonName, ')
           ..write('note: $note, ')
           ..write('mediaId: $mediaId')
