@@ -155,6 +155,26 @@ class Database extends _$Database {
   Future<List<CoordinateData>> getAllCoordinates() {
     return select(coordinate).get();
   }
+
+  Future<void> deleteAllPersonnel() {
+    return delete(personnel).go();
+  }
+
+  Future<List<TaxonomyData>> getTaxonList() {
+    return select(taxonomy).get();
+  }
+
+  Future<void> createTaxon(TaxonomyCompanion form) {
+    return into(taxonomy).insert(form);
+  }
+
+  Future<void> updateTaxonEntry(int id, TaxonomyCompanion entry) {
+    return (update(taxonomy)..where((t) => t.id.equals(id))).write(entry);
+  }
+
+  Future<void> deleteTaxon(int id) {
+    return (delete(taxonomy)..where((t) => t.id.equals(id))).go();
+  }
 }
 
 LazyDatabase _openConnection() {
