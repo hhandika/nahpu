@@ -162,6 +162,7 @@ class PersonnelMenuState extends ConsumerState<PersonnelMenu> {
         break;
       case PersonnelMenuAction.delete:
         ref.read(databaseProvider).deletePersonnel(widget.data.uuid!);
+        ref.invalidate(personnelListProvider);
         break;
     }
   }
@@ -183,6 +184,7 @@ class NewPersonnelState extends ConsumerState<NewPersonnel> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add personnel'),
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -208,7 +210,7 @@ class EditPersonnelForm extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit personnel'),
-        leading: null,
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -328,6 +330,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
           Visibility(
             visible: widget.ctr.roleCtr == 'Collector',
             child: TextField(
+              enabled: widget.ctr.roleCtr == 'Collector',
               controller: widget.ctr.nextCollectorNumCtr,
               decoration: const InputDecoration(
                 labelText: 'Next collector Number',
@@ -341,6 +344,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
               labelText: 'Notes',
               hintText: 'Write notes',
             ),
+            maxLines: 3,
           ),
           const SizedBox(
             height: 20,
@@ -348,14 +352,14 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
           Wrap(
             spacing: 10,
             children: [
-              TextButton(
-                child: const Text('Cancel'),
+              SecondaryButton(
+                text: 'Cancel',
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
-              TextButton(
-                child: Text(widget.isAddNew ? 'Add' : 'Update'),
+              PrimaryButton(
+                text: widget.isAddNew ? 'Add' : 'Update',
                 onPressed: () {
                   widget.isAddNew ? _addPersonnel() : _updatePersonnel();
                   ref.invalidate(personnelListProvider);
@@ -382,8 +386,9 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
             affiliation: db.Value(widget.ctr.affiliationCtr.text),
             email: db.Value(widget.ctr.emailCtr.text),
             role: db.Value(widget.ctr.roleCtr),
-            nextCollectorNumber:
-                db.Value(int.parse(widget.ctr.nextCollectorNumCtr.text)),
+            nextCollectorNumber: db.Value(
+              _getCollectorNumber(),
+            ),
           ),
         );
   }
@@ -398,9 +403,18 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
         affiliation: db.Value(widget.ctr.affiliationCtr.text),
         email: db.Value(widget.ctr.emailCtr.text),
         role: db.Value(widget.ctr.roleCtr),
-        nextCollectorNumber:
-            db.Value(int.parse(widget.ctr.nextCollectorNumCtr.text)),
+        nextCollectorNumber: db.Value(
+          _getCollectorNumber(),
+        ),
       ),
     );
+  }
+
+  int _getCollectorNumber() {
+    if (widget.ctr.nextCollectorNumCtr.text == '') {
+      return 0;
+    } else {
+      return int.parse(widget.ctr.nextCollectorNumCtr.text);
+    }
   }
 }
