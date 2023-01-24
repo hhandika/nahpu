@@ -145,6 +145,13 @@ CREATE TABLE personnel (
     FOREIGN KEY(personnelPhoto) REFERENCES personnelPhoto(id)
 );
 
+CREATE TABLE projectPersonnel (
+    projectUuid TEXT,
+    personnelId TEXT,
+    FOREIGN KEY(projectUuid) REFERENCES project(uuid),
+    FOREIGN KEY(personnelId) REFERENCES personnel(uuid)
+);
+
 CREATE TABLE specimen (
     uuid TEXT UNIQUE NOT NULL PRIMARY KEY,
     projectUuid TEXT,

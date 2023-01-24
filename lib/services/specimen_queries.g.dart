@@ -18,6 +18,7 @@ mixin _$SpecimenQueryMixin on DatabaseAccessor<Database> {
   Narrative get narrative => attachedDatabase.narrative;
   AssociatedData get associatedData => attachedDatabase.associatedData;
   PersonnelList get personnelList => attachedDatabase.personnelList;
+  ProjectPersonnel get projectPersonnel => attachedDatabase.projectPersonnel;
   Specimen get specimen => attachedDatabase.specimen;
   MammalMeasurement get mammalMeasurement => attachedDatabase.mammalMeasurement;
   BirdMeasurement get birdMeasurement => attachedDatabase.birdMeasurement;

@@ -5000,6 +5000,202 @@ class PersonnelListCompanion extends UpdateCompanion<PersonnelListData> {
   }
 }
 
+class ProjectPersonnel extends Table
+    with TableInfo<ProjectPersonnel, ProjectPersonnelData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  ProjectPersonnel(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _projectUuidMeta =
+      const VerificationMeta('projectUuid');
+  late final GeneratedColumn<String> projectUuid = GeneratedColumn<String>(
+      'projectUuid', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _personnelIdMeta =
+      const VerificationMeta('personnelId');
+  late final GeneratedColumn<String> personnelId = GeneratedColumn<String>(
+      'personnelId', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  @override
+  List<GeneratedColumn> get $columns => [projectUuid, personnelId];
+  @override
+  String get aliasedName => _alias ?? 'projectPersonnel';
+  @override
+  String get actualTableName => 'projectPersonnel';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<ProjectPersonnelData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('projectUuid')) {
+      context.handle(
+          _projectUuidMeta,
+          projectUuid.isAcceptableOrUnknown(
+              data['projectUuid']!, _projectUuidMeta));
+    }
+    if (data.containsKey('personnelId')) {
+      context.handle(
+          _personnelIdMeta,
+          personnelId.isAcceptableOrUnknown(
+              data['personnelId']!, _personnelIdMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  ProjectPersonnelData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ProjectPersonnelData(
+      projectUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
+      personnelId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}personnelId']),
+    );
+  }
+
+  @override
+  ProjectPersonnel createAlias(String alias) {
+    return ProjectPersonnel(attachedDatabase, alias);
+  }
+
+  @override
+  List<String> get customConstraints => const [
+        'FOREIGN KEY(projectUuid)REFERENCES project(uuid)',
+        'FOREIGN KEY(personnelId)REFERENCES personnel(uuid)'
+      ];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class ProjectPersonnelData extends DataClass
+    implements Insertable<ProjectPersonnelData> {
+  final String? projectUuid;
+  final String? personnelId;
+  const ProjectPersonnelData({this.projectUuid, this.personnelId});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || projectUuid != null) {
+      map['projectUuid'] = Variable<String>(projectUuid);
+    }
+    if (!nullToAbsent || personnelId != null) {
+      map['personnelId'] = Variable<String>(personnelId);
+    }
+    return map;
+  }
+
+  ProjectPersonnelCompanion toCompanion(bool nullToAbsent) {
+    return ProjectPersonnelCompanion(
+      projectUuid: projectUuid == null && nullToAbsent
+          ? const Value.absent()
+          : Value(projectUuid),
+      personnelId: personnelId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(personnelId),
+    );
+  }
+
+  factory ProjectPersonnelData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ProjectPersonnelData(
+      projectUuid: serializer.fromJson<String?>(json['projectUuid']),
+      personnelId: serializer.fromJson<String?>(json['personnelId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'projectUuid': serializer.toJson<String?>(projectUuid),
+      'personnelId': serializer.toJson<String?>(personnelId),
+    };
+  }
+
+  ProjectPersonnelData copyWith(
+          {Value<String?> projectUuid = const Value.absent(),
+          Value<String?> personnelId = const Value.absent()}) =>
+      ProjectPersonnelData(
+        projectUuid: projectUuid.present ? projectUuid.value : this.projectUuid,
+        personnelId: personnelId.present ? personnelId.value : this.personnelId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('ProjectPersonnelData(')
+          ..write('projectUuid: $projectUuid, ')
+          ..write('personnelId: $personnelId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(projectUuid, personnelId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ProjectPersonnelData &&
+          other.projectUuid == this.projectUuid &&
+          other.personnelId == this.personnelId);
+}
+
+class ProjectPersonnelCompanion extends UpdateCompanion<ProjectPersonnelData> {
+  final Value<String?> projectUuid;
+  final Value<String?> personnelId;
+  const ProjectPersonnelCompanion({
+    this.projectUuid = const Value.absent(),
+    this.personnelId = const Value.absent(),
+  });
+  ProjectPersonnelCompanion.insert({
+    this.projectUuid = const Value.absent(),
+    this.personnelId = const Value.absent(),
+  });
+  static Insertable<ProjectPersonnelData> custom({
+    Expression<String>? projectUuid,
+    Expression<String>? personnelId,
+  }) {
+    return RawValuesInsertable({
+      if (projectUuid != null) 'projectUuid': projectUuid,
+      if (personnelId != null) 'personnelId': personnelId,
+    });
+  }
+
+  ProjectPersonnelCompanion copyWith(
+      {Value<String?>? projectUuid, Value<String?>? personnelId}) {
+    return ProjectPersonnelCompanion(
+      projectUuid: projectUuid ?? this.projectUuid,
+      personnelId: personnelId ?? this.personnelId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (projectUuid.present) {
+      map['projectUuid'] = Variable<String>(projectUuid.value);
+    }
+    if (personnelId.present) {
+      map['personnelId'] = Variable<String>(personnelId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProjectPersonnelCompanion(')
+          ..write('projectUuid: $projectUuid, ')
+          ..write('personnelId: $personnelId')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -9022,6 +9218,7 @@ abstract class _$Database extends GeneratedDatabase {
   late final Narrative narrative = Narrative(this);
   late final AssociatedData associatedData = AssociatedData(this);
   late final PersonnelList personnelList = PersonnelList(this);
+  late final ProjectPersonnel projectPersonnel = ProjectPersonnel(this);
   late final Specimen specimen = Specimen(this);
   late final MammalMeasurement mammalMeasurement = MammalMeasurement(this);
   late final BirdMeasurement birdMeasurement = BirdMeasurement(this);
@@ -9061,6 +9258,7 @@ abstract class _$Database extends GeneratedDatabase {
         narrative,
         associatedData,
         personnelList,
+        projectPersonnel,
         specimen,
         mammalMeasurement,
         birdMeasurement,

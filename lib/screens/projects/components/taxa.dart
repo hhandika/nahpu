@@ -78,79 +78,85 @@ class TaxonEntryFormState extends ConsumerState<TaxonEntryForm> {
       ),
       body: SafeArea(
         child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Class',
-                  hintText: 'Enter a class',
-                ),
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Order',
-                  hintText: 'Enter an order',
-                ),
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Family',
-                  hintText: 'Enter a family',
-                ),
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Genus',
-                  hintText: 'Enter a genus',
-                ),
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Specific epithet',
-                  hintText: 'Enter specific epithet',
-                ),
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Intraspecific epithet',
-                  hintText: 'Enter intraspecific epithet',
-                ),
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Common name',
-                  hintText: 'Enter a common name',
-                ),
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Notes',
-                  hintText: 'Enter notes',
-                ),
-              ),
-              const SizedBox(height: 20),
-              Wrap(
-                spacing: 10,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Cancel'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Save'),
-                  ),
-                ],
-              ),
-            ],
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: const TaxonEntryBody(),
           ),
         ),
       ),
+    );
+  }
+}
+
+class TaxonEntryBody extends ConsumerWidget {
+  const TaxonEntryBody({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        TextFormField(
+          decoration: const InputDecoration(
+            labelText: 'Class',
+            hintText: 'Enter a class',
+          ),
+        ),
+        TextFormField(
+          decoration: const InputDecoration(
+            labelText: 'Order',
+            hintText: 'Enter an order',
+          ),
+        ),
+        TextFormField(
+          decoration: const InputDecoration(
+            labelText: 'Family',
+            hintText: 'Enter a family',
+          ),
+        ),
+        TextFormField(
+          decoration: const InputDecoration(
+            labelText: 'Genus',
+            hintText: 'Enter a genus',
+          ),
+        ),
+        TextFormField(
+          decoration: const InputDecoration(
+            labelText: 'Specific epithet',
+            hintText: 'Enter specific epithet',
+          ),
+        ),
+        TextFormField(
+          decoration: const InputDecoration(
+            labelText: 'Common name',
+            hintText: 'Enter a common name',
+          ),
+        ),
+        TextFormField(
+          decoration: const InputDecoration(
+            labelText: 'Notes',
+            hintText: 'Enter notes',
+          ),
+        ),
+        const SizedBox(height: 20),
+        Wrap(
+          spacing: 10,
+          children: [
+            SecondaryButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              text: 'Cancel',
+            ),
+            PrimaryButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              text: 'Save',
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
