@@ -32,7 +32,7 @@ class NewSite extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return IconButton(
-      icon: const Icon(Icons.add_rounded),
+      icon: const Icon(Icons.add_circle_outline_rounded),
       onPressed: () async {
         createNewSite(context, ref);
       },
@@ -87,8 +87,7 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
       case MenuSelection.deleteAllRecords:
         final projectUuid = ref.read(projectUuidProvider.notifier).state;
         ref.read(databaseProvider).deleteAllSites(projectUuid);
-        //ref.invalidate(siteEntryProvider);
-        //ref.invalidate(pageNavigationProvider);
+        ref.invalidate(siteEntryProvider);
         break;
     }
   }

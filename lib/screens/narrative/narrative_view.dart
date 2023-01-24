@@ -38,7 +38,7 @@ class NarrativeState extends ConsumerState<Narrative> {
           NewNarrative(),
           NarrativeMenu(),
         ],
-        leading: const ProjectBackButton(),
+        automaticallyImplyLeading: false,
       ),
       resizeToAvoidBottomInset: false,
       body: SafeArea(

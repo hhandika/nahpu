@@ -41,12 +41,16 @@ class NumberOnlyField extends ConsumerWidget {
     Key? key,
     required this.labelText,
     required this.hintText,
-    required this.controller,
+    this.controller,
+    this.onChanged,
+    required this.isLastField,
   }) : super(key: key);
 
   final String labelText;
   final String hintText;
-  final TextEditingController controller;
+  final TextEditingController? controller;
+  final ValueChanged? onChanged;
+  final bool isLastField;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -55,6 +59,8 @@ class NumberOnlyField extends ConsumerWidget {
       controller: controller,
       hintText: hintText,
       keyboardType: TextInputType.number,
+      onChanged: onChanged,
+      isLastField: isLastField,
     );
   }
 }
@@ -68,6 +74,8 @@ class CustomTextField extends ConsumerWidget {
     this.enabled = true,
     this.keyboardType = TextInputType.text,
     this.onChanged,
+    required this.isLastField,
+    this.maxLines,
   }) : super(key: key);
 
   final bool enabled;
@@ -76,11 +84,14 @@ class CustomTextField extends ConsumerWidget {
   final String hintText;
   final TextInputType keyboardType;
   final ValueChanged? onChanged;
+  final bool isLastField;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TextField(
       enabled: enabled,
+      maxLines: maxLines,
       controller: controller,
       decoration: InputDecoration(
         labelText: labelText,
@@ -88,6 +99,8 @@ class CustomTextField extends ConsumerWidget {
       ),
       keyboardType: keyboardType,
       onChanged: onChanged,
+      textInputAction:
+          isLastField ? TextInputAction.done : TextInputAction.next,
     );
   }
 }

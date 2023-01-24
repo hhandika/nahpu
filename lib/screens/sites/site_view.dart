@@ -37,13 +37,13 @@ class SitesState extends ConsumerState<Sites> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Sites"),
-        leading: const ProjectBackButton(),
+        automaticallyImplyLeading: false,
         actions: const [
           NewSite(),
           SiteMenu(),
         ],
       ),
-      resizeToAvoidBottomInset: false,
+      // resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Center(
           child: siteEntries.when(data: (siteEntries) {

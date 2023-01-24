@@ -35,11 +35,12 @@ class SpecimensState extends ConsumerState<Specimens> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Specimen Records"),
+        title: const Text(
+          "Specimen Records",
+        ),
         actions: const [NewSpecimens(), SpecimenMenu()],
-        leading: const ProjectBackButton(),
+        automaticallyImplyLeading: false,
       ),
-      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Center(
           child: ref.watch(specimenEntryProvider).when(

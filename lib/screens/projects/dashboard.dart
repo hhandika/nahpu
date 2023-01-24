@@ -37,7 +37,6 @@ class DashboardState extends ConsumerState<Dashboard> {
       appBar: AppBar(
         title: const Text("Project Dashboard"),
       ),
-      resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       floatingActionButton: const ActionButtons(),
       drawer: const ProjectMenuDrawer(),
