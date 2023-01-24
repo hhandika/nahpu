@@ -144,6 +144,10 @@ class Database extends _$Database {
     return (update(personnel)..where((t) => t.uuid.equals(id))).write(entry);
   }
 
+  Future<void> deletePersonnel(String uuid) {
+    return (delete(personnel)..where((t) => t.uuid.equals(uuid))).go();
+  }
+
   Future<List<PersonnelData>> getAllPersonnel() {
     return select(personnel).get();
   }
