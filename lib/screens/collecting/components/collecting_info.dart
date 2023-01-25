@@ -30,11 +30,16 @@ class CollectingInfoFields extends ConsumerWidget {
           Padding(
             // Match adaptive layout padding
             padding: const EdgeInsets.only(left: 5.0, right: 5.0, bottom: 5.0),
-            child: TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Site ID',
-                hintText: 'Enter a new event',
-              ),
+            child: SiteIdField(
+              value: collEventCtr.siteIDCtr,
+              onChanges: (String? value) {
+                updateCollEvent(
+                    collEventId,
+                    CollEventCompanion(
+                      siteID: db.Value(value),
+                    ),
+                    ref);
+              },
             ),
           ),
           Padding(
@@ -45,6 +50,14 @@ class CollectingInfoFields extends ConsumerWidget {
                 labelText: 'Collecting Event ID',
                 hintText: 'Autofill',
               ),
+              onChanged: (String? value) {
+                updateCollEvent(
+                    collEventId,
+                    CollEventCompanion(
+                      eventID: db.Value(value),
+                    ),
+                    ref);
+              },
             ),
           ),
           EventDateField(

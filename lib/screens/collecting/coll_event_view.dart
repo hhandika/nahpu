@@ -71,6 +71,7 @@ class CollEventsState extends ConsumerState<CollEvents> {
                       itemCount: collEventSize,
                       itemBuilder: (context, index) {
                         final collEventForm = CollEventFormCtrModel(
+                          siteIDCtr: collEventEntries[index].siteID,
                           eventIDCtr: TextEditingController(
                               text: collEventEntries[index].eventID),
                           startDateCtr: TextEditingController(
