@@ -6,9 +6,11 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 
 class MammalMeasurementForms extends ConsumerStatefulWidget {
-  const MammalMeasurementForms(
-      {Key? key, required this.useHorizontalLayout, required this.isBats})
-      : super(key: key);
+  const MammalMeasurementForms({
+    Key? key,
+    required this.useHorizontalLayout,
+    required this.isBats,
+  }) : super(key: key);
 
   final bool useHorizontalLayout;
   final bool isBats;
