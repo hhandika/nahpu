@@ -79,12 +79,12 @@ class NarrativeFormCtrModel {
       required this.siteCtr,
       required this.narrativeCtr});
   TextEditingController dateCtr;
-  TextEditingController siteCtr;
+  String? siteCtr;
   TextEditingController narrativeCtr;
 
   factory NarrativeFormCtrModel.empty() => NarrativeFormCtrModel(
       dateCtr: TextEditingController(),
-      siteCtr: TextEditingController(),
+      siteCtr: null,
       narrativeCtr: TextEditingController());
 }
 

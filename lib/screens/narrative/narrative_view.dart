@@ -105,7 +105,7 @@ class NarrativeState extends ConsumerState<Narrative> {
       List<NarrativeData> narrativeEntries, int index) {
     return NarrativeFormCtrModel(
       dateCtr: TextEditingController(text: narrativeEntries[index].date),
-      siteCtr: TextEditingController(text: narrativeEntries[index].siteID),
+      siteCtr: narrativeEntries[index].siteID,
       narrativeCtr:
           TextEditingController(text: narrativeEntries[index].narrative),
     );

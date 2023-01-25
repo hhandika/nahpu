@@ -17,7 +17,7 @@ final narrativeEntryProvider =
 });
 
 final siteEntryProvider = FutureProvider.autoDispose<List<SiteData>>((ref) {
-  final projectUuid = ref.watch(projectUuidProvider.notifier).state;
+  final projectUuid = ref.read(projectUuidProvider.notifier).state;
   final siteEntries = ref.read(databaseProvider).getAllSites(projectUuid);
   return siteEntries;
 });
