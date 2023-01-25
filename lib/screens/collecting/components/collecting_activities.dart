@@ -27,8 +27,8 @@ class CollActivityFields extends ConsumerWidget {
             ),
             items: const [
               DropdownMenuItem(
-                value: 'Trapping',
-                child: Text('Trapping'),
+                value: 'Collecting',
+                child: Text('Collecting'),
               ),
               DropdownMenuItem(
                 value: 'Recording',
