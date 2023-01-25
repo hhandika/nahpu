@@ -115,15 +115,16 @@ class SpecimenFormCtrModel {
   TextEditingController trapTypeCtr;
 
   factory SpecimenFormCtrModel.empty() => SpecimenFormCtrModel(
-      speciesIdCtr: null,
-      collectorCtr: null,
-      preparatorCtr: null,
-      conditionCtr: null,
-      prepDateCtr: TextEditingController(),
-      prepTimeCtr: TextEditingController(),
-      captureDateCtr: TextEditingController(),
-      captureTimeCtr: TextEditingController(),
-      trapTypeCtr: TextEditingController());
+        speciesIdCtr: null,
+        collectorCtr: null,
+        preparatorCtr: null,
+        conditionCtr: null,
+        prepDateCtr: TextEditingController(),
+        prepTimeCtr: TextEditingController(),
+        captureDateCtr: TextEditingController(),
+        captureTimeCtr: TextEditingController(),
+        trapTypeCtr: TextEditingController(),
+      );
 }
 
 class BirdMeasurementCtrModel {

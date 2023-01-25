@@ -61,6 +61,7 @@ class MammalFormsState extends ConsumerState<MammalForms> {
                             widget.isBats ? 'Vespertilionidae' : 'Muridae',
                       ),
                       CaptureRecordFields(
+                        specimenUuid: widget.specimenUuid,
                         useHorizontalLayout: useHorizontalLayout,
                         specimenCtr: widget.specimenCtr,
                       ),
