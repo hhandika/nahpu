@@ -4,6 +4,7 @@ import 'package:nahpu/models/catalogs.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
+import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/indicators.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
@@ -25,7 +26,7 @@ class SpecimensState extends ConsumerState<Specimens> {
   PageController pageController = PageController();
   PageNavigation _pageNav = PageNavigation();
 
-  TaxonData taxonomy = TaxonData.empty();
+  TaxonData taxonomy = TaxonData();
 
   @override
   void dispose() {
@@ -71,6 +72,15 @@ class SpecimensState extends ConsumerState<Specimens> {
                       controller: pageController,
                       itemCount: specimenSize,
                       itemBuilder: (context, index) {
+                        int? speciesId = specimenEntry[index].speciesID;
+                        if (speciesId != null) {
+                          ref
+                              .read(databaseProvider)
+                              .getTaxonById(speciesId)
+                              .then((value) {
+                            taxonomy = TaxonData.fromTaxonomyData(value);
+                          });
+                        }
                         final specimenFormCtr =
                             _updateController(specimenEntry, index);
                         return SpecimenForm(
@@ -106,10 +116,8 @@ class SpecimensState extends ConsumerState<Specimens> {
 
   SpecimenFormCtrModel _updateController(
       List<SpecimenData> specimenEntry, int index) {
-    int? speciesId = specimenEntry[index].speciesID;
-    taxonomy.id = speciesId;
     return SpecimenFormCtrModel(
-      speciesIdCtr: taxonomy,
+      taxonDataCtr: taxonomy,
       collectorCtr: specimenEntry[index].collectorID,
       preparatorCtr: specimenEntry[index].preparatorID,
       conditionCtr: specimenEntry[index].condition,

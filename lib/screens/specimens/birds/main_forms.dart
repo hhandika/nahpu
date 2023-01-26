@@ -51,9 +51,7 @@ class BirdFormsState extends ConsumerState<BirdForms> {
                     children: [
                       TaxonomicForm(
                           useHorizontalLayout: useHorizontalLayout,
-                          taxonClass: 'Aves',
-                          taxonOrder: 'Passeriformes',
-                          taxonFamily: 'Fringillidae'),
+                          taxonData: widget.specimenCtr.taxonDataCtr),
                       CaptureRecordFields(
                         specimenUuid: widget.specimenUuid,
                         useHorizontalLayout: useHorizontalLayout,

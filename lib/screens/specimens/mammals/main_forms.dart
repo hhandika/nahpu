@@ -55,10 +55,7 @@ class MammalFormsState extends ConsumerState<MammalForms> {
                     children: [
                       TaxonomicForm(
                         useHorizontalLayout: useHorizontalLayout,
-                        taxonClass: 'Mammalia',
-                        taxonOrder: widget.isBats ? 'Chiroptera' : 'Rodentia',
-                        taxonFamily:
-                            widget.isBats ? 'Vespertilionidae' : 'Muridae',
+                        taxonData: widget.specimenCtr.taxonDataCtr,
                       ),
                       CaptureRecordFields(
                         specimenUuid: widget.specimenUuid,

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:nahpu/services/database.dart';
 
 enum CatalogFmt { generalMammals, birds, bats }
 
@@ -72,35 +73,43 @@ Icon matchCatFmtToIcon(CatalogFmt catalogFmt) {
 
 class TaxonData {
   TaxonData({
-    required this.id,
-    required this.order,
-    required this.family,
-    required this.genus,
-    required this.species,
+    this.taxonClass,
+    this.taxonOrder,
+    this.taxonFamily,
+    this.genus,
+    this.specificEpithet,
   });
 
-  int? id;
-  String? order;
-  String? family;
+  String? taxonClass;
+  String? taxonOrder;
+  String? taxonFamily;
   String? genus;
-  String? species;
+  String? specificEpithet;
 
-  factory TaxonData.empty() => TaxonData(
-        id: null,
-        order: null,
-        family: null,
-        genus: null,
-        species: null,
-      );
+  factory TaxonData.fromTaxonomyData(TaxonomyData taxonomyData) {
+    return TaxonData(
+      taxonClass: taxonomyData.taxonClass,
+      taxonOrder: taxonomyData.taxonOrder,
+      taxonFamily: taxonomyData.taxonFamily,
+      genus: taxonomyData.genus,
+      specificEpithet: taxonomyData.specificEpithet,
+    );
+  }
 
   String get speciesName {
-    if (genus != null && species != null) {
-      return '$genus $species';
-    } else if (genus != null && species == null) {
-      return '$genus';
-    } else if (genus == null && species != null) {
-      return '$species';
+    if (genus != null && specificEpithet != null) {
+      return '$genus $specificEpithet';
     } else {
+      return '';
+    }
+  }
+}
+
+extension StringExtension on String {
+  String toSentenceCase() {
+    try {
+      return '${this[0].toUpperCase()}${substring(1)}';
+    } catch (e) {
       return '';
     }
   }

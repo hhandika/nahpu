@@ -38,6 +38,12 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
   final speciesCtr = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    speciesCtr.text = widget.specimenCtr.taxonDataCtr.speciesName;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final personnelEntry = ref.watch(personnelListProvider);
     personnelEntry.when(

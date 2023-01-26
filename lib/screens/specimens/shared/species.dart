@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database.dart';
+import 'package:nahpu/models/types.dart';
 
 class SpeciesAutoComplete extends ConsumerWidget {
   const SpeciesAutoComplete(
@@ -22,10 +23,19 @@ class SpeciesAutoComplete extends ConsumerWidget {
         ),
       ),
       suggestionsCallback: (pattern) async {
-        Future<List<TaxonomyData>> speciesList =
-            ref.watch(databaseProvider).getTaxonList();
-        return await speciesList.then((value) =>
-            value.map((e) => '${e.genus} ${e.specificEpithet}').toList());
+        List<TaxonomyData> speciesList =
+            await ref.watch(databaseProvider).getTaxonList();
+        List<String> sortedList = speciesList
+            .map((e) => '${e.genus} ${e.specificEpithet}')
+            .where((element) => element.contains(pattern.toSentenceCase()))
+            .toList();
+        if (pattern.isEmpty) {
+          return ['Enter a species name'];
+        } else if (sortedList.isEmpty) {
+          return ['No species found'];
+        } else {
+          return sortedList;
+        }
       },
       itemBuilder: (context, suggestion) {
         return ListTile(
