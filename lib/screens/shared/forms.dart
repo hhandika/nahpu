@@ -11,8 +11,8 @@ class SiteIdField extends ConsumerWidget {
     required this.value,
   }) : super(key: key);
 
-  final void Function(String?) onChanges;
-  final String? value;
+  final void Function(int?) onChanges;
+  final int? value;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,7 +31,7 @@ class SiteIdField extends ConsumerWidget {
       ),
       items: data
           .map((site) => DropdownMenuItem(
-                value: site.siteID,
+                value: site.id,
                 child: Text(site.siteID ?? ''),
               ))
           .toList(),

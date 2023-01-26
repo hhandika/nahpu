@@ -23,7 +23,7 @@ class SiteForm extends ConsumerWidget {
       padding: const EdgeInsets.all(10),
       child: SiteIdField(
         value: narrativeCtr.siteCtr,
-        onChanges: (String? value) {
+        onChanges: (int? value) {
           updateNarrative(
               narrativeId, NarrativeCompanion(siteID: db.Value(value)), ref);
         },

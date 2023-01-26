@@ -72,21 +72,36 @@ Icon matchCatFmtToIcon(CatalogFmt catalogFmt) {
 
 class TaxonData {
   TaxonData({
+    required this.id,
     required this.order,
     required this.family,
     required this.genus,
     required this.species,
   });
 
+  int? id;
   String? order;
   String? family;
   String? genus;
   String? species;
 
   factory TaxonData.empty() => TaxonData(
+        id: null,
         order: null,
         family: null,
         genus: null,
         species: null,
       );
+
+  String get speciesName {
+    if (genus != null && species != null) {
+      return '$genus $species';
+    } else if (genus != null && species == null) {
+      return '$genus';
+    } else if (genus == null && species != null) {
+      return '$species';
+    } else {
+      return '';
+    }
+  }
 }

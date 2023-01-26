@@ -32,7 +32,7 @@ class CollectingInfoFields extends ConsumerWidget {
             padding: const EdgeInsets.only(left: 5.0, right: 5.0, bottom: 5.0),
             child: SiteIdField(
               value: collEventCtr.siteIDCtr,
-              onChanges: (String? value) {
+              onChanges: (int? value) {
                 updateCollEvent(
                     collEventId,
                     CollEventCompanion(

@@ -11,9 +11,11 @@ import 'package:nahpu/screens/specimens/shared/species.dart';
 import 'package:nahpu/services/database.dart';
 
 class CollectingRecordField extends ConsumerStatefulWidget {
-  const CollectingRecordField(
-      {Key? key, required this.specimenUuid, required this.specimenCtr})
-      : super(key: key);
+  const CollectingRecordField({
+    Key? key,
+    required this.specimenUuid,
+    required this.specimenCtr,
+  }) : super(key: key);
 
   final SpecimenFormCtrModel specimenCtr;
   final String specimenUuid;
@@ -33,12 +35,11 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
     'Released',
   ];
 
-  String? species;
+  final speciesCtr = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final personnelEntry = ref.watch(personnelListProvider);
-    final speciesCtr = TextEditingController(text: species);
     personnelEntry.when(
       data: (personnelEntry) => personnelList = personnelEntry,
       loading: () => null,
@@ -93,8 +94,8 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
               controller: speciesCtr,
               onSelected: (String value) {
                 setState(() {
-                  species = value;
-                  var taxon = species!.split(' ');
+                  speciesCtr.text = value;
+                  var taxon = value.split(' ');
                   ref
                       .read(databaseProvider)
                       .getTaxonIdByGenusEpithet(taxon[0], taxon[1])

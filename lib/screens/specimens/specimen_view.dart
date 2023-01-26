@@ -4,7 +4,6 @@ import 'package:nahpu/models/catalogs.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
-import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/indicators.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
@@ -108,18 +107,9 @@ class SpecimensState extends ConsumerState<Specimens> {
   SpecimenFormCtrModel _updateController(
       List<SpecimenData> specimenEntry, int index) {
     int? speciesId = specimenEntry[index].speciesID;
-    ref.read(databaseProvider).getTaxonById(speciesId!).then((value) {
-      setState(() {
-        taxonomy = TaxonData(
-            order: value.taxonOrder,
-            family: value.taxonFamily,
-            genus: value.genus,
-            species: value.specificEpithet);
-      });
-    });
+    taxonomy.id = speciesId;
     return SpecimenFormCtrModel(
-      speciesIdCtr:
-          TextEditingController(text: '${taxonomy.genus} ${taxonomy.species}'),
+      speciesIdCtr: taxonomy,
       collectorCtr: specimenEntry[index].collectorID,
       preparatorCtr: specimenEntry[index].preparatorID,
       conditionCtr: specimenEntry[index].condition,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nahpu/models/types.dart';
 
 class SiteFormCtrModel {
   SiteFormCtrModel({
@@ -56,7 +57,7 @@ class CollEventFormCtrModel {
     required this.noteCtr,
   });
 
-  String? siteIDCtr;
+  int? siteIDCtr;
   TextEditingController eventIDCtr;
   TextEditingController startDateCtr;
   TextEditingController endDateCtr;
@@ -82,7 +83,7 @@ class NarrativeFormCtrModel {
       required this.siteCtr,
       required this.narrativeCtr});
   TextEditingController dateCtr;
-  String? siteCtr;
+  int? siteCtr;
   TextEditingController narrativeCtr;
 
   factory NarrativeFormCtrModel.empty() => NarrativeFormCtrModel(
@@ -107,7 +108,7 @@ class SpecimenFormCtrModel {
   String? collectorCtr;
   String? preparatorCtr;
   String? conditionCtr;
-  TextEditingController speciesIdCtr;
+  TaxonData speciesIdCtr;
   TextEditingController prepDateCtr;
   TextEditingController prepTimeCtr;
   TextEditingController captureDateCtr;
@@ -118,7 +119,7 @@ class SpecimenFormCtrModel {
         collectorCtr: null,
         preparatorCtr: null,
         conditionCtr: null,
-        speciesIdCtr: TextEditingController(),
+        speciesIdCtr: TaxonData.empty(),
         prepDateCtr: TextEditingController(),
         prepTimeCtr: TextEditingController(),
         captureDateCtr: TextEditingController(),

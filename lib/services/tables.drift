@@ -56,7 +56,7 @@ CREATE TABLE collEvent (
     endTime TEXT,
     primaryCollMethod TEXT,
     collMethodNotes TEXT,
-    siteID TEXT REFERENCES site(siteID),
+    siteID INT REFERENCES site(id),
     FOREIGN KEY(projectUuid) REFERENCES project(uuid)
 );
 
@@ -83,11 +83,11 @@ CREATE TABLE narrative (
     id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
     projectUuid TEXT,
     date TEXT,
-    siteID TEXT,
+    siteID INT,
     narrative TEXT,
     mediaID INT REFERENCES media(primaryId),
     FOREIGN KEY(projectUuid) REFERENCES project(uuid),
-    FOREIGN KEY(siteID) REFERENCES site(siteID)
+    FOREIGN KEY(siteID) REFERENCES site(id)
 );
 
 CREATE TABLE media (

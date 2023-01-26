@@ -3079,11 +3079,11 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _siteIDMeta = const VerificationMeta('siteID');
-  late final GeneratedColumn<String> siteID = GeneratedColumn<String>(
+  late final GeneratedColumn<int> siteID = GeneratedColumn<int>(
       'siteID', aliasedName, true,
-      type: DriftSqlType.string,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
-      $customConstraints: 'REFERENCES site(siteID)');
+      $customConstraints: 'REFERENCES site(id)');
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -3179,7 +3179,7 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
       collMethodNotes: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}collMethodNotes']),
       siteID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}siteID']),
+          .read(DriftSqlType.int, data['${effectivePrefix}siteID']),
     );
   }
 
@@ -3205,7 +3205,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
   final String? endTime;
   final String? primaryCollMethod;
   final String? collMethodNotes;
-  final String? siteID;
+  final int? siteID;
   const CollEventData(
       {required this.id,
       this.eventID,
@@ -3246,7 +3246,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
       map['collMethodNotes'] = Variable<String>(collMethodNotes);
     }
     if (!nullToAbsent || siteID != null) {
-      map['siteID'] = Variable<String>(siteID);
+      map['siteID'] = Variable<int>(siteID);
     }
     return map;
   }
@@ -3297,7 +3297,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
       primaryCollMethod:
           serializer.fromJson<String?>(json['primaryCollMethod']),
       collMethodNotes: serializer.fromJson<String?>(json['collMethodNotes']),
-      siteID: serializer.fromJson<String?>(json['siteID']),
+      siteID: serializer.fromJson<int?>(json['siteID']),
     );
   }
   @override
@@ -3313,7 +3313,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
       'endTime': serializer.toJson<String?>(endTime),
       'primaryCollMethod': serializer.toJson<String?>(primaryCollMethod),
       'collMethodNotes': serializer.toJson<String?>(collMethodNotes),
-      'siteID': serializer.toJson<String?>(siteID),
+      'siteID': serializer.toJson<int?>(siteID),
     };
   }
 
@@ -3327,7 +3327,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
           Value<String?> endTime = const Value.absent(),
           Value<String?> primaryCollMethod = const Value.absent(),
           Value<String?> collMethodNotes = const Value.absent(),
-          Value<String?> siteID = const Value.absent()}) =>
+          Value<int?> siteID = const Value.absent()}) =>
       CollEventData(
         id: id ?? this.id,
         eventID: eventID.present ? eventID.value : this.eventID,
@@ -3390,7 +3390,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
   final Value<String?> endTime;
   final Value<String?> primaryCollMethod;
   final Value<String?> collMethodNotes;
-  final Value<String?> siteID;
+  final Value<int?> siteID;
   const CollEventCompanion({
     this.id = const Value.absent(),
     this.eventID = const Value.absent(),
@@ -3425,7 +3425,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
     Expression<String>? endTime,
     Expression<String>? primaryCollMethod,
     Expression<String>? collMethodNotes,
-    Expression<String>? siteID,
+    Expression<int>? siteID,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -3451,7 +3451,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
       Value<String?>? endTime,
       Value<String?>? primaryCollMethod,
       Value<String?>? collMethodNotes,
-      Value<String?>? siteID}) {
+      Value<int?>? siteID}) {
     return CollEventCompanion(
       id: id ?? this.id,
       eventID: eventID ?? this.eventID,
@@ -3497,7 +3497,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
       map['collMethodNotes'] = Variable<String>(collMethodNotes.value);
     }
     if (siteID.present) {
-      map['siteID'] = Variable<String>(siteID.value);
+      map['siteID'] = Variable<int>(siteID.value);
     }
     return map;
   }
@@ -4140,9 +4140,9 @@ class Narrative extends Table with TableInfo<Narrative, NarrativeData> {
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _siteIDMeta = const VerificationMeta('siteID');
-  late final GeneratedColumn<String> siteID = GeneratedColumn<String>(
+  late final GeneratedColumn<int> siteID = GeneratedColumn<int>(
       'siteID', aliasedName, true,
-      type: DriftSqlType.string,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _narrativeMeta =
@@ -4212,7 +4212,7 @@ class Narrative extends Table with TableInfo<Narrative, NarrativeData> {
       date: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}date']),
       siteID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}siteID']),
+          .read(DriftSqlType.int, data['${effectivePrefix}siteID']),
       narrative: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}narrative']),
       mediaID: attachedDatabase.typeMapping
@@ -4228,7 +4228,7 @@ class Narrative extends Table with TableInfo<Narrative, NarrativeData> {
   @override
   List<String> get customConstraints => const [
         'FOREIGN KEY(projectUuid)REFERENCES project(uuid)',
-        'FOREIGN KEY(siteID)REFERENCES site(siteID)'
+        'FOREIGN KEY(siteID)REFERENCES site(id)'
       ];
   @override
   bool get dontWriteConstraints => true;
@@ -4238,7 +4238,7 @@ class NarrativeData extends DataClass implements Insertable<NarrativeData> {
   final int id;
   final String? projectUuid;
   final String? date;
-  final String? siteID;
+  final int? siteID;
   final String? narrative;
   final int? mediaID;
   const NarrativeData(
@@ -4259,7 +4259,7 @@ class NarrativeData extends DataClass implements Insertable<NarrativeData> {
       map['date'] = Variable<String>(date);
     }
     if (!nullToAbsent || siteID != null) {
-      map['siteID'] = Variable<String>(siteID);
+      map['siteID'] = Variable<int>(siteID);
     }
     if (!nullToAbsent || narrative != null) {
       map['narrative'] = Variable<String>(narrative);
@@ -4295,7 +4295,7 @@ class NarrativeData extends DataClass implements Insertable<NarrativeData> {
       id: serializer.fromJson<int>(json['id']),
       projectUuid: serializer.fromJson<String?>(json['projectUuid']),
       date: serializer.fromJson<String?>(json['date']),
-      siteID: serializer.fromJson<String?>(json['siteID']),
+      siteID: serializer.fromJson<int?>(json['siteID']),
       narrative: serializer.fromJson<String?>(json['narrative']),
       mediaID: serializer.fromJson<int?>(json['mediaID']),
     );
@@ -4307,7 +4307,7 @@ class NarrativeData extends DataClass implements Insertable<NarrativeData> {
       'id': serializer.toJson<int>(id),
       'projectUuid': serializer.toJson<String?>(projectUuid),
       'date': serializer.toJson<String?>(date),
-      'siteID': serializer.toJson<String?>(siteID),
+      'siteID': serializer.toJson<int?>(siteID),
       'narrative': serializer.toJson<String?>(narrative),
       'mediaID': serializer.toJson<int?>(mediaID),
     };
@@ -4317,7 +4317,7 @@ class NarrativeData extends DataClass implements Insertable<NarrativeData> {
           {int? id,
           Value<String?> projectUuid = const Value.absent(),
           Value<String?> date = const Value.absent(),
-          Value<String?> siteID = const Value.absent(),
+          Value<int?> siteID = const Value.absent(),
           Value<String?> narrative = const Value.absent(),
           Value<int?> mediaID = const Value.absent()}) =>
       NarrativeData(
@@ -4360,7 +4360,7 @@ class NarrativeCompanion extends UpdateCompanion<NarrativeData> {
   final Value<int> id;
   final Value<String?> projectUuid;
   final Value<String?> date;
-  final Value<String?> siteID;
+  final Value<int?> siteID;
   final Value<String?> narrative;
   final Value<int?> mediaID;
   const NarrativeCompanion({
@@ -4383,7 +4383,7 @@ class NarrativeCompanion extends UpdateCompanion<NarrativeData> {
     Expression<int>? id,
     Expression<String>? projectUuid,
     Expression<String>? date,
-    Expression<String>? siteID,
+    Expression<int>? siteID,
     Expression<String>? narrative,
     Expression<int>? mediaID,
   }) {
@@ -4401,7 +4401,7 @@ class NarrativeCompanion extends UpdateCompanion<NarrativeData> {
       {Value<int>? id,
       Value<String?>? projectUuid,
       Value<String?>? date,
-      Value<String?>? siteID,
+      Value<int?>? siteID,
       Value<String?>? narrative,
       Value<int?>? mediaID}) {
     return NarrativeCompanion(
@@ -4427,7 +4427,7 @@ class NarrativeCompanion extends UpdateCompanion<NarrativeData> {
       map['date'] = Variable<String>(date.value);
     }
     if (siteID.present) {
-      map['siteID'] = Variable<String>(siteID.value);
+      map['siteID'] = Variable<int>(siteID.value);
     }
     if (narrative.present) {
       map['narrative'] = Variable<String>(narrative.value);
@@ -8307,11 +8307,11 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
   Taxonomy(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, true,
+      'id', aliasedName, false,
       hasAutoIncrement: true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
-      $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
+      $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
   static const VerificationMeta _taxonClassMeta =
       const VerificationMeta('taxonClass');
   late final GeneratedColumn<String> taxonClass = GeneratedColumn<String>(
@@ -8442,7 +8442,7 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return TaxonomyData(
       id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id']),
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       taxonClass: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}taxonClass']),
       taxonOrder: attachedDatabase.typeMapping
@@ -8475,7 +8475,7 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
 }
 
 class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
-  final int? id;
+  final int id;
   final String? taxonClass;
   final String? taxonOrder;
   final String? taxonFamily;
@@ -8485,7 +8485,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
   final String? note;
   final int? mediaId;
   const TaxonomyData(
-      {this.id,
+      {required this.id,
       this.taxonClass,
       this.taxonOrder,
       this.taxonFamily,
@@ -8497,9 +8497,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || id != null) {
-      map['id'] = Variable<int>(id);
-    }
+    map['id'] = Variable<int>(id);
     if (!nullToAbsent || taxonClass != null) {
       map['taxonClass'] = Variable<String>(taxonClass);
     }
@@ -8529,7 +8527,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
 
   TaxonomyCompanion toCompanion(bool nullToAbsent) {
     return TaxonomyCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      id: Value(id),
       taxonClass: taxonClass == null && nullToAbsent
           ? const Value.absent()
           : Value(taxonClass),
@@ -8558,7 +8556,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return TaxonomyData(
-      id: serializer.fromJson<int?>(json['id']),
+      id: serializer.fromJson<int>(json['id']),
       taxonClass: serializer.fromJson<String?>(json['taxonClass']),
       taxonOrder: serializer.fromJson<String?>(json['taxonOrder']),
       taxonFamily: serializer.fromJson<String?>(json['taxonFamily']),
@@ -8573,7 +8571,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int?>(id),
+      'id': serializer.toJson<int>(id),
       'taxonClass': serializer.toJson<String?>(taxonClass),
       'taxonOrder': serializer.toJson<String?>(taxonOrder),
       'taxonFamily': serializer.toJson<String?>(taxonFamily),
@@ -8586,7 +8584,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
   }
 
   TaxonomyData copyWith(
-          {Value<int?> id = const Value.absent(),
+          {int? id,
           Value<String?> taxonClass = const Value.absent(),
           Value<String?> taxonOrder = const Value.absent(),
           Value<String?> taxonFamily = const Value.absent(),
@@ -8596,7 +8594,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
           Value<String?> note = const Value.absent(),
           Value<int?> mediaId = const Value.absent()}) =>
       TaxonomyData(
-        id: id.present ? id.value : this.id,
+        id: id ?? this.id,
         taxonClass: taxonClass.present ? taxonClass.value : this.taxonClass,
         taxonOrder: taxonOrder.present ? taxonOrder.value : this.taxonOrder,
         taxonFamily: taxonFamily.present ? taxonFamily.value : this.taxonFamily,
@@ -8643,7 +8641,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
 }
 
 class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
-  final Value<int?> id;
+  final Value<int> id;
   final Value<String?> taxonClass;
   final Value<String?> taxonOrder;
   final Value<String?> taxonFamily;
@@ -8699,7 +8697,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
   }
 
   TaxonomyCompanion copyWith(
-      {Value<int?>? id,
+      {Value<int>? id,
       Value<String?>? taxonClass,
       Value<String?>? taxonOrder,
       Value<String?>? taxonFamily,
