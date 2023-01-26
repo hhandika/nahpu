@@ -56,46 +56,9 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
       isPrimary: true,
       child: Column(
         children: [
-          DropdownButtonFormField(
-            value: widget.specimenCtr.collectorCtr,
-            decoration: const InputDecoration(
-              labelText: 'Collector',
-              hintText: 'Choose a collector',
-            ),
-            items: personnelList
-                .map((e) => DropdownMenuItem(
-                      value: e.uuid,
-                      child: Text(e.name ?? ''),
-                    ))
-                .toList(),
-            onChanged: (String? uuid) {
-              updateSpecimen(widget.specimenUuid,
-                  SpecimenCompanion(collectorID: db.Value(uuid)), ref);
-            },
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Collector Number',
-              hintText: 'Enter collector number',
-            ),
-          ),
-          DropdownButtonFormField(
-            value: widget.specimenCtr.preparatorCtr,
-            decoration: const InputDecoration(
-              labelText: 'Preparator',
-              hintText: 'Choose a preparator',
-            ),
-            items: personnelList
-                .map((e) => DropdownMenuItem(
-                      value: e.uuid,
-                      child: Text(e.name ?? ''),
-                    ))
-                .toList(),
-            onChanged: (String? uuid) {
-              updateSpecimen(widget.specimenUuid,
-                  SpecimenCompanion(preparatorID: db.Value(uuid)), ref);
-            },
-          ),
+          PersonnelRecords(
+              specimenUuid: widget.specimenUuid,
+              specimenCtr: widget.specimenCtr),
           SpeciesAutoComplete(
               controller: speciesCtr,
               onSelected: (String value) {
@@ -189,5 +152,104 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
         ],
       ),
     );
+  }
+}
+
+class PersonnelRecords extends ConsumerStatefulWidget {
+  const PersonnelRecords({
+    Key? key,
+    required this.specimenUuid,
+    required this.specimenCtr,
+  }) : super(key: key);
+
+  final SpecimenFormCtrModel specimenCtr;
+  final String specimenUuid;
+
+  @override
+  PersonnelRecordsState createState() => PersonnelRecordsState();
+}
+
+class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
+  List<PersonnelData> personnelList = [];
+
+  @override
+  Widget build(BuildContext context) {
+    final personnelEntry = ref.watch(personnelListProvider);
+    personnelEntry.when(
+      data: (personnelEntry) => personnelList = personnelEntry,
+      loading: () => null,
+      error: (e, s) => null,
+    );
+    return Column(
+      children: [
+        DropdownButtonFormField(
+          value: widget.specimenCtr.collectorCtr,
+          decoration: const InputDecoration(
+            labelText: 'Collector',
+            hintText: 'Choose a collector',
+          ),
+          items: personnelList
+              .where((element) => element.role == 'Collector')
+              .map((e) => DropdownMenuItem(
+                    value: e.uuid,
+                    child: Text(e.name ?? ''),
+                  ))
+              .toList(),
+          onChanged: (String? uuid) {
+            setState(() {
+              var currentCollNum = _getCurrentCollectorNumber(uuid);
+              widget.specimenCtr.collectorNumberCtr.text =
+                  currentCollNum.toString();
+              updateSpecimen(
+                  widget.specimenUuid,
+                  SpecimenCompanion(
+                      collectorID: db.Value(uuid),
+                      collectorNumber: db.Value(currentCollNum)),
+                  ref);
+              if (uuid != null) {
+                ref.read(databaseProvider).updatePersonnelEntry(
+                    uuid,
+                    PersonnelCompanion(
+                        nextCollectorNumber: db.Value(currentCollNum)));
+              }
+            });
+          },
+        ),
+        TextFormField(
+          controller: widget.specimenCtr.collectorNumberCtr,
+          enabled: false,
+          decoration: const InputDecoration(
+            labelText: 'Collector Number',
+            hintText: 'Enter collector number',
+          ),
+        ),
+        DropdownButtonFormField(
+          value: widget.specimenCtr.preparatorCtr,
+          decoration: const InputDecoration(
+            labelText: 'Preparator',
+            hintText: 'Choose a preparator',
+          ),
+          items: personnelList
+              .where((element) =>
+                  element.role == 'Collector' ||
+                  element.role == 'Preparator only')
+              .map((e) => DropdownMenuItem(
+                    value: e.uuid,
+                    child: Text(e.name ?? ''),
+                  ))
+              .toList(),
+          onChanged: (String? uuid) {
+            updateSpecimen(widget.specimenUuid,
+                SpecimenCompanion(preparatorID: db.Value(uuid)), ref);
+          },
+        )
+      ],
+    );
+  }
+
+  int _getCurrentCollectorNumber(String? uuid) {
+    var collector = personnelList.firstWhere((element) => element.uuid == uuid);
+    int currentCollNum = collector.nextCollectorNumber! + 1;
+    return currentCollNum;
   }
 }

@@ -119,6 +119,8 @@ class SpecimensState extends ConsumerState<Specimens> {
     return SpecimenFormCtrModel(
       taxonDataCtr: taxonomy,
       collectorCtr: specimenEntry[index].collectorID,
+      collectorNumberCtr: TextEditingController(
+          text: specimenEntry[index].collectorNumber?.toString() ?? ""),
       preparatorCtr: specimenEntry[index].preparatorID,
       conditionCtr: specimenEntry[index].condition,
       prepDateCtr: TextEditingController(text: specimenEntry[index].prepDate),

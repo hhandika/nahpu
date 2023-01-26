@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:nahpu/providers/page_viewer.dart';
@@ -52,7 +53,7 @@ class NarrativeMenuState extends ConsumerState<SpecimenMenu> {
       case MenuSelection.deleteAllRecords:
         final projectUuid = ref.read(projectUuidProvider.notifier).state;
         ref.read(databaseProvider).deleteAllSpecimens(projectUuid);
-        //ref.invalidate(specimenEntryProvider);
+        ref.invalidate(specimenEntryProvider);
         //ref.invalidate(pageNavigationProvider);
         break;
     }
