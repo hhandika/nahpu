@@ -85,6 +85,7 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
       case MenuSelection.deleteRecords:
         break;
       case MenuSelection.deleteAllRecords:
+        // TODO: prevent deletion of records if they are in used
         final projectUuid = ref.read(projectUuidProvider.notifier).state;
         ref.read(databaseProvider).deleteAllSites(projectUuid);
         ref.invalidate(siteEntryProvider);
