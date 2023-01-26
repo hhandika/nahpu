@@ -6,6 +6,7 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:intl/intl.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:drift/drift.dart' as db;
+import 'package:nahpu/screens/specimens/shared/species.dart';
 import 'package:nahpu/services/database.dart';
 
 class CollectingRecordFields extends ConsumerWidget {
@@ -79,22 +80,7 @@ class CollectingRecordFields extends ConsumerWidget {
                   SpecimenCompanion(preparatorID: db.Value(uuid)), ref);
             },
           ),
-          DropdownButtonFormField(
-              decoration: const InputDecoration(
-                labelText: 'Species',
-                hintText: 'Choose a speciess',
-              ),
-              items: const [
-                DropdownMenuItem(
-                  value: 'One',
-                  child: Text('One'),
-                ),
-                DropdownMenuItem(
-                  value: 'Two',
-                  child: Text('Two'),
-                ),
-              ],
-              onChanged: (String? newValue) {}),
+          SpeciesAutoComplete(onSelected: (String? value) {}),
           DropdownButtonFormField(
             value: specimenCtr.conditionCtr,
             onChanged: (String? value) {

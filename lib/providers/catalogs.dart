@@ -42,3 +42,9 @@ final personnelListProvider = FutureProvider.autoDispose<List<PersonnelData>>(
 
 final coordinateListProvider = FutureProvider.autoDispose<List<CoordinateData>>(
     (ref) => ref.read(databaseProvider).getAllCoordinates());
+
+extension StringExtension on String {
+  String toSentenceCase() {
+    return "${this[0].toUpperCase()}${substring(1)}";
+  }
+}
