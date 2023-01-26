@@ -43,7 +43,7 @@ class BirdFormsState extends ConsumerState<BirdForms> {
               AdaptiveLayout(
                 useHorizontalLayout: useHorizontalLayout,
                 children: [
-                  CollectingRecordFields(
+                  CollectingRecordField(
                       specimenUuid: widget.specimenUuid,
                       specimenCtr: widget.specimenCtr),
                   Column(

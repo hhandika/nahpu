@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/controller/updaters.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:flutter/material.dart';
+import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:intl/intl.dart';
 import 'package:nahpu/providers/catalogs.dart';
@@ -9,8 +10,8 @@ import 'package:drift/drift.dart' as db;
 import 'package:nahpu/screens/specimens/shared/species.dart';
 import 'package:nahpu/services/database.dart';
 
-class CollectingRecordFields extends ConsumerWidget {
-  const CollectingRecordFields(
+class CollectingRecordField extends ConsumerStatefulWidget {
+  const CollectingRecordField(
       {Key? key, required this.specimenUuid, required this.specimenCtr})
       : super(key: key);
 
@@ -18,18 +19,26 @@ class CollectingRecordFields extends ConsumerWidget {
   final String specimenUuid;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    List<PersonnelData> personnelList = [];
-    final personnelEntry = ref.watch(personnelListProvider);
+  CollectingRecordFieldState createState() => CollectingRecordFieldState();
+}
 
-    final List<String> conditions = [
-      'Freshy Euthanized',
-      'Good',
-      'Fair',
-      'Poor',
-      'Rotten',
-      'Released',
-    ];
+class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
+  List<PersonnelData> personnelList = [];
+  final List<String> conditions = [
+    'Freshy Euthanized',
+    'Good',
+    'Fair',
+    'Poor',
+    'Rotten',
+    'Released',
+  ];
+
+  String? species;
+
+  @override
+  Widget build(BuildContext context) {
+    final personnelEntry = ref.watch(personnelListProvider);
+    final speciesCtr = TextEditingController(text: species);
     personnelEntry.when(
       data: (personnelEntry) => personnelList = personnelEntry,
       loading: () => null,
@@ -41,7 +50,7 @@ class CollectingRecordFields extends ConsumerWidget {
       child: Column(
         children: [
           DropdownButtonFormField(
-            value: specimenCtr.collectorCtr,
+            value: widget.specimenCtr.collectorCtr,
             decoration: const InputDecoration(
               labelText: 'Collector',
               hintText: 'Choose a collector',
@@ -53,7 +62,7 @@ class CollectingRecordFields extends ConsumerWidget {
                     ))
                 .toList(),
             onChanged: (String? uuid) {
-              updateSpecimen(specimenUuid,
+              updateSpecimen(widget.specimenUuid,
                   SpecimenCompanion(collectorID: db.Value(uuid)), ref);
             },
           ),
@@ -64,7 +73,7 @@ class CollectingRecordFields extends ConsumerWidget {
             ),
           ),
           DropdownButtonFormField(
-            value: specimenCtr.preparatorCtr,
+            value: widget.specimenCtr.preparatorCtr,
             decoration: const InputDecoration(
               labelText: 'Preparator',
               hintText: 'Choose a preparator',
@@ -76,15 +85,29 @@ class CollectingRecordFields extends ConsumerWidget {
                     ))
                 .toList(),
             onChanged: (String? uuid) {
-              updateSpecimen(specimenUuid,
+              updateSpecimen(widget.specimenUuid,
                   SpecimenCompanion(preparatorID: db.Value(uuid)), ref);
             },
           ),
-          SpeciesAutoComplete(onSelected: (String? value) {}),
+          SpeciesAutoComplete(
+              controller: speciesCtr,
+              onSelected: (String value) {
+                setState(() {
+                  species = value;
+                  var taxon = species!.split(' ');
+                  ref
+                      .read(databaseProvider)
+                      .getTaxonIdByGenusEpithet(taxon[0], taxon[1])
+                      .then((data) => updateSpecimen(
+                          widget.specimenUuid,
+                          SpecimenCompanion(speciesID: db.Value(data.id)),
+                          ref));
+                });
+              }),
           DropdownButtonFormField(
-            value: specimenCtr.conditionCtr,
+            value: widget.specimenCtr.conditionCtr,
             onChanged: (String? value) {
-              updateSpecimen(specimenUuid,
+              updateSpecimen(widget.specimenUuid,
                   SpecimenCompanion(condition: db.Value(value)), ref);
             },
             decoration: const InputDecoration(
@@ -106,7 +129,7 @@ class CollectingRecordFields extends ConsumerWidget {
                     labelText: 'Preparation date',
                     hintText: 'Enter date',
                   ),
-                  controller: specimenCtr.prepDateCtr,
+                  controller: widget.specimenCtr.prepDateCtr,
                   onTap: () async {
                     final selectedDate = await showDatePicker(
                         context: context,
@@ -115,12 +138,13 @@ class CollectingRecordFields extends ConsumerWidget {
                         lastDate: DateTime.now());
 
                     if (selectedDate != null) {
-                      specimenCtr.prepDateCtr.text =
+                      widget.specimenCtr.prepDateCtr.text =
                           DateFormat.yMMMd().format(selectedDate);
                       updateSpecimen(
-                          specimenUuid,
+                          widget.specimenUuid,
                           SpecimenCompanion(
-                              prepDate: db.Value(specimenCtr.prepDateCtr.text)),
+                              prepDate: db.Value(
+                                  widget.specimenCtr.prepDateCtr.text)),
                           ref);
                     }
                   },
@@ -133,17 +157,19 @@ class CollectingRecordFields extends ConsumerWidget {
                     labelText: 'Prep. time',
                     hintText: 'Enter time',
                   ),
-                  controller: specimenCtr.prepTimeCtr,
+                  controller: widget.specimenCtr.prepTimeCtr,
                   onTap: () {
                     showTimePicker(
                             context: context, initialTime: TimeOfDay.now())
                         .then((time) {
                       if (time != null) {
-                        specimenCtr.prepTimeCtr.text = time.format(context);
+                        widget.specimenCtr.prepTimeCtr.text =
+                            time.format(context);
                         updateSpecimen(
-                            specimenUuid,
+                            widget.specimenUuid,
                             SpecimenCompanion(
-                              prepTime: db.Value(specimenCtr.prepTimeCtr.text),
+                              prepTime:
+                                  db.Value(widget.specimenCtr.prepTimeCtr.text),
                             ),
                             ref);
                       }

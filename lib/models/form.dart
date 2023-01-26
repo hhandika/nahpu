@@ -104,10 +104,10 @@ class SpecimenFormCtrModel {
     required this.trapTypeCtr,
   });
 
-  int? speciesIdCtr;
   String? collectorCtr;
   String? preparatorCtr;
   String? conditionCtr;
+  TextEditingController speciesIdCtr;
   TextEditingController prepDateCtr;
   TextEditingController prepTimeCtr;
   TextEditingController captureDateCtr;
@@ -115,10 +115,10 @@ class SpecimenFormCtrModel {
   TextEditingController trapTypeCtr;
 
   factory SpecimenFormCtrModel.empty() => SpecimenFormCtrModel(
-        speciesIdCtr: null,
         collectorCtr: null,
         preparatorCtr: null,
         conditionCtr: null,
+        speciesIdCtr: TextEditingController(),
         prepDateCtr: TextEditingController(),
         prepTimeCtr: TextEditingController(),
         captureDateCtr: TextEditingController(),

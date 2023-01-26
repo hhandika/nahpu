@@ -234,7 +234,7 @@ CREATE TABLE part (
 );
 
 CREATE TABLE taxonomy (
-    id INT PRIMARY KEY AUTOINCREMENT,
+    id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
     taxonClass TEXT,
     taxonOrder TEXT,
     taxonFamily TEXT,

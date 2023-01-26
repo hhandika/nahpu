@@ -160,6 +160,17 @@ class Database extends _$Database {
     return delete(personnel).go();
   }
 
+  Future<TaxonomyData> getTaxonById(int id) {
+    return (select(taxonomy)..where((t) => t.id.equals(id))).getSingle();
+  }
+
+  Future<TaxonomyData> getTaxonIdByGenusEpithet(String genus, String epithet) {
+    return (select(taxonomy)
+          ..where((t) => t.genus.equals(genus))
+          ..where((t) => t.specificEpithet.equals(epithet)))
+        .getSingle();
+  }
+
   Future<List<TaxonomyData>> getTaxonList() {
     return select(taxonomy).get();
   }

@@ -69,3 +69,24 @@ Icon matchCatFmtToIcon(CatalogFmt catalogFmt) {
       return const Icon(MdiIcons.paw);
   }
 }
+
+class TaxonData {
+  TaxonData({
+    required this.order,
+    required this.family,
+    required this.genus,
+    required this.species,
+  });
+
+  String? order;
+  String? family;
+  String? genus;
+  String? species;
+
+  factory TaxonData.empty() => TaxonData(
+        order: null,
+        family: null,
+        genus: null,
+        species: null,
+      );
+}

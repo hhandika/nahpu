@@ -47,7 +47,7 @@ class MammalFormsState extends ConsumerState<MammalForms> {
               AdaptiveLayout(
                 useHorizontalLayout: useHorizontalLayout,
                 children: [
-                  CollectingRecordFields(
+                  CollectingRecordField(
                       specimenUuid: widget.specimenUuid,
                       specimenCtr: widget.specimenCtr),
                   Column(
