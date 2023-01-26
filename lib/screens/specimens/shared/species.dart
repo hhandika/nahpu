@@ -22,6 +22,7 @@ class SpeciesAutoComplete extends ConsumerWidget {
           hintText: 'Choose a species',
         ),
       ),
+      hideSuggestionsOnKeyboardHide: false,
       suggestionsCallback: (pattern) async {
         List<TaxonomyData> speciesList =
             await ref.watch(databaseProvider).getTaxonList();
