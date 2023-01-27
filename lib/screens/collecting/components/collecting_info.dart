@@ -28,7 +28,7 @@ class CollectingInfoFields extends ConsumerStatefulWidget {
 
 class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
   String? _siteID;
-  String? _date;
+
   List<SiteData> data = [];
 
   final DateTime initialStartDate =
