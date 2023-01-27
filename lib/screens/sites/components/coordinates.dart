@@ -56,6 +56,12 @@ class CoordinateForms extends ConsumerWidget {
         children: [
           TextFormField(
             decoration: const InputDecoration(
+              labelText: 'Coordinate ID',
+              hintText: 'Add a coordinate ID',
+            ),
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
               labelText: 'Latitude',
               hintText: 'Add a latitude',
             ),

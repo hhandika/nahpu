@@ -62,8 +62,8 @@ class SiteInfo extends ConsumerWidget {
           DropdownButtonFormField(
             value: siteFormCtr.leadStaffCtr,
             decoration: const InputDecoration(
-              labelText: 'Lead Staff',
-              hintText: 'Choose a lead staff',
+              labelText: 'Site Leader',
+              hintText: 'Choose a person name',
             ),
             items: personnelList
                 .map(

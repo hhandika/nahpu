@@ -158,7 +158,7 @@ class LocalityNote extends ConsumerWidget {
         hintText: 'Enter more info about the site (optional)',
       ),
       onChanged: (value) {
-        updateSite(id, SiteCompanion(locality: db.Value(value)), ref);
+        updateSite(id, SiteCompanion(remark: db.Value(value)), ref);
       },
     );
   }
