@@ -3,10 +3,10 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 
 class NahpuTheme {
   static final _defaultLightColorScheme =
-      FlexThemeData.light(scheme: FlexScheme.dellGenoa).colorScheme;
+      FlexThemeData.light(scheme: FlexScheme.jungle).colorScheme;
 
   static final _defaultDarkColorScheme =
-      FlexThemeData.dark(scheme: FlexScheme.dellGenoa).colorScheme;
+      FlexThemeData.dark(scheme: FlexScheme.jungle).colorScheme;
 
   static ThemeData lightTheme(ColorScheme? lightColorScheme) {
     return ThemeData(
