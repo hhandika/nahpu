@@ -17,6 +17,7 @@ class SpeciesAutoComplete extends ConsumerWidget {
     return TypeAheadField(
       textFieldConfiguration: TextFieldConfiguration(
         controller: controller,
+        autofocus: true,
         decoration: const InputDecoration(
           labelText: 'Species',
           hintText: 'Choose a species',

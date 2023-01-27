@@ -179,7 +179,7 @@ class TaxonEntryFormState extends ConsumerState<TaxonEntryForm> {
                         ref.invalidate(taxonRegistryProvider);
                         Navigator.of(context).pop();
                       },
-                      text: 'Save',
+                      text: 'Add',
                     ),
                   ],
                 ),
@@ -220,11 +220,13 @@ class TaxonRegistryListState extends ConsumerState<TaxonRegistryList> {
         title: const Text('Taxon registry'),
       ),
       body: ref.watch(taxonRegistryProvider).when(
-            data: (taxonList) {
-              return TaxonList(taxonList: taxonList);
+            data: (data) {
+              return data.isEmpty
+                  ? const Text('No taxon found')
+                  : TaxonList(taxonList: data);
             },
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, stack) => Text(error.toString()),
+            loading: () => const CommmonProgressIndicator(),
+            error: (error, stack) => Text('Error: $error'),
           ),
     );
   }
@@ -244,6 +246,13 @@ class TaxonList extends ConsumerWidget {
           title: Text(taxonList[index].taxonFamily ?? 'Unknown family'),
           subtitle: Text(
               '${taxonList[index].genus} ${taxonList[index].specificEpithet}'),
+          trailing: IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () async {
+              await ref.read(databaseProvider).deleteTaxon(taxonList[index].id);
+              ref.invalidate(taxonRegistryProvider);
+            },
+          ),
           onTap: () {},
         );
       },
