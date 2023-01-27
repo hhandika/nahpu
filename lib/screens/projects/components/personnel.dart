@@ -110,7 +110,7 @@ class PersonalListTile extends StatelessWidget {
 
   String _getSubtitle(String? affiliation, String? role) {
     if (affiliation != null && role != null) {
-      return '$affiliation | $role';
+      return '$role | $affiliation';
     } else if (affiliation != null) {
       return affiliation;
     } else if (role != null) {
