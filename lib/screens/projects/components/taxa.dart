@@ -19,7 +19,7 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
   @override
   Widget build(BuildContext context) {
     return FormCard(
-      title: 'Taxon registry',
+      title: 'Taxon Registry',
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

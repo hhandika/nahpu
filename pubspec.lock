@@ -289,6 +289,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.55.2"
+  flex_color_scheme:
+    dependency: "direct main"
+    description:
+      name: flex_color_scheme
+      sha256: "03a0ad67cc224b20aab9f9a775a6cef76c8f884887902a2d94635c187858b31b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.2"
+  flex_seed_scheme:
+    dependency: transitive
+    description:
+      name: flex_seed_scheme
+      sha256: "7ded1dbf0cef4d9d27a194ad021f4755cd4a82a3c5f10e803dca84d9843fd639"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   flutter:
     dependency: "direct main"
     description: flutter

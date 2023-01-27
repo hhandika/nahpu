@@ -52,6 +52,7 @@ dependencies:
   material_design_icons_flutter: ^6.0.7096
   fl_chart: ^0.55.2
   flutter_typeahead: ^4.1.1
+  flex_color_scheme: ^6.1.2
 
 dev_dependencies:
   flutter_test:
