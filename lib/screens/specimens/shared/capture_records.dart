@@ -23,7 +23,7 @@ class CaptureRecordFields extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     List<CollEventData> eventEntry = [];
     ref.watch(collEventEntryProvider).when(
-          data: (eventEntry) => eventEntry = eventEntry,
+          data: (value) => eventEntry = value,
           loading: () => null,
           error: (e, s) => null,
         );
