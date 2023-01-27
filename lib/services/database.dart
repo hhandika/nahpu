@@ -92,6 +92,10 @@ class Database extends _$Database {
     return (delete(site)..where((t) => t.siteID.equals(siteId))).go();
   }
 
+  Future<SiteData> getSiteById(int id) async {
+    return await (select(site)..where((t) => t.id.equals(id))).getSingle();
+  }
+
   Future<void> deleteAllSites(String projectUuid) {
     return (delete(site)..where((t) => t.projectUuid.equals(projectUuid))).go();
   }
@@ -107,6 +111,10 @@ class Database extends _$Database {
   Future<List<CollEventData>> getAllCollEvents(String projectUuid) {
     return (select(collEvent)..where((t) => t.projectUuid.equals(projectUuid)))
         .get();
+  }
+
+  Future<CollEventData> getCollEventById(int id) async {
+    return await (select(collEvent)..where((t) => t.id.equals(id))).getSingle();
   }
 
   Future<void> deleteCollEvent(int id) {

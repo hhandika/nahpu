@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/services/database.dart';
 import 'package:nahpu/models/form.dart';
@@ -19,10 +20,18 @@ class SiteForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    List<SiteData> data = [];
+    final siteEntry = ref.watch(siteEntryProvider);
+    siteEntry.when(
+      data: (siteEntry) => data = siteEntry,
+      loading: () => null,
+      error: (e, s) => null,
+    );
     return Container(
       padding: const EdgeInsets.all(10),
       child: SiteIdField(
         value: narrativeCtr.siteCtr,
+        siteData: data,
         onChanges: (int? value) {
           updateNarrative(
               narrativeId, NarrativeCompanion(siteID: db.Value(value)), ref);

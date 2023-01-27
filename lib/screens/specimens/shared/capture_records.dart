@@ -1,9 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:flutter/material.dart';
+import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:intl/intl.dart';
 import 'package:nahpu/screens/shared/layout.dart';
+import 'package:nahpu/services/database.dart';
 
 class CaptureRecordFields extends ConsumerWidget {
   const CaptureRecordFields({
@@ -19,6 +21,12 @@ class CaptureRecordFields extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    List<CollEventData> eventEntry = [];
+    ref.watch(collEventEntryProvider).when(
+          data: (eventEntry) => eventEntry = eventEntry,
+          loading: () => null,
+          error: (e, s) => null,
+        );
     return FormCard(
       title: 'Capture Records',
       child: Column(
@@ -31,17 +39,13 @@ class CaptureRecordFields extends ConsumerWidget {
                   labelText: 'Collecting Event ID',
                   hintText: 'Choose a collecting event ID',
                 ),
-                items: const [
-                  DropdownMenuItem(
-                    value: 'One',
-                    child: Text('One'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Two',
-                    child: Text('Two'),
-                  ),
-                ],
-                onChanged: (String? newValue) {},
+                items: eventEntry
+                    .map((event) => DropdownMenuItem(
+                          value: event.id,
+                          child: Text(event.eventID ?? ''),
+                        ))
+                    .toList(),
+                onChanged: (int? newValue) {},
               ),
             ],
           ),

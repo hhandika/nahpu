@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/controller/updaters.dart';
 import 'package:nahpu/models/form.dart';
+import 'package:nahpu/providers/catalogs.dart';
+import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:intl/intl.dart';
 import 'package:nahpu/services/database.dart';
 import 'package:drift/drift.dart' as db;
 
-class CollectingInfoFields extends ConsumerWidget {
+class CollectingInfoFields extends ConsumerStatefulWidget {
   const CollectingInfoFields({
     super.key,
     required this.collEventId,
@@ -21,56 +23,166 @@ class CollectingInfoFields extends ConsumerWidget {
   final CollEventFormCtrModel collEventCtr;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  CollectingInfoFieldsState createState() => CollectingInfoFieldsState();
+}
+
+class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
+  String? _siteID;
+  List<SiteData> data = [];
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final siteEntry = ref.watch(siteEntryProvider);
+    siteEntry.when(
+      data: (siteEntry) => {
+        data = siteEntry,
+      },
+      loading: () => null,
+      error: (e, s) => null,
+    );
     return FormCard(
       title: 'Collecting Info',
       isPrimary: true,
       child: Column(
         children: [
           Padding(
-            // Match adaptive layout padding
-            padding: const EdgeInsets.only(left: 5.0, right: 5.0, bottom: 5.0),
-            child: SiteIdField(
-              value: collEventCtr.siteIDCtr,
-              onChanges: (int? value) {
-                updateCollEvent(
-                    collEventId,
-                    CollEventCompanion(
-                      siteID: db.Value(value),
-                    ),
-                    ref);
-              },
+            padding: const EdgeInsets.only(top: 10.0),
+            child: CollEventIdTile(
+              collEventId: widget.collEventId,
+              collEventCtr: widget.collEventCtr,
             ),
           ),
           Padding(
+            // Match adaptive layout padding
             padding: const EdgeInsets.only(left: 5.0, right: 5.0, bottom: 5.0),
-            child: TextFormField(
-              controller: collEventCtr.eventIDCtr,
-              decoration: const InputDecoration(
-                labelText: 'Collecting Event ID',
-                hintText: 'Autofill',
-              ),
-              onChanged: (String? value) {
-                updateCollEvent(
-                    collEventId,
-                    CollEventCompanion(
-                      eventID: db.Value(value),
-                    ),
-                    ref);
+            child: SiteIdField(
+              value: widget.collEventCtr.siteIDCtr,
+              siteData: data,
+              onChanges: (int? value) async {
+                setState(() {
+                  _siteID = data.where((e) => e.id == value).first.siteID;
+                  updateCollEvent(
+                      widget.collEventId,
+                      CollEventCompanion(
+                        siteID: db.Value(value),
+                        eventID: db.Value(_getEventID(_siteID)),
+                      ),
+                      ref);
+                });
               },
             ),
           ),
           EventDateField(
-            collEventId: collEventId,
-            collEventCtr: collEventCtr,
-            useHorizontalLayout: useHorizontalLayout,
+            collEventId: widget.collEventId,
+            collEventCtr: widget.collEventCtr,
+            useHorizontalLayout: widget.useHorizontalLayout,
           ),
           EventTimeField(
-            collEventId: collEventId,
-            collEventCtr: collEventCtr,
-            useHorizontalLayout: useHorizontalLayout,
+            collEventId: widget.collEventId,
+            collEventCtr: widget.collEventCtr,
+            useHorizontalLayout: widget.useHorizontalLayout,
           ),
         ],
+      ),
+    );
+  }
+
+  String _getEventID(siteId) {
+    if (widget.collEventCtr.eventIDCtr.text.isEmpty) {
+      return '';
+    } else {
+      return '$siteId-${widget.collEventCtr.startDateCtr.text}';
+    }
+  }
+}
+
+class CollEventIdTile extends ConsumerWidget {
+  const CollEventIdTile({
+    super.key,
+    required this.collEventId,
+    required this.collEventCtr,
+  });
+
+  final int collEventId;
+  final CollEventFormCtrModel collEventCtr;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    String? eventID = '';
+    ref.watch(databaseProvider).getCollEventById(collEventId).then(
+          (value) => eventID = value.eventID,
+        );
+    return ListTile(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        side: BorderSide(
+          color: Theme.of(context).colorScheme.secondary,
+          width: 0.5,
+        ),
+      ),
+      title: RichText(
+        text: TextSpan(
+          text: 'Coll. Event ID: ',
+          style: Theme.of(context).textTheme.titleMedium,
+          children: [
+            TextSpan(
+              text: collEventCtr.eventIDCtr.text,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ],
+        ),
+      ),
+      trailing: IconButton(
+        icon: const Icon(
+          Icons.edit_rounded,
+          size: 20,
+        ),
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Edit Collecting Event ID'),
+                content: TextFormField(
+                  controller: collEventCtr.eventIDCtr,
+                  decoration: const InputDecoration(
+                    labelText: 'Collecting Event ID',
+                    hintText: 'Enter collecting event ID',
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      updateCollEvent(
+                          collEventId,
+                          CollEventCompanion(
+                            eventID: db.Value(collEventCtr.eventIDCtr.text),
+                          ),
+                          ref);
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Save'),
+                  ),
+                ],
+              );
+            },
+          );
+        },
       ),
     );
   }
