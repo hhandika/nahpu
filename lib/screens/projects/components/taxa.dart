@@ -20,40 +20,43 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
   Widget build(BuildContext context) {
     return FormCard(
       title: 'Taxon Registry',
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SizedBox(
-              height: MediaQuery.of(context).size.height * 0.3,
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                child: const TaxonRegistryInfo(),
-              )),
-          Wrap(
-            spacing: 10,
-            children: [
-              SecondaryButton(
-                  text: 'Show',
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+                height: MediaQuery.of(context).size.height * 0.3,
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  child: const TaxonRegistryInfo(),
+                )),
+            Wrap(
+              spacing: 10,
+              children: [
+                SecondaryButton(
+                    text: 'Show',
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const TaxonRegistryList(),
+                        ),
+                      );
+                    }),
+                PrimaryButton(
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const TaxonRegistryList(),
+                        builder: (context) => const TaxonEntryForm(),
                       ),
                     );
-                  }),
-              PrimaryButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const TaxonEntryForm(),
-                    ),
-                  );
-                },
-                text: 'Add taxon',
-              ),
-            ],
-          ),
-        ],
+                  },
+                  text: 'Add taxon',
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
