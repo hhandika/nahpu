@@ -28,7 +28,13 @@ class CollectingInfoFields extends ConsumerStatefulWidget {
 
 class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
   String? _siteID;
+  String? _date;
   List<SiteData> data = [];
+
+  final DateTime initialStartDate =
+      DateTime.now().subtract(const Duration(days: 1));
+  final DateTime initialEndDate = DateTime.now();
+
   @override
   void initState() {
     super.initState();
@@ -81,10 +87,54 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
               },
             ),
           ),
-          EventDateField(
-            collEventId: widget.collEventId,
-            collEventCtr: widget.collEventCtr,
+          AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
+            children: [
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Start Date',
+                  hintText: 'Enter date',
+                ),
+                controller: widget.collEventCtr.startDateCtr,
+                onTap: () async {
+                  DateTime? date = await showDate(context, initialStartDate);
+                  if (date != null) {
+                    setState(() {
+                      widget.collEventCtr.startDateCtr.text =
+                          DateFormat.yMMMd().format(date);
+                      updateCollEvent(
+                          widget.collEventId,
+                          CollEventCompanion(
+                            startDate:
+                                db.Value(widget.collEventCtr.startDateCtr.text),
+                          ),
+                          ref);
+                    });
+                  }
+                },
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'End Date',
+                  hintText: 'Enter date',
+                ),
+                controller: widget.collEventCtr.endDateCtr,
+                onTap: () async {
+                  DateTime? date = await showDate(context, initialEndDate);
+                  if (date != null) {
+                    widget.collEventCtr.endDateCtr.text =
+                        DateFormat.yMMMd().format(date);
+                    updateCollEvent(
+                        widget.collEventId,
+                        CollEventCompanion(
+                          endDate:
+                              db.Value(widget.collEventCtr.endDateCtr.text),
+                        ),
+                        ref);
+                  }
+                },
+              ),
+            ],
           ),
           EventTimeField(
             collEventId: widget.collEventId,
@@ -97,11 +147,15 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
   }
 
   String _getEventID(siteId) {
-    if (widget.collEventCtr.eventIDCtr.text.isEmpty) {
-      return '';
-    } else {
-      return '$siteId-${widget.collEventCtr.startDateCtr.text}';
-    }
+    return '$siteId-${widget.collEventCtr.startDateCtr.text}';
+  }
+
+  Future<DateTime?> showDate(BuildContext context, DateTime initialStartDate) {
+    return showDatePicker(
+        context: context,
+        initialDate: initialStartDate,
+        firstDate: DateTime(2000),
+        lastDate: DateTime.now());
   }
 }
 
@@ -117,15 +171,15 @@ class CollEventIdTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    String? eventID = '';
-    ref.watch(databaseProvider).getCollEventById(collEventId).then(
-          (value) => eventID = value.eventID,
-        );
+    ref.watch(databaseProvider).getCollEventById(collEventId).then((value) => {
+          if (value.eventID != null)
+            {collEventCtr.eventIDCtr.text = value.eventID!},
+        });
     return ListTile(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
         side: BorderSide(
-          color: Theme.of(context).colorScheme.secondary,
+          color: Theme.of(context).colorScheme.onSurface,
           width: 0.5,
         ),
       ),
@@ -174,6 +228,7 @@ class CollEventIdTile extends ConsumerWidget {
                             eventID: db.Value(collEventCtr.eventIDCtr.text),
                           ),
                           ref);
+                      ref.invalidate(collEventEntryProvider);
                       Navigator.of(context).pop();
                     },
                     child: const Text('Save'),
@@ -185,77 +240,6 @@ class CollEventIdTile extends ConsumerWidget {
         },
       ),
     );
-  }
-}
-
-class EventDateField extends ConsumerWidget {
-  const EventDateField({
-    super.key,
-    required this.collEventId,
-    required this.collEventCtr,
-    required this.useHorizontalLayout,
-  });
-
-  final int collEventId;
-  final CollEventFormCtrModel collEventCtr;
-  final bool useHorizontalLayout;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final DateTime initialStartDate =
-        DateTime.now().subtract(const Duration(days: 1));
-    final DateTime initialEndDate = DateTime.now();
-    return AdaptiveLayout(
-      useHorizontalLayout: useHorizontalLayout,
-      children: [
-        TextFormField(
-          decoration: const InputDecoration(
-            labelText: 'Start Date',
-            hintText: 'Enter date',
-          ),
-          controller: collEventCtr.startDateCtr,
-          onTap: () async {
-            DateTime? date = await showDate(context, initialStartDate);
-            if (date != null) {
-              collEventCtr.startDateCtr.text = DateFormat.yMMMd().format(date);
-              updateCollEvent(
-                  collEventId,
-                  CollEventCompanion(
-                    startDate: db.Value(collEventCtr.startDateCtr.text),
-                  ),
-                  ref);
-            }
-          },
-        ),
-        TextFormField(
-          decoration: const InputDecoration(
-            labelText: 'End Date',
-            hintText: 'Enter date',
-          ),
-          controller: collEventCtr.endDateCtr,
-          onTap: () async {
-            DateTime? date = await showDate(context, initialEndDate);
-            if (date != null) {
-              collEventCtr.endDateCtr.text = DateFormat.yMMMd().format(date);
-              updateCollEvent(
-                  collEventId,
-                  CollEventCompanion(
-                    endDate: db.Value(collEventCtr.endDateCtr.text),
-                  ),
-                  ref);
-            }
-          },
-        ),
-      ],
-    );
-  }
-
-  Future<DateTime?> showDate(BuildContext context, DateTime initialStartDate) {
-    return showDatePicker(
-        context: context,
-        initialDate: initialStartDate,
-        firstDate: DateTime(2000),
-        lastDate: DateTime.now());
   }
 }
 
