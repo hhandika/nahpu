@@ -58,7 +58,7 @@ class NewPersonnelFormValidation with _$NewPersonnelFormValidation {
       collNum: NewPersonnelFormField(value: null, errMsg: null));
 
   bool get isValidCollector =>
-      name.isValid && email.isValid && initial.isValid && collNum.isValid;
+      name.isValid && initial.isValid && collNum.isValid;
   bool get isValid => name.isValid;
 }
 
