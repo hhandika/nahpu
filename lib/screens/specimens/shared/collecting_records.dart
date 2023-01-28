@@ -192,7 +192,7 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
             hintText: 'Choose a person with field number',
           ),
           items: personnelList
-              .where((element) => element.role == 'Collector')
+              .where((element) => element.role == 'Cataloger')
               .map((e) => DropdownMenuItem(
                     value: e.uuid,
                     child: Text(e.name ?? ''),

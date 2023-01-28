@@ -74,6 +74,7 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
               siteData: data,
               onChanges: (int? value) async {
                 setState(() {
+                  _siteID = data.where((e) => e.id == value).first.siteID;
                   updateCollEvent(
                       widget.collEventId,
                       CollEventCompanion(
@@ -96,19 +97,23 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
                 onTap: () async {
                   DateTime? date = await showDate(context, initialStartDate);
                   if (date != null) {
-                    setState(() {
-                      widget.collEventCtr.startDateCtr.text =
-                          DateFormat.yMMMd().format(date);
-                      updateCollEvent(
-                          widget.collEventId,
-                          CollEventCompanion(
-                            startDate:
-                                db.Value(widget.collEventCtr.startDateCtr.text),
-                            eventID: db.Value(_getEventID(_siteID)),
-                          ),
-                          ref);
-                      ref.invalidate(collEventIDprovider);
-                    });
+                    setState(
+                      () {
+                        widget.collEventCtr.startDateCtr.text =
+                            DateFormat.yMMMd().format(date);
+                        widget.collEventCtr.eventIDCtr.text = _getEventID();
+                        updateCollEvent(
+                            widget.collEventId,
+                            CollEventCompanion(
+                              startDate: db.Value(
+                                  widget.collEventCtr.startDateCtr.text),
+                              eventID: db.Value(
+                                widget.collEventCtr.eventIDCtr.text,
+                              ),
+                            ),
+                            ref);
+                      },
+                    );
                   }
                 },
               ),
@@ -145,14 +150,8 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
     );
   }
 
-  String _getEventID(siteId) {
-    String? siteID =
-        data.where((e) => e.id == widget.collEventCtr.siteIDCtr).first.siteID;
-    if (siteID != null) {
-      return '$siteID-${widget.collEventCtr.startDateCtr.text}';
-    } else {
-      return '';
-    }
+  String _getEventID() {
+    return '$_siteID-${widget.collEventCtr.startDateCtr.text}';
   }
 
   Future<DateTime?> showDate(BuildContext context, DateTime initialStartDate) {
@@ -176,13 +175,6 @@ class CollEventIdTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(collEventIDprovider(collEventId)).when(
-        data: (value) => {
-              if (value.eventID != null)
-                {collEventCtr.eventIDCtr.text = value.eventID!},
-            },
-        loading: () => null,
-        error: (e, s) => null);
     return ListTile(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
