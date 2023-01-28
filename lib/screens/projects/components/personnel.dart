@@ -268,6 +268,15 @@ class PersonnelForm extends ConsumerStatefulWidget {
 // 1. Add photo
 class PersonnelFormState extends ConsumerState<PersonnelForm> {
   final _formKey = GlobalKey<FormState>();
+
+  List<String> _roleList = const [
+    'Cataloger',
+    'Field assistant',
+    'Preparator only',
+    'Local helper',
+    'Photographer only',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
@@ -334,24 +343,14 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                     labelText: 'Role',
                     hintText: 'Enter role',
                   ),
-                  items: const [
-                    DropdownMenuItem(
-                      value: 'Collector',
-                      child: Text('Collector'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Local helper',
-                      child: Text('Local helper'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Preparator only',
-                      child: Text('Preparator only'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Photographer only',
-                      child: Text('Photographer only'),
-                    ),
-                  ],
+                  items: _roleList
+                      .map(
+                        (role) => DropdownMenuItem(
+                          value: role,
+                          child: Text(role),
+                        ),
+                      )
+                      .toList(),
                   onChanged: (String? newValue) {
                     setState(() {
                       widget.ctr.roleCtr = newValue;
@@ -359,7 +358,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                   },
                 ),
                 Visibility(
-                  visible: widget.ctr.roleCtr == 'Collector',
+                  visible: widget.ctr.roleCtr == 'Cataloger',
                   child: Column(
                     children: [
                       TextFormField(
@@ -367,7 +366,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                         maxLength: 8,
                         decoration: InputDecoration(
                           labelText: 'Initials*',
-                          hintText: 'Enter intials (required for collectors)',
+                          hintText: 'Enter intials (required for catalogers)',
                           errorText: ref
                               .watch(personnelFormNotifier)
                               .form
@@ -392,7 +391,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                         },
                       ),
                       TextField(
-                          enabled: widget.ctr.roleCtr == 'Collector',
+                          enabled: widget.ctr.roleCtr == 'Cataloger',
                           controller: widget.ctr.nextCollectorNumCtr,
                           decoration: InputDecoration(
                             labelText: 'Last collector Number*',
@@ -439,11 +438,11 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                     ),
                     FormElevButton(
                       text: widget.isAddNew ? 'Add' : 'Update',
-                      enabled: widget.ctr.roleCtr == 'Collector'
+                      enabled: widget.ctr.roleCtr == 'Cataloger'
                           ? ref
                               .watch(personnelFormNotifier)
                               .form
-                              .isValidCollector
+                              .isValidCataloger
                           : ref.watch(personnelFormNotifier).form.isValid,
                       onPressed: () {
                         widget.isAddNew ? _addPersonnel() : _updatePersonnel();
