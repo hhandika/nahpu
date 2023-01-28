@@ -187,15 +187,10 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
       children: [
         DropdownButtonFormField(
           value: widget.specimenCtr.collectorCtr,
-          decoration: InputDecoration(
-            labelText: 'Collector',
-            hintText: 'Choose a collector',
-            suffix: IconButton(
-              onPressed: () async {
-                // Show help dialog
-              },
-              icon: const Icon(Icons.help_outline),
-            ),
+          decoration: const InputDecoration(
+            labelText: 'Cataloger',
+            hintText: 'Choose a person with field number',
+            helperText: 'A person with field number',
           ),
           items: personnelList
               .where((element) => element.role == 'Collector')
@@ -228,15 +223,15 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
           controller: widget.specimenCtr.collectorNumberCtr,
           enabled: false,
           decoration: const InputDecoration(
-            labelText: 'Collector Number',
-            hintText: 'Enter collector number',
+            labelText: 'Field Number',
+            hintText: 'Autofill',
           ),
         ),
         DropdownButtonFormField(
           value: widget.specimenCtr.preparatorCtr,
           decoration: const InputDecoration(
-            labelText: 'Preparator',
-            hintText: 'Choose a preparator',
+            labelText: 'Specimen Preparator',
+            hintText: 'Choose a preparator (default is cataloger)',
           ),
           items: personnelList
               .where((element) =>
