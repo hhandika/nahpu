@@ -269,113 +269,116 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 500),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextFormField(
-            controller: widget.ctr.nameCtr,
-            decoration: const InputDecoration(
-              labelText: 'Name',
-              hintText: 'Enter a name',
-            ),
-          ),
-          TextFormField(
-            controller: widget.ctr.initialCtr,
-            decoration: const InputDecoration(
-              labelText: 'Initials',
-              hintText: 'Enter intials',
-            ),
-          ),
-          TextFormField(
-            controller: widget.ctr.emailCtr,
-            decoration: const InputDecoration(
-              labelText: 'Email',
-              hintText: 'Enter email',
-            ),
-          ),
-          TextFormField(
-            controller: widget.ctr.affiliationCtr,
-            decoration: const InputDecoration(
-              labelText: 'Affiliation',
-              hintText: 'Enter Affiliation',
-            ),
-          ),
-          DropdownButtonFormField(
-            value: widget.ctr.roleCtr,
-            decoration: const InputDecoration(
-              labelText: 'Role',
-              hintText: 'Enter role',
-            ),
-            items: const [
-              DropdownMenuItem(
-                value: 'Collector',
-                child: Text('Collector'),
-              ),
-              DropdownMenuItem(
-                value: 'Local helper',
-                child: Text('Local helper'),
-              ),
-              DropdownMenuItem(
-                value: 'Preparator only',
-                child: Text('Preparator only'),
-              ),
-              DropdownMenuItem(
-                value: 'Photographer only',
-                child: Text('Photographer only'),
-              ),
-            ],
-            onChanged: (String? newValue) {
-              setState(() {
-                widget.ctr.roleCtr = newValue!;
-              });
-            },
-          ),
-          Visibility(
-            visible: widget.ctr.roleCtr == 'Collector',
-            child: TextField(
-              enabled: widget.ctr.roleCtr == 'Collector',
-              controller: widget.ctr.nextCollectorNumCtr,
+      child: Padding(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              controller: widget.ctr.nameCtr,
               decoration: const InputDecoration(
-                labelText: 'Next collector Number',
-                hintText: 'Enter number',
+                labelText: 'Name',
+                hintText: 'Enter a name',
               ),
             ),
-          ),
-          TextField(
-            controller: widget.ctr.noteCtr,
-            decoration: const InputDecoration(
-              labelText: 'Notes',
-              hintText: 'Write notes',
+            TextFormField(
+              controller: widget.ctr.initialCtr,
+              decoration: const InputDecoration(
+                labelText: 'Initials',
+                hintText: 'Enter intials',
+              ),
             ),
-            maxLines: 3,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Wrap(
-            spacing: 10,
-            children: [
-              SecondaryButton(
-                text: 'Cancel',
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+            TextFormField(
+              controller: widget.ctr.emailCtr,
+              decoration: const InputDecoration(
+                labelText: 'Email',
+                hintText: 'Enter email',
               ),
-              PrimaryButton(
-                text: widget.isAddNew ? 'Add' : 'Update',
-                onPressed: () {
-                  widget.isAddNew ? _addPersonnel() : _updatePersonnel();
-                  ref.invalidate(personnelListProvider);
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const Dashboard(),
-                    ),
-                  );
-                },
+            ),
+            TextFormField(
+              controller: widget.ctr.affiliationCtr,
+              decoration: const InputDecoration(
+                labelText: 'Affiliation',
+                hintText: 'Enter Affiliation',
               ),
-            ],
-          ),
-        ],
+            ),
+            DropdownButtonFormField(
+              value: widget.ctr.roleCtr,
+              decoration: const InputDecoration(
+                labelText: 'Role',
+                hintText: 'Enter role',
+              ),
+              items: const [
+                DropdownMenuItem(
+                  value: 'Collector',
+                  child: Text('Collector'),
+                ),
+                DropdownMenuItem(
+                  value: 'Local helper',
+                  child: Text('Local helper'),
+                ),
+                DropdownMenuItem(
+                  value: 'Preparator only',
+                  child: Text('Preparator only'),
+                ),
+                DropdownMenuItem(
+                  value: 'Photographer only',
+                  child: Text('Photographer only'),
+                ),
+              ],
+              onChanged: (String? newValue) {
+                setState(() {
+                  widget.ctr.roleCtr = newValue!;
+                });
+              },
+            ),
+            Visibility(
+              visible: widget.ctr.roleCtr == 'Collector',
+              child: TextField(
+                enabled: widget.ctr.roleCtr == 'Collector',
+                controller: widget.ctr.nextCollectorNumCtr,
+                decoration: const InputDecoration(
+                  labelText: 'Next collector Number',
+                  hintText: 'Enter number',
+                ),
+              ),
+            ),
+            TextField(
+              controller: widget.ctr.noteCtr,
+              decoration: const InputDecoration(
+                labelText: 'Notes',
+                hintText: 'Write notes',
+              ),
+              maxLines: 3,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Wrap(
+              spacing: 10,
+              children: [
+                SecondaryButton(
+                  text: 'Cancel',
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                PrimaryButton(
+                  text: widget.isAddNew ? 'Add' : 'Update',
+                  onPressed: () {
+                    widget.isAddNew ? _addPersonnel() : _updatePersonnel();
+                    ref.invalidate(personnelListProvider);
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const Dashboard(),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

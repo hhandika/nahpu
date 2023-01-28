@@ -47,7 +47,7 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const TaxonEntryForm(),
+                        builder: (context) => const TaxonRegistryForm(),
                       ),
                     );
                   },
@@ -90,14 +90,14 @@ class TaxonRegistryInfo extends ConsumerWidget {
   }
 }
 
-class TaxonEntryForm extends ConsumerStatefulWidget {
-  const TaxonEntryForm({super.key});
+class TaxonRegistryForm extends ConsumerStatefulWidget {
+  const TaxonRegistryForm({super.key});
 
   @override
-  TaxonEntryFormState createState() => TaxonEntryFormState();
+  TaxonRegistryFormState createState() => TaxonRegistryFormState();
 }
 
-class TaxonEntryFormState extends ConsumerState<TaxonEntryForm> {
+class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
   final TaxonRegistryCtrModel _ctr = TaxonRegistryCtrModel.empty();
 
   @override
@@ -111,80 +111,82 @@ class TaxonEntryFormState extends ConsumerState<TaxonEntryForm> {
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 500),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  controller: _ctr.taxonClassCtr,
-                  decoration: const InputDecoration(
-                    labelText: 'Class',
-                    hintText: 'Enter a class',
-                  ),
-                ),
-                TextFormField(
-                  controller: _ctr.taxonOrderCtr,
-                  decoration: const InputDecoration(
-                    labelText: 'Order',
-                    hintText: 'Enter an order',
-                  ),
-                ),
-                TextFormField(
-                  controller: _ctr.taxonFamilyCtr,
-                  decoration: const InputDecoration(
-                    labelText: 'Family',
-                    hintText: 'Enter a family',
-                  ),
-                ),
-                TextFormField(
-                  controller: _ctr.genusCtr,
-                  decoration: const InputDecoration(
-                    labelText: 'Genus',
-                    hintText: 'Enter a genus',
-                  ),
-                ),
-                TextFormField(
-                  controller: _ctr.specificEpithetCtr,
-                  decoration: const InputDecoration(
-                    labelText: 'Specific epithet',
-                    hintText: 'Enter specific epithet',
-                  ),
-                ),
-                TextFormField(
-                  controller: _ctr.commonNameCtr,
-                  decoration: const InputDecoration(
-                    labelText: 'Common name',
-                    hintText: 'Enter a common name',
-                  ),
-                ),
-                TextFormField(
-                  controller: _ctr.noteCtr,
-                  decoration: const InputDecoration(
-                    labelText: 'Notes',
-                    hintText: 'Enter notes',
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Wrap(
-                  spacing: 10,
+            child: Padding(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    SecondaryButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      text: 'Cancel',
+                    TextFormField(
+                      controller: _ctr.taxonClassCtr,
+                      decoration: const InputDecoration(
+                        labelText: 'Class',
+                        hintText: 'Enter a class',
+                      ),
                     ),
-                    PrimaryButton(
-                      onPressed: () {
-                        _saveTaxon();
-                        ref.invalidate(taxonRegistryProvider);
-                        Navigator.of(context).pop();
-                      },
-                      text: 'Add',
+                    TextFormField(
+                      controller: _ctr.taxonOrderCtr,
+                      decoration: const InputDecoration(
+                        labelText: 'Order',
+                        hintText: 'Enter an order',
+                      ),
+                    ),
+                    TextFormField(
+                      controller: _ctr.taxonFamilyCtr,
+                      decoration: const InputDecoration(
+                        labelText: 'Family',
+                        hintText: 'Enter a family',
+                      ),
+                    ),
+                    TextFormField(
+                      controller: _ctr.genusCtr,
+                      decoration: const InputDecoration(
+                        labelText: 'Genus',
+                        hintText: 'Enter a genus',
+                      ),
+                    ),
+                    TextFormField(
+                      controller: _ctr.specificEpithetCtr,
+                      decoration: const InputDecoration(
+                        labelText: 'Specific epithet',
+                        hintText: 'Enter specific epithet',
+                      ),
+                    ),
+                    TextFormField(
+                      controller: _ctr.commonNameCtr,
+                      decoration: const InputDecoration(
+                        labelText: 'Common name',
+                        hintText: 'Enter a common name',
+                      ),
+                    ),
+                    TextFormField(
+                      controller: _ctr.noteCtr,
+                      decoration: const InputDecoration(
+                        labelText: 'Notes',
+                        hintText: 'Enter notes',
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Wrap(
+                      spacing: 10,
+                      children: [
+                        SecondaryButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          text: 'Cancel',
+                        ),
+                        PrimaryButton(
+                          onPressed: () {
+                            _saveTaxon();
+                            ref.invalidate(taxonRegistryProvider);
+                            Navigator.of(context).pop();
+                          },
+                          text: 'Add',
+                        ),
+                      ],
                     ),
                   ],
-                ),
-              ],
-            ),
+                )),
           ),
         ),
       ),
