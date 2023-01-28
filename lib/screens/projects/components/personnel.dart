@@ -472,6 +472,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
             initial: db.Value(widget.ctr.initialCtr.text),
             affiliation: db.Value(widget.ctr.affiliationCtr.text),
             email: db.Value(widget.ctr.emailCtr.text),
+            phone: db.Value(widget.ctr.phoneCtr.text),
             role: db.Value(widget.ctr.roleCtr),
             nextCollectorNumber: db.Value(
               _getCollectorNumber(),
@@ -489,6 +490,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
         initial: db.Value(widget.ctr.initialCtr.text),
         affiliation: db.Value(widget.ctr.affiliationCtr.text),
         email: db.Value(widget.ctr.emailCtr.text),
+        phone: db.Value(widget.ctr.phoneCtr.text),
         role: db.Value(widget.ctr.roleCtr),
         nextCollectorNumber: db.Value(
           _getCollectorNumber(),
