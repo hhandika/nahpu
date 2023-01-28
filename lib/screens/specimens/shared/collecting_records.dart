@@ -190,7 +190,6 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
           decoration: const InputDecoration(
             labelText: 'Cataloger',
             hintText: 'Choose a person with field number',
-            helperText: 'A person with field number',
           ),
           items: personnelList
               .where((element) => element.role == 'Collector')
@@ -230,12 +229,12 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
         DropdownButtonFormField(
           value: widget.specimenCtr.preparatorCtr,
           decoration: const InputDecoration(
-            labelText: 'Specimen Preparator',
+            labelText: 'Preparator',
             hintText: 'Choose a preparator (default is cataloger)',
           ),
           items: personnelList
               .where((element) =>
-                  element.role == 'Collector' ||
+                  element.role == 'Cataloger' ||
                   element.role == 'Preparator only')
               .map((e) => DropdownMenuItem(
                     value: e.uuid,

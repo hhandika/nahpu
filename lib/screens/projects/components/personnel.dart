@@ -269,7 +269,7 @@ class PersonnelForm extends ConsumerStatefulWidget {
 class PersonnelFormState extends ConsumerState<PersonnelForm> {
   final _formKey = GlobalKey<FormState>();
 
-  List<String> _roleList = const [
+  final List<String> _roleList = const [
     'Cataloger',
     'Field assistant',
     'Preparator only',
@@ -440,6 +440,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                     onPressed: () {
                       widget.isAddNew ? _addPersonnel() : _updatePersonnel();
                       ref.invalidate(personnelListProvider);
+                      ref.invalidate(personnelFormNotifier);
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => const Dashboard(),
