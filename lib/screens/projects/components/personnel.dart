@@ -280,186 +280,180 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 500),
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  controller: widget.ctr.nameCtr,
-                  decoration: InputDecoration(
-                    labelText: 'Name*',
-                    hintText: 'Enter a name (required)',
-                    errorText:
-                        ref.watch(personnelFormNotifier).form.name.errMsg,
-                  ),
-                  onChanged: (value) {
-                    ref
-                        .watch(personnelFormNotifier.notifier)
-                        .validateName(value);
-                  },
+      constraints: const BoxConstraints(maxWidth: 500),
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: widget.ctr.nameCtr,
+                decoration: InputDecoration(
+                  labelText: 'Name*',
+                  hintText: 'Enter a name (required)',
+                  errorText: ref.watch(personnelFormNotifier).form.name.errMsg,
                 ),
-                TextFormField(
-                  controller: widget.ctr.affiliationCtr,
-                  decoration: const InputDecoration(
-                    labelText: 'Affiliation',
-                    hintText: 'Enter Affiliation',
-                  ),
+                onChanged: (value) {
+                  ref.watch(personnelFormNotifier.notifier).validateName(value);
+                },
+              ),
+              TextFormField(
+                controller: widget.ctr.affiliationCtr,
+                decoration: const InputDecoration(
+                  labelText: 'Affiliation',
+                  hintText: 'Enter Affiliation',
                 ),
-                TextFormField(
-                  controller: widget.ctr.emailCtr,
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    hintText: 'Enter email',
-                    errorText:
-                        ref.watch(personnelFormNotifier).form.email.errMsg,
-                  ),
-                  onChanged: (value) {
-                    ref.watch(personnelFormNotifier.notifier).validateEmail(
-                          value,
-                        );
-                    widget.ctr.emailCtr.value = TextEditingValue(
-                        text: value.toLowerCase(),
-                        selection: widget.ctr.emailCtr.selection);
-                  },
+              ),
+              TextFormField(
+                controller: widget.ctr.emailCtr,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  hintText: 'Enter email',
+                  errorText: ref.watch(personnelFormNotifier).form.email.errMsg,
                 ),
-                TextFormField(
-                  controller: widget.ctr.phoneCtr,
-                  decoration: const InputDecoration(
-                    labelText: 'Phone',
-                    hintText: 'Enter phone',
-                  ),
-                  keyboardType: TextInputType.phone,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
+                onChanged: (value) {
+                  ref.watch(personnelFormNotifier.notifier).validateEmail(
+                        value,
+                      );
+                  widget.ctr.emailCtr.value = TextEditingValue(
+                      text: value.toLowerCase(),
+                      selection: widget.ctr.emailCtr.selection);
+                },
+              ),
+              TextFormField(
+                controller: widget.ctr.phoneCtr,
+                decoration: const InputDecoration(
+                  labelText: 'Phone',
+                  hintText: 'Enter phone',
                 ),
-                DropdownButtonFormField(
-                  value: widget.ctr.roleCtr,
-                  decoration: const InputDecoration(
-                    labelText: 'Role',
-                    hintText: 'Enter role',
-                  ),
-                  items: _roleList
-                      .map(
-                        (role) => DropdownMenuItem(
-                          value: role,
-                          child: Text(role),
+                keyboardType: TextInputType.phone,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+              ),
+              DropdownButtonFormField(
+                value: widget.ctr.roleCtr,
+                decoration: const InputDecoration(
+                  labelText: 'Role',
+                  hintText: 'Enter role',
+                ),
+                items: _roleList
+                    .map(
+                      (role) => DropdownMenuItem(
+                        value: role,
+                        child: Text(role),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    widget.ctr.roleCtr = newValue;
+                  });
+                },
+              ),
+              Visibility(
+                visible: widget.ctr.roleCtr == 'Cataloger',
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: widget.ctr.initialCtr,
+                      maxLength: 8,
+                      decoration: InputDecoration(
+                        labelText: 'Initials*',
+                        hintText: 'Enter intials (required for catalogers)',
+                        errorText: ref
+                            .watch(personnelFormNotifier)
+                            .form
+                            .initial
+                            .errMsg,
+                      ),
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(5),
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r'[a-zA-Z]+|\s'),
                         ),
-                      )
-                      .toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      widget.ctr.roleCtr = newValue;
-                    });
-                  },
-                ),
-                Visibility(
-                  visible: widget.ctr.roleCtr == 'Cataloger',
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        controller: widget.ctr.initialCtr,
-                        maxLength: 8,
+                      ],
+                      onChanged: (value) {
+                        widget.ctr.initialCtr.value = TextEditingValue(
+                            text: value.toUpperCase(),
+                            selection: widget.ctr.initialCtr.selection);
+                        ref
+                            .watch(personnelFormNotifier.notifier)
+                            .validateInitial(
+                              value,
+                            );
+                      },
+                    ),
+                    TextField(
+                        enabled: widget.ctr.roleCtr == 'Cataloger',
+                        controller: widget.ctr.nextCollectorNumCtr,
                         decoration: InputDecoration(
-                          labelText: 'Initials*',
-                          hintText: 'Enter intials (required for catalogers)',
+                          labelText: 'Last collector Number*',
+                          hintText: 'Enter number (required for collectors)',
                           errorText: ref
-                              .watch(personnelFormNotifier)
+                              .watch(projectFormNotifier)
                               .form
-                              .initial
+                              .collNum
                               .errMsg,
                         ),
+                        keyboardType: TextInputType.number,
                         inputFormatters: [
-                          LengthLimitingTextInputFormatter(5),
                           FilteringTextInputFormatter.allow(
-                            RegExp(r'[a-zA-Z]+|\s'),
+                            RegExp(r'[0-9]+'),
                           ),
                         ],
                         onChanged: (value) {
-                          widget.ctr.initialCtr.value = TextEditingValue(
-                              text: value.toUpperCase(),
-                              selection: widget.ctr.initialCtr.selection);
                           ref
                               .watch(personnelFormNotifier.notifier)
-                              .validateInitial(
-                                value,
-                              );
-                        },
-                      ),
-                      TextField(
-                          enabled: widget.ctr.roleCtr == 'Cataloger',
-                          controller: widget.ctr.nextCollectorNumCtr,
-                          decoration: InputDecoration(
-                            labelText: 'Last collector Number*',
-                            hintText: 'Enter number (required for collectors)',
-                            errorText: ref
-                                .watch(projectFormNotifier)
-                                .form
-                                .collNum
-                                .errMsg,
-                          ),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                              RegExp(r'[0-9]+'),
-                            ),
-                          ],
-                          onChanged: (value) {
-                            ref
-                                .watch(personnelFormNotifier.notifier)
-                                .validateCollNum(value);
-                          }),
-                    ],
-                  ),
-                ),
-                TextField(
-                  controller: widget.ctr.noteCtr,
-                  decoration: const InputDecoration(
-                    labelText: 'Notes',
-                    hintText: 'Write notes',
-                  ),
-                  maxLines: 3,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Wrap(
-                  spacing: 10,
-                  children: [
-                    SecondaryButton(
-                      text: 'Cancel',
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    FormElevButton(
-                      text: widget.isAddNew ? 'Add' : 'Update',
-                      enabled: widget.ctr.roleCtr == 'Cataloger'
-                          ? ref
-                              .watch(personnelFormNotifier)
-                              .form
-                              .isValidCataloger
-                          : ref.watch(personnelFormNotifier).form.isValid,
-                      onPressed: () {
-                        widget.isAddNew ? _addPersonnel() : _updatePersonnel();
-                        ref.invalidate(personnelListProvider);
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const Dashboard(),
-                          ),
-                        );
-                      },
-                    ),
+                              .validateCollNum(value);
+                        }),
                   ],
                 ),
-              ],
-            ),
+              ),
+              TextField(
+                controller: widget.ctr.noteCtr,
+                decoration: const InputDecoration(
+                  labelText: 'Notes',
+                  hintText: 'Write notes',
+                ),
+                maxLines: 3,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Wrap(
+                spacing: 10,
+                children: [
+                  SecondaryButton(
+                    text: 'Cancel',
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  FormElevButton(
+                    text: widget.isAddNew ? 'Add' : 'Update',
+                    enabled: widget.ctr.roleCtr == 'Cataloger'
+                        ? ref.watch(personnelFormNotifier).form.isValidCataloger
+                        : ref.watch(personnelFormNotifier).form.isValid,
+                    onPressed: () {
+                      widget.isAddNew ? _addPersonnel() : _updatePersonnel();
+                      ref.invalidate(personnelListProvider);
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const Dashboard(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Future<void> _updatePersonnel() {

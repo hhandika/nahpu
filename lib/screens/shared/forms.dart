@@ -59,16 +59,45 @@ class FormCard extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
-            withTitle
-                ? Text(
-                    title,
-                    style: Theme.of(context).textTheme.titleLarge,
-                  )
-                : const SizedBox.shrink(),
+            withTitle ? TitleForm(title: title) : const SizedBox.shrink(),
             child,
           ],
         ),
       ),
+    );
+  }
+}
+
+class TitleForm extends StatelessWidget {
+  const TitleForm({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          title,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        IconButton(
+          onPressed: () {},
+          padding: const EdgeInsets.only(
+            left: 2,
+          ),
+          constraints: const BoxConstraints(),
+          icon: Icon(
+            Icons.info_outline_rounded,
+            size: 20,
+            color: Colors.grey[400],
+          ),
+        ),
+      ],
     );
   }
 }
