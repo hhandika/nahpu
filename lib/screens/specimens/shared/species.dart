@@ -6,8 +6,11 @@ import 'package:nahpu/services/database.dart';
 import 'package:nahpu/models/types.dart';
 
 class SpeciesAutoComplete extends ConsumerWidget {
-  const SpeciesAutoComplete(
-      {super.key, required this.onSelected, required this.controller});
+  const SpeciesAutoComplete({
+    super.key,
+    required this.onSelected,
+    required this.controller,
+  });
 
   final void Function(String) onSelected;
   final TextEditingController? controller;

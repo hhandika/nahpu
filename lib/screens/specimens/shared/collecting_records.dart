@@ -36,11 +36,13 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
   ];
 
   final speciesCtr = TextEditingController();
+  late FocusNode _speciesFocusNode;
 
   @override
   void initState() {
     super.initState();
     speciesCtr.text = widget.specimenCtr.taxonDataCtr.speciesName;
+    _speciesFocusNode = FocusNode();
   }
 
   @override
@@ -62,6 +64,7 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
           SpeciesAutoComplete(
               controller: speciesCtr,
               onSelected: (String value) {
+                _speciesFocusNode.requestFocus();
                 setState(() {
                   speciesCtr.text = value;
                   var taxon = value.split(' ');
