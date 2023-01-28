@@ -187,9 +187,15 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
       children: [
         DropdownButtonFormField(
           value: widget.specimenCtr.collectorCtr,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             labelText: 'Collector',
             hintText: 'Choose a collector',
+            suffix: IconButton(
+              onPressed: () async {
+                // Show help dialog
+              },
+              icon: const Icon(Icons.help_outline),
+            ),
           ),
           items: personnelList
               .where((element) => element.role == 'Collector')

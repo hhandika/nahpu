@@ -266,7 +266,6 @@ class PersonnelForm extends ConsumerStatefulWidget {
 
 // TODO:
 // 1. Add photo
-// 2. Add validation
 class PersonnelFormState extends ConsumerState<PersonnelForm> {
   final _formKey = GlobalKey<FormState>();
   @override
