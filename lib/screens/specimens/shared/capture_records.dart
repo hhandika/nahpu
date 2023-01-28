@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/controller/updaters.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/providers/catalogs.dart';
@@ -6,6 +7,7 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:intl/intl.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/database.dart';
+import 'package:drift/drift.dart' as db;
 
 class CaptureRecordFields extends ConsumerWidget {
   const CaptureRecordFields({
@@ -45,7 +47,10 @@ class CaptureRecordFields extends ConsumerWidget {
                           child: Text(event.eventID ?? ''),
                         ))
                     .toList(),
-                onChanged: (int? newValue) {},
+                onChanged: (int? newValue) {
+                  updateSpecimen(specimenUuid,
+                      SpecimenCompanion(collEventID: db.Value(newValue)), ref);
+                },
               ),
             ],
           ),

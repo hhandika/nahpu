@@ -37,6 +37,12 @@ final specimenEntryProvider =
   return specimenEntries;
 });
 
+final collEventIDprovider =
+    FutureProvider.family.autoDispose<CollEventData, int>((ref, id) async {
+  final collEventID = ref.read(databaseProvider).getCollEventById(id);
+  return collEventID;
+});
+
 final personnelListProvider = FutureProvider.autoDispose<List<PersonnelData>>(
     (ref) => ref.read(databaseProvider).getAllPersonnel());
 

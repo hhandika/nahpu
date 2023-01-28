@@ -75,12 +75,10 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
               siteData: data,
               onChanges: (int? value) async {
                 setState(() {
-                  _siteID = data.where((e) => e.id == value).first.siteID;
                   updateCollEvent(
                       widget.collEventId,
                       CollEventCompanion(
                         siteID: db.Value(value),
-                        eventID: db.Value(_getEventID(_siteID)),
                       ),
                       ref);
                 });
@@ -107,8 +105,10 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
                           CollEventCompanion(
                             startDate:
                                 db.Value(widget.collEventCtr.startDateCtr.text),
+                            eventID: db.Value(_getEventID(_siteID)),
                           ),
                           ref);
+                      ref.invalidate(collEventIDprovider);
                     });
                   }
                 },
@@ -147,7 +147,13 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
   }
 
   String _getEventID(siteId) {
-    return '$siteId-${widget.collEventCtr.startDateCtr.text}';
+    String? siteID =
+        data.where((e) => e.id == widget.collEventCtr.siteIDCtr).first.siteID;
+    if (siteID != null) {
+      return '$siteID-${widget.collEventCtr.startDateCtr.text}';
+    } else {
+      return '';
+    }
   }
 
   Future<DateTime?> showDate(BuildContext context, DateTime initialStartDate) {
@@ -171,10 +177,13 @@ class CollEventIdTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(databaseProvider).getCollEventById(collEventId).then((value) => {
-          if (value.eventID != null)
-            {collEventCtr.eventIDCtr.text = value.eventID!},
-        });
+    ref.watch(collEventIDprovider(collEventId)).when(
+        data: (value) => {
+              if (value.eventID != null)
+                {collEventCtr.eventIDCtr.text = value.eventID!},
+            },
+        loading: () => null,
+        error: (e, s) => null);
     return ListTile(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
