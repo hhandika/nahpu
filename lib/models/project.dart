@@ -23,11 +23,7 @@ class ProjectFormValidation with _$ProjectFormValidation {
       email: ProjectFormField(value: null, errMsg: null),
       collNum: ProjectFormField(value: null, errMsg: null));
 
-  bool get isValid =>
-      projectName.isValid &&
-      collName.isValid &&
-      email.isValid &&
-      collNum.isValid;
+  bool get isValid => projectName.isValid;
 }
 
 @freezed
@@ -37,4 +33,40 @@ class ProjectFormField with _$ProjectFormField {
     required String? errMsg,
     @Default(false) bool isValid,
   }) = _ProjectName;
+}
+
+@freezed
+class NewPersonnelFormState with _$NewPersonnelFormState {
+  const factory NewPersonnelFormState(NewPersonnelFormValidation form) =
+      _NewPersonnelFormState;
+}
+
+@freezed
+class NewPersonnelFormValidation with _$NewPersonnelFormValidation {
+  const NewPersonnelFormValidation._();
+  const factory NewPersonnelFormValidation({
+    required NewPersonnelFormField name,
+    required NewPersonnelFormField email,
+    required NewPersonnelFormField initial,
+    required NewPersonnelFormField collNum,
+  }) = _NewPersonnelFormValidation;
+
+  factory NewPersonnelFormValidation.empty() => NewPersonnelFormValidation(
+      name: NewPersonnelFormField(value: null, errMsg: null),
+      email: NewPersonnelFormField(value: null, errMsg: null),
+      initial: NewPersonnelFormField(value: null, errMsg: null),
+      collNum: NewPersonnelFormField(value: null, errMsg: null));
+
+  bool get isValidCollector =>
+      name.isValid && email.isValid && initial.isValid && collNum.isValid;
+  bool get isValid => name.isValid;
+}
+
+@freezed
+class NewPersonnelFormField with _$NewPersonnelFormField {
+  factory NewPersonnelFormField({
+    required String? value,
+    required String? errMsg,
+    @Default(false) bool isValid,
+  }) = _NewPersonnelFormField;
 }

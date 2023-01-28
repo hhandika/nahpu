@@ -865,6 +865,12 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _phoneMeta = const VerificationMeta('phone');
+  late final GeneratedColumn<String> phone = GeneratedColumn<String>(
+      'phone', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _affiliationMeta =
       const VerificationMeta('affiliation');
   late final GeneratedColumn<String> affiliation = GeneratedColumn<String>(
@@ -898,6 +904,7 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
         name,
         initial,
         email,
+        phone,
         affiliation,
         role,
         nextCollectorNumber,
@@ -929,6 +936,10 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
     if (data.containsKey('email')) {
       context.handle(
           _emailMeta, email.isAcceptableOrUnknown(data['email']!, _emailMeta));
+    }
+    if (data.containsKey('phone')) {
+      context.handle(
+          _phoneMeta, phone.isAcceptableOrUnknown(data['phone']!, _phoneMeta));
     }
     if (data.containsKey('affiliation')) {
       context.handle(
@@ -969,6 +980,8 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
           .read(DriftSqlType.string, data['${effectivePrefix}initial']),
       email: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}email']),
+      phone: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}phone']),
       affiliation: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}affiliation']),
       role: attachedDatabase.typeMapping
@@ -997,6 +1010,7 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
   final String? name;
   final String? initial;
   final String? email;
+  final String? phone;
   final String? affiliation;
   final String? role;
   final int? nextCollectorNumber;
@@ -1006,6 +1020,7 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
       this.name,
       this.initial,
       this.email,
+      this.phone,
       this.affiliation,
       this.role,
       this.nextCollectorNumber,
@@ -1022,6 +1037,9 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
     }
     if (!nullToAbsent || email != null) {
       map['email'] = Variable<String>(email);
+    }
+    if (!nullToAbsent || phone != null) {
+      map['phone'] = Variable<String>(phone);
     }
     if (!nullToAbsent || affiliation != null) {
       map['affiliation'] = Variable<String>(affiliation);
@@ -1047,6 +1065,8 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
           : Value(initial),
       email:
           email == null && nullToAbsent ? const Value.absent() : Value(email),
+      phone:
+          phone == null && nullToAbsent ? const Value.absent() : Value(phone),
       affiliation: affiliation == null && nullToAbsent
           ? const Value.absent()
           : Value(affiliation),
@@ -1068,6 +1088,7 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
       name: serializer.fromJson<String?>(json['name']),
       initial: serializer.fromJson<String?>(json['initial']),
       email: serializer.fromJson<String?>(json['email']),
+      phone: serializer.fromJson<String?>(json['phone']),
       affiliation: serializer.fromJson<String?>(json['affiliation']),
       role: serializer.fromJson<String?>(json['role']),
       nextCollectorNumber:
@@ -1083,6 +1104,7 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
       'name': serializer.toJson<String?>(name),
       'initial': serializer.toJson<String?>(initial),
       'email': serializer.toJson<String?>(email),
+      'phone': serializer.toJson<String?>(phone),
       'affiliation': serializer.toJson<String?>(affiliation),
       'role': serializer.toJson<String?>(role),
       'nextCollectorNumber': serializer.toJson<int?>(nextCollectorNumber),
@@ -1095,6 +1117,7 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
           Value<String?> name = const Value.absent(),
           Value<String?> initial = const Value.absent(),
           Value<String?> email = const Value.absent(),
+          Value<String?> phone = const Value.absent(),
           Value<String?> affiliation = const Value.absent(),
           Value<String?> role = const Value.absent(),
           Value<int?> nextCollectorNumber = const Value.absent(),
@@ -1104,6 +1127,7 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
         name: name.present ? name.value : this.name,
         initial: initial.present ? initial.value : this.initial,
         email: email.present ? email.value : this.email,
+        phone: phone.present ? phone.value : this.phone,
         affiliation: affiliation.present ? affiliation.value : this.affiliation,
         role: role.present ? role.value : this.role,
         nextCollectorNumber: nextCollectorNumber.present
@@ -1119,6 +1143,7 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
           ..write('name: $name, ')
           ..write('initial: $initial, ')
           ..write('email: $email, ')
+          ..write('phone: $phone, ')
           ..write('affiliation: $affiliation, ')
           ..write('role: $role, ')
           ..write('nextCollectorNumber: $nextCollectorNumber, ')
@@ -1128,8 +1153,8 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
   }
 
   @override
-  int get hashCode => Object.hash(uuid, name, initial, email, affiliation, role,
-      nextCollectorNumber, personnelPhoto);
+  int get hashCode => Object.hash(uuid, name, initial, email, phone,
+      affiliation, role, nextCollectorNumber, personnelPhoto);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1138,6 +1163,7 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
           other.name == this.name &&
           other.initial == this.initial &&
           other.email == this.email &&
+          other.phone == this.phone &&
           other.affiliation == this.affiliation &&
           other.role == this.role &&
           other.nextCollectorNumber == this.nextCollectorNumber &&
@@ -1149,6 +1175,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
   final Value<String?> name;
   final Value<String?> initial;
   final Value<String?> email;
+  final Value<String?> phone;
   final Value<String?> affiliation;
   final Value<String?> role;
   final Value<int?> nextCollectorNumber;
@@ -1158,6 +1185,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     this.name = const Value.absent(),
     this.initial = const Value.absent(),
     this.email = const Value.absent(),
+    this.phone = const Value.absent(),
     this.affiliation = const Value.absent(),
     this.role = const Value.absent(),
     this.nextCollectorNumber = const Value.absent(),
@@ -1168,6 +1196,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     this.name = const Value.absent(),
     this.initial = const Value.absent(),
     this.email = const Value.absent(),
+    this.phone = const Value.absent(),
     this.affiliation = const Value.absent(),
     this.role = const Value.absent(),
     this.nextCollectorNumber = const Value.absent(),
@@ -1178,6 +1207,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     Expression<String>? name,
     Expression<String>? initial,
     Expression<String>? email,
+    Expression<String>? phone,
     Expression<String>? affiliation,
     Expression<String>? role,
     Expression<int>? nextCollectorNumber,
@@ -1188,6 +1218,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
       if (name != null) 'name': name,
       if (initial != null) 'initial': initial,
       if (email != null) 'email': email,
+      if (phone != null) 'phone': phone,
       if (affiliation != null) 'affiliation': affiliation,
       if (role != null) 'role': role,
       if (nextCollectorNumber != null)
@@ -1201,6 +1232,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
       Value<String?>? name,
       Value<String?>? initial,
       Value<String?>? email,
+      Value<String?>? phone,
       Value<String?>? affiliation,
       Value<String?>? role,
       Value<int?>? nextCollectorNumber,
@@ -1210,6 +1242,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
       name: name ?? this.name,
       initial: initial ?? this.initial,
       email: email ?? this.email,
+      phone: phone ?? this.phone,
       affiliation: affiliation ?? this.affiliation,
       role: role ?? this.role,
       nextCollectorNumber: nextCollectorNumber ?? this.nextCollectorNumber,
@@ -1231,6 +1264,9 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     }
     if (email.present) {
       map['email'] = Variable<String>(email.value);
+    }
+    if (phone.present) {
+      map['phone'] = Variable<String>(phone.value);
     }
     if (affiliation.present) {
       map['affiliation'] = Variable<String>(affiliation.value);
@@ -1254,6 +1290,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
           ..write('name: $name, ')
           ..write('initial: $initial, ')
           ..write('email: $email, ')
+          ..write('phone: $phone, ')
           ..write('affiliation: $affiliation, ')
           ..write('role: $role, ')
           ..write('nextCollectorNumber: $nextCollectorNumber, ')

@@ -187,6 +187,7 @@ class PersonnelFormCtrModel {
     required this.nameCtr,
     required this.initialCtr,
     required this.emailCtr,
+    required this.phoneCtr,
     required this.affiliationCtr,
     required this.roleCtr,
     required this.nextCollectorNumCtr,
@@ -200,6 +201,7 @@ class PersonnelFormCtrModel {
   TextEditingController affiliationCtr;
   String? roleCtr;
   TextEditingController nextCollectorNumCtr;
+  TextEditingController phoneCtr;
   TextEditingController photoIdCtr;
   TextEditingController noteCtr;
 
@@ -207,6 +209,7 @@ class PersonnelFormCtrModel {
       nameCtr: TextEditingController(),
       initialCtr: TextEditingController(),
       emailCtr: TextEditingController(),
+      phoneCtr: TextEditingController(),
       affiliationCtr: TextEditingController(),
       roleCtr: null,
       nextCollectorNumCtr: TextEditingController(),

@@ -104,72 +104,6 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                       hintText: 'Enter PI name of the project (optional)',
                     ),
                     const TaxonGroupFields(),
-                    ProjectFormField(
-                      controller: collectorController,
-                      hintText:
-                          'Enter the name of the main collector (required)',
-                      labelText: 'Collector Name*',
-                      onChanged: ref
-                          .watch(projectFormNotifier.notifier)
-                          .validateCollName,
-                      errorText:
-                          ref.watch(projectFormNotifier).form.collName.errMsg,
-                    ),
-                    ProjectFormField(
-                      controller: collectorInitialController,
-                      maxLength: 5,
-                      hintText: 'Enter the collector name initial (required)',
-                      labelText: 'Collector initial*',
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(5),
-                        FilteringTextInputFormatter.allow(
-                          RegExp(r'[a-zA-Z]+|\s'),
-                        ),
-                      ],
-                      onChanged: (value) {
-                        collectorInitialController.value = TextEditingValue(
-                            text: value!.toUpperCase(),
-                            selection: collectorInitialController.selection);
-                      },
-                    ),
-                    ProjectFormField(
-                      controller: collectorEmailController,
-                      labelText: 'Collector email*',
-                      hintText: 'Enter the email of the collector (required)',
-                      onChanged: (value) {
-                        ref.watch(projectFormNotifier.notifier).validateEmail(
-                              value,
-                            );
-                        collectorEmailController.value = TextEditingValue(
-                            text: value!.toLowerCase(),
-                            selection: collectorEmailController.selection);
-                      },
-                      errorText:
-                          ref.watch(projectFormNotifier).form.email.errMsg,
-                    ),
-                    ProjectFormField(
-                      controller: collectorAffiliationController,
-                      labelText: 'Collector affiliation',
-                      hintText:
-                          'Enter the affiliation of the collector (optional)',
-                    ),
-                    ProjectFormField(
-                      controller: collNumController,
-                      labelText: 'First collector number*',
-                      hintText:
-                          'Enter the starting collectors number (required)',
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(
-                          RegExp(r'[0-9]+'),
-                        ),
-                      ],
-                      onChanged: ref
-                          .watch(projectFormNotifier.notifier)
-                          .validateCollNum,
-                      errorText:
-                          ref.watch(projectFormNotifier).form.collNum.errMsg,
-                    ),
                     const SizedBox(height: 20),
                     Wrap(spacing: 10, children: [
                       SecondaryButton(
@@ -178,11 +112,10 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                           Navigator.pop(context);
                         },
                       ),
-                      CustomElevButton(
+                      FormElevButton(
                           onPressed: () {
                             _createProject();
                             _updateProjectUuid();
-                            _updateMainCollectorCatNum();
                             _goToDashboard();
                             // Reset states to default
                             ref.invalidate(projectListProvider);
@@ -211,27 +144,11 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
       lastModified: db.Value(getSystemDateTime()),
     );
 
-    final personnel = PersonnelCompanion(
-      name: db.Value(collectorController.text),
-      initial: db.Value(collectorInitialController.text),
-      email: db.Value(collectorEmailController.text),
-      affiliation: db.Value(collectorAffiliationController.text),
-      role: const db.Value('Collector'),
-      nextCollectorNumber: db.Value(int.parse(collNumController.text)),
-    );
-    createProject(
-      ref,
-      projectData,
-      personnel,
-    );
+    await ref.read(databaseProvider).createProject(projectData);
   }
 
   void _updateProjectUuid() {
     ref.read(projectUuidProvider.notifier).state = _uuidKey;
-  }
-
-  void _updateMainCollectorCatNum() {
-    ref.read(catalogNumberNotifier.notifier).saveCatNum(ref);
   }
 
   Future<void> _goToDashboard() async {
@@ -239,34 +156,6 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
       context,
       MaterialPageRoute(builder: (context) => const Dashboard()),
     );
-  }
-}
-
-class CustomElevButton extends StatelessWidget {
-  const CustomElevButton({
-    Key? key,
-    required this.onPressed,
-    required this.text,
-    required this.enabled,
-  }) : super(key: key);
-
-  final VoidCallback onPressed;
-  final String text;
-  final bool enabled;
-
-  @override
-  Widget build(BuildContext context) {
-    if (enabled) {
-      return PrimaryButton(
-        onPressed: onPressed,
-        text: text,
-      );
-    } else {
-      return PrimaryButton(
-        onPressed: null,
-        text: text,
-      );
-    }
   }
 }
 

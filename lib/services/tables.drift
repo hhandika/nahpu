@@ -138,6 +138,7 @@ CREATE TABLE personnel (
     name TEXT,
     initial TEXT,
     email TEXT,
+    phone TEXT,
     affiliation TEXT,
     role TEXT,
     nextCollectorNumber INT,

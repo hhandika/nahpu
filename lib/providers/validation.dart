@@ -45,39 +45,45 @@ class ProjectFormValidationNotifier extends StateNotifier<ProjectFormState> {
             }
         });
   }
+}
 
-  void validateCollName(String? value) {
-    late ProjectFormField collNameField;
+final personnelFormNotifier = StateNotifierProvider.autoDispose<
+    PersonnelFormValidationNotifier,
+    NewPersonnelFormState>((ref) => PersonnelFormValidationNotifier());
 
-    ProjectFormValidation form = state.form
-        .copyWith(collName: state.form.collName.copyWith(value: value));
+class PersonnelFormValidationNotifier
+    extends StateNotifier<NewPersonnelFormState> {
+  PersonnelFormValidationNotifier()
+      : super(NewPersonnelFormState(NewPersonnelFormValidation.empty()));
+
+  void validateName(String? value) {
+    late NewPersonnelFormField nameField;
+
+    NewPersonnelFormValidation form =
+        state.form.copyWith(name: state.form.name.copyWith(value: value));
 
     if (value == null || value.isEmpty) {
-      collNameField = form.collName
-          .copyWith(errMsg: "Collector name is required", isValid: false);
+      nameField =
+          form.name.copyWith(errMsg: "Name is required", isValid: false);
     } else if (!value.isValidName) {
-      collNameField =
-          form.collName.copyWith(errMsg: "Invalid name", isValid: false);
+      nameField = form.name.copyWith(errMsg: "Invalid name", isValid: false);
     } else if (value.length < 3) {
-      collNameField = form.collName
-          .copyWith(errMsg: "Collector name is too short", isValid: false);
+      nameField =
+          form.name.copyWith(errMsg: "Name is too short", isValid: false);
     } else {
-      collNameField = form.collName.copyWith(errMsg: null, isValid: true);
+      nameField = form.name.copyWith(errMsg: null, isValid: true);
     }
 
-    state = state.copyWith(form: form.copyWith(collName: collNameField));
+    state = state.copyWith(form: form.copyWith(name: nameField));
   }
 
   void validateEmail(String? value) {
-    late ProjectFormField emailField;
+    late NewPersonnelFormField emailField;
 
-    ProjectFormValidation form =
+    NewPersonnelFormValidation form =
         state.form.copyWith(email: state.form.email.copyWith(value: value));
 
-    if (value == null || value.isEmpty) {
-      emailField =
-          form.email.copyWith(errMsg: "Email is required", isValid: false);
-    } else if (!value.isValidEmail) {
+    if (value != null && value.isNotEmpty && !value.isValidEmail) {
       emailField = form.email.copyWith(errMsg: "Invalid email", isValid: false);
     } else {
       emailField = form.email.copyWith(errMsg: null, isValid: true);
@@ -86,10 +92,26 @@ class ProjectFormValidationNotifier extends StateNotifier<ProjectFormState> {
     state = state.copyWith(form: form.copyWith(email: emailField));
   }
 
-  void validateCollNum(String? value) {
-    late ProjectFormField collNumField;
+  void validateInitial(String? value) {
+    late NewPersonnelFormField initialField;
 
-    ProjectFormValidation form =
+    NewPersonnelFormValidation form =
+        state.form.copyWith(initial: state.form.initial.copyWith(value: value));
+
+    if (value == null || value.isEmpty) {
+      initialField =
+          form.initial.copyWith(errMsg: "Initial is required", isValid: false);
+    } else {
+      initialField = form.initial.copyWith(errMsg: null, isValid: true);
+    }
+
+    state = state.copyWith(form: form.copyWith(initial: initialField));
+  }
+
+  void validateCollNum(String? value) {
+    late NewPersonnelFormField collNumField;
+
+    NewPersonnelFormValidation form =
         state.form.copyWith(collNum: state.form.collNum.copyWith(value: value));
 
     if (value == null || value.isEmpty) {

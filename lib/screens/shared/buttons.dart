@@ -21,6 +21,34 @@ class ProjectBackButton extends ConsumerWidget {
   }
 }
 
+class FormElevButton extends StatelessWidget {
+  const FormElevButton({
+    Key? key,
+    required this.onPressed,
+    required this.text,
+    required this.enabled,
+  }) : super(key: key);
+
+  final VoidCallback onPressed;
+  final String text;
+  final bool enabled;
+
+  @override
+  Widget build(BuildContext context) {
+    if (enabled) {
+      return PrimaryButton(
+        onPressed: onPressed,
+        text: text,
+      );
+    } else {
+      return PrimaryButton(
+        onPressed: null,
+        text: text,
+      );
+    }
+  }
+}
+
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({super.key, required this.text, required this.onPressed});
 

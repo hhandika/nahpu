@@ -532,3 +532,528 @@ abstract class _ProjectName implements ProjectFormField {
   _$$_ProjectNameCopyWith<_$_ProjectName> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+/// @nodoc
+mixin _$NewPersonnelFormState {
+  NewPersonnelFormValidation get form => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $NewPersonnelFormStateCopyWith<NewPersonnelFormState> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $NewPersonnelFormStateCopyWith<$Res> {
+  factory $NewPersonnelFormStateCopyWith(NewPersonnelFormState value,
+          $Res Function(NewPersonnelFormState) then) =
+      _$NewPersonnelFormStateCopyWithImpl<$Res, NewPersonnelFormState>;
+  @useResult
+  $Res call({NewPersonnelFormValidation form});
+
+  $NewPersonnelFormValidationCopyWith<$Res> get form;
+}
+
+/// @nodoc
+class _$NewPersonnelFormStateCopyWithImpl<$Res,
+        $Val extends NewPersonnelFormState>
+    implements $NewPersonnelFormStateCopyWith<$Res> {
+  _$NewPersonnelFormStateCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? form = null,
+  }) {
+    return _then(_value.copyWith(
+      form: null == form
+          ? _value.form
+          : form // ignore: cast_nullable_to_non_nullable
+              as NewPersonnelFormValidation,
+    ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $NewPersonnelFormValidationCopyWith<$Res> get form {
+    return $NewPersonnelFormValidationCopyWith<$Res>(_value.form, (value) {
+      return _then(_value.copyWith(form: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$_NewPersonnelFormStateCopyWith<$Res>
+    implements $NewPersonnelFormStateCopyWith<$Res> {
+  factory _$$_NewPersonnelFormStateCopyWith(_$_NewPersonnelFormState value,
+          $Res Function(_$_NewPersonnelFormState) then) =
+      __$$_NewPersonnelFormStateCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({NewPersonnelFormValidation form});
+
+  @override
+  $NewPersonnelFormValidationCopyWith<$Res> get form;
+}
+
+/// @nodoc
+class __$$_NewPersonnelFormStateCopyWithImpl<$Res>
+    extends _$NewPersonnelFormStateCopyWithImpl<$Res, _$_NewPersonnelFormState>
+    implements _$$_NewPersonnelFormStateCopyWith<$Res> {
+  __$$_NewPersonnelFormStateCopyWithImpl(_$_NewPersonnelFormState _value,
+      $Res Function(_$_NewPersonnelFormState) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? form = null,
+  }) {
+    return _then(_$_NewPersonnelFormState(
+      null == form
+          ? _value.form
+          : form // ignore: cast_nullable_to_non_nullable
+              as NewPersonnelFormValidation,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_NewPersonnelFormState implements _NewPersonnelFormState {
+  const _$_NewPersonnelFormState(this.form);
+
+  @override
+  final NewPersonnelFormValidation form;
+
+  @override
+  String toString() {
+    return 'NewPersonnelFormState(form: $form)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_NewPersonnelFormState &&
+            (identical(other.form, form) || other.form == form));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, form);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_NewPersonnelFormStateCopyWith<_$_NewPersonnelFormState> get copyWith =>
+      __$$_NewPersonnelFormStateCopyWithImpl<_$_NewPersonnelFormState>(
+          this, _$identity);
+}
+
+abstract class _NewPersonnelFormState implements NewPersonnelFormState {
+  const factory _NewPersonnelFormState(final NewPersonnelFormValidation form) =
+      _$_NewPersonnelFormState;
+
+  @override
+  NewPersonnelFormValidation get form;
+  @override
+  @JsonKey(ignore: true)
+  _$$_NewPersonnelFormStateCopyWith<_$_NewPersonnelFormState> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$NewPersonnelFormValidation {
+  NewPersonnelFormField get name => throw _privateConstructorUsedError;
+  NewPersonnelFormField get email => throw _privateConstructorUsedError;
+  NewPersonnelFormField get initial => throw _privateConstructorUsedError;
+  NewPersonnelFormField get collNum => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $NewPersonnelFormValidationCopyWith<NewPersonnelFormValidation>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $NewPersonnelFormValidationCopyWith<$Res> {
+  factory $NewPersonnelFormValidationCopyWith(NewPersonnelFormValidation value,
+          $Res Function(NewPersonnelFormValidation) then) =
+      _$NewPersonnelFormValidationCopyWithImpl<$Res,
+          NewPersonnelFormValidation>;
+  @useResult
+  $Res call(
+      {NewPersonnelFormField name,
+      NewPersonnelFormField email,
+      NewPersonnelFormField initial,
+      NewPersonnelFormField collNum});
+
+  $NewPersonnelFormFieldCopyWith<$Res> get name;
+  $NewPersonnelFormFieldCopyWith<$Res> get email;
+  $NewPersonnelFormFieldCopyWith<$Res> get initial;
+  $NewPersonnelFormFieldCopyWith<$Res> get collNum;
+}
+
+/// @nodoc
+class _$NewPersonnelFormValidationCopyWithImpl<$Res,
+        $Val extends NewPersonnelFormValidation>
+    implements $NewPersonnelFormValidationCopyWith<$Res> {
+  _$NewPersonnelFormValidationCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = null,
+    Object? email = null,
+    Object? initial = null,
+    Object? collNum = null,
+  }) {
+    return _then(_value.copyWith(
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as NewPersonnelFormField,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as NewPersonnelFormField,
+      initial: null == initial
+          ? _value.initial
+          : initial // ignore: cast_nullable_to_non_nullable
+              as NewPersonnelFormField,
+      collNum: null == collNum
+          ? _value.collNum
+          : collNum // ignore: cast_nullable_to_non_nullable
+              as NewPersonnelFormField,
+    ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $NewPersonnelFormFieldCopyWith<$Res> get name {
+    return $NewPersonnelFormFieldCopyWith<$Res>(_value.name, (value) {
+      return _then(_value.copyWith(name: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $NewPersonnelFormFieldCopyWith<$Res> get email {
+    return $NewPersonnelFormFieldCopyWith<$Res>(_value.email, (value) {
+      return _then(_value.copyWith(email: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $NewPersonnelFormFieldCopyWith<$Res> get initial {
+    return $NewPersonnelFormFieldCopyWith<$Res>(_value.initial, (value) {
+      return _then(_value.copyWith(initial: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $NewPersonnelFormFieldCopyWith<$Res> get collNum {
+    return $NewPersonnelFormFieldCopyWith<$Res>(_value.collNum, (value) {
+      return _then(_value.copyWith(collNum: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$_NewPersonnelFormValidationCopyWith<$Res>
+    implements $NewPersonnelFormValidationCopyWith<$Res> {
+  factory _$$_NewPersonnelFormValidationCopyWith(
+          _$_NewPersonnelFormValidation value,
+          $Res Function(_$_NewPersonnelFormValidation) then) =
+      __$$_NewPersonnelFormValidationCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {NewPersonnelFormField name,
+      NewPersonnelFormField email,
+      NewPersonnelFormField initial,
+      NewPersonnelFormField collNum});
+
+  @override
+  $NewPersonnelFormFieldCopyWith<$Res> get name;
+  @override
+  $NewPersonnelFormFieldCopyWith<$Res> get email;
+  @override
+  $NewPersonnelFormFieldCopyWith<$Res> get initial;
+  @override
+  $NewPersonnelFormFieldCopyWith<$Res> get collNum;
+}
+
+/// @nodoc
+class __$$_NewPersonnelFormValidationCopyWithImpl<$Res>
+    extends _$NewPersonnelFormValidationCopyWithImpl<$Res,
+        _$_NewPersonnelFormValidation>
+    implements _$$_NewPersonnelFormValidationCopyWith<$Res> {
+  __$$_NewPersonnelFormValidationCopyWithImpl(
+      _$_NewPersonnelFormValidation _value,
+      $Res Function(_$_NewPersonnelFormValidation) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = null,
+    Object? email = null,
+    Object? initial = null,
+    Object? collNum = null,
+  }) {
+    return _then(_$_NewPersonnelFormValidation(
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as NewPersonnelFormField,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as NewPersonnelFormField,
+      initial: null == initial
+          ? _value.initial
+          : initial // ignore: cast_nullable_to_non_nullable
+              as NewPersonnelFormField,
+      collNum: null == collNum
+          ? _value.collNum
+          : collNum // ignore: cast_nullable_to_non_nullable
+              as NewPersonnelFormField,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_NewPersonnelFormValidation extends _NewPersonnelFormValidation {
+  const _$_NewPersonnelFormValidation(
+      {required this.name,
+      required this.email,
+      required this.initial,
+      required this.collNum})
+      : super._();
+
+  @override
+  final NewPersonnelFormField name;
+  @override
+  final NewPersonnelFormField email;
+  @override
+  final NewPersonnelFormField initial;
+  @override
+  final NewPersonnelFormField collNum;
+
+  @override
+  String toString() {
+    return 'NewPersonnelFormValidation(name: $name, email: $email, initial: $initial, collNum: $collNum)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_NewPersonnelFormValidation &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.initial, initial) || other.initial == initial) &&
+            (identical(other.collNum, collNum) || other.collNum == collNum));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, name, email, initial, collNum);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_NewPersonnelFormValidationCopyWith<_$_NewPersonnelFormValidation>
+      get copyWith => __$$_NewPersonnelFormValidationCopyWithImpl<
+          _$_NewPersonnelFormValidation>(this, _$identity);
+}
+
+abstract class _NewPersonnelFormValidation extends NewPersonnelFormValidation {
+  const factory _NewPersonnelFormValidation(
+          {required final NewPersonnelFormField name,
+          required final NewPersonnelFormField email,
+          required final NewPersonnelFormField initial,
+          required final NewPersonnelFormField collNum}) =
+      _$_NewPersonnelFormValidation;
+  const _NewPersonnelFormValidation._() : super._();
+
+  @override
+  NewPersonnelFormField get name;
+  @override
+  NewPersonnelFormField get email;
+  @override
+  NewPersonnelFormField get initial;
+  @override
+  NewPersonnelFormField get collNum;
+  @override
+  @JsonKey(ignore: true)
+  _$$_NewPersonnelFormValidationCopyWith<_$_NewPersonnelFormValidation>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$NewPersonnelFormField {
+  String? get value => throw _privateConstructorUsedError;
+  String? get errMsg => throw _privateConstructorUsedError;
+  bool get isValid => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $NewPersonnelFormFieldCopyWith<NewPersonnelFormField> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $NewPersonnelFormFieldCopyWith<$Res> {
+  factory $NewPersonnelFormFieldCopyWith(NewPersonnelFormField value,
+          $Res Function(NewPersonnelFormField) then) =
+      _$NewPersonnelFormFieldCopyWithImpl<$Res, NewPersonnelFormField>;
+  @useResult
+  $Res call({String? value, String? errMsg, bool isValid});
+}
+
+/// @nodoc
+class _$NewPersonnelFormFieldCopyWithImpl<$Res,
+        $Val extends NewPersonnelFormField>
+    implements $NewPersonnelFormFieldCopyWith<$Res> {
+  _$NewPersonnelFormFieldCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? value = freezed,
+    Object? errMsg = freezed,
+    Object? isValid = null,
+  }) {
+    return _then(_value.copyWith(
+      value: freezed == value
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as String?,
+      errMsg: freezed == errMsg
+          ? _value.errMsg
+          : errMsg // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isValid: null == isValid
+          ? _value.isValid
+          : isValid // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_NewPersonnelFormFieldCopyWith<$Res>
+    implements $NewPersonnelFormFieldCopyWith<$Res> {
+  factory _$$_NewPersonnelFormFieldCopyWith(_$_NewPersonnelFormField value,
+          $Res Function(_$_NewPersonnelFormField) then) =
+      __$$_NewPersonnelFormFieldCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String? value, String? errMsg, bool isValid});
+}
+
+/// @nodoc
+class __$$_NewPersonnelFormFieldCopyWithImpl<$Res>
+    extends _$NewPersonnelFormFieldCopyWithImpl<$Res, _$_NewPersonnelFormField>
+    implements _$$_NewPersonnelFormFieldCopyWith<$Res> {
+  __$$_NewPersonnelFormFieldCopyWithImpl(_$_NewPersonnelFormField _value,
+      $Res Function(_$_NewPersonnelFormField) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? value = freezed,
+    Object? errMsg = freezed,
+    Object? isValid = null,
+  }) {
+    return _then(_$_NewPersonnelFormField(
+      value: freezed == value
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as String?,
+      errMsg: freezed == errMsg
+          ? _value.errMsg
+          : errMsg // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isValid: null == isValid
+          ? _value.isValid
+          : isValid // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_NewPersonnelFormField implements _NewPersonnelFormField {
+  _$_NewPersonnelFormField(
+      {required this.value, required this.errMsg, this.isValid = false});
+
+  @override
+  final String? value;
+  @override
+  final String? errMsg;
+  @override
+  @JsonKey()
+  final bool isValid;
+
+  @override
+  String toString() {
+    return 'NewPersonnelFormField(value: $value, errMsg: $errMsg, isValid: $isValid)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_NewPersonnelFormField &&
+            (identical(other.value, value) || other.value == value) &&
+            (identical(other.errMsg, errMsg) || other.errMsg == errMsg) &&
+            (identical(other.isValid, isValid) || other.isValid == isValid));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, value, errMsg, isValid);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_NewPersonnelFormFieldCopyWith<_$_NewPersonnelFormField> get copyWith =>
+      __$$_NewPersonnelFormFieldCopyWithImpl<_$_NewPersonnelFormField>(
+          this, _$identity);
+}
+
+abstract class _NewPersonnelFormField implements NewPersonnelFormField {
+  factory _NewPersonnelFormField(
+      {required final String? value,
+      required final String? errMsg,
+      final bool isValid}) = _$_NewPersonnelFormField;
+
+  @override
+  String? get value;
+  @override
+  String? get errMsg;
+  @override
+  bool get isValid;
+  @override
+  @JsonKey(ignore: true)
+  _$$_NewPersonnelFormFieldCopyWith<_$_NewPersonnelFormField> get copyWith =>
+      throw _privateConstructorUsedError;
+}
