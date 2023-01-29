@@ -21,19 +21,37 @@ class StatisticViewerState extends ConsumerState<StatisticViewer> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        DropdownButton(
-          items: graphOptions
-              .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-              .toList(),
-          onChanged: (String? value) {
-            setState(
-              () {
+        Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: DropdownButton<String>(
+            value: selectedGraph,
+            items: graphOptions
+                .map((e) => DropdownMenuItem(
+                      value: e,
+                      child: Text(e),
+                    ))
+                .toList(),
+            onChanged: (value) {
+              setState(() {
                 selectedGraph = value;
-              },
-            );
-          },
+              });
+            },
+          ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 5),
+        Expanded(
+            child: Stack(
+          alignment: Alignment.topRight,
+          children: [
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.fullscreen_outlined),
+            ),
+            GraphViewer(
+              selectedGraph: selectedGraph!,
+            ),
+          ],
+        )),
       ],
     );
   }
