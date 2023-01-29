@@ -27,6 +27,7 @@ class CollectingInfoFields extends ConsumerStatefulWidget {
 
 class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
   List<SiteData> data = [];
+  String? siteID;
 
   final DateTime initialStartDate =
       DateTime.now().subtract(const Duration(days: 1));
@@ -70,8 +71,9 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
             child: SiteIdField(
               value: widget.collEventCtr.siteIDCtr,
               siteData: data,
-              onChanges: (int? value) {
+              onChanges: (int? value) async {
                 setState(() {
+                  widget.collEventCtr.siteIDCtr = value;
                   _getEventID();
                   updateCollEvent(
                       widget.collEventId,
@@ -152,11 +154,23 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
   }
 
   void _getEventID() {
-    String siteID =
-        data.where((e) => e.id == widget.collEventCtr.siteIDCtr).first.siteID ??
-            '';
-    String date = '-${widget.collEventCtr.startDateCtr.text}';
-    widget.collEventCtr.eventIDCtr.text = '$siteID$date';
+    try {
+      siteID = data
+          .firstWhere(
+            (e) => widget.collEventCtr.siteIDCtr == e.id,
+          )
+          .siteID;
+      String date;
+      if (widget.collEventCtr.startDateCtr.text.isNotEmpty) {
+        date = widget.collEventCtr.startDateCtr.text;
+      } else {
+        date = DateFormat.yMMMd().format(initialStartDate);
+      }
+
+      widget.collEventCtr.eventIDCtr.text = '$siteID-$date';
+    } catch (e) {
+      siteID = '';
+    }
   }
 
   Future<DateTime?> showDate(BuildContext context, DateTime initialStartDate) {
@@ -233,7 +247,7 @@ class CollEventIdTile extends ConsumerWidget {
                             eventID: db.Value(collEventCtr.eventIDCtr.text),
                           ),
                           ref);
-                      ref.invalidate(collEventEntryProvider);
+                      ref.invalidate(siteEntryProvider);
                       Navigator.of(context).pop();
                     },
                     child: const Text('Save'),
