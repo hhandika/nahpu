@@ -200,14 +200,20 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
               .toList(),
           onChanged: (String? uuid) {
             setState(() {
+              widget.specimenCtr.collectorCtr = uuid;
+              widget.specimenCtr.preparatorCtr = uuid;
               var currentCollNum = _getCurrentCollectorNumber(uuid);
               widget.specimenCtr.collectorNumberCtr.text =
                   currentCollNum.toString();
               updateSpecimen(
                   widget.specimenUuid,
                   SpecimenCompanion(
-                      collectorID: db.Value(uuid),
-                      collectorNumber: db.Value(currentCollNum)),
+                    collectorID: db.Value(uuid),
+                    collectorNumber: db.Value(
+                      currentCollNum,
+                    ),
+                    preparatorID: db.Value(uuid),
+                  ),
                   ref);
               if (uuid != null) {
                 ref.read(databaseProvider).updatePersonnelEntry(
