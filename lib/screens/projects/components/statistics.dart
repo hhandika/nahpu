@@ -10,8 +10,62 @@ class StatisticViewer extends ConsumerStatefulWidget {
 }
 
 class StatisticViewerState extends ConsumerState<StatisticViewer> {
+  final List<String> graphOptions = [
+    'Species accumulation curve',
+    'Collecting success',
+  ];
+
+  String? selectedGraph = 'Species accumulation curve';
+
   @override
   Widget build(BuildContext context) {
+    return Column(
+      children: [
+        DropdownButton(
+          items: graphOptions
+              .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+              .toList(),
+          onChanged: (String? value) {
+            setState(
+              () {
+                selectedGraph = value;
+              },
+            );
+          },
+        ),
+        const SizedBox(height: 10),
+      ],
+    );
+  }
+}
+
+class GraphViewer extends StatelessWidget {
+  const GraphViewer({
+    super.key,
+    required this.selectedGraph,
+  });
+
+  final String selectedGraph;
+
+  @override
+  Widget build(BuildContext context) {
+    switch (selectedGraph) {
+      case 'Species accumulation curve':
+        return const SpeciesAccCurve();
+      case 'Collecting success':
+        return const Text('Collecting success');
+      default:
+        return const Text('No graph selected');
+    }
+    ;
+  }
+}
+
+class SpeciesAccCurve extends ConsumerWidget {
+  const SpeciesAccCurve({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.only(top: 40, left: 20, right: 20),
       child: LineChartViewer(
