@@ -2463,11 +2463,18 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
   final String? _alias;
   Coordinate(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, true,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: 'UNIQUE PRIMARY KEY AUTOINCREMENT');
+  static const VerificationMeta _nameIdMeta = const VerificationMeta('nameId');
+  late final GeneratedColumn<String> nameId = GeneratedColumn<String>(
+      'nameId', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      $customConstraints: 'UNIQUE PRIMARY KEY');
+      $customConstraints: '');
   static const VerificationMeta _decimalLatitudeMeta =
       const VerificationMeta('decimalLatitude');
   late final GeneratedColumn<double> decimalLatitude = GeneratedColumn<double>(
@@ -2530,14 +2537,15 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _siteIDMeta = const VerificationMeta('siteID');
-  late final GeneratedColumn<String> siteID = GeneratedColumn<String>(
+  late final GeneratedColumn<int> siteID = GeneratedColumn<int>(
       'siteID', aliasedName, true,
-      type: DriftSqlType.string,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
-      $customConstraints: 'REFERENCES site(siteID)');
+      $customConstraints: 'REFERENCES site(id)');
   @override
   List<GeneratedColumn> get $columns => [
         id,
+        nameId,
         decimalLatitude,
         decimalLongitude,
         elevationInMeter,
@@ -2560,6 +2568,10 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('nameId')) {
+      context.handle(_nameIdMeta,
+          nameId.isAcceptableOrUnknown(data['nameId']!, _nameIdMeta));
     }
     if (data.containsKey('decimalLatitude')) {
       context.handle(
@@ -2626,7 +2638,9 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return CoordinateData(
       id: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}id']),
+          .read(DriftSqlType.int, data['${effectivePrefix}id']),
+      nameId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}nameId']),
       decimalLatitude: attachedDatabase.typeMapping
           .read(DriftSqlType.double, data['${effectivePrefix}decimalLatitude']),
       decimalLongitude: attachedDatabase.typeMapping.read(
@@ -2647,7 +2661,7 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
       notes: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}notes']),
       siteID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}siteID']),
+          .read(DriftSqlType.int, data['${effectivePrefix}siteID']),
     );
   }
 
@@ -2661,7 +2675,8 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
 }
 
 class CoordinateData extends DataClass implements Insertable<CoordinateData> {
-  final String? id;
+  final int? id;
+  final String? nameId;
   final double? decimalLatitude;
   final double? decimalLongitude;
   final int? elevationInMeter;
@@ -2671,9 +2686,10 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
   final int? coordinateUncertaintyInMeters;
   final String? gpsUnit;
   final String? notes;
-  final String? siteID;
+  final int? siteID;
   const CoordinateData(
       {this.id,
+      this.nameId,
       this.decimalLatitude,
       this.decimalLongitude,
       this.elevationInMeter,
@@ -2688,7 +2704,10 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (!nullToAbsent || id != null) {
-      map['id'] = Variable<String>(id);
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || nameId != null) {
+      map['nameId'] = Variable<String>(nameId);
     }
     if (!nullToAbsent || decimalLatitude != null) {
       map['decimalLatitude'] = Variable<double>(decimalLatitude);
@@ -2719,7 +2738,7 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
       map['notes'] = Variable<String>(notes);
     }
     if (!nullToAbsent || siteID != null) {
-      map['siteID'] = Variable<String>(siteID);
+      map['siteID'] = Variable<int>(siteID);
     }
     return map;
   }
@@ -2727,6 +2746,8 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
   CoordinateCompanion toCompanion(bool nullToAbsent) {
     return CoordinateCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      nameId:
+          nameId == null && nullToAbsent ? const Value.absent() : Value(nameId),
       decimalLatitude: decimalLatitude == null && nullToAbsent
           ? const Value.absent()
           : Value(decimalLatitude),
@@ -2762,7 +2783,8 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return CoordinateData(
-      id: serializer.fromJson<String?>(json['id']),
+      id: serializer.fromJson<int?>(json['id']),
+      nameId: serializer.fromJson<String?>(json['nameId']),
       decimalLatitude: serializer.fromJson<double?>(json['decimalLatitude']),
       decimalLongitude: serializer.fromJson<double?>(json['decimalLongitude']),
       elevationInMeter: serializer.fromJson<int?>(json['elevationInMeter']),
@@ -2775,14 +2797,15 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
           serializer.fromJson<int?>(json['coordinateUncertaintyInMeters']),
       gpsUnit: serializer.fromJson<String?>(json['gpsUnit']),
       notes: serializer.fromJson<String?>(json['notes']),
-      siteID: serializer.fromJson<String?>(json['siteID']),
+      siteID: serializer.fromJson<int?>(json['siteID']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<String?>(id),
+      'id': serializer.toJson<int?>(id),
+      'nameId': serializer.toJson<String?>(nameId),
       'decimalLatitude': serializer.toJson<double?>(decimalLatitude),
       'decimalLongitude': serializer.toJson<double?>(decimalLongitude),
       'elevationInMeter': serializer.toJson<int?>(elevationInMeter),
@@ -2795,12 +2818,13 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
           serializer.toJson<int?>(coordinateUncertaintyInMeters),
       'gpsUnit': serializer.toJson<String?>(gpsUnit),
       'notes': serializer.toJson<String?>(notes),
-      'siteID': serializer.toJson<String?>(siteID),
+      'siteID': serializer.toJson<int?>(siteID),
     };
   }
 
   CoordinateData copyWith(
-          {Value<String?> id = const Value.absent(),
+          {Value<int?> id = const Value.absent(),
+          Value<String?> nameId = const Value.absent(),
           Value<double?> decimalLatitude = const Value.absent(),
           Value<double?> decimalLongitude = const Value.absent(),
           Value<int?> elevationInMeter = const Value.absent(),
@@ -2810,9 +2834,10 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
           Value<int?> coordinateUncertaintyInMeters = const Value.absent(),
           Value<String?> gpsUnit = const Value.absent(),
           Value<String?> notes = const Value.absent(),
-          Value<String?> siteID = const Value.absent()}) =>
+          Value<int?> siteID = const Value.absent()}) =>
       CoordinateData(
         id: id.present ? id.value : this.id,
+        nameId: nameId.present ? nameId.value : this.nameId,
         decimalLatitude: decimalLatitude.present
             ? decimalLatitude.value
             : this.decimalLatitude,
@@ -2840,6 +2865,7 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
   String toString() {
     return (StringBuffer('CoordinateData(')
           ..write('id: $id, ')
+          ..write('nameId: $nameId, ')
           ..write('decimalLatitude: $decimalLatitude, ')
           ..write('decimalLongitude: $decimalLongitude, ')
           ..write('elevationInMeter: $elevationInMeter, ')
@@ -2858,6 +2884,7 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
   @override
   int get hashCode => Object.hash(
       id,
+      nameId,
       decimalLatitude,
       decimalLongitude,
       elevationInMeter,
@@ -2873,6 +2900,7 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
       identical(this, other) ||
       (other is CoordinateData &&
           other.id == this.id &&
+          other.nameId == this.nameId &&
           other.decimalLatitude == this.decimalLatitude &&
           other.decimalLongitude == this.decimalLongitude &&
           other.elevationInMeter == this.elevationInMeter &&
@@ -2887,7 +2915,8 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
 }
 
 class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
-  final Value<String?> id;
+  final Value<int?> id;
+  final Value<String?> nameId;
   final Value<double?> decimalLatitude;
   final Value<double?> decimalLongitude;
   final Value<int?> elevationInMeter;
@@ -2897,9 +2926,10 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
   final Value<int?> coordinateUncertaintyInMeters;
   final Value<String?> gpsUnit;
   final Value<String?> notes;
-  final Value<String?> siteID;
+  final Value<int?> siteID;
   const CoordinateCompanion({
     this.id = const Value.absent(),
+    this.nameId = const Value.absent(),
     this.decimalLatitude = const Value.absent(),
     this.decimalLongitude = const Value.absent(),
     this.elevationInMeter = const Value.absent(),
@@ -2913,6 +2943,7 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
   });
   CoordinateCompanion.insert({
     this.id = const Value.absent(),
+    this.nameId = const Value.absent(),
     this.decimalLatitude = const Value.absent(),
     this.decimalLongitude = const Value.absent(),
     this.elevationInMeter = const Value.absent(),
@@ -2925,7 +2956,8 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
     this.siteID = const Value.absent(),
   });
   static Insertable<CoordinateData> custom({
-    Expression<String>? id,
+    Expression<int>? id,
+    Expression<String>? nameId,
     Expression<double>? decimalLatitude,
     Expression<double>? decimalLongitude,
     Expression<int>? elevationInMeter,
@@ -2935,10 +2967,11 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
     Expression<int>? coordinateUncertaintyInMeters,
     Expression<String>? gpsUnit,
     Expression<String>? notes,
-    Expression<String>? siteID,
+    Expression<int>? siteID,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (nameId != null) 'nameId': nameId,
       if (decimalLatitude != null) 'decimalLatitude': decimalLatitude,
       if (decimalLongitude != null) 'decimalLongitude': decimalLongitude,
       if (elevationInMeter != null) 'elevationInMeter': elevationInMeter,
@@ -2956,7 +2989,8 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
   }
 
   CoordinateCompanion copyWith(
-      {Value<String?>? id,
+      {Value<int?>? id,
+      Value<String?>? nameId,
       Value<double?>? decimalLatitude,
       Value<double?>? decimalLongitude,
       Value<int?>? elevationInMeter,
@@ -2966,9 +3000,10 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
       Value<int?>? coordinateUncertaintyInMeters,
       Value<String?>? gpsUnit,
       Value<String?>? notes,
-      Value<String?>? siteID}) {
+      Value<int?>? siteID}) {
     return CoordinateCompanion(
       id: id ?? this.id,
+      nameId: nameId ?? this.nameId,
       decimalLatitude: decimalLatitude ?? this.decimalLatitude,
       decimalLongitude: decimalLongitude ?? this.decimalLongitude,
       elevationInMeter: elevationInMeter ?? this.elevationInMeter,
@@ -2989,7 +3024,10 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (id.present) {
-      map['id'] = Variable<String>(id.value);
+      map['id'] = Variable<int>(id.value);
+    }
+    if (nameId.present) {
+      map['nameId'] = Variable<String>(nameId.value);
     }
     if (decimalLatitude.present) {
       map['decimalLatitude'] = Variable<double>(decimalLatitude.value);
@@ -3022,7 +3060,7 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
       map['notes'] = Variable<String>(notes.value);
     }
     if (siteID.present) {
-      map['siteID'] = Variable<String>(siteID.value);
+      map['siteID'] = Variable<int>(siteID.value);
     }
     return map;
   }
@@ -3031,6 +3069,7 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
   String toString() {
     return (StringBuffer('CoordinateCompanion(')
           ..write('id: $id, ')
+          ..write('nameId: $nameId, ')
           ..write('decimalLatitude: $decimalLatitude, ')
           ..write('decimalLongitude: $decimalLongitude, ')
           ..write('elevationInMeter: $elevationInMeter, ')

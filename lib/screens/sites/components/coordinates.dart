@@ -5,7 +5,7 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/indicators.dart';
 
 class CoordinateFields extends StatelessWidget {
-  const CoordinateFields({Key? key, required this.siteId}) : super(key: key);
+  const CoordinateFields({super.key, required this.siteId});
 
   final int siteId;
 
@@ -15,9 +15,11 @@ class CoordinateFields extends StatelessWidget {
       title: 'Coordinates',
       child: Column(
         children: [
-          const SizedBox(
+          SizedBox(
             height: 10,
-            child: CoordinateList(),
+            child: CoordinateList(
+              sideId: siteId,
+            ),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -125,8 +127,11 @@ class CoordinateForms extends ConsumerWidget {
 
 class CoordinateList extends ConsumerWidget {
   const CoordinateList({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+    required this.sideId,
+  });
+
+  final int sideId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -138,8 +143,8 @@ class CoordinateList extends ConsumerWidget {
           itemBuilder: (context, index) {
             return ListTile(
               leading: const Icon(Icons.person_rounded),
-              title: Text(data[index].siteID ?? ''),
-              subtitle: Text(data[index].id ?? ''),
+              title: Text(data[index].nameId ?? ''),
+              subtitle: Text(data[index].gpsUnit ?? ''),
               trailing: IconButton(
                 icon: const Icon(Icons.delete_rounded),
                 onPressed: () {

@@ -136,8 +136,8 @@ class TrapList extends ConsumerWidget {
           itemBuilder: (context, index) {
             return ListTile(
               leading: const Icon(Icons.person_rounded),
-              title: Text(data[index].siteID ?? ''),
-              subtitle: Text(data[index].id ?? ''),
+              title: Text(data[index].nameId ?? ''),
+              subtitle: Text(data[index].gpsUnit ?? ''),
               trailing: IconButton(
                 icon: const Icon(Icons.delete_rounded),
                 onPressed: () {
@@ -162,7 +162,7 @@ class TrappingPersonnelList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final coordinates = ref.watch(coordinateListProvider);
+    final coordinates = ref.watch(personnelListProvider);
     return coordinates.when(
       data: (data) {
         return ListView.builder(
@@ -170,8 +170,8 @@ class TrappingPersonnelList extends ConsumerWidget {
           itemBuilder: (context, index) {
             return ListTile(
               leading: const Icon(Icons.person_rounded),
-              title: Text(data[index].siteID ?? ''),
-              subtitle: Text(data[index].id ?? ''),
+              title: Text(data[index].name ?? ''),
+              subtitle: Text(data[index].role ?? ''),
               trailing: IconButton(
                 icon: const Icon(Icons.delete_rounded),
                 onPressed: () {

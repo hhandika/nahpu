@@ -33,7 +33,8 @@ CREATE TABLE site (
 );
 
 CREATE TABLE coordinate (
-    id TEXT UNIQUE PRIMARY KEY,
+    id INT UNIQUE PRIMARY KEY AUTOINCREMENT, -- internal id for easy access
+    nameId TEXT, -- users assigned id.
     decimalLatitude REAL,
     decimalLongitude REAL,
     elevationInMeter INT,
@@ -43,7 +44,7 @@ CREATE TABLE coordinate (
     coordinateUncertaintyInMeters INT,
     gpsUnit TEXT,
     notes TEXT,
-    siteID TEXT REFERENCES site(siteID)
+    siteID INT REFERENCES site(id)
 );
 
 CREATE TABLE collEvent (

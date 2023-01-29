@@ -160,10 +160,6 @@ class Database extends _$Database {
     return select(personnel).get();
   }
 
-  Future<List<CoordinateData>> getAllCoordinates() {
-    return select(coordinate).get();
-  }
-
   Future<void> deleteAllPersonnel() {
     return delete(personnel).go();
   }

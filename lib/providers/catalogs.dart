@@ -2,6 +2,7 @@ import 'package:nahpu/services/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/specimen_queries.dart';
+import 'package:nahpu/services/coordinate_queries.dart';
 
 final specimenProvider = Provider<SpecimenQuery>((ref) {
   final specimenTable = SpecimenQuery(ref.read(databaseProvider));
@@ -47,4 +48,4 @@ final personnelListProvider = FutureProvider.autoDispose<List<PersonnelData>>(
     (ref) => ref.read(databaseProvider).getAllPersonnel());
 
 final coordinateListProvider = FutureProvider.autoDispose<List<CoordinateData>>(
-    (ref) => ref.read(databaseProvider).getAllCoordinates());
+    (ref) => CoordinateQuery(ref.read(databaseProvider)).getAllCoordinates());
