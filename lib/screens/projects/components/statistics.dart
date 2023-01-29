@@ -75,7 +75,6 @@ class GraphViewer extends StatelessWidget {
       default:
         return const Text('No graph selected');
     }
-    ;
   }
 }
 
