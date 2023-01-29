@@ -87,9 +87,7 @@ class TitleForm extends StatelessWidget {
         ),
         IconButton(
           onPressed: () {},
-          padding: const EdgeInsets.only(
-            left: 2,
-          ),
+          padding: EdgeInsets.zero,
           constraints: const BoxConstraints(),
           icon: Icon(
             Icons.info_outline_rounded,
