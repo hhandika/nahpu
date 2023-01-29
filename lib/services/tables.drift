@@ -41,7 +41,7 @@ CREATE TABLE coordinate (
     minimumElevationInMeters INT,
     maximumElevationInMeters INT,
     datum TEXT,
-    coordinateUncertaintyInMeters INT,
+    uncertaintyInMeters INT,
     gpsUnit TEXT,
     notes TEXT,
     siteID INT REFERENCES site(id)

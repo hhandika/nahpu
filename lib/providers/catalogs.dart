@@ -47,5 +47,7 @@ final collEventIDprovider =
 final personnelListProvider = FutureProvider.autoDispose<List<PersonnelData>>(
     (ref) => ref.read(databaseProvider).getAllPersonnel());
 
-final coordinateListProvider = FutureProvider.autoDispose<List<CoordinateData>>(
-    (ref) => CoordinateQuery(ref.read(databaseProvider)).getAllCoordinates());
+final coordinateBySiteProvider = FutureProvider.family
+    .autoDispose<List<CoordinateData>, int>((ref, siteId) =>
+        CoordinateQuery(ref.read(databaseProvider))
+            .getCoordinatesBySiteID(siteId));

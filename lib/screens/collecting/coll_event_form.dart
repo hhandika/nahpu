@@ -128,30 +128,31 @@ class TrapList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final coordinates = ref.watch(coordinateListProvider);
-    return coordinates.when(
-      data: (data) {
-        return ListView.builder(
-          itemCount: data.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              leading: const Icon(Icons.person_rounded),
-              title: Text(data[index].nameId ?? ''),
-              subtitle: Text(data[index].gpsUnit ?? ''),
-              trailing: IconButton(
-                icon: const Icon(Icons.delete_rounded),
-                onPressed: () {
-                  // ref.read(personnelListProvider.notifier).deletePersonnel(
-                  //     data[index].id, data[index].name, data[index].email);
-                },
-              ),
-            );
-          },
-        );
-      },
-      loading: () => const CommmonProgressIndicator(),
-      error: (error, stack) => Text(error.toString()),
-    );
+    return const Text('TrapList');
+    // final coordinates = ref.watch(coordinateListProvider);
+    // return coordinates.when(
+    //   data: (data) {
+    //     return ListView.builder(
+    //       itemCount: data.length,
+    //       itemBuilder: (context, index) {
+    //         return ListTile(
+    //           leading: const Icon(Icons.person_rounded),
+    //           title: Text(data[index].nameId ?? ''),
+    //           subtitle: Text(data[index].gpsUnit ?? ''),
+    //           trailing: IconButton(
+    //             icon: const Icon(Icons.delete_rounded),
+    //             onPressed: () {
+    //               // ref.read(personnelListProvider.notifier).deletePersonnel(
+    //               //     data[index].id, data[index].name, data[index].email);
+    //             },
+    //           ),
+    //         );
+    //       },
+    //     );
+    //   },
+    //   loading: () => const CommmonProgressIndicator(),
+    //   error: (error, stack) => Text(error.toString()),
+    // );
   }
 }
 

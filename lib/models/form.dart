@@ -245,3 +245,35 @@ class TaxonRegistryCtrModel {
       commonNameCtr: TextEditingController(),
       noteCtr: TextEditingController());
 }
+
+class CoordinateCtrModel {
+  CoordinateCtrModel({
+    required this.nameIdCtr,
+    required this.latitudeCtr,
+    required this.longitudeCtr,
+    required this.elevationCtr,
+    required this.datumCtr,
+    required this.uncertaintyCtr,
+    required this.gpsUnitCtr,
+    required this.noteCtr,
+  });
+
+  TextEditingController nameIdCtr;
+  TextEditingController latitudeCtr;
+  TextEditingController longitudeCtr;
+  TextEditingController elevationCtr;
+  TextEditingController datumCtr;
+  TextEditingController uncertaintyCtr;
+  TextEditingController gpsUnitCtr;
+  TextEditingController noteCtr;
+
+  factory CoordinateCtrModel.empty() => CoordinateCtrModel(
+      nameIdCtr: TextEditingController(),
+      latitudeCtr: TextEditingController(),
+      longitudeCtr: TextEditingController(),
+      elevationCtr: TextEditingController(),
+      datumCtr: TextEditingController(),
+      uncertaintyCtr: TextEditingController(),
+      gpsUnitCtr: TextEditingController(),
+      noteCtr: TextEditingController());
+}

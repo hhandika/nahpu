@@ -2516,13 +2516,13 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _coordinateUncertaintyInMetersMeta =
-      const VerificationMeta('coordinateUncertaintyInMeters');
-  late final GeneratedColumn<int> coordinateUncertaintyInMeters =
-      GeneratedColumn<int>('coordinateUncertaintyInMeters', aliasedName, true,
-          type: DriftSqlType.int,
-          requiredDuringInsert: false,
-          $customConstraints: '');
+  static const VerificationMeta _uncertaintyInMetersMeta =
+      const VerificationMeta('uncertaintyInMeters');
+  late final GeneratedColumn<int> uncertaintyInMeters = GeneratedColumn<int>(
+      'uncertaintyInMeters', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _gpsUnitMeta =
       const VerificationMeta('gpsUnit');
   late final GeneratedColumn<String> gpsUnit = GeneratedColumn<String>(
@@ -2552,7 +2552,7 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
         minimumElevationInMeters,
         maximumElevationInMeters,
         datum,
-        coordinateUncertaintyInMeters,
+        uncertaintyInMeters,
         gpsUnit,
         notes,
         siteID
@@ -2609,12 +2609,11 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
       context.handle(
           _datumMeta, datum.isAcceptableOrUnknown(data['datum']!, _datumMeta));
     }
-    if (data.containsKey('coordinateUncertaintyInMeters')) {
+    if (data.containsKey('uncertaintyInMeters')) {
       context.handle(
-          _coordinateUncertaintyInMetersMeta,
-          coordinateUncertaintyInMeters.isAcceptableOrUnknown(
-              data['coordinateUncertaintyInMeters']!,
-              _coordinateUncertaintyInMetersMeta));
+          _uncertaintyInMetersMeta,
+          uncertaintyInMeters.isAcceptableOrUnknown(
+              data['uncertaintyInMeters']!, _uncertaintyInMetersMeta));
     }
     if (data.containsKey('gpsUnit')) {
       context.handle(_gpsUnitMeta,
@@ -2653,9 +2652,8 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
           DriftSqlType.int, data['${effectivePrefix}maximumElevationInMeters']),
       datum: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}datum']),
-      coordinateUncertaintyInMeters: attachedDatabase.typeMapping.read(
-          DriftSqlType.int,
-          data['${effectivePrefix}coordinateUncertaintyInMeters']),
+      uncertaintyInMeters: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}uncertaintyInMeters']),
       gpsUnit: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}gpsUnit']),
       notes: attachedDatabase.typeMapping
@@ -2683,7 +2681,7 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
   final int? minimumElevationInMeters;
   final int? maximumElevationInMeters;
   final String? datum;
-  final int? coordinateUncertaintyInMeters;
+  final int? uncertaintyInMeters;
   final String? gpsUnit;
   final String? notes;
   final int? siteID;
@@ -2696,7 +2694,7 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
       this.minimumElevationInMeters,
       this.maximumElevationInMeters,
       this.datum,
-      this.coordinateUncertaintyInMeters,
+      this.uncertaintyInMeters,
       this.gpsUnit,
       this.notes,
       this.siteID});
@@ -2727,9 +2725,8 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
     if (!nullToAbsent || datum != null) {
       map['datum'] = Variable<String>(datum);
     }
-    if (!nullToAbsent || coordinateUncertaintyInMeters != null) {
-      map['coordinateUncertaintyInMeters'] =
-          Variable<int>(coordinateUncertaintyInMeters);
+    if (!nullToAbsent || uncertaintyInMeters != null) {
+      map['uncertaintyInMeters'] = Variable<int>(uncertaintyInMeters);
     }
     if (!nullToAbsent || gpsUnit != null) {
       map['gpsUnit'] = Variable<String>(gpsUnit);
@@ -2765,10 +2762,9 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
           : Value(maximumElevationInMeters),
       datum:
           datum == null && nullToAbsent ? const Value.absent() : Value(datum),
-      coordinateUncertaintyInMeters:
-          coordinateUncertaintyInMeters == null && nullToAbsent
-              ? const Value.absent()
-              : Value(coordinateUncertaintyInMeters),
+      uncertaintyInMeters: uncertaintyInMeters == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uncertaintyInMeters),
       gpsUnit: gpsUnit == null && nullToAbsent
           ? const Value.absent()
           : Value(gpsUnit),
@@ -2793,8 +2789,8 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
       maximumElevationInMeters:
           serializer.fromJson<int?>(json['maximumElevationInMeters']),
       datum: serializer.fromJson<String?>(json['datum']),
-      coordinateUncertaintyInMeters:
-          serializer.fromJson<int?>(json['coordinateUncertaintyInMeters']),
+      uncertaintyInMeters:
+          serializer.fromJson<int?>(json['uncertaintyInMeters']),
       gpsUnit: serializer.fromJson<String?>(json['gpsUnit']),
       notes: serializer.fromJson<String?>(json['notes']),
       siteID: serializer.fromJson<int?>(json['siteID']),
@@ -2814,8 +2810,7 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
       'maximumElevationInMeters':
           serializer.toJson<int?>(maximumElevationInMeters),
       'datum': serializer.toJson<String?>(datum),
-      'coordinateUncertaintyInMeters':
-          serializer.toJson<int?>(coordinateUncertaintyInMeters),
+      'uncertaintyInMeters': serializer.toJson<int?>(uncertaintyInMeters),
       'gpsUnit': serializer.toJson<String?>(gpsUnit),
       'notes': serializer.toJson<String?>(notes),
       'siteID': serializer.toJson<int?>(siteID),
@@ -2831,7 +2826,7 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
           Value<int?> minimumElevationInMeters = const Value.absent(),
           Value<int?> maximumElevationInMeters = const Value.absent(),
           Value<String?> datum = const Value.absent(),
-          Value<int?> coordinateUncertaintyInMeters = const Value.absent(),
+          Value<int?> uncertaintyInMeters = const Value.absent(),
           Value<String?> gpsUnit = const Value.absent(),
           Value<String?> notes = const Value.absent(),
           Value<int?> siteID = const Value.absent()}) =>
@@ -2854,9 +2849,9 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
             ? maximumElevationInMeters.value
             : this.maximumElevationInMeters,
         datum: datum.present ? datum.value : this.datum,
-        coordinateUncertaintyInMeters: coordinateUncertaintyInMeters.present
-            ? coordinateUncertaintyInMeters.value
-            : this.coordinateUncertaintyInMeters,
+        uncertaintyInMeters: uncertaintyInMeters.present
+            ? uncertaintyInMeters.value
+            : this.uncertaintyInMeters,
         gpsUnit: gpsUnit.present ? gpsUnit.value : this.gpsUnit,
         notes: notes.present ? notes.value : this.notes,
         siteID: siteID.present ? siteID.value : this.siteID,
@@ -2872,8 +2867,7 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
           ..write('minimumElevationInMeters: $minimumElevationInMeters, ')
           ..write('maximumElevationInMeters: $maximumElevationInMeters, ')
           ..write('datum: $datum, ')
-          ..write(
-              'coordinateUncertaintyInMeters: $coordinateUncertaintyInMeters, ')
+          ..write('uncertaintyInMeters: $uncertaintyInMeters, ')
           ..write('gpsUnit: $gpsUnit, ')
           ..write('notes: $notes, ')
           ..write('siteID: $siteID')
@@ -2891,7 +2885,7 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
       minimumElevationInMeters,
       maximumElevationInMeters,
       datum,
-      coordinateUncertaintyInMeters,
+      uncertaintyInMeters,
       gpsUnit,
       notes,
       siteID);
@@ -2907,8 +2901,7 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
           other.minimumElevationInMeters == this.minimumElevationInMeters &&
           other.maximumElevationInMeters == this.maximumElevationInMeters &&
           other.datum == this.datum &&
-          other.coordinateUncertaintyInMeters ==
-              this.coordinateUncertaintyInMeters &&
+          other.uncertaintyInMeters == this.uncertaintyInMeters &&
           other.gpsUnit == this.gpsUnit &&
           other.notes == this.notes &&
           other.siteID == this.siteID);
@@ -2923,7 +2916,7 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
   final Value<int?> minimumElevationInMeters;
   final Value<int?> maximumElevationInMeters;
   final Value<String?> datum;
-  final Value<int?> coordinateUncertaintyInMeters;
+  final Value<int?> uncertaintyInMeters;
   final Value<String?> gpsUnit;
   final Value<String?> notes;
   final Value<int?> siteID;
@@ -2936,7 +2929,7 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
     this.minimumElevationInMeters = const Value.absent(),
     this.maximumElevationInMeters = const Value.absent(),
     this.datum = const Value.absent(),
-    this.coordinateUncertaintyInMeters = const Value.absent(),
+    this.uncertaintyInMeters = const Value.absent(),
     this.gpsUnit = const Value.absent(),
     this.notes = const Value.absent(),
     this.siteID = const Value.absent(),
@@ -2950,7 +2943,7 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
     this.minimumElevationInMeters = const Value.absent(),
     this.maximumElevationInMeters = const Value.absent(),
     this.datum = const Value.absent(),
-    this.coordinateUncertaintyInMeters = const Value.absent(),
+    this.uncertaintyInMeters = const Value.absent(),
     this.gpsUnit = const Value.absent(),
     this.notes = const Value.absent(),
     this.siteID = const Value.absent(),
@@ -2964,7 +2957,7 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
     Expression<int>? minimumElevationInMeters,
     Expression<int>? maximumElevationInMeters,
     Expression<String>? datum,
-    Expression<int>? coordinateUncertaintyInMeters,
+    Expression<int>? uncertaintyInMeters,
     Expression<String>? gpsUnit,
     Expression<String>? notes,
     Expression<int>? siteID,
@@ -2980,8 +2973,8 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
       if (maximumElevationInMeters != null)
         'maximumElevationInMeters': maximumElevationInMeters,
       if (datum != null) 'datum': datum,
-      if (coordinateUncertaintyInMeters != null)
-        'coordinateUncertaintyInMeters': coordinateUncertaintyInMeters,
+      if (uncertaintyInMeters != null)
+        'uncertaintyInMeters': uncertaintyInMeters,
       if (gpsUnit != null) 'gpsUnit': gpsUnit,
       if (notes != null) 'notes': notes,
       if (siteID != null) 'siteID': siteID,
@@ -2997,7 +2990,7 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
       Value<int?>? minimumElevationInMeters,
       Value<int?>? maximumElevationInMeters,
       Value<String?>? datum,
-      Value<int?>? coordinateUncertaintyInMeters,
+      Value<int?>? uncertaintyInMeters,
       Value<String?>? gpsUnit,
       Value<String?>? notes,
       Value<int?>? siteID}) {
@@ -3012,8 +3005,7 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
       maximumElevationInMeters:
           maximumElevationInMeters ?? this.maximumElevationInMeters,
       datum: datum ?? this.datum,
-      coordinateUncertaintyInMeters:
-          coordinateUncertaintyInMeters ?? this.coordinateUncertaintyInMeters,
+      uncertaintyInMeters: uncertaintyInMeters ?? this.uncertaintyInMeters,
       gpsUnit: gpsUnit ?? this.gpsUnit,
       notes: notes ?? this.notes,
       siteID: siteID ?? this.siteID,
@@ -3049,9 +3041,8 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
     if (datum.present) {
       map['datum'] = Variable<String>(datum.value);
     }
-    if (coordinateUncertaintyInMeters.present) {
-      map['coordinateUncertaintyInMeters'] =
-          Variable<int>(coordinateUncertaintyInMeters.value);
+    if (uncertaintyInMeters.present) {
+      map['uncertaintyInMeters'] = Variable<int>(uncertaintyInMeters.value);
     }
     if (gpsUnit.present) {
       map['gpsUnit'] = Variable<String>(gpsUnit.value);
@@ -3076,8 +3067,7 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
           ..write('minimumElevationInMeters: $minimumElevationInMeters, ')
           ..write('maximumElevationInMeters: $maximumElevationInMeters, ')
           ..write('datum: $datum, ')
-          ..write(
-              'coordinateUncertaintyInMeters: $coordinateUncertaintyInMeters, ')
+          ..write('uncertaintyInMeters: $uncertaintyInMeters, ')
           ..write('gpsUnit: $gpsUnit, ')
           ..write('notes: $notes, ')
           ..write('siteID: $siteID')

@@ -18,13 +18,18 @@ Future<void> createNewCollEvents(BuildContext context, WidgetRef ref) {
       .createCollEvent(CollEventCompanion(
         projectUuid: db.Value(projectUuid),
       ))
-      .then((value) {
-    ref.invalidate(collEventEntryProvider);
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => NewCollEventForm(
-              collEventId: value,
-            )));
-  });
+      .then(
+    (value) {
+      ref.invalidate(collEventEntryProvider);
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => NewCollEventForm(
+            collEventId: value,
+          ),
+        ),
+      );
+    },
+  );
 }
 
 class NewCollEvents extends ConsumerWidget {

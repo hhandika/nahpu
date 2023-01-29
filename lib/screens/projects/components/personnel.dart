@@ -170,19 +170,12 @@ class PersonnelMenuState extends ConsumerState<PersonnelMenu> {
   }
 }
 
-class NewPersonnel extends ConsumerStatefulWidget {
-  const NewPersonnel({Key? key}) : super(key: key);
+class NewPersonnel extends ConsumerWidget {
+  const NewPersonnel({super.key});
 
   @override
-  NewPersonnelState createState() => NewPersonnelState();
-}
-
-class NewPersonnelState extends ConsumerState<NewPersonnel> {
-  final PersonnelFormCtrModel ctr = PersonnelFormCtrModel.empty();
-  final String _uuid = uuid;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final PersonnelFormCtrModel ctr = PersonnelFormCtrModel.empty();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add personnel'),
@@ -192,7 +185,7 @@ class NewPersonnelState extends ConsumerState<NewPersonnel> {
         child: SingleChildScrollView(
           child: PersonnelForm(
             ctr: ctr,
-            personnelUuid: _uuid,
+            personnelUuid: uuid,
             isAddNew: true,
           ),
         ),
