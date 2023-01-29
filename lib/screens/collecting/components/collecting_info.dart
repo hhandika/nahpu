@@ -70,7 +70,7 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
             child: SiteIdField(
               value: widget.collEventCtr.siteIDCtr,
               siteData: data,
-              onChanges: (int? value) async {
+              onChanges: (int? value) {
                 setState(() {
                   _getEventID();
                   updateCollEvent(
