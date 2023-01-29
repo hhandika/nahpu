@@ -37,10 +37,10 @@ packages:
     dependency: transitive
     description:
       name: archive
-      sha256: ed7cc591a948744994714375caf9a2ce89e1d82e8243997c8a2994d57181c212
+      sha256: d6347d54a2d8028e0437e3c099f66fdb8ae02c4720c1e7534c9f24c10351f85d
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.5"
+    version: "3.3.6"
   args:
     dependency: transitive
     description:
@@ -301,10 +301,10 @@ packages:
     dependency: transitive
     description:
       name: flex_seed_scheme
-      sha256: "7ded1dbf0cef4d9d27a194ad021f4755cd4a82a3c5f10e803dca84d9843fd639"
+      sha256: "30216f9e53240cd1c86d2b627040e2d7faa42a7ae0799c6964c4e3bf9b70705d"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "1.2.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -399,10 +399,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_typeahead
-      sha256: "0ec56e1deac7556f3616f3cd53c9a25bf225dc8b72e9f44b5a7717e42bb467b5"
+      sha256: "9ed8fe6412ba4c1196c0cada258f476b42361d59e3c831e406ce263ba229ec1d"
       url: "https://pub.dev"
     source: hosted
-    version: "4.1.1"
+    version: "4.3.2"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -1030,5 +1030,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.18.0 <4.0.0"
-  flutter: ">=3.3.0"
+  dart: ">=2.19.0 <4.0.0"
+  flutter: ">=3.7.0"
