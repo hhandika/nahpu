@@ -26,8 +26,6 @@ class CollectingInfoFields extends ConsumerStatefulWidget {
 }
 
 class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
-  String? _siteID;
-
   List<SiteData> data = [];
 
   final DateTime initialStartDate =
@@ -74,11 +72,14 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
               siteData: data,
               onChanges: (int? value) async {
                 setState(() {
-                  _siteID = data.where((e) => e.id == value).first.siteID;
+                  _getEventID();
                   updateCollEvent(
                       widget.collEventId,
                       CollEventCompanion(
                         siteID: db.Value(value),
+                        eventID: db.Value(
+                          widget.collEventCtr.eventIDCtr.text,
+                        ),
                       ),
                       ref);
                 });
@@ -101,7 +102,7 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
                       () {
                         widget.collEventCtr.startDateCtr.text =
                             DateFormat.yMMMd().format(date);
-                        widget.collEventCtr.eventIDCtr.text = _getEventID();
+                        _getEventID();
                         updateCollEvent(
                             widget.collEventId,
                             CollEventCompanion(
@@ -150,8 +151,12 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
     );
   }
 
-  String _getEventID() {
-    return '$_siteID-${widget.collEventCtr.startDateCtr.text}';
+  void _getEventID() {
+    String siteID =
+        data.where((e) => e.id == widget.collEventCtr.siteIDCtr).first.siteID ??
+            '';
+    String date = '-${widget.collEventCtr.startDateCtr.text}';
+    widget.collEventCtr.eventIDCtr.text = '$siteID$date';
   }
 
   Future<DateTime?> showDate(BuildContext context, DateTime initialStartDate) {
