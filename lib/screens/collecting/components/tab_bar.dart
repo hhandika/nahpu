@@ -40,21 +40,21 @@ class _CollEventTabBarState extends State<CollEventTabBar>
         tabController: _tabController,
         tabs: [
           Tab(
-              icon: Icon(MdiIcons.weatherPartlyCloudy,
-                  color: Theme.of(context).colorScheme.tertiary)),
-          Tab(
             icon: Icon(Icons.group_outlined,
                 color: Theme.of(context).colorScheme.tertiary),
           ),
+          Tab(
+              icon: Icon(MdiIcons.weatherPartlyCloudy,
+                  color: Theme.of(context).colorScheme.tertiary)),
           Tab(
               icon: Icon(MdiIcons.toolboxOutline,
                   color: Theme.of(context).colorScheme.tertiary)),
         ],
         children: [
+          const CollectingPersonnelForm(),
           EnvironmentDataForm(
             useHorizontalLayout: widget.useHorizontalLayout,
           ),
-          const CollectingPersonnelForm(),
           const Text('Camera'),
         ],
       ),
