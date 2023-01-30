@@ -57,13 +57,14 @@ class SiteFormState extends ConsumerState<SiteForm>
             AdaptiveLayout(
               useHorizontalLayout: useHorizontalLayout,
               children: [
+                Habitat(
+                  id: widget.id,
+                  useHorizontalLayout: useHorizontalLayout,
+                  siteFormCtr: widget.siteFormCtr,
+                ),
                 CoordinateFields(
                   siteId: widget.id,
                 ),
-                Habitat(
-                    id: widget.id,
-                    useHorizontalLayout: useHorizontalLayout,
-                    siteFormCtr: widget.siteFormCtr),
               ],
             ),
             MediaTabBars(
