@@ -10,24 +10,41 @@ class EnvironmentDataForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final List<String> moonPhase = [
+      'New Moon',
+      'Waxing Crescent',
+      'First Quarter',
+      'Waxing Gibbous',
+      'Full Moon',
+      'Waning Gibbous',
+      'Last Quarter',
+      'Waning Crescent'
+    ];
     return SingleChildScrollView(
       child: Container(
         constraints: const BoxConstraints(maxWidth: 300),
         child: Column(
           children: [
+            Text(
+              'Weather Data',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 15),
+            Text('Temperature (°C)',
+                style: Theme.of(context).textTheme.titleMedium),
             AdaptiveLayout(
               useHorizontalLayout: useHorizontalLayout,
               children: const [
                 TextField(
                   decoration: InputDecoration(
-                      labelText: 'Lowest Temperature',
-                      hintText: 'Enter lowest'),
+                      labelText: 'Day Lowest',
+                      hintText: 'Enter lowest temperature'),
                 ),
                 TextField(
                   decoration: InputDecoration(
-                      labelText: 'Highest Temperature',
-                      hintText: 'Enter highest'),
-                )
+                      labelText: 'Day Highest',
+                      hintText: 'Enter highest temprature'),
+                ),
               ],
             ),
             AdaptiveLayout(
@@ -35,31 +52,64 @@ class EnvironmentDataForm extends ConsumerWidget {
               children: const [
                 TextField(
                   decoration: InputDecoration(
-                      labelText: 'Lowest Precipitation',
-                      hintText: 'Enter lowest'),
+                      labelText: 'Night Lowest',
+                      hintText: 'Enter lowest temperature'),
                 ),
                 TextField(
-                    decoration: InputDecoration(
-                        labelText: 'Highest Precipitation',
-                        hintText: 'Enter highest'))
+                  decoration: InputDecoration(
+                      labelText: 'Night Highest',
+                      hintText: 'Enter highest temprature'),
+                ),
               ],
             ),
+            const SizedBox(height: 10),
+            Text('Humidity (%)',
+                style: Theme.of(context).textTheme.titleMedium),
             AdaptiveLayout(
               useHorizontalLayout: useHorizontalLayout,
               children: const [
                 TextField(
                   decoration: InputDecoration(
-                      labelText: 'Sunrise', hintText: 'Enter sunrise'),
+                      labelText: 'Average', hintText: 'Enter average humidity'),
                 ),
                 TextField(
                   decoration: InputDecoration(
-                      labelText: 'Sunset', hintText: 'Enter sunset'),
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                      labelText: 'Moon phase', hintText: 'Enter moon phase'),
+                      labelText: 'Dew Point', hintText: 'Enter dew point'),
                 )
               ],
+            ),
+            const SizedBox(height: 10),
+            Text('Astronomy', style: Theme.of(context).textTheme.titleMedium),
+            AdaptiveLayout(
+              useHorizontalLayout: useHorizontalLayout,
+              children: const [
+                TextField(
+                  decoration: InputDecoration(
+                      labelText: 'Sunrise', hintText: 'Enter sunrise time'),
+                ),
+                TextField(
+                  decoration: InputDecoration(
+                      labelText: 'Sunset', hintText: 'Enter sunset time'),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 5, right: 5),
+              child: DropdownButtonFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Moon Phase',
+                  hintText: 'Select moon phase',
+                ),
+                items: moonPhase
+                    .map(
+                      (e) => DropdownMenuItem(
+                        value: e,
+                        child: Text(e),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (String? value) {},
+              ),
             ),
           ],
         ),
