@@ -287,7 +287,7 @@ class CoordinateList extends ConsumerWidget {
           itemCount: data.length,
           itemBuilder: (context, index) {
             return ListTile(
-              title: Text('${data[index].nameId} (${data[index].gpsUnit})'),
+              title: Text('${data[index].nameId}'),
               subtitle: CoordinateSubtitle(coordinate: data[index]),
               trailing: CoordinateMenu(
                 coordinateId: data[index].id!,
