@@ -331,7 +331,7 @@ class CoordinateSubtitle extends StatelessWidget {
     return RichText(
       text: TextSpan(
         children: [
-          const WidgetSpan(child: Icon(Icons.location_on_outlined, size: 14)),
+          const WidgetSpan(child: Icon(Icons.pin_drop_outlined, size: 14)),
           TextSpan(
               style: Theme.of(context).textTheme.labelLarge,
               text:
