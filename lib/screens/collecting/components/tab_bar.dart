@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:nahpu/screens/collecting/components/collecting_personnel.dart';
 import 'package:nahpu/screens/collecting/components/environment_data.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class CollEventMediaTabBar extends StatefulWidget {
-  const CollEventMediaTabBar({super.key, required this.useHorizontalLayout});
+class CollEventTabBar extends StatefulWidget {
+  const CollEventTabBar({super.key, required this.useHorizontalLayout});
 
   final bool useHorizontalLayout;
 
   @override
-  State<CollEventMediaTabBar> createState() => _CollEventMediaTabBarState();
+  State<CollEventTabBar> createState() => _CollEventTabBarState();
 }
 
-class _CollEventMediaTabBarState extends State<CollEventMediaTabBar>
+class _CollEventTabBarState extends State<CollEventTabBar>
     with TickerProviderStateMixin {
   late TabController _tabController;
 
-  final int _length = 2;
+  final int _length = 3;
 
   @override
   void initState() {
@@ -37,13 +38,18 @@ class _CollEventMediaTabBarState extends State<CollEventMediaTabBar>
       tabController: _tabController,
       tabs: [
         Tab(
+          icon: Icon(Icons.group_outlined,
+              color: Theme.of(context).colorScheme.tertiary),
+        ),
+        Tab(
             icon: Icon(MdiIcons.weatherPartlyCloudy,
                 color: Theme.of(context).colorScheme.tertiary)),
         Tab(
-            icon: Icon(Icons.camera_alt_rounded,
+            icon: Icon(MdiIcons.toolboxOutline,
                 color: Theme.of(context).colorScheme.tertiary)),
       ],
       children: [
+        const CollectingPersonnelForm(),
         EnvironmentDataForm(
           useHorizontalLayout: widget.useHorizontalLayout,
         ),

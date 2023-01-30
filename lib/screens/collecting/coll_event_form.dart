@@ -4,7 +4,7 @@ import 'package:nahpu/models/form.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/collecting/components/collecting_activities.dart';
 import 'package:nahpu/screens/collecting/components/collecting_info.dart';
-import 'package:nahpu/screens/collecting/components/media.dart';
+import 'package:nahpu/screens/collecting/components/tab_bar.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/indicators.dart';
 import 'package:nahpu/screens/shared/layout.dart';
@@ -51,12 +51,12 @@ class CollEventFormState extends ConsumerState<CollEventForm> {
                     child: _buildTrappingFields(),
                   ),
                   FormCard(
-                    title: 'Trapping Personnel',
-                    child: _buildTrappingPersonnelFields(),
-                  ),
+                    withTitle: false,
+                    child: CollEventTabBar(
+                        useHorizontalLayout: useHorizontalLayout),
+                  )
                 ],
               ),
-              CollEventMediaTabBar(useHorizontalLayout: useHorizontalLayout),
             ],
           ),
         );
@@ -86,34 +86,6 @@ class CollEventFormState extends ConsumerState<CollEventForm> {
           },
           child: const Text(
             'Add equipments',
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTrappingPersonnelFields() {
-    return Column(
-      children: [
-        const SizedBox(
-          height: 10,
-          child: TrapList(),
-        ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-            elevation: 0,
-          ),
-          onPressed: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return const PhotoForm();
-                });
-          },
-          child: const Text(
-            'Add personnels',
           ),
         ),
       ],
@@ -153,39 +125,5 @@ class TrapList extends ConsumerWidget {
     //   loading: () => const CommmonProgressIndicator(),
     //   error: (error, stack) => Text(error.toString()),
     // );
-  }
-}
-
-class TrappingPersonnelList extends ConsumerWidget {
-  const TrappingPersonnelList({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final coordinates = ref.watch(personnelListProvider);
-    return coordinates.when(
-      data: (data) {
-        return ListView.builder(
-          itemCount: data.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              leading: const Icon(Icons.person_rounded),
-              title: Text(data[index].name ?? ''),
-              subtitle: Text(data[index].role ?? ''),
-              trailing: IconButton(
-                icon: const Icon(Icons.delete_rounded),
-                onPressed: () {
-                  // ref.read(personnelListProvider.notifier).deletePersonnel(
-                  //     data[index].id, data[index].name, data[index].email);
-                },
-              ),
-            );
-          },
-        );
-      },
-      loading: () => const CommmonProgressIndicator(),
-      error: (error, stack) => Text(error.toString()),
-    );
   }
 }
