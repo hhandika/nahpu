@@ -37,7 +37,7 @@ class _CollEventMediaTabBarState extends State<CollEventMediaTabBar>
       tabController: _tabController,
       tabs: [
         Tab(
-            icon: Icon(MdiIcons.weatherCloudy,
+            icon: Icon(MdiIcons.weatherPartlyCloudy,
                 color: Theme.of(context).colorScheme.tertiary)),
         Tab(
             icon: Icon(Icons.camera_alt_rounded,
