@@ -46,7 +46,7 @@ class MiscFormState extends ConsumerState<MiscForm>
           height: 0.4,
           tabs: [
             Tab(
-                icon: Icon(Icons.bar_chart_rounded,
+                icon: Icon(MdiIcons.chartLine,
                     color: Theme.of(context).colorScheme.tertiary)),
             Tab(
                 icon: Icon(Icons.receipt_long_rounded,

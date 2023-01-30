@@ -48,7 +48,7 @@ class PartDataFormState extends ConsumerState<PartDataForm>
             ),
           ),
           Tab(
-              icon: Icon(MdiIcons.database,
+              icon: Icon(MdiIcons.databaseOutline,
                   color: Theme.of(context).colorScheme.tertiary))
         ],
         children: [

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/form.dart';
-import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/collecting/components/collecting_activities.dart';
 import 'package:nahpu/screens/collecting/components/collecting_info.dart';
 import 'package:nahpu/screens/collecting/components/tab_bar.dart';
 import 'package:nahpu/screens/shared/forms.dart';
-import 'package:nahpu/screens/shared/indicators.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/screens/shared/photos.dart';
 
