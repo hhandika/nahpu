@@ -22,6 +22,9 @@ class CoordinateFields extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          const SizedBox(
+            height: 10,
+          ),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.5,
             child: CoordinateList(
@@ -284,7 +287,6 @@ class CoordinateList extends ConsumerWidget {
           itemCount: data.length,
           itemBuilder: (context, index) {
             return ListTile(
-              leading: const Icon(Icons.pin_drop_outlined),
               title: Text('${data[index].nameId} (${data[index].gpsUnit})'),
               subtitle: CoordinateSubtitle(coordinate: data[index]),
               trailing: CoordinateMenu(
@@ -329,23 +331,27 @@ class CoordinateSubtitle extends StatelessWidget {
     return RichText(
       text: TextSpan(
         children: [
-          const WidgetSpan(child: Icon(Icons.location_on)),
+          const WidgetSpan(child: Icon(Icons.location_on_outlined, size: 14)),
           TextSpan(
+              style: Theme.of(context).textTheme.labelLarge,
               text:
                   '${coordinate.decimalLatitude}, ${coordinate.decimalLongitude}'),
-          const TextSpan(text: ' '),
-          const WidgetSpan(child: Icon(Icons.height)),
+          const TextSpan(text: '  '),
+          const WidgetSpan(child: Icon(Icons.landscape_outlined, size: 14)),
           TextSpan(
+            style: Theme.of(context).textTheme.labelLarge,
             text: '${coordinate.elevationInMeter} m',
           ),
-          const TextSpan(text: ' '),
-          const WidgetSpan(child: Icon(Icons.circle)),
+          const TextSpan(text: '  '),
+          const WidgetSpan(child: Icon(Icons.circle_outlined, size: 14)),
           TextSpan(
+            style: Theme.of(context).textTheme.labelLarge,
             text: '±${coordinate.uncertaintyInMeters} m',
           ),
-          const TextSpan(text: ' '),
-          const WidgetSpan(child: Icon(Icons.date_range)),
+          const TextSpan(text: '  '),
+          const WidgetSpan(child: Icon(Icons.map_outlined, size: 14)),
           TextSpan(
+            style: Theme.of(context).textTheme.labelLarge,
             text: '${coordinate.datum}',
           ),
         ],
