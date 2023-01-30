@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/screens/collecting/components/collecting_activities.dart';
+import 'package:nahpu/screens/collecting/components/collecting_effort.dart';
 import 'package:nahpu/screens/collecting/components/collecting_info.dart';
 import 'package:nahpu/screens/collecting/components/tab_bar.dart';
 import 'package:nahpu/screens/shared/forms.dart';
@@ -44,15 +45,8 @@ class CollEventFormState extends ConsumerState<CollEventForm> {
               AdaptiveLayout(
                 useHorizontalLayout: useHorizontalLayout,
                 children: [
-                  FormCard(
-                    title: 'Collecting Effort',
-                    child: _buildTrappingFields(),
-                  ),
-                  FormCard(
-                    withTitle: false,
-                    child: CollEventTabBar(
-                        useHorizontalLayout: useHorizontalLayout),
-                  )
+                  const CollectingEffortFrom(),
+                  CollEventTabBar(useHorizontalLayout: useHorizontalLayout),
                 ],
               ),
             ],
@@ -60,68 +54,5 @@ class CollEventFormState extends ConsumerState<CollEventForm> {
         );
       },
     );
-  }
-
-  Widget _buildTrappingFields() {
-    return Column(
-      children: [
-        const SizedBox(
-          height: 10,
-          child: TrapList(),
-        ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-            elevation: 0,
-          ),
-          onPressed: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return const PhotoForm();
-                });
-          },
-          child: const Text(
-            'Add equipments',
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class TrapList extends ConsumerWidget {
-  const TrapList({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return const Text('TrapList');
-    // final coordinates = ref.watch(coordinateListProvider);
-    // return coordinates.when(
-    //   data: (data) {
-    //     return ListView.builder(
-    //       itemCount: data.length,
-    //       itemBuilder: (context, index) {
-    //         return ListTile(
-    //           leading: const Icon(Icons.person_rounded),
-    //           title: Text(data[index].nameId ?? ''),
-    //           subtitle: Text(data[index].gpsUnit ?? ''),
-    //           trailing: IconButton(
-    //             icon: const Icon(Icons.delete_rounded),
-    //             onPressed: () {
-    //               // ref.read(personnelListProvider.notifier).deletePersonnel(
-    //               //     data[index].id, data[index].name, data[index].email);
-    //             },
-    //           ),
-    //         );
-    //       },
-    //     );
-    //   },
-    //   loading: () => const CommmonProgressIndicator(),
-    //   error: (error, stack) => Text(error.toString()),
-    // );
   }
 }

@@ -33,28 +33,31 @@ class _CollEventTabBarState extends State<CollEventTabBar>
 
   @override
   Widget build(BuildContext context) {
-    return MediaTabBars(
-      length: 2,
-      tabController: _tabController,
-      tabs: [
-        Tab(
-          icon: Icon(Icons.group_outlined,
-              color: Theme.of(context).colorScheme.tertiary),
-        ),
-        Tab(
-            icon: Icon(MdiIcons.weatherPartlyCloudy,
-                color: Theme.of(context).colorScheme.tertiary)),
-        Tab(
-            icon: Icon(MdiIcons.toolboxOutline,
-                color: Theme.of(context).colorScheme.tertiary)),
-      ],
-      children: [
-        const CollectingPersonnelForm(),
-        EnvironmentDataForm(
-          useHorizontalLayout: widget.useHorizontalLayout,
-        ),
-        const Text('Camera'),
-      ],
+    return FormCard(
+      withTitle: false,
+      child: MediaTabBars(
+        length: 2,
+        tabController: _tabController,
+        tabs: [
+          Tab(
+              icon: Icon(MdiIcons.weatherPartlyCloudy,
+                  color: Theme.of(context).colorScheme.tertiary)),
+          Tab(
+            icon: Icon(Icons.group_outlined,
+                color: Theme.of(context).colorScheme.tertiary),
+          ),
+          Tab(
+              icon: Icon(MdiIcons.toolboxOutline,
+                  color: Theme.of(context).colorScheme.tertiary)),
+        ],
+        children: [
+          EnvironmentDataForm(
+            useHorizontalLayout: widget.useHorizontalLayout,
+          ),
+          const CollectingPersonnelForm(),
+          const Text('Camera'),
+        ],
+      ),
     );
   }
 }
