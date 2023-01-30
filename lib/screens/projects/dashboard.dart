@@ -50,8 +50,20 @@ class DashboardState extends ConsumerState<Dashboard> {
                   AdaptiveLayout(
                     useHorizontalLayout: useHorizontalLayout,
                     children: [
-                      ProjectOverview(
-                        projectUuid: projectUuid,
+                      Stack(
+                        alignment: Alignment.bottomRight,
+                        children: [
+                          ProjectOverview(
+                            projectUuid: projectUuid,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.edit),
+                            ),
+                          ),
+                        ],
                       ),
                       const PersonnelViewer(),
                     ],
