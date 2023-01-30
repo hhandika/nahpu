@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/collecting/components/environment_data.dart';
 import 'package:nahpu/screens/shared/forms.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class CollEventMediaTabBar extends StatefulWidget {
   const CollEventMediaTabBar({super.key, required this.useHorizontalLayout});
@@ -36,7 +37,7 @@ class _CollEventMediaTabBarState extends State<CollEventMediaTabBar>
       tabController: _tabController,
       tabs: [
         Tab(
-            icon: Icon(Icons.wb_sunny_rounded,
+            icon: Icon(MdiIcons.weatherCloudy,
                 color: Theme.of(context).colorScheme.tertiary)),
         Tab(
             icon: Icon(Icons.camera_alt_rounded,
