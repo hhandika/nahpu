@@ -54,8 +54,8 @@ class CollActivityFields extends ConsumerWidget {
             maxLines: 5,
             controller: collEventCtr.noteCtr,
             decoration: const InputDecoration(
-              labelText: 'Collecting method notes',
-              hintText: 'Enter notes',
+              labelText: 'Notes',
+              hintText: 'Enter notes about the activity',
             ),
             onChanged: (String? newValue) {
               updateCollEvent(collEventId,
