@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/form.dart';
+import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/forms.dart';
+import 'package:nahpu/services/database.dart';
 
 class CollectingEffortFrom extends StatelessWidget {
-  const CollectingEffortFrom({super.key});
+  const CollectingEffortFrom({
+    super.key,
+    required this.collEventId,
+  });
+
+  final int collEventId;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +21,7 @@ class CollectingEffortFrom extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          const ToolTile(),
+          CollEffortList(collEventId: collEventId),
           PrimaryButton(onPressed: () {}, text: 'Add Tool'),
         ],
       ),
@@ -22,38 +29,53 @@ class CollectingEffortFrom extends StatelessWidget {
   }
 }
 
-class ToolTile extends ConsumerWidget {
-  const ToolTile({
+class CollEffortList extends ConsumerWidget {
+  const CollEffortList({
     super.key,
+    required this.collEventId,
   });
+
+  final int collEventId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const Text('ToolTile');
-    // final coordinates = ref.watch(coordinateListProvider);
-    // return coordinates.when(
-    //   data: (data) {
-    //     return ListView.builder(
-    //       itemCount: data.length,
-    //       itemBuilder: (context, index) {
-    //         return ListTile(
-    //           leading: const Icon(Icons.person_rounded),
-    //           title: Text(data[index].nameId ?? ''),
-    //           subtitle: Text(data[index].gpsUnit ?? ''),
-    //           trailing: IconButton(
-    //             icon: const Icon(Icons.delete_rounded),
-    //             onPressed: () {
-    //               // ref.read(personnelListProvider.notifier).deletePersonnel(
-    //               //     data[index].id, data[index].name, data[index].email);
-    //             },
-    //           ),
-    //         );
-    //       },
-    //     );
-    //   },
-    //   loading: () => const CommmonProgressIndicator(),
-    //   error: (error, stack) => Text(error.toString()),
-    // );
+    final collEffort = ref.watch(collEffortByEventProvider(collEventId));
+    return collEffort.when(
+      data: (data) {
+        return ListView.builder(
+          shrinkWrap: true,
+          itemCount: data.length,
+          itemBuilder: (context, index) {
+            data.isEmpty
+                ? const Text('No tools used')
+                : CollEffortTile(collEffort: data[index]);
+          },
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stack) => Text(error.toString()),
+    );
+  }
+}
+
+class CollEffortTile extends StatelessWidget {
+  const CollEffortTile({
+    super.key,
+    required this.collEffort,
+  });
+
+  final CollEffortData collEffort;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(collEffort.type ?? ''),
+      subtitle: Text(collEffort.brand ?? ''),
+      trailing: IconButton(
+        icon: const Icon(Icons.edit),
+        onPressed: () {},
+      ),
+    );
   }
 }
 

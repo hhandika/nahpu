@@ -35,3 +35,30 @@ class CollEventQuery extends DatabaseAccessor<Database>
         .go();
   }
 }
+
+// We use the class mixin from CollEventQuery to create a new class
+class CollEffortQuery extends DatabaseAccessor<Database>
+    with _$CollEventQueryMixin {
+  CollEffortQuery(Database db) : super(db);
+
+  Future<int> createCollEffort(CollEffortCompanion form) =>
+      into(collEffort).insert(form);
+
+  Future updateCollEffortEntry(int id, CollEffortCompanion entry) {
+    return (update(collEffort)..where((t) => t.id.equals(id))).write(entry);
+  }
+
+  Future<List<CollEffortData>> getCollEffortByEventId(int collEventId) async {
+    return await (select(collEffort)
+          ..where((t) => t.eventID.equals(collEventId)))
+        .get();
+  }
+
+  Future<void> deleteCollEffort(int id) {
+    return (delete(collEffort)..where((t) => t.id.equals(id))).go();
+  }
+
+  Future<void> deleteAllCollEfforts(String projectUuid) {
+    return delete(collEffort).go();
+  }
+}

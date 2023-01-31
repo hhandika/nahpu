@@ -42,7 +42,8 @@ final specimenEntryProvider =
 
 final collEventIDprovider =
     FutureProvider.family.autoDispose<CollEventData, int>((ref, id) async {
-  final collEventID = CollEventQuery(ref.read(databaseProvider)).getCollEventById(id);
+  final collEventID =
+      CollEventQuery(ref.read(databaseProvider)).getCollEventById(id);
   return collEventID;
 });
 
@@ -53,3 +54,8 @@ final coordinateBySiteProvider = FutureProvider.family
     .autoDispose<List<CoordinateData>, int>((ref, siteId) =>
         CoordinateQuery(ref.read(databaseProvider))
             .getCoordinatesBySiteID(siteId));
+
+final collEffortByEventProvider = FutureProvider.family
+    .autoDispose<List<CollEffortData>, int>((ref, collEventId) =>
+        CollEffortQuery(ref.read(databaseProvider))
+            .getCollEffortByEventId(collEventId));

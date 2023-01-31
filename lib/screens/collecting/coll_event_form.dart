@@ -43,7 +43,9 @@ class CollEventFormState extends ConsumerState<CollEventForm> {
               AdaptiveLayout(
                 useHorizontalLayout: useHorizontalLayout,
                 children: [
-                  const CollectingEffortFrom(),
+                  CollectingEffortFrom(
+                    collEventId: widget.id,
+                  ),
                   CollEventTabBar(useHorizontalLayout: useHorizontalLayout),
                 ],
               ),
