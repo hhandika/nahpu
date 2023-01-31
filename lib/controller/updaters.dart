@@ -1,5 +1,6 @@
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/services/database.dart';
+import 'package:nahpu/services/collevent_queries.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,7 +13,7 @@ void updateNarrative(int id, NarrativeCompanion entries, WidgetRef ref) {
 }
 
 void updateCollEvent(int id, CollEventCompanion entries, WidgetRef ref) {
-  ref.read(databaseProvider).updateCollEventEntry(id, entries);
+  CollEventQuery(ref.read(databaseProvider)).updateCollEventEntry(id, entries);
 }
 
 void updateSpecimen(String uuid, SpecimenCompanion entries, WidgetRef ref) {

@@ -100,32 +100,6 @@ class Database extends _$Database {
     return (delete(site)..where((t) => t.projectUuid.equals(projectUuid))).go();
   }
 
-  // Collecting event table
-  Future<int> createCollEvent(CollEventCompanion form) =>
-      into(collEvent).insert(form);
-
-  Future updateCollEventEntry(int id, CollEventCompanion entry) {
-    return (update(collEvent)..where((t) => t.id.equals(id))).write(entry);
-  }
-
-  Future<List<CollEventData>> getAllCollEvents(String projectUuid) {
-    return (select(collEvent)..where((t) => t.projectUuid.equals(projectUuid)))
-        .get();
-  }
-
-  Future<CollEventData> getCollEventById(int id) async {
-    return await (select(collEvent)..where((t) => t.id.equals(id))).getSingle();
-  }
-
-  Future<void> deleteCollEvent(int id) {
-    return (delete(collEvent)..where((t) => t.id.equals(id))).go();
-  }
-
-  Future<void> deleteAllCollEvents(String projectUuid) {
-    return (delete(collEvent)..where((t) => t.projectUuid.equals(projectUuid)))
-        .go();
-  }
-
   // Specimen General table
   Future<int> createSpecimen(SpecimenCompanion form) =>
       into(specimen).insert(form);

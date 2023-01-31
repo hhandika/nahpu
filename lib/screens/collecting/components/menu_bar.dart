@@ -6,18 +6,17 @@ import 'package:nahpu/services/database.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/collecting/new_coll_events.dart';
-// import 'package:nahpu/providers/page_viewer.dart';
+import 'package:nahpu/services/collevent_queries.dart';
 
 enum MenuSelection { newEvent, pdfExport, deleteRecords, deleteAllRecords }
 
 Future<void> createNewCollEvents(BuildContext context, WidgetRef ref) {
   String projectUuid = ref.watch(projectUuidProvider);
 
-  return ref
-      .read(databaseProvider)
+  return CollEventQuery(ref.read(databaseProvider))
       .createCollEvent(CollEventCompanion(
-        projectUuid: db.Value(projectUuid),
-      ))
+    projectUuid: db.Value(projectUuid),
+  ))
       .then(
     (value) {
       ref.invalidate(collEventEntryProvider);
@@ -93,7 +92,8 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
       case MenuSelection.deleteAllRecords:
         // TODO: Prevent deleting all records if there are being used.
         final projectUuid = ref.read(projectUuidProvider.notifier).state;
-        ref.read(databaseProvider).deleteAllCollEvents(projectUuid);
+        CollEventQuery(ref.read(databaseProvider))
+            .deleteAllCollEvents(projectUuid);
         ref.invalidate(collEventEntryProvider);
         break;
     }

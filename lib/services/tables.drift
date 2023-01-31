@@ -70,14 +70,12 @@ CREATE TABLE collectingPersonnel (
 
 CREATE TABLE collEffort (
     id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
-    eventID TEXT,
-    projectUuid TEXT,
+    eventID INT,
     type TEXT,
     brand TEXT,
     count INT,
     size TEXT,
-    FOREIGN KEY(eventID) REFERENCES collEvent(eventID),
-    FOREIGN KEY(projectUuid) REFERENCES project(uuid)
+    FOREIGN KEY(eventID) REFERENCES collEvent(id)
 );
 
 CREATE TABLE narrative (

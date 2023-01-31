@@ -277,3 +277,26 @@ class CoordinateCtrModel {
       gpsUnitCtr: TextEditingController(),
       noteCtr: TextEditingController());
 }
+
+class CollectingToolCtrModel {
+  CollectingToolCtrModel({
+    required this.nameCtr,
+    required this.brandCtr,
+    required this.countCtr,
+    required this.sizeCtr,
+    required this.noteCtr,
+  });
+
+  TextEditingController nameCtr;
+  TextEditingController brandCtr;
+  TextEditingController countCtr;
+  TextEditingController sizeCtr;
+  TextEditingController noteCtr;
+
+  factory CollectingToolCtrModel.empty() => CollectingToolCtrModel(
+      nameCtr: TextEditingController(),
+      brandCtr: TextEditingController(),
+      countCtr: TextEditingController(),
+      sizeCtr: TextEditingController(),
+      noteCtr: TextEditingController());
+}

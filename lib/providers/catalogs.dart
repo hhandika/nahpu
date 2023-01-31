@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/specimen_queries.dart';
 import 'package:nahpu/services/coordinate_queries.dart';
+import 'package:nahpu/services/collevent_queries.dart';
 
 final specimenProvider = Provider<SpecimenQuery>((ref) {
   final specimenTable = SpecimenQuery(ref.read(databaseProvider));
@@ -26,7 +27,8 @@ final siteEntryProvider = FutureProvider.autoDispose<List<SiteData>>((ref) {
 final collEventEntryProvider =
     FutureProvider.autoDispose<List<CollEventData>>((ref) {
   final projectUuid = ref.watch(projectUuidProvider);
-  final collEvents = ref.read(databaseProvider).getAllCollEvents(projectUuid);
+  final collEvents =
+      CollEventQuery(ref.read(databaseProvider)).getAllCollEvents(projectUuid);
   return collEvents;
 });
 
@@ -40,7 +42,7 @@ final specimenEntryProvider =
 
 final collEventIDprovider =
     FutureProvider.family.autoDispose<CollEventData, int>((ref, id) async {
-  final collEventID = ref.read(databaseProvider).getCollEventById(id);
+  final collEventID = CollEventQuery(ref.read(databaseProvider)).getCollEventById(id);
   return collEventID;
 });
 

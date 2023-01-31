@@ -3823,16 +3823,9 @@ class CollEffort extends Table with TableInfo<CollEffort, CollEffortData> {
       $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
   static const VerificationMeta _eventIDMeta =
       const VerificationMeta('eventID');
-  late final GeneratedColumn<String> eventID = GeneratedColumn<String>(
+  late final GeneratedColumn<int> eventID = GeneratedColumn<int>(
       'eventID', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _projectUuidMeta =
-      const VerificationMeta('projectUuid');
-  late final GeneratedColumn<String> projectUuid = GeneratedColumn<String>(
-      'projectUuid', aliasedName, true,
-      type: DriftSqlType.string,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _typeMeta = const VerificationMeta('type');
@@ -3860,8 +3853,7 @@ class CollEffort extends Table with TableInfo<CollEffort, CollEffortData> {
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, eventID, projectUuid, type, brand, count, size];
+  List<GeneratedColumn> get $columns => [id, eventID, type, brand, count, size];
   @override
   String get aliasedName => _alias ?? 'collEffort';
   @override
@@ -3877,12 +3869,6 @@ class CollEffort extends Table with TableInfo<CollEffort, CollEffortData> {
     if (data.containsKey('eventID')) {
       context.handle(_eventIDMeta,
           eventID.isAcceptableOrUnknown(data['eventID']!, _eventIDMeta));
-    }
-    if (data.containsKey('projectUuid')) {
-      context.handle(
-          _projectUuidMeta,
-          projectUuid.isAcceptableOrUnknown(
-              data['projectUuid']!, _projectUuidMeta));
     }
     if (data.containsKey('type')) {
       context.handle(
@@ -3912,9 +3898,7 @@ class CollEffort extends Table with TableInfo<CollEffort, CollEffortData> {
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       eventID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}eventID']),
-      projectUuid: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
+          .read(DriftSqlType.int, data['${effectivePrefix}eventID']),
       type: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}type']),
       brand: attachedDatabase.typeMapping
@@ -3932,18 +3916,15 @@ class CollEffort extends Table with TableInfo<CollEffort, CollEffortData> {
   }
 
   @override
-  List<String> get customConstraints => const [
-        'FOREIGN KEY(eventID)REFERENCES collEvent(eventID)',
-        'FOREIGN KEY(projectUuid)REFERENCES project(uuid)'
-      ];
+  List<String> get customConstraints =>
+      const ['FOREIGN KEY(eventID)REFERENCES collEvent(id)'];
   @override
   bool get dontWriteConstraints => true;
 }
 
 class CollEffortData extends DataClass implements Insertable<CollEffortData> {
   final int id;
-  final String? eventID;
-  final String? projectUuid;
+  final int? eventID;
   final String? type;
   final String? brand;
   final int? count;
@@ -3951,7 +3932,6 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
   const CollEffortData(
       {required this.id,
       this.eventID,
-      this.projectUuid,
       this.type,
       this.brand,
       this.count,
@@ -3961,10 +3941,7 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     if (!nullToAbsent || eventID != null) {
-      map['eventID'] = Variable<String>(eventID);
-    }
-    if (!nullToAbsent || projectUuid != null) {
-      map['projectUuid'] = Variable<String>(projectUuid);
+      map['eventID'] = Variable<int>(eventID);
     }
     if (!nullToAbsent || type != null) {
       map['type'] = Variable<String>(type);
@@ -3987,9 +3964,6 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
       eventID: eventID == null && nullToAbsent
           ? const Value.absent()
           : Value(eventID),
-      projectUuid: projectUuid == null && nullToAbsent
-          ? const Value.absent()
-          : Value(projectUuid),
       type: type == null && nullToAbsent ? const Value.absent() : Value(type),
       brand:
           brand == null && nullToAbsent ? const Value.absent() : Value(brand),
@@ -4004,8 +3978,7 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return CollEffortData(
       id: serializer.fromJson<int>(json['id']),
-      eventID: serializer.fromJson<String?>(json['eventID']),
-      projectUuid: serializer.fromJson<String?>(json['projectUuid']),
+      eventID: serializer.fromJson<int?>(json['eventID']),
       type: serializer.fromJson<String?>(json['type']),
       brand: serializer.fromJson<String?>(json['brand']),
       count: serializer.fromJson<int?>(json['count']),
@@ -4017,8 +3990,7 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'eventID': serializer.toJson<String?>(eventID),
-      'projectUuid': serializer.toJson<String?>(projectUuid),
+      'eventID': serializer.toJson<int?>(eventID),
       'type': serializer.toJson<String?>(type),
       'brand': serializer.toJson<String?>(brand),
       'count': serializer.toJson<int?>(count),
@@ -4028,8 +4000,7 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
 
   CollEffortData copyWith(
           {int? id,
-          Value<String?> eventID = const Value.absent(),
-          Value<String?> projectUuid = const Value.absent(),
+          Value<int?> eventID = const Value.absent(),
           Value<String?> type = const Value.absent(),
           Value<String?> brand = const Value.absent(),
           Value<int?> count = const Value.absent(),
@@ -4037,7 +4008,6 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
       CollEffortData(
         id: id ?? this.id,
         eventID: eventID.present ? eventID.value : this.eventID,
-        projectUuid: projectUuid.present ? projectUuid.value : this.projectUuid,
         type: type.present ? type.value : this.type,
         brand: brand.present ? brand.value : this.brand,
         count: count.present ? count.value : this.count,
@@ -4048,7 +4018,6 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
     return (StringBuffer('CollEffortData(')
           ..write('id: $id, ')
           ..write('eventID: $eventID, ')
-          ..write('projectUuid: $projectUuid, ')
           ..write('type: $type, ')
           ..write('brand: $brand, ')
           ..write('count: $count, ')
@@ -4058,15 +4027,13 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, eventID, projectUuid, type, brand, count, size);
+  int get hashCode => Object.hash(id, eventID, type, brand, count, size);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is CollEffortData &&
           other.id == this.id &&
           other.eventID == this.eventID &&
-          other.projectUuid == this.projectUuid &&
           other.type == this.type &&
           other.brand == this.brand &&
           other.count == this.count &&
@@ -4075,8 +4042,7 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
 
 class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
   final Value<int> id;
-  final Value<String?> eventID;
-  final Value<String?> projectUuid;
+  final Value<int?> eventID;
   final Value<String?> type;
   final Value<String?> brand;
   final Value<int?> count;
@@ -4084,7 +4050,6 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
   const CollEffortCompanion({
     this.id = const Value.absent(),
     this.eventID = const Value.absent(),
-    this.projectUuid = const Value.absent(),
     this.type = const Value.absent(),
     this.brand = const Value.absent(),
     this.count = const Value.absent(),
@@ -4093,7 +4058,6 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
   CollEffortCompanion.insert({
     this.id = const Value.absent(),
     this.eventID = const Value.absent(),
-    this.projectUuid = const Value.absent(),
     this.type = const Value.absent(),
     this.brand = const Value.absent(),
     this.count = const Value.absent(),
@@ -4101,8 +4065,7 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
   });
   static Insertable<CollEffortData> custom({
     Expression<int>? id,
-    Expression<String>? eventID,
-    Expression<String>? projectUuid,
+    Expression<int>? eventID,
     Expression<String>? type,
     Expression<String>? brand,
     Expression<int>? count,
@@ -4111,7 +4074,6 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (eventID != null) 'eventID': eventID,
-      if (projectUuid != null) 'projectUuid': projectUuid,
       if (type != null) 'type': type,
       if (brand != null) 'brand': brand,
       if (count != null) 'count': count,
@@ -4121,8 +4083,7 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
 
   CollEffortCompanion copyWith(
       {Value<int>? id,
-      Value<String?>? eventID,
-      Value<String?>? projectUuid,
+      Value<int?>? eventID,
       Value<String?>? type,
       Value<String?>? brand,
       Value<int?>? count,
@@ -4130,7 +4091,6 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
     return CollEffortCompanion(
       id: id ?? this.id,
       eventID: eventID ?? this.eventID,
-      projectUuid: projectUuid ?? this.projectUuid,
       type: type ?? this.type,
       brand: brand ?? this.brand,
       count: count ?? this.count,
@@ -4145,10 +4105,7 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
       map['id'] = Variable<int>(id.value);
     }
     if (eventID.present) {
-      map['eventID'] = Variable<String>(eventID.value);
-    }
-    if (projectUuid.present) {
-      map['projectUuid'] = Variable<String>(projectUuid.value);
+      map['eventID'] = Variable<int>(eventID.value);
     }
     if (type.present) {
       map['type'] = Variable<String>(type.value);
@@ -4170,7 +4127,6 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
     return (StringBuffer('CollEffortCompanion(')
           ..write('id: $id, ')
           ..write('eventID: $eventID, ')
-          ..write('projectUuid: $projectUuid, ')
           ..write('type: $type, ')
           ..write('brand: $brand, ')
           ..write('count: $count, ')
