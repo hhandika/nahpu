@@ -54,7 +54,7 @@ class NumberOnlyField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return CustomTextField(
+    return CommonTextField(
       labelText: labelText,
       controller: controller,
       hintText: hintText,
@@ -65,8 +65,8 @@ class NumberOnlyField extends ConsumerWidget {
   }
 }
 
-class CustomTextField extends ConsumerWidget {
-  const CustomTextField({
+class CommonTextField extends ConsumerWidget {
+  const CommonTextField({
     Key? key,
     required this.labelText,
     this.controller,

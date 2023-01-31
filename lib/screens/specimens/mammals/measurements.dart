@@ -166,7 +166,7 @@ class MammalMeasurementFormsState
           ),
           const Padding(
             padding: EdgeInsets.all(5),
-            child: CustomTextField(
+            child: CommonTextField(
               maxLines: 5,
               labelText: 'Remarks',
               hintText: 'Write notes about the measurements (optional)',

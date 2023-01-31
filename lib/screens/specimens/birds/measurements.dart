@@ -63,13 +63,13 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
-              CustomTextField(
+              CommonTextField(
                 controller: birdMeasurementCtrModel.irisCtr,
                 labelText: 'Iris color',
                 hintText: 'Enter iris color',
                 isLastField: false,
               ),
-              CustomTextField(
+              CommonTextField(
                 controller: birdMeasurementCtrModel.billCtr,
                 labelText: 'Bill color',
                 hintText: 'Enter bill color',
@@ -80,13 +80,13 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
-              CustomTextField(
+              CommonTextField(
                 controller: birdMeasurementCtrModel.footCtr,
                 labelText: 'Foot color',
                 hintText: 'Enter foot color',
                 isLastField: false,
               ),
-              CustomTextField(
+              CommonTextField(
                 controller: birdMeasurementCtrModel.tarsusCtr,
                 labelText: 'Tarsus color',
                 hintText: 'Enter foot color',
@@ -184,7 +184,7 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
           ),
           const Padding(
             padding: EdgeInsets.all(5),
-            child: CustomTextField(
+            child: CommonTextField(
               maxLines: 3,
               labelText: 'Stomach contents',
               hintText: 'Enter stomach contents',
@@ -271,7 +271,7 @@ class MaleGonadForm extends ConsumerWidget {
             // Remarks
             const Padding(
               padding: EdgeInsets.all(5),
-              child: CustomTextField(
+              child: CommonTextField(
                 maxLines: 3,
                 labelText: 'Remarks',
                 hintText: 'Enter remarks',
@@ -316,12 +316,12 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: const [
-              CustomTextField(
+              CommonTextField(
                 labelText: 'Length (mm)',
                 hintText: 'Enter length',
                 isLastField: false,
               ),
-              CustomTextField(
+              CommonTextField(
                 labelText: 'Width (mm)',
                 hintText: 'Enter width',
                 isLastField: false,
@@ -369,7 +369,7 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
           OviductForm(useHorizontalLayout: widget.useHorizontalLayout),
           const Padding(
             padding: EdgeInsets.all(5),
-            child: CustomTextField(
+            child: CommonTextField(
               maxLines: 3,
               labelText: 'Remarks',
               hintText: 'Add additional information about the gonads',
@@ -527,7 +527,7 @@ class MoltingForm extends StatelessWidget {
           const BodyMoltForm(),
           const Padding(
             padding: EdgeInsets.all(5),
-            child: CustomTextField(
+            child: CommonTextField(
               maxLines: 3,
               labelText: 'Remarks',
               hintText: 'Add additional information about the molting',
