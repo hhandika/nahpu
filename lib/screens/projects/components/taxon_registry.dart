@@ -84,7 +84,7 @@ class TaxonRegistryInfo extends ConsumerWidget {
                     ],
                   ),
                 ),
-          loading: () => const CommmonProgressIndicator(),
+          loading: () => const CommonProgressIndicator(),
           error: (error, stack) => Text('Error: $error'),
         );
   }
@@ -229,7 +229,7 @@ class TaxonRegistryListState extends ConsumerState<TaxonRegistryList> {
                   ? const Text('No taxon found')
                   : TaxonList(taxonList: data);
             },
-            loading: () => const CommmonProgressIndicator(),
+            loading: () => const CommonProgressIndicator(),
             error: (error, stack) => Text('Error: $error'),
           ),
     );

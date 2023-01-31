@@ -31,7 +31,7 @@ class HomeBodyState extends ConsumerState<HomeBody> {
                 return _buildBody(data.reversed.toList());
               },
               loading: () {
-                return const CommmonProgressIndicator();
+                return const CommonProgressIndicator();
               },
               error: (error, stackTrace) {
                 return Text(error.toString());

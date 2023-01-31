@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CommmonProgressIndicator extends StatelessWidget {
-  const CommmonProgressIndicator({super.key});
+class CommonProgressIndicator extends StatelessWidget {
+  const CommonProgressIndicator({super.key});
 
   @override
   Widget build(BuildContext context) {

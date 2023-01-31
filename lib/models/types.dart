@@ -8,6 +8,8 @@ enum SpecimenSex { male, female, unknown }
 
 enum SpecimenAge { adult, subadult, juvenile, unknown }
 
+enum CommonPopUpMenuItems { edit, delete }
+
 SpecimenSex matchSpecimenSex(String? sex) {
   switch (sex) {
     case 'Male':

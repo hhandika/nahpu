@@ -81,7 +81,7 @@ class SitesState extends ConsumerState<Sites> {
               );
             }
           }, loading: () {
-            return const CommmonProgressIndicator();
+            return const CommonProgressIndicator();
           }, error: (error, stackTrace) {
             return Text(error.toString());
           }),

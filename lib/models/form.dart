@@ -297,21 +297,21 @@ class CoordinateCtrModel {
 
 class CollEffortCtrModel {
   CollEffortCtrModel({
-    required this.nameCtr,
+    required this.typeCtr,
     required this.brandCtr,
     required this.countCtr,
     required this.sizeCtr,
     required this.noteCtr,
   });
 
-  TextEditingController nameCtr;
+  TextEditingController typeCtr;
   TextEditingController brandCtr;
   TextEditingController countCtr;
   TextEditingController sizeCtr;
   TextEditingController noteCtr;
 
   factory CollEffortCtrModel.empty() => CollEffortCtrModel(
-      nameCtr: TextEditingController(),
+      typeCtr: TextEditingController(),
       brandCtr: TextEditingController(),
       countCtr: TextEditingController(),
       sizeCtr: TextEditingController(),
@@ -319,7 +319,7 @@ class CollEffortCtrModel {
 
   factory CollEffortCtrModel.fromData(CollEffortData data) =>
       CollEffortCtrModel(
-        nameCtr: TextEditingController(text: data.type ?? ''),
+        typeCtr: TextEditingController(text: data.type ?? ''),
         brandCtr: TextEditingController(text: data.brand ?? ''),
         countCtr: TextEditingController(text: data.count.toString()),
         sizeCtr: TextEditingController(text: data.size.toString()),

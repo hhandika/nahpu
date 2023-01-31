@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/form.dart';
+import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
@@ -26,7 +27,7 @@ class CollectingEffortFrom extends StatelessWidget {
         children: [
           const SizedBox(height: 10),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.5,
+            height: MediaQuery.of(context).size.height * 0.3,
             child: CollEffortList(collEventId: collEventId),
           ),
           PrimaryButton(
@@ -113,7 +114,6 @@ class EditCollEffort extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final collToolCtr = CollEffortCtrModel.empty();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Collecting Effort'),
@@ -142,11 +142,44 @@ class CollEffortTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(collEffort.type ?? ''),
-      subtitle: Text(collEffort.brand ?? ''),
+      subtitle: Subtitle(data: collEffort),
       trailing: CollEffortMenu(
         collEventId: collEffort.eventID!,
         collEffortId: collEffort.id,
         collToolCtr: CollEffortCtrModel.fromData(collEffort),
+      ),
+    );
+  }
+}
+
+class Subtitle extends StatelessWidget {
+  const Subtitle({
+    super.key,
+    required this.data,
+  });
+
+  final CollEffortData data;
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(
+            text: 'Count: ${data.count}',
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          const TextSpan(text: ' | '),
+          if (data.size != null && data.size!.isNotEmpty)
+            TextSpan(
+              text: ' | Size: ${data.size}',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          TextSpan(
+            text: 'Brand: ${data.brand}',
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ],
       ),
     );
   }
@@ -171,28 +204,42 @@ class CollEffortMenu extends ConsumerStatefulWidget {
 class CollEffortMenuState extends ConsumerState<CollEffortMenu> {
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton(
-      onSelected: (value) {
-        if (value == 'edit') {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => EditCollEffort(
-                collEffortId: widget.collEffortId,
-                collEventId: widget.collEventId,
-                collToolCtr: widget.collToolCtr,
-              ),
-            ),
-          );
-        }
-      },
+    return PopupMenuButton<CommonPopUpMenuItems>(
+      onSelected: _onSelected,
       itemBuilder: (context) => [
         const PopupMenuItem(
-          value: 'new',
-          child: Text('New Collecting Effort'),
+          value: CommonPopUpMenuItems.edit,
+          child: Text('Edit'),
+        ),
+        const PopupMenuItem(
+          value: CommonPopUpMenuItems.delete,
+          child: Text('Delete'),
         ),
       ],
     );
+  }
+
+  void _onSelected(CommonPopUpMenuItems item) {
+    switch (item) {
+      case CommonPopUpMenuItems.edit:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EditCollEffort(
+              collEffortId: widget.collEffortId,
+              collEventId: widget.collEventId,
+              collToolCtr: widget.collToolCtr,
+            ),
+          ),
+        );
+        break;
+      case CommonPopUpMenuItems.delete:
+        CollEffortQuery(ref.read(databaseProvider)).deleteCollEffort(
+          widget.collEffortId,
+        );
+        ref.invalidate(collEffortByEventProvider);
+        break;
+    }
   }
 }
 
@@ -223,10 +270,10 @@ class CollEffortFormState extends ConsumerState<CollEffortForm> {
         child: Column(
           children: [
             TextFormField(
-              controller: widget.collToolCtr.nameCtr,
+              controller: widget.collToolCtr.typeCtr,
               decoration: const InputDecoration(
-                labelText: 'Name',
-                hintText: 'Enter name of the tool',
+                labelText: 'Type',
+                hintText: 'Enter the type of the tool',
               ),
             ),
             TextFormField(
@@ -320,7 +367,7 @@ class CollEffortFormState extends ConsumerState<CollEffortForm> {
   CollEffortCompanion _getForm() {
     return CollEffortCompanion(
       eventID: db.Value(widget.collEventId),
-      type: db.Value(widget.collToolCtr.nameCtr.text),
+      type: db.Value(widget.collToolCtr.typeCtr.text),
       brand: db.Value(widget.collToolCtr.brandCtr.text),
       count: db.Value(int.tryParse(widget.collToolCtr.countCtr.text)),
       size: db.Value(widget.collToolCtr.sizeCtr.text),

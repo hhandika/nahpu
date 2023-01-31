@@ -98,7 +98,7 @@ class SpecimensState extends ConsumerState<Specimens> {
                     );
                   }
                 },
-                loading: () => const CommmonProgressIndicator(),
+                loading: () => const CommonProgressIndicator(),
                 error: (error, stack) => Text(error.toString()),
               ),
         ),

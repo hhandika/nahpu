@@ -71,7 +71,7 @@ class PersonnelList extends ConsumerWidget {
           },
         );
       },
-      loading: () => const CommmonProgressIndicator(),
+      loading: () => const CommonProgressIndicator(),
       error: (error, stack) => Text(error.toString()),
     );
   }

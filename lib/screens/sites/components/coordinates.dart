@@ -1,4 +1,5 @@
 import 'package:nahpu/models/form.dart';
+import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +27,7 @@ class CoordinateFields extends StatelessWidget {
             height: 10,
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.5,
+            height: MediaQuery.of(context).size.height * 0.3,
             child: CoordinateList(
               sideId: siteId,
             ),
@@ -299,7 +300,7 @@ class CoordinateList extends ConsumerWidget {
           },
         );
       },
-      loading: () => const CommmonProgressIndicator(),
+      loading: () => const CommonProgressIndicator(),
       error: (error, stack) => Text(error.toString()),
     );
   }
@@ -368,34 +369,39 @@ class CoordinateMenuState extends ConsumerState<CoordinateMenu> {
   Widget build(BuildContext context) {
     return PopupMenuButton(
       icon: const Icon(Icons.more_vert),
-      onSelected: (value) {
-        if (value == 'edit') {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => EditCoordinate(
-                coordinateId: widget.coordinateId,
-                siteId: widget.siteId,
-                coordCtr: widget.coordCtr,
-              ),
-            ),
-          );
-        } else if (value == 'delete') {
-          CoordinateQuery(ref.read(databaseProvider))
-              .deleteCoordinate(widget.coordinateId);
-          ref.invalidate(coordinateBySiteProvider);
-        }
-      },
+      onSelected: _onSelected,
       itemBuilder: (context) => [
-        const PopupMenuItem(
-          value: 'edit',
+        const PopupMenuItem<CommonPopUpMenuItems>(
+          value: CommonPopUpMenuItems.edit,
           child: Text('Edit'),
         ),
         const PopupMenuItem(
-          value: 'delete',
+          value: CommonPopUpMenuItems.delete,
           child: Text('Delete'),
         ),
       ],
     );
+  }
+
+  void _onSelected(CommonPopUpMenuItems item) {
+    switch (item) {
+      case CommonPopUpMenuItems.edit:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EditCoordinate(
+              coordinateId: widget.coordinateId,
+              siteId: widget.siteId,
+              coordCtr: widget.coordCtr,
+            ),
+          ),
+        );
+        break;
+      case CommonPopUpMenuItems.delete:
+        CoordinateQuery(ref.read(databaseProvider))
+            .deleteCoordinate(widget.coordinateId);
+        ref.invalidate(coordinateBySiteProvider);
+        break;
+    }
   }
 }
