@@ -62,3 +62,28 @@ class CollEffortQuery extends DatabaseAccessor<Database>
     return delete(collEffort).go();
   }
 }
+
+class WeatherDataQuery extends DatabaseAccessor<Database>
+    with _$CollEventQueryMixin {
+  WeatherDataQuery(Database db) : super(db);
+
+  Future<int> createWeatherData(WeatherDataCompanion form) =>
+      into(weatherData).insert(form);
+
+  Future updateWeatherDataEntry(int id, WeatherDataCompanion entry) {
+    return (update(weatherData)..where((t) => t.id.equals(id))).write(entry);
+  }
+
+  Future<List<WeatherDataData>> getWeatherDataById(int weatherId) async {
+    return await (select(weatherData)..where((t) => t.id.equals(weatherId)))
+        .get();
+  }
+
+  Future<void> deleteWeatherData(int id) {
+    return (delete(weatherData)..where((t) => t.id.equals(id))).go();
+  }
+
+  Future<void> deleteAllWeatherData(String projectUuid) {
+    return delete(weatherData).go();
+  }
+}
