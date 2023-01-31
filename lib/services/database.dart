@@ -100,24 +100,6 @@ class Database extends _$Database {
     return (delete(site)..where((t) => t.projectUuid.equals(projectUuid))).go();
   }
 
-  // Specimen General table
-  Future<int> createSpecimen(SpecimenCompanion form) =>
-      into(specimen).insert(form);
-
-  Future<List<SpecimenData>> getAllSpecimens(String projectUuid) {
-    return (select(specimen)..where((t) => t.projectUuid.equals(projectUuid)))
-        .get();
-  }
-
-  Future<void> deleteSpecimen(String uuid) {
-    return (delete(specimen)..where((t) => t.uuid.equals(uuid))).go();
-  }
-
-  Future<void> deleteAllSpecimens(String projectUuid) {
-    return (delete(specimen)..where((t) => t.projectUuid.equals(projectUuid)))
-        .go();
-  }
-
   // Personnel table
   Future<int> createPersonnel(PersonnelCompanion form) =>
       into(personnel).insert(form);
@@ -136,33 +118,6 @@ class Database extends _$Database {
 
   Future<void> deleteAllPersonnel() {
     return delete(personnel).go();
-  }
-
-  Future<TaxonomyData> getTaxonById(int id) {
-    return (select(taxonomy)..where((t) => t.id.equals(id))).getSingle();
-  }
-
-  Future<TaxonomyData> getTaxonIdByGenusEpithet(String genus, String epithet) {
-    return (select(taxonomy)
-          ..where((t) => t.genus.equals(genus))
-          ..where((t) => t.specificEpithet.equals(epithet)))
-        .getSingle();
-  }
-
-  Future<List<TaxonomyData>> getTaxonList() {
-    return select(taxonomy).get();
-  }
-
-  Future<void> createTaxon(TaxonomyCompanion form) {
-    return into(taxonomy).insert(form);
-  }
-
-  Future<void> updateTaxonEntry(int id, TaxonomyCompanion entry) {
-    return (update(taxonomy)..where((t) => t.id.equals(id))).write(entry);
-  }
-
-  Future<void> deleteTaxon(int id) {
-    return (delete(taxonomy)..where((t) => t.id.equals(id))).go();
   }
 }
 

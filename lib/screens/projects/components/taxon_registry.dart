@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/form.dart';
+import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/indicators.dart';
 import 'package:nahpu/services/database.dart';
 import 'package:drift/drift.dart' as db;
+import 'package:nahpu/services/taxonomy_queries.dart';
 
 class TaxonRegistryViewer extends ConsumerStatefulWidget {
   const TaxonRegistryViewer({super.key});
@@ -205,7 +207,7 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
       commonName: db.Value(_ctr.commonNameCtr.text),
       note: db.Value(_ctr.noteCtr.text),
     );
-    await ref.read(databaseProvider).createTaxon(taxon);
+    await TaxonomyQuery(ref.read(databaseProvider)).createTaxon(taxon);
   }
 }
 
@@ -253,7 +255,8 @@ class TaxonList extends ConsumerWidget {
           trailing: IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () async {
-              await ref.read(databaseProvider).deleteTaxon(taxonList[index].id);
+              await TaxonomyQuery(ref.read(databaseProvider))
+                  .deleteTaxon(taxonList[index].id);
               ref.invalidate(taxonRegistryProvider);
             },
           ),

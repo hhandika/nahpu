@@ -4,6 +4,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database.dart';
 import 'package:nahpu/models/types.dart';
+import 'package:nahpu/services/taxonomy_queries.dart';
 
 class SpeciesAutoComplete extends ConsumerWidget {
   const SpeciesAutoComplete({
@@ -28,7 +29,7 @@ class SpeciesAutoComplete extends ConsumerWidget {
       hideSuggestionsOnKeyboardHide: false,
       suggestionsCallback: (pattern) async {
         List<TaxonomyData> speciesList =
-            await ref.watch(databaseProvider).getTaxonList();
+            await TaxonomyQuery(ref.watch(databaseProvider)).getTaxonList();
         List<String> sortedList = speciesList
             .map((e) => '${e.genus} ${e.specificEpithet}')
             .where((element) => element.contains(pattern.toSentenceCase()))

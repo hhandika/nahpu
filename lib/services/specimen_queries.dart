@@ -10,7 +10,23 @@ class SpecimenQuery extends DatabaseAccessor<Database>
     with _$SpecimenQueryMixin {
   SpecimenQuery(Database db) : super(db);
 
-  // Specimen table
+  // Specimen General table
+  Future<int> createSpecimen(SpecimenCompanion form) =>
+      into(specimen).insert(form);
+
+  Future<List<SpecimenData>> getAllSpecimens(String projectUuid) {
+    return (select(specimen)..where((t) => t.projectUuid.equals(projectUuid)))
+        .get();
+  }
+
+  Future<void> deleteSpecimen(String uuid) {
+    return (delete(specimen)..where((t) => t.uuid.equals(uuid))).go();
+  }
+
+  Future<void> deleteAllSpecimens(String projectUuid) {
+    return (delete(specimen)..where((t) => t.projectUuid.equals(projectUuid)))
+        .go();
+  }
 
   Future<int> createBirdMeasurements(BirdMeasurementCompanion form) =>
       into(birdMeasurement).insert(form);
@@ -27,20 +43,6 @@ class SpecimenQuery extends DatabaseAccessor<Database>
     return (update(birdMeasurement)
           ..where((t) => t.specimenUuid.equals(specimenUuid)))
         .write(entry);
-  }
-
-  Future<List<SpecimenData>> getAllSpecimens(String projectUuid) {
-    return (select(specimen)..where((t) => t.projectUuid.equals(projectUuid)))
-        .get();
-  }
-
-  Future<void> deleteSpecimen(String uuid) {
-    return (delete(specimen)..where((t) => t.uuid.equals(uuid))).go();
-  }
-
-  Future<void> deleteAllSpecimens(String projectUuid) {
-    return (delete(specimen)..where((t) => t.projectUuid.equals(projectUuid)))
-        .go();
   }
 
   Future<BirdMeasurementData?> getBirdMeasurementByUuid(

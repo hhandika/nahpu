@@ -2541,7 +2541,7 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
       'siteID', aliasedName, true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
-      $customConstraints: 'REFERENCES site(id)');
+      $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -2668,6 +2668,9 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
     return Coordinate(attachedDatabase, alias);
   }
 
+  @override
+  List<String> get customConstraints =>
+      const ['FOREIGN KEY(siteID)REFERENCES site(id)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -3076,6 +3079,438 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
   }
 }
 
+class WeatherData extends Table with TableInfo<WeatherData, WeatherDataData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  WeatherData(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
+  static const VerificationMeta _lowestDayTempMeta =
+      const VerificationMeta('lowestDayTemp');
+  late final GeneratedColumn<String> lowestDayTemp = GeneratedColumn<String>(
+      'lowestDayTemp', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _highestDayTempMeta =
+      const VerificationMeta('highestDayTemp');
+  late final GeneratedColumn<String> highestDayTemp = GeneratedColumn<String>(
+      'highestDayTemp', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _lowestNightTempMeta =
+      const VerificationMeta('lowestNightTemp');
+  late final GeneratedColumn<String> lowestNightTemp = GeneratedColumn<String>(
+      'lowestNightTemp', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _highestNightTempMeta =
+      const VerificationMeta('highestNightTemp');
+  late final GeneratedColumn<String> highestNightTemp = GeneratedColumn<String>(
+      'highestNightTemp', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _sunriseMeta =
+      const VerificationMeta('sunrise');
+  late final GeneratedColumn<String> sunrise = GeneratedColumn<String>(
+      'sunrise', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _sunsetMeta = const VerificationMeta('sunset');
+  late final GeneratedColumn<String> sunset = GeneratedColumn<String>(
+      'sunset', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _moonPhaseMeta =
+      const VerificationMeta('moonPhase');
+  late final GeneratedColumn<String> moonPhase = GeneratedColumn<String>(
+      'moonPhase', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        lowestDayTemp,
+        highestDayTemp,
+        lowestNightTemp,
+        highestNightTemp,
+        sunrise,
+        sunset,
+        moonPhase
+      ];
+  @override
+  String get aliasedName => _alias ?? 'weatherData';
+  @override
+  String get actualTableName => 'weatherData';
+  @override
+  VerificationContext validateIntegrity(Insertable<WeatherDataData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('lowestDayTemp')) {
+      context.handle(
+          _lowestDayTempMeta,
+          lowestDayTemp.isAcceptableOrUnknown(
+              data['lowestDayTemp']!, _lowestDayTempMeta));
+    }
+    if (data.containsKey('highestDayTemp')) {
+      context.handle(
+          _highestDayTempMeta,
+          highestDayTemp.isAcceptableOrUnknown(
+              data['highestDayTemp']!, _highestDayTempMeta));
+    }
+    if (data.containsKey('lowestNightTemp')) {
+      context.handle(
+          _lowestNightTempMeta,
+          lowestNightTemp.isAcceptableOrUnknown(
+              data['lowestNightTemp']!, _lowestNightTempMeta));
+    }
+    if (data.containsKey('highestNightTemp')) {
+      context.handle(
+          _highestNightTempMeta,
+          highestNightTemp.isAcceptableOrUnknown(
+              data['highestNightTemp']!, _highestNightTempMeta));
+    }
+    if (data.containsKey('sunrise')) {
+      context.handle(_sunriseMeta,
+          sunrise.isAcceptableOrUnknown(data['sunrise']!, _sunriseMeta));
+    }
+    if (data.containsKey('sunset')) {
+      context.handle(_sunsetMeta,
+          sunset.isAcceptableOrUnknown(data['sunset']!, _sunsetMeta));
+    }
+    if (data.containsKey('moonPhase')) {
+      context.handle(_moonPhaseMeta,
+          moonPhase.isAcceptableOrUnknown(data['moonPhase']!, _moonPhaseMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  WeatherDataData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return WeatherDataData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      lowestDayTemp: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}lowestDayTemp']),
+      highestDayTemp: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}highestDayTemp']),
+      lowestNightTemp: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}lowestNightTemp']),
+      highestNightTemp: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}highestNightTemp']),
+      sunrise: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}sunrise']),
+      sunset: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}sunset']),
+      moonPhase: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}moonPhase']),
+    );
+  }
+
+  @override
+  WeatherData createAlias(String alias) {
+    return WeatherData(attachedDatabase, alias);
+  }
+
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class WeatherDataData extends DataClass implements Insertable<WeatherDataData> {
+  final int id;
+  final String? lowestDayTemp;
+  final String? highestDayTemp;
+  final String? lowestNightTemp;
+  final String? highestNightTemp;
+  final String? sunrise;
+  final String? sunset;
+  final String? moonPhase;
+  const WeatherDataData(
+      {required this.id,
+      this.lowestDayTemp,
+      this.highestDayTemp,
+      this.lowestNightTemp,
+      this.highestNightTemp,
+      this.sunrise,
+      this.sunset,
+      this.moonPhase});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || lowestDayTemp != null) {
+      map['lowestDayTemp'] = Variable<String>(lowestDayTemp);
+    }
+    if (!nullToAbsent || highestDayTemp != null) {
+      map['highestDayTemp'] = Variable<String>(highestDayTemp);
+    }
+    if (!nullToAbsent || lowestNightTemp != null) {
+      map['lowestNightTemp'] = Variable<String>(lowestNightTemp);
+    }
+    if (!nullToAbsent || highestNightTemp != null) {
+      map['highestNightTemp'] = Variable<String>(highestNightTemp);
+    }
+    if (!nullToAbsent || sunrise != null) {
+      map['sunrise'] = Variable<String>(sunrise);
+    }
+    if (!nullToAbsent || sunset != null) {
+      map['sunset'] = Variable<String>(sunset);
+    }
+    if (!nullToAbsent || moonPhase != null) {
+      map['moonPhase'] = Variable<String>(moonPhase);
+    }
+    return map;
+  }
+
+  WeatherDataCompanion toCompanion(bool nullToAbsent) {
+    return WeatherDataCompanion(
+      id: Value(id),
+      lowestDayTemp: lowestDayTemp == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lowestDayTemp),
+      highestDayTemp: highestDayTemp == null && nullToAbsent
+          ? const Value.absent()
+          : Value(highestDayTemp),
+      lowestNightTemp: lowestNightTemp == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lowestNightTemp),
+      highestNightTemp: highestNightTemp == null && nullToAbsent
+          ? const Value.absent()
+          : Value(highestNightTemp),
+      sunrise: sunrise == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sunrise),
+      sunset:
+          sunset == null && nullToAbsent ? const Value.absent() : Value(sunset),
+      moonPhase: moonPhase == null && nullToAbsent
+          ? const Value.absent()
+          : Value(moonPhase),
+    );
+  }
+
+  factory WeatherDataData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return WeatherDataData(
+      id: serializer.fromJson<int>(json['id']),
+      lowestDayTemp: serializer.fromJson<String?>(json['lowestDayTemp']),
+      highestDayTemp: serializer.fromJson<String?>(json['highestDayTemp']),
+      lowestNightTemp: serializer.fromJson<String?>(json['lowestNightTemp']),
+      highestNightTemp: serializer.fromJson<String?>(json['highestNightTemp']),
+      sunrise: serializer.fromJson<String?>(json['sunrise']),
+      sunset: serializer.fromJson<String?>(json['sunset']),
+      moonPhase: serializer.fromJson<String?>(json['moonPhase']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'lowestDayTemp': serializer.toJson<String?>(lowestDayTemp),
+      'highestDayTemp': serializer.toJson<String?>(highestDayTemp),
+      'lowestNightTemp': serializer.toJson<String?>(lowestNightTemp),
+      'highestNightTemp': serializer.toJson<String?>(highestNightTemp),
+      'sunrise': serializer.toJson<String?>(sunrise),
+      'sunset': serializer.toJson<String?>(sunset),
+      'moonPhase': serializer.toJson<String?>(moonPhase),
+    };
+  }
+
+  WeatherDataData copyWith(
+          {int? id,
+          Value<String?> lowestDayTemp = const Value.absent(),
+          Value<String?> highestDayTemp = const Value.absent(),
+          Value<String?> lowestNightTemp = const Value.absent(),
+          Value<String?> highestNightTemp = const Value.absent(),
+          Value<String?> sunrise = const Value.absent(),
+          Value<String?> sunset = const Value.absent(),
+          Value<String?> moonPhase = const Value.absent()}) =>
+      WeatherDataData(
+        id: id ?? this.id,
+        lowestDayTemp:
+            lowestDayTemp.present ? lowestDayTemp.value : this.lowestDayTemp,
+        highestDayTemp:
+            highestDayTemp.present ? highestDayTemp.value : this.highestDayTemp,
+        lowestNightTemp: lowestNightTemp.present
+            ? lowestNightTemp.value
+            : this.lowestNightTemp,
+        highestNightTemp: highestNightTemp.present
+            ? highestNightTemp.value
+            : this.highestNightTemp,
+        sunrise: sunrise.present ? sunrise.value : this.sunrise,
+        sunset: sunset.present ? sunset.value : this.sunset,
+        moonPhase: moonPhase.present ? moonPhase.value : this.moonPhase,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('WeatherDataData(')
+          ..write('id: $id, ')
+          ..write('lowestDayTemp: $lowestDayTemp, ')
+          ..write('highestDayTemp: $highestDayTemp, ')
+          ..write('lowestNightTemp: $lowestNightTemp, ')
+          ..write('highestNightTemp: $highestNightTemp, ')
+          ..write('sunrise: $sunrise, ')
+          ..write('sunset: $sunset, ')
+          ..write('moonPhase: $moonPhase')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, lowestDayTemp, highestDayTemp,
+      lowestNightTemp, highestNightTemp, sunrise, sunset, moonPhase);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is WeatherDataData &&
+          other.id == this.id &&
+          other.lowestDayTemp == this.lowestDayTemp &&
+          other.highestDayTemp == this.highestDayTemp &&
+          other.lowestNightTemp == this.lowestNightTemp &&
+          other.highestNightTemp == this.highestNightTemp &&
+          other.sunrise == this.sunrise &&
+          other.sunset == this.sunset &&
+          other.moonPhase == this.moonPhase);
+}
+
+class WeatherDataCompanion extends UpdateCompanion<WeatherDataData> {
+  final Value<int> id;
+  final Value<String?> lowestDayTemp;
+  final Value<String?> highestDayTemp;
+  final Value<String?> lowestNightTemp;
+  final Value<String?> highestNightTemp;
+  final Value<String?> sunrise;
+  final Value<String?> sunset;
+  final Value<String?> moonPhase;
+  const WeatherDataCompanion({
+    this.id = const Value.absent(),
+    this.lowestDayTemp = const Value.absent(),
+    this.highestDayTemp = const Value.absent(),
+    this.lowestNightTemp = const Value.absent(),
+    this.highestNightTemp = const Value.absent(),
+    this.sunrise = const Value.absent(),
+    this.sunset = const Value.absent(),
+    this.moonPhase = const Value.absent(),
+  });
+  WeatherDataCompanion.insert({
+    this.id = const Value.absent(),
+    this.lowestDayTemp = const Value.absent(),
+    this.highestDayTemp = const Value.absent(),
+    this.lowestNightTemp = const Value.absent(),
+    this.highestNightTemp = const Value.absent(),
+    this.sunrise = const Value.absent(),
+    this.sunset = const Value.absent(),
+    this.moonPhase = const Value.absent(),
+  });
+  static Insertable<WeatherDataData> custom({
+    Expression<int>? id,
+    Expression<String>? lowestDayTemp,
+    Expression<String>? highestDayTemp,
+    Expression<String>? lowestNightTemp,
+    Expression<String>? highestNightTemp,
+    Expression<String>? sunrise,
+    Expression<String>? sunset,
+    Expression<String>? moonPhase,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (lowestDayTemp != null) 'lowestDayTemp': lowestDayTemp,
+      if (highestDayTemp != null) 'highestDayTemp': highestDayTemp,
+      if (lowestNightTemp != null) 'lowestNightTemp': lowestNightTemp,
+      if (highestNightTemp != null) 'highestNightTemp': highestNightTemp,
+      if (sunrise != null) 'sunrise': sunrise,
+      if (sunset != null) 'sunset': sunset,
+      if (moonPhase != null) 'moonPhase': moonPhase,
+    });
+  }
+
+  WeatherDataCompanion copyWith(
+      {Value<int>? id,
+      Value<String?>? lowestDayTemp,
+      Value<String?>? highestDayTemp,
+      Value<String?>? lowestNightTemp,
+      Value<String?>? highestNightTemp,
+      Value<String?>? sunrise,
+      Value<String?>? sunset,
+      Value<String?>? moonPhase}) {
+    return WeatherDataCompanion(
+      id: id ?? this.id,
+      lowestDayTemp: lowestDayTemp ?? this.lowestDayTemp,
+      highestDayTemp: highestDayTemp ?? this.highestDayTemp,
+      lowestNightTemp: lowestNightTemp ?? this.lowestNightTemp,
+      highestNightTemp: highestNightTemp ?? this.highestNightTemp,
+      sunrise: sunrise ?? this.sunrise,
+      sunset: sunset ?? this.sunset,
+      moonPhase: moonPhase ?? this.moonPhase,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (lowestDayTemp.present) {
+      map['lowestDayTemp'] = Variable<String>(lowestDayTemp.value);
+    }
+    if (highestDayTemp.present) {
+      map['highestDayTemp'] = Variable<String>(highestDayTemp.value);
+    }
+    if (lowestNightTemp.present) {
+      map['lowestNightTemp'] = Variable<String>(lowestNightTemp.value);
+    }
+    if (highestNightTemp.present) {
+      map['highestNightTemp'] = Variable<String>(highestNightTemp.value);
+    }
+    if (sunrise.present) {
+      map['sunrise'] = Variable<String>(sunrise.value);
+    }
+    if (sunset.present) {
+      map['sunset'] = Variable<String>(sunset.value);
+    }
+    if (moonPhase.present) {
+      map['moonPhase'] = Variable<String>(moonPhase.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('WeatherDataCompanion(')
+          ..write('id: $id, ')
+          ..write('lowestDayTemp: $lowestDayTemp, ')
+          ..write('highestDayTemp: $highestDayTemp, ')
+          ..write('lowestNightTemp: $lowestNightTemp, ')
+          ..write('highestNightTemp: $highestNightTemp, ')
+          ..write('sunrise: $sunrise, ')
+          ..write('sunset: $sunset, ')
+          ..write('moonPhase: $moonPhase')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -3144,6 +3579,13 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _weatherIDMeta =
+      const VerificationMeta('weatherID');
+  late final GeneratedColumn<int> weatherID = GeneratedColumn<int>(
+      'weatherID', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _siteIDMeta = const VerificationMeta('siteID');
   late final GeneratedColumn<int> siteID = GeneratedColumn<int>(
       'siteID', aliasedName, true,
@@ -3161,6 +3603,7 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
         endTime,
         primaryCollMethod,
         collMethodNotes,
+        weatherID,
         siteID
       ];
   @override
@@ -3213,6 +3656,10 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
           collMethodNotes.isAcceptableOrUnknown(
               data['collMethodNotes']!, _collMethodNotesMeta));
     }
+    if (data.containsKey('weatherID')) {
+      context.handle(_weatherIDMeta,
+          weatherID.isAcceptableOrUnknown(data['weatherID']!, _weatherIDMeta));
+    }
     if (data.containsKey('siteID')) {
       context.handle(_siteIDMeta,
           siteID.isAcceptableOrUnknown(data['siteID']!, _siteIDMeta));
@@ -3244,6 +3691,8 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
           DriftSqlType.string, data['${effectivePrefix}primaryCollMethod']),
       collMethodNotes: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}collMethodNotes']),
+      weatherID: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}weatherID']),
       siteID: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}siteID']),
     );
@@ -3255,8 +3704,10 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
   }
 
   @override
-  List<String> get customConstraints =>
-      const ['FOREIGN KEY(projectUuid)REFERENCES project(uuid)'];
+  List<String> get customConstraints => const [
+        'FOREIGN KEY(projectUuid)REFERENCES project(uuid)',
+        'FOREIGN KEY(weatherID)REFERENCES weatherData(id)'
+      ];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -3271,6 +3722,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
   final String? endTime;
   final String? primaryCollMethod;
   final String? collMethodNotes;
+  final int? weatherID;
   final int? siteID;
   const CollEventData(
       {required this.id,
@@ -3282,6 +3734,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
       this.endTime,
       this.primaryCollMethod,
       this.collMethodNotes,
+      this.weatherID,
       this.siteID});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -3310,6 +3763,9 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
     }
     if (!nullToAbsent || collMethodNotes != null) {
       map['collMethodNotes'] = Variable<String>(collMethodNotes);
+    }
+    if (!nullToAbsent || weatherID != null) {
+      map['weatherID'] = Variable<int>(weatherID);
     }
     if (!nullToAbsent || siteID != null) {
       map['siteID'] = Variable<int>(siteID);
@@ -3344,6 +3800,9 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
       collMethodNotes: collMethodNotes == null && nullToAbsent
           ? const Value.absent()
           : Value(collMethodNotes),
+      weatherID: weatherID == null && nullToAbsent
+          ? const Value.absent()
+          : Value(weatherID),
       siteID:
           siteID == null && nullToAbsent ? const Value.absent() : Value(siteID),
     );
@@ -3363,6 +3822,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
       primaryCollMethod:
           serializer.fromJson<String?>(json['primaryCollMethod']),
       collMethodNotes: serializer.fromJson<String?>(json['collMethodNotes']),
+      weatherID: serializer.fromJson<int?>(json['weatherID']),
       siteID: serializer.fromJson<int?>(json['siteID']),
     );
   }
@@ -3379,6 +3839,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
       'endTime': serializer.toJson<String?>(endTime),
       'primaryCollMethod': serializer.toJson<String?>(primaryCollMethod),
       'collMethodNotes': serializer.toJson<String?>(collMethodNotes),
+      'weatherID': serializer.toJson<int?>(weatherID),
       'siteID': serializer.toJson<int?>(siteID),
     };
   }
@@ -3393,6 +3854,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
           Value<String?> endTime = const Value.absent(),
           Value<String?> primaryCollMethod = const Value.absent(),
           Value<String?> collMethodNotes = const Value.absent(),
+          Value<int?> weatherID = const Value.absent(),
           Value<int?> siteID = const Value.absent()}) =>
       CollEventData(
         id: id ?? this.id,
@@ -3408,6 +3870,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
         collMethodNotes: collMethodNotes.present
             ? collMethodNotes.value
             : this.collMethodNotes,
+        weatherID: weatherID.present ? weatherID.value : this.weatherID,
         siteID: siteID.present ? siteID.value : this.siteID,
       );
   @override
@@ -3422,14 +3885,25 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
           ..write('endTime: $endTime, ')
           ..write('primaryCollMethod: $primaryCollMethod, ')
           ..write('collMethodNotes: $collMethodNotes, ')
+          ..write('weatherID: $weatherID, ')
           ..write('siteID: $siteID')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, eventID, projectUuid, startDate,
-      startTime, endDate, endTime, primaryCollMethod, collMethodNotes, siteID);
+  int get hashCode => Object.hash(
+      id,
+      eventID,
+      projectUuid,
+      startDate,
+      startTime,
+      endDate,
+      endTime,
+      primaryCollMethod,
+      collMethodNotes,
+      weatherID,
+      siteID);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -3443,6 +3917,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
           other.endTime == this.endTime &&
           other.primaryCollMethod == this.primaryCollMethod &&
           other.collMethodNotes == this.collMethodNotes &&
+          other.weatherID == this.weatherID &&
           other.siteID == this.siteID);
 }
 
@@ -3456,6 +3931,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
   final Value<String?> endTime;
   final Value<String?> primaryCollMethod;
   final Value<String?> collMethodNotes;
+  final Value<int?> weatherID;
   final Value<int?> siteID;
   const CollEventCompanion({
     this.id = const Value.absent(),
@@ -3467,6 +3943,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
     this.endTime = const Value.absent(),
     this.primaryCollMethod = const Value.absent(),
     this.collMethodNotes = const Value.absent(),
+    this.weatherID = const Value.absent(),
     this.siteID = const Value.absent(),
   });
   CollEventCompanion.insert({
@@ -3479,6 +3956,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
     this.endTime = const Value.absent(),
     this.primaryCollMethod = const Value.absent(),
     this.collMethodNotes = const Value.absent(),
+    this.weatherID = const Value.absent(),
     this.siteID = const Value.absent(),
   });
   static Insertable<CollEventData> custom({
@@ -3491,6 +3969,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
     Expression<String>? endTime,
     Expression<String>? primaryCollMethod,
     Expression<String>? collMethodNotes,
+    Expression<int>? weatherID,
     Expression<int>? siteID,
   }) {
     return RawValuesInsertable({
@@ -3503,6 +3982,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
       if (endTime != null) 'endTime': endTime,
       if (primaryCollMethod != null) 'primaryCollMethod': primaryCollMethod,
       if (collMethodNotes != null) 'collMethodNotes': collMethodNotes,
+      if (weatherID != null) 'weatherID': weatherID,
       if (siteID != null) 'siteID': siteID,
     });
   }
@@ -3517,6 +3997,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
       Value<String?>? endTime,
       Value<String?>? primaryCollMethod,
       Value<String?>? collMethodNotes,
+      Value<int?>? weatherID,
       Value<int?>? siteID}) {
     return CollEventCompanion(
       id: id ?? this.id,
@@ -3528,6 +4009,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
       endTime: endTime ?? this.endTime,
       primaryCollMethod: primaryCollMethod ?? this.primaryCollMethod,
       collMethodNotes: collMethodNotes ?? this.collMethodNotes,
+      weatherID: weatherID ?? this.weatherID,
       siteID: siteID ?? this.siteID,
     );
   }
@@ -3562,6 +4044,9 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
     if (collMethodNotes.present) {
       map['collMethodNotes'] = Variable<String>(collMethodNotes.value);
     }
+    if (weatherID.present) {
+      map['weatherID'] = Variable<int>(weatherID.value);
+    }
     if (siteID.present) {
       map['siteID'] = Variable<int>(siteID.value);
     }
@@ -3580,6 +4065,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
           ..write('endTime: $endTime, ')
           ..write('primaryCollMethod: $primaryCollMethod, ')
           ..write('collMethodNotes: $collMethodNotes, ')
+          ..write('weatherID: $weatherID, ')
           ..write('siteID: $siteID')
           ..write(')'))
         .toString();
@@ -5255,6 +5741,475 @@ class ProjectPersonnelCompanion extends UpdateCompanion<ProjectPersonnelData> {
   }
 }
 
+class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  Taxonomy(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
+  static const VerificationMeta _taxonClassMeta =
+      const VerificationMeta('taxonClass');
+  late final GeneratedColumn<String> taxonClass = GeneratedColumn<String>(
+      'taxonClass', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _taxonOrderMeta =
+      const VerificationMeta('taxonOrder');
+  late final GeneratedColumn<String> taxonOrder = GeneratedColumn<String>(
+      'taxonOrder', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _taxonFamilyMeta =
+      const VerificationMeta('taxonFamily');
+  late final GeneratedColumn<String> taxonFamily = GeneratedColumn<String>(
+      'taxonFamily', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _genusMeta = const VerificationMeta('genus');
+  late final GeneratedColumn<String> genus = GeneratedColumn<String>(
+      'genus', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _specificEpithetMeta =
+      const VerificationMeta('specificEpithet');
+  late final GeneratedColumn<String> specificEpithet = GeneratedColumn<String>(
+      'specificEpithet', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _commonNameMeta =
+      const VerificationMeta('commonName');
+  late final GeneratedColumn<String> commonName = GeneratedColumn<String>(
+      'commonName', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+      'note', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _mediaIdMeta =
+      const VerificationMeta('mediaId');
+  late final GeneratedColumn<int> mediaId = GeneratedColumn<int>(
+      'mediaId', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        taxonClass,
+        taxonOrder,
+        taxonFamily,
+        genus,
+        specificEpithet,
+        commonName,
+        note,
+        mediaId
+      ];
+  @override
+  String get aliasedName => _alias ?? 'taxonomy';
+  @override
+  String get actualTableName => 'taxonomy';
+  @override
+  VerificationContext validateIntegrity(Insertable<TaxonomyData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('taxonClass')) {
+      context.handle(
+          _taxonClassMeta,
+          taxonClass.isAcceptableOrUnknown(
+              data['taxonClass']!, _taxonClassMeta));
+    }
+    if (data.containsKey('taxonOrder')) {
+      context.handle(
+          _taxonOrderMeta,
+          taxonOrder.isAcceptableOrUnknown(
+              data['taxonOrder']!, _taxonOrderMeta));
+    }
+    if (data.containsKey('taxonFamily')) {
+      context.handle(
+          _taxonFamilyMeta,
+          taxonFamily.isAcceptableOrUnknown(
+              data['taxonFamily']!, _taxonFamilyMeta));
+    }
+    if (data.containsKey('genus')) {
+      context.handle(
+          _genusMeta, genus.isAcceptableOrUnknown(data['genus']!, _genusMeta));
+    }
+    if (data.containsKey('specificEpithet')) {
+      context.handle(
+          _specificEpithetMeta,
+          specificEpithet.isAcceptableOrUnknown(
+              data['specificEpithet']!, _specificEpithetMeta));
+    }
+    if (data.containsKey('commonName')) {
+      context.handle(
+          _commonNameMeta,
+          commonName.isAcceptableOrUnknown(
+              data['commonName']!, _commonNameMeta));
+    }
+    if (data.containsKey('note')) {
+      context.handle(
+          _noteMeta, note.isAcceptableOrUnknown(data['note']!, _noteMeta));
+    }
+    if (data.containsKey('mediaId')) {
+      context.handle(_mediaIdMeta,
+          mediaId.isAcceptableOrUnknown(data['mediaId']!, _mediaIdMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  TaxonomyData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return TaxonomyData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      taxonClass: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}taxonClass']),
+      taxonOrder: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}taxonOrder']),
+      taxonFamily: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}taxonFamily']),
+      genus: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}genus']),
+      specificEpithet: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}specificEpithet']),
+      commonName: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}commonName']),
+      note: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}note']),
+      mediaId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}mediaId']),
+    );
+  }
+
+  @override
+  Taxonomy createAlias(String alias) {
+    return Taxonomy(attachedDatabase, alias);
+  }
+
+  @override
+  List<String> get customConstraints =>
+      const ['FOREIGN KEY(mediaId)REFERENCES media(primaryId)'];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
+  final int id;
+  final String? taxonClass;
+  final String? taxonOrder;
+  final String? taxonFamily;
+  final String? genus;
+  final String? specificEpithet;
+  final String? commonName;
+  final String? note;
+  final int? mediaId;
+  const TaxonomyData(
+      {required this.id,
+      this.taxonClass,
+      this.taxonOrder,
+      this.taxonFamily,
+      this.genus,
+      this.specificEpithet,
+      this.commonName,
+      this.note,
+      this.mediaId});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || taxonClass != null) {
+      map['taxonClass'] = Variable<String>(taxonClass);
+    }
+    if (!nullToAbsent || taxonOrder != null) {
+      map['taxonOrder'] = Variable<String>(taxonOrder);
+    }
+    if (!nullToAbsent || taxonFamily != null) {
+      map['taxonFamily'] = Variable<String>(taxonFamily);
+    }
+    if (!nullToAbsent || genus != null) {
+      map['genus'] = Variable<String>(genus);
+    }
+    if (!nullToAbsent || specificEpithet != null) {
+      map['specificEpithet'] = Variable<String>(specificEpithet);
+    }
+    if (!nullToAbsent || commonName != null) {
+      map['commonName'] = Variable<String>(commonName);
+    }
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    if (!nullToAbsent || mediaId != null) {
+      map['mediaId'] = Variable<int>(mediaId);
+    }
+    return map;
+  }
+
+  TaxonomyCompanion toCompanion(bool nullToAbsent) {
+    return TaxonomyCompanion(
+      id: Value(id),
+      taxonClass: taxonClass == null && nullToAbsent
+          ? const Value.absent()
+          : Value(taxonClass),
+      taxonOrder: taxonOrder == null && nullToAbsent
+          ? const Value.absent()
+          : Value(taxonOrder),
+      taxonFamily: taxonFamily == null && nullToAbsent
+          ? const Value.absent()
+          : Value(taxonFamily),
+      genus:
+          genus == null && nullToAbsent ? const Value.absent() : Value(genus),
+      specificEpithet: specificEpithet == null && nullToAbsent
+          ? const Value.absent()
+          : Value(specificEpithet),
+      commonName: commonName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(commonName),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      mediaId: mediaId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(mediaId),
+    );
+  }
+
+  factory TaxonomyData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return TaxonomyData(
+      id: serializer.fromJson<int>(json['id']),
+      taxonClass: serializer.fromJson<String?>(json['taxonClass']),
+      taxonOrder: serializer.fromJson<String?>(json['taxonOrder']),
+      taxonFamily: serializer.fromJson<String?>(json['taxonFamily']),
+      genus: serializer.fromJson<String?>(json['genus']),
+      specificEpithet: serializer.fromJson<String?>(json['specificEpithet']),
+      commonName: serializer.fromJson<String?>(json['commonName']),
+      note: serializer.fromJson<String?>(json['note']),
+      mediaId: serializer.fromJson<int?>(json['mediaId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'taxonClass': serializer.toJson<String?>(taxonClass),
+      'taxonOrder': serializer.toJson<String?>(taxonOrder),
+      'taxonFamily': serializer.toJson<String?>(taxonFamily),
+      'genus': serializer.toJson<String?>(genus),
+      'specificEpithet': serializer.toJson<String?>(specificEpithet),
+      'commonName': serializer.toJson<String?>(commonName),
+      'note': serializer.toJson<String?>(note),
+      'mediaId': serializer.toJson<int?>(mediaId),
+    };
+  }
+
+  TaxonomyData copyWith(
+          {int? id,
+          Value<String?> taxonClass = const Value.absent(),
+          Value<String?> taxonOrder = const Value.absent(),
+          Value<String?> taxonFamily = const Value.absent(),
+          Value<String?> genus = const Value.absent(),
+          Value<String?> specificEpithet = const Value.absent(),
+          Value<String?> commonName = const Value.absent(),
+          Value<String?> note = const Value.absent(),
+          Value<int?> mediaId = const Value.absent()}) =>
+      TaxonomyData(
+        id: id ?? this.id,
+        taxonClass: taxonClass.present ? taxonClass.value : this.taxonClass,
+        taxonOrder: taxonOrder.present ? taxonOrder.value : this.taxonOrder,
+        taxonFamily: taxonFamily.present ? taxonFamily.value : this.taxonFamily,
+        genus: genus.present ? genus.value : this.genus,
+        specificEpithet: specificEpithet.present
+            ? specificEpithet.value
+            : this.specificEpithet,
+        commonName: commonName.present ? commonName.value : this.commonName,
+        note: note.present ? note.value : this.note,
+        mediaId: mediaId.present ? mediaId.value : this.mediaId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('TaxonomyData(')
+          ..write('id: $id, ')
+          ..write('taxonClass: $taxonClass, ')
+          ..write('taxonOrder: $taxonOrder, ')
+          ..write('taxonFamily: $taxonFamily, ')
+          ..write('genus: $genus, ')
+          ..write('specificEpithet: $specificEpithet, ')
+          ..write('commonName: $commonName, ')
+          ..write('note: $note, ')
+          ..write('mediaId: $mediaId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, taxonClass, taxonOrder, taxonFamily,
+      genus, specificEpithet, commonName, note, mediaId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is TaxonomyData &&
+          other.id == this.id &&
+          other.taxonClass == this.taxonClass &&
+          other.taxonOrder == this.taxonOrder &&
+          other.taxonFamily == this.taxonFamily &&
+          other.genus == this.genus &&
+          other.specificEpithet == this.specificEpithet &&
+          other.commonName == this.commonName &&
+          other.note == this.note &&
+          other.mediaId == this.mediaId);
+}
+
+class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
+  final Value<int> id;
+  final Value<String?> taxonClass;
+  final Value<String?> taxonOrder;
+  final Value<String?> taxonFamily;
+  final Value<String?> genus;
+  final Value<String?> specificEpithet;
+  final Value<String?> commonName;
+  final Value<String?> note;
+  final Value<int?> mediaId;
+  const TaxonomyCompanion({
+    this.id = const Value.absent(),
+    this.taxonClass = const Value.absent(),
+    this.taxonOrder = const Value.absent(),
+    this.taxonFamily = const Value.absent(),
+    this.genus = const Value.absent(),
+    this.specificEpithet = const Value.absent(),
+    this.commonName = const Value.absent(),
+    this.note = const Value.absent(),
+    this.mediaId = const Value.absent(),
+  });
+  TaxonomyCompanion.insert({
+    this.id = const Value.absent(),
+    this.taxonClass = const Value.absent(),
+    this.taxonOrder = const Value.absent(),
+    this.taxonFamily = const Value.absent(),
+    this.genus = const Value.absent(),
+    this.specificEpithet = const Value.absent(),
+    this.commonName = const Value.absent(),
+    this.note = const Value.absent(),
+    this.mediaId = const Value.absent(),
+  });
+  static Insertable<TaxonomyData> custom({
+    Expression<int>? id,
+    Expression<String>? taxonClass,
+    Expression<String>? taxonOrder,
+    Expression<String>? taxonFamily,
+    Expression<String>? genus,
+    Expression<String>? specificEpithet,
+    Expression<String>? commonName,
+    Expression<String>? note,
+    Expression<int>? mediaId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (taxonClass != null) 'taxonClass': taxonClass,
+      if (taxonOrder != null) 'taxonOrder': taxonOrder,
+      if (taxonFamily != null) 'taxonFamily': taxonFamily,
+      if (genus != null) 'genus': genus,
+      if (specificEpithet != null) 'specificEpithet': specificEpithet,
+      if (commonName != null) 'commonName': commonName,
+      if (note != null) 'note': note,
+      if (mediaId != null) 'mediaId': mediaId,
+    });
+  }
+
+  TaxonomyCompanion copyWith(
+      {Value<int>? id,
+      Value<String?>? taxonClass,
+      Value<String?>? taxonOrder,
+      Value<String?>? taxonFamily,
+      Value<String?>? genus,
+      Value<String?>? specificEpithet,
+      Value<String?>? commonName,
+      Value<String?>? note,
+      Value<int?>? mediaId}) {
+    return TaxonomyCompanion(
+      id: id ?? this.id,
+      taxonClass: taxonClass ?? this.taxonClass,
+      taxonOrder: taxonOrder ?? this.taxonOrder,
+      taxonFamily: taxonFamily ?? this.taxonFamily,
+      genus: genus ?? this.genus,
+      specificEpithet: specificEpithet ?? this.specificEpithet,
+      commonName: commonName ?? this.commonName,
+      note: note ?? this.note,
+      mediaId: mediaId ?? this.mediaId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (taxonClass.present) {
+      map['taxonClass'] = Variable<String>(taxonClass.value);
+    }
+    if (taxonOrder.present) {
+      map['taxonOrder'] = Variable<String>(taxonOrder.value);
+    }
+    if (taxonFamily.present) {
+      map['taxonFamily'] = Variable<String>(taxonFamily.value);
+    }
+    if (genus.present) {
+      map['genus'] = Variable<String>(genus.value);
+    }
+    if (specificEpithet.present) {
+      map['specificEpithet'] = Variable<String>(specificEpithet.value);
+    }
+    if (commonName.present) {
+      map['commonName'] = Variable<String>(commonName.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (mediaId.present) {
+      map['mediaId'] = Variable<int>(mediaId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TaxonomyCompanion(')
+          ..write('id: $id, ')
+          ..write('taxonClass: $taxonClass, ')
+          ..write('taxonOrder: $taxonOrder, ')
+          ..write('taxonFamily: $taxonFamily, ')
+          ..write('genus: $genus, ')
+          ..write('specificEpithet: $specificEpithet, ')
+          ..write('commonName: $commonName, ')
+          ..write('note: $note, ')
+          ..write('mediaId: $mediaId')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -5506,6 +6461,7 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
   List<String> get customConstraints => const [
         'FOREIGN KEY(projectUuid)REFERENCES project(uuid)',
         'FOREIGN KEY(collectorID)REFERENCES personnel(uuid)',
+        'FOREIGN KEY(speciesID)REFERENCES taxonomy(id)',
         'FOREIGN KEY(collEventID)REFERENCES collEvent(id)'
       ];
   @override
@@ -7893,17 +8849,17 @@ class Part extends Table with TableInfo<Part, PartData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _secondaryNumberMeta =
-      const VerificationMeta('secondaryNumber');
-  late final GeneratedColumn<String> secondaryNumber = GeneratedColumn<String>(
-      'secondaryNumber', aliasedName, true,
+  static const VerificationMeta _secondaryIDMeta =
+      const VerificationMeta('secondaryID');
+  late final GeneratedColumn<String> secondaryID = GeneratedColumn<String>(
+      'secondaryID', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _barcodeIDMeta =
-      const VerificationMeta('barcodeID');
-  late final GeneratedColumn<String> barcodeID = GeneratedColumn<String>(
-      'barcodeID', aliasedName, true,
+  static const VerificationMeta _tertiaryIDMeta =
+      const VerificationMeta('tertiaryID');
+  late final GeneratedColumn<String> tertiaryID = GeneratedColumn<String>(
+      'tertiaryID', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -7950,8 +8906,8 @@ class Part extends Table with TableInfo<Part, PartData> {
   @override
   List<GeneratedColumn> get $columns => [
         specimenUuid,
-        secondaryNumber,
-        barcodeID,
+        secondaryID,
+        tertiaryID,
         type,
         count,
         treatment,
@@ -7974,15 +8930,17 @@ class Part extends Table with TableInfo<Part, PartData> {
           specimenUuid.isAcceptableOrUnknown(
               data['specimenUuid']!, _specimenUuidMeta));
     }
-    if (data.containsKey('secondaryNumber')) {
+    if (data.containsKey('secondaryID')) {
       context.handle(
-          _secondaryNumberMeta,
-          secondaryNumber.isAcceptableOrUnknown(
-              data['secondaryNumber']!, _secondaryNumberMeta));
+          _secondaryIDMeta,
+          secondaryID.isAcceptableOrUnknown(
+              data['secondaryID']!, _secondaryIDMeta));
     }
-    if (data.containsKey('barcodeID')) {
-      context.handle(_barcodeIDMeta,
-          barcodeID.isAcceptableOrUnknown(data['barcodeID']!, _barcodeIDMeta));
+    if (data.containsKey('tertiaryID')) {
+      context.handle(
+          _tertiaryIDMeta,
+          tertiaryID.isAcceptableOrUnknown(
+              data['tertiaryID']!, _tertiaryIDMeta));
     }
     if (data.containsKey('type')) {
       context.handle(
@@ -8025,10 +8983,10 @@ class Part extends Table with TableInfo<Part, PartData> {
     return PartData(
       specimenUuid: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}specimenUuid']),
-      secondaryNumber: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}secondaryNumber']),
-      barcodeID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}barcodeID']),
+      secondaryID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}secondaryID']),
+      tertiaryID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}tertiaryID']),
       type: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}type']),
       count: attachedDatabase.typeMapping
@@ -8055,8 +9013,8 @@ class Part extends Table with TableInfo<Part, PartData> {
 
 class PartData extends DataClass implements Insertable<PartData> {
   final String? specimenUuid;
-  final String? secondaryNumber;
-  final String? barcodeID;
+  final String? secondaryID;
+  final String? tertiaryID;
   final String? type;
   final String? count;
   final String? treatment;
@@ -8065,8 +9023,8 @@ class PartData extends DataClass implements Insertable<PartData> {
   final String? museumLoan;
   const PartData(
       {this.specimenUuid,
-      this.secondaryNumber,
-      this.barcodeID,
+      this.secondaryID,
+      this.tertiaryID,
       this.type,
       this.count,
       this.treatment,
@@ -8079,11 +9037,11 @@ class PartData extends DataClass implements Insertable<PartData> {
     if (!nullToAbsent || specimenUuid != null) {
       map['specimenUuid'] = Variable<String>(specimenUuid);
     }
-    if (!nullToAbsent || secondaryNumber != null) {
-      map['secondaryNumber'] = Variable<String>(secondaryNumber);
+    if (!nullToAbsent || secondaryID != null) {
+      map['secondaryID'] = Variable<String>(secondaryID);
     }
-    if (!nullToAbsent || barcodeID != null) {
-      map['barcodeID'] = Variable<String>(barcodeID);
+    if (!nullToAbsent || tertiaryID != null) {
+      map['tertiaryID'] = Variable<String>(tertiaryID);
     }
     if (!nullToAbsent || type != null) {
       map['type'] = Variable<String>(type);
@@ -8111,12 +9069,12 @@ class PartData extends DataClass implements Insertable<PartData> {
       specimenUuid: specimenUuid == null && nullToAbsent
           ? const Value.absent()
           : Value(specimenUuid),
-      secondaryNumber: secondaryNumber == null && nullToAbsent
+      secondaryID: secondaryID == null && nullToAbsent
           ? const Value.absent()
-          : Value(secondaryNumber),
-      barcodeID: barcodeID == null && nullToAbsent
+          : Value(secondaryID),
+      tertiaryID: tertiaryID == null && nullToAbsent
           ? const Value.absent()
-          : Value(barcodeID),
+          : Value(tertiaryID),
       type: type == null && nullToAbsent ? const Value.absent() : Value(type),
       count:
           count == null && nullToAbsent ? const Value.absent() : Value(count),
@@ -8140,8 +9098,8 @@ class PartData extends DataClass implements Insertable<PartData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return PartData(
       specimenUuid: serializer.fromJson<String?>(json['specimenUuid']),
-      secondaryNumber: serializer.fromJson<String?>(json['secondaryNumber']),
-      barcodeID: serializer.fromJson<String?>(json['barcodeID']),
+      secondaryID: serializer.fromJson<String?>(json['secondaryID']),
+      tertiaryID: serializer.fromJson<String?>(json['tertiaryID']),
       type: serializer.fromJson<String?>(json['type']),
       count: serializer.fromJson<String?>(json['count']),
       treatment: serializer.fromJson<String?>(json['treatment']),
@@ -8156,8 +9114,8 @@ class PartData extends DataClass implements Insertable<PartData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'specimenUuid': serializer.toJson<String?>(specimenUuid),
-      'secondaryNumber': serializer.toJson<String?>(secondaryNumber),
-      'barcodeID': serializer.toJson<String?>(barcodeID),
+      'secondaryID': serializer.toJson<String?>(secondaryID),
+      'tertiaryID': serializer.toJson<String?>(tertiaryID),
       'type': serializer.toJson<String?>(type),
       'count': serializer.toJson<String?>(count),
       'treatment': serializer.toJson<String?>(treatment),
@@ -8169,8 +9127,8 @@ class PartData extends DataClass implements Insertable<PartData> {
 
   PartData copyWith(
           {Value<String?> specimenUuid = const Value.absent(),
-          Value<String?> secondaryNumber = const Value.absent(),
-          Value<String?> barcodeID = const Value.absent(),
+          Value<String?> secondaryID = const Value.absent(),
+          Value<String?> tertiaryID = const Value.absent(),
           Value<String?> type = const Value.absent(),
           Value<String?> count = const Value.absent(),
           Value<String?> treatment = const Value.absent(),
@@ -8180,10 +9138,8 @@ class PartData extends DataClass implements Insertable<PartData> {
       PartData(
         specimenUuid:
             specimenUuid.present ? specimenUuid.value : this.specimenUuid,
-        secondaryNumber: secondaryNumber.present
-            ? secondaryNumber.value
-            : this.secondaryNumber,
-        barcodeID: barcodeID.present ? barcodeID.value : this.barcodeID,
+        secondaryID: secondaryID.present ? secondaryID.value : this.secondaryID,
+        tertiaryID: tertiaryID.present ? tertiaryID.value : this.tertiaryID,
         type: type.present ? type.value : this.type,
         count: count.present ? count.value : this.count,
         treatment: treatment.present ? treatment.value : this.treatment,
@@ -8199,8 +9155,8 @@ class PartData extends DataClass implements Insertable<PartData> {
   String toString() {
     return (StringBuffer('PartData(')
           ..write('specimenUuid: $specimenUuid, ')
-          ..write('secondaryNumber: $secondaryNumber, ')
-          ..write('barcodeID: $barcodeID, ')
+          ..write('secondaryID: $secondaryID, ')
+          ..write('tertiaryID: $tertiaryID, ')
           ..write('type: $type, ')
           ..write('count: $count, ')
           ..write('treatment: $treatment, ')
@@ -8212,15 +9168,15 @@ class PartData extends DataClass implements Insertable<PartData> {
   }
 
   @override
-  int get hashCode => Object.hash(specimenUuid, secondaryNumber, barcodeID,
-      type, count, treatment, additionalTreatment, museumPermanent, museumLoan);
+  int get hashCode => Object.hash(specimenUuid, secondaryID, tertiaryID, type,
+      count, treatment, additionalTreatment, museumPermanent, museumLoan);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is PartData &&
           other.specimenUuid == this.specimenUuid &&
-          other.secondaryNumber == this.secondaryNumber &&
-          other.barcodeID == this.barcodeID &&
+          other.secondaryID == this.secondaryID &&
+          other.tertiaryID == this.tertiaryID &&
           other.type == this.type &&
           other.count == this.count &&
           other.treatment == this.treatment &&
@@ -8231,8 +9187,8 @@ class PartData extends DataClass implements Insertable<PartData> {
 
 class PartCompanion extends UpdateCompanion<PartData> {
   final Value<String?> specimenUuid;
-  final Value<String?> secondaryNumber;
-  final Value<String?> barcodeID;
+  final Value<String?> secondaryID;
+  final Value<String?> tertiaryID;
   final Value<String?> type;
   final Value<String?> count;
   final Value<String?> treatment;
@@ -8241,8 +9197,8 @@ class PartCompanion extends UpdateCompanion<PartData> {
   final Value<String?> museumLoan;
   const PartCompanion({
     this.specimenUuid = const Value.absent(),
-    this.secondaryNumber = const Value.absent(),
-    this.barcodeID = const Value.absent(),
+    this.secondaryID = const Value.absent(),
+    this.tertiaryID = const Value.absent(),
     this.type = const Value.absent(),
     this.count = const Value.absent(),
     this.treatment = const Value.absent(),
@@ -8252,8 +9208,8 @@ class PartCompanion extends UpdateCompanion<PartData> {
   });
   PartCompanion.insert({
     this.specimenUuid = const Value.absent(),
-    this.secondaryNumber = const Value.absent(),
-    this.barcodeID = const Value.absent(),
+    this.secondaryID = const Value.absent(),
+    this.tertiaryID = const Value.absent(),
     this.type = const Value.absent(),
     this.count = const Value.absent(),
     this.treatment = const Value.absent(),
@@ -8263,8 +9219,8 @@ class PartCompanion extends UpdateCompanion<PartData> {
   });
   static Insertable<PartData> custom({
     Expression<String>? specimenUuid,
-    Expression<String>? secondaryNumber,
-    Expression<String>? barcodeID,
+    Expression<String>? secondaryID,
+    Expression<String>? tertiaryID,
     Expression<String>? type,
     Expression<String>? count,
     Expression<String>? treatment,
@@ -8274,8 +9230,8 @@ class PartCompanion extends UpdateCompanion<PartData> {
   }) {
     return RawValuesInsertable({
       if (specimenUuid != null) 'specimenUuid': specimenUuid,
-      if (secondaryNumber != null) 'secondaryNumber': secondaryNumber,
-      if (barcodeID != null) 'barcodeID': barcodeID,
+      if (secondaryID != null) 'secondaryID': secondaryID,
+      if (tertiaryID != null) 'tertiaryID': tertiaryID,
       if (type != null) 'type': type,
       if (count != null) 'count': count,
       if (treatment != null) 'treatment': treatment,
@@ -8288,8 +9244,8 @@ class PartCompanion extends UpdateCompanion<PartData> {
 
   PartCompanion copyWith(
       {Value<String?>? specimenUuid,
-      Value<String?>? secondaryNumber,
-      Value<String?>? barcodeID,
+      Value<String?>? secondaryID,
+      Value<String?>? tertiaryID,
       Value<String?>? type,
       Value<String?>? count,
       Value<String?>? treatment,
@@ -8298,8 +9254,8 @@ class PartCompanion extends UpdateCompanion<PartData> {
       Value<String?>? museumLoan}) {
     return PartCompanion(
       specimenUuid: specimenUuid ?? this.specimenUuid,
-      secondaryNumber: secondaryNumber ?? this.secondaryNumber,
-      barcodeID: barcodeID ?? this.barcodeID,
+      secondaryID: secondaryID ?? this.secondaryID,
+      tertiaryID: tertiaryID ?? this.tertiaryID,
       type: type ?? this.type,
       count: count ?? this.count,
       treatment: treatment ?? this.treatment,
@@ -8315,11 +9271,11 @@ class PartCompanion extends UpdateCompanion<PartData> {
     if (specimenUuid.present) {
       map['specimenUuid'] = Variable<String>(specimenUuid.value);
     }
-    if (secondaryNumber.present) {
-      map['secondaryNumber'] = Variable<String>(secondaryNumber.value);
+    if (secondaryID.present) {
+      map['secondaryID'] = Variable<String>(secondaryID.value);
     }
-    if (barcodeID.present) {
-      map['barcodeID'] = Variable<String>(barcodeID.value);
+    if (tertiaryID.present) {
+      map['tertiaryID'] = Variable<String>(tertiaryID.value);
     }
     if (type.present) {
       map['type'] = Variable<String>(type.value);
@@ -8346,483 +9302,14 @@ class PartCompanion extends UpdateCompanion<PartData> {
   String toString() {
     return (StringBuffer('PartCompanion(')
           ..write('specimenUuid: $specimenUuid, ')
-          ..write('secondaryNumber: $secondaryNumber, ')
-          ..write('barcodeID: $barcodeID, ')
+          ..write('secondaryID: $secondaryID, ')
+          ..write('tertiaryID: $tertiaryID, ')
           ..write('type: $type, ')
           ..write('count: $count, ')
           ..write('treatment: $treatment, ')
           ..write('additionalTreatment: $additionalTreatment, ')
           ..write('museumPermanent: $museumPermanent, ')
           ..write('museumLoan: $museumLoan')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  Taxonomy(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
-  static const VerificationMeta _taxonClassMeta =
-      const VerificationMeta('taxonClass');
-  late final GeneratedColumn<String> taxonClass = GeneratedColumn<String>(
-      'taxonClass', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _taxonOrderMeta =
-      const VerificationMeta('taxonOrder');
-  late final GeneratedColumn<String> taxonOrder = GeneratedColumn<String>(
-      'taxonOrder', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _taxonFamilyMeta =
-      const VerificationMeta('taxonFamily');
-  late final GeneratedColumn<String> taxonFamily = GeneratedColumn<String>(
-      'taxonFamily', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _genusMeta = const VerificationMeta('genus');
-  late final GeneratedColumn<String> genus = GeneratedColumn<String>(
-      'genus', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _specificEpithetMeta =
-      const VerificationMeta('specificEpithet');
-  late final GeneratedColumn<String> specificEpithet = GeneratedColumn<String>(
-      'specificEpithet', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _commonNameMeta =
-      const VerificationMeta('commonName');
-  late final GeneratedColumn<String> commonName = GeneratedColumn<String>(
-      'commonName', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _noteMeta = const VerificationMeta('note');
-  late final GeneratedColumn<String> note = GeneratedColumn<String>(
-      'note', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _mediaIdMeta =
-      const VerificationMeta('mediaId');
-  late final GeneratedColumn<int> mediaId = GeneratedColumn<int>(
-      'mediaId', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  @override
-  List<GeneratedColumn> get $columns => [
-        id,
-        taxonClass,
-        taxonOrder,
-        taxonFamily,
-        genus,
-        specificEpithet,
-        commonName,
-        note,
-        mediaId
-      ];
-  @override
-  String get aliasedName => _alias ?? 'taxonomy';
-  @override
-  String get actualTableName => 'taxonomy';
-  @override
-  VerificationContext validateIntegrity(Insertable<TaxonomyData> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('taxonClass')) {
-      context.handle(
-          _taxonClassMeta,
-          taxonClass.isAcceptableOrUnknown(
-              data['taxonClass']!, _taxonClassMeta));
-    }
-    if (data.containsKey('taxonOrder')) {
-      context.handle(
-          _taxonOrderMeta,
-          taxonOrder.isAcceptableOrUnknown(
-              data['taxonOrder']!, _taxonOrderMeta));
-    }
-    if (data.containsKey('taxonFamily')) {
-      context.handle(
-          _taxonFamilyMeta,
-          taxonFamily.isAcceptableOrUnknown(
-              data['taxonFamily']!, _taxonFamilyMeta));
-    }
-    if (data.containsKey('genus')) {
-      context.handle(
-          _genusMeta, genus.isAcceptableOrUnknown(data['genus']!, _genusMeta));
-    }
-    if (data.containsKey('specificEpithet')) {
-      context.handle(
-          _specificEpithetMeta,
-          specificEpithet.isAcceptableOrUnknown(
-              data['specificEpithet']!, _specificEpithetMeta));
-    }
-    if (data.containsKey('commonName')) {
-      context.handle(
-          _commonNameMeta,
-          commonName.isAcceptableOrUnknown(
-              data['commonName']!, _commonNameMeta));
-    }
-    if (data.containsKey('note')) {
-      context.handle(
-          _noteMeta, note.isAcceptableOrUnknown(data['note']!, _noteMeta));
-    }
-    if (data.containsKey('mediaId')) {
-      context.handle(_mediaIdMeta,
-          mediaId.isAcceptableOrUnknown(data['mediaId']!, _mediaIdMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  TaxonomyData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return TaxonomyData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      taxonClass: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}taxonClass']),
-      taxonOrder: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}taxonOrder']),
-      taxonFamily: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}taxonFamily']),
-      genus: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}genus']),
-      specificEpithet: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}specificEpithet']),
-      commonName: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}commonName']),
-      note: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}note']),
-      mediaId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}mediaId']),
-    );
-  }
-
-  @override
-  Taxonomy createAlias(String alias) {
-    return Taxonomy(attachedDatabase, alias);
-  }
-
-  @override
-  List<String> get customConstraints =>
-      const ['FOREIGN KEY(mediaId)REFERENCES media(primaryId)'];
-  @override
-  bool get dontWriteConstraints => true;
-}
-
-class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
-  final int id;
-  final String? taxonClass;
-  final String? taxonOrder;
-  final String? taxonFamily;
-  final String? genus;
-  final String? specificEpithet;
-  final String? commonName;
-  final String? note;
-  final int? mediaId;
-  const TaxonomyData(
-      {required this.id,
-      this.taxonClass,
-      this.taxonOrder,
-      this.taxonFamily,
-      this.genus,
-      this.specificEpithet,
-      this.commonName,
-      this.note,
-      this.mediaId});
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    if (!nullToAbsent || taxonClass != null) {
-      map['taxonClass'] = Variable<String>(taxonClass);
-    }
-    if (!nullToAbsent || taxonOrder != null) {
-      map['taxonOrder'] = Variable<String>(taxonOrder);
-    }
-    if (!nullToAbsent || taxonFamily != null) {
-      map['taxonFamily'] = Variable<String>(taxonFamily);
-    }
-    if (!nullToAbsent || genus != null) {
-      map['genus'] = Variable<String>(genus);
-    }
-    if (!nullToAbsent || specificEpithet != null) {
-      map['specificEpithet'] = Variable<String>(specificEpithet);
-    }
-    if (!nullToAbsent || commonName != null) {
-      map['commonName'] = Variable<String>(commonName);
-    }
-    if (!nullToAbsent || note != null) {
-      map['note'] = Variable<String>(note);
-    }
-    if (!nullToAbsent || mediaId != null) {
-      map['mediaId'] = Variable<int>(mediaId);
-    }
-    return map;
-  }
-
-  TaxonomyCompanion toCompanion(bool nullToAbsent) {
-    return TaxonomyCompanion(
-      id: Value(id),
-      taxonClass: taxonClass == null && nullToAbsent
-          ? const Value.absent()
-          : Value(taxonClass),
-      taxonOrder: taxonOrder == null && nullToAbsent
-          ? const Value.absent()
-          : Value(taxonOrder),
-      taxonFamily: taxonFamily == null && nullToAbsent
-          ? const Value.absent()
-          : Value(taxonFamily),
-      genus:
-          genus == null && nullToAbsent ? const Value.absent() : Value(genus),
-      specificEpithet: specificEpithet == null && nullToAbsent
-          ? const Value.absent()
-          : Value(specificEpithet),
-      commonName: commonName == null && nullToAbsent
-          ? const Value.absent()
-          : Value(commonName),
-      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
-      mediaId: mediaId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(mediaId),
-    );
-  }
-
-  factory TaxonomyData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return TaxonomyData(
-      id: serializer.fromJson<int>(json['id']),
-      taxonClass: serializer.fromJson<String?>(json['taxonClass']),
-      taxonOrder: serializer.fromJson<String?>(json['taxonOrder']),
-      taxonFamily: serializer.fromJson<String?>(json['taxonFamily']),
-      genus: serializer.fromJson<String?>(json['genus']),
-      specificEpithet: serializer.fromJson<String?>(json['specificEpithet']),
-      commonName: serializer.fromJson<String?>(json['commonName']),
-      note: serializer.fromJson<String?>(json['note']),
-      mediaId: serializer.fromJson<int?>(json['mediaId']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'taxonClass': serializer.toJson<String?>(taxonClass),
-      'taxonOrder': serializer.toJson<String?>(taxonOrder),
-      'taxonFamily': serializer.toJson<String?>(taxonFamily),
-      'genus': serializer.toJson<String?>(genus),
-      'specificEpithet': serializer.toJson<String?>(specificEpithet),
-      'commonName': serializer.toJson<String?>(commonName),
-      'note': serializer.toJson<String?>(note),
-      'mediaId': serializer.toJson<int?>(mediaId),
-    };
-  }
-
-  TaxonomyData copyWith(
-          {int? id,
-          Value<String?> taxonClass = const Value.absent(),
-          Value<String?> taxonOrder = const Value.absent(),
-          Value<String?> taxonFamily = const Value.absent(),
-          Value<String?> genus = const Value.absent(),
-          Value<String?> specificEpithet = const Value.absent(),
-          Value<String?> commonName = const Value.absent(),
-          Value<String?> note = const Value.absent(),
-          Value<int?> mediaId = const Value.absent()}) =>
-      TaxonomyData(
-        id: id ?? this.id,
-        taxonClass: taxonClass.present ? taxonClass.value : this.taxonClass,
-        taxonOrder: taxonOrder.present ? taxonOrder.value : this.taxonOrder,
-        taxonFamily: taxonFamily.present ? taxonFamily.value : this.taxonFamily,
-        genus: genus.present ? genus.value : this.genus,
-        specificEpithet: specificEpithet.present
-            ? specificEpithet.value
-            : this.specificEpithet,
-        commonName: commonName.present ? commonName.value : this.commonName,
-        note: note.present ? note.value : this.note,
-        mediaId: mediaId.present ? mediaId.value : this.mediaId,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('TaxonomyData(')
-          ..write('id: $id, ')
-          ..write('taxonClass: $taxonClass, ')
-          ..write('taxonOrder: $taxonOrder, ')
-          ..write('taxonFamily: $taxonFamily, ')
-          ..write('genus: $genus, ')
-          ..write('specificEpithet: $specificEpithet, ')
-          ..write('commonName: $commonName, ')
-          ..write('note: $note, ')
-          ..write('mediaId: $mediaId')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(id, taxonClass, taxonOrder, taxonFamily,
-      genus, specificEpithet, commonName, note, mediaId);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is TaxonomyData &&
-          other.id == this.id &&
-          other.taxonClass == this.taxonClass &&
-          other.taxonOrder == this.taxonOrder &&
-          other.taxonFamily == this.taxonFamily &&
-          other.genus == this.genus &&
-          other.specificEpithet == this.specificEpithet &&
-          other.commonName == this.commonName &&
-          other.note == this.note &&
-          other.mediaId == this.mediaId);
-}
-
-class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
-  final Value<int> id;
-  final Value<String?> taxonClass;
-  final Value<String?> taxonOrder;
-  final Value<String?> taxonFamily;
-  final Value<String?> genus;
-  final Value<String?> specificEpithet;
-  final Value<String?> commonName;
-  final Value<String?> note;
-  final Value<int?> mediaId;
-  const TaxonomyCompanion({
-    this.id = const Value.absent(),
-    this.taxonClass = const Value.absent(),
-    this.taxonOrder = const Value.absent(),
-    this.taxonFamily = const Value.absent(),
-    this.genus = const Value.absent(),
-    this.specificEpithet = const Value.absent(),
-    this.commonName = const Value.absent(),
-    this.note = const Value.absent(),
-    this.mediaId = const Value.absent(),
-  });
-  TaxonomyCompanion.insert({
-    this.id = const Value.absent(),
-    this.taxonClass = const Value.absent(),
-    this.taxonOrder = const Value.absent(),
-    this.taxonFamily = const Value.absent(),
-    this.genus = const Value.absent(),
-    this.specificEpithet = const Value.absent(),
-    this.commonName = const Value.absent(),
-    this.note = const Value.absent(),
-    this.mediaId = const Value.absent(),
-  });
-  static Insertable<TaxonomyData> custom({
-    Expression<int>? id,
-    Expression<String>? taxonClass,
-    Expression<String>? taxonOrder,
-    Expression<String>? taxonFamily,
-    Expression<String>? genus,
-    Expression<String>? specificEpithet,
-    Expression<String>? commonName,
-    Expression<String>? note,
-    Expression<int>? mediaId,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (taxonClass != null) 'taxonClass': taxonClass,
-      if (taxonOrder != null) 'taxonOrder': taxonOrder,
-      if (taxonFamily != null) 'taxonFamily': taxonFamily,
-      if (genus != null) 'genus': genus,
-      if (specificEpithet != null) 'specificEpithet': specificEpithet,
-      if (commonName != null) 'commonName': commonName,
-      if (note != null) 'note': note,
-      if (mediaId != null) 'mediaId': mediaId,
-    });
-  }
-
-  TaxonomyCompanion copyWith(
-      {Value<int>? id,
-      Value<String?>? taxonClass,
-      Value<String?>? taxonOrder,
-      Value<String?>? taxonFamily,
-      Value<String?>? genus,
-      Value<String?>? specificEpithet,
-      Value<String?>? commonName,
-      Value<String?>? note,
-      Value<int?>? mediaId}) {
-    return TaxonomyCompanion(
-      id: id ?? this.id,
-      taxonClass: taxonClass ?? this.taxonClass,
-      taxonOrder: taxonOrder ?? this.taxonOrder,
-      taxonFamily: taxonFamily ?? this.taxonFamily,
-      genus: genus ?? this.genus,
-      specificEpithet: specificEpithet ?? this.specificEpithet,
-      commonName: commonName ?? this.commonName,
-      note: note ?? this.note,
-      mediaId: mediaId ?? this.mediaId,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
-    if (taxonClass.present) {
-      map['taxonClass'] = Variable<String>(taxonClass.value);
-    }
-    if (taxonOrder.present) {
-      map['taxonOrder'] = Variable<String>(taxonOrder.value);
-    }
-    if (taxonFamily.present) {
-      map['taxonFamily'] = Variable<String>(taxonFamily.value);
-    }
-    if (genus.present) {
-      map['genus'] = Variable<String>(genus.value);
-    }
-    if (specificEpithet.present) {
-      map['specificEpithet'] = Variable<String>(specificEpithet.value);
-    }
-    if (commonName.present) {
-      map['commonName'] = Variable<String>(commonName.value);
-    }
-    if (note.present) {
-      map['note'] = Variable<String>(note.value);
-    }
-    if (mediaId.present) {
-      map['mediaId'] = Variable<int>(mediaId.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('TaxonomyCompanion(')
-          ..write('id: $id, ')
-          ..write('taxonClass: $taxonClass, ')
-          ..write('taxonOrder: $taxonOrder, ')
-          ..write('taxonFamily: $taxonFamily, ')
-          ..write('genus: $genus, ')
-          ..write('specificEpithet: $specificEpithet, ')
-          ..write('commonName: $commonName, ')
-          ..write('note: $note, ')
-          ..write('mediaId: $mediaId')
           ..write(')'))
         .toString();
   }
@@ -9213,6 +9700,7 @@ abstract class _$Database extends GeneratedDatabase {
   late final Media media = Media(this);
   late final Site site = Site(this);
   late final Coordinate coordinate = Coordinate(this);
+  late final WeatherData weatherData = WeatherData(this);
   late final CollEvent collEvent = CollEvent(this);
   late final CollectingPersonnel collectingPersonnel =
       CollectingPersonnel(this);
@@ -9221,11 +9709,11 @@ abstract class _$Database extends GeneratedDatabase {
   late final AssociatedData associatedData = AssociatedData(this);
   late final PersonnelList personnelList = PersonnelList(this);
   late final ProjectPersonnel projectPersonnel = ProjectPersonnel(this);
+  late final Taxonomy taxonomy = Taxonomy(this);
   late final Specimen specimen = Specimen(this);
   late final MammalMeasurement mammalMeasurement = MammalMeasurement(this);
   late final BirdMeasurement birdMeasurement = BirdMeasurement(this);
   late final Part part = Part(this);
-  late final Taxonomy taxonomy = Taxonomy(this);
   late final Expense expense = Expense(this);
   Selectable<ListProjectResult> listProject() {
     return customSelect('SELECT uuid, name, created, lastModified FROM project',
@@ -9254,6 +9742,7 @@ abstract class _$Database extends GeneratedDatabase {
         media,
         site,
         coordinate,
+        weatherData,
         collEvent,
         collectingPersonnel,
         collEffort,
@@ -9261,11 +9750,11 @@ abstract class _$Database extends GeneratedDatabase {
         associatedData,
         personnelList,
         projectPersonnel,
+        taxonomy,
         specimen,
         mammalMeasurement,
         birdMeasurement,
         part,
-        taxonomy,
         expense
       ];
 }

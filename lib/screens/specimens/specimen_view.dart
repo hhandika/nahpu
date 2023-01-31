@@ -13,6 +13,7 @@ import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
 import 'package:nahpu/screens/specimens/specimen_form.dart';
 import 'package:nahpu/services/database.dart';
 import 'package:nahpu/controller/navigation.dart';
+import 'package:nahpu/services/taxonomy_queries.dart';
 
 class Specimens extends ConsumerStatefulWidget {
   const Specimens({Key? key}) : super(key: key);
@@ -74,8 +75,7 @@ class SpecimensState extends ConsumerState<Specimens> {
                       itemBuilder: (context, index) {
                         int? speciesId = specimenEntry[index].speciesID;
                         if (speciesId != null) {
-                          ref
-                              .read(databaseProvider)
+                          TaxonomyQuery(ref.read(databaseProvider))
                               .getTaxonById(speciesId)
                               .then((value) {
                             taxonomy = TaxonData.fromTaxonomyData(value);

@@ -44,7 +44,8 @@ CREATE TABLE coordinate (
     uncertaintyInMeters INT,
     gpsUnit TEXT,
     notes TEXT,
-    siteID INT REFERENCES site(id)
+    siteID INT,
+    FOREIGN KEY(siteID) REFERENCES site(id)
 );
 
 CREATE TABLE collEvent (
@@ -57,8 +58,10 @@ CREATE TABLE collEvent (
     endTime TEXT,
     primaryCollMethod TEXT,
     collMethodNotes TEXT,
+    weatherID INT,
     siteID INT REFERENCES site(id),
-    FOREIGN KEY(projectUuid) REFERENCES project(uuid)
+    FOREIGN KEY(projectUuid) REFERENCES project(uuid),
+    FOREIGN KEY(weatherID) REFERENCES weatherData(id)
 );
 
 CREATE TABLE collectingPersonnel (
@@ -164,6 +167,19 @@ CREATE TABLE projectPersonnel (
     FOREIGN KEY(personnelId) REFERENCES personnel(uuid)
 );
 
+CREATE TABLE taxonomy (
+    id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
+    taxonClass TEXT,
+    taxonOrder TEXT,
+    taxonFamily TEXT,
+    genus TEXT,
+    specificEpithet TEXT,
+    commonName TEXT,
+    note TEXT,
+    mediaId INT,
+    FOREIGN KEY(mediaId) REFERENCES media(primaryId)
+);
+
 CREATE TABLE specimen (
     uuid TEXT UNIQUE NOT NULL PRIMARY KEY,
     projectUuid TEXT,
@@ -181,6 +197,7 @@ CREATE TABLE specimen (
     preparatorID TEXT REFERENCES personnel(uuid),
     FOREIGN KEY(projectUuid) REFERENCES project(uuid),
     FOREIGN KEY(collectorID) REFERENCES personnel(uuid),
+    FOREIGN KEY(speciesID) REFERENCES taxonomy(id),
     FOREIGN KEY(collEventID) REFERENCES collEvent(id)
 );
 
@@ -243,19 +260,6 @@ CREATE TABLE part (
     additionalTreatment TEXT,
     museumPermanent TEXT,
     museumLoan TEXT 
-);
-
-CREATE TABLE taxonomy (
-    id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
-    taxonClass TEXT,
-    taxonOrder TEXT,
-    taxonFamily TEXT,
-    genus TEXT,
-    specificEpithet TEXT,
-    commonName TEXT,
-    note TEXT,
-    mediaID INT,
-    FOREIGN KEY(mediaId) REFERENCES media(primaryId)
 );
 
 CREATE TABLE expense (

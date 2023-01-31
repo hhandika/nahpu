@@ -1,9 +1,9 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'collevent_queries.dart';
+part of 'taxonomy_queries.dart';
 
 // ignore_for_file: type=lint
-mixin _$CollEventQueryMixin on DatabaseAccessor<Database> {
+mixin _$TaxonomyQueryMixin on DatabaseAccessor<Database> {
   Project get project => attachedDatabase.project;
   FileMetadata get fileMetadata => attachedDatabase.fileMetadata;
   PersonnelPhoto get personnelPhoto => attachedDatabase.personnelPhoto;

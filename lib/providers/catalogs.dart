@@ -4,6 +4,7 @@ import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/specimen_queries.dart';
 import 'package:nahpu/services/coordinate_queries.dart';
 import 'package:nahpu/services/collevent_queries.dart';
+import 'package:nahpu/services/taxonomy_queries.dart';
 
 final specimenProvider = Provider<SpecimenQuery>((ref) {
   final specimenTable = SpecimenQuery(ref.read(databaseProvider));
@@ -36,7 +37,7 @@ final specimenEntryProvider =
     FutureProvider.autoDispose<List<SpecimenData>>((ref) {
   final projectUuid = ref.watch(projectUuidProvider);
   final specimenEntries =
-      ref.read(databaseProvider).getAllSpecimens(projectUuid);
+      SpecimenQuery(ref.read(databaseProvider)).getAllSpecimens(projectUuid);
   return specimenEntries;
 });
 
@@ -59,3 +60,8 @@ final collEffortByEventProvider = FutureProvider.family
     .autoDispose<List<CollEffortData>, int>((ref, collEventId) =>
         CollEffortQuery(ref.read(databaseProvider))
             .getCollEffortByEventId(collEventId));
+
+final taxonRegistryProvider = FutureProvider<List<TaxonomyData>>((ref) async {
+  final projectTaxon = TaxonomyQuery(ref.read(databaseProvider)).getTaxonList();
+  return await projectTaxon;
+});

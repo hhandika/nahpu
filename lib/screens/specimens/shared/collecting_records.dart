@@ -9,6 +9,7 @@ import 'package:nahpu/providers/catalogs.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/screens/specimens/shared/species.dart';
 import 'package:nahpu/services/database.dart';
+import 'package:nahpu/services/taxonomy_queries.dart';
 
 class CollectingRecordField extends ConsumerStatefulWidget {
   const CollectingRecordField({
@@ -68,8 +69,7 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
                 setState(() {
                   speciesCtr.text = value;
                   var taxon = value.split(' ');
-                  ref
-                      .read(databaseProvider)
+                  TaxonomyQuery(ref.read(databaseProvider))
                       .getTaxonIdByGenusEpithet(taxon[0], taxon[1])
                       .then((data) => updateSpecimen(
                           widget.specimenUuid,

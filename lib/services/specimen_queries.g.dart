@@ -11,6 +11,7 @@ mixin _$SpecimenQueryMixin on DatabaseAccessor<Database> {
   Media get media => attachedDatabase.media;
   Site get site => attachedDatabase.site;
   Coordinate get coordinate => attachedDatabase.coordinate;
+  WeatherData get weatherData => attachedDatabase.weatherData;
   CollEvent get collEvent => attachedDatabase.collEvent;
   CollectingPersonnel get collectingPersonnel =>
       attachedDatabase.collectingPersonnel;
@@ -19,11 +20,11 @@ mixin _$SpecimenQueryMixin on DatabaseAccessor<Database> {
   AssociatedData get associatedData => attachedDatabase.associatedData;
   PersonnelList get personnelList => attachedDatabase.personnelList;
   ProjectPersonnel get projectPersonnel => attachedDatabase.projectPersonnel;
+  Taxonomy get taxonomy => attachedDatabase.taxonomy;
   Specimen get specimen => attachedDatabase.specimen;
   MammalMeasurement get mammalMeasurement => attachedDatabase.mammalMeasurement;
   BirdMeasurement get birdMeasurement => attachedDatabase.birdMeasurement;
   Part get part => attachedDatabase.part;
-  Taxonomy get taxonomy => attachedDatabase.taxonomy;
   Expense get expense => attachedDatabase.expense;
   Selectable<ListProjectResult> listProject() {
     return customSelect('SELECT uuid, name, created, lastModified FROM project',
