@@ -35,66 +35,63 @@ class CaptureRecordFields extends ConsumerWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(5),
-            child: TextFormField(
+            child: DropdownButtonFormField(
               decoration: const InputDecoration(
-                labelText: 'Capture date',
-                hintText: 'Enter date',
+                labelText: 'Collecting Event ID',
+                hintText: 'Choose a collecting event ID',
               ),
-              controller: specimenCtr.captureDateCtr,
-              onTap: () async {
-                showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime.now())
-                    .then((date) {
-                  if (date != null) {
-                    specimenCtr.captureDateCtr.text =
-                        DateFormat.yMMMd().format(date);
-                  }
-                });
+              items: eventEntry
+                  .map((event) => DropdownMenuItem(
+                        value: event.id,
+                        child: Text(event.eventID ?? ''),
+                      ))
+                  .toList(),
+              onChanged: (int? newValue) {
+                updateSpecimen(specimenUuid,
+                    SpecimenCompanion(collEventID: db.Value(newValue)), ref);
               },
             ),
           ),
           AdaptiveLayout(
             useHorizontalLayout: useHorizontalLayout,
             children: [
-              DropdownButtonFormField(
+              TextFormField(
                 decoration: const InputDecoration(
-                  labelText: 'Collecting Event ID',
-                  hintText: 'Choose a collecting event ID',
+                  labelText: 'Capture date',
+                  hintText: 'Enter date',
                 ),
-                items: eventEntry
-                    .map((event) => DropdownMenuItem(
-                          value: event.id,
-                          child: Text(event.eventID ?? ''),
-                        ))
-                    .toList(),
-                onChanged: (int? newValue) {
-                  updateSpecimen(specimenUuid,
-                      SpecimenCompanion(collEventID: db.Value(newValue)), ref);
+                controller: specimenCtr.captureDateCtr,
+                onTap: () async {
+                  showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime.now())
+                      .then((date) {
+                    if (date != null) {
+                      specimenCtr.captureDateCtr.text =
+                          DateFormat.yMMMd().format(date);
+                    }
+                  });
                 },
               ),
+              DropdownButtonFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Capture Method',
+                    hintText: 'Choose a trap type',
+                  ),
+                  items: const [
+                    DropdownMenuItem(
+                      value: 'One',
+                      child: Text('One'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'Two',
+                      child: Text('Two'),
+                    ),
+                  ],
+                  onChanged: (String? newValue) {}),
             ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(5),
-            child: DropdownButtonFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Capture Method',
-                  hintText: 'Choose a trap type',
-                ),
-                items: const [
-                  DropdownMenuItem(
-                    value: 'One',
-                    child: Text('One'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Two',
-                    child: Text('Two'),
-                  ),
-                ],
-                onChanged: (String? newValue) {}),
           ),
           Padding(
             padding: const EdgeInsets.all(5),
