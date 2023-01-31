@@ -24,33 +24,31 @@ class CollEventFormState extends ConsumerState<CollEventForm> {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints c) {
         bool useHorizontalLayout = c.maxWidth > 600;
-        return SingleChildScrollView(
-          child: Column(
-            children: [
-              AdaptiveLayout(
-                useHorizontalLayout: useHorizontalLayout,
-                children: [
-                  CollectingInfoFields(
-                      collEventId: widget.id,
-                      useHorizontalLayout: useHorizontalLayout,
-                      collEventCtr: widget.collEventCtr),
-                  CollActivityFields(
+        return ListView(
+          children: [
+            AdaptiveLayout(
+              useHorizontalLayout: useHorizontalLayout,
+              children: [
+                CollectingInfoFields(
                     collEventId: widget.id,
-                    collEventCtr: widget.collEventCtr,
-                  ),
-                ],
-              ),
-              AdaptiveLayout(
-                useHorizontalLayout: useHorizontalLayout,
-                children: [
-                  CollectingEffortFrom(
-                    collEventId: widget.id,
-                  ),
-                  CollEventTabBar(useHorizontalLayout: useHorizontalLayout),
-                ],
-              ),
-            ],
-          ),
+                    useHorizontalLayout: useHorizontalLayout,
+                    collEventCtr: widget.collEventCtr),
+                CollActivityFields(
+                  collEventId: widget.id,
+                  collEventCtr: widget.collEventCtr,
+                ),
+              ],
+            ),
+            AdaptiveLayout(
+              useHorizontalLayout: useHorizontalLayout,
+              children: [
+                CollectingEffortFrom(
+                  collEventId: widget.id,
+                ),
+                CollEventTabBar(useHorizontalLayout: useHorizontalLayout),
+              ],
+            ),
+          ],
         );
       },
     );

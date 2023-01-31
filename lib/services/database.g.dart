@@ -3852,8 +3852,15 @@ class CollEffort extends Table with TableInfo<CollEffort, CollEffortData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+      'notes', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   @override
-  List<GeneratedColumn> get $columns => [id, eventID, type, brand, count, size];
+  List<GeneratedColumn> get $columns =>
+      [id, eventID, type, brand, count, size, notes];
   @override
   String get aliasedName => _alias ?? 'collEffort';
   @override
@@ -3886,6 +3893,10 @@ class CollEffort extends Table with TableInfo<CollEffort, CollEffortData> {
       context.handle(
           _sizeMeta, size.isAcceptableOrUnknown(data['size']!, _sizeMeta));
     }
+    if (data.containsKey('notes')) {
+      context.handle(
+          _notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
+    }
     return context;
   }
 
@@ -3907,6 +3918,8 @@ class CollEffort extends Table with TableInfo<CollEffort, CollEffortData> {
           .read(DriftSqlType.int, data['${effectivePrefix}count']),
       size: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}size']),
+      notes: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}notes']),
     );
   }
 
@@ -3929,13 +3942,15 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
   final String? brand;
   final int? count;
   final String? size;
+  final String? notes;
   const CollEffortData(
       {required this.id,
       this.eventID,
       this.type,
       this.brand,
       this.count,
-      this.size});
+      this.size,
+      this.notes});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -3955,6 +3970,9 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
     if (!nullToAbsent || size != null) {
       map['size'] = Variable<String>(size);
     }
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
     return map;
   }
 
@@ -3970,6 +3988,8 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
       count:
           count == null && nullToAbsent ? const Value.absent() : Value(count),
       size: size == null && nullToAbsent ? const Value.absent() : Value(size),
+      notes:
+          notes == null && nullToAbsent ? const Value.absent() : Value(notes),
     );
   }
 
@@ -3983,6 +4003,7 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
       brand: serializer.fromJson<String?>(json['brand']),
       count: serializer.fromJson<int?>(json['count']),
       size: serializer.fromJson<String?>(json['size']),
+      notes: serializer.fromJson<String?>(json['notes']),
     );
   }
   @override
@@ -3995,6 +4016,7 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
       'brand': serializer.toJson<String?>(brand),
       'count': serializer.toJson<int?>(count),
       'size': serializer.toJson<String?>(size),
+      'notes': serializer.toJson<String?>(notes),
     };
   }
 
@@ -4004,7 +4026,8 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
           Value<String?> type = const Value.absent(),
           Value<String?> brand = const Value.absent(),
           Value<int?> count = const Value.absent(),
-          Value<String?> size = const Value.absent()}) =>
+          Value<String?> size = const Value.absent(),
+          Value<String?> notes = const Value.absent()}) =>
       CollEffortData(
         id: id ?? this.id,
         eventID: eventID.present ? eventID.value : this.eventID,
@@ -4012,6 +4035,7 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
         brand: brand.present ? brand.value : this.brand,
         count: count.present ? count.value : this.count,
         size: size.present ? size.value : this.size,
+        notes: notes.present ? notes.value : this.notes,
       );
   @override
   String toString() {
@@ -4021,13 +4045,14 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
           ..write('type: $type, ')
           ..write('brand: $brand, ')
           ..write('count: $count, ')
-          ..write('size: $size')
+          ..write('size: $size, ')
+          ..write('notes: $notes')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, eventID, type, brand, count, size);
+  int get hashCode => Object.hash(id, eventID, type, brand, count, size, notes);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -4037,7 +4062,8 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
           other.type == this.type &&
           other.brand == this.brand &&
           other.count == this.count &&
-          other.size == this.size);
+          other.size == this.size &&
+          other.notes == this.notes);
 }
 
 class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
@@ -4047,6 +4073,7 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
   final Value<String?> brand;
   final Value<int?> count;
   final Value<String?> size;
+  final Value<String?> notes;
   const CollEffortCompanion({
     this.id = const Value.absent(),
     this.eventID = const Value.absent(),
@@ -4054,6 +4081,7 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
     this.brand = const Value.absent(),
     this.count = const Value.absent(),
     this.size = const Value.absent(),
+    this.notes = const Value.absent(),
   });
   CollEffortCompanion.insert({
     this.id = const Value.absent(),
@@ -4062,6 +4090,7 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
     this.brand = const Value.absent(),
     this.count = const Value.absent(),
     this.size = const Value.absent(),
+    this.notes = const Value.absent(),
   });
   static Insertable<CollEffortData> custom({
     Expression<int>? id,
@@ -4070,6 +4099,7 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
     Expression<String>? brand,
     Expression<int>? count,
     Expression<String>? size,
+    Expression<String>? notes,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -4078,6 +4108,7 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
       if (brand != null) 'brand': brand,
       if (count != null) 'count': count,
       if (size != null) 'size': size,
+      if (notes != null) 'notes': notes,
     });
   }
 
@@ -4087,7 +4118,8 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
       Value<String?>? type,
       Value<String?>? brand,
       Value<int?>? count,
-      Value<String?>? size}) {
+      Value<String?>? size,
+      Value<String?>? notes}) {
     return CollEffortCompanion(
       id: id ?? this.id,
       eventID: eventID ?? this.eventID,
@@ -4095,6 +4127,7 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
       brand: brand ?? this.brand,
       count: count ?? this.count,
       size: size ?? this.size,
+      notes: notes ?? this.notes,
     );
   }
 
@@ -4119,6 +4152,9 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
     if (size.present) {
       map['size'] = Variable<String>(size.value);
     }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
     return map;
   }
 
@@ -4130,7 +4166,8 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
           ..write('type: $type, ')
           ..write('brand: $brand, ')
           ..write('count: $count, ')
-          ..write('size: $size')
+          ..write('size: $size, ')
+          ..write('notes: $notes')
           ..write(')'))
         .toString();
   }

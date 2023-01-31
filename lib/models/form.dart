@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nahpu/models/types.dart';
+import 'package:nahpu/services/database.dart';
 
 class SiteFormCtrModel {
   SiteFormCtrModel({
@@ -276,10 +277,26 @@ class CoordinateCtrModel {
       uncertaintyCtr: TextEditingController(),
       gpsUnitCtr: TextEditingController(),
       noteCtr: TextEditingController());
+
+  factory CoordinateCtrModel.fromData(CoordinateData data) =>
+      CoordinateCtrModel(
+        nameIdCtr: TextEditingController(text: data.nameId ?? ''),
+        latitudeCtr:
+            TextEditingController(text: data.decimalLatitude.toString()),
+        longitudeCtr:
+            TextEditingController(text: data.decimalLongitude.toString()),
+        elevationCtr:
+            TextEditingController(text: data.elevationInMeter.toString()),
+        datumCtr: TextEditingController(text: data.datum ?? ''),
+        uncertaintyCtr:
+            TextEditingController(text: data.uncertaintyInMeters.toString()),
+        gpsUnitCtr: TextEditingController(text: data.gpsUnit ?? ''),
+        noteCtr: TextEditingController(text: data.notes ?? ''),
+      );
 }
 
-class CollectingToolCtrModel {
-  CollectingToolCtrModel({
+class CollEffortCtrModel {
+  CollEffortCtrModel({
     required this.nameCtr,
     required this.brandCtr,
     required this.countCtr,
@@ -293,10 +310,19 @@ class CollectingToolCtrModel {
   TextEditingController sizeCtr;
   TextEditingController noteCtr;
 
-  factory CollectingToolCtrModel.empty() => CollectingToolCtrModel(
+  factory CollEffortCtrModel.empty() => CollEffortCtrModel(
       nameCtr: TextEditingController(),
       brandCtr: TextEditingController(),
       countCtr: TextEditingController(),
       sizeCtr: TextEditingController(),
       noteCtr: TextEditingController());
+
+  factory CollEffortCtrModel.fromData(CollEffortData data) =>
+      CollEffortCtrModel(
+        nameCtr: TextEditingController(text: data.type ?? ''),
+        brandCtr: TextEditingController(text: data.brand ?? ''),
+        countCtr: TextEditingController(text: data.count.toString()),
+        sizeCtr: TextEditingController(text: data.size.toString()),
+        noteCtr: TextEditingController(text: data.notes ?? ''),
+      );
 }

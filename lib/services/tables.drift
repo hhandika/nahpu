@@ -75,6 +75,7 @@ CREATE TABLE collEffort (
     brand TEXT,
     count INT,
     size TEXT,
+    notes TEXT,
     FOREIGN KEY(eventID) REFERENCES collEvent(id)
 );
 

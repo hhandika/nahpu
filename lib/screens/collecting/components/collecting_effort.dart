@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/providers/catalogs.dart';
+import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/forms.dart';
+import 'package:nahpu/services/collevent_queries.dart';
 import 'package:nahpu/services/database.dart';
+import 'package:drift/drift.dart' as db;
 
 class CollectingEffortFrom extends StatelessWidget {
   const CollectingEffortFrom({
@@ -19,10 +22,24 @@ class CollectingEffortFrom extends StatelessWidget {
     return FormCard(
       title: 'Collecting Effort',
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          CollEffortList(collEventId: collEventId),
-          PrimaryButton(onPressed: () {}, text: 'Add Tool'),
+          const SizedBox(height: 10),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.5,
+            child: CollEffortList(collEventId: collEventId),
+          ),
+          PrimaryButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        NewCollEffort(collEventId: collEventId),
+                  ),
+                );
+              },
+              text: 'Add Tool'),
         ],
       ),
     );
@@ -46,14 +63,69 @@ class CollEffortList extends ConsumerWidget {
           shrinkWrap: true,
           itemCount: data.length,
           itemBuilder: (context, index) {
-            data.isEmpty
-                ? const Text('No tools used')
-                : CollEffortTile(collEffort: data[index]);
+            return CollEffortTile(collEffort: data[index]);
           },
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, stack) => Text(error.toString()),
+    );
+  }
+}
+
+class NewCollEffort extends ConsumerWidget {
+  const NewCollEffort({
+    super.key,
+    required this.collEventId,
+  });
+
+  final int collEventId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final collToolCtr = CollEffortCtrModel.empty();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('New Collecting Effort'),
+      ),
+      body: Center(
+          child: CollEffortForm(
+        collEffortId: null,
+        collEventId: collEventId,
+        collToolCtr: collToolCtr,
+      )),
+    );
+  }
+}
+
+class EditCollEffort extends ConsumerWidget {
+  const EditCollEffort({
+    super.key,
+    required this.collEffortId,
+    required this.collEventId,
+    required this.collToolCtr,
+  });
+
+  final int collEffortId;
+  final int collEventId;
+  final CollEffortCtrModel collToolCtr;
+  final bool isEditing = true;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final collToolCtr = CollEffortCtrModel.empty();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Edit Collecting Effort'),
+      ),
+      body: Center(
+        child: CollEffortForm(
+          collEffortId: collEffortId,
+          collEventId: collEventId,
+          collToolCtr: collToolCtr,
+          isEditing: true,
+        ),
+      ),
     );
   }
 }
@@ -71,10 +143,55 @@ class CollEffortTile extends StatelessWidget {
     return ListTile(
       title: Text(collEffort.type ?? ''),
       subtitle: Text(collEffort.brand ?? ''),
-      trailing: IconButton(
-        icon: const Icon(Icons.edit),
-        onPressed: () {},
+      trailing: CollEffortMenu(
+        collEventId: collEffort.eventID!,
+        collEffortId: collEffort.id,
+        collToolCtr: CollEffortCtrModel.fromData(collEffort),
       ),
+    );
+  }
+}
+
+class CollEffortMenu extends ConsumerStatefulWidget {
+  const CollEffortMenu({
+    super.key,
+    required this.collEventId,
+    required this.collEffortId,
+    required this.collToolCtr,
+  });
+
+  final int collEventId;
+  final int collEffortId;
+  final CollEffortCtrModel collToolCtr;
+
+  @override
+  CollEffortMenuState createState() => CollEffortMenuState();
+}
+
+class CollEffortMenuState extends ConsumerState<CollEffortMenu> {
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+      onSelected: (value) {
+        if (value == 'edit') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => EditCollEffort(
+                collEffortId: widget.collEffortId,
+                collEventId: widget.collEventId,
+                collToolCtr: widget.collToolCtr,
+              ),
+            ),
+          );
+        }
+      },
+      itemBuilder: (context) => [
+        const PopupMenuItem(
+          value: 'new',
+          child: Text('New Collecting Effort'),
+        ),
+      ],
     );
   }
 }
@@ -82,12 +199,16 @@ class CollEffortTile extends StatelessWidget {
 class CollEffortForm extends ConsumerStatefulWidget {
   const CollEffortForm({
     super.key,
+    required this.collEffortId,
     required this.collEventId,
     required this.collToolCtr,
+    this.isEditing = false,
   });
 
-  final int? collEventId;
-  final CollectingToolCtrModel collToolCtr;
+  final int? collEffortId;
+  final int collEventId;
+  final CollEffortCtrModel collToolCtr;
+  final bool isEditing;
 
   @override
   CollEffortFormState createState() => CollEffortFormState();
@@ -149,19 +270,61 @@ class CollEffortFormState extends ConsumerState<CollEffortForm> {
                 const SizedBox(width: 20),
                 PrimaryButton(
                   onPressed: () {
-                    // ref.read(personnelListProvider.notifier).addPersonnel(
-                    //     widget.personnelCtr.nameCtr.text,
-                    //     widget.personnelCtr.emailCtr.text,
-                    //     widget.personnelCtr.roleCtr.text);
-                    // Navigator.pop(context);
+                    widget.isEditing ? _updateCollEffort() : _addCollEffort();
+                    ref.invalidate(collEffortByEventProvider);
+                    Navigator.pop(context);
                   },
-                  text: 'Add',
+                  text: widget.isEditing ? 'Update' : 'Add',
                 ),
               ],
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Future<void> _updateCollEffort() async {
+    final form = _getForm();
+    try {
+      await CollEffortQuery(ref.read(databaseProvider))
+          .updateCollEffortEntry(widget.collEffortId!, form);
+    } catch (e) {
+      AlertDialog alert = AlertDialog(
+        title: const Text('Error'),
+        content: Text(e.toString()),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      );
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    }
+  }
+
+  Future<void> _addCollEffort() async {
+    final form = _getForm();
+    await CollEffortQuery(ref.read(databaseProvider)).createCollEffort(form);
+  }
+
+  CollEffortCompanion _getForm() {
+    return CollEffortCompanion(
+      eventID: db.Value(widget.collEventId),
+      type: db.Value(widget.collToolCtr.nameCtr.text),
+      brand: db.Value(widget.collToolCtr.brandCtr.text),
+      count: db.Value(int.tryParse(widget.collToolCtr.countCtr.text)),
+      size: db.Value(widget.collToolCtr.sizeCtr.text),
+      notes: db.Value(widget.collToolCtr.noteCtr.text),
     );
   }
 }

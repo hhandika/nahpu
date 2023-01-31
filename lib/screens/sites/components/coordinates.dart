@@ -203,7 +203,7 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
                   ),
                   PrimaryButton(
                     onPressed: () {
-                      widget.isEditing ? updateCoordinate() : getCoordinate();
+                      widget.isEditing ? _updateCoordinate() : _getCoordinate();
                       ref.invalidate(coordinateBySiteProvider);
                       Navigator.pop(context);
                     },
@@ -216,14 +216,14 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
     );
   }
 
-  Future<void> getCoordinate() async {
-    CoordinateCompanion form = getform();
+  Future<void> _getCoordinate() async {
+    CoordinateCompanion form = _getform();
 
     await CoordinateQuery(ref.read(databaseProvider)).createCoordinate(form);
   }
 
-  Future<void> updateCoordinate() async {
-    CoordinateCompanion form = getform();
+  Future<void> _updateCoordinate() async {
+    CoordinateCompanion form = _getform();
 
     try {
       await CoordinateQuery(ref.read(databaseProvider))
@@ -251,7 +251,7 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
     }
   }
 
-  CoordinateCompanion getform() {
+  CoordinateCompanion _getform() {
     return CoordinateCompanion(
       nameId: db.Value(widget.coordCtr.nameIdCtr.text),
       decimalLatitude:
@@ -284,6 +284,7 @@ class CoordinateList extends ConsumerWidget {
     return coordinates.when(
       data: (data) {
         return ListView.builder(
+          shrinkWrap: true,
           itemCount: data.length,
           itemBuilder: (context, index) {
             return ListTile(
@@ -292,21 +293,7 @@ class CoordinateList extends ConsumerWidget {
               trailing: CoordinateMenu(
                 coordinateId: data[index].id!,
                 siteId: data[index].siteID!,
-                coordCtr: CoordinateCtrModel(
-                  nameIdCtr: TextEditingController(text: data[index].nameId),
-                  latitudeCtr: TextEditingController(
-                      text: data[index].decimalLatitude.toString()),
-                  longitudeCtr: TextEditingController(
-                      text: data[index].decimalLongitude.toString()),
-                  elevationCtr: TextEditingController(
-                      text: data[index].elevationInMeter.toString()),
-                  datumCtr:
-                      TextEditingController(text: data[index].datum.toString()),
-                  uncertaintyCtr: TextEditingController(
-                      text: data[index].uncertaintyInMeters.toString()),
-                  gpsUnitCtr: TextEditingController(text: data[index].gpsUnit),
-                  noteCtr: TextEditingController(text: data[index].notes),
-                ),
+                coordCtr: CoordinateCtrModel.fromData(data[index]),
               ),
             );
           },
