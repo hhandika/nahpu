@@ -33,6 +33,29 @@ class CaptureRecordFields extends ConsumerWidget {
       title: 'Capture Records',
       child: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Capture date',
+                hintText: 'Enter date',
+              ),
+              controller: specimenCtr.captureDateCtr,
+              onTap: () async {
+                showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime.now())
+                    .then((date) {
+                  if (date != null) {
+                    specimenCtr.captureDateCtr.text =
+                        DateFormat.yMMMd().format(date);
+                  }
+                });
+              },
+            ),
+          ),
           AdaptiveLayout(
             useHorizontalLayout: useHorizontalLayout,
             children: [
@@ -75,26 +98,22 @@ class CaptureRecordFields extends ConsumerWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(5),
-            child: TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Capture date',
-                hintText: 'Enter date',
-              ),
-              controller: specimenCtr.captureDateCtr,
-              onTap: () async {
-                showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime.now())
-                    .then((date) {
-                  if (date != null) {
-                    specimenCtr.captureDateCtr.text =
-                        DateFormat.yMMMd().format(date);
-                  }
-                });
-              },
-            ),
+            child: DropdownButtonFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Collected by',
+                  hintText: 'Choose a person',
+                ),
+                items: const [
+                  DropdownMenuItem(
+                    value: 'One',
+                    child: Text('One'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Two',
+                    child: Text('Two'),
+                  ),
+                ],
+                onChanged: (String? newValue) {}),
           ),
         ],
       ),
