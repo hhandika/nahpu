@@ -79,6 +79,17 @@ CREATE TABLE collEffort (
     FOREIGN KEY(eventID) REFERENCES collEvent(id)
 );
 
+CREATE TABLE weatherData (
+    id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
+    lowestDayTemp TEXT,
+    highestDayTemp TEXT,
+    lowestNightTemp TEXT,
+    highestNightTemp TEXT,
+    sunrise TEXT,
+    sunset TEXT,
+    moonPhase TEXT
+);
+
 CREATE TABLE narrative (
     id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
     projectUuid TEXT,
@@ -224,8 +235,8 @@ CREATE TABLE birdMeasurement (
 
 CREATE TABLE part (
     specimenUuid TEXT,
-    secondaryNumber TEXT, -- primary use prep number
-    barcodeID TEXT,
+    secondaryID TEXT, -- primary use prep number
+    tertiaryID TEXT,
     type TEXT,
     count TEXT,
     treatment TEXT,
@@ -243,7 +254,7 @@ CREATE TABLE taxonomy (
     specificEpithet TEXT,
     commonName TEXT,
     note TEXT,
-    mediaId INT,
+    mediaID INT,
     FOREIGN KEY(mediaId) REFERENCES media(primaryId)
 );
 
