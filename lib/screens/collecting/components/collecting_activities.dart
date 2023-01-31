@@ -22,8 +22,8 @@ class CollActivityFields extends ConsumerWidget {
           DropdownButtonFormField(
             value: collEventCtr.primaryCollMethodCtr,
             decoration: const InputDecoration(
-              labelText: 'Primary collection method',
-              hintText: 'Choose a method',
+              labelText: 'Primary activity',
+              hintText: 'Add activity',
             ),
             items: const [
               DropdownMenuItem(
@@ -33,6 +33,14 @@ class CollActivityFields extends ConsumerWidget {
               DropdownMenuItem(
                 value: 'Recording',
                 child: Text('Recording'),
+              ),
+              DropdownMenuItem(
+                value: 'Observing',
+                child: Text('Observing'),
+              ),
+              DropdownMenuItem(
+                value: 'Other',
+                child: Text('Other'),
               ),
             ],
             onChanged: (String? newValue) {
