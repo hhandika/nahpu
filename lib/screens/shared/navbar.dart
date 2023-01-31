@@ -85,6 +85,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
         );
         break;
       case 2:
+        ref.invalidate(siteEntryProvider);
         ref.invalidate(collEventEntryProvider);
         Navigator.push(
           context,
@@ -92,6 +93,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
         );
         break;
       case 3:
+        ref.invalidate(collEventEntryProvider);
         ref.invalidate(specimenEntryProvider);
         Navigator.push(
           context,
@@ -99,6 +101,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
         );
         break;
       case 4:
+        ref.invalidate(siteEntryProvider);
         ref.invalidate(narrativeEntryProvider);
         Navigator.push(
           context,
