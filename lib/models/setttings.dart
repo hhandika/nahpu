@@ -2,9 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class ProjectSettings {
-  String defaultCatalog = 'general-mammals';
-}
+get defaultCatalog => 'general-mammals';
 
 get systemIcon {
   if (Platform.isAndroid) {

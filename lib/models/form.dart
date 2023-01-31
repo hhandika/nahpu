@@ -44,6 +44,20 @@ class SiteFormCtrModel {
         habitatDescriptionCtr: TextEditingController(),
         habitatConditionCtr: TextEditingController(),
       );
+
+  void dispose() {
+    siteIDCtr.dispose();
+    siteTypeCtr.dispose();
+    countryCtr.dispose();
+    stateProvinceCtr.dispose();
+    countyCtr.dispose();
+    municipalityCtr.dispose();
+    localityCtr.dispose();
+    remarkCtr.dispose();
+    habitatTypeCtr.dispose();
+    habitatDescriptionCtr.dispose();
+    habitatConditionCtr.dispose();
+  }
 }
 
 class CollEventFormCtrModel {
@@ -76,6 +90,15 @@ class CollEventFormCtrModel {
       endTimeCtr: TextEditingController(),
       primaryCollMethodCtr: null,
       noteCtr: TextEditingController());
+
+  void dispose() {
+    eventIDCtr.dispose();
+    startDateCtr.dispose();
+    endDateCtr.dispose();
+    startTimeCtr.dispose();
+    endTimeCtr.dispose();
+    noteCtr.dispose();
+  }
 }
 
 class NarrativeFormCtrModel {
@@ -91,6 +114,11 @@ class NarrativeFormCtrModel {
       dateCtr: TextEditingController(),
       siteCtr: null,
       narrativeCtr: TextEditingController());
+
+  void dispose() {
+    dateCtr.dispose();
+    narrativeCtr.dispose();
+  }
 }
 
 class SpecimenFormCtrModel {
@@ -130,6 +158,15 @@ class SpecimenFormCtrModel {
         captureTimeCtr: TextEditingController(),
         trapTypeCtr: TextEditingController(),
       );
+
+  void dispose() {
+    collectorNumberCtr.dispose();
+    prepDateCtr.dispose();
+    prepTimeCtr.dispose();
+    captureDateCtr.dispose();
+    captureTimeCtr.dispose();
+    trapTypeCtr.dispose();
+  }
 }
 
 class BirdMeasurementCtrModel {
@@ -181,6 +218,23 @@ class BirdMeasurementCtrModel {
         gonadCtr: TextEditingController(),
         testisCtr: TextEditingController(),
       );
+
+  void dispose() {
+    weightCtr.dispose();
+    wingspanCtr.dispose();
+    irisCtr.dispose();
+    billCtr.dispose();
+    tarsusCtr.dispose();
+    footCtr.dispose();
+    wingMoltCtr.dispose();
+    tailMoltCtr.dispose();
+    bodyMoltCtr.dispose();
+    bursaCtr.dispose();
+    skullOssCtr.dispose();
+    fatCtr.dispose();
+    gonadCtr.dispose();
+    testisCtr.dispose();
+  }
 }
 
 class PersonnelFormCtrModel {
@@ -245,6 +299,16 @@ class TaxonRegistryCtrModel {
       specificEpithetCtr: TextEditingController(),
       commonNameCtr: TextEditingController(),
       noteCtr: TextEditingController());
+
+  void dispose() {
+    taxonClassCtr.dispose();
+    taxonOrderCtr.dispose();
+    taxonFamilyCtr.dispose();
+    genusCtr.dispose();
+    specificEpithetCtr.dispose();
+    commonNameCtr.dispose();
+    noteCtr.dispose();
+  }
 }
 
 class CoordinateCtrModel {
@@ -293,6 +357,17 @@ class CoordinateCtrModel {
         gpsUnitCtr: TextEditingController(text: data.gpsUnit ?? ''),
         noteCtr: TextEditingController(text: data.notes ?? ''),
       );
+
+  void dispose() {
+    nameIdCtr.dispose();
+    latitudeCtr.dispose();
+    longitudeCtr.dispose();
+    elevationCtr.dispose();
+    datumCtr.dispose();
+    uncertaintyCtr.dispose();
+    gpsUnitCtr.dispose();
+    noteCtr.dispose();
+  }
 }
 
 class CollEffortCtrModel {
@@ -325,4 +400,12 @@ class CollEffortCtrModel {
         sizeCtr: TextEditingController(text: data.size.toString()),
         noteCtr: TextEditingController(text: data.notes ?? ''),
       );
+
+  void dispose() {
+    typeCtr.dispose();
+    brandCtr.dispose();
+    countCtr.dispose();
+    sizeCtr.dispose();
+    noteCtr.dispose();
+  }
 }

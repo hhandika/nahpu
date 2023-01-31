@@ -11,7 +11,8 @@ final databaseProvider = Provider<Database>((ref) {
   return db;
 });
 
-final projectListProvider = FutureProvider<List<ListProjectResult>>((ref) {
+final projectListProvider =
+    FutureProvider.autoDispose<List<ListProjectResult>>((ref) {
   return ref.read(databaseProvider).getProjectList();
 });
 
@@ -21,9 +22,9 @@ final projectInfoProvider =
   return await projectInfo;
 });
 
-final projectUuidProvider = StateProvider<String>((ref) => '');
+final projectUuidProvider = StateProvider.autoDispose<String>((ref) => '');
 
-final projectNavbarIndexProvider = StateProvider<int>((ref) => 0);
+final projectNavbarIndexProvider = StateProvider.autoDispose<int>((ref) => 0);
 
 Future<void> createPersonnel(WidgetRef ref, PersonnelCompanion form) async {
   await ref.read(databaseProvider).createPersonnel(form);

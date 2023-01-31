@@ -29,6 +29,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm> {
 
   @override
   void dispose() {
+    widget.specimenCtr.dispose();
     super.dispose();
   }
 

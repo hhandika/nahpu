@@ -25,6 +25,17 @@ class NarrativeForm extends ConsumerStatefulWidget {
 
 class NarrativeFormState extends ConsumerState<NarrativeForm> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    widget.narrativeCtr.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {

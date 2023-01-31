@@ -61,7 +61,8 @@ final collEffortByEventProvider = FutureProvider.family
         CollEffortQuery(ref.read(databaseProvider))
             .getCollEffortByEventId(collEventId));
 
-final taxonRegistryProvider = FutureProvider<List<TaxonomyData>>((ref) async {
+final taxonRegistryProvider =
+    FutureProvider.autoDispose<List<TaxonomyData>>((ref) async {
   final projectTaxon = TaxonomyQuery(ref.read(databaseProvider)).getTaxonList();
   return await projectTaxon;
 });

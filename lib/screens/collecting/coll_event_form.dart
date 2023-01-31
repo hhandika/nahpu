@@ -20,6 +20,12 @@ class CollEventForm extends ConsumerStatefulWidget {
 
 class CollEventFormState extends ConsumerState<CollEventForm> {
   @override
+  void dispose() {
+    widget.collEventCtr.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints c) {

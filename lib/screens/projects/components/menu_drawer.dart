@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/models/setttings.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
-import 'package:nahpu/screens/settings/project_settings.dart';
+import 'package:drift/drift.dart' as db;
 import 'package:nahpu/screens/home/home.dart';
+import 'package:nahpu/screens/settings/project_settings.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/indicators.dart';
+import 'package:nahpu/services/database.dart';
 
 class ProjectMenuDrawer extends ConsumerWidget {
   const ProjectMenuDrawer({Key? key}) : super(key: key);
@@ -87,7 +90,13 @@ class ProjectMenuDrawer extends ConsumerWidget {
             leading: const Icon(Icons.exit_to_app_rounded),
             title: const Text('Close project'),
             onTap: () {
-              Navigator.push(
+              ref.invalidate(projectListProvider);
+              ref.read(databaseProvider).updateProjectEntry(
+                    projectUuid,
+                    ProjectCompanion(
+                        lastModified: db.Value(getSystemDateTime())),
+                  );
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => const Home()),
               );

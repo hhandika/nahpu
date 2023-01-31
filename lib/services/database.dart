@@ -53,7 +53,13 @@ class Database extends _$Database {
     return (delete(project)..where((t) => t.uuid.equals(id))).go();
   }
 
-  Future updateEntry(ProjectData entry) => update(project).replace(entry);
+  Future<void> deleteAllProjects() {
+    return (delete(project)).go();
+  }
+
+  Future<void> updateProjectEntry(String uuid, ProjectCompanion entry) {
+    return (update(project)..where((t) => t.uuid.equals(uuid))).write(entry);
+  }
 
   Future<int> createNarrative(NarrativeCompanion form) =>
       into(narrative).insert(form);

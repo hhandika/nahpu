@@ -69,6 +69,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
   void _onItemTapped(int index) {
     switch (index) {
       case 0:
+        _invalidateAll();
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -109,6 +110,13 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
         );
         break;
     }
+  }
+
+  void _invalidateAll() {
+    ref.invalidate(siteEntryProvider);
+    ref.invalidate(collEventEntryProvider);
+    ref.invalidate(specimenEntryProvider);
+    ref.invalidate(narrativeEntryProvider);
   }
 }
 

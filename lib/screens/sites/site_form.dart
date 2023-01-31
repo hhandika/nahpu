@@ -34,6 +34,7 @@ class SiteFormState extends ConsumerState<SiteForm>
   @override
   void dispose() {
     _tabController.dispose();
+    widget.siteFormCtr.dispose();
     super.dispose();
   }
 
