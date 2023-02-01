@@ -70,7 +70,10 @@ class SpecimenPartFields extends ConsumerWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const SizedBox(height: 100),
+        const SizedBox(
+          height: 100,
+          child: TitleForm(text: 'Specimen Parts'),
+        ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
@@ -93,7 +96,7 @@ class SpecimenPartFields extends ConsumerWidget {
         TextFormField(
           maxLines: 5,
           decoration: const InputDecoration(
-            labelText: 'Part notes',
+            labelText: 'Notes',
             hintText: 'Add notes',
           ),
         ),
