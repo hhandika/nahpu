@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 
 class EnvironmentDataForm extends ConsumerWidget {
@@ -25,9 +26,8 @@ class EnvironmentDataForm extends ConsumerWidget {
         constraints: const BoxConstraints(maxWidth: 300),
         child: Column(
           children: [
-            Text(
-              'Weather Data',
-              style: Theme.of(context).textTheme.titleLarge,
+            const TitleForm(
+              text: 'Weather Data',
             ),
             const SizedBox(height: 15),
             Text('Temperature (°C)',

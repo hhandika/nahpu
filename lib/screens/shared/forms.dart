@@ -55,14 +55,13 @@ class FormCard extends StatelessWidget {
           ? Color.lerp(Theme.of(context).colorScheme.secondaryContainer,
               Theme.of(context).colorScheme.surface, 0.5)
           : Theme.of(context).colorScheme.surface,
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            withTitle ? TitleForm(title: title) : const SizedBox.shrink(),
-            child,
-          ],
-        ),
+      child: Column(
+        children: [
+          withTitle ? TitleForm(text: title) : const SizedBox.shrink(),
+          Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+              child: child)
+        ],
       ),
     );
   }
@@ -71,31 +70,35 @@ class FormCard extends StatelessWidget {
 class TitleForm extends StatelessWidget {
   const TitleForm({
     Key? key,
-    required this.title,
+    required this.text,
   }) : super(key: key);
 
-  final String title;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        IconButton(
-          onPressed: () {},
-          padding: EdgeInsets.zero,
-          constraints: const BoxConstraints(),
-          icon: Icon(
-            Icons.info_outline_rounded,
-            size: 20,
-            color: Colors.grey[400],
+    return Padding(
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            text,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
-        ),
-      ],
+          IconButton(
+            onPressed: () {},
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+            icon: Icon(
+              Icons.info_outline_rounded,
+              size: 20,
+              color: Colors.grey[400],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
+import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/services/collevent_queries.dart';
 import 'package:nahpu/services/database.dart';
 
@@ -50,6 +51,7 @@ class CollPersonnelFormState extends ConsumerState<CollPersonnelForm> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        const TitleForm(text: 'Collecting Personnel'),
         Expanded(
           child: _personnel.isNotEmpty
               ? ListView.builder(
