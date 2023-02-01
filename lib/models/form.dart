@@ -412,20 +412,18 @@ class CollEffortCtrModel {
 
 class CollPersonnelCtrModel {
   CollPersonnelCtrModel({
-    required this.nameCtr,
+    required this.id,
+    required this.nameIDCtr,
     required this.roleCtr,
   });
 
-  TextEditingController nameCtr;
-  TextEditingController roleCtr;
+  int? id;
+  String? nameIDCtr;
+  String? roleCtr;
 
   factory CollPersonnelCtrModel.empty() => CollPersonnelCtrModel(
-        nameCtr: TextEditingController(),
-        roleCtr: TextEditingController(),
+        id: null,
+        nameIDCtr: null,
+        roleCtr: null,
       );
-
-  void dispose() {
-    nameCtr.dispose();
-    roleCtr.dispose();
-  }
 }

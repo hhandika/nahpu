@@ -66,3 +66,8 @@ final taxonRegistryProvider =
   final projectTaxon = TaxonomyQuery(ref.read(databaseProvider)).getTaxonList();
   return await projectTaxon;
 });
+
+final collPersonnelProvider = FutureProvider.family
+    .autoDispose<List<CollectingPersonnelData>, int>((ref, collEventId) =>
+        CollectingPersonnelQuery(ref.read(databaseProvider))
+            .getCollectingPersonnelByEventId(collEventId));

@@ -72,7 +72,7 @@ class CollectingPersonnelQuery extends DatabaseAccessor<Database>
 
   Future updateCollectingPersonnelEntry(
       int id, CollectingPersonnelCompanion entry) {
-    return (update(collectingPersonnel)..where((t) => t.id.equals(id)))
+    return (update(collectingPersonnel)..where((t) => t.eventID.equals(id)))
         .write(entry);
   }
 
