@@ -59,6 +59,7 @@ CREATE TABLE collEvent (
     primaryCollMethod TEXT,
     collMethodNotes TEXT,
     weatherID INT,
+    personnelNotes,
     siteID INT REFERENCES site(id),
     FOREIGN KEY(projectUuid) REFERENCES project(uuid),
     FOREIGN KEY(weatherID) REFERENCES weatherData(id)

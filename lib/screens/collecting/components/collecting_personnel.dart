@@ -5,6 +5,7 @@ import 'package:nahpu/models/form.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/services/collevent_queries.dart';
 import 'package:nahpu/services/database.dart';
 
@@ -74,7 +75,12 @@ class CollPersonnelFormState extends ConsumerState<CollPersonnelForm> {
             ref.invalidate(collPersonnelProvider);
             setState(() {});
           },
-        )
+        ),
+        const CommonTextField(
+            maxLines: 5,
+            labelText: 'Notes',
+            hintText: 'Enter notes',
+            isLastField: true),
       ],
     );
   }
@@ -183,7 +189,7 @@ class CollPersonnelFieldState extends ConsumerState<CollPersonnelField> {
                 .deleteCollectingPersonnel(widget.controller.id!);
             ref.invalidate(collPersonnelProvider);
           },
-        )
+        ),
       ],
     );
   }
