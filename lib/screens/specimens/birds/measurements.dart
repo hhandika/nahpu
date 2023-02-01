@@ -46,13 +46,13 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
-              NumberOnlyField(
+              CommonNumField(
                 controller: birdMeasurementCtrModel.weightCtr,
                 labelText: 'Weight (grams)',
                 hintText: 'Enter weight',
                 isLastField: false,
               ),
-              NumberOnlyField(
+              CommonNumField(
                 controller: birdMeasurementCtrModel.wingspanCtr,
                 labelText: 'Wingspan (mm)',
                 hintText: 'Enter TL',
@@ -173,7 +173,7 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
-              NumberOnlyField(
+              CommonNumField(
                 controller: birdMeasurementCtrModel.bursaCtr,
                 labelText: 'Bursa (mm)',
                 hintText: 'Enter tail molt',
@@ -256,12 +256,12 @@ class MaleGonadForm extends ConsumerWidget {
             AdaptiveLayout(
               useHorizontalLayout: useHorizontalLayout,
               children: const [
-                NumberOnlyField(
+                CommonNumField(
                   labelText: 'Length',
                   hintText: 'Enter length',
                   isLastField: false,
                 ),
-                NumberOnlyField(
+                CommonNumField(
                   labelText: 'Width',
                   hintText: 'Enter width',
                   isLastField: false,
@@ -446,17 +446,17 @@ class OvumSizeForm extends StatelessWidget {
         AdaptiveLayout(
           useHorizontalLayout: useHorizontalLayout,
           children: const [
-            NumberOnlyField(
+            CommonNumField(
               labelText: 'First',
               hintText: 'Enter size',
               isLastField: false,
             ),
-            NumberOnlyField(
+            CommonNumField(
               labelText: 'Second',
               hintText: 'Enter size',
               isLastField: false,
             ),
-            NumberOnlyField(
+            CommonNumField(
               labelText: 'Third',
               hintText: 'Enter size',
               isLastField: false,
@@ -476,7 +476,7 @@ class OviductForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveLayout(useHorizontalLayout: useHorizontalLayout, children: [
-      const NumberOnlyField(
+      const CommonNumField(
         labelText: 'Width (mm)',
         hintText: 'Enter width',
         isLastField: false,
@@ -559,12 +559,12 @@ class WingMoltForm extends StatelessWidget {
         AdaptiveLayout(
           useHorizontalLayout: useHorizontalLayout,
           children: const [
-            NumberOnlyField(
+            CommonNumField(
               labelText: 'Right primaries',
               hintText: 'Enter right primaries molt',
               isLastField: false,
             ),
-            NumberOnlyField(
+            CommonNumField(
               labelText: 'Left primaries',
               hintText: 'Enter left primaries molt',
               isLastField: false,
@@ -574,12 +574,12 @@ class WingMoltForm extends StatelessWidget {
         AdaptiveLayout(
           useHorizontalLayout: useHorizontalLayout,
           children: const [
-            NumberOnlyField(
+            CommonNumField(
               labelText: 'Right secondaries',
               hintText: 'Enter right secondaries molt',
               isLastField: false,
             ),
-            NumberOnlyField(
+            CommonNumField(
               labelText: 'Left secondaries',
               hintText: 'Enter left secondaries molt',
               isLastField: false,
@@ -610,12 +610,12 @@ class TailMoltForm extends StatelessWidget {
         AdaptiveLayout(
           useHorizontalLayout: useHorizontalLayout,
           children: const [
-            NumberOnlyField(
+            CommonNumField(
               labelText: 'Right rectrices',
               hintText: 'Enter right rectrices molt',
               isLastField: false,
             ),
-            NumberOnlyField(
+            CommonNumField(
               labelText: 'Left retrices',
               hintText: 'Enter left retrices molt',
               isLastField: false,

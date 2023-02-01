@@ -91,7 +91,7 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
-              TextFormField(
+              TextField(
                 decoration: const InputDecoration(
                   labelText: 'Start Date',
                   hintText: 'Enter date',
@@ -120,7 +120,7 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
                   }
                 },
               ),
-              TextFormField(
+              TextField(
                 decoration: const InputDecoration(
                   labelText: 'End Date',
                   hintText: 'Enter date',

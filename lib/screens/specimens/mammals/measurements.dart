@@ -32,12 +32,12 @@ class MammalMeasurementFormsState
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: const [
-              NumberOnlyField(
+              CommonNumField(
                 labelText: 'Total length (mm)',
                 hintText: 'Enter TTL',
                 isLastField: false,
               ),
-              NumberOnlyField(
+              CommonNumField(
                 labelText: 'Tail length (mm)',
                 hintText: 'Enter TL',
                 isLastField: false,
@@ -47,12 +47,12 @@ class MammalMeasurementFormsState
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: const [
-              NumberOnlyField(
+              CommonNumField(
                 labelText: 'Hind foot length (mm)',
                 hintText: 'Enter HF length',
                 isLastField: false,
               ),
-              NumberOnlyField(
+              CommonNumField(
                 labelText: 'Ear length (mm)',
                 hintText: 'Enter ER length',
                 isLastField: false,
@@ -62,14 +62,14 @@ class MammalMeasurementFormsState
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
-              const NumberOnlyField(
+              const CommonNumField(
                 labelText: 'Weight (grams)',
                 hintText: 'Enter specimen weight',
                 isLastField: false,
               ),
               Visibility(
                 visible: widget.isBats,
-                child: const NumberOnlyField(
+                child: const CommonNumField(
                   labelText: 'Forearm Length (mm)',
                   hintText: 'Enter FL length',
                   isLastField: true,
@@ -277,12 +277,12 @@ class ScrotalMaleForm extends StatelessWidget {
         child: AdaptiveLayout(
           useHorizontalLayout: useHorizontalLayout,
           children: const [
-            NumberOnlyField(
+            CommonNumField(
               labelText: 'Length (mm)',
               hintText: 'Enter the length of the right testes ',
               isLastField: false,
             ),
-            NumberOnlyField(
+            CommonNumField(
               labelText: 'Width (mm)',
               hintText: 'Enter the width of the right testes ',
               isLastField: true,
@@ -407,7 +407,7 @@ class _FemaleGonadFormState extends State<FemaleGonadForm> {
           EmbryoForm(
             useHorizontalLayout: widget.useHorizontalLayout,
           ),
-          const NumberOnlyField(
+          const CommonNumField(
             labelText: 'CR length (mm)',
             hintText: 'Enter crown-rump length',
             isLastField: true,
@@ -433,17 +433,17 @@ class MammaeForm extends StatelessWidget {
     return AdaptiveLayout(
         useHorizontalLayout: useHorizontalLayout,
         children: const [
-          NumberOnlyField(
+          CommonNumField(
             labelText: 'Axillary',
             hintText: 'Enter the axillary pair number',
             isLastField: false,
           ),
-          NumberOnlyField(
+          CommonNumField(
             labelText: 'Abdominal',
             hintText: 'Enter the abdominal pair number',
             isLastField: false,
           ),
-          NumberOnlyField(
+          CommonNumField(
             labelText: 'Inguinal',
             hintText: 'Enter the inguinal pair number',
             isLastField: false,
@@ -462,9 +462,9 @@ class EmbryoForm extends StatelessWidget {
     return AdaptiveLayout(
         useHorizontalLayout: useHorizontalLayout,
         children: const [
-          NumberOnlyField(
+          CommonNumField(
               labelText: 'Left', hintText: 'Left', isLastField: false),
-          NumberOnlyField(
+          CommonNumField(
               labelText: 'Right', hintText: 'Right', isLastField: true),
         ]);
   }
@@ -480,9 +480,9 @@ class PlacentalScarForm extends StatelessWidget {
     return AdaptiveLayout(
         useHorizontalLayout: useHorizontalLayout,
         children: const [
-          NumberOnlyField(
+          CommonNumField(
               labelText: 'Left', hintText: 'Left', isLastField: false),
-          NumberOnlyField(
+          CommonNumField(
               labelText: 'Right', hintText: 'Right', isLastField: true),
         ]);
   }

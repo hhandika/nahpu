@@ -36,8 +36,8 @@ class TaxonGroupFields extends ConsumerWidget {
   }
 }
 
-class NumberOnlyField extends ConsumerWidget {
-  const NumberOnlyField({
+class CommonNumField extends ConsumerWidget {
+  const CommonNumField({
     Key? key,
     required this.labelText,
     required this.hintText,

@@ -427,3 +427,42 @@ class CollPersonnelCtrModel {
         roleCtr: null,
       );
 }
+
+class CollWeatherCtrModel {
+  CollWeatherCtrModel({
+    required this.id,
+    required this.dayTempLowestCtr,
+    required this.dayTempHighestCtr,
+    required this.nightTempLowestCtr,
+    required this.nightTempHighestCtr,
+    required this.avarageHumidityCtr,
+    required this.dewPointCtr,
+    required this.sunriseTimeCtr,
+    required this.sunsetTimeCtr,
+    required this.moonPhaseCtr,
+  });
+
+  int? id;
+  TextEditingController dayTempLowestCtr;
+  TextEditingController dayTempHighestCtr;
+  TextEditingController nightTempLowestCtr;
+  TextEditingController nightTempHighestCtr;
+  TextEditingController avarageHumidityCtr;
+  TextEditingController dewPointCtr;
+  TextEditingController sunriseTimeCtr;
+  TextEditingController sunsetTimeCtr;
+  String? moonPhaseCtr;
+
+  factory CollWeatherCtrModel.empty() => CollWeatherCtrModel(
+        id: null,
+        dayTempLowestCtr: TextEditingController(),
+        dayTempHighestCtr: TextEditingController(),
+        nightTempLowestCtr: TextEditingController(),
+        nightTempHighestCtr: TextEditingController(),
+        avarageHumidityCtr: TextEditingController(),
+        dewPointCtr: TextEditingController(),
+        sunriseTimeCtr: TextEditingController(),
+        sunsetTimeCtr: TextEditingController(),
+        moonPhaseCtr: null,
+      );
+}

@@ -58,8 +58,9 @@ class _CollEventTabBarState extends State<CollEventTabBar>
         ],
         children: [
           CollPersonnelForm(eventID: widget.eventID),
-          EnvironmentDataForm(
+          EnvironmentDataView(
             useHorizontalLayout: widget.useHorizontalLayout,
+            eventID: widget.eventID,
           ),
           const ToolManagement(),
         ],

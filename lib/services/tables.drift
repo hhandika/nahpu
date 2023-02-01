@@ -58,7 +58,13 @@ CREATE TABLE collEvent (
     endTime TEXT,
     primaryCollMethod TEXT,
     collMethodNotes TEXT,
-    weatherID INT,
+    lowestDayTemp TEXT,
+    highestDayTemp TEXT,
+    lowestNightTemp TEXT,
+    highestNightTemp TEXT,
+    sunrise TEXT,
+    sunset TEXT,
+    moonPhase TEXT,
     personnelNotes,
     siteID INT REFERENCES site(id),
     FOREIGN KEY(projectUuid) REFERENCES project(uuid),
@@ -83,17 +89,6 @@ CREATE TABLE collEffort (
     size TEXT,
     notes TEXT,
     FOREIGN KEY(eventID) REFERENCES collEvent(id)
-);
-
-CREATE TABLE weatherData (
-    id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
-    lowestDayTemp TEXT,
-    highestDayTemp TEXT,
-    lowestNightTemp TEXT,
-    highestNightTemp TEXT,
-    sunrise TEXT,
-    sunset TEXT,
-    moonPhase TEXT
 );
 
 CREATE TABLE narrative (
