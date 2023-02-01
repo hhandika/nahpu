@@ -18,6 +18,14 @@ Future<void> createNewCollEvents(BuildContext context, WidgetRef ref) {
   ))
       .then(
     (value) {
+      // Weather data used collect event id as a foreign key
+      // so we need to create a new weather data entry
+      // for the new collect event
+      WeatherDataQuery(ref.read(databaseProvider)).createWeatherData(
+        WeatherDataCompanion(
+          eventID: db.Value(value),
+        ),
+      );
       ref.invalidate(collEventEntryProvider);
       Navigator.of(context).push(
         MaterialPageRoute(
