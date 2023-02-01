@@ -70,7 +70,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
     switch (index) {
       case 0:
         _invalidateAll();
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => const Dashboard(),
@@ -80,7 +80,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
         break;
       case 1:
         ref.invalidate(siteEntryProvider);
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const Sites()),
         );
@@ -88,7 +88,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
       case 2:
         ref.invalidate(siteEntryProvider);
         ref.invalidate(collEventEntryProvider);
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const CollEvents()),
         );
@@ -96,7 +96,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
       case 3:
         ref.invalidate(collEventEntryProvider);
         ref.invalidate(specimenEntryProvider);
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const Specimens()),
         );
@@ -104,7 +104,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
       case 4:
         ref.invalidate(siteEntryProvider);
         ref.invalidate(narrativeEntryProvider);
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const Narrative()),
         );
