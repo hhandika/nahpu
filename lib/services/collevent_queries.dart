@@ -100,16 +100,18 @@ class WeatherDataQuery extends DatabaseAccessor<Database>
       into(weatherData).insert(form);
 
   Future updateWeatherDataEntry(int id, WeatherDataCompanion entry) {
-    return (update(weatherData)..where((t) => t.id.equals(id))).write(entry);
+    return (update(weatherData)..where((t) => t.eventID.equals(id)))
+        .write(entry);
   }
 
   Future<List<WeatherDataData>> getWeatherDataById(int weatherId) async {
-    return await (select(weatherData)..where((t) => t.id.equals(weatherId)))
+    return await (select(weatherData)
+          ..where((t) => t.eventID.equals(weatherId)))
         .get();
   }
 
   Future<void> deleteWeatherData(int id) {
-    return (delete(weatherData)..where((t) => t.id.equals(id))).go();
+    return (delete(weatherData)..where((t) => t.eventID.equals(id))).go();
   }
 
   Future<void> deleteAllWeatherData(String projectUuid) {

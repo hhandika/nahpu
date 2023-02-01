@@ -11,8 +11,8 @@ mixin _$SpecimenQueryMixin on DatabaseAccessor<Database> {
   Media get media => attachedDatabase.media;
   Site get site => attachedDatabase.site;
   Coordinate get coordinate => attachedDatabase.coordinate;
-  WeatherData get weatherData => attachedDatabase.weatherData;
   CollEvent get collEvent => attachedDatabase.collEvent;
+  WeatherData get weatherData => attachedDatabase.weatherData;
   CollectingPersonnel get collectingPersonnel =>
       attachedDatabase.collectingPersonnel;
   CollEffort get collEffort => attachedDatabase.collEffort;

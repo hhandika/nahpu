@@ -58,6 +58,13 @@ CREATE TABLE collEvent (
     endTime TEXT,
     primaryCollMethod TEXT,
     collMethodNotes TEXT,
+    personnelNotes,
+    siteID INT REFERENCES site(id),
+    FOREIGN KEY(projectUuid) REFERENCES project(uuid)
+);
+
+CREATE TABLE weatherData (
+    eventID INT,
     lowestDayTemp TEXT,
     highestDayTemp TEXT,
     lowestNightTemp TEXT,
@@ -65,10 +72,7 @@ CREATE TABLE collEvent (
     sunrise TEXT,
     sunset TEXT,
     moonPhase TEXT,
-    personnelNotes,
-    siteID INT REFERENCES site(id),
-    FOREIGN KEY(projectUuid) REFERENCES project(uuid),
-    FOREIGN KEY(weatherID) REFERENCES weatherData(id)
+    FOREIGN KEY(eventID) REFERENCES collEvent(id)
 );
 
 CREATE TABLE collectingPersonnel (

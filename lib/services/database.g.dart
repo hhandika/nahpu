@@ -3079,438 +3079,6 @@ class CoordinateCompanion extends UpdateCompanion<CoordinateData> {
   }
 }
 
-class WeatherData extends Table with TableInfo<WeatherData, WeatherDataData> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  WeatherData(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
-  static const VerificationMeta _lowestDayTempMeta =
-      const VerificationMeta('lowestDayTemp');
-  late final GeneratedColumn<String> lowestDayTemp = GeneratedColumn<String>(
-      'lowestDayTemp', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _highestDayTempMeta =
-      const VerificationMeta('highestDayTemp');
-  late final GeneratedColumn<String> highestDayTemp = GeneratedColumn<String>(
-      'highestDayTemp', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _lowestNightTempMeta =
-      const VerificationMeta('lowestNightTemp');
-  late final GeneratedColumn<String> lowestNightTemp = GeneratedColumn<String>(
-      'lowestNightTemp', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _highestNightTempMeta =
-      const VerificationMeta('highestNightTemp');
-  late final GeneratedColumn<String> highestNightTemp = GeneratedColumn<String>(
-      'highestNightTemp', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _sunriseMeta =
-      const VerificationMeta('sunrise');
-  late final GeneratedColumn<String> sunrise = GeneratedColumn<String>(
-      'sunrise', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _sunsetMeta = const VerificationMeta('sunset');
-  late final GeneratedColumn<String> sunset = GeneratedColumn<String>(
-      'sunset', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _moonPhaseMeta =
-      const VerificationMeta('moonPhase');
-  late final GeneratedColumn<String> moonPhase = GeneratedColumn<String>(
-      'moonPhase', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  @override
-  List<GeneratedColumn> get $columns => [
-        id,
-        lowestDayTemp,
-        highestDayTemp,
-        lowestNightTemp,
-        highestNightTemp,
-        sunrise,
-        sunset,
-        moonPhase
-      ];
-  @override
-  String get aliasedName => _alias ?? 'weatherData';
-  @override
-  String get actualTableName => 'weatherData';
-  @override
-  VerificationContext validateIntegrity(Insertable<WeatherDataData> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('lowestDayTemp')) {
-      context.handle(
-          _lowestDayTempMeta,
-          lowestDayTemp.isAcceptableOrUnknown(
-              data['lowestDayTemp']!, _lowestDayTempMeta));
-    }
-    if (data.containsKey('highestDayTemp')) {
-      context.handle(
-          _highestDayTempMeta,
-          highestDayTemp.isAcceptableOrUnknown(
-              data['highestDayTemp']!, _highestDayTempMeta));
-    }
-    if (data.containsKey('lowestNightTemp')) {
-      context.handle(
-          _lowestNightTempMeta,
-          lowestNightTemp.isAcceptableOrUnknown(
-              data['lowestNightTemp']!, _lowestNightTempMeta));
-    }
-    if (data.containsKey('highestNightTemp')) {
-      context.handle(
-          _highestNightTempMeta,
-          highestNightTemp.isAcceptableOrUnknown(
-              data['highestNightTemp']!, _highestNightTempMeta));
-    }
-    if (data.containsKey('sunrise')) {
-      context.handle(_sunriseMeta,
-          sunrise.isAcceptableOrUnknown(data['sunrise']!, _sunriseMeta));
-    }
-    if (data.containsKey('sunset')) {
-      context.handle(_sunsetMeta,
-          sunset.isAcceptableOrUnknown(data['sunset']!, _sunsetMeta));
-    }
-    if (data.containsKey('moonPhase')) {
-      context.handle(_moonPhaseMeta,
-          moonPhase.isAcceptableOrUnknown(data['moonPhase']!, _moonPhaseMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  WeatherDataData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return WeatherDataData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      lowestDayTemp: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}lowestDayTemp']),
-      highestDayTemp: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}highestDayTemp']),
-      lowestNightTemp: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}lowestNightTemp']),
-      highestNightTemp: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}highestNightTemp']),
-      sunrise: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}sunrise']),
-      sunset: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}sunset']),
-      moonPhase: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}moonPhase']),
-    );
-  }
-
-  @override
-  WeatherData createAlias(String alias) {
-    return WeatherData(attachedDatabase, alias);
-  }
-
-  @override
-  bool get dontWriteConstraints => true;
-}
-
-class WeatherDataData extends DataClass implements Insertable<WeatherDataData> {
-  final int id;
-  final String? lowestDayTemp;
-  final String? highestDayTemp;
-  final String? lowestNightTemp;
-  final String? highestNightTemp;
-  final String? sunrise;
-  final String? sunset;
-  final String? moonPhase;
-  const WeatherDataData(
-      {required this.id,
-      this.lowestDayTemp,
-      this.highestDayTemp,
-      this.lowestNightTemp,
-      this.highestNightTemp,
-      this.sunrise,
-      this.sunset,
-      this.moonPhase});
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    if (!nullToAbsent || lowestDayTemp != null) {
-      map['lowestDayTemp'] = Variable<String>(lowestDayTemp);
-    }
-    if (!nullToAbsent || highestDayTemp != null) {
-      map['highestDayTemp'] = Variable<String>(highestDayTemp);
-    }
-    if (!nullToAbsent || lowestNightTemp != null) {
-      map['lowestNightTemp'] = Variable<String>(lowestNightTemp);
-    }
-    if (!nullToAbsent || highestNightTemp != null) {
-      map['highestNightTemp'] = Variable<String>(highestNightTemp);
-    }
-    if (!nullToAbsent || sunrise != null) {
-      map['sunrise'] = Variable<String>(sunrise);
-    }
-    if (!nullToAbsent || sunset != null) {
-      map['sunset'] = Variable<String>(sunset);
-    }
-    if (!nullToAbsent || moonPhase != null) {
-      map['moonPhase'] = Variable<String>(moonPhase);
-    }
-    return map;
-  }
-
-  WeatherDataCompanion toCompanion(bool nullToAbsent) {
-    return WeatherDataCompanion(
-      id: Value(id),
-      lowestDayTemp: lowestDayTemp == null && nullToAbsent
-          ? const Value.absent()
-          : Value(lowestDayTemp),
-      highestDayTemp: highestDayTemp == null && nullToAbsent
-          ? const Value.absent()
-          : Value(highestDayTemp),
-      lowestNightTemp: lowestNightTemp == null && nullToAbsent
-          ? const Value.absent()
-          : Value(lowestNightTemp),
-      highestNightTemp: highestNightTemp == null && nullToAbsent
-          ? const Value.absent()
-          : Value(highestNightTemp),
-      sunrise: sunrise == null && nullToAbsent
-          ? const Value.absent()
-          : Value(sunrise),
-      sunset:
-          sunset == null && nullToAbsent ? const Value.absent() : Value(sunset),
-      moonPhase: moonPhase == null && nullToAbsent
-          ? const Value.absent()
-          : Value(moonPhase),
-    );
-  }
-
-  factory WeatherDataData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return WeatherDataData(
-      id: serializer.fromJson<int>(json['id']),
-      lowestDayTemp: serializer.fromJson<String?>(json['lowestDayTemp']),
-      highestDayTemp: serializer.fromJson<String?>(json['highestDayTemp']),
-      lowestNightTemp: serializer.fromJson<String?>(json['lowestNightTemp']),
-      highestNightTemp: serializer.fromJson<String?>(json['highestNightTemp']),
-      sunrise: serializer.fromJson<String?>(json['sunrise']),
-      sunset: serializer.fromJson<String?>(json['sunset']),
-      moonPhase: serializer.fromJson<String?>(json['moonPhase']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'lowestDayTemp': serializer.toJson<String?>(lowestDayTemp),
-      'highestDayTemp': serializer.toJson<String?>(highestDayTemp),
-      'lowestNightTemp': serializer.toJson<String?>(lowestNightTemp),
-      'highestNightTemp': serializer.toJson<String?>(highestNightTemp),
-      'sunrise': serializer.toJson<String?>(sunrise),
-      'sunset': serializer.toJson<String?>(sunset),
-      'moonPhase': serializer.toJson<String?>(moonPhase),
-    };
-  }
-
-  WeatherDataData copyWith(
-          {int? id,
-          Value<String?> lowestDayTemp = const Value.absent(),
-          Value<String?> highestDayTemp = const Value.absent(),
-          Value<String?> lowestNightTemp = const Value.absent(),
-          Value<String?> highestNightTemp = const Value.absent(),
-          Value<String?> sunrise = const Value.absent(),
-          Value<String?> sunset = const Value.absent(),
-          Value<String?> moonPhase = const Value.absent()}) =>
-      WeatherDataData(
-        id: id ?? this.id,
-        lowestDayTemp:
-            lowestDayTemp.present ? lowestDayTemp.value : this.lowestDayTemp,
-        highestDayTemp:
-            highestDayTemp.present ? highestDayTemp.value : this.highestDayTemp,
-        lowestNightTemp: lowestNightTemp.present
-            ? lowestNightTemp.value
-            : this.lowestNightTemp,
-        highestNightTemp: highestNightTemp.present
-            ? highestNightTemp.value
-            : this.highestNightTemp,
-        sunrise: sunrise.present ? sunrise.value : this.sunrise,
-        sunset: sunset.present ? sunset.value : this.sunset,
-        moonPhase: moonPhase.present ? moonPhase.value : this.moonPhase,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('WeatherDataData(')
-          ..write('id: $id, ')
-          ..write('lowestDayTemp: $lowestDayTemp, ')
-          ..write('highestDayTemp: $highestDayTemp, ')
-          ..write('lowestNightTemp: $lowestNightTemp, ')
-          ..write('highestNightTemp: $highestNightTemp, ')
-          ..write('sunrise: $sunrise, ')
-          ..write('sunset: $sunset, ')
-          ..write('moonPhase: $moonPhase')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(id, lowestDayTemp, highestDayTemp,
-      lowestNightTemp, highestNightTemp, sunrise, sunset, moonPhase);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is WeatherDataData &&
-          other.id == this.id &&
-          other.lowestDayTemp == this.lowestDayTemp &&
-          other.highestDayTemp == this.highestDayTemp &&
-          other.lowestNightTemp == this.lowestNightTemp &&
-          other.highestNightTemp == this.highestNightTemp &&
-          other.sunrise == this.sunrise &&
-          other.sunset == this.sunset &&
-          other.moonPhase == this.moonPhase);
-}
-
-class WeatherDataCompanion extends UpdateCompanion<WeatherDataData> {
-  final Value<int> id;
-  final Value<String?> lowestDayTemp;
-  final Value<String?> highestDayTemp;
-  final Value<String?> lowestNightTemp;
-  final Value<String?> highestNightTemp;
-  final Value<String?> sunrise;
-  final Value<String?> sunset;
-  final Value<String?> moonPhase;
-  const WeatherDataCompanion({
-    this.id = const Value.absent(),
-    this.lowestDayTemp = const Value.absent(),
-    this.highestDayTemp = const Value.absent(),
-    this.lowestNightTemp = const Value.absent(),
-    this.highestNightTemp = const Value.absent(),
-    this.sunrise = const Value.absent(),
-    this.sunset = const Value.absent(),
-    this.moonPhase = const Value.absent(),
-  });
-  WeatherDataCompanion.insert({
-    this.id = const Value.absent(),
-    this.lowestDayTemp = const Value.absent(),
-    this.highestDayTemp = const Value.absent(),
-    this.lowestNightTemp = const Value.absent(),
-    this.highestNightTemp = const Value.absent(),
-    this.sunrise = const Value.absent(),
-    this.sunset = const Value.absent(),
-    this.moonPhase = const Value.absent(),
-  });
-  static Insertable<WeatherDataData> custom({
-    Expression<int>? id,
-    Expression<String>? lowestDayTemp,
-    Expression<String>? highestDayTemp,
-    Expression<String>? lowestNightTemp,
-    Expression<String>? highestNightTemp,
-    Expression<String>? sunrise,
-    Expression<String>? sunset,
-    Expression<String>? moonPhase,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (lowestDayTemp != null) 'lowestDayTemp': lowestDayTemp,
-      if (highestDayTemp != null) 'highestDayTemp': highestDayTemp,
-      if (lowestNightTemp != null) 'lowestNightTemp': lowestNightTemp,
-      if (highestNightTemp != null) 'highestNightTemp': highestNightTemp,
-      if (sunrise != null) 'sunrise': sunrise,
-      if (sunset != null) 'sunset': sunset,
-      if (moonPhase != null) 'moonPhase': moonPhase,
-    });
-  }
-
-  WeatherDataCompanion copyWith(
-      {Value<int>? id,
-      Value<String?>? lowestDayTemp,
-      Value<String?>? highestDayTemp,
-      Value<String?>? lowestNightTemp,
-      Value<String?>? highestNightTemp,
-      Value<String?>? sunrise,
-      Value<String?>? sunset,
-      Value<String?>? moonPhase}) {
-    return WeatherDataCompanion(
-      id: id ?? this.id,
-      lowestDayTemp: lowestDayTemp ?? this.lowestDayTemp,
-      highestDayTemp: highestDayTemp ?? this.highestDayTemp,
-      lowestNightTemp: lowestNightTemp ?? this.lowestNightTemp,
-      highestNightTemp: highestNightTemp ?? this.highestNightTemp,
-      sunrise: sunrise ?? this.sunrise,
-      sunset: sunset ?? this.sunset,
-      moonPhase: moonPhase ?? this.moonPhase,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
-    if (lowestDayTemp.present) {
-      map['lowestDayTemp'] = Variable<String>(lowestDayTemp.value);
-    }
-    if (highestDayTemp.present) {
-      map['highestDayTemp'] = Variable<String>(highestDayTemp.value);
-    }
-    if (lowestNightTemp.present) {
-      map['lowestNightTemp'] = Variable<String>(lowestNightTemp.value);
-    }
-    if (highestNightTemp.present) {
-      map['highestNightTemp'] = Variable<String>(highestNightTemp.value);
-    }
-    if (sunrise.present) {
-      map['sunrise'] = Variable<String>(sunrise.value);
-    }
-    if (sunset.present) {
-      map['sunset'] = Variable<String>(sunset.value);
-    }
-    if (moonPhase.present) {
-      map['moonPhase'] = Variable<String>(moonPhase.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('WeatherDataCompanion(')
-          ..write('id: $id, ')
-          ..write('lowestDayTemp: $lowestDayTemp, ')
-          ..write('highestDayTemp: $highestDayTemp, ')
-          ..write('lowestNightTemp: $lowestNightTemp, ')
-          ..write('highestNightTemp: $highestNightTemp, ')
-          ..write('sunrise: $sunrise, ')
-          ..write('sunset: $sunset, ')
-          ..write('moonPhase: $moonPhase')
-          ..write(')'))
-        .toString();
-  }
-}
-
 class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -3579,13 +3147,13 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _weatherIDMeta =
-      const VerificationMeta('weatherID');
-  late final GeneratedColumn<int> weatherID = GeneratedColumn<int>(
-      'weatherID', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
+  static const VerificationMeta _personnelNotesMeta =
+      const VerificationMeta('personnelNotes');
+  late final GeneratedColumn<Uint8List> personnelNotes =
+      GeneratedColumn<Uint8List>('personnelNotes', aliasedName, true,
+          type: DriftSqlType.blob,
+          requiredDuringInsert: false,
+          $customConstraints: '');
   static const VerificationMeta _siteIDMeta = const VerificationMeta('siteID');
   late final GeneratedColumn<int> siteID = GeneratedColumn<int>(
       'siteID', aliasedName, true,
@@ -3603,7 +3171,7 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
         endTime,
         primaryCollMethod,
         collMethodNotes,
-        weatherID,
+        personnelNotes,
         siteID
       ];
   @override
@@ -3656,9 +3224,11 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
           collMethodNotes.isAcceptableOrUnknown(
               data['collMethodNotes']!, _collMethodNotesMeta));
     }
-    if (data.containsKey('weatherID')) {
-      context.handle(_weatherIDMeta,
-          weatherID.isAcceptableOrUnknown(data['weatherID']!, _weatherIDMeta));
+    if (data.containsKey('personnelNotes')) {
+      context.handle(
+          _personnelNotesMeta,
+          personnelNotes.isAcceptableOrUnknown(
+              data['personnelNotes']!, _personnelNotesMeta));
     }
     if (data.containsKey('siteID')) {
       context.handle(_siteIDMeta,
@@ -3691,8 +3261,8 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
           DriftSqlType.string, data['${effectivePrefix}primaryCollMethod']),
       collMethodNotes: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}collMethodNotes']),
-      weatherID: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}weatherID']),
+      personnelNotes: attachedDatabase.typeMapping
+          .read(DriftSqlType.blob, data['${effectivePrefix}personnelNotes']),
       siteID: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}siteID']),
     );
@@ -3704,10 +3274,8 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
   }
 
   @override
-  List<String> get customConstraints => const [
-        'FOREIGN KEY(projectUuid)REFERENCES project(uuid)',
-        'FOREIGN KEY(weatherID)REFERENCES weatherData(id)'
-      ];
+  List<String> get customConstraints =>
+      const ['FOREIGN KEY(projectUuid)REFERENCES project(uuid)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -3722,7 +3290,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
   final String? endTime;
   final String? primaryCollMethod;
   final String? collMethodNotes;
-  final int? weatherID;
+  final Uint8List? personnelNotes;
   final int? siteID;
   const CollEventData(
       {required this.id,
@@ -3734,7 +3302,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
       this.endTime,
       this.primaryCollMethod,
       this.collMethodNotes,
-      this.weatherID,
+      this.personnelNotes,
       this.siteID});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -3764,8 +3332,8 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
     if (!nullToAbsent || collMethodNotes != null) {
       map['collMethodNotes'] = Variable<String>(collMethodNotes);
     }
-    if (!nullToAbsent || weatherID != null) {
-      map['weatherID'] = Variable<int>(weatherID);
+    if (!nullToAbsent || personnelNotes != null) {
+      map['personnelNotes'] = Variable<Uint8List>(personnelNotes);
     }
     if (!nullToAbsent || siteID != null) {
       map['siteID'] = Variable<int>(siteID);
@@ -3800,9 +3368,9 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
       collMethodNotes: collMethodNotes == null && nullToAbsent
           ? const Value.absent()
           : Value(collMethodNotes),
-      weatherID: weatherID == null && nullToAbsent
+      personnelNotes: personnelNotes == null && nullToAbsent
           ? const Value.absent()
-          : Value(weatherID),
+          : Value(personnelNotes),
       siteID:
           siteID == null && nullToAbsent ? const Value.absent() : Value(siteID),
     );
@@ -3822,7 +3390,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
       primaryCollMethod:
           serializer.fromJson<String?>(json['primaryCollMethod']),
       collMethodNotes: serializer.fromJson<String?>(json['collMethodNotes']),
-      weatherID: serializer.fromJson<int?>(json['weatherID']),
+      personnelNotes: serializer.fromJson<Uint8List?>(json['personnelNotes']),
       siteID: serializer.fromJson<int?>(json['siteID']),
     );
   }
@@ -3839,7 +3407,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
       'endTime': serializer.toJson<String?>(endTime),
       'primaryCollMethod': serializer.toJson<String?>(primaryCollMethod),
       'collMethodNotes': serializer.toJson<String?>(collMethodNotes),
-      'weatherID': serializer.toJson<int?>(weatherID),
+      'personnelNotes': serializer.toJson<Uint8List?>(personnelNotes),
       'siteID': serializer.toJson<int?>(siteID),
     };
   }
@@ -3854,7 +3422,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
           Value<String?> endTime = const Value.absent(),
           Value<String?> primaryCollMethod = const Value.absent(),
           Value<String?> collMethodNotes = const Value.absent(),
-          Value<int?> weatherID = const Value.absent(),
+          Value<Uint8List?> personnelNotes = const Value.absent(),
           Value<int?> siteID = const Value.absent()}) =>
       CollEventData(
         id: id ?? this.id,
@@ -3870,7 +3438,8 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
         collMethodNotes: collMethodNotes.present
             ? collMethodNotes.value
             : this.collMethodNotes,
-        weatherID: weatherID.present ? weatherID.value : this.weatherID,
+        personnelNotes:
+            personnelNotes.present ? personnelNotes.value : this.personnelNotes,
         siteID: siteID.present ? siteID.value : this.siteID,
       );
   @override
@@ -3885,7 +3454,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
           ..write('endTime: $endTime, ')
           ..write('primaryCollMethod: $primaryCollMethod, ')
           ..write('collMethodNotes: $collMethodNotes, ')
-          ..write('weatherID: $weatherID, ')
+          ..write('personnelNotes: $personnelNotes, ')
           ..write('siteID: $siteID')
           ..write(')'))
         .toString();
@@ -3902,7 +3471,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
       endTime,
       primaryCollMethod,
       collMethodNotes,
-      weatherID,
+      $driftBlobEquality.hash(personnelNotes),
       siteID);
   @override
   bool operator ==(Object other) =>
@@ -3917,7 +3486,8 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
           other.endTime == this.endTime &&
           other.primaryCollMethod == this.primaryCollMethod &&
           other.collMethodNotes == this.collMethodNotes &&
-          other.weatherID == this.weatherID &&
+          $driftBlobEquality.equals(
+              other.personnelNotes, this.personnelNotes) &&
           other.siteID == this.siteID);
 }
 
@@ -3931,7 +3501,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
   final Value<String?> endTime;
   final Value<String?> primaryCollMethod;
   final Value<String?> collMethodNotes;
-  final Value<int?> weatherID;
+  final Value<Uint8List?> personnelNotes;
   final Value<int?> siteID;
   const CollEventCompanion({
     this.id = const Value.absent(),
@@ -3943,7 +3513,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
     this.endTime = const Value.absent(),
     this.primaryCollMethod = const Value.absent(),
     this.collMethodNotes = const Value.absent(),
-    this.weatherID = const Value.absent(),
+    this.personnelNotes = const Value.absent(),
     this.siteID = const Value.absent(),
   });
   CollEventCompanion.insert({
@@ -3956,7 +3526,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
     this.endTime = const Value.absent(),
     this.primaryCollMethod = const Value.absent(),
     this.collMethodNotes = const Value.absent(),
-    this.weatherID = const Value.absent(),
+    this.personnelNotes = const Value.absent(),
     this.siteID = const Value.absent(),
   });
   static Insertable<CollEventData> custom({
@@ -3969,7 +3539,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
     Expression<String>? endTime,
     Expression<String>? primaryCollMethod,
     Expression<String>? collMethodNotes,
-    Expression<int>? weatherID,
+    Expression<Uint8List>? personnelNotes,
     Expression<int>? siteID,
   }) {
     return RawValuesInsertable({
@@ -3982,7 +3552,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
       if (endTime != null) 'endTime': endTime,
       if (primaryCollMethod != null) 'primaryCollMethod': primaryCollMethod,
       if (collMethodNotes != null) 'collMethodNotes': collMethodNotes,
-      if (weatherID != null) 'weatherID': weatherID,
+      if (personnelNotes != null) 'personnelNotes': personnelNotes,
       if (siteID != null) 'siteID': siteID,
     });
   }
@@ -3997,7 +3567,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
       Value<String?>? endTime,
       Value<String?>? primaryCollMethod,
       Value<String?>? collMethodNotes,
-      Value<int?>? weatherID,
+      Value<Uint8List?>? personnelNotes,
       Value<int?>? siteID}) {
     return CollEventCompanion(
       id: id ?? this.id,
@@ -4009,7 +3579,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
       endTime: endTime ?? this.endTime,
       primaryCollMethod: primaryCollMethod ?? this.primaryCollMethod,
       collMethodNotes: collMethodNotes ?? this.collMethodNotes,
-      weatherID: weatherID ?? this.weatherID,
+      personnelNotes: personnelNotes ?? this.personnelNotes,
       siteID: siteID ?? this.siteID,
     );
   }
@@ -4044,8 +3614,8 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
     if (collMethodNotes.present) {
       map['collMethodNotes'] = Variable<String>(collMethodNotes.value);
     }
-    if (weatherID.present) {
-      map['weatherID'] = Variable<int>(weatherID.value);
+    if (personnelNotes.present) {
+      map['personnelNotes'] = Variable<Uint8List>(personnelNotes.value);
     }
     if (siteID.present) {
       map['siteID'] = Variable<int>(siteID.value);
@@ -4065,8 +3635,448 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
           ..write('endTime: $endTime, ')
           ..write('primaryCollMethod: $primaryCollMethod, ')
           ..write('collMethodNotes: $collMethodNotes, ')
-          ..write('weatherID: $weatherID, ')
+          ..write('personnelNotes: $personnelNotes, ')
           ..write('siteID: $siteID')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class WeatherData extends Table with TableInfo<WeatherData, WeatherDataData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  WeatherData(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _eventIDMeta =
+      const VerificationMeta('eventID');
+  late final GeneratedColumn<int> eventID = GeneratedColumn<int>(
+      'eventID', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _lowestDayTempMeta =
+      const VerificationMeta('lowestDayTemp');
+  late final GeneratedColumn<String> lowestDayTemp = GeneratedColumn<String>(
+      'lowestDayTemp', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _highestDayTempMeta =
+      const VerificationMeta('highestDayTemp');
+  late final GeneratedColumn<String> highestDayTemp = GeneratedColumn<String>(
+      'highestDayTemp', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _lowestNightTempMeta =
+      const VerificationMeta('lowestNightTemp');
+  late final GeneratedColumn<String> lowestNightTemp = GeneratedColumn<String>(
+      'lowestNightTemp', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _highestNightTempMeta =
+      const VerificationMeta('highestNightTemp');
+  late final GeneratedColumn<String> highestNightTemp = GeneratedColumn<String>(
+      'highestNightTemp', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _sunriseMeta =
+      const VerificationMeta('sunrise');
+  late final GeneratedColumn<String> sunrise = GeneratedColumn<String>(
+      'sunrise', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _sunsetMeta = const VerificationMeta('sunset');
+  late final GeneratedColumn<String> sunset = GeneratedColumn<String>(
+      'sunset', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _moonPhaseMeta =
+      const VerificationMeta('moonPhase');
+  late final GeneratedColumn<String> moonPhase = GeneratedColumn<String>(
+      'moonPhase', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  @override
+  List<GeneratedColumn> get $columns => [
+        eventID,
+        lowestDayTemp,
+        highestDayTemp,
+        lowestNightTemp,
+        highestNightTemp,
+        sunrise,
+        sunset,
+        moonPhase
+      ];
+  @override
+  String get aliasedName => _alias ?? 'weatherData';
+  @override
+  String get actualTableName => 'weatherData';
+  @override
+  VerificationContext validateIntegrity(Insertable<WeatherDataData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('eventID')) {
+      context.handle(_eventIDMeta,
+          eventID.isAcceptableOrUnknown(data['eventID']!, _eventIDMeta));
+    }
+    if (data.containsKey('lowestDayTemp')) {
+      context.handle(
+          _lowestDayTempMeta,
+          lowestDayTemp.isAcceptableOrUnknown(
+              data['lowestDayTemp']!, _lowestDayTempMeta));
+    }
+    if (data.containsKey('highestDayTemp')) {
+      context.handle(
+          _highestDayTempMeta,
+          highestDayTemp.isAcceptableOrUnknown(
+              data['highestDayTemp']!, _highestDayTempMeta));
+    }
+    if (data.containsKey('lowestNightTemp')) {
+      context.handle(
+          _lowestNightTempMeta,
+          lowestNightTemp.isAcceptableOrUnknown(
+              data['lowestNightTemp']!, _lowestNightTempMeta));
+    }
+    if (data.containsKey('highestNightTemp')) {
+      context.handle(
+          _highestNightTempMeta,
+          highestNightTemp.isAcceptableOrUnknown(
+              data['highestNightTemp']!, _highestNightTempMeta));
+    }
+    if (data.containsKey('sunrise')) {
+      context.handle(_sunriseMeta,
+          sunrise.isAcceptableOrUnknown(data['sunrise']!, _sunriseMeta));
+    }
+    if (data.containsKey('sunset')) {
+      context.handle(_sunsetMeta,
+          sunset.isAcceptableOrUnknown(data['sunset']!, _sunsetMeta));
+    }
+    if (data.containsKey('moonPhase')) {
+      context.handle(_moonPhaseMeta,
+          moonPhase.isAcceptableOrUnknown(data['moonPhase']!, _moonPhaseMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  WeatherDataData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return WeatherDataData(
+      eventID: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}eventID']),
+      lowestDayTemp: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}lowestDayTemp']),
+      highestDayTemp: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}highestDayTemp']),
+      lowestNightTemp: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}lowestNightTemp']),
+      highestNightTemp: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}highestNightTemp']),
+      sunrise: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}sunrise']),
+      sunset: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}sunset']),
+      moonPhase: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}moonPhase']),
+    );
+  }
+
+  @override
+  WeatherData createAlias(String alias) {
+    return WeatherData(attachedDatabase, alias);
+  }
+
+  @override
+  List<String> get customConstraints =>
+      const ['FOREIGN KEY(eventID)REFERENCES collEvent(id)'];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class WeatherDataData extends DataClass implements Insertable<WeatherDataData> {
+  final int? eventID;
+  final String? lowestDayTemp;
+  final String? highestDayTemp;
+  final String? lowestNightTemp;
+  final String? highestNightTemp;
+  final String? sunrise;
+  final String? sunset;
+  final String? moonPhase;
+  const WeatherDataData(
+      {this.eventID,
+      this.lowestDayTemp,
+      this.highestDayTemp,
+      this.lowestNightTemp,
+      this.highestNightTemp,
+      this.sunrise,
+      this.sunset,
+      this.moonPhase});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || eventID != null) {
+      map['eventID'] = Variable<int>(eventID);
+    }
+    if (!nullToAbsent || lowestDayTemp != null) {
+      map['lowestDayTemp'] = Variable<String>(lowestDayTemp);
+    }
+    if (!nullToAbsent || highestDayTemp != null) {
+      map['highestDayTemp'] = Variable<String>(highestDayTemp);
+    }
+    if (!nullToAbsent || lowestNightTemp != null) {
+      map['lowestNightTemp'] = Variable<String>(lowestNightTemp);
+    }
+    if (!nullToAbsent || highestNightTemp != null) {
+      map['highestNightTemp'] = Variable<String>(highestNightTemp);
+    }
+    if (!nullToAbsent || sunrise != null) {
+      map['sunrise'] = Variable<String>(sunrise);
+    }
+    if (!nullToAbsent || sunset != null) {
+      map['sunset'] = Variable<String>(sunset);
+    }
+    if (!nullToAbsent || moonPhase != null) {
+      map['moonPhase'] = Variable<String>(moonPhase);
+    }
+    return map;
+  }
+
+  WeatherDataCompanion toCompanion(bool nullToAbsent) {
+    return WeatherDataCompanion(
+      eventID: eventID == null && nullToAbsent
+          ? const Value.absent()
+          : Value(eventID),
+      lowestDayTemp: lowestDayTemp == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lowestDayTemp),
+      highestDayTemp: highestDayTemp == null && nullToAbsent
+          ? const Value.absent()
+          : Value(highestDayTemp),
+      lowestNightTemp: lowestNightTemp == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lowestNightTemp),
+      highestNightTemp: highestNightTemp == null && nullToAbsent
+          ? const Value.absent()
+          : Value(highestNightTemp),
+      sunrise: sunrise == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sunrise),
+      sunset:
+          sunset == null && nullToAbsent ? const Value.absent() : Value(sunset),
+      moonPhase: moonPhase == null && nullToAbsent
+          ? const Value.absent()
+          : Value(moonPhase),
+    );
+  }
+
+  factory WeatherDataData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return WeatherDataData(
+      eventID: serializer.fromJson<int?>(json['eventID']),
+      lowestDayTemp: serializer.fromJson<String?>(json['lowestDayTemp']),
+      highestDayTemp: serializer.fromJson<String?>(json['highestDayTemp']),
+      lowestNightTemp: serializer.fromJson<String?>(json['lowestNightTemp']),
+      highestNightTemp: serializer.fromJson<String?>(json['highestNightTemp']),
+      sunrise: serializer.fromJson<String?>(json['sunrise']),
+      sunset: serializer.fromJson<String?>(json['sunset']),
+      moonPhase: serializer.fromJson<String?>(json['moonPhase']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'eventID': serializer.toJson<int?>(eventID),
+      'lowestDayTemp': serializer.toJson<String?>(lowestDayTemp),
+      'highestDayTemp': serializer.toJson<String?>(highestDayTemp),
+      'lowestNightTemp': serializer.toJson<String?>(lowestNightTemp),
+      'highestNightTemp': serializer.toJson<String?>(highestNightTemp),
+      'sunrise': serializer.toJson<String?>(sunrise),
+      'sunset': serializer.toJson<String?>(sunset),
+      'moonPhase': serializer.toJson<String?>(moonPhase),
+    };
+  }
+
+  WeatherDataData copyWith(
+          {Value<int?> eventID = const Value.absent(),
+          Value<String?> lowestDayTemp = const Value.absent(),
+          Value<String?> highestDayTemp = const Value.absent(),
+          Value<String?> lowestNightTemp = const Value.absent(),
+          Value<String?> highestNightTemp = const Value.absent(),
+          Value<String?> sunrise = const Value.absent(),
+          Value<String?> sunset = const Value.absent(),
+          Value<String?> moonPhase = const Value.absent()}) =>
+      WeatherDataData(
+        eventID: eventID.present ? eventID.value : this.eventID,
+        lowestDayTemp:
+            lowestDayTemp.present ? lowestDayTemp.value : this.lowestDayTemp,
+        highestDayTemp:
+            highestDayTemp.present ? highestDayTemp.value : this.highestDayTemp,
+        lowestNightTemp: lowestNightTemp.present
+            ? lowestNightTemp.value
+            : this.lowestNightTemp,
+        highestNightTemp: highestNightTemp.present
+            ? highestNightTemp.value
+            : this.highestNightTemp,
+        sunrise: sunrise.present ? sunrise.value : this.sunrise,
+        sunset: sunset.present ? sunset.value : this.sunset,
+        moonPhase: moonPhase.present ? moonPhase.value : this.moonPhase,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('WeatherDataData(')
+          ..write('eventID: $eventID, ')
+          ..write('lowestDayTemp: $lowestDayTemp, ')
+          ..write('highestDayTemp: $highestDayTemp, ')
+          ..write('lowestNightTemp: $lowestNightTemp, ')
+          ..write('highestNightTemp: $highestNightTemp, ')
+          ..write('sunrise: $sunrise, ')
+          ..write('sunset: $sunset, ')
+          ..write('moonPhase: $moonPhase')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(eventID, lowestDayTemp, highestDayTemp,
+      lowestNightTemp, highestNightTemp, sunrise, sunset, moonPhase);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is WeatherDataData &&
+          other.eventID == this.eventID &&
+          other.lowestDayTemp == this.lowestDayTemp &&
+          other.highestDayTemp == this.highestDayTemp &&
+          other.lowestNightTemp == this.lowestNightTemp &&
+          other.highestNightTemp == this.highestNightTemp &&
+          other.sunrise == this.sunrise &&
+          other.sunset == this.sunset &&
+          other.moonPhase == this.moonPhase);
+}
+
+class WeatherDataCompanion extends UpdateCompanion<WeatherDataData> {
+  final Value<int?> eventID;
+  final Value<String?> lowestDayTemp;
+  final Value<String?> highestDayTemp;
+  final Value<String?> lowestNightTemp;
+  final Value<String?> highestNightTemp;
+  final Value<String?> sunrise;
+  final Value<String?> sunset;
+  final Value<String?> moonPhase;
+  const WeatherDataCompanion({
+    this.eventID = const Value.absent(),
+    this.lowestDayTemp = const Value.absent(),
+    this.highestDayTemp = const Value.absent(),
+    this.lowestNightTemp = const Value.absent(),
+    this.highestNightTemp = const Value.absent(),
+    this.sunrise = const Value.absent(),
+    this.sunset = const Value.absent(),
+    this.moonPhase = const Value.absent(),
+  });
+  WeatherDataCompanion.insert({
+    this.eventID = const Value.absent(),
+    this.lowestDayTemp = const Value.absent(),
+    this.highestDayTemp = const Value.absent(),
+    this.lowestNightTemp = const Value.absent(),
+    this.highestNightTemp = const Value.absent(),
+    this.sunrise = const Value.absent(),
+    this.sunset = const Value.absent(),
+    this.moonPhase = const Value.absent(),
+  });
+  static Insertable<WeatherDataData> custom({
+    Expression<int>? eventID,
+    Expression<String>? lowestDayTemp,
+    Expression<String>? highestDayTemp,
+    Expression<String>? lowestNightTemp,
+    Expression<String>? highestNightTemp,
+    Expression<String>? sunrise,
+    Expression<String>? sunset,
+    Expression<String>? moonPhase,
+  }) {
+    return RawValuesInsertable({
+      if (eventID != null) 'eventID': eventID,
+      if (lowestDayTemp != null) 'lowestDayTemp': lowestDayTemp,
+      if (highestDayTemp != null) 'highestDayTemp': highestDayTemp,
+      if (lowestNightTemp != null) 'lowestNightTemp': lowestNightTemp,
+      if (highestNightTemp != null) 'highestNightTemp': highestNightTemp,
+      if (sunrise != null) 'sunrise': sunrise,
+      if (sunset != null) 'sunset': sunset,
+      if (moonPhase != null) 'moonPhase': moonPhase,
+    });
+  }
+
+  WeatherDataCompanion copyWith(
+      {Value<int?>? eventID,
+      Value<String?>? lowestDayTemp,
+      Value<String?>? highestDayTemp,
+      Value<String?>? lowestNightTemp,
+      Value<String?>? highestNightTemp,
+      Value<String?>? sunrise,
+      Value<String?>? sunset,
+      Value<String?>? moonPhase}) {
+    return WeatherDataCompanion(
+      eventID: eventID ?? this.eventID,
+      lowestDayTemp: lowestDayTemp ?? this.lowestDayTemp,
+      highestDayTemp: highestDayTemp ?? this.highestDayTemp,
+      lowestNightTemp: lowestNightTemp ?? this.lowestNightTemp,
+      highestNightTemp: highestNightTemp ?? this.highestNightTemp,
+      sunrise: sunrise ?? this.sunrise,
+      sunset: sunset ?? this.sunset,
+      moonPhase: moonPhase ?? this.moonPhase,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (eventID.present) {
+      map['eventID'] = Variable<int>(eventID.value);
+    }
+    if (lowestDayTemp.present) {
+      map['lowestDayTemp'] = Variable<String>(lowestDayTemp.value);
+    }
+    if (highestDayTemp.present) {
+      map['highestDayTemp'] = Variable<String>(highestDayTemp.value);
+    }
+    if (lowestNightTemp.present) {
+      map['lowestNightTemp'] = Variable<String>(lowestNightTemp.value);
+    }
+    if (highestNightTemp.present) {
+      map['highestNightTemp'] = Variable<String>(highestNightTemp.value);
+    }
+    if (sunrise.present) {
+      map['sunrise'] = Variable<String>(sunrise.value);
+    }
+    if (sunset.present) {
+      map['sunset'] = Variable<String>(sunset.value);
+    }
+    if (moonPhase.present) {
+      map['moonPhase'] = Variable<String>(moonPhase.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('WeatherDataCompanion(')
+          ..write('eventID: $eventID, ')
+          ..write('lowestDayTemp: $lowestDayTemp, ')
+          ..write('highestDayTemp: $highestDayTemp, ')
+          ..write('lowestNightTemp: $lowestNightTemp, ')
+          ..write('highestNightTemp: $highestNightTemp, ')
+          ..write('sunrise: $sunrise, ')
+          ..write('sunset: $sunset, ')
+          ..write('moonPhase: $moonPhase')
           ..write(')'))
         .toString();
   }
@@ -9741,8 +9751,8 @@ abstract class _$Database extends GeneratedDatabase {
   late final Media media = Media(this);
   late final Site site = Site(this);
   late final Coordinate coordinate = Coordinate(this);
-  late final WeatherData weatherData = WeatherData(this);
   late final CollEvent collEvent = CollEvent(this);
+  late final WeatherData weatherData = WeatherData(this);
   late final CollectingPersonnel collectingPersonnel =
       CollectingPersonnel(this);
   late final CollEffort collEffort = CollEffort(this);
@@ -9783,8 +9793,8 @@ abstract class _$Database extends GeneratedDatabase {
         media,
         site,
         coordinate,
-        weatherData,
         collEvent,
+        weatherData,
         collectingPersonnel,
         collEffort,
         narrative,
