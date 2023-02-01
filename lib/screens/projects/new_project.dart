@@ -152,7 +152,7 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
   }
 
   Future<void> _goToDashboard() async {
-    await Navigator.push(
+    await Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const Dashboard()),
     );
