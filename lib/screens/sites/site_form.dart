@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/shared/common_widget.dart';
 import 'package:nahpu/screens/sites/components/habitats.dart';
 import 'package:nahpu/screens/sites/components/geography.dart';
 import 'package:nahpu/screens/sites/components/site_info.dart';
@@ -84,6 +85,7 @@ class SiteFormState extends ConsumerState<SiteForm>
                 VideoViewer(),
               ],
             ),
+            const BottomPadding()
           ],
         );
       },

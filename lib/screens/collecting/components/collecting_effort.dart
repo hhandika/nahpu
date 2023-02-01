@@ -5,6 +5,7 @@ import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/services/collevent_queries.dart';
 import 'package:nahpu/services/database.dart';
@@ -22,26 +23,31 @@ class CollectingEffortFrom extends StatelessWidget {
   Widget build(BuildContext context) {
     return FormCard(
       title: 'Collecting Effort',
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const SizedBox(height: 10),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.3,
-            child: CollEffortList(collEventId: collEventId),
-          ),
-          PrimaryButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        NewCollEffort(collEventId: collEventId),
-                  ),
-                );
-              },
-              text: 'Add Tool'),
-        ],
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.4,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CollEffortList(collEventId: collEventId),
+            PrimaryButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          NewCollEffort(collEventId: collEventId),
+                    ),
+                  );
+                },
+                text: 'Add Tool'),
+            const CommonTextField(
+              labelText: 'Notes',
+              hintText: 'Notes',
+              maxLines: 3,
+              isLastField: true,
+            ),
+          ],
+        ),
       ),
     );
   }

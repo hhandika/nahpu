@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/collecting/components/collecting_personnel.dart';
 import 'package:nahpu/screens/collecting/components/environment_data.dart';
+import 'package:nahpu/screens/collecting/components/tool_management.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -60,7 +61,7 @@ class _CollEventTabBarState extends State<CollEventTabBar>
           EnvironmentDataForm(
             useHorizontalLayout: widget.useHorizontalLayout,
           ),
-          const Text('Camera'),
+          const ToolManagement(),
         ],
       ),
     );

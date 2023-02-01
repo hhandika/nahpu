@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/controller/updaters.dart';
+import 'package:nahpu/screens/shared/common_widget.dart';
 import 'package:nahpu/services/database.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/screens/narrative/components/media.dart';
@@ -78,6 +79,7 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
                 ),
               ),
               const MediaForm(),
+              const BottomPadding()
             ],
           ),
         );
