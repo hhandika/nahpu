@@ -5,7 +5,6 @@ import 'package:nahpu/models/form.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
-import 'package:nahpu/screens/shared/indicators.dart';
 import 'package:nahpu/services/collevent_queries.dart';
 import 'package:nahpu/services/database.dart';
 
@@ -22,8 +21,7 @@ class CollPersonnelForm extends ConsumerStatefulWidget {
 }
 
 class CollPersonnelFormState extends ConsumerState<CollPersonnelForm> {
-  final List<CollPersonnelCtrModel> controllers = [];
-
+  final List<CollPersonnelCtrModel> _personnel = [];
   @override
   void initState() {
     super.initState();
@@ -31,45 +29,50 @@ class CollPersonnelFormState extends ConsumerState<CollPersonnelForm> {
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(collPersonnelProvider(widget.eventID)).when(
+        data: (data) {
+          _personnel.clear();
+          if (data.isNotEmpty) {
+            for (var person in data) {
+              _personnel.add(
+                _addPersonnel(
+                  person.id,
+                  person.personnelId,
+                  person.role,
+                ),
+              );
+            }
+          }
+        },
+        loading: () => null,
+        error: (e, s) => null);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.3,
-          child: ref.watch(collPersonnelProvider(widget.eventID)).when(
-                data: (personnel) {
-                  if (personnel.isNotEmpty) {
-                    for (var person in personnel) {
-                      setState(() {
-                        controllers.add(_addPersonnel(
-                          person.id,
-                          person.personnelId,
-                          person.role,
-                        ));
-                      });
-                    }
-                  }
-                  return CollPersonnelField(
-                    eventID: widget.eventID,
-                    controllers: controllers,
-                  );
-                },
-                loading: () => const Center(
-                  child: CommonProgressIndicator(),
+        Expanded(
+          child: _personnel.isNotEmpty
+              ? ListView.builder(
+                  itemCount: _personnel.length,
+                  itemBuilder: (context, index) {
+                    return CollPersonnelField(
+                      eventID: widget.eventID,
+                      controller: _personnel[index],
+                    );
+                  },
+                )
+              : const Center(
+                  child: Text('No personnel added'),
                 ),
-                error: (error, stack) => Text(error.toString()),
-              ),
         ),
         PrimaryButton(
           text: 'Add Personnel',
           onPressed: () async {
-            int value =
-                await CollectingPersonnelQuery(ref.read(databaseProvider))
-                    .createCollectingPersonnel(
-                        const CollectingPersonnelCompanion());
-            setState(() {
-              controllers.add(_addPersonnel(value, null, null));
-            });
+            await CollectingPersonnelQuery(ref.read(databaseProvider))
+                .createCollectingPersonnel(CollectingPersonnelCompanion(
+              eventID: db.Value(widget.eventID),
+            ));
+            ref.invalidate(collPersonnelProvider);
+            setState(() {});
           },
         )
       ],
@@ -90,11 +93,11 @@ class CollPersonnelField extends ConsumerStatefulWidget {
   const CollPersonnelField({
     super.key,
     required this.eventID,
-    required this.controllers,
+    required this.controller,
   });
 
   final int eventID;
-  final List<CollPersonnelCtrModel> controllers;
+  final CollPersonnelCtrModel controller;
 
   @override
   CollPersonnelFieldState createState() => CollPersonnelFieldState();
@@ -110,79 +113,78 @@ class CollPersonnelFieldState extends ConsumerState<CollPersonnelField> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: widget.controllers.length,
-      itemBuilder: (context, index) {
-        return Row(
-          children: [
-            Expanded(
-              child: DropdownButtonFormField<String>(
-                value: widget.controllers[index].nameIDCtr,
-                decoration: const InputDecoration(
-                  labelText: 'Personnel',
-                  hintText: 'Enter a name',
-                ),
-                items: ref.watch(personnelListProvider).when(
-                      data: (value) => value
-                          .map((person) => DropdownMenuItem(
-                                value: person.uuid,
-                                child: Text(person.name ?? ''),
-                              ))
-                          .toList(),
-                      loading: () => const [],
-                      error: (error, stack) => const [],
-                    ),
-                onChanged: (value) {
-                  setState(() {
-                    widget.controllers[index].nameIDCtr = value ?? '';
-                    CollectingPersonnelQuery(ref.read(databaseProvider))
-                        .updateCollectingPersonnelEntry(
-                      widget.eventID,
-                      CollectingPersonnelCompanion(
-                        personnelId: db.Value(value),
-                      ),
-                    );
-                  });
-                },
-              ),
+    return Row(
+      children: [
+        Expanded(
+          child: DropdownButtonFormField<String>(
+            value: widget.controller.nameIDCtr,
+            decoration: const InputDecoration(
+              labelText: 'Personnel',
+              hintText: 'Enter a name',
             ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: DropdownButtonFormField<String>(
-                // value: widget.controllers[index].roleCtr.text,
-                decoration: const InputDecoration(
-                  labelText: 'Role',
-                  hintText: 'Enter a role',
+            items: ref.watch(personnelListProvider).when(
+                  data: (value) => value
+                      .map((person) => DropdownMenuItem(
+                            value: person.uuid,
+                            child: Text(person.name ?? ''),
+                          ))
+                      .toList(),
+                  loading: () => const [],
+                  error: (error, stack) => const [],
                 ),
-                items: collRoles
-                    .map((role) => DropdownMenuItem(
-                          value: role,
-                          child: Text(role),
-                        ))
-                    .toList(),
-                onChanged: (value) {
-                  widget.controllers[index].roleCtr = value ?? '';
-                  CollectingPersonnelQuery(ref.read(databaseProvider))
-                      .updateCollectingPersonnelEntry(
-                    widget.eventID,
-                    CollectingPersonnelCompanion(
-                      role: db.Value(value),
-                    ),
-                  );
-                },
-              ),
+            onChanged: (value) {
+              widget.controller.nameIDCtr = value ?? '';
+
+              CollectingPersonnelQuery(ref.read(databaseProvider))
+                  .updateCollectingPersonnelEntry(
+                widget.controller.id!,
+                CollectingPersonnelCompanion(
+                  eventID: db.Value(widget.eventID),
+                  personnelId: db.Value(widget.controller.nameIDCtr),
+                ),
+              );
+              ref.invalidate(collPersonnelProvider);
+            },
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: DropdownButtonFormField<String>(
+            value: widget.controller.roleCtr,
+            decoration: const InputDecoration(
+              labelText: 'Role',
+              hintText: 'Enter a role',
             ),
-            IconButton(
-              icon: const Icon(Icons.delete),
-              onPressed: () {
-                setState(() {
-                  widget.controllers.removeAt(index);
-                });
-              },
-            )
-          ],
-        );
-      },
+            items: collRoles
+                .map((role) => DropdownMenuItem(
+                      value: role,
+                      child: Text(role),
+                    ))
+                .toList(),
+            onChanged: (String? value) {
+              widget.controller.roleCtr = value;
+
+              CollectingPersonnelQuery(ref.read(databaseProvider))
+                  .updateCollectingPersonnelEntry(
+                widget.controller.id!,
+                CollectingPersonnelCompanion(
+                  eventID: db.Value(widget.eventID),
+                  role: db.Value(widget.controller.roleCtr),
+                ),
+              );
+              ref.invalidate(collPersonnelProvider);
+            },
+          ),
+        ),
+        IconButton(
+          icon: const Icon(Icons.delete),
+          onPressed: () {
+            CollectingPersonnelQuery(ref.read(databaseProvider))
+                .deleteCollectingPersonnel(widget.controller.id!);
+            ref.invalidate(collPersonnelProvider);
+          },
+        )
+      ],
     );
   }
 }
