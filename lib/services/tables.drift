@@ -66,8 +66,10 @@ CREATE TABLE collEvent (
 
 CREATE TABLE collectingPersonnel (
     id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
+    eventID INT,
     personnelId TEXT,
     role TEXT, -- referring to collecting role, not project role
+    FOREIGN KEY(eventID) REFERENCES collEvent(id),
     FOREIGN KEY(personnelId) REFERENCES personnel(uuid)
 );
 

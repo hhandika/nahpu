@@ -5,9 +5,14 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class CollEventTabBar extends StatefulWidget {
-  const CollEventTabBar({super.key, required this.useHorizontalLayout});
+  const CollEventTabBar({
+    super.key,
+    required this.useHorizontalLayout,
+    required this.eventID,
+  });
 
   final bool useHorizontalLayout;
+  final int eventID;
 
   @override
   State<CollEventTabBar> createState() => _CollEventTabBarState();
@@ -51,7 +56,7 @@ class _CollEventTabBarState extends State<CollEventTabBar>
                   color: Theme.of(context).colorScheme.tertiary)),
         ],
         children: [
-          const CollectingPersonnelForm(),
+          CollPersonnelForm(eventID: widget.eventID),
           EnvironmentDataForm(
             useHorizontalLayout: widget.useHorizontalLayout,
           ),

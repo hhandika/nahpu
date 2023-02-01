@@ -4085,6 +4085,13 @@ class CollectingPersonnel extends Table
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
+  static const VerificationMeta _eventIDMeta =
+      const VerificationMeta('eventID');
+  late final GeneratedColumn<int> eventID = GeneratedColumn<int>(
+      'eventID', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _personnelIdMeta =
       const VerificationMeta('personnelId');
   late final GeneratedColumn<String> personnelId = GeneratedColumn<String>(
@@ -4099,7 +4106,7 @@ class CollectingPersonnel extends Table
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
-  List<GeneratedColumn> get $columns => [id, personnelId, role];
+  List<GeneratedColumn> get $columns => [id, eventID, personnelId, role];
   @override
   String get aliasedName => _alias ?? 'collectingPersonnel';
   @override
@@ -4112,6 +4119,10 @@ class CollectingPersonnel extends Table
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('eventID')) {
+      context.handle(_eventIDMeta,
+          eventID.isAcceptableOrUnknown(data['eventID']!, _eventIDMeta));
     }
     if (data.containsKey('personnelId')) {
       context.handle(
@@ -4135,6 +4146,8 @@ class CollectingPersonnel extends Table
     return CollectingPersonnelData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      eventID: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}eventID']),
       personnelId: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}personnelId']),
       role: attachedDatabase.typeMapping
@@ -4148,8 +4161,10 @@ class CollectingPersonnel extends Table
   }
 
   @override
-  List<String> get customConstraints =>
-      const ['FOREIGN KEY(personnelId)REFERENCES personnel(uuid)'];
+  List<String> get customConstraints => const [
+        'FOREIGN KEY(eventID)REFERENCES collEvent(id)',
+        'FOREIGN KEY(personnelId)REFERENCES personnel(uuid)'
+      ];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -4157,14 +4172,18 @@ class CollectingPersonnel extends Table
 class CollectingPersonnelData extends DataClass
     implements Insertable<CollectingPersonnelData> {
   final int id;
+  final int? eventID;
   final String? personnelId;
   final String? role;
   const CollectingPersonnelData(
-      {required this.id, this.personnelId, this.role});
+      {required this.id, this.eventID, this.personnelId, this.role});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
+    if (!nullToAbsent || eventID != null) {
+      map['eventID'] = Variable<int>(eventID);
+    }
     if (!nullToAbsent || personnelId != null) {
       map['personnelId'] = Variable<String>(personnelId);
     }
@@ -4177,6 +4196,9 @@ class CollectingPersonnelData extends DataClass
   CollectingPersonnelCompanion toCompanion(bool nullToAbsent) {
     return CollectingPersonnelCompanion(
       id: Value(id),
+      eventID: eventID == null && nullToAbsent
+          ? const Value.absent()
+          : Value(eventID),
       personnelId: personnelId == null && nullToAbsent
           ? const Value.absent()
           : Value(personnelId),
@@ -4189,6 +4211,7 @@ class CollectingPersonnelData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return CollectingPersonnelData(
       id: serializer.fromJson<int>(json['id']),
+      eventID: serializer.fromJson<int?>(json['eventID']),
       personnelId: serializer.fromJson<String?>(json['personnelId']),
       role: serializer.fromJson<String?>(json['role']),
     );
@@ -4198,6 +4221,7 @@ class CollectingPersonnelData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
+      'eventID': serializer.toJson<int?>(eventID),
       'personnelId': serializer.toJson<String?>(personnelId),
       'role': serializer.toJson<String?>(role),
     };
@@ -4205,10 +4229,12 @@ class CollectingPersonnelData extends DataClass
 
   CollectingPersonnelData copyWith(
           {int? id,
+          Value<int?> eventID = const Value.absent(),
           Value<String?> personnelId = const Value.absent(),
           Value<String?> role = const Value.absent()}) =>
       CollectingPersonnelData(
         id: id ?? this.id,
+        eventID: eventID.present ? eventID.value : this.eventID,
         personnelId: personnelId.present ? personnelId.value : this.personnelId,
         role: role.present ? role.value : this.role,
       );
@@ -4216,6 +4242,7 @@ class CollectingPersonnelData extends DataClass
   String toString() {
     return (StringBuffer('CollectingPersonnelData(')
           ..write('id: $id, ')
+          ..write('eventID: $eventID, ')
           ..write('personnelId: $personnelId, ')
           ..write('role: $role')
           ..write(')'))
@@ -4223,12 +4250,13 @@ class CollectingPersonnelData extends DataClass
   }
 
   @override
-  int get hashCode => Object.hash(id, personnelId, role);
+  int get hashCode => Object.hash(id, eventID, personnelId, role);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is CollectingPersonnelData &&
           other.id == this.id &&
+          other.eventID == this.eventID &&
           other.personnelId == this.personnelId &&
           other.role == this.role);
 }
@@ -4236,34 +4264,43 @@ class CollectingPersonnelData extends DataClass
 class CollectingPersonnelCompanion
     extends UpdateCompanion<CollectingPersonnelData> {
   final Value<int> id;
+  final Value<int?> eventID;
   final Value<String?> personnelId;
   final Value<String?> role;
   const CollectingPersonnelCompanion({
     this.id = const Value.absent(),
+    this.eventID = const Value.absent(),
     this.personnelId = const Value.absent(),
     this.role = const Value.absent(),
   });
   CollectingPersonnelCompanion.insert({
     this.id = const Value.absent(),
+    this.eventID = const Value.absent(),
     this.personnelId = const Value.absent(),
     this.role = const Value.absent(),
   });
   static Insertable<CollectingPersonnelData> custom({
     Expression<int>? id,
+    Expression<int>? eventID,
     Expression<String>? personnelId,
     Expression<String>? role,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (eventID != null) 'eventID': eventID,
       if (personnelId != null) 'personnelId': personnelId,
       if (role != null) 'role': role,
     });
   }
 
   CollectingPersonnelCompanion copyWith(
-      {Value<int>? id, Value<String?>? personnelId, Value<String?>? role}) {
+      {Value<int>? id,
+      Value<int?>? eventID,
+      Value<String?>? personnelId,
+      Value<String?>? role}) {
     return CollectingPersonnelCompanion(
       id: id ?? this.id,
+      eventID: eventID ?? this.eventID,
       personnelId: personnelId ?? this.personnelId,
       role: role ?? this.role,
     );
@@ -4274,6 +4311,9 @@ class CollectingPersonnelCompanion
     final map = <String, Expression>{};
     if (id.present) {
       map['id'] = Variable<int>(id.value);
+    }
+    if (eventID.present) {
+      map['eventID'] = Variable<int>(eventID.value);
     }
     if (personnelId.present) {
       map['personnelId'] = Variable<String>(personnelId.value);
@@ -4288,6 +4328,7 @@ class CollectingPersonnelCompanion
   String toString() {
     return (StringBuffer('CollectingPersonnelCompanion(')
           ..write('id: $id, ')
+          ..write('eventID: $eventID, ')
           ..write('personnelId: $personnelId, ')
           ..write('role: $role')
           ..write(')'))

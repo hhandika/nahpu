@@ -63,6 +63,35 @@ class CollEffortQuery extends DatabaseAccessor<Database>
   }
 }
 
+class CollectingPersonnelQuery extends DatabaseAccessor<Database>
+    with _$CollEventQueryMixin {
+  CollectingPersonnelQuery(Database db) : super(db);
+
+  Future<int> createCollectingPersonnel(CollectingPersonnelCompanion form) =>
+      into(collectingPersonnel).insert(form);
+
+  Future updateCollectingPersonnelEntry(
+      int id, CollectingPersonnelCompanion entry) {
+    return (update(collectingPersonnel)..where((t) => t.id.equals(id)))
+        .write(entry);
+  }
+
+  Future<List<CollectingPersonnelData>> getCollectingPersonnelByEventId(
+      int collEventId) async {
+    return await (select(collectingPersonnel)
+          ..where((t) => t.eventID.equals(collEventId)))
+        .get();
+  }
+
+  Future<void> deleteCollectingPersonnel(int id) {
+    return (delete(collectingPersonnel)..where((t) => t.id.equals(id))).go();
+  }
+
+  Future<void> deleteAllCollectingPersonnel(String projectUuid) {
+    return delete(collectingPersonnel).go();
+  }
+}
+
 class WeatherDataQuery extends DatabaseAccessor<Database>
     with _$CollEventQueryMixin {
   WeatherDataQuery(Database db) : super(db);

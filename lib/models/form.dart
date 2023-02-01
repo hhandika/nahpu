@@ -409,3 +409,23 @@ class CollEffortCtrModel {
     noteCtr.dispose();
   }
 }
+
+class CollPersonnelCtrModel {
+  CollPersonnelCtrModel({
+    required this.nameCtr,
+    required this.roleCtr,
+  });
+
+  TextEditingController nameCtr;
+  TextEditingController roleCtr;
+
+  factory CollPersonnelCtrModel.empty() => CollPersonnelCtrModel(
+        nameCtr: TextEditingController(),
+        roleCtr: TextEditingController(),
+      );
+
+  void dispose() {
+    nameCtr.dispose();
+    roleCtr.dispose();
+  }
+}

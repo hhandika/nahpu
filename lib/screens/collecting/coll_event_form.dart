@@ -51,7 +51,10 @@ class CollEventFormState extends ConsumerState<CollEventForm> {
                 CollectingEffortFrom(
                   collEventId: widget.id,
                 ),
-                CollEventTabBar(useHorizontalLayout: useHorizontalLayout),
+                CollEventTabBar(
+                  eventID: widget.id,
+                  useHorizontalLayout: useHorizontalLayout,
+                ),
               ],
             ),
           ],
