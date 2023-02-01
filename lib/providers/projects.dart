@@ -22,7 +22,7 @@ final projectInfoProvider =
   return await projectInfo;
 });
 
-final projectUuidProvider = StateProvider.autoDispose<String>((ref) => '');
+final projectUuidProvider = StateProvider<String>((ref) => '');
 
 final projectNavbarIndexProvider = StateProvider.autoDispose<int>((ref) => 0);
 
