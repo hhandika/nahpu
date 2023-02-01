@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// Used by specimen forms to avoid the
+/// bottom sheet covering the last field
 class BottomPadding extends StatelessWidget {
   const BottomPadding({super.key});
 
