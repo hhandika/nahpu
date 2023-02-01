@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:nahpu/screens/shared/forms.dart';
 
 class ReceiptViewer extends ConsumerStatefulWidget {
   const ReceiptViewer({Key? key}) : super(key: key);
@@ -14,10 +15,7 @@ class ReceiptViewerState extends ConsumerState<ReceiptViewer> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          'Expenses',
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
+        const TitleForm(text: 'Receipts'),
         const SizedBox(height: 100),
         PrimaryButton(
           text: 'Add expense',

@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:nahpu/screens/shared/forms.dart';
 
 class PermitViewer extends ConsumerStatefulWidget {
   const PermitViewer({Key? key}) : super(key: key);
@@ -14,10 +15,7 @@ class PermitViewerState extends ConsumerState<PermitViewer> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          'Permits',
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
+        const TitleForm(text: 'Permits'),
         const SizedBox(height: 100),
         PrimaryButton(
           text: 'Add permit',
