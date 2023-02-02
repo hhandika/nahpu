@@ -45,6 +45,22 @@ class SiteFormCtrModel {
         habitatConditionCtr: TextEditingController(),
       );
 
+  factory SiteFormCtrModel.fromData(SiteData site) => SiteFormCtrModel(
+        siteIDCtr: TextEditingController(text: site.siteID),
+        leadStaffCtr: site.leadStaffId,
+        siteTypeCtr: TextEditingController(text: site.siteType),
+        countryCtr: TextEditingController(text: site.country),
+        stateProvinceCtr: TextEditingController(text: site.stateProvince),
+        countyCtr: TextEditingController(text: site.county),
+        municipalityCtr: TextEditingController(text: site.municipality),
+        localityCtr: TextEditingController(text: site.locality),
+        remarkCtr: TextEditingController(text: site.remark),
+        habitatTypeCtr: TextEditingController(text: site.habitatType),
+        habitatDescriptionCtr:
+            TextEditingController(text: site.habitatDescription),
+        habitatConditionCtr: TextEditingController(text: site.habitatCondition),
+      );
+
   void dispose() {
     siteIDCtr.dispose();
     siteTypeCtr.dispose();
@@ -170,6 +186,22 @@ class SpecimenFormCtrModel {
         captureDateCtr: TextEditingController(),
         captureTimeCtr: TextEditingController(),
         trapTypeCtr: TextEditingController(),
+      );
+
+  factory SpecimenFormCtrModel.fromData(
+          SpecimenData specimen, TaxonData taxonData) =>
+      SpecimenFormCtrModel(
+        collectorCtr: specimen.collectorID,
+        preparatorCtr: specimen.preparatorID,
+        conditionCtr: specimen.condition,
+        collectorNumberCtr: TextEditingController(
+            text: specimen.collectorNumber?.toString() ?? ''),
+        taxonDataCtr: taxonData,
+        prepDateCtr: TextEditingController(text: specimen.prepDate),
+        prepTimeCtr: TextEditingController(text: specimen.prepTime),
+        captureDateCtr: TextEditingController(text: specimen.captureDate),
+        captureTimeCtr: TextEditingController(text: specimen.captureTime),
+        trapTypeCtr: TextEditingController(text: specimen.trapType),
       );
 
   void dispose() {
