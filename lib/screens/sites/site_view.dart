@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/controller/navigation.dart';
+import 'package:nahpu/services/navigation_services.dart';
 import 'package:nahpu/models/catalogs.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/providers/catalogs.dart';

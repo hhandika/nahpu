@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/controller/navigation.dart';
+import 'package:nahpu/services/navigation_services.dart';
 import 'package:nahpu/models/catalogs.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/providers/catalogs.dart';
@@ -22,6 +22,7 @@ class NarrativeState extends ConsumerState<Narrative> {
   bool isVisible = false;
   PageController pageController = PageController();
   PageNavigation _pageNav = PageNavigation();
+  int? narrativeId;
 
   @override
   void dispose() {
@@ -34,9 +35,11 @@ class NarrativeState extends ConsumerState<Narrative> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Narrative"),
-        actions: const [
-          NewNarrative(),
-          NarrativeMenu(),
+        actions: [
+          const NewNarrative(),
+          NarrativeMenu(
+            narrativeId: narrativeId,
+          ),
         ],
         automaticallyImplyLeading: false,
       ),

@@ -5,6 +5,7 @@ import 'package:nahpu/models/form.dart';
 import 'package:nahpu/screens/narrative/narrative_form.dart';
 import 'package:nahpu/screens/narrative/components/menu_bar.dart';
 import 'package:nahpu/screens/narrative/narrative_view.dart';
+import 'package:nahpu/services/narrative_services.dart';
 
 import '../../providers/catalogs.dart';
 // import 'package:nahpu/providers/page_viewer.dart';
@@ -34,11 +35,13 @@ class NewNarrativeFormState extends ConsumerState<NewNarrativeForm> {
         title: const Text("New Narrative"),
         actions: const [
           NewNarrative(),
-          NarrativeMenu(),
+          NarrativeMenu(
+            narrativeId: null,
+          ),
         ],
         leading: BackButton(
           onPressed: () {
-            ref.invalidate(narrativeEntryProvider);
+            NarrativeServices(ref).invalidateNarrative();
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const Narrative()));
           },

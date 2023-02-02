@@ -61,51 +61,6 @@ class Database extends _$Database {
     return (update(project)..where((t) => t.uuid.equals(uuid))).write(entry);
   }
 
-  Future<int> createNarrative(NarrativeCompanion form) =>
-      into(narrative).insert(form);
-
-  Future updateNarrativeEntry(int id, NarrativeCompanion entry) {
-    return (update(narrative)..where((t) => t.id.equals(id))).write(entry);
-  }
-
-  Future<List<NarrativeData>> getAllNarrative(String projectUuid) {
-    return (select(narrative)..where((t) => t.projectUuid.equals(projectUuid)))
-        .get();
-  }
-
-  Future<void> deleteNarrative(int id) {
-    return (delete(narrative)..where((t) => t.id.equals(id))).go();
-  }
-
-  Future<void> deleteAllNarrative(String projectUuid) {
-    return (delete(narrative)..where((t) => t.projectUuid.equals(projectUuid)))
-        .go();
-  }
-
-  // Site table
-  Future<int> createSite(SiteCompanion form) => into(site).insert(form);
-
-  Future updateSiteEntry(int id, SiteCompanion entry) {
-    return (update(site)..where((t) => t.id.equals(id))).write(entry);
-  }
-
-  Future<List<SiteData>> getAllSites(String projectUuid) {
-    return (select(site)..where((t) => t.projectUuid.equals(projectUuid)))
-        .get();
-  }
-
-  Future<void> deleteSite(String siteId) {
-    return (delete(site)..where((t) => t.siteID.equals(siteId))).go();
-  }
-
-  Future<SiteData> getSiteById(int id) async {
-    return await (select(site)..where((t) => t.id.equals(id))).getSingle();
-  }
-
-  Future<void> deleteAllSites(String projectUuid) {
-    return (delete(site)..where((t) => t.projectUuid.equals(projectUuid))).go();
-  }
-
   // Personnel table
   Future<int> createPersonnel(PersonnelCompanion form) =>
       into(personnel).insert(form);

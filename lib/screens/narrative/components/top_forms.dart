@@ -5,8 +5,8 @@ import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/services/database.dart';
 import 'package:nahpu/models/form.dart';
-import 'package:nahpu/controller/updaters.dart';
 import 'package:drift/drift.dart' as db;
+import 'package:nahpu/services/narrative_services.dart';
 
 class SiteForm extends ConsumerWidget {
   const SiteForm({
@@ -31,8 +31,10 @@ class SiteForm extends ConsumerWidget {
         value: narrativeCtr.siteCtr,
         siteData: data,
         onChanges: (int? value) {
-          updateNarrative(
-              narrativeId, NarrativeCompanion(siteID: db.Value(value)), ref);
+          NarrativeServices(ref).updateNarrative(
+            narrativeId,
+            NarrativeCompanion(siteID: db.Value(value)),
+          );
         },
       ),
     );
@@ -67,10 +69,10 @@ class DateForm extends ConsumerWidget {
               lastDate: DateTime.now());
           if (selectedDate != null) {
             narrativeCtr.dateCtr.text = DateFormat.yMMMd().format(selectedDate);
-            updateNarrative(
-                narrativeId,
-                NarrativeCompanion(date: db.Value(narrativeCtr.dateCtr.text)),
-                ref);
+            NarrativeServices(ref).updateNarrative(
+              narrativeId,
+              NarrativeCompanion(date: db.Value(narrativeCtr.dateCtr.text)),
+            );
           }
         },
       ),

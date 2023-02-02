@@ -1,6 +1,8 @@
 import 'package:nahpu/services/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/services/narrative_queries.dart';
+import 'package:nahpu/services/site_queries.dart';
 import 'package:nahpu/services/specimen_queries.dart';
 import 'package:nahpu/services/coordinate_queries.dart';
 import 'package:nahpu/services/collevent_queries.dart';
@@ -10,13 +12,14 @@ final narrativeEntryProvider =
     FutureProvider.autoDispose<List<NarrativeData>>((ref) {
   final projectUuid = ref.watch(projectUuidProvider);
   final narrativeEntries =
-      ref.read(databaseProvider).getAllNarrative(projectUuid);
+      NarrativeQuery(ref.read(databaseProvider)).getAllNarrative(projectUuid);
   return narrativeEntries;
 });
 
 final siteEntryProvider = FutureProvider.autoDispose<List<SiteData>>((ref) {
   final projectUuid = ref.read(projectUuidProvider.notifier).state;
-  final siteEntries = ref.read(databaseProvider).getAllSites(projectUuid);
+  final siteEntries =
+      SiteQuery(ref.read(databaseProvider)).getAllSites(projectUuid);
   return siteEntries;
 });
 
