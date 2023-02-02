@@ -53,7 +53,7 @@ class CaptureRecordFields extends ConsumerWidget {
           AdaptiveLayout(
             useHorizontalLayout: useHorizontalLayout,
             children: [
-              TextFormField(
+              TextField(
                 decoration: const InputDecoration(
                   labelText: 'Capture date',
                   hintText: 'Enter date',
@@ -73,27 +73,28 @@ class CaptureRecordFields extends ConsumerWidget {
                   });
                 },
               ),
-              DropdownButtonFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Capture Method',
-                    hintText: 'Choose a trap type',
-                  ),
-                  items: const [
-                    DropdownMenuItem(
-                      value: 'One',
-                      child: Text('One'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Two',
-                      child: Text('Two'),
-                    ),
-                  ],
-                  onChanged: (String? newValue) {}),
+              TextField(
+                decoration: const InputDecoration(
+                  labelText: 'Capture time',
+                  hintText: 'Enter time',
+                ),
+                controller: specimenCtr.captureTimeCtr,
+                onTap: () async {
+                  showTimePicker(
+                    context: context,
+                    initialTime: TimeOfDay.now(),
+                  ).then((time) {
+                    if (time != null) {
+                      specimenCtr.captureTimeCtr.text =
+                          time.format(context).toString();
+                    }
+                  });
+                },
+              ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(5),
-            child: DropdownButtonFormField(
+          AdaptiveLayout(useHorizontalLayout: useHorizontalLayout, children: [
+            DropdownButtonFormField(
                 decoration: const InputDecoration(
                   labelText: 'Collected by',
                   hintText: 'Choose a person',
@@ -109,7 +110,23 @@ class CaptureRecordFields extends ConsumerWidget {
                   ),
                 ],
                 onChanged: (String? newValue) {}),
-          ),
+            DropdownButtonFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Capture Method',
+                  hintText: 'Choose a trap type',
+                ),
+                items: const [
+                  DropdownMenuItem(
+                    value: 'One',
+                    child: Text('One'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Two',
+                    child: Text('Two'),
+                  ),
+                ],
+                onChanged: (String? newValue) {}),
+          ])
         ],
       ),
     );
