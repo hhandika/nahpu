@@ -70,22 +70,8 @@ class CollEventsState extends ConsumerState<CollEvents> {
                       controller: pageController,
                       itemCount: collEventSize,
                       itemBuilder: (context, index) {
-                        final collEventForm = CollEventFormCtrModel(
-                          siteIDCtr: collEventEntries[index].siteID,
-                          eventIDCtr: TextEditingController(
-                              text: collEventEntries[index].eventID),
-                          startDateCtr: TextEditingController(
-                              text: collEventEntries[index].startDate),
-                          endDateCtr: TextEditingController(
-                              text: collEventEntries[index].endDate),
-                          startTimeCtr: TextEditingController(
-                              text: collEventEntries[index].startTime),
-                          endTimeCtr: TextEditingController(
-                              text: collEventEntries[index].endTime),
-                          primaryCollMethodCtr:
-                              collEventEntries[index].primaryCollMethod,
-                          noteCtr: TextEditingController(
-                              text: collEventEntries[index].collMethodNotes),
+                        final collEventForm = CollEventFormCtrModel.fromData(
+                          collEventEntries[index],
                         );
 
                         return CollEventForm(

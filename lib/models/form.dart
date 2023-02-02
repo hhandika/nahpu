@@ -82,14 +82,27 @@ class CollEventFormCtrModel {
   TextEditingController noteCtr;
 
   factory CollEventFormCtrModel.empty() => CollEventFormCtrModel(
-      siteIDCtr: null,
-      eventIDCtr: TextEditingController(),
-      startDateCtr: TextEditingController(),
-      endDateCtr: TextEditingController(),
-      startTimeCtr: TextEditingController(),
-      endTimeCtr: TextEditingController(),
-      primaryCollMethodCtr: null,
-      noteCtr: TextEditingController());
+        siteIDCtr: null,
+        eventIDCtr: TextEditingController(),
+        startDateCtr: TextEditingController(),
+        endDateCtr: TextEditingController(),
+        startTimeCtr: TextEditingController(),
+        endTimeCtr: TextEditingController(),
+        primaryCollMethodCtr: null,
+        noteCtr: TextEditingController(),
+      );
+
+  factory CollEventFormCtrModel.fromData(CollEventData collEvent) =>
+      CollEventFormCtrModel(
+        siteIDCtr: collEvent.siteID,
+        eventIDCtr: TextEditingController(text: collEvent.eventID),
+        startDateCtr: TextEditingController(text: collEvent.startDate),
+        endDateCtr: TextEditingController(text: collEvent.endDate),
+        startTimeCtr: TextEditingController(text: collEvent.startTime),
+        endTimeCtr: TextEditingController(text: collEvent.endTime),
+        primaryCollMethodCtr: collEvent.primaryCollMethod,
+        noteCtr: TextEditingController(text: collEvent.collMethodNotes),
+      );
 
   void dispose() {
     eventIDCtr.dispose();
