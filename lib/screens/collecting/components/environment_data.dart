@@ -5,8 +5,8 @@ import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 
-class EnvironmentDataView extends ConsumerWidget {
-  const EnvironmentDataView({
+class WeatherDataView extends ConsumerWidget {
+  const WeatherDataView({
     super.key,
     required this.useHorizontalLayout,
     required this.eventID,
@@ -18,20 +18,17 @@ class EnvironmentDataView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListView(
-      children: [
-        const TitleForm(
+      children: const [
+        TitleForm(
           text: 'Weather Data',
         ),
-        EnvironmentDataForm(
-            useHorizontalLayout: useHorizontalLayout,
-            weatherCtr: CollWeatherCtrModel.empty()),
       ],
     );
   }
 }
 
-class EnvironmentDataForm extends ConsumerWidget {
-  const EnvironmentDataForm(
+class WeatherDataForm extends ConsumerWidget {
+  const WeatherDataForm(
       {super.key, required this.useHorizontalLayout, required this.weatherCtr});
 
   final bool useHorizontalLayout;

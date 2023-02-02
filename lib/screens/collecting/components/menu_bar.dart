@@ -22,7 +22,7 @@ Future<void> createNewCollEvents(BuildContext context, WidgetRef ref) {
       // so we need to create a new weather data entry
       // for the new collect event
       WeatherDataQuery(ref.read(databaseProvider)).createWeatherData(
-        WeatherDataCompanion(
+        WeatherCompanion(
           eventID: db.Value(value),
         ),
       );

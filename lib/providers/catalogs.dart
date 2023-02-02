@@ -71,3 +71,7 @@ final collPersonnelProvider = FutureProvider.family
     .autoDispose<List<CollectingPersonnelData>, int>((ref, collEventId) =>
         CollectingPersonnelQuery(ref.read(databaseProvider))
             .getCollectingPersonnelByEventId(collEventId));
+
+final weatherDataProvider = FutureProvider.family.autoDispose<WeatherData, int>(
+    (ref, collEventId) => WeatherDataQuery(ref.read(databaseProvider))
+        .getWeatherDataByEventId(collEventId));

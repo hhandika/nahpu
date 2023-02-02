@@ -3642,11 +3642,11 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
   }
 }
 
-class WeatherData extends Table with TableInfo<WeatherData, WeatherDataData> {
+class Weather extends Table with TableInfo<Weather, WeatherData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  WeatherData(this.attachedDatabase, [this._alias]);
+  Weather(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _eventIDMeta =
       const VerificationMeta('eventID');
   late final GeneratedColumn<int> eventID = GeneratedColumn<int>(
@@ -3714,11 +3714,11 @@ class WeatherData extends Table with TableInfo<WeatherData, WeatherDataData> {
         moonPhase
       ];
   @override
-  String get aliasedName => _alias ?? 'weatherData';
+  String get aliasedName => _alias ?? 'weather';
   @override
-  String get actualTableName => 'weatherData';
+  String get actualTableName => 'weather';
   @override
-  VerificationContext validateIntegrity(Insertable<WeatherDataData> instance,
+  VerificationContext validateIntegrity(Insertable<WeatherData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -3768,9 +3768,9 @@ class WeatherData extends Table with TableInfo<WeatherData, WeatherDataData> {
   @override
   Set<GeneratedColumn> get $primaryKey => const {};
   @override
-  WeatherDataData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  WeatherData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return WeatherDataData(
+    return WeatherData(
       eventID: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}eventID']),
       lowestDayTemp: attachedDatabase.typeMapping
@@ -3791,8 +3791,8 @@ class WeatherData extends Table with TableInfo<WeatherData, WeatherDataData> {
   }
 
   @override
-  WeatherData createAlias(String alias) {
-    return WeatherData(attachedDatabase, alias);
+  Weather createAlias(String alias) {
+    return Weather(attachedDatabase, alias);
   }
 
   @override
@@ -3802,7 +3802,7 @@ class WeatherData extends Table with TableInfo<WeatherData, WeatherDataData> {
   bool get dontWriteConstraints => true;
 }
 
-class WeatherDataData extends DataClass implements Insertable<WeatherDataData> {
+class WeatherData extends DataClass implements Insertable<WeatherData> {
   final int? eventID;
   final String? lowestDayTemp;
   final String? highestDayTemp;
@@ -3811,7 +3811,7 @@ class WeatherDataData extends DataClass implements Insertable<WeatherDataData> {
   final String? sunrise;
   final String? sunset;
   final String? moonPhase;
-  const WeatherDataData(
+  const WeatherData(
       {this.eventID,
       this.lowestDayTemp,
       this.highestDayTemp,
@@ -3850,8 +3850,8 @@ class WeatherDataData extends DataClass implements Insertable<WeatherDataData> {
     return map;
   }
 
-  WeatherDataCompanion toCompanion(bool nullToAbsent) {
-    return WeatherDataCompanion(
+  WeatherCompanion toCompanion(bool nullToAbsent) {
+    return WeatherCompanion(
       eventID: eventID == null && nullToAbsent
           ? const Value.absent()
           : Value(eventID),
@@ -3878,10 +3878,10 @@ class WeatherDataData extends DataClass implements Insertable<WeatherDataData> {
     );
   }
 
-  factory WeatherDataData.fromJson(Map<String, dynamic> json,
+  factory WeatherData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return WeatherDataData(
+    return WeatherData(
       eventID: serializer.fromJson<int?>(json['eventID']),
       lowestDayTemp: serializer.fromJson<String?>(json['lowestDayTemp']),
       highestDayTemp: serializer.fromJson<String?>(json['highestDayTemp']),
@@ -3907,7 +3907,7 @@ class WeatherDataData extends DataClass implements Insertable<WeatherDataData> {
     };
   }
 
-  WeatherDataData copyWith(
+  WeatherData copyWith(
           {Value<int?> eventID = const Value.absent(),
           Value<String?> lowestDayTemp = const Value.absent(),
           Value<String?> highestDayTemp = const Value.absent(),
@@ -3916,7 +3916,7 @@ class WeatherDataData extends DataClass implements Insertable<WeatherDataData> {
           Value<String?> sunrise = const Value.absent(),
           Value<String?> sunset = const Value.absent(),
           Value<String?> moonPhase = const Value.absent()}) =>
-      WeatherDataData(
+      WeatherData(
         eventID: eventID.present ? eventID.value : this.eventID,
         lowestDayTemp:
             lowestDayTemp.present ? lowestDayTemp.value : this.lowestDayTemp,
@@ -3934,7 +3934,7 @@ class WeatherDataData extends DataClass implements Insertable<WeatherDataData> {
       );
   @override
   String toString() {
-    return (StringBuffer('WeatherDataData(')
+    return (StringBuffer('WeatherData(')
           ..write('eventID: $eventID, ')
           ..write('lowestDayTemp: $lowestDayTemp, ')
           ..write('highestDayTemp: $highestDayTemp, ')
@@ -3953,7 +3953,7 @@ class WeatherDataData extends DataClass implements Insertable<WeatherDataData> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is WeatherDataData &&
+      (other is WeatherData &&
           other.eventID == this.eventID &&
           other.lowestDayTemp == this.lowestDayTemp &&
           other.highestDayTemp == this.highestDayTemp &&
@@ -3964,7 +3964,7 @@ class WeatherDataData extends DataClass implements Insertable<WeatherDataData> {
           other.moonPhase == this.moonPhase);
 }
 
-class WeatherDataCompanion extends UpdateCompanion<WeatherDataData> {
+class WeatherCompanion extends UpdateCompanion<WeatherData> {
   final Value<int?> eventID;
   final Value<String?> lowestDayTemp;
   final Value<String?> highestDayTemp;
@@ -3973,7 +3973,7 @@ class WeatherDataCompanion extends UpdateCompanion<WeatherDataData> {
   final Value<String?> sunrise;
   final Value<String?> sunset;
   final Value<String?> moonPhase;
-  const WeatherDataCompanion({
+  const WeatherCompanion({
     this.eventID = const Value.absent(),
     this.lowestDayTemp = const Value.absent(),
     this.highestDayTemp = const Value.absent(),
@@ -3983,7 +3983,7 @@ class WeatherDataCompanion extends UpdateCompanion<WeatherDataData> {
     this.sunset = const Value.absent(),
     this.moonPhase = const Value.absent(),
   });
-  WeatherDataCompanion.insert({
+  WeatherCompanion.insert({
     this.eventID = const Value.absent(),
     this.lowestDayTemp = const Value.absent(),
     this.highestDayTemp = const Value.absent(),
@@ -3993,7 +3993,7 @@ class WeatherDataCompanion extends UpdateCompanion<WeatherDataData> {
     this.sunset = const Value.absent(),
     this.moonPhase = const Value.absent(),
   });
-  static Insertable<WeatherDataData> custom({
+  static Insertable<WeatherData> custom({
     Expression<int>? eventID,
     Expression<String>? lowestDayTemp,
     Expression<String>? highestDayTemp,
@@ -4015,7 +4015,7 @@ class WeatherDataCompanion extends UpdateCompanion<WeatherDataData> {
     });
   }
 
-  WeatherDataCompanion copyWith(
+  WeatherCompanion copyWith(
       {Value<int?>? eventID,
       Value<String?>? lowestDayTemp,
       Value<String?>? highestDayTemp,
@@ -4024,7 +4024,7 @@ class WeatherDataCompanion extends UpdateCompanion<WeatherDataData> {
       Value<String?>? sunrise,
       Value<String?>? sunset,
       Value<String?>? moonPhase}) {
-    return WeatherDataCompanion(
+    return WeatherCompanion(
       eventID: eventID ?? this.eventID,
       lowestDayTemp: lowestDayTemp ?? this.lowestDayTemp,
       highestDayTemp: highestDayTemp ?? this.highestDayTemp,
@@ -4068,7 +4068,7 @@ class WeatherDataCompanion extends UpdateCompanion<WeatherDataData> {
 
   @override
   String toString() {
-    return (StringBuffer('WeatherDataCompanion(')
+    return (StringBuffer('WeatherCompanion(')
           ..write('eventID: $eventID, ')
           ..write('lowestDayTemp: $lowestDayTemp, ')
           ..write('highestDayTemp: $highestDayTemp, ')
@@ -9752,7 +9752,7 @@ abstract class _$Database extends GeneratedDatabase {
   late final Site site = Site(this);
   late final Coordinate coordinate = Coordinate(this);
   late final CollEvent collEvent = CollEvent(this);
-  late final WeatherData weatherData = WeatherData(this);
+  late final Weather weather = Weather(this);
   late final CollectingPersonnel collectingPersonnel =
       CollectingPersonnel(this);
   late final CollEffort collEffort = CollEffort(this);
@@ -9794,7 +9794,7 @@ abstract class _$Database extends GeneratedDatabase {
         site,
         coordinate,
         collEvent,
-        weatherData,
+        weather,
         collectingPersonnel,
         collEffort,
         narrative,

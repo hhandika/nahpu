@@ -96,25 +96,23 @@ class WeatherDataQuery extends DatabaseAccessor<Database>
     with _$CollEventQueryMixin {
   WeatherDataQuery(Database db) : super(db);
 
-  Future<int> createWeatherData(WeatherDataCompanion form) =>
-      into(weatherData).insert(form);
+  Future<int> createWeatherData(WeatherCompanion form) =>
+      into(weather).insert(form);
 
-  Future updateWeatherDataEntry(int id, WeatherDataCompanion entry) {
-    return (update(weatherData)..where((t) => t.eventID.equals(id)))
-        .write(entry);
+  Future updateWeatherDataEntry(int id, WeatherCompanion entry) {
+    return (update(weather)..where((t) => t.eventID.equals(id))).write(entry);
   }
 
-  Future<List<WeatherDataData>> getWeatherDataById(int weatherId) async {
-    return await (select(weatherData)
-          ..where((t) => t.eventID.equals(weatherId)))
-        .get();
+  Future<WeatherData> getWeatherDataByEventId(int weatherId) async {
+    return await (select(weather)..where((t) => t.eventID.equals(weatherId)))
+        .getSingle();
   }
 
   Future<void> deleteWeatherData(int id) {
-    return (delete(weatherData)..where((t) => t.eventID.equals(id))).go();
+    return (delete(weather)..where((t) => t.eventID.equals(id))).go();
   }
 
   Future<void> deleteAllWeatherData(String projectUuid) {
-    return delete(weatherData).go();
+    return delete(weather).go();
   }
 }

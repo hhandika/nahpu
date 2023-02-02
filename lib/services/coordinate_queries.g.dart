@@ -12,7 +12,7 @@ mixin _$CoordinateQueryMixin on DatabaseAccessor<Database> {
   Site get site => attachedDatabase.site;
   Coordinate get coordinate => attachedDatabase.coordinate;
   CollEvent get collEvent => attachedDatabase.collEvent;
-  WeatherData get weatherData => attachedDatabase.weatherData;
+  Weather get weather => attachedDatabase.weather;
   CollectingPersonnel get collectingPersonnel =>
       attachedDatabase.collectingPersonnel;
   CollEffort get collEffort => attachedDatabase.collEffort;

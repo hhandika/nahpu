@@ -63,7 +63,7 @@ CREATE TABLE collEvent (
     FOREIGN KEY(projectUuid) REFERENCES project(uuid)
 );
 
-CREATE TABLE weatherData (
+CREATE TABLE weather (
     eventID INT,
     lowestDayTemp TEXT,
     highestDayTemp TEXT,
