@@ -17,9 +17,9 @@ class CollEventServices {
         .createCollEvent(CollEventCompanion(
       projectUuid: db.Value(projectUuid),
     ));
-    // Weather data used collect event id as a foreign key
+    // Weather data used collecting event id as a foreign key
     // so we need to create a new weather data entry
-    // for the new collect event
+    // for the new collecting event
     WeatherDataQuery(ref.read(databaseProvider))
         .createWeatherData(WeatherCompanion(eventID: db.Value(eventID)));
     invalidateCollEvent();
@@ -39,5 +39,6 @@ class CollEventServices {
   void invalidateCollEvent() {
     ref.invalidate(collEventEntryProvider);
     ref.invalidate(weatherDataProvider);
+    ref.invalidate(collPersonnelProvider);
   }
 }
