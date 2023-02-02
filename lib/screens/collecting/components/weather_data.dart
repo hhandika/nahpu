@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/fields.dart';
@@ -205,22 +204,20 @@ class WeatherDataFormState extends ConsumerState<WeatherDataForm> {
                 hintText: 'Enter sunrise time',
               ),
               onTap: () async {
-                TimeOfDay? picked = await showTimePicker(
+                await showTimePicker(
                   context: context,
                   initialTime: TimeOfDay.now(),
-                );
-
-                if (picked != null) {
-                  if (!mounted) return;
-                  widget.weatherCtr.sunriseTimeCtr.text =
-                      picked.format(context);
-                  CollEventServices(ref).updateWeatherData(
-                      widget.eventID,
-                      WeatherCompanion(
-                        sunriseTime:
-                            db.Value(widget.weatherCtr.sunriseTimeCtr.text),
-                      ));
-                }
+                ).then((value) {
+                  if (value != null) {
+                    widget.weatherCtr.sunriseTimeCtr.text =
+                        value.format(context);
+                    CollEventServices(ref).updateWeatherData(
+                        widget.eventID,
+                        WeatherCompanion(
+                          sunriseTime: db.Value(value.format(context)),
+                        ));
+                  }
+                });
               },
             ),
             TextField(
@@ -230,23 +227,20 @@ class WeatherDataFormState extends ConsumerState<WeatherDataForm> {
                 hintText: 'Enter sunset time',
               ),
               onTap: () async {
-                DateTime? picked = await showDatePicker(
+                await showTimePicker(
                   context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2101),
-                );
-
-                if (picked != null) {
-                  widget.weatherCtr.sunsetTimeCtr.text =
-                      DateFormat.yMMMd().format(picked);
-                  CollEventServices(ref).updateWeatherData(
-                      widget.eventID,
-                      WeatherCompanion(
-                        sunsetTime:
-                            db.Value(widget.weatherCtr.sunsetTimeCtr.text),
-                      ));
-                }
+                  initialTime: TimeOfDay.now(),
+                ).then((value) {
+                  if (value != null) {
+                    widget.weatherCtr.sunsetTimeCtr.text =
+                        value.format(context);
+                    CollEventServices(ref).updateWeatherData(
+                        widget.eventID,
+                        WeatherCompanion(
+                          sunsetTime: db.Value(value.format(context)),
+                        ));
+                  }
+                });
               },
             ),
           ],
