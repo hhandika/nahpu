@@ -78,7 +78,7 @@ class TitleForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -93,7 +93,7 @@ class TitleForm extends StatelessWidget {
             constraints: const BoxConstraints(),
             icon: Icon(
               Icons.info_outline_rounded,
-              size: 20,
+              size: 22,
               color: Colors.grey[400],
             ),
           ),
