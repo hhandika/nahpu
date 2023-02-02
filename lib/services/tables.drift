@@ -78,10 +78,11 @@ CREATE TABLE weather (
     FOREIGN KEY(eventID) REFERENCES collEvent(id)
 );
 
-CREATE TABLE collectingPersonnel (
+CREATE TABLE collPersonnel (
     id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
     eventID INT,
     personnelId TEXT,
+    name TEXT, -- we add it here to save time pulling it from personnel data
     role TEXT, -- referring to collecting role, not project role
     FOREIGN KEY(eventID) REFERENCES collEvent(id),
     FOREIGN KEY(personnelId) REFERENCES personnel(uuid)
@@ -204,7 +205,7 @@ CREATE TABLE specimen (
     preparatorID TEXT REFERENCES personnel(uuid),
     FOREIGN KEY(projectUuid) REFERENCES project(uuid),
     FOREIGN KEY(catalogerID) REFERENCES personnel(uuid),
-    FOREIGN KEY(collPersonnelID) REFERENCES collectingPersonnel(id),
+    FOREIGN KEY(collPersonnelID) REFERENCES collPersonnel(id),
     FOREIGN KEY(collMethodID) REFERENCES collEffort(id),
     FOREIGN KEY(speciesID) REFERENCES taxonomy(id),
     FOREIGN KEY(collEventID) REFERENCES collEvent(id)

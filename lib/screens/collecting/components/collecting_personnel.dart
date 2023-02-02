@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/providers/catalogs.dart';
-import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
-import 'package:nahpu/services/collevent_queries.dart';
+import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database.dart';
 
 class CollPersonnelForm extends ConsumerStatefulWidget {
@@ -36,11 +35,7 @@ class CollPersonnelFormState extends ConsumerState<CollPersonnelForm> {
       if (data.isNotEmpty) {
         for (var person in data) {
           _personnel.add(
-            _addPersonnel(
-              person.id,
-              person.personnelId,
-              person.role,
-            ),
+            _addPersonnel(person),
           );
         }
       }
@@ -66,12 +61,10 @@ class CollPersonnelFormState extends ConsumerState<CollPersonnelForm> {
         ),
         PrimaryButton(
           text: 'Add Personnel',
-          onPressed: () async {
-            await CollectingPersonnelQuery(ref.read(databaseProvider))
-                .createCollectingPersonnel(CollectingPersonnelCompanion(
+          onPressed: () {
+            CollEventServices(ref).createCollPersonnel(CollPersonnelCompanion(
               eventID: db.Value(widget.eventID),
             ));
-            ref.invalidate(collPersonnelProvider);
             setState(() {});
           },
         ),
@@ -84,12 +77,9 @@ class CollPersonnelFormState extends ConsumerState<CollPersonnelForm> {
     );
   }
 
-  CollPersonnelCtrModel _addPersonnel(int id, String? nameID, String? role) {
-    final CollPersonnelCtrModel newPersonnel = CollPersonnelCtrModel(
-      id: id,
-      nameIDCtr: nameID,
-      roleCtr: role,
-    );
+  CollPersonnelCtrModel _addPersonnel(CollPersonnelData form) {
+    final CollPersonnelCtrModel newPersonnel =
+        CollPersonnelCtrModel.fromData(form);
     return newPersonnel;
   }
 }
@@ -140,15 +130,13 @@ class CollPersonnelFieldState extends ConsumerState<CollPersonnelField> {
             onChanged: (value) {
               widget.controller.nameIDCtr = value ?? '';
 
-              CollectingPersonnelQuery(ref.read(databaseProvider))
-                  .updateCollectingPersonnelEntry(
+              CollEventServices(ref).updateCollPersonnel(
                 widget.controller.id!,
-                CollectingPersonnelCompanion(
+                CollPersonnelCompanion(
                   eventID: db.Value(widget.eventID),
                   personnelId: db.Value(widget.controller.nameIDCtr),
                 ),
               );
-              ref.invalidate(collPersonnelProvider);
             },
           ),
         ),
@@ -169,24 +157,20 @@ class CollPersonnelFieldState extends ConsumerState<CollPersonnelField> {
             onChanged: (String? value) {
               widget.controller.roleCtr = value;
 
-              CollectingPersonnelQuery(ref.read(databaseProvider))
-                  .updateCollectingPersonnelEntry(
+              CollEventServices(ref).updateCollPersonnel(
                 widget.controller.id!,
-                CollectingPersonnelCompanion(
+                CollPersonnelCompanion(
                   eventID: db.Value(widget.eventID),
                   role: db.Value(widget.controller.roleCtr),
                 ),
               );
-              ref.invalidate(collPersonnelProvider);
             },
           ),
         ),
         IconButton(
           icon: const Icon(Icons.delete),
           onPressed: () {
-            CollectingPersonnelQuery(ref.read(databaseProvider))
-                .deleteCollectingPersonnel(widget.controller.id!);
-            ref.invalidate(collPersonnelProvider);
+            CollEventServices(ref).deleteCollPersonnel(widget.controller.id!);
           },
         ),
       ],

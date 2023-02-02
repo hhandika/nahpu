@@ -63,32 +63,30 @@ class CollEffortQuery extends DatabaseAccessor<Database>
   }
 }
 
-class CollectingPersonnelQuery extends DatabaseAccessor<Database>
+class CollPersonnelQuery extends DatabaseAccessor<Database>
     with _$CollEventQueryMixin {
-  CollectingPersonnelQuery(Database db) : super(db);
+  CollPersonnelQuery(Database db) : super(db);
 
-  Future<int> createCollectingPersonnel(CollectingPersonnelCompanion form) =>
-      into(collectingPersonnel).insert(form);
+  Future<int> createCollPersonnel(CollPersonnelCompanion form) =>
+      into(collPersonnel).insert(form);
 
-  Future updateCollectingPersonnelEntry(
-      int id, CollectingPersonnelCompanion entry) {
-    return (update(collectingPersonnel)..where((t) => t.id.equals(id)))
-        .write(entry);
+  Future updateCollPersonnelEntry(int id, CollPersonnelCompanion entry) {
+    return (update(collPersonnel)..where((t) => t.id.equals(id))).write(entry);
   }
 
-  Future<List<CollectingPersonnelData>> getCollPersonnelByEventId(
+  Future<List<CollPersonnelData>> getCollPersonnelByEventId(
       int collEventId) async {
-    return await (select(collectingPersonnel)
+    return await (select(collPersonnel)
           ..where((t) => t.eventID.equals(collEventId)))
         .get();
   }
 
-  Future<void> deleteCollectingPersonnel(int id) {
-    return (delete(collectingPersonnel)..where((t) => t.id.equals(id))).go();
+  Future<void> deleteCollPersonnel(int id) {
+    return (delete(collPersonnel)..where((t) => t.id.equals(id))).go();
   }
 
-  Future<void> deleteAllCollectingPersonnel(String projectUuid) {
-    return delete(collectingPersonnel).go();
+  Future<void> deleteAllCollPersonnel(String projectUuid) {
+    return delete(collPersonnel).go();
   }
 }
 

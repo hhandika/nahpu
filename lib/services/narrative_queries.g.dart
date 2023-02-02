@@ -13,8 +13,7 @@ mixin _$NarrativeQueryMixin on DatabaseAccessor<Database> {
   Coordinate get coordinate => attachedDatabase.coordinate;
   CollEvent get collEvent => attachedDatabase.collEvent;
   Weather get weather => attachedDatabase.weather;
-  CollectingPersonnel get collectingPersonnel =>
-      attachedDatabase.collectingPersonnel;
+  CollPersonnel get collPersonnel => attachedDatabase.collPersonnel;
   CollEffort get collEffort => attachedDatabase.collEffort;
   Narrative get narrative => attachedDatabase.narrative;
   AssociatedData get associatedData => attachedDatabase.associatedData;

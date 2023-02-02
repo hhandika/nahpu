@@ -9,20 +9,25 @@ import 'package:nahpu/services/database.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/specimen_services.dart';
 
-class CaptureRecordFields extends ConsumerWidget {
+class CaptureRecordFields extends ConsumerStatefulWidget {
   const CaptureRecordFields({
-    Key? key,
+    super.key,
     required this.specimenUuid,
     required this.useHorizontalLayout,
     required this.specimenCtr,
-  }) : super(key: key);
+  });
 
   final bool useHorizontalLayout;
   final String specimenUuid;
   final SpecimenFormCtrModel specimenCtr;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  CaptureRecordFieldsState createState() => CaptureRecordFieldsState();
+}
+
+class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
+  @override
+  Widget build(BuildContext context) {
     List<CollEventData> eventEntry = [];
     ref.watch(collEventEntryProvider).whenData(
           (value) => eventEntry = value,
@@ -34,7 +39,7 @@ class CaptureRecordFields extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.all(5),
             child: DropdownButtonFormField(
-              value: specimenCtr.collEventIDCtr,
+              value: widget.specimenCtr.collEventIDCtr,
               decoration: const InputDecoration(
                 labelText: 'Collecting Event ID',
                 hintText: 'Choose a collecting event ID',
@@ -46,20 +51,23 @@ class CaptureRecordFields extends ConsumerWidget {
                       ))
                   .toList(),
               onChanged: (int? newValue) {
-                SpecimenServices(ref).updateSpecimen(specimenUuid,
-                    SpecimenCompanion(collEventID: db.Value(newValue)));
+                setState(() {
+                  widget.specimenCtr.collEventIDCtr = newValue;
+                  SpecimenServices(ref).updateSpecimen(widget.specimenUuid,
+                      SpecimenCompanion(collEventID: db.Value(newValue)));
+                });
               },
             ),
           ),
           AdaptiveLayout(
-            useHorizontalLayout: useHorizontalLayout,
+            useHorizontalLayout: widget.useHorizontalLayout,
             children: [
               TextField(
                 decoration: const InputDecoration(
                   labelText: 'Capture date',
                   hintText: 'Enter date',
                 ),
-                controller: specimenCtr.captureDateCtr,
+                controller: widget.specimenCtr.captureDateCtr,
                 onTap: () async {
                   showDatePicker(
                           context: context,
@@ -68,13 +76,13 @@ class CaptureRecordFields extends ConsumerWidget {
                           lastDate: DateTime.now())
                       .then((date) {
                     if (date != null) {
-                      specimenCtr.captureDateCtr.text =
+                      widget.specimenCtr.captureDateCtr.text =
                           DateFormat.yMMMd().format(date);
                       SpecimenServices(ref).updateSpecimen(
-                        specimenUuid,
+                        widget.specimenUuid,
                         SpecimenCompanion(
                           captureDate:
-                              db.Value(specimenCtr.captureDateCtr.text),
+                              db.Value(widget.specimenCtr.captureDateCtr.text),
                         ),
                       );
                     }
@@ -86,20 +94,20 @@ class CaptureRecordFields extends ConsumerWidget {
                   labelText: 'Capture time',
                   hintText: 'Enter time',
                 ),
-                controller: specimenCtr.captureTimeCtr,
+                controller: widget.specimenCtr.captureTimeCtr,
                 onTap: () async {
                   showTimePicker(
                     context: context,
                     initialTime: TimeOfDay.now(),
                   ).then((time) {
                     if (time != null) {
-                      specimenCtr.captureTimeCtr.text =
+                      widget.specimenCtr.captureTimeCtr.text =
                           time.format(context).toString();
                       SpecimenServices(ref).updateSpecimen(
-                        specimenUuid,
+                        widget.specimenUuid,
                         SpecimenCompanion(
                           captureTime:
-                              db.Value(specimenCtr.captureTimeCtr.text),
+                              db.Value(widget.specimenCtr.captureTimeCtr.text),
                         ),
                       );
                     }
@@ -108,41 +116,65 @@ class CaptureRecordFields extends ConsumerWidget {
               ),
             ],
           ),
-          AdaptiveLayout(useHorizontalLayout: useHorizontalLayout, children: [
-            DropdownButtonFormField<int>(
-                value: specimenCtr.captureMethodCtr,
-                decoration: const InputDecoration(
-                  labelText: 'Collected by',
-                  hintText: 'Choose a person',
-                ),
-                items: const [
-                  DropdownMenuItem(
-                    value: 1,
-                    child: Text('One'),
-                  ),
-                  DropdownMenuItem(
-                    value: 2,
-                    child: Text('Two'),
-                  ),
-                ],
-                onChanged: (int? newValue) {}),
-            DropdownButtonFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Capture Method',
-                  hintText: 'Choose a trap type',
-                ),
-                items: const [
-                  DropdownMenuItem(
-                    value: 'One',
-                    child: Text('One'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Two',
-                    child: Text('Two'),
-                  ),
-                ],
-                onChanged: (String? newValue) {}),
-          ])
+          AdaptiveLayout(
+              useHorizontalLayout: widget.useHorizontalLayout,
+              children: [
+                DropdownButtonFormField<int>(
+                    value: widget.specimenCtr.collPersonnelCtr,
+                    decoration: const InputDecoration(
+                      labelText: 'Collected by',
+                      hintText: 'Choose a person',
+                    ),
+                    items: widget.specimenCtr.collEventIDCtr != null
+                        ? ref.watch(collEventEntryProvider).when(
+                              data: (data) {
+                                return data.map((person) {
+                                  return DropdownMenuItem(
+                                    value: person.id,
+                                    child: Text(person.eventID ?? ''),
+                                  );
+                                }).toList();
+                              },
+                              loading: () => const [],
+                              error: (e, s) => const [],
+                            )
+                        : [],
+                    onChanged: (int? newValue) {}),
+                DropdownButtonFormField<int?>(
+                    value: widget.specimenCtr.captureMethodCtr,
+                    decoration: const InputDecoration(
+                      labelText: 'Capture Method',
+                      hintText: 'Choose a trap type',
+                    ),
+                    items: widget.specimenCtr.collEventIDCtr != null
+                        ? ref
+                            .watch(collEffortByEventProvider(
+                                widget.specimenCtr.collEventIDCtr!))
+                            .when(
+                                data: (data) {
+                                  return data.map((effort) {
+                                    return DropdownMenuItem(
+                                      value: effort.id,
+                                      child: Text(effort.type ?? ''),
+                                    );
+                                  }).toList();
+                                },
+                                loading: () => const [],
+                                error: (error, stack) => const [])
+                        : const [],
+                    onChanged: (int? newValue) {
+                      setState(() {
+                        widget.specimenCtr.captureMethodCtr = newValue;
+                        SpecimenServices(ref).updateSpecimen(
+                          widget.specimenUuid,
+                          SpecimenCompanion(
+                            collMethodID:
+                                db.Value(widget.specimenCtr.captureMethodCtr),
+                          ),
+                        );
+                      });
+                    }),
+              ])
         ],
       ),
     );

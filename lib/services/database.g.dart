@@ -4222,12 +4222,12 @@ class WeatherCompanion extends UpdateCompanion<WeatherData> {
   }
 }
 
-class CollectingPersonnel extends Table
-    with TableInfo<CollectingPersonnel, CollectingPersonnelData> {
+class CollPersonnel extends Table
+    with TableInfo<CollPersonnel, CollPersonnelData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  CollectingPersonnel(this.attachedDatabase, [this._alias]);
+  CollPersonnel(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
@@ -4249,6 +4249,12 @@ class CollectingPersonnel extends Table
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _roleMeta = const VerificationMeta('role');
   late final GeneratedColumn<String> role = GeneratedColumn<String>(
       'role', aliasedName, true,
@@ -4256,14 +4262,13 @@ class CollectingPersonnel extends Table
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
-  List<GeneratedColumn> get $columns => [id, eventID, personnelId, role];
+  List<GeneratedColumn> get $columns => [id, eventID, personnelId, name, role];
   @override
-  String get aliasedName => _alias ?? 'collectingPersonnel';
+  String get aliasedName => _alias ?? 'collPersonnel';
   @override
-  String get actualTableName => 'collectingPersonnel';
+  String get actualTableName => 'collPersonnel';
   @override
-  VerificationContext validateIntegrity(
-      Insertable<CollectingPersonnelData> instance,
+  VerificationContext validateIntegrity(Insertable<CollPersonnelData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -4280,6 +4285,10 @@ class CollectingPersonnel extends Table
           personnelId.isAcceptableOrUnknown(
               data['personnelId']!, _personnelIdMeta));
     }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    }
     if (data.containsKey('role')) {
       context.handle(
           _roleMeta, role.isAcceptableOrUnknown(data['role']!, _roleMeta));
@@ -4290,24 +4299,25 @@ class CollectingPersonnel extends Table
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  CollectingPersonnelData map(Map<String, dynamic> data,
-      {String? tablePrefix}) {
+  CollPersonnelData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return CollectingPersonnelData(
+    return CollPersonnelData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       eventID: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}eventID']),
       personnelId: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}personnelId']),
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name']),
       role: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}role']),
     );
   }
 
   @override
-  CollectingPersonnel createAlias(String alias) {
-    return CollectingPersonnel(attachedDatabase, alias);
+  CollPersonnel createAlias(String alias) {
+    return CollPersonnel(attachedDatabase, alias);
   }
 
   @override
@@ -4319,14 +4329,15 @@ class CollectingPersonnel extends Table
   bool get dontWriteConstraints => true;
 }
 
-class CollectingPersonnelData extends DataClass
-    implements Insertable<CollectingPersonnelData> {
+class CollPersonnelData extends DataClass
+    implements Insertable<CollPersonnelData> {
   final int id;
   final int? eventID;
   final String? personnelId;
+  final String? name;
   final String? role;
-  const CollectingPersonnelData(
-      {required this.id, this.eventID, this.personnelId, this.role});
+  const CollPersonnelData(
+      {required this.id, this.eventID, this.personnelId, this.name, this.role});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -4337,14 +4348,17 @@ class CollectingPersonnelData extends DataClass
     if (!nullToAbsent || personnelId != null) {
       map['personnelId'] = Variable<String>(personnelId);
     }
+    if (!nullToAbsent || name != null) {
+      map['name'] = Variable<String>(name);
+    }
     if (!nullToAbsent || role != null) {
       map['role'] = Variable<String>(role);
     }
     return map;
   }
 
-  CollectingPersonnelCompanion toCompanion(bool nullToAbsent) {
-    return CollectingPersonnelCompanion(
+  CollPersonnelCompanion toCompanion(bool nullToAbsent) {
+    return CollPersonnelCompanion(
       id: Value(id),
       eventID: eventID == null && nullToAbsent
           ? const Value.absent()
@@ -4352,17 +4366,19 @@ class CollectingPersonnelData extends DataClass
       personnelId: personnelId == null && nullToAbsent
           ? const Value.absent()
           : Value(personnelId),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
       role: role == null && nullToAbsent ? const Value.absent() : Value(role),
     );
   }
 
-  factory CollectingPersonnelData.fromJson(Map<String, dynamic> json,
+  factory CollPersonnelData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return CollectingPersonnelData(
+    return CollPersonnelData(
       id: serializer.fromJson<int>(json['id']),
       eventID: serializer.fromJson<int?>(json['eventID']),
       personnelId: serializer.fromJson<String?>(json['personnelId']),
+      name: serializer.fromJson<String?>(json['name']),
       role: serializer.fromJson<String?>(json['role']),
     );
   }
@@ -4373,85 +4389,96 @@ class CollectingPersonnelData extends DataClass
       'id': serializer.toJson<int>(id),
       'eventID': serializer.toJson<int?>(eventID),
       'personnelId': serializer.toJson<String?>(personnelId),
+      'name': serializer.toJson<String?>(name),
       'role': serializer.toJson<String?>(role),
     };
   }
 
-  CollectingPersonnelData copyWith(
+  CollPersonnelData copyWith(
           {int? id,
           Value<int?> eventID = const Value.absent(),
           Value<String?> personnelId = const Value.absent(),
+          Value<String?> name = const Value.absent(),
           Value<String?> role = const Value.absent()}) =>
-      CollectingPersonnelData(
+      CollPersonnelData(
         id: id ?? this.id,
         eventID: eventID.present ? eventID.value : this.eventID,
         personnelId: personnelId.present ? personnelId.value : this.personnelId,
+        name: name.present ? name.value : this.name,
         role: role.present ? role.value : this.role,
       );
   @override
   String toString() {
-    return (StringBuffer('CollectingPersonnelData(')
+    return (StringBuffer('CollPersonnelData(')
           ..write('id: $id, ')
           ..write('eventID: $eventID, ')
           ..write('personnelId: $personnelId, ')
+          ..write('name: $name, ')
           ..write('role: $role')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, eventID, personnelId, role);
+  int get hashCode => Object.hash(id, eventID, personnelId, name, role);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is CollectingPersonnelData &&
+      (other is CollPersonnelData &&
           other.id == this.id &&
           other.eventID == this.eventID &&
           other.personnelId == this.personnelId &&
+          other.name == this.name &&
           other.role == this.role);
 }
 
-class CollectingPersonnelCompanion
-    extends UpdateCompanion<CollectingPersonnelData> {
+class CollPersonnelCompanion extends UpdateCompanion<CollPersonnelData> {
   final Value<int> id;
   final Value<int?> eventID;
   final Value<String?> personnelId;
+  final Value<String?> name;
   final Value<String?> role;
-  const CollectingPersonnelCompanion({
+  const CollPersonnelCompanion({
     this.id = const Value.absent(),
     this.eventID = const Value.absent(),
     this.personnelId = const Value.absent(),
+    this.name = const Value.absent(),
     this.role = const Value.absent(),
   });
-  CollectingPersonnelCompanion.insert({
+  CollPersonnelCompanion.insert({
     this.id = const Value.absent(),
     this.eventID = const Value.absent(),
     this.personnelId = const Value.absent(),
+    this.name = const Value.absent(),
     this.role = const Value.absent(),
   });
-  static Insertable<CollectingPersonnelData> custom({
+  static Insertable<CollPersonnelData> custom({
     Expression<int>? id,
     Expression<int>? eventID,
     Expression<String>? personnelId,
+    Expression<String>? name,
     Expression<String>? role,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (eventID != null) 'eventID': eventID,
       if (personnelId != null) 'personnelId': personnelId,
+      if (name != null) 'name': name,
       if (role != null) 'role': role,
     });
   }
 
-  CollectingPersonnelCompanion copyWith(
+  CollPersonnelCompanion copyWith(
       {Value<int>? id,
       Value<int?>? eventID,
       Value<String?>? personnelId,
+      Value<String?>? name,
       Value<String?>? role}) {
-    return CollectingPersonnelCompanion(
+    return CollPersonnelCompanion(
       id: id ?? this.id,
       eventID: eventID ?? this.eventID,
       personnelId: personnelId ?? this.personnelId,
+      name: name ?? this.name,
       role: role ?? this.role,
     );
   }
@@ -4468,6 +4495,9 @@ class CollectingPersonnelCompanion
     if (personnelId.present) {
       map['personnelId'] = Variable<String>(personnelId.value);
     }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
     if (role.present) {
       map['role'] = Variable<String>(role.value);
     }
@@ -4476,10 +4506,11 @@ class CollectingPersonnelCompanion
 
   @override
   String toString() {
-    return (StringBuffer('CollectingPersonnelCompanion(')
+    return (StringBuffer('CollPersonnelCompanion(')
           ..write('id: $id, ')
           ..write('eventID: $eventID, ')
           ..write('personnelId: $personnelId, ')
+          ..write('name: $name, ')
           ..write('role: $role')
           ..write(')'))
         .toString();
@@ -6684,7 +6715,7 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
   List<String> get customConstraints => const [
         'FOREIGN KEY(projectUuid)REFERENCES project(uuid)',
         'FOREIGN KEY(catalogerID)REFERENCES personnel(uuid)',
-        'FOREIGN KEY(collPersonnelID)REFERENCES collectingPersonnel(id)',
+        'FOREIGN KEY(collPersonnelID)REFERENCES collPersonnel(id)',
         'FOREIGN KEY(collMethodID)REFERENCES collEffort(id)',
         'FOREIGN KEY(speciesID)REFERENCES taxonomy(id)',
         'FOREIGN KEY(collEventID)REFERENCES collEvent(id)'
@@ -9980,8 +10011,7 @@ abstract class _$Database extends GeneratedDatabase {
   late final Coordinate coordinate = Coordinate(this);
   late final CollEvent collEvent = CollEvent(this);
   late final Weather weather = Weather(this);
-  late final CollectingPersonnel collectingPersonnel =
-      CollectingPersonnel(this);
+  late final CollPersonnel collPersonnel = CollPersonnel(this);
   late final CollEffort collEffort = CollEffort(this);
   late final Narrative narrative = Narrative(this);
   late final AssociatedData associatedData = AssociatedData(this);
@@ -10022,7 +10052,7 @@ abstract class _$Database extends GeneratedDatabase {
         coordinate,
         collEvent,
         weather,
-        collectingPersonnel,
+        collPersonnel,
         collEffort,
         narrative,
         associatedData,

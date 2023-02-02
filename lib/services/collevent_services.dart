@@ -26,6 +26,19 @@ class CollEventServices {
     return eventID;
   }
 
+  Future<int> createCollPersonnel(CollPersonnelCompanion form) async {
+    int id = await CollPersonnelQuery(ref.read(databaseProvider))
+        .createCollPersonnel(form);
+    invalidateCollPersonnel();
+    return id;
+  }
+
+  void updateCollPersonnel(int id, CollPersonnelCompanion form) async {
+    CollPersonnelQuery(ref.read(databaseProvider))
+        .updateCollPersonnelEntry(id, form);
+    invalidateCollPersonnel();
+  }
+
   void updateCollEvent(int id, CollEventCompanion entries) {
     CollEventQuery(ref.read(databaseProvider))
         .updateCollEventEntry(id, entries);
@@ -36,9 +49,18 @@ class CollEventServices {
         .updateWeatherDataEntry(eventID, weatherData);
   }
 
+  void deleteCollPersonnel(int id) {
+    CollPersonnelQuery(ref.read(databaseProvider)).deleteCollPersonnel(id);
+    invalidateCollPersonnel();
+  }
+
   void invalidateCollEvent() {
     ref.invalidate(collEventEntryProvider);
     ref.invalidate(weatherDataProvider);
+    ref.invalidate(collPersonnelProvider);
+  }
+
+  void invalidateCollPersonnel() {
     ref.invalidate(collPersonnelProvider);
   }
 }
