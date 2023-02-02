@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/controller/updaters.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/database.dart';
 import 'package:nahpu/models/form.dart';
+import 'package:nahpu/services/site_services.dart';
 
 class SiteInfo extends ConsumerWidget {
   const SiteInfo({
@@ -51,10 +51,10 @@ class SiteInfo extends ConsumerWidget {
                 text: value.toUpperCase(),
                 selection: siteFormCtr.siteIDCtr.selection,
               );
-              updateSite(
-                  id,
-                  SiteCompanion(siteID: db.Value(siteFormCtr.siteIDCtr.text)),
-                  ref);
+              SiteServices(ref).updateSite(
+                id,
+                SiteCompanion(siteID: db.Value(siteFormCtr.siteIDCtr.text)),
+              );
             },
           ),
           DropdownButtonFormField(
@@ -72,7 +72,10 @@ class SiteInfo extends ConsumerWidget {
                 )
                 .toList(),
             onChanged: (String? uuid) {
-              updateSite(id, SiteCompanion(leadStaffId: db.Value(uuid)), ref);
+              SiteServices(ref).updateSite(
+                id,
+                SiteCompanion(leadStaffId: db.Value(uuid)),
+              );
             },
           ),
           TextFormField(
@@ -82,7 +85,10 @@ class SiteInfo extends ConsumerWidget {
               hintText: 'Enter a site type, e.g. "Camp", "City", "etc."',
             ),
             onChanged: (value) {
-              updateSite(id, SiteCompanion(siteType: db.Value(value)), ref);
+              SiteServices(ref).updateSite(
+                id,
+                SiteCompanion(siteType: db.Value(value)),
+              );
             },
           ),
         ],

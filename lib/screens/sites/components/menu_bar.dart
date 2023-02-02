@@ -1,24 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:drift/drift.dart' as db;
-import 'package:nahpu/providers/catalogs.dart';
-// import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/providers/projects.dart';
-import 'package:nahpu/services/database.dart';
 import 'package:nahpu/screens/sites/new_sites.dart';
+import 'package:nahpu/services/site_services.dart';
 
 enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
 
 Future<void> createNewSite(BuildContext context, WidgetRef ref) {
   String projectUuid = ref.watch(projectUuidProvider);
 
-  return ref
-      .read(databaseProvider)
-      .createSite(SiteCompanion(
-        projectUuid: db.Value(projectUuid),
-      ))
-      .then((value) {
-    ref.invalidate(siteEntryProvider);
+  return SiteServices(ref).createNewSite(projectUuid).then((value) {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => NewSites(
               id: value,
@@ -85,10 +76,7 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
       case MenuSelection.deleteRecords:
         break;
       case MenuSelection.deleteAllRecords:
-        // TODO: prevent deletion of records if they are in used
-        final projectUuid = ref.read(projectUuidProvider.notifier).state;
-        ref.read(databaseProvider).deleteAllSites(projectUuid);
-        ref.invalidate(siteEntryProvider);
+        SiteServices(ref).deleteAllSites();
         break;
     }
   }

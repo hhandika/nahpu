@@ -20,8 +20,8 @@ class SiteQuery extends DatabaseAccessor<Database> with _$SiteQueryMixin {
         .get();
   }
 
-  Future<void> deleteSite(String siteId) {
-    return (delete(site)..where((t) => t.siteID.equals(siteId))).go();
+  Future<void> deleteSite(int id) {
+    return (delete(site)..where((t) => t.id.equals(id))).go();
   }
 
   Future<SiteData> getSiteById(int id) async {

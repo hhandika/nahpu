@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/form.dart';
-
 import 'package:nahpu/screens/narrative/narrative_form.dart';
 import 'package:nahpu/screens/narrative/components/menu_bar.dart';
 import 'package:nahpu/screens/narrative/narrative_view.dart';
 import 'package:nahpu/services/narrative_services.dart';
-
-import '../../providers/catalogs.dart';
-// import 'package:nahpu/providers/page_viewer.dart';
 
 class NewNarrativeForm extends ConsumerStatefulWidget {
   const NewNarrativeForm({Key? key, required this.narrativeId})
