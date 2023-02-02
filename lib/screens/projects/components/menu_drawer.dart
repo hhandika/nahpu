@@ -144,7 +144,7 @@ class MenuAvatar extends ConsumerWidget {
       data: (data) {
         return UserAccountsDrawerHeader(
           decoration:
-              BoxDecoration(color: Theme.of(context).colorScheme.secondary),
+              BoxDecoration(color: Theme.of(context).colorScheme.primary),
           accountName: Text(
             data?.name ?? 'No Project',
             style: const TextStyle(
