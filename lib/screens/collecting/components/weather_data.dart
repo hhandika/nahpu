@@ -287,6 +287,7 @@ class WeatherDataFormState extends ConsumerState<WeatherDataForm> {
             controller: widget.weatherCtr.noteCtr,
             labelText: 'Notes',
             hintText: 'Enter notes',
+            maxLines: 3,
             isLastField: true,
             onChanged: (String? value) {
               if (value != null) {

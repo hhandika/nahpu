@@ -31,23 +31,20 @@ class CollPersonnelFormState extends ConsumerState<CollPersonnelForm> {
 
   @override
   Widget build(BuildContext context) {
-    ref.watch(collPersonnelProvider(widget.eventID)).when(
-        data: (data) {
-          _personnel.clear();
-          if (data.isNotEmpty) {
-            for (var person in data) {
-              _personnel.add(
-                _addPersonnel(
-                  person.id,
-                  person.personnelId,
-                  person.role,
-                ),
-              );
-            }
-          }
-        },
-        loading: () => null,
-        error: (e, s) => null);
+    ref.watch(collPersonnelProvider(widget.eventID)).whenData((data) {
+      _personnel.clear();
+      if (data.isNotEmpty) {
+        for (var person in data) {
+          _personnel.add(
+            _addPersonnel(
+              person.id,
+              person.personnelId,
+              person.role,
+            ),
+          );
+        }
+      }
+    });
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:nahpu/models/form.dart';
-// import 'package:nahpu/providers/page_viewer.dart';s
 import 'package:nahpu/screens/collecting/coll_event_form.dart';
 import 'package:nahpu/screens/collecting/coll_event_view.dart';
 import 'package:nahpu/screens/collecting/components/menu_bar.dart';
-
-import '../../providers/catalogs.dart';
+import 'package:nahpu/services/collevent_services.dart';
 
 enum MenuSelection { newNote, pdfExport, deleteRecords, deleteAllRecords }
 
@@ -37,8 +34,8 @@ class NewCollEventFormState extends ConsumerState<NewCollEventForm> {
         title: const Text("New Coll. Events"),
         leading: BackButton(
           onPressed: () {
-            ref.invalidate(collEventEntryProvider);
-            Navigator.push(context,
+            CollEventServices(ref).invalidateCollEvent();
+            Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => const CollEvents()));
           },
         ),
