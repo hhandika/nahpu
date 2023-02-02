@@ -82,7 +82,7 @@ class SpecimensState extends ConsumerState<Specimens> {
                           });
                         }
                         final specimenFormCtr =
-                            _updateController(specimenEntry, index);
+                            _updateController(specimenEntry[index]);
                         return SpecimenForm(
                           specimenUuid: specimenEntry[index].uuid,
                           specimenCtr: specimenFormCtr,
@@ -114,22 +114,7 @@ class SpecimensState extends ConsumerState<Specimens> {
     );
   }
 
-  SpecimenFormCtrModel _updateController(
-      List<SpecimenData> specimenEntry, int index) {
-    return SpecimenFormCtrModel(
-      taxonDataCtr: taxonomy,
-      collectorCtr: specimenEntry[index].collectorID,
-      collectorNumberCtr: TextEditingController(
-          text: specimenEntry[index].collectorNumber?.toString() ?? ""),
-      preparatorCtr: specimenEntry[index].preparatorID,
-      conditionCtr: specimenEntry[index].condition,
-      prepDateCtr: TextEditingController(text: specimenEntry[index].prepDate),
-      prepTimeCtr: TextEditingController(text: specimenEntry[index].prepTime),
-      captureDateCtr:
-          TextEditingController(text: specimenEntry[index].captureDate),
-      captureTimeCtr:
-          TextEditingController(text: specimenEntry[index].captureTime),
-      trapTypeCtr: TextEditingController(text: specimenEntry[index].trapType),
-    );
+  SpecimenFormCtrModel _updateController(SpecimenData specimenEntry) {
+    return SpecimenFormCtrModel.fromData(specimenEntry, TaxonData());
   }
 }

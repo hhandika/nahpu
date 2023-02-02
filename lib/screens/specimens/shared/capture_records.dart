@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/database.dart';
 import 'package:drift/drift.dart' as db;
+import 'package:nahpu/services/specimen_services.dart';
 
 class CaptureRecordFields extends ConsumerWidget {
   const CaptureRecordFields({
@@ -34,6 +35,7 @@ class CaptureRecordFields extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.all(5),
             child: DropdownButtonFormField(
+              value: specimenCtr.collEventIDCtr,
               decoration: const InputDecoration(
                 labelText: 'Collecting Event ID',
                 hintText: 'Choose a collecting event ID',
@@ -45,8 +47,8 @@ class CaptureRecordFields extends ConsumerWidget {
                       ))
                   .toList(),
               onChanged: (int? newValue) {
-                updateSpecimen(specimenUuid,
-                    SpecimenCompanion(collEventID: db.Value(newValue)), ref);
+                SpecimenServices(ref).updateSpecimen(specimenUuid,
+                    SpecimenCompanion(collEventID: db.Value(newValue)));
               },
             ),
           ),

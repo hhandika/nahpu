@@ -9,6 +9,7 @@ import 'package:nahpu/providers/catalogs.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/screens/specimens/shared/species.dart';
 import 'package:nahpu/services/database.dart';
+import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/taxonomy_queries.dart';
 
 class CollectingRecordField extends ConsumerStatefulWidget {
@@ -69,17 +70,21 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
                   var taxon = value.split(' ');
                   TaxonomyQuery(ref.read(databaseProvider))
                       .getTaxonIdByGenusEpithet(taxon[0], taxon[1])
-                      .then((data) => updateSpecimen(
+                      .then(
+                        (data) => SpecimenServices(ref).updateSpecimen(
                           widget.specimenUuid,
                           SpecimenCompanion(speciesID: db.Value(data.id)),
-                          ref));
+                        ),
+                      );
                 });
               }),
           DropdownButtonFormField(
             value: widget.specimenCtr.conditionCtr,
             onChanged: (String? value) {
-              updateSpecimen(widget.specimenUuid,
-                  SpecimenCompanion(condition: db.Value(value)), ref);
+              SpecimenServices(ref).updateSpecimen(
+                widget.specimenUuid,
+                SpecimenCompanion(condition: db.Value(value)),
+              );
             },
             decoration: const InputDecoration(
               labelText: 'Condition',
@@ -111,12 +116,12 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
                     if (selectedDate != null) {
                       widget.specimenCtr.prepDateCtr.text =
                           DateFormat.yMMMd().format(selectedDate);
-                      updateSpecimen(
-                          widget.specimenUuid,
-                          SpecimenCompanion(
-                              prepDate: db.Value(
-                                  widget.specimenCtr.prepDateCtr.text)),
-                          ref);
+                      SpecimenServices(ref).updateSpecimen(
+                        widget.specimenUuid,
+                        SpecimenCompanion(
+                            prepDate:
+                                db.Value(widget.specimenCtr.prepDateCtr.text)),
+                      );
                     }
                   },
                 ),
@@ -136,13 +141,13 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
                       if (time != null) {
                         widget.specimenCtr.prepTimeCtr.text =
                             time.format(context);
-                        updateSpecimen(
-                            widget.specimenUuid,
-                            SpecimenCompanion(
-                              prepTime:
-                                  db.Value(widget.specimenCtr.prepTimeCtr.text),
-                            ),
-                            ref);
+                        SpecimenServices(ref).updateSpecimen(
+                          widget.specimenUuid,
+                          SpecimenCompanion(
+                            prepTime:
+                                db.Value(widget.specimenCtr.prepTimeCtr.text),
+                          ),
+                        );
                       }
                     });
                   },
@@ -201,16 +206,16 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
               var currentCollNum = _getCurrentCollectorNumber(uuid);
               widget.specimenCtr.collectorNumberCtr.text =
                   currentCollNum.toString();
-              updateSpecimen(
-                  widget.specimenUuid,
-                  SpecimenCompanion(
-                    collectorID: db.Value(uuid),
-                    collectorNumber: db.Value(
-                      currentCollNum,
-                    ),
-                    preparatorID: db.Value(uuid),
+              SpecimenServices(ref).updateSpecimen(
+                widget.specimenUuid,
+                SpecimenCompanion(
+                  collectorID: db.Value(uuid),
+                  collectorNumber: db.Value(
+                    currentCollNum,
                   ),
-                  ref);
+                  preparatorID: db.Value(uuid),
+                ),
+              );
               if (uuid != null) {
                 ref.read(databaseProvider).updatePersonnelEntry(
                     uuid,
@@ -244,8 +249,10 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
                   ))
               .toList(),
           onChanged: (String? uuid) {
-            updateSpecimen(widget.specimenUuid,
-                SpecimenCompanion(preparatorID: db.Value(uuid)), ref);
+            SpecimenServices(ref).updateSpecimen(
+              widget.specimenUuid,
+              SpecimenCompanion(preparatorID: db.Value(uuid)),
+            );
           },
         )
       ],

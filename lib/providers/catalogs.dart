@@ -6,11 +6,6 @@ import 'package:nahpu/services/coordinate_queries.dart';
 import 'package:nahpu/services/collevent_queries.dart';
 import 'package:nahpu/services/taxonomy_queries.dart';
 
-final specimenProvider = Provider<SpecimenQuery>((ref) {
-  final specimenTable = SpecimenQuery(ref.read(databaseProvider));
-  return specimenTable;
-});
-
 final narrativeEntryProvider =
     FutureProvider.autoDispose<List<NarrativeData>>((ref) {
   final projectUuid = ref.watch(projectUuidProvider);

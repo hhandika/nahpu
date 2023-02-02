@@ -12,6 +12,7 @@ import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/database.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/specimen_queries.dart';
+import 'package:nahpu/services/specimen_services.dart';
 
 Future<void> createNewSpecimens(BuildContext context, WidgetRef ref) {
   String projectUuid = ref.watch(projectUuidProvider);
@@ -24,32 +25,16 @@ Future<void> createNewSpecimens(BuildContext context, WidgetRef ref) {
   ));
   switch (catalogFmt) {
     case CatalogFmt.birds:
-      ref.read(specimenProvider).createBirdMeasurements(
-            BirdMeasurementCompanion(
-              specimenUuid: db.Value(specimenUuid),
-            ),
-          );
+      SpecimenServices(ref).createBirdSpecimen(specimenUuid);
       break;
     case CatalogFmt.bats:
-      ref.read(specimenProvider).createMammalMeasurements(
-            MammalMeasurementCompanion(
-              specimenUuid: db.Value(specimenUuid),
-            ),
-          );
+      SpecimenServices(ref).createMammalSpecimen(specimenUuid);
       break;
     case CatalogFmt.generalMammals:
-      ref.read(specimenProvider).createMammalMeasurements(
-            MammalMeasurementCompanion(
-              specimenUuid: db.Value(specimenUuid),
-            ),
-          );
+      SpecimenServices(ref).createMammalSpecimen(specimenUuid);
       break;
     default:
-      ref.read(specimenProvider).createMammalMeasurements(
-            MammalMeasurementCompanion(
-              specimenUuid: db.Value(specimenUuid),
-            ),
-          );
+      SpecimenServices(ref).createMammalSpecimen(specimenUuid);
       break;
   }
 
