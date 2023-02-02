@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/controller/updaters.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/screens/shared/forms.dart';
+import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database.dart';
 import 'package:drift/drift.dart' as db;
 
@@ -44,10 +44,10 @@ class CollActivityFields extends ConsumerWidget {
               ),
             ],
             onChanged: (String? newValue) {
-              updateCollEvent(
-                  collEventId,
-                  CollEventCompanion(primaryCollMethod: db.Value(newValue)),
-                  ref);
+              CollEventServices(ref).updateCollEvent(
+                collEventId,
+                CollEventCompanion(primaryCollMethod: db.Value(newValue)),
+              );
             },
           ),
           TextField(
@@ -58,8 +58,10 @@ class CollActivityFields extends ConsumerWidget {
               hintText: 'Enter notes about the activity',
             ),
             onChanged: (String? newValue) {
-              updateCollEvent(collEventId,
-                  CollEventCompanion(collMethodNotes: db.Value(newValue)), ref);
+              CollEventServices(ref).updateCollEvent(
+                collEventId,
+                CollEventCompanion(collMethodNotes: db.Value(newValue)),
+              );
             },
           ),
         ],

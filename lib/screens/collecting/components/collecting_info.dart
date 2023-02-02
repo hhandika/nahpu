@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/controller/updaters.dart';
+
 import 'package:nahpu/models/form.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:intl/intl.dart';
+import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database.dart';
 import 'package:drift/drift.dart' as db;
 
@@ -73,15 +74,14 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
                 setState(() {
                   widget.collEventCtr.siteIDCtr = value;
                   _getEventID();
-                  updateCollEvent(
+                  CollEventServices(ref).updateCollEvent(
                       widget.collEventId,
                       CollEventCompanion(
                         siteID: db.Value(value),
                         eventID: db.Value(
                           widget.collEventCtr.eventIDCtr.text,
                         ),
-                      ),
-                      ref);
+                      ));
                 });
               },
             ),
@@ -103,16 +103,16 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
                         widget.collEventCtr.startDateCtr.text =
                             DateFormat.yMMMd().format(date);
                         _getEventID();
-                        updateCollEvent(
-                            widget.collEventId,
-                            CollEventCompanion(
-                              startDate: db.Value(
-                                  widget.collEventCtr.startDateCtr.text),
-                              eventID: db.Value(
-                                widget.collEventCtr.eventIDCtr.text,
-                              ),
+                        CollEventServices(ref).updateCollEvent(
+                          widget.collEventId,
+                          CollEventCompanion(
+                            startDate:
+                                db.Value(widget.collEventCtr.startDateCtr.text),
+                            eventID: db.Value(
+                              widget.collEventCtr.eventIDCtr.text,
                             ),
-                            ref);
+                          ),
+                        );
                       },
                     );
                   }
@@ -129,13 +129,12 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
                   if (date != null) {
                     widget.collEventCtr.endDateCtr.text =
                         DateFormat.yMMMd().format(date);
-                    updateCollEvent(
-                        widget.collEventId,
-                        CollEventCompanion(
-                          endDate:
-                              db.Value(widget.collEventCtr.endDateCtr.text),
-                        ),
-                        ref);
+                    CollEventServices(ref).updateCollEvent(
+                      widget.collEventId,
+                      CollEventCompanion(
+                        endDate: db.Value(widget.collEventCtr.endDateCtr.text),
+                      ),
+                    );
                   }
                 },
               ),
@@ -239,12 +238,12 @@ class CollEventIdTile extends ConsumerWidget {
                   ),
                   TextButton(
                     onPressed: () {
-                      updateCollEvent(
-                          collEventId,
-                          CollEventCompanion(
-                            eventID: db.Value(collEventCtr.eventIDCtr.text),
-                          ),
-                          ref);
+                      CollEventServices(ref).updateCollEvent(
+                        collEventId,
+                        CollEventCompanion(
+                          eventID: db.Value(collEventCtr.eventIDCtr.text),
+                        ),
+                      );
                       ref.invalidate(siteEntryProvider);
                       Navigator.of(context).pop();
                     },
@@ -296,12 +295,12 @@ class EventTimeFieldState extends ConsumerState<EventTimeField> {
               if (!mounted) return;
 
               widget.collEventCtr.startTimeCtr.text = time.format(context);
-              updateCollEvent(
-                  widget.collEventId,
-                  CollEventCompanion(
-                    startTime: db.Value(widget.collEventCtr.startTimeCtr.text),
-                  ),
-                  ref);
+              CollEventServices(ref).updateCollEvent(
+                widget.collEventId,
+                CollEventCompanion(
+                  startTime: db.Value(widget.collEventCtr.startTimeCtr.text),
+                ),
+              );
             }
           },
         ),
@@ -317,12 +316,12 @@ class EventTimeFieldState extends ConsumerState<EventTimeField> {
               if (!mounted) return;
 
               widget.collEventCtr.endTimeCtr.text = time.format(context);
-              updateCollEvent(
-                  widget.collEventId,
-                  CollEventCompanion(
-                    endTime: db.Value(widget.collEventCtr.endTimeCtr.text),
-                  ),
-                  ref);
+              CollEventServices(ref).updateCollEvent(
+                widget.collEventId,
+                CollEventCompanion(
+                  endTime: db.Value(widget.collEventCtr.endTimeCtr.text),
+                ),
+              );
             }
           },
         ),

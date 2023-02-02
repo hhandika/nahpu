@@ -26,6 +26,11 @@ class CollEventServices {
     return eventID;
   }
 
+  void updateCollEvent(int id, CollEventCompanion entries) {
+    CollEventQuery(ref.read(databaseProvider))
+        .updateCollEventEntry(id, entries);
+  }
+
   void updateWeatherData(int eventID, WeatherCompanion weatherData) {
     WeatherDataQuery(ref.read(databaseProvider))
         .updateWeatherDataEntry(eventID, weatherData);
