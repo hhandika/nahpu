@@ -127,6 +127,6 @@ class SpecimenIcons extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
-    return matchCatFmtToIcon(catalogFmt);
+    return Icon(matchCatFmtToIcon(catalogFmt));
   }
 }

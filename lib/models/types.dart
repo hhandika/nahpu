@@ -60,16 +60,29 @@ String matchCatFmtToTaxonGroup(CatalogFmt catalogFmt) {
   }
 }
 
-Icon matchCatFmtToIcon(CatalogFmt catalogFmt) {
+IconData matchCatFmtToPartIcon(CatalogFmt catalogFmt) {
   switch (catalogFmt) {
     case CatalogFmt.birds:
-      return const Icon(MdiIcons.feather);
+      return MdiIcons.owl;
     case CatalogFmt.generalMammals:
-      return const Icon(MdiIcons.paw);
+      return MdiIcons.pawOutline;
     case CatalogFmt.bats:
-      return const Icon(MdiIcons.bat);
+      return MdiIcons.pawOutline;
     default:
-      return const Icon(MdiIcons.paw);
+      return MdiIcons.paw;
+  }
+}
+
+IconData matchCatFmtToIcon(CatalogFmt catalogFmt) {
+  switch (catalogFmt) {
+    case CatalogFmt.birds:
+      return MdiIcons.feather;
+    case CatalogFmt.generalMammals:
+      return MdiIcons.paw;
+    case CatalogFmt.bats:
+      return MdiIcons.bat;
+    default:
+      return MdiIcons.paw;
   }
 }
 

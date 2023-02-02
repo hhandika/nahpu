@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/form.dart';
+import 'package:nahpu/models/types.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/screens/specimens/birds/measurements.dart';
@@ -68,7 +69,10 @@ class BirdFormsState extends ConsumerState<BirdForms> {
                   BirdMeasurementForms(
                       useHorizontalLayout: useHorizontalLayout,
                       specimenUuid: widget.specimenUuid),
-                  PartDataForm(specimenCtr: widget.specimenCtr),
+                  PartDataForm(
+                    specimenCtr: widget.specimenCtr,
+                    catalogFmt: CatalogFmt.birds,
+                  ),
                 ],
               ),
               MediaForms(

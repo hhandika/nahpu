@@ -3,14 +3,20 @@ import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/models/form.dart';
 import 'package:flutter/material.dart';
+import 'package:nahpu/models/types.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/associated_data.dart';
 
 class PartDataForm extends ConsumerStatefulWidget {
-  const PartDataForm({super.key, required this.specimenCtr});
+  const PartDataForm({
+    super.key,
+    required this.specimenCtr,
+    required this.catalogFmt,
+  });
 
   final SpecimenFormCtrModel specimenCtr;
+  final CatalogFmt catalogFmt;
 
   @override
   PartDataFormState createState() => PartDataFormState();
@@ -43,10 +49,7 @@ class PartDataFormState extends ConsumerState<PartDataForm>
         length: _length,
         tabs: [
           Tab(
-            icon: Text(
-              'Parts',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
+            icon: Icon(matchCatFmtToPartIcon(widget.catalogFmt)),
           ),
           Tab(
               icon: Icon(MdiIcons.databaseOutline,
