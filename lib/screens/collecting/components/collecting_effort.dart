@@ -28,7 +28,9 @@ class CollectingEffortFrom extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CollEffortList(collEventId: collEventId),
+            Expanded(
+              child: CollEffortList(collEventId: collEventId),
+            ),
             PrimaryButton(
                 onPressed: () {
                   Navigator.push(
@@ -173,17 +175,17 @@ class Subtitle extends StatelessWidget {
         children: [
           TextSpan(
             text: 'Count: ${data.count}',
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.labelMedium,
           ),
           const TextSpan(text: ' | '),
           if (data.size != null && data.size!.isNotEmpty)
             TextSpan(
               text: ' | Size: ${data.size}',
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.labelMedium,
             ),
           TextSpan(
             text: 'Brand: ${data.brand}',
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.labelMedium,
           ),
         ],
       ),
@@ -310,7 +312,6 @@ class CollEffortFormState extends ConsumerState<CollEffortForm> {
                 hintText: 'Enter any notes about the tool (if applicable)',
               ),
             ),
-            const SizedBox(height: 20),
             Wrap(
               alignment: WrapAlignment.center,
               children: [
@@ -375,7 +376,7 @@ class CollEffortFormState extends ConsumerState<CollEffortForm> {
       eventID: db.Value(widget.collEventId),
       type: db.Value(widget.collToolCtr.typeCtr.text),
       brand: db.Value(widget.collToolCtr.brandCtr.text),
-      count: db.Value(int.tryParse(widget.collToolCtr.countCtr.text)),
+      count: db.Value(int.tryParse(widget.collToolCtr.countCtr.text) ?? 0),
       size: db.Value(widget.collToolCtr.sizeCtr.text),
       notes: db.Value(widget.collToolCtr.noteCtr.text),
     );
