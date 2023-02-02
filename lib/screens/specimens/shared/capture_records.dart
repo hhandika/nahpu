@@ -70,6 +70,13 @@ class CaptureRecordFields extends ConsumerWidget {
                     if (date != null) {
                       specimenCtr.captureDateCtr.text =
                           DateFormat.yMMMd().format(date);
+                      SpecimenServices(ref).updateSpecimen(
+                        specimenUuid,
+                        SpecimenCompanion(
+                          captureDate:
+                              db.Value(specimenCtr.captureDateCtr.text),
+                        ),
+                      );
                     }
                   });
                 },
@@ -88,6 +95,13 @@ class CaptureRecordFields extends ConsumerWidget {
                     if (time != null) {
                       specimenCtr.captureTimeCtr.text =
                           time.format(context).toString();
+                      SpecimenServices(ref).updateSpecimen(
+                        specimenUuid,
+                        SpecimenCompanion(
+                          captureTime:
+                              db.Value(specimenCtr.captureTimeCtr.text),
+                        ),
+                      );
                     }
                   });
                 },
