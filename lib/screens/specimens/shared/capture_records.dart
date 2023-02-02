@@ -126,12 +126,15 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                       hintText: 'Choose a person',
                     ),
                     items: widget.specimenCtr.collEventIDCtr != null
-                        ? ref.watch(collEventEntryProvider).when(
+                        ? ref
+                            .watch(collPersonnelProvider(
+                                widget.specimenCtr.collEventIDCtr!))
+                            .when(
                               data: (data) {
                                 return data.map((person) {
                                   return DropdownMenuItem(
                                     value: person.id,
-                                    child: Text(person.eventID ?? ''),
+                                    child: Text(person.name ?? ''),
                                   );
                                 }).toList();
                               },

@@ -60,26 +60,6 @@ class Database extends _$Database {
   Future<void> updateProjectEntry(String uuid, ProjectCompanion entry) {
     return (update(project)..where((t) => t.uuid.equals(uuid))).write(entry);
   }
-
-  // Personnel table
-  Future<int> createPersonnel(PersonnelCompanion form) =>
-      into(personnel).insert(form);
-
-  Future updatePersonnelEntry(String id, PersonnelCompanion entry) {
-    return (update(personnel)..where((t) => t.uuid.equals(id))).write(entry);
-  }
-
-  Future<void> deletePersonnel(String uuid) {
-    return (delete(personnel)..where((t) => t.uuid.equals(uuid))).go();
-  }
-
-  Future<List<PersonnelData>> getAllPersonnel() {
-    return select(personnel).get();
-  }
-
-  Future<void> deleteAllPersonnel() {
-    return delete(personnel).go();
-  }
 }
 
 LazyDatabase _openConnection() {

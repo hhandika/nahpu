@@ -26,10 +26,6 @@ final projectUuidProvider = StateProvider<String>((ref) => '');
 
 final projectNavbarIndexProvider = StateProvider.autoDispose<int>((ref) => 0);
 
-Future<void> createPersonnel(WidgetRef ref, PersonnelCompanion form) async {
-  await ref.read(databaseProvider).createPersonnel(form);
-}
-
 get uuid => const Uuid().v4();
 
 void deleteProject(WidgetRef ref, String uuid) {

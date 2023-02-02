@@ -314,7 +314,7 @@ class PersonnelFormCtrModel {
   String? roleCtr;
   TextEditingController nextCollectorNumCtr;
   TextEditingController phoneCtr;
-  TextEditingController photoIdCtr;
+  int? photoIdCtr;
   TextEditingController noteCtr;
 
   factory PersonnelFormCtrModel.empty() => PersonnelFormCtrModel(
@@ -325,8 +325,22 @@ class PersonnelFormCtrModel {
       affiliationCtr: TextEditingController(),
       roleCtr: null,
       nextCollectorNumCtr: TextEditingController(),
-      photoIdCtr: TextEditingController(),
+      photoIdCtr: null,
       noteCtr: TextEditingController());
+
+  factory PersonnelFormCtrModel.fromData(PersonnelData personnel) =>
+      PersonnelFormCtrModel(
+        nameCtr: TextEditingController(text: personnel.name),
+        initialCtr: TextEditingController(text: personnel.initial),
+        emailCtr: TextEditingController(text: personnel.email),
+        phoneCtr: TextEditingController(text: personnel.phone),
+        affiliationCtr: TextEditingController(text: personnel.affiliation),
+        roleCtr: personnel.role,
+        nextCollectorNumCtr: TextEditingController(
+            text: personnel.currentFieldNumber?.toString() ?? ''),
+        photoIdCtr: personnel.photoID,
+        noteCtr: TextEditingController(text: personnel.notes),
+      );
 }
 
 class TaxonRegistryCtrModel {

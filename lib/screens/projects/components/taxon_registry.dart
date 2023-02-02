@@ -205,7 +205,7 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
       genus: db.Value(_ctr.genusCtr.text),
       specificEpithet: db.Value(_ctr.specificEpithetCtr.text),
       commonName: db.Value(_ctr.commonNameCtr.text),
-      note: db.Value(_ctr.noteCtr.text),
+      notes: db.Value(_ctr.noteCtr.text),
     );
     await TaxonomyQuery(ref.read(databaseProvider)).createTaxon(taxon);
   }

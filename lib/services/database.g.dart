@@ -884,18 +884,24 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _nextCollectorNumberMeta =
-      const VerificationMeta('nextCollectorNumber');
-  late final GeneratedColumn<int> nextCollectorNumber = GeneratedColumn<int>(
-      'nextCollectorNumber', aliasedName, true,
+  static const VerificationMeta _currentFieldNumberMeta =
+      const VerificationMeta('currentFieldNumber');
+  late final GeneratedColumn<int> currentFieldNumber = GeneratedColumn<int>(
+      'currentFieldNumber', aliasedName, true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _personnelPhotoMeta =
-      const VerificationMeta('personnelPhoto');
-  late final GeneratedColumn<int> personnelPhoto = GeneratedColumn<int>(
-      'personnelPhoto', aliasedName, true,
+  static const VerificationMeta _photoIDMeta =
+      const VerificationMeta('photoID');
+  late final GeneratedColumn<int> photoID = GeneratedColumn<int>(
+      'photoID', aliasedName, true,
       type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+      'notes', aliasedName, true,
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
@@ -907,8 +913,9 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
         phone,
         affiliation,
         role,
-        nextCollectorNumber,
-        personnelPhoto
+        currentFieldNumber,
+        photoID,
+        notes
       ];
   @override
   String get aliasedName => _alias ?? 'personnel';
@@ -951,17 +958,19 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
       context.handle(
           _roleMeta, role.isAcceptableOrUnknown(data['role']!, _roleMeta));
     }
-    if (data.containsKey('nextCollectorNumber')) {
+    if (data.containsKey('currentFieldNumber')) {
       context.handle(
-          _nextCollectorNumberMeta,
-          nextCollectorNumber.isAcceptableOrUnknown(
-              data['nextCollectorNumber']!, _nextCollectorNumberMeta));
+          _currentFieldNumberMeta,
+          currentFieldNumber.isAcceptableOrUnknown(
+              data['currentFieldNumber']!, _currentFieldNumberMeta));
     }
-    if (data.containsKey('personnelPhoto')) {
+    if (data.containsKey('photoID')) {
+      context.handle(_photoIDMeta,
+          photoID.isAcceptableOrUnknown(data['photoID']!, _photoIDMeta));
+    }
+    if (data.containsKey('notes')) {
       context.handle(
-          _personnelPhotoMeta,
-          personnelPhoto.isAcceptableOrUnknown(
-              data['personnelPhoto']!, _personnelPhotoMeta));
+          _notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
     }
     return context;
   }
@@ -986,10 +995,12 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
           .read(DriftSqlType.string, data['${effectivePrefix}affiliation']),
       role: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}role']),
-      nextCollectorNumber: attachedDatabase.typeMapping.read(
-          DriftSqlType.int, data['${effectivePrefix}nextCollectorNumber']),
-      personnelPhoto: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}personnelPhoto']),
+      currentFieldNumber: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}currentFieldNumber']),
+      photoID: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}photoID']),
+      notes: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}notes']),
     );
   }
 
@@ -1000,7 +1011,7 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
 
   @override
   List<String> get customConstraints =>
-      const ['FOREIGN KEY(personnelPhoto)REFERENCES personnelPhoto(id)'];
+      const ['FOREIGN KEY(photoID)REFERENCES personnelPhoto(id)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -1013,8 +1024,9 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
   final String? phone;
   final String? affiliation;
   final String? role;
-  final int? nextCollectorNumber;
-  final int? personnelPhoto;
+  final int? currentFieldNumber;
+  final int? photoID;
+  final String? notes;
   const PersonnelData(
       {required this.uuid,
       this.name,
@@ -1023,8 +1035,9 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
       this.phone,
       this.affiliation,
       this.role,
-      this.nextCollectorNumber,
-      this.personnelPhoto});
+      this.currentFieldNumber,
+      this.photoID,
+      this.notes});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1047,11 +1060,14 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
     if (!nullToAbsent || role != null) {
       map['role'] = Variable<String>(role);
     }
-    if (!nullToAbsent || nextCollectorNumber != null) {
-      map['nextCollectorNumber'] = Variable<int>(nextCollectorNumber);
+    if (!nullToAbsent || currentFieldNumber != null) {
+      map['currentFieldNumber'] = Variable<int>(currentFieldNumber);
     }
-    if (!nullToAbsent || personnelPhoto != null) {
-      map['personnelPhoto'] = Variable<int>(personnelPhoto);
+    if (!nullToAbsent || photoID != null) {
+      map['photoID'] = Variable<int>(photoID);
+    }
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
     }
     return map;
   }
@@ -1071,12 +1087,14 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
           ? const Value.absent()
           : Value(affiliation),
       role: role == null && nullToAbsent ? const Value.absent() : Value(role),
-      nextCollectorNumber: nextCollectorNumber == null && nullToAbsent
+      currentFieldNumber: currentFieldNumber == null && nullToAbsent
           ? const Value.absent()
-          : Value(nextCollectorNumber),
-      personnelPhoto: personnelPhoto == null && nullToAbsent
+          : Value(currentFieldNumber),
+      photoID: photoID == null && nullToAbsent
           ? const Value.absent()
-          : Value(personnelPhoto),
+          : Value(photoID),
+      notes:
+          notes == null && nullToAbsent ? const Value.absent() : Value(notes),
     );
   }
 
@@ -1091,9 +1109,9 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
       phone: serializer.fromJson<String?>(json['phone']),
       affiliation: serializer.fromJson<String?>(json['affiliation']),
       role: serializer.fromJson<String?>(json['role']),
-      nextCollectorNumber:
-          serializer.fromJson<int?>(json['nextCollectorNumber']),
-      personnelPhoto: serializer.fromJson<int?>(json['personnelPhoto']),
+      currentFieldNumber: serializer.fromJson<int?>(json['currentFieldNumber']),
+      photoID: serializer.fromJson<int?>(json['photoID']),
+      notes: serializer.fromJson<String?>(json['notes']),
     );
   }
   @override
@@ -1107,8 +1125,9 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
       'phone': serializer.toJson<String?>(phone),
       'affiliation': serializer.toJson<String?>(affiliation),
       'role': serializer.toJson<String?>(role),
-      'nextCollectorNumber': serializer.toJson<int?>(nextCollectorNumber),
-      'personnelPhoto': serializer.toJson<int?>(personnelPhoto),
+      'currentFieldNumber': serializer.toJson<int?>(currentFieldNumber),
+      'photoID': serializer.toJson<int?>(photoID),
+      'notes': serializer.toJson<String?>(notes),
     };
   }
 
@@ -1120,8 +1139,9 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
           Value<String?> phone = const Value.absent(),
           Value<String?> affiliation = const Value.absent(),
           Value<String?> role = const Value.absent(),
-          Value<int?> nextCollectorNumber = const Value.absent(),
-          Value<int?> personnelPhoto = const Value.absent()}) =>
+          Value<int?> currentFieldNumber = const Value.absent(),
+          Value<int?> photoID = const Value.absent(),
+          Value<String?> notes = const Value.absent()}) =>
       PersonnelData(
         uuid: uuid ?? this.uuid,
         name: name.present ? name.value : this.name,
@@ -1130,11 +1150,11 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
         phone: phone.present ? phone.value : this.phone,
         affiliation: affiliation.present ? affiliation.value : this.affiliation,
         role: role.present ? role.value : this.role,
-        nextCollectorNumber: nextCollectorNumber.present
-            ? nextCollectorNumber.value
-            : this.nextCollectorNumber,
-        personnelPhoto:
-            personnelPhoto.present ? personnelPhoto.value : this.personnelPhoto,
+        currentFieldNumber: currentFieldNumber.present
+            ? currentFieldNumber.value
+            : this.currentFieldNumber,
+        photoID: photoID.present ? photoID.value : this.photoID,
+        notes: notes.present ? notes.value : this.notes,
       );
   @override
   String toString() {
@@ -1146,15 +1166,16 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
           ..write('phone: $phone, ')
           ..write('affiliation: $affiliation, ')
           ..write('role: $role, ')
-          ..write('nextCollectorNumber: $nextCollectorNumber, ')
-          ..write('personnelPhoto: $personnelPhoto')
+          ..write('currentFieldNumber: $currentFieldNumber, ')
+          ..write('photoID: $photoID, ')
+          ..write('notes: $notes')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(uuid, name, initial, email, phone,
-      affiliation, role, nextCollectorNumber, personnelPhoto);
+      affiliation, role, currentFieldNumber, photoID, notes);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1166,8 +1187,9 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
           other.phone == this.phone &&
           other.affiliation == this.affiliation &&
           other.role == this.role &&
-          other.nextCollectorNumber == this.nextCollectorNumber &&
-          other.personnelPhoto == this.personnelPhoto);
+          other.currentFieldNumber == this.currentFieldNumber &&
+          other.photoID == this.photoID &&
+          other.notes == this.notes);
 }
 
 class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
@@ -1178,8 +1200,9 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
   final Value<String?> phone;
   final Value<String?> affiliation;
   final Value<String?> role;
-  final Value<int?> nextCollectorNumber;
-  final Value<int?> personnelPhoto;
+  final Value<int?> currentFieldNumber;
+  final Value<int?> photoID;
+  final Value<String?> notes;
   const PersonnelCompanion({
     this.uuid = const Value.absent(),
     this.name = const Value.absent(),
@@ -1188,8 +1211,9 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     this.phone = const Value.absent(),
     this.affiliation = const Value.absent(),
     this.role = const Value.absent(),
-    this.nextCollectorNumber = const Value.absent(),
-    this.personnelPhoto = const Value.absent(),
+    this.currentFieldNumber = const Value.absent(),
+    this.photoID = const Value.absent(),
+    this.notes = const Value.absent(),
   });
   PersonnelCompanion.insert({
     required String uuid,
@@ -1199,8 +1223,9 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     this.phone = const Value.absent(),
     this.affiliation = const Value.absent(),
     this.role = const Value.absent(),
-    this.nextCollectorNumber = const Value.absent(),
-    this.personnelPhoto = const Value.absent(),
+    this.currentFieldNumber = const Value.absent(),
+    this.photoID = const Value.absent(),
+    this.notes = const Value.absent(),
   }) : uuid = Value(uuid);
   static Insertable<PersonnelData> custom({
     Expression<String>? uuid,
@@ -1210,8 +1235,9 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     Expression<String>? phone,
     Expression<String>? affiliation,
     Expression<String>? role,
-    Expression<int>? nextCollectorNumber,
-    Expression<int>? personnelPhoto,
+    Expression<int>? currentFieldNumber,
+    Expression<int>? photoID,
+    Expression<String>? notes,
   }) {
     return RawValuesInsertable({
       if (uuid != null) 'uuid': uuid,
@@ -1221,9 +1247,9 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
       if (phone != null) 'phone': phone,
       if (affiliation != null) 'affiliation': affiliation,
       if (role != null) 'role': role,
-      if (nextCollectorNumber != null)
-        'nextCollectorNumber': nextCollectorNumber,
-      if (personnelPhoto != null) 'personnelPhoto': personnelPhoto,
+      if (currentFieldNumber != null) 'currentFieldNumber': currentFieldNumber,
+      if (photoID != null) 'photoID': photoID,
+      if (notes != null) 'notes': notes,
     });
   }
 
@@ -1235,8 +1261,9 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
       Value<String?>? phone,
       Value<String?>? affiliation,
       Value<String?>? role,
-      Value<int?>? nextCollectorNumber,
-      Value<int?>? personnelPhoto}) {
+      Value<int?>? currentFieldNumber,
+      Value<int?>? photoID,
+      Value<String?>? notes}) {
     return PersonnelCompanion(
       uuid: uuid ?? this.uuid,
       name: name ?? this.name,
@@ -1245,8 +1272,9 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
       phone: phone ?? this.phone,
       affiliation: affiliation ?? this.affiliation,
       role: role ?? this.role,
-      nextCollectorNumber: nextCollectorNumber ?? this.nextCollectorNumber,
-      personnelPhoto: personnelPhoto ?? this.personnelPhoto,
+      currentFieldNumber: currentFieldNumber ?? this.currentFieldNumber,
+      photoID: photoID ?? this.photoID,
+      notes: notes ?? this.notes,
     );
   }
 
@@ -1274,11 +1302,14 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     if (role.present) {
       map['role'] = Variable<String>(role.value);
     }
-    if (nextCollectorNumber.present) {
-      map['nextCollectorNumber'] = Variable<int>(nextCollectorNumber.value);
+    if (currentFieldNumber.present) {
+      map['currentFieldNumber'] = Variable<int>(currentFieldNumber.value);
     }
-    if (personnelPhoto.present) {
-      map['personnelPhoto'] = Variable<int>(personnelPhoto.value);
+    if (photoID.present) {
+      map['photoID'] = Variable<int>(photoID.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
     }
     return map;
   }
@@ -1293,8 +1324,9 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
           ..write('phone: $phone, ')
           ..write('affiliation: $affiliation, ')
           ..write('role: $role, ')
-          ..write('nextCollectorNumber: $nextCollectorNumber, ')
-          ..write('personnelPhoto: $personnelPhoto')
+          ..write('currentFieldNumber: $currentFieldNumber, ')
+          ..write('photoID: $photoID, ')
+          ..write('notes: $notes')
           ..write(')'))
         .toString();
   }
@@ -3147,13 +3179,6 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _personnelNotesMeta =
-      const VerificationMeta('personnelNotes');
-  late final GeneratedColumn<Uint8List> personnelNotes =
-      GeneratedColumn<Uint8List>('personnelNotes', aliasedName, true,
-          type: DriftSqlType.blob,
-          requiredDuringInsert: false,
-          $customConstraints: '');
   static const VerificationMeta _siteIDMeta = const VerificationMeta('siteID');
   late final GeneratedColumn<int> siteID = GeneratedColumn<int>(
       'siteID', aliasedName, true,
@@ -3171,7 +3196,6 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
         endTime,
         primaryCollMethod,
         collMethodNotes,
-        personnelNotes,
         siteID
       ];
   @override
@@ -3224,12 +3248,6 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
           collMethodNotes.isAcceptableOrUnknown(
               data['collMethodNotes']!, _collMethodNotesMeta));
     }
-    if (data.containsKey('personnelNotes')) {
-      context.handle(
-          _personnelNotesMeta,
-          personnelNotes.isAcceptableOrUnknown(
-              data['personnelNotes']!, _personnelNotesMeta));
-    }
     if (data.containsKey('siteID')) {
       context.handle(_siteIDMeta,
           siteID.isAcceptableOrUnknown(data['siteID']!, _siteIDMeta));
@@ -3261,8 +3279,6 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
           DriftSqlType.string, data['${effectivePrefix}primaryCollMethod']),
       collMethodNotes: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}collMethodNotes']),
-      personnelNotes: attachedDatabase.typeMapping
-          .read(DriftSqlType.blob, data['${effectivePrefix}personnelNotes']),
       siteID: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}siteID']),
     );
@@ -3290,7 +3306,6 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
   final String? endTime;
   final String? primaryCollMethod;
   final String? collMethodNotes;
-  final Uint8List? personnelNotes;
   final int? siteID;
   const CollEventData(
       {required this.id,
@@ -3302,7 +3317,6 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
       this.endTime,
       this.primaryCollMethod,
       this.collMethodNotes,
-      this.personnelNotes,
       this.siteID});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -3331,9 +3345,6 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
     }
     if (!nullToAbsent || collMethodNotes != null) {
       map['collMethodNotes'] = Variable<String>(collMethodNotes);
-    }
-    if (!nullToAbsent || personnelNotes != null) {
-      map['personnelNotes'] = Variable<Uint8List>(personnelNotes);
     }
     if (!nullToAbsent || siteID != null) {
       map['siteID'] = Variable<int>(siteID);
@@ -3368,9 +3379,6 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
       collMethodNotes: collMethodNotes == null && nullToAbsent
           ? const Value.absent()
           : Value(collMethodNotes),
-      personnelNotes: personnelNotes == null && nullToAbsent
-          ? const Value.absent()
-          : Value(personnelNotes),
       siteID:
           siteID == null && nullToAbsent ? const Value.absent() : Value(siteID),
     );
@@ -3390,7 +3398,6 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
       primaryCollMethod:
           serializer.fromJson<String?>(json['primaryCollMethod']),
       collMethodNotes: serializer.fromJson<String?>(json['collMethodNotes']),
-      personnelNotes: serializer.fromJson<Uint8List?>(json['personnelNotes']),
       siteID: serializer.fromJson<int?>(json['siteID']),
     );
   }
@@ -3407,7 +3414,6 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
       'endTime': serializer.toJson<String?>(endTime),
       'primaryCollMethod': serializer.toJson<String?>(primaryCollMethod),
       'collMethodNotes': serializer.toJson<String?>(collMethodNotes),
-      'personnelNotes': serializer.toJson<Uint8List?>(personnelNotes),
       'siteID': serializer.toJson<int?>(siteID),
     };
   }
@@ -3422,7 +3428,6 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
           Value<String?> endTime = const Value.absent(),
           Value<String?> primaryCollMethod = const Value.absent(),
           Value<String?> collMethodNotes = const Value.absent(),
-          Value<Uint8List?> personnelNotes = const Value.absent(),
           Value<int?> siteID = const Value.absent()}) =>
       CollEventData(
         id: id ?? this.id,
@@ -3438,8 +3443,6 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
         collMethodNotes: collMethodNotes.present
             ? collMethodNotes.value
             : this.collMethodNotes,
-        personnelNotes:
-            personnelNotes.present ? personnelNotes.value : this.personnelNotes,
         siteID: siteID.present ? siteID.value : this.siteID,
       );
   @override
@@ -3454,25 +3457,14 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
           ..write('endTime: $endTime, ')
           ..write('primaryCollMethod: $primaryCollMethod, ')
           ..write('collMethodNotes: $collMethodNotes, ')
-          ..write('personnelNotes: $personnelNotes, ')
           ..write('siteID: $siteID')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      id,
-      eventID,
-      projectUuid,
-      startDate,
-      startTime,
-      endDate,
-      endTime,
-      primaryCollMethod,
-      collMethodNotes,
-      $driftBlobEquality.hash(personnelNotes),
-      siteID);
+  int get hashCode => Object.hash(id, eventID, projectUuid, startDate,
+      startTime, endDate, endTime, primaryCollMethod, collMethodNotes, siteID);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -3486,8 +3478,6 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
           other.endTime == this.endTime &&
           other.primaryCollMethod == this.primaryCollMethod &&
           other.collMethodNotes == this.collMethodNotes &&
-          $driftBlobEquality.equals(
-              other.personnelNotes, this.personnelNotes) &&
           other.siteID == this.siteID);
 }
 
@@ -3501,7 +3491,6 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
   final Value<String?> endTime;
   final Value<String?> primaryCollMethod;
   final Value<String?> collMethodNotes;
-  final Value<Uint8List?> personnelNotes;
   final Value<int?> siteID;
   const CollEventCompanion({
     this.id = const Value.absent(),
@@ -3513,7 +3502,6 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
     this.endTime = const Value.absent(),
     this.primaryCollMethod = const Value.absent(),
     this.collMethodNotes = const Value.absent(),
-    this.personnelNotes = const Value.absent(),
     this.siteID = const Value.absent(),
   });
   CollEventCompanion.insert({
@@ -3526,7 +3514,6 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
     this.endTime = const Value.absent(),
     this.primaryCollMethod = const Value.absent(),
     this.collMethodNotes = const Value.absent(),
-    this.personnelNotes = const Value.absent(),
     this.siteID = const Value.absent(),
   });
   static Insertable<CollEventData> custom({
@@ -3539,7 +3526,6 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
     Expression<String>? endTime,
     Expression<String>? primaryCollMethod,
     Expression<String>? collMethodNotes,
-    Expression<Uint8List>? personnelNotes,
     Expression<int>? siteID,
   }) {
     return RawValuesInsertable({
@@ -3552,7 +3538,6 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
       if (endTime != null) 'endTime': endTime,
       if (primaryCollMethod != null) 'primaryCollMethod': primaryCollMethod,
       if (collMethodNotes != null) 'collMethodNotes': collMethodNotes,
-      if (personnelNotes != null) 'personnelNotes': personnelNotes,
       if (siteID != null) 'siteID': siteID,
     });
   }
@@ -3567,7 +3552,6 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
       Value<String?>? endTime,
       Value<String?>? primaryCollMethod,
       Value<String?>? collMethodNotes,
-      Value<Uint8List?>? personnelNotes,
       Value<int?>? siteID}) {
     return CollEventCompanion(
       id: id ?? this.id,
@@ -3579,7 +3563,6 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
       endTime: endTime ?? this.endTime,
       primaryCollMethod: primaryCollMethod ?? this.primaryCollMethod,
       collMethodNotes: collMethodNotes ?? this.collMethodNotes,
-      personnelNotes: personnelNotes ?? this.personnelNotes,
       siteID: siteID ?? this.siteID,
     );
   }
@@ -3614,9 +3597,6 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
     if (collMethodNotes.present) {
       map['collMethodNotes'] = Variable<String>(collMethodNotes.value);
     }
-    if (personnelNotes.present) {
-      map['personnelNotes'] = Variable<Uint8List>(personnelNotes.value);
-    }
     if (siteID.present) {
       map['siteID'] = Variable<int>(siteID.value);
     }
@@ -3635,7 +3615,6 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
           ..write('endTime: $endTime, ')
           ..write('primaryCollMethod: $primaryCollMethod, ')
           ..write('collMethodNotes: $collMethodNotes, ')
-          ..write('personnelNotes: $personnelNotes, ')
           ..write('siteID: $siteID')
           ..write(')'))
         .toString();
@@ -6016,9 +5995,9 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _noteMeta = const VerificationMeta('note');
-  late final GeneratedColumn<String> note = GeneratedColumn<String>(
-      'note', aliasedName, true,
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+      'notes', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -6038,7 +6017,7 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
         genus,
         specificEpithet,
         commonName,
-        note,
+        notes,
         mediaId
       ];
   @override
@@ -6087,9 +6066,9 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
           commonName.isAcceptableOrUnknown(
               data['commonName']!, _commonNameMeta));
     }
-    if (data.containsKey('note')) {
+    if (data.containsKey('notes')) {
       context.handle(
-          _noteMeta, note.isAcceptableOrUnknown(data['note']!, _noteMeta));
+          _notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
     }
     if (data.containsKey('mediaId')) {
       context.handle(_mediaIdMeta,
@@ -6118,8 +6097,8 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
           .read(DriftSqlType.string, data['${effectivePrefix}specificEpithet']),
       commonName: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}commonName']),
-      note: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}note']),
+      notes: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}notes']),
       mediaId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}mediaId']),
     );
@@ -6145,7 +6124,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
   final String? genus;
   final String? specificEpithet;
   final String? commonName;
-  final String? note;
+  final String? notes;
   final int? mediaId;
   const TaxonomyData(
       {required this.id,
@@ -6155,7 +6134,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
       this.genus,
       this.specificEpithet,
       this.commonName,
-      this.note,
+      this.notes,
       this.mediaId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -6179,8 +6158,8 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
     if (!nullToAbsent || commonName != null) {
       map['commonName'] = Variable<String>(commonName);
     }
-    if (!nullToAbsent || note != null) {
-      map['note'] = Variable<String>(note);
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
     }
     if (!nullToAbsent || mediaId != null) {
       map['mediaId'] = Variable<int>(mediaId);
@@ -6208,7 +6187,8 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
       commonName: commonName == null && nullToAbsent
           ? const Value.absent()
           : Value(commonName),
-      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      notes:
+          notes == null && nullToAbsent ? const Value.absent() : Value(notes),
       mediaId: mediaId == null && nullToAbsent
           ? const Value.absent()
           : Value(mediaId),
@@ -6226,7 +6206,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
       genus: serializer.fromJson<String?>(json['genus']),
       specificEpithet: serializer.fromJson<String?>(json['specificEpithet']),
       commonName: serializer.fromJson<String?>(json['commonName']),
-      note: serializer.fromJson<String?>(json['note']),
+      notes: serializer.fromJson<String?>(json['notes']),
       mediaId: serializer.fromJson<int?>(json['mediaId']),
     );
   }
@@ -6241,7 +6221,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
       'genus': serializer.toJson<String?>(genus),
       'specificEpithet': serializer.toJson<String?>(specificEpithet),
       'commonName': serializer.toJson<String?>(commonName),
-      'note': serializer.toJson<String?>(note),
+      'notes': serializer.toJson<String?>(notes),
       'mediaId': serializer.toJson<int?>(mediaId),
     };
   }
@@ -6254,7 +6234,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
           Value<String?> genus = const Value.absent(),
           Value<String?> specificEpithet = const Value.absent(),
           Value<String?> commonName = const Value.absent(),
-          Value<String?> note = const Value.absent(),
+          Value<String?> notes = const Value.absent(),
           Value<int?> mediaId = const Value.absent()}) =>
       TaxonomyData(
         id: id ?? this.id,
@@ -6266,7 +6246,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
             ? specificEpithet.value
             : this.specificEpithet,
         commonName: commonName.present ? commonName.value : this.commonName,
-        note: note.present ? note.value : this.note,
+        notes: notes.present ? notes.value : this.notes,
         mediaId: mediaId.present ? mediaId.value : this.mediaId,
       );
   @override
@@ -6279,7 +6259,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
           ..write('genus: $genus, ')
           ..write('specificEpithet: $specificEpithet, ')
           ..write('commonName: $commonName, ')
-          ..write('note: $note, ')
+          ..write('notes: $notes, ')
           ..write('mediaId: $mediaId')
           ..write(')'))
         .toString();
@@ -6287,7 +6267,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
 
   @override
   int get hashCode => Object.hash(id, taxonClass, taxonOrder, taxonFamily,
-      genus, specificEpithet, commonName, note, mediaId);
+      genus, specificEpithet, commonName, notes, mediaId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -6299,7 +6279,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
           other.genus == this.genus &&
           other.specificEpithet == this.specificEpithet &&
           other.commonName == this.commonName &&
-          other.note == this.note &&
+          other.notes == this.notes &&
           other.mediaId == this.mediaId);
 }
 
@@ -6311,7 +6291,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
   final Value<String?> genus;
   final Value<String?> specificEpithet;
   final Value<String?> commonName;
-  final Value<String?> note;
+  final Value<String?> notes;
   final Value<int?> mediaId;
   const TaxonomyCompanion({
     this.id = const Value.absent(),
@@ -6321,7 +6301,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
     this.genus = const Value.absent(),
     this.specificEpithet = const Value.absent(),
     this.commonName = const Value.absent(),
-    this.note = const Value.absent(),
+    this.notes = const Value.absent(),
     this.mediaId = const Value.absent(),
   });
   TaxonomyCompanion.insert({
@@ -6332,7 +6312,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
     this.genus = const Value.absent(),
     this.specificEpithet = const Value.absent(),
     this.commonName = const Value.absent(),
-    this.note = const Value.absent(),
+    this.notes = const Value.absent(),
     this.mediaId = const Value.absent(),
   });
   static Insertable<TaxonomyData> custom({
@@ -6343,7 +6323,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
     Expression<String>? genus,
     Expression<String>? specificEpithet,
     Expression<String>? commonName,
-    Expression<String>? note,
+    Expression<String>? notes,
     Expression<int>? mediaId,
   }) {
     return RawValuesInsertable({
@@ -6354,7 +6334,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
       if (genus != null) 'genus': genus,
       if (specificEpithet != null) 'specificEpithet': specificEpithet,
       if (commonName != null) 'commonName': commonName,
-      if (note != null) 'note': note,
+      if (notes != null) 'notes': notes,
       if (mediaId != null) 'mediaId': mediaId,
     });
   }
@@ -6367,7 +6347,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
       Value<String?>? genus,
       Value<String?>? specificEpithet,
       Value<String?>? commonName,
-      Value<String?>? note,
+      Value<String?>? notes,
       Value<int?>? mediaId}) {
     return TaxonomyCompanion(
       id: id ?? this.id,
@@ -6377,7 +6357,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
       genus: genus ?? this.genus,
       specificEpithet: specificEpithet ?? this.specificEpithet,
       commonName: commonName ?? this.commonName,
-      note: note ?? this.note,
+      notes: notes ?? this.notes,
       mediaId: mediaId ?? this.mediaId,
     );
   }
@@ -6406,8 +6386,8 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
     if (commonName.present) {
       map['commonName'] = Variable<String>(commonName.value);
     }
-    if (note.present) {
-      map['note'] = Variable<String>(note.value);
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
     }
     if (mediaId.present) {
       map['mediaId'] = Variable<int>(mediaId.value);
@@ -6425,7 +6405,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
           ..write('genus: $genus, ')
           ..write('specificEpithet: $specificEpithet, ')
           ..write('commonName: $commonName, ')
-          ..write('note: $note, ')
+          ..write('notes: $notes, ')
           ..write('mediaId: $mediaId')
           ..write(')'))
         .toString();

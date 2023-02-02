@@ -11,6 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/common.dart';
+import 'package:nahpu/services/personnel_services.dart';
 
 enum PersonnelMenuAction { edit, delete }
 
@@ -163,8 +164,7 @@ class PersonnelMenuState extends ConsumerState<PersonnelMenu> {
         );
         break;
       case PersonnelMenuAction.delete:
-        ref.read(databaseProvider).deletePersonnel(widget.data.uuid);
-        ref.invalidate(personnelListProvider);
+        PersonnelServices(ref).deletePersonnel(widget.data.uuid);
         break;
     }
   }
@@ -233,9 +233,8 @@ class EditPersonnelForm extends ConsumerWidget {
       emailCtr: TextEditingController(text: personnelData.email),
       roleCtr: personnelData.role,
       nextCollectorNumCtr:
-          TextEditingController(text: '${personnelData.nextCollectorNumber}'),
-      photoIdCtr:
-          TextEditingController(text: '${personnelData.personnelPhoto}'),
+          TextEditingController(text: '${personnelData.currentFieldNumber}'),
+      photoIdCtr: personnelData.photoID,
       noteCtr: TextEditingController(text: ''),
     );
   }
@@ -450,26 +449,25 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
     );
   }
 
-  Future<void> _updatePersonnel() {
-    return ref.read(databaseProvider).updatePersonnelEntry(
-          widget.personnelUuid,
-          PersonnelCompanion(
-            name: db.Value(widget.ctr.nameCtr.text),
-            initial: db.Value(widget.ctr.initialCtr.text),
-            affiliation: db.Value(widget.ctr.affiliationCtr.text),
-            email: db.Value(widget.ctr.emailCtr.text),
-            phone: db.Value(widget.ctr.phoneCtr.text),
-            role: db.Value(widget.ctr.roleCtr),
-            nextCollectorNumber: db.Value(
-              _getCollectorNumber(),
-            ),
-          ),
-        );
+  void _updatePersonnel() {
+    PersonnelServices(ref).updatePersonnelEntry(
+      widget.personnelUuid,
+      PersonnelCompanion(
+        name: db.Value(widget.ctr.nameCtr.text),
+        initial: db.Value(widget.ctr.initialCtr.text),
+        affiliation: db.Value(widget.ctr.affiliationCtr.text),
+        email: db.Value(widget.ctr.emailCtr.text),
+        phone: db.Value(widget.ctr.phoneCtr.text),
+        role: db.Value(widget.ctr.roleCtr),
+        currentFieldNumber: db.Value(
+          _getCollectorNumber(),
+        ),
+      ),
+    );
   }
 
   Future<void> _addPersonnel() {
-    return createPersonnel(
-      ref,
+    return PersonnelServices(ref).createPersonnel(
       PersonnelCompanion(
         uuid: db.Value(widget.personnelUuid),
         name: db.Value(widget.ctr.nameCtr.text),
@@ -478,7 +476,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
         email: db.Value(widget.ctr.emailCtr.text),
         phone: db.Value(widget.ctr.phoneCtr.text),
         role: db.Value(widget.ctr.roleCtr),
-        nextCollectorNumber: db.Value(
+        currentFieldNumber: db.Value(
           _getCollectorNumber(),
         ),
       ),

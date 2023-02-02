@@ -7,6 +7,11 @@ import 'package:nahpu/services/specimen_queries.dart';
 import 'package:nahpu/services/coordinate_queries.dart';
 import 'package:nahpu/services/collevent_queries.dart';
 import 'package:nahpu/services/taxonomy_queries.dart';
+import 'package:nahpu/services/personnel_queries.dart';
+
+void createPersonnel(WidgetRef ref, PersonnelCompanion form) {
+  PersonnelQuery(ref.read(databaseProvider)).createPersonnel(form);
+}
 
 final narrativeEntryProvider =
     FutureProvider.autoDispose<List<NarrativeData>>((ref) {
@@ -47,7 +52,7 @@ final collEventIDprovider =
 });
 
 final personnelListProvider = FutureProvider.autoDispose<List<PersonnelData>>(
-    (ref) => ref.read(databaseProvider).getAllPersonnel());
+    (ref) => PersonnelQuery(ref.read(databaseProvider)).getAllPersonnel());
 
 final coordinateBySiteProvider = FutureProvider.family
     .autoDispose<List<CoordinateData>, int>((ref, siteId) =>

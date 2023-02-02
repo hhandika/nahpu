@@ -8,6 +8,7 @@ import 'package:nahpu/providers/catalogs.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/screens/specimens/shared/species.dart';
 import 'package:nahpu/services/database.dart';
+import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/taxonomy_queries.dart';
 
@@ -216,10 +217,10 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
                 ),
               );
               if (uuid != null) {
-                ref.read(databaseProvider).updatePersonnelEntry(
+                PersonnelServices(ref).updatePersonnelEntry(
                     uuid,
                     PersonnelCompanion(
-                        nextCollectorNumber: db.Value(currentCollNum)));
+                        currentFieldNumber: db.Value(currentCollNum)));
               }
             });
           },
@@ -260,7 +261,7 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
 
   int _getCurrentCollectorNumber(String? uuid) {
     var collector = personnelList.firstWhere((element) => element.uuid == uuid);
-    int currentCollNum = collector.nextCollectorNumber! + 1;
+    int currentCollNum = collector.currentFieldNumber! + 1;
     return currentCollNum;
   }
 }
