@@ -74,7 +74,7 @@ class SiteFormState extends ConsumerState<SiteForm>
               length: 2,
               tabs: [
                 Tab(
-                    icon: Icon(Icons.photo_album_rounded,
+                    icon: Icon(Icons.photo_library_rounded,
                         color: Theme.of(context).colorScheme.tertiary)),
                 Tab(
                     icon: Icon(Icons.video_library_rounded,
