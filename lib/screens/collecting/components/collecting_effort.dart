@@ -74,7 +74,7 @@ class CollEffortList extends ConsumerWidget {
           },
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const CircularProgressIndicator(),
       error: (error, stack) => Text(error.toString()),
     );
   }

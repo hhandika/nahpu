@@ -5,7 +5,7 @@ import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/forms.dart';
-import 'package:nahpu/screens/shared/indicators.dart';
+import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/database.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/taxonomy_queries.dart';
