@@ -24,7 +24,7 @@ class CollectingEffortFrom extends StatelessWidget {
     return FormCard(
       title: 'Collecting Effort',
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.4,
+        height: MediaQuery.of(context).size.height * 0.5,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -312,6 +312,7 @@ class CollEffortFormState extends ConsumerState<CollEffortForm> {
                 hintText: 'Enter any notes about the tool (if applicable)',
               ),
             ),
+            const SizedBox(height: 20),
             Wrap(
               alignment: WrapAlignment.center,
               children: [
