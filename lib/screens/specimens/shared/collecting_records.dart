@@ -49,10 +49,8 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
   @override
   Widget build(BuildContext context) {
     final personnelEntry = ref.watch(personnelListProvider);
-    personnelEntry.when(
-      data: (personnelEntry) => personnelList = personnelEntry,
-      loading: () => null,
-      error: (e, s) => null,
+    personnelEntry.whenData(
+      (personnelEntry) => personnelList = personnelEntry,
     );
     return FormCard(
       title: 'Collecting Records',
@@ -178,10 +176,8 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
   @override
   Widget build(BuildContext context) {
     final personnelEntry = ref.watch(personnelListProvider);
-    personnelEntry.when(
-      data: (personnelEntry) => personnelList = personnelEntry,
-      loading: () => null,
-      error: (e, s) => null,
+    personnelEntry.whenData(
+      (personnelEntry) => personnelList = personnelEntry,
     );
     return Column(
       children: [

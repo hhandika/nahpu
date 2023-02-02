@@ -24,10 +24,8 @@ class CaptureRecordFields extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     List<CollEventData> eventEntry = [];
-    ref.watch(collEventEntryProvider).when(
-          data: (value) => eventEntry = value,
-          loading: () => null,
-          error: (e, s) => null,
+    ref.watch(collEventEntryProvider).whenData(
+          (value) => eventEntry = value,
         );
     return FormCard(
       title: 'Capture Records',

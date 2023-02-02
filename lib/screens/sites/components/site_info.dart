@@ -25,10 +25,8 @@ class SiteInfo extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     List<PersonnelData> personnelList = [];
     final personnelEntry = ref.watch(personnelListProvider);
-    personnelEntry.when(
-      data: (personnelEntry) => personnelList = personnelEntry,
-      loading: () => null,
-      error: (e, s) => null,
+    personnelEntry.whenData(
+      (personnelEntry) => personnelList = personnelEntry,
     );
 
     return FormCard(

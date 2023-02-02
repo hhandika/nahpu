@@ -33,9 +33,7 @@ class WeatherDataView extends ConsumerWidget {
                 eventID: eventID,
                 weatherCtr: _getweatherData(weatherData),
               ),
-              loading: () => const Center(
-                child: CircularProgressIndicator(),
-              ),
+              loading: () => const CircularProgressIndicator(),
               error: (error, stack) => const Center(
                 child: Text('Error'),
               ),

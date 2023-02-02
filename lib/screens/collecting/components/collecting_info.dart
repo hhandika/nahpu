@@ -46,12 +46,10 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
   @override
   Widget build(BuildContext context) {
     final siteEntry = ref.watch(siteEntryProvider);
-    siteEntry.when(
-      data: (siteEntry) => {
+    siteEntry.whenData(
+      (siteEntry) => {
         data = siteEntry,
       },
-      loading: () => null,
-      error: (e, s) => null,
     );
     return FormCard(
       title: 'Collecting Info',

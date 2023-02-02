@@ -22,10 +22,8 @@ class SiteForm extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     List<SiteData> data = [];
     final siteEntry = ref.watch(siteEntryProvider);
-    siteEntry.when(
-      data: (siteEntry) => data = siteEntry,
-      loading: () => null,
-      error: (e, s) => null,
+    siteEntry.whenData(
+      (siteEntry) => data = siteEntry,
     );
     return Container(
       padding: const EdgeInsets.all(10),
