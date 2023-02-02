@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/navigation_services.dart';
 import 'package:nahpu/models/catalogs.dart';
-import 'package:nahpu/models/form.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/common.dart';

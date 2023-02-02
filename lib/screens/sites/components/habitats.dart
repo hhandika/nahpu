@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/models/form.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/services/database.dart';
 import 'package:drift/drift.dart' as db;

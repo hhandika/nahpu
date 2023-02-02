@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/models/form.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/screens/narrative/narrative_form.dart';
 import 'package:nahpu/screens/narrative/components/menu_bar.dart';
 import 'package:nahpu/screens/narrative/narrative_view.dart';

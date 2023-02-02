@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/narrative_services.dart';
 import 'package:nahpu/services/navigation_services.dart';
 import 'package:nahpu/models/catalogs.dart';
-import 'package:nahpu/models/form.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/narrative/components/menu_bar.dart';
 import 'package:nahpu/screens/narrative/narrative_form.dart';

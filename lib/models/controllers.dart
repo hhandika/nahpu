@@ -153,9 +153,11 @@ class NarrativeFormCtrModel {
 class SpecimenFormCtrModel {
   SpecimenFormCtrModel({
     required this.taxonDataCtr,
-    required this.collectorCtr,
+    required this.catalogerCtr,
     required this.collectorNumberCtr,
     required this.collEventIDCtr,
+    required this.specimenCollectorCtr,
+    required this.captureMethodCtr,
     required this.preparatorCtr,
     required this.conditionCtr,
     required this.prepDateCtr,
@@ -165,11 +167,13 @@ class SpecimenFormCtrModel {
     required this.trapTypeCtr,
   });
 
-  String? collectorCtr;
+  String? catalogerCtr;
   String? preparatorCtr;
   String? conditionCtr;
   TaxonData taxonDataCtr;
   int? collEventIDCtr;
+  int? specimenCollectorCtr;
+  int? captureMethodCtr;
   TextEditingController collectorNumberCtr;
   TextEditingController prepDateCtr;
   TextEditingController prepTimeCtr;
@@ -178,10 +182,12 @@ class SpecimenFormCtrModel {
   TextEditingController trapTypeCtr;
 
   factory SpecimenFormCtrModel.empty() => SpecimenFormCtrModel(
-        collectorCtr: null,
+        catalogerCtr: null,
         preparatorCtr: null,
         conditionCtr: null,
         collEventIDCtr: null,
+        specimenCollectorCtr: null,
+        captureMethodCtr: null,
         collectorNumberCtr: TextEditingController(),
         taxonDataCtr: TaxonData(),
         prepDateCtr: TextEditingController(),
@@ -194,12 +200,14 @@ class SpecimenFormCtrModel {
   factory SpecimenFormCtrModel.fromData(
           SpecimenData specimen, TaxonData taxonData) =>
       SpecimenFormCtrModel(
-        collectorCtr: specimen.collectorID,
+        catalogerCtr: specimen.catalogerID,
         preparatorCtr: specimen.preparatorID,
         conditionCtr: specimen.condition,
         collEventIDCtr: specimen.collEventID,
-        collectorNumberCtr: TextEditingController(
-            text: specimen.collectorNumber?.toString() ?? ''),
+        specimenCollectorCtr: specimen.collPersonnelID,
+        captureMethodCtr: specimen.collMethodID,
+        collectorNumberCtr:
+            TextEditingController(text: specimen.fieldNumber?.toString() ?? ''),
         taxonDataCtr: taxonData,
         prepDateCtr: TextEditingController(text: specimen.prepDate),
         prepTimeCtr: TextEditingController(text: specimen.prepTime),

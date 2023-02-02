@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/models/form.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/screens/collecting/components/collecting_activities.dart';
 import 'package:nahpu/screens/collecting/components/collecting_effort.dart';
 import 'package:nahpu/screens/collecting/components/collecting_info.dart';

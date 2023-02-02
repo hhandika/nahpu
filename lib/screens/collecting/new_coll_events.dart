@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/models/form.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/screens/collecting/coll_event_form.dart';
 import 'package:nahpu/screens/collecting/coll_event_view.dart';
 import 'package:nahpu/screens/collecting/components/menu_bar.dart';

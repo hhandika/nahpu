@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/models/form.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/forms.dart';
@@ -186,7 +186,7 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
     return Column(
       children: [
         DropdownButtonFormField(
-          value: widget.specimenCtr.collectorCtr,
+          value: widget.specimenCtr.catalogerCtr,
           decoration: const InputDecoration(
             labelText: 'Cataloger',
             hintText: 'Choose a person with field number',
@@ -200,7 +200,7 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
               .toList(),
           onChanged: (String? uuid) {
             setState(() {
-              widget.specimenCtr.collectorCtr = uuid;
+              widget.specimenCtr.catalogerCtr = uuid;
               widget.specimenCtr.preparatorCtr = uuid;
               var currentCollNum = _getCurrentCollectorNumber(uuid);
               widget.specimenCtr.collectorNumberCtr.text =
@@ -208,8 +208,8 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
               SpecimenServices(ref).updateSpecimen(
                 widget.specimenUuid,
                 SpecimenCompanion(
-                  collectorID: db.Value(uuid),
-                  collectorNumber: db.Value(
+                  catalogerID: db.Value(uuid),
+                  fieldNumber: db.Value(
                     currentCollNum,
                   ),
                   preparatorID: db.Value(uuid),

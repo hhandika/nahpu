@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/models/form.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/forms.dart';
@@ -109,22 +109,23 @@ class CaptureRecordFields extends ConsumerWidget {
             ],
           ),
           AdaptiveLayout(useHorizontalLayout: useHorizontalLayout, children: [
-            DropdownButtonFormField(
+            DropdownButtonFormField<int>(
+                value: specimenCtr.captureMethodCtr,
                 decoration: const InputDecoration(
                   labelText: 'Collected by',
                   hintText: 'Choose a person',
                 ),
                 items: const [
                   DropdownMenuItem(
-                    value: 'One',
+                    value: 1,
                     child: Text('One'),
                   ),
                   DropdownMenuItem(
-                    value: 'Two',
+                    value: 2,
                     child: Text('Two'),
                   ),
                 ],
-                onChanged: (String? newValue) {}),
+                onChanged: (int? newValue) {}),
             DropdownButtonFormField(
                 decoration: const InputDecoration(
                   labelText: 'Capture Method',
