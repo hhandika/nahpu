@@ -68,7 +68,7 @@ final taxonRegistryProvider =
 final collPersonnelProvider = FutureProvider.family
     .autoDispose<List<CollectingPersonnelData>, int>((ref, collEventId) =>
         CollectingPersonnelQuery(ref.read(databaseProvider))
-            .getCollectingPersonnelByEventId(collEventId));
+            .getCollPersonnelByEventId(collEventId));
 
 final weatherDataProvider = FutureProvider.family.autoDispose<WeatherData, int>(
     (ref, collEventId) => WeatherDataQuery(ref.read(databaseProvider))

@@ -76,7 +76,7 @@ class CollectingPersonnelQuery extends DatabaseAccessor<Database>
         .write(entry);
   }
 
-  Future<List<CollectingPersonnelData>> getCollectingPersonnelByEventId(
+  Future<List<CollectingPersonnelData>> getCollPersonnelByEventId(
       int collEventId) async {
     return await (select(collectingPersonnel)
           ..where((t) => t.eventID.equals(collEventId)))
