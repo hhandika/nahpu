@@ -49,7 +49,7 @@ class CommonNumField extends ConsumerWidget {
   final String labelText;
   final String hintText;
   final TextEditingController? controller;
-  final ValueChanged? onChanged;
+  final void Function(String?)? onChanged;
   final bool isLastField;
 
   @override
@@ -83,7 +83,7 @@ class CommonTextField extends ConsumerWidget {
   final String labelText;
   final String hintText;
   final TextInputType keyboardType;
-  final ValueChanged? onChanged;
+  final void Function(String?)? onChanged;
   final bool isLastField;
   final int? maxLines;
 

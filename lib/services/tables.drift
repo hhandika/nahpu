@@ -65,13 +65,16 @@ CREATE TABLE collEvent (
 
 CREATE TABLE weather (
     eventID INT,
-    lowestDayTemp TEXT,
-    highestDayTemp TEXT,
-    lowestNightTemp TEXT,
-    highestNightTemp TEXT,
-    sunrise TEXT,
-    sunset TEXT,
+    lowestDayTempC REAL,
+    highestDayTempC REAL,
+    lowestNightTempC REAL,
+    highestNightTempC REAL,
+    averageHumidity REAL,
+    dewPointTemp REAL,
+    sunriseTime TEXT,
+    sunsetTime TEXT,
     moonPhase TEXT,
+    notes TEXT,
     FOREIGN KEY(eventID) REFERENCES collEvent(id)
 );
 

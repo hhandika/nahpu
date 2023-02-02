@@ -178,7 +178,7 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
         context: context,
         initialDate: initialStartDate,
         firstDate: DateTime(2000),
-        lastDate: DateTime.now());
+        lastDate: DateTime.now()); // Prevent user from selecting future dates
   }
 }
 

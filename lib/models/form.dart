@@ -430,39 +430,59 @@ class CollPersonnelCtrModel {
 
 class CollWeatherCtrModel {
   CollWeatherCtrModel({
-    required this.id,
-    required this.dayTempLowestCtr,
-    required this.dayTempHighestCtr,
-    required this.nightTempLowestCtr,
-    required this.nightTempHighestCtr,
-    required this.avarageHumidityCtr,
+    required this.lowestDayTempCtr,
+    required this.highestDayTempCtr,
+    required this.lowestNightTempCtr,
+    required this.highestNightTempCtr,
+    required this.averageHumidityCtr,
     required this.dewPointCtr,
     required this.sunriseTimeCtr,
     required this.sunsetTimeCtr,
     required this.moonPhaseCtr,
+    required this.noteCtr,
   });
 
-  int? id;
-  TextEditingController dayTempLowestCtr;
-  TextEditingController dayTempHighestCtr;
-  TextEditingController nightTempLowestCtr;
-  TextEditingController nightTempHighestCtr;
-  TextEditingController avarageHumidityCtr;
+  TextEditingController lowestDayTempCtr;
+  TextEditingController highestDayTempCtr;
+  TextEditingController lowestNightTempCtr;
+  TextEditingController highestNightTempCtr;
+  TextEditingController averageHumidityCtr;
   TextEditingController dewPointCtr;
   TextEditingController sunriseTimeCtr;
   TextEditingController sunsetTimeCtr;
+  TextEditingController noteCtr;
   String? moonPhaseCtr;
 
-  factory CollWeatherCtrModel.empty() => CollWeatherCtrModel(
-        id: null,
-        dayTempLowestCtr: TextEditingController(),
-        dayTempHighestCtr: TextEditingController(),
-        nightTempLowestCtr: TextEditingController(),
-        nightTempHighestCtr: TextEditingController(),
-        avarageHumidityCtr: TextEditingController(),
-        dewPointCtr: TextEditingController(),
-        sunriseTimeCtr: TextEditingController(),
-        sunsetTimeCtr: TextEditingController(),
-        moonPhaseCtr: null,
+  factory CollWeatherCtrModel.fromData(WeatherData data) => CollWeatherCtrModel(
+        lowestDayTempCtr:
+            TextEditingController(text: data.lowestDayTempC?.toString() ?? ''),
+        highestDayTempCtr:
+            TextEditingController(text: data.highestDayTempC?.toString() ?? ''),
+        lowestNightTempCtr: TextEditingController(
+            text: data.lowestNightTempC?.toString() ?? ''),
+        highestNightTempCtr: TextEditingController(
+            text: data.highestNightTempC?.toString() ?? ''),
+        averageHumidityCtr:
+            TextEditingController(text: data.averageHumidity?.toString() ?? ''),
+        dewPointCtr:
+            TextEditingController(text: data.dewPointTemp?.toString() ?? ''),
+        sunriseTimeCtr:
+            TextEditingController(text: data.sunriseTime?.toString() ?? ''),
+        sunsetTimeCtr:
+            TextEditingController(text: data.sunsetTime?.toString() ?? ''),
+        moonPhaseCtr: data.moonPhase,
+        noteCtr: TextEditingController(text: data.notes ?? ''),
       );
+
+  void dispose() {
+    lowestDayTempCtr.dispose();
+    highestDayTempCtr.dispose();
+    lowestNightTempCtr.dispose();
+    highestNightTempCtr.dispose();
+    averageHumidityCtr.dispose();
+    dewPointCtr.dispose();
+    sunriseTimeCtr.dispose();
+    sunsetTimeCtr.dispose();
+    noteCtr.dispose();
+  }
 }

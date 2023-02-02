@@ -3654,44 +3654,59 @@ class Weather extends Table with TableInfo<Weather, WeatherData> {
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _lowestDayTempMeta =
-      const VerificationMeta('lowestDayTemp');
-  late final GeneratedColumn<String> lowestDayTemp = GeneratedColumn<String>(
-      'lowestDayTemp', aliasedName, true,
+  static const VerificationMeta _lowestDayTempCMeta =
+      const VerificationMeta('lowestDayTempC');
+  late final GeneratedColumn<double> lowestDayTempC = GeneratedColumn<double>(
+      'lowestDayTempC', aliasedName, true,
+      type: DriftSqlType.double,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _highestDayTempCMeta =
+      const VerificationMeta('highestDayTempC');
+  late final GeneratedColumn<double> highestDayTempC = GeneratedColumn<double>(
+      'highestDayTempC', aliasedName, true,
+      type: DriftSqlType.double,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _lowestNightTempCMeta =
+      const VerificationMeta('lowestNightTempC');
+  late final GeneratedColumn<double> lowestNightTempC = GeneratedColumn<double>(
+      'lowestNightTempC', aliasedName, true,
+      type: DriftSqlType.double,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _highestNightTempCMeta =
+      const VerificationMeta('highestNightTempC');
+  late final GeneratedColumn<double> highestNightTempC =
+      GeneratedColumn<double>('highestNightTempC', aliasedName, true,
+          type: DriftSqlType.double,
+          requiredDuringInsert: false,
+          $customConstraints: '');
+  static const VerificationMeta _averageHumidityMeta =
+      const VerificationMeta('averageHumidity');
+  late final GeneratedColumn<double> averageHumidity = GeneratedColumn<double>(
+      'averageHumidity', aliasedName, true,
+      type: DriftSqlType.double,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _dewPointTempMeta =
+      const VerificationMeta('dewPointTemp');
+  late final GeneratedColumn<double> dewPointTemp = GeneratedColumn<double>(
+      'dewPointTemp', aliasedName, true,
+      type: DriftSqlType.double,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _sunriseTimeMeta =
+      const VerificationMeta('sunriseTime');
+  late final GeneratedColumn<String> sunriseTime = GeneratedColumn<String>(
+      'sunriseTime', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _highestDayTempMeta =
-      const VerificationMeta('highestDayTemp');
-  late final GeneratedColumn<String> highestDayTemp = GeneratedColumn<String>(
-      'highestDayTemp', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _lowestNightTempMeta =
-      const VerificationMeta('lowestNightTemp');
-  late final GeneratedColumn<String> lowestNightTemp = GeneratedColumn<String>(
-      'lowestNightTemp', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _highestNightTempMeta =
-      const VerificationMeta('highestNightTemp');
-  late final GeneratedColumn<String> highestNightTemp = GeneratedColumn<String>(
-      'highestNightTemp', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _sunriseMeta =
-      const VerificationMeta('sunrise');
-  late final GeneratedColumn<String> sunrise = GeneratedColumn<String>(
-      'sunrise', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _sunsetMeta = const VerificationMeta('sunset');
-  late final GeneratedColumn<String> sunset = GeneratedColumn<String>(
-      'sunset', aliasedName, true,
+  static const VerificationMeta _sunsetTimeMeta =
+      const VerificationMeta('sunsetTime');
+  late final GeneratedColumn<String> sunsetTime = GeneratedColumn<String>(
+      'sunsetTime', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -3702,16 +3717,25 @@ class Weather extends Table with TableInfo<Weather, WeatherData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+      'notes', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
         eventID,
-        lowestDayTemp,
-        highestDayTemp,
-        lowestNightTemp,
-        highestNightTemp,
-        sunrise,
-        sunset,
-        moonPhase
+        lowestDayTempC,
+        highestDayTempC,
+        lowestNightTempC,
+        highestNightTempC,
+        averageHumidity,
+        dewPointTemp,
+        sunriseTime,
+        sunsetTime,
+        moonPhase,
+        notes
       ];
   @override
   String get aliasedName => _alias ?? 'weather';
@@ -3726,41 +3750,61 @@ class Weather extends Table with TableInfo<Weather, WeatherData> {
       context.handle(_eventIDMeta,
           eventID.isAcceptableOrUnknown(data['eventID']!, _eventIDMeta));
     }
-    if (data.containsKey('lowestDayTemp')) {
+    if (data.containsKey('lowestDayTempC')) {
       context.handle(
-          _lowestDayTempMeta,
-          lowestDayTemp.isAcceptableOrUnknown(
-              data['lowestDayTemp']!, _lowestDayTempMeta));
+          _lowestDayTempCMeta,
+          lowestDayTempC.isAcceptableOrUnknown(
+              data['lowestDayTempC']!, _lowestDayTempCMeta));
     }
-    if (data.containsKey('highestDayTemp')) {
+    if (data.containsKey('highestDayTempC')) {
       context.handle(
-          _highestDayTempMeta,
-          highestDayTemp.isAcceptableOrUnknown(
-              data['highestDayTemp']!, _highestDayTempMeta));
+          _highestDayTempCMeta,
+          highestDayTempC.isAcceptableOrUnknown(
+              data['highestDayTempC']!, _highestDayTempCMeta));
     }
-    if (data.containsKey('lowestNightTemp')) {
+    if (data.containsKey('lowestNightTempC')) {
       context.handle(
-          _lowestNightTempMeta,
-          lowestNightTemp.isAcceptableOrUnknown(
-              data['lowestNightTemp']!, _lowestNightTempMeta));
+          _lowestNightTempCMeta,
+          lowestNightTempC.isAcceptableOrUnknown(
+              data['lowestNightTempC']!, _lowestNightTempCMeta));
     }
-    if (data.containsKey('highestNightTemp')) {
+    if (data.containsKey('highestNightTempC')) {
       context.handle(
-          _highestNightTempMeta,
-          highestNightTemp.isAcceptableOrUnknown(
-              data['highestNightTemp']!, _highestNightTempMeta));
+          _highestNightTempCMeta,
+          highestNightTempC.isAcceptableOrUnknown(
+              data['highestNightTempC']!, _highestNightTempCMeta));
     }
-    if (data.containsKey('sunrise')) {
-      context.handle(_sunriseMeta,
-          sunrise.isAcceptableOrUnknown(data['sunrise']!, _sunriseMeta));
+    if (data.containsKey('averageHumidity')) {
+      context.handle(
+          _averageHumidityMeta,
+          averageHumidity.isAcceptableOrUnknown(
+              data['averageHumidity']!, _averageHumidityMeta));
     }
-    if (data.containsKey('sunset')) {
-      context.handle(_sunsetMeta,
-          sunset.isAcceptableOrUnknown(data['sunset']!, _sunsetMeta));
+    if (data.containsKey('dewPointTemp')) {
+      context.handle(
+          _dewPointTempMeta,
+          dewPointTemp.isAcceptableOrUnknown(
+              data['dewPointTemp']!, _dewPointTempMeta));
+    }
+    if (data.containsKey('sunriseTime')) {
+      context.handle(
+          _sunriseTimeMeta,
+          sunriseTime.isAcceptableOrUnknown(
+              data['sunriseTime']!, _sunriseTimeMeta));
+    }
+    if (data.containsKey('sunsetTime')) {
+      context.handle(
+          _sunsetTimeMeta,
+          sunsetTime.isAcceptableOrUnknown(
+              data['sunsetTime']!, _sunsetTimeMeta));
     }
     if (data.containsKey('moonPhase')) {
       context.handle(_moonPhaseMeta,
           moonPhase.isAcceptableOrUnknown(data['moonPhase']!, _moonPhaseMeta));
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+          _notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
     }
     return context;
   }
@@ -3773,20 +3817,26 @@ class Weather extends Table with TableInfo<Weather, WeatherData> {
     return WeatherData(
       eventID: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}eventID']),
-      lowestDayTemp: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}lowestDayTemp']),
-      highestDayTemp: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}highestDayTemp']),
-      lowestNightTemp: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}lowestNightTemp']),
-      highestNightTemp: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}highestNightTemp']),
-      sunrise: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}sunrise']),
-      sunset: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}sunset']),
+      lowestDayTempC: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}lowestDayTempC']),
+      highestDayTempC: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}highestDayTempC']),
+      lowestNightTempC: attachedDatabase.typeMapping.read(
+          DriftSqlType.double, data['${effectivePrefix}lowestNightTempC']),
+      highestNightTempC: attachedDatabase.typeMapping.read(
+          DriftSqlType.double, data['${effectivePrefix}highestNightTempC']),
+      averageHumidity: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}averageHumidity']),
+      dewPointTemp: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}dewPointTemp']),
+      sunriseTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}sunriseTime']),
+      sunsetTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}sunsetTime']),
       moonPhase: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}moonPhase']),
+      notes: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}notes']),
     );
   }
 
@@ -3804,48 +3854,63 @@ class Weather extends Table with TableInfo<Weather, WeatherData> {
 
 class WeatherData extends DataClass implements Insertable<WeatherData> {
   final int? eventID;
-  final String? lowestDayTemp;
-  final String? highestDayTemp;
-  final String? lowestNightTemp;
-  final String? highestNightTemp;
-  final String? sunrise;
-  final String? sunset;
+  final double? lowestDayTempC;
+  final double? highestDayTempC;
+  final double? lowestNightTempC;
+  final double? highestNightTempC;
+  final double? averageHumidity;
+  final double? dewPointTemp;
+  final String? sunriseTime;
+  final String? sunsetTime;
   final String? moonPhase;
+  final String? notes;
   const WeatherData(
       {this.eventID,
-      this.lowestDayTemp,
-      this.highestDayTemp,
-      this.lowestNightTemp,
-      this.highestNightTemp,
-      this.sunrise,
-      this.sunset,
-      this.moonPhase});
+      this.lowestDayTempC,
+      this.highestDayTempC,
+      this.lowestNightTempC,
+      this.highestNightTempC,
+      this.averageHumidity,
+      this.dewPointTemp,
+      this.sunriseTime,
+      this.sunsetTime,
+      this.moonPhase,
+      this.notes});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (!nullToAbsent || eventID != null) {
       map['eventID'] = Variable<int>(eventID);
     }
-    if (!nullToAbsent || lowestDayTemp != null) {
-      map['lowestDayTemp'] = Variable<String>(lowestDayTemp);
+    if (!nullToAbsent || lowestDayTempC != null) {
+      map['lowestDayTempC'] = Variable<double>(lowestDayTempC);
     }
-    if (!nullToAbsent || highestDayTemp != null) {
-      map['highestDayTemp'] = Variable<String>(highestDayTemp);
+    if (!nullToAbsent || highestDayTempC != null) {
+      map['highestDayTempC'] = Variable<double>(highestDayTempC);
     }
-    if (!nullToAbsent || lowestNightTemp != null) {
-      map['lowestNightTemp'] = Variable<String>(lowestNightTemp);
+    if (!nullToAbsent || lowestNightTempC != null) {
+      map['lowestNightTempC'] = Variable<double>(lowestNightTempC);
     }
-    if (!nullToAbsent || highestNightTemp != null) {
-      map['highestNightTemp'] = Variable<String>(highestNightTemp);
+    if (!nullToAbsent || highestNightTempC != null) {
+      map['highestNightTempC'] = Variable<double>(highestNightTempC);
     }
-    if (!nullToAbsent || sunrise != null) {
-      map['sunrise'] = Variable<String>(sunrise);
+    if (!nullToAbsent || averageHumidity != null) {
+      map['averageHumidity'] = Variable<double>(averageHumidity);
     }
-    if (!nullToAbsent || sunset != null) {
-      map['sunset'] = Variable<String>(sunset);
+    if (!nullToAbsent || dewPointTemp != null) {
+      map['dewPointTemp'] = Variable<double>(dewPointTemp);
+    }
+    if (!nullToAbsent || sunriseTime != null) {
+      map['sunriseTime'] = Variable<String>(sunriseTime);
+    }
+    if (!nullToAbsent || sunsetTime != null) {
+      map['sunsetTime'] = Variable<String>(sunsetTime);
     }
     if (!nullToAbsent || moonPhase != null) {
       map['moonPhase'] = Variable<String>(moonPhase);
+    }
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
     }
     return map;
   }
@@ -3855,26 +3920,35 @@ class WeatherData extends DataClass implements Insertable<WeatherData> {
       eventID: eventID == null && nullToAbsent
           ? const Value.absent()
           : Value(eventID),
-      lowestDayTemp: lowestDayTemp == null && nullToAbsent
+      lowestDayTempC: lowestDayTempC == null && nullToAbsent
           ? const Value.absent()
-          : Value(lowestDayTemp),
-      highestDayTemp: highestDayTemp == null && nullToAbsent
+          : Value(lowestDayTempC),
+      highestDayTempC: highestDayTempC == null && nullToAbsent
           ? const Value.absent()
-          : Value(highestDayTemp),
-      lowestNightTemp: lowestNightTemp == null && nullToAbsent
+          : Value(highestDayTempC),
+      lowestNightTempC: lowestNightTempC == null && nullToAbsent
           ? const Value.absent()
-          : Value(lowestNightTemp),
-      highestNightTemp: highestNightTemp == null && nullToAbsent
+          : Value(lowestNightTempC),
+      highestNightTempC: highestNightTempC == null && nullToAbsent
           ? const Value.absent()
-          : Value(highestNightTemp),
-      sunrise: sunrise == null && nullToAbsent
+          : Value(highestNightTempC),
+      averageHumidity: averageHumidity == null && nullToAbsent
           ? const Value.absent()
-          : Value(sunrise),
-      sunset:
-          sunset == null && nullToAbsent ? const Value.absent() : Value(sunset),
+          : Value(averageHumidity),
+      dewPointTemp: dewPointTemp == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dewPointTemp),
+      sunriseTime: sunriseTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sunriseTime),
+      sunsetTime: sunsetTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sunsetTime),
       moonPhase: moonPhase == null && nullToAbsent
           ? const Value.absent()
           : Value(moonPhase),
+      notes:
+          notes == null && nullToAbsent ? const Value.absent() : Value(notes),
     );
   }
 
@@ -3883,13 +3957,17 @@ class WeatherData extends DataClass implements Insertable<WeatherData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return WeatherData(
       eventID: serializer.fromJson<int?>(json['eventID']),
-      lowestDayTemp: serializer.fromJson<String?>(json['lowestDayTemp']),
-      highestDayTemp: serializer.fromJson<String?>(json['highestDayTemp']),
-      lowestNightTemp: serializer.fromJson<String?>(json['lowestNightTemp']),
-      highestNightTemp: serializer.fromJson<String?>(json['highestNightTemp']),
-      sunrise: serializer.fromJson<String?>(json['sunrise']),
-      sunset: serializer.fromJson<String?>(json['sunset']),
+      lowestDayTempC: serializer.fromJson<double?>(json['lowestDayTempC']),
+      highestDayTempC: serializer.fromJson<double?>(json['highestDayTempC']),
+      lowestNightTempC: serializer.fromJson<double?>(json['lowestNightTempC']),
+      highestNightTempC:
+          serializer.fromJson<double?>(json['highestNightTempC']),
+      averageHumidity: serializer.fromJson<double?>(json['averageHumidity']),
+      dewPointTemp: serializer.fromJson<double?>(json['dewPointTemp']),
+      sunriseTime: serializer.fromJson<String?>(json['sunriseTime']),
+      sunsetTime: serializer.fromJson<String?>(json['sunsetTime']),
       moonPhase: serializer.fromJson<String?>(json['moonPhase']),
+      notes: serializer.fromJson<String?>(json['notes']),
     );
   }
   @override
@@ -3897,142 +3975,192 @@ class WeatherData extends DataClass implements Insertable<WeatherData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'eventID': serializer.toJson<int?>(eventID),
-      'lowestDayTemp': serializer.toJson<String?>(lowestDayTemp),
-      'highestDayTemp': serializer.toJson<String?>(highestDayTemp),
-      'lowestNightTemp': serializer.toJson<String?>(lowestNightTemp),
-      'highestNightTemp': serializer.toJson<String?>(highestNightTemp),
-      'sunrise': serializer.toJson<String?>(sunrise),
-      'sunset': serializer.toJson<String?>(sunset),
+      'lowestDayTempC': serializer.toJson<double?>(lowestDayTempC),
+      'highestDayTempC': serializer.toJson<double?>(highestDayTempC),
+      'lowestNightTempC': serializer.toJson<double?>(lowestNightTempC),
+      'highestNightTempC': serializer.toJson<double?>(highestNightTempC),
+      'averageHumidity': serializer.toJson<double?>(averageHumidity),
+      'dewPointTemp': serializer.toJson<double?>(dewPointTemp),
+      'sunriseTime': serializer.toJson<String?>(sunriseTime),
+      'sunsetTime': serializer.toJson<String?>(sunsetTime),
       'moonPhase': serializer.toJson<String?>(moonPhase),
+      'notes': serializer.toJson<String?>(notes),
     };
   }
 
   WeatherData copyWith(
           {Value<int?> eventID = const Value.absent(),
-          Value<String?> lowestDayTemp = const Value.absent(),
-          Value<String?> highestDayTemp = const Value.absent(),
-          Value<String?> lowestNightTemp = const Value.absent(),
-          Value<String?> highestNightTemp = const Value.absent(),
-          Value<String?> sunrise = const Value.absent(),
-          Value<String?> sunset = const Value.absent(),
-          Value<String?> moonPhase = const Value.absent()}) =>
+          Value<double?> lowestDayTempC = const Value.absent(),
+          Value<double?> highestDayTempC = const Value.absent(),
+          Value<double?> lowestNightTempC = const Value.absent(),
+          Value<double?> highestNightTempC = const Value.absent(),
+          Value<double?> averageHumidity = const Value.absent(),
+          Value<double?> dewPointTemp = const Value.absent(),
+          Value<String?> sunriseTime = const Value.absent(),
+          Value<String?> sunsetTime = const Value.absent(),
+          Value<String?> moonPhase = const Value.absent(),
+          Value<String?> notes = const Value.absent()}) =>
       WeatherData(
         eventID: eventID.present ? eventID.value : this.eventID,
-        lowestDayTemp:
-            lowestDayTemp.present ? lowestDayTemp.value : this.lowestDayTemp,
-        highestDayTemp:
-            highestDayTemp.present ? highestDayTemp.value : this.highestDayTemp,
-        lowestNightTemp: lowestNightTemp.present
-            ? lowestNightTemp.value
-            : this.lowestNightTemp,
-        highestNightTemp: highestNightTemp.present
-            ? highestNightTemp.value
-            : this.highestNightTemp,
-        sunrise: sunrise.present ? sunrise.value : this.sunrise,
-        sunset: sunset.present ? sunset.value : this.sunset,
+        lowestDayTempC:
+            lowestDayTempC.present ? lowestDayTempC.value : this.lowestDayTempC,
+        highestDayTempC: highestDayTempC.present
+            ? highestDayTempC.value
+            : this.highestDayTempC,
+        lowestNightTempC: lowestNightTempC.present
+            ? lowestNightTempC.value
+            : this.lowestNightTempC,
+        highestNightTempC: highestNightTempC.present
+            ? highestNightTempC.value
+            : this.highestNightTempC,
+        averageHumidity: averageHumidity.present
+            ? averageHumidity.value
+            : this.averageHumidity,
+        dewPointTemp:
+            dewPointTemp.present ? dewPointTemp.value : this.dewPointTemp,
+        sunriseTime: sunriseTime.present ? sunriseTime.value : this.sunriseTime,
+        sunsetTime: sunsetTime.present ? sunsetTime.value : this.sunsetTime,
         moonPhase: moonPhase.present ? moonPhase.value : this.moonPhase,
+        notes: notes.present ? notes.value : this.notes,
       );
   @override
   String toString() {
     return (StringBuffer('WeatherData(')
           ..write('eventID: $eventID, ')
-          ..write('lowestDayTemp: $lowestDayTemp, ')
-          ..write('highestDayTemp: $highestDayTemp, ')
-          ..write('lowestNightTemp: $lowestNightTemp, ')
-          ..write('highestNightTemp: $highestNightTemp, ')
-          ..write('sunrise: $sunrise, ')
-          ..write('sunset: $sunset, ')
-          ..write('moonPhase: $moonPhase')
+          ..write('lowestDayTempC: $lowestDayTempC, ')
+          ..write('highestDayTempC: $highestDayTempC, ')
+          ..write('lowestNightTempC: $lowestNightTempC, ')
+          ..write('highestNightTempC: $highestNightTempC, ')
+          ..write('averageHumidity: $averageHumidity, ')
+          ..write('dewPointTemp: $dewPointTemp, ')
+          ..write('sunriseTime: $sunriseTime, ')
+          ..write('sunsetTime: $sunsetTime, ')
+          ..write('moonPhase: $moonPhase, ')
+          ..write('notes: $notes')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(eventID, lowestDayTemp, highestDayTemp,
-      lowestNightTemp, highestNightTemp, sunrise, sunset, moonPhase);
+  int get hashCode => Object.hash(
+      eventID,
+      lowestDayTempC,
+      highestDayTempC,
+      lowestNightTempC,
+      highestNightTempC,
+      averageHumidity,
+      dewPointTemp,
+      sunriseTime,
+      sunsetTime,
+      moonPhase,
+      notes);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is WeatherData &&
           other.eventID == this.eventID &&
-          other.lowestDayTemp == this.lowestDayTemp &&
-          other.highestDayTemp == this.highestDayTemp &&
-          other.lowestNightTemp == this.lowestNightTemp &&
-          other.highestNightTemp == this.highestNightTemp &&
-          other.sunrise == this.sunrise &&
-          other.sunset == this.sunset &&
-          other.moonPhase == this.moonPhase);
+          other.lowestDayTempC == this.lowestDayTempC &&
+          other.highestDayTempC == this.highestDayTempC &&
+          other.lowestNightTempC == this.lowestNightTempC &&
+          other.highestNightTempC == this.highestNightTempC &&
+          other.averageHumidity == this.averageHumidity &&
+          other.dewPointTemp == this.dewPointTemp &&
+          other.sunriseTime == this.sunriseTime &&
+          other.sunsetTime == this.sunsetTime &&
+          other.moonPhase == this.moonPhase &&
+          other.notes == this.notes);
 }
 
 class WeatherCompanion extends UpdateCompanion<WeatherData> {
   final Value<int?> eventID;
-  final Value<String?> lowestDayTemp;
-  final Value<String?> highestDayTemp;
-  final Value<String?> lowestNightTemp;
-  final Value<String?> highestNightTemp;
-  final Value<String?> sunrise;
-  final Value<String?> sunset;
+  final Value<double?> lowestDayTempC;
+  final Value<double?> highestDayTempC;
+  final Value<double?> lowestNightTempC;
+  final Value<double?> highestNightTempC;
+  final Value<double?> averageHumidity;
+  final Value<double?> dewPointTemp;
+  final Value<String?> sunriseTime;
+  final Value<String?> sunsetTime;
   final Value<String?> moonPhase;
+  final Value<String?> notes;
   const WeatherCompanion({
     this.eventID = const Value.absent(),
-    this.lowestDayTemp = const Value.absent(),
-    this.highestDayTemp = const Value.absent(),
-    this.lowestNightTemp = const Value.absent(),
-    this.highestNightTemp = const Value.absent(),
-    this.sunrise = const Value.absent(),
-    this.sunset = const Value.absent(),
+    this.lowestDayTempC = const Value.absent(),
+    this.highestDayTempC = const Value.absent(),
+    this.lowestNightTempC = const Value.absent(),
+    this.highestNightTempC = const Value.absent(),
+    this.averageHumidity = const Value.absent(),
+    this.dewPointTemp = const Value.absent(),
+    this.sunriseTime = const Value.absent(),
+    this.sunsetTime = const Value.absent(),
     this.moonPhase = const Value.absent(),
+    this.notes = const Value.absent(),
   });
   WeatherCompanion.insert({
     this.eventID = const Value.absent(),
-    this.lowestDayTemp = const Value.absent(),
-    this.highestDayTemp = const Value.absent(),
-    this.lowestNightTemp = const Value.absent(),
-    this.highestNightTemp = const Value.absent(),
-    this.sunrise = const Value.absent(),
-    this.sunset = const Value.absent(),
+    this.lowestDayTempC = const Value.absent(),
+    this.highestDayTempC = const Value.absent(),
+    this.lowestNightTempC = const Value.absent(),
+    this.highestNightTempC = const Value.absent(),
+    this.averageHumidity = const Value.absent(),
+    this.dewPointTemp = const Value.absent(),
+    this.sunriseTime = const Value.absent(),
+    this.sunsetTime = const Value.absent(),
     this.moonPhase = const Value.absent(),
+    this.notes = const Value.absent(),
   });
   static Insertable<WeatherData> custom({
     Expression<int>? eventID,
-    Expression<String>? lowestDayTemp,
-    Expression<String>? highestDayTemp,
-    Expression<String>? lowestNightTemp,
-    Expression<String>? highestNightTemp,
-    Expression<String>? sunrise,
-    Expression<String>? sunset,
+    Expression<double>? lowestDayTempC,
+    Expression<double>? highestDayTempC,
+    Expression<double>? lowestNightTempC,
+    Expression<double>? highestNightTempC,
+    Expression<double>? averageHumidity,
+    Expression<double>? dewPointTemp,
+    Expression<String>? sunriseTime,
+    Expression<String>? sunsetTime,
     Expression<String>? moonPhase,
+    Expression<String>? notes,
   }) {
     return RawValuesInsertable({
       if (eventID != null) 'eventID': eventID,
-      if (lowestDayTemp != null) 'lowestDayTemp': lowestDayTemp,
-      if (highestDayTemp != null) 'highestDayTemp': highestDayTemp,
-      if (lowestNightTemp != null) 'lowestNightTemp': lowestNightTemp,
-      if (highestNightTemp != null) 'highestNightTemp': highestNightTemp,
-      if (sunrise != null) 'sunrise': sunrise,
-      if (sunset != null) 'sunset': sunset,
+      if (lowestDayTempC != null) 'lowestDayTempC': lowestDayTempC,
+      if (highestDayTempC != null) 'highestDayTempC': highestDayTempC,
+      if (lowestNightTempC != null) 'lowestNightTempC': lowestNightTempC,
+      if (highestNightTempC != null) 'highestNightTempC': highestNightTempC,
+      if (averageHumidity != null) 'averageHumidity': averageHumidity,
+      if (dewPointTemp != null) 'dewPointTemp': dewPointTemp,
+      if (sunriseTime != null) 'sunriseTime': sunriseTime,
+      if (sunsetTime != null) 'sunsetTime': sunsetTime,
       if (moonPhase != null) 'moonPhase': moonPhase,
+      if (notes != null) 'notes': notes,
     });
   }
 
   WeatherCompanion copyWith(
       {Value<int?>? eventID,
-      Value<String?>? lowestDayTemp,
-      Value<String?>? highestDayTemp,
-      Value<String?>? lowestNightTemp,
-      Value<String?>? highestNightTemp,
-      Value<String?>? sunrise,
-      Value<String?>? sunset,
-      Value<String?>? moonPhase}) {
+      Value<double?>? lowestDayTempC,
+      Value<double?>? highestDayTempC,
+      Value<double?>? lowestNightTempC,
+      Value<double?>? highestNightTempC,
+      Value<double?>? averageHumidity,
+      Value<double?>? dewPointTemp,
+      Value<String?>? sunriseTime,
+      Value<String?>? sunsetTime,
+      Value<String?>? moonPhase,
+      Value<String?>? notes}) {
     return WeatherCompanion(
       eventID: eventID ?? this.eventID,
-      lowestDayTemp: lowestDayTemp ?? this.lowestDayTemp,
-      highestDayTemp: highestDayTemp ?? this.highestDayTemp,
-      lowestNightTemp: lowestNightTemp ?? this.lowestNightTemp,
-      highestNightTemp: highestNightTemp ?? this.highestNightTemp,
-      sunrise: sunrise ?? this.sunrise,
-      sunset: sunset ?? this.sunset,
+      lowestDayTempC: lowestDayTempC ?? this.lowestDayTempC,
+      highestDayTempC: highestDayTempC ?? this.highestDayTempC,
+      lowestNightTempC: lowestNightTempC ?? this.lowestNightTempC,
+      highestNightTempC: highestNightTempC ?? this.highestNightTempC,
+      averageHumidity: averageHumidity ?? this.averageHumidity,
+      dewPointTemp: dewPointTemp ?? this.dewPointTemp,
+      sunriseTime: sunriseTime ?? this.sunriseTime,
+      sunsetTime: sunsetTime ?? this.sunsetTime,
       moonPhase: moonPhase ?? this.moonPhase,
+      notes: notes ?? this.notes,
     );
   }
 
@@ -4042,26 +4170,35 @@ class WeatherCompanion extends UpdateCompanion<WeatherData> {
     if (eventID.present) {
       map['eventID'] = Variable<int>(eventID.value);
     }
-    if (lowestDayTemp.present) {
-      map['lowestDayTemp'] = Variable<String>(lowestDayTemp.value);
+    if (lowestDayTempC.present) {
+      map['lowestDayTempC'] = Variable<double>(lowestDayTempC.value);
     }
-    if (highestDayTemp.present) {
-      map['highestDayTemp'] = Variable<String>(highestDayTemp.value);
+    if (highestDayTempC.present) {
+      map['highestDayTempC'] = Variable<double>(highestDayTempC.value);
     }
-    if (lowestNightTemp.present) {
-      map['lowestNightTemp'] = Variable<String>(lowestNightTemp.value);
+    if (lowestNightTempC.present) {
+      map['lowestNightTempC'] = Variable<double>(lowestNightTempC.value);
     }
-    if (highestNightTemp.present) {
-      map['highestNightTemp'] = Variable<String>(highestNightTemp.value);
+    if (highestNightTempC.present) {
+      map['highestNightTempC'] = Variable<double>(highestNightTempC.value);
     }
-    if (sunrise.present) {
-      map['sunrise'] = Variable<String>(sunrise.value);
+    if (averageHumidity.present) {
+      map['averageHumidity'] = Variable<double>(averageHumidity.value);
     }
-    if (sunset.present) {
-      map['sunset'] = Variable<String>(sunset.value);
+    if (dewPointTemp.present) {
+      map['dewPointTemp'] = Variable<double>(dewPointTemp.value);
+    }
+    if (sunriseTime.present) {
+      map['sunriseTime'] = Variable<String>(sunriseTime.value);
+    }
+    if (sunsetTime.present) {
+      map['sunsetTime'] = Variable<String>(sunsetTime.value);
     }
     if (moonPhase.present) {
       map['moonPhase'] = Variable<String>(moonPhase.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
     }
     return map;
   }
@@ -4070,13 +4207,16 @@ class WeatherCompanion extends UpdateCompanion<WeatherData> {
   String toString() {
     return (StringBuffer('WeatherCompanion(')
           ..write('eventID: $eventID, ')
-          ..write('lowestDayTemp: $lowestDayTemp, ')
-          ..write('highestDayTemp: $highestDayTemp, ')
-          ..write('lowestNightTemp: $lowestNightTemp, ')
-          ..write('highestNightTemp: $highestNightTemp, ')
-          ..write('sunrise: $sunrise, ')
-          ..write('sunset: $sunset, ')
-          ..write('moonPhase: $moonPhase')
+          ..write('lowestDayTempC: $lowestDayTempC, ')
+          ..write('highestDayTempC: $highestDayTempC, ')
+          ..write('lowestNightTempC: $lowestNightTempC, ')
+          ..write('highestNightTempC: $highestNightTempC, ')
+          ..write('averageHumidity: $averageHumidity, ')
+          ..write('dewPointTemp: $dewPointTemp, ')
+          ..write('sunriseTime: $sunriseTime, ')
+          ..write('sunsetTime: $sunsetTime, ')
+          ..write('moonPhase: $moonPhase, ')
+          ..write('notes: $notes')
           ..write(')'))
         .toString();
   }

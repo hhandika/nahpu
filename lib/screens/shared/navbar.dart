@@ -114,6 +114,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
 
   void _invalidateAll() {
     ref.invalidate(siteEntryProvider);
+    ref.invalidate(weatherDataProvider);
     ref.invalidate(collEventEntryProvider);
     ref.invalidate(specimenEntryProvider);
     ref.invalidate(narrativeEntryProvider);
