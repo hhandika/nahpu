@@ -11,6 +11,7 @@ class BottomPadding extends StatelessWidget {
       // Padding to avoid the bottom sheet covering the last field
       padding:
           EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: SizedBox(height: MediaQuery.of(context).size.height * 0.05),
     );
   }
 }

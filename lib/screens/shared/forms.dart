@@ -78,7 +78,7 @@ class TitleForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 5),
+      padding: const EdgeInsets.only(bottom: 5, top: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
