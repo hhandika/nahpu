@@ -45,7 +45,7 @@ class SpeciesAutoComplete extends ConsumerWidget {
         }
       },
       itemBuilder: (context, suggestion) {
-        return Text(suggestion);
+        return Text(suggestion, style: Theme.of(context).textTheme.labelMedium);
       },
       onSuggestionSelected: onSelected,
     );
