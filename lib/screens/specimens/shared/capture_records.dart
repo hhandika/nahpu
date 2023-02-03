@@ -143,7 +143,17 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                               error: (e, s) => const [],
                             )
                         : [],
-                    onChanged: (int? newValue) {}),
+                    onChanged: (int? newValue) {
+                      setState(() {
+                        widget.specimenCtr.collPersonnelCtr = newValue;
+                        SpecimenServices(ref).updateSpecimen(
+                          widget.specimenUuid,
+                          SpecimenCompanion(
+                            collPersonnelID: db.Value(newValue),
+                          ),
+                        );
+                      });
+                    }),
                 DropdownButtonFormField<int?>(
                     value: widget.specimenCtr.captureMethodCtr,
                     decoration: const InputDecoration(
