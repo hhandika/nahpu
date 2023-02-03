@@ -5,7 +5,7 @@ import 'package:nahpu/screens/projects/dashboard.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:drift/drift.dart' as db;
-import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/services/project_services.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
