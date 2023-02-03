@@ -1,4 +1,4 @@
-import 'package:nahpu/models/catalogs.dart';
+import 'package:nahpu/models/navigation.dart';
 
 PageNavigation updatePageNavigation(PageNavigation pageState) {
   if (pageState.currentPage == 1) {
