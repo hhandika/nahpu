@@ -9,7 +9,7 @@ import 'package:nahpu/screens/specimens/shared/capture_records.dart';
 import 'package:nahpu/screens/specimens/shared/collecting_records.dart';
 import 'package:nahpu/screens/specimens/shared/media.dart';
 import 'package:nahpu/screens/specimens/shared/specimen_parts.dart';
-import 'package:nahpu/screens/specimens/shared/taxonomy.dart';
+import 'package:nahpu/screens/specimens/shared/taxa.dart';
 
 class BirdForms extends ConsumerStatefulWidget {
   const BirdForms(
