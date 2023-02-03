@@ -11,9 +11,9 @@ import 'package:nahpu/screens/shared/navbar.dart';
 import 'package:nahpu/screens/specimens/new_specimens.dart';
 import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
 import 'package:nahpu/screens/specimens/specimen_form.dart';
-import 'package:nahpu/services/database.dart';
+import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/navigation_services.dart';
-import 'package:nahpu/services/taxonomy_queries.dart';
+import 'package:nahpu/services/database/taxonomy_queries.dart';
 
 class Specimens extends ConsumerStatefulWidget {
   const Specimens({Key? key}) : super(key: key);

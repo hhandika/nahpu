@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:nahpu/services/database.dart';
+import 'package:nahpu/services/database/database.dart';
 
 enum CatalogFmt { generalMammals, birds, bats }
 

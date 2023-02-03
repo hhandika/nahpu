@@ -1,5 +1,5 @@
 import 'package:drift/drift.dart';
-import 'package:nahpu/services/database.dart';
+import 'package:nahpu/services/database/database.dart';
 
 part 'personnel_queries.g.dart';
 

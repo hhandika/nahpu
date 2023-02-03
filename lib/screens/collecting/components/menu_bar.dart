@@ -4,7 +4,7 @@ import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/collecting/new_coll_events.dart';
-import 'package:nahpu/services/collevent_queries.dart';
+import 'package:nahpu/services/database/collevent_queries.dart';
 
 enum MenuSelection { newEvent, pdfExport, deleteRecords, deleteAllRecords }
 

@@ -9,9 +9,9 @@ import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
 import 'package:nahpu/screens/specimens/specimen_form.dart';
 import 'package:nahpu/screens/specimens/specimen_view.dart';
 import 'package:drift/drift.dart' as db;
-import 'package:nahpu/services/database.dart';
+import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/providers/projects.dart';
-import 'package:nahpu/services/specimen_queries.dart';
+import 'package:nahpu/services/database/specimen_queries.dart';
 import 'package:nahpu/services/specimen_services.dart';
 
 Future<void> createNewSpecimens(BuildContext context, WidgetRef ref) {

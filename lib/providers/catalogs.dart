@@ -1,13 +1,13 @@
-import 'package:nahpu/services/database.dart';
+import 'package:nahpu/services/database/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
-import 'package:nahpu/services/narrative_queries.dart';
-import 'package:nahpu/services/site_queries.dart';
-import 'package:nahpu/services/specimen_queries.dart';
-import 'package:nahpu/services/coordinate_queries.dart';
-import 'package:nahpu/services/collevent_queries.dart';
-import 'package:nahpu/services/taxonomy_queries.dart';
-import 'package:nahpu/services/personnel_queries.dart';
+import 'package:nahpu/services/database/narrative_queries.dart';
+import 'package:nahpu/services/database/site_queries.dart';
+import 'package:nahpu/services/database/specimen_queries.dart';
+import 'package:nahpu/services/database/coordinate_queries.dart';
+import 'package:nahpu/services/database/collevent_queries.dart';
+import 'package:nahpu/services/database/taxonomy_queries.dart';
+import 'package:nahpu/services/database/personnel_queries.dart';
 
 void createPersonnel(WidgetRef ref, PersonnelCompanion form) {
   PersonnelQuery(ref.read(databaseProvider)).createPersonnel(form);

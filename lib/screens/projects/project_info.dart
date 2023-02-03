@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:nahpu/services/database.dart';
+import 'package:nahpu/services/database/database.dart';
 
 class ProjectInfo extends StatelessWidget {
   const ProjectInfo({Key? key, required this.projectData}) : super(key: key);

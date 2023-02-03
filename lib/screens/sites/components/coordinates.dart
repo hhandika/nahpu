@@ -7,8 +7,8 @@ import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/common.dart';
-import 'package:nahpu/services/coordinate_queries.dart';
-import 'package:nahpu/services/database.dart';
+import 'package:nahpu/services/database/coordinate_queries.dart';
+import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 
 class CoordinateFields extends StatelessWidget {

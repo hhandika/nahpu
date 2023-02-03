@@ -7,7 +7,7 @@ import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:intl/intl.dart';
 import 'package:nahpu/services/collevent_services.dart';
-import 'package:nahpu/services/database.dart';
+import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 
 class CollectingInfoFields extends ConsumerStatefulWidget {

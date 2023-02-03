@@ -1,5 +1,5 @@
 import 'package:drift/drift.dart';
-import 'package:nahpu/services/database.dart';
+import 'package:nahpu/services/database/database.dart';
 
 part 'site_queries.g.dart';
 

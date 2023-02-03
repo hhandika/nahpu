@@ -1,5 +1,5 @@
 import 'package:drift/drift.dart';
-import 'package:nahpu/services/database.dart';
+import 'package:nahpu/services/database/database.dart';
 
 part 'collevent_queries.g.dart';
 

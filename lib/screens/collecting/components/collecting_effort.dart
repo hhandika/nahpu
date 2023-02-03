@@ -7,8 +7,8 @@ import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
-import 'package:nahpu/services/collevent_queries.dart';
-import 'package:nahpu/services/database.dart';
+import 'package:nahpu/services/database/collevent_queries.dart';
+import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 
 class CollectingEffortFrom extends StatelessWidget {

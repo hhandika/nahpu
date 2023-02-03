@@ -1,7 +1,7 @@
 /// Project module providers contain all the providers related to the project,
 /// Except for the project form validation provider, which is in the validation.dart file.
 
-import 'package:nahpu/services/database.dart';
+import 'package:nahpu/services/database/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 

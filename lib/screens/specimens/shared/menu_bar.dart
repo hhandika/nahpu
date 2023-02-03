@@ -4,7 +4,7 @@ import 'package:nahpu/providers/projects.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/screens/specimens/new_specimens.dart';
-import 'package:nahpu/services/specimen_queries.dart';
+import 'package:nahpu/services/database/specimen_queries.dart';
 
 enum MenuSelection { newSpecimen, pdfExport, deleteRecords, deleteAllRecords }
 
