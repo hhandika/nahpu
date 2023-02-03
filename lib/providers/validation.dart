@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/models/project.dart';
+import 'package:nahpu/models/validation.dart';
 import 'package:nahpu/providers/projects.dart';
 
 final projectFormNotifier = StateNotifierProvider.autoDispose<

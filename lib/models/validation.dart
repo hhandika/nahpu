@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'project.freezed.dart';
+part 'validation.freezed.dart';
 
 @freezed
 class ProjectFormState with _$ProjectFormState {
