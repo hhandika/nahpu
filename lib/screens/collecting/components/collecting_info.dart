@@ -58,7 +58,7 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 10.0),
+            padding: const EdgeInsets.only(left: 5, right: 5, top: 10),
             child: CollEventIdTile(
               collEventId: widget.collEventId,
               collEventCtr: widget.collEventCtr,
@@ -216,44 +216,46 @@ class CollEventIdTile extends ConsumerWidget {
           Icons.edit_rounded,
           size: 20,
         ),
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Edit Collecting Event ID'),
-                content: TextFormField(
-                  controller: collEventCtr.eventIDCtr,
-                  decoration: const InputDecoration(
-                    labelText: 'Collecting Event ID',
-                    hintText: 'Enter collecting event ID',
-                  ),
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Cancel'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      CollEventServices(ref).updateCollEvent(
-                        collEventId,
-                        CollEventCompanion(
-                          eventID: db.Value(collEventCtr.eventIDCtr.text),
+        onPressed: collEventCtr.eventIDCtr.text.isEmpty
+            ? null
+            : () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Edit Collecting Event ID'),
+                      content: TextFormField(
+                        controller: collEventCtr.eventIDCtr,
+                        decoration: const InputDecoration(
+                          labelText: 'Collecting Event ID',
+                          hintText: 'Enter collecting event ID',
                         ),
-                      );
-                      ref.invalidate(siteEntryProvider);
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Save'),
-                  ),
-                ],
-              );
-            },
-          );
-        },
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            CollEventServices(ref).updateCollEvent(
+                              collEventId,
+                              CollEventCompanion(
+                                eventID: db.Value(collEventCtr.eventIDCtr.text),
+                              ),
+                            );
+                            ref.invalidate(siteEntryProvider);
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Save'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
       ),
     );
   }
