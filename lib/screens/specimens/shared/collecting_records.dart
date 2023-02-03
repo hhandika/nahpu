@@ -6,7 +6,7 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:intl/intl.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:drift/drift.dart' as db;
-import 'package:nahpu/screens/specimens/shared/species.dart';
+import 'package:nahpu/screens/specimens/shared/taxa.dart';
 import 'package:nahpu/services/database.dart';
 import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
