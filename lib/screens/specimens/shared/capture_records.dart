@@ -133,9 +133,10 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                               data: (data) {
                                 return data.map((person) {
                                   return DropdownMenuItem(
-                                    value: person.id,
-                                    child: Text(person.name ?? ''),
-                                  );
+                                      value: person.id,
+                                      child: PersonnelName(
+                                        personnelUuid: person.personnelId,
+                                      ));
                                 }).toList();
                               },
                               loading: () => const [],
@@ -181,5 +182,29 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
         ],
       ),
     );
+  }
+}
+
+class PersonnelName extends ConsumerWidget {
+  const PersonnelName({
+    Key? key,
+    required this.personnelUuid,
+  }) : super(key: key);
+
+  final String? personnelUuid;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    try {
+      return ref.watch(personnelNameProvider(personnelUuid!)).when(
+            data: (data) {
+              return Text(data.name ?? '');
+            },
+            loading: () => const Text('Loading...'),
+            error: (error, stack) => const Text('Error'),
+          );
+    } catch (e) {
+      return const Text('Error');
+    }
   }
 }

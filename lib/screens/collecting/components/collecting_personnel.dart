@@ -134,7 +134,7 @@ class CollPersonnelFieldState extends ConsumerState<CollPersonnelField> {
                 widget.controller.id!,
                 CollPersonnelCompanion(
                   eventID: db.Value(widget.eventID),
-                  personnelId: db.Value(widget.controller.nameIDCtr),
+                  personnelId: db.Value(value),
                 ),
               );
             },
