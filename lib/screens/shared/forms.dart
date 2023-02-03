@@ -1,38 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
-import 'package:nahpu/services/database.dart';
-
-class SiteIdField extends ConsumerWidget {
-  const SiteIdField({
-    Key? key,
-    required this.onChanges,
-    required this.siteData,
-    required this.value,
-  }) : super(key: key);
-
-  final void Function(int?) onChanges;
-  final List<SiteData> siteData;
-  final int? value;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return DropdownButtonFormField(
-      value: value,
-      decoration: const InputDecoration(
-        labelText: 'Site ID',
-        hintText: 'Enter a site',
-      ),
-      items: siteData
-          .map((site) => DropdownMenuItem(
-                value: site.id,
-                child: Text(site.siteID ?? ''),
-              ))
-          .toList(),
-      onChanged: onChanges,
-    );
-  }
-}
 
 class FormCard extends StatelessWidget {
   const FormCard(
