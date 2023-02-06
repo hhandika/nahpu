@@ -130,7 +130,7 @@ class PersonnelSubtitle extends StatelessWidget {
       role != null
           ? TextSpan(children: [
               const WidgetSpan(
-                child: TileIcon(icon: Icons.person_rounded),
+                child: TileIcon(icon: Icons.account_circle_outlined),
               ),
               TextSpan(
                 text: '$role ',
