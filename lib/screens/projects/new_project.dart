@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/setttings.dart';
 import 'package:nahpu/providers/projects.dart';
-import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'dashboard.dart';
@@ -22,14 +22,7 @@ class CreateProjectForm extends ConsumerStatefulWidget {
 class NewProjectFormState extends ConsumerState<CreateProjectForm> {
   final _formKey = GlobalKey<FormState>();
   final _uuidKey = uuid;
-  final projectNameController = TextEditingController();
-  final descriptionController = TextEditingController();
-  final collectorController = TextEditingController();
-  final collectorInitialController = TextEditingController();
-  final collectorEmailController = TextEditingController();
-  final collectorAffiliationController = TextEditingController();
-  final collNumController = TextEditingController();
-  final piController = TextEditingController();
+  final ProjectFormCtrModel projectCtr = ProjectFormCtrModel.empty();
 
   @override
   void initState() {
@@ -38,23 +31,12 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
 
   @override
   void dispose() {
-    projectNameController.dispose();
-    descriptionController.dispose();
-    collectorController.dispose();
-    collectorInitialController.dispose();
-    collectorEmailController.dispose();
-    collectorAffiliationController.dispose();
-    collNumController.dispose();
-    piController.dispose();
+    projectCtr.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final catNum = ref.watch(catalogNumberNotifier);
-    if (catNum != 0) {
-      collNumController.text = catNum.toString();
-    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create a new project'),
@@ -70,7 +52,7 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                 child: Column(
                   children: [
                     ProjectFormField(
-                      controller: projectNameController,
+                      controller: projectCtr.projectNameCtr,
                       maxLength: 25,
                       labelText: 'Project name*',
                       hintText: 'Enter the name of the project (required)',
@@ -95,14 +77,29 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                           .errMsg,
                     ),
                     ProjectFormField(
-                      controller: descriptionController,
+                      controller: projectCtr.descriptionCtr,
                       labelText: 'Project description',
                       hintText: 'Enter a description of the project (optional)',
                     ),
                     ProjectFormField(
-                      controller: piController,
+                      controller: projectCtr.pICtr,
                       labelText: 'Principal Investigator',
                       hintText: 'Enter PI name of the project (optional)',
+                    ),
+                    ProjectFormField(
+                      controller: projectCtr.pICtr,
+                      labelText: 'Location',
+                      hintText: 'Enter location of the project (optional)',
+                    ),
+                    ProjectFormField(
+                      controller: projectCtr.pICtr,
+                      labelText: 'Project start date',
+                      hintText: 'Enter start date of the project (optional)',
+                    ),
+                    ProjectFormField(
+                      controller: projectCtr.pICtr,
+                      labelText: 'Project end date',
+                      hintText: 'Enter end date of the project (optional)',
                     ),
                     const TaxonGroupFields(),
                     const SizedBox(height: 20),
@@ -138,9 +135,9 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
   Future<void> _createProject() async {
     final projectData = ProjectCompanion(
       uuid: db.Value(_uuidKey),
-      name: db.Value(projectNameController.text),
-      description: db.Value(descriptionController.text),
-      principalInvestigator: db.Value(piController.text),
+      name: db.Value(projectCtr.projectNameCtr.text),
+      description: db.Value(projectCtr.descriptionCtr.text),
+      principalInvestigator: db.Value(projectCtr.pICtr.text),
       created: db.Value(getSystemDateTime()),
       lastModified: db.Value(getSystemDateTime()),
     );

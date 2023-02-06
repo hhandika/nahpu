@@ -2,6 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/services/database/database.dart';
 
+class ProjectFormCtrModel {
+  ProjectFormCtrModel({
+    required this.projectNameCtr,
+    required this.descriptionCtr,
+    required this.pICtr,
+    required this.locationCtr,
+    required this.startDateCtr,
+    required this.endDateCtr,
+  });
+
+  TextEditingController projectNameCtr;
+  TextEditingController descriptionCtr;
+  TextEditingController pICtr;
+  TextEditingController locationCtr;
+  TextEditingController startDateCtr;
+  TextEditingController endDateCtr;
+
+  factory ProjectFormCtrModel.empty() => ProjectFormCtrModel(
+        projectNameCtr: TextEditingController(),
+        descriptionCtr: TextEditingController(),
+        pICtr: TextEditingController(),
+        locationCtr: TextEditingController(),
+        startDateCtr: TextEditingController(),
+        endDateCtr: TextEditingController(),
+      );
+
+  void dispose() {
+    projectNameCtr.dispose();
+    descriptionCtr.dispose();
+    pICtr.dispose();
+  }
+}
+
 class SiteFormCtrModel {
   SiteFormCtrModel({
     required this.siteIDCtr,
