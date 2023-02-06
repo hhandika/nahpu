@@ -91,17 +91,18 @@ class PersonalListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: const Icon(Icons.person_rounded),
       title: Text(_getTitle(personnelData.name, personnelData.initial)),
-      subtitle:
-          Text(_getSubtitle(personnelData.affiliation, personnelData.role)),
+      subtitle: PersonnelSubtitle(
+        role: personnelData.role,
+        affiliation: personnelData.affiliation,
+      ),
       trailing: trailing,
     );
   }
 
   String _getTitle(String? name, String? personInitial) {
     if (name != null && personInitial != null) {
-      return '$name | $personInitial';
+      return '$name ($personInitial)';
     } else if (name != null) {
       return name;
     } else if (personInitial != null) {
@@ -110,17 +111,51 @@ class PersonalListTile extends StatelessWidget {
       return '';
     }
   }
+}
 
-  String _getSubtitle(String? affiliation, String? role) {
-    if (affiliation != null && role != null) {
-      return '$role | $affiliation';
-    } else if (affiliation != null) {
-      return affiliation;
-    } else if (role != null) {
-      return role;
-    } else {
-      return '';
-    }
+class PersonnelSubtitle extends StatelessWidget {
+  const PersonnelSubtitle({
+    super.key,
+    required this.role,
+    required this.affiliation,
+  });
+
+  final String? role;
+  final String? affiliation;
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+        text: TextSpan(children: [
+      role != null
+          ? TextSpan(children: [
+              const WidgetSpan(
+                  child: Icon(
+                Icons.person_rounded,
+                size: 14,
+              )),
+              TextSpan(
+                text: '$role ',
+                style: Theme.of(context).textTheme.labelLarge,
+              ),
+            ])
+          : const TextSpan(),
+      affiliation != null
+          ? TextSpan(
+              children: [
+                const WidgetSpan(
+                    child: Icon(
+                  Icons.business_rounded,
+                  size: 14,
+                )),
+                TextSpan(
+                  text: '$affiliation',
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
+              ],
+            )
+          : const TextSpan(),
+    ]));
   }
 }
 
