@@ -42,7 +42,7 @@ class TileIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Icon(
       icon,
-      size: 14,
+      size: 16,
     );
   }
 }
