@@ -1,4 +1,4 @@
-import 'package:nahpu/models/setttings.dart';
+import 'package:nahpu/services/utility_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter/material.dart';

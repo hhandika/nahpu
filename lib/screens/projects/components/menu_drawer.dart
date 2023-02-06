@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/models/setttings.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:drift/drift.dart' as db;
@@ -10,6 +9,7 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/project_services.dart';
+import 'package:nahpu/services/utility_services.dart';
 
 class ProjectMenuDrawer extends ConsumerWidget {
   const ProjectMenuDrawer({Key? key}) : super(key: key);
@@ -96,7 +96,7 @@ class ProjectMenuDrawer extends ConsumerWidget {
                     ProjectCompanion(
                         lastModified: db.Value(getSystemDateTime())),
                   );
-              ProjectServices(ref).invalideProject();
+              ProjectServices(ref).invalidateProject();
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => const Home()),

@@ -230,7 +230,7 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
       await CoordinateQuery(ref.read(databaseProvider))
           .updateCoordinate(widget.coordinateId!, form);
     } catch (e) {
-      // Errror dialog box
+      // Error dialog box
       AlertDialog alert = AlertDialog(
         title: const Text('Error'),
         content: const Text('There was an error updating the coordinate'),

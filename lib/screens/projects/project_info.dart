@@ -74,7 +74,7 @@ class ProjectInfo extends StatelessWidget {
         ),
         RichText(
           text: TextSpan(
-            text: 'Modified: ',
+            text: 'Accessed: ',
             style: Theme.of(context).textTheme.titleSmall,
             children: [
               TextSpan(

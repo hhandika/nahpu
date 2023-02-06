@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 get uuid => const Uuid().v4();
 
+get defaultCatalog => 'general-mammals';
+
 class ProjectServices {
   ProjectServices(this.ref);
 
@@ -14,7 +16,7 @@ class ProjectServices {
     ref.invalidate(projectListProvider);
   }
 
-  void invalideProject() {
+  void invalidateProject() {
     ref.invalidate(projectListProvider);
     ref.invalidate(projectInfoProvider);
   }

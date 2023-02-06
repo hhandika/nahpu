@@ -57,8 +57,8 @@ class PersonnelList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final personnels = ref.watch(personnelListProvider);
-    return personnels.when(
+    final personnel = ref.watch(personnelListProvider);
+    return personnel.when(
       data: (data) {
         return ListView.builder(
           itemCount: data.length,
@@ -385,7 +385,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                       maxLength: 8,
                       decoration: InputDecoration(
                         labelText: 'Initials*',
-                        hintText: 'Enter intials (required for catalogers)',
+                        hintText: 'Enter initials (required for catalogers)',
                         errorText: ref
                             .watch(personnelFormNotifier)
                             .form
