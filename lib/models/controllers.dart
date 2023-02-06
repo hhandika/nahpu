@@ -32,6 +32,9 @@ class ProjectFormCtrModel {
     projectNameCtr.dispose();
     descriptionCtr.dispose();
     pICtr.dispose();
+    locationCtr.dispose();
+    startDateCtr.dispose();
+    endDateCtr.dispose();
   }
 }
 

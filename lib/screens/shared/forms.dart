@@ -95,7 +95,7 @@ class DeleteAlerts extends ConsumerWidget {
         ),
         TextButton(
           onPressed: () {
-            deleteProject(ref, projectUuid);
+            ProjectServices(ref).deleteProject(projectUuid);
             onDelete();
           },
           child: const Text('Delete', style: TextStyle(color: Colors.red)),

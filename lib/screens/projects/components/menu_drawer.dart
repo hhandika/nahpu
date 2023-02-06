@@ -9,6 +9,7 @@ import 'package:nahpu/screens/settings/project_settings.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/project_services.dart';
 
 class ProjectMenuDrawer extends ConsumerWidget {
   const ProjectMenuDrawer({Key? key}) : super(key: key);
@@ -90,12 +91,12 @@ class ProjectMenuDrawer extends ConsumerWidget {
             leading: const Icon(Icons.exit_to_app_rounded),
             title: const Text('Close project'),
             onTap: () {
-              ref.invalidate(projectListProvider);
               ref.read(databaseProvider).updateProjectEntry(
                     projectUuid,
                     ProjectCompanion(
                         lastModified: db.Value(getSystemDateTime())),
                   );
+              ProjectServices(ref).invalideProject();
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => const Home()),
@@ -117,7 +118,7 @@ class ProjectMenuDrawer extends ConsumerWidget {
                 builder: (BuildContext context) {
                   return DeleteAlerts(
                     projectUuid: projectUuid,
-                    onDelete: () => Navigator.push(
+                    onDelete: () => Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => const Home()),
                     ),

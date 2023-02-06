@@ -4,7 +4,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 get uuid => const Uuid().v4();
 
-void deleteProject(WidgetRef ref, String uuid) {
-  ref.read(databaseProvider).deleteProject(uuid);
-  ref.invalidate(projectListProvider);
+class ProjectServices {
+  ProjectServices(this.ref);
+
+  final WidgetRef ref;
+
+  void deleteProject(String uuid) {
+    ref.read(databaseProvider).deleteProject(uuid);
+    ref.invalidate(projectListProvider);
+  }
+
+  void invalideProject() {
+    ref.invalidate(projectListProvider);
+    ref.invalidate(projectInfoProvider);
+  }
 }
