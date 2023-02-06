@@ -130,10 +130,8 @@ class PersonnelSubtitle extends StatelessWidget {
       role != null
           ? TextSpan(children: [
               const WidgetSpan(
-                  child: Icon(
-                Icons.person_rounded,
-                size: 14,
-              )),
+                child: TileIcon(icon: Icons.person_rounded),
+              ),
               TextSpan(
                 text: '$role ',
                 style: Theme.of(context).textTheme.labelLarge,
@@ -144,10 +142,8 @@ class PersonnelSubtitle extends StatelessWidget {
           ? TextSpan(
               children: [
                 const WidgetSpan(
-                    child: Icon(
-                  Icons.business_rounded,
-                  size: 14,
-                )),
+                  child: TileIcon(icon: Icons.business_rounded),
+                ),
                 TextSpan(
                   text: '$affiliation',
                   style: Theme.of(context).textTheme.labelLarge,

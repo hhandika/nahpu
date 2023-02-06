@@ -319,25 +319,33 @@ class CoordinateSubtitle extends StatelessWidget {
     return RichText(
       text: TextSpan(
         children: [
-          const WidgetSpan(child: Icon(Icons.pin_drop_outlined, size: 14)),
+          const WidgetSpan(
+            child: TileIcon(icon: Icons.pin_drop_outlined),
+          ),
           TextSpan(
               style: Theme.of(context).textTheme.labelLarge,
               text:
                   '${coordinate.decimalLatitude}, ${coordinate.decimalLongitude}'),
           const TextSpan(text: '  '),
-          const WidgetSpan(child: Icon(Icons.landscape_outlined, size: 14)),
+          const WidgetSpan(
+            child: TileIcon(icon: Icons.landscape_outlined),
+          ),
           TextSpan(
             style: Theme.of(context).textTheme.labelLarge,
             text: '${coordinate.elevationInMeter} m',
           ),
           const TextSpan(text: '  '),
-          const WidgetSpan(child: Icon(Icons.circle_outlined, size: 14)),
+          const WidgetSpan(
+            child: TileIcon(icon: Icons.circle_outlined),
+          ),
           TextSpan(
             style: Theme.of(context).textTheme.labelLarge,
             text: '±${coordinate.uncertaintyInMeters} m',
           ),
           const TextSpan(text: '  '),
-          const WidgetSpan(child: Icon(Icons.map_outlined, size: 14)),
+          const WidgetSpan(
+            child: TileIcon(icon: Icons.map_outlined),
+          ),
           TextSpan(
             style: Theme.of(context).textTheme.labelLarge,
             text: '${coordinate.datum}',
