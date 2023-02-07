@@ -1,44 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/controllers.dart';
-import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
 import 'package:nahpu/screens/specimens/specimen_form.dart';
 import 'package:nahpu/screens/specimens/specimen_view.dart';
-import 'package:drift/drift.dart' as db;
-import 'package:nahpu/services/database/database.dart';
-import 'package:nahpu/providers/projects.dart';
-import 'package:nahpu/services/database/specimen_queries.dart';
 import 'package:nahpu/services/specimen_services.dart';
-import 'package:nahpu/services/project_services.dart';
 
 Future<void> createNewSpecimens(BuildContext context, WidgetRef ref) {
-  String projectUuid = ref.watch(projectUuidProvider);
-  CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
-  final String specimenUuid = uuid;
-  SpecimenQuery(ref.read(databaseProvider)).createSpecimen(SpecimenCompanion(
-    uuid: db.Value(specimenUuid),
-    projectUuid: db.Value(projectUuid),
-    taxonGroup: db.Value(matchCatFmtToTaxonGroup(catalogFmt)),
-  ));
-  switch (catalogFmt) {
-    case CatalogFmt.birds:
-      SpecimenServices(ref).createBirdSpecimen(specimenUuid);
-      break;
-    case CatalogFmt.bats:
-      SpecimenServices(ref).createMammalSpecimen(specimenUuid);
-      break;
-    case CatalogFmt.generalMammals:
-      SpecimenServices(ref).createMammalSpecimen(specimenUuid);
-      break;
-    default:
-      SpecimenServices(ref).createMammalSpecimen(specimenUuid);
-      break;
-  }
-
-  ref.invalidate(specimenEntryProvider);
+  String specimenUuid = SpecimenServices(ref).createSpecimen();
   return Navigator.of(context).push(
     MaterialPageRoute(
       builder: (_) => NewSpecimenForm(

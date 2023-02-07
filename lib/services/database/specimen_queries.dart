@@ -28,15 +28,25 @@ class SpecimenQuery extends DatabaseAccessor<Database>
         .go();
   }
 
-  Future<int> createBirdMeasurements(BirdMeasurementCompanion form) =>
-      into(birdMeasurement).insert(form);
-
-  Future<int> createMammalMeasurements(MammalMeasurementCompanion form) =>
-      into(mammalMeasurement).insert(form);
-
   Future updateSpecimenEntry(String uuid, SpecimenCompanion entry) {
     return (update(specimen)..where((t) => t.uuid.equals(uuid))).write(entry);
   }
+}
+
+class MammalSpecimenQuery extends DatabaseAccessor<Database>
+    with _$SpecimenQueryMixin {
+  MammalSpecimenQuery(Database db) : super(db);
+
+  Future<int> createMammalMeasurements(MammalMeasurementCompanion form) =>
+      into(mammalMeasurement).insert(form);
+}
+
+class BirdSpecimenQuery extends DatabaseAccessor<Database>
+    with _$SpecimenQueryMixin {
+  BirdSpecimenQuery(Database db) : super(db);
+
+  Future<int> createBirdMeasurements(BirdMeasurementCompanion form) =>
+      into(birdMeasurement).insert(form);
 
   Future updateBirdMeasurements(
       String specimenUuid, BirdMeasurementCompanion entry) {
