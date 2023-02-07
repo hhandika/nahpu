@@ -12,7 +12,7 @@
 import 'package:flutter_test/flutter_test.dart';
 
 // import 'package:nahpu/main.dart';
-import 'package:nahpu/providers/validation.dart';
+import 'package:nahpu/services/validation_services.dart';
 
 void main() {
   // testWidgets('Counter increments smoke test', (WidgetTester tester) async {
@@ -32,10 +32,14 @@ void main() {
   //   expect(find.text('1'), findsOneWidget);
   // });
   test('Test email is valid', () {
-    String email = 'test@gmail.com';
-    String email2 = 'test\$\$#%@gmail';
-    expect(email.isValidEmail, isTrue);
-    expect(email2.isValidEmail, isFalse);
+    String validEmail = 'test@gmail.com';
+    String invalidEmail = 'test\$\$#%@gmail';
+    String validEmailSubdomain = 'test@email.co.id';
+    String validEmailSubdomain2 = 'test@email.univ.co.id';
+    expect(validEmail.isValidEmail, isTrue);
+    expect(invalidEmail.isValidEmail, isFalse);
+    expect(validEmailSubdomain.isValidEmail, isTrue);
+    expect(validEmailSubdomain2.isValidEmail, isTrue);
   });
 
   test('Test validation for name', () {

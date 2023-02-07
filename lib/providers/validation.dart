@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/validation.dart';
 import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/services/validation_services.dart';
 
 final projectFormNotifier = StateNotifierProvider.autoDispose<
     ProjectFormValidationNotifier,
@@ -125,27 +126,5 @@ class PersonnelFormValidationNotifier
     }
 
     state = state.copyWith(form: form.copyWith(collNum: collNumField));
-  }
-}
-
-extension StringValidator on String {
-  bool get isValidCollNum {
-    final catNumRegex = RegExp(r'^[0-9]+$');
-    return catNumRegex.hasMatch(this);
-  }
-
-  bool get isValidProjectName {
-    final projectNameRegex = RegExp(r'^[a-zA-Z0-9-_ ]+$');
-    return projectNameRegex.hasMatch(this);
-  }
-
-  bool get isValidName {
-    final nameRegex = RegExp(r'^[\p{L}\p{Mn}\p{Pd}\s]+$', unicode: true);
-    return nameRegex.hasMatch(this);
-  }
-
-  bool get isValidEmail {
-    final emailRegex = RegExp(r'(^[a-zA-Z0-9_.]+[@]{1}[a-z0-9]+[\.][a-z]+$)');
-    return emailRegex.hasMatch(this);
   }
 }
