@@ -124,6 +124,8 @@ class CoordinateForms extends ConsumerStatefulWidget {
 }
 
 class CoordinateFormsState extends ConsumerState<CoordinateForms> {
+  final List<String> _datum = ['WGS84', 'NAD83', 'NAD27', 'Other'];
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -145,6 +147,8 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
                   labelText: 'Decimal Latitude',
                   hintText: 'Add a latitude',
                 ),
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
               ),
               TextFormField(
                 controller: widget.coordCtr.longitudeCtr,
@@ -152,6 +156,8 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
                   labelText: 'Decimal Longitude',
                   hintText: 'Add a longitude',
                 ),
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
               ),
               TextFormField(
                 controller: widget.coordCtr.elevationCtr,
@@ -159,13 +165,22 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
                   labelText: 'Elevation (m)',
                   hintText: 'Add an elevation',
                 ),
+                keyboardType: TextInputType.number,
               ),
-              TextFormField(
-                controller: widget.coordCtr.datumCtr,
+              DropdownButtonFormField(
+                value: widget.coordCtr.datumCtr.text.isEmpty
+                    ? _datum[0]
+                    : widget.coordCtr.datumCtr.text,
                 decoration: const InputDecoration(
                   labelText: 'Datum',
-                  hintText: 'Add a datum',
+                  hintText: 'Specify the datum',
                 ),
+                items: _datum
+                    .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                    .toList(),
+                onChanged: (value) {
+                  widget.coordCtr.datumCtr.text = value.toString();
+                },
               ),
               TextFormField(
                 controller: widget.coordCtr.uncertaintyCtr,
