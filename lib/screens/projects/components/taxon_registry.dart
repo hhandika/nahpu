@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/controllers.dart';
+import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
@@ -119,13 +120,18 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      TextFormField(
-                        controller: _ctr.taxonClassCtr,
-                        decoration: const InputDecoration(
-                          labelText: 'Class',
-                          hintText: 'Enter a class',
-                        ),
-                      ),
+                      DropdownButtonFormField(
+                          decoration: const InputDecoration(
+                            labelText: 'Class',
+                            hintText: 'Select a taxon class',
+                          ),
+                          items: supportedTaxonClass
+                              .map((e) =>
+                                  DropdownMenuItem(value: e, child: Text(e)))
+                              .toList(),
+                          onChanged: (value) {
+                            _ctr.taxonClassCtr.text = value ?? '';
+                          }),
                       TextFormField(
                         controller: _ctr.taxonOrderCtr,
                         decoration: const InputDecoration(
@@ -249,9 +255,13 @@ class TaxonList extends ConsumerWidget {
       itemCount: taxonList.length,
       itemBuilder: (context, index) {
         return ListTile(
-          title: Text(taxonList[index].taxonFamily ?? 'Unknown family'),
-          subtitle: Text(
+          title: Text(
               '${taxonList[index].genus} ${taxonList[index].specificEpithet}'),
+          subtitle: Text(
+            '${taxonList[index].taxonClass} '
+            '${taxonList[index].taxonOrder} '
+            '${taxonList[index].taxonFamily}',
+          ),
           trailing: IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () async {

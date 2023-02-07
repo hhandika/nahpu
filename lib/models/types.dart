@@ -10,6 +10,11 @@ enum SpecimenAge { adult, subadult, juvenile, unknown }
 
 enum CommonPopUpMenuItems { edit, delete }
 
+const List<String> supportedTaxonClass = [
+  'Aves',
+  'Mammalia',
+];
+
 SpecimenSex matchSpecimenSex(String? sex) {
   switch (sex) {
     case 'Male':
