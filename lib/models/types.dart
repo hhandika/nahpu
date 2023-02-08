@@ -6,63 +6,21 @@ enum CatalogFmt { generalMammals, birds, bats }
 
 enum CommonPopUpMenuItems { edit, delete }
 
+// Database read through index.
+// and stored as integer.
+// DON'T CHANGE ORDER!
 enum SpecimenSex { male, female, unknown }
+
+const List<String> specimenSexList = [
+  'Male',
+  'Female',
+  'Unknown',
+];
 
 const List<String> supportedTaxonClass = [
   'Aves',
   'Mammalia',
 ];
-
-// We encode to int to save space in the database
-int matchSpecimenSexEncoding(SpecimenSex sex) {
-  switch (sex) {
-    case SpecimenSex.male:
-      return 0;
-    case SpecimenSex.female:
-      return 1;
-    default:
-      return 2; // Unknown
-  }
-}
-
-SpecimenSex? matchEncodingToSpecimenSex(int? sexCode) {
-  switch (sexCode) {
-    case null:
-      return null;
-    case 0:
-      return SpecimenSex.male;
-    case 1:
-      return SpecimenSex.female;
-    default:
-      return SpecimenSex.unknown;
-  }
-}
-
-int matchSpecimenAge(String? age) {
-  switch (age) {
-    case 'Adult':
-      return 0;
-    case 'Subadult':
-      return 1;
-    case 'Juvenile':
-      return 2;
-    default:
-      return 3;
-  }
-}
-
-String matchEncodingToAge(int ageCode) {
-  switch (ageCode) {
-    case 0:
-      return 'Adult';
-    case 1:
-      return 'Subadult';
-    case 2:
-      return 'Juvenile';
-    default:
-      return 'Unknown';
-  }
-}
 
 CatalogFmt matchTaxonGroupToCatFmt(String? taxonGroup) {
   switch (taxonGroup) {

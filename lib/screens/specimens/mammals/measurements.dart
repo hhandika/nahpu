@@ -7,6 +7,7 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/specimen_services.dart';
+import 'package:nahpu/models/mammals.dart';
 import 'package:drift/drift.dart' as db;
 
 class MammalMeasurementForms extends ConsumerStatefulWidget {
@@ -157,20 +158,12 @@ class MammalMeasurementFormsState
                   labelText: 'Accuracy',
                   hintText: 'Select measurement accuracy',
                 ),
-                items: const [
-                  DropdownMenuItem(
-                    value: 'Accurate',
-                    child: Text('Accurate'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Tail cropped',
-                    child: Text('Tail cropped'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Partially eaten',
-                    child: Text('Partially eaten'),
-                  ),
-                ],
+                items: accuracyList
+                    .map((e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(e),
+                        ))
+                    .toList(),
                 onChanged: (String? newValue) {
                   ctr.accuracyCtr = newValue;
                   SpecimenServices(ref).updateMammalMeasurement(
@@ -188,25 +181,18 @@ class MammalMeasurementFormsState
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
               DropdownButtonFormField<SpecimenSex>(
-                  value: matchEncodingToSpecimenSex(ctr.sexCtr),
+                  value: _getSpecimenSex(),
                   decoration: const InputDecoration(
                     labelText: 'Sex',
                     hintText: 'Choose one',
                   ),
-                  items: const [
-                    DropdownMenuItem(
-                      value: SpecimenSex.male,
-                      child: Text('Male'),
-                    ),
-                    DropdownMenuItem(
-                      value: SpecimenSex.female,
-                      child: Text('Female'),
-                    ),
-                    DropdownMenuItem(
-                      value: SpecimenSex.unknown,
-                      child: Text('Unknown'),
-                    ),
-                  ],
+                  items: specimenSexList
+                      .map((e) => DropdownMenuItem(
+                            value:
+                                SpecimenSex.values[specimenSexList.indexOf(e)],
+                            child: Text(e),
+                          ))
+                      .toList(),
                   onChanged: (SpecimenSex? newValue) {
                     setState(() {
                       if (newValue != null) {
@@ -214,70 +200,88 @@ class MammalMeasurementFormsState
                           widget.specimenUuid,
                           MammalMeasurementCompanion(
                             sex: db.Value(
-                              matchSpecimenSexEncoding(newValue),
+                              newValue.index,
                             ),
                           ),
                         );
                       }
                     });
                   }),
-              DropdownButtonFormField<int>(
-                  value: ctr.ageCtr,
+              DropdownButtonFormField<SpecimenAge>(
+                  value: _getSpecimenAge(),
                   decoration: const InputDecoration(
                     labelText: 'Age',
                     hintText: 'Select specimen age',
                   ),
-                  items: const [
-                    DropdownMenuItem(
-                      value: 0,
-                      child: Text('Adult'),
-                    ),
-                    DropdownMenuItem(
-                      value: 1,
-                      child: Text('Sub-adult'),
-                    ),
-                    DropdownMenuItem(
-                      value: 2,
-                      child: Text('Juvenile'),
-                    ),
-                    DropdownMenuItem(
-                      value: 3,
-                      child: Text('Unknown'),
-                    ),
-                  ],
-                  onChanged: (int? newValue) {
-                    ctr.ageCtr = newValue;
-                    SpecimenServices(ref).updateMammalMeasurement(
-                      widget.specimenUuid,
-                      MammalMeasurementCompanion(
-                        age: db.Value(newValue),
-                      ),
-                    );
+                  items: specimenAgeList
+                      .map((e) => DropdownMenuItem(
+                            value:
+                                SpecimenAge.values[specimenAgeList.indexOf(e)],
+                            child: Text(e),
+                          ))
+                      .toList(),
+                  onChanged: (SpecimenAge? newValue) {
+                    setState(() {
+                      if (newValue != null) {
+                        ctr.ageCtr = newValue.index;
+                        SpecimenServices(ref).updateMammalMeasurement(
+                          widget.specimenUuid,
+                          MammalMeasurementCompanion(
+                            age: db.Value(
+                              newValue.index,
+                            ),
+                          ),
+                        );
+                      }
+                    });
                   }),
             ],
           ),
           MaleGonadForm(
-            specimenSex: matchEncodingToSpecimenSex(ctr.sexCtr),
+            specimenSex: _getSpecimenSex(),
             useHorizontalLayout: widget.useHorizontalLayout,
             ctr: ctr,
           ),
           FemaleGonadForm(
-            specimenSex: matchEncodingToSpecimenSex(ctr.sexCtr),
+            specimenSex: _getSpecimenSex(),
             useHorizontalLayout: widget.useHorizontalLayout,
             ctr: ctr,
           ),
-          const Padding(
-            padding: EdgeInsets.all(5),
+          Padding(
+            padding: const EdgeInsets.all(5),
             child: CommonTextField(
+              controller: ctr.remarksCtr,
               maxLines: 5,
               labelText: 'Remarks',
               hintText: 'Write notes about the measurements (optional)',
               isLastField: true,
+              onChanged: (value) {
+                SpecimenServices(ref).updateMammalMeasurement(
+                  widget.specimenUuid,
+                  MammalMeasurementCompanion(
+                    remark: db.Value(value),
+                  ),
+                );
+              },
             ),
           ),
         ],
       ),
     );
+  }
+
+  SpecimenSex? _getSpecimenSex() {
+    if (ctr.sexCtr != null) {
+      return SpecimenSex.values[ctr.sexCtr!];
+    }
+    return null;
+  }
+
+  SpecimenAge? _getSpecimenAge() {
+    if (ctr.ageCtr != null) {
+      return SpecimenAge.values[ctr.ageCtr!];
+    }
+    return null;
   }
 
   Future<void> _updateCtr(String specimenUuid) async {

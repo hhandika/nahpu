@@ -7386,6 +7386,13 @@ class MammalMeasurement extends Table
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _accuracySpecifyMeta =
+      const VerificationMeta('accuracySpecify');
+  late final GeneratedColumn<String> accuracySpecify = GeneratedColumn<String>(
+      'accuracySpecify', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _sexMeta = const VerificationMeta('sex');
   late final GeneratedColumn<int> sex = GeneratedColumn<int>(
       'sex', aliasedName, true,
@@ -7400,9 +7407,9 @@ class MammalMeasurement extends Table
       $customConstraints: '');
   static const VerificationMeta _testisPositionMeta =
       const VerificationMeta('testisPosition');
-  late final GeneratedColumn<String> testisPosition = GeneratedColumn<String>(
+  late final GeneratedColumn<int> testisPosition = GeneratedColumn<int>(
       'testisPosition', aliasedName, true,
-      type: DriftSqlType.string,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _testisLengthMeta =
@@ -7421,18 +7428,18 @@ class MammalMeasurement extends Table
       $customConstraints: '');
   static const VerificationMeta _epididymisAppearanceMeta =
       const VerificationMeta('epididymisAppearance');
-  late final GeneratedColumn<String> epididymisAppearance =
-      GeneratedColumn<String>('epididymisAppearance', aliasedName, true,
-          type: DriftSqlType.string,
-          requiredDuringInsert: false,
-          $customConstraints: '');
+  late final GeneratedColumn<int> epididymisAppearance = GeneratedColumn<int>(
+      'epididymisAppearance', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _reproductiveStageMeta =
       const VerificationMeta('reproductiveStage');
-  late final GeneratedColumn<String> reproductiveStage =
-      GeneratedColumn<String>('reproductiveStage', aliasedName, true,
-          type: DriftSqlType.string,
-          requiredDuringInsert: false,
-          $customConstraints: '');
+  late final GeneratedColumn<int> reproductiveStage = GeneratedColumn<int>(
+      'reproductiveStage', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _leftPlacentalScarsMeta =
       const VerificationMeta('leftPlacentalScars');
   late final GeneratedColumn<int> leftPlacentalScars = GeneratedColumn<int>(
@@ -7477,16 +7484,16 @@ class MammalMeasurement extends Table
       $customConstraints: '');
   static const VerificationMeta _vaginaOpeningMeta =
       const VerificationMeta('vaginaOpening');
-  late final GeneratedColumn<String> vaginaOpening = GeneratedColumn<String>(
+  late final GeneratedColumn<int> vaginaOpening = GeneratedColumn<int>(
       'vaginaOpening', aliasedName, true,
-      type: DriftSqlType.string,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _pubicSymphysisMeta =
       const VerificationMeta('pubicSymphysis');
-  late final GeneratedColumn<String> pubicSymphysis = GeneratedColumn<String>(
+  late final GeneratedColumn<int> pubicSymphysis = GeneratedColumn<int>(
       'pubicSymphysis', aliasedName, true,
-      type: DriftSqlType.string,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _embryoLeftCountMeta =
@@ -7526,6 +7533,7 @@ class MammalMeasurement extends Table
         forearm,
         weight,
         accuracy,
+        accuracySpecify,
         sex,
         age,
         testisPosition,
@@ -7597,6 +7605,12 @@ class MammalMeasurement extends Table
     if (data.containsKey('accuracy')) {
       context.handle(_accuracyMeta,
           accuracy.isAcceptableOrUnknown(data['accuracy']!, _accuracyMeta));
+    }
+    if (data.containsKey('accuracySpecify')) {
+      context.handle(
+          _accuracySpecifyMeta,
+          accuracySpecify.isAcceptableOrUnknown(
+              data['accuracySpecify']!, _accuracySpecifyMeta));
     }
     if (data.containsKey('sex')) {
       context.handle(
@@ -7729,20 +7743,22 @@ class MammalMeasurement extends Table
           .read(DriftSqlType.int, data['${effectivePrefix}weight']),
       accuracy: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}accuracy']),
+      accuracySpecify: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}accuracySpecify']),
       sex: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}sex']),
       age: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}age']),
       testisPosition: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}testisPosition']),
+          .read(DriftSqlType.int, data['${effectivePrefix}testisPosition']),
       testisLength: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}testisLength']),
       testisWidth: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}testisWidth']),
       epididymisAppearance: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}epididymisAppearance']),
-      reproductiveStage: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}reproductiveStage']),
+          DriftSqlType.int, data['${effectivePrefix}epididymisAppearance']),
+      reproductiveStage: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}reproductiveStage']),
       leftPlacentalScars: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}leftPlacentalScars']),
       rightPlacentalScars: attachedDatabase.typeMapping.read(
@@ -7756,9 +7772,9 @@ class MammalMeasurement extends Table
       mammaeAbdominalCount: attachedDatabase.typeMapping.read(
           DriftSqlType.int, data['${effectivePrefix}mammaeAbdominalCount']),
       vaginaOpening: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}vaginaOpening']),
+          .read(DriftSqlType.int, data['${effectivePrefix}vaginaOpening']),
       pubicSymphysis: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}pubicSymphysis']),
+          .read(DriftSqlType.int, data['${effectivePrefix}pubicSymphysis']),
       embryoLeftCount: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}embryoLeftCount']),
       embryoRightCount: attachedDatabase.typeMapping
@@ -7792,21 +7808,22 @@ class MammalMeasurementData extends DataClass
   final int? forearm;
   final int? weight;
   final String? accuracy;
+  final String? accuracySpecify;
   final int? sex;
   final int? age;
-  final String? testisPosition;
+  final int? testisPosition;
   final int? testisLength;
   final int? testisWidth;
-  final String? epididymisAppearance;
-  final String? reproductiveStage;
+  final int? epididymisAppearance;
+  final int? reproductiveStage;
   final int? leftPlacentalScars;
   final int? rightPlacentalScars;
   final int? mammaeCondition;
   final int? mammaeInguinalCount;
   final int? mammaeAxillaryCount;
   final int? mammaeAbdominalCount;
-  final String? vaginaOpening;
-  final String? pubicSymphysis;
+  final int? vaginaOpening;
+  final int? pubicSymphysis;
   final int? embryoLeftCount;
   final int? embryoRightCount;
   final int? embryoCR;
@@ -7820,6 +7837,7 @@ class MammalMeasurementData extends DataClass
       this.forearm,
       this.weight,
       this.accuracy,
+      this.accuracySpecify,
       this.sex,
       this.age,
       this.testisPosition,
@@ -7864,6 +7882,9 @@ class MammalMeasurementData extends DataClass
     if (!nullToAbsent || accuracy != null) {
       map['accuracy'] = Variable<String>(accuracy);
     }
+    if (!nullToAbsent || accuracySpecify != null) {
+      map['accuracySpecify'] = Variable<String>(accuracySpecify);
+    }
     if (!nullToAbsent || sex != null) {
       map['sex'] = Variable<int>(sex);
     }
@@ -7871,7 +7892,7 @@ class MammalMeasurementData extends DataClass
       map['age'] = Variable<int>(age);
     }
     if (!nullToAbsent || testisPosition != null) {
-      map['testisPosition'] = Variable<String>(testisPosition);
+      map['testisPosition'] = Variable<int>(testisPosition);
     }
     if (!nullToAbsent || testisLength != null) {
       map['testisLength'] = Variable<int>(testisLength);
@@ -7880,10 +7901,10 @@ class MammalMeasurementData extends DataClass
       map['testisWidth'] = Variable<int>(testisWidth);
     }
     if (!nullToAbsent || epididymisAppearance != null) {
-      map['epididymisAppearance'] = Variable<String>(epididymisAppearance);
+      map['epididymisAppearance'] = Variable<int>(epididymisAppearance);
     }
     if (!nullToAbsent || reproductiveStage != null) {
-      map['reproductiveStage'] = Variable<String>(reproductiveStage);
+      map['reproductiveStage'] = Variable<int>(reproductiveStage);
     }
     if (!nullToAbsent || leftPlacentalScars != null) {
       map['leftPlacentalScars'] = Variable<int>(leftPlacentalScars);
@@ -7904,10 +7925,10 @@ class MammalMeasurementData extends DataClass
       map['mammaeAbdominalCount'] = Variable<int>(mammaeAbdominalCount);
     }
     if (!nullToAbsent || vaginaOpening != null) {
-      map['vaginaOpening'] = Variable<String>(vaginaOpening);
+      map['vaginaOpening'] = Variable<int>(vaginaOpening);
     }
     if (!nullToAbsent || pubicSymphysis != null) {
-      map['pubicSymphysis'] = Variable<String>(pubicSymphysis);
+      map['pubicSymphysis'] = Variable<int>(pubicSymphysis);
     }
     if (!nullToAbsent || embryoLeftCount != null) {
       map['embryoLeftCount'] = Variable<int>(embryoLeftCount);
@@ -7947,6 +7968,9 @@ class MammalMeasurementData extends DataClass
       accuracy: accuracy == null && nullToAbsent
           ? const Value.absent()
           : Value(accuracy),
+      accuracySpecify: accuracySpecify == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accuracySpecify),
       sex: sex == null && nullToAbsent ? const Value.absent() : Value(sex),
       age: age == null && nullToAbsent ? const Value.absent() : Value(age),
       testisPosition: testisPosition == null && nullToAbsent
@@ -8014,15 +8038,15 @@ class MammalMeasurementData extends DataClass
       forearm: serializer.fromJson<int?>(json['forearm']),
       weight: serializer.fromJson<int?>(json['weight']),
       accuracy: serializer.fromJson<String?>(json['accuracy']),
+      accuracySpecify: serializer.fromJson<String?>(json['accuracySpecify']),
       sex: serializer.fromJson<int?>(json['sex']),
       age: serializer.fromJson<int?>(json['age']),
-      testisPosition: serializer.fromJson<String?>(json['testisPosition']),
+      testisPosition: serializer.fromJson<int?>(json['testisPosition']),
       testisLength: serializer.fromJson<int?>(json['testisLength']),
       testisWidth: serializer.fromJson<int?>(json['testisWidth']),
       epididymisAppearance:
-          serializer.fromJson<String?>(json['epididymisAppearance']),
-      reproductiveStage:
-          serializer.fromJson<String?>(json['reproductiveStage']),
+          serializer.fromJson<int?>(json['epididymisAppearance']),
+      reproductiveStage: serializer.fromJson<int?>(json['reproductiveStage']),
       leftPlacentalScars: serializer.fromJson<int?>(json['leftPlacentalScars']),
       rightPlacentalScars:
           serializer.fromJson<int?>(json['rightPlacentalScars']),
@@ -8033,8 +8057,8 @@ class MammalMeasurementData extends DataClass
           serializer.fromJson<int?>(json['mammaeAxillaryCount']),
       mammaeAbdominalCount:
           serializer.fromJson<int?>(json['mammaeAbdominalCount']),
-      vaginaOpening: serializer.fromJson<String?>(json['vaginaOpening']),
-      pubicSymphysis: serializer.fromJson<String?>(json['pubicSymphysis']),
+      vaginaOpening: serializer.fromJson<int?>(json['vaginaOpening']),
+      pubicSymphysis: serializer.fromJson<int?>(json['pubicSymphysis']),
       embryoLeftCount: serializer.fromJson<int?>(json['embryoLeftCount']),
       embryoRightCount: serializer.fromJson<int?>(json['embryoRightCount']),
       embryoCR: serializer.fromJson<int?>(json['embryoCR']),
@@ -8053,21 +8077,22 @@ class MammalMeasurementData extends DataClass
       'forearm': serializer.toJson<int?>(forearm),
       'weight': serializer.toJson<int?>(weight),
       'accuracy': serializer.toJson<String?>(accuracy),
+      'accuracySpecify': serializer.toJson<String?>(accuracySpecify),
       'sex': serializer.toJson<int?>(sex),
       'age': serializer.toJson<int?>(age),
-      'testisPosition': serializer.toJson<String?>(testisPosition),
+      'testisPosition': serializer.toJson<int?>(testisPosition),
       'testisLength': serializer.toJson<int?>(testisLength),
       'testisWidth': serializer.toJson<int?>(testisWidth),
-      'epididymisAppearance': serializer.toJson<String?>(epididymisAppearance),
-      'reproductiveStage': serializer.toJson<String?>(reproductiveStage),
+      'epididymisAppearance': serializer.toJson<int?>(epididymisAppearance),
+      'reproductiveStage': serializer.toJson<int?>(reproductiveStage),
       'leftPlacentalScars': serializer.toJson<int?>(leftPlacentalScars),
       'rightPlacentalScars': serializer.toJson<int?>(rightPlacentalScars),
       'mammaeCondition': serializer.toJson<int?>(mammaeCondition),
       'mammaeInguinalCount': serializer.toJson<int?>(mammaeInguinalCount),
       'mammaeAxillaryCount': serializer.toJson<int?>(mammaeAxillaryCount),
       'mammaeAbdominalCount': serializer.toJson<int?>(mammaeAbdominalCount),
-      'vaginaOpening': serializer.toJson<String?>(vaginaOpening),
-      'pubicSymphysis': serializer.toJson<String?>(pubicSymphysis),
+      'vaginaOpening': serializer.toJson<int?>(vaginaOpening),
+      'pubicSymphysis': serializer.toJson<int?>(pubicSymphysis),
       'embryoLeftCount': serializer.toJson<int?>(embryoLeftCount),
       'embryoRightCount': serializer.toJson<int?>(embryoRightCount),
       'embryoCR': serializer.toJson<int?>(embryoCR),
@@ -8084,21 +8109,22 @@ class MammalMeasurementData extends DataClass
           Value<int?> forearm = const Value.absent(),
           Value<int?> weight = const Value.absent(),
           Value<String?> accuracy = const Value.absent(),
+          Value<String?> accuracySpecify = const Value.absent(),
           Value<int?> sex = const Value.absent(),
           Value<int?> age = const Value.absent(),
-          Value<String?> testisPosition = const Value.absent(),
+          Value<int?> testisPosition = const Value.absent(),
           Value<int?> testisLength = const Value.absent(),
           Value<int?> testisWidth = const Value.absent(),
-          Value<String?> epididymisAppearance = const Value.absent(),
-          Value<String?> reproductiveStage = const Value.absent(),
+          Value<int?> epididymisAppearance = const Value.absent(),
+          Value<int?> reproductiveStage = const Value.absent(),
           Value<int?> leftPlacentalScars = const Value.absent(),
           Value<int?> rightPlacentalScars = const Value.absent(),
           Value<int?> mammaeCondition = const Value.absent(),
           Value<int?> mammaeInguinalCount = const Value.absent(),
           Value<int?> mammaeAxillaryCount = const Value.absent(),
           Value<int?> mammaeAbdominalCount = const Value.absent(),
-          Value<String?> vaginaOpening = const Value.absent(),
-          Value<String?> pubicSymphysis = const Value.absent(),
+          Value<int?> vaginaOpening = const Value.absent(),
+          Value<int?> pubicSymphysis = const Value.absent(),
           Value<int?> embryoLeftCount = const Value.absent(),
           Value<int?> embryoRightCount = const Value.absent(),
           Value<int?> embryoCR = const Value.absent(),
@@ -8113,6 +8139,9 @@ class MammalMeasurementData extends DataClass
         forearm: forearm.present ? forearm.value : this.forearm,
         weight: weight.present ? weight.value : this.weight,
         accuracy: accuracy.present ? accuracy.value : this.accuracy,
+        accuracySpecify: accuracySpecify.present
+            ? accuracySpecify.value
+            : this.accuracySpecify,
         sex: sex.present ? sex.value : this.sex,
         age: age.present ? age.value : this.age,
         testisPosition:
@@ -8168,6 +8197,7 @@ class MammalMeasurementData extends DataClass
           ..write('forearm: $forearm, ')
           ..write('weight: $weight, ')
           ..write('accuracy: $accuracy, ')
+          ..write('accuracySpecify: $accuracySpecify, ')
           ..write('sex: $sex, ')
           ..write('age: $age, ')
           ..write('testisPosition: $testisPosition, ')
@@ -8201,6 +8231,7 @@ class MammalMeasurementData extends DataClass
         forearm,
         weight,
         accuracy,
+        accuracySpecify,
         sex,
         age,
         testisPosition,
@@ -8233,6 +8264,7 @@ class MammalMeasurementData extends DataClass
           other.forearm == this.forearm &&
           other.weight == this.weight &&
           other.accuracy == this.accuracy &&
+          other.accuracySpecify == this.accuracySpecify &&
           other.sex == this.sex &&
           other.age == this.age &&
           other.testisPosition == this.testisPosition &&
@@ -8264,21 +8296,22 @@ class MammalMeasurementCompanion
   final Value<int?> forearm;
   final Value<int?> weight;
   final Value<String?> accuracy;
+  final Value<String?> accuracySpecify;
   final Value<int?> sex;
   final Value<int?> age;
-  final Value<String?> testisPosition;
+  final Value<int?> testisPosition;
   final Value<int?> testisLength;
   final Value<int?> testisWidth;
-  final Value<String?> epididymisAppearance;
-  final Value<String?> reproductiveStage;
+  final Value<int?> epididymisAppearance;
+  final Value<int?> reproductiveStage;
   final Value<int?> leftPlacentalScars;
   final Value<int?> rightPlacentalScars;
   final Value<int?> mammaeCondition;
   final Value<int?> mammaeInguinalCount;
   final Value<int?> mammaeAxillaryCount;
   final Value<int?> mammaeAbdominalCount;
-  final Value<String?> vaginaOpening;
-  final Value<String?> pubicSymphysis;
+  final Value<int?> vaginaOpening;
+  final Value<int?> pubicSymphysis;
   final Value<int?> embryoLeftCount;
   final Value<int?> embryoRightCount;
   final Value<int?> embryoCR;
@@ -8292,6 +8325,7 @@ class MammalMeasurementCompanion
     this.forearm = const Value.absent(),
     this.weight = const Value.absent(),
     this.accuracy = const Value.absent(),
+    this.accuracySpecify = const Value.absent(),
     this.sex = const Value.absent(),
     this.age = const Value.absent(),
     this.testisPosition = const Value.absent(),
@@ -8321,6 +8355,7 @@ class MammalMeasurementCompanion
     this.forearm = const Value.absent(),
     this.weight = const Value.absent(),
     this.accuracy = const Value.absent(),
+    this.accuracySpecify = const Value.absent(),
     this.sex = const Value.absent(),
     this.age = const Value.absent(),
     this.testisPosition = const Value.absent(),
@@ -8350,21 +8385,22 @@ class MammalMeasurementCompanion
     Expression<int>? forearm,
     Expression<int>? weight,
     Expression<String>? accuracy,
+    Expression<String>? accuracySpecify,
     Expression<int>? sex,
     Expression<int>? age,
-    Expression<String>? testisPosition,
+    Expression<int>? testisPosition,
     Expression<int>? testisLength,
     Expression<int>? testisWidth,
-    Expression<String>? epididymisAppearance,
-    Expression<String>? reproductiveStage,
+    Expression<int>? epididymisAppearance,
+    Expression<int>? reproductiveStage,
     Expression<int>? leftPlacentalScars,
     Expression<int>? rightPlacentalScars,
     Expression<int>? mammaeCondition,
     Expression<int>? mammaeInguinalCount,
     Expression<int>? mammaeAxillaryCount,
     Expression<int>? mammaeAbdominalCount,
-    Expression<String>? vaginaOpening,
-    Expression<String>? pubicSymphysis,
+    Expression<int>? vaginaOpening,
+    Expression<int>? pubicSymphysis,
     Expression<int>? embryoLeftCount,
     Expression<int>? embryoRightCount,
     Expression<int>? embryoCR,
@@ -8379,6 +8415,7 @@ class MammalMeasurementCompanion
       if (forearm != null) 'forearm': forearm,
       if (weight != null) 'weight': weight,
       if (accuracy != null) 'accuracy': accuracy,
+      if (accuracySpecify != null) 'accuracySpecify': accuracySpecify,
       if (sex != null) 'sex': sex,
       if (age != null) 'age': age,
       if (testisPosition != null) 'testisPosition': testisPosition,
@@ -8415,21 +8452,22 @@ class MammalMeasurementCompanion
       Value<int?>? forearm,
       Value<int?>? weight,
       Value<String?>? accuracy,
+      Value<String?>? accuracySpecify,
       Value<int?>? sex,
       Value<int?>? age,
-      Value<String?>? testisPosition,
+      Value<int?>? testisPosition,
       Value<int?>? testisLength,
       Value<int?>? testisWidth,
-      Value<String?>? epididymisAppearance,
-      Value<String?>? reproductiveStage,
+      Value<int?>? epididymisAppearance,
+      Value<int?>? reproductiveStage,
       Value<int?>? leftPlacentalScars,
       Value<int?>? rightPlacentalScars,
       Value<int?>? mammaeCondition,
       Value<int?>? mammaeInguinalCount,
       Value<int?>? mammaeAxillaryCount,
       Value<int?>? mammaeAbdominalCount,
-      Value<String?>? vaginaOpening,
-      Value<String?>? pubicSymphysis,
+      Value<int?>? vaginaOpening,
+      Value<int?>? pubicSymphysis,
       Value<int?>? embryoLeftCount,
       Value<int?>? embryoRightCount,
       Value<int?>? embryoCR,
@@ -8443,6 +8481,7 @@ class MammalMeasurementCompanion
       forearm: forearm ?? this.forearm,
       weight: weight ?? this.weight,
       accuracy: accuracy ?? this.accuracy,
+      accuracySpecify: accuracySpecify ?? this.accuracySpecify,
       sex: sex ?? this.sex,
       age: age ?? this.age,
       testisPosition: testisPosition ?? this.testisPosition,
@@ -8492,6 +8531,9 @@ class MammalMeasurementCompanion
     if (accuracy.present) {
       map['accuracy'] = Variable<String>(accuracy.value);
     }
+    if (accuracySpecify.present) {
+      map['accuracySpecify'] = Variable<String>(accuracySpecify.value);
+    }
     if (sex.present) {
       map['sex'] = Variable<int>(sex.value);
     }
@@ -8499,7 +8541,7 @@ class MammalMeasurementCompanion
       map['age'] = Variable<int>(age.value);
     }
     if (testisPosition.present) {
-      map['testisPosition'] = Variable<String>(testisPosition.value);
+      map['testisPosition'] = Variable<int>(testisPosition.value);
     }
     if (testisLength.present) {
       map['testisLength'] = Variable<int>(testisLength.value);
@@ -8508,11 +8550,10 @@ class MammalMeasurementCompanion
       map['testisWidth'] = Variable<int>(testisWidth.value);
     }
     if (epididymisAppearance.present) {
-      map['epididymisAppearance'] =
-          Variable<String>(epididymisAppearance.value);
+      map['epididymisAppearance'] = Variable<int>(epididymisAppearance.value);
     }
     if (reproductiveStage.present) {
-      map['reproductiveStage'] = Variable<String>(reproductiveStage.value);
+      map['reproductiveStage'] = Variable<int>(reproductiveStage.value);
     }
     if (leftPlacentalScars.present) {
       map['leftPlacentalScars'] = Variable<int>(leftPlacentalScars.value);
@@ -8533,10 +8574,10 @@ class MammalMeasurementCompanion
       map['mammaeAbdominalCount'] = Variable<int>(mammaeAbdominalCount.value);
     }
     if (vaginaOpening.present) {
-      map['vaginaOpening'] = Variable<String>(vaginaOpening.value);
+      map['vaginaOpening'] = Variable<int>(vaginaOpening.value);
     }
     if (pubicSymphysis.present) {
-      map['pubicSymphysis'] = Variable<String>(pubicSymphysis.value);
+      map['pubicSymphysis'] = Variable<int>(pubicSymphysis.value);
     }
     if (embryoLeftCount.present) {
       map['embryoLeftCount'] = Variable<int>(embryoLeftCount.value);
@@ -8564,6 +8605,7 @@ class MammalMeasurementCompanion
           ..write('forearm: $forearm, ')
           ..write('weight: $weight, ')
           ..write('accuracy: $accuracy, ')
+          ..write('accuracySpecify: $accuracySpecify, ')
           ..write('sex: $sex, ')
           ..write('age: $age, ')
           ..write('testisPosition: $testisPosition, ')
