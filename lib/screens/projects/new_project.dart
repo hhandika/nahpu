@@ -86,6 +86,7 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                       labelText: 'Principal Investigator',
                       hintText: 'Enter PI name of the project (optional)',
                     ),
+                    const TaxonGroupFields(),
                     ProjectFormField(
                       controller: projectCtr.pICtr,
                       labelText: 'Location',
@@ -101,7 +102,6 @@ class NewProjectFormState extends ConsumerState<CreateProjectForm> {
                       labelText: 'Project end date',
                       hintText: 'Enter end date of the project (optional)',
                     ),
-                    const TaxonGroupFields(),
                     const SizedBox(height: 20),
                     Wrap(spacing: 10, children: [
                       SecondaryButton(

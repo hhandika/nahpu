@@ -18,7 +18,7 @@ class TaxonGroupFields extends ConsumerWidget {
     CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
     return DropdownButtonFormField(
       decoration: const InputDecoration(
-        labelText: 'Taxon Group',
+        labelText: 'Main Taxon Group',
         hintText: 'Choose a taxon group',
       ),
       items: [
