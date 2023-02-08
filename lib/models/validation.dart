@@ -11,23 +11,16 @@ class ProjectFormState with _$ProjectFormState {
 @freezed
 class ProjectFormValidation with _$ProjectFormValidation {
   const ProjectFormValidation._();
-  const factory ProjectFormValidation(
-      {required ProjectFormField projectName,
-      required ProjectFormField collName,
-      required ProjectFormField email,
-      required ProjectFormField collNum}) = _ProjectFormValidation;
+  const factory ProjectFormValidation({required ProjectFormField projectName}) =
+      _ProjectFormValidation;
 
   factory ProjectFormValidation.empty() => ProjectFormValidation(
-      projectName: ProjectFormField(value: null, errMsg: null),
-      collName: ProjectFormField(value: null, errMsg: null),
-      email: ProjectFormField(value: null, errMsg: null),
-      collNum: ProjectFormField(value: null, errMsg: null));
+        projectName: ProjectFormField(value: null, errMsg: null),
+      );
 
   factory ProjectFormValidation.isValid() => ProjectFormValidation(
-      projectName: ProjectFormField(value: null, errMsg: null, isValid: true),
-      collName: ProjectFormField(value: null, errMsg: null, isValid: true),
-      email: ProjectFormField(value: null, errMsg: null, isValid: true),
-      collNum: ProjectFormField(value: null, errMsg: null, isValid: true));
+        projectName: ProjectFormField(value: null, errMsg: null, isValid: true),
+      );
 
   bool get isValid => projectName.isValid;
 }

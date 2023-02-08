@@ -148,9 +148,6 @@ abstract class _ProjectFormState implements ProjectFormState {
 /// @nodoc
 mixin _$ProjectFormValidation {
   ProjectFormField get projectName => throw _privateConstructorUsedError;
-  ProjectFormField get collName => throw _privateConstructorUsedError;
-  ProjectFormField get email => throw _privateConstructorUsedError;
-  ProjectFormField get collNum => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ProjectFormValidationCopyWith<ProjectFormValidation> get copyWith =>
@@ -163,16 +160,9 @@ abstract class $ProjectFormValidationCopyWith<$Res> {
           $Res Function(ProjectFormValidation) then) =
       _$ProjectFormValidationCopyWithImpl<$Res, ProjectFormValidation>;
   @useResult
-  $Res call(
-      {ProjectFormField projectName,
-      ProjectFormField collName,
-      ProjectFormField email,
-      ProjectFormField collNum});
+  $Res call({ProjectFormField projectName});
 
   $ProjectFormFieldCopyWith<$Res> get projectName;
-  $ProjectFormFieldCopyWith<$Res> get collName;
-  $ProjectFormFieldCopyWith<$Res> get email;
-  $ProjectFormFieldCopyWith<$Res> get collNum;
 }
 
 /// @nodoc
@@ -190,26 +180,11 @@ class _$ProjectFormValidationCopyWithImpl<$Res,
   @override
   $Res call({
     Object? projectName = null,
-    Object? collName = null,
-    Object? email = null,
-    Object? collNum = null,
   }) {
     return _then(_value.copyWith(
       projectName: null == projectName
           ? _value.projectName
           : projectName // ignore: cast_nullable_to_non_nullable
-              as ProjectFormField,
-      collName: null == collName
-          ? _value.collName
-          : collName // ignore: cast_nullable_to_non_nullable
-              as ProjectFormField,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as ProjectFormField,
-      collNum: null == collNum
-          ? _value.collNum
-          : collNum // ignore: cast_nullable_to_non_nullable
               as ProjectFormField,
     ) as $Val);
   }
@@ -219,30 +194,6 @@ class _$ProjectFormValidationCopyWithImpl<$Res,
   $ProjectFormFieldCopyWith<$Res> get projectName {
     return $ProjectFormFieldCopyWith<$Res>(_value.projectName, (value) {
       return _then(_value.copyWith(projectName: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $ProjectFormFieldCopyWith<$Res> get collName {
-    return $ProjectFormFieldCopyWith<$Res>(_value.collName, (value) {
-      return _then(_value.copyWith(collName: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $ProjectFormFieldCopyWith<$Res> get email {
-    return $ProjectFormFieldCopyWith<$Res>(_value.email, (value) {
-      return _then(_value.copyWith(email: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $ProjectFormFieldCopyWith<$Res> get collNum {
-    return $ProjectFormFieldCopyWith<$Res>(_value.collNum, (value) {
-      return _then(_value.copyWith(collNum: value) as $Val);
     });
   }
 }
@@ -255,20 +206,10 @@ abstract class _$$_ProjectFormValidationCopyWith<$Res>
       __$$_ProjectFormValidationCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {ProjectFormField projectName,
-      ProjectFormField collName,
-      ProjectFormField email,
-      ProjectFormField collNum});
+  $Res call({ProjectFormField projectName});
 
   @override
   $ProjectFormFieldCopyWith<$Res> get projectName;
-  @override
-  $ProjectFormFieldCopyWith<$Res> get collName;
-  @override
-  $ProjectFormFieldCopyWith<$Res> get email;
-  @override
-  $ProjectFormFieldCopyWith<$Res> get collNum;
 }
 
 /// @nodoc
@@ -283,26 +224,11 @@ class __$$_ProjectFormValidationCopyWithImpl<$Res>
   @override
   $Res call({
     Object? projectName = null,
-    Object? collName = null,
-    Object? email = null,
-    Object? collNum = null,
   }) {
     return _then(_$_ProjectFormValidation(
       projectName: null == projectName
           ? _value.projectName
           : projectName // ignore: cast_nullable_to_non_nullable
-              as ProjectFormField,
-      collName: null == collName
-          ? _value.collName
-          : collName // ignore: cast_nullable_to_non_nullable
-              as ProjectFormField,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as ProjectFormField,
-      collNum: null == collNum
-          ? _value.collNum
-          : collNum // ignore: cast_nullable_to_non_nullable
               as ProjectFormField,
     ));
   }
@@ -311,25 +237,14 @@ class __$$_ProjectFormValidationCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_ProjectFormValidation extends _ProjectFormValidation {
-  const _$_ProjectFormValidation(
-      {required this.projectName,
-      required this.collName,
-      required this.email,
-      required this.collNum})
-      : super._();
+  const _$_ProjectFormValidation({required this.projectName}) : super._();
 
   @override
   final ProjectFormField projectName;
-  @override
-  final ProjectFormField collName;
-  @override
-  final ProjectFormField email;
-  @override
-  final ProjectFormField collNum;
 
   @override
   String toString() {
-    return 'ProjectFormValidation(projectName: $projectName, collName: $collName, email: $email, collNum: $collNum)';
+    return 'ProjectFormValidation(projectName: $projectName)';
   }
 
   @override
@@ -338,16 +253,11 @@ class _$_ProjectFormValidation extends _ProjectFormValidation {
         (other.runtimeType == runtimeType &&
             other is _$_ProjectFormValidation &&
             (identical(other.projectName, projectName) ||
-                other.projectName == projectName) &&
-            (identical(other.collName, collName) ||
-                other.collName == collName) &&
-            (identical(other.email, email) || other.email == email) &&
-            (identical(other.collNum, collNum) || other.collNum == collNum));
+                other.projectName == projectName));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, projectName, collName, email, collNum);
+  int get hashCode => Object.hash(runtimeType, projectName);
 
   @JsonKey(ignore: true)
   @override
@@ -359,20 +269,11 @@ class _$_ProjectFormValidation extends _ProjectFormValidation {
 
 abstract class _ProjectFormValidation extends ProjectFormValidation {
   const factory _ProjectFormValidation(
-      {required final ProjectFormField projectName,
-      required final ProjectFormField collName,
-      required final ProjectFormField email,
-      required final ProjectFormField collNum}) = _$_ProjectFormValidation;
+      {required final ProjectFormField projectName}) = _$_ProjectFormValidation;
   const _ProjectFormValidation._() : super._();
 
   @override
   ProjectFormField get projectName;
-  @override
-  ProjectFormField get collName;
-  @override
-  ProjectFormField get email;
-  @override
-  ProjectFormField get collNum;
   @override
   @JsonKey(ignore: true)
   _$$_ProjectFormValidationCopyWith<_$_ProjectFormValidation> get copyWith =>
