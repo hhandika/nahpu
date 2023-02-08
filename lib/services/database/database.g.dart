@@ -7393,9 +7393,9 @@ class MammalMeasurement extends Table
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _ageMeta = const VerificationMeta('age');
-  late final GeneratedColumn<String> age = GeneratedColumn<String>(
+  late final GeneratedColumn<int> age = GeneratedColumn<int>(
       'age', aliasedName, true,
-      type: DriftSqlType.string,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _testisPositionMeta =
@@ -7732,7 +7732,7 @@ class MammalMeasurement extends Table
       sex: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}sex']),
       age: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}age']),
+          .read(DriftSqlType.int, data['${effectivePrefix}age']),
       testisPosition: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}testisPosition']),
       testisLength: attachedDatabase.typeMapping
@@ -7793,7 +7793,7 @@ class MammalMeasurementData extends DataClass
   final int? weight;
   final String? accuracy;
   final int? sex;
-  final String? age;
+  final int? age;
   final String? testisPosition;
   final int? testisLength;
   final int? testisWidth;
@@ -7868,7 +7868,7 @@ class MammalMeasurementData extends DataClass
       map['sex'] = Variable<int>(sex);
     }
     if (!nullToAbsent || age != null) {
-      map['age'] = Variable<String>(age);
+      map['age'] = Variable<int>(age);
     }
     if (!nullToAbsent || testisPosition != null) {
       map['testisPosition'] = Variable<String>(testisPosition);
@@ -8015,7 +8015,7 @@ class MammalMeasurementData extends DataClass
       weight: serializer.fromJson<int?>(json['weight']),
       accuracy: serializer.fromJson<String?>(json['accuracy']),
       sex: serializer.fromJson<int?>(json['sex']),
-      age: serializer.fromJson<String?>(json['age']),
+      age: serializer.fromJson<int?>(json['age']),
       testisPosition: serializer.fromJson<String?>(json['testisPosition']),
       testisLength: serializer.fromJson<int?>(json['testisLength']),
       testisWidth: serializer.fromJson<int?>(json['testisWidth']),
@@ -8054,7 +8054,7 @@ class MammalMeasurementData extends DataClass
       'weight': serializer.toJson<int?>(weight),
       'accuracy': serializer.toJson<String?>(accuracy),
       'sex': serializer.toJson<int?>(sex),
-      'age': serializer.toJson<String?>(age),
+      'age': serializer.toJson<int?>(age),
       'testisPosition': serializer.toJson<String?>(testisPosition),
       'testisLength': serializer.toJson<int?>(testisLength),
       'testisWidth': serializer.toJson<int?>(testisWidth),
@@ -8085,7 +8085,7 @@ class MammalMeasurementData extends DataClass
           Value<int?> weight = const Value.absent(),
           Value<String?> accuracy = const Value.absent(),
           Value<int?> sex = const Value.absent(),
-          Value<String?> age = const Value.absent(),
+          Value<int?> age = const Value.absent(),
           Value<String?> testisPosition = const Value.absent(),
           Value<int?> testisLength = const Value.absent(),
           Value<int?> testisWidth = const Value.absent(),
@@ -8265,7 +8265,7 @@ class MammalMeasurementCompanion
   final Value<int?> weight;
   final Value<String?> accuracy;
   final Value<int?> sex;
-  final Value<String?> age;
+  final Value<int?> age;
   final Value<String?> testisPosition;
   final Value<int?> testisLength;
   final Value<int?> testisWidth;
@@ -8351,7 +8351,7 @@ class MammalMeasurementCompanion
     Expression<int>? weight,
     Expression<String>? accuracy,
     Expression<int>? sex,
-    Expression<String>? age,
+    Expression<int>? age,
     Expression<String>? testisPosition,
     Expression<int>? testisLength,
     Expression<int>? testisWidth,
@@ -8416,7 +8416,7 @@ class MammalMeasurementCompanion
       Value<int?>? weight,
       Value<String?>? accuracy,
       Value<int?>? sex,
-      Value<String?>? age,
+      Value<int?>? age,
       Value<String?>? testisPosition,
       Value<int?>? testisLength,
       Value<int?>? testisWidth,
@@ -8496,7 +8496,7 @@ class MammalMeasurementCompanion
       map['sex'] = Variable<int>(sex.value);
     }
     if (age.present) {
-      map['age'] = Variable<String>(age.value);
+      map['age'] = Variable<int>(age.value);
     }
     if (testisPosition.present) {
       map['testisPosition'] = Variable<String>(testisPosition.value);

@@ -4,38 +4,61 @@ import 'package:nahpu/services/database/database.dart';
 
 enum CatalogFmt { generalMammals, birds, bats }
 
-enum SpecimenSex { male, female, unknown }
-
-enum SpecimenAge { adult, subadult, juvenile, unknown }
-
 enum CommonPopUpMenuItems { edit, delete }
+
+enum SpecimenSex { male, female, unknown }
 
 const List<String> supportedTaxonClass = [
   'Aves',
   'Mammalia',
 ];
 
-SpecimenSex matchSpecimenSex(String? sex) {
+// We encode to int to save space in the database
+int matchSpecimenSex(SpecimenSex sex) {
   switch (sex) {
-    case 'Male':
+    case SpecimenSex.male:
+      return 0;
+    case SpecimenSex.female:
+      return 1;
+    default:
+      return 2; // Unknown
+  }
+}
+
+SpecimenSex matchEncodingToSex(int sexCode) {
+  switch (sexCode) {
+    case 0:
       return SpecimenSex.male;
-    case 'Female':
+    case 1:
       return SpecimenSex.female;
     default:
       return SpecimenSex.unknown;
   }
 }
 
-SpecimenAge matchSpecimenAge(String? age) {
+int matchSpecimenAge(String? age) {
   switch (age) {
     case 'Adult':
-      return SpecimenAge.adult;
+      return 0;
     case 'Subadult':
-      return SpecimenAge.subadult;
+      return 1;
     case 'Juvenile':
-      return SpecimenAge.juvenile;
+      return 2;
     default:
-      return SpecimenAge.unknown;
+      return 3;
+  }
+}
+
+String matchEncodingToAge(int ageCode) {
+  switch (ageCode) {
+    case 0:
+      return 'Adult';
+    case 1:
+      return 'Subadult';
+    case 2:
+      return 'Juvenile';
+    default:
+      return 'Unknown';
   }
 }
 

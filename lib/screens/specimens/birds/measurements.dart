@@ -115,9 +115,7 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
                   ),
                 ],
                 onChanged: (String? newValue) {
-                  setState(() {
-                    _specimenSex = matchSpecimenSex(newValue);
-                  });
+                  setState(() {});
                 },
               ),
               DropdownButtonFormField(

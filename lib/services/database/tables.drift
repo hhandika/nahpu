@@ -224,7 +224,7 @@ CREATE TABLE mammalMeasurement (
     weight INT,
     accuracy TEXT,
     sex INT,
-    age TEXT,
+    age INT,
     testisPosition TEXT,
     testisLength INT,
     testisWidth INT,

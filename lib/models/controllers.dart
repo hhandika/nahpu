@@ -309,8 +309,8 @@ class MammalMeasurementCtrModel {
   TextEditingController forearmCtr;
   TextEditingController weightCtr;
   String? accuracyCtr;
-  TextEditingController sexCtr;
-  TextEditingController ageCtr;
+  int? sexCtr;
+  int? ageCtr;
   TextEditingController testisPosCtr;
   TextEditingController testisLengthCtr;
   TextEditingController testisWidthCtr;
@@ -337,8 +337,8 @@ class MammalMeasurementCtrModel {
       forearmCtr: TextEditingController(),
       weightCtr: TextEditingController(),
       accuracyCtr: null,
-      sexCtr: TextEditingController(),
-      ageCtr: TextEditingController(),
+      sexCtr: null,
+      ageCtr: null,
       testisPosCtr: TextEditingController(),
       testisLengthCtr: TextEditingController(),
       testisWidthCtr: TextEditingController(),
@@ -369,8 +369,8 @@ class MammalMeasurementCtrModel {
         forearmCtr: TextEditingController(text: data.forearm?.toString() ?? ''),
         weightCtr: TextEditingController(text: data.weight?.toString() ?? ''),
         accuracyCtr: data.accuracy?.toString(),
-        sexCtr: TextEditingController(text: data.sex?.toString() ?? ''),
-        ageCtr: TextEditingController(text: data.age?.toString() ?? ''),
+        sexCtr: data.sex,
+        ageCtr: data.age,
         testisPosCtr:
             TextEditingController(text: data.testisPosition?.toString() ?? ''),
         testisLengthCtr:
@@ -413,8 +413,6 @@ class MammalMeasurementCtrModel {
     earCtr.dispose();
     forearmCtr.dispose();
     weightCtr.dispose();
-    sexCtr.dispose();
-    ageCtr.dispose();
     testisPosCtr.dispose();
     testisLengthCtr.dispose();
     testisWidthCtr.dispose();

@@ -188,54 +188,65 @@ class MammalMeasurementFormsState
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
-              DropdownButtonFormField(
+              DropdownButtonFormField<SpecimenSex>(
                   decoration: const InputDecoration(
                     labelText: 'Sex',
                     hintText: 'Choose one',
                   ),
                   items: const [
                     DropdownMenuItem(
-                      value: 'Male',
+                      value: SpecimenSex.male,
                       child: Text('Male'),
                     ),
                     DropdownMenuItem(
-                      value: 'Female',
+                      value: SpecimenSex.female,
                       child: Text('Female'),
                     ),
                     DropdownMenuItem(
-                      value: 'Unknown',
+                      value: SpecimenSex.unknown,
                       child: Text('Unknown'),
                     ),
                   ],
-                  onChanged: (String? newValue) {
+                  onChanged: (SpecimenSex? newValue) {
                     setState(() {
-                      _specimenSex = matchSpecimenSex(newValue);
+                      if (newValue != null) {
+                        _specimenSex = newValue;
+                      }
                     });
                   }),
-              DropdownButtonFormField(
+              DropdownButtonFormField<int>(
+                  value: ctr.ageCtr,
                   decoration: const InputDecoration(
                     labelText: 'Age',
                     hintText: 'Select specimen age',
                   ),
                   items: const [
                     DropdownMenuItem(
-                      value: 'Adult',
+                      value: 0,
                       child: Text('Adult'),
                     ),
                     DropdownMenuItem(
-                      value: 'Sub-adult',
+                      value: 1,
                       child: Text('Sub-adult'),
                     ),
                     DropdownMenuItem(
-                      value: 'Juvenile',
+                      value: 2,
                       child: Text('Juvenile'),
                     ),
                     DropdownMenuItem(
-                      value: 'Unknown',
+                      value: 3,
                       child: Text('Unknown'),
                     ),
                   ],
-                  onChanged: (String? newValue) {}),
+                  onChanged: (int? newValue) {
+                    ctr.ageCtr = newValue;
+                    SpecimenServices(ref).updateMammalMeasurement(
+                      widget.specimenUuid,
+                      MammalMeasurementCompanion(
+                        age: db.Value(newValue),
+                      ),
+                    );
+                  }),
             ],
           ),
           MaleGonadForm(
