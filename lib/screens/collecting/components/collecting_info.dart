@@ -71,18 +71,20 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
               value: widget.collEventCtr.siteIDCtr,
               siteData: data,
               onChanges: (int? value) async {
-                setState(() {
-                  widget.collEventCtr.siteIDCtr = value;
-                  _getEventID();
-                  CollEventServices(ref).updateCollEvent(
-                      widget.collEventId,
-                      CollEventCompanion(
-                        siteID: db.Value(value),
-                        eventID: db.Value(
-                          widget.collEventCtr.eventIDCtr.text,
-                        ),
-                      ));
-                });
+                if (value != null) {
+                  setState(() {
+                    widget.collEventCtr.siteIDCtr = value;
+                    _getEventID();
+                    CollEventServices(ref).updateCollEvent(
+                        widget.collEventId,
+                        CollEventCompanion(
+                          siteID: db.Value(value),
+                          eventID: db.Value(
+                            widget.collEventCtr.eventIDCtr.text,
+                          ),
+                        ));
+                  });
+                }
               },
             ),
           ),
