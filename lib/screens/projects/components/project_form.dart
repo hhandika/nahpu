@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/controllers.dart';
+import 'package:nahpu/services/project_services.dart';
 import 'package:nahpu/services/utility_services.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
@@ -117,10 +118,10 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
       description: db.Value(widget.projectCtr.descriptionCtr.text),
       principalInvestigator: db.Value(widget.projectCtr.pICtr.text),
       created: db.Value(getSystemDateTime()),
-      lastModified: db.Value(getSystemDateTime()),
+      lastAccessed: db.Value(getSystemDateTime()),
     );
 
-    await ref.read(databaseProvider).createProject(projectData);
+    ProjectServices(ref).createProject(projectData);
   }
 
   Future<void> _goToDashboard() async {

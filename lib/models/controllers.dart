@@ -28,13 +28,14 @@ class ProjectFormCtrModel {
         endDateCtr: TextEditingController(),
       );
 
-  factory ProjectFormCtrModel.fromData(ProjectData data) => ProjectFormCtrModel(
-        projectNameCtr: TextEditingController(text: data.name),
-        descriptionCtr: TextEditingController(text: data.description),
-        pICtr: TextEditingController(text: data.principalInvestigator),
-        locationCtr: TextEditingController(text: data.location),
-        startDateCtr: TextEditingController(text: data.startDate),
-        endDateCtr: TextEditingController(text: data.endDate),
+  factory ProjectFormCtrModel.fromData(ProjectData? data) =>
+      ProjectFormCtrModel(
+        projectNameCtr: TextEditingController(text: data?.name ?? ''),
+        descriptionCtr: TextEditingController(text: data?.description ?? ''),
+        pICtr: TextEditingController(text: data?.principalInvestigator ?? ''),
+        locationCtr: TextEditingController(text: data?.location ?? ''),
+        startDateCtr: TextEditingController(text: data?.startDate ?? ''),
+        endDateCtr: TextEditingController(text: data?.endDate ?? ''),
       );
 
   void dispose() {

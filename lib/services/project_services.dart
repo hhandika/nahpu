@@ -25,6 +25,10 @@ class ProjectServices {
     invalidateProject();
   }
 
+  Future<ProjectData> getProjectByUuid(String uuid) {
+    return ref.read(databaseProvider).getProjectByUuid(uuid);
+  }
+
   String getProjectUuid() {
     return ref.read(projectUuidProvider);
   }
