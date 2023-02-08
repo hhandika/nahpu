@@ -295,7 +295,7 @@ class MammalMeasurementCtrModel {
     required this.mammaeAxCtr,
     required this.mammaeAbdCtr,
     required this.vaginaOpeningCtr,
-    required this.pubicSymphysis,
+    required this.pubicSymphysisCtr,
     required this.embryoLeftCtr,
     required this.embryoRightCtr,
     required this.embryoCRCtr,
@@ -311,19 +311,19 @@ class MammalMeasurementCtrModel {
   String? accuracyCtr;
   int? sexCtr;
   int? ageCtr;
-  TextEditingController testisPosCtr;
+  int? testisPosCtr;
   TextEditingController testisLengthCtr;
   TextEditingController testisWidthCtr;
-  TextEditingController epididymisCtr;
-  TextEditingController reproductiveStageCtr;
+  int? epididymisCtr;
+  int? reproductiveStageCtr;
   TextEditingController leftPlacentaCtr;
   TextEditingController rightPlacentaCtr;
-  TextEditingController mammaeConditionCtr;
+  int? mammaeConditionCtr;
   TextEditingController mammaeIngCtr;
   TextEditingController mammaeAxCtr;
   TextEditingController mammaeAbdCtr;
-  TextEditingController vaginaOpeningCtr;
-  TextEditingController pubicSymphysis;
+  int? vaginaOpeningCtr;
+  int? pubicSymphysisCtr;
   TextEditingController embryoLeftCtr;
   TextEditingController embryoRightCtr;
   TextEditingController embryoCRCtr;
@@ -339,19 +339,19 @@ class MammalMeasurementCtrModel {
       accuracyCtr: null,
       sexCtr: null,
       ageCtr: null,
-      testisPosCtr: TextEditingController(),
+      testisPosCtr: null,
       testisLengthCtr: TextEditingController(),
       testisWidthCtr: TextEditingController(),
-      epididymisCtr: TextEditingController(),
-      reproductiveStageCtr: TextEditingController(),
+      epididymisCtr: null,
+      reproductiveStageCtr: null,
       leftPlacentaCtr: TextEditingController(),
       rightPlacentaCtr: TextEditingController(),
-      mammaeConditionCtr: TextEditingController(),
+      mammaeConditionCtr: null,
       mammaeIngCtr: TextEditingController(),
       mammaeAxCtr: TextEditingController(),
       mammaeAbdCtr: TextEditingController(),
-      vaginaOpeningCtr: TextEditingController(),
-      pubicSymphysis: TextEditingController(),
+      vaginaOpeningCtr: null,
+      pubicSymphysisCtr: null,
       embryoLeftCtr: TextEditingController(),
       embryoRightCtr: TextEditingController(),
       embryoCRCtr: TextEditingController(),
@@ -371,32 +371,26 @@ class MammalMeasurementCtrModel {
         accuracyCtr: data.accuracy?.toString(),
         sexCtr: data.sex,
         ageCtr: data.age,
-        testisPosCtr:
-            TextEditingController(text: data.testisPosition?.toString() ?? ''),
+        testisPosCtr: data.testisPosition,
         testisLengthCtr:
             TextEditingController(text: data.testisLength?.toString() ?? ''),
         testisWidthCtr:
             TextEditingController(text: data.testisWidth?.toString() ?? ''),
-        epididymisCtr: TextEditingController(
-            text: data.epididymisAppearance?.toString() ?? ''),
-        reproductiveStageCtr: TextEditingController(
-            text: data.reproductiveStage?.toString() ?? ''),
+        epididymisCtr: data.epididymisAppearance,
+        reproductiveStageCtr: data.reproductiveStage,
         leftPlacentaCtr: TextEditingController(
             text: data.leftPlacentalScars?.toString() ?? ''),
         rightPlacentaCtr: TextEditingController(
             text: data.rightPlacentalScars?.toString() ?? ''),
-        mammaeConditionCtr:
-            TextEditingController(text: data.mammaeCondition?.toString() ?? ''),
+        mammaeConditionCtr: data.mammaeCondition,
         mammaeIngCtr: TextEditingController(
             text: data.mammaeInguinalCount?.toString() ?? ''),
         mammaeAxCtr: TextEditingController(
             text: data.mammaeAxillaryCount?.toString() ?? ''),
         mammaeAbdCtr: TextEditingController(
             text: data.mammaeAbdominalCount?.toString() ?? ''),
-        vaginaOpeningCtr:
-            TextEditingController(text: data.vaginaOpening?.toString() ?? ''),
-        pubicSymphysis:
-            TextEditingController(text: data.pubicSymphysis?.toString() ?? ''),
+        vaginaOpeningCtr: data.vaginaOpening,
+        pubicSymphysisCtr: data.pubicSymphysis,
         embryoLeftCtr:
             TextEditingController(text: data.embryoLeftCount?.toString() ?? ''),
         embryoRightCtr: TextEditingController(
@@ -413,19 +407,13 @@ class MammalMeasurementCtrModel {
     earCtr.dispose();
     forearmCtr.dispose();
     weightCtr.dispose();
-    testisPosCtr.dispose();
     testisLengthCtr.dispose();
     testisWidthCtr.dispose();
-    epididymisCtr.dispose();
-    reproductiveStageCtr.dispose();
     leftPlacentaCtr.dispose();
     rightPlacentaCtr.dispose();
-    mammaeConditionCtr.dispose();
     mammaeIngCtr.dispose();
     mammaeAxCtr.dispose();
     mammaeAbdCtr.dispose();
-    vaginaOpeningCtr.dispose();
-    pubicSymphysis.dispose();
     embryoLeftCtr.dispose();
     embryoRightCtr.dispose();
     embryoCRCtr.dispose();

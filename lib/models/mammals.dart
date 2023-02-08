@@ -25,7 +25,7 @@ const List<String> epididymisAppearanceList = [
   'Not Tubular',
 ];
 
-enum VaginaCondition { imperforate, perforate }
+enum VaginaOpening { imperforate, perforate }
 
 const List<String> vaginaOpeningList = [
   'Imperforate',
