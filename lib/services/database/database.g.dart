@@ -7248,58 +7248,50 @@ class MammalMeasurement extends Table
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _inaccurateMeta =
-      const VerificationMeta('inaccurate');
-  late final GeneratedColumn<String> inaccurate = GeneratedColumn<String>(
-      'inaccurate', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _inaccurateReasonMeta =
-      const VerificationMeta('inaccurateReason');
-  late final GeneratedColumn<String> inaccurateReason = GeneratedColumn<String>(
-      'inaccurateReason', aliasedName, true,
+  static const VerificationMeta _accuracyMeta =
+      const VerificationMeta('accuracy');
+  late final GeneratedColumn<String> accuracy = GeneratedColumn<String>(
+      'accuracy', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _sexMeta = const VerificationMeta('sex');
-  late final GeneratedColumn<String> sex = GeneratedColumn<String>(
+  late final GeneratedColumn<int> sex = GeneratedColumn<int>(
       'sex', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _lifeStageMeta =
-      const VerificationMeta('lifeStage');
-  late final GeneratedColumn<String> lifeStage = GeneratedColumn<String>(
-      'lifeStage', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _testesPositionMeta =
-      const VerificationMeta('testesPosition');
-  late final GeneratedColumn<String> testesPosition = GeneratedColumn<String>(
-      'testesPosition', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _testesLengthMeta =
-      const VerificationMeta('testesLength');
-  late final GeneratedColumn<int> testesLength = GeneratedColumn<int>(
-      'testesLength', aliasedName, true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _testesWidthMeta =
-      const VerificationMeta('testesWidth');
-  late final GeneratedColumn<int> testesWidth = GeneratedColumn<int>(
-      'testesWidth', aliasedName, true,
+  static const VerificationMeta _ageMeta = const VerificationMeta('age');
+  late final GeneratedColumn<String> age = GeneratedColumn<String>(
+      'age', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _testisPositionMeta =
+      const VerificationMeta('testisPosition');
+  late final GeneratedColumn<String> testisPosition = GeneratedColumn<String>(
+      'testisPosition', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _testisLengthMeta =
+      const VerificationMeta('testisLength');
+  late final GeneratedColumn<int> testisLength = GeneratedColumn<int>(
+      'testisLength', aliasedName, true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _epididimysAppearanceMeta =
-      const VerificationMeta('epididimysAppearance');
-  late final GeneratedColumn<String> epididimysAppearance =
-      GeneratedColumn<String>('epididimysAppearance', aliasedName, true,
+  static const VerificationMeta _testisWidthMeta =
+      const VerificationMeta('testisWidth');
+  late final GeneratedColumn<int> testisWidth = GeneratedColumn<int>(
+      'testisWidth', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _epididymisAppearanceMeta =
+      const VerificationMeta('epididymisAppearance');
+  late final GeneratedColumn<String> epididymisAppearance =
+      GeneratedColumn<String>('epididymisAppearance', aliasedName, true,
           type: DriftSqlType.string,
           requiredDuringInsert: false,
           $customConstraints: '');
@@ -7338,10 +7330,10 @@ class MammalMeasurement extends Table
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _mammaeAxilaryCountMeta =
-      const VerificationMeta('mammaeAxilaryCount');
-  late final GeneratedColumn<int> mammaeAxilaryCount = GeneratedColumn<int>(
-      'mammaeAxilaryCount', aliasedName, true,
+  static const VerificationMeta _mammaeAxillaryCountMeta =
+      const VerificationMeta('mammaeAxillaryCount');
+  late final GeneratedColumn<int> mammaeAxillaryCount = GeneratedColumn<int>(
+      'mammaeAxillaryCount', aliasedName, true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -7359,10 +7351,10 @@ class MammalMeasurement extends Table
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _pubicSymphisisMeta =
-      const VerificationMeta('pubicSymphisis');
-  late final GeneratedColumn<String> pubicSymphisis = GeneratedColumn<String>(
-      'pubicSymphisis', aliasedName, true,
+  static const VerificationMeta _pubicSymphysisMeta =
+      const VerificationMeta('pubicSymphysis');
+  late final GeneratedColumn<String> pubicSymphysis = GeneratedColumn<String>(
+      'pubicSymphysis', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -7402,23 +7394,22 @@ class MammalMeasurement extends Table
         earLength,
         forearm,
         weight,
-        inaccurate,
-        inaccurateReason,
+        accuracy,
         sex,
-        lifeStage,
-        testesPosition,
-        testesLength,
-        testesWidth,
-        epididimysAppearance,
+        age,
+        testisPosition,
+        testisLength,
+        testisWidth,
+        epididymisAppearance,
         reproductiveStage,
         leftPlacentalScars,
         rightPlacentalScars,
         mammaeCondition,
         mammaeInguinalCount,
-        mammaeAxilaryCount,
+        mammaeAxillaryCount,
         mammaeAbdominalCount,
         vaginaOpening,
-        pubicSymphisis,
+        pubicSymphysis,
         embryoLeftCount,
         embryoRightCount,
         embryoCR,
@@ -7472,49 +7463,41 @@ class MammalMeasurement extends Table
       context.handle(_weightMeta,
           weight.isAcceptableOrUnknown(data['weight']!, _weightMeta));
     }
-    if (data.containsKey('inaccurate')) {
-      context.handle(
-          _inaccurateMeta,
-          inaccurate.isAcceptableOrUnknown(
-              data['inaccurate']!, _inaccurateMeta));
-    }
-    if (data.containsKey('inaccurateReason')) {
-      context.handle(
-          _inaccurateReasonMeta,
-          inaccurateReason.isAcceptableOrUnknown(
-              data['inaccurateReason']!, _inaccurateReasonMeta));
+    if (data.containsKey('accuracy')) {
+      context.handle(_accuracyMeta,
+          accuracy.isAcceptableOrUnknown(data['accuracy']!, _accuracyMeta));
     }
     if (data.containsKey('sex')) {
       context.handle(
           _sexMeta, sex.isAcceptableOrUnknown(data['sex']!, _sexMeta));
     }
-    if (data.containsKey('lifeStage')) {
-      context.handle(_lifeStageMeta,
-          lifeStage.isAcceptableOrUnknown(data['lifeStage']!, _lifeStageMeta));
-    }
-    if (data.containsKey('testesPosition')) {
+    if (data.containsKey('age')) {
       context.handle(
-          _testesPositionMeta,
-          testesPosition.isAcceptableOrUnknown(
-              data['testesPosition']!, _testesPositionMeta));
+          _ageMeta, age.isAcceptableOrUnknown(data['age']!, _ageMeta));
     }
-    if (data.containsKey('testesLength')) {
+    if (data.containsKey('testisPosition')) {
       context.handle(
-          _testesLengthMeta,
-          testesLength.isAcceptableOrUnknown(
-              data['testesLength']!, _testesLengthMeta));
+          _testisPositionMeta,
+          testisPosition.isAcceptableOrUnknown(
+              data['testisPosition']!, _testisPositionMeta));
     }
-    if (data.containsKey('testesWidth')) {
+    if (data.containsKey('testisLength')) {
       context.handle(
-          _testesWidthMeta,
-          testesWidth.isAcceptableOrUnknown(
-              data['testesWidth']!, _testesWidthMeta));
+          _testisLengthMeta,
+          testisLength.isAcceptableOrUnknown(
+              data['testisLength']!, _testisLengthMeta));
     }
-    if (data.containsKey('epididimysAppearance')) {
+    if (data.containsKey('testisWidth')) {
       context.handle(
-          _epididimysAppearanceMeta,
-          epididimysAppearance.isAcceptableOrUnknown(
-              data['epididimysAppearance']!, _epididimysAppearanceMeta));
+          _testisWidthMeta,
+          testisWidth.isAcceptableOrUnknown(
+              data['testisWidth']!, _testisWidthMeta));
+    }
+    if (data.containsKey('epididymisAppearance')) {
+      context.handle(
+          _epididymisAppearanceMeta,
+          epididymisAppearance.isAcceptableOrUnknown(
+              data['epididymisAppearance']!, _epididymisAppearanceMeta));
     }
     if (data.containsKey('reproductiveStage')) {
       context.handle(
@@ -7546,11 +7529,11 @@ class MammalMeasurement extends Table
           mammaeInguinalCount.isAcceptableOrUnknown(
               data['mammaeInguinalCount']!, _mammaeInguinalCountMeta));
     }
-    if (data.containsKey('mammaeAxilaryCount')) {
+    if (data.containsKey('mammaeAxillaryCount')) {
       context.handle(
-          _mammaeAxilaryCountMeta,
-          mammaeAxilaryCount.isAcceptableOrUnknown(
-              data['mammaeAxilaryCount']!, _mammaeAxilaryCountMeta));
+          _mammaeAxillaryCountMeta,
+          mammaeAxillaryCount.isAcceptableOrUnknown(
+              data['mammaeAxillaryCount']!, _mammaeAxillaryCountMeta));
     }
     if (data.containsKey('mammaeAbdominalCount')) {
       context.handle(
@@ -7564,11 +7547,11 @@ class MammalMeasurement extends Table
           vaginaOpening.isAcceptableOrUnknown(
               data['vaginaOpening']!, _vaginaOpeningMeta));
     }
-    if (data.containsKey('pubicSymphisis')) {
+    if (data.containsKey('pubicSymphysis')) {
       context.handle(
-          _pubicSymphisisMeta,
-          pubicSymphisis.isAcceptableOrUnknown(
-              data['pubicSymphisis']!, _pubicSymphisisMeta));
+          _pubicSymphysisMeta,
+          pubicSymphysis.isAcceptableOrUnknown(
+              data['pubicSymphysis']!, _pubicSymphysisMeta));
     }
     if (data.containsKey('embryoLeftCount')) {
       context.handle(
@@ -7613,22 +7596,20 @@ class MammalMeasurement extends Table
           .read(DriftSqlType.int, data['${effectivePrefix}forearm']),
       weight: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}weight']),
-      inaccurate: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}inaccurate']),
-      inaccurateReason: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}inaccurateReason']),
+      accuracy: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}accuracy']),
       sex: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}sex']),
-      lifeStage: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}lifeStage']),
-      testesPosition: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}testesPosition']),
-      testesLength: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}testesLength']),
-      testesWidth: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}testesWidth']),
-      epididimysAppearance: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}epididimysAppearance']),
+          .read(DriftSqlType.int, data['${effectivePrefix}sex']),
+      age: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}age']),
+      testisPosition: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}testisPosition']),
+      testisLength: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}testisLength']),
+      testisWidth: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}testisWidth']),
+      epididymisAppearance: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}epididymisAppearance']),
       reproductiveStage: attachedDatabase.typeMapping.read(
           DriftSqlType.string, data['${effectivePrefix}reproductiveStage']),
       leftPlacentalScars: attachedDatabase.typeMapping
@@ -7639,14 +7620,14 @@ class MammalMeasurement extends Table
           .read(DriftSqlType.int, data['${effectivePrefix}mammaeCondition']),
       mammaeInguinalCount: attachedDatabase.typeMapping.read(
           DriftSqlType.int, data['${effectivePrefix}mammaeInguinalCount']),
-      mammaeAxilaryCount: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}mammaeAxilaryCount']),
+      mammaeAxillaryCount: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}mammaeAxillaryCount']),
       mammaeAbdominalCount: attachedDatabase.typeMapping.read(
           DriftSqlType.int, data['${effectivePrefix}mammaeAbdominalCount']),
       vaginaOpening: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}vaginaOpening']),
-      pubicSymphisis: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}pubicSymphisis']),
+      pubicSymphysis: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}pubicSymphysis']),
       embryoLeftCount: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}embryoLeftCount']),
       embryoRightCount: attachedDatabase.typeMapping
@@ -7679,23 +7660,22 @@ class MammalMeasurementData extends DataClass
   final int? earLength;
   final int? forearm;
   final int? weight;
-  final String? inaccurate;
-  final String? inaccurateReason;
-  final String? sex;
-  final String? lifeStage;
-  final String? testesPosition;
-  final int? testesLength;
-  final int? testesWidth;
-  final String? epididimysAppearance;
+  final String? accuracy;
+  final int? sex;
+  final String? age;
+  final String? testisPosition;
+  final int? testisLength;
+  final int? testisWidth;
+  final String? epididymisAppearance;
   final String? reproductiveStage;
   final int? leftPlacentalScars;
   final int? rightPlacentalScars;
   final int? mammaeCondition;
   final int? mammaeInguinalCount;
-  final int? mammaeAxilaryCount;
+  final int? mammaeAxillaryCount;
   final int? mammaeAbdominalCount;
   final String? vaginaOpening;
-  final String? pubicSymphisis;
+  final String? pubicSymphysis;
   final int? embryoLeftCount;
   final int? embryoRightCount;
   final int? embryoCR;
@@ -7708,23 +7688,22 @@ class MammalMeasurementData extends DataClass
       this.earLength,
       this.forearm,
       this.weight,
-      this.inaccurate,
-      this.inaccurateReason,
+      this.accuracy,
       this.sex,
-      this.lifeStage,
-      this.testesPosition,
-      this.testesLength,
-      this.testesWidth,
-      this.epididimysAppearance,
+      this.age,
+      this.testisPosition,
+      this.testisLength,
+      this.testisWidth,
+      this.epididymisAppearance,
       this.reproductiveStage,
       this.leftPlacentalScars,
       this.rightPlacentalScars,
       this.mammaeCondition,
       this.mammaeInguinalCount,
-      this.mammaeAxilaryCount,
+      this.mammaeAxillaryCount,
       this.mammaeAbdominalCount,
       this.vaginaOpening,
-      this.pubicSymphisis,
+      this.pubicSymphysis,
       this.embryoLeftCount,
       this.embryoRightCount,
       this.embryoCR,
@@ -7751,29 +7730,26 @@ class MammalMeasurementData extends DataClass
     if (!nullToAbsent || weight != null) {
       map['weight'] = Variable<int>(weight);
     }
-    if (!nullToAbsent || inaccurate != null) {
-      map['inaccurate'] = Variable<String>(inaccurate);
-    }
-    if (!nullToAbsent || inaccurateReason != null) {
-      map['inaccurateReason'] = Variable<String>(inaccurateReason);
+    if (!nullToAbsent || accuracy != null) {
+      map['accuracy'] = Variable<String>(accuracy);
     }
     if (!nullToAbsent || sex != null) {
-      map['sex'] = Variable<String>(sex);
+      map['sex'] = Variable<int>(sex);
     }
-    if (!nullToAbsent || lifeStage != null) {
-      map['lifeStage'] = Variable<String>(lifeStage);
+    if (!nullToAbsent || age != null) {
+      map['age'] = Variable<String>(age);
     }
-    if (!nullToAbsent || testesPosition != null) {
-      map['testesPosition'] = Variable<String>(testesPosition);
+    if (!nullToAbsent || testisPosition != null) {
+      map['testisPosition'] = Variable<String>(testisPosition);
     }
-    if (!nullToAbsent || testesLength != null) {
-      map['testesLength'] = Variable<int>(testesLength);
+    if (!nullToAbsent || testisLength != null) {
+      map['testisLength'] = Variable<int>(testisLength);
     }
-    if (!nullToAbsent || testesWidth != null) {
-      map['testesWidth'] = Variable<int>(testesWidth);
+    if (!nullToAbsent || testisWidth != null) {
+      map['testisWidth'] = Variable<int>(testisWidth);
     }
-    if (!nullToAbsent || epididimysAppearance != null) {
-      map['epididimysAppearance'] = Variable<String>(epididimysAppearance);
+    if (!nullToAbsent || epididymisAppearance != null) {
+      map['epididymisAppearance'] = Variable<String>(epididymisAppearance);
     }
     if (!nullToAbsent || reproductiveStage != null) {
       map['reproductiveStage'] = Variable<String>(reproductiveStage);
@@ -7790,8 +7766,8 @@ class MammalMeasurementData extends DataClass
     if (!nullToAbsent || mammaeInguinalCount != null) {
       map['mammaeInguinalCount'] = Variable<int>(mammaeInguinalCount);
     }
-    if (!nullToAbsent || mammaeAxilaryCount != null) {
-      map['mammaeAxilaryCount'] = Variable<int>(mammaeAxilaryCount);
+    if (!nullToAbsent || mammaeAxillaryCount != null) {
+      map['mammaeAxillaryCount'] = Variable<int>(mammaeAxillaryCount);
     }
     if (!nullToAbsent || mammaeAbdominalCount != null) {
       map['mammaeAbdominalCount'] = Variable<int>(mammaeAbdominalCount);
@@ -7799,8 +7775,8 @@ class MammalMeasurementData extends DataClass
     if (!nullToAbsent || vaginaOpening != null) {
       map['vaginaOpening'] = Variable<String>(vaginaOpening);
     }
-    if (!nullToAbsent || pubicSymphisis != null) {
-      map['pubicSymphisis'] = Variable<String>(pubicSymphisis);
+    if (!nullToAbsent || pubicSymphysis != null) {
+      map['pubicSymphysis'] = Variable<String>(pubicSymphysis);
     }
     if (!nullToAbsent || embryoLeftCount != null) {
       map['embryoLeftCount'] = Variable<int>(embryoLeftCount);
@@ -7837,28 +7813,23 @@ class MammalMeasurementData extends DataClass
           : Value(forearm),
       weight:
           weight == null && nullToAbsent ? const Value.absent() : Value(weight),
-      inaccurate: inaccurate == null && nullToAbsent
+      accuracy: accuracy == null && nullToAbsent
           ? const Value.absent()
-          : Value(inaccurate),
-      inaccurateReason: inaccurateReason == null && nullToAbsent
-          ? const Value.absent()
-          : Value(inaccurateReason),
+          : Value(accuracy),
       sex: sex == null && nullToAbsent ? const Value.absent() : Value(sex),
-      lifeStage: lifeStage == null && nullToAbsent
+      age: age == null && nullToAbsent ? const Value.absent() : Value(age),
+      testisPosition: testisPosition == null && nullToAbsent
           ? const Value.absent()
-          : Value(lifeStage),
-      testesPosition: testesPosition == null && nullToAbsent
+          : Value(testisPosition),
+      testisLength: testisLength == null && nullToAbsent
           ? const Value.absent()
-          : Value(testesPosition),
-      testesLength: testesLength == null && nullToAbsent
+          : Value(testisLength),
+      testisWidth: testisWidth == null && nullToAbsent
           ? const Value.absent()
-          : Value(testesLength),
-      testesWidth: testesWidth == null && nullToAbsent
+          : Value(testisWidth),
+      epididymisAppearance: epididymisAppearance == null && nullToAbsent
           ? const Value.absent()
-          : Value(testesWidth),
-      epididimysAppearance: epididimysAppearance == null && nullToAbsent
-          ? const Value.absent()
-          : Value(epididimysAppearance),
+          : Value(epididymisAppearance),
       reproductiveStage: reproductiveStage == null && nullToAbsent
           ? const Value.absent()
           : Value(reproductiveStage),
@@ -7874,18 +7845,18 @@ class MammalMeasurementData extends DataClass
       mammaeInguinalCount: mammaeInguinalCount == null && nullToAbsent
           ? const Value.absent()
           : Value(mammaeInguinalCount),
-      mammaeAxilaryCount: mammaeAxilaryCount == null && nullToAbsent
+      mammaeAxillaryCount: mammaeAxillaryCount == null && nullToAbsent
           ? const Value.absent()
-          : Value(mammaeAxilaryCount),
+          : Value(mammaeAxillaryCount),
       mammaeAbdominalCount: mammaeAbdominalCount == null && nullToAbsent
           ? const Value.absent()
           : Value(mammaeAbdominalCount),
       vaginaOpening: vaginaOpening == null && nullToAbsent
           ? const Value.absent()
           : Value(vaginaOpening),
-      pubicSymphisis: pubicSymphisis == null && nullToAbsent
+      pubicSymphysis: pubicSymphysis == null && nullToAbsent
           ? const Value.absent()
-          : Value(pubicSymphisis),
+          : Value(pubicSymphysis),
       embryoLeftCount: embryoLeftCount == null && nullToAbsent
           ? const Value.absent()
           : Value(embryoLeftCount),
@@ -7911,15 +7882,14 @@ class MammalMeasurementData extends DataClass
       earLength: serializer.fromJson<int?>(json['earLength']),
       forearm: serializer.fromJson<int?>(json['forearm']),
       weight: serializer.fromJson<int?>(json['weight']),
-      inaccurate: serializer.fromJson<String?>(json['inaccurate']),
-      inaccurateReason: serializer.fromJson<String?>(json['inaccurateReason']),
-      sex: serializer.fromJson<String?>(json['sex']),
-      lifeStage: serializer.fromJson<String?>(json['lifeStage']),
-      testesPosition: serializer.fromJson<String?>(json['testesPosition']),
-      testesLength: serializer.fromJson<int?>(json['testesLength']),
-      testesWidth: serializer.fromJson<int?>(json['testesWidth']),
-      epididimysAppearance:
-          serializer.fromJson<String?>(json['epididimysAppearance']),
+      accuracy: serializer.fromJson<String?>(json['accuracy']),
+      sex: serializer.fromJson<int?>(json['sex']),
+      age: serializer.fromJson<String?>(json['age']),
+      testisPosition: serializer.fromJson<String?>(json['testisPosition']),
+      testisLength: serializer.fromJson<int?>(json['testisLength']),
+      testisWidth: serializer.fromJson<int?>(json['testisWidth']),
+      epididymisAppearance:
+          serializer.fromJson<String?>(json['epididymisAppearance']),
       reproductiveStage:
           serializer.fromJson<String?>(json['reproductiveStage']),
       leftPlacentalScars: serializer.fromJson<int?>(json['leftPlacentalScars']),
@@ -7928,11 +7898,12 @@ class MammalMeasurementData extends DataClass
       mammaeCondition: serializer.fromJson<int?>(json['mammaeCondition']),
       mammaeInguinalCount:
           serializer.fromJson<int?>(json['mammaeInguinalCount']),
-      mammaeAxilaryCount: serializer.fromJson<int?>(json['mammaeAxilaryCount']),
+      mammaeAxillaryCount:
+          serializer.fromJson<int?>(json['mammaeAxillaryCount']),
       mammaeAbdominalCount:
           serializer.fromJson<int?>(json['mammaeAbdominalCount']),
       vaginaOpening: serializer.fromJson<String?>(json['vaginaOpening']),
-      pubicSymphisis: serializer.fromJson<String?>(json['pubicSymphisis']),
+      pubicSymphysis: serializer.fromJson<String?>(json['pubicSymphysis']),
       embryoLeftCount: serializer.fromJson<int?>(json['embryoLeftCount']),
       embryoRightCount: serializer.fromJson<int?>(json['embryoRightCount']),
       embryoCR: serializer.fromJson<int?>(json['embryoCR']),
@@ -7950,23 +7921,22 @@ class MammalMeasurementData extends DataClass
       'earLength': serializer.toJson<int?>(earLength),
       'forearm': serializer.toJson<int?>(forearm),
       'weight': serializer.toJson<int?>(weight),
-      'inaccurate': serializer.toJson<String?>(inaccurate),
-      'inaccurateReason': serializer.toJson<String?>(inaccurateReason),
-      'sex': serializer.toJson<String?>(sex),
-      'lifeStage': serializer.toJson<String?>(lifeStage),
-      'testesPosition': serializer.toJson<String?>(testesPosition),
-      'testesLength': serializer.toJson<int?>(testesLength),
-      'testesWidth': serializer.toJson<int?>(testesWidth),
-      'epididimysAppearance': serializer.toJson<String?>(epididimysAppearance),
+      'accuracy': serializer.toJson<String?>(accuracy),
+      'sex': serializer.toJson<int?>(sex),
+      'age': serializer.toJson<String?>(age),
+      'testisPosition': serializer.toJson<String?>(testisPosition),
+      'testisLength': serializer.toJson<int?>(testisLength),
+      'testisWidth': serializer.toJson<int?>(testisWidth),
+      'epididymisAppearance': serializer.toJson<String?>(epididymisAppearance),
       'reproductiveStage': serializer.toJson<String?>(reproductiveStage),
       'leftPlacentalScars': serializer.toJson<int?>(leftPlacentalScars),
       'rightPlacentalScars': serializer.toJson<int?>(rightPlacentalScars),
       'mammaeCondition': serializer.toJson<int?>(mammaeCondition),
       'mammaeInguinalCount': serializer.toJson<int?>(mammaeInguinalCount),
-      'mammaeAxilaryCount': serializer.toJson<int?>(mammaeAxilaryCount),
+      'mammaeAxillaryCount': serializer.toJson<int?>(mammaeAxillaryCount),
       'mammaeAbdominalCount': serializer.toJson<int?>(mammaeAbdominalCount),
       'vaginaOpening': serializer.toJson<String?>(vaginaOpening),
-      'pubicSymphisis': serializer.toJson<String?>(pubicSymphisis),
+      'pubicSymphysis': serializer.toJson<String?>(pubicSymphysis),
       'embryoLeftCount': serializer.toJson<int?>(embryoLeftCount),
       'embryoRightCount': serializer.toJson<int?>(embryoRightCount),
       'embryoCR': serializer.toJson<int?>(embryoCR),
@@ -7982,23 +7952,22 @@ class MammalMeasurementData extends DataClass
           Value<int?> earLength = const Value.absent(),
           Value<int?> forearm = const Value.absent(),
           Value<int?> weight = const Value.absent(),
-          Value<String?> inaccurate = const Value.absent(),
-          Value<String?> inaccurateReason = const Value.absent(),
-          Value<String?> sex = const Value.absent(),
-          Value<String?> lifeStage = const Value.absent(),
-          Value<String?> testesPosition = const Value.absent(),
-          Value<int?> testesLength = const Value.absent(),
-          Value<int?> testesWidth = const Value.absent(),
-          Value<String?> epididimysAppearance = const Value.absent(),
+          Value<String?> accuracy = const Value.absent(),
+          Value<int?> sex = const Value.absent(),
+          Value<String?> age = const Value.absent(),
+          Value<String?> testisPosition = const Value.absent(),
+          Value<int?> testisLength = const Value.absent(),
+          Value<int?> testisWidth = const Value.absent(),
+          Value<String?> epididymisAppearance = const Value.absent(),
           Value<String?> reproductiveStage = const Value.absent(),
           Value<int?> leftPlacentalScars = const Value.absent(),
           Value<int?> rightPlacentalScars = const Value.absent(),
           Value<int?> mammaeCondition = const Value.absent(),
           Value<int?> mammaeInguinalCount = const Value.absent(),
-          Value<int?> mammaeAxilaryCount = const Value.absent(),
+          Value<int?> mammaeAxillaryCount = const Value.absent(),
           Value<int?> mammaeAbdominalCount = const Value.absent(),
           Value<String?> vaginaOpening = const Value.absent(),
-          Value<String?> pubicSymphisis = const Value.absent(),
+          Value<String?> pubicSymphysis = const Value.absent(),
           Value<int?> embryoLeftCount = const Value.absent(),
           Value<int?> embryoRightCount = const Value.absent(),
           Value<int?> embryoCR = const Value.absent(),
@@ -8012,20 +7981,17 @@ class MammalMeasurementData extends DataClass
         earLength: earLength.present ? earLength.value : this.earLength,
         forearm: forearm.present ? forearm.value : this.forearm,
         weight: weight.present ? weight.value : this.weight,
-        inaccurate: inaccurate.present ? inaccurate.value : this.inaccurate,
-        inaccurateReason: inaccurateReason.present
-            ? inaccurateReason.value
-            : this.inaccurateReason,
+        accuracy: accuracy.present ? accuracy.value : this.accuracy,
         sex: sex.present ? sex.value : this.sex,
-        lifeStage: lifeStage.present ? lifeStage.value : this.lifeStage,
-        testesPosition:
-            testesPosition.present ? testesPosition.value : this.testesPosition,
-        testesLength:
-            testesLength.present ? testesLength.value : this.testesLength,
-        testesWidth: testesWidth.present ? testesWidth.value : this.testesWidth,
-        epididimysAppearance: epididimysAppearance.present
-            ? epididimysAppearance.value
-            : this.epididimysAppearance,
+        age: age.present ? age.value : this.age,
+        testisPosition:
+            testisPosition.present ? testisPosition.value : this.testisPosition,
+        testisLength:
+            testisLength.present ? testisLength.value : this.testisLength,
+        testisWidth: testisWidth.present ? testisWidth.value : this.testisWidth,
+        epididymisAppearance: epididymisAppearance.present
+            ? epididymisAppearance.value
+            : this.epididymisAppearance,
         reproductiveStage: reproductiveStage.present
             ? reproductiveStage.value
             : this.reproductiveStage,
@@ -8041,16 +8007,16 @@ class MammalMeasurementData extends DataClass
         mammaeInguinalCount: mammaeInguinalCount.present
             ? mammaeInguinalCount.value
             : this.mammaeInguinalCount,
-        mammaeAxilaryCount: mammaeAxilaryCount.present
-            ? mammaeAxilaryCount.value
-            : this.mammaeAxilaryCount,
+        mammaeAxillaryCount: mammaeAxillaryCount.present
+            ? mammaeAxillaryCount.value
+            : this.mammaeAxillaryCount,
         mammaeAbdominalCount: mammaeAbdominalCount.present
             ? mammaeAbdominalCount.value
             : this.mammaeAbdominalCount,
         vaginaOpening:
             vaginaOpening.present ? vaginaOpening.value : this.vaginaOpening,
-        pubicSymphisis:
-            pubicSymphisis.present ? pubicSymphisis.value : this.pubicSymphisis,
+        pubicSymphysis:
+            pubicSymphysis.present ? pubicSymphysis.value : this.pubicSymphysis,
         embryoLeftCount: embryoLeftCount.present
             ? embryoLeftCount.value
             : this.embryoLeftCount,
@@ -8070,23 +8036,22 @@ class MammalMeasurementData extends DataClass
           ..write('earLength: $earLength, ')
           ..write('forearm: $forearm, ')
           ..write('weight: $weight, ')
-          ..write('inaccurate: $inaccurate, ')
-          ..write('inaccurateReason: $inaccurateReason, ')
+          ..write('accuracy: $accuracy, ')
           ..write('sex: $sex, ')
-          ..write('lifeStage: $lifeStage, ')
-          ..write('testesPosition: $testesPosition, ')
-          ..write('testesLength: $testesLength, ')
-          ..write('testesWidth: $testesWidth, ')
-          ..write('epididimysAppearance: $epididimysAppearance, ')
+          ..write('age: $age, ')
+          ..write('testisPosition: $testisPosition, ')
+          ..write('testisLength: $testisLength, ')
+          ..write('testisWidth: $testisWidth, ')
+          ..write('epididymisAppearance: $epididymisAppearance, ')
           ..write('reproductiveStage: $reproductiveStage, ')
           ..write('leftPlacentalScars: $leftPlacentalScars, ')
           ..write('rightPlacentalScars: $rightPlacentalScars, ')
           ..write('mammaeCondition: $mammaeCondition, ')
           ..write('mammaeInguinalCount: $mammaeInguinalCount, ')
-          ..write('mammaeAxilaryCount: $mammaeAxilaryCount, ')
+          ..write('mammaeAxillaryCount: $mammaeAxillaryCount, ')
           ..write('mammaeAbdominalCount: $mammaeAbdominalCount, ')
           ..write('vaginaOpening: $vaginaOpening, ')
-          ..write('pubicSymphisis: $pubicSymphisis, ')
+          ..write('pubicSymphysis: $pubicSymphysis, ')
           ..write('embryoLeftCount: $embryoLeftCount, ')
           ..write('embryoRightCount: $embryoRightCount, ')
           ..write('embryoCR: $embryoCR, ')
@@ -8104,23 +8069,22 @@ class MammalMeasurementData extends DataClass
         earLength,
         forearm,
         weight,
-        inaccurate,
-        inaccurateReason,
+        accuracy,
         sex,
-        lifeStage,
-        testesPosition,
-        testesLength,
-        testesWidth,
-        epididimysAppearance,
+        age,
+        testisPosition,
+        testisLength,
+        testisWidth,
+        epididymisAppearance,
         reproductiveStage,
         leftPlacentalScars,
         rightPlacentalScars,
         mammaeCondition,
         mammaeInguinalCount,
-        mammaeAxilaryCount,
+        mammaeAxillaryCount,
         mammaeAbdominalCount,
         vaginaOpening,
-        pubicSymphisis,
+        pubicSymphysis,
         embryoLeftCount,
         embryoRightCount,
         embryoCR,
@@ -8137,23 +8101,22 @@ class MammalMeasurementData extends DataClass
           other.earLength == this.earLength &&
           other.forearm == this.forearm &&
           other.weight == this.weight &&
-          other.inaccurate == this.inaccurate &&
-          other.inaccurateReason == this.inaccurateReason &&
+          other.accuracy == this.accuracy &&
           other.sex == this.sex &&
-          other.lifeStage == this.lifeStage &&
-          other.testesPosition == this.testesPosition &&
-          other.testesLength == this.testesLength &&
-          other.testesWidth == this.testesWidth &&
-          other.epididimysAppearance == this.epididimysAppearance &&
+          other.age == this.age &&
+          other.testisPosition == this.testisPosition &&
+          other.testisLength == this.testisLength &&
+          other.testisWidth == this.testisWidth &&
+          other.epididymisAppearance == this.epididymisAppearance &&
           other.reproductiveStage == this.reproductiveStage &&
           other.leftPlacentalScars == this.leftPlacentalScars &&
           other.rightPlacentalScars == this.rightPlacentalScars &&
           other.mammaeCondition == this.mammaeCondition &&
           other.mammaeInguinalCount == this.mammaeInguinalCount &&
-          other.mammaeAxilaryCount == this.mammaeAxilaryCount &&
+          other.mammaeAxillaryCount == this.mammaeAxillaryCount &&
           other.mammaeAbdominalCount == this.mammaeAbdominalCount &&
           other.vaginaOpening == this.vaginaOpening &&
-          other.pubicSymphisis == this.pubicSymphisis &&
+          other.pubicSymphysis == this.pubicSymphysis &&
           other.embryoLeftCount == this.embryoLeftCount &&
           other.embryoRightCount == this.embryoRightCount &&
           other.embryoCR == this.embryoCR &&
@@ -8169,23 +8132,22 @@ class MammalMeasurementCompanion
   final Value<int?> earLength;
   final Value<int?> forearm;
   final Value<int?> weight;
-  final Value<String?> inaccurate;
-  final Value<String?> inaccurateReason;
-  final Value<String?> sex;
-  final Value<String?> lifeStage;
-  final Value<String?> testesPosition;
-  final Value<int?> testesLength;
-  final Value<int?> testesWidth;
-  final Value<String?> epididimysAppearance;
+  final Value<String?> accuracy;
+  final Value<int?> sex;
+  final Value<String?> age;
+  final Value<String?> testisPosition;
+  final Value<int?> testisLength;
+  final Value<int?> testisWidth;
+  final Value<String?> epididymisAppearance;
   final Value<String?> reproductiveStage;
   final Value<int?> leftPlacentalScars;
   final Value<int?> rightPlacentalScars;
   final Value<int?> mammaeCondition;
   final Value<int?> mammaeInguinalCount;
-  final Value<int?> mammaeAxilaryCount;
+  final Value<int?> mammaeAxillaryCount;
   final Value<int?> mammaeAbdominalCount;
   final Value<String?> vaginaOpening;
-  final Value<String?> pubicSymphisis;
+  final Value<String?> pubicSymphysis;
   final Value<int?> embryoLeftCount;
   final Value<int?> embryoRightCount;
   final Value<int?> embryoCR;
@@ -8198,23 +8160,22 @@ class MammalMeasurementCompanion
     this.earLength = const Value.absent(),
     this.forearm = const Value.absent(),
     this.weight = const Value.absent(),
-    this.inaccurate = const Value.absent(),
-    this.inaccurateReason = const Value.absent(),
+    this.accuracy = const Value.absent(),
     this.sex = const Value.absent(),
-    this.lifeStage = const Value.absent(),
-    this.testesPosition = const Value.absent(),
-    this.testesLength = const Value.absent(),
-    this.testesWidth = const Value.absent(),
-    this.epididimysAppearance = const Value.absent(),
+    this.age = const Value.absent(),
+    this.testisPosition = const Value.absent(),
+    this.testisLength = const Value.absent(),
+    this.testisWidth = const Value.absent(),
+    this.epididymisAppearance = const Value.absent(),
     this.reproductiveStage = const Value.absent(),
     this.leftPlacentalScars = const Value.absent(),
     this.rightPlacentalScars = const Value.absent(),
     this.mammaeCondition = const Value.absent(),
     this.mammaeInguinalCount = const Value.absent(),
-    this.mammaeAxilaryCount = const Value.absent(),
+    this.mammaeAxillaryCount = const Value.absent(),
     this.mammaeAbdominalCount = const Value.absent(),
     this.vaginaOpening = const Value.absent(),
-    this.pubicSymphisis = const Value.absent(),
+    this.pubicSymphysis = const Value.absent(),
     this.embryoLeftCount = const Value.absent(),
     this.embryoRightCount = const Value.absent(),
     this.embryoCR = const Value.absent(),
@@ -8228,23 +8189,22 @@ class MammalMeasurementCompanion
     this.earLength = const Value.absent(),
     this.forearm = const Value.absent(),
     this.weight = const Value.absent(),
-    this.inaccurate = const Value.absent(),
-    this.inaccurateReason = const Value.absent(),
+    this.accuracy = const Value.absent(),
     this.sex = const Value.absent(),
-    this.lifeStage = const Value.absent(),
-    this.testesPosition = const Value.absent(),
-    this.testesLength = const Value.absent(),
-    this.testesWidth = const Value.absent(),
-    this.epididimysAppearance = const Value.absent(),
+    this.age = const Value.absent(),
+    this.testisPosition = const Value.absent(),
+    this.testisLength = const Value.absent(),
+    this.testisWidth = const Value.absent(),
+    this.epididymisAppearance = const Value.absent(),
     this.reproductiveStage = const Value.absent(),
     this.leftPlacentalScars = const Value.absent(),
     this.rightPlacentalScars = const Value.absent(),
     this.mammaeCondition = const Value.absent(),
     this.mammaeInguinalCount = const Value.absent(),
-    this.mammaeAxilaryCount = const Value.absent(),
+    this.mammaeAxillaryCount = const Value.absent(),
     this.mammaeAbdominalCount = const Value.absent(),
     this.vaginaOpening = const Value.absent(),
-    this.pubicSymphisis = const Value.absent(),
+    this.pubicSymphysis = const Value.absent(),
     this.embryoLeftCount = const Value.absent(),
     this.embryoRightCount = const Value.absent(),
     this.embryoCR = const Value.absent(),
@@ -8258,23 +8218,22 @@ class MammalMeasurementCompanion
     Expression<int>? earLength,
     Expression<int>? forearm,
     Expression<int>? weight,
-    Expression<String>? inaccurate,
-    Expression<String>? inaccurateReason,
-    Expression<String>? sex,
-    Expression<String>? lifeStage,
-    Expression<String>? testesPosition,
-    Expression<int>? testesLength,
-    Expression<int>? testesWidth,
-    Expression<String>? epididimysAppearance,
+    Expression<String>? accuracy,
+    Expression<int>? sex,
+    Expression<String>? age,
+    Expression<String>? testisPosition,
+    Expression<int>? testisLength,
+    Expression<int>? testisWidth,
+    Expression<String>? epididymisAppearance,
     Expression<String>? reproductiveStage,
     Expression<int>? leftPlacentalScars,
     Expression<int>? rightPlacentalScars,
     Expression<int>? mammaeCondition,
     Expression<int>? mammaeInguinalCount,
-    Expression<int>? mammaeAxilaryCount,
+    Expression<int>? mammaeAxillaryCount,
     Expression<int>? mammaeAbdominalCount,
     Expression<String>? vaginaOpening,
-    Expression<String>? pubicSymphisis,
+    Expression<String>? pubicSymphysis,
     Expression<int>? embryoLeftCount,
     Expression<int>? embryoRightCount,
     Expression<int>? embryoCR,
@@ -8288,15 +8247,14 @@ class MammalMeasurementCompanion
       if (earLength != null) 'earLength': earLength,
       if (forearm != null) 'forearm': forearm,
       if (weight != null) 'weight': weight,
-      if (inaccurate != null) 'inaccurate': inaccurate,
-      if (inaccurateReason != null) 'inaccurateReason': inaccurateReason,
+      if (accuracy != null) 'accuracy': accuracy,
       if (sex != null) 'sex': sex,
-      if (lifeStage != null) 'lifeStage': lifeStage,
-      if (testesPosition != null) 'testesPosition': testesPosition,
-      if (testesLength != null) 'testesLength': testesLength,
-      if (testesWidth != null) 'testesWidth': testesWidth,
-      if (epididimysAppearance != null)
-        'epididimysAppearance': epididimysAppearance,
+      if (age != null) 'age': age,
+      if (testisPosition != null) 'testisPosition': testisPosition,
+      if (testisLength != null) 'testisLength': testisLength,
+      if (testisWidth != null) 'testisWidth': testisWidth,
+      if (epididymisAppearance != null)
+        'epididymisAppearance': epididymisAppearance,
       if (reproductiveStage != null) 'reproductiveStage': reproductiveStage,
       if (leftPlacentalScars != null) 'leftPlacentalScars': leftPlacentalScars,
       if (rightPlacentalScars != null)
@@ -8304,11 +8262,12 @@ class MammalMeasurementCompanion
       if (mammaeCondition != null) 'mammaeCondition': mammaeCondition,
       if (mammaeInguinalCount != null)
         'mammaeInguinalCount': mammaeInguinalCount,
-      if (mammaeAxilaryCount != null) 'mammaeAxilaryCount': mammaeAxilaryCount,
+      if (mammaeAxillaryCount != null)
+        'mammaeAxillaryCount': mammaeAxillaryCount,
       if (mammaeAbdominalCount != null)
         'mammaeAbdominalCount': mammaeAbdominalCount,
       if (vaginaOpening != null) 'vaginaOpening': vaginaOpening,
-      if (pubicSymphisis != null) 'pubicSymphisis': pubicSymphisis,
+      if (pubicSymphysis != null) 'pubicSymphysis': pubicSymphysis,
       if (embryoLeftCount != null) 'embryoLeftCount': embryoLeftCount,
       if (embryoRightCount != null) 'embryoRightCount': embryoRightCount,
       if (embryoCR != null) 'embryoCR': embryoCR,
@@ -8324,23 +8283,22 @@ class MammalMeasurementCompanion
       Value<int?>? earLength,
       Value<int?>? forearm,
       Value<int?>? weight,
-      Value<String?>? inaccurate,
-      Value<String?>? inaccurateReason,
-      Value<String?>? sex,
-      Value<String?>? lifeStage,
-      Value<String?>? testesPosition,
-      Value<int?>? testesLength,
-      Value<int?>? testesWidth,
-      Value<String?>? epididimysAppearance,
+      Value<String?>? accuracy,
+      Value<int?>? sex,
+      Value<String?>? age,
+      Value<String?>? testisPosition,
+      Value<int?>? testisLength,
+      Value<int?>? testisWidth,
+      Value<String?>? epididymisAppearance,
       Value<String?>? reproductiveStage,
       Value<int?>? leftPlacentalScars,
       Value<int?>? rightPlacentalScars,
       Value<int?>? mammaeCondition,
       Value<int?>? mammaeInguinalCount,
-      Value<int?>? mammaeAxilaryCount,
+      Value<int?>? mammaeAxillaryCount,
       Value<int?>? mammaeAbdominalCount,
       Value<String?>? vaginaOpening,
-      Value<String?>? pubicSymphisis,
+      Value<String?>? pubicSymphysis,
       Value<int?>? embryoLeftCount,
       Value<int?>? embryoRightCount,
       Value<int?>? embryoCR,
@@ -8353,23 +8311,22 @@ class MammalMeasurementCompanion
       earLength: earLength ?? this.earLength,
       forearm: forearm ?? this.forearm,
       weight: weight ?? this.weight,
-      inaccurate: inaccurate ?? this.inaccurate,
-      inaccurateReason: inaccurateReason ?? this.inaccurateReason,
+      accuracy: accuracy ?? this.accuracy,
       sex: sex ?? this.sex,
-      lifeStage: lifeStage ?? this.lifeStage,
-      testesPosition: testesPosition ?? this.testesPosition,
-      testesLength: testesLength ?? this.testesLength,
-      testesWidth: testesWidth ?? this.testesWidth,
-      epididimysAppearance: epididimysAppearance ?? this.epididimysAppearance,
+      age: age ?? this.age,
+      testisPosition: testisPosition ?? this.testisPosition,
+      testisLength: testisLength ?? this.testisLength,
+      testisWidth: testisWidth ?? this.testisWidth,
+      epididymisAppearance: epididymisAppearance ?? this.epididymisAppearance,
       reproductiveStage: reproductiveStage ?? this.reproductiveStage,
       leftPlacentalScars: leftPlacentalScars ?? this.leftPlacentalScars,
       rightPlacentalScars: rightPlacentalScars ?? this.rightPlacentalScars,
       mammaeCondition: mammaeCondition ?? this.mammaeCondition,
       mammaeInguinalCount: mammaeInguinalCount ?? this.mammaeInguinalCount,
-      mammaeAxilaryCount: mammaeAxilaryCount ?? this.mammaeAxilaryCount,
+      mammaeAxillaryCount: mammaeAxillaryCount ?? this.mammaeAxillaryCount,
       mammaeAbdominalCount: mammaeAbdominalCount ?? this.mammaeAbdominalCount,
       vaginaOpening: vaginaOpening ?? this.vaginaOpening,
-      pubicSymphisis: pubicSymphisis ?? this.pubicSymphisis,
+      pubicSymphysis: pubicSymphysis ?? this.pubicSymphysis,
       embryoLeftCount: embryoLeftCount ?? this.embryoLeftCount,
       embryoRightCount: embryoRightCount ?? this.embryoRightCount,
       embryoCR: embryoCR ?? this.embryoCR,
@@ -8401,30 +8358,27 @@ class MammalMeasurementCompanion
     if (weight.present) {
       map['weight'] = Variable<int>(weight.value);
     }
-    if (inaccurate.present) {
-      map['inaccurate'] = Variable<String>(inaccurate.value);
-    }
-    if (inaccurateReason.present) {
-      map['inaccurateReason'] = Variable<String>(inaccurateReason.value);
+    if (accuracy.present) {
+      map['accuracy'] = Variable<String>(accuracy.value);
     }
     if (sex.present) {
-      map['sex'] = Variable<String>(sex.value);
+      map['sex'] = Variable<int>(sex.value);
     }
-    if (lifeStage.present) {
-      map['lifeStage'] = Variable<String>(lifeStage.value);
+    if (age.present) {
+      map['age'] = Variable<String>(age.value);
     }
-    if (testesPosition.present) {
-      map['testesPosition'] = Variable<String>(testesPosition.value);
+    if (testisPosition.present) {
+      map['testisPosition'] = Variable<String>(testisPosition.value);
     }
-    if (testesLength.present) {
-      map['testesLength'] = Variable<int>(testesLength.value);
+    if (testisLength.present) {
+      map['testisLength'] = Variable<int>(testisLength.value);
     }
-    if (testesWidth.present) {
-      map['testesWidth'] = Variable<int>(testesWidth.value);
+    if (testisWidth.present) {
+      map['testisWidth'] = Variable<int>(testisWidth.value);
     }
-    if (epididimysAppearance.present) {
-      map['epididimysAppearance'] =
-          Variable<String>(epididimysAppearance.value);
+    if (epididymisAppearance.present) {
+      map['epididymisAppearance'] =
+          Variable<String>(epididymisAppearance.value);
     }
     if (reproductiveStage.present) {
       map['reproductiveStage'] = Variable<String>(reproductiveStage.value);
@@ -8441,8 +8395,8 @@ class MammalMeasurementCompanion
     if (mammaeInguinalCount.present) {
       map['mammaeInguinalCount'] = Variable<int>(mammaeInguinalCount.value);
     }
-    if (mammaeAxilaryCount.present) {
-      map['mammaeAxilaryCount'] = Variable<int>(mammaeAxilaryCount.value);
+    if (mammaeAxillaryCount.present) {
+      map['mammaeAxillaryCount'] = Variable<int>(mammaeAxillaryCount.value);
     }
     if (mammaeAbdominalCount.present) {
       map['mammaeAbdominalCount'] = Variable<int>(mammaeAbdominalCount.value);
@@ -8450,8 +8404,8 @@ class MammalMeasurementCompanion
     if (vaginaOpening.present) {
       map['vaginaOpening'] = Variable<String>(vaginaOpening.value);
     }
-    if (pubicSymphisis.present) {
-      map['pubicSymphisis'] = Variable<String>(pubicSymphisis.value);
+    if (pubicSymphysis.present) {
+      map['pubicSymphysis'] = Variable<String>(pubicSymphysis.value);
     }
     if (embryoLeftCount.present) {
       map['embryoLeftCount'] = Variable<int>(embryoLeftCount.value);
@@ -8478,23 +8432,22 @@ class MammalMeasurementCompanion
           ..write('earLength: $earLength, ')
           ..write('forearm: $forearm, ')
           ..write('weight: $weight, ')
-          ..write('inaccurate: $inaccurate, ')
-          ..write('inaccurateReason: $inaccurateReason, ')
+          ..write('accuracy: $accuracy, ')
           ..write('sex: $sex, ')
-          ..write('lifeStage: $lifeStage, ')
-          ..write('testesPosition: $testesPosition, ')
-          ..write('testesLength: $testesLength, ')
-          ..write('testesWidth: $testesWidth, ')
-          ..write('epididimysAppearance: $epididimysAppearance, ')
+          ..write('age: $age, ')
+          ..write('testisPosition: $testisPosition, ')
+          ..write('testisLength: $testisLength, ')
+          ..write('testisWidth: $testisWidth, ')
+          ..write('epididymisAppearance: $epididymisAppearance, ')
           ..write('reproductiveStage: $reproductiveStage, ')
           ..write('leftPlacentalScars: $leftPlacentalScars, ')
           ..write('rightPlacentalScars: $rightPlacentalScars, ')
           ..write('mammaeCondition: $mammaeCondition, ')
           ..write('mammaeInguinalCount: $mammaeInguinalCount, ')
-          ..write('mammaeAxilaryCount: $mammaeAxilaryCount, ')
+          ..write('mammaeAxillaryCount: $mammaeAxillaryCount, ')
           ..write('mammaeAbdominalCount: $mammaeAbdominalCount, ')
           ..write('vaginaOpening: $vaginaOpening, ')
-          ..write('pubicSymphisis: $pubicSymphisis, ')
+          ..write('pubicSymphysis: $pubicSymphysis, ')
           ..write('embryoLeftCount: $embryoLeftCount, ')
           ..write('embryoRightCount: $embryoRightCount, ')
           ..write('embryoCR: $embryoCR, ')
@@ -8537,10 +8490,17 @@ class BirdMeasurement extends Table
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _feetColorMeta =
-      const VerificationMeta('feetColor');
-  late final GeneratedColumn<String> feetColor = GeneratedColumn<String>(
-      'feetColor', aliasedName, true,
+  static const VerificationMeta _billColorMeta =
+      const VerificationMeta('billColor');
+  late final GeneratedColumn<String> billColor = GeneratedColumn<String>(
+      'billColor', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _footColorMeta =
+      const VerificationMeta('footColor');
+  late final GeneratedColumn<String> footColor = GeneratedColumn<String>(
+      'footColor', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -8551,46 +8511,38 @@ class BirdMeasurement extends Table
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _moltingWingMeta =
-      const VerificationMeta('moltingWing');
-  late final GeneratedColumn<String> moltingWing = GeneratedColumn<String>(
-      'moltingWing', aliasedName, true,
-      type: DriftSqlType.string,
+  static const VerificationMeta _sexMeta = const VerificationMeta('sex');
+  late final GeneratedColumn<int> sex = GeneratedColumn<int>(
+      'sex', aliasedName, true,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _moltingTailMeta =
-      const VerificationMeta('moltingTail');
-  late final GeneratedColumn<String> moltingTail = GeneratedColumn<String>(
-      'moltingTail', aliasedName, true,
-      type: DriftSqlType.string,
+  static const VerificationMeta _moltingMeta =
+      const VerificationMeta('molting');
+  late final GeneratedColumn<int> molting = GeneratedColumn<int>(
+      'molting', aliasedName, true,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _bodyFatMeta =
-      const VerificationMeta('bodyFat');
-  late final GeneratedColumn<String> bodyFat = GeneratedColumn<String>(
-      'bodyFat', aliasedName, true,
-      type: DriftSqlType.string,
+  static const VerificationMeta _broodPatchMeta =
+      const VerificationMeta('broodPatch');
+  late final GeneratedColumn<int> broodPatch = GeneratedColumn<int>(
+      'broodPatch', aliasedName, true,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _skullOssificationMeta =
+      const VerificationMeta('skullOssification');
+  late final GeneratedColumn<String> skullOssification =
+      GeneratedColumn<String>('skullOssification', aliasedName, true,
+          type: DriftSqlType.string,
+          requiredDuringInsert: false,
+          $customConstraints: '');
   static const VerificationMeta _bursaLengthMeta =
       const VerificationMeta('bursaLength');
   late final GeneratedColumn<int> bursaLength = GeneratedColumn<int>(
       'bursaLength', aliasedName, true,
       type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _bursaWidthMeta =
-      const VerificationMeta('bursaWidth');
-  late final GeneratedColumn<int> bursaWidth = GeneratedColumn<int>(
-      'bursaWidth', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _skullOssilationMeta =
-      const VerificationMeta('skullOssilation');
-  late final GeneratedColumn<String> skullOssilation = GeneratedColumn<String>(
-      'skullOssilation', aliasedName, true,
-      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _fatMeta = const VerificationMeta('fat');
@@ -8599,22 +8551,129 @@ class BirdMeasurement extends Table
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _sexMeta = const VerificationMeta('sex');
-  late final GeneratedColumn<String> sex = GeneratedColumn<String>(
-      'sex', aliasedName, true,
+  static const VerificationMeta _stomachContentMeta =
+      const VerificationMeta('stomachContent');
+  late final GeneratedColumn<String> stomachContent = GeneratedColumn<String>(
+      'stomachContent', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _gonadMeta = const VerificationMeta('gonad');
-  late final GeneratedColumn<String> gonad = GeneratedColumn<String>(
-      'gonad', aliasedName, true,
+  static const VerificationMeta _testisLengthMeta =
+      const VerificationMeta('testisLength');
+  late final GeneratedColumn<int> testisLength = GeneratedColumn<int>(
+      'testisLength', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _testisWidthMeta =
+      const VerificationMeta('testisWidth');
+  late final GeneratedColumn<int> testisWidth = GeneratedColumn<int>(
+      'testisWidth', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _testisRemarkMeta =
+      const VerificationMeta('testisRemark');
+  late final GeneratedColumn<String> testisRemark = GeneratedColumn<String>(
+      'testisRemark', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _stomachMeta =
-      const VerificationMeta('stomach');
-  late final GeneratedColumn<String> stomach = GeneratedColumn<String>(
-      'stomach', aliasedName, true,
+  static const VerificationMeta _ovaryLengthMeta =
+      const VerificationMeta('ovaryLength');
+  late final GeneratedColumn<int> ovaryLength = GeneratedColumn<int>(
+      'ovaryLength', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _ovaryWidthMeta =
+      const VerificationMeta('ovaryWidth');
+  late final GeneratedColumn<int> ovaryWidth = GeneratedColumn<int>(
+      'ovaryWidth', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _ovaryAppearanceMeta =
+      const VerificationMeta('ovaryAppearance');
+  late final GeneratedColumn<String> ovaryAppearance = GeneratedColumn<String>(
+      'ovaryAppearance', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _oviductWidthMeta =
+      const VerificationMeta('oviductWidth');
+  late final GeneratedColumn<int> oviductWidth = GeneratedColumn<int>(
+      'oviductWidth', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _oviductAppearanceMeta =
+      const VerificationMeta('oviductAppearance');
+  late final GeneratedColumn<int> oviductAppearance = GeneratedColumn<int>(
+      'oviductAppearance', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _ovaryRemarkMeta =
+      const VerificationMeta('ovaryRemark');
+  late final GeneratedColumn<String> ovaryRemark = GeneratedColumn<String>(
+      'ovaryRemark', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _wingRightPrimaryMeta =
+      const VerificationMeta('wingRightPrimary');
+  late final GeneratedColumn<String> wingRightPrimary = GeneratedColumn<String>(
+      'wingRightPrimary', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _wingLeftPrimaryMeta =
+      const VerificationMeta('wingLeftPrimary');
+  late final GeneratedColumn<String> wingLeftPrimary = GeneratedColumn<String>(
+      'wingLeftPrimary', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _wingRightSecondaryMeta =
+      const VerificationMeta('wingRightSecondary');
+  late final GeneratedColumn<String> wingRightSecondary =
+      GeneratedColumn<String>('wingRightSecondary', aliasedName, true,
+          type: DriftSqlType.string,
+          requiredDuringInsert: false,
+          $customConstraints: '');
+  static const VerificationMeta _wingLeftSecondaryMeta =
+      const VerificationMeta('wingLeftSecondary');
+  late final GeneratedColumn<String> wingLeftSecondary =
+      GeneratedColumn<String>('wingLeftSecondary', aliasedName, true,
+          type: DriftSqlType.string,
+          requiredDuringInsert: false,
+          $customConstraints: '');
+  static const VerificationMeta _tailRightRectricesMeta =
+      const VerificationMeta('tailRightRectrices');
+  late final GeneratedColumn<String> tailRightRectrices =
+      GeneratedColumn<String>('tailRightRectrices', aliasedName, true,
+          type: DriftSqlType.string,
+          requiredDuringInsert: false,
+          $customConstraints: '');
+  static const VerificationMeta _tailLeftRectricesMeta =
+      const VerificationMeta('tailLeftRectrices');
+  late final GeneratedColumn<String> tailLeftRectrices =
+      GeneratedColumn<String>('tailLeftRectrices', aliasedName, true,
+          type: DriftSqlType.string,
+          requiredDuringInsert: false,
+          $customConstraints: '');
+  static const VerificationMeta _bodyMoltMeta =
+      const VerificationMeta('bodyMolt');
+  late final GeneratedColumn<int> bodyMolt = GeneratedColumn<int>(
+      'bodyMolt', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _moltRemarkMeta =
+      const VerificationMeta('moltRemark');
+  late final GeneratedColumn<String> moltRemark = GeneratedColumn<String>(
+      'moltRemark', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -8624,18 +8683,33 @@ class BirdMeasurement extends Table
         weight,
         wingspan,
         irisColor,
-        feetColor,
+        billColor,
+        footColor,
         tarsusColor,
-        moltingWing,
-        moltingTail,
-        bodyFat,
-        bursaLength,
-        bursaWidth,
-        skullOssilation,
-        fat,
         sex,
-        gonad,
-        stomach
+        molting,
+        broodPatch,
+        skullOssification,
+        bursaLength,
+        fat,
+        stomachContent,
+        testisLength,
+        testisWidth,
+        testisRemark,
+        ovaryLength,
+        ovaryWidth,
+        ovaryAppearance,
+        oviductWidth,
+        oviductAppearance,
+        ovaryRemark,
+        wingRightPrimary,
+        wingLeftPrimary,
+        wingRightSecondary,
+        wingLeftSecondary,
+        tailRightRectrices,
+        tailLeftRectrices,
+        bodyMolt,
+        moltRemark
       ];
   @override
   String get aliasedName => _alias ?? 'birdMeasurement';
@@ -8667,9 +8741,13 @@ class BirdMeasurement extends Table
       context.handle(_irisColorMeta,
           irisColor.isAcceptableOrUnknown(data['irisColor']!, _irisColorMeta));
     }
-    if (data.containsKey('feetColor')) {
-      context.handle(_feetColorMeta,
-          feetColor.isAcceptableOrUnknown(data['feetColor']!, _feetColorMeta));
+    if (data.containsKey('billColor')) {
+      context.handle(_billColorMeta,
+          billColor.isAcceptableOrUnknown(data['billColor']!, _billColorMeta));
+    }
+    if (data.containsKey('footColor')) {
+      context.handle(_footColorMeta,
+          footColor.isAcceptableOrUnknown(data['footColor']!, _footColorMeta));
     }
     if (data.containsKey('tarsusColor')) {
       context.handle(
@@ -8677,21 +8755,25 @@ class BirdMeasurement extends Table
           tarsusColor.isAcceptableOrUnknown(
               data['tarsusColor']!, _tarsusColorMeta));
     }
-    if (data.containsKey('moltingWing')) {
+    if (data.containsKey('sex')) {
       context.handle(
-          _moltingWingMeta,
-          moltingWing.isAcceptableOrUnknown(
-              data['moltingWing']!, _moltingWingMeta));
+          _sexMeta, sex.isAcceptableOrUnknown(data['sex']!, _sexMeta));
     }
-    if (data.containsKey('moltingTail')) {
+    if (data.containsKey('molting')) {
+      context.handle(_moltingMeta,
+          molting.isAcceptableOrUnknown(data['molting']!, _moltingMeta));
+    }
+    if (data.containsKey('broodPatch')) {
       context.handle(
-          _moltingTailMeta,
-          moltingTail.isAcceptableOrUnknown(
-              data['moltingTail']!, _moltingTailMeta));
+          _broodPatchMeta,
+          broodPatch.isAcceptableOrUnknown(
+              data['broodPatch']!, _broodPatchMeta));
     }
-    if (data.containsKey('bodyFat')) {
-      context.handle(_bodyFatMeta,
-          bodyFat.isAcceptableOrUnknown(data['bodyFat']!, _bodyFatMeta));
+    if (data.containsKey('skullOssification')) {
+      context.handle(
+          _skullOssificationMeta,
+          skullOssification.isAcceptableOrUnknown(
+              data['skullOssification']!, _skullOssificationMeta));
     }
     if (data.containsKey('bursaLength')) {
       context.handle(
@@ -8699,33 +8781,115 @@ class BirdMeasurement extends Table
           bursaLength.isAcceptableOrUnknown(
               data['bursaLength']!, _bursaLengthMeta));
     }
-    if (data.containsKey('bursaWidth')) {
-      context.handle(
-          _bursaWidthMeta,
-          bursaWidth.isAcceptableOrUnknown(
-              data['bursaWidth']!, _bursaWidthMeta));
-    }
-    if (data.containsKey('skullOssilation')) {
-      context.handle(
-          _skullOssilationMeta,
-          skullOssilation.isAcceptableOrUnknown(
-              data['skullOssilation']!, _skullOssilationMeta));
-    }
     if (data.containsKey('fat')) {
       context.handle(
           _fatMeta, fat.isAcceptableOrUnknown(data['fat']!, _fatMeta));
     }
-    if (data.containsKey('sex')) {
+    if (data.containsKey('stomachContent')) {
       context.handle(
-          _sexMeta, sex.isAcceptableOrUnknown(data['sex']!, _sexMeta));
+          _stomachContentMeta,
+          stomachContent.isAcceptableOrUnknown(
+              data['stomachContent']!, _stomachContentMeta));
     }
-    if (data.containsKey('gonad')) {
+    if (data.containsKey('testisLength')) {
       context.handle(
-          _gonadMeta, gonad.isAcceptableOrUnknown(data['gonad']!, _gonadMeta));
+          _testisLengthMeta,
+          testisLength.isAcceptableOrUnknown(
+              data['testisLength']!, _testisLengthMeta));
     }
-    if (data.containsKey('stomach')) {
-      context.handle(_stomachMeta,
-          stomach.isAcceptableOrUnknown(data['stomach']!, _stomachMeta));
+    if (data.containsKey('testisWidth')) {
+      context.handle(
+          _testisWidthMeta,
+          testisWidth.isAcceptableOrUnknown(
+              data['testisWidth']!, _testisWidthMeta));
+    }
+    if (data.containsKey('testisRemark')) {
+      context.handle(
+          _testisRemarkMeta,
+          testisRemark.isAcceptableOrUnknown(
+              data['testisRemark']!, _testisRemarkMeta));
+    }
+    if (data.containsKey('ovaryLength')) {
+      context.handle(
+          _ovaryLengthMeta,
+          ovaryLength.isAcceptableOrUnknown(
+              data['ovaryLength']!, _ovaryLengthMeta));
+    }
+    if (data.containsKey('ovaryWidth')) {
+      context.handle(
+          _ovaryWidthMeta,
+          ovaryWidth.isAcceptableOrUnknown(
+              data['ovaryWidth']!, _ovaryWidthMeta));
+    }
+    if (data.containsKey('ovaryAppearance')) {
+      context.handle(
+          _ovaryAppearanceMeta,
+          ovaryAppearance.isAcceptableOrUnknown(
+              data['ovaryAppearance']!, _ovaryAppearanceMeta));
+    }
+    if (data.containsKey('oviductWidth')) {
+      context.handle(
+          _oviductWidthMeta,
+          oviductWidth.isAcceptableOrUnknown(
+              data['oviductWidth']!, _oviductWidthMeta));
+    }
+    if (data.containsKey('oviductAppearance')) {
+      context.handle(
+          _oviductAppearanceMeta,
+          oviductAppearance.isAcceptableOrUnknown(
+              data['oviductAppearance']!, _oviductAppearanceMeta));
+    }
+    if (data.containsKey('ovaryRemark')) {
+      context.handle(
+          _ovaryRemarkMeta,
+          ovaryRemark.isAcceptableOrUnknown(
+              data['ovaryRemark']!, _ovaryRemarkMeta));
+    }
+    if (data.containsKey('wingRightPrimary')) {
+      context.handle(
+          _wingRightPrimaryMeta,
+          wingRightPrimary.isAcceptableOrUnknown(
+              data['wingRightPrimary']!, _wingRightPrimaryMeta));
+    }
+    if (data.containsKey('wingLeftPrimary')) {
+      context.handle(
+          _wingLeftPrimaryMeta,
+          wingLeftPrimary.isAcceptableOrUnknown(
+              data['wingLeftPrimary']!, _wingLeftPrimaryMeta));
+    }
+    if (data.containsKey('wingRightSecondary')) {
+      context.handle(
+          _wingRightSecondaryMeta,
+          wingRightSecondary.isAcceptableOrUnknown(
+              data['wingRightSecondary']!, _wingRightSecondaryMeta));
+    }
+    if (data.containsKey('wingLeftSecondary')) {
+      context.handle(
+          _wingLeftSecondaryMeta,
+          wingLeftSecondary.isAcceptableOrUnknown(
+              data['wingLeftSecondary']!, _wingLeftSecondaryMeta));
+    }
+    if (data.containsKey('tailRightRectrices')) {
+      context.handle(
+          _tailRightRectricesMeta,
+          tailRightRectrices.isAcceptableOrUnknown(
+              data['tailRightRectrices']!, _tailRightRectricesMeta));
+    }
+    if (data.containsKey('tailLeftRectrices')) {
+      context.handle(
+          _tailLeftRectricesMeta,
+          tailLeftRectrices.isAcceptableOrUnknown(
+              data['tailLeftRectrices']!, _tailLeftRectricesMeta));
+    }
+    if (data.containsKey('bodyMolt')) {
+      context.handle(_bodyMoltMeta,
+          bodyMolt.isAcceptableOrUnknown(data['bodyMolt']!, _bodyMoltMeta));
+    }
+    if (data.containsKey('moltRemark')) {
+      context.handle(
+          _moltRemarkMeta,
+          moltRemark.isAcceptableOrUnknown(
+              data['moltRemark']!, _moltRemarkMeta));
     }
     return context;
   }
@@ -8744,30 +8908,60 @@ class BirdMeasurement extends Table
           .read(DriftSqlType.int, data['${effectivePrefix}wingspan']),
       irisColor: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}irisColor']),
-      feetColor: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}feetColor']),
+      billColor: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}billColor']),
+      footColor: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}footColor']),
       tarsusColor: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}tarsusColor']),
-      moltingWing: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}moltingWing']),
-      moltingTail: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}moltingTail']),
-      bodyFat: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}bodyFat']),
+      sex: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}sex']),
+      molting: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}molting']),
+      broodPatch: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}broodPatch']),
+      skullOssification: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}skullOssification']),
       bursaLength: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}bursaLength']),
-      bursaWidth: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}bursaWidth']),
-      skullOssilation: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}skullOssilation']),
       fat: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}fat']),
-      sex: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}sex']),
-      gonad: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}gonad']),
-      stomach: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}stomach']),
+      stomachContent: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}stomachContent']),
+      testisLength: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}testisLength']),
+      testisWidth: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}testisWidth']),
+      testisRemark: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}testisRemark']),
+      ovaryLength: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}ovaryLength']),
+      ovaryWidth: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}ovaryWidth']),
+      ovaryAppearance: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}ovaryAppearance']),
+      oviductWidth: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}oviductWidth']),
+      oviductAppearance: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}oviductAppearance']),
+      ovaryRemark: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}ovaryRemark']),
+      wingRightPrimary: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}wingRightPrimary']),
+      wingLeftPrimary: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}wingLeftPrimary']),
+      wingRightSecondary: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}wingRightSecondary']),
+      wingLeftSecondary: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}wingLeftSecondary']),
+      tailRightRectrices: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}tailRightRectrices']),
+      tailLeftRectrices: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}tailLeftRectrices']),
+      bodyMolt: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}bodyMolt']),
+      moltRemark: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}moltRemark']),
     );
   }
 
@@ -8789,35 +8983,65 @@ class BirdMeasurementData extends DataClass
   final int? weight;
   final int? wingspan;
   final String? irisColor;
-  final String? feetColor;
+  final String? billColor;
+  final String? footColor;
   final String? tarsusColor;
-  final String? moltingWing;
-  final String? moltingTail;
-  final String? bodyFat;
+  final int? sex;
+  final int? molting;
+  final int? broodPatch;
+  final String? skullOssification;
   final int? bursaLength;
-  final int? bursaWidth;
-  final String? skullOssilation;
   final String? fat;
-  final String? sex;
-  final String? gonad;
-  final String? stomach;
+  final String? stomachContent;
+  final int? testisLength;
+  final int? testisWidth;
+  final String? testisRemark;
+  final int? ovaryLength;
+  final int? ovaryWidth;
+  final String? ovaryAppearance;
+  final int? oviductWidth;
+  final int? oviductAppearance;
+  final String? ovaryRemark;
+  final String? wingRightPrimary;
+  final String? wingLeftPrimary;
+  final String? wingRightSecondary;
+  final String? wingLeftSecondary;
+  final String? tailRightRectrices;
+  final String? tailLeftRectrices;
+  final int? bodyMolt;
+  final String? moltRemark;
   const BirdMeasurementData(
       {required this.specimenUuid,
       this.weight,
       this.wingspan,
       this.irisColor,
-      this.feetColor,
+      this.billColor,
+      this.footColor,
       this.tarsusColor,
-      this.moltingWing,
-      this.moltingTail,
-      this.bodyFat,
-      this.bursaLength,
-      this.bursaWidth,
-      this.skullOssilation,
-      this.fat,
       this.sex,
-      this.gonad,
-      this.stomach});
+      this.molting,
+      this.broodPatch,
+      this.skullOssification,
+      this.bursaLength,
+      this.fat,
+      this.stomachContent,
+      this.testisLength,
+      this.testisWidth,
+      this.testisRemark,
+      this.ovaryLength,
+      this.ovaryWidth,
+      this.ovaryAppearance,
+      this.oviductWidth,
+      this.oviductAppearance,
+      this.ovaryRemark,
+      this.wingRightPrimary,
+      this.wingLeftPrimary,
+      this.wingRightSecondary,
+      this.wingLeftSecondary,
+      this.tailRightRectrices,
+      this.tailLeftRectrices,
+      this.bodyMolt,
+      this.moltRemark});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -8831,41 +9055,86 @@ class BirdMeasurementData extends DataClass
     if (!nullToAbsent || irisColor != null) {
       map['irisColor'] = Variable<String>(irisColor);
     }
-    if (!nullToAbsent || feetColor != null) {
-      map['feetColor'] = Variable<String>(feetColor);
+    if (!nullToAbsent || billColor != null) {
+      map['billColor'] = Variable<String>(billColor);
+    }
+    if (!nullToAbsent || footColor != null) {
+      map['footColor'] = Variable<String>(footColor);
     }
     if (!nullToAbsent || tarsusColor != null) {
       map['tarsusColor'] = Variable<String>(tarsusColor);
     }
-    if (!nullToAbsent || moltingWing != null) {
-      map['moltingWing'] = Variable<String>(moltingWing);
+    if (!nullToAbsent || sex != null) {
+      map['sex'] = Variable<int>(sex);
     }
-    if (!nullToAbsent || moltingTail != null) {
-      map['moltingTail'] = Variable<String>(moltingTail);
+    if (!nullToAbsent || molting != null) {
+      map['molting'] = Variable<int>(molting);
     }
-    if (!nullToAbsent || bodyFat != null) {
-      map['bodyFat'] = Variable<String>(bodyFat);
+    if (!nullToAbsent || broodPatch != null) {
+      map['broodPatch'] = Variable<int>(broodPatch);
+    }
+    if (!nullToAbsent || skullOssification != null) {
+      map['skullOssification'] = Variable<String>(skullOssification);
     }
     if (!nullToAbsent || bursaLength != null) {
       map['bursaLength'] = Variable<int>(bursaLength);
     }
-    if (!nullToAbsent || bursaWidth != null) {
-      map['bursaWidth'] = Variable<int>(bursaWidth);
-    }
-    if (!nullToAbsent || skullOssilation != null) {
-      map['skullOssilation'] = Variable<String>(skullOssilation);
-    }
     if (!nullToAbsent || fat != null) {
       map['fat'] = Variable<String>(fat);
     }
-    if (!nullToAbsent || sex != null) {
-      map['sex'] = Variable<String>(sex);
+    if (!nullToAbsent || stomachContent != null) {
+      map['stomachContent'] = Variable<String>(stomachContent);
     }
-    if (!nullToAbsent || gonad != null) {
-      map['gonad'] = Variable<String>(gonad);
+    if (!nullToAbsent || testisLength != null) {
+      map['testisLength'] = Variable<int>(testisLength);
     }
-    if (!nullToAbsent || stomach != null) {
-      map['stomach'] = Variable<String>(stomach);
+    if (!nullToAbsent || testisWidth != null) {
+      map['testisWidth'] = Variable<int>(testisWidth);
+    }
+    if (!nullToAbsent || testisRemark != null) {
+      map['testisRemark'] = Variable<String>(testisRemark);
+    }
+    if (!nullToAbsent || ovaryLength != null) {
+      map['ovaryLength'] = Variable<int>(ovaryLength);
+    }
+    if (!nullToAbsent || ovaryWidth != null) {
+      map['ovaryWidth'] = Variable<int>(ovaryWidth);
+    }
+    if (!nullToAbsent || ovaryAppearance != null) {
+      map['ovaryAppearance'] = Variable<String>(ovaryAppearance);
+    }
+    if (!nullToAbsent || oviductWidth != null) {
+      map['oviductWidth'] = Variable<int>(oviductWidth);
+    }
+    if (!nullToAbsent || oviductAppearance != null) {
+      map['oviductAppearance'] = Variable<int>(oviductAppearance);
+    }
+    if (!nullToAbsent || ovaryRemark != null) {
+      map['ovaryRemark'] = Variable<String>(ovaryRemark);
+    }
+    if (!nullToAbsent || wingRightPrimary != null) {
+      map['wingRightPrimary'] = Variable<String>(wingRightPrimary);
+    }
+    if (!nullToAbsent || wingLeftPrimary != null) {
+      map['wingLeftPrimary'] = Variable<String>(wingLeftPrimary);
+    }
+    if (!nullToAbsent || wingRightSecondary != null) {
+      map['wingRightSecondary'] = Variable<String>(wingRightSecondary);
+    }
+    if (!nullToAbsent || wingLeftSecondary != null) {
+      map['wingLeftSecondary'] = Variable<String>(wingLeftSecondary);
+    }
+    if (!nullToAbsent || tailRightRectrices != null) {
+      map['tailRightRectrices'] = Variable<String>(tailRightRectrices);
+    }
+    if (!nullToAbsent || tailLeftRectrices != null) {
+      map['tailLeftRectrices'] = Variable<String>(tailLeftRectrices);
+    }
+    if (!nullToAbsent || bodyMolt != null) {
+      map['bodyMolt'] = Variable<int>(bodyMolt);
+    }
+    if (!nullToAbsent || moltRemark != null) {
+      map['moltRemark'] = Variable<String>(moltRemark);
     }
     return map;
   }
@@ -8881,37 +9150,83 @@ class BirdMeasurementData extends DataClass
       irisColor: irisColor == null && nullToAbsent
           ? const Value.absent()
           : Value(irisColor),
-      feetColor: feetColor == null && nullToAbsent
+      billColor: billColor == null && nullToAbsent
           ? const Value.absent()
-          : Value(feetColor),
+          : Value(billColor),
+      footColor: footColor == null && nullToAbsent
+          ? const Value.absent()
+          : Value(footColor),
       tarsusColor: tarsusColor == null && nullToAbsent
           ? const Value.absent()
           : Value(tarsusColor),
-      moltingWing: moltingWing == null && nullToAbsent
+      sex: sex == null && nullToAbsent ? const Value.absent() : Value(sex),
+      molting: molting == null && nullToAbsent
           ? const Value.absent()
-          : Value(moltingWing),
-      moltingTail: moltingTail == null && nullToAbsent
+          : Value(molting),
+      broodPatch: broodPatch == null && nullToAbsent
           ? const Value.absent()
-          : Value(moltingTail),
-      bodyFat: bodyFat == null && nullToAbsent
+          : Value(broodPatch),
+      skullOssification: skullOssification == null && nullToAbsent
           ? const Value.absent()
-          : Value(bodyFat),
+          : Value(skullOssification),
       bursaLength: bursaLength == null && nullToAbsent
           ? const Value.absent()
           : Value(bursaLength),
-      bursaWidth: bursaWidth == null && nullToAbsent
-          ? const Value.absent()
-          : Value(bursaWidth),
-      skullOssilation: skullOssilation == null && nullToAbsent
-          ? const Value.absent()
-          : Value(skullOssilation),
       fat: fat == null && nullToAbsent ? const Value.absent() : Value(fat),
-      sex: sex == null && nullToAbsent ? const Value.absent() : Value(sex),
-      gonad:
-          gonad == null && nullToAbsent ? const Value.absent() : Value(gonad),
-      stomach: stomach == null && nullToAbsent
+      stomachContent: stomachContent == null && nullToAbsent
           ? const Value.absent()
-          : Value(stomach),
+          : Value(stomachContent),
+      testisLength: testisLength == null && nullToAbsent
+          ? const Value.absent()
+          : Value(testisLength),
+      testisWidth: testisWidth == null && nullToAbsent
+          ? const Value.absent()
+          : Value(testisWidth),
+      testisRemark: testisRemark == null && nullToAbsent
+          ? const Value.absent()
+          : Value(testisRemark),
+      ovaryLength: ovaryLength == null && nullToAbsent
+          ? const Value.absent()
+          : Value(ovaryLength),
+      ovaryWidth: ovaryWidth == null && nullToAbsent
+          ? const Value.absent()
+          : Value(ovaryWidth),
+      ovaryAppearance: ovaryAppearance == null && nullToAbsent
+          ? const Value.absent()
+          : Value(ovaryAppearance),
+      oviductWidth: oviductWidth == null && nullToAbsent
+          ? const Value.absent()
+          : Value(oviductWidth),
+      oviductAppearance: oviductAppearance == null && nullToAbsent
+          ? const Value.absent()
+          : Value(oviductAppearance),
+      ovaryRemark: ovaryRemark == null && nullToAbsent
+          ? const Value.absent()
+          : Value(ovaryRemark),
+      wingRightPrimary: wingRightPrimary == null && nullToAbsent
+          ? const Value.absent()
+          : Value(wingRightPrimary),
+      wingLeftPrimary: wingLeftPrimary == null && nullToAbsent
+          ? const Value.absent()
+          : Value(wingLeftPrimary),
+      wingRightSecondary: wingRightSecondary == null && nullToAbsent
+          ? const Value.absent()
+          : Value(wingRightSecondary),
+      wingLeftSecondary: wingLeftSecondary == null && nullToAbsent
+          ? const Value.absent()
+          : Value(wingLeftSecondary),
+      tailRightRectrices: tailRightRectrices == null && nullToAbsent
+          ? const Value.absent()
+          : Value(tailRightRectrices),
+      tailLeftRectrices: tailLeftRectrices == null && nullToAbsent
+          ? const Value.absent()
+          : Value(tailLeftRectrices),
+      bodyMolt: bodyMolt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(bodyMolt),
+      moltRemark: moltRemark == null && nullToAbsent
+          ? const Value.absent()
+          : Value(moltRemark),
     );
   }
 
@@ -8923,18 +9238,38 @@ class BirdMeasurementData extends DataClass
       weight: serializer.fromJson<int?>(json['weight']),
       wingspan: serializer.fromJson<int?>(json['wingspan']),
       irisColor: serializer.fromJson<String?>(json['irisColor']),
-      feetColor: serializer.fromJson<String?>(json['feetColor']),
+      billColor: serializer.fromJson<String?>(json['billColor']),
+      footColor: serializer.fromJson<String?>(json['footColor']),
       tarsusColor: serializer.fromJson<String?>(json['tarsusColor']),
-      moltingWing: serializer.fromJson<String?>(json['moltingWing']),
-      moltingTail: serializer.fromJson<String?>(json['moltingTail']),
-      bodyFat: serializer.fromJson<String?>(json['bodyFat']),
+      sex: serializer.fromJson<int?>(json['sex']),
+      molting: serializer.fromJson<int?>(json['molting']),
+      broodPatch: serializer.fromJson<int?>(json['broodPatch']),
+      skullOssification:
+          serializer.fromJson<String?>(json['skullOssification']),
       bursaLength: serializer.fromJson<int?>(json['bursaLength']),
-      bursaWidth: serializer.fromJson<int?>(json['bursaWidth']),
-      skullOssilation: serializer.fromJson<String?>(json['skullOssilation']),
       fat: serializer.fromJson<String?>(json['fat']),
-      sex: serializer.fromJson<String?>(json['sex']),
-      gonad: serializer.fromJson<String?>(json['gonad']),
-      stomach: serializer.fromJson<String?>(json['stomach']),
+      stomachContent: serializer.fromJson<String?>(json['stomachContent']),
+      testisLength: serializer.fromJson<int?>(json['testisLength']),
+      testisWidth: serializer.fromJson<int?>(json['testisWidth']),
+      testisRemark: serializer.fromJson<String?>(json['testisRemark']),
+      ovaryLength: serializer.fromJson<int?>(json['ovaryLength']),
+      ovaryWidth: serializer.fromJson<int?>(json['ovaryWidth']),
+      ovaryAppearance: serializer.fromJson<String?>(json['ovaryAppearance']),
+      oviductWidth: serializer.fromJson<int?>(json['oviductWidth']),
+      oviductAppearance: serializer.fromJson<int?>(json['oviductAppearance']),
+      ovaryRemark: serializer.fromJson<String?>(json['ovaryRemark']),
+      wingRightPrimary: serializer.fromJson<String?>(json['wingRightPrimary']),
+      wingLeftPrimary: serializer.fromJson<String?>(json['wingLeftPrimary']),
+      wingRightSecondary:
+          serializer.fromJson<String?>(json['wingRightSecondary']),
+      wingLeftSecondary:
+          serializer.fromJson<String?>(json['wingLeftSecondary']),
+      tailRightRectrices:
+          serializer.fromJson<String?>(json['tailRightRectrices']),
+      tailLeftRectrices:
+          serializer.fromJson<String?>(json['tailLeftRectrices']),
+      bodyMolt: serializer.fromJson<int?>(json['bodyMolt']),
+      moltRemark: serializer.fromJson<String?>(json['moltRemark']),
     );
   }
   @override
@@ -8945,18 +9280,33 @@ class BirdMeasurementData extends DataClass
       'weight': serializer.toJson<int?>(weight),
       'wingspan': serializer.toJson<int?>(wingspan),
       'irisColor': serializer.toJson<String?>(irisColor),
-      'feetColor': serializer.toJson<String?>(feetColor),
+      'billColor': serializer.toJson<String?>(billColor),
+      'footColor': serializer.toJson<String?>(footColor),
       'tarsusColor': serializer.toJson<String?>(tarsusColor),
-      'moltingWing': serializer.toJson<String?>(moltingWing),
-      'moltingTail': serializer.toJson<String?>(moltingTail),
-      'bodyFat': serializer.toJson<String?>(bodyFat),
+      'sex': serializer.toJson<int?>(sex),
+      'molting': serializer.toJson<int?>(molting),
+      'broodPatch': serializer.toJson<int?>(broodPatch),
+      'skullOssification': serializer.toJson<String?>(skullOssification),
       'bursaLength': serializer.toJson<int?>(bursaLength),
-      'bursaWidth': serializer.toJson<int?>(bursaWidth),
-      'skullOssilation': serializer.toJson<String?>(skullOssilation),
       'fat': serializer.toJson<String?>(fat),
-      'sex': serializer.toJson<String?>(sex),
-      'gonad': serializer.toJson<String?>(gonad),
-      'stomach': serializer.toJson<String?>(stomach),
+      'stomachContent': serializer.toJson<String?>(stomachContent),
+      'testisLength': serializer.toJson<int?>(testisLength),
+      'testisWidth': serializer.toJson<int?>(testisWidth),
+      'testisRemark': serializer.toJson<String?>(testisRemark),
+      'ovaryLength': serializer.toJson<int?>(ovaryLength),
+      'ovaryWidth': serializer.toJson<int?>(ovaryWidth),
+      'ovaryAppearance': serializer.toJson<String?>(ovaryAppearance),
+      'oviductWidth': serializer.toJson<int?>(oviductWidth),
+      'oviductAppearance': serializer.toJson<int?>(oviductAppearance),
+      'ovaryRemark': serializer.toJson<String?>(ovaryRemark),
+      'wingRightPrimary': serializer.toJson<String?>(wingRightPrimary),
+      'wingLeftPrimary': serializer.toJson<String?>(wingLeftPrimary),
+      'wingRightSecondary': serializer.toJson<String?>(wingRightSecondary),
+      'wingLeftSecondary': serializer.toJson<String?>(wingLeftSecondary),
+      'tailRightRectrices': serializer.toJson<String?>(tailRightRectrices),
+      'tailLeftRectrices': serializer.toJson<String?>(tailLeftRectrices),
+      'bodyMolt': serializer.toJson<int?>(bodyMolt),
+      'moltRemark': serializer.toJson<String?>(moltRemark),
     };
   }
 
@@ -8965,37 +9315,87 @@ class BirdMeasurementData extends DataClass
           Value<int?> weight = const Value.absent(),
           Value<int?> wingspan = const Value.absent(),
           Value<String?> irisColor = const Value.absent(),
-          Value<String?> feetColor = const Value.absent(),
+          Value<String?> billColor = const Value.absent(),
+          Value<String?> footColor = const Value.absent(),
           Value<String?> tarsusColor = const Value.absent(),
-          Value<String?> moltingWing = const Value.absent(),
-          Value<String?> moltingTail = const Value.absent(),
-          Value<String?> bodyFat = const Value.absent(),
+          Value<int?> sex = const Value.absent(),
+          Value<int?> molting = const Value.absent(),
+          Value<int?> broodPatch = const Value.absent(),
+          Value<String?> skullOssification = const Value.absent(),
           Value<int?> bursaLength = const Value.absent(),
-          Value<int?> bursaWidth = const Value.absent(),
-          Value<String?> skullOssilation = const Value.absent(),
           Value<String?> fat = const Value.absent(),
-          Value<String?> sex = const Value.absent(),
-          Value<String?> gonad = const Value.absent(),
-          Value<String?> stomach = const Value.absent()}) =>
+          Value<String?> stomachContent = const Value.absent(),
+          Value<int?> testisLength = const Value.absent(),
+          Value<int?> testisWidth = const Value.absent(),
+          Value<String?> testisRemark = const Value.absent(),
+          Value<int?> ovaryLength = const Value.absent(),
+          Value<int?> ovaryWidth = const Value.absent(),
+          Value<String?> ovaryAppearance = const Value.absent(),
+          Value<int?> oviductWidth = const Value.absent(),
+          Value<int?> oviductAppearance = const Value.absent(),
+          Value<String?> ovaryRemark = const Value.absent(),
+          Value<String?> wingRightPrimary = const Value.absent(),
+          Value<String?> wingLeftPrimary = const Value.absent(),
+          Value<String?> wingRightSecondary = const Value.absent(),
+          Value<String?> wingLeftSecondary = const Value.absent(),
+          Value<String?> tailRightRectrices = const Value.absent(),
+          Value<String?> tailLeftRectrices = const Value.absent(),
+          Value<int?> bodyMolt = const Value.absent(),
+          Value<String?> moltRemark = const Value.absent()}) =>
       BirdMeasurementData(
         specimenUuid: specimenUuid ?? this.specimenUuid,
         weight: weight.present ? weight.value : this.weight,
         wingspan: wingspan.present ? wingspan.value : this.wingspan,
         irisColor: irisColor.present ? irisColor.value : this.irisColor,
-        feetColor: feetColor.present ? feetColor.value : this.feetColor,
+        billColor: billColor.present ? billColor.value : this.billColor,
+        footColor: footColor.present ? footColor.value : this.footColor,
         tarsusColor: tarsusColor.present ? tarsusColor.value : this.tarsusColor,
-        moltingWing: moltingWing.present ? moltingWing.value : this.moltingWing,
-        moltingTail: moltingTail.present ? moltingTail.value : this.moltingTail,
-        bodyFat: bodyFat.present ? bodyFat.value : this.bodyFat,
-        bursaLength: bursaLength.present ? bursaLength.value : this.bursaLength,
-        bursaWidth: bursaWidth.present ? bursaWidth.value : this.bursaWidth,
-        skullOssilation: skullOssilation.present
-            ? skullOssilation.value
-            : this.skullOssilation,
-        fat: fat.present ? fat.value : this.fat,
         sex: sex.present ? sex.value : this.sex,
-        gonad: gonad.present ? gonad.value : this.gonad,
-        stomach: stomach.present ? stomach.value : this.stomach,
+        molting: molting.present ? molting.value : this.molting,
+        broodPatch: broodPatch.present ? broodPatch.value : this.broodPatch,
+        skullOssification: skullOssification.present
+            ? skullOssification.value
+            : this.skullOssification,
+        bursaLength: bursaLength.present ? bursaLength.value : this.bursaLength,
+        fat: fat.present ? fat.value : this.fat,
+        stomachContent:
+            stomachContent.present ? stomachContent.value : this.stomachContent,
+        testisLength:
+            testisLength.present ? testisLength.value : this.testisLength,
+        testisWidth: testisWidth.present ? testisWidth.value : this.testisWidth,
+        testisRemark:
+            testisRemark.present ? testisRemark.value : this.testisRemark,
+        ovaryLength: ovaryLength.present ? ovaryLength.value : this.ovaryLength,
+        ovaryWidth: ovaryWidth.present ? ovaryWidth.value : this.ovaryWidth,
+        ovaryAppearance: ovaryAppearance.present
+            ? ovaryAppearance.value
+            : this.ovaryAppearance,
+        oviductWidth:
+            oviductWidth.present ? oviductWidth.value : this.oviductWidth,
+        oviductAppearance: oviductAppearance.present
+            ? oviductAppearance.value
+            : this.oviductAppearance,
+        ovaryRemark: ovaryRemark.present ? ovaryRemark.value : this.ovaryRemark,
+        wingRightPrimary: wingRightPrimary.present
+            ? wingRightPrimary.value
+            : this.wingRightPrimary,
+        wingLeftPrimary: wingLeftPrimary.present
+            ? wingLeftPrimary.value
+            : this.wingLeftPrimary,
+        wingRightSecondary: wingRightSecondary.present
+            ? wingRightSecondary.value
+            : this.wingRightSecondary,
+        wingLeftSecondary: wingLeftSecondary.present
+            ? wingLeftSecondary.value
+            : this.wingLeftSecondary,
+        tailRightRectrices: tailRightRectrices.present
+            ? tailRightRectrices.value
+            : this.tailRightRectrices,
+        tailLeftRectrices: tailLeftRectrices.present
+            ? tailLeftRectrices.value
+            : this.tailLeftRectrices,
+        bodyMolt: bodyMolt.present ? bodyMolt.value : this.bodyMolt,
+        moltRemark: moltRemark.present ? moltRemark.value : this.moltRemark,
       );
   @override
   String toString() {
@@ -9004,40 +9404,71 @@ class BirdMeasurementData extends DataClass
           ..write('weight: $weight, ')
           ..write('wingspan: $wingspan, ')
           ..write('irisColor: $irisColor, ')
-          ..write('feetColor: $feetColor, ')
+          ..write('billColor: $billColor, ')
+          ..write('footColor: $footColor, ')
           ..write('tarsusColor: $tarsusColor, ')
-          ..write('moltingWing: $moltingWing, ')
-          ..write('moltingTail: $moltingTail, ')
-          ..write('bodyFat: $bodyFat, ')
-          ..write('bursaLength: $bursaLength, ')
-          ..write('bursaWidth: $bursaWidth, ')
-          ..write('skullOssilation: $skullOssilation, ')
-          ..write('fat: $fat, ')
           ..write('sex: $sex, ')
-          ..write('gonad: $gonad, ')
-          ..write('stomach: $stomach')
+          ..write('molting: $molting, ')
+          ..write('broodPatch: $broodPatch, ')
+          ..write('skullOssification: $skullOssification, ')
+          ..write('bursaLength: $bursaLength, ')
+          ..write('fat: $fat, ')
+          ..write('stomachContent: $stomachContent, ')
+          ..write('testisLength: $testisLength, ')
+          ..write('testisWidth: $testisWidth, ')
+          ..write('testisRemark: $testisRemark, ')
+          ..write('ovaryLength: $ovaryLength, ')
+          ..write('ovaryWidth: $ovaryWidth, ')
+          ..write('ovaryAppearance: $ovaryAppearance, ')
+          ..write('oviductWidth: $oviductWidth, ')
+          ..write('oviductAppearance: $oviductAppearance, ')
+          ..write('ovaryRemark: $ovaryRemark, ')
+          ..write('wingRightPrimary: $wingRightPrimary, ')
+          ..write('wingLeftPrimary: $wingLeftPrimary, ')
+          ..write('wingRightSecondary: $wingRightSecondary, ')
+          ..write('wingLeftSecondary: $wingLeftSecondary, ')
+          ..write('tailRightRectrices: $tailRightRectrices, ')
+          ..write('tailLeftRectrices: $tailLeftRectrices, ')
+          ..write('bodyMolt: $bodyMolt, ')
+          ..write('moltRemark: $moltRemark')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      specimenUuid,
-      weight,
-      wingspan,
-      irisColor,
-      feetColor,
-      tarsusColor,
-      moltingWing,
-      moltingTail,
-      bodyFat,
-      bursaLength,
-      bursaWidth,
-      skullOssilation,
-      fat,
-      sex,
-      gonad,
-      stomach);
+  int get hashCode => Object.hashAll([
+        specimenUuid,
+        weight,
+        wingspan,
+        irisColor,
+        billColor,
+        footColor,
+        tarsusColor,
+        sex,
+        molting,
+        broodPatch,
+        skullOssification,
+        bursaLength,
+        fat,
+        stomachContent,
+        testisLength,
+        testisWidth,
+        testisRemark,
+        ovaryLength,
+        ovaryWidth,
+        ovaryAppearance,
+        oviductWidth,
+        oviductAppearance,
+        ovaryRemark,
+        wingRightPrimary,
+        wingLeftPrimary,
+        wingRightSecondary,
+        wingLeftSecondary,
+        tailRightRectrices,
+        tailLeftRectrices,
+        bodyMolt,
+        moltRemark
+      ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -9046,18 +9477,33 @@ class BirdMeasurementData extends DataClass
           other.weight == this.weight &&
           other.wingspan == this.wingspan &&
           other.irisColor == this.irisColor &&
-          other.feetColor == this.feetColor &&
+          other.billColor == this.billColor &&
+          other.footColor == this.footColor &&
           other.tarsusColor == this.tarsusColor &&
-          other.moltingWing == this.moltingWing &&
-          other.moltingTail == this.moltingTail &&
-          other.bodyFat == this.bodyFat &&
-          other.bursaLength == this.bursaLength &&
-          other.bursaWidth == this.bursaWidth &&
-          other.skullOssilation == this.skullOssilation &&
-          other.fat == this.fat &&
           other.sex == this.sex &&
-          other.gonad == this.gonad &&
-          other.stomach == this.stomach);
+          other.molting == this.molting &&
+          other.broodPatch == this.broodPatch &&
+          other.skullOssification == this.skullOssification &&
+          other.bursaLength == this.bursaLength &&
+          other.fat == this.fat &&
+          other.stomachContent == this.stomachContent &&
+          other.testisLength == this.testisLength &&
+          other.testisWidth == this.testisWidth &&
+          other.testisRemark == this.testisRemark &&
+          other.ovaryLength == this.ovaryLength &&
+          other.ovaryWidth == this.ovaryWidth &&
+          other.ovaryAppearance == this.ovaryAppearance &&
+          other.oviductWidth == this.oviductWidth &&
+          other.oviductAppearance == this.oviductAppearance &&
+          other.ovaryRemark == this.ovaryRemark &&
+          other.wingRightPrimary == this.wingRightPrimary &&
+          other.wingLeftPrimary == this.wingLeftPrimary &&
+          other.wingRightSecondary == this.wingRightSecondary &&
+          other.wingLeftSecondary == this.wingLeftSecondary &&
+          other.tailRightRectrices == this.tailRightRectrices &&
+          other.tailLeftRectrices == this.tailLeftRectrices &&
+          other.bodyMolt == this.bodyMolt &&
+          other.moltRemark == this.moltRemark);
 }
 
 class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
@@ -9065,89 +9511,164 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
   final Value<int?> weight;
   final Value<int?> wingspan;
   final Value<String?> irisColor;
-  final Value<String?> feetColor;
+  final Value<String?> billColor;
+  final Value<String?> footColor;
   final Value<String?> tarsusColor;
-  final Value<String?> moltingWing;
-  final Value<String?> moltingTail;
-  final Value<String?> bodyFat;
+  final Value<int?> sex;
+  final Value<int?> molting;
+  final Value<int?> broodPatch;
+  final Value<String?> skullOssification;
   final Value<int?> bursaLength;
-  final Value<int?> bursaWidth;
-  final Value<String?> skullOssilation;
   final Value<String?> fat;
-  final Value<String?> sex;
-  final Value<String?> gonad;
-  final Value<String?> stomach;
+  final Value<String?> stomachContent;
+  final Value<int?> testisLength;
+  final Value<int?> testisWidth;
+  final Value<String?> testisRemark;
+  final Value<int?> ovaryLength;
+  final Value<int?> ovaryWidth;
+  final Value<String?> ovaryAppearance;
+  final Value<int?> oviductWidth;
+  final Value<int?> oviductAppearance;
+  final Value<String?> ovaryRemark;
+  final Value<String?> wingRightPrimary;
+  final Value<String?> wingLeftPrimary;
+  final Value<String?> wingRightSecondary;
+  final Value<String?> wingLeftSecondary;
+  final Value<String?> tailRightRectrices;
+  final Value<String?> tailLeftRectrices;
+  final Value<int?> bodyMolt;
+  final Value<String?> moltRemark;
   const BirdMeasurementCompanion({
     this.specimenUuid = const Value.absent(),
     this.weight = const Value.absent(),
     this.wingspan = const Value.absent(),
     this.irisColor = const Value.absent(),
-    this.feetColor = const Value.absent(),
+    this.billColor = const Value.absent(),
+    this.footColor = const Value.absent(),
     this.tarsusColor = const Value.absent(),
-    this.moltingWing = const Value.absent(),
-    this.moltingTail = const Value.absent(),
-    this.bodyFat = const Value.absent(),
-    this.bursaLength = const Value.absent(),
-    this.bursaWidth = const Value.absent(),
-    this.skullOssilation = const Value.absent(),
-    this.fat = const Value.absent(),
     this.sex = const Value.absent(),
-    this.gonad = const Value.absent(),
-    this.stomach = const Value.absent(),
+    this.molting = const Value.absent(),
+    this.broodPatch = const Value.absent(),
+    this.skullOssification = const Value.absent(),
+    this.bursaLength = const Value.absent(),
+    this.fat = const Value.absent(),
+    this.stomachContent = const Value.absent(),
+    this.testisLength = const Value.absent(),
+    this.testisWidth = const Value.absent(),
+    this.testisRemark = const Value.absent(),
+    this.ovaryLength = const Value.absent(),
+    this.ovaryWidth = const Value.absent(),
+    this.ovaryAppearance = const Value.absent(),
+    this.oviductWidth = const Value.absent(),
+    this.oviductAppearance = const Value.absent(),
+    this.ovaryRemark = const Value.absent(),
+    this.wingRightPrimary = const Value.absent(),
+    this.wingLeftPrimary = const Value.absent(),
+    this.wingRightSecondary = const Value.absent(),
+    this.wingLeftSecondary = const Value.absent(),
+    this.tailRightRectrices = const Value.absent(),
+    this.tailLeftRectrices = const Value.absent(),
+    this.bodyMolt = const Value.absent(),
+    this.moltRemark = const Value.absent(),
   });
   BirdMeasurementCompanion.insert({
     required String specimenUuid,
     this.weight = const Value.absent(),
     this.wingspan = const Value.absent(),
     this.irisColor = const Value.absent(),
-    this.feetColor = const Value.absent(),
+    this.billColor = const Value.absent(),
+    this.footColor = const Value.absent(),
     this.tarsusColor = const Value.absent(),
-    this.moltingWing = const Value.absent(),
-    this.moltingTail = const Value.absent(),
-    this.bodyFat = const Value.absent(),
-    this.bursaLength = const Value.absent(),
-    this.bursaWidth = const Value.absent(),
-    this.skullOssilation = const Value.absent(),
-    this.fat = const Value.absent(),
     this.sex = const Value.absent(),
-    this.gonad = const Value.absent(),
-    this.stomach = const Value.absent(),
+    this.molting = const Value.absent(),
+    this.broodPatch = const Value.absent(),
+    this.skullOssification = const Value.absent(),
+    this.bursaLength = const Value.absent(),
+    this.fat = const Value.absent(),
+    this.stomachContent = const Value.absent(),
+    this.testisLength = const Value.absent(),
+    this.testisWidth = const Value.absent(),
+    this.testisRemark = const Value.absent(),
+    this.ovaryLength = const Value.absent(),
+    this.ovaryWidth = const Value.absent(),
+    this.ovaryAppearance = const Value.absent(),
+    this.oviductWidth = const Value.absent(),
+    this.oviductAppearance = const Value.absent(),
+    this.ovaryRemark = const Value.absent(),
+    this.wingRightPrimary = const Value.absent(),
+    this.wingLeftPrimary = const Value.absent(),
+    this.wingRightSecondary = const Value.absent(),
+    this.wingLeftSecondary = const Value.absent(),
+    this.tailRightRectrices = const Value.absent(),
+    this.tailLeftRectrices = const Value.absent(),
+    this.bodyMolt = const Value.absent(),
+    this.moltRemark = const Value.absent(),
   }) : specimenUuid = Value(specimenUuid);
   static Insertable<BirdMeasurementData> custom({
     Expression<String>? specimenUuid,
     Expression<int>? weight,
     Expression<int>? wingspan,
     Expression<String>? irisColor,
-    Expression<String>? feetColor,
+    Expression<String>? billColor,
+    Expression<String>? footColor,
     Expression<String>? tarsusColor,
-    Expression<String>? moltingWing,
-    Expression<String>? moltingTail,
-    Expression<String>? bodyFat,
+    Expression<int>? sex,
+    Expression<int>? molting,
+    Expression<int>? broodPatch,
+    Expression<String>? skullOssification,
     Expression<int>? bursaLength,
-    Expression<int>? bursaWidth,
-    Expression<String>? skullOssilation,
     Expression<String>? fat,
-    Expression<String>? sex,
-    Expression<String>? gonad,
-    Expression<String>? stomach,
+    Expression<String>? stomachContent,
+    Expression<int>? testisLength,
+    Expression<int>? testisWidth,
+    Expression<String>? testisRemark,
+    Expression<int>? ovaryLength,
+    Expression<int>? ovaryWidth,
+    Expression<String>? ovaryAppearance,
+    Expression<int>? oviductWidth,
+    Expression<int>? oviductAppearance,
+    Expression<String>? ovaryRemark,
+    Expression<String>? wingRightPrimary,
+    Expression<String>? wingLeftPrimary,
+    Expression<String>? wingRightSecondary,
+    Expression<String>? wingLeftSecondary,
+    Expression<String>? tailRightRectrices,
+    Expression<String>? tailLeftRectrices,
+    Expression<int>? bodyMolt,
+    Expression<String>? moltRemark,
   }) {
     return RawValuesInsertable({
       if (specimenUuid != null) 'specimenUuid': specimenUuid,
       if (weight != null) 'weight': weight,
       if (wingspan != null) 'wingspan': wingspan,
       if (irisColor != null) 'irisColor': irisColor,
-      if (feetColor != null) 'feetColor': feetColor,
+      if (billColor != null) 'billColor': billColor,
+      if (footColor != null) 'footColor': footColor,
       if (tarsusColor != null) 'tarsusColor': tarsusColor,
-      if (moltingWing != null) 'moltingWing': moltingWing,
-      if (moltingTail != null) 'moltingTail': moltingTail,
-      if (bodyFat != null) 'bodyFat': bodyFat,
-      if (bursaLength != null) 'bursaLength': bursaLength,
-      if (bursaWidth != null) 'bursaWidth': bursaWidth,
-      if (skullOssilation != null) 'skullOssilation': skullOssilation,
-      if (fat != null) 'fat': fat,
       if (sex != null) 'sex': sex,
-      if (gonad != null) 'gonad': gonad,
-      if (stomach != null) 'stomach': stomach,
+      if (molting != null) 'molting': molting,
+      if (broodPatch != null) 'broodPatch': broodPatch,
+      if (skullOssification != null) 'skullOssification': skullOssification,
+      if (bursaLength != null) 'bursaLength': bursaLength,
+      if (fat != null) 'fat': fat,
+      if (stomachContent != null) 'stomachContent': stomachContent,
+      if (testisLength != null) 'testisLength': testisLength,
+      if (testisWidth != null) 'testisWidth': testisWidth,
+      if (testisRemark != null) 'testisRemark': testisRemark,
+      if (ovaryLength != null) 'ovaryLength': ovaryLength,
+      if (ovaryWidth != null) 'ovaryWidth': ovaryWidth,
+      if (ovaryAppearance != null) 'ovaryAppearance': ovaryAppearance,
+      if (oviductWidth != null) 'oviductWidth': oviductWidth,
+      if (oviductAppearance != null) 'oviductAppearance': oviductAppearance,
+      if (ovaryRemark != null) 'ovaryRemark': ovaryRemark,
+      if (wingRightPrimary != null) 'wingRightPrimary': wingRightPrimary,
+      if (wingLeftPrimary != null) 'wingLeftPrimary': wingLeftPrimary,
+      if (wingRightSecondary != null) 'wingRightSecondary': wingRightSecondary,
+      if (wingLeftSecondary != null) 'wingLeftSecondary': wingLeftSecondary,
+      if (tailRightRectrices != null) 'tailRightRectrices': tailRightRectrices,
+      if (tailLeftRectrices != null) 'tailLeftRectrices': tailLeftRectrices,
+      if (bodyMolt != null) 'bodyMolt': bodyMolt,
+      if (moltRemark != null) 'moltRemark': moltRemark,
     });
   }
 
@@ -9156,35 +9677,65 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
       Value<int?>? weight,
       Value<int?>? wingspan,
       Value<String?>? irisColor,
-      Value<String?>? feetColor,
+      Value<String?>? billColor,
+      Value<String?>? footColor,
       Value<String?>? tarsusColor,
-      Value<String?>? moltingWing,
-      Value<String?>? moltingTail,
-      Value<String?>? bodyFat,
+      Value<int?>? sex,
+      Value<int?>? molting,
+      Value<int?>? broodPatch,
+      Value<String?>? skullOssification,
       Value<int?>? bursaLength,
-      Value<int?>? bursaWidth,
-      Value<String?>? skullOssilation,
       Value<String?>? fat,
-      Value<String?>? sex,
-      Value<String?>? gonad,
-      Value<String?>? stomach}) {
+      Value<String?>? stomachContent,
+      Value<int?>? testisLength,
+      Value<int?>? testisWidth,
+      Value<String?>? testisRemark,
+      Value<int?>? ovaryLength,
+      Value<int?>? ovaryWidth,
+      Value<String?>? ovaryAppearance,
+      Value<int?>? oviductWidth,
+      Value<int?>? oviductAppearance,
+      Value<String?>? ovaryRemark,
+      Value<String?>? wingRightPrimary,
+      Value<String?>? wingLeftPrimary,
+      Value<String?>? wingRightSecondary,
+      Value<String?>? wingLeftSecondary,
+      Value<String?>? tailRightRectrices,
+      Value<String?>? tailLeftRectrices,
+      Value<int?>? bodyMolt,
+      Value<String?>? moltRemark}) {
     return BirdMeasurementCompanion(
       specimenUuid: specimenUuid ?? this.specimenUuid,
       weight: weight ?? this.weight,
       wingspan: wingspan ?? this.wingspan,
       irisColor: irisColor ?? this.irisColor,
-      feetColor: feetColor ?? this.feetColor,
+      billColor: billColor ?? this.billColor,
+      footColor: footColor ?? this.footColor,
       tarsusColor: tarsusColor ?? this.tarsusColor,
-      moltingWing: moltingWing ?? this.moltingWing,
-      moltingTail: moltingTail ?? this.moltingTail,
-      bodyFat: bodyFat ?? this.bodyFat,
-      bursaLength: bursaLength ?? this.bursaLength,
-      bursaWidth: bursaWidth ?? this.bursaWidth,
-      skullOssilation: skullOssilation ?? this.skullOssilation,
-      fat: fat ?? this.fat,
       sex: sex ?? this.sex,
-      gonad: gonad ?? this.gonad,
-      stomach: stomach ?? this.stomach,
+      molting: molting ?? this.molting,
+      broodPatch: broodPatch ?? this.broodPatch,
+      skullOssification: skullOssification ?? this.skullOssification,
+      bursaLength: bursaLength ?? this.bursaLength,
+      fat: fat ?? this.fat,
+      stomachContent: stomachContent ?? this.stomachContent,
+      testisLength: testisLength ?? this.testisLength,
+      testisWidth: testisWidth ?? this.testisWidth,
+      testisRemark: testisRemark ?? this.testisRemark,
+      ovaryLength: ovaryLength ?? this.ovaryLength,
+      ovaryWidth: ovaryWidth ?? this.ovaryWidth,
+      ovaryAppearance: ovaryAppearance ?? this.ovaryAppearance,
+      oviductWidth: oviductWidth ?? this.oviductWidth,
+      oviductAppearance: oviductAppearance ?? this.oviductAppearance,
+      ovaryRemark: ovaryRemark ?? this.ovaryRemark,
+      wingRightPrimary: wingRightPrimary ?? this.wingRightPrimary,
+      wingLeftPrimary: wingLeftPrimary ?? this.wingLeftPrimary,
+      wingRightSecondary: wingRightSecondary ?? this.wingRightSecondary,
+      wingLeftSecondary: wingLeftSecondary ?? this.wingLeftSecondary,
+      tailRightRectrices: tailRightRectrices ?? this.tailRightRectrices,
+      tailLeftRectrices: tailLeftRectrices ?? this.tailLeftRectrices,
+      bodyMolt: bodyMolt ?? this.bodyMolt,
+      moltRemark: moltRemark ?? this.moltRemark,
     );
   }
 
@@ -9203,41 +9754,86 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
     if (irisColor.present) {
       map['irisColor'] = Variable<String>(irisColor.value);
     }
-    if (feetColor.present) {
-      map['feetColor'] = Variable<String>(feetColor.value);
+    if (billColor.present) {
+      map['billColor'] = Variable<String>(billColor.value);
+    }
+    if (footColor.present) {
+      map['footColor'] = Variable<String>(footColor.value);
     }
     if (tarsusColor.present) {
       map['tarsusColor'] = Variable<String>(tarsusColor.value);
     }
-    if (moltingWing.present) {
-      map['moltingWing'] = Variable<String>(moltingWing.value);
+    if (sex.present) {
+      map['sex'] = Variable<int>(sex.value);
     }
-    if (moltingTail.present) {
-      map['moltingTail'] = Variable<String>(moltingTail.value);
+    if (molting.present) {
+      map['molting'] = Variable<int>(molting.value);
     }
-    if (bodyFat.present) {
-      map['bodyFat'] = Variable<String>(bodyFat.value);
+    if (broodPatch.present) {
+      map['broodPatch'] = Variable<int>(broodPatch.value);
+    }
+    if (skullOssification.present) {
+      map['skullOssification'] = Variable<String>(skullOssification.value);
     }
     if (bursaLength.present) {
       map['bursaLength'] = Variable<int>(bursaLength.value);
     }
-    if (bursaWidth.present) {
-      map['bursaWidth'] = Variable<int>(bursaWidth.value);
-    }
-    if (skullOssilation.present) {
-      map['skullOssilation'] = Variable<String>(skullOssilation.value);
-    }
     if (fat.present) {
       map['fat'] = Variable<String>(fat.value);
     }
-    if (sex.present) {
-      map['sex'] = Variable<String>(sex.value);
+    if (stomachContent.present) {
+      map['stomachContent'] = Variable<String>(stomachContent.value);
     }
-    if (gonad.present) {
-      map['gonad'] = Variable<String>(gonad.value);
+    if (testisLength.present) {
+      map['testisLength'] = Variable<int>(testisLength.value);
     }
-    if (stomach.present) {
-      map['stomach'] = Variable<String>(stomach.value);
+    if (testisWidth.present) {
+      map['testisWidth'] = Variable<int>(testisWidth.value);
+    }
+    if (testisRemark.present) {
+      map['testisRemark'] = Variable<String>(testisRemark.value);
+    }
+    if (ovaryLength.present) {
+      map['ovaryLength'] = Variable<int>(ovaryLength.value);
+    }
+    if (ovaryWidth.present) {
+      map['ovaryWidth'] = Variable<int>(ovaryWidth.value);
+    }
+    if (ovaryAppearance.present) {
+      map['ovaryAppearance'] = Variable<String>(ovaryAppearance.value);
+    }
+    if (oviductWidth.present) {
+      map['oviductWidth'] = Variable<int>(oviductWidth.value);
+    }
+    if (oviductAppearance.present) {
+      map['oviductAppearance'] = Variable<int>(oviductAppearance.value);
+    }
+    if (ovaryRemark.present) {
+      map['ovaryRemark'] = Variable<String>(ovaryRemark.value);
+    }
+    if (wingRightPrimary.present) {
+      map['wingRightPrimary'] = Variable<String>(wingRightPrimary.value);
+    }
+    if (wingLeftPrimary.present) {
+      map['wingLeftPrimary'] = Variable<String>(wingLeftPrimary.value);
+    }
+    if (wingRightSecondary.present) {
+      map['wingRightSecondary'] = Variable<String>(wingRightSecondary.value);
+    }
+    if (wingLeftSecondary.present) {
+      map['wingLeftSecondary'] = Variable<String>(wingLeftSecondary.value);
+    }
+    if (tailRightRectrices.present) {
+      map['tailRightRectrices'] = Variable<String>(tailRightRectrices.value);
+    }
+    if (tailLeftRectrices.present) {
+      map['tailLeftRectrices'] = Variable<String>(tailLeftRectrices.value);
+    }
+    if (bodyMolt.present) {
+      map['bodyMolt'] = Variable<int>(bodyMolt.value);
+    }
+    if (moltRemark.present) {
+      map['moltRemark'] = Variable<String>(moltRemark.value);
     }
     return map;
   }
@@ -9249,18 +9845,33 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
           ..write('weight: $weight, ')
           ..write('wingspan: $wingspan, ')
           ..write('irisColor: $irisColor, ')
-          ..write('feetColor: $feetColor, ')
+          ..write('billColor: $billColor, ')
+          ..write('footColor: $footColor, ')
           ..write('tarsusColor: $tarsusColor, ')
-          ..write('moltingWing: $moltingWing, ')
-          ..write('moltingTail: $moltingTail, ')
-          ..write('bodyFat: $bodyFat, ')
-          ..write('bursaLength: $bursaLength, ')
-          ..write('bursaWidth: $bursaWidth, ')
-          ..write('skullOssilation: $skullOssilation, ')
-          ..write('fat: $fat, ')
           ..write('sex: $sex, ')
-          ..write('gonad: $gonad, ')
-          ..write('stomach: $stomach')
+          ..write('molting: $molting, ')
+          ..write('broodPatch: $broodPatch, ')
+          ..write('skullOssification: $skullOssification, ')
+          ..write('bursaLength: $bursaLength, ')
+          ..write('fat: $fat, ')
+          ..write('stomachContent: $stomachContent, ')
+          ..write('testisLength: $testisLength, ')
+          ..write('testisWidth: $testisWidth, ')
+          ..write('testisRemark: $testisRemark, ')
+          ..write('ovaryLength: $ovaryLength, ')
+          ..write('ovaryWidth: $ovaryWidth, ')
+          ..write('ovaryAppearance: $ovaryAppearance, ')
+          ..write('oviductWidth: $oviductWidth, ')
+          ..write('oviductAppearance: $oviductAppearance, ')
+          ..write('ovaryRemark: $ovaryRemark, ')
+          ..write('wingRightPrimary: $wingRightPrimary, ')
+          ..write('wingLeftPrimary: $wingLeftPrimary, ')
+          ..write('wingRightSecondary: $wingRightSecondary, ')
+          ..write('wingLeftSecondary: $wingLeftSecondary, ')
+          ..write('tailRightRectrices: $tailRightRectrices, ')
+          ..write('tailLeftRectrices: $tailLeftRectrices, ')
+          ..write('bodyMolt: $bodyMolt, ')
+          ..write('moltRemark: $moltRemark')
           ..write(')'))
         .toString();
   }

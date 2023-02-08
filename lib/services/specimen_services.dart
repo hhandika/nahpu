@@ -45,6 +45,18 @@ class SpecimenServices {
         MammalMeasurementCompanion(specimenUuid: db.Value(specimenUuid)));
   }
 
+  Future<MammalMeasurementData> getMammalMeasurementData(
+      String specimenUuid) async {
+    return await MammalSpecimenQuery(ref.read(databaseProvider))
+        .getMammalMeasurements(specimenUuid);
+  }
+
+  void updateMammalMeasurement(
+      String specimenUuid, MammalMeasurementCompanion entries) {
+    MammalSpecimenQuery(ref.read(databaseProvider))
+        .updateMammalMeasurements(specimenUuid, entries);
+  }
+
   void _createBirdSpecimen(String specimenUuid) {
     BirdSpecimenQuery(ref.read(databaseProvider)).createBirdMeasurements(
         BirdMeasurementCompanion(specimenUuid: db.Value(specimenUuid)));

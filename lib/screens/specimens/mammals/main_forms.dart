@@ -73,6 +73,7 @@ class MammalFormsState extends ConsumerState<MammalForms> {
                 children: [
                   MammalMeasurementForms(
                     useHorizontalLayout: useHorizontalLayout,
+                    specimenUuid: widget.specimenUuid,
                     isBats: widget.isBats,
                   ),
                   PartDataForm(

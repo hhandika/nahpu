@@ -39,6 +39,20 @@ class MammalSpecimenQuery extends DatabaseAccessor<Database>
 
   Future<int> createMammalMeasurements(MammalMeasurementCompanion form) =>
       into(mammalMeasurement).insert(form);
+
+  Future updateMammalMeasurements(
+      String specimenUuid, MammalMeasurementCompanion form) {
+    return (update(mammalMeasurement)
+          ..where((t) => t.specimenUuid.equals(specimenUuid)))
+        .write(form);
+  }
+
+  Future<MammalMeasurementData> getMammalMeasurements(
+      String specimenUuid) async {
+    return (select(mammalMeasurement)
+          ..where((t) => t.specimenUuid.equals(specimenUuid)))
+        .getSingle();
+  }
 }
 
 class BirdSpecimenQuery extends DatabaseAccessor<Database>

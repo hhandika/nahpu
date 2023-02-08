@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
+import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/specimen_services.dart';
+import 'package:drift/drift.dart' as db;
 
 class MammalMeasurementForms extends ConsumerStatefulWidget {
   const MammalMeasurementForms({
     Key? key,
     required this.useHorizontalLayout,
+    required this.specimenUuid,
     required this.isBats,
   }) : super(key: key);
 
   final bool useHorizontalLayout;
+  final String specimenUuid;
   final bool isBats;
 
   @override
@@ -22,6 +28,19 @@ class MammalMeasurementForms extends ConsumerStatefulWidget {
 class MammalMeasurementFormsState
     extends ConsumerState<MammalMeasurementForms> {
   SpecimenSex _specimenSex = SpecimenSex.unknown;
+  MammalMeasurementCtrModel ctr = MammalMeasurementCtrModel.empty();
+
+  @override
+  void initState() {
+    _updateCtr(widget.specimenUuid);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    ctr.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,48 +50,98 @@ class MammalMeasurementFormsState
         children: [
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
-            children: const [
+            children: [
               CommonNumField(
+                controller: ctr.totalLengthCtr,
                 labelText: 'Total length (mm)',
                 hintText: 'Enter TTL',
                 isLastField: false,
+                onChanged: (value) {
+                  SpecimenServices(ref).updateMammalMeasurement(
+                    widget.specimenUuid,
+                    MammalMeasurementCompanion(
+                      totalLength: db.Value(int.tryParse(value ?? '') ?? 0),
+                    ),
+                  );
+                },
               ),
               CommonNumField(
+                controller: ctr.tailLengthCtr,
                 labelText: 'Tail length (mm)',
                 hintText: 'Enter TL',
                 isLastField: false,
-              ),
-            ],
-          ),
-          AdaptiveLayout(
-            useHorizontalLayout: widget.useHorizontalLayout,
-            children: const [
-              CommonNumField(
-                labelText: 'Hind foot length (mm)',
-                hintText: 'Enter HF length',
-                isLastField: false,
-              ),
-              CommonNumField(
-                labelText: 'Ear length (mm)',
-                hintText: 'Enter ER length',
-                isLastField: false,
+                onChanged: (value) {
+                  SpecimenServices(ref).updateMammalMeasurement(
+                    widget.specimenUuid,
+                    MammalMeasurementCompanion(
+                      tailLength: db.Value(int.tryParse(value ?? '') ?? 0),
+                    ),
+                  );
+                },
               ),
             ],
           ),
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
-              const CommonNumField(
+              CommonNumField(
+                labelText: 'Hind foot length (mm)',
+                hintText: 'Enter HF length',
+                isLastField: false,
+                onChanged: (value) {
+                  SpecimenServices(ref).updateMammalMeasurement(
+                    widget.specimenUuid,
+                    MammalMeasurementCompanion(
+                      hindFootLength: db.Value(int.tryParse(value ?? '') ?? 0),
+                    ),
+                  );
+                },
+              ),
+              CommonNumField(
+                labelText: 'Ear length (mm)',
+                hintText: 'Enter ER length',
+                isLastField: false,
+                onChanged: (value) {
+                  SpecimenServices(ref).updateMammalMeasurement(
+                    widget.specimenUuid,
+                    MammalMeasurementCompanion(
+                      earLength: db.Value(int.tryParse(value ?? '') ?? 0),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+          AdaptiveLayout(
+            useHorizontalLayout: widget.useHorizontalLayout,
+            children: [
+              CommonNumField(
                 labelText: 'Weight (grams)',
                 hintText: 'Enter specimen weight',
                 isLastField: false,
+                onChanged: (value) {
+                  SpecimenServices(ref).updateMammalMeasurement(
+                    widget.specimenUuid,
+                    MammalMeasurementCompanion(
+                      weight: db.Value(int.tryParse(value ?? '') ?? 0),
+                    ),
+                  );
+                },
               ),
               Visibility(
                 visible: widget.isBats,
-                child: const CommonNumField(
+                child: CommonNumField(
                   labelText: 'Forearm Length (mm)',
                   hintText: 'Enter FL length',
                   isLastField: true,
+                  onChanged: (value) {
+                    SpecimenServices(ref).updateMammalMeasurement(
+                      widget.specimenUuid,
+                      MammalMeasurementCompanion(
+                        forearm: db.Value(int.tryParse(value ?? '') ?? 0),
+                      ),
+                    );
+                  },
                 ),
               ),
             ],
@@ -98,7 +167,14 @@ class MammalMeasurementFormsState
                     child: Text('Partially eaten'),
                   ),
                 ],
-                onChanged: (String? newValue) {}),
+                onChanged: (String? newValue) {
+                  SpecimenServices(ref).updateMammalMeasurement(
+                    widget.specimenUuid,
+                    MammalMeasurementCompanion(
+                      accuracy: db.Value(newValue ?? 'Accurate'),
+                    ),
+                  );
+                }),
           ),
           Divider(
             color: Theme.of(context).dividerColor,
@@ -126,9 +202,7 @@ class MammalMeasurementFormsState
                     ),
                   ],
                   onChanged: (String? newValue) {
-                    setState(() {
-                      _specimenSex = matchSpecimenSex(newValue);
-                    });
+                    _specimenSex = matchSpecimenSex(newValue);
                   }),
               DropdownButtonFormField(
                   decoration: const InputDecoration(
@@ -141,8 +215,8 @@ class MammalMeasurementFormsState
                       child: Text('Adult'),
                     ),
                     DropdownMenuItem(
-                      value: 'Subadult',
-                      child: Text('Subadult'),
+                      value: 'Sub-adult',
+                      child: Text('Sub-adult'),
                     ),
                     DropdownMenuItem(
                       value: 'Juvenile',
@@ -176,6 +250,12 @@ class MammalMeasurementFormsState
         ],
       ),
     );
+  }
+
+  Future<void> _updateCtr(String specimenUuid) async {
+    SpecimenServices(ref)
+        .getMammalMeasurementData(specimenUuid)
+        .then((value) => ctr = MammalMeasurementCtrModel.fromData(value));
   }
 }
 
