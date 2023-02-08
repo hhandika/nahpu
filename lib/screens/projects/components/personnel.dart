@@ -102,7 +102,7 @@ class PersonalListTile extends StatelessWidget {
 
   String _getTitle(String? name, String? personInitial) {
     if (name != null && personInitial != null) {
-      return '$name ($personInitial)';
+      return personInitial.isEmpty ? name : '$name ($personInitial)';
     } else if (name != null) {
       return name;
     } else if (personInitial != null) {
