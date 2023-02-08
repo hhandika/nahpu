@@ -46,6 +46,10 @@ class ProjectFormValidationNotifier extends StateNotifier<ProjectFormState> {
             }
         });
   }
+
+  void isEditing() {
+    state = state.copyWith(form: ProjectFormValidation.isValid());
+  }
 }
 
 final personnelFormNotifier = StateNotifierProvider.autoDispose<
@@ -126,5 +130,9 @@ class PersonnelFormValidationNotifier
     }
 
     state = state.copyWith(form: form.copyWith(collNum: collNumField));
+  }
+
+  void isEditing() {
+    state = state.copyWith(form: NewPersonnelFormValidation.isValid());
   }
 }

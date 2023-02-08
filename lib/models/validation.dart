@@ -23,6 +23,12 @@ class ProjectFormValidation with _$ProjectFormValidation {
       email: ProjectFormField(value: null, errMsg: null),
       collNum: ProjectFormField(value: null, errMsg: null));
 
+  factory ProjectFormValidation.isValid() => ProjectFormValidation(
+      projectName: ProjectFormField(value: null, errMsg: null, isValid: true),
+      collName: ProjectFormField(value: null, errMsg: null, isValid: true),
+      email: ProjectFormField(value: null, errMsg: null, isValid: true),
+      collNum: ProjectFormField(value: null, errMsg: null, isValid: true));
+
   bool get isValid => projectName.isValid;
 }
 
@@ -56,6 +62,12 @@ class NewPersonnelFormValidation with _$NewPersonnelFormValidation {
       email: NewPersonnelFormField(value: null, errMsg: null),
       initial: NewPersonnelFormField(value: null, errMsg: null),
       collNum: NewPersonnelFormField(value: null, errMsg: null));
+
+  factory NewPersonnelFormValidation.isValid() => NewPersonnelFormValidation(
+      name: NewPersonnelFormField(value: null, errMsg: null, isValid: true),
+      email: NewPersonnelFormField(value: null, errMsg: null, isValid: true),
+      initial: NewPersonnelFormField(value: null, errMsg: null, isValid: true),
+      collNum: NewPersonnelFormField(value: null, errMsg: null, isValid: true));
 
   bool get isValidCataloger =>
       name.isValid && initial.isValid && collNum.isValid;

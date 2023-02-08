@@ -186,6 +186,7 @@ class PersonnelMenuState extends ConsumerState<PersonnelMenu> {
   void _onPopUpMenuSelected(PersonnelMenuAction item) {
     switch (item) {
       case PersonnelMenuAction.edit:
+        ref.read(personnelFormNotifier.notifier).isEditing();
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => EditPersonnelForm(
@@ -452,14 +453,15 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                   SecondaryButton(
                     text: 'Cancel',
                     onPressed: () {
+                      ref.invalidate(personnelFormNotifier);
                       Navigator.of(context).pop();
                     },
                   ),
                   FormElevButton(
                     text: widget.isAddNew ? 'Add' : 'Update',
                     enabled: widget.ctr.roleCtr == 'Cataloger'
-                        ? ref.watch(personnelFormNotifier).form.isValidCataloger
-                        : ref.watch(personnelFormNotifier).form.isValid,
+                        ? ref.read(personnelFormNotifier).form.isValidCataloger
+                        : ref.read(personnelFormNotifier).form.isValid,
                     onPressed: () {
                       widget.isAddNew ? _addPersonnel() : _updatePersonnel();
                       ref.invalidate(personnelListProvider);
