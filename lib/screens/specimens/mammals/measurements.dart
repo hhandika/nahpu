@@ -27,7 +27,6 @@ class MammalMeasurementForms extends ConsumerStatefulWidget {
 
 class MammalMeasurementFormsState
     extends ConsumerState<MammalMeasurementForms> {
-  SpecimenSex _specimenSex = SpecimenSex.unknown;
   MammalMeasurementCtrModel ctr = MammalMeasurementCtrModel.empty();
 
   @override
@@ -189,6 +188,7 @@ class MammalMeasurementFormsState
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
               DropdownButtonFormField<SpecimenSex>(
+                  value: matchEncodingToSpecimenSex(ctr.sexCtr),
                   decoration: const InputDecoration(
                     labelText: 'Sex',
                     hintText: 'Choose one',
@@ -210,7 +210,14 @@ class MammalMeasurementFormsState
                   onChanged: (SpecimenSex? newValue) {
                     setState(() {
                       if (newValue != null) {
-                        _specimenSex = newValue;
+                        SpecimenServices(ref).updateMammalMeasurement(
+                          widget.specimenUuid,
+                          MammalMeasurementCompanion(
+                            sex: db.Value(
+                              matchSpecimenSexEncoding(newValue),
+                            ),
+                          ),
+                        );
                       }
                     });
                   }),
@@ -250,11 +257,11 @@ class MammalMeasurementFormsState
             ],
           ),
           MaleGonadForm(
-            specimenSex: _specimenSex,
+            specimenSex: matchEncodingToSpecimenSex(ctr.sexCtr),
             useHorizontalLayout: widget.useHorizontalLayout,
           ),
           FemaleGonadForm(
-            specimenSex: _specimenSex,
+            specimenSex: matchEncodingToSpecimenSex(ctr.sexCtr),
             useHorizontalLayout: widget.useHorizontalLayout,
           ),
           const Padding(
@@ -285,7 +292,7 @@ class MaleGonadForm extends StatefulWidget {
     required this.useHorizontalLayout,
   });
 
-  final SpecimenSex specimenSex;
+  final SpecimenSex? specimenSex;
   final bool useHorizontalLayout;
 
   @override
@@ -403,7 +410,7 @@ class FemaleGonadForm extends StatefulWidget {
     required this.useHorizontalLayout,
   });
 
-  final SpecimenSex specimenSex;
+  final SpecimenSex? specimenSex;
   final bool useHorizontalLayout;
   @override
   State<FemaleGonadForm> createState() => _FemaleGonadFormState();

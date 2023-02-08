@@ -14,7 +14,7 @@ const List<String> supportedTaxonClass = [
 ];
 
 // We encode to int to save space in the database
-int matchSpecimenSex(SpecimenSex sex) {
+int matchSpecimenSexEncoding(SpecimenSex sex) {
   switch (sex) {
     case SpecimenSex.male:
       return 0;
@@ -25,8 +25,10 @@ int matchSpecimenSex(SpecimenSex sex) {
   }
 }
 
-SpecimenSex matchEncodingToSex(int sexCode) {
+SpecimenSex? matchEncodingToSpecimenSex(int? sexCode) {
   switch (sexCode) {
+    case null:
+      return null;
     case 0:
       return SpecimenSex.male;
     case 1:
