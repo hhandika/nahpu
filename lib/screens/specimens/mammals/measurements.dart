@@ -582,7 +582,11 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
             },
           ),
           Text('Mammae Counts', style: Theme.of(context).textTheme.titleMedium),
-          MammaeForm(useHorizontalLayout: widget.useHorizontalLayout),
+          MammaeForm(
+            useHorizontalLayout: widget.useHorizontalLayout,
+            specimenUuid: widget.specimenUuid,
+            ctr: widget.ctr,
+          ),
           DropdownButtonFormField<MammaeCondition>(
             value: _getMammaeCondition(),
             decoration: const InputDecoration(
@@ -615,6 +619,8 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
           ),
           EmbryoForm(
             useHorizontalLayout: widget.useHorizontalLayout,
+            specimenUuid: widget.specimenUuid,
+            ctr: widget.ctr,
           ),
           CommonNumField(
             controller: widget.ctr.embryoCRCtr,
@@ -638,6 +644,8 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
               style: Theme.of(context).textTheme.titleMedium),
           PlacentalScarForm(
             useHorizontalLayout: widget.useHorizontalLayout,
+            specimenUuid: widget.specimenUuid,
+            ctr: widget.ctr,
           ),
         ],
       ),
@@ -673,67 +681,185 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
   }
 }
 
-class MammaeForm extends StatelessWidget {
-  const MammaeForm({super.key, required this.useHorizontalLayout});
+class MammaeForm extends ConsumerWidget {
+  const MammaeForm({
+    super.key,
+    required this.useHorizontalLayout,
+    required this.specimenUuid,
+    required this.ctr,
+  });
 
   final bool useHorizontalLayout;
+  final String specimenUuid;
+  final MammalMeasurementCtrModel ctr;
 
   @override
-  Widget build(BuildContext context) {
-    return AdaptiveLayout(
-        useHorizontalLayout: useHorizontalLayout,
-        children: const [
-          CommonNumField(
-            labelText: 'Axillary',
-            hintText: 'Enter the axillary pair number',
-            isLastField: false,
-          ),
-          CommonNumField(
-            labelText: 'Abdominal',
-            hintText: 'Enter the abdominal pair number',
-            isLastField: false,
-          ),
-          CommonNumField(
-            labelText: 'Inguinal',
-            hintText: 'Enter the inguinal pair number',
-            isLastField: false,
-          ),
-        ]);
+  Widget build(BuildContext context, WidgetRef ref) {
+    return AdaptiveLayout(useHorizontalLayout: useHorizontalLayout, children: [
+      CommonNumField(
+        controller: ctr.mammaeAxCtr,
+        labelText: 'Axillary',
+        hintText: 'Enter the axillary pair number',
+        isLastField: false,
+        onChanged: (String? value) {
+          if (value != null) {
+            SpecimenServices(ref).updateMammalMeasurement(
+              specimenUuid,
+              MammalMeasurementCompanion(
+                mammaeAxillaryCount: db.Value(
+                  int.tryParse(value),
+                ),
+              ),
+            );
+          }
+        },
+      ),
+      CommonNumField(
+        controller: ctr.mammaeAbdCtr,
+        labelText: 'Abdominal',
+        hintText: 'Enter the abdominal pair number',
+        isLastField: false,
+        onChanged: (String? value) {
+          if (value != null) {
+            SpecimenServices(ref).updateMammalMeasurement(
+              specimenUuid,
+              MammalMeasurementCompanion(
+                mammaeAbdominalCount: db.Value(
+                  int.tryParse(value),
+                ),
+              ),
+            );
+          }
+        },
+      ),
+      CommonNumField(
+        controller: ctr.mammaeIngCtr,
+        labelText: 'Inguinal',
+        hintText: 'Enter the inguinal pair number',
+        isLastField: false,
+        onChanged: (String? value) {
+          if (value != null) {
+            SpecimenServices(ref).updateMammalMeasurement(
+              specimenUuid,
+              MammalMeasurementCompanion(
+                mammaeInguinalCount: db.Value(
+                  int.tryParse(value),
+                ),
+              ),
+            );
+          }
+        },
+      ),
+    ]);
   }
 }
 
-class EmbryoForm extends StatelessWidget {
-  const EmbryoForm({super.key, required this.useHorizontalLayout});
+class EmbryoForm extends ConsumerWidget {
+  const EmbryoForm({
+    super.key,
+    required this.useHorizontalLayout,
+    required this.ctr,
+    required this.specimenUuid,
+  });
 
   final bool useHorizontalLayout;
+  final String? specimenUuid;
+  final MammalMeasurementCtrModel ctr;
 
   @override
-  Widget build(BuildContext context) {
-    return AdaptiveLayout(
-        useHorizontalLayout: useHorizontalLayout,
-        children: const [
-          CommonNumField(
-              labelText: 'Left', hintText: 'Left', isLastField: false),
-          CommonNumField(
-              labelText: 'Right', hintText: 'Right', isLastField: true),
-        ]);
+  Widget build(BuildContext context, WidgetRef ref) {
+    return AdaptiveLayout(useHorizontalLayout: useHorizontalLayout, children: [
+      CommonNumField(
+        controller: ctr.embryoLeftCtr,
+        labelText: 'Left',
+        hintText: 'Left',
+        isLastField: false,
+        onChanged: (String? value) {
+          if (value != null) {
+            SpecimenServices(ref).updateMammalMeasurement(
+              specimenUuid!,
+              MammalMeasurementCompanion(
+                embryoLeftCount: db.Value(
+                  int.tryParse(value),
+                ),
+              ),
+            );
+          }
+        },
+      ),
+      CommonNumField(
+        controller: ctr.embryoRightCtr,
+        labelText: 'Right',
+        hintText: 'Right',
+        isLastField: true,
+        onChanged: (String? value) {
+          if (value != null) {
+            SpecimenServices(ref).updateMammalMeasurement(
+              specimenUuid!,
+              MammalMeasurementCompanion(
+                embryoRightCount: db.Value(
+                  int.tryParse(value),
+                ),
+              ),
+            );
+          }
+        },
+      ),
+    ]);
   }
 }
 
-class PlacentalScarForm extends StatelessWidget {
-  const PlacentalScarForm({super.key, required this.useHorizontalLayout});
+class PlacentalScarForm extends ConsumerWidget {
+  const PlacentalScarForm({
+    super.key,
+    required this.useHorizontalLayout,
+    required this.ctr,
+    required this.specimenUuid,
+  });
 
   final bool useHorizontalLayout;
+  final String specimenUuid;
+  final MammalMeasurementCtrModel ctr;
 
   @override
-  Widget build(BuildContext context) {
-    return AdaptiveLayout(
-        useHorizontalLayout: useHorizontalLayout,
-        children: const [
-          CommonNumField(
-              labelText: 'Left', hintText: 'Left', isLastField: false),
-          CommonNumField(
-              labelText: 'Right', hintText: 'Right', isLastField: true),
-        ]);
+  Widget build(BuildContext context, WidgetRef ref) {
+    return AdaptiveLayout(useHorizontalLayout: useHorizontalLayout, children: [
+      CommonNumField(
+        controller: ctr.leftPlacentaCtr,
+        labelText: 'Left',
+        hintText: 'Left',
+        isLastField: false,
+        onChanged: (String? value) {
+          if (value != null) {
+            SpecimenServices(ref).updateMammalMeasurement(
+              specimenUuid,
+              MammalMeasurementCompanion(
+                leftPlacentalScars: db.Value(
+                  int.tryParse(value),
+                ),
+              ),
+            );
+          }
+        },
+      ),
+      CommonNumField(
+        controller: ctr.rightPlacentaCtr,
+        labelText: 'Right',
+        hintText: 'Right',
+        isLastField: true,
+        onChanged: (String? value) {
+          if (value != null) {
+            SpecimenServices(ref).updateMammalMeasurement(
+              specimenUuid,
+              MammalMeasurementCompanion(
+                rightPlacentalScars: db.Value(
+                  int.tryParse(value),
+                ),
+              ),
+            );
+          }
+        },
+      ),
+    ]);
   }
 }
