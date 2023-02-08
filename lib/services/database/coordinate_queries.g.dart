@@ -26,7 +26,7 @@ mixin _$CoordinateQueryMixin on DatabaseAccessor<Database> {
   Part get part => attachedDatabase.part;
   Expense get expense => attachedDatabase.expense;
   Selectable<ListProjectResult> listProject() {
-    return customSelect('SELECT uuid, name, created, lastModified FROM project',
+    return customSelect('SELECT uuid, name, created, lastAccessed FROM project',
         variables: [],
         readsFrom: {
           project,
@@ -35,7 +35,7 @@ mixin _$CoordinateQueryMixin on DatabaseAccessor<Database> {
         uuid: row.read<String>('uuid'),
         name: row.read<String>('name'),
         created: row.readNullable<String>('created'),
-        lastModified: row.readNullable<String>('lastModified'),
+        lastAccessed: row.readNullable<String>('lastAccessed'),
       );
     });
   }
@@ -45,11 +45,11 @@ class ListProjectResult {
   final String uuid;
   final String name;
   final String? created;
-  final String? lastModified;
+  final String? lastAccessed;
   ListProjectResult({
     required this.uuid,
     required this.name,
     this.created,
-    this.lastModified,
+    this.lastAccessed,
   });
 }

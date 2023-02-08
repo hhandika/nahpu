@@ -78,7 +78,7 @@ class ProjectInfo extends StatelessWidget {
             style: Theme.of(context).textTheme.titleSmall,
             children: [
               TextSpan(
-                text: projectData?.lastModified ?? 'No DateModified',
+                text: projectData?.lastAccessed ?? 'No DateModified',
                 style: Theme.of(context).textTheme.bodyLarge,
               )
             ],

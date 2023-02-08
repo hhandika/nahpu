@@ -1,3 +1,5 @@
+import 'package:nahpu/providers/validation.dart';
+import 'package:nahpu/services/database/database.dart';
 import 'package:uuid/uuid.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,6 +13,22 @@ class ProjectServices {
 
   final WidgetRef ref;
 
+  void createProject(ProjectCompanion form) {
+    ref.read(databaseProvider).createProject(form);
+    _updateProjectUuid(form.uuid.value);
+    ref.invalidate(projectListProvider);
+    ref.invalidate(projectFormNotifier);
+  }
+
+  void updateProject(String projectUuid, ProjectCompanion form) {
+    ref.read(databaseProvider).updateProjectEntry(projectUuid, form);
+    invalidateProject();
+  }
+
+  String getProjectUuid() {
+    return ref.read(projectUuidProvider);
+  }
+
   void deleteProject(String uuid) {
     ref.read(databaseProvider).deleteProject(uuid);
     ref.invalidate(projectListProvider);
@@ -19,5 +37,9 @@ class ProjectServices {
   void invalidateProject() {
     ref.invalidate(projectListProvider);
     ref.invalidate(projectInfoProvider);
+  }
+
+  void _updateProjectUuid(String projectUuid) {
+    ref.read(projectUuidProvider.notifier).state = projectUuid;
   }
 }

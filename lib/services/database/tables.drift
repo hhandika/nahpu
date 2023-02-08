@@ -8,8 +8,11 @@ CREATE TABLE project (
     name TEXT NOT NULL UNIQUE,
     description TEXT,
     principalInvestigator TEXT,
+    location TEXT,
+    startDate TEXT,
+    endDate TEXT,
     created TEXT,
-    lastModified Text
+    lastAccessed Text
 );
 
 CREATE TABLE site (
@@ -300,4 +303,4 @@ CREATE TABLE expense (
     FOREIGN KEY(projectUuid) REFERENCES project(uuid) 
 );
 
-listProject: SELECT uuid,name,created,lastModified FROM project;
+listProject: SELECT uuid,name,created,lastAccessed FROM project;

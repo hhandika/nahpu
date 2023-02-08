@@ -91,12 +91,14 @@ class ProjectMenuDrawer extends ConsumerWidget {
             leading: const Icon(Icons.exit_to_app_rounded),
             title: const Text('Close project'),
             onTap: () {
-              ref.read(databaseProvider).updateProjectEntry(
-                    projectUuid,
-                    ProjectCompanion(
-                        lastModified: db.Value(getSystemDateTime())),
-                  );
-              ProjectServices(ref).invalidateProject();
+              ProjectServices(ref).updateProject(
+                projectUuid,
+                ProjectCompanion(
+                  lastAccessed: db.Value(
+                    getSystemDateTime(),
+                  ),
+                ),
+              );
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => const Home()),
