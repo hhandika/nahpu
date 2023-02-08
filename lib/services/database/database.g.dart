@@ -7200,20 +7200,13 @@ class MammalMeasurement extends Table
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   MammalMeasurement(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
   static const VerificationMeta _specimenUuidMeta =
       const VerificationMeta('specimenUuid');
   late final GeneratedColumn<String> specimenUuid = GeneratedColumn<String>(
-      'specimenUuid', aliasedName, true,
+      'specimenUuid', aliasedName, false,
       type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   static const VerificationMeta _totalLengthMeta =
       const VerificationMeta('totalLength');
   late final GeneratedColumn<int> totalLength = GeneratedColumn<int>(
@@ -7303,6 +7296,13 @@ class MammalMeasurement extends Table
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _epididimysAppearanceMeta =
+      const VerificationMeta('epididimysAppearance');
+  late final GeneratedColumn<String> epididimysAppearance =
+      GeneratedColumn<String>('epididimysAppearance', aliasedName, true,
+          type: DriftSqlType.string,
+          requiredDuringInsert: false,
+          $customConstraints: '');
   static const VerificationMeta _reproductiveStageMeta =
       const VerificationMeta('reproductiveStage');
   late final GeneratedColumn<String> reproductiveStage =
@@ -7310,11 +7310,25 @@ class MammalMeasurement extends Table
           type: DriftSqlType.string,
           requiredDuringInsert: false,
           $customConstraints: '');
-  static const VerificationMeta _placentalScarsMeta =
-      const VerificationMeta('placentalScars');
-  late final GeneratedColumn<String> placentalScars = GeneratedColumn<String>(
-      'placentalScars', aliasedName, true,
-      type: DriftSqlType.string,
+  static const VerificationMeta _leftPlacentalScarsMeta =
+      const VerificationMeta('leftPlacentalScars');
+  late final GeneratedColumn<int> leftPlacentalScars = GeneratedColumn<int>(
+      'leftPlacentalScars', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _rightPlacentalScarsMeta =
+      const VerificationMeta('rightPlacentalScars');
+  late final GeneratedColumn<int> rightPlacentalScars = GeneratedColumn<int>(
+      'rightPlacentalScars', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _mammaeConditionMeta =
+      const VerificationMeta('mammaeCondition');
+  late final GeneratedColumn<int> mammaeCondition = GeneratedColumn<int>(
+      'mammaeCondition', aliasedName, true,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _mammaeInguinalCountMeta =
@@ -7338,6 +7352,20 @@ class MammalMeasurement extends Table
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _vaginaOpeningMeta =
+      const VerificationMeta('vaginaOpening');
+  late final GeneratedColumn<String> vaginaOpening = GeneratedColumn<String>(
+      'vaginaOpening', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _pubicSymphisisMeta =
+      const VerificationMeta('pubicSymphisis');
+  late final GeneratedColumn<String> pubicSymphisis = GeneratedColumn<String>(
+      'pubicSymphisis', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _embryoLeftCountMeta =
       const VerificationMeta('embryoLeftCount');
   late final GeneratedColumn<int> embryoLeftCount = GeneratedColumn<int>(
@@ -7352,23 +7380,21 @@ class MammalMeasurement extends Table
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _embryoCRLeftMeta =
-      const VerificationMeta('embryoCRLeft');
-  late final GeneratedColumn<int> embryoCRLeft = GeneratedColumn<int>(
-      'embryoCRLeft', aliasedName, true,
+  static const VerificationMeta _embryoCRMeta =
+      const VerificationMeta('embryoCR');
+  late final GeneratedColumn<int> embryoCR = GeneratedColumn<int>(
+      'embryoCR', aliasedName, true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _embryoCRRightMeta =
-      const VerificationMeta('embryoCRRight');
-  late final GeneratedColumn<int> embryoCRRight = GeneratedColumn<int>(
-      'embryoCRRight', aliasedName, true,
-      type: DriftSqlType.int,
+  static const VerificationMeta _remarkMeta = const VerificationMeta('remark');
+  late final GeneratedColumn<String> remark = GeneratedColumn<String>(
+      'remark', aliasedName, true,
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
-        id,
         specimenUuid,
         totalLength,
         tailLength,
@@ -7383,15 +7409,20 @@ class MammalMeasurement extends Table
         testesPosition,
         testesLength,
         testesWidth,
+        epididimysAppearance,
         reproductiveStage,
-        placentalScars,
+        leftPlacentalScars,
+        rightPlacentalScars,
+        mammaeCondition,
         mammaeInguinalCount,
         mammaeAxilaryCount,
         mammaeAbdominalCount,
+        vaginaOpening,
+        pubicSymphisis,
         embryoLeftCount,
         embryoRightCount,
-        embryoCRLeft,
-        embryoCRRight
+        embryoCR,
+        remark
       ];
   @override
   String get aliasedName => _alias ?? 'mammalMeasurement';
@@ -7403,14 +7434,13 @@ class MammalMeasurement extends Table
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
     if (data.containsKey('specimenUuid')) {
       context.handle(
           _specimenUuidMeta,
           specimenUuid.isAcceptableOrUnknown(
               data['specimenUuid']!, _specimenUuidMeta));
+    } else if (isInserting) {
+      context.missing(_specimenUuidMeta);
     }
     if (data.containsKey('totalLength')) {
       context.handle(
@@ -7480,17 +7510,35 @@ class MammalMeasurement extends Table
           testesWidth.isAcceptableOrUnknown(
               data['testesWidth']!, _testesWidthMeta));
     }
+    if (data.containsKey('epididimysAppearance')) {
+      context.handle(
+          _epididimysAppearanceMeta,
+          epididimysAppearance.isAcceptableOrUnknown(
+              data['epididimysAppearance']!, _epididimysAppearanceMeta));
+    }
     if (data.containsKey('reproductiveStage')) {
       context.handle(
           _reproductiveStageMeta,
           reproductiveStage.isAcceptableOrUnknown(
               data['reproductiveStage']!, _reproductiveStageMeta));
     }
-    if (data.containsKey('placentalScars')) {
+    if (data.containsKey('leftPlacentalScars')) {
       context.handle(
-          _placentalScarsMeta,
-          placentalScars.isAcceptableOrUnknown(
-              data['placentalScars']!, _placentalScarsMeta));
+          _leftPlacentalScarsMeta,
+          leftPlacentalScars.isAcceptableOrUnknown(
+              data['leftPlacentalScars']!, _leftPlacentalScarsMeta));
+    }
+    if (data.containsKey('rightPlacentalScars')) {
+      context.handle(
+          _rightPlacentalScarsMeta,
+          rightPlacentalScars.isAcceptableOrUnknown(
+              data['rightPlacentalScars']!, _rightPlacentalScarsMeta));
+    }
+    if (data.containsKey('mammaeCondition')) {
+      context.handle(
+          _mammaeConditionMeta,
+          mammaeCondition.isAcceptableOrUnknown(
+              data['mammaeCondition']!, _mammaeConditionMeta));
     }
     if (data.containsKey('mammaeInguinalCount')) {
       context.handle(
@@ -7510,6 +7558,18 @@ class MammalMeasurement extends Table
           mammaeAbdominalCount.isAcceptableOrUnknown(
               data['mammaeAbdominalCount']!, _mammaeAbdominalCountMeta));
     }
+    if (data.containsKey('vaginaOpening')) {
+      context.handle(
+          _vaginaOpeningMeta,
+          vaginaOpening.isAcceptableOrUnknown(
+              data['vaginaOpening']!, _vaginaOpeningMeta));
+    }
+    if (data.containsKey('pubicSymphisis')) {
+      context.handle(
+          _pubicSymphisisMeta,
+          pubicSymphisis.isAcceptableOrUnknown(
+              data['pubicSymphisis']!, _pubicSymphisisMeta));
+    }
     if (data.containsKey('embryoLeftCount')) {
       context.handle(
           _embryoLeftCountMeta,
@@ -7522,31 +7582,25 @@ class MammalMeasurement extends Table
           embryoRightCount.isAcceptableOrUnknown(
               data['embryoRightCount']!, _embryoRightCountMeta));
     }
-    if (data.containsKey('embryoCRLeft')) {
-      context.handle(
-          _embryoCRLeftMeta,
-          embryoCRLeft.isAcceptableOrUnknown(
-              data['embryoCRLeft']!, _embryoCRLeftMeta));
+    if (data.containsKey('embryoCR')) {
+      context.handle(_embryoCRMeta,
+          embryoCR.isAcceptableOrUnknown(data['embryoCR']!, _embryoCRMeta));
     }
-    if (data.containsKey('embryoCRRight')) {
-      context.handle(
-          _embryoCRRightMeta,
-          embryoCRRight.isAcceptableOrUnknown(
-              data['embryoCRRight']!, _embryoCRRightMeta));
+    if (data.containsKey('remark')) {
+      context.handle(_remarkMeta,
+          remark.isAcceptableOrUnknown(data['remark']!, _remarkMeta));
     }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => const {};
   @override
   MammalMeasurementData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return MammalMeasurementData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       specimenUuid: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}specimenUuid']),
+          .read(DriftSqlType.string, data['${effectivePrefix}specimenUuid'])!,
       totalLength: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}totalLength']),
       tailLength: attachedDatabase.typeMapping
@@ -7573,24 +7627,34 @@ class MammalMeasurement extends Table
           .read(DriftSqlType.int, data['${effectivePrefix}testesLength']),
       testesWidth: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}testesWidth']),
+      epididimysAppearance: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}epididimysAppearance']),
       reproductiveStage: attachedDatabase.typeMapping.read(
           DriftSqlType.string, data['${effectivePrefix}reproductiveStage']),
-      placentalScars: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}placentalScars']),
+      leftPlacentalScars: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}leftPlacentalScars']),
+      rightPlacentalScars: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}rightPlacentalScars']),
+      mammaeCondition: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}mammaeCondition']),
       mammaeInguinalCount: attachedDatabase.typeMapping.read(
           DriftSqlType.int, data['${effectivePrefix}mammaeInguinalCount']),
       mammaeAxilaryCount: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}mammaeAxilaryCount']),
       mammaeAbdominalCount: attachedDatabase.typeMapping.read(
           DriftSqlType.int, data['${effectivePrefix}mammaeAbdominalCount']),
+      vaginaOpening: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}vaginaOpening']),
+      pubicSymphisis: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}pubicSymphisis']),
       embryoLeftCount: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}embryoLeftCount']),
       embryoRightCount: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}embryoRightCount']),
-      embryoCRLeft: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}embryoCRLeft']),
-      embryoCRRight: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}embryoCRRight']),
+      embryoCR: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}embryoCR']),
+      remark: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}remark']),
     );
   }
 
@@ -7608,8 +7672,7 @@ class MammalMeasurement extends Table
 
 class MammalMeasurementData extends DataClass
     implements Insertable<MammalMeasurementData> {
-  final int id;
-  final String? specimenUuid;
+  final String specimenUuid;
   final int? totalLength;
   final int? tailLength;
   final int? hindFootLength;
@@ -7623,18 +7686,22 @@ class MammalMeasurementData extends DataClass
   final String? testesPosition;
   final int? testesLength;
   final int? testesWidth;
+  final String? epididimysAppearance;
   final String? reproductiveStage;
-  final String? placentalScars;
+  final int? leftPlacentalScars;
+  final int? rightPlacentalScars;
+  final int? mammaeCondition;
   final int? mammaeInguinalCount;
   final int? mammaeAxilaryCount;
   final int? mammaeAbdominalCount;
+  final String? vaginaOpening;
+  final String? pubicSymphisis;
   final int? embryoLeftCount;
   final int? embryoRightCount;
-  final int? embryoCRLeft;
-  final int? embryoCRRight;
+  final int? embryoCR;
+  final String? remark;
   const MammalMeasurementData(
-      {required this.id,
-      this.specimenUuid,
+      {required this.specimenUuid,
       this.totalLength,
       this.tailLength,
       this.hindFootLength,
@@ -7648,22 +7715,24 @@ class MammalMeasurementData extends DataClass
       this.testesPosition,
       this.testesLength,
       this.testesWidth,
+      this.epididimysAppearance,
       this.reproductiveStage,
-      this.placentalScars,
+      this.leftPlacentalScars,
+      this.rightPlacentalScars,
+      this.mammaeCondition,
       this.mammaeInguinalCount,
       this.mammaeAxilaryCount,
       this.mammaeAbdominalCount,
+      this.vaginaOpening,
+      this.pubicSymphisis,
       this.embryoLeftCount,
       this.embryoRightCount,
-      this.embryoCRLeft,
-      this.embryoCRRight});
+      this.embryoCR,
+      this.remark});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    if (!nullToAbsent || specimenUuid != null) {
-      map['specimenUuid'] = Variable<String>(specimenUuid);
-    }
+    map['specimenUuid'] = Variable<String>(specimenUuid);
     if (!nullToAbsent || totalLength != null) {
       map['totalLength'] = Variable<int>(totalLength);
     }
@@ -7703,11 +7772,20 @@ class MammalMeasurementData extends DataClass
     if (!nullToAbsent || testesWidth != null) {
       map['testesWidth'] = Variable<int>(testesWidth);
     }
+    if (!nullToAbsent || epididimysAppearance != null) {
+      map['epididimysAppearance'] = Variable<String>(epididimysAppearance);
+    }
     if (!nullToAbsent || reproductiveStage != null) {
       map['reproductiveStage'] = Variable<String>(reproductiveStage);
     }
-    if (!nullToAbsent || placentalScars != null) {
-      map['placentalScars'] = Variable<String>(placentalScars);
+    if (!nullToAbsent || leftPlacentalScars != null) {
+      map['leftPlacentalScars'] = Variable<int>(leftPlacentalScars);
+    }
+    if (!nullToAbsent || rightPlacentalScars != null) {
+      map['rightPlacentalScars'] = Variable<int>(rightPlacentalScars);
+    }
+    if (!nullToAbsent || mammaeCondition != null) {
+      map['mammaeCondition'] = Variable<int>(mammaeCondition);
     }
     if (!nullToAbsent || mammaeInguinalCount != null) {
       map['mammaeInguinalCount'] = Variable<int>(mammaeInguinalCount);
@@ -7718,27 +7796,30 @@ class MammalMeasurementData extends DataClass
     if (!nullToAbsent || mammaeAbdominalCount != null) {
       map['mammaeAbdominalCount'] = Variable<int>(mammaeAbdominalCount);
     }
+    if (!nullToAbsent || vaginaOpening != null) {
+      map['vaginaOpening'] = Variable<String>(vaginaOpening);
+    }
+    if (!nullToAbsent || pubicSymphisis != null) {
+      map['pubicSymphisis'] = Variable<String>(pubicSymphisis);
+    }
     if (!nullToAbsent || embryoLeftCount != null) {
       map['embryoLeftCount'] = Variable<int>(embryoLeftCount);
     }
     if (!nullToAbsent || embryoRightCount != null) {
       map['embryoRightCount'] = Variable<int>(embryoRightCount);
     }
-    if (!nullToAbsent || embryoCRLeft != null) {
-      map['embryoCRLeft'] = Variable<int>(embryoCRLeft);
+    if (!nullToAbsent || embryoCR != null) {
+      map['embryoCR'] = Variable<int>(embryoCR);
     }
-    if (!nullToAbsent || embryoCRRight != null) {
-      map['embryoCRRight'] = Variable<int>(embryoCRRight);
+    if (!nullToAbsent || remark != null) {
+      map['remark'] = Variable<String>(remark);
     }
     return map;
   }
 
   MammalMeasurementCompanion toCompanion(bool nullToAbsent) {
     return MammalMeasurementCompanion(
-      id: Value(id),
-      specimenUuid: specimenUuid == null && nullToAbsent
-          ? const Value.absent()
-          : Value(specimenUuid),
+      specimenUuid: Value(specimenUuid),
       totalLength: totalLength == null && nullToAbsent
           ? const Value.absent()
           : Value(totalLength),
@@ -7775,12 +7856,21 @@ class MammalMeasurementData extends DataClass
       testesWidth: testesWidth == null && nullToAbsent
           ? const Value.absent()
           : Value(testesWidth),
+      epididimysAppearance: epididimysAppearance == null && nullToAbsent
+          ? const Value.absent()
+          : Value(epididimysAppearance),
       reproductiveStage: reproductiveStage == null && nullToAbsent
           ? const Value.absent()
           : Value(reproductiveStage),
-      placentalScars: placentalScars == null && nullToAbsent
+      leftPlacentalScars: leftPlacentalScars == null && nullToAbsent
           ? const Value.absent()
-          : Value(placentalScars),
+          : Value(leftPlacentalScars),
+      rightPlacentalScars: rightPlacentalScars == null && nullToAbsent
+          ? const Value.absent()
+          : Value(rightPlacentalScars),
+      mammaeCondition: mammaeCondition == null && nullToAbsent
+          ? const Value.absent()
+          : Value(mammaeCondition),
       mammaeInguinalCount: mammaeInguinalCount == null && nullToAbsent
           ? const Value.absent()
           : Value(mammaeInguinalCount),
@@ -7790,18 +7880,23 @@ class MammalMeasurementData extends DataClass
       mammaeAbdominalCount: mammaeAbdominalCount == null && nullToAbsent
           ? const Value.absent()
           : Value(mammaeAbdominalCount),
+      vaginaOpening: vaginaOpening == null && nullToAbsent
+          ? const Value.absent()
+          : Value(vaginaOpening),
+      pubicSymphisis: pubicSymphisis == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pubicSymphisis),
       embryoLeftCount: embryoLeftCount == null && nullToAbsent
           ? const Value.absent()
           : Value(embryoLeftCount),
       embryoRightCount: embryoRightCount == null && nullToAbsent
           ? const Value.absent()
           : Value(embryoRightCount),
-      embryoCRLeft: embryoCRLeft == null && nullToAbsent
+      embryoCR: embryoCR == null && nullToAbsent
           ? const Value.absent()
-          : Value(embryoCRLeft),
-      embryoCRRight: embryoCRRight == null && nullToAbsent
-          ? const Value.absent()
-          : Value(embryoCRRight),
+          : Value(embryoCR),
+      remark:
+          remark == null && nullToAbsent ? const Value.absent() : Value(remark),
     );
   }
 
@@ -7809,8 +7904,7 @@ class MammalMeasurementData extends DataClass
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return MammalMeasurementData(
-      id: serializer.fromJson<int>(json['id']),
-      specimenUuid: serializer.fromJson<String?>(json['specimenUuid']),
+      specimenUuid: serializer.fromJson<String>(json['specimenUuid']),
       totalLength: serializer.fromJson<int?>(json['totalLength']),
       tailLength: serializer.fromJson<int?>(json['tailLength']),
       hindFootLength: serializer.fromJson<int?>(json['hindFootLength']),
@@ -7824,26 +7918,32 @@ class MammalMeasurementData extends DataClass
       testesPosition: serializer.fromJson<String?>(json['testesPosition']),
       testesLength: serializer.fromJson<int?>(json['testesLength']),
       testesWidth: serializer.fromJson<int?>(json['testesWidth']),
+      epididimysAppearance:
+          serializer.fromJson<String?>(json['epididimysAppearance']),
       reproductiveStage:
           serializer.fromJson<String?>(json['reproductiveStage']),
-      placentalScars: serializer.fromJson<String?>(json['placentalScars']),
+      leftPlacentalScars: serializer.fromJson<int?>(json['leftPlacentalScars']),
+      rightPlacentalScars:
+          serializer.fromJson<int?>(json['rightPlacentalScars']),
+      mammaeCondition: serializer.fromJson<int?>(json['mammaeCondition']),
       mammaeInguinalCount:
           serializer.fromJson<int?>(json['mammaeInguinalCount']),
       mammaeAxilaryCount: serializer.fromJson<int?>(json['mammaeAxilaryCount']),
       mammaeAbdominalCount:
           serializer.fromJson<int?>(json['mammaeAbdominalCount']),
+      vaginaOpening: serializer.fromJson<String?>(json['vaginaOpening']),
+      pubicSymphisis: serializer.fromJson<String?>(json['pubicSymphisis']),
       embryoLeftCount: serializer.fromJson<int?>(json['embryoLeftCount']),
       embryoRightCount: serializer.fromJson<int?>(json['embryoRightCount']),
-      embryoCRLeft: serializer.fromJson<int?>(json['embryoCRLeft']),
-      embryoCRRight: serializer.fromJson<int?>(json['embryoCRRight']),
+      embryoCR: serializer.fromJson<int?>(json['embryoCR']),
+      remark: serializer.fromJson<String?>(json['remark']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'specimenUuid': serializer.toJson<String?>(specimenUuid),
+      'specimenUuid': serializer.toJson<String>(specimenUuid),
       'totalLength': serializer.toJson<int?>(totalLength),
       'tailLength': serializer.toJson<int?>(tailLength),
       'hindFootLength': serializer.toJson<int?>(hindFootLength),
@@ -7857,21 +7957,25 @@ class MammalMeasurementData extends DataClass
       'testesPosition': serializer.toJson<String?>(testesPosition),
       'testesLength': serializer.toJson<int?>(testesLength),
       'testesWidth': serializer.toJson<int?>(testesWidth),
+      'epididimysAppearance': serializer.toJson<String?>(epididimysAppearance),
       'reproductiveStage': serializer.toJson<String?>(reproductiveStage),
-      'placentalScars': serializer.toJson<String?>(placentalScars),
+      'leftPlacentalScars': serializer.toJson<int?>(leftPlacentalScars),
+      'rightPlacentalScars': serializer.toJson<int?>(rightPlacentalScars),
+      'mammaeCondition': serializer.toJson<int?>(mammaeCondition),
       'mammaeInguinalCount': serializer.toJson<int?>(mammaeInguinalCount),
       'mammaeAxilaryCount': serializer.toJson<int?>(mammaeAxilaryCount),
       'mammaeAbdominalCount': serializer.toJson<int?>(mammaeAbdominalCount),
+      'vaginaOpening': serializer.toJson<String?>(vaginaOpening),
+      'pubicSymphisis': serializer.toJson<String?>(pubicSymphisis),
       'embryoLeftCount': serializer.toJson<int?>(embryoLeftCount),
       'embryoRightCount': serializer.toJson<int?>(embryoRightCount),
-      'embryoCRLeft': serializer.toJson<int?>(embryoCRLeft),
-      'embryoCRRight': serializer.toJson<int?>(embryoCRRight),
+      'embryoCR': serializer.toJson<int?>(embryoCR),
+      'remark': serializer.toJson<String?>(remark),
     };
   }
 
   MammalMeasurementData copyWith(
-          {int? id,
-          Value<String?> specimenUuid = const Value.absent(),
+          {String? specimenUuid,
           Value<int?> totalLength = const Value.absent(),
           Value<int?> tailLength = const Value.absent(),
           Value<int?> hindFootLength = const Value.absent(),
@@ -7885,19 +7989,22 @@ class MammalMeasurementData extends DataClass
           Value<String?> testesPosition = const Value.absent(),
           Value<int?> testesLength = const Value.absent(),
           Value<int?> testesWidth = const Value.absent(),
+          Value<String?> epididimysAppearance = const Value.absent(),
           Value<String?> reproductiveStage = const Value.absent(),
-          Value<String?> placentalScars = const Value.absent(),
+          Value<int?> leftPlacentalScars = const Value.absent(),
+          Value<int?> rightPlacentalScars = const Value.absent(),
+          Value<int?> mammaeCondition = const Value.absent(),
           Value<int?> mammaeInguinalCount = const Value.absent(),
           Value<int?> mammaeAxilaryCount = const Value.absent(),
           Value<int?> mammaeAbdominalCount = const Value.absent(),
+          Value<String?> vaginaOpening = const Value.absent(),
+          Value<String?> pubicSymphisis = const Value.absent(),
           Value<int?> embryoLeftCount = const Value.absent(),
           Value<int?> embryoRightCount = const Value.absent(),
-          Value<int?> embryoCRLeft = const Value.absent(),
-          Value<int?> embryoCRRight = const Value.absent()}) =>
+          Value<int?> embryoCR = const Value.absent(),
+          Value<String?> remark = const Value.absent()}) =>
       MammalMeasurementData(
-        id: id ?? this.id,
-        specimenUuid:
-            specimenUuid.present ? specimenUuid.value : this.specimenUuid,
+        specimenUuid: specimenUuid ?? this.specimenUuid,
         totalLength: totalLength.present ? totalLength.value : this.totalLength,
         tailLength: tailLength.present ? tailLength.value : this.tailLength,
         hindFootLength:
@@ -7916,11 +8023,21 @@ class MammalMeasurementData extends DataClass
         testesLength:
             testesLength.present ? testesLength.value : this.testesLength,
         testesWidth: testesWidth.present ? testesWidth.value : this.testesWidth,
+        epididimysAppearance: epididimysAppearance.present
+            ? epididimysAppearance.value
+            : this.epididimysAppearance,
         reproductiveStage: reproductiveStage.present
             ? reproductiveStage.value
             : this.reproductiveStage,
-        placentalScars:
-            placentalScars.present ? placentalScars.value : this.placentalScars,
+        leftPlacentalScars: leftPlacentalScars.present
+            ? leftPlacentalScars.value
+            : this.leftPlacentalScars,
+        rightPlacentalScars: rightPlacentalScars.present
+            ? rightPlacentalScars.value
+            : this.rightPlacentalScars,
+        mammaeCondition: mammaeCondition.present
+            ? mammaeCondition.value
+            : this.mammaeCondition,
         mammaeInguinalCount: mammaeInguinalCount.present
             ? mammaeInguinalCount.value
             : this.mammaeInguinalCount,
@@ -7930,21 +8047,22 @@ class MammalMeasurementData extends DataClass
         mammaeAbdominalCount: mammaeAbdominalCount.present
             ? mammaeAbdominalCount.value
             : this.mammaeAbdominalCount,
+        vaginaOpening:
+            vaginaOpening.present ? vaginaOpening.value : this.vaginaOpening,
+        pubicSymphisis:
+            pubicSymphisis.present ? pubicSymphisis.value : this.pubicSymphisis,
         embryoLeftCount: embryoLeftCount.present
             ? embryoLeftCount.value
             : this.embryoLeftCount,
         embryoRightCount: embryoRightCount.present
             ? embryoRightCount.value
             : this.embryoRightCount,
-        embryoCRLeft:
-            embryoCRLeft.present ? embryoCRLeft.value : this.embryoCRLeft,
-        embryoCRRight:
-            embryoCRRight.present ? embryoCRRight.value : this.embryoCRRight,
+        embryoCR: embryoCR.present ? embryoCR.value : this.embryoCR,
+        remark: remark.present ? remark.value : this.remark,
       );
   @override
   String toString() {
     return (StringBuffer('MammalMeasurementData(')
-          ..write('id: $id, ')
           ..write('specimenUuid: $specimenUuid, ')
           ..write('totalLength: $totalLength, ')
           ..write('tailLength: $tailLength, ')
@@ -7959,22 +8077,26 @@ class MammalMeasurementData extends DataClass
           ..write('testesPosition: $testesPosition, ')
           ..write('testesLength: $testesLength, ')
           ..write('testesWidth: $testesWidth, ')
+          ..write('epididimysAppearance: $epididimysAppearance, ')
           ..write('reproductiveStage: $reproductiveStage, ')
-          ..write('placentalScars: $placentalScars, ')
+          ..write('leftPlacentalScars: $leftPlacentalScars, ')
+          ..write('rightPlacentalScars: $rightPlacentalScars, ')
+          ..write('mammaeCondition: $mammaeCondition, ')
           ..write('mammaeInguinalCount: $mammaeInguinalCount, ')
           ..write('mammaeAxilaryCount: $mammaeAxilaryCount, ')
           ..write('mammaeAbdominalCount: $mammaeAbdominalCount, ')
+          ..write('vaginaOpening: $vaginaOpening, ')
+          ..write('pubicSymphisis: $pubicSymphisis, ')
           ..write('embryoLeftCount: $embryoLeftCount, ')
           ..write('embryoRightCount: $embryoRightCount, ')
-          ..write('embryoCRLeft: $embryoCRLeft, ')
-          ..write('embryoCRRight: $embryoCRRight')
+          ..write('embryoCR: $embryoCR, ')
+          ..write('remark: $remark')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hashAll([
-        id,
         specimenUuid,
         totalLength,
         tailLength,
@@ -7989,21 +8111,25 @@ class MammalMeasurementData extends DataClass
         testesPosition,
         testesLength,
         testesWidth,
+        epididimysAppearance,
         reproductiveStage,
-        placentalScars,
+        leftPlacentalScars,
+        rightPlacentalScars,
+        mammaeCondition,
         mammaeInguinalCount,
         mammaeAxilaryCount,
         mammaeAbdominalCount,
+        vaginaOpening,
+        pubicSymphisis,
         embryoLeftCount,
         embryoRightCount,
-        embryoCRLeft,
-        embryoCRRight
+        embryoCR,
+        remark
       ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is MammalMeasurementData &&
-          other.id == this.id &&
           other.specimenUuid == this.specimenUuid &&
           other.totalLength == this.totalLength &&
           other.tailLength == this.tailLength &&
@@ -8018,21 +8144,25 @@ class MammalMeasurementData extends DataClass
           other.testesPosition == this.testesPosition &&
           other.testesLength == this.testesLength &&
           other.testesWidth == this.testesWidth &&
+          other.epididimysAppearance == this.epididimysAppearance &&
           other.reproductiveStage == this.reproductiveStage &&
-          other.placentalScars == this.placentalScars &&
+          other.leftPlacentalScars == this.leftPlacentalScars &&
+          other.rightPlacentalScars == this.rightPlacentalScars &&
+          other.mammaeCondition == this.mammaeCondition &&
           other.mammaeInguinalCount == this.mammaeInguinalCount &&
           other.mammaeAxilaryCount == this.mammaeAxilaryCount &&
           other.mammaeAbdominalCount == this.mammaeAbdominalCount &&
+          other.vaginaOpening == this.vaginaOpening &&
+          other.pubicSymphisis == this.pubicSymphisis &&
           other.embryoLeftCount == this.embryoLeftCount &&
           other.embryoRightCount == this.embryoRightCount &&
-          other.embryoCRLeft == this.embryoCRLeft &&
-          other.embryoCRRight == this.embryoCRRight);
+          other.embryoCR == this.embryoCR &&
+          other.remark == this.remark);
 }
 
 class MammalMeasurementCompanion
     extends UpdateCompanion<MammalMeasurementData> {
-  final Value<int> id;
-  final Value<String?> specimenUuid;
+  final Value<String> specimenUuid;
   final Value<int?> totalLength;
   final Value<int?> tailLength;
   final Value<int?> hindFootLength;
@@ -8046,17 +8176,21 @@ class MammalMeasurementCompanion
   final Value<String?> testesPosition;
   final Value<int?> testesLength;
   final Value<int?> testesWidth;
+  final Value<String?> epididimysAppearance;
   final Value<String?> reproductiveStage;
-  final Value<String?> placentalScars;
+  final Value<int?> leftPlacentalScars;
+  final Value<int?> rightPlacentalScars;
+  final Value<int?> mammaeCondition;
   final Value<int?> mammaeInguinalCount;
   final Value<int?> mammaeAxilaryCount;
   final Value<int?> mammaeAbdominalCount;
+  final Value<String?> vaginaOpening;
+  final Value<String?> pubicSymphisis;
   final Value<int?> embryoLeftCount;
   final Value<int?> embryoRightCount;
-  final Value<int?> embryoCRLeft;
-  final Value<int?> embryoCRRight;
+  final Value<int?> embryoCR;
+  final Value<String?> remark;
   const MammalMeasurementCompanion({
-    this.id = const Value.absent(),
     this.specimenUuid = const Value.absent(),
     this.totalLength = const Value.absent(),
     this.tailLength = const Value.absent(),
@@ -8071,19 +8205,23 @@ class MammalMeasurementCompanion
     this.testesPosition = const Value.absent(),
     this.testesLength = const Value.absent(),
     this.testesWidth = const Value.absent(),
+    this.epididimysAppearance = const Value.absent(),
     this.reproductiveStage = const Value.absent(),
-    this.placentalScars = const Value.absent(),
+    this.leftPlacentalScars = const Value.absent(),
+    this.rightPlacentalScars = const Value.absent(),
+    this.mammaeCondition = const Value.absent(),
     this.mammaeInguinalCount = const Value.absent(),
     this.mammaeAxilaryCount = const Value.absent(),
     this.mammaeAbdominalCount = const Value.absent(),
+    this.vaginaOpening = const Value.absent(),
+    this.pubicSymphisis = const Value.absent(),
     this.embryoLeftCount = const Value.absent(),
     this.embryoRightCount = const Value.absent(),
-    this.embryoCRLeft = const Value.absent(),
-    this.embryoCRRight = const Value.absent(),
+    this.embryoCR = const Value.absent(),
+    this.remark = const Value.absent(),
   });
   MammalMeasurementCompanion.insert({
-    this.id = const Value.absent(),
-    this.specimenUuid = const Value.absent(),
+    required String specimenUuid,
     this.totalLength = const Value.absent(),
     this.tailLength = const Value.absent(),
     this.hindFootLength = const Value.absent(),
@@ -8097,18 +8235,22 @@ class MammalMeasurementCompanion
     this.testesPosition = const Value.absent(),
     this.testesLength = const Value.absent(),
     this.testesWidth = const Value.absent(),
+    this.epididimysAppearance = const Value.absent(),
     this.reproductiveStage = const Value.absent(),
-    this.placentalScars = const Value.absent(),
+    this.leftPlacentalScars = const Value.absent(),
+    this.rightPlacentalScars = const Value.absent(),
+    this.mammaeCondition = const Value.absent(),
     this.mammaeInguinalCount = const Value.absent(),
     this.mammaeAxilaryCount = const Value.absent(),
     this.mammaeAbdominalCount = const Value.absent(),
+    this.vaginaOpening = const Value.absent(),
+    this.pubicSymphisis = const Value.absent(),
     this.embryoLeftCount = const Value.absent(),
     this.embryoRightCount = const Value.absent(),
-    this.embryoCRLeft = const Value.absent(),
-    this.embryoCRRight = const Value.absent(),
-  });
+    this.embryoCR = const Value.absent(),
+    this.remark = const Value.absent(),
+  }) : specimenUuid = Value(specimenUuid);
   static Insertable<MammalMeasurementData> custom({
-    Expression<int>? id,
     Expression<String>? specimenUuid,
     Expression<int>? totalLength,
     Expression<int>? tailLength,
@@ -8123,18 +8265,22 @@ class MammalMeasurementCompanion
     Expression<String>? testesPosition,
     Expression<int>? testesLength,
     Expression<int>? testesWidth,
+    Expression<String>? epididimysAppearance,
     Expression<String>? reproductiveStage,
-    Expression<String>? placentalScars,
+    Expression<int>? leftPlacentalScars,
+    Expression<int>? rightPlacentalScars,
+    Expression<int>? mammaeCondition,
     Expression<int>? mammaeInguinalCount,
     Expression<int>? mammaeAxilaryCount,
     Expression<int>? mammaeAbdominalCount,
+    Expression<String>? vaginaOpening,
+    Expression<String>? pubicSymphisis,
     Expression<int>? embryoLeftCount,
     Expression<int>? embryoRightCount,
-    Expression<int>? embryoCRLeft,
-    Expression<int>? embryoCRRight,
+    Expression<int>? embryoCR,
+    Expression<String>? remark,
   }) {
     return RawValuesInsertable({
-      if (id != null) 'id': id,
       if (specimenUuid != null) 'specimenUuid': specimenUuid,
       if (totalLength != null) 'totalLength': totalLength,
       if (tailLength != null) 'tailLength': tailLength,
@@ -8149,23 +8295,29 @@ class MammalMeasurementCompanion
       if (testesPosition != null) 'testesPosition': testesPosition,
       if (testesLength != null) 'testesLength': testesLength,
       if (testesWidth != null) 'testesWidth': testesWidth,
+      if (epididimysAppearance != null)
+        'epididimysAppearance': epididimysAppearance,
       if (reproductiveStage != null) 'reproductiveStage': reproductiveStage,
-      if (placentalScars != null) 'placentalScars': placentalScars,
+      if (leftPlacentalScars != null) 'leftPlacentalScars': leftPlacentalScars,
+      if (rightPlacentalScars != null)
+        'rightPlacentalScars': rightPlacentalScars,
+      if (mammaeCondition != null) 'mammaeCondition': mammaeCondition,
       if (mammaeInguinalCount != null)
         'mammaeInguinalCount': mammaeInguinalCount,
       if (mammaeAxilaryCount != null) 'mammaeAxilaryCount': mammaeAxilaryCount,
       if (mammaeAbdominalCount != null)
         'mammaeAbdominalCount': mammaeAbdominalCount,
+      if (vaginaOpening != null) 'vaginaOpening': vaginaOpening,
+      if (pubicSymphisis != null) 'pubicSymphisis': pubicSymphisis,
       if (embryoLeftCount != null) 'embryoLeftCount': embryoLeftCount,
       if (embryoRightCount != null) 'embryoRightCount': embryoRightCount,
-      if (embryoCRLeft != null) 'embryoCRLeft': embryoCRLeft,
-      if (embryoCRRight != null) 'embryoCRRight': embryoCRRight,
+      if (embryoCR != null) 'embryoCR': embryoCR,
+      if (remark != null) 'remark': remark,
     });
   }
 
   MammalMeasurementCompanion copyWith(
-      {Value<int>? id,
-      Value<String?>? specimenUuid,
+      {Value<String>? specimenUuid,
       Value<int?>? totalLength,
       Value<int?>? tailLength,
       Value<int?>? hindFootLength,
@@ -8179,17 +8331,21 @@ class MammalMeasurementCompanion
       Value<String?>? testesPosition,
       Value<int?>? testesLength,
       Value<int?>? testesWidth,
+      Value<String?>? epididimysAppearance,
       Value<String?>? reproductiveStage,
-      Value<String?>? placentalScars,
+      Value<int?>? leftPlacentalScars,
+      Value<int?>? rightPlacentalScars,
+      Value<int?>? mammaeCondition,
       Value<int?>? mammaeInguinalCount,
       Value<int?>? mammaeAxilaryCount,
       Value<int?>? mammaeAbdominalCount,
+      Value<String?>? vaginaOpening,
+      Value<String?>? pubicSymphisis,
       Value<int?>? embryoLeftCount,
       Value<int?>? embryoRightCount,
-      Value<int?>? embryoCRLeft,
-      Value<int?>? embryoCRRight}) {
+      Value<int?>? embryoCR,
+      Value<String?>? remark}) {
     return MammalMeasurementCompanion(
-      id: id ?? this.id,
       specimenUuid: specimenUuid ?? this.specimenUuid,
       totalLength: totalLength ?? this.totalLength,
       tailLength: tailLength ?? this.tailLength,
@@ -8204,24 +8360,26 @@ class MammalMeasurementCompanion
       testesPosition: testesPosition ?? this.testesPosition,
       testesLength: testesLength ?? this.testesLength,
       testesWidth: testesWidth ?? this.testesWidth,
+      epididimysAppearance: epididimysAppearance ?? this.epididimysAppearance,
       reproductiveStage: reproductiveStage ?? this.reproductiveStage,
-      placentalScars: placentalScars ?? this.placentalScars,
+      leftPlacentalScars: leftPlacentalScars ?? this.leftPlacentalScars,
+      rightPlacentalScars: rightPlacentalScars ?? this.rightPlacentalScars,
+      mammaeCondition: mammaeCondition ?? this.mammaeCondition,
       mammaeInguinalCount: mammaeInguinalCount ?? this.mammaeInguinalCount,
       mammaeAxilaryCount: mammaeAxilaryCount ?? this.mammaeAxilaryCount,
       mammaeAbdominalCount: mammaeAbdominalCount ?? this.mammaeAbdominalCount,
+      vaginaOpening: vaginaOpening ?? this.vaginaOpening,
+      pubicSymphisis: pubicSymphisis ?? this.pubicSymphisis,
       embryoLeftCount: embryoLeftCount ?? this.embryoLeftCount,
       embryoRightCount: embryoRightCount ?? this.embryoRightCount,
-      embryoCRLeft: embryoCRLeft ?? this.embryoCRLeft,
-      embryoCRRight: embryoCRRight ?? this.embryoCRRight,
+      embryoCR: embryoCR ?? this.embryoCR,
+      remark: remark ?? this.remark,
     );
   }
 
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
     if (specimenUuid.present) {
       map['specimenUuid'] = Variable<String>(specimenUuid.value);
     }
@@ -8264,11 +8422,21 @@ class MammalMeasurementCompanion
     if (testesWidth.present) {
       map['testesWidth'] = Variable<int>(testesWidth.value);
     }
+    if (epididimysAppearance.present) {
+      map['epididimysAppearance'] =
+          Variable<String>(epididimysAppearance.value);
+    }
     if (reproductiveStage.present) {
       map['reproductiveStage'] = Variable<String>(reproductiveStage.value);
     }
-    if (placentalScars.present) {
-      map['placentalScars'] = Variable<String>(placentalScars.value);
+    if (leftPlacentalScars.present) {
+      map['leftPlacentalScars'] = Variable<int>(leftPlacentalScars.value);
+    }
+    if (rightPlacentalScars.present) {
+      map['rightPlacentalScars'] = Variable<int>(rightPlacentalScars.value);
+    }
+    if (mammaeCondition.present) {
+      map['mammaeCondition'] = Variable<int>(mammaeCondition.value);
     }
     if (mammaeInguinalCount.present) {
       map['mammaeInguinalCount'] = Variable<int>(mammaeInguinalCount.value);
@@ -8279,17 +8447,23 @@ class MammalMeasurementCompanion
     if (mammaeAbdominalCount.present) {
       map['mammaeAbdominalCount'] = Variable<int>(mammaeAbdominalCount.value);
     }
+    if (vaginaOpening.present) {
+      map['vaginaOpening'] = Variable<String>(vaginaOpening.value);
+    }
+    if (pubicSymphisis.present) {
+      map['pubicSymphisis'] = Variable<String>(pubicSymphisis.value);
+    }
     if (embryoLeftCount.present) {
       map['embryoLeftCount'] = Variable<int>(embryoLeftCount.value);
     }
     if (embryoRightCount.present) {
       map['embryoRightCount'] = Variable<int>(embryoRightCount.value);
     }
-    if (embryoCRLeft.present) {
-      map['embryoCRLeft'] = Variable<int>(embryoCRLeft.value);
+    if (embryoCR.present) {
+      map['embryoCR'] = Variable<int>(embryoCR.value);
     }
-    if (embryoCRRight.present) {
-      map['embryoCRRight'] = Variable<int>(embryoCRRight.value);
+    if (remark.present) {
+      map['remark'] = Variable<String>(remark.value);
     }
     return map;
   }
@@ -8297,7 +8471,6 @@ class MammalMeasurementCompanion
   @override
   String toString() {
     return (StringBuffer('MammalMeasurementCompanion(')
-          ..write('id: $id, ')
           ..write('specimenUuid: $specimenUuid, ')
           ..write('totalLength: $totalLength, ')
           ..write('tailLength: $tailLength, ')
@@ -8312,15 +8485,20 @@ class MammalMeasurementCompanion
           ..write('testesPosition: $testesPosition, ')
           ..write('testesLength: $testesLength, ')
           ..write('testesWidth: $testesWidth, ')
+          ..write('epididimysAppearance: $epididimysAppearance, ')
           ..write('reproductiveStage: $reproductiveStage, ')
-          ..write('placentalScars: $placentalScars, ')
+          ..write('leftPlacentalScars: $leftPlacentalScars, ')
+          ..write('rightPlacentalScars: $rightPlacentalScars, ')
+          ..write('mammaeCondition: $mammaeCondition, ')
           ..write('mammaeInguinalCount: $mammaeInguinalCount, ')
           ..write('mammaeAxilaryCount: $mammaeAxilaryCount, ')
           ..write('mammaeAbdominalCount: $mammaeAbdominalCount, ')
+          ..write('vaginaOpening: $vaginaOpening, ')
+          ..write('pubicSymphisis: $pubicSymphisis, ')
           ..write('embryoLeftCount: $embryoLeftCount, ')
           ..write('embryoRightCount: $embryoRightCount, ')
-          ..write('embryoCRLeft: $embryoCRLeft, ')
-          ..write('embryoCRRight: $embryoCRRight')
+          ..write('embryoCR: $embryoCR, ')
+          ..write('remark: $remark')
           ..write(')'))
         .toString();
   }
@@ -8332,20 +8510,13 @@ class BirdMeasurement extends Table
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   BirdMeasurement(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
   static const VerificationMeta _specimenUuidMeta =
       const VerificationMeta('specimenUuid');
   late final GeneratedColumn<String> specimenUuid = GeneratedColumn<String>(
-      'specimenUuid', aliasedName, true,
+      'specimenUuid', aliasedName, false,
       type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   static const VerificationMeta _weightMeta = const VerificationMeta('weight');
   late final GeneratedColumn<int> weight = GeneratedColumn<int>(
       'weight', aliasedName, true,
@@ -8449,7 +8620,6 @@ class BirdMeasurement extends Table
       $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
-        id,
         specimenUuid,
         weight,
         wingspan,
@@ -8477,14 +8647,13 @@ class BirdMeasurement extends Table
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
     if (data.containsKey('specimenUuid')) {
       context.handle(
           _specimenUuidMeta,
           specimenUuid.isAcceptableOrUnknown(
               data['specimenUuid']!, _specimenUuidMeta));
+    } else if (isInserting) {
+      context.missing(_specimenUuidMeta);
     }
     if (data.containsKey('weight')) {
       context.handle(_weightMeta,
@@ -8562,15 +8731,13 @@ class BirdMeasurement extends Table
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => const {};
   @override
   BirdMeasurementData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return BirdMeasurementData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       specimenUuid: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}specimenUuid']),
+          .read(DriftSqlType.string, data['${effectivePrefix}specimenUuid'])!,
       weight: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}weight']),
       wingspan: attachedDatabase.typeMapping
@@ -8618,8 +8785,7 @@ class BirdMeasurement extends Table
 
 class BirdMeasurementData extends DataClass
     implements Insertable<BirdMeasurementData> {
-  final int id;
-  final String? specimenUuid;
+  final String specimenUuid;
   final int? weight;
   final int? wingspan;
   final String? irisColor;
@@ -8636,8 +8802,7 @@ class BirdMeasurementData extends DataClass
   final String? gonad;
   final String? stomach;
   const BirdMeasurementData(
-      {required this.id,
-      this.specimenUuid,
+      {required this.specimenUuid,
       this.weight,
       this.wingspan,
       this.irisColor,
@@ -8656,10 +8821,7 @@ class BirdMeasurementData extends DataClass
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    if (!nullToAbsent || specimenUuid != null) {
-      map['specimenUuid'] = Variable<String>(specimenUuid);
-    }
+    map['specimenUuid'] = Variable<String>(specimenUuid);
     if (!nullToAbsent || weight != null) {
       map['weight'] = Variable<int>(weight);
     }
@@ -8710,10 +8872,7 @@ class BirdMeasurementData extends DataClass
 
   BirdMeasurementCompanion toCompanion(bool nullToAbsent) {
     return BirdMeasurementCompanion(
-      id: Value(id),
-      specimenUuid: specimenUuid == null && nullToAbsent
-          ? const Value.absent()
-          : Value(specimenUuid),
+      specimenUuid: Value(specimenUuid),
       weight:
           weight == null && nullToAbsent ? const Value.absent() : Value(weight),
       wingspan: wingspan == null && nullToAbsent
@@ -8760,8 +8919,7 @@ class BirdMeasurementData extends DataClass
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return BirdMeasurementData(
-      id: serializer.fromJson<int>(json['id']),
-      specimenUuid: serializer.fromJson<String?>(json['specimenUuid']),
+      specimenUuid: serializer.fromJson<String>(json['specimenUuid']),
       weight: serializer.fromJson<int?>(json['weight']),
       wingspan: serializer.fromJson<int?>(json['wingspan']),
       irisColor: serializer.fromJson<String?>(json['irisColor']),
@@ -8783,8 +8941,7 @@ class BirdMeasurementData extends DataClass
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'specimenUuid': serializer.toJson<String?>(specimenUuid),
+      'specimenUuid': serializer.toJson<String>(specimenUuid),
       'weight': serializer.toJson<int?>(weight),
       'wingspan': serializer.toJson<int?>(wingspan),
       'irisColor': serializer.toJson<String?>(irisColor),
@@ -8804,8 +8961,7 @@ class BirdMeasurementData extends DataClass
   }
 
   BirdMeasurementData copyWith(
-          {int? id,
-          Value<String?> specimenUuid = const Value.absent(),
+          {String? specimenUuid,
           Value<int?> weight = const Value.absent(),
           Value<int?> wingspan = const Value.absent(),
           Value<String?> irisColor = const Value.absent(),
@@ -8822,9 +8978,7 @@ class BirdMeasurementData extends DataClass
           Value<String?> gonad = const Value.absent(),
           Value<String?> stomach = const Value.absent()}) =>
       BirdMeasurementData(
-        id: id ?? this.id,
-        specimenUuid:
-            specimenUuid.present ? specimenUuid.value : this.specimenUuid,
+        specimenUuid: specimenUuid ?? this.specimenUuid,
         weight: weight.present ? weight.value : this.weight,
         wingspan: wingspan.present ? wingspan.value : this.wingspan,
         irisColor: irisColor.present ? irisColor.value : this.irisColor,
@@ -8846,7 +9000,6 @@ class BirdMeasurementData extends DataClass
   @override
   String toString() {
     return (StringBuffer('BirdMeasurementData(')
-          ..write('id: $id, ')
           ..write('specimenUuid: $specimenUuid, ')
           ..write('weight: $weight, ')
           ..write('wingspan: $wingspan, ')
@@ -8869,7 +9022,6 @@ class BirdMeasurementData extends DataClass
 
   @override
   int get hashCode => Object.hash(
-      id,
       specimenUuid,
       weight,
       wingspan,
@@ -8890,7 +9042,6 @@ class BirdMeasurementData extends DataClass
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is BirdMeasurementData &&
-          other.id == this.id &&
           other.specimenUuid == this.specimenUuid &&
           other.weight == this.weight &&
           other.wingspan == this.wingspan &&
@@ -8910,8 +9061,7 @@ class BirdMeasurementData extends DataClass
 }
 
 class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
-  final Value<int> id;
-  final Value<String?> specimenUuid;
+  final Value<String> specimenUuid;
   final Value<int?> weight;
   final Value<int?> wingspan;
   final Value<String?> irisColor;
@@ -8928,7 +9078,6 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
   final Value<String?> gonad;
   final Value<String?> stomach;
   const BirdMeasurementCompanion({
-    this.id = const Value.absent(),
     this.specimenUuid = const Value.absent(),
     this.weight = const Value.absent(),
     this.wingspan = const Value.absent(),
@@ -8947,8 +9096,7 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
     this.stomach = const Value.absent(),
   });
   BirdMeasurementCompanion.insert({
-    this.id = const Value.absent(),
-    this.specimenUuid = const Value.absent(),
+    required String specimenUuid,
     this.weight = const Value.absent(),
     this.wingspan = const Value.absent(),
     this.irisColor = const Value.absent(),
@@ -8964,9 +9112,8 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
     this.sex = const Value.absent(),
     this.gonad = const Value.absent(),
     this.stomach = const Value.absent(),
-  });
+  }) : specimenUuid = Value(specimenUuid);
   static Insertable<BirdMeasurementData> custom({
-    Expression<int>? id,
     Expression<String>? specimenUuid,
     Expression<int>? weight,
     Expression<int>? wingspan,
@@ -8985,7 +9132,6 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
     Expression<String>? stomach,
   }) {
     return RawValuesInsertable({
-      if (id != null) 'id': id,
       if (specimenUuid != null) 'specimenUuid': specimenUuid,
       if (weight != null) 'weight': weight,
       if (wingspan != null) 'wingspan': wingspan,
@@ -9006,8 +9152,7 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
   }
 
   BirdMeasurementCompanion copyWith(
-      {Value<int>? id,
-      Value<String?>? specimenUuid,
+      {Value<String>? specimenUuid,
       Value<int?>? weight,
       Value<int?>? wingspan,
       Value<String?>? irisColor,
@@ -9024,7 +9169,6 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
       Value<String?>? gonad,
       Value<String?>? stomach}) {
     return BirdMeasurementCompanion(
-      id: id ?? this.id,
       specimenUuid: specimenUuid ?? this.specimenUuid,
       weight: weight ?? this.weight,
       wingspan: wingspan ?? this.wingspan,
@@ -9047,9 +9191,6 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
     if (specimenUuid.present) {
       map['specimenUuid'] = Variable<String>(specimenUuid.value);
     }
@@ -9104,7 +9245,6 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
   @override
   String toString() {
     return (StringBuffer('BirdMeasurementCompanion(')
-          ..write('id: $id, ')
           ..write('specimenUuid: $specimenUuid, ')
           ..write('weight: $weight, ')
           ..write('wingspan: $wingspan, ')
