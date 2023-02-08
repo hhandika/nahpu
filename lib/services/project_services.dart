@@ -17,11 +17,12 @@ class ProjectServices {
     ref.read(databaseProvider).createProject(form);
     _updateProjectUuid(form.uuid.value);
     ref.invalidate(projectListProvider);
-    ref.invalidate(projectFormNotifier);
+    ref.invalidate(projectFormValidation);
   }
 
   void updateProject(String projectUuid, ProjectCompanion form) {
     ref.read(databaseProvider).updateProjectEntry(projectUuid, form);
+    ref.invalidate(projectFormValidation);
     invalidateProject();
   }
 

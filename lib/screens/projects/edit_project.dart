@@ -27,6 +27,7 @@ class EditProjectState extends ConsumerState<EditProject> {
             data: (data) => ProjectForm(
                   projectCtr: getProjectCtr(data),
                   projectUuid: widget.projectUuid,
+                  isEditing: true,
                 ),
             loading: () => const CircularProgressIndicator(),
             error: (error, stack) => Text(error.toString())),

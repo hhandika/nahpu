@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/services/project_services.dart';
 import 'package:nahpu/services/utility_services.dart';
-import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
@@ -17,10 +16,12 @@ class ProjectForm extends ConsumerStatefulWidget {
     super.key,
     required this.projectCtr,
     required this.projectUuid,
+    this.isEditing = false,
   });
 
   final ProjectFormCtrModel projectCtr;
   final String projectUuid;
+  final bool isEditing;
 
   @override
   ProjectFormState createState() => ProjectFormState();
@@ -52,14 +53,14 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                   ],
                   onChanged: (value) {
                     ref
-                        .watch(projectFormNotifier.notifier)
+                        .watch(projectFormValidation.notifier)
                         .validateProjectName(value);
                     ref
-                        .watch(projectFormNotifier.notifier)
+                        .watch(projectFormValidation.notifier)
                         .checkProjectNameExists(ref, value?.trim() ?? '');
                   },
                   errorText:
-                      ref.watch(projectFormNotifier).form.projectName.errMsg,
+                      ref.watch(projectFormValidation).form.projectName.errMsg,
                 ),
                 ProjectFormField(
                   controller: widget.projectCtr.descriptionCtr,
@@ -79,12 +80,12 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                 ),
                 ProjectFormField(
                   controller: widget.projectCtr.pICtr,
-                  labelText: 'Project start date',
+                  labelText: 'Start date',
                   hintText: 'Enter start date of the project (optional)',
                 ),
                 ProjectFormField(
                   controller: widget.projectCtr.pICtr,
-                  labelText: 'Project end date',
+                  labelText: 'End date',
                   hintText: 'Enter end date of the project (optional)',
                 ),
                 const SizedBox(height: 20),
@@ -92,16 +93,18 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                   SecondaryButton(
                     text: 'Cancel',
                     onPressed: () {
+                      ref.invalidate(projectFormValidation);
                       Navigator.pop(context);
                     },
                   ),
                   FormElevButton(
-                      onPressed: () {
-                        _createProject();
-                        _goToDashboard();
-                      },
-                      text: 'Create',
-                      enabled: ref.read(projectFormNotifier).form.isValid)
+                    onPressed: () {
+                      widget.isEditing ? _updateProject() : _createProject();
+                      _goToDashboard();
+                    },
+                    text: widget.isEditing ? 'Update' : 'Create',
+                    enabled: ref.read(projectFormValidation).form.isValid,
+                  )
                 ])
               ],
             ),
@@ -111,8 +114,20 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
     );
   }
 
-  Future<void> _createProject() async {
-    final projectData = ProjectCompanion(
+  void _createProject() {
+    final projectData = _getForm();
+
+    ProjectServices(ref).createProject(projectData);
+  }
+
+  void _updateProject() {
+    final projectData = _getForm();
+
+    ProjectServices(ref).updateProject(widget.projectUuid, projectData);
+  }
+
+  ProjectCompanion _getForm() {
+    return ProjectCompanion(
       uuid: db.Value(widget.projectUuid),
       name: db.Value(widget.projectCtr.projectNameCtr.text),
       description: db.Value(widget.projectCtr.descriptionCtr.text),
@@ -120,8 +135,6 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
       created: db.Value(getSystemDateTime()),
       lastAccessed: db.Value(getSystemDateTime()),
     );
-
-    ProjectServices(ref).createProject(projectData);
   }
 
   Future<void> _goToDashboard() async {

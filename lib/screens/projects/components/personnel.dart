@@ -186,7 +186,7 @@ class PersonnelMenuState extends ConsumerState<PersonnelMenu> {
   void _onPopUpMenuSelected(PersonnelMenuAction item) {
     switch (item) {
       case PersonnelMenuAction.edit:
-        ref.read(personnelFormNotifier.notifier).isEditing();
+        ref.read(personnelFormValidation.notifier).isEditing();
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => EditPersonnelForm(
@@ -317,10 +317,13 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                 decoration: InputDecoration(
                   labelText: 'Name*',
                   hintText: 'Enter a name (required)',
-                  errorText: ref.watch(personnelFormNotifier).form.name.errMsg,
+                  errorText:
+                      ref.watch(personnelFormValidation).form.name.errMsg,
                 ),
                 onChanged: (value) {
-                  ref.watch(personnelFormNotifier.notifier).validateName(value);
+                  ref
+                      .watch(personnelFormValidation.notifier)
+                      .validateName(value);
                 },
               ),
               TextFormField(
@@ -335,10 +338,11 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                 decoration: InputDecoration(
                   labelText: 'Email',
                   hintText: 'Enter email',
-                  errorText: ref.watch(personnelFormNotifier).form.email.errMsg,
+                  errorText:
+                      ref.watch(personnelFormValidation).form.email.errMsg,
                 ),
                 onChanged: (value) {
-                  ref.watch(personnelFormNotifier.notifier).validateEmail(
+                  ref.watch(personnelFormValidation.notifier).validateEmail(
                         value,
                       );
                   widget.ctr.emailCtr.value = TextEditingValue(
@@ -388,7 +392,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                         labelText: 'Initials*',
                         hintText: 'Enter initials (required for catalogers)',
                         errorText: ref
-                            .watch(personnelFormNotifier)
+                            .watch(personnelFormValidation)
                             .form
                             .initial
                             .errMsg,
@@ -404,7 +408,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                             text: value.toUpperCase(),
                             selection: widget.ctr.initialCtr.selection);
                         ref
-                            .watch(personnelFormNotifier.notifier)
+                            .watch(personnelFormValidation.notifier)
                             .validateInitial(
                               value,
                             );
@@ -417,7 +421,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                           labelText: 'Last collector Number*',
                           hintText: 'Enter number (required for collectors)',
                           errorText: ref
-                              .watch(projectFormNotifier)
+                              .watch(personnelFormValidation)
                               .form
                               .collNum
                               .errMsg,
@@ -430,7 +434,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                         ],
                         onChanged: (value) {
                           ref
-                              .watch(personnelFormNotifier.notifier)
+                              .watch(personnelFormValidation.notifier)
                               .validateCollNum(value);
                         }),
                   ],
@@ -453,19 +457,22 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                   SecondaryButton(
                     text: 'Cancel',
                     onPressed: () {
-                      ref.invalidate(personnelFormNotifier);
+                      ref.invalidate(personnelFormValidation);
                       Navigator.of(context).pop();
                     },
                   ),
                   FormElevButton(
                     text: widget.isAddNew ? 'Add' : 'Update',
                     enabled: widget.ctr.roleCtr == 'Cataloger'
-                        ? ref.read(personnelFormNotifier).form.isValidCataloger
-                        : ref.read(personnelFormNotifier).form.isValid,
+                        ? ref
+                            .read(personnelFormValidation)
+                            .form
+                            .isValidCataloger
+                        : ref.read(personnelFormValidation).form.isValid,
                     onPressed: () {
                       widget.isAddNew ? _addPersonnel() : _updatePersonnel();
                       ref.invalidate(personnelListProvider);
-                      ref.invalidate(personnelFormNotifier);
+                      ref.invalidate(personnelFormValidation);
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => const Dashboard(),

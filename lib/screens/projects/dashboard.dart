@@ -63,7 +63,7 @@ class DashboardState extends ConsumerState<Dashboard> {
                             child: IconButton(
                               onPressed: () {
                                 ref
-                                    .read(projectFormNotifier.notifier)
+                                    .read(projectFormValidation.notifier)
                                     .isEditing();
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) =>

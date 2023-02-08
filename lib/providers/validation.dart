@@ -3,7 +3,7 @@ import 'package:nahpu/models/validation.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/validation_services.dart';
 
-final projectFormNotifier = StateNotifierProvider.autoDispose<
+final projectFormValidation = StateNotifierProvider.autoDispose<
     ProjectFormValidationNotifier,
     ProjectFormState>((ref) => ProjectFormValidationNotifier());
 
@@ -52,7 +52,7 @@ class ProjectFormValidationNotifier extends StateNotifier<ProjectFormState> {
   }
 }
 
-final personnelFormNotifier = StateNotifierProvider.autoDispose<
+final personnelFormValidation = StateNotifierProvider.autoDispose<
     PersonnelFormValidationNotifier,
     NewPersonnelFormState>((ref) => PersonnelFormValidationNotifier());
 
