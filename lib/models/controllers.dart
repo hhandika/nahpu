@@ -298,7 +298,7 @@ class MammalMeasurementCtrModel {
   TextEditingController earCtr;
   TextEditingController forearmCtr;
   TextEditingController weightCtr;
-  TextEditingController accuracyCtr;
+  String? accuracyCtr;
   TextEditingController sexCtr;
   TextEditingController ageCtr;
   TextEditingController testisPosCtr;
@@ -326,7 +326,7 @@ class MammalMeasurementCtrModel {
       earCtr: TextEditingController(),
       forearmCtr: TextEditingController(),
       weightCtr: TextEditingController(),
-      accuracyCtr: TextEditingController(),
+      accuracyCtr: null,
       sexCtr: TextEditingController(),
       ageCtr: TextEditingController(),
       testisPosCtr: TextEditingController(),
@@ -358,8 +358,7 @@ class MammalMeasurementCtrModel {
         earCtr: TextEditingController(text: data.earLength?.toString() ?? ''),
         forearmCtr: TextEditingController(text: data.forearm?.toString() ?? ''),
         weightCtr: TextEditingController(text: data.weight?.toString() ?? ''),
-        accuracyCtr:
-            TextEditingController(text: data.accuracy?.toString() ?? ''),
+        accuracyCtr: data.accuracy?.toString(),
         sexCtr: TextEditingController(text: data.sex?.toString() ?? ''),
         ageCtr: TextEditingController(text: data.age?.toString() ?? ''),
         testisPosCtr:
@@ -404,7 +403,6 @@ class MammalMeasurementCtrModel {
     earCtr.dispose();
     forearmCtr.dispose();
     weightCtr.dispose();
-    accuracyCtr.dispose();
     sexCtr.dispose();
     ageCtr.dispose();
     testisPosCtr.dispose();

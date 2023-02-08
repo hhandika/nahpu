@@ -85,6 +85,7 @@ class MammalMeasurementFormsState
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
               CommonNumField(
+                controller: ctr.hindFootCtr,
                 labelText: 'Hind foot length (mm)',
                 hintText: 'Enter HF length',
                 isLastField: false,
@@ -98,6 +99,7 @@ class MammalMeasurementFormsState
                 },
               ),
               CommonNumField(
+                controller: ctr.earCtr,
                 labelText: 'Ear length (mm)',
                 hintText: 'Enter ER length',
                 isLastField: false,
@@ -116,6 +118,7 @@ class MammalMeasurementFormsState
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
               CommonNumField(
+                controller: ctr.weightCtr,
                 labelText: 'Weight (grams)',
                 hintText: 'Enter specimen weight',
                 isLastField: false,
@@ -131,6 +134,7 @@ class MammalMeasurementFormsState
               Visibility(
                 visible: widget.isBats,
                 child: CommonNumField(
+                  controller: ctr.forearmCtr,
                   labelText: 'Forearm Length (mm)',
                   hintText: 'Enter FL length',
                   isLastField: true,
@@ -149,6 +153,7 @@ class MammalMeasurementFormsState
           Padding(
             padding: const EdgeInsets.all(5),
             child: DropdownButtonFormField(
+                value: ctr.accuracyCtr,
                 decoration: const InputDecoration(
                   labelText: 'Accuracy',
                   hintText: 'Select measurement accuracy',
@@ -168,10 +173,11 @@ class MammalMeasurementFormsState
                   ),
                 ],
                 onChanged: (String? newValue) {
+                  ctr.accuracyCtr = newValue;
                   SpecimenServices(ref).updateMammalMeasurement(
                     widget.specimenUuid,
                     MammalMeasurementCompanion(
-                      accuracy: db.Value(newValue ?? 'Accurate'),
+                      accuracy: db.Value(newValue),
                     ),
                   );
                 }),
