@@ -366,7 +366,7 @@ class SkullOssField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<int> skullOss = [5, 10, 25, 50, 75, 90, 95, 99];
+    List<int> skullOss = [5, 10, 25, 50, 75, 90, 95, 100];
     return DropdownButtonFormField(
         decoration: const InputDecoration(
           labelText: 'Skull ossification (%)',
