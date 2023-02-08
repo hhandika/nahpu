@@ -103,7 +103,9 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                       _goToDashboard();
                     },
                     text: widget.isEditing ? 'Update' : 'Create',
-                    enabled: ref.read(projectFormValidation).form.isValid,
+                    enabled: widget.isEditing
+                        ? true // Temporary fix to allow editing
+                        : ref.read(projectFormValidation).form.isValid,
                   )
                 ])
               ],
