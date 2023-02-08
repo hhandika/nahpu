@@ -211,51 +211,52 @@ class CollEventIdTile extends ConsumerWidget {
           ],
         ),
       ),
-      trailing: IconButton(
-        icon: const Icon(
-          Icons.edit_rounded,
-          size: 20,
-        ),
-        onPressed: collEventCtr.eventIDCtr.text.isEmpty
-            ? null
-            : () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: const Text('Edit Collecting Event ID'),
-                      content: TextFormField(
-                        controller: collEventCtr.eventIDCtr,
-                        decoration: const InputDecoration(
-                          labelText: 'Collecting Event ID',
-                          hintText: 'Enter collecting event ID',
-                        ),
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text('Cancel'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            CollEventServices(ref).updateCollEvent(
-                              collEventId,
-                              CollEventCompanion(
-                                eventID: db.Value(collEventCtr.eventIDCtr.text),
-                              ),
-                            );
-                            ref.invalidate(siteEntryProvider);
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text('Save'),
-                        ),
-                      ],
-                    );
-                  },
+      trailing: Visibility(
+        visible: collEventCtr.eventIDCtr.text.isNotEmpty,
+        child: IconButton(
+          icon: const Icon(
+            Icons.edit_rounded,
+            size: 20,
+          ),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Edit Collecting Event ID'),
+                  content: TextFormField(
+                    controller: collEventCtr.eventIDCtr,
+                    decoration: const InputDecoration(
+                      labelText: 'Collecting Event ID',
+                      hintText: 'Enter collecting event ID',
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        CollEventServices(ref).updateCollEvent(
+                          collEventId,
+                          CollEventCompanion(
+                            eventID: db.Value(collEventCtr.eventIDCtr.text),
+                          ),
+                        );
+                        ref.invalidate(siteEntryProvider);
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Save'),
+                    ),
+                  ],
                 );
               },
+            );
+          },
+        ),
       ),
     );
   }

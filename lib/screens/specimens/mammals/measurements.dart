@@ -208,7 +208,9 @@ class MammalMeasurementFormsState
                     ),
                   ],
                   onChanged: (String? newValue) {
-                    _specimenSex = matchSpecimenSex(newValue);
+                    setState(() {
+                      _specimenSex = matchSpecimenSex(newValue);
+                    });
                   }),
               DropdownButtonFormField(
                   decoration: const InputDecoration(
@@ -318,6 +320,41 @@ class _MaleGonadFormState extends State<MaleGonadForm> {
             visible: _isScrotal,
             useHorizontalLayout: widget.useHorizontalLayout,
           ),
+          const Divider(),
+        ],
+      ),
+    );
+  }
+}
+
+class ScrotalMaleForm extends StatelessWidget {
+  const ScrotalMaleForm(
+      {super.key, required this.visible, required this.useHorizontalLayout});
+
+  final bool visible;
+  final bool useHorizontalLayout;
+
+  @override
+  Widget build(BuildContext context) {
+    return Visibility(
+      visible: visible,
+      child: Column(
+        children: [
+          AdaptiveLayout(
+            useHorizontalLayout: useHorizontalLayout,
+            children: const [
+              CommonNumField(
+                labelText: 'Length (mm)',
+                hintText: 'Enter the length of the right testes ',
+                isLastField: false,
+              ),
+              CommonNumField(
+                labelText: 'Width (mm)',
+                hintText: 'Enter the width of the right testes ',
+                isLastField: true,
+              ),
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.all(5),
             child: DropdownButtonFormField(
@@ -342,39 +379,9 @@ class _MaleGonadFormState extends State<MaleGonadForm> {
               onChanged: (value) {},
             ),
           ),
-          const Divider(),
         ],
       ),
     );
-  }
-}
-
-class ScrotalMaleForm extends StatelessWidget {
-  const ScrotalMaleForm(
-      {super.key, required this.visible, required this.useHorizontalLayout});
-
-  final bool visible;
-  final bool useHorizontalLayout;
-
-  @override
-  Widget build(BuildContext context) {
-    return Visibility(
-        visible: visible,
-        child: AdaptiveLayout(
-          useHorizontalLayout: useHorizontalLayout,
-          children: const [
-            CommonNumField(
-              labelText: 'Length (mm)',
-              hintText: 'Enter the length of the right testes ',
-              isLastField: false,
-            ),
-            CommonNumField(
-              labelText: 'Width (mm)',
-              hintText: 'Enter the width of the right testes ',
-              isLastField: true,
-            ),
-          ],
-        ));
   }
 }
 
