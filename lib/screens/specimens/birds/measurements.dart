@@ -19,11 +19,9 @@ class BirdMeasurementForms extends ConsumerStatefulWidget {
 }
 
 class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
-  SpecimenSex _specimenSex = SpecimenSex.unknown;
   bool _molting = false;
 
-  final BirdMeasurementCtrModel birdMeasurementCtrModel =
-      BirdMeasurementCtrModel.empty();
+  final BirdMeasurementCtrModel ctr = BirdMeasurementCtrModel.empty();
 
   @override
   void initState() {
@@ -45,13 +43,13 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
               CommonNumField(
-                controller: birdMeasurementCtrModel.weightCtr,
+                controller: ctr.weightCtr,
                 labelText: 'Weight (grams)',
                 hintText: 'Enter weight',
                 isLastField: false,
               ),
               CommonNumField(
-                controller: birdMeasurementCtrModel.wingspanCtr,
+                controller: ctr.wingspanCtr,
                 labelText: 'Wingspan (mm)',
                 hintText: 'Enter TL',
                 isLastField: false,
@@ -62,13 +60,13 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
               CommonTextField(
-                controller: birdMeasurementCtrModel.irisCtr,
+                controller: ctr.irisCtr,
                 labelText: 'Iris color',
                 hintText: 'Enter iris color',
                 isLastField: false,
               ),
               CommonTextField(
-                controller: birdMeasurementCtrModel.billCtr,
+                controller: ctr.billCtr,
                 labelText: 'Bill color',
                 hintText: 'Enter bill color',
                 isLastField: false,
@@ -79,13 +77,13 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
               CommonTextField(
-                controller: birdMeasurementCtrModel.footCtr,
+                controller: ctr.footCtr,
                 labelText: 'Foot color',
                 hintText: 'Enter foot color',
                 isLastField: false,
               ),
               CommonTextField(
-                controller: birdMeasurementCtrModel.tarsusCtr,
+                controller: ctr.tarsusCtr,
                 labelText: 'Tarsus color',
                 hintText: 'Enter foot color',
                 isLastField: true,
@@ -170,7 +168,7 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
               CommonNumField(
-                controller: birdMeasurementCtrModel.bursaCtr,
+                controller: ctr.bursaCtr,
                 labelText: 'Bursa (mm)',
                 hintText: 'Enter tail molt',
                 isLastField: false,
@@ -191,12 +189,12 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
           MaleGonadForm(
             specimenUuid: widget.specimenUuid,
             useHorizontalLayout: widget.useHorizontalLayout,
-            sex: _specimenSex,
+            sex: SpecimenSex.male,
           ),
           FemaleGonadForm(
             specimenUuid: widget.specimenUuid,
             useHorizontalLayout: widget.useHorizontalLayout,
-            sex: _specimenSex,
+            sex: SpecimenSex.female,
           ),
           const Divider(),
           MoltingForm(
@@ -277,8 +275,7 @@ class FemaleGonadForm extends ConsumerStatefulWidget {
 }
 
 class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
-  bool _isLargOvum = false;
-
+  final bool _isLargeOvum = false;
   @override
   Widget build(BuildContext context) {
     return Visibility(
@@ -327,14 +324,12 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
                 ),
               ],
               onChanged: (String? newValue) {
-                setState(() {
-                  _isLargOvum = newValue == 'large' ? true : false;
-                });
+                setState(() {});
               },
             ),
           ),
           Visibility(
-            visible: _isLargOvum,
+            visible: _isLargeOvum,
             child: OvumSizeForm(
               useHorizontalLayout: widget.useHorizontalLayout,
             ),

@@ -259,10 +259,12 @@ class MammalMeasurementFormsState
           MaleGonadForm(
             specimenSex: matchEncodingToSpecimenSex(ctr.sexCtr),
             useHorizontalLayout: widget.useHorizontalLayout,
+            ctr: ctr,
           ),
           FemaleGonadForm(
             specimenSex: matchEncodingToSpecimenSex(ctr.sexCtr),
             useHorizontalLayout: widget.useHorizontalLayout,
+            ctr: ctr,
           ),
           const Padding(
             padding: EdgeInsets.all(5),
@@ -290,10 +292,12 @@ class MaleGonadForm extends StatefulWidget {
     super.key,
     required this.specimenSex,
     required this.useHorizontalLayout,
+    required this.ctr,
   });
 
   final SpecimenSex? specimenSex;
   final bool useHorizontalLayout;
+  final MammalMeasurementCtrModel ctr;
 
   @override
   State<MaleGonadForm> createState() => _MaleGonadFormState();
@@ -337,6 +341,7 @@ class _MaleGonadFormState extends State<MaleGonadForm> {
           ScrotalMaleForm(
             visible: _isScrotal,
             useHorizontalLayout: widget.useHorizontalLayout,
+            ctr: widget.ctr,
           ),
           const Divider(),
         ],
@@ -346,11 +351,16 @@ class _MaleGonadFormState extends State<MaleGonadForm> {
 }
 
 class ScrotalMaleForm extends StatelessWidget {
-  const ScrotalMaleForm(
-      {super.key, required this.visible, required this.useHorizontalLayout});
+  const ScrotalMaleForm({
+    super.key,
+    required this.visible,
+    required this.useHorizontalLayout,
+    required this.ctr,
+  });
 
   final bool visible;
   final bool useHorizontalLayout;
+  final MammalMeasurementCtrModel ctr;
 
   @override
   Widget build(BuildContext context) {
@@ -408,10 +418,12 @@ class FemaleGonadForm extends StatefulWidget {
     super.key,
     required this.specimenSex,
     required this.useHorizontalLayout,
+    required this.ctr,
   });
 
   final SpecimenSex? specimenSex;
   final bool useHorizontalLayout;
+  final MammalMeasurementCtrModel ctr;
   @override
   State<FemaleGonadForm> createState() => _FemaleGonadFormState();
 }
