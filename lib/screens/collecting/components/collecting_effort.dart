@@ -177,16 +177,16 @@ class Subtitle extends StatelessWidget {
             text: 'Count: ${data.count}',
             style: Theme.of(context).textTheme.labelMedium,
           ),
-          const TextSpan(text: ' | '),
           if (data.size != null && data.size!.isNotEmpty)
             TextSpan(
               text: ' | Size: ${data.size}',
               style: Theme.of(context).textTheme.labelMedium,
             ),
-          TextSpan(
-            text: 'Brand: ${data.brand}',
-            style: Theme.of(context).textTheme.labelMedium,
-          ),
+          if (data.notes != null && data.notes!.isNotEmpty)
+            TextSpan(
+              text: ' | Notes: ${data.notes}',
+              style: Theme.of(context).textTheme.labelMedium,
+            ),
         ],
       ),
     );
