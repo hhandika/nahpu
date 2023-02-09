@@ -7374,9 +7374,9 @@ class MammalMeasurement extends Table
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _weightMeta = const VerificationMeta('weight');
-  late final GeneratedColumn<int> weight = GeneratedColumn<int>(
+  late final GeneratedColumn<double> weight = GeneratedColumn<double>(
       'weight', aliasedName, true,
-      type: DriftSqlType.int,
+      type: DriftSqlType.double,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _accuracyMeta =
@@ -7740,7 +7740,7 @@ class MammalMeasurement extends Table
       forearm: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}forearm']),
       weight: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}weight']),
+          .read(DriftSqlType.double, data['${effectivePrefix}weight']),
       accuracy: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}accuracy']),
       accuracySpecify: attachedDatabase.typeMapping
@@ -7806,7 +7806,7 @@ class MammalMeasurementData extends DataClass
   final int? hindFootLength;
   final int? earLength;
   final int? forearm;
-  final int? weight;
+  final double? weight;
   final String? accuracy;
   final String? accuracySpecify;
   final int? sex;
@@ -7877,7 +7877,7 @@ class MammalMeasurementData extends DataClass
       map['forearm'] = Variable<int>(forearm);
     }
     if (!nullToAbsent || weight != null) {
-      map['weight'] = Variable<int>(weight);
+      map['weight'] = Variable<double>(weight);
     }
     if (!nullToAbsent || accuracy != null) {
       map['accuracy'] = Variable<String>(accuracy);
@@ -8036,7 +8036,7 @@ class MammalMeasurementData extends DataClass
       hindFootLength: serializer.fromJson<int?>(json['hindFootLength']),
       earLength: serializer.fromJson<int?>(json['earLength']),
       forearm: serializer.fromJson<int?>(json['forearm']),
-      weight: serializer.fromJson<int?>(json['weight']),
+      weight: serializer.fromJson<double?>(json['weight']),
       accuracy: serializer.fromJson<String?>(json['accuracy']),
       accuracySpecify: serializer.fromJson<String?>(json['accuracySpecify']),
       sex: serializer.fromJson<int?>(json['sex']),
@@ -8075,7 +8075,7 @@ class MammalMeasurementData extends DataClass
       'hindFootLength': serializer.toJson<int?>(hindFootLength),
       'earLength': serializer.toJson<int?>(earLength),
       'forearm': serializer.toJson<int?>(forearm),
-      'weight': serializer.toJson<int?>(weight),
+      'weight': serializer.toJson<double?>(weight),
       'accuracy': serializer.toJson<String?>(accuracy),
       'accuracySpecify': serializer.toJson<String?>(accuracySpecify),
       'sex': serializer.toJson<int?>(sex),
@@ -8107,7 +8107,7 @@ class MammalMeasurementData extends DataClass
           Value<int?> hindFootLength = const Value.absent(),
           Value<int?> earLength = const Value.absent(),
           Value<int?> forearm = const Value.absent(),
-          Value<int?> weight = const Value.absent(),
+          Value<double?> weight = const Value.absent(),
           Value<String?> accuracy = const Value.absent(),
           Value<String?> accuracySpecify = const Value.absent(),
           Value<int?> sex = const Value.absent(),
@@ -8294,7 +8294,7 @@ class MammalMeasurementCompanion
   final Value<int?> hindFootLength;
   final Value<int?> earLength;
   final Value<int?> forearm;
-  final Value<int?> weight;
+  final Value<double?> weight;
   final Value<String?> accuracy;
   final Value<String?> accuracySpecify;
   final Value<int?> sex;
@@ -8383,7 +8383,7 @@ class MammalMeasurementCompanion
     Expression<int>? hindFootLength,
     Expression<int>? earLength,
     Expression<int>? forearm,
-    Expression<int>? weight,
+    Expression<double>? weight,
     Expression<String>? accuracy,
     Expression<String>? accuracySpecify,
     Expression<int>? sex,
@@ -8450,7 +8450,7 @@ class MammalMeasurementCompanion
       Value<int?>? hindFootLength,
       Value<int?>? earLength,
       Value<int?>? forearm,
-      Value<int?>? weight,
+      Value<double?>? weight,
       Value<String?>? accuracy,
       Value<String?>? accuracySpecify,
       Value<int?>? sex,
@@ -8526,7 +8526,7 @@ class MammalMeasurementCompanion
       map['forearm'] = Variable<int>(forearm.value);
     }
     if (weight.present) {
-      map['weight'] = Variable<int>(weight.value);
+      map['weight'] = Variable<double>(weight.value);
     }
     if (accuracy.present) {
       map['accuracy'] = Variable<String>(accuracy.value);
@@ -8644,9 +8644,9 @@ class BirdMeasurement extends Table
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   static const VerificationMeta _weightMeta = const VerificationMeta('weight');
-  late final GeneratedColumn<int> weight = GeneratedColumn<int>(
+  late final GeneratedColumn<double> weight = GeneratedColumn<double>(
       'weight', aliasedName, true,
-      type: DriftSqlType.int,
+      type: DriftSqlType.double,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _wingspanMeta =
@@ -8766,6 +8766,13 @@ class BirdMeasurement extends Table
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _oviductWidthMeta =
+      const VerificationMeta('oviductWidth');
+  late final GeneratedColumn<int> oviductWidth = GeneratedColumn<int>(
+      'oviductWidth', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _ovaryAppearanceMeta =
       const VerificationMeta('ovaryAppearance');
   late final GeneratedColumn<int> ovaryAppearance = GeneratedColumn<int>(
@@ -8773,10 +8780,24 @@ class BirdMeasurement extends Table
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _oviductWidthMeta =
-      const VerificationMeta('oviductWidth');
-  late final GeneratedColumn<int> oviductWidth = GeneratedColumn<int>(
-      'oviductWidth', aliasedName, true,
+  static const VerificationMeta _firstOvaSizeMeta =
+      const VerificationMeta('firstOvaSize');
+  late final GeneratedColumn<int> firstOvaSize = GeneratedColumn<int>(
+      'firstOvaSize', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _secondOvaSizeMeta =
+      const VerificationMeta('secondOvaSize');
+  late final GeneratedColumn<int> secondOvaSize = GeneratedColumn<int>(
+      'secondOvaSize', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _thirdOvaSizeMeta =
+      const VerificationMeta('thirdOvaSize');
+  late final GeneratedColumn<int> thirdOvaSize = GeneratedColumn<int>(
+      'thirdOvaSize', aliasedName, true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -8871,8 +8892,11 @@ class BirdMeasurement extends Table
         testisRemark,
         ovaryLength,
         ovaryWidth,
-        ovaryAppearance,
         oviductWidth,
+        ovaryAppearance,
+        firstOvaSize,
+        secondOvaSize,
+        thirdOvaSize,
         oviductAppearance,
         ovaryRemark,
         wingRightPrimary,
@@ -8994,17 +9018,35 @@ class BirdMeasurement extends Table
           ovaryWidth.isAcceptableOrUnknown(
               data['ovaryWidth']!, _ovaryWidthMeta));
     }
+    if (data.containsKey('oviductWidth')) {
+      context.handle(
+          _oviductWidthMeta,
+          oviductWidth.isAcceptableOrUnknown(
+              data['oviductWidth']!, _oviductWidthMeta));
+    }
     if (data.containsKey('ovaryAppearance')) {
       context.handle(
           _ovaryAppearanceMeta,
           ovaryAppearance.isAcceptableOrUnknown(
               data['ovaryAppearance']!, _ovaryAppearanceMeta));
     }
-    if (data.containsKey('oviductWidth')) {
+    if (data.containsKey('firstOvaSize')) {
       context.handle(
-          _oviductWidthMeta,
-          oviductWidth.isAcceptableOrUnknown(
-              data['oviductWidth']!, _oviductWidthMeta));
+          _firstOvaSizeMeta,
+          firstOvaSize.isAcceptableOrUnknown(
+              data['firstOvaSize']!, _firstOvaSizeMeta));
+    }
+    if (data.containsKey('secondOvaSize')) {
+      context.handle(
+          _secondOvaSizeMeta,
+          secondOvaSize.isAcceptableOrUnknown(
+              data['secondOvaSize']!, _secondOvaSizeMeta));
+    }
+    if (data.containsKey('thirdOvaSize')) {
+      context.handle(
+          _thirdOvaSizeMeta,
+          thirdOvaSize.isAcceptableOrUnknown(
+              data['thirdOvaSize']!, _thirdOvaSizeMeta));
     }
     if (data.containsKey('oviductAppearance')) {
       context.handle(
@@ -9076,7 +9118,7 @@ class BirdMeasurement extends Table
       specimenUuid: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}specimenUuid'])!,
       weight: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}weight']),
+          .read(DriftSqlType.double, data['${effectivePrefix}weight']),
       wingspan: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}wingspan']),
       irisColor: attachedDatabase.typeMapping
@@ -9111,10 +9153,16 @@ class BirdMeasurement extends Table
           .read(DriftSqlType.int, data['${effectivePrefix}ovaryLength']),
       ovaryWidth: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}ovaryWidth']),
-      ovaryAppearance: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}ovaryAppearance']),
       oviductWidth: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}oviductWidth']),
+      ovaryAppearance: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}ovaryAppearance']),
+      firstOvaSize: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}firstOvaSize']),
+      secondOvaSize: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}secondOvaSize']),
+      thirdOvaSize: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}thirdOvaSize']),
       oviductAppearance: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}oviductAppearance']),
       ovaryRemark: attachedDatabase.typeMapping
@@ -9153,7 +9201,7 @@ class BirdMeasurement extends Table
 class BirdMeasurementData extends DataClass
     implements Insertable<BirdMeasurementData> {
   final String specimenUuid;
-  final int? weight;
+  final double? weight;
   final int? wingspan;
   final String? irisColor;
   final String? billColor;
@@ -9171,8 +9219,11 @@ class BirdMeasurementData extends DataClass
   final String? testisRemark;
   final int? ovaryLength;
   final int? ovaryWidth;
-  final int? ovaryAppearance;
   final int? oviductWidth;
+  final int? ovaryAppearance;
+  final int? firstOvaSize;
+  final int? secondOvaSize;
+  final int? thirdOvaSize;
   final int? oviductAppearance;
   final String? ovaryRemark;
   final String? wingRightPrimary;
@@ -9203,8 +9254,11 @@ class BirdMeasurementData extends DataClass
       this.testisRemark,
       this.ovaryLength,
       this.ovaryWidth,
-      this.ovaryAppearance,
       this.oviductWidth,
+      this.ovaryAppearance,
+      this.firstOvaSize,
+      this.secondOvaSize,
+      this.thirdOvaSize,
       this.oviductAppearance,
       this.ovaryRemark,
       this.wingRightPrimary,
@@ -9220,7 +9274,7 @@ class BirdMeasurementData extends DataClass
     final map = <String, Expression>{};
     map['specimenUuid'] = Variable<String>(specimenUuid);
     if (!nullToAbsent || weight != null) {
-      map['weight'] = Variable<int>(weight);
+      map['weight'] = Variable<double>(weight);
     }
     if (!nullToAbsent || wingspan != null) {
       map['wingspan'] = Variable<int>(wingspan);
@@ -9273,11 +9327,20 @@ class BirdMeasurementData extends DataClass
     if (!nullToAbsent || ovaryWidth != null) {
       map['ovaryWidth'] = Variable<int>(ovaryWidth);
     }
+    if (!nullToAbsent || oviductWidth != null) {
+      map['oviductWidth'] = Variable<int>(oviductWidth);
+    }
     if (!nullToAbsent || ovaryAppearance != null) {
       map['ovaryAppearance'] = Variable<int>(ovaryAppearance);
     }
-    if (!nullToAbsent || oviductWidth != null) {
-      map['oviductWidth'] = Variable<int>(oviductWidth);
+    if (!nullToAbsent || firstOvaSize != null) {
+      map['firstOvaSize'] = Variable<int>(firstOvaSize);
+    }
+    if (!nullToAbsent || secondOvaSize != null) {
+      map['secondOvaSize'] = Variable<int>(secondOvaSize);
+    }
+    if (!nullToAbsent || thirdOvaSize != null) {
+      map['thirdOvaSize'] = Variable<int>(thirdOvaSize);
     }
     if (!nullToAbsent || oviductAppearance != null) {
       map['oviductAppearance'] = Variable<int>(oviductAppearance);
@@ -9364,12 +9427,21 @@ class BirdMeasurementData extends DataClass
       ovaryWidth: ovaryWidth == null && nullToAbsent
           ? const Value.absent()
           : Value(ovaryWidth),
-      ovaryAppearance: ovaryAppearance == null && nullToAbsent
-          ? const Value.absent()
-          : Value(ovaryAppearance),
       oviductWidth: oviductWidth == null && nullToAbsent
           ? const Value.absent()
           : Value(oviductWidth),
+      ovaryAppearance: ovaryAppearance == null && nullToAbsent
+          ? const Value.absent()
+          : Value(ovaryAppearance),
+      firstOvaSize: firstOvaSize == null && nullToAbsent
+          ? const Value.absent()
+          : Value(firstOvaSize),
+      secondOvaSize: secondOvaSize == null && nullToAbsent
+          ? const Value.absent()
+          : Value(secondOvaSize),
+      thirdOvaSize: thirdOvaSize == null && nullToAbsent
+          ? const Value.absent()
+          : Value(thirdOvaSize),
       oviductAppearance: oviductAppearance == null && nullToAbsent
           ? const Value.absent()
           : Value(oviductAppearance),
@@ -9408,7 +9480,7 @@ class BirdMeasurementData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return BirdMeasurementData(
       specimenUuid: serializer.fromJson<String>(json['specimenUuid']),
-      weight: serializer.fromJson<int?>(json['weight']),
+      weight: serializer.fromJson<double?>(json['weight']),
       wingspan: serializer.fromJson<int?>(json['wingspan']),
       irisColor: serializer.fromJson<String?>(json['irisColor']),
       billColor: serializer.fromJson<String?>(json['billColor']),
@@ -9426,8 +9498,11 @@ class BirdMeasurementData extends DataClass
       testisRemark: serializer.fromJson<String?>(json['testisRemark']),
       ovaryLength: serializer.fromJson<int?>(json['ovaryLength']),
       ovaryWidth: serializer.fromJson<int?>(json['ovaryWidth']),
-      ovaryAppearance: serializer.fromJson<int?>(json['ovaryAppearance']),
       oviductWidth: serializer.fromJson<int?>(json['oviductWidth']),
+      ovaryAppearance: serializer.fromJson<int?>(json['ovaryAppearance']),
+      firstOvaSize: serializer.fromJson<int?>(json['firstOvaSize']),
+      secondOvaSize: serializer.fromJson<int?>(json['secondOvaSize']),
+      thirdOvaSize: serializer.fromJson<int?>(json['thirdOvaSize']),
       oviductAppearance: serializer.fromJson<int?>(json['oviductAppearance']),
       ovaryRemark: serializer.fromJson<String?>(json['ovaryRemark']),
       wingRightPrimary: serializer.fromJson<String?>(json['wingRightPrimary']),
@@ -9449,7 +9524,7 @@ class BirdMeasurementData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'specimenUuid': serializer.toJson<String>(specimenUuid),
-      'weight': serializer.toJson<int?>(weight),
+      'weight': serializer.toJson<double?>(weight),
       'wingspan': serializer.toJson<int?>(wingspan),
       'irisColor': serializer.toJson<String?>(irisColor),
       'billColor': serializer.toJson<String?>(billColor),
@@ -9467,8 +9542,11 @@ class BirdMeasurementData extends DataClass
       'testisRemark': serializer.toJson<String?>(testisRemark),
       'ovaryLength': serializer.toJson<int?>(ovaryLength),
       'ovaryWidth': serializer.toJson<int?>(ovaryWidth),
-      'ovaryAppearance': serializer.toJson<int?>(ovaryAppearance),
       'oviductWidth': serializer.toJson<int?>(oviductWidth),
+      'ovaryAppearance': serializer.toJson<int?>(ovaryAppearance),
+      'firstOvaSize': serializer.toJson<int?>(firstOvaSize),
+      'secondOvaSize': serializer.toJson<int?>(secondOvaSize),
+      'thirdOvaSize': serializer.toJson<int?>(thirdOvaSize),
       'oviductAppearance': serializer.toJson<int?>(oviductAppearance),
       'ovaryRemark': serializer.toJson<String?>(ovaryRemark),
       'wingRightPrimary': serializer.toJson<String?>(wingRightPrimary),
@@ -9484,7 +9562,7 @@ class BirdMeasurementData extends DataClass
 
   BirdMeasurementData copyWith(
           {String? specimenUuid,
-          Value<int?> weight = const Value.absent(),
+          Value<double?> weight = const Value.absent(),
           Value<int?> wingspan = const Value.absent(),
           Value<String?> irisColor = const Value.absent(),
           Value<String?> billColor = const Value.absent(),
@@ -9502,8 +9580,11 @@ class BirdMeasurementData extends DataClass
           Value<String?> testisRemark = const Value.absent(),
           Value<int?> ovaryLength = const Value.absent(),
           Value<int?> ovaryWidth = const Value.absent(),
-          Value<int?> ovaryAppearance = const Value.absent(),
           Value<int?> oviductWidth = const Value.absent(),
+          Value<int?> ovaryAppearance = const Value.absent(),
+          Value<int?> firstOvaSize = const Value.absent(),
+          Value<int?> secondOvaSize = const Value.absent(),
+          Value<int?> thirdOvaSize = const Value.absent(),
           Value<int?> oviductAppearance = const Value.absent(),
           Value<String?> ovaryRemark = const Value.absent(),
           Value<String?> wingRightPrimary = const Value.absent(),
@@ -9539,11 +9620,17 @@ class BirdMeasurementData extends DataClass
             testisRemark.present ? testisRemark.value : this.testisRemark,
         ovaryLength: ovaryLength.present ? ovaryLength.value : this.ovaryLength,
         ovaryWidth: ovaryWidth.present ? ovaryWidth.value : this.ovaryWidth,
+        oviductWidth:
+            oviductWidth.present ? oviductWidth.value : this.oviductWidth,
         ovaryAppearance: ovaryAppearance.present
             ? ovaryAppearance.value
             : this.ovaryAppearance,
-        oviductWidth:
-            oviductWidth.present ? oviductWidth.value : this.oviductWidth,
+        firstOvaSize:
+            firstOvaSize.present ? firstOvaSize.value : this.firstOvaSize,
+        secondOvaSize:
+            secondOvaSize.present ? secondOvaSize.value : this.secondOvaSize,
+        thirdOvaSize:
+            thirdOvaSize.present ? thirdOvaSize.value : this.thirdOvaSize,
         oviductAppearance: oviductAppearance.present
             ? oviductAppearance.value
             : this.oviductAppearance,
@@ -9591,8 +9678,11 @@ class BirdMeasurementData extends DataClass
           ..write('testisRemark: $testisRemark, ')
           ..write('ovaryLength: $ovaryLength, ')
           ..write('ovaryWidth: $ovaryWidth, ')
-          ..write('ovaryAppearance: $ovaryAppearance, ')
           ..write('oviductWidth: $oviductWidth, ')
+          ..write('ovaryAppearance: $ovaryAppearance, ')
+          ..write('firstOvaSize: $firstOvaSize, ')
+          ..write('secondOvaSize: $secondOvaSize, ')
+          ..write('thirdOvaSize: $thirdOvaSize, ')
           ..write('oviductAppearance: $oviductAppearance, ')
           ..write('ovaryRemark: $ovaryRemark, ')
           ..write('wingRightPrimary: $wingRightPrimary, ')
@@ -9628,8 +9718,11 @@ class BirdMeasurementData extends DataClass
         testisRemark,
         ovaryLength,
         ovaryWidth,
-        ovaryAppearance,
         oviductWidth,
+        ovaryAppearance,
+        firstOvaSize,
+        secondOvaSize,
+        thirdOvaSize,
         oviductAppearance,
         ovaryRemark,
         wingRightPrimary,
@@ -9664,8 +9757,11 @@ class BirdMeasurementData extends DataClass
           other.testisRemark == this.testisRemark &&
           other.ovaryLength == this.ovaryLength &&
           other.ovaryWidth == this.ovaryWidth &&
-          other.ovaryAppearance == this.ovaryAppearance &&
           other.oviductWidth == this.oviductWidth &&
+          other.ovaryAppearance == this.ovaryAppearance &&
+          other.firstOvaSize == this.firstOvaSize &&
+          other.secondOvaSize == this.secondOvaSize &&
+          other.thirdOvaSize == this.thirdOvaSize &&
           other.oviductAppearance == this.oviductAppearance &&
           other.ovaryRemark == this.ovaryRemark &&
           other.wingRightPrimary == this.wingRightPrimary &&
@@ -9680,7 +9776,7 @@ class BirdMeasurementData extends DataClass
 
 class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
   final Value<String> specimenUuid;
-  final Value<int?> weight;
+  final Value<double?> weight;
   final Value<int?> wingspan;
   final Value<String?> irisColor;
   final Value<String?> billColor;
@@ -9698,8 +9794,11 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
   final Value<String?> testisRemark;
   final Value<int?> ovaryLength;
   final Value<int?> ovaryWidth;
-  final Value<int?> ovaryAppearance;
   final Value<int?> oviductWidth;
+  final Value<int?> ovaryAppearance;
+  final Value<int?> firstOvaSize;
+  final Value<int?> secondOvaSize;
+  final Value<int?> thirdOvaSize;
   final Value<int?> oviductAppearance;
   final Value<String?> ovaryRemark;
   final Value<String?> wingRightPrimary;
@@ -9730,8 +9829,11 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
     this.testisRemark = const Value.absent(),
     this.ovaryLength = const Value.absent(),
     this.ovaryWidth = const Value.absent(),
-    this.ovaryAppearance = const Value.absent(),
     this.oviductWidth = const Value.absent(),
+    this.ovaryAppearance = const Value.absent(),
+    this.firstOvaSize = const Value.absent(),
+    this.secondOvaSize = const Value.absent(),
+    this.thirdOvaSize = const Value.absent(),
     this.oviductAppearance = const Value.absent(),
     this.ovaryRemark = const Value.absent(),
     this.wingRightPrimary = const Value.absent(),
@@ -9763,8 +9865,11 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
     this.testisRemark = const Value.absent(),
     this.ovaryLength = const Value.absent(),
     this.ovaryWidth = const Value.absent(),
-    this.ovaryAppearance = const Value.absent(),
     this.oviductWidth = const Value.absent(),
+    this.ovaryAppearance = const Value.absent(),
+    this.firstOvaSize = const Value.absent(),
+    this.secondOvaSize = const Value.absent(),
+    this.thirdOvaSize = const Value.absent(),
     this.oviductAppearance = const Value.absent(),
     this.ovaryRemark = const Value.absent(),
     this.wingRightPrimary = const Value.absent(),
@@ -9778,7 +9883,7 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
   }) : specimenUuid = Value(specimenUuid);
   static Insertable<BirdMeasurementData> custom({
     Expression<String>? specimenUuid,
-    Expression<int>? weight,
+    Expression<double>? weight,
     Expression<int>? wingspan,
     Expression<String>? irisColor,
     Expression<String>? billColor,
@@ -9796,8 +9901,11 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
     Expression<String>? testisRemark,
     Expression<int>? ovaryLength,
     Expression<int>? ovaryWidth,
-    Expression<int>? ovaryAppearance,
     Expression<int>? oviductWidth,
+    Expression<int>? ovaryAppearance,
+    Expression<int>? firstOvaSize,
+    Expression<int>? secondOvaSize,
+    Expression<int>? thirdOvaSize,
     Expression<int>? oviductAppearance,
     Expression<String>? ovaryRemark,
     Expression<String>? wingRightPrimary,
@@ -9829,8 +9937,11 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
       if (testisRemark != null) 'testisRemark': testisRemark,
       if (ovaryLength != null) 'ovaryLength': ovaryLength,
       if (ovaryWidth != null) 'ovaryWidth': ovaryWidth,
-      if (ovaryAppearance != null) 'ovaryAppearance': ovaryAppearance,
       if (oviductWidth != null) 'oviductWidth': oviductWidth,
+      if (ovaryAppearance != null) 'ovaryAppearance': ovaryAppearance,
+      if (firstOvaSize != null) 'firstOvaSize': firstOvaSize,
+      if (secondOvaSize != null) 'secondOvaSize': secondOvaSize,
+      if (thirdOvaSize != null) 'thirdOvaSize': thirdOvaSize,
       if (oviductAppearance != null) 'oviductAppearance': oviductAppearance,
       if (ovaryRemark != null) 'ovaryRemark': ovaryRemark,
       if (wingRightPrimary != null) 'wingRightPrimary': wingRightPrimary,
@@ -9846,7 +9957,7 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
 
   BirdMeasurementCompanion copyWith(
       {Value<String>? specimenUuid,
-      Value<int?>? weight,
+      Value<double?>? weight,
       Value<int?>? wingspan,
       Value<String?>? irisColor,
       Value<String?>? billColor,
@@ -9864,8 +9975,11 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
       Value<String?>? testisRemark,
       Value<int?>? ovaryLength,
       Value<int?>? ovaryWidth,
-      Value<int?>? ovaryAppearance,
       Value<int?>? oviductWidth,
+      Value<int?>? ovaryAppearance,
+      Value<int?>? firstOvaSize,
+      Value<int?>? secondOvaSize,
+      Value<int?>? thirdOvaSize,
       Value<int?>? oviductAppearance,
       Value<String?>? ovaryRemark,
       Value<String?>? wingRightPrimary,
@@ -9896,8 +10010,11 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
       testisRemark: testisRemark ?? this.testisRemark,
       ovaryLength: ovaryLength ?? this.ovaryLength,
       ovaryWidth: ovaryWidth ?? this.ovaryWidth,
-      ovaryAppearance: ovaryAppearance ?? this.ovaryAppearance,
       oviductWidth: oviductWidth ?? this.oviductWidth,
+      ovaryAppearance: ovaryAppearance ?? this.ovaryAppearance,
+      firstOvaSize: firstOvaSize ?? this.firstOvaSize,
+      secondOvaSize: secondOvaSize ?? this.secondOvaSize,
+      thirdOvaSize: thirdOvaSize ?? this.thirdOvaSize,
       oviductAppearance: oviductAppearance ?? this.oviductAppearance,
       ovaryRemark: ovaryRemark ?? this.ovaryRemark,
       wingRightPrimary: wingRightPrimary ?? this.wingRightPrimary,
@@ -9918,7 +10035,7 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
       map['specimenUuid'] = Variable<String>(specimenUuid.value);
     }
     if (weight.present) {
-      map['weight'] = Variable<int>(weight.value);
+      map['weight'] = Variable<double>(weight.value);
     }
     if (wingspan.present) {
       map['wingspan'] = Variable<int>(wingspan.value);
@@ -9971,11 +10088,20 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
     if (ovaryWidth.present) {
       map['ovaryWidth'] = Variable<int>(ovaryWidth.value);
     }
+    if (oviductWidth.present) {
+      map['oviductWidth'] = Variable<int>(oviductWidth.value);
+    }
     if (ovaryAppearance.present) {
       map['ovaryAppearance'] = Variable<int>(ovaryAppearance.value);
     }
-    if (oviductWidth.present) {
-      map['oviductWidth'] = Variable<int>(oviductWidth.value);
+    if (firstOvaSize.present) {
+      map['firstOvaSize'] = Variable<int>(firstOvaSize.value);
+    }
+    if (secondOvaSize.present) {
+      map['secondOvaSize'] = Variable<int>(secondOvaSize.value);
+    }
+    if (thirdOvaSize.present) {
+      map['thirdOvaSize'] = Variable<int>(thirdOvaSize.value);
     }
     if (oviductAppearance.present) {
       map['oviductAppearance'] = Variable<int>(oviductAppearance.value);
@@ -10032,8 +10158,11 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
           ..write('testisRemark: $testisRemark, ')
           ..write('ovaryLength: $ovaryLength, ')
           ..write('ovaryWidth: $ovaryWidth, ')
-          ..write('ovaryAppearance: $ovaryAppearance, ')
           ..write('oviductWidth: $oviductWidth, ')
+          ..write('ovaryAppearance: $ovaryAppearance, ')
+          ..write('firstOvaSize: $firstOvaSize, ')
+          ..write('secondOvaSize: $secondOvaSize, ')
+          ..write('thirdOvaSize: $thirdOvaSize, ')
           ..write('oviductAppearance: $oviductAppearance, ')
           ..write('ovaryRemark: $ovaryRemark, ')
           ..write('wingRightPrimary: $wingRightPrimary, ')

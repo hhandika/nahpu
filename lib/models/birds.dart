@@ -32,3 +32,7 @@ const List<String> bodyMoltList = [
   'Moderate',
   'Heavy',
 ];
+
+// This number is not in consistent order.
+// We just hardcode it here.
+const List<int> skullOssificationList = [100, 95, 90, 75, 50, 25, 10, 5];

@@ -221,7 +221,7 @@ CREATE TABLE mammalMeasurement (
     hindFootLength INT,
     earLength INT,
     forearm INT,
-    weight INT,
+    weight REAL,
     accuracy TEXT,
     accuracySpecify TEXT,
     sex INT,
@@ -248,7 +248,7 @@ CREATE TABLE mammalMeasurement (
 
 CREATE TABLE birdMeasurement (
     specimenUuid TEXT NOT NULL,
-    weight INT,
+    weight REAL,
     wingspan INT,
     irisColor TEXT,
     billColor TEXT,
@@ -265,9 +265,12 @@ CREATE TABLE birdMeasurement (
     testisWidth INT,
     testisRemark TEXT,
     ovaryLength INT,
-    ovaryWidth INT,
     oviductWidth INT,
     ovaryAppearance INT,
+    firstOvaSize INT,
+    secondOvaSize INT,
+    thirdOvaSize INT,
+    ovaryWidth INT,
     oviductAppearance INT, -- encode to int to save space
     ovaryRemark TEXT,
     wingRightPrimary TEXT,

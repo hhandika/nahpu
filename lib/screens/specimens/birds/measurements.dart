@@ -6,6 +6,9 @@ import 'package:nahpu/models/types.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
+import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/specimen_services.dart';
+import 'package:drift/drift.dart' as db;
 
 class BirdMeasurementForms extends ConsumerStatefulWidget {
   const BirdMeasurementForms(
@@ -22,10 +25,11 @@ class BirdMeasurementForms extends ConsumerStatefulWidget {
 class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
   bool _molting = false;
 
-  final BirdMeasurementCtrModel ctr = BirdMeasurementCtrModel.empty();
+  BirdMeasurementCtrModel ctr = BirdMeasurementCtrModel.empty();
 
   @override
   void initState() {
+    _updateCtr(widget.specimenUuid);
     super.initState();
   }
 
@@ -48,12 +52,33 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
                 labelText: 'Weight (grams)',
                 hintText: 'Enter weight',
                 isLastField: false,
+                onChanged: (String? value) {
+                  if (value != null && value.isNotEmpty) {
+                    final double weight = double.tryParse(value) ?? 0.0;
+                    SpecimenServices(ref).updateBirdMeasurement(
+                      widget.specimenUuid,
+                      BirdMeasurementCompanion(
+                        weight: db.Value(weight),
+                      ),
+                    );
+                  }
+                },
               ),
               CommonNumField(
                 controller: ctr.wingspanCtr,
                 labelText: 'Wingspan (mm)',
                 hintText: 'Enter TL',
                 isLastField: false,
+                onChanged: (String? value) {
+                  if (value != null && value.isNotEmpty) {
+                    SpecimenServices(ref).updateBirdMeasurement(
+                      widget.specimenUuid,
+                      BirdMeasurementCompanion(
+                        wingspan: db.Value(int.tryParse(value) ?? 0),
+                      ),
+                    );
+                  }
+                },
               ),
             ],
           ),
@@ -65,12 +90,32 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
                 labelText: 'Iris color',
                 hintText: 'Enter iris color',
                 isLastField: false,
+                onChanged: (String? value) {
+                  if (value != null && value.isNotEmpty) {
+                    SpecimenServices(ref).updateBirdMeasurement(
+                      widget.specimenUuid,
+                      BirdMeasurementCompanion(
+                        irisColor: db.Value(value),
+                      ),
+                    );
+                  }
+                },
               ),
               CommonTextField(
                 controller: ctr.billCtr,
                 labelText: 'Bill color',
                 hintText: 'Enter bill color',
                 isLastField: false,
+                onChanged: (String? value) {
+                  if (value != null && value.isNotEmpty) {
+                    SpecimenServices(ref).updateBirdMeasurement(
+                      widget.specimenUuid,
+                      BirdMeasurementCompanion(
+                        billColor: db.Value(value),
+                      ),
+                    );
+                  }
+                },
               ),
             ],
           ),
@@ -82,60 +127,90 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
                 labelText: 'Foot color',
                 hintText: 'Enter foot color',
                 isLastField: false,
+                onChanged: (String? value) {
+                  if (value != null && value.isNotEmpty) {
+                    SpecimenServices(ref).updateBirdMeasurement(
+                      widget.specimenUuid,
+                      BirdMeasurementCompanion(
+                        footColor: db.Value(value),
+                      ),
+                    );
+                  }
+                },
               ),
               CommonTextField(
                 controller: ctr.tarsusCtr,
                 labelText: 'Tarsus color',
                 hintText: 'Enter foot color',
                 isLastField: true,
+                onChanged: (String? value) {
+                  if (value != null && value.isNotEmpty) {
+                    SpecimenServices(ref).updateBirdMeasurement(
+                      widget.specimenUuid,
+                      BirdMeasurementCompanion(
+                        tarsusColor: db.Value(value),
+                      ),
+                    );
+                  }
+                },
               ),
             ],
           ),
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
-              DropdownButtonFormField(
+              DropdownButtonFormField<SpecimenSex>(
+                value: _getSpecimenSex(),
                 decoration: const InputDecoration(
                   labelText: 'Sex',
                   hintText: 'Choose one',
                 ),
-                items: const [
-                  DropdownMenuItem(
-                    value: 'Male',
-                    child: Text('Male'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Female',
-                    child: Text('Female'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Unknown',
-                    child: Text('Unknown'),
-                  ),
-                ],
-                onChanged: (String? newValue) {
-                  setState(() {});
+                items: specimenSexList
+                    .map((e) => DropdownMenuItem(
+                          value: SpecimenSex.values[specimenSexList.indexOf(e)],
+                          child: Text(e),
+                        ))
+                    .toList(),
+                onChanged: (SpecimenSex? newValue) {
+                  if (newValue != null) {
+                    setState(() {
+                      ctr.sexCtr = newValue.index;
+                      SpecimenServices(ref).updateBirdMeasurement(
+                          widget.specimenUuid,
+                          BirdMeasurementCompanion(
+                            sex: db.Value(newValue.index),
+                          ));
+                    });
+                  }
                 },
               ),
-              DropdownButtonFormField(
+              DropdownButtonFormField<int?>(
+                value: ctr.moltCtr,
                 decoration: const InputDecoration(
                   labelText: 'Molting',
                   hintText: 'Choose one',
                 ),
                 items: const [
                   DropdownMenuItem(
-                    value: 'Yes',
+                    value: 0,
                     child: Text('Yes'),
                   ),
                   DropdownMenuItem(
-                    value: 'No',
+                    value: 1,
                     child: Text('No'),
                   ),
                 ],
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _molting = newValue == 'Yes' ? true : false;
-                  });
+                onChanged: (int? newValue) {
+                  if (newValue != null) {
+                    setState(() {
+                      _molting = newValue == 0 ? true : false;
+                      SpecimenServices(ref).updateBirdMeasurement(
+                          widget.specimenUuid,
+                          BirdMeasurementCompanion(
+                            molting: db.Value(newValue),
+                          ));
+                    });
+                  }
                 },
               ),
             ],
@@ -143,26 +218,37 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
-              DropdownButtonFormField(
+              DropdownButtonFormField<int?>(
                 decoration: const InputDecoration(
                   labelText: 'Brood patch',
                   hintText: 'Choose one',
                 ),
                 items: const [
                   DropdownMenuItem(
-                    value: 'Yes',
+                    value: 0,
                     child: Text('Yes'),
                   ),
                   DropdownMenuItem(
-                    value: 'No',
+                    value: 1,
                     child: Text('No'),
                   ),
                 ],
-                onChanged: (String? newValue) {
-                  setState(() {});
+                onChanged: (int? newValue) {
+                  if (newValue != null) {
+                    setState(() {
+                      SpecimenServices(ref).updateBirdMeasurement(
+                          widget.specimenUuid,
+                          BirdMeasurementCompanion(
+                            broodPatch: db.Value(newValue),
+                          ));
+                    });
+                  }
                 },
               ),
-              const SkullOssField(),
+              SkullOssField(
+                specimenUuid: widget.specimenUuid,
+                ctr: ctr,
+              ),
             ],
           ),
           AdaptiveLayout(
@@ -173,38 +259,79 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
                 labelText: 'Bursa (mm)',
                 hintText: 'Enter tail molt',
                 isLastField: false,
+                onChanged: (String? value) {
+                  if (value != null && value.isNotEmpty) {
+                    SpecimenServices(ref).updateBirdMeasurement(
+                      widget.specimenUuid,
+                      BirdMeasurementCompanion(
+                        bursaLength: db.Value(int.tryParse(value) ?? 0),
+                      ),
+                    );
+                  }
+                },
               ),
-              const FatField(),
+              FatField(
+                specimenUuid: widget.specimenUuid,
+                ctr: ctr,
+              ),
             ],
           ),
-          const Padding(
-            padding: EdgeInsets.all(5),
+          Padding(
+            padding: const EdgeInsets.all(5),
             child: CommonTextField(
+              controller: ctr.stomachContentCtr,
               maxLines: 3,
               labelText: 'Stomach contents',
               hintText: 'Enter stomach contents',
               isLastField: false,
+              onChanged: (String? value) {
+                if (value != null && value.isNotEmpty) {
+                  SpecimenServices(ref).updateBirdMeasurement(
+                    widget.specimenUuid,
+                    BirdMeasurementCompanion(
+                      stomachContent: db.Value(value),
+                    ),
+                  );
+                }
+              },
             ),
           ),
           const Divider(),
           MaleGonadForm(
             specimenUuid: widget.specimenUuid,
+            ctr: ctr,
             useHorizontalLayout: widget.useHorizontalLayout,
-            sex: SpecimenSex.male,
+            sex: _getSpecimenSex(),
           ),
           FemaleGonadForm(
             specimenUuid: widget.specimenUuid,
+            ctr: ctr,
             useHorizontalLayout: widget.useHorizontalLayout,
-            sex: SpecimenSex.female,
+            sex: _getSpecimenSex(),
           ),
           const Divider(),
           MoltingForm(
+            specimenUuid: widget.specimenUuid,
+            ctr: ctr,
             useHorizontalLayout: widget.useHorizontalLayout,
             visible: _molting,
           ),
         ],
       ),
     );
+  }
+
+  Future<void> _updateCtr(String specimenUuid) async {
+    SpecimenServices(ref)
+        .getBirdMeasurementData(specimenUuid)
+        .then((value) => ctr = BirdMeasurementCtrModel.fromData(value));
+  }
+
+  SpecimenSex? _getSpecimenSex() {
+    if (ctr.sexCtr != null) {
+      return SpecimenSex.values[ctr.sexCtr!];
+    }
+    return null;
   }
 }
 
@@ -213,12 +340,14 @@ class MaleGonadForm extends ConsumerWidget {
     super.key,
     required this.specimenUuid,
     required this.useHorizontalLayout,
+    required this.ctr,
     required this.sex,
   });
 
   final String specimenUuid;
   final bool useHorizontalLayout;
-  final SpecimenSex sex;
+  final BirdMeasurementCtrModel ctr;
+  final SpecimenSex? sex;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -231,27 +360,60 @@ class MaleGonadForm extends ConsumerWidget {
                 style: Theme.of(context).textTheme.titleSmall),
             AdaptiveLayout(
               useHorizontalLayout: useHorizontalLayout,
-              children: const [
+              children: [
                 CommonNumField(
+                  controller: ctr.testisLengthCtr,
                   labelText: 'Length',
                   hintText: 'Enter length',
                   isLastField: false,
+                  onChanged: (String? value) {
+                    if (value != null && value.isNotEmpty) {
+                      SpecimenServices(ref).updateBirdMeasurement(
+                        specimenUuid,
+                        BirdMeasurementCompanion(
+                          testisLength: db.Value(int.tryParse(value) ?? 0),
+                        ),
+                      );
+                    }
+                  },
                 ),
                 CommonNumField(
+                  controller: ctr.testisWidthCtr,
                   labelText: 'Width',
                   hintText: 'Enter width',
                   isLastField: false,
+                  onChanged: (String? value) {
+                    if (value != null && value.isNotEmpty) {
+                      SpecimenServices(ref).updateBirdMeasurement(
+                        specimenUuid,
+                        BirdMeasurementCompanion(
+                          testisWidth: db.Value(int.tryParse(value) ?? 0),
+                        ),
+                      );
+                    }
+                  },
                 ),
               ],
             ),
             // Remarks
-            const Padding(
-              padding: EdgeInsets.all(5),
+            Padding(
+              padding: const EdgeInsets.all(5),
               child: CommonTextField(
+                controller: ctr.testisRemarkCtr,
                 maxLines: 3,
                 labelText: 'Remarks',
                 hintText: 'Enter remarks',
                 isLastField: false,
+                onChanged: (String? value) {
+                  if (value != null && value.isNotEmpty) {
+                    SpecimenServices(ref).updateBirdMeasurement(
+                      specimenUuid,
+                      BirdMeasurementCompanion(
+                        testisRemark: db.Value(value),
+                      ),
+                    );
+                  }
+                },
               ),
             ),
           ],
@@ -263,13 +425,15 @@ class FemaleGonadForm extends ConsumerStatefulWidget {
   const FemaleGonadForm({
     super.key,
     required this.specimenUuid,
+    required this.ctr,
     required this.useHorizontalLayout,
     required this.sex,
   });
 
   final String specimenUuid;
+  final BirdMeasurementCtrModel ctr;
   final bool useHorizontalLayout;
-  final SpecimenSex sex;
+  final SpecimenSex? sex;
 
   @override
   FemaleGonadFormState createState() => FemaleGonadFormState();
@@ -290,48 +454,73 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
           ),
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
-            children: const [
+            children: [
               CommonTextField(
+                controller: widget.ctr.ovaryLengthCtr,
                 labelText: 'Length (mm)',
                 hintText: 'Enter length',
                 isLastField: false,
+                onChanged: (String? value) {
+                  if (value != null && value.isNotEmpty) {
+                    SpecimenServices(ref).updateBirdMeasurement(
+                      widget.specimenUuid,
+                      BirdMeasurementCompanion(
+                        ovaryLength: db.Value(int.tryParse(value) ?? 0),
+                      ),
+                    );
+                  }
+                },
               ),
               CommonTextField(
+                controller: widget.ctr.ovaryWidthCtr,
                 labelText: 'Width (mm)',
                 hintText: 'Enter width',
                 isLastField: false,
+                onChanged: (String? value) {
+                  if (value != null && value.isNotEmpty) {
+                    SpecimenServices(ref).updateBirdMeasurement(
+                      widget.specimenUuid,
+                      BirdMeasurementCompanion(
+                        ovaryWidth: db.Value(int.tryParse(value) ?? 0),
+                      ),
+                    );
+                  }
+                },
               ),
             ],
           ),
           Padding(
             padding: const EdgeInsets.all(5),
-            child: DropdownButtonFormField(
+            child: DropdownButtonFormField<OvaryAppearance>(
+              value: _getOvaryAppearance(),
               decoration: const InputDecoration(
                 labelText: 'Appearance',
                 hintText: 'Choose one',
               ),
-              items: const [
-                DropdownMenuItem(
-                  value: 'Smooth',
-                  child: Text('Smooth'),
-                ),
-                DropdownMenuItem(
-                  value: 'small',
-                  child: Text('All ova <1 mm'),
-                ),
-                DropdownMenuItem(
-                  value: 'large',
-                  child: Text('At least one ovum >1 mm'),
-                ),
-              ],
-              onChanged: (String? newValue) {
-                setState(() {});
+              items: ovaryAppearanceList
+                  .map((e) => DropdownMenuItem(
+                        value: OvaryAppearance
+                            .values[ovaryAppearanceList.indexOf(e)],
+                        child: Text(e),
+                      ))
+                  .toList(),
+              onChanged: (OvaryAppearance? newValue) {
+                if (newValue != null) {
+                  SpecimenServices(ref).updateBirdMeasurement(
+                    widget.specimenUuid,
+                    BirdMeasurementCompanion(
+                      ovaryAppearance: db.Value(newValue.index),
+                    ),
+                  );
+                }
               },
             ),
           ),
           Visibility(
             visible: _isLargeOvum,
             child: OvumSizeForm(
+              specimenUuid: widget.specimenUuid,
+              ctr: widget.ctr,
               useHorizontalLayout: widget.useHorizontalLayout,
             ),
           ),
@@ -339,77 +528,139 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
             'Oviduct',
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          OviductForm(useHorizontalLayout: widget.useHorizontalLayout),
-          const Padding(
-            padding: EdgeInsets.all(5),
+          OviductForm(
+            specimenUuid: widget.specimenUuid,
+            ctr: widget.ctr,
+            useHorizontalLayout: widget.useHorizontalLayout,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(5),
             child: CommonTextField(
+              controller: widget.ctr.ovaryRemarkCtr,
               maxLines: 3,
               labelText: 'Remarks',
               hintText: 'Add additional information about the gonads',
               isLastField: true,
+              onChanged: (String? value) {
+                if (value != null) {
+                  SpecimenServices(ref).updateBirdMeasurement(
+                    widget.specimenUuid,
+                    BirdMeasurementCompanion(
+                      ovaryRemark: db.Value(value),
+                    ),
+                  );
+                }
+              },
             ),
           )
         ],
       ),
     );
   }
-}
 
-class SkullOssField extends StatelessWidget {
-  const SkullOssField({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    List<int> skullOss = [5, 10, 25, 50, 75, 90, 95, 100];
-    return DropdownButtonFormField(
-        decoration: const InputDecoration(
-          labelText: 'Skull ossification (%)',
-          hintText: 'Enter percentage',
-        ),
-        items: skullOss.reversed
-            .map((e) => DropdownMenuItem(
-                  value: e,
-                  child: Text('$e %'),
-                ))
-            .toList(),
-        onChanged: (int? newValue) {});
+  OvaryAppearance? _getOvaryAppearance() {
+    if (widget.ctr.ovaryAppearanceCtr != null) {
+      return OvaryAppearance.values[widget.ctr.ovaryAppearanceCtr!];
+    }
+    return null;
   }
 }
 
-class FatField extends StatelessWidget {
-  const FatField({super.key});
+class SkullOssField extends ConsumerWidget {
+  const SkullOssField({
+    super.key,
+    required this.specimenUuid,
+    required this.ctr,
+  });
+
+  final String specimenUuid;
+  final BirdMeasurementCtrModel ctr;
 
   @override
-  Widget build(BuildContext context) {
-    List<String> fatClass = [
-      'No fat',
-      'Trace',
-      'Light',
-      'Moderate',
-      'Heavy',
-      'Extremely heavy'
-    ];
+  Widget build(BuildContext context, WidgetRef ref) {
     return DropdownButtonFormField(
+      decoration: const InputDecoration(
+        labelText: 'Skull ossification (%)',
+        hintText: 'Enter percentage',
+      ),
+      items: skullOssificationList
+          .map((e) => DropdownMenuItem(
+                value: e,
+                child: Text('$e %'),
+              ))
+          .toList(),
+      onChanged: (int? newValue) {
+        if (newValue != null) {
+          SpecimenServices(ref).updateBirdMeasurement(
+            specimenUuid,
+            BirdMeasurementCompanion(
+              skullOssification: db.Value(newValue),
+            ),
+          );
+        }
+      },
+    );
+  }
+}
+
+class FatField extends ConsumerWidget {
+  const FatField({
+    super.key,
+    required this.specimenUuid,
+    required this.ctr,
+  });
+
+  final String specimenUuid;
+  final BirdMeasurementCtrModel ctr;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return DropdownButtonFormField<FatCategory>(
+        value: _getFatCategory(),
         decoration: const InputDecoration(
           labelText: 'Fat',
           hintText: 'Enter amount of fat',
         ),
-        items: fatClass
+        items: fatCategoryList
             .map((e) => DropdownMenuItem(
-                  value: e,
+                  value: FatCategory.values[fatCategoryList.indexOf(e)],
                   child: Text(e),
                 ))
             .toList(),
-        onChanged: (String? newValue) {});
+        onChanged: (FatCategory? newValue) {
+          if (newValue != null) {
+            SpecimenServices(ref).updateBirdMeasurement(
+              specimenUuid,
+              BirdMeasurementCompanion(
+                fat: db.Value(newValue.index),
+              ),
+            );
+          }
+        });
+  }
+
+  FatCategory? _getFatCategory() {
+    if (ctr.fatCtr != null) {
+      return FatCategory.values[ctr.fatCtr!];
+    }
+    return null;
   }
 }
 
-class OvumSizeForm extends StatelessWidget {
-  const OvumSizeForm({super.key, required this.useHorizontalLayout});
+class OvumSizeForm extends ConsumerWidget {
+  const OvumSizeForm({
+    super.key,
+    required this.specimenUuid,
+    required this.ctr,
+    required this.useHorizontalLayout,
+  });
+
+  final String specimenUuid;
+  final BirdMeasurementCtrModel ctr;
   final bool useHorizontalLayout;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
         Text(
@@ -418,21 +669,54 @@ class OvumSizeForm extends StatelessWidget {
         ),
         AdaptiveLayout(
           useHorizontalLayout: useHorizontalLayout,
-          children: const [
+          children: [
             CommonNumField(
+              controller: ctr.firstOvaSizeCtr,
               labelText: 'First',
               hintText: 'Enter size',
               isLastField: false,
+              onChanged: (String? value) {
+                if (value != null) {
+                  SpecimenServices(ref).updateBirdMeasurement(
+                    specimenUuid,
+                    BirdMeasurementCompanion(
+                      firstOvaSize: db.Value(int.parse(value)),
+                    ),
+                  );
+                }
+              },
             ),
             CommonNumField(
+              controller: ctr.secondOvaSizeCtr,
               labelText: 'Second',
               hintText: 'Enter size',
               isLastField: false,
+              onChanged: (String? value) {
+                if (value != null) {
+                  SpecimenServices(ref).updateBirdMeasurement(
+                    specimenUuid,
+                    BirdMeasurementCompanion(
+                      secondOvaSize: db.Value(int.parse(value)),
+                    ),
+                  );
+                }
+              },
             ),
             CommonNumField(
+              controller: ctr.thirdOvaSizeCtr,
               labelText: 'Third',
               hintText: 'Enter size',
               isLastField: false,
+              onChanged: (String? value) {
+                if (value != null) {
+                  SpecimenServices(ref).updateBirdMeasurement(
+                    specimenUuid,
+                    BirdMeasurementCompanion(
+                      thirdOvaSize: db.Value(int.parse(value)),
+                    ),
+                  );
+                }
+              },
             ),
           ],
         )
@@ -441,52 +725,88 @@ class OvumSizeForm extends StatelessWidget {
   }
 }
 
-class OviductForm extends StatelessWidget {
-  const OviductForm({super.key, required this.useHorizontalLayout});
+class OviductForm extends ConsumerWidget {
+  const OviductForm({
+    super.key,
+    required this.specimenUuid,
+    required this.ctr,
+    required this.useHorizontalLayout,
+  });
 
+  final String specimenUuid;
+  final BirdMeasurementCtrModel ctr;
   final bool useHorizontalLayout;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return AdaptiveLayout(useHorizontalLayout: useHorizontalLayout, children: [
-      const CommonNumField(
+      CommonNumField(
+        controller: ctr.oviductWidthCtr,
         labelText: 'Width (mm)',
         hintText: 'Enter width',
         isLastField: false,
+        onChanged: (String? value) {
+          if (value != null) {
+            SpecimenServices(ref).updateBirdMeasurement(
+              specimenUuid,
+              BirdMeasurementCompanion(
+                oviductWidth: db.Value(int.parse(value)),
+              ),
+            );
+          }
+        },
       ),
-      DropdownButtonFormField(
+      DropdownButtonFormField<OviductAppearance>(
+        value: _getOviductAppearance(),
         decoration: const InputDecoration(
           labelText: 'Appearance',
           hintText: 'Choose one',
         ),
-        items: const [
-          DropdownMenuItem(
-            value: 'Straight',
-            child: Text('Straight'),
-          ),
-          DropdownMenuItem(
-            value: 'Convoluted',
-            child: Text('Convoluted'),
-          ),
-        ],
-        onChanged: (String? newValue) {},
+        items: oviductAppearanceList
+            .map((e) => DropdownMenuItem(
+                  value: OviductAppearance
+                      .values[oviductAppearanceList.indexOf(e)],
+                  child: Text(e),
+                ))
+            .toList(),
+        onChanged: (OviductAppearance? newValue) {
+          if (newValue != null) {
+            SpecimenServices(ref).updateBirdMeasurement(
+              specimenUuid,
+              BirdMeasurementCompanion(
+                oviductAppearance: db.Value(newValue.index),
+              ),
+            );
+          }
+        },
       ),
     ]);
   }
+
+  OviductAppearance? _getOviductAppearance() {
+    if (ctr.oviductAppearanceCtr != null) {
+      return OviductAppearance.values[ctr.oviductAppearanceCtr!];
+    }
+    return null;
+  }
 }
 
-class MoltingForm extends StatelessWidget {
+class MoltingForm extends ConsumerWidget {
   const MoltingForm({
     super.key,
+    required this.specimenUuid,
+    required this.ctr,
     required this.useHorizontalLayout,
     required this.visible,
   });
 
+  final String specimenUuid;
+  final BirdMeasurementCtrModel ctr;
   final bool useHorizontalLayout;
   final bool visible;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Visibility(
       visible: visible,
       child: Column(
@@ -495,16 +815,38 @@ class MoltingForm extends StatelessWidget {
             'Molt',
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          WingMoltForm(useHorizontalLayout: useHorizontalLayout),
-          TailMoltForm(useHorizontalLayout: useHorizontalLayout),
-          const BodyMoltForm(),
-          const Padding(
-            padding: EdgeInsets.all(5),
+          WingMoltForm(
+            specimenUuid: specimenUuid,
+            ctr: ctr,
+            useHorizontalLayout: useHorizontalLayout,
+          ),
+          TailMoltForm(
+            specimenUuid: specimenUuid,
+            ctr: ctr,
+            useHorizontalLayout: useHorizontalLayout,
+          ),
+          BodyMoltForm(
+            specimenUuid: specimenUuid,
+            ctr: ctr,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(5),
             child: CommonTextField(
+              controller: ctr.moltRemarkCtr,
               maxLines: 3,
               labelText: 'Remarks',
               hintText: 'Add additional information about the molting',
               isLastField: true,
+              onChanged: (String? value) {
+                if (value != null) {
+                  SpecimenServices(ref).updateBirdMeasurement(
+                    specimenUuid,
+                    BirdMeasurementCompanion(
+                      moltRemark: db.Value(value),
+                    ),
+                  );
+                }
+              },
             ),
           )
         ],
@@ -513,16 +855,20 @@ class MoltingForm extends StatelessWidget {
   }
 }
 
-class WingMoltForm extends StatelessWidget {
+class WingMoltForm extends ConsumerWidget {
   const WingMoltForm({
     super.key,
+    required this.specimenUuid,
+    required this.ctr,
     required this.useHorizontalLayout,
   });
 
+  final String specimenUuid;
+  final BirdMeasurementCtrModel ctr;
   final bool useHorizontalLayout;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
         Text(
@@ -531,31 +877,75 @@ class WingMoltForm extends StatelessWidget {
         ),
         AdaptiveLayout(
           useHorizontalLayout: useHorizontalLayout,
-          children: const [
+          children: [
             CommonNumField(
-              labelText: 'Right primaries',
-              hintText: 'Enter right primaries molt',
-              isLastField: false,
-            ),
-            CommonNumField(
+              controller: ctr.wingLeftPrimaryMoltCtr,
               labelText: 'Left primaries',
               hintText: 'Enter left primaries molt',
               isLastField: false,
+              onChanged: (String? value) {
+                if (value != null) {
+                  SpecimenServices(ref).updateBirdMeasurement(
+                    specimenUuid,
+                    BirdMeasurementCompanion(
+                      wingLeftPrimary: db.Value(value),
+                    ),
+                  );
+                }
+              },
+            ),
+            CommonNumField(
+              controller: ctr.wingRightPrimaryMoltCtr,
+              labelText: 'Right primaries',
+              hintText: 'Enter right primaries molt',
+              isLastField: false,
+              onChanged: (String? value) {
+                if (value != null) {
+                  SpecimenServices(ref).updateBirdMeasurement(
+                    specimenUuid,
+                    BirdMeasurementCompanion(
+                      wingRightPrimary: db.Value(value),
+                    ),
+                  );
+                }
+              },
             ),
           ],
         ),
         AdaptiveLayout(
           useHorizontalLayout: useHorizontalLayout,
-          children: const [
+          children: [
             CommonNumField(
-              labelText: 'Right secondaries',
-              hintText: 'Enter right secondaries molt',
-              isLastField: false,
-            ),
-            CommonNumField(
+              controller: ctr.wingLeftSecondaryMoltCtr,
               labelText: 'Left secondaries',
               hintText: 'Enter left secondaries molt',
               isLastField: false,
+              onChanged: (String? value) {
+                if (value != null) {
+                  SpecimenServices(ref).updateBirdMeasurement(
+                    specimenUuid,
+                    BirdMeasurementCompanion(
+                      wingLeftSecondary: db.Value(value),
+                    ),
+                  );
+                }
+              },
+            ),
+            CommonNumField(
+              controller: ctr.wingRightSecondaryMoltCtr,
+              labelText: 'Right secondaries',
+              hintText: 'Enter right secondaries molt',
+              isLastField: false,
+              onChanged: (String? value) {
+                if (value != null) {
+                  SpecimenServices(ref).updateBirdMeasurement(
+                    specimenUuid,
+                    BirdMeasurementCompanion(
+                      wingRightSecondary: db.Value(value),
+                    ),
+                  );
+                }
+              },
             ),
           ],
         ),
@@ -564,16 +954,20 @@ class WingMoltForm extends StatelessWidget {
   }
 }
 
-class TailMoltForm extends StatelessWidget {
+class TailMoltForm extends ConsumerWidget {
   const TailMoltForm({
     super.key,
+    required this.specimenUuid,
+    required this.ctr,
     required this.useHorizontalLayout,
   });
 
+  final String specimenUuid;
+  final BirdMeasurementCtrModel ctr;
   final bool useHorizontalLayout;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
         Text(
@@ -582,16 +976,38 @@ class TailMoltForm extends StatelessWidget {
         ),
         AdaptiveLayout(
           useHorizontalLayout: useHorizontalLayout,
-          children: const [
+          children: [
             CommonNumField(
-              labelText: 'Right rectrices',
-              hintText: 'Enter right rectrices molt',
-              isLastField: false,
-            ),
-            CommonNumField(
+              controller: ctr.tailLeftRectriceCtr,
               labelText: 'Left retrices',
               hintText: 'Enter left retrices molt',
               isLastField: false,
+              onChanged: (String? value) {
+                if (value != null) {
+                  SpecimenServices(ref).updateBirdMeasurement(
+                    specimenUuid,
+                    BirdMeasurementCompanion(
+                      tailLeftRectrices: db.Value(value),
+                    ),
+                  );
+                }
+              },
+            ),
+            CommonNumField(
+              controller: ctr.tailRightRectriceCtr,
+              labelText: 'Right rectrices',
+              hintText: 'Enter right rectrices molt',
+              isLastField: false,
+              onChanged: (String? value) {
+                if (value != null) {
+                  SpecimenServices(ref).updateBirdMeasurement(
+                    specimenUuid,
+                    BirdMeasurementCompanion(
+                      tailRightRectrices: db.Value(value),
+                    ),
+                  );
+                }
+              },
             ),
           ],
         ),
@@ -600,14 +1016,22 @@ class TailMoltForm extends StatelessWidget {
   }
 }
 
-class BodyMoltForm extends StatelessWidget {
-  const BodyMoltForm({super.key});
+class BodyMoltForm extends ConsumerWidget {
+  const BodyMoltForm({
+    super.key,
+    required this.specimenUuid,
+    required this.ctr,
+  });
+
+  final String specimenUuid;
+  final BirdMeasurementCtrModel ctr;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.all(5),
       child: DropdownButtonFormField<BodyMolt>(
+        value: _getMoltValue(),
         decoration: const InputDecoration(
           labelText: 'Body Molt',
           hintText: 'Choose one',
@@ -618,8 +1042,24 @@ class BodyMoltForm extends StatelessWidget {
                   child: Text(e),
                 ))
             .toList(),
-        onChanged: (BodyMolt? newValue) {},
+        onChanged: (BodyMolt? newValue) {
+          if (newValue != null) {
+            SpecimenServices(ref).updateBirdMeasurement(
+              specimenUuid,
+              BirdMeasurementCompanion(
+                bodyMolt: db.Value(newValue.index),
+              ),
+            );
+          }
+        },
       ),
     );
+  }
+
+  BodyMolt? _getMoltValue() {
+    if (ctr.bodyMoltCtr != null) {
+      return BodyMolt.values[ctr.bodyMoltCtr!];
+    }
+    return null;
   }
 }

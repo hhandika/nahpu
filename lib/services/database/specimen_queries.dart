@@ -47,9 +47,9 @@ class MammalSpecimenQuery extends DatabaseAccessor<Database>
         .write(form);
   }
 
-  Future<MammalMeasurementData> getMammalMeasurements(
+  Future<MammalMeasurementData> getMammalMeasurementByUuid(
       String specimenUuid) async {
-    return (select(mammalMeasurement)
+    return await (select(mammalMeasurement)
           ..where((t) => t.specimenUuid.equals(specimenUuid)))
         .getSingle();
   }
@@ -69,14 +69,10 @@ class BirdSpecimenQuery extends DatabaseAccessor<Database>
         .write(entry);
   }
 
-  Future<BirdMeasurementData?> getBirdMeasurementByUuid(
+  Future<BirdMeasurementData> getBirdMeasurementByUuid(
       String specimenUuid) async {
-    try {
-      return (select(birdMeasurement)
-            ..where((t) => t.specimenUuid.equals(specimenUuid)))
-          .getSingle();
-    } catch (e) {
-      return null;
-    }
+    return await (select(birdMeasurement)
+          ..where((t) => t.specimenUuid.equals(specimenUuid)))
+        .getSingle();
   }
 }

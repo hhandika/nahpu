@@ -442,6 +442,10 @@ class BirdMeasurementCtrModel {
     required this.ovaryLengthCtr,
     required this.ovaryWidthCtr,
     required this.ovaryAppearanceCtr,
+    required this.firstOvaSizeCtr,
+    required this.secondOvaSizeCtr,
+    required this.thirdOvaSizeCtr,
+    required this.oviductWidthCtr,
     required this.oviductAppearanceCtr,
     required this.ovaryRemarkCtr,
     required this.wingLeftPrimaryMoltCtr,
@@ -473,6 +477,10 @@ class BirdMeasurementCtrModel {
   TextEditingController ovaryLengthCtr;
   TextEditingController ovaryWidthCtr;
   int? ovaryAppearanceCtr;
+  TextEditingController firstOvaSizeCtr;
+  TextEditingController secondOvaSizeCtr;
+  TextEditingController thirdOvaSizeCtr;
+  TextEditingController oviductWidthCtr;
   int? oviductAppearanceCtr;
   TextEditingController ovaryRemarkCtr;
   TextEditingController wingRightPrimaryMoltCtr;
@@ -503,7 +511,11 @@ class BirdMeasurementCtrModel {
         testisRemarkCtr: TextEditingController(),
         ovaryLengthCtr: TextEditingController(),
         ovaryWidthCtr: TextEditingController(),
+        oviductWidthCtr: TextEditingController(),
         ovaryAppearanceCtr: null,
+        firstOvaSizeCtr: TextEditingController(),
+        secondOvaSizeCtr: TextEditingController(),
+        thirdOvaSizeCtr: TextEditingController(),
         oviductAppearanceCtr: null,
         ovaryRemarkCtr: TextEditingController(),
         wingRightPrimaryMoltCtr: TextEditingController(),
@@ -544,6 +556,14 @@ class BirdMeasurementCtrModel {
         ovaryWidthCtr:
             TextEditingController(text: data.ovaryWidth?.toString() ?? ''),
         ovaryAppearanceCtr: data.ovaryAppearance,
+        firstOvaSizeCtr:
+            TextEditingController(text: data.firstOvaSize?.toString() ?? ''),
+        secondOvaSizeCtr:
+            TextEditingController(text: data.secondOvaSize?.toString() ?? ''),
+        thirdOvaSizeCtr:
+            TextEditingController(text: data.thirdOvaSize?.toString() ?? ''),
+        oviductWidthCtr:
+            TextEditingController(text: data.oviductWidth?.toString() ?? ''),
         oviductAppearanceCtr: data.oviductAppearance,
         ovaryRemarkCtr: TextEditingController(text: data.ovaryRemark ?? ''),
         wingRightPrimaryMoltCtr: TextEditingController(
@@ -576,7 +596,11 @@ class BirdMeasurementCtrModel {
     testisRemarkCtr.dispose();
     ovaryLengthCtr.dispose();
     ovaryWidthCtr.dispose();
+    firstOvaSizeCtr.dispose();
+    secondOvaSizeCtr.dispose();
+    thirdOvaSizeCtr.dispose();
     ovaryRemarkCtr.dispose();
+    oviductWidthCtr.dispose();
     wingRightPrimaryMoltCtr.dispose();
     wingLeftPrimaryMoltCtr.dispose();
     wingRightSecondaryMoltCtr.dispose();

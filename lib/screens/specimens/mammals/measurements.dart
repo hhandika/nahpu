@@ -126,7 +126,7 @@ class MammalMeasurementFormsState
                   SpecimenServices(ref).updateMammalMeasurement(
                     widget.specimenUuid,
                     MammalMeasurementCompanion(
-                      weight: db.Value(int.tryParse(value ?? '') ?? 0),
+                      weight: db.Value(double.tryParse(value ?? '') ?? 0.0),
                     ),
                   );
                 },
