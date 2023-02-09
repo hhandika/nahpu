@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
@@ -78,17 +79,27 @@ class SiteInfo extends ConsumerWidget {
               );
             },
           ),
-          TextFormField(
-            controller: siteFormCtr.siteTypeCtr,
+          DropdownButtonFormField<String?>(
+            value: siteFormCtr.siteTypeCtr,
             decoration: const InputDecoration(
               labelText: 'Site Type',
-              hintText: 'Enter a site type, e.g. "Camp", "City", "etc."',
+              hintText: 'Choose a site type',
             ),
-            onChanged: (value) {
-              SiteServices(ref).updateSite(
-                id,
-                SiteCompanion(siteType: db.Value(value)),
-              );
+            items: siteTypeList
+                .map(
+                  (e) => DropdownMenuItem(
+                    value: e,
+                    child: Text(e),
+                  ),
+                )
+                .toList(),
+            onChanged: (String? value) {
+              if (value != null) {
+                SiteServices(ref).updateSite(
+                  id,
+                  SiteCompanion(siteType: db.Value(value)),
+                );
+              }
             },
           ),
         ],

@@ -67,7 +67,7 @@ class SitesState extends ConsumerState<Sites> {
                 controller: pageController,
                 itemCount: siteSize,
                 itemBuilder: (context, index) {
-                  final siteForm = _updateController(siteEntries, index);
+                  final siteForm = _updateController(siteEntries[index]);
                   return SiteForm(
                     id: siteEntries[index].id,
                     siteFormCtr: siteForm,
@@ -97,25 +97,7 @@ class SitesState extends ConsumerState<Sites> {
     );
   }
 
-  SiteFormCtrModel _updateController(List<SiteData> siteEntries, int index) {
-    return SiteFormCtrModel(
-      siteIDCtr: TextEditingController(text: siteEntries[index].siteID),
-      leadStaffCtr: siteEntries[index].leadStaffId,
-      siteTypeCtr: TextEditingController(text: siteEntries[index].siteType),
-      countryCtr: TextEditingController(text: siteEntries[index].country),
-      stateProvinceCtr:
-          TextEditingController(text: siteEntries[index].stateProvince),
-      countyCtr: TextEditingController(text: siteEntries[index].county),
-      municipalityCtr:
-          TextEditingController(text: siteEntries[index].municipality),
-      localityCtr: TextEditingController(text: siteEntries[index].locality),
-      remarkCtr: TextEditingController(text: siteEntries[index].remark),
-      habitatTypeCtr:
-          TextEditingController(text: siteEntries[index].habitatType),
-      habitatDescriptionCtr:
-          TextEditingController(text: siteEntries[index].habitatDescription),
-      habitatConditionCtr:
-          TextEditingController(text: siteEntries[index].habitatCondition),
-    );
+  SiteFormCtrModel _updateController(SiteData siteEntries) {
+    return SiteFormCtrModel.fromData(siteEntries);
   }
 }

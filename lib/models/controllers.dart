@@ -65,7 +65,7 @@ class SiteFormCtrModel {
   });
   TextEditingController siteIDCtr;
   String? leadStaffCtr;
-  TextEditingController siteTypeCtr;
+  String? siteTypeCtr;
   TextEditingController countryCtr;
   TextEditingController stateProvinceCtr;
   TextEditingController countyCtr;
@@ -79,7 +79,7 @@ class SiteFormCtrModel {
   factory SiteFormCtrModel.empty() => SiteFormCtrModel(
         siteIDCtr: TextEditingController(),
         leadStaffCtr: null,
-        siteTypeCtr: TextEditingController(),
+        siteTypeCtr: null,
         countryCtr: TextEditingController(),
         stateProvinceCtr: TextEditingController(),
         countyCtr: TextEditingController(),
@@ -94,7 +94,7 @@ class SiteFormCtrModel {
   factory SiteFormCtrModel.fromData(SiteData site) => SiteFormCtrModel(
         siteIDCtr: TextEditingController(text: site.siteID),
         leadStaffCtr: site.leadStaffId,
-        siteTypeCtr: TextEditingController(text: site.siteType),
+        siteTypeCtr: site.siteType,
         countryCtr: TextEditingController(text: site.country),
         stateProvinceCtr: TextEditingController(text: site.stateProvince),
         countyCtr: TextEditingController(text: site.county),
@@ -109,7 +109,6 @@ class SiteFormCtrModel {
 
   void dispose() {
     siteIDCtr.dispose();
-    siteTypeCtr.dispose();
     countryCtr.dispose();
     stateProvinceCtr.dispose();
     countyCtr.dispose();

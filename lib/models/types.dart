@@ -22,6 +22,16 @@ const List<String> supportedTaxonClass = [
   'Mammalia',
 ];
 
+const List<String> siteTypeList = [
+  'City',
+  'Hotel',
+  'Village',
+  'Camp',
+  'Trail',
+  'Trapline',
+  'Netline'
+];
+
 CatalogFmt matchTaxonGroupToCatFmt(String? taxonGroup) {
   switch (taxonGroup) {
     case 'Birds':
