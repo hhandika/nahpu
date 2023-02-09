@@ -57,13 +57,17 @@ class MammalMeasurementFormsState
                 labelText: 'Total length (mm)',
                 hintText: 'Enter TTL',
                 isLastField: false,
-                onChanged: (value) {
-                  SpecimenServices(ref).updateMammalMeasurement(
-                    widget.specimenUuid,
-                    MammalMeasurementCompanion(
-                      totalLength: db.Value(int.tryParse(value ?? '') ?? 0),
-                    ),
-                  );
+                onChanged: (String? value) {
+                  if (value != null && value.isNotEmpty) {
+                    setState(() {
+                      SpecimenServices(ref).updateMammalMeasurement(
+                        widget.specimenUuid,
+                        MammalMeasurementCompanion(
+                          totalLength: db.Value(int.tryParse(value) ?? 0),
+                        ),
+                      );
+                    });
+                  }
                 },
               ),
               CommonNumField(
@@ -71,13 +75,17 @@ class MammalMeasurementFormsState
                 labelText: 'Tail length (mm)',
                 hintText: 'Enter TL',
                 isLastField: false,
-                onChanged: (value) {
-                  SpecimenServices(ref).updateMammalMeasurement(
-                    widget.specimenUuid,
-                    MammalMeasurementCompanion(
-                      tailLength: db.Value(int.tryParse(value ?? '') ?? 0),
-                    ),
-                  );
+                onChanged: (String? value) {
+                  if (value != null && value.isNotEmpty) {
+                    setState(() {
+                      SpecimenServices(ref).updateMammalMeasurement(
+                        widget.specimenUuid,
+                        MammalMeasurementCompanion(
+                          tailLength: db.Value(int.tryParse(value)),
+                        ),
+                      );
+                    });
+                  }
                 },
               ),
             ],
@@ -90,13 +98,17 @@ class MammalMeasurementFormsState
                 labelText: 'Hind foot length (mm)',
                 hintText: 'Enter HF length',
                 isLastField: false,
-                onChanged: (value) {
-                  SpecimenServices(ref).updateMammalMeasurement(
-                    widget.specimenUuid,
-                    MammalMeasurementCompanion(
-                      hindFootLength: db.Value(int.tryParse(value ?? '') ?? 0),
-                    ),
-                  );
+                onChanged: (String? value) {
+                  if (value != null && value.isNotEmpty) {
+                    setState(() {
+                      SpecimenServices(ref).updateMammalMeasurement(
+                        widget.specimenUuid,
+                        MammalMeasurementCompanion(
+                          hindFootLength: db.Value(int.tryParse(value)),
+                        ),
+                      );
+                    });
+                  }
                 },
               ),
               CommonNumField(
@@ -104,13 +116,17 @@ class MammalMeasurementFormsState
                 labelText: 'Ear length (mm)',
                 hintText: 'Enter ER length',
                 isLastField: false,
-                onChanged: (value) {
-                  SpecimenServices(ref).updateMammalMeasurement(
-                    widget.specimenUuid,
-                    MammalMeasurementCompanion(
-                      earLength: db.Value(int.tryParse(value ?? '') ?? 0),
-                    ),
-                  );
+                onChanged: (String? value) {
+                  if (value != null && value.isNotEmpty) {
+                    setState(() {
+                      SpecimenServices(ref).updateMammalMeasurement(
+                        widget.specimenUuid,
+                        MammalMeasurementCompanion(
+                          earLength: db.Value(int.tryParse(value)),
+                        ),
+                      );
+                    });
+                  }
                 },
               ),
             ],
@@ -124,12 +140,16 @@ class MammalMeasurementFormsState
                 hintText: 'Enter specimen weight',
                 isLastField: false,
                 onChanged: (value) {
-                  SpecimenServices(ref).updateMammalMeasurement(
-                    widget.specimenUuid,
-                    MammalMeasurementCompanion(
-                      weight: db.Value(double.tryParse(value ?? '') ?? 0.0),
-                    ),
-                  );
+                  if (value != null && value.isNotEmpty) {
+                    setState(() {
+                      SpecimenServices(ref).updateMammalMeasurement(
+                        widget.specimenUuid,
+                        MammalMeasurementCompanion(
+                          weight: db.Value(double.tryParse(value)),
+                        ),
+                      );
+                    });
+                  }
                 },
               ),
               Visibility(
@@ -140,12 +160,16 @@ class MammalMeasurementFormsState
                   hintText: 'Enter FL length',
                   isLastField: true,
                   onChanged: (value) {
-                    SpecimenServices(ref).updateMammalMeasurement(
-                      widget.specimenUuid,
-                      MammalMeasurementCompanion(
-                        forearm: db.Value(int.tryParse(value ?? '') ?? 0),
-                      ),
-                    );
+                    if (value != null && value.isNotEmpty) {
+                      setState(() {
+                        SpecimenServices(ref).updateMammalMeasurement(
+                          widget.specimenUuid,
+                          MammalMeasurementCompanion(
+                            forearm: db.Value(int.tryParse(value)),
+                          ),
+                        );
+                      });
+                    }
                   },
                 ),
               ),
@@ -376,7 +400,7 @@ class MaleGonadFormState extends ConsumerState<MaleGonadForm> {
   }
 }
 
-class ScrotalMaleForm extends ConsumerWidget {
+class ScrotalMaleForm extends ConsumerStatefulWidget {
   const ScrotalMaleForm({
     super.key,
     required this.specimenUuid,
@@ -391,22 +415,27 @@ class ScrotalMaleForm extends ConsumerWidget {
   final MammalMeasurementCtrModel ctr;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ScrotalMaleFormState createState() => ScrotalMaleFormState();
+}
+
+class ScrotalMaleFormState extends ConsumerState<ScrotalMaleForm> {
+  @override
+  Widget build(BuildContext context) {
     return Visibility(
-      visible: visible,
+      visible: widget.visible,
       child: Column(
         children: [
           AdaptiveLayout(
-            useHorizontalLayout: useHorizontalLayout,
+            useHorizontalLayout: widget.useHorizontalLayout,
             children: [
               CommonNumField(
-                controller: ctr.testisLengthCtr,
+                controller: widget.ctr.testisLengthCtr,
                 labelText: 'Length (mm)',
                 hintText: 'Enter the length of the right testes ',
                 isLastField: false,
                 onChanged: (String? value) {
                   SpecimenServices(ref).updateMammalMeasurement(
-                    specimenUuid,
+                    widget.specimenUuid,
                     MammalMeasurementCompanion(
                       testisLength: db.Value(
                         int.tryParse(value ?? '0'),
@@ -416,13 +445,13 @@ class ScrotalMaleForm extends ConsumerWidget {
                 },
               ),
               CommonNumField(
-                controller: ctr.testisWidthCtr,
+                controller: widget.ctr.testisWidthCtr,
                 labelText: 'Width (mm)',
                 hintText: 'Enter the width of the right testes ',
                 isLastField: true,
                 onChanged: (String? value) {
                   SpecimenServices(ref).updateMammalMeasurement(
-                    specimenUuid,
+                    widget.specimenUuid,
                     MammalMeasurementCompanion(
                       testisWidth: db.Value(
                         int.tryParse(value ?? '0'),
@@ -451,7 +480,7 @@ class ScrotalMaleForm extends ConsumerWidget {
               onChanged: (value) {
                 if (value != null) {
                   SpecimenServices(ref).updateMammalMeasurement(
-                    specimenUuid,
+                    widget.specimenUuid,
                     MammalMeasurementCompanion(
                       epididymisAppearance: db.Value(
                         value.index,
@@ -468,8 +497,8 @@ class ScrotalMaleForm extends ConsumerWidget {
   }
 
   EpididymisAppearance? _getEpididymisAppearance() {
-    if (ctr.epididymisCtr != null) {
-      return EpididymisAppearance.values[ctr.epididymisCtr!];
+    if (widget.ctr.epididymisCtr != null) {
+      return EpididymisAppearance.values[widget.ctr.epididymisCtr!];
     }
     return null;
   }
