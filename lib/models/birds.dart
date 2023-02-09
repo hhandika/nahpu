@@ -3,7 +3,7 @@ enum OvaryAppearance { smooth, small, large }
 const List<String> ovaryAppearanceList = [
   'Smooth',
   'Small',
-  'Large',
+  'At least one ovum >1 mm', // Large in enum
 ];
 
 enum FatCategory { noFat, trace, light, moderate, heavy, extremelyHeavy }
