@@ -247,7 +247,7 @@ CREATE TABLE mammalMeasurement (
 );
 
 CREATE TABLE birdMeasurement (
-    specimenUuid TEXT  NOT NULL,
+    specimenUuid TEXT NOT NULL,
     weight INT,
     wingspan INT,
     irisColor TEXT,

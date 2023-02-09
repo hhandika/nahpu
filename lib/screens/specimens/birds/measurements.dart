@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/models/birds.dart';
 import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/screens/shared/fields.dart';
@@ -606,26 +607,18 @@ class BodyMoltForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(5),
-      child: DropdownButtonFormField(
+      child: DropdownButtonFormField<BodyMolt>(
         decoration: const InputDecoration(
           labelText: 'Body Molt',
           hintText: 'Choose one',
         ),
-        items: const [
-          DropdownMenuItem(
-            value: 'Trace',
-            child: Text('Trace'),
-          ),
-          DropdownMenuItem(
-            value: 'Moderate',
-            child: Text('Moderate'),
-          ),
-          DropdownMenuItem(
-            value: 'Heavy',
-            child: Text('Heavy'),
-          ),
-        ],
-        onChanged: (String? newValue) {},
+        items: bodyMoltList
+            .map((e) => DropdownMenuItem(
+                  value: BodyMolt.values[bodyMoltList.indexOf(e)],
+                  child: Text(e),
+                ))
+            .toList(),
+        onChanged: (BodyMolt? newValue) {},
       ),
     );
   }
