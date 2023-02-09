@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/birds.dart';
 import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/types.dart';
+import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
@@ -353,7 +354,7 @@ class MaleGonadForm extends ConsumerWidget {
         visible: sex == SpecimenSex.male,
         child: Column(
           children: [
-            const Divider(),
+            const CommonDivider(),
             Text('Male Gonads', style: Theme.of(context).textTheme.titleLarge),
             Text('Testis size (mm)',
                 style: Theme.of(context).textTheme.titleSmall),
@@ -446,7 +447,7 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
       visible: widget.sex == SpecimenSex.female,
       child: Column(
         children: [
-          const Divider(),
+          const CommonDivider(),
           Text('Female Gonads', style: Theme.of(context).textTheme.titleLarge),
           Text(
             'Ovaries',
@@ -814,7 +815,7 @@ class MoltingForm extends ConsumerWidget {
       visible: visible,
       child: Column(
         children: [
-          const Divider(),
+          const CommonDivider(),
           Text(
             'Molt',
             style: Theme.of(context).textTheme.titleMedium,

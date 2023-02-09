@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/types.dart';
+import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
@@ -174,9 +175,6 @@ class MammalMeasurementFormsState
                   );
                 }),
           ),
-          Divider(
-            color: Theme.of(context).dividerColor,
-          ),
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
@@ -323,8 +321,8 @@ class MaleGonadFormState extends ConsumerState<MaleGonadForm> {
       visible: widget.specimenSex == SpecimenSex.male,
       child: Column(
         children: [
-          const Divider(),
-          Text('Testes', style: Theme.of(context).textTheme.titleMedium),
+          const CommonDivider(),
+          Text('Testes', style: Theme.of(context).textTheme.titleLarge),
           Padding(
             padding: const EdgeInsets.all(5),
             child: DropdownButtonFormField<TestisPosition>(
@@ -365,7 +363,6 @@ class MaleGonadFormState extends ConsumerState<MaleGonadForm> {
             useHorizontalLayout: widget.useHorizontalLayout,
             ctr: widget.ctr,
           ),
-          const Divider(),
         ],
       ),
     );
@@ -502,7 +499,7 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
       visible: widget.specimenSex == SpecimenSex.female,
       child: Column(
         children: [
-          const Divider(),
+          const CommonDivider(),
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
@@ -560,93 +557,105 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
               ),
             ],
           ),
-          DropdownButtonFormField<ReproductiveStage>(
-            value: _getReproductiveStage(),
-            decoration: const InputDecoration(
-              labelText: 'Reproductive stage',
-              hintText: 'Select reproductive stage',
-            ),
-            items: reproductiveStageList
-                .map((e) => DropdownMenuItem(
-                      value: ReproductiveStage
-                          .values[reproductiveStageList.indexOf(e)],
-                      child: Text(e),
-                    ))
-                .toList(),
-            onChanged: (ReproductiveStage? newValue) {
-              if (newValue != null) {
-                SpecimenServices(ref).updateMammalMeasurement(
-                  widget.specimenUuid,
-                  MammalMeasurementCompanion(
-                    reproductiveStage: db.Value(
-                      newValue.index,
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: DropdownButtonFormField<ReproductiveStage>(
+              value: _getReproductiveStage(),
+              decoration: const InputDecoration(
+                labelText: 'Reproductive stage',
+                hintText: 'Select reproductive stage',
+              ),
+              items: reproductiveStageList
+                  .map((e) => DropdownMenuItem(
+                        value: ReproductiveStage
+                            .values[reproductiveStageList.indexOf(e)],
+                        child: Text(e),
+                      ))
+                  .toList(),
+              onChanged: (ReproductiveStage? newValue) {
+                if (newValue != null) {
+                  SpecimenServices(ref).updateMammalMeasurement(
+                    widget.specimenUuid,
+                    MammalMeasurementCompanion(
+                      reproductiveStage: db.Value(
+                        newValue.index,
+                      ),
                     ),
-                  ),
-                );
-              }
-            },
+                  );
+                }
+              },
+            ),
           ),
-          Text('Mammae Counts', style: Theme.of(context).textTheme.titleMedium),
+          const CommonDivider(),
+          Text('Mammae Counts', style: Theme.of(context).textTheme.titleLarge),
           MammaeForm(
             useHorizontalLayout: widget.useHorizontalLayout,
             specimenUuid: widget.specimenUuid,
             ctr: widget.ctr,
           ),
-          DropdownButtonFormField<MammaeCondition>(
-            value: _getMammaeCondition(),
-            decoration: const InputDecoration(
-              labelText: 'Mammae condition',
-              hintText: 'Select mammae condition',
-            ),
-            items: mammaeConditionList
-                .map((e) => DropdownMenuItem(
-                      value: MammaeCondition
-                          .values[mammaeConditionList.indexOf(e)],
-                      child: Text(e),
-                    ))
-                .toList(),
-            onChanged: (MammaeCondition? newValue) {
-              if (newValue != null) {
-                SpecimenServices(ref).updateMammalMeasurement(
-                  widget.specimenUuid,
-                  MammalMeasurementCompanion(
-                    mammaeCondition: db.Value(
-                      newValue.index,
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: DropdownButtonFormField<MammaeCondition>(
+              value: _getMammaeCondition(),
+              decoration: const InputDecoration(
+                labelText: 'Mammae condition',
+                hintText: 'Select mammae condition',
+              ),
+              items: mammaeConditionList
+                  .map((e) => DropdownMenuItem(
+                        value: MammaeCondition
+                            .values[mammaeConditionList.indexOf(e)],
+                        child: Text(e),
+                      ))
+                  .toList(),
+              onChanged: (MammaeCondition? newValue) {
+                if (newValue != null) {
+                  SpecimenServices(ref).updateMammalMeasurement(
+                    widget.specimenUuid,
+                    MammalMeasurementCompanion(
+                      mammaeCondition: db.Value(
+                        newValue.index,
+                      ),
                     ),
-                  ),
-                );
-              }
-            },
+                  );
+                }
+              },
+            ),
           ),
+          const CommonDivider(),
           Text(
             'Embryo',
-            style: Theme.of(context).textTheme.titleMedium,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
           EmbryoForm(
             useHorizontalLayout: widget.useHorizontalLayout,
             specimenUuid: widget.specimenUuid,
             ctr: widget.ctr,
           ),
-          CommonNumField(
-            controller: widget.ctr.embryoCRCtr,
-            labelText: 'CR length (mm)',
-            hintText: 'Enter crown-rump length',
-            isLastField: true,
-            onChanged: (String? value) {
-              if (value != null) {
-                SpecimenServices(ref).updateMammalMeasurement(
-                  widget.specimenUuid,
-                  MammalMeasurementCompanion(
-                    embryoCR: db.Value(
-                      int.tryParse(value),
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: CommonNumField(
+              controller: widget.ctr.embryoCRCtr,
+              labelText: 'CR length (mm)',
+              hintText: 'Enter crown-rump length',
+              isLastField: true,
+              onChanged: (String? value) {
+                if (value != null) {
+                  SpecimenServices(ref).updateMammalMeasurement(
+                    widget.specimenUuid,
+                    MammalMeasurementCompanion(
+                      embryoCR: db.Value(
+                        int.tryParse(value),
+                      ),
                     ),
-                  ),
-                );
-              }
-            },
+                  );
+                }
+              },
+            ),
           ),
+          const CommonDivider(),
           Text('Placental Scars',
-              style: Theme.of(context).textTheme.titleMedium),
+              style: Theme.of(context).textTheme.titleLarge),
           PlacentalScarForm(
             useHorizontalLayout: widget.useHorizontalLayout,
             specimenUuid: widget.specimenUuid,
