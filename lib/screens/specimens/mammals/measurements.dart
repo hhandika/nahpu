@@ -194,8 +194,9 @@ class MammalMeasurementFormsState
                           ))
                       .toList(),
                   onChanged: (SpecimenSex? newValue) {
-                    setState(() {
-                      if (newValue != null) {
+                    if (newValue != null) {
+                      setState(() {
+                        ctr.sexCtr = newValue.index;
                         SpecimenServices(ref).updateMammalMeasurement(
                           widget.specimenUuid,
                           MammalMeasurementCompanion(
@@ -204,25 +205,25 @@ class MammalMeasurementFormsState
                             ),
                           ),
                         );
-                      }
-                    });
+                      });
+                    }
                   }),
               DropdownButtonFormField<SpecimenAge>(
-                  value: _getSpecimenAge(),
-                  decoration: const InputDecoration(
-                    labelText: 'Age',
-                    hintText: 'Select specimen age',
-                  ),
-                  items: specimenAgeList
-                      .map((e) => DropdownMenuItem(
-                            value:
-                                SpecimenAge.values[specimenAgeList.indexOf(e)],
-                            child: Text(e),
-                          ))
-                      .toList(),
-                  onChanged: (SpecimenAge? newValue) {
-                    setState(() {
-                      if (newValue != null) {
+                value: _getSpecimenAge(),
+                decoration: const InputDecoration(
+                  labelText: 'Age',
+                  hintText: 'Select specimen age',
+                ),
+                items: specimenAgeList
+                    .map((e) => DropdownMenuItem(
+                          value: SpecimenAge.values[specimenAgeList.indexOf(e)],
+                          child: Text(e),
+                        ))
+                    .toList(),
+                onChanged: (SpecimenAge? newValue) {
+                  if (newValue != null) {
+                    setState(
+                      () {
                         ctr.ageCtr = newValue.index;
                         SpecimenServices(ref).updateMammalMeasurement(
                           widget.specimenUuid,
@@ -232,9 +233,11 @@ class MammalMeasurementFormsState
                             ),
                           ),
                         );
-                      }
-                    });
-                  }),
+                      },
+                    );
+                  }
+                },
+              ),
             ],
           ),
           MaleGonadForm(
@@ -338,19 +341,21 @@ class MaleGonadFormState extends ConsumerState<MaleGonadForm> {
                       ))
                   .toList(),
               onChanged: (TestisPosition? newValue) {
-                setState(() {
-                  if (newValue != null) {
-                    _isScrotal = newValue == TestisPosition.scrotal;
-                    SpecimenServices(ref).updateMammalMeasurement(
-                      widget.specimenUuid,
-                      MammalMeasurementCompanion(
-                        testisPosition: db.Value(
-                          newValue.index,
+                if (newValue != null) {
+                  setState(
+                    () {
+                      _isScrotal = newValue == TestisPosition.scrotal;
+                      SpecimenServices(ref).updateMammalMeasurement(
+                        widget.specimenUuid,
+                        MammalMeasurementCompanion(
+                          testisPosition: db.Value(
+                            newValue.index,
+                          ),
                         ),
-                      ),
-                    );
-                  }
-                });
+                      );
+                    },
+                  );
+                }
               },
             ),
           ),
