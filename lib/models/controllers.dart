@@ -427,48 +427,139 @@ class BirdMeasurementCtrModel {
     required this.wingspanCtr,
     required this.irisCtr,
     required this.billCtr,
-    required this.tarsusCtr,
     required this.footCtr,
-    required this.wingMoltCtr,
-    required this.tailMoltCtr,
-    required this.bodyMoltCtr,
-    required this.bursaCtr,
+    required this.tarsusCtr,
+    required this.sexCtr,
+    required this.moltCtr,
+    required this.broodPatchCtr,
     required this.skullOssCtr,
+    required this.bursaCtr,
     required this.fatCtr,
-    required this.gonadCtr,
-    required this.testisCtr,
+    required this.stomachContentCtr,
+    required this.testisLengthCtr,
+    required this.testisWidthCtr,
+    required this.testisRemarkCtr,
+    required this.ovaryLengthCtr,
+    required this.ovaryWidthCtr,
+    required this.ovaryAppearanceCtr,
+    required this.oviductAppearanceCtr,
+    required this.ovaryRemarkCtr,
+    required this.wingLeftPrimaryMoltCtr,
+    required this.wingRightPrimaryMoltCtr,
+    required this.wingLeftSecondaryMoltCtr,
+    required this.wingRightSecondaryMoltCtr,
+    required this.tailLeftRectriceCtr,
+    required this.tailRightRectriceCtr,
+    required this.bodyMoltCtr,
+    required this.moltRemarkCtr,
   });
 
   TextEditingController weightCtr;
   TextEditingController wingspanCtr;
   TextEditingController irisCtr;
   TextEditingController billCtr;
-  TextEditingController tarsusCtr;
   TextEditingController footCtr;
-  TextEditingController wingMoltCtr;
-  TextEditingController tailMoltCtr;
-  TextEditingController bodyMoltCtr;
+  TextEditingController tarsusCtr;
+  int? sexCtr;
+  int? moltCtr;
+  int? broodPatchCtr;
+  int? skullOssCtr;
   TextEditingController bursaCtr;
-  TextEditingController skullOssCtr;
-  TextEditingController fatCtr;
-  TextEditingController gonadCtr;
-  TextEditingController testisCtr;
+  int? fatCtr;
+  TextEditingController stomachContentCtr;
+  TextEditingController testisLengthCtr;
+  TextEditingController testisWidthCtr;
+  TextEditingController testisRemarkCtr;
+  TextEditingController ovaryLengthCtr;
+  TextEditingController ovaryWidthCtr;
+  int? ovaryAppearanceCtr;
+  int? oviductAppearanceCtr;
+  TextEditingController ovaryRemarkCtr;
+  TextEditingController wingRightPrimaryMoltCtr;
+  TextEditingController wingLeftPrimaryMoltCtr;
+  TextEditingController wingRightSecondaryMoltCtr;
+  TextEditingController wingLeftSecondaryMoltCtr;
+  TextEditingController tailRightRectriceCtr;
+  TextEditingController tailLeftRectriceCtr;
+  int? bodyMoltCtr;
+  TextEditingController moltRemarkCtr;
 
   factory BirdMeasurementCtrModel.empty() => BirdMeasurementCtrModel(
         weightCtr: TextEditingController(),
         wingspanCtr: TextEditingController(),
         irisCtr: TextEditingController(),
         billCtr: TextEditingController(),
-        tarsusCtr: TextEditingController(),
         footCtr: TextEditingController(),
-        wingMoltCtr: TextEditingController(),
-        tailMoltCtr: TextEditingController(),
-        bodyMoltCtr: TextEditingController(),
+        tarsusCtr: TextEditingController(),
+        sexCtr: null,
+        moltCtr: null,
+        broodPatchCtr: null,
+        skullOssCtr: null,
         bursaCtr: TextEditingController(),
-        skullOssCtr: TextEditingController(),
-        fatCtr: TextEditingController(),
-        gonadCtr: TextEditingController(),
-        testisCtr: TextEditingController(),
+        fatCtr: null,
+        stomachContentCtr: TextEditingController(),
+        testisLengthCtr: TextEditingController(),
+        testisWidthCtr: TextEditingController(),
+        testisRemarkCtr: TextEditingController(),
+        ovaryLengthCtr: TextEditingController(),
+        ovaryWidthCtr: TextEditingController(),
+        ovaryAppearanceCtr: null,
+        oviductAppearanceCtr: null,
+        ovaryRemarkCtr: TextEditingController(),
+        wingRightPrimaryMoltCtr: TextEditingController(),
+        wingLeftPrimaryMoltCtr: TextEditingController(),
+        wingRightSecondaryMoltCtr: TextEditingController(),
+        wingLeftSecondaryMoltCtr: TextEditingController(),
+        tailRightRectriceCtr: TextEditingController(),
+        tailLeftRectriceCtr: TextEditingController(),
+        bodyMoltCtr: null,
+        moltRemarkCtr: TextEditingController(),
+      );
+
+  factory BirdMeasurementCtrModel.fromData(BirdMeasurementData data) =>
+      BirdMeasurementCtrModel(
+        weightCtr: TextEditingController(text: data.weight?.toString() ?? ''),
+        wingspanCtr:
+            TextEditingController(text: data.wingspan?.toString() ?? ''),
+        irisCtr: TextEditingController(text: data.irisColor ?? ''),
+        billCtr: TextEditingController(text: data.billColor ?? ''),
+        footCtr: TextEditingController(text: data.footColor ?? ''),
+        tarsusCtr: TextEditingController(text: data.tarsusColor ?? ''),
+        sexCtr: data.sex,
+        moltCtr: data.molting,
+        broodPatchCtr: data.broodPatch,
+        skullOssCtr: data.skullOssification,
+        bursaCtr:
+            TextEditingController(text: data.bursaLength?.toString() ?? ''),
+        fatCtr: data.fat,
+        stomachContentCtr:
+            TextEditingController(text: data.stomachContent ?? ''),
+        testisLengthCtr:
+            TextEditingController(text: data.testisLength?.toString() ?? ''),
+        testisWidthCtr:
+            TextEditingController(text: data.testisWidth?.toString() ?? ''),
+        testisRemarkCtr: TextEditingController(text: data.testisRemark ?? ''),
+        ovaryLengthCtr:
+            TextEditingController(text: data.ovaryLength?.toString() ?? ''),
+        ovaryWidthCtr:
+            TextEditingController(text: data.ovaryWidth?.toString() ?? ''),
+        ovaryAppearanceCtr: data.ovaryAppearance,
+        oviductAppearanceCtr: data.oviductAppearance,
+        ovaryRemarkCtr: TextEditingController(text: data.ovaryRemark ?? ''),
+        wingRightPrimaryMoltCtr: TextEditingController(
+            text: data.wingRightPrimary?.toString() ?? ''),
+        wingLeftPrimaryMoltCtr:
+            TextEditingController(text: data.wingLeftPrimary?.toString() ?? ''),
+        wingRightSecondaryMoltCtr: TextEditingController(
+            text: data.wingRightSecondary?.toString() ?? ''),
+        wingLeftSecondaryMoltCtr: TextEditingController(
+            text: data.wingLeftSecondary?.toString() ?? ''),
+        tailRightRectriceCtr: TextEditingController(
+            text: data.tailRightRectrices?.toString() ?? ''),
+        tailLeftRectriceCtr: TextEditingController(
+            text: data.tailLeftRectrices?.toString() ?? ''),
+        bodyMoltCtr: data.bodyMolt,
+        moltRemarkCtr: TextEditingController(text: data.moltRemark ?? ''),
       );
 
   void dispose() {
@@ -476,16 +567,23 @@ class BirdMeasurementCtrModel {
     wingspanCtr.dispose();
     irisCtr.dispose();
     billCtr.dispose();
-    tarsusCtr.dispose();
     footCtr.dispose();
-    wingMoltCtr.dispose();
-    tailMoltCtr.dispose();
-    bodyMoltCtr.dispose();
+    tarsusCtr.dispose();
     bursaCtr.dispose();
-    skullOssCtr.dispose();
-    fatCtr.dispose();
-    gonadCtr.dispose();
-    testisCtr.dispose();
+    stomachContentCtr.dispose();
+    testisLengthCtr.dispose();
+    testisWidthCtr.dispose();
+    testisRemarkCtr.dispose();
+    ovaryLengthCtr.dispose();
+    ovaryWidthCtr.dispose();
+    ovaryRemarkCtr.dispose();
+    wingRightPrimaryMoltCtr.dispose();
+    wingLeftPrimaryMoltCtr.dispose();
+    wingRightSecondaryMoltCtr.dispose();
+    wingLeftSecondaryMoltCtr.dispose();
+    tailRightRectriceCtr.dispose();
+    tailLeftRectriceCtr.dispose();
+    moltRemarkCtr.dispose();
   }
 }
 

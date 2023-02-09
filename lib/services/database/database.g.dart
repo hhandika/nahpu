@@ -8706,11 +8706,11 @@ class BirdMeasurement extends Table
       $customConstraints: '');
   static const VerificationMeta _skullOssificationMeta =
       const VerificationMeta('skullOssification');
-  late final GeneratedColumn<String> skullOssification =
-      GeneratedColumn<String>('skullOssification', aliasedName, true,
-          type: DriftSqlType.string,
-          requiredDuringInsert: false,
-          $customConstraints: '');
+  late final GeneratedColumn<int> skullOssification = GeneratedColumn<int>(
+      'skullOssification', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _bursaLengthMeta =
       const VerificationMeta('bursaLength');
   late final GeneratedColumn<int> bursaLength = GeneratedColumn<int>(
@@ -8719,9 +8719,9 @@ class BirdMeasurement extends Table
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _fatMeta = const VerificationMeta('fat');
-  late final GeneratedColumn<String> fat = GeneratedColumn<String>(
+  late final GeneratedColumn<int> fat = GeneratedColumn<int>(
       'fat', aliasedName, true,
-      type: DriftSqlType.string,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _stomachContentMeta =
@@ -8768,9 +8768,9 @@ class BirdMeasurement extends Table
       $customConstraints: '');
   static const VerificationMeta _ovaryAppearanceMeta =
       const VerificationMeta('ovaryAppearance');
-  late final GeneratedColumn<String> ovaryAppearance = GeneratedColumn<String>(
+  late final GeneratedColumn<int> ovaryAppearance = GeneratedColumn<int>(
       'ovaryAppearance', aliasedName, true,
-      type: DriftSqlType.string,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _oviductWidthMeta =
@@ -9093,12 +9093,12 @@ class BirdMeasurement extends Table
           .read(DriftSqlType.int, data['${effectivePrefix}molting']),
       broodPatch: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}broodPatch']),
-      skullOssification: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}skullOssification']),
+      skullOssification: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}skullOssification']),
       bursaLength: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}bursaLength']),
       fat: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}fat']),
+          .read(DriftSqlType.int, data['${effectivePrefix}fat']),
       stomachContent: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}stomachContent']),
       testisLength: attachedDatabase.typeMapping
@@ -9112,7 +9112,7 @@ class BirdMeasurement extends Table
       ovaryWidth: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}ovaryWidth']),
       ovaryAppearance: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}ovaryAppearance']),
+          .read(DriftSqlType.int, data['${effectivePrefix}ovaryAppearance']),
       oviductWidth: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}oviductWidth']),
       oviductAppearance: attachedDatabase.typeMapping
@@ -9162,16 +9162,16 @@ class BirdMeasurementData extends DataClass
   final int? sex;
   final int? molting;
   final int? broodPatch;
-  final String? skullOssification;
+  final int? skullOssification;
   final int? bursaLength;
-  final String? fat;
+  final int? fat;
   final String? stomachContent;
   final int? testisLength;
   final int? testisWidth;
   final String? testisRemark;
   final int? ovaryLength;
   final int? ovaryWidth;
-  final String? ovaryAppearance;
+  final int? ovaryAppearance;
   final int? oviductWidth;
   final int? oviductAppearance;
   final String? ovaryRemark;
@@ -9247,13 +9247,13 @@ class BirdMeasurementData extends DataClass
       map['broodPatch'] = Variable<int>(broodPatch);
     }
     if (!nullToAbsent || skullOssification != null) {
-      map['skullOssification'] = Variable<String>(skullOssification);
+      map['skullOssification'] = Variable<int>(skullOssification);
     }
     if (!nullToAbsent || bursaLength != null) {
       map['bursaLength'] = Variable<int>(bursaLength);
     }
     if (!nullToAbsent || fat != null) {
-      map['fat'] = Variable<String>(fat);
+      map['fat'] = Variable<int>(fat);
     }
     if (!nullToAbsent || stomachContent != null) {
       map['stomachContent'] = Variable<String>(stomachContent);
@@ -9274,7 +9274,7 @@ class BirdMeasurementData extends DataClass
       map['ovaryWidth'] = Variable<int>(ovaryWidth);
     }
     if (!nullToAbsent || ovaryAppearance != null) {
-      map['ovaryAppearance'] = Variable<String>(ovaryAppearance);
+      map['ovaryAppearance'] = Variable<int>(ovaryAppearance);
     }
     if (!nullToAbsent || oviductWidth != null) {
       map['oviductWidth'] = Variable<int>(oviductWidth);
@@ -9417,17 +9417,16 @@ class BirdMeasurementData extends DataClass
       sex: serializer.fromJson<int?>(json['sex']),
       molting: serializer.fromJson<int?>(json['molting']),
       broodPatch: serializer.fromJson<int?>(json['broodPatch']),
-      skullOssification:
-          serializer.fromJson<String?>(json['skullOssification']),
+      skullOssification: serializer.fromJson<int?>(json['skullOssification']),
       bursaLength: serializer.fromJson<int?>(json['bursaLength']),
-      fat: serializer.fromJson<String?>(json['fat']),
+      fat: serializer.fromJson<int?>(json['fat']),
       stomachContent: serializer.fromJson<String?>(json['stomachContent']),
       testisLength: serializer.fromJson<int?>(json['testisLength']),
       testisWidth: serializer.fromJson<int?>(json['testisWidth']),
       testisRemark: serializer.fromJson<String?>(json['testisRemark']),
       ovaryLength: serializer.fromJson<int?>(json['ovaryLength']),
       ovaryWidth: serializer.fromJson<int?>(json['ovaryWidth']),
-      ovaryAppearance: serializer.fromJson<String?>(json['ovaryAppearance']),
+      ovaryAppearance: serializer.fromJson<int?>(json['ovaryAppearance']),
       oviductWidth: serializer.fromJson<int?>(json['oviductWidth']),
       oviductAppearance: serializer.fromJson<int?>(json['oviductAppearance']),
       ovaryRemark: serializer.fromJson<String?>(json['ovaryRemark']),
@@ -9459,16 +9458,16 @@ class BirdMeasurementData extends DataClass
       'sex': serializer.toJson<int?>(sex),
       'molting': serializer.toJson<int?>(molting),
       'broodPatch': serializer.toJson<int?>(broodPatch),
-      'skullOssification': serializer.toJson<String?>(skullOssification),
+      'skullOssification': serializer.toJson<int?>(skullOssification),
       'bursaLength': serializer.toJson<int?>(bursaLength),
-      'fat': serializer.toJson<String?>(fat),
+      'fat': serializer.toJson<int?>(fat),
       'stomachContent': serializer.toJson<String?>(stomachContent),
       'testisLength': serializer.toJson<int?>(testisLength),
       'testisWidth': serializer.toJson<int?>(testisWidth),
       'testisRemark': serializer.toJson<String?>(testisRemark),
       'ovaryLength': serializer.toJson<int?>(ovaryLength),
       'ovaryWidth': serializer.toJson<int?>(ovaryWidth),
-      'ovaryAppearance': serializer.toJson<String?>(ovaryAppearance),
+      'ovaryAppearance': serializer.toJson<int?>(ovaryAppearance),
       'oviductWidth': serializer.toJson<int?>(oviductWidth),
       'oviductAppearance': serializer.toJson<int?>(oviductAppearance),
       'ovaryRemark': serializer.toJson<String?>(ovaryRemark),
@@ -9494,16 +9493,16 @@ class BirdMeasurementData extends DataClass
           Value<int?> sex = const Value.absent(),
           Value<int?> molting = const Value.absent(),
           Value<int?> broodPatch = const Value.absent(),
-          Value<String?> skullOssification = const Value.absent(),
+          Value<int?> skullOssification = const Value.absent(),
           Value<int?> bursaLength = const Value.absent(),
-          Value<String?> fat = const Value.absent(),
+          Value<int?> fat = const Value.absent(),
           Value<String?> stomachContent = const Value.absent(),
           Value<int?> testisLength = const Value.absent(),
           Value<int?> testisWidth = const Value.absent(),
           Value<String?> testisRemark = const Value.absent(),
           Value<int?> ovaryLength = const Value.absent(),
           Value<int?> ovaryWidth = const Value.absent(),
-          Value<String?> ovaryAppearance = const Value.absent(),
+          Value<int?> ovaryAppearance = const Value.absent(),
           Value<int?> oviductWidth = const Value.absent(),
           Value<int?> oviductAppearance = const Value.absent(),
           Value<String?> ovaryRemark = const Value.absent(),
@@ -9690,16 +9689,16 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
   final Value<int?> sex;
   final Value<int?> molting;
   final Value<int?> broodPatch;
-  final Value<String?> skullOssification;
+  final Value<int?> skullOssification;
   final Value<int?> bursaLength;
-  final Value<String?> fat;
+  final Value<int?> fat;
   final Value<String?> stomachContent;
   final Value<int?> testisLength;
   final Value<int?> testisWidth;
   final Value<String?> testisRemark;
   final Value<int?> ovaryLength;
   final Value<int?> ovaryWidth;
-  final Value<String?> ovaryAppearance;
+  final Value<int?> ovaryAppearance;
   final Value<int?> oviductWidth;
   final Value<int?> oviductAppearance;
   final Value<String?> ovaryRemark;
@@ -9788,16 +9787,16 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
     Expression<int>? sex,
     Expression<int>? molting,
     Expression<int>? broodPatch,
-    Expression<String>? skullOssification,
+    Expression<int>? skullOssification,
     Expression<int>? bursaLength,
-    Expression<String>? fat,
+    Expression<int>? fat,
     Expression<String>? stomachContent,
     Expression<int>? testisLength,
     Expression<int>? testisWidth,
     Expression<String>? testisRemark,
     Expression<int>? ovaryLength,
     Expression<int>? ovaryWidth,
-    Expression<String>? ovaryAppearance,
+    Expression<int>? ovaryAppearance,
     Expression<int>? oviductWidth,
     Expression<int>? oviductAppearance,
     Expression<String>? ovaryRemark,
@@ -9856,16 +9855,16 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
       Value<int?>? sex,
       Value<int?>? molting,
       Value<int?>? broodPatch,
-      Value<String?>? skullOssification,
+      Value<int?>? skullOssification,
       Value<int?>? bursaLength,
-      Value<String?>? fat,
+      Value<int?>? fat,
       Value<String?>? stomachContent,
       Value<int?>? testisLength,
       Value<int?>? testisWidth,
       Value<String?>? testisRemark,
       Value<int?>? ovaryLength,
       Value<int?>? ovaryWidth,
-      Value<String?>? ovaryAppearance,
+      Value<int?>? ovaryAppearance,
       Value<int?>? oviductWidth,
       Value<int?>? oviductAppearance,
       Value<String?>? ovaryRemark,
@@ -9946,13 +9945,13 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
       map['broodPatch'] = Variable<int>(broodPatch.value);
     }
     if (skullOssification.present) {
-      map['skullOssification'] = Variable<String>(skullOssification.value);
+      map['skullOssification'] = Variable<int>(skullOssification.value);
     }
     if (bursaLength.present) {
       map['bursaLength'] = Variable<int>(bursaLength.value);
     }
     if (fat.present) {
-      map['fat'] = Variable<String>(fat.value);
+      map['fat'] = Variable<int>(fat.value);
     }
     if (stomachContent.present) {
       map['stomachContent'] = Variable<String>(stomachContent.value);
@@ -9973,7 +9972,7 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
       map['ovaryWidth'] = Variable<int>(ovaryWidth.value);
     }
     if (ovaryAppearance.present) {
-      map['ovaryAppearance'] = Variable<String>(ovaryAppearance.value);
+      map['ovaryAppearance'] = Variable<int>(ovaryAppearance.value);
     }
     if (oviductWidth.present) {
       map['oviductWidth'] = Variable<int>(oviductWidth.value);
