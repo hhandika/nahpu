@@ -94,7 +94,6 @@ class SecondaryButton extends StatelessWidget {
 }
 
 class CustomPageNavButton extends ConsumerWidget {
-  final Duration _duration = const Duration(milliseconds: 300);
   final Curve _curve = Curves.easeInOut;
 
   const CustomPageNavButton({
@@ -123,7 +122,7 @@ class CustomPageNavButton extends ConsumerWidget {
                 : () {
                     if (pageController.hasClients) {
                       pageController.previousPage(
-                          duration: _duration, curve: _curve);
+                          duration: kTabScrollDuration, curve: _curve);
                     }
                   },
             child: const Icon(Icons.navigate_before),
@@ -140,7 +139,7 @@ class CustomPageNavButton extends ConsumerWidget {
                 : () {
                     if (pageController.hasClients) {
                       pageController.nextPage(
-                          duration: _duration, curve: _curve);
+                          duration: kTabScrollDuration, curve: _curve);
                     }
                   },
             child: const Icon(Icons.navigate_next),
