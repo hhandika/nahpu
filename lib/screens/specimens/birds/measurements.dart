@@ -296,7 +296,6 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
               },
             ),
           ),
-          const Divider(),
           MaleGonadForm(
             specimenUuid: widget.specimenUuid,
             ctr: ctr,
@@ -309,7 +308,6 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
             useHorizontalLayout: widget.useHorizontalLayout,
             sex: _getSpecimenSex(),
           ),
-          const Divider(),
           MoltingForm(
             specimenUuid: widget.specimenUuid,
             ctr: ctr,
@@ -355,6 +353,7 @@ class MaleGonadForm extends ConsumerWidget {
         visible: sex == SpecimenSex.male,
         child: Column(
           children: [
+            const Divider(),
             Text('Male Gonads', style: Theme.of(context).textTheme.titleLarge),
             Text('Testis size (mm)',
                 style: Theme.of(context).textTheme.titleSmall),
@@ -440,13 +439,14 @@ class FemaleGonadForm extends ConsumerStatefulWidget {
 }
 
 class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
-  final bool _isLargeOvum = false;
+  bool _isLargeOvum = false;
   @override
   Widget build(BuildContext context) {
     return Visibility(
       visible: widget.sex == SpecimenSex.female,
       child: Column(
         children: [
+          const Divider(),
           Text('Female Gonads', style: Theme.of(context).textTheme.titleLarge),
           Text(
             'Ovaries',
@@ -506,12 +506,15 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
                   .toList(),
               onChanged: (OvaryAppearance? newValue) {
                 if (newValue != null) {
-                  SpecimenServices(ref).updateBirdMeasurement(
-                    widget.specimenUuid,
-                    BirdMeasurementCompanion(
-                      ovaryAppearance: db.Value(newValue.index),
-                    ),
-                  );
+                  setState(() {
+                    _isLargeOvum = newValue == OvaryAppearance.large;
+                    SpecimenServices(ref).updateBirdMeasurement(
+                      widget.specimenUuid,
+                      BirdMeasurementCompanion(
+                        ovaryAppearance: db.Value(newValue.index),
+                      ),
+                    );
+                  });
                 }
               },
             ),
@@ -811,6 +814,7 @@ class MoltingForm extends ConsumerWidget {
       visible: visible,
       child: Column(
         children: [
+          const Divider(),
           Text(
             'Molt',
             style: Theme.of(context).textTheme.titleMedium,
