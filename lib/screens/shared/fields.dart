@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/models/types.dart';
@@ -86,13 +87,17 @@ class CommonNumField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return CommonTextField(
-      labelText: labelText,
+    return TextField(
       controller: controller,
-      hintText: hintText,
+      decoration: InputDecoration(
+        labelText: labelText,
+        hintText: hintText,
+      ),
+      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       keyboardType: TextInputType.number,
       onChanged: onChanged,
-      isLastField: isLastField,
+      textInputAction:
+          isLastField ? TextInputAction.done : TextInputAction.next,
     );
   }
 }
