@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/models/navigation.dart';
-
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
 
@@ -89,63 +87,6 @@ class SecondaryButton extends StatelessWidget {
       ),
       onPressed: onPressed,
       child: Text(text),
-    );
-  }
-}
-
-class CustomPageNavButton extends ConsumerWidget {
-  final Curve _curve = Curves.easeInOut;
-
-  const CustomPageNavButton({
-    Key? key,
-    required this.pageController,
-    required this.pageNav,
-  }) : super(key: key);
-
-  final PageController pageController;
-  final PageNavigation pageNav;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // final page = ref.watch(pageNavigationProvider);
-    return Container(
-      constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.1,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextButton(
-            onPressed: pageNav.isFirstPage
-                ? null
-                : () {
-                    if (pageController.hasClients) {
-                      pageController.previousPage(
-                          duration: kTabScrollDuration, curve: _curve);
-                    }
-                  },
-            child: const Icon(Icons.navigate_before),
-          ),
-          FittedBox(
-            child: Text(
-              'Page ${pageNav.currentPage} of ${pageNav.pageCounts}',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
-          TextButton(
-            onPressed: pageNav.isLastPage
-                ? null
-                : () {
-                    if (pageController.hasClients) {
-                      pageController.nextPage(
-                          duration: kTabScrollDuration, curve: _curve);
-                    }
-                  },
-            child: const Icon(Icons.navigate_next),
-          ),
-        ],
-      ),
     );
   }
 }
