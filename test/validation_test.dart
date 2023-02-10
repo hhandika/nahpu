@@ -5,16 +5,8 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-// import 'dart:js_util';
-
-// import 'package:flutter/material.dart';
-
-import 'dart:math';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nahpu/models/types.dart';
-
-// import 'package:nahpu/main.dart';
 import 'package:nahpu/services/validation_services.dart';
 
 void main() {
