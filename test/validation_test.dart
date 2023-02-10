@@ -50,14 +50,12 @@ void main() {
     expect(catNum3.isValidCollNum, isFalse);
   }));
 
-  test(
-      'Test Specimen Sex Index',
-      () => {
-            expect(SpecimenSex.values[0], SpecimenSex.male),
-            expect(SpecimenSex.values[1], SpecimenSex.female),
-            expect(SpecimenSex.values[2], SpecimenSex.unknown),
-            expect(specimenSexList.indexOf('Male'), 0),
-            expect(specimenSexList.indexOf('Female'), 1),
-            expect(specimenSexList.indexOf('Unknown'), 2),
-          });
+  test('Test Specimen Sex Index', () {
+    expect(SpecimenSex.values[0], SpecimenSex.male);
+    expect(SpecimenSex.values[1], SpecimenSex.female);
+    expect(SpecimenSex.values[2], SpecimenSex.unknown);
+    expect(specimenSexList.indexOf('Male'), 0);
+    expect(specimenSexList.indexOf('Female'), 1);
+    expect(specimenSexList.indexOf('Unknown'), 2);
+  });
 }
