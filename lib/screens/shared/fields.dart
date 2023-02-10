@@ -77,6 +77,7 @@ class CommonNumField extends ConsumerWidget {
     this.controller,
     this.onChanged,
     required this.isLastField,
+    this.isDouble = false,
   }) : super(key: key);
 
   final String labelText;
@@ -84,6 +85,7 @@ class CommonNumField extends ConsumerWidget {
   final TextEditingController? controller;
   final void Function(String?)? onChanged;
   final bool isLastField;
+  final bool isDouble;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -93,8 +95,12 @@ class CommonNumField extends ConsumerWidget {
         labelText: labelText,
         hintText: hintText,
       ),
-      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-      keyboardType: TextInputType.number,
+      inputFormatters: isDouble
+          ? [FilteringTextInputFormatter.allow(RegExp(r"[0-9.]"))]
+          : [FilteringTextInputFormatter.digitsOnly],
+      keyboardType: isDouble
+          ? const TextInputType.numberWithOptions(decimal: true)
+          : TextInputType.number,
       onChanged: onChanged,
       textInputAction:
           isLastField ? TextInputAction.done : TextInputAction.next,

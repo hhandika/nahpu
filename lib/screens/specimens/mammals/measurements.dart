@@ -138,6 +138,7 @@ class MammalMeasurementFormsState
                 controller: ctr.weightCtr,
                 labelText: 'Weight (grams)',
                 hintText: 'Enter specimen weight',
+                isDouble: true,
                 isLastField: false,
                 onChanged: (value) {
                   if (value != null && value.isNotEmpty) {

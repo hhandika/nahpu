@@ -52,6 +52,7 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
                 controller: ctr.weightCtr,
                 labelText: 'Weight (grams)',
                 hintText: 'Enter weight',
+                isDouble: true,
                 isLastField: false,
                 onChanged: (String? value) {
                   if (value != null && value.isNotEmpty) {
