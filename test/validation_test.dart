@@ -46,9 +46,11 @@ void main() {
     String name = 'Heru Handika';
     String name2 = 'Bruná Encantada';
     String name3 = 'Name 123';
+    String name4 = 'Name J. Be-fore';
     expect(name.isValidName, isTrue);
     expect(name2.isValidName, isTrue);
     expect(name3.isValidName, isFalse);
+    expect(name4.isValidName, isTrue);
   });
 
   test('Test validation for project names', () {
