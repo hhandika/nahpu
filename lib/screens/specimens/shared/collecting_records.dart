@@ -200,29 +200,26 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
                   ))
               .toList(),
           onChanged: (String? uuid) {
-            setState(() {
-              widget.specimenCtr.catalogerCtr = uuid;
-              widget.specimenCtr.preparatorCtr = uuid;
-              var currentCollNum = _getCurrentCollectorNumber(uuid);
-              widget.specimenCtr.collectorNumberCtr.text =
-                  currentCollNum.toString();
-              SpecimenServices(ref).updateSpecimen(
-                widget.specimenUuid,
-                SpecimenCompanion(
-                  catalogerID: db.Value(uuid),
-                  fieldNumber: db.Value(
-                    currentCollNum,
+            if (uuid != null) {
+              setState(() {
+                widget.specimenCtr.catalogerCtr = uuid;
+                widget.specimenCtr.preparatorCtr = uuid;
+                _getCurrentCollectorNumber(uuid);
+                int fieldNumber = _getCurrentCollectorNumber(uuid);
+                widget.specimenCtr.collectorNumberCtr.text =
+                    fieldNumber.toString();
+                SpecimenServices(ref).updateSpecimen(
+                  widget.specimenUuid,
+                  SpecimenCompanion(
+                    catalogerID: db.Value(uuid),
+                    fieldNumber: db.Value(
+                      fieldNumber,
+                    ),
+                    preparatorID: db.Value(uuid),
                   ),
-                  preparatorID: db.Value(uuid),
-                ),
-              );
-              if (uuid != null) {
-                PersonnelServices(ref).updatePersonnelEntry(
-                    uuid,
-                    PersonnelCompanion(
-                        currentFieldNumber: db.Value(currentCollNum)));
-              }
-            });
+                );
+              });
+            }
           },
         ),
         TextFormField(
@@ -259,9 +256,12 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
     );
   }
 
-  int _getCurrentCollectorNumber(String? uuid) {
-    var collector = personnelList.firstWhere((element) => element.uuid == uuid);
-    int currentCollNum = collector.currentFieldNumber! + 1;
-    return currentCollNum;
+  int _getCurrentCollectorNumber(String personnelUuid) {
+    int? fieldNumber = personnelList
+        .firstWhere((element) => element.uuid == personnelUuid)
+        .currentFieldNumber;
+    fieldNumber ??= 0;
+
+    return fieldNumber;
   }
 }

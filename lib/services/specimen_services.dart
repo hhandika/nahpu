@@ -4,8 +4,10 @@ import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/database/personnel_queries.dart';
 import 'package:nahpu/services/database/specimen_queries.dart';
 import 'package:drift/drift.dart' as db;
+import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/project_services.dart';
 
 class SpecimenServices {
@@ -22,6 +24,7 @@ class SpecimenServices {
       projectUuid: db.Value(projectUuid),
       taxonGroup: db.Value(matchCatFmtToTaxonGroup(catalogFmt)),
     ));
+    PersonnelServices(ref).updateAllCatalogerFieldNumbers();
     switch (catalogFmt) {
       case CatalogFmt.birds:
         _createBirdSpecimen(specimenUuid);
@@ -36,8 +39,27 @@ class SpecimenServices {
         _createMammalSpecimen(specimenUuid);
         break;
     }
-    ref.invalidate(specimenEntryProvider);
+    _invalidateSpecimenList();
     return specimenUuid;
+  }
+
+  Future<int?> getSpecimenFieldNumber(
+      String projectUuid, String specimenUuid) async {
+    int? fieldNumber = await SpecimenQuery(ref.read(databaseProvider))
+        .getlastCatFieldNumber(projectUuid, specimenUuid);
+
+    fieldNumber ??= await PersonnelQuery(ref.read(databaseProvider))
+        .getCurrentFieldNumberByUuid(specimenUuid);
+    ref.invalidate(personnelListProvider);
+    return _getFieldNumber(fieldNumber);
+  }
+
+  int _getFieldNumber(int? lastFieldNumber) {
+    if (lastFieldNumber == null) {
+      return 0;
+    } else {
+      return lastFieldNumber + 1;
+    }
   }
 
   void _createMammalSpecimen(String specimenUuid) {
@@ -75,5 +97,10 @@ class SpecimenServices {
       String specimenUuid, BirdMeasurementCompanion entries) {
     BirdSpecimenQuery(ref.read(databaseProvider))
         .updateBirdMeasurements(specimenUuid, entries);
+  }
+
+  void _invalidateSpecimenList() {
+    ref.invalidate(specimenEntryProvider);
+    ref.invalidate(personnelListProvider);
   }
 }

@@ -18,6 +18,25 @@ class PersonnelQuery extends DatabaseAccessor<Database>
     return (update(personnel)..where((t) => t.uuid.equals(id))).write(entry);
   }
 
+  Future<int?> getCurrentFieldNumberByUuid(String personnelUuid) async {
+    return await (select(personnel)..where((t) => t.uuid.equals(personnelUuid)))
+        .map((e) => e.currentFieldNumber)
+        .getSingle();
+  }
+
+  Future<int?> updateCatalogerFieldNumber(String personnelUuid) async {
+    try {
+      return await (update(personnel)
+            ..where((t) => t.uuid.equals(personnelUuid)))
+          .write(PersonnelCompanion(
+              currentFieldNumber: Value(
+                  (await getCurrentFieldNumberByUuid(personnelUuid) ?? 0) +
+                      1)));
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<void> deletePersonnel(String uuid) {
     return (delete(personnel)..where((t) => t.uuid.equals(uuid))).go();
   }

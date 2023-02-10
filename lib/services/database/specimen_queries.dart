@@ -19,6 +19,19 @@ class SpecimenQuery extends DatabaseAccessor<Database>
         .get();
   }
 
+  Future<int?> getlastCatFieldNumber(
+      String projectUuid, String catalogerUuid) async {
+    try {
+      return await (select(specimen)
+            ..where((t) => t.projectUuid.equals(projectUuid))
+            ..where((t) => t.catalogerID.equals(catalogerUuid)))
+          .map((e) => e.fieldNumber)
+          .getSingle();
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<void> deleteSpecimen(String uuid) {
     return (delete(specimen)..where((t) => t.uuid.equals(uuid))).go();
   }
