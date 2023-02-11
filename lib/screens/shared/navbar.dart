@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/styles/colors.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/providers/projects.dart';
@@ -24,7 +23,8 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
     int selectedIndex = ref.watch(projectNavbarIndexProvider);
     return NavigationBar(
       labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-      backgroundColor: NahpuColor.navColor(context),
+      backgroundColor: Color.lerp(Theme.of(context).colorScheme.surface,
+          Theme.of(context).colorScheme.secondary, 0.1),
       elevation: 10,
       animationDuration: const Duration(seconds: 3),
       selectedIndex: selectedIndex,
@@ -69,7 +69,8 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
   void _onItemTapped(int index) {
     switch (index) {
       case 0:
-        Navigator.push(
+        _invalidateAll();
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => const Dashboard(),
@@ -79,33 +80,44 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
         break;
       case 1:
         ref.invalidate(siteEntryProvider);
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const Sites()),
         );
         break;
       case 2:
+        ref.invalidate(siteEntryProvider);
         ref.invalidate(collEventEntryProvider);
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const CollEvents()),
         );
         break;
       case 3:
+        ref.invalidate(collEventEntryProvider);
         ref.invalidate(specimenEntryProvider);
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const Specimens()),
         );
         break;
       case 4:
+        ref.invalidate(siteEntryProvider);
         ref.invalidate(narrativeEntryProvider);
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const Narrative()),
         );
         break;
     }
+  }
+
+  void _invalidateAll() {
+    ref.invalidate(siteEntryProvider);
+    ref.invalidate(weatherDataProvider);
+    ref.invalidate(collEventEntryProvider);
+    ref.invalidate(specimenEntryProvider);
+    ref.invalidate(narrativeEntryProvider);
   }
 }
 
@@ -115,6 +127,6 @@ class SpecimenIcons extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
-    return matchCatFmtToIcon(catalogFmt);
+    return Icon(matchCatFmtToIcon(catalogFmt));
   }
 }

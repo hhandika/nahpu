@@ -1,24 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:drift/drift.dart' as db;
-import 'package:nahpu/providers/catalogs.dart';
-import 'package:nahpu/services/database.dart';
+import 'package:nahpu/services/narrative_services.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/narrative/new_narrative.dart';
-// import 'package:nahpu/providers/page_viewer.dart';
+import 'package:flutter/material.dart';
 
 enum MenuSelection { newNarrative, pdfExport, deleteRecords, deleteAllRecords }
 
 Future<void> createNewNarrative(BuildContext context, WidgetRef ref) {
   String projectUuid = ref.watch(projectUuidProvider);
 
-  return ref
-      .read(databaseProvider)
-      .createNarrative(NarrativeCompanion(
-        projectUuid: db.Value(projectUuid),
-      ))
-      .then((value) {
-    ref.invalidate(narrativeEntryProvider);
+  return NarrativeServices(ref).createNewNarrative(projectUuid).then((value) {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => NewNarrativeForm(
               narrativeId: value,
@@ -27,7 +18,7 @@ Future<void> createNewNarrative(BuildContext context, WidgetRef ref) {
 }
 
 class NewNarrative extends ConsumerWidget {
-  const NewNarrative({Key? key}) : super(key: key);
+  const NewNarrative({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -41,7 +32,9 @@ class NewNarrative extends ConsumerWidget {
 }
 
 class NarrativeMenu extends ConsumerStatefulWidget {
-  const NarrativeMenu({Key? key}) : super(key: key);
+  const NarrativeMenu({super.key, required this.narrativeId});
+
+  final int? narrativeId;
 
   @override
   NarrativeMenuState createState() => NarrativeMenuState();
@@ -83,12 +76,14 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
       case MenuSelection.pdfExport:
         break;
       case MenuSelection.deleteRecords:
+        if (widget.narrativeId != null) {
+          NarrativeServices(ref).deleteNarrative(widget.narrativeId!);
+        }
         break;
       case MenuSelection.deleteAllRecords:
         final projectUuid = ref.read(projectUuidProvider.notifier).state;
-        ref.read(databaseProvider).deleteAllNarrative(projectUuid);
-        //ref.invalidate(narrativeEntryProvider);
-        //ref.invalidate(pageNavigationProvider);
+        NarrativeServices(ref).deleteAllNarrative(projectUuid);
+
         break;
     }
   }

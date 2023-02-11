@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/models/form.dart';
+import 'package:nahpu/models/controllers.dart';
+import 'package:nahpu/models/types.dart';
+import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/screens/specimens/mammals/measurements.dart';
 import 'package:nahpu/screens/specimens/shared/capture_records.dart';
 import 'package:nahpu/screens/specimens/shared/collecting_records.dart';
 import 'package:nahpu/screens/specimens/shared/media.dart';
 import 'package:nahpu/screens/specimens/shared/specimen_parts.dart';
-import 'package:nahpu/screens/specimens/shared/taxonomy.dart';
+import 'package:nahpu/screens/specimens/shared/taxa.dart';
 
 class MammalForms extends ConsumerStatefulWidget {
   const MammalForms(
@@ -47,7 +49,7 @@ class MammalFormsState extends ConsumerState<MammalForms> {
               AdaptiveLayout(
                 useHorizontalLayout: useHorizontalLayout,
                 children: [
-                  CollectingRecordFields(
+                  CollectingRecordField(
                       specimenUuid: widget.specimenUuid,
                       specimenCtr: widget.specimenCtr),
                   Column(
@@ -55,12 +57,10 @@ class MammalFormsState extends ConsumerState<MammalForms> {
                     children: [
                       TaxonomicForm(
                         useHorizontalLayout: useHorizontalLayout,
-                        taxonClass: 'Mammalia',
-                        taxonOrder: widget.isBats ? 'Chiroptera' : 'Rodentia',
-                        taxonFamily:
-                            widget.isBats ? 'Vespertilionidae' : 'Muridae',
+                        taxonData: widget.specimenCtr.taxonDataCtr,
                       ),
                       CaptureRecordFields(
+                        specimenUuid: widget.specimenUuid,
                         useHorizontalLayout: useHorizontalLayout,
                         specimenCtr: widget.specimenCtr,
                       ),
@@ -73,14 +73,19 @@ class MammalFormsState extends ConsumerState<MammalForms> {
                 children: [
                   MammalMeasurementForms(
                     useHorizontalLayout: useHorizontalLayout,
+                    specimenUuid: widget.specimenUuid,
                     isBats: widget.isBats,
                   ),
-                  PartDataForm(specimenCtr: widget.specimenCtr),
+                  PartDataForm(
+                    specimenCtr: widget.specimenCtr,
+                    catalogFmt: CatalogFmt.generalMammals,
+                  ),
                 ],
               ),
               MediaForms(
                 specimenUuid: widget.specimenUuid,
               ),
+              const BottomPadding()
             ],
           ),
         );

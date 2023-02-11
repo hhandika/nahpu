@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:nahpu/services/database.dart';
+import 'package:nahpu/services/database/database.dart';
 
 class ProjectInfo extends StatelessWidget {
   const ProjectInfo({Key? key, required this.projectData}) : super(key: key);
@@ -74,11 +74,11 @@ class ProjectInfo extends StatelessWidget {
         ),
         RichText(
           text: TextSpan(
-            text: 'Modified: ',
+            text: 'Accessed: ',
             style: Theme.of(context).textTheme.titleSmall,
             children: [
               TextSpan(
-                text: projectData?.lastModified ?? 'No DateModified',
+                text: projectData?.lastAccessed ?? 'No DateModified',
                 style: Theme.of(context).textTheme.bodyLarge,
               )
             ],

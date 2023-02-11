@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/models/form.dart';
+import 'package:nahpu/models/controllers.dart';
+import 'package:nahpu/models/types.dart';
+import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/screens/specimens/birds/measurements.dart';
 import 'package:nahpu/screens/specimens/shared/capture_records.dart';
 import 'package:nahpu/screens/specimens/shared/collecting_records.dart';
 import 'package:nahpu/screens/specimens/shared/media.dart';
 import 'package:nahpu/screens/specimens/shared/specimen_parts.dart';
-import 'package:nahpu/screens/specimens/shared/taxonomy.dart';
+import 'package:nahpu/screens/specimens/shared/taxa.dart';
 
 class BirdForms extends ConsumerStatefulWidget {
   const BirdForms(
@@ -43,7 +45,7 @@ class BirdFormsState extends ConsumerState<BirdForms> {
               AdaptiveLayout(
                 useHorizontalLayout: useHorizontalLayout,
                 children: [
-                  CollectingRecordFields(
+                  CollectingRecordField(
                       specimenUuid: widget.specimenUuid,
                       specimenCtr: widget.specimenCtr),
                   Column(
@@ -51,10 +53,9 @@ class BirdFormsState extends ConsumerState<BirdForms> {
                     children: [
                       TaxonomicForm(
                           useHorizontalLayout: useHorizontalLayout,
-                          taxonClass: 'Aves',
-                          taxonOrder: 'Passeriformes',
-                          taxonFamily: 'Fringillidae'),
+                          taxonData: widget.specimenCtr.taxonDataCtr),
                       CaptureRecordFields(
+                        specimenUuid: widget.specimenUuid,
                         useHorizontalLayout: useHorizontalLayout,
                         specimenCtr: widget.specimenCtr,
                       ),
@@ -68,12 +69,16 @@ class BirdFormsState extends ConsumerState<BirdForms> {
                   BirdMeasurementForms(
                       useHorizontalLayout: useHorizontalLayout,
                       specimenUuid: widget.specimenUuid),
-                  PartDataForm(specimenCtr: widget.specimenCtr),
+                  PartDataForm(
+                    specimenCtr: widget.specimenCtr,
+                    catalogFmt: CatalogFmt.birds,
+                  ),
                 ],
               ),
               MediaForms(
                 specimenUuid: widget.specimenUuid,
               ),
+              const BottomPadding(),
             ],
           ),
         );

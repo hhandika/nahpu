@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/controller/navigation.dart';
-import 'package:nahpu/models/catalogs.dart';
-import 'package:nahpu/models/form.dart';
+import 'package:nahpu/services/navigation_services.dart';
+import 'package:nahpu/models/navigation.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
-import 'package:nahpu/screens/shared/indicators.dart';
+import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
 import 'package:nahpu/screens/sites/components/menu_bar.dart';
 import 'package:nahpu/screens/sites/site_form.dart';
-import 'package:nahpu/services/database.dart';
+import 'package:nahpu/services/database/database.dart';
 
 enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
 
@@ -67,7 +67,7 @@ class SitesState extends ConsumerState<Sites> {
                 controller: pageController,
                 itemCount: siteSize,
                 itemBuilder: (context, index) {
-                  final siteForm = _updateController(siteEntries, index);
+                  final siteForm = _updateController(siteEntries[index]);
                   return SiteForm(
                     id: siteEntries[index].id,
                     siteFormCtr: siteForm,
@@ -81,7 +81,7 @@ class SitesState extends ConsumerState<Sites> {
               );
             }
           }, loading: () {
-            return const CommmonProgressIndicator();
+            return const CommonProgressIndicator();
           }, error: (error, stackTrace) {
             return Text(error.toString());
           }),
@@ -97,25 +97,7 @@ class SitesState extends ConsumerState<Sites> {
     );
   }
 
-  SiteFormCtrModel _updateController(List<SiteData> siteEntries, int index) {
-    return SiteFormCtrModel(
-      siteIDCtr: TextEditingController(text: siteEntries[index].siteID),
-      leadStaffCtr: siteEntries[index].leadStaffId,
-      siteTypeCtr: TextEditingController(text: siteEntries[index].siteType),
-      countryCtr: TextEditingController(text: siteEntries[index].country),
-      stateProvinceCtr:
-          TextEditingController(text: siteEntries[index].stateProvince),
-      countyCtr: TextEditingController(text: siteEntries[index].county),
-      municipalityCtr:
-          TextEditingController(text: siteEntries[index].municipality),
-      localityCtr: TextEditingController(text: siteEntries[index].locality),
-      remarkCtr: TextEditingController(text: siteEntries[index].remark),
-      habitatTypeCtr:
-          TextEditingController(text: siteEntries[index].habitatType),
-      habitatDescriptionCtr:
-          TextEditingController(text: siteEntries[index].habitatDescription),
-      habitatConditionCtr:
-          TextEditingController(text: siteEntries[index].habitatCondition),
-    );
+  SiteFormCtrModel _updateController(SiteData siteEntries) {
+    return SiteFormCtrModel.fromData(siteEntries);
   }
 }

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/controller/navigation.dart';
-import 'package:nahpu/models/catalogs.dart';
-import 'package:nahpu/models/form.dart';
+import 'package:nahpu/services/narrative_services.dart';
+import 'package:nahpu/services/navigation_services.dart';
+import 'package:nahpu/models/navigation.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/narrative/components/menu_bar.dart';
 import 'package:nahpu/screens/narrative/narrative_form.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
-import 'package:nahpu/screens/shared/indicators.dart';
+import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
-import 'package:nahpu/services/database.dart';
+import 'package:nahpu/services/database/database.dart';
 
 class Narrative extends ConsumerStatefulWidget {
   const Narrative({Key? key}) : super(key: key);
@@ -22,6 +23,7 @@ class NarrativeState extends ConsumerState<Narrative> {
   bool isVisible = false;
   PageController pageController = PageController();
   PageNavigation _pageNav = PageNavigation();
+  int? narrativeId;
 
   @override
   void dispose() {
@@ -34,9 +36,11 @@ class NarrativeState extends ConsumerState<Narrative> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Narrative"),
-        actions: const [
-          NewNarrative(),
-          NarrativeMenu(),
+        actions: [
+          const NewNarrative(),
+          NarrativeMenu(
+            narrativeId: narrativeId,
+          ),
         ],
         automaticallyImplyLeading: false,
       ),
@@ -80,12 +84,12 @@ class NarrativeState extends ConsumerState<Narrative> {
                       onPageChanged: (value) => setState(() {
                         _pageNav.currentPage = value + 1;
                         _pageNav = updatePageNavigation(_pageNav);
-                        ref.invalidate(narrativeEntryProvider);
+                        NarrativeServices(ref).invalidateNarrative();
                       }),
                     );
                   }
                 },
-                loading: () => const CommmonProgressIndicator(),
+                loading: () => const CommonProgressIndicator(),
                 error: (error, stack) => Text(error.toString()),
               ),
         ),
@@ -105,7 +109,7 @@ class NarrativeState extends ConsumerState<Narrative> {
       List<NarrativeData> narrativeEntries, int index) {
     return NarrativeFormCtrModel(
       dateCtr: TextEditingController(text: narrativeEntries[index].date),
-      siteCtr: TextEditingController(text: narrativeEntries[index].siteID),
+      siteCtr: narrativeEntries[index].siteID,
       narrativeCtr:
           TextEditingController(text: narrativeEntries[index].narrative),
     );

@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
-import 'package:nahpu/screens/settings/project_settings.dart';
+import 'package:drift/drift.dart' as db;
 import 'package:nahpu/screens/home/home.dart';
+import 'package:nahpu/screens/settings/project_settings.dart';
 import 'package:nahpu/screens/shared/forms.dart';
-import 'package:nahpu/screens/shared/indicators.dart';
+import 'package:nahpu/screens/shared/common.dart';
+import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/project_services.dart';
+import 'package:nahpu/services/utility_services.dart';
 
 class ProjectMenuDrawer extends ConsumerWidget {
   const ProjectMenuDrawer({Key? key}) : super(key: key);
@@ -87,7 +91,15 @@ class ProjectMenuDrawer extends ConsumerWidget {
             leading: const Icon(Icons.exit_to_app_rounded),
             title: const Text('Close project'),
             onTap: () {
-              Navigator.push(
+              ProjectServices(ref).updateProject(
+                projectUuid,
+                ProjectCompanion(
+                  lastAccessed: db.Value(
+                    getSystemDateTime(),
+                  ),
+                ),
+              );
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => const Home()),
               );
@@ -108,7 +120,7 @@ class ProjectMenuDrawer extends ConsumerWidget {
                 builder: (BuildContext context) {
                   return DeleteAlerts(
                     projectUuid: projectUuid,
-                    onDelete: () => Navigator.push(
+                    onDelete: () => Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => const Home()),
                     ),
@@ -135,7 +147,7 @@ class MenuAvatar extends ConsumerWidget {
       data: (data) {
         return UserAccountsDrawerHeader(
           decoration:
-              BoxDecoration(color: Theme.of(context).colorScheme.secondary),
+              BoxDecoration(color: Theme.of(context).colorScheme.primary),
           accountName: Text(
             data?.name ?? 'No Project',
             style: const TextStyle(
@@ -150,7 +162,7 @@ class MenuAvatar extends ConsumerWidget {
           ),
         );
       },
-      loading: () => const CommmonProgressIndicator(),
+      loading: () => const CommonProgressIndicator(),
       error: (error, stack) => Text(
         error.toString(),
       ),

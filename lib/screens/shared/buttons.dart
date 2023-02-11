@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/models/catalogs.dart';
+import 'package:nahpu/models/navigation.dart';
 
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
@@ -18,6 +18,34 @@ class ProjectBackButton extends ConsumerWidget {
         ref.read(projectNavbarIndexProvider.notifier).state = 0;
       },
     );
+  }
+}
+
+class FormElevButton extends StatelessWidget {
+  const FormElevButton({
+    Key? key,
+    required this.onPressed,
+    required this.text,
+    required this.enabled,
+  }) : super(key: key);
+
+  final VoidCallback onPressed;
+  final String text;
+  final bool enabled;
+
+  @override
+  Widget build(BuildContext context) {
+    if (enabled) {
+      return PrimaryButton(
+        onPressed: onPressed,
+        text: text,
+      );
+    } else {
+      return PrimaryButton(
+        onPressed: null,
+        text: text,
+      );
+    }
   }
 }
 
@@ -66,7 +94,6 @@ class SecondaryButton extends StatelessWidget {
 }
 
 class CustomPageNavButton extends ConsumerWidget {
-  final Duration _duration = const Duration(milliseconds: 300);
   final Curve _curve = Curves.easeInOut;
 
   const CustomPageNavButton({
@@ -95,7 +122,7 @@ class CustomPageNavButton extends ConsumerWidget {
                 : () {
                     if (pageController.hasClients) {
                       pageController.previousPage(
-                          duration: _duration, curve: _curve);
+                          duration: kTabScrollDuration, curve: _curve);
                     }
                   },
             child: const Icon(Icons.navigate_before),
@@ -112,7 +139,7 @@ class CustomPageNavButton extends ConsumerWidget {
                 : () {
                     if (pageController.hasClients) {
                       pageController.nextPage(
-                          duration: _duration, curve: _curve);
+                          duration: kTabScrollDuration, curve: _curve);
                     }
                   },
             child: const Icon(Icons.navigate_next),

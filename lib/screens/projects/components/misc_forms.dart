@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/screens/projects/components/expenses.dart';
+import 'package:nahpu/screens/projects/components/permits.dart';
 import 'package:nahpu/screens/projects/components/statistics.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 
@@ -14,7 +16,7 @@ class MiscForm extends ConsumerStatefulWidget {
 class MiscFormState extends ConsumerState<MiscForm>
     with TickerProviderStateMixin {
   late TabController _tabController;
-  final int _length = 2;
+  final int _length = 3;
 
   @override
   void initState() {
@@ -41,18 +43,22 @@ class MiscFormState extends ConsumerState<MiscForm>
         child: MediaTabBars(
           tabController: _tabController,
           length: _length,
-          height: 0.3,
+          height: 0.4,
           tabs: [
             Tab(
-                icon: Icon(Icons.bar_chart_rounded,
+                icon: Icon(MdiIcons.chartLine,
                     color: Theme.of(context).colorScheme.tertiary)),
             Tab(
                 icon: Icon(Icons.receipt_long_rounded,
+                    color: Theme.of(context).colorScheme.tertiary)),
+            Tab(
+                icon: Icon(MdiIcons.fileDocumentMultipleOutline,
                     color: Theme.of(context).colorScheme.tertiary)),
           ],
           children: const [
             StatisticViewer(),
             ReceiptViewer(),
+            PermitViewer(),
           ],
         ),
       ),

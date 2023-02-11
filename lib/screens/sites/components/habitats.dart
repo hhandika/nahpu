@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/controller/updaters.dart';
-import 'package:nahpu/models/form.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/screens/shared/forms.dart';
-import 'package:nahpu/services/database.dart';
+import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
+import 'package:nahpu/services/site_services.dart';
 
 class Habitat extends ConsumerWidget {
   const Habitat(
@@ -32,8 +32,10 @@ class Habitat extends ConsumerWidget {
                 hintText:
                     'Enter a habitat type, e.g. "Urban", "Montane Forest", "Desert", "etc."',
               ),
-              onChanged: (value) => updateSite(
-                  id, SiteCompanion(habitatType: db.Value(value)), ref),
+              onChanged: (value) => SiteServices(ref).updateSite(
+                id,
+                SiteCompanion(habitatType: db.Value(value)),
+              ),
             ),
             TextFormField(
               controller: siteFormCtr.habitatConditionCtr,
@@ -42,8 +44,10 @@ class Habitat extends ConsumerWidget {
                 hintText:
                     'Enter habitat condition, e.g. "Prestine", "Disturbed", "etc."',
               ),
-              onChanged: (value) => updateSite(
-                  id, SiteCompanion(habitatCondition: db.Value(value)), ref),
+              onChanged: (value) => SiteServices(ref).updateSite(
+                id,
+                SiteCompanion(habitatCondition: db.Value(value)),
+              ),
             ),
             TextFormField(
               maxLines: 5,
@@ -53,8 +57,10 @@ class Habitat extends ConsumerWidget {
                 hintText:
                     'Describe the site, e.g. "A camp site in the middle of the forest."',
               ),
-              onChanged: (value) => updateSite(
-                  id, SiteCompanion(habitatDescription: db.Value(value)), ref),
+              onChanged: (value) => SiteServices(ref).updateSite(
+                id,
+                SiteCompanion(habitatDescription: db.Value(value)),
+              ),
             ),
           ],
         ),

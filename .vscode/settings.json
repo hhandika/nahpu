@@ -1,3 +1,10 @@
 {
+<<<<<<< HEAD
   "cmake.sourceDirectory": "${workspaceFolder}/linux"
 }
+=======
+    "cSpell.words": [
+        "nahpu"
+    ]
+}
+>>>>>>> main

@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 
 class NahpuTheme {
-  static final _defaultLightColorScheme = ColorScheme.fromSwatch(
-    primarySwatch: Colors.teal,
-    brightness: Brightness.light,
-  );
+  static final _defaultLightColorScheme =
+      FlexThemeData.light(scheme: FlexScheme.jungle).colorScheme;
 
-  static final _defaultDarkColorScheme = ColorScheme.fromSwatch(
-    primarySwatch: Colors.teal,
-    brightness: Brightness.dark,
-  );
+  static final _defaultDarkColorScheme =
+      FlexThemeData.dark(scheme: FlexScheme.jungle).colorScheme;
 
   static ThemeData lightTheme(ColorScheme? lightColorScheme) {
     return ThemeData(
       colorScheme: lightColorScheme ?? _defaultLightColorScheme,
-      useMaterial3: Platform.isIOS ? false : true,
+      useMaterial3: true,
+      // useMaterial3: Platform.isIOS ? false : true,
       visualDensity: VisualDensity.adaptivePlatformDensity,
       appBarTheme: appBarLightTheme,
       cardTheme: cardTheme,
@@ -25,7 +22,8 @@ class NahpuTheme {
   static ThemeData darkTheme(ColorScheme? darkColorScheme) {
     return ThemeData(
       colorScheme: darkColorScheme ?? _defaultDarkColorScheme,
-      useMaterial3: Platform.isIOS ? false : true,
+      useMaterial3: true,
+      // useMaterial3: Platform.isIOS ? false : true,
       visualDensity: VisualDensity.adaptivePlatformDensity,
       appBarTheme: appBarDarkTheme,
       cardTheme: cardTheme,

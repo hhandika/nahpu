@@ -1,15 +1,22 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:nahpu/models/form.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:flutter/material.dart';
+import 'package:nahpu/models/types.dart';
+import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/associated_data.dart';
 
 class PartDataForm extends ConsumerStatefulWidget {
-  const PartDataForm({super.key, required this.specimenCtr});
+  const PartDataForm({
+    super.key,
+    required this.specimenCtr,
+    required this.catalogFmt,
+  });
 
   final SpecimenFormCtrModel specimenCtr;
+  final CatalogFmt catalogFmt;
 
   @override
   PartDataFormState createState() => PartDataFormState();
@@ -42,13 +49,10 @@ class PartDataFormState extends ConsumerState<PartDataForm>
         length: _length,
         tabs: [
           Tab(
-            icon: Text(
-              'Parts',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
+            icon: Icon(matchCatFmtToPartIcon(widget.catalogFmt)),
           ),
           Tab(
-              icon: Icon(MdiIcons.database,
+              icon: Icon(MdiIcons.databaseOutline,
                   color: Theme.of(context).colorScheme.tertiary))
         ],
         children: [
@@ -70,13 +74,9 @@ class SpecimenPartFields extends ConsumerWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const SizedBox(height: 100),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-            elevation: 0,
-          ),
+        const TitleForm(text: 'Specimen Parts'),
+        const Expanded(child: PartList()),
+        PrimaryButton(
           onPressed: () {
             showDialog(
                 context: context,
@@ -86,18 +86,27 @@ class SpecimenPartFields extends ConsumerWidget {
                   );
                 });
           },
-          child: const Text(
-            'Add part',
-          ),
+          text: 'Add Part',
         ),
         TextFormField(
           maxLines: 5,
           decoration: const InputDecoration(
-            labelText: 'Part notes',
+            labelText: 'Notes',
             hintText: 'Add notes',
           ),
         ),
       ],
+    );
+  }
+}
+
+class PartList extends ConsumerWidget {
+  const PartList({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ListView(
+      children: const [Text('Parts'), Text('data')],
     );
   }
 }

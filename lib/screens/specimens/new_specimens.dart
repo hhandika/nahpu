@@ -1,58 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/models/form.dart';
-import 'package:nahpu/models/types.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
-// import 'package:nahpu/providers/page_viewer.dart';
 import 'package:nahpu/screens/specimens/specimen_form.dart';
 import 'package:nahpu/screens/specimens/specimen_view.dart';
-import 'package:drift/drift.dart' as db;
-import 'package:nahpu/services/database.dart';
-import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/services/specimen_services.dart';
 
 Future<void> createNewSpecimens(BuildContext context, WidgetRef ref) {
-  String projectUuid = ref.watch(projectUuidProvider);
-  CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
-  final String specimenUuid = uuid;
-  ref.read(databaseProvider).createSpecimen(SpecimenCompanion(
-        uuid: db.Value(specimenUuid),
-        projectUuid: db.Value(projectUuid),
-        taxonGroup: db.Value(matchCatFmtToTaxonGroup(catalogFmt)),
-      ));
-  switch (catalogFmt) {
-    case CatalogFmt.birds:
-      ref.read(specimenProvider).createBirdMeasurements(
-            BirdMeasurementCompanion(
-              specimenUuid: db.Value(specimenUuid),
-            ),
-          );
-      break;
-    case CatalogFmt.bats:
-      ref.read(specimenProvider).createMammalMeasurements(
-            MammalMeasurementCompanion(
-              specimenUuid: db.Value(specimenUuid),
-            ),
-          );
-      break;
-    case CatalogFmt.generalMammals:
-      ref.read(specimenProvider).createMammalMeasurements(
-            MammalMeasurementCompanion(
-              specimenUuid: db.Value(specimenUuid),
-            ),
-          );
-      break;
-    default:
-      ref.read(specimenProvider).createMammalMeasurements(
-            MammalMeasurementCompanion(
-              specimenUuid: db.Value(specimenUuid),
-            ),
-          );
-      break;
-  }
-
-  ref.invalidate(specimenEntryProvider);
+  String specimenUuid = SpecimenServices(ref).createSpecimen();
   return Navigator.of(context).push(
     MaterialPageRoute(
       builder: (_) => NewSpecimenForm(

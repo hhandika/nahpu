@@ -1,9 +1,9 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'specimen_queries.dart';
+part of 'coordinate_queries.dart';
 
 // ignore_for_file: type=lint
-mixin _$SpecimenQueryMixin on DatabaseAccessor<Database> {
+mixin _$CoordinateQueryMixin on DatabaseAccessor<Database> {
   Project get project => attachedDatabase.project;
   FileMetadata get fileMetadata => attachedDatabase.fileMetadata;
   PersonnelPhoto get personnelPhoto => attachedDatabase.personnelPhoto;
@@ -12,21 +12,21 @@ mixin _$SpecimenQueryMixin on DatabaseAccessor<Database> {
   Site get site => attachedDatabase.site;
   Coordinate get coordinate => attachedDatabase.coordinate;
   CollEvent get collEvent => attachedDatabase.collEvent;
-  CollectingPersonnel get collectingPersonnel =>
-      attachedDatabase.collectingPersonnel;
+  Weather get weather => attachedDatabase.weather;
+  CollPersonnel get collPersonnel => attachedDatabase.collPersonnel;
   CollEffort get collEffort => attachedDatabase.collEffort;
   Narrative get narrative => attachedDatabase.narrative;
   AssociatedData get associatedData => attachedDatabase.associatedData;
   PersonnelList get personnelList => attachedDatabase.personnelList;
   ProjectPersonnel get projectPersonnel => attachedDatabase.projectPersonnel;
+  Taxonomy get taxonomy => attachedDatabase.taxonomy;
   Specimen get specimen => attachedDatabase.specimen;
   MammalMeasurement get mammalMeasurement => attachedDatabase.mammalMeasurement;
   BirdMeasurement get birdMeasurement => attachedDatabase.birdMeasurement;
   Part get part => attachedDatabase.part;
-  Taxonomy get taxonomy => attachedDatabase.taxonomy;
   Expense get expense => attachedDatabase.expense;
   Selectable<ListProjectResult> listProject() {
-    return customSelect('SELECT uuid, name, created, lastModified FROM project',
+    return customSelect('SELECT uuid, name, created, lastAccessed FROM project',
         variables: [],
         readsFrom: {
           project,
@@ -35,7 +35,7 @@ mixin _$SpecimenQueryMixin on DatabaseAccessor<Database> {
         uuid: row.read<String>('uuid'),
         name: row.read<String>('name'),
         created: row.readNullable<String>('created'),
-        lastModified: row.readNullable<String>('lastModified'),
+        lastAccessed: row.readNullable<String>('lastAccessed'),
       );
     });
   }
@@ -45,11 +45,11 @@ class ListProjectResult {
   final String uuid;
   final String name;
   final String? created;
-  final String? lastModified;
+  final String? lastAccessed;
   ListProjectResult({
     required this.uuid,
     required this.name,
     this.created,
-    this.lastModified,
+    this.lastAccessed,
   });
 }

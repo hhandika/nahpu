@@ -1,105 +1,90 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/controller/updaters.dart';
-import 'package:nahpu/models/form.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:flutter/material.dart';
+import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:intl/intl.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:drift/drift.dart' as db;
-import 'package:nahpu/services/database.dart';
+import 'package:nahpu/screens/specimens/shared/taxa.dart';
+import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/personnel_services.dart';
+import 'package:nahpu/services/specimen_services.dart';
+import 'package:nahpu/services/database/taxonomy_queries.dart';
 
-class CollectingRecordFields extends ConsumerWidget {
-  const CollectingRecordFields(
-      {Key? key, required this.specimenUuid, required this.specimenCtr})
-      : super(key: key);
+class CollectingRecordField extends ConsumerStatefulWidget {
+  const CollectingRecordField({
+    Key? key,
+    required this.specimenUuid,
+    required this.specimenCtr,
+  }) : super(key: key);
 
   final SpecimenFormCtrModel specimenCtr;
   final String specimenUuid;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    List<PersonnelData> personnelList = [];
-    final personnelEntry = ref.watch(personnelListProvider);
+  CollectingRecordFieldState createState() => CollectingRecordFieldState();
+}
 
-    final List<String> conditions = [
-      'Freshy Euthanized',
-      'Good',
-      'Fair',
-      'Poor',
-      'Rotten',
-      'Released',
-    ];
-    personnelEntry.when(
-      data: (personnelEntry) => personnelList = personnelEntry,
-      loading: () => null,
-      error: (e, s) => null,
+class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
+  List<PersonnelData> personnelList = [];
+  final List<String> conditions = [
+    'Freshy Euthanized',
+    'Good',
+    'Fair',
+    'Poor',
+    'Rotten',
+    'Released',
+  ];
+
+  final speciesCtr = TextEditingController();
+  late FocusNode _speciesFocusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    speciesCtr.text = widget.specimenCtr.taxonDataCtr.speciesName;
+    _speciesFocusNode = FocusNode();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final personnelEntry = ref.watch(personnelListProvider);
+    personnelEntry.whenData(
+      (personnelEntry) => personnelList = personnelEntry,
     );
     return FormCard(
       title: 'Collecting Records',
       isPrimary: true,
       child: Column(
         children: [
+          PersonnelRecords(
+              specimenUuid: widget.specimenUuid,
+              specimenCtr: widget.specimenCtr),
+          SpeciesAutoComplete(
+              controller: speciesCtr,
+              onSelected: (String value) {
+                _speciesFocusNode.requestFocus();
+                setState(() {
+                  speciesCtr.text = value;
+                  var taxon = value.split(' ');
+                  TaxonomyQuery(ref.read(databaseProvider))
+                      .getTaxonIdByGenusEpithet(taxon[0], taxon[1])
+                      .then(
+                        (data) => SpecimenServices(ref).updateSpecimen(
+                          widget.specimenUuid,
+                          SpecimenCompanion(speciesID: db.Value(data.id)),
+                        ),
+                      );
+                });
+              }),
           DropdownButtonFormField(
-            value: specimenCtr.collectorCtr,
-            decoration: const InputDecoration(
-              labelText: 'Collector',
-              hintText: 'Choose a collector',
-            ),
-            items: personnelList
-                .map((e) => DropdownMenuItem(
-                      value: e.uuid,
-                      child: Text(e.name ?? ''),
-                    ))
-                .toList(),
-            onChanged: (String? uuid) {
-              updateSpecimen(specimenUuid,
-                  SpecimenCompanion(collectorID: db.Value(uuid)), ref);
-            },
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Collector Number',
-              hintText: 'Enter collector number',
-            ),
-          ),
-          DropdownButtonFormField(
-            value: specimenCtr.preparatorCtr,
-            decoration: const InputDecoration(
-              labelText: 'Preparator',
-              hintText: 'Choose a preparator',
-            ),
-            items: personnelList
-                .map((e) => DropdownMenuItem(
-                      value: e.uuid,
-                      child: Text(e.name ?? ''),
-                    ))
-                .toList(),
-            onChanged: (String? uuid) {
-              updateSpecimen(specimenUuid,
-                  SpecimenCompanion(preparatorID: db.Value(uuid)), ref);
-            },
-          ),
-          DropdownButtonFormField(
-              decoration: const InputDecoration(
-                labelText: 'Species',
-                hintText: 'Choose a speciess',
-              ),
-              items: const [
-                DropdownMenuItem(
-                  value: 'One',
-                  child: Text('One'),
-                ),
-                DropdownMenuItem(
-                  value: 'Two',
-                  child: Text('Two'),
-                ),
-              ],
-              onChanged: (String? newValue) {}),
-          DropdownButtonFormField(
-            value: specimenCtr.conditionCtr,
+            value: widget.specimenCtr.conditionCtr,
             onChanged: (String? value) {
-              updateSpecimen(specimenUuid,
-                  SpecimenCompanion(condition: db.Value(value)), ref);
+              SpecimenServices(ref).updateSpecimen(
+                widget.specimenUuid,
+                SpecimenCompanion(condition: db.Value(value)),
+              );
             },
             decoration: const InputDecoration(
               labelText: 'Condition',
@@ -120,7 +105,7 @@ class CollectingRecordFields extends ConsumerWidget {
                     labelText: 'Preparation date',
                     hintText: 'Enter date',
                   ),
-                  controller: specimenCtr.prepDateCtr,
+                  controller: widget.specimenCtr.prepDateCtr,
                   onTap: () async {
                     final selectedDate = await showDatePicker(
                         context: context,
@@ -129,13 +114,14 @@ class CollectingRecordFields extends ConsumerWidget {
                         lastDate: DateTime.now());
 
                     if (selectedDate != null) {
-                      specimenCtr.prepDateCtr.text =
+                      widget.specimenCtr.prepDateCtr.text =
                           DateFormat.yMMMd().format(selectedDate);
-                      updateSpecimen(
-                          specimenUuid,
-                          SpecimenCompanion(
-                              prepDate: db.Value(specimenCtr.prepDateCtr.text)),
-                          ref);
+                      SpecimenServices(ref).updateSpecimen(
+                        widget.specimenUuid,
+                        SpecimenCompanion(
+                            prepDate:
+                                db.Value(widget.specimenCtr.prepDateCtr.text)),
+                      );
                     }
                   },
                 ),
@@ -147,19 +133,21 @@ class CollectingRecordFields extends ConsumerWidget {
                     labelText: 'Prep. time',
                     hintText: 'Enter time',
                   ),
-                  controller: specimenCtr.prepTimeCtr,
+                  controller: widget.specimenCtr.prepTimeCtr,
                   onTap: () {
                     showTimePicker(
                             context: context, initialTime: TimeOfDay.now())
                         .then((time) {
                       if (time != null) {
-                        specimenCtr.prepTimeCtr.text = time.format(context);
-                        updateSpecimen(
-                            specimenUuid,
-                            SpecimenCompanion(
-                              prepTime: db.Value(specimenCtr.prepTimeCtr.text),
-                            ),
-                            ref);
+                        widget.specimenCtr.prepTimeCtr.text =
+                            time.format(context);
+                        SpecimenServices(ref).updateSpecimen(
+                          widget.specimenUuid,
+                          SpecimenCompanion(
+                            prepTime:
+                                db.Value(widget.specimenCtr.prepTimeCtr.text),
+                          ),
+                        );
                       }
                     });
                   },
@@ -170,5 +158,110 @@ class CollectingRecordFields extends ConsumerWidget {
         ],
       ),
     );
+  }
+}
+
+class PersonnelRecords extends ConsumerStatefulWidget {
+  const PersonnelRecords({
+    Key? key,
+    required this.specimenUuid,
+    required this.specimenCtr,
+  }) : super(key: key);
+
+  final SpecimenFormCtrModel specimenCtr;
+  final String specimenUuid;
+
+  @override
+  PersonnelRecordsState createState() => PersonnelRecordsState();
+}
+
+class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
+  List<PersonnelData> personnelList = [];
+
+  @override
+  Widget build(BuildContext context) {
+    final personnelEntry = ref.watch(personnelListProvider);
+    personnelEntry.whenData(
+      (personnelEntry) => personnelList = personnelEntry,
+    );
+    return Column(
+      children: [
+        DropdownButtonFormField(
+          value: widget.specimenCtr.catalogerCtr,
+          decoration: const InputDecoration(
+            labelText: 'Cataloger',
+            hintText: 'Choose a person with field number',
+          ),
+          items: personnelList
+              .where((element) => element.role == 'Cataloger')
+              .map((e) => DropdownMenuItem(
+                    value: e.uuid,
+                    child: Text(e.name ?? ''),
+                  ))
+              .toList(),
+          onChanged: (String? uuid) {
+            setState(() {
+              widget.specimenCtr.catalogerCtr = uuid;
+              widget.specimenCtr.preparatorCtr = uuid;
+              var currentCollNum = _getCurrentCollectorNumber(uuid);
+              widget.specimenCtr.collectorNumberCtr.text =
+                  currentCollNum.toString();
+              SpecimenServices(ref).updateSpecimen(
+                widget.specimenUuid,
+                SpecimenCompanion(
+                  catalogerID: db.Value(uuid),
+                  fieldNumber: db.Value(
+                    currentCollNum,
+                  ),
+                  preparatorID: db.Value(uuid),
+                ),
+              );
+              if (uuid != null) {
+                PersonnelServices(ref).updatePersonnelEntry(
+                    uuid,
+                    PersonnelCompanion(
+                        currentFieldNumber: db.Value(currentCollNum)));
+              }
+            });
+          },
+        ),
+        TextFormField(
+          controller: widget.specimenCtr.collectorNumberCtr,
+          enabled: false,
+          decoration: const InputDecoration(
+            labelText: 'Field Number',
+            hintText: 'Autofill',
+          ),
+        ),
+        DropdownButtonFormField(
+          value: widget.specimenCtr.preparatorCtr,
+          decoration: const InputDecoration(
+            labelText: 'Preparator',
+            hintText: 'Choose a preparator (default is cataloger)',
+          ),
+          items: personnelList
+              .where((element) =>
+                  element.role == 'Cataloger' ||
+                  element.role == 'Preparator only')
+              .map((e) => DropdownMenuItem(
+                    value: e.uuid,
+                    child: Text(e.name ?? ''),
+                  ))
+              .toList(),
+          onChanged: (String? uuid) {
+            SpecimenServices(ref).updateSpecimen(
+              widget.specimenUuid,
+              SpecimenCompanion(preparatorID: db.Value(uuid)),
+            );
+          },
+        )
+      ],
+    );
+  }
+
+  int _getCurrentCollectorNumber(String? uuid) {
+    var collector = personnelList.firstWhere((element) => element.uuid == uuid);
+    int currentCollNum = collector.currentFieldNumber! + 1;
+    return currentCollNum;
   }
 }

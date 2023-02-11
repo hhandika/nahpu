@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/controller/updaters.dart';
+import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
-import 'package:nahpu/services/database.dart';
-import 'package:nahpu/models/form.dart';
+import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/models/controllers.dart';
+import 'package:nahpu/services/site_services.dart';
 
 class SiteInfo extends ConsumerWidget {
   const SiteInfo({
@@ -25,10 +26,8 @@ class SiteInfo extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     List<PersonnelData> personnelList = [];
     final personnelEntry = ref.watch(personnelListProvider);
-    personnelEntry.when(
-      data: (personnelEntry) => personnelList = personnelEntry,
-      loading: () => null,
-      error: (e, s) => null,
+    personnelEntry.whenData(
+      (personnelEntry) => personnelList = personnelEntry,
     );
 
     return FormCard(
@@ -53,17 +52,17 @@ class SiteInfo extends ConsumerWidget {
                 text: value.toUpperCase(),
                 selection: siteFormCtr.siteIDCtr.selection,
               );
-              updateSite(
-                  id,
-                  SiteCompanion(siteID: db.Value(siteFormCtr.siteIDCtr.text)),
-                  ref);
+              SiteServices(ref).updateSite(
+                id,
+                SiteCompanion(siteID: db.Value(siteFormCtr.siteIDCtr.text)),
+              );
             },
           ),
           DropdownButtonFormField(
             value: siteFormCtr.leadStaffCtr,
             decoration: const InputDecoration(
-              labelText: 'Lead Staff',
-              hintText: 'Choose a lead staff',
+              labelText: 'Site Leader',
+              hintText: 'Choose a person name',
             ),
             items: personnelList
                 .map(
@@ -74,17 +73,33 @@ class SiteInfo extends ConsumerWidget {
                 )
                 .toList(),
             onChanged: (String? uuid) {
-              updateSite(id, SiteCompanion(leadStaffId: db.Value(uuid)), ref);
+              SiteServices(ref).updateSite(
+                id,
+                SiteCompanion(leadStaffId: db.Value(uuid)),
+              );
             },
           ),
-          TextFormField(
-            controller: siteFormCtr.siteTypeCtr,
+          DropdownButtonFormField<String?>(
+            value: siteFormCtr.siteTypeCtr,
             decoration: const InputDecoration(
               labelText: 'Site Type',
-              hintText: 'Enter a site type, e.g. "Camp", "City", "etc."',
+              hintText: 'Choose a site type',
             ),
-            onChanged: (value) {
-              updateSite(id, SiteCompanion(siteType: db.Value(value)), ref);
+            items: siteTypeList
+                .map(
+                  (e) => DropdownMenuItem(
+                    value: e,
+                    child: Text(e),
+                  ),
+                )
+                .toList(),
+            onChanged: (String? value) {
+              if (value != null) {
+                SiteServices(ref).updateSite(
+                  id,
+                  SiteCompanion(siteType: db.Value(value)),
+                );
+              }
             },
           ),
         ],

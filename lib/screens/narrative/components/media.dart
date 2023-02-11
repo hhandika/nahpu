@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/photos.dart';
 import 'package:nahpu/screens/shared/videos.dart';
-import 'package:nahpu/styles/colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MediaForm extends ConsumerStatefulWidget {
@@ -34,11 +33,11 @@ class MediaFormState extends ConsumerState<MediaForm>
         DefaultTabController(
           length: 2,
           child: TabBar(
-            indicatorColor: NahpuColor.tabBarColor(context),
+            indicatorColor: Theme.of(context).colorScheme.secondary,
             controller: _tabController,
             tabs: [
               Tab(
-                  icon: Icon(Icons.photo_album_rounded,
+                  icon: Icon(Icons.photo_library_rounded,
                       color: Theme.of(context).colorScheme.tertiary)),
               Tab(
                   icon: Icon(Icons.video_library_rounded,

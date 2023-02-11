@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/controller/updaters.dart';
-import 'package:nahpu/models/form.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/screens/shared/forms.dart';
-import 'package:nahpu/services/database.dart';
+import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/site_services.dart';
 
 class Geography extends StatelessWidget {
   const Geography({
@@ -72,7 +72,10 @@ class MainSiteLocality extends ConsumerWidget {
             hintText: 'Enter a country location',
           ),
           onChanged: (value) {
-            updateSite(id, SiteCompanion(country: db.Value(value)), ref);
+            SiteServices(ref).updateSite(
+              id,
+              SiteCompanion(country: db.Value(value)),
+            );
           },
         ),
         TextFormField(
@@ -82,7 +85,10 @@ class MainSiteLocality extends ConsumerWidget {
             hintText: 'Enter a state/province location',
           ),
           onChanged: (value) {
-            updateSite(id, SiteCompanion(stateProvince: db.Value(value)), ref);
+            SiteServices(ref).updateSite(
+              id,
+              SiteCompanion(stateProvince: db.Value(value)),
+            );
           },
         ),
         TextFormField(
@@ -92,7 +98,10 @@ class MainSiteLocality extends ConsumerWidget {
             hintText: 'Enter a county/parish/district location',
           ),
           onChanged: (value) {
-            updateSite(id, SiteCompanion(county: db.Value(value)), ref);
+            SiteServices(ref).updateSite(
+              id,
+              SiteCompanion(county: db.Value(value)),
+            );
           },
         ),
         TextFormField(
@@ -102,7 +111,10 @@ class MainSiteLocality extends ConsumerWidget {
             hintText: 'Enter municipality/city/town name',
           ),
           onChanged: (value) {
-            updateSite(id, SiteCompanion(municipality: db.Value(value)), ref);
+            SiteServices(ref).updateSite(
+              id,
+              SiteCompanion(municipality: db.Value(value)),
+            );
           },
         ),
       ],
@@ -131,7 +143,10 @@ class PreciseLocality extends ConsumerWidget {
         hintText: 'Enter a precise locality lower than municipality',
       ),
       onChanged: (value) {
-        updateSite(id, SiteCompanion(locality: db.Value(value)), ref);
+        SiteServices(ref).updateSite(
+          id,
+          SiteCompanion(locality: db.Value(value)),
+        );
       },
     );
   }
@@ -158,7 +173,10 @@ class LocalityNote extends ConsumerWidget {
         hintText: 'Enter more info about the site (optional)',
       ),
       onChanged: (value) {
-        updateSite(id, SiteCompanion(locality: db.Value(value)), ref);
+        SiteServices(ref).updateSite(
+          id,
+          SiteCompanion(remark: db.Value(value)),
+        );
       },
     );
   }

@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/types.dart';
+import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
+import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/specimen_services.dart';
+import 'package:nahpu/models/mammals.dart';
+import 'package:drift/drift.dart' as db;
 
 class MammalMeasurementForms extends ConsumerStatefulWidget {
-  const MammalMeasurementForms(
-      {Key? key, required this.useHorizontalLayout, required this.isBats})
-      : super(key: key);
+  const MammalMeasurementForms({
+    Key? key,
+    required this.useHorizontalLayout,
+    required this.specimenUuid,
+    required this.isBats,
+  }) : super(key: key);
 
   final bool useHorizontalLayout;
+  final String specimenUuid;
   final bool isBats;
 
   @override
@@ -19,7 +29,19 @@ class MammalMeasurementForms extends ConsumerStatefulWidget {
 
 class MammalMeasurementFormsState
     extends ConsumerState<MammalMeasurementForms> {
-  SpecimenSex _specimenSex = SpecimenSex.unknown;
+  MammalMeasurementCtrModel ctr = MammalMeasurementCtrModel.empty();
+
+  @override
+  void initState() {
+    _updateCtr(widget.specimenUuid);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    ctr.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,48 +51,127 @@ class MammalMeasurementFormsState
         children: [
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
-            children: const [
-              NumberOnlyField(
+            children: [
+              CommonNumField(
+                controller: ctr.totalLengthCtr,
                 labelText: 'Total length (mm)',
                 hintText: 'Enter TTL',
                 isLastField: false,
+                onChanged: (String? value) {
+                  if (value != null && value.isNotEmpty) {
+                    setState(() {
+                      SpecimenServices(ref).updateMammalMeasurement(
+                        widget.specimenUuid,
+                        MammalMeasurementCompanion(
+                          totalLength: db.Value(int.tryParse(value) ?? 0),
+                        ),
+                      );
+                    });
+                  }
+                },
               ),
-              NumberOnlyField(
+              CommonNumField(
+                controller: ctr.tailLengthCtr,
                 labelText: 'Tail length (mm)',
                 hintText: 'Enter TL',
                 isLastField: false,
-              ),
-            ],
-          ),
-          AdaptiveLayout(
-            useHorizontalLayout: widget.useHorizontalLayout,
-            children: const [
-              NumberOnlyField(
-                labelText: 'Hind foot length (mm)',
-                hintText: 'Enter HF length',
-                isLastField: false,
-              ),
-              NumberOnlyField(
-                labelText: 'Ear length (mm)',
-                hintText: 'Enter ER length',
-                isLastField: false,
+                onChanged: (String? value) {
+                  if (value != null && value.isNotEmpty) {
+                    setState(() {
+                      SpecimenServices(ref).updateMammalMeasurement(
+                        widget.specimenUuid,
+                        MammalMeasurementCompanion(
+                          tailLength: db.Value(int.tryParse(value)),
+                        ),
+                      );
+                    });
+                  }
+                },
               ),
             ],
           ),
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
-              const NumberOnlyField(
+              CommonNumField(
+                controller: ctr.hindFootCtr,
+                labelText: 'Hind foot length (mm)',
+                hintText: 'Enter HF length',
+                isLastField: false,
+                onChanged: (String? value) {
+                  if (value != null && value.isNotEmpty) {
+                    setState(() {
+                      SpecimenServices(ref).updateMammalMeasurement(
+                        widget.specimenUuid,
+                        MammalMeasurementCompanion(
+                          hindFootLength: db.Value(int.tryParse(value)),
+                        ),
+                      );
+                    });
+                  }
+                },
+              ),
+              CommonNumField(
+                controller: ctr.earCtr,
+                labelText: 'Ear length (mm)',
+                hintText: 'Enter ER length',
+                isLastField: false,
+                onChanged: (String? value) {
+                  if (value != null && value.isNotEmpty) {
+                    setState(() {
+                      SpecimenServices(ref).updateMammalMeasurement(
+                        widget.specimenUuid,
+                        MammalMeasurementCompanion(
+                          earLength: db.Value(int.tryParse(value)),
+                        ),
+                      );
+                    });
+                  }
+                },
+              ),
+            ],
+          ),
+          AdaptiveLayout(
+            useHorizontalLayout: widget.useHorizontalLayout,
+            children: [
+              CommonNumField(
+                controller: ctr.weightCtr,
                 labelText: 'Weight (grams)',
                 hintText: 'Enter specimen weight',
+                isDouble: true,
                 isLastField: false,
+                onChanged: (value) {
+                  if (value != null && value.isNotEmpty) {
+                    setState(() {
+                      SpecimenServices(ref).updateMammalMeasurement(
+                        widget.specimenUuid,
+                        MammalMeasurementCompanion(
+                          weight: db.Value(double.tryParse(value)),
+                        ),
+                      );
+                    });
+                  }
+                },
               ),
               Visibility(
                 visible: widget.isBats,
-                child: const NumberOnlyField(
+                child: CommonNumField(
+                  controller: ctr.forearmCtr,
                   labelText: 'Forearm Length (mm)',
                   hintText: 'Enter FL length',
                   isLastField: true,
+                  onChanged: (value) {
+                    if (value != null && value.isNotEmpty) {
+                      setState(() {
+                        SpecimenServices(ref).updateMammalMeasurement(
+                          widget.specimenUuid,
+                          MammalMeasurementCompanion(
+                            forearm: db.Value(int.tryParse(value)),
+                          ),
+                        );
+                      });
+                    }
+                  },
                 ),
               ),
             ],
@@ -78,120 +179,165 @@ class MammalMeasurementFormsState
           Padding(
             padding: const EdgeInsets.all(5),
             child: DropdownButtonFormField(
+                value: ctr.accuracyCtr,
                 decoration: const InputDecoration(
                   labelText: 'Accuracy',
                   hintText: 'Select measurement accuracy',
                 ),
-                items: const [
-                  DropdownMenuItem(
-                    value: 'Accurate',
-                    child: Text('Accurate'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Tail cropped',
-                    child: Text('Tail cropped'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Partially eaten',
-                    child: Text('Partially eaten'),
-                  ),
-                ],
-                onChanged: (String? newValue) {}),
-          ),
-          Divider(
-            color: Theme.of(context).dividerColor,
+                items: accuracyList
+                    .map((e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(e),
+                        ))
+                    .toList(),
+                onChanged: (String? newValue) {
+                  ctr.accuracyCtr = newValue;
+                  SpecimenServices(ref).updateMammalMeasurement(
+                    widget.specimenUuid,
+                    MammalMeasurementCompanion(
+                      accuracy: db.Value(newValue),
+                    ),
+                  );
+                }),
           ),
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
-              DropdownButtonFormField(
+              DropdownButtonFormField<SpecimenSex>(
+                  value: _getSpecimenSex(),
                   decoration: const InputDecoration(
                     labelText: 'Sex',
                     hintText: 'Choose one',
                   ),
-                  items: const [
-                    DropdownMenuItem(
-                      value: 'Male',
-                      child: Text('Male'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Female',
-                      child: Text('Female'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Unknown',
-                      child: Text('Unknown'),
-                    ),
-                  ],
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _specimenSex = matchSpecimenSex(newValue);
-                    });
+                  items: specimenSexList
+                      .map((e) => DropdownMenuItem(
+                            value:
+                                SpecimenSex.values[specimenSexList.indexOf(e)],
+                            child: Text(e),
+                          ))
+                      .toList(),
+                  onChanged: (SpecimenSex? newValue) {
+                    if (newValue != null) {
+                      setState(() {
+                        ctr.sexCtr = newValue.index;
+                        SpecimenServices(ref).updateMammalMeasurement(
+                          widget.specimenUuid,
+                          MammalMeasurementCompanion(
+                            sex: db.Value(
+                              newValue.index,
+                            ),
+                          ),
+                        );
+                      });
+                    }
                   }),
-              DropdownButtonFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Age',
-                    hintText: 'Select specimen age',
-                  ),
-                  items: const [
-                    DropdownMenuItem(
-                      value: 'Adult',
-                      child: Text('Adult'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Subadult',
-                      child: Text('Subadult'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Juvenile',
-                      child: Text('Juvenile'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Unknown',
-                      child: Text('Unknown'),
-                    ),
-                  ],
-                  onChanged: (String? newValue) {}),
+              DropdownButtonFormField<SpecimenAge>(
+                value: _getSpecimenAge(),
+                decoration: const InputDecoration(
+                  labelText: 'Age',
+                  hintText: 'Select specimen age',
+                ),
+                items: specimenAgeList
+                    .map((e) => DropdownMenuItem(
+                          value: SpecimenAge.values[specimenAgeList.indexOf(e)],
+                          child: Text(e),
+                        ))
+                    .toList(),
+                onChanged: (SpecimenAge? newValue) {
+                  if (newValue != null) {
+                    setState(
+                      () {
+                        ctr.ageCtr = newValue.index;
+                        SpecimenServices(ref).updateMammalMeasurement(
+                          widget.specimenUuid,
+                          MammalMeasurementCompanion(
+                            age: db.Value(
+                              newValue.index,
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
             ],
           ),
           MaleGonadForm(
-            specimenSex: _specimenSex,
+            specimenUuid: widget.specimenUuid,
+            specimenSex: _getSpecimenSex(),
             useHorizontalLayout: widget.useHorizontalLayout,
+            ctr: ctr,
           ),
           FemaleGonadForm(
-            specimenSex: _specimenSex,
+            specimenUuid: widget.specimenUuid,
+            specimenSex: _getSpecimenSex(),
             useHorizontalLayout: widget.useHorizontalLayout,
+            ctr: ctr,
           ),
-          const Padding(
-            padding: EdgeInsets.all(5),
-            child: CustomTextField(
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: CommonTextField(
+              controller: ctr.remarksCtr,
               maxLines: 5,
               labelText: 'Remarks',
               hintText: 'Write notes about the measurements (optional)',
               isLastField: true,
+              onChanged: (value) {
+                SpecimenServices(ref).updateMammalMeasurement(
+                  widget.specimenUuid,
+                  MammalMeasurementCompanion(
+                    remark: db.Value(value),
+                  ),
+                );
+              },
             ),
           ),
         ],
       ),
     );
   }
+
+  SpecimenSex? _getSpecimenSex() {
+    if (ctr.sexCtr != null) {
+      return SpecimenSex.values[ctr.sexCtr!];
+    }
+    return null;
+  }
+
+  SpecimenAge? _getSpecimenAge() {
+    if (ctr.ageCtr != null) {
+      return SpecimenAge.values[ctr.ageCtr!];
+    }
+    return null;
+  }
+
+  Future<void> _updateCtr(String specimenUuid) async {
+    SpecimenServices(ref)
+        .getMammalMeasurementData(specimenUuid)
+        .then((value) => ctr = MammalMeasurementCtrModel.fromData(value));
+  }
 }
 
-class MaleGonadForm extends StatefulWidget {
+class MaleGonadForm extends ConsumerStatefulWidget {
   const MaleGonadForm({
     super.key,
+    required this.specimenUuid,
     required this.specimenSex,
     required this.useHorizontalLayout,
+    required this.ctr,
   });
 
-  final SpecimenSex specimenSex;
+  final String specimenUuid;
+  final SpecimenSex? specimenSex;
   final bool useHorizontalLayout;
+  final MammalMeasurementCtrModel ctr;
 
   @override
-  State<MaleGonadForm> createState() => _MaleGonadFormState();
+  MaleGonadFormState createState() => MaleGonadFormState();
 }
 
-class _MaleGonadFormState extends State<MaleGonadForm> {
+class MaleGonadFormState extends ConsumerState<MaleGonadForm> {
   bool _isScrotal = false;
 
   @override
@@ -200,288 +346,564 @@ class _MaleGonadFormState extends State<MaleGonadForm> {
       visible: widget.specimenSex == SpecimenSex.male,
       child: Column(
         children: [
-          const Divider(),
-          Text('Testes', style: Theme.of(context).textTheme.titleMedium),
+          const CommonDivider(),
+          Text('Testes', style: Theme.of(context).textTheme.titleLarge),
           Padding(
             padding: const EdgeInsets.all(5),
-            child: DropdownButtonFormField(
+            child: DropdownButtonFormField<TestisPosition>(
+              value: _getTestisPosition(),
               decoration: const InputDecoration(
                 labelText: 'Position',
                 hintText: 'Select testis position',
               ),
-              items: const [
-                DropdownMenuItem(
-                  value: 'Scrotal',
-                  child: Text('Scrotal'),
-                ),
-                DropdownMenuItem(
-                  value: 'Abdominal',
-                  child: Text('Abdominal'),
-                ),
-              ],
-              onChanged: (String? newValue) {
-                setState(() {
-                  _isScrotal = newValue == 'Scrotal';
-                });
+              items: testisPositionList
+                  .map((e) => DropdownMenuItem(
+                        value: TestisPosition
+                            .values[testisPositionList.indexOf(e)],
+                        child: Text(e),
+                      ))
+                  .toList(),
+              onChanged: (TestisPosition? newValue) {
+                if (newValue != null) {
+                  setState(
+                    () {
+                      _isScrotal = newValue == TestisPosition.scrotal;
+                      SpecimenServices(ref).updateMammalMeasurement(
+                        widget.specimenUuid,
+                        MammalMeasurementCompanion(
+                          testisPosition: db.Value(
+                            newValue.index,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }
               },
             ),
           ),
           ScrotalMaleForm(
+            specimenUuid: widget.specimenUuid,
             visible: _isScrotal,
             useHorizontalLayout: widget.useHorizontalLayout,
+            ctr: widget.ctr,
           ),
-          Padding(
-            padding: const EdgeInsets.all(5),
-            child: DropdownButtonFormField(
-              decoration: const InputDecoration(
-                labelText: 'Epididymis',
-                hintText: 'Select epididymis appearance',
-              ),
-              items: const [
-                DropdownMenuItem(
-                  value: 'Tubular',
-                  child: Text('Tubular'),
-                ),
-                DropdownMenuItem(
-                  value: 'Partial',
-                  child: Text('Partial'),
-                ),
-                DropdownMenuItem(
-                  value: 'Not tubular',
-                  child: Text('Not tubular'),
-                ),
-              ],
-              onChanged: (value) {},
-            ),
-          ),
-          const Divider(),
         ],
       ),
     );
   }
-}
 
-class ScrotalMaleForm extends StatelessWidget {
-  const ScrotalMaleForm(
-      {super.key, required this.visible, required this.useHorizontalLayout});
-
-  final bool visible;
-  final bool useHorizontalLayout;
-
-  @override
-  Widget build(BuildContext context) {
-    return Visibility(
-        visible: visible,
-        child: AdaptiveLayout(
-          useHorizontalLayout: useHorizontalLayout,
-          children: const [
-            NumberOnlyField(
-              labelText: 'Length (mm)',
-              hintText: 'Enter the length of the right testes ',
-              isLastField: false,
-            ),
-            NumberOnlyField(
-              labelText: 'Width (mm)',
-              hintText: 'Enter the width of the right testes ',
-              isLastField: true,
-            ),
-          ],
-        ));
+  TestisPosition? _getTestisPosition() {
+    if (widget.ctr.testisPosCtr != null) {
+      return TestisPosition.values[widget.ctr.testisPosCtr!];
+    }
+    return null;
   }
 }
 
-class FemaleGonadForm extends StatefulWidget {
-  const FemaleGonadForm({
+class ScrotalMaleForm extends ConsumerStatefulWidget {
+  const ScrotalMaleForm({
     super.key,
-    required this.specimenSex,
+    required this.specimenUuid,
+    required this.visible,
     required this.useHorizontalLayout,
+    required this.ctr,
   });
 
-  final SpecimenSex specimenSex;
+  final String specimenUuid;
+  final bool visible;
   final bool useHorizontalLayout;
+  final MammalMeasurementCtrModel ctr;
+
   @override
-  State<FemaleGonadForm> createState() => _FemaleGonadFormState();
+  ScrotalMaleFormState createState() => ScrotalMaleFormState();
 }
 
-class _FemaleGonadFormState extends State<FemaleGonadForm> {
+class ScrotalMaleFormState extends ConsumerState<ScrotalMaleForm> {
+  @override
+  Widget build(BuildContext context) {
+    return Visibility(
+      visible: widget.visible,
+      child: Column(
+        children: [
+          AdaptiveLayout(
+            useHorizontalLayout: widget.useHorizontalLayout,
+            children: [
+              CommonNumField(
+                controller: widget.ctr.testisLengthCtr,
+                labelText: 'Length (mm)',
+                hintText: 'Enter the length of the right testes ',
+                isLastField: false,
+                onChanged: (String? value) {
+                  SpecimenServices(ref).updateMammalMeasurement(
+                    widget.specimenUuid,
+                    MammalMeasurementCompanion(
+                      testisLength: db.Value(
+                        int.tryParse(value ?? '0'),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              CommonNumField(
+                controller: widget.ctr.testisWidthCtr,
+                labelText: 'Width (mm)',
+                hintText: 'Enter the width of the right testes ',
+                isLastField: true,
+                onChanged: (String? value) {
+                  SpecimenServices(ref).updateMammalMeasurement(
+                    widget.specimenUuid,
+                    MammalMeasurementCompanion(
+                      testisWidth: db.Value(
+                        int.tryParse(value ?? '0'),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: DropdownButtonFormField<EpididymisAppearance>(
+              value: _getEpididymisAppearance(),
+              decoration: const InputDecoration(
+                labelText: 'Epididymis',
+                hintText: 'Select epididymis appearance',
+              ),
+              items: epididymisAppearanceList
+                  .map((e) => DropdownMenuItem(
+                        value: EpididymisAppearance
+                            .values[epididymisAppearanceList.indexOf(e)],
+                        child: Text(e),
+                      ))
+                  .toList(),
+              onChanged: (value) {
+                if (value != null) {
+                  SpecimenServices(ref).updateMammalMeasurement(
+                    widget.specimenUuid,
+                    MammalMeasurementCompanion(
+                      epididymisAppearance: db.Value(
+                        value.index,
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  EpididymisAppearance? _getEpididymisAppearance() {
+    if (widget.ctr.epididymisCtr != null) {
+      return EpididymisAppearance.values[widget.ctr.epididymisCtr!];
+    }
+    return null;
+  }
+}
+
+class FemaleGonadForm extends ConsumerStatefulWidget {
+  const FemaleGonadForm({
+    super.key,
+    required this.specimenUuid,
+    required this.specimenSex,
+    required this.useHorizontalLayout,
+    required this.ctr,
+  });
+
+  final String specimenUuid;
+  final SpecimenSex? specimenSex;
+  final bool useHorizontalLayout;
+  final MammalMeasurementCtrModel ctr;
+  @override
+  FemaleGonadFormState createState() => FemaleGonadFormState();
+}
+
+class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
   @override
   Widget build(BuildContext context) {
     return Visibility(
       visible: widget.specimenSex == SpecimenSex.female,
       child: Column(
         children: [
-          const Divider(),
+          const CommonDivider(),
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
-              DropdownButtonFormField(
+              DropdownButtonFormField<VaginaOpening>(
+                value: _getVaginaOpening(),
                 decoration: const InputDecoration(
-                  labelText: 'Vagina',
-                  hintText: 'Select vagina condition',
+                  labelText: 'Vagina opening',
+                  hintText: 'Select vagina opening',
                 ),
-                items: const [
-                  DropdownMenuItem(
-                    value: 'Imperforate',
-                    child: Text('Imperforate'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Perforate',
-                    child: Text('Perforate'),
-                  ),
-                ],
-                onChanged: (String? newValue) {},
+                items: vaginaOpeningList
+                    .map((e) => DropdownMenuItem(
+                          value: VaginaOpening
+                              .values[vaginaOpeningList.indexOf(e)],
+                          child: Text(e),
+                        ))
+                    .toList(),
+                onChanged: (VaginaOpening? newValue) {
+                  if (newValue != null) {
+                    SpecimenServices(ref).updateMammalMeasurement(
+                      widget.specimenUuid,
+                      MammalMeasurementCompanion(
+                        vaginaOpening: db.Value(
+                          newValue.index,
+                        ),
+                      ),
+                    );
+                  }
+                },
               ),
-              DropdownButtonFormField(
+              DropdownButtonFormField<PubicSymphysis>(
+                value: _getPubicSymphysis(),
                 decoration: const InputDecoration(
                   labelText: 'Pubic symphysis',
                   hintText: 'Select pubic symphysis condition',
                 ),
-                items: const [
-                  DropdownMenuItem(
-                    value: 'Closed',
-                    child: Text('Closed'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Small open',
-                    child: Text('Small open'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Open',
-                    child: Text('Open'),
-                  ),
-                ],
-                onChanged: (String? newValue) {},
+                items: pubicSymphysisList
+                    .map((e) => DropdownMenuItem(
+                          value: PubicSymphysis
+                              .values[pubicSymphysisList.indexOf(e)],
+                          child: Text(e),
+                        ))
+                    .toList(),
+                onChanged: (PubicSymphysis? newValue) {
+                  if (newValue != null) {
+                    SpecimenServices(ref).updateMammalMeasurement(
+                      widget.specimenUuid,
+                      MammalMeasurementCompanion(
+                        pubicSymphysis: db.Value(
+                          newValue.index,
+                        ),
+                      ),
+                    );
+                  }
+                },
               ),
             ],
           ),
-          DropdownButtonFormField(
-            decoration: const InputDecoration(
-              labelText: 'Reproductive stage',
-              hintText: 'Select reproductive stage',
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: DropdownButtonFormField<ReproductiveStage>(
+              value: _getReproductiveStage(),
+              decoration: const InputDecoration(
+                labelText: 'Reproductive stage',
+                hintText: 'Select reproductive stage',
+              ),
+              items: reproductiveStageList
+                  .map((e) => DropdownMenuItem(
+                        value: ReproductiveStage
+                            .values[reproductiveStageList.indexOf(e)],
+                        child: Text(e),
+                      ))
+                  .toList(),
+              onChanged: (ReproductiveStage? newValue) {
+                if (newValue != null) {
+                  SpecimenServices(ref).updateMammalMeasurement(
+                    widget.specimenUuid,
+                    MammalMeasurementCompanion(
+                      reproductiveStage: db.Value(
+                        newValue.index,
+                      ),
+                    ),
+                  );
+                }
+              },
             ),
-            items: const [
-              DropdownMenuItem(
-                value: 'Nulliparous',
-                child: Text('Nulliparous'),
-              ),
-              DropdownMenuItem(
-                value: 'Primiparous',
-                child: Text('Primiparous'),
-              ),
-              DropdownMenuItem(
-                value: 'Multiparous',
-                child: Text('Multiparous'),
-              ),
-            ],
-            onChanged: (String? newValue) {},
           ),
-          Text('Mammae Counts', style: Theme.of(context).textTheme.titleMedium),
-          MammaeForm(useHorizontalLayout: widget.useHorizontalLayout),
-          DropdownButtonFormField(
-            decoration: const InputDecoration(
-              labelText: 'Mammae condition',
-              hintText: 'Select mammae condition',
+          const CommonDivider(),
+          Text('Mammae Counts', style: Theme.of(context).textTheme.titleLarge),
+          MammaeForm(
+            useHorizontalLayout: widget.useHorizontalLayout,
+            specimenUuid: widget.specimenUuid,
+            ctr: widget.ctr,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: DropdownButtonFormField<MammaeCondition>(
+              value: _getMammaeCondition(),
+              decoration: const InputDecoration(
+                labelText: 'Mammae condition',
+                hintText: 'Select mammae condition',
+              ),
+              items: mammaeConditionList
+                  .map((e) => DropdownMenuItem(
+                        value: MammaeCondition
+                            .values[mammaeConditionList.indexOf(e)],
+                        child: Text(e),
+                      ))
+                  .toList(),
+              onChanged: (MammaeCondition? newValue) {
+                if (newValue != null) {
+                  SpecimenServices(ref).updateMammalMeasurement(
+                    widget.specimenUuid,
+                    MammalMeasurementCompanion(
+                      mammaeCondition: db.Value(
+                        newValue.index,
+                      ),
+                    ),
+                  );
+                }
+              },
             ),
-            items: const [
-              DropdownMenuItem(
-                value: 'Small',
-                child: Text('Small'),
-              ),
-              DropdownMenuItem(
-                value: 'Large',
-                child: Text('Large'),
-              ),
-              DropdownMenuItem(
-                value: 'Lactating',
-                child: Text('Lactating'),
-              ),
-            ],
-            onChanged: (String? newValue) {},
           ),
+          const CommonDivider(),
           Text(
             'Embryo',
-            style: Theme.of(context).textTheme.titleMedium,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
           EmbryoForm(
             useHorizontalLayout: widget.useHorizontalLayout,
+            specimenUuid: widget.specimenUuid,
+            ctr: widget.ctr,
           ),
-          const NumberOnlyField(
-            labelText: 'CR length (mm)',
-            hintText: 'Enter crown-rump length',
-            isLastField: true,
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: CommonNumField(
+              controller: widget.ctr.embryoCRCtr,
+              labelText: 'CR length (mm)',
+              hintText: 'Enter crown-rump length',
+              isLastField: true,
+              onChanged: (String? value) {
+                if (value != null) {
+                  SpecimenServices(ref).updateMammalMeasurement(
+                    widget.specimenUuid,
+                    MammalMeasurementCompanion(
+                      embryoCR: db.Value(
+                        int.tryParse(value),
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
           ),
+          const CommonDivider(),
           Text('Placental Scars',
-              style: Theme.of(context).textTheme.titleMedium),
+              style: Theme.of(context).textTheme.titleLarge),
           PlacentalScarForm(
             useHorizontalLayout: widget.useHorizontalLayout,
+            specimenUuid: widget.specimenUuid,
+            ctr: widget.ctr,
           ),
         ],
       ),
     );
   }
-}
 
-class MammaeForm extends StatelessWidget {
-  const MammaeForm({super.key, required this.useHorizontalLayout});
+  VaginaOpening? _getVaginaOpening() {
+    if (widget.ctr.vaginaOpeningCtr != null) {
+      return VaginaOpening.values[widget.ctr.vaginaOpeningCtr!];
+    }
+    return null;
+  }
 
-  final bool useHorizontalLayout;
+  PubicSymphysis? _getPubicSymphysis() {
+    if (widget.ctr.pubicSymphysisCtr != null) {
+      return PubicSymphysis.values[widget.ctr.pubicSymphysisCtr!];
+    }
+    return null;
+  }
 
-  @override
-  Widget build(BuildContext context) {
-    return AdaptiveLayout(
-        useHorizontalLayout: useHorizontalLayout,
-        children: const [
-          NumberOnlyField(
-            labelText: 'Axillary',
-            hintText: 'Enter the axillary pair number',
-            isLastField: false,
-          ),
-          NumberOnlyField(
-            labelText: 'Abdominal',
-            hintText: 'Enter the abdominal pair number',
-            isLastField: false,
-          ),
-          NumberOnlyField(
-            labelText: 'Inguinal',
-            hintText: 'Enter the inguinal pair number',
-            isLastField: false,
-          ),
-        ]);
+  ReproductiveStage? _getReproductiveStage() {
+    if (widget.ctr.reproductiveStageCtr != null) {
+      return ReproductiveStage.values[widget.ctr.reproductiveStageCtr!];
+    }
+    return null;
+  }
+
+  MammaeCondition? _getMammaeCondition() {
+    if (widget.ctr.mammaeConditionCtr != null) {
+      return MammaeCondition.values[widget.ctr.mammaeConditionCtr!];
+    }
+    return null;
   }
 }
 
-class EmbryoForm extends StatelessWidget {
-  const EmbryoForm({super.key, required this.useHorizontalLayout});
+class MammaeForm extends ConsumerWidget {
+  const MammaeForm({
+    super.key,
+    required this.useHorizontalLayout,
+    required this.specimenUuid,
+    required this.ctr,
+  });
 
   final bool useHorizontalLayout;
+  final String specimenUuid;
+  final MammalMeasurementCtrModel ctr;
 
   @override
-  Widget build(BuildContext context) {
-    return AdaptiveLayout(
-        useHorizontalLayout: useHorizontalLayout,
-        children: const [
-          NumberOnlyField(
-              labelText: 'Left', hintText: 'Left', isLastField: false),
-          NumberOnlyField(
-              labelText: 'Right', hintText: 'Right', isLastField: true),
-        ]);
+  Widget build(BuildContext context, WidgetRef ref) {
+    return AdaptiveLayout(useHorizontalLayout: useHorizontalLayout, children: [
+      CommonNumField(
+        controller: ctr.mammaeAxCtr,
+        labelText: 'Axillary',
+        hintText: 'Enter the axillary pair number',
+        isLastField: false,
+        onChanged: (String? value) {
+          if (value != null) {
+            SpecimenServices(ref).updateMammalMeasurement(
+              specimenUuid,
+              MammalMeasurementCompanion(
+                mammaeAxillaryCount: db.Value(
+                  int.tryParse(value),
+                ),
+              ),
+            );
+          }
+        },
+      ),
+      CommonNumField(
+        controller: ctr.mammaeAbdCtr,
+        labelText: 'Abdominal',
+        hintText: 'Enter the abdominal pair number',
+        isLastField: false,
+        onChanged: (String? value) {
+          if (value != null) {
+            SpecimenServices(ref).updateMammalMeasurement(
+              specimenUuid,
+              MammalMeasurementCompanion(
+                mammaeAbdominalCount: db.Value(
+                  int.tryParse(value),
+                ),
+              ),
+            );
+          }
+        },
+      ),
+      CommonNumField(
+        controller: ctr.mammaeIngCtr,
+        labelText: 'Inguinal',
+        hintText: 'Enter the inguinal pair number',
+        isLastField: false,
+        onChanged: (String? value) {
+          if (value != null) {
+            SpecimenServices(ref).updateMammalMeasurement(
+              specimenUuid,
+              MammalMeasurementCompanion(
+                mammaeInguinalCount: db.Value(
+                  int.tryParse(value),
+                ),
+              ),
+            );
+          }
+        },
+      ),
+    ]);
   }
 }
 
-class PlacentalScarForm extends StatelessWidget {
-  const PlacentalScarForm({super.key, required this.useHorizontalLayout});
+class EmbryoForm extends ConsumerWidget {
+  const EmbryoForm({
+    super.key,
+    required this.useHorizontalLayout,
+    required this.ctr,
+    required this.specimenUuid,
+  });
 
   final bool useHorizontalLayout;
+  final String? specimenUuid;
+  final MammalMeasurementCtrModel ctr;
 
   @override
-  Widget build(BuildContext context) {
-    return AdaptiveLayout(
-        useHorizontalLayout: useHorizontalLayout,
-        children: const [
-          NumberOnlyField(
-              labelText: 'Left', hintText: 'Left', isLastField: false),
-          NumberOnlyField(
-              labelText: 'Right', hintText: 'Right', isLastField: true),
-        ]);
+  Widget build(BuildContext context, WidgetRef ref) {
+    return AdaptiveLayout(useHorizontalLayout: useHorizontalLayout, children: [
+      CommonNumField(
+        controller: ctr.embryoLeftCtr,
+        labelText: 'Left',
+        hintText: 'Left',
+        isLastField: false,
+        onChanged: (String? value) {
+          if (value != null) {
+            SpecimenServices(ref).updateMammalMeasurement(
+              specimenUuid!,
+              MammalMeasurementCompanion(
+                embryoLeftCount: db.Value(
+                  int.tryParse(value),
+                ),
+              ),
+            );
+          }
+        },
+      ),
+      CommonNumField(
+        controller: ctr.embryoRightCtr,
+        labelText: 'Right',
+        hintText: 'Right',
+        isLastField: true,
+        onChanged: (String? value) {
+          if (value != null) {
+            SpecimenServices(ref).updateMammalMeasurement(
+              specimenUuid!,
+              MammalMeasurementCompanion(
+                embryoRightCount: db.Value(
+                  int.tryParse(value),
+                ),
+              ),
+            );
+          }
+        },
+      ),
+    ]);
+  }
+}
+
+class PlacentalScarForm extends ConsumerWidget {
+  const PlacentalScarForm({
+    super.key,
+    required this.useHorizontalLayout,
+    required this.ctr,
+    required this.specimenUuid,
+  });
+
+  final bool useHorizontalLayout;
+  final String specimenUuid;
+  final MammalMeasurementCtrModel ctr;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return AdaptiveLayout(useHorizontalLayout: useHorizontalLayout, children: [
+      CommonNumField(
+        controller: ctr.leftPlacentaCtr,
+        labelText: 'Left',
+        hintText: 'Left',
+        isLastField: false,
+        onChanged: (String? value) {
+          if (value != null) {
+            SpecimenServices(ref).updateMammalMeasurement(
+              specimenUuid,
+              MammalMeasurementCompanion(
+                leftPlacentalScars: db.Value(
+                  int.tryParse(value),
+                ),
+              ),
+            );
+          }
+        },
+      ),
+      CommonNumField(
+        controller: ctr.rightPlacentaCtr,
+        labelText: 'Right',
+        hintText: 'Right',
+        isLastField: true,
+        onChanged: (String? value) {
+          if (value != null) {
+            SpecimenServices(ref).updateMammalMeasurement(
+              specimenUuid,
+              MammalMeasurementCompanion(
+                rightPlacentalScars: db.Value(
+                  int.tryParse(value),
+                ),
+              ),
+            );
+          }
+        },
+      ),
+    ]);
   }
 }

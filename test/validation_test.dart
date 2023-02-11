@@ -5,46 +5,31 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-// import 'dart:js_util';
-
-// import 'package:flutter/material.dart';
-
 import 'package:flutter_test/flutter_test.dart';
-
-// import 'package:nahpu/main.dart';
-import 'package:nahpu/providers/validation.dart';
+import 'package:nahpu/models/types.dart';
+import 'package:nahpu/services/validation_services.dart';
 
 void main() {
-  // testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-  //   // Build our app and trigger a frame.
-  //   await tester.pumpWidget(const MyApp());
-
-  //   // Verify that our counter starts at 0.
-  //   expect(find.text('0'), findsOneWidget);
-  //   expect(find.text('1'), findsNothing);
-
-  //   // Tap the '+' icon and trigger a frame.
-  //   await tester.tap(find.byIcon(Icons.add));
-  //   await tester.pump();
-
-  //   // Verify that our counter has incremented.
-  //   expect(find.text('0'), findsNothing);
-  //   expect(find.text('1'), findsOneWidget);
-  // });
   test('Test email is valid', () {
-    String email = 'test@gmail.com';
-    String email2 = 'test\$\$#%@gmail';
-    expect(email.isValidEmail, isTrue);
-    expect(email2.isValidEmail, isFalse);
+    String validEmail = 'test@gmail.com';
+    String invalidEmail = 'test\$\$#%@gmail';
+    String validEmailSubdomain = 'test@email.co.id';
+    String validEmailSubdomain2 = 'test@email.univ.co.id';
+    expect(validEmail.isValidEmail, isTrue);
+    expect(invalidEmail.isValidEmail, isFalse);
+    expect(validEmailSubdomain.isValidEmail, isTrue);
+    expect(validEmailSubdomain2.isValidEmail, isTrue);
   });
 
   test('Test validation for name', () {
     String name = 'Heru Handika';
     String name2 = 'Bruná Encantada';
     String name3 = 'Name 123';
+    String name4 = 'Name J. Be-fore';
     expect(name.isValidName, isTrue);
     expect(name2.isValidName, isTrue);
     expect(name3.isValidName, isFalse);
+    expect(name4.isValidName, isTrue);
   });
 
   test('Test validation for project names', () {
@@ -64,4 +49,13 @@ void main() {
     expect(catNum2.isValidCollNum, isTrue);
     expect(catNum3.isValidCollNum, isFalse);
   }));
+
+  test('Test Specimen Sex Index', () {
+    expect(SpecimenSex.values[0], SpecimenSex.male);
+    expect(SpecimenSex.values[1], SpecimenSex.female);
+    expect(SpecimenSex.values[2], SpecimenSex.unknown);
+    expect(specimenSexList.indexOf('Male'), 0);
+    expect(specimenSexList.indexOf('Female'), 1);
+    expect(specimenSexList.indexOf('Unknown'), 2);
+  });
 }

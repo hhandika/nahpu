@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/controller/navigation.dart';
-import 'package:nahpu/models/catalogs.dart';
-import 'package:nahpu/models/form.dart';
-
+import 'package:nahpu/services/collevent_services.dart';
+import 'package:nahpu/services/navigation_services.dart';
+import 'package:nahpu/models/navigation.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/providers/catalogs.dart';
-
 import 'package:nahpu/screens/collecting/coll_event_form.dart';
 import 'package:nahpu/screens/collecting/components/menu_bar.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
-import 'package:nahpu/screens/shared/indicators.dart';
+import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
 
 class CollEvents extends ConsumerStatefulWidget {
@@ -70,21 +69,8 @@ class CollEventsState extends ConsumerState<CollEvents> {
                       controller: pageController,
                       itemCount: collEventSize,
                       itemBuilder: (context, index) {
-                        final collEventForm = CollEventFormCtrModel(
-                          eventIDCtr: TextEditingController(
-                              text: collEventEntries[index].eventID),
-                          startDateCtr: TextEditingController(
-                              text: collEventEntries[index].startDate),
-                          endDateCtr: TextEditingController(
-                              text: collEventEntries[index].endDate),
-                          startTimeCtr: TextEditingController(
-                              text: collEventEntries[index].startTime),
-                          endTimeCtr: TextEditingController(
-                              text: collEventEntries[index].endTime),
-                          primaryCollMethodCtr:
-                              collEventEntries[index].primaryCollMethod,
-                          noteCtr: TextEditingController(
-                              text: collEventEntries[index].collMethodNotes),
+                        final collEventForm = CollEventFormCtrModel.fromData(
+                          collEventEntries[index],
                         );
 
                         return CollEventForm(
@@ -95,12 +81,12 @@ class CollEventsState extends ConsumerState<CollEvents> {
                       onPageChanged: (value) => setState(() {
                         _pageNav.currentPage = value + 1;
                         _pageNav = updatePageNavigation(_pageNav);
-                        ref.invalidate(collEventEntryProvider);
+                        CollEventServices(ref).invalidateCollEvent();
                       }),
                     );
                   }
                 },
-                loading: () => const CommmonProgressIndicator(),
+                loading: () => const CommonProgressIndicator(),
                 error: (error, stack) => Text(error.toString()),
               ),
         ),

@@ -1,7 +1,9 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/settings.dart';
+import 'package:nahpu/services/database/database.dart';
 
 class TaxonGroupFields extends ConsumerWidget {
   const TaxonGroupFields({Key? key}) : super(key: key);
@@ -17,7 +19,7 @@ class TaxonGroupFields extends ConsumerWidget {
     CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
     return DropdownButtonFormField(
       decoration: const InputDecoration(
-        labelText: 'Taxon Group',
+        labelText: 'Main Taxon Group',
         hintText: 'Choose a taxon group',
       ),
       items: [
@@ -36,37 +38,78 @@ class TaxonGroupFields extends ConsumerWidget {
   }
 }
 
-class NumberOnlyField extends ConsumerWidget {
-  const NumberOnlyField({
+class SiteIdField extends ConsumerWidget {
+  const SiteIdField({
+    Key? key,
+    required this.onChanges,
+    required this.siteData,
+    required this.value,
+  }) : super(key: key);
+
+  final void Function(int?) onChanges;
+  final List<SiteData> siteData;
+  final int? value;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return DropdownButtonFormField(
+      value: value,
+      decoration: const InputDecoration(
+        labelText: 'Site ID',
+        hintText: 'Enter a site',
+      ),
+      items: siteData
+          .map((site) => DropdownMenuItem(
+                value: site.id,
+                child: Text(site.siteID ?? ''),
+              ))
+          .toList(),
+      onChanged: onChanges,
+    );
+  }
+}
+
+class CommonNumField extends ConsumerWidget {
+  const CommonNumField({
     Key? key,
     required this.labelText,
     required this.hintText,
     this.controller,
     this.onChanged,
     required this.isLastField,
+    this.isDouble = false,
   }) : super(key: key);
 
   final String labelText;
   final String hintText;
   final TextEditingController? controller;
-  final ValueChanged? onChanged;
+  final void Function(String?)? onChanged;
   final bool isLastField;
+  final bool isDouble;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return CustomTextField(
-      labelText: labelText,
+    return TextField(
       controller: controller,
-      hintText: hintText,
-      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+        labelText: labelText,
+        hintText: hintText,
+      ),
+      inputFormatters: isDouble
+          ? [FilteringTextInputFormatter.allow(RegExp(r"[0-9.]"))]
+          : [FilteringTextInputFormatter.digitsOnly],
+      keyboardType: isDouble
+          ? const TextInputType.numberWithOptions(decimal: true)
+          : TextInputType.number,
       onChanged: onChanged,
-      isLastField: isLastField,
+      textInputAction:
+          isLastField ? TextInputAction.done : TextInputAction.next,
     );
   }
 }
 
-class CustomTextField extends ConsumerWidget {
-  const CustomTextField({
+class CommonTextField extends ConsumerWidget {
+  const CommonTextField({
     Key? key,
     required this.labelText,
     this.controller,
@@ -83,7 +126,7 @@ class CustomTextField extends ConsumerWidget {
   final String labelText;
   final String hintText;
   final TextInputType keyboardType;
-  final ValueChanged? onChanged;
+  final void Function(String?)? onChanged;
   final bool isLastField;
   final int? maxLines;
 

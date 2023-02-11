@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:nahpu/services/database.dart';
-import 'package:nahpu/models/form.dart';
-import 'package:nahpu/controller/updaters.dart';
+import 'package:nahpu/providers/catalogs.dart';
+import 'package:nahpu/screens/shared/fields.dart';
+import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:drift/drift.dart' as db;
+import 'package:nahpu/services/narrative_services.dart';
 
 class SiteForm extends ConsumerWidget {
   const SiteForm({
@@ -18,17 +20,21 @@ class SiteForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    List<SiteData> data = [];
+    final siteEntry = ref.watch(siteEntryProvider);
+    siteEntry.whenData(
+      (siteEntry) => data = siteEntry,
+    );
     return Container(
       padding: const EdgeInsets.all(10),
-      child: TextFormField(
-        controller: narrativeCtr.siteCtr,
-        decoration: const InputDecoration(
-          labelText: 'Site ID',
-          hintText: 'Enter a site',
-        ),
-        onChanged: (value) {
-          updateNarrative(
-              narrativeId, NarrativeCompanion(siteID: db.Value(value)), ref);
+      child: SiteIdField(
+        value: narrativeCtr.siteCtr,
+        siteData: data,
+        onChanges: (int? value) {
+          NarrativeServices(ref).updateNarrative(
+            narrativeId,
+            NarrativeCompanion(siteID: db.Value(value)),
+          );
         },
       ),
     );
@@ -63,10 +69,10 @@ class DateForm extends ConsumerWidget {
               lastDate: DateTime.now());
           if (selectedDate != null) {
             narrativeCtr.dateCtr.text = DateFormat.yMMMd().format(selectedDate);
-            updateNarrative(
-                narrativeId,
-                NarrativeCompanion(date: db.Value(narrativeCtr.dateCtr.text)),
-                ref);
+            NarrativeServices(ref).updateNarrative(
+              narrativeId,
+              NarrativeCompanion(date: db.Value(narrativeCtr.dateCtr.text)),
+            );
           }
         },
       ),

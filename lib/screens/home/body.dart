@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/services/database.dart';
+import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
 import 'package:nahpu/screens/projects/project_info.dart';
 import 'package:nahpu/screens/shared/forms.dart';
-import 'package:nahpu/screens/shared/indicators.dart';
+import 'package:nahpu/screens/shared/common.dart';
 
 enum MenuSelection { details, deleteProject }
 
@@ -31,7 +31,7 @@ class HomeBodyState extends ConsumerState<HomeBody> {
                 return _buildBody(data.reversed.toList());
               },
               loading: () {
-                return const CommmonProgressIndicator();
+                return const CommonProgressIndicator();
               },
               error: (error, stackTrace) {
                 return Text(error.toString());

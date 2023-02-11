@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/models/catalogs.dart';
-import 'package:nahpu/models/form.dart';
+import 'package:nahpu/models/navigation.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
+import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
-import 'package:nahpu/screens/shared/indicators.dart';
+import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/navbar.dart';
 import 'package:nahpu/screens/specimens/new_specimens.dart';
 import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
 import 'package:nahpu/screens/specimens/specimen_form.dart';
-import 'package:nahpu/services/database.dart';
-import 'package:nahpu/controller/navigation.dart';
+import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/navigation_services.dart';
+import 'package:nahpu/services/database/taxonomy_queries.dart';
 
 class Specimens extends ConsumerStatefulWidget {
   const Specimens({Key? key}) : super(key: key);
@@ -24,6 +26,8 @@ class SpecimensState extends ConsumerState<Specimens> {
   bool isVisible = false;
   PageController pageController = PageController();
   PageNavigation _pageNav = PageNavigation();
+
+  TaxonData taxonomy = TaxonData();
 
   @override
   void dispose() {
@@ -69,8 +73,16 @@ class SpecimensState extends ConsumerState<Specimens> {
                       controller: pageController,
                       itemCount: specimenSize,
                       itemBuilder: (context, index) {
+                        int? speciesId = specimenEntry[index].speciesID;
+                        if (speciesId != null) {
+                          TaxonomyQuery(ref.read(databaseProvider))
+                              .getTaxonById(speciesId)
+                              .then((value) {
+                            taxonomy = TaxonData.fromTaxonomyData(value);
+                          });
+                        }
                         final specimenFormCtr =
-                            _updateController(specimenEntry, index);
+                            _updateController(specimenEntry[index]);
                         return SpecimenForm(
                           specimenUuid: specimenEntry[index].uuid,
                           specimenCtr: specimenFormCtr,
@@ -86,7 +98,7 @@ class SpecimensState extends ConsumerState<Specimens> {
                     );
                   }
                 },
-                loading: () => const CommmonProgressIndicator(),
+                loading: () => const CommonProgressIndicator(),
                 error: (error, stack) => Text(error.toString()),
               ),
         ),
@@ -102,20 +114,7 @@ class SpecimensState extends ConsumerState<Specimens> {
     );
   }
 
-  SpecimenFormCtrModel _updateController(
-      List<SpecimenData> specimenEntry, int index) {
-    return SpecimenFormCtrModel(
-      speciesIdCtr: specimenEntry[index].speciesID,
-      collectorCtr: specimenEntry[index].collectorID,
-      preparatorCtr: specimenEntry[index].preparatorID,
-      conditionCtr: specimenEntry[index].condition,
-      prepDateCtr: TextEditingController(text: specimenEntry[index].prepDate),
-      prepTimeCtr: TextEditingController(text: specimenEntry[index].prepTime),
-      captureDateCtr:
-          TextEditingController(text: specimenEntry[index].captureDate),
-      captureTimeCtr:
-          TextEditingController(text: specimenEntry[index].captureTime),
-      trapTypeCtr: TextEditingController(text: specimenEntry[index].trapType),
-    );
+  SpecimenFormCtrModel _updateController(SpecimenData specimenEntry) {
+    return SpecimenFormCtrModel.fromData(specimenEntry, TaxonData());
   }
 }

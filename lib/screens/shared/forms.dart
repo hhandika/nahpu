@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/services/project_services.dart';
 
 class FormCard extends StatelessWidget {
   const FormCard(
@@ -23,19 +23,49 @@ class FormCard extends StatelessWidget {
           ? Color.lerp(Theme.of(context).colorScheme.secondaryContainer,
               Theme.of(context).colorScheme.surface, 0.5)
           : Theme.of(context).colorScheme.surface,
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            withTitle
-                ? Text(
-                    title,
-                    style: Theme.of(context).textTheme.titleLarge,
-                  )
-                : const SizedBox.shrink(),
-            child,
-          ],
-        ),
+      child: Column(
+        children: [
+          withTitle ? TitleForm(text: title) : const SizedBox.shrink(),
+          Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+              child: child)
+        ],
+      ),
+    );
+  }
+}
+
+class TitleForm extends StatelessWidget {
+  const TitleForm({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5, top: 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            text,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          IconButton(
+            onPressed: () {},
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+            icon: Icon(
+              Icons.info_outline_rounded,
+              size: 22,
+              color: Colors.grey[400],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -65,7 +95,7 @@ class DeleteAlerts extends ConsumerWidget {
         ),
         TextButton(
           onPressed: () {
-            deleteProject(ref, projectUuid);
+            ProjectServices(ref).deleteProject(projectUuid);
             onDelete();
           },
           child: const Text('Delete', style: TextStyle(color: Colors.red)),

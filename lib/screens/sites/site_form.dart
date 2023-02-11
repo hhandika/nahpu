@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/sites/components/habitats.dart';
 import 'package:nahpu/screens/sites/components/geography.dart';
 import 'package:nahpu/screens/sites/components/site_info.dart';
-import 'package:nahpu/models/form.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/photos.dart';
 import 'package:nahpu/screens/shared/layout.dart';
@@ -34,6 +35,7 @@ class SiteFormState extends ConsumerState<SiteForm>
   @override
   void dispose() {
     _tabController.dispose();
+    widget.siteFormCtr.dispose();
     super.dispose();
   }
 
@@ -57,13 +59,14 @@ class SiteFormState extends ConsumerState<SiteForm>
             AdaptiveLayout(
               useHorizontalLayout: useHorizontalLayout,
               children: [
+                Habitat(
+                  id: widget.id,
+                  useHorizontalLayout: useHorizontalLayout,
+                  siteFormCtr: widget.siteFormCtr,
+                ),
                 CoordinateFields(
                   siteId: widget.id,
                 ),
-                Habitat(
-                    id: widget.id,
-                    useHorizontalLayout: useHorizontalLayout,
-                    siteFormCtr: widget.siteFormCtr),
               ],
             ),
             MediaTabBars(
@@ -71,7 +74,7 @@ class SiteFormState extends ConsumerState<SiteForm>
               length: 2,
               tabs: [
                 Tab(
-                    icon: Icon(Icons.photo_album_rounded,
+                    icon: Icon(Icons.photo_library_rounded,
                         color: Theme.of(context).colorScheme.tertiary)),
                 Tab(
                     icon: Icon(Icons.video_library_rounded,
@@ -82,6 +85,7 @@ class SiteFormState extends ConsumerState<SiteForm>
                 VideoViewer(),
               ],
             ),
+            const BottomPadding()
           ],
         );
       },

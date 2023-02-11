@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/models/form.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/screens/specimens/birds/main_forms.dart';
 import 'package:nahpu/screens/specimens/mammals/main_forms.dart';
@@ -29,6 +29,7 @@ class SpecimenFormState extends ConsumerState<SpecimenForm> {
 
   @override
   void dispose() {
+    widget.specimenCtr.dispose();
     super.dispose();
   }
 
