@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/controllers.dart';
 import 'package:flutter/material.dart';
+import 'package:nahpu/models/mammals.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:intl/intl.dart';
@@ -27,14 +28,6 @@ class CollectingRecordField extends ConsumerStatefulWidget {
 
 class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
   List<PersonnelData> personnelList = [];
-  final List<String> conditions = [
-    'Freshly Euthanized',
-    'Good',
-    'Fair',
-    'Poor',
-    'Rotten',
-    'Released',
-  ];
 
   final speciesCtr = TextEditingController();
   late FocusNode _speciesFocusNode;
@@ -89,7 +82,7 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
               labelText: 'Condition',
               hintText: 'Choose a condition',
             ),
-            items: conditions
+            items: conditionList
                 .map((String condition) => DropdownMenuItem(
                       value: condition,
                       child: Text(condition),
