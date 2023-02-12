@@ -60,17 +60,28 @@ class PersonnelList extends ConsumerWidget {
     final personnel = ref.watch(personnelListProvider);
     return personnel.when(
       data: (data) {
-        return ListView.builder(
-          itemCount: data.length,
-          itemBuilder: (context, index) {
-            return PersonalListTile(
-              personnelData: data[index],
-              trailing: PersonnelMenu(
-                data: data[index],
-              ),
-            );
-          },
-        );
+        return data.isEmpty
+            ? Column(
+                children: const [
+                  Text(
+                    'No personnel found!',
+                  ),
+                  Text(
+                    'Add at least a cataloger to use the app.',
+                  )
+                ],
+              )
+            : ListView.builder(
+                itemCount: data.length,
+                itemBuilder: (context, index) {
+                  return PersonalListTile(
+                    personnelData: data[index],
+                    trailing: PersonnelMenu(
+                      data: data[index],
+                    ),
+                  );
+                },
+              );
       },
       loading: () => const CommonProgressIndicator(),
       error: (error, stack) => Text(error.toString()),
