@@ -8,7 +8,6 @@ import 'package:nahpu/providers/catalogs.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/screens/specimens/shared/taxa.dart';
 import 'package:nahpu/services/database/database.dart';
-import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
 
@@ -29,7 +28,7 @@ class CollectingRecordField extends ConsumerStatefulWidget {
 class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
   List<PersonnelData> personnelList = [];
   final List<String> conditions = [
-    'Freshy Euthanized',
+    'Freshly Euthanized',
     'Good',
     'Fair',
     'Poor',
