@@ -7,7 +7,6 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/personnel_queries.dart';
 import 'package:nahpu/services/database/specimen_queries.dart';
 import 'package:drift/drift.dart' as db;
-import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/project_services.dart';
 
 class SpecimenServices {
@@ -24,7 +23,7 @@ class SpecimenServices {
       projectUuid: db.Value(projectUuid),
       taxonGroup: db.Value(matchCatFmtToTaxonGroup(catalogFmt)),
     ));
-    PersonnelServices(ref).updateAllCatalogerFieldNumbers();
+
     switch (catalogFmt) {
       case CatalogFmt.birds:
         _createBirdSpecimen(specimenUuid);
@@ -43,15 +42,26 @@ class SpecimenServices {
     return specimenUuid;
   }
 
-  Future<int?> getSpecimenFieldNumber(
-      String projectUuid, String specimenUuid) async {
-    int? fieldNumber = await SpecimenQuery(ref.read(databaseProvider))
-        .getlastCatFieldNumber(projectUuid, specimenUuid);
+  Future<int> getSpecimenFieldNumber(
+      String personnelUuid, String specimenUuid) async {
+    String projectUuid = ref.read(projectUuidProvider);
+    SpecimenData? specimenData = await SpecimenQuery(ref.read(databaseProvider))
+        .getLastCatFieldNumber(projectUuid, specimenUuid);
 
-    fieldNumber ??= await PersonnelQuery(ref.read(databaseProvider))
-        .getCurrentFieldNumberByUuid(specimenUuid);
-    ref.invalidate(personnelListProvider);
-    return _getFieldNumber(fieldNumber);
+    if (specimenData != null && specimenData.fieldNumber != null) {
+      if (specimenData.uuid != specimenUuid) {
+        ref.invalidate(personnelListProvider);
+        return _getFieldNumber(specimenData.fieldNumber);
+      } else {
+        ref.invalidate(personnelListProvider);
+        return specimenData.fieldNumber!;
+      }
+    } else {
+      int? fieldNumber = await PersonnelQuery(ref.read(databaseProvider))
+          .getCurrentFieldNumberByUuid(personnelUuid);
+      ref.invalidate(personnelListProvider);
+      return _getFieldNumber(fieldNumber);
+    }
   }
 
   int _getFieldNumber(int? lastFieldNumber) {

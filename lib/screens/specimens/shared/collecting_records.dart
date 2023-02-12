@@ -9,15 +9,16 @@ import 'package:nahpu/providers/catalogs.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/screens/specimens/shared/taxa.dart';
 import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
 
 class CollectingRecordField extends ConsumerStatefulWidget {
   const CollectingRecordField({
-    Key? key,
+    super.key,
     required this.specimenUuid,
     required this.specimenCtr,
-  }) : super(key: key);
+  });
 
   final SpecimenFormCtrModel specimenCtr;
   final String specimenUuid;
@@ -191,15 +192,20 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
                     child: Text(e.name ?? ''),
                   ))
               .toList(),
-          onChanged: (String? uuid) {
+          onChanged: (String? uuid) async {
+            // TODO: Apply on-change once.
             if (uuid != null) {
+              int fieldNumber = await _getCurrentCollectorNumber(uuid);
               setState(() {
                 widget.specimenCtr.catalogerCtr = uuid;
                 widget.specimenCtr.preparatorCtr = uuid;
                 _getCurrentCollectorNumber(uuid);
-                int fieldNumber = _getCurrentCollectorNumber(uuid);
                 widget.specimenCtr.collectorNumberCtr.text =
                     fieldNumber.toString();
+                PersonnelServices(ref).updatePersonnelEntry(
+                    uuid,
+                    PersonnelCompanion(
+                        currentFieldNumber: db.Value(fieldNumber)));
                 SpecimenServices(ref).updateSpecimen(
                   widget.specimenUuid,
                   SpecimenCompanion(
@@ -248,11 +254,9 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
     );
   }
 
-  int _getCurrentCollectorNumber(String personnelUuid) {
-    int? fieldNumber = personnelList
-        .firstWhere((element) => element.uuid == personnelUuid)
-        .currentFieldNumber;
-    fieldNumber ??= 0;
+  Future<int> _getCurrentCollectorNumber(String personnelUuid) async {
+    int fieldNumber = await SpecimenServices(ref)
+        .getSpecimenFieldNumber(personnelUuid, widget.specimenUuid);
 
     return fieldNumber;
   }
