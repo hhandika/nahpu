@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/controllers.dart';
 import 'package:flutter/material.dart';
+import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:intl/intl.dart';
@@ -26,6 +27,9 @@ class CaptureRecordFields extends ConsumerStatefulWidget {
 }
 
 class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
+  bool isRelativeTime = false;
+  bool isMultipleCollectors = false;
+
   @override
   Widget build(BuildContext context) {
     List<CollEventData> eventEntry = [];
@@ -36,6 +40,30 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
       title: 'Capture Records',
       child: Column(
         children: [
+          AdaptiveLayout(
+            useHorizontalLayout: widget.useHorizontalLayout,
+            children: [
+              CheckboxListTile(
+                value: isRelativeTime,
+                onChanged: (value) {
+                  setState(() {
+                    isRelativeTime = value!;
+                  });
+                },
+                title: const Text('Relative time'),
+                controlAffinity: ListTileControlAffinity.leading,
+              ),
+              CheckboxListTile(
+                  value: isMultipleCollectors,
+                  onChanged: (value) {
+                    setState(() {
+                      isMultipleCollectors = value!;
+                    });
+                  },
+                  title: const Text('Multiple collectors'),
+                  controlAffinity: ListTileControlAffinity.leading),
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.all(5),
             child: DropdownButtonFormField(
@@ -89,30 +117,10 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                   });
                 },
               ),
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Capture time',
-                  hintText: 'Enter time',
-                ),
-                controller: widget.specimenCtr.captureTimeCtr,
-                onTap: () async {
-                  showTimePicker(
-                    context: context,
-                    initialTime: TimeOfDay.now(),
-                  ).then((time) {
-                    if (time != null) {
-                      widget.specimenCtr.captureTimeCtr.text =
-                          time.format(context).toString();
-                      SpecimenServices(ref).updateSpecimen(
-                        widget.specimenUuid,
-                        SpecimenCompanion(
-                          captureTime:
-                              db.Value(widget.specimenCtr.captureTimeCtr.text),
-                        ),
-                      );
-                    }
-                  });
-                },
+              CaptureTime(
+                specimenUuid: widget.specimenUuid,
+                specimenCtr: widget.specimenCtr,
+                isRelativeTime: isRelativeTime,
               ),
             ],
           ),
@@ -216,5 +224,74 @@ class PersonnelName extends ConsumerWidget {
     } catch (e) {
       return const Text('Error');
     }
+  }
+}
+
+class CaptureTime extends ConsumerStatefulWidget {
+  const CaptureTime(
+      {super.key,
+      required this.specimenUuid,
+      required this.specimenCtr,
+      required this.isRelativeTime});
+
+  final String specimenUuid;
+  final SpecimenFormCtrModel specimenCtr;
+  final bool isRelativeTime;
+
+  @override
+  CaptureTimeState createState() => CaptureTimeState();
+}
+
+class CaptureTimeState extends ConsumerState<CaptureTime> {
+  @override
+  Widget build(BuildContext context) {
+    return widget.isRelativeTime
+        ? DropdownButtonFormField(
+            items: relativeTimeList
+                .map(
+                  (e) => DropdownMenuItem(
+                    value: e,
+                    child: Text(e),
+                  ),
+                )
+                .toList(),
+            onChanged: (String? newValue) {
+              setState(() {
+                widget.specimenCtr.captureTimeCtr.text = newValue ?? '';
+                SpecimenServices(ref).updateSpecimen(
+                  widget.specimenUuid,
+                  SpecimenCompanion(
+                    captureTime:
+                        db.Value(widget.specimenCtr.captureTimeCtr.text),
+                  ),
+                );
+              });
+            },
+          )
+        : TextField(
+            decoration: const InputDecoration(
+              labelText: 'Capture time',
+              hintText: 'Enter time',
+            ),
+            controller: widget.specimenCtr.captureTimeCtr,
+            onTap: () async {
+              showTimePicker(
+                context: context,
+                initialTime: TimeOfDay.now(),
+              ).then((time) {
+                if (time != null) {
+                  widget.specimenCtr.captureTimeCtr.text =
+                      time.format(context).toString();
+                  SpecimenServices(ref).updateSpecimen(
+                    widget.specimenUuid,
+                    SpecimenCompanion(
+                      captureTime:
+                          db.Value(widget.specimenCtr.captureTimeCtr.text),
+                    ),
+                  );
+                }
+              });
+            },
+          );
   }
 }

@@ -32,6 +32,14 @@ const List<String> siteTypeList = [
   'Netline'
 ];
 
+const List<String> relativeTimeList = [
+  'Dawn',
+  'Morning',
+  'Afternoon',
+  'Dusk',
+  'Night',
+];
+
 CatalogFmt matchTaxonGroupToCatFmt(String? taxonGroup) {
   switch (taxonGroup) {
     case 'Birds':
