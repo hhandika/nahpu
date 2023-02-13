@@ -45,31 +45,34 @@ class SpecimenServices {
   Future<int> getSpecimenFieldNumber(
       String personnelUuid, String specimenUuid) async {
     String projectUuid = ref.read(projectUuidProvider);
-    SpecimenData? specimenData = await SpecimenQuery(ref.read(databaseProvider))
-        .getLastCatFieldNumber(projectUuid, specimenUuid);
+    final db = ref.read(databaseProvider);
+    SpecimenData? specimenData = await SpecimenQuery(db)
+        .getLastCatFieldNumber(projectUuid, specimenUuid, personnelUuid);
 
-    if (specimenData != null && specimenData.fieldNumber != null) {
-      if (specimenData.uuid != specimenUuid) {
-        ref.invalidate(personnelListProvider);
-        return _getFieldNumber(specimenData.fieldNumber);
-      } else {
-        ref.invalidate(personnelListProvider);
-        return specimenData.fieldNumber!;
+    ref.invalidate(personnelListProvider);
+    if (specimenData == null) {
+      try {
+        int? fieldNumber =
+            await PersonnelQuery(db).getCurrentFieldNumberByUuid(personnelUuid);
+        return _getCurrentFieldNumber(fieldNumber);
+      } catch (e) {
+        return 0;
       }
     } else {
-      int? fieldNumber = await PersonnelQuery(ref.read(databaseProvider))
-          .getCurrentFieldNumberByUuid(personnelUuid);
-      ref.invalidate(personnelListProvider);
-      return _getFieldNumber(fieldNumber);
+      return _getFieldNumber(specimenData.fieldNumber!);
     }
   }
 
-  int _getFieldNumber(int? lastFieldNumber) {
-    if (lastFieldNumber == null) {
+  int _getCurrentFieldNumber(int? currentFieldNum) {
+    if (currentFieldNum == null) {
       return 0;
     } else {
-      return lastFieldNumber + 1;
+      return currentFieldNum;
     }
+  }
+
+  int _getFieldNumber(int lastFieldNumber) {
+    return lastFieldNumber + 1;
   }
 
   void _createMammalSpecimen(String specimenUuid) {

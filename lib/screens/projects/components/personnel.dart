@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/providers/validation.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
@@ -106,6 +107,7 @@ class PersonalListTile extends StatelessWidget {
       subtitle: PersonnelSubtitle(
         role: personnelData.role,
         affiliation: personnelData.affiliation,
+        currentFieldNumber: personnelData.currentFieldNumber,
       ),
       trailing: trailing,
     );
@@ -129,10 +131,12 @@ class PersonnelSubtitle extends StatelessWidget {
     super.key,
     required this.role,
     required this.affiliation,
+    required this.currentFieldNumber,
   });
 
   final String? role;
   final String? affiliation;
+  final int? currentFieldNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -156,7 +160,20 @@ class PersonnelSubtitle extends StatelessWidget {
                   child: TileIcon(icon: Icons.business_rounded),
                 ),
                 TextSpan(
-                  text: '$affiliation',
+                  text: '$affiliation ',
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
+              ],
+            )
+          : const TextSpan(),
+      currentFieldNumber != null
+          ? TextSpan(
+              children: [
+                const WidgetSpan(
+                  child: TileIcon(icon: MdiIcons.counter),
+                ),
+                TextSpan(
+                  text: '$currentFieldNumber',
                   style: Theme.of(context).textTheme.labelLarge,
                 ),
               ],

@@ -20,11 +20,16 @@ class SpecimenQuery extends DatabaseAccessor<Database>
   }
 
   Future<SpecimenData?> getLastCatFieldNumber(
-      String projectUuid, String catalogerUuid) async {
+      String projectUuid, String specimenUuid, String catalogerUuid) async {
     try {
       return await (select(specimen)
             ..where((t) => t.projectUuid.equals(projectUuid))
-            ..where((t) => t.catalogerID.equals(catalogerUuid)))
+            ..where((t) => t.uuid.equals(specimenUuid))
+            ..where((t) => t.catalogerID.equals(catalogerUuid))
+            ..orderBy([
+              (t) => OrderingTerm(
+                  expression: t.fieldNumber, mode: OrderingMode.desc)
+            ]))
           .getSingle();
     } catch (e) {
       return null;

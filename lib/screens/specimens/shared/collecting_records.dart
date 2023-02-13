@@ -170,6 +170,7 @@ class PersonnelRecords extends ConsumerStatefulWidget {
 
 class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
   List<PersonnelData> personnelList = [];
+  bool hasChanged = false;
 
   @override
   Widget build(BuildContext context) {
@@ -202,10 +203,13 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
                 _getCurrentCollectorNumber(uuid);
                 widget.specimenCtr.collectorNumberCtr.text =
                     fieldNumber.toString();
-                PersonnelServices(ref).updatePersonnelEntry(
-                    uuid,
-                    PersonnelCompanion(
-                        currentFieldNumber: db.Value(fieldNumber)));
+                if (!hasChanged) {
+                  PersonnelServices(ref).updatePersonnelEntry(
+                      uuid,
+                      PersonnelCompanion(
+                          currentFieldNumber: db.Value(fieldNumber + 1)));
+                  hasChanged = true;
+                }
                 SpecimenServices(ref).updateSpecimen(
                   widget.specimenUuid,
                   SpecimenCompanion(
