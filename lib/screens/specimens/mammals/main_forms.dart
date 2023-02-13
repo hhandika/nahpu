@@ -57,7 +57,7 @@ class MammalFormsState extends ConsumerState<MammalForms> {
                     children: [
                       TaxonomicForm(
                         useHorizontalLayout: useHorizontalLayout,
-                        taxonData: widget.specimenCtr.taxonDataCtr,
+                        specimenUuid: widget.specimenUuid,
                       ),
                       CaptureRecordFields(
                         specimenUuid: widget.specimenUuid,

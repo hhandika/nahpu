@@ -8,6 +8,7 @@ import 'package:nahpu/services/database/coordinate_queries.dart';
 import 'package:nahpu/services/database/collevent_queries.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
 import 'package:nahpu/services/database/personnel_queries.dart';
+import 'package:nahpu/services/specimen_services.dart';
 
 void createPersonnel(WidgetRef ref, PersonnelCompanion form) {
   PersonnelQuery(ref.read(databaseProvider)).createPersonnel(form);
@@ -84,4 +85,18 @@ final personnelNameProvider =
   final person =
       PersonnelQuery(ref.read(databaseProvider)).getPersonnelByUuid(uuid);
   return person;
+});
+
+final taxonDataProvider = FutureProvider.family
+    .autoDispose<TaxonomyData?, String>((ref, specimenUuid) async {
+  int? taxonId = await SpecimenQuery(ref.read(databaseProvider))
+      .getSpecimenByUuid(specimenUuid);
+
+  if (taxonId != null) {
+    final taxonData =
+        TaxonomyQuery(ref.read(databaseProvider)).getTaxonById(taxonId);
+    return taxonData;
+  } else {
+    return null;
+  }
 });

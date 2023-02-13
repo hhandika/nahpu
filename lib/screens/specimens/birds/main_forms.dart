@@ -52,8 +52,9 @@ class BirdFormsState extends ConsumerState<BirdForms> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       TaxonomicForm(
-                          useHorizontalLayout: useHorizontalLayout,
-                          taxonData: widget.specimenCtr.taxonDataCtr),
+                        useHorizontalLayout: useHorizontalLayout,
+                        specimenUuid: widget.specimenUuid,
+                      ),
                       CaptureRecordFields(
                         specimenUuid: widget.specimenUuid,
                         useHorizontalLayout: useHorizontalLayout,

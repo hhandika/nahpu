@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/models/types.dart';
@@ -55,33 +56,38 @@ class SpeciesAutoComplete extends ConsumerWidget {
 }
 
 class TaxonomicForm extends ConsumerWidget {
-  const TaxonomicForm(
-      {Key? key, required this.useHorizontalLayout, required this.taxonData})
-      : super(key: key);
+  const TaxonomicForm({
+    super.key,
+    required this.useHorizontalLayout,
+    required this.specimenUuid,
+  });
 
   final bool useHorizontalLayout;
-  final TaxonData? taxonData;
+  final String specimenUuid;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<String> terms = ['Class', 'Order', 'Family'];
-    List<String> taxonomy = [
-      taxonData?.taxonClass ?? '',
-      taxonData?.taxonOrder ?? '',
-      taxonData?.taxonFamily ?? '',
-    ];
     return FormCard(
       title: 'Taxonomy',
-      child: AdaptiveLayout(
-        useHorizontalLayout: useHorizontalLayout,
-        children: [
-          for (var i = 0; i < terms.length; i++)
-            ListTile(
-              title: Text(terms[i]),
-              subtitle: Text(taxonomy[i]),
-            ),
-        ],
-      ),
+      child: ref.watch(taxonDataProvider(specimenUuid)).when(
+            data: (taxonData) {
+              if (taxonData == null) {
+                return const Center(
+                    child: Text('No taxonomic data found\nAdd a species'));
+              } else {
+                return AdaptiveLayout(
+                  useHorizontalLayout: useHorizontalLayout,
+                  children: [
+                    Text('Class: ${taxonData.taxonClass}'),
+                    Text('Order: ${taxonData.taxonOrder}'),
+                    Text('Family: ${taxonData.taxonFamily}'),
+                  ],
+                );
+              }
+            },
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (error, stack) => Text('Error: $error'),
+          ),
     );
   }
 }

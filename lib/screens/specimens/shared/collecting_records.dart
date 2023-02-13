@@ -58,18 +58,20 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
               controller: speciesCtr,
               onSelected: (String value) {
                 _speciesFocusNode.requestFocus();
-                setState(() {
-                  speciesCtr.text = value;
-                  var taxon = value.split(' ');
-                  TaxonomyQuery(ref.read(databaseProvider))
-                      .getTaxonIdByGenusEpithet(taxon[0], taxon[1])
-                      .then(
-                        (data) => SpecimenServices(ref).updateSpecimen(
-                          widget.specimenUuid,
-                          SpecimenCompanion(speciesID: db.Value(data.id)),
-                        ),
-                      );
-                });
+                setState(
+                  () {
+                    speciesCtr.text = value;
+                    var taxon = value.split(' ');
+                    TaxonomyQuery(ref.read(databaseProvider))
+                        .getTaxonIdByGenusEpithet(taxon[0], taxon[1])
+                        .then(
+                          (data) => SpecimenServices(ref).updateSpecimen(
+                            widget.specimenUuid,
+                            SpecimenCompanion(speciesID: db.Value(data.id)),
+                          ),
+                        );
+                  },
+                );
               }),
           DropdownButtonFormField(
             value: widget.specimenCtr.conditionCtr,

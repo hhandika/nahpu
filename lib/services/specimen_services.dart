@@ -99,6 +99,7 @@ class SpecimenServices {
   void updateSpecimen(String uuid, SpecimenCompanion entries) {
     SpecimenQuery(ref.read(databaseProvider))
         .updateSpecimenEntry(uuid, entries);
+    ref.invalidate(taxonDataProvider);
   }
 
   Future<BirdMeasurementData> getBirdMeasurementData(String specimenUuid) {
@@ -114,6 +115,7 @@ class SpecimenServices {
 
   void _invalidateSpecimenList() {
     ref.invalidate(specimenEntryProvider);
+
     ref.invalidate(personnelListProvider);
   }
 }
