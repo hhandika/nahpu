@@ -8,7 +8,6 @@ import 'package:nahpu/services/database/coordinate_queries.dart';
 import 'package:nahpu/services/database/collevent_queries.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
 import 'package:nahpu/services/database/personnel_queries.dart';
-import 'package:nahpu/services/specimen_services.dart';
 
 void createPersonnel(WidgetRef ref, PersonnelCompanion form) {
   PersonnelQuery(ref.read(databaseProvider)).createPersonnel(form);
