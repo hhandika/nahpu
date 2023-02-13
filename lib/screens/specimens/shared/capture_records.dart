@@ -247,6 +247,10 @@ class CaptureTimeState extends ConsumerState<CaptureTime> {
   Widget build(BuildContext context) {
     return widget.isRelativeTime
         ? DropdownButtonFormField(
+            decoration: const InputDecoration(
+              labelText: 'Capture time',
+              hintText: 'Enter time',
+            ),
             items: relativeTimeList
                 .map(
                   (e) => DropdownMenuItem(
