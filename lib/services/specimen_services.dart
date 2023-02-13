@@ -115,7 +115,7 @@ class SpecimenServices {
 
   void _invalidateSpecimenList() {
     ref.invalidate(specimenEntryProvider);
-
+    ref.invalidate(taxonDataProvider);
     ref.invalidate(personnelListProvider);
   }
 }

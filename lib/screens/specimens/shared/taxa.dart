@@ -72,8 +72,7 @@ class TaxonomicForm extends ConsumerWidget {
       child: ref.watch(taxonDataProvider(specimenUuid)).when(
             data: (taxonData) {
               if (taxonData == null) {
-                return const Center(
-                    child: Text('No taxonomic data found\nAdd a species'));
+                return const Center(child: Text('No species added!'));
               } else {
                 return AdaptiveLayout(
                   useHorizontalLayout: useHorizontalLayout,
