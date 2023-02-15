@@ -169,6 +169,52 @@ class EditPart extends StatelessWidget {
   }
 }
 
+class PartIdForm extends ConsumerWidget {
+  const PartIdForm({
+    super.key,
+    required this.specimenUuid,
+    required this.partCtr,
+  });
+
+  final String specimenUuid;
+  final PartFormCtrModel partCtr;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Theme.of(context).colorScheme.primaryContainer,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(children: [
+        Text(
+          'Part ID',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        CommonTextField(
+            controller: partCtr.primaryIdCtr,
+            labelText: 'Primary',
+            hintText: 'Enter primary ID',
+            isLastField: false),
+        CommonTextField(
+            controller: partCtr.secondaryIdCtr,
+            labelText: 'Secondary',
+            hintText: 'Enter secondary ID',
+            isLastField: false),
+        CommonTextField(
+            controller: partCtr.tertiaryIdCtr,
+            labelText: 'Tertiary',
+            hintText: 'Enter tertiary ID',
+            isLastField: true),
+      ]),
+    );
+  }
+}
+
 class PartForms extends ConsumerWidget {
   const PartForms({
     super.key,
@@ -189,6 +235,10 @@ class PartForms extends ConsumerWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              PartIdForm(
+                specimenUuid: specimenUuid,
+                partCtr: partCtr,
+              ),
               CommonTextField(
                 controller: partCtr.typeCtr,
                 labelText: 'Preparation type',
