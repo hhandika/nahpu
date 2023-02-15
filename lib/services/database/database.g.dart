@@ -8759,13 +8759,6 @@ class BirdMeasurement extends Table
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _ovaryWidthMeta =
-      const VerificationMeta('ovaryWidth');
-  late final GeneratedColumn<int> ovaryWidth = GeneratedColumn<int>(
-      'ovaryWidth', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
   static const VerificationMeta _oviductWidthMeta =
       const VerificationMeta('oviductWidth');
   late final GeneratedColumn<int> oviductWidth = GeneratedColumn<int>(
@@ -8798,6 +8791,13 @@ class BirdMeasurement extends Table
       const VerificationMeta('thirdOvaSize');
   late final GeneratedColumn<int> thirdOvaSize = GeneratedColumn<int>(
       'thirdOvaSize', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _ovaryWidthMeta =
+      const VerificationMeta('ovaryWidth');
+  late final GeneratedColumn<int> ovaryWidth = GeneratedColumn<int>(
+      'ovaryWidth', aliasedName, true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -8891,12 +8891,12 @@ class BirdMeasurement extends Table
         testisWidth,
         testisRemark,
         ovaryLength,
-        ovaryWidth,
         oviductWidth,
         ovaryAppearance,
         firstOvaSize,
         secondOvaSize,
         thirdOvaSize,
+        ovaryWidth,
         oviductAppearance,
         ovaryRemark,
         wingRightPrimary,
@@ -9012,12 +9012,6 @@ class BirdMeasurement extends Table
           ovaryLength.isAcceptableOrUnknown(
               data['ovaryLength']!, _ovaryLengthMeta));
     }
-    if (data.containsKey('ovaryWidth')) {
-      context.handle(
-          _ovaryWidthMeta,
-          ovaryWidth.isAcceptableOrUnknown(
-              data['ovaryWidth']!, _ovaryWidthMeta));
-    }
     if (data.containsKey('oviductWidth')) {
       context.handle(
           _oviductWidthMeta,
@@ -9047,6 +9041,12 @@ class BirdMeasurement extends Table
           _thirdOvaSizeMeta,
           thirdOvaSize.isAcceptableOrUnknown(
               data['thirdOvaSize']!, _thirdOvaSizeMeta));
+    }
+    if (data.containsKey('ovaryWidth')) {
+      context.handle(
+          _ovaryWidthMeta,
+          ovaryWidth.isAcceptableOrUnknown(
+              data['ovaryWidth']!, _ovaryWidthMeta));
     }
     if (data.containsKey('oviductAppearance')) {
       context.handle(
@@ -9151,8 +9151,6 @@ class BirdMeasurement extends Table
           .read(DriftSqlType.string, data['${effectivePrefix}testisRemark']),
       ovaryLength: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}ovaryLength']),
-      ovaryWidth: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}ovaryWidth']),
       oviductWidth: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}oviductWidth']),
       ovaryAppearance: attachedDatabase.typeMapping
@@ -9163,6 +9161,8 @@ class BirdMeasurement extends Table
           .read(DriftSqlType.int, data['${effectivePrefix}secondOvaSize']),
       thirdOvaSize: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}thirdOvaSize']),
+      ovaryWidth: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}ovaryWidth']),
       oviductAppearance: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}oviductAppearance']),
       ovaryRemark: attachedDatabase.typeMapping
@@ -9218,12 +9218,12 @@ class BirdMeasurementData extends DataClass
   final int? testisWidth;
   final String? testisRemark;
   final int? ovaryLength;
-  final int? ovaryWidth;
   final int? oviductWidth;
   final int? ovaryAppearance;
   final int? firstOvaSize;
   final int? secondOvaSize;
   final int? thirdOvaSize;
+  final int? ovaryWidth;
   final int? oviductAppearance;
   final String? ovaryRemark;
   final String? wingRightPrimary;
@@ -9253,12 +9253,12 @@ class BirdMeasurementData extends DataClass
       this.testisWidth,
       this.testisRemark,
       this.ovaryLength,
-      this.ovaryWidth,
       this.oviductWidth,
       this.ovaryAppearance,
       this.firstOvaSize,
       this.secondOvaSize,
       this.thirdOvaSize,
+      this.ovaryWidth,
       this.oviductAppearance,
       this.ovaryRemark,
       this.wingRightPrimary,
@@ -9324,9 +9324,6 @@ class BirdMeasurementData extends DataClass
     if (!nullToAbsent || ovaryLength != null) {
       map['ovaryLength'] = Variable<int>(ovaryLength);
     }
-    if (!nullToAbsent || ovaryWidth != null) {
-      map['ovaryWidth'] = Variable<int>(ovaryWidth);
-    }
     if (!nullToAbsent || oviductWidth != null) {
       map['oviductWidth'] = Variable<int>(oviductWidth);
     }
@@ -9341,6 +9338,9 @@ class BirdMeasurementData extends DataClass
     }
     if (!nullToAbsent || thirdOvaSize != null) {
       map['thirdOvaSize'] = Variable<int>(thirdOvaSize);
+    }
+    if (!nullToAbsent || ovaryWidth != null) {
+      map['ovaryWidth'] = Variable<int>(ovaryWidth);
     }
     if (!nullToAbsent || oviductAppearance != null) {
       map['oviductAppearance'] = Variable<int>(oviductAppearance);
@@ -9424,9 +9424,6 @@ class BirdMeasurementData extends DataClass
       ovaryLength: ovaryLength == null && nullToAbsent
           ? const Value.absent()
           : Value(ovaryLength),
-      ovaryWidth: ovaryWidth == null && nullToAbsent
-          ? const Value.absent()
-          : Value(ovaryWidth),
       oviductWidth: oviductWidth == null && nullToAbsent
           ? const Value.absent()
           : Value(oviductWidth),
@@ -9442,6 +9439,9 @@ class BirdMeasurementData extends DataClass
       thirdOvaSize: thirdOvaSize == null && nullToAbsent
           ? const Value.absent()
           : Value(thirdOvaSize),
+      ovaryWidth: ovaryWidth == null && nullToAbsent
+          ? const Value.absent()
+          : Value(ovaryWidth),
       oviductAppearance: oviductAppearance == null && nullToAbsent
           ? const Value.absent()
           : Value(oviductAppearance),
@@ -9497,12 +9497,12 @@ class BirdMeasurementData extends DataClass
       testisWidth: serializer.fromJson<int?>(json['testisWidth']),
       testisRemark: serializer.fromJson<String?>(json['testisRemark']),
       ovaryLength: serializer.fromJson<int?>(json['ovaryLength']),
-      ovaryWidth: serializer.fromJson<int?>(json['ovaryWidth']),
       oviductWidth: serializer.fromJson<int?>(json['oviductWidth']),
       ovaryAppearance: serializer.fromJson<int?>(json['ovaryAppearance']),
       firstOvaSize: serializer.fromJson<int?>(json['firstOvaSize']),
       secondOvaSize: serializer.fromJson<int?>(json['secondOvaSize']),
       thirdOvaSize: serializer.fromJson<int?>(json['thirdOvaSize']),
+      ovaryWidth: serializer.fromJson<int?>(json['ovaryWidth']),
       oviductAppearance: serializer.fromJson<int?>(json['oviductAppearance']),
       ovaryRemark: serializer.fromJson<String?>(json['ovaryRemark']),
       wingRightPrimary: serializer.fromJson<String?>(json['wingRightPrimary']),
@@ -9541,12 +9541,12 @@ class BirdMeasurementData extends DataClass
       'testisWidth': serializer.toJson<int?>(testisWidth),
       'testisRemark': serializer.toJson<String?>(testisRemark),
       'ovaryLength': serializer.toJson<int?>(ovaryLength),
-      'ovaryWidth': serializer.toJson<int?>(ovaryWidth),
       'oviductWidth': serializer.toJson<int?>(oviductWidth),
       'ovaryAppearance': serializer.toJson<int?>(ovaryAppearance),
       'firstOvaSize': serializer.toJson<int?>(firstOvaSize),
       'secondOvaSize': serializer.toJson<int?>(secondOvaSize),
       'thirdOvaSize': serializer.toJson<int?>(thirdOvaSize),
+      'ovaryWidth': serializer.toJson<int?>(ovaryWidth),
       'oviductAppearance': serializer.toJson<int?>(oviductAppearance),
       'ovaryRemark': serializer.toJson<String?>(ovaryRemark),
       'wingRightPrimary': serializer.toJson<String?>(wingRightPrimary),
@@ -9579,12 +9579,12 @@ class BirdMeasurementData extends DataClass
           Value<int?> testisWidth = const Value.absent(),
           Value<String?> testisRemark = const Value.absent(),
           Value<int?> ovaryLength = const Value.absent(),
-          Value<int?> ovaryWidth = const Value.absent(),
           Value<int?> oviductWidth = const Value.absent(),
           Value<int?> ovaryAppearance = const Value.absent(),
           Value<int?> firstOvaSize = const Value.absent(),
           Value<int?> secondOvaSize = const Value.absent(),
           Value<int?> thirdOvaSize = const Value.absent(),
+          Value<int?> ovaryWidth = const Value.absent(),
           Value<int?> oviductAppearance = const Value.absent(),
           Value<String?> ovaryRemark = const Value.absent(),
           Value<String?> wingRightPrimary = const Value.absent(),
@@ -9619,7 +9619,6 @@ class BirdMeasurementData extends DataClass
         testisRemark:
             testisRemark.present ? testisRemark.value : this.testisRemark,
         ovaryLength: ovaryLength.present ? ovaryLength.value : this.ovaryLength,
-        ovaryWidth: ovaryWidth.present ? ovaryWidth.value : this.ovaryWidth,
         oviductWidth:
             oviductWidth.present ? oviductWidth.value : this.oviductWidth,
         ovaryAppearance: ovaryAppearance.present
@@ -9631,6 +9630,7 @@ class BirdMeasurementData extends DataClass
             secondOvaSize.present ? secondOvaSize.value : this.secondOvaSize,
         thirdOvaSize:
             thirdOvaSize.present ? thirdOvaSize.value : this.thirdOvaSize,
+        ovaryWidth: ovaryWidth.present ? ovaryWidth.value : this.ovaryWidth,
         oviductAppearance: oviductAppearance.present
             ? oviductAppearance.value
             : this.oviductAppearance,
@@ -9677,12 +9677,12 @@ class BirdMeasurementData extends DataClass
           ..write('testisWidth: $testisWidth, ')
           ..write('testisRemark: $testisRemark, ')
           ..write('ovaryLength: $ovaryLength, ')
-          ..write('ovaryWidth: $ovaryWidth, ')
           ..write('oviductWidth: $oviductWidth, ')
           ..write('ovaryAppearance: $ovaryAppearance, ')
           ..write('firstOvaSize: $firstOvaSize, ')
           ..write('secondOvaSize: $secondOvaSize, ')
           ..write('thirdOvaSize: $thirdOvaSize, ')
+          ..write('ovaryWidth: $ovaryWidth, ')
           ..write('oviductAppearance: $oviductAppearance, ')
           ..write('ovaryRemark: $ovaryRemark, ')
           ..write('wingRightPrimary: $wingRightPrimary, ')
@@ -9717,12 +9717,12 @@ class BirdMeasurementData extends DataClass
         testisWidth,
         testisRemark,
         ovaryLength,
-        ovaryWidth,
         oviductWidth,
         ovaryAppearance,
         firstOvaSize,
         secondOvaSize,
         thirdOvaSize,
+        ovaryWidth,
         oviductAppearance,
         ovaryRemark,
         wingRightPrimary,
@@ -9756,12 +9756,12 @@ class BirdMeasurementData extends DataClass
           other.testisWidth == this.testisWidth &&
           other.testisRemark == this.testisRemark &&
           other.ovaryLength == this.ovaryLength &&
-          other.ovaryWidth == this.ovaryWidth &&
           other.oviductWidth == this.oviductWidth &&
           other.ovaryAppearance == this.ovaryAppearance &&
           other.firstOvaSize == this.firstOvaSize &&
           other.secondOvaSize == this.secondOvaSize &&
           other.thirdOvaSize == this.thirdOvaSize &&
+          other.ovaryWidth == this.ovaryWidth &&
           other.oviductAppearance == this.oviductAppearance &&
           other.ovaryRemark == this.ovaryRemark &&
           other.wingRightPrimary == this.wingRightPrimary &&
@@ -9793,12 +9793,12 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
   final Value<int?> testisWidth;
   final Value<String?> testisRemark;
   final Value<int?> ovaryLength;
-  final Value<int?> ovaryWidth;
   final Value<int?> oviductWidth;
   final Value<int?> ovaryAppearance;
   final Value<int?> firstOvaSize;
   final Value<int?> secondOvaSize;
   final Value<int?> thirdOvaSize;
+  final Value<int?> ovaryWidth;
   final Value<int?> oviductAppearance;
   final Value<String?> ovaryRemark;
   final Value<String?> wingRightPrimary;
@@ -9828,12 +9828,12 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
     this.testisWidth = const Value.absent(),
     this.testisRemark = const Value.absent(),
     this.ovaryLength = const Value.absent(),
-    this.ovaryWidth = const Value.absent(),
     this.oviductWidth = const Value.absent(),
     this.ovaryAppearance = const Value.absent(),
     this.firstOvaSize = const Value.absent(),
     this.secondOvaSize = const Value.absent(),
     this.thirdOvaSize = const Value.absent(),
+    this.ovaryWidth = const Value.absent(),
     this.oviductAppearance = const Value.absent(),
     this.ovaryRemark = const Value.absent(),
     this.wingRightPrimary = const Value.absent(),
@@ -9864,12 +9864,12 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
     this.testisWidth = const Value.absent(),
     this.testisRemark = const Value.absent(),
     this.ovaryLength = const Value.absent(),
-    this.ovaryWidth = const Value.absent(),
     this.oviductWidth = const Value.absent(),
     this.ovaryAppearance = const Value.absent(),
     this.firstOvaSize = const Value.absent(),
     this.secondOvaSize = const Value.absent(),
     this.thirdOvaSize = const Value.absent(),
+    this.ovaryWidth = const Value.absent(),
     this.oviductAppearance = const Value.absent(),
     this.ovaryRemark = const Value.absent(),
     this.wingRightPrimary = const Value.absent(),
@@ -9900,12 +9900,12 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
     Expression<int>? testisWidth,
     Expression<String>? testisRemark,
     Expression<int>? ovaryLength,
-    Expression<int>? ovaryWidth,
     Expression<int>? oviductWidth,
     Expression<int>? ovaryAppearance,
     Expression<int>? firstOvaSize,
     Expression<int>? secondOvaSize,
     Expression<int>? thirdOvaSize,
+    Expression<int>? ovaryWidth,
     Expression<int>? oviductAppearance,
     Expression<String>? ovaryRemark,
     Expression<String>? wingRightPrimary,
@@ -9936,12 +9936,12 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
       if (testisWidth != null) 'testisWidth': testisWidth,
       if (testisRemark != null) 'testisRemark': testisRemark,
       if (ovaryLength != null) 'ovaryLength': ovaryLength,
-      if (ovaryWidth != null) 'ovaryWidth': ovaryWidth,
       if (oviductWidth != null) 'oviductWidth': oviductWidth,
       if (ovaryAppearance != null) 'ovaryAppearance': ovaryAppearance,
       if (firstOvaSize != null) 'firstOvaSize': firstOvaSize,
       if (secondOvaSize != null) 'secondOvaSize': secondOvaSize,
       if (thirdOvaSize != null) 'thirdOvaSize': thirdOvaSize,
+      if (ovaryWidth != null) 'ovaryWidth': ovaryWidth,
       if (oviductAppearance != null) 'oviductAppearance': oviductAppearance,
       if (ovaryRemark != null) 'ovaryRemark': ovaryRemark,
       if (wingRightPrimary != null) 'wingRightPrimary': wingRightPrimary,
@@ -9974,12 +9974,12 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
       Value<int?>? testisWidth,
       Value<String?>? testisRemark,
       Value<int?>? ovaryLength,
-      Value<int?>? ovaryWidth,
       Value<int?>? oviductWidth,
       Value<int?>? ovaryAppearance,
       Value<int?>? firstOvaSize,
       Value<int?>? secondOvaSize,
       Value<int?>? thirdOvaSize,
+      Value<int?>? ovaryWidth,
       Value<int?>? oviductAppearance,
       Value<String?>? ovaryRemark,
       Value<String?>? wingRightPrimary,
@@ -10009,12 +10009,12 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
       testisWidth: testisWidth ?? this.testisWidth,
       testisRemark: testisRemark ?? this.testisRemark,
       ovaryLength: ovaryLength ?? this.ovaryLength,
-      ovaryWidth: ovaryWidth ?? this.ovaryWidth,
       oviductWidth: oviductWidth ?? this.oviductWidth,
       ovaryAppearance: ovaryAppearance ?? this.ovaryAppearance,
       firstOvaSize: firstOvaSize ?? this.firstOvaSize,
       secondOvaSize: secondOvaSize ?? this.secondOvaSize,
       thirdOvaSize: thirdOvaSize ?? this.thirdOvaSize,
+      ovaryWidth: ovaryWidth ?? this.ovaryWidth,
       oviductAppearance: oviductAppearance ?? this.oviductAppearance,
       ovaryRemark: ovaryRemark ?? this.ovaryRemark,
       wingRightPrimary: wingRightPrimary ?? this.wingRightPrimary,
@@ -10085,9 +10085,6 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
     if (ovaryLength.present) {
       map['ovaryLength'] = Variable<int>(ovaryLength.value);
     }
-    if (ovaryWidth.present) {
-      map['ovaryWidth'] = Variable<int>(ovaryWidth.value);
-    }
     if (oviductWidth.present) {
       map['oviductWidth'] = Variable<int>(oviductWidth.value);
     }
@@ -10102,6 +10099,9 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
     }
     if (thirdOvaSize.present) {
       map['thirdOvaSize'] = Variable<int>(thirdOvaSize.value);
+    }
+    if (ovaryWidth.present) {
+      map['ovaryWidth'] = Variable<int>(ovaryWidth.value);
     }
     if (oviductAppearance.present) {
       map['oviductAppearance'] = Variable<int>(oviductAppearance.value);
@@ -10157,12 +10157,12 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
           ..write('testisWidth: $testisWidth, ')
           ..write('testisRemark: $testisRemark, ')
           ..write('ovaryLength: $ovaryLength, ')
-          ..write('ovaryWidth: $ovaryWidth, ')
           ..write('oviductWidth: $oviductWidth, ')
           ..write('ovaryAppearance: $ovaryAppearance, ')
           ..write('firstOvaSize: $firstOvaSize, ')
           ..write('secondOvaSize: $secondOvaSize, ')
           ..write('thirdOvaSize: $thirdOvaSize, ')
+          ..write('ovaryWidth: $ovaryWidth, ')
           ..write('oviductAppearance: $oviductAppearance, ')
           ..write('ovaryRemark: $ovaryRemark, ')
           ..write('wingRightPrimary: $wingRightPrimary, ')
@@ -10187,6 +10187,13 @@ class Part extends Table with TableInfo<Part, PartData> {
       const VerificationMeta('specimenUuid');
   late final GeneratedColumn<String> specimenUuid = GeneratedColumn<String>(
       'specimenUuid', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _primaryIDMeta =
+      const VerificationMeta('primaryID');
+  late final GeneratedColumn<String> primaryID = GeneratedColumn<String>(
+      'primaryID', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -10230,6 +10237,20 @@ class Part extends Table with TableInfo<Part, PartData> {
           type: DriftSqlType.string,
           requiredDuringInsert: false,
           $customConstraints: '');
+  static const VerificationMeta _dateTakenMeta =
+      const VerificationMeta('dateTaken');
+  late final GeneratedColumn<String> dateTaken = GeneratedColumn<String>(
+      'dateTaken', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _timeTakenMeta =
+      const VerificationMeta('timeTaken');
+  late final GeneratedColumn<String> timeTaken = GeneratedColumn<String>(
+      'timeTaken', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _museumPermanentMeta =
       const VerificationMeta('museumPermanent');
   late final GeneratedColumn<String> museumPermanent = GeneratedColumn<String>(
@@ -10244,17 +10265,27 @@ class Part extends Table with TableInfo<Part, PartData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _remarkMeta = const VerificationMeta('remark');
+  late final GeneratedColumn<String> remark = GeneratedColumn<String>(
+      'remark', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
         specimenUuid,
+        primaryID,
         secondaryID,
         tertiaryID,
         type,
         count,
         treatment,
         additionalTreatment,
+        dateTaken,
+        timeTaken,
         museumPermanent,
-        museumLoan
+        museumLoan,
+        remark
       ];
   @override
   String get aliasedName => _alias ?? 'part';
@@ -10270,6 +10301,10 @@ class Part extends Table with TableInfo<Part, PartData> {
           _specimenUuidMeta,
           specimenUuid.isAcceptableOrUnknown(
               data['specimenUuid']!, _specimenUuidMeta));
+    }
+    if (data.containsKey('primaryID')) {
+      context.handle(_primaryIDMeta,
+          primaryID.isAcceptableOrUnknown(data['primaryID']!, _primaryIDMeta));
     }
     if (data.containsKey('secondaryID')) {
       context.handle(
@@ -10301,6 +10336,14 @@ class Part extends Table with TableInfo<Part, PartData> {
           additionalTreatment.isAcceptableOrUnknown(
               data['additionalTreatment']!, _additionalTreatmentMeta));
     }
+    if (data.containsKey('dateTaken')) {
+      context.handle(_dateTakenMeta,
+          dateTaken.isAcceptableOrUnknown(data['dateTaken']!, _dateTakenMeta));
+    }
+    if (data.containsKey('timeTaken')) {
+      context.handle(_timeTakenMeta,
+          timeTaken.isAcceptableOrUnknown(data['timeTaken']!, _timeTakenMeta));
+    }
     if (data.containsKey('museumPermanent')) {
       context.handle(
           _museumPermanentMeta,
@@ -10313,6 +10356,10 @@ class Part extends Table with TableInfo<Part, PartData> {
           museumLoan.isAcceptableOrUnknown(
               data['museumLoan']!, _museumLoanMeta));
     }
+    if (data.containsKey('remark')) {
+      context.handle(_remarkMeta,
+          remark.isAcceptableOrUnknown(data['remark']!, _remarkMeta));
+    }
     return context;
   }
 
@@ -10324,6 +10371,8 @@ class Part extends Table with TableInfo<Part, PartData> {
     return PartData(
       specimenUuid: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}specimenUuid']),
+      primaryID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}primaryID']),
       secondaryID: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}secondaryID']),
       tertiaryID: attachedDatabase.typeMapping
@@ -10336,10 +10385,16 @@ class Part extends Table with TableInfo<Part, PartData> {
           .read(DriftSqlType.string, data['${effectivePrefix}treatment']),
       additionalTreatment: attachedDatabase.typeMapping.read(
           DriftSqlType.string, data['${effectivePrefix}additionalTreatment']),
+      dateTaken: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}dateTaken']),
+      timeTaken: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}timeTaken']),
       museumPermanent: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}museumPermanent']),
       museumLoan: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}museumLoan']),
+      remark: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}remark']),
     );
   }
 
@@ -10349,34 +10404,48 @@ class Part extends Table with TableInfo<Part, PartData> {
   }
 
   @override
+  List<String> get customConstraints =>
+      const ['FOREIGN KEY(specimenUuid)REFERENCES specimen(uuid)'];
+  @override
   bool get dontWriteConstraints => true;
 }
 
 class PartData extends DataClass implements Insertable<PartData> {
   final String? specimenUuid;
+  final String? primaryID;
   final String? secondaryID;
   final String? tertiaryID;
   final String? type;
   final String? count;
   final String? treatment;
   final String? additionalTreatment;
+  final String? dateTaken;
+  final String? timeTaken;
   final String? museumPermanent;
   final String? museumLoan;
+  final String? remark;
   const PartData(
       {this.specimenUuid,
+      this.primaryID,
       this.secondaryID,
       this.tertiaryID,
       this.type,
       this.count,
       this.treatment,
       this.additionalTreatment,
+      this.dateTaken,
+      this.timeTaken,
       this.museumPermanent,
-      this.museumLoan});
+      this.museumLoan,
+      this.remark});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (!nullToAbsent || specimenUuid != null) {
       map['specimenUuid'] = Variable<String>(specimenUuid);
+    }
+    if (!nullToAbsent || primaryID != null) {
+      map['primaryID'] = Variable<String>(primaryID);
     }
     if (!nullToAbsent || secondaryID != null) {
       map['secondaryID'] = Variable<String>(secondaryID);
@@ -10396,11 +10465,20 @@ class PartData extends DataClass implements Insertable<PartData> {
     if (!nullToAbsent || additionalTreatment != null) {
       map['additionalTreatment'] = Variable<String>(additionalTreatment);
     }
+    if (!nullToAbsent || dateTaken != null) {
+      map['dateTaken'] = Variable<String>(dateTaken);
+    }
+    if (!nullToAbsent || timeTaken != null) {
+      map['timeTaken'] = Variable<String>(timeTaken);
+    }
     if (!nullToAbsent || museumPermanent != null) {
       map['museumPermanent'] = Variable<String>(museumPermanent);
     }
     if (!nullToAbsent || museumLoan != null) {
       map['museumLoan'] = Variable<String>(museumLoan);
+    }
+    if (!nullToAbsent || remark != null) {
+      map['remark'] = Variable<String>(remark);
     }
     return map;
   }
@@ -10410,6 +10488,9 @@ class PartData extends DataClass implements Insertable<PartData> {
       specimenUuid: specimenUuid == null && nullToAbsent
           ? const Value.absent()
           : Value(specimenUuid),
+      primaryID: primaryID == null && nullToAbsent
+          ? const Value.absent()
+          : Value(primaryID),
       secondaryID: secondaryID == null && nullToAbsent
           ? const Value.absent()
           : Value(secondaryID),
@@ -10425,12 +10506,20 @@ class PartData extends DataClass implements Insertable<PartData> {
       additionalTreatment: additionalTreatment == null && nullToAbsent
           ? const Value.absent()
           : Value(additionalTreatment),
+      dateTaken: dateTaken == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dateTaken),
+      timeTaken: timeTaken == null && nullToAbsent
+          ? const Value.absent()
+          : Value(timeTaken),
       museumPermanent: museumPermanent == null && nullToAbsent
           ? const Value.absent()
           : Value(museumPermanent),
       museumLoan: museumLoan == null && nullToAbsent
           ? const Value.absent()
           : Value(museumLoan),
+      remark:
+          remark == null && nullToAbsent ? const Value.absent() : Value(remark),
     );
   }
 
@@ -10439,6 +10528,7 @@ class PartData extends DataClass implements Insertable<PartData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return PartData(
       specimenUuid: serializer.fromJson<String?>(json['specimenUuid']),
+      primaryID: serializer.fromJson<String?>(json['primaryID']),
       secondaryID: serializer.fromJson<String?>(json['secondaryID']),
       tertiaryID: serializer.fromJson<String?>(json['tertiaryID']),
       type: serializer.fromJson<String?>(json['type']),
@@ -10446,8 +10536,11 @@ class PartData extends DataClass implements Insertable<PartData> {
       treatment: serializer.fromJson<String?>(json['treatment']),
       additionalTreatment:
           serializer.fromJson<String?>(json['additionalTreatment']),
+      dateTaken: serializer.fromJson<String?>(json['dateTaken']),
+      timeTaken: serializer.fromJson<String?>(json['timeTaken']),
       museumPermanent: serializer.fromJson<String?>(json['museumPermanent']),
       museumLoan: serializer.fromJson<String?>(json['museumLoan']),
+      remark: serializer.fromJson<String?>(json['remark']),
     );
   }
   @override
@@ -10455,30 +10548,39 @@ class PartData extends DataClass implements Insertable<PartData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'specimenUuid': serializer.toJson<String?>(specimenUuid),
+      'primaryID': serializer.toJson<String?>(primaryID),
       'secondaryID': serializer.toJson<String?>(secondaryID),
       'tertiaryID': serializer.toJson<String?>(tertiaryID),
       'type': serializer.toJson<String?>(type),
       'count': serializer.toJson<String?>(count),
       'treatment': serializer.toJson<String?>(treatment),
       'additionalTreatment': serializer.toJson<String?>(additionalTreatment),
+      'dateTaken': serializer.toJson<String?>(dateTaken),
+      'timeTaken': serializer.toJson<String?>(timeTaken),
       'museumPermanent': serializer.toJson<String?>(museumPermanent),
       'museumLoan': serializer.toJson<String?>(museumLoan),
+      'remark': serializer.toJson<String?>(remark),
     };
   }
 
   PartData copyWith(
           {Value<String?> specimenUuid = const Value.absent(),
+          Value<String?> primaryID = const Value.absent(),
           Value<String?> secondaryID = const Value.absent(),
           Value<String?> tertiaryID = const Value.absent(),
           Value<String?> type = const Value.absent(),
           Value<String?> count = const Value.absent(),
           Value<String?> treatment = const Value.absent(),
           Value<String?> additionalTreatment = const Value.absent(),
+          Value<String?> dateTaken = const Value.absent(),
+          Value<String?> timeTaken = const Value.absent(),
           Value<String?> museumPermanent = const Value.absent(),
-          Value<String?> museumLoan = const Value.absent()}) =>
+          Value<String?> museumLoan = const Value.absent(),
+          Value<String?> remark = const Value.absent()}) =>
       PartData(
         specimenUuid:
             specimenUuid.present ? specimenUuid.value : this.specimenUuid,
+        primaryID: primaryID.present ? primaryID.value : this.primaryID,
         secondaryID: secondaryID.present ? secondaryID.value : this.secondaryID,
         tertiaryID: tertiaryID.present ? tertiaryID.value : this.tertiaryID,
         type: type.present ? type.value : this.type,
@@ -10487,90 +10589,130 @@ class PartData extends DataClass implements Insertable<PartData> {
         additionalTreatment: additionalTreatment.present
             ? additionalTreatment.value
             : this.additionalTreatment,
+        dateTaken: dateTaken.present ? dateTaken.value : this.dateTaken,
+        timeTaken: timeTaken.present ? timeTaken.value : this.timeTaken,
         museumPermanent: museumPermanent.present
             ? museumPermanent.value
             : this.museumPermanent,
         museumLoan: museumLoan.present ? museumLoan.value : this.museumLoan,
+        remark: remark.present ? remark.value : this.remark,
       );
   @override
   String toString() {
     return (StringBuffer('PartData(')
           ..write('specimenUuid: $specimenUuid, ')
+          ..write('primaryID: $primaryID, ')
           ..write('secondaryID: $secondaryID, ')
           ..write('tertiaryID: $tertiaryID, ')
           ..write('type: $type, ')
           ..write('count: $count, ')
           ..write('treatment: $treatment, ')
           ..write('additionalTreatment: $additionalTreatment, ')
+          ..write('dateTaken: $dateTaken, ')
+          ..write('timeTaken: $timeTaken, ')
           ..write('museumPermanent: $museumPermanent, ')
-          ..write('museumLoan: $museumLoan')
+          ..write('museumLoan: $museumLoan, ')
+          ..write('remark: $remark')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(specimenUuid, secondaryID, tertiaryID, type,
-      count, treatment, additionalTreatment, museumPermanent, museumLoan);
+  int get hashCode => Object.hash(
+      specimenUuid,
+      primaryID,
+      secondaryID,
+      tertiaryID,
+      type,
+      count,
+      treatment,
+      additionalTreatment,
+      dateTaken,
+      timeTaken,
+      museumPermanent,
+      museumLoan,
+      remark);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is PartData &&
           other.specimenUuid == this.specimenUuid &&
+          other.primaryID == this.primaryID &&
           other.secondaryID == this.secondaryID &&
           other.tertiaryID == this.tertiaryID &&
           other.type == this.type &&
           other.count == this.count &&
           other.treatment == this.treatment &&
           other.additionalTreatment == this.additionalTreatment &&
+          other.dateTaken == this.dateTaken &&
+          other.timeTaken == this.timeTaken &&
           other.museumPermanent == this.museumPermanent &&
-          other.museumLoan == this.museumLoan);
+          other.museumLoan == this.museumLoan &&
+          other.remark == this.remark);
 }
 
 class PartCompanion extends UpdateCompanion<PartData> {
   final Value<String?> specimenUuid;
+  final Value<String?> primaryID;
   final Value<String?> secondaryID;
   final Value<String?> tertiaryID;
   final Value<String?> type;
   final Value<String?> count;
   final Value<String?> treatment;
   final Value<String?> additionalTreatment;
+  final Value<String?> dateTaken;
+  final Value<String?> timeTaken;
   final Value<String?> museumPermanent;
   final Value<String?> museumLoan;
+  final Value<String?> remark;
   const PartCompanion({
     this.specimenUuid = const Value.absent(),
+    this.primaryID = const Value.absent(),
     this.secondaryID = const Value.absent(),
     this.tertiaryID = const Value.absent(),
     this.type = const Value.absent(),
     this.count = const Value.absent(),
     this.treatment = const Value.absent(),
     this.additionalTreatment = const Value.absent(),
+    this.dateTaken = const Value.absent(),
+    this.timeTaken = const Value.absent(),
     this.museumPermanent = const Value.absent(),
     this.museumLoan = const Value.absent(),
+    this.remark = const Value.absent(),
   });
   PartCompanion.insert({
     this.specimenUuid = const Value.absent(),
+    this.primaryID = const Value.absent(),
     this.secondaryID = const Value.absent(),
     this.tertiaryID = const Value.absent(),
     this.type = const Value.absent(),
     this.count = const Value.absent(),
     this.treatment = const Value.absent(),
     this.additionalTreatment = const Value.absent(),
+    this.dateTaken = const Value.absent(),
+    this.timeTaken = const Value.absent(),
     this.museumPermanent = const Value.absent(),
     this.museumLoan = const Value.absent(),
+    this.remark = const Value.absent(),
   });
   static Insertable<PartData> custom({
     Expression<String>? specimenUuid,
+    Expression<String>? primaryID,
     Expression<String>? secondaryID,
     Expression<String>? tertiaryID,
     Expression<String>? type,
     Expression<String>? count,
     Expression<String>? treatment,
     Expression<String>? additionalTreatment,
+    Expression<String>? dateTaken,
+    Expression<String>? timeTaken,
     Expression<String>? museumPermanent,
     Expression<String>? museumLoan,
+    Expression<String>? remark,
   }) {
     return RawValuesInsertable({
       if (specimenUuid != null) 'specimenUuid': specimenUuid,
+      if (primaryID != null) 'primaryID': primaryID,
       if (secondaryID != null) 'secondaryID': secondaryID,
       if (tertiaryID != null) 'tertiaryID': tertiaryID,
       if (type != null) 'type': type,
@@ -10578,31 +10720,42 @@ class PartCompanion extends UpdateCompanion<PartData> {
       if (treatment != null) 'treatment': treatment,
       if (additionalTreatment != null)
         'additionalTreatment': additionalTreatment,
+      if (dateTaken != null) 'dateTaken': dateTaken,
+      if (timeTaken != null) 'timeTaken': timeTaken,
       if (museumPermanent != null) 'museumPermanent': museumPermanent,
       if (museumLoan != null) 'museumLoan': museumLoan,
+      if (remark != null) 'remark': remark,
     });
   }
 
   PartCompanion copyWith(
       {Value<String?>? specimenUuid,
+      Value<String?>? primaryID,
       Value<String?>? secondaryID,
       Value<String?>? tertiaryID,
       Value<String?>? type,
       Value<String?>? count,
       Value<String?>? treatment,
       Value<String?>? additionalTreatment,
+      Value<String?>? dateTaken,
+      Value<String?>? timeTaken,
       Value<String?>? museumPermanent,
-      Value<String?>? museumLoan}) {
+      Value<String?>? museumLoan,
+      Value<String?>? remark}) {
     return PartCompanion(
       specimenUuid: specimenUuid ?? this.specimenUuid,
+      primaryID: primaryID ?? this.primaryID,
       secondaryID: secondaryID ?? this.secondaryID,
       tertiaryID: tertiaryID ?? this.tertiaryID,
       type: type ?? this.type,
       count: count ?? this.count,
       treatment: treatment ?? this.treatment,
       additionalTreatment: additionalTreatment ?? this.additionalTreatment,
+      dateTaken: dateTaken ?? this.dateTaken,
+      timeTaken: timeTaken ?? this.timeTaken,
       museumPermanent: museumPermanent ?? this.museumPermanent,
       museumLoan: museumLoan ?? this.museumLoan,
+      remark: remark ?? this.remark,
     );
   }
 
@@ -10611,6 +10764,9 @@ class PartCompanion extends UpdateCompanion<PartData> {
     final map = <String, Expression>{};
     if (specimenUuid.present) {
       map['specimenUuid'] = Variable<String>(specimenUuid.value);
+    }
+    if (primaryID.present) {
+      map['primaryID'] = Variable<String>(primaryID.value);
     }
     if (secondaryID.present) {
       map['secondaryID'] = Variable<String>(secondaryID.value);
@@ -10630,11 +10786,20 @@ class PartCompanion extends UpdateCompanion<PartData> {
     if (additionalTreatment.present) {
       map['additionalTreatment'] = Variable<String>(additionalTreatment.value);
     }
+    if (dateTaken.present) {
+      map['dateTaken'] = Variable<String>(dateTaken.value);
+    }
+    if (timeTaken.present) {
+      map['timeTaken'] = Variable<String>(timeTaken.value);
+    }
     if (museumPermanent.present) {
       map['museumPermanent'] = Variable<String>(museumPermanent.value);
     }
     if (museumLoan.present) {
       map['museumLoan'] = Variable<String>(museumLoan.value);
+    }
+    if (remark.present) {
+      map['remark'] = Variable<String>(remark.value);
     }
     return map;
   }
@@ -10643,14 +10808,18 @@ class PartCompanion extends UpdateCompanion<PartData> {
   String toString() {
     return (StringBuffer('PartCompanion(')
           ..write('specimenUuid: $specimenUuid, ')
+          ..write('primaryID: $primaryID, ')
           ..write('secondaryID: $secondaryID, ')
           ..write('tertiaryID: $tertiaryID, ')
           ..write('type: $type, ')
           ..write('count: $count, ')
           ..write('treatment: $treatment, ')
           ..write('additionalTreatment: $additionalTreatment, ')
+          ..write('dateTaken: $dateTaken, ')
+          ..write('timeTaken: $timeTaken, ')
           ..write('museumPermanent: $museumPermanent, ')
-          ..write('museumLoan: $museumLoan')
+          ..write('museumLoan: $museumLoan, ')
+          ..write('remark: $remark')
           ..write(')'))
         .toString();
   }

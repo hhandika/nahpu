@@ -610,6 +610,83 @@ class BirdMeasurementCtrModel {
   }
 }
 
+class PartFormCtrModel {
+  PartFormCtrModel({
+    required this.primaryIdCtr,
+    required this.secondaryIdCtr,
+    required this.tertiaryIdCtr,
+    required this.typeCtr,
+    required this.countCtr,
+    required this.treatmentCtr,
+    required this.additionalTreatmentCtr,
+    required this.dateTakenCtr,
+    required this.timeTakenCtr,
+    required this.museumPermanentCtr,
+    required this.museumLoanCtr,
+    required this.remarkCtr,
+  });
+
+  TextEditingController primaryIdCtr;
+  TextEditingController secondaryIdCtr;
+  TextEditingController tertiaryIdCtr;
+  TextEditingController typeCtr;
+  TextEditingController countCtr;
+  TextEditingController treatmentCtr;
+  TextEditingController additionalTreatmentCtr;
+  TextEditingController dateTakenCtr;
+  TextEditingController timeTakenCtr;
+  TextEditingController museumPermanentCtr;
+  TextEditingController museumLoanCtr;
+  TextEditingController remarkCtr = TextEditingController();
+
+  factory PartFormCtrModel.empty() => PartFormCtrModel(
+        primaryIdCtr: TextEditingController(),
+        secondaryIdCtr: TextEditingController(),
+        tertiaryIdCtr: TextEditingController(),
+        typeCtr: TextEditingController(),
+        countCtr: TextEditingController(),
+        treatmentCtr: TextEditingController(),
+        additionalTreatmentCtr: TextEditingController(),
+        dateTakenCtr: TextEditingController(),
+        timeTakenCtr: TextEditingController(),
+        museumPermanentCtr: TextEditingController(),
+        museumLoanCtr: TextEditingController(),
+        remarkCtr: TextEditingController(),
+      );
+
+  factory PartFormCtrModel.fromData(PartData data) => PartFormCtrModel(
+        primaryIdCtr: TextEditingController(text: data.primaryID ?? ''),
+        secondaryIdCtr: TextEditingController(text: data.secondaryID ?? ''),
+        tertiaryIdCtr: TextEditingController(text: data.tertiaryID ?? ''),
+        typeCtr: TextEditingController(text: data.type ?? ''),
+        countCtr: TextEditingController(text: data.count?.toString() ?? ''),
+        treatmentCtr: TextEditingController(text: data.treatment ?? ''),
+        additionalTreatmentCtr:
+            TextEditingController(text: data.additionalTreatment ?? ''),
+        dateTakenCtr: TextEditingController(text: data.dateTaken ?? ''),
+        timeTakenCtr: TextEditingController(text: data.timeTaken ?? ''),
+        museumPermanentCtr:
+            TextEditingController(text: data.museumPermanent ?? ''),
+        museumLoanCtr: TextEditingController(text: data.museumLoan ?? ''),
+        remarkCtr: TextEditingController(text: data.remark ?? ''),
+      );
+
+  void dispose() {
+    primaryIdCtr.dispose();
+    secondaryIdCtr.dispose();
+    tertiaryIdCtr.dispose();
+    typeCtr.dispose();
+    countCtr.dispose();
+    treatmentCtr.dispose();
+    additionalTreatmentCtr.dispose();
+    dateTakenCtr.dispose();
+    timeTakenCtr.dispose();
+    museumPermanentCtr.dispose();
+    museumLoanCtr.dispose();
+    remarkCtr.dispose();
+  }
+}
+
 class PersonnelFormCtrModel {
   PersonnelFormCtrModel({
     required this.nameCtr,

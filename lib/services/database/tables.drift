@@ -286,14 +286,19 @@ CREATE TABLE birdMeasurement (
 
 CREATE TABLE part (
     specimenUuid TEXT,
+    primaryID TEXT,
     secondaryID TEXT, -- primary use prep number
     tertiaryID TEXT,
     type TEXT,
     count TEXT,
     treatment TEXT,
     additionalTreatment TEXT,
+    dateTaken TEXT,
+    timeTaken TEXT,
     museumPermanent TEXT,
-    museumLoan TEXT 
+    museumLoan TEXT,
+    remark TEXT,
+    FOREIGN KEY(specimenUuid) REFERENCES specimen(uuid) 
 );
 
 CREATE TABLE expense (

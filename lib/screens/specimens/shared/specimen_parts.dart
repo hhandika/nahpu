@@ -5,17 +5,18 @@ import 'package:nahpu/models/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/associated_data.dart';
 
 class PartDataForm extends ConsumerStatefulWidget {
   const PartDataForm({
     super.key,
-    required this.specimenCtr,
+    required this.specimenUuid,
     required this.catalogFmt,
   });
 
-  final SpecimenFormCtrModel specimenCtr;
+  final String specimenUuid;
   final CatalogFmt catalogFmt;
 
   @override
@@ -52,11 +53,12 @@ class PartDataFormState extends ConsumerState<PartDataForm>
             icon: Icon(matchCatFmtToPartIcon(widget.catalogFmt)),
           ),
           Tab(
-              icon: Icon(MdiIcons.databaseOutline,
-                  color: Theme.of(context).colorScheme.tertiary))
+            icon: Icon(MdiIcons.databaseOutline,
+                color: Theme.of(context).colorScheme.tertiary),
+          )
         ],
         children: [
-          SpecimenPartFields(specimenCtr: widget.specimenCtr),
+          SpecimenPartFields(specimenUuid: widget.specimenUuid),
           const AssociatedDataViewer(),
         ],
       ),
@@ -65,9 +67,12 @@ class PartDataFormState extends ConsumerState<PartDataForm>
 }
 
 class SpecimenPartFields extends ConsumerWidget {
-  const SpecimenPartFields({super.key, required this.specimenCtr});
+  const SpecimenPartFields({
+    super.key,
+    required this.specimenUuid,
+  });
 
-  final SpecimenFormCtrModel specimenCtr;
+  final String specimenUuid;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -78,13 +83,11 @@ class SpecimenPartFields extends ConsumerWidget {
         const Expanded(child: PartList()),
         PrimaryButton(
           onPressed: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return PartForms(
-                    specimenCtr: specimenCtr,
-                  );
-                });
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => NewPart(specimenUuid: specimenUuid),
+              ),
+            );
           },
           text: 'Add Part',
         ),
@@ -111,92 +114,180 @@ class PartList extends ConsumerWidget {
   }
 }
 
-class PartForms extends ConsumerWidget {
-  const PartForms({Key? key, required this.specimenCtr}) : super(key: key);
+class NewPart extends StatelessWidget {
+  const NewPart({
+    super.key,
+    required this.specimenUuid,
+  });
 
-  final SpecimenFormCtrModel specimenCtr;
+  final String specimenUuid;
+
+  @override
+  Widget build(BuildContext context) {
+    final PartFormCtrModel partCtr = PartFormCtrModel.empty();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Add specimen parts'),
+        automaticallyImplyLeading: false,
+      ),
+      body: Center(
+        child: PartForms(
+          specimenUuid: specimenUuid,
+          partCtr: partCtr,
+        ),
+      ),
+    );
+  }
+}
+
+class EditPart extends StatelessWidget {
+  const EditPart({
+    super.key,
+    required this.specimenUuid,
+    required this.partUuid,
+  });
+
+  final String specimenUuid;
+  final String partUuid;
+
+  @override
+  Widget build(BuildContext context) {
+    final PartFormCtrModel partCtr = PartFormCtrModel.empty();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Edit specimen parts'),
+        automaticallyImplyLeading: false,
+      ),
+      body: Center(
+        child: PartForms(
+          specimenUuid: specimenUuid,
+          partCtr: partCtr,
+          isEditing: true,
+        ),
+      ),
+    );
+  }
+}
+
+class PartForms extends ConsumerWidget {
+  const PartForms({
+    super.key,
+    required this.specimenUuid,
+    required this.partCtr,
+    this.isEditing = false,
+  });
+
+  final String specimenUuid;
+  final PartFormCtrModel partCtr;
+  final bool isEditing;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return AlertDialog(
-      title: const Text('Add a part'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Preparation type',
-              hintText: 'Enter prep type: e.g. "skin", "liver", etc."',
-            ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Counts',
-              hintText: 'Enter part counts',
-            ),
-            keyboardType: TextInputType.number,
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Treatment',
-              hintText: 'Enter part counts',
-            ),
-            keyboardType: TextInputType.number,
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Date taken',
-              hintText: 'Enter date',
-            ),
-            controller: specimenCtr.prepDateCtr,
-            onTap: () async {
-              final selectedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime.now());
+    return ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 500),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CommonTextField(
+                controller: partCtr.typeCtr,
+                labelText: 'Preparation type',
+                hintText: 'Enter prep type: e.g. "skin", "liver", etc."',
+                isLastField: false,
+              ),
+              CommonNumField(
+                controller: partCtr.countCtr,
+                labelText: 'Counts',
+                hintText: 'Enter part counts',
+                isLastField: false,
+              ),
+              CommonTextField(
+                controller: partCtr.treatmentCtr,
+                labelText: 'Treatment',
+                hintText:
+                    'Enter a treatment: e.g. "formalin", "alcohol", etc."',
+                isLastField: false,
+              ),
+              CommonTextField(
+                controller: partCtr.dateTakenCtr,
+                labelText: 'Additional treatment',
+                hintText:
+                    'Enter a treatment: e.g. "formalin", "alcohol", etc."',
+                isLastField: false,
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Date taken',
+                  hintText: 'Enter date',
+                ),
+                controller: partCtr.dateTakenCtr,
+                onTap: () async {
+                  final selectedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime.now());
 
-              if (selectedDate != null) {
-                specimenCtr.prepDateCtr.text =
-                    DateFormat.yMMMd().format(selectedDate);
-              }
-            },
+                  if (selectedDate != null) {
+                    partCtr.dateTakenCtr.text =
+                        DateFormat.yMMMd().format(selectedDate);
+                  }
+                },
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Time taken',
+                  hintText: 'Enter time',
+                ),
+                controller: partCtr.timeTakenCtr,
+                onTap: () {
+                  showTimePicker(context: context, initialTime: TimeOfDay.now())
+                      .then((time) {
+                    if (time != null) {
+                      partCtr.timeTakenCtr.text = time.format(context);
+                    }
+                  });
+                },
+              ),
+              CommonTextField(
+                controller: partCtr.museumPermanentCtr,
+                labelText: 'Museum permanent',
+                hintText: 'Enter a museum name or abbreviation',
+                isLastField: false,
+              ),
+              CommonTextField(
+                controller: partCtr.museumLoanCtr,
+                labelText: 'Museum loan',
+                hintText: 'Enter a museum name or abbreviation',
+                isLastField: false,
+              ),
+              CommonTextField(
+                controller: partCtr.remarkCtr,
+                maxLines: 3,
+                labelText: 'Remarks',
+                hintText: 'Enter a remark specific to this part',
+                isLastField: false,
+              ),
+              const SizedBox(height: 10),
+              Wrap(
+                children: [
+                  SecondaryButton(
+                    text: 'Cancel',
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  const SizedBox(width: 10),
+                  PrimaryButton(
+                    text: isEditing ? 'Update' : 'Add',
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ],
           ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Time taken',
-              hintText: 'Enter time',
-            ),
-            controller: specimenCtr.prepTimeCtr,
-            onTap: () {
-              showTimePicker(context: context, initialTime: TimeOfDay.now())
-                  .then((time) {
-                if (time != null) {
-                  specimenCtr.prepTimeCtr.text = time.format(context);
-                }
-              });
-            },
-          ),
-        ],
-      ),
-      actions: [
-        ElevatedButton(
-          child: const Text('Cancel'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Theme.of(context).colorScheme.onTertiaryContainer,
-            backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
-          ),
-          child: const Text('Add'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
-    );
+        ));
   }
 }
