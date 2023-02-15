@@ -259,7 +259,7 @@ class PartForms extends ConsumerWidget {
                 isLastField: false,
               ),
               CommonTextField(
-                controller: partCtr.dateTakenCtr,
+                controller: partCtr.additionalTreatmentCtr,
                 labelText: 'Additional treatment',
                 hintText:
                     'Enter a treatment: e.g. "formalin", "alcohol", etc."',
