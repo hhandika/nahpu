@@ -23,7 +23,7 @@ mixin _$SiteQueryMixin on DatabaseAccessor<Database> {
   Specimen get specimen => attachedDatabase.specimen;
   MammalMeasurement get mammalMeasurement => attachedDatabase.mammalMeasurement;
   BirdMeasurement get birdMeasurement => attachedDatabase.birdMeasurement;
-  Part get part => attachedDatabase.part;
+  SpecimenPart get specimenPart => attachedDatabase.specimenPart;
   Expense get expense => attachedDatabase.expense;
   Selectable<ListProjectResult> listProject() {
     return customSelect('SELECT uuid, name, created, lastAccessed FROM project',

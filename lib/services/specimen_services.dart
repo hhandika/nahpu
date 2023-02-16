@@ -113,6 +113,11 @@ class SpecimenServices {
         .updateBirdMeasurements(specimenUuid, entries);
   }
 
+  Future<List<SpecimenPartData>> getSpecimenParts(String specimenUuid) {
+    return SpecimenPartQuery(ref.read(databaseProvider))
+        .getSpecimenParts(specimenUuid);
+  }
+
   void _invalidateSpecimenList() {
     ref.invalidate(specimenEntryProvider);
     ref.invalidate(taxonDataProvider);

@@ -169,6 +169,132 @@ class EditPart extends StatelessWidget {
   }
 }
 
+class PartForms extends ConsumerWidget {
+  const PartForms({
+    super.key,
+    required this.specimenUuid,
+    required this.partCtr,
+    this.isEditing = false,
+  });
+
+  final String specimenUuid;
+  final PartFormCtrModel partCtr;
+  final bool isEditing;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 500),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            PartIdForm(
+              specimenUuid: specimenUuid,
+              partCtr: partCtr,
+            ),
+            CommonTextField(
+              controller: partCtr.typeCtr,
+              labelText: 'Preparation type',
+              hintText: 'Enter prep type: e.g. "skin", "liver", etc."',
+              isLastField: false,
+            ),
+            CommonNumField(
+              controller: partCtr.countCtr,
+              labelText: 'Counts',
+              hintText: 'Enter part counts',
+              isLastField: false,
+            ),
+            CommonTextField(
+              controller: partCtr.treatmentCtr,
+              labelText: 'Treatment',
+              hintText: 'Enter a treatment: e.g. "formalin", "alcohol", etc."',
+              isLastField: false,
+            ),
+            CommonTextField(
+              controller: partCtr.additionalTreatmentCtr,
+              labelText: 'Additional treatment',
+              hintText: 'Enter a treatment: e.g. "formalin", "alcohol", etc."',
+              isLastField: false,
+            ),
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Date taken',
+                hintText: 'Enter date',
+              ),
+              controller: partCtr.dateTakenCtr,
+              onTap: () async {
+                final selectedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime.now());
+
+                if (selectedDate != null) {
+                  partCtr.dateTakenCtr.text =
+                      DateFormat.yMMMd().format(selectedDate);
+                }
+              },
+            ),
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Time taken',
+                hintText: 'Enter time',
+              ),
+              controller: partCtr.timeTakenCtr,
+              onTap: () {
+                showTimePicker(context: context, initialTime: TimeOfDay.now())
+                    .then((time) {
+                  if (time != null) {
+                    partCtr.timeTakenCtr.text = time.format(context);
+                  }
+                });
+              },
+            ),
+            CommonTextField(
+              controller: partCtr.museumPermanentCtr,
+              labelText: 'Museum permanent',
+              hintText: 'Enter a museum name or abbreviation',
+              isLastField: false,
+            ),
+            CommonTextField(
+              controller: partCtr.museumLoanCtr,
+              labelText: 'Museum loan',
+              hintText: 'Enter a museum name or abbreviation',
+              isLastField: false,
+            ),
+            CommonTextField(
+              controller: partCtr.remarkCtr,
+              maxLines: 3,
+              labelText: 'Remarks',
+              hintText: 'Enter a remark specific to this part',
+              isLastField: false,
+            ),
+            const SizedBox(height: 10),
+            Wrap(
+              children: [
+                SecondaryButton(
+                  text: 'Cancel',
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                const SizedBox(width: 10),
+                PrimaryButton(
+                  text: isEditing ? 'Update' : 'Add',
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class PartIdForm extends ConsumerWidget {
   const PartIdForm({
     super.key,
@@ -192,152 +318,20 @@ class PartIdForm extends ConsumerWidget {
       ),
       child: Column(children: [
         Text(
-          'Part ID',
+          'Additional Part ID',
           style: Theme.of(context).textTheme.titleMedium,
         ),
         CommonTextField(
-            controller: partCtr.primaryIdCtr,
-            labelText: 'Primary',
-            hintText: 'Enter primary ID',
+            controller: partCtr.tissueIdCtr,
+            labelText: 'Tissue ID',
+            hintText: 'Enter tissue ID (if applicable)',
             isLastField: false),
         CommonTextField(
-            controller: partCtr.secondaryIdCtr,
-            labelText: 'Secondary',
-            hintText: 'Enter secondary ID',
+            controller: partCtr.barcodeIdCtr,
+            labelText: 'Barcode ID',
+            hintText: 'Enter barcode ID (if applicable)',
             isLastField: false),
-        CommonTextField(
-            controller: partCtr.tertiaryIdCtr,
-            labelText: 'Tertiary',
-            hintText: 'Enter tertiary ID',
-            isLastField: true),
       ]),
     );
-  }
-}
-
-class PartForms extends ConsumerWidget {
-  const PartForms({
-    super.key,
-    required this.specimenUuid,
-    required this.partCtr,
-    this.isEditing = false,
-  });
-
-  final String specimenUuid;
-  final PartFormCtrModel partCtr;
-  final bool isEditing;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 500),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              PartIdForm(
-                specimenUuid: specimenUuid,
-                partCtr: partCtr,
-              ),
-              CommonTextField(
-                controller: partCtr.typeCtr,
-                labelText: 'Preparation type',
-                hintText: 'Enter prep type: e.g. "skin", "liver", etc."',
-                isLastField: false,
-              ),
-              CommonNumField(
-                controller: partCtr.countCtr,
-                labelText: 'Counts',
-                hintText: 'Enter part counts',
-                isLastField: false,
-              ),
-              CommonTextField(
-                controller: partCtr.treatmentCtr,
-                labelText: 'Treatment',
-                hintText:
-                    'Enter a treatment: e.g. "formalin", "alcohol", etc."',
-                isLastField: false,
-              ),
-              CommonTextField(
-                controller: partCtr.additionalTreatmentCtr,
-                labelText: 'Additional treatment',
-                hintText:
-                    'Enter a treatment: e.g. "formalin", "alcohol", etc."',
-                isLastField: false,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Date taken',
-                  hintText: 'Enter date',
-                ),
-                controller: partCtr.dateTakenCtr,
-                onTap: () async {
-                  final selectedDate = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime.now());
-
-                  if (selectedDate != null) {
-                    partCtr.dateTakenCtr.text =
-                        DateFormat.yMMMd().format(selectedDate);
-                  }
-                },
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Time taken',
-                  hintText: 'Enter time',
-                ),
-                controller: partCtr.timeTakenCtr,
-                onTap: () {
-                  showTimePicker(context: context, initialTime: TimeOfDay.now())
-                      .then((time) {
-                    if (time != null) {
-                      partCtr.timeTakenCtr.text = time.format(context);
-                    }
-                  });
-                },
-              ),
-              CommonTextField(
-                controller: partCtr.museumPermanentCtr,
-                labelText: 'Museum permanent',
-                hintText: 'Enter a museum name or abbreviation',
-                isLastField: false,
-              ),
-              CommonTextField(
-                controller: partCtr.museumLoanCtr,
-                labelText: 'Museum loan',
-                hintText: 'Enter a museum name or abbreviation',
-                isLastField: false,
-              ),
-              CommonTextField(
-                controller: partCtr.remarkCtr,
-                maxLines: 3,
-                labelText: 'Remarks',
-                hintText: 'Enter a remark specific to this part',
-                isLastField: false,
-              ),
-              const SizedBox(height: 10),
-              Wrap(
-                children: [
-                  SecondaryButton(
-                    text: 'Cancel',
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  const SizedBox(width: 10),
-                  PrimaryButton(
-                    text: isEditing ? 'Update' : 'Add',
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ));
   }
 }

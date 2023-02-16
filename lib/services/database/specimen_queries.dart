@@ -100,3 +100,33 @@ class BirdSpecimenQuery extends DatabaseAccessor<Database>
         .getSingle();
   }
 }
+
+class SpecimenPartQuery extends DatabaseAccessor<Database>
+    with _$SpecimenQueryMixin {
+  SpecimenPartQuery(Database db) : super(db);
+
+  Future<int> createSpecimenPart(SpecimenPartCompanion form) =>
+      into(specimenPart).insert(form);
+
+  Future<List<SpecimenPartData>> getSpecimenParts(String specimenUuid) {
+    return (select(specimenPart)
+          ..where((t) => t.specimenUuid.equals(specimenUuid)))
+        .get();
+  }
+
+  Future<void> deleteSpecimenPart(String uuid) {
+    return (delete(specimenPart)..where((t) => t.specimenUuid.equals(uuid)))
+        .go();
+  }
+
+  Future<void> deleteAllSpecimenParts(String specimenUuid) {
+    return (delete(specimenPart)
+          ..where((t) => t.specimenUuid.equals(specimenUuid)))
+        .go();
+  }
+
+  Future updateSpecimenPartEntry(String uuid, SpecimenPartCompanion entry) {
+    return (update(specimenPart)..where((t) => t.specimenUuid.equals(uuid)))
+        .write(entry);
+  }
+}

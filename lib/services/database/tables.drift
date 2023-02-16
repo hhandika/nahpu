@@ -284,10 +284,11 @@ CREATE TABLE birdMeasurement (
     FOREIGN KEY(specimenUuid) REFERENCES specimen(uuid)
 );
 
-CREATE TABLE part (
+CREATE TABLE specimenPart (
+    id INT UNIQUE PRIMARY KEY AUTOINCREMENT, -- internal id
     specimenUuid TEXT,
-    primaryID TEXT,
-    secondaryID TEXT, -- primary use prep number
+    tissueID TEXT,
+    barcodeID TEXT, -- primary use prep number
     tertiaryID TEXT,
     type TEXT,
     count TEXT,

@@ -10178,11 +10178,19 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
   }
 }
 
-class Part extends Table with TableInfo<Part, PartData> {
+class SpecimenPart extends Table
+    with TableInfo<SpecimenPart, SpecimenPartData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Part(this.attachedDatabase, [this._alias]);
+  SpecimenPart(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, true,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: 'UNIQUE PRIMARY KEY AUTOINCREMENT');
   static const VerificationMeta _specimenUuidMeta =
       const VerificationMeta('specimenUuid');
   late final GeneratedColumn<String> specimenUuid = GeneratedColumn<String>(
@@ -10190,17 +10198,17 @@ class Part extends Table with TableInfo<Part, PartData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _primaryIDMeta =
-      const VerificationMeta('primaryID');
-  late final GeneratedColumn<String> primaryID = GeneratedColumn<String>(
-      'primaryID', aliasedName, true,
+  static const VerificationMeta _tissueIDMeta =
+      const VerificationMeta('tissueID');
+  late final GeneratedColumn<String> tissueID = GeneratedColumn<String>(
+      'tissueID', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _secondaryIDMeta =
-      const VerificationMeta('secondaryID');
-  late final GeneratedColumn<String> secondaryID = GeneratedColumn<String>(
-      'secondaryID', aliasedName, true,
+  static const VerificationMeta _barcodeIDMeta =
+      const VerificationMeta('barcodeID');
+  late final GeneratedColumn<String> barcodeID = GeneratedColumn<String>(
+      'barcodeID', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -10273,9 +10281,10 @@ class Part extends Table with TableInfo<Part, PartData> {
       $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
+        id,
         specimenUuid,
-        primaryID,
-        secondaryID,
+        tissueID,
+        barcodeID,
         tertiaryID,
         type,
         count,
@@ -10288,29 +10297,30 @@ class Part extends Table with TableInfo<Part, PartData> {
         remark
       ];
   @override
-  String get aliasedName => _alias ?? 'part';
+  String get aliasedName => _alias ?? 'specimenPart';
   @override
-  String get actualTableName => 'part';
+  String get actualTableName => 'specimenPart';
   @override
-  VerificationContext validateIntegrity(Insertable<PartData> instance,
+  VerificationContext validateIntegrity(Insertable<SpecimenPartData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
     if (data.containsKey('specimenUuid')) {
       context.handle(
           _specimenUuidMeta,
           specimenUuid.isAcceptableOrUnknown(
               data['specimenUuid']!, _specimenUuidMeta));
     }
-    if (data.containsKey('primaryID')) {
-      context.handle(_primaryIDMeta,
-          primaryID.isAcceptableOrUnknown(data['primaryID']!, _primaryIDMeta));
+    if (data.containsKey('tissueID')) {
+      context.handle(_tissueIDMeta,
+          tissueID.isAcceptableOrUnknown(data['tissueID']!, _tissueIDMeta));
     }
-    if (data.containsKey('secondaryID')) {
-      context.handle(
-          _secondaryIDMeta,
-          secondaryID.isAcceptableOrUnknown(
-              data['secondaryID']!, _secondaryIDMeta));
+    if (data.containsKey('barcodeID')) {
+      context.handle(_barcodeIDMeta,
+          barcodeID.isAcceptableOrUnknown(data['barcodeID']!, _barcodeIDMeta));
     }
     if (data.containsKey('tertiaryID')) {
       context.handle(
@@ -10364,17 +10374,19 @@ class Part extends Table with TableInfo<Part, PartData> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => const {};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  PartData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  SpecimenPartData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return PartData(
+    return SpecimenPartData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id']),
       specimenUuid: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}specimenUuid']),
-      primaryID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}primaryID']),
-      secondaryID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}secondaryID']),
+      tissueID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}tissueID']),
+      barcodeID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}barcodeID']),
       tertiaryID: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}tertiaryID']),
       type: attachedDatabase.typeMapping
@@ -10399,8 +10411,8 @@ class Part extends Table with TableInfo<Part, PartData> {
   }
 
   @override
-  Part createAlias(String alias) {
-    return Part(attachedDatabase, alias);
+  SpecimenPart createAlias(String alias) {
+    return SpecimenPart(attachedDatabase, alias);
   }
 
   @override
@@ -10410,10 +10422,12 @@ class Part extends Table with TableInfo<Part, PartData> {
   bool get dontWriteConstraints => true;
 }
 
-class PartData extends DataClass implements Insertable<PartData> {
+class SpecimenPartData extends DataClass
+    implements Insertable<SpecimenPartData> {
+  final int? id;
   final String? specimenUuid;
-  final String? primaryID;
-  final String? secondaryID;
+  final String? tissueID;
+  final String? barcodeID;
   final String? tertiaryID;
   final String? type;
   final String? count;
@@ -10424,10 +10438,11 @@ class PartData extends DataClass implements Insertable<PartData> {
   final String? museumPermanent;
   final String? museumLoan;
   final String? remark;
-  const PartData(
-      {this.specimenUuid,
-      this.primaryID,
-      this.secondaryID,
+  const SpecimenPartData(
+      {this.id,
+      this.specimenUuid,
+      this.tissueID,
+      this.barcodeID,
       this.tertiaryID,
       this.type,
       this.count,
@@ -10441,14 +10456,17 @@ class PartData extends DataClass implements Insertable<PartData> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
     if (!nullToAbsent || specimenUuid != null) {
       map['specimenUuid'] = Variable<String>(specimenUuid);
     }
-    if (!nullToAbsent || primaryID != null) {
-      map['primaryID'] = Variable<String>(primaryID);
+    if (!nullToAbsent || tissueID != null) {
+      map['tissueID'] = Variable<String>(tissueID);
     }
-    if (!nullToAbsent || secondaryID != null) {
-      map['secondaryID'] = Variable<String>(secondaryID);
+    if (!nullToAbsent || barcodeID != null) {
+      map['barcodeID'] = Variable<String>(barcodeID);
     }
     if (!nullToAbsent || tertiaryID != null) {
       map['tertiaryID'] = Variable<String>(tertiaryID);
@@ -10483,17 +10501,18 @@ class PartData extends DataClass implements Insertable<PartData> {
     return map;
   }
 
-  PartCompanion toCompanion(bool nullToAbsent) {
-    return PartCompanion(
+  SpecimenPartCompanion toCompanion(bool nullToAbsent) {
+    return SpecimenPartCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       specimenUuid: specimenUuid == null && nullToAbsent
           ? const Value.absent()
           : Value(specimenUuid),
-      primaryID: primaryID == null && nullToAbsent
+      tissueID: tissueID == null && nullToAbsent
           ? const Value.absent()
-          : Value(primaryID),
-      secondaryID: secondaryID == null && nullToAbsent
+          : Value(tissueID),
+      barcodeID: barcodeID == null && nullToAbsent
           ? const Value.absent()
-          : Value(secondaryID),
+          : Value(barcodeID),
       tertiaryID: tertiaryID == null && nullToAbsent
           ? const Value.absent()
           : Value(tertiaryID),
@@ -10523,13 +10542,14 @@ class PartData extends DataClass implements Insertable<PartData> {
     );
   }
 
-  factory PartData.fromJson(Map<String, dynamic> json,
+  factory SpecimenPartData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return PartData(
+    return SpecimenPartData(
+      id: serializer.fromJson<int?>(json['id']),
       specimenUuid: serializer.fromJson<String?>(json['specimenUuid']),
-      primaryID: serializer.fromJson<String?>(json['primaryID']),
-      secondaryID: serializer.fromJson<String?>(json['secondaryID']),
+      tissueID: serializer.fromJson<String?>(json['tissueID']),
+      barcodeID: serializer.fromJson<String?>(json['barcodeID']),
       tertiaryID: serializer.fromJson<String?>(json['tertiaryID']),
       type: serializer.fromJson<String?>(json['type']),
       count: serializer.fromJson<String?>(json['count']),
@@ -10547,9 +10567,10 @@ class PartData extends DataClass implements Insertable<PartData> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
+      'id': serializer.toJson<int?>(id),
       'specimenUuid': serializer.toJson<String?>(specimenUuid),
-      'primaryID': serializer.toJson<String?>(primaryID),
-      'secondaryID': serializer.toJson<String?>(secondaryID),
+      'tissueID': serializer.toJson<String?>(tissueID),
+      'barcodeID': serializer.toJson<String?>(barcodeID),
       'tertiaryID': serializer.toJson<String?>(tertiaryID),
       'type': serializer.toJson<String?>(type),
       'count': serializer.toJson<String?>(count),
@@ -10563,10 +10584,11 @@ class PartData extends DataClass implements Insertable<PartData> {
     };
   }
 
-  PartData copyWith(
-          {Value<String?> specimenUuid = const Value.absent(),
-          Value<String?> primaryID = const Value.absent(),
-          Value<String?> secondaryID = const Value.absent(),
+  SpecimenPartData copyWith(
+          {Value<int?> id = const Value.absent(),
+          Value<String?> specimenUuid = const Value.absent(),
+          Value<String?> tissueID = const Value.absent(),
+          Value<String?> barcodeID = const Value.absent(),
           Value<String?> tertiaryID = const Value.absent(),
           Value<String?> type = const Value.absent(),
           Value<String?> count = const Value.absent(),
@@ -10577,11 +10599,12 @@ class PartData extends DataClass implements Insertable<PartData> {
           Value<String?> museumPermanent = const Value.absent(),
           Value<String?> museumLoan = const Value.absent(),
           Value<String?> remark = const Value.absent()}) =>
-      PartData(
+      SpecimenPartData(
+        id: id.present ? id.value : this.id,
         specimenUuid:
             specimenUuid.present ? specimenUuid.value : this.specimenUuid,
-        primaryID: primaryID.present ? primaryID.value : this.primaryID,
-        secondaryID: secondaryID.present ? secondaryID.value : this.secondaryID,
+        tissueID: tissueID.present ? tissueID.value : this.tissueID,
+        barcodeID: barcodeID.present ? barcodeID.value : this.barcodeID,
         tertiaryID: tertiaryID.present ? tertiaryID.value : this.tertiaryID,
         type: type.present ? type.value : this.type,
         count: count.present ? count.value : this.count,
@@ -10599,10 +10622,11 @@ class PartData extends DataClass implements Insertable<PartData> {
       );
   @override
   String toString() {
-    return (StringBuffer('PartData(')
+    return (StringBuffer('SpecimenPartData(')
+          ..write('id: $id, ')
           ..write('specimenUuid: $specimenUuid, ')
-          ..write('primaryID: $primaryID, ')
-          ..write('secondaryID: $secondaryID, ')
+          ..write('tissueID: $tissueID, ')
+          ..write('barcodeID: $barcodeID, ')
           ..write('tertiaryID: $tertiaryID, ')
           ..write('type: $type, ')
           ..write('count: $count, ')
@@ -10619,9 +10643,10 @@ class PartData extends DataClass implements Insertable<PartData> {
 
   @override
   int get hashCode => Object.hash(
+      id,
       specimenUuid,
-      primaryID,
-      secondaryID,
+      tissueID,
+      barcodeID,
       tertiaryID,
       type,
       count,
@@ -10635,10 +10660,11 @@ class PartData extends DataClass implements Insertable<PartData> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is PartData &&
+      (other is SpecimenPartData &&
+          other.id == this.id &&
           other.specimenUuid == this.specimenUuid &&
-          other.primaryID == this.primaryID &&
-          other.secondaryID == this.secondaryID &&
+          other.tissueID == this.tissueID &&
+          other.barcodeID == this.barcodeID &&
           other.tertiaryID == this.tertiaryID &&
           other.type == this.type &&
           other.count == this.count &&
@@ -10651,10 +10677,11 @@ class PartData extends DataClass implements Insertable<PartData> {
           other.remark == this.remark);
 }
 
-class PartCompanion extends UpdateCompanion<PartData> {
+class SpecimenPartCompanion extends UpdateCompanion<SpecimenPartData> {
+  final Value<int?> id;
   final Value<String?> specimenUuid;
-  final Value<String?> primaryID;
-  final Value<String?> secondaryID;
+  final Value<String?> tissueID;
+  final Value<String?> barcodeID;
   final Value<String?> tertiaryID;
   final Value<String?> type;
   final Value<String?> count;
@@ -10665,10 +10692,11 @@ class PartCompanion extends UpdateCompanion<PartData> {
   final Value<String?> museumPermanent;
   final Value<String?> museumLoan;
   final Value<String?> remark;
-  const PartCompanion({
+  const SpecimenPartCompanion({
+    this.id = const Value.absent(),
     this.specimenUuid = const Value.absent(),
-    this.primaryID = const Value.absent(),
-    this.secondaryID = const Value.absent(),
+    this.tissueID = const Value.absent(),
+    this.barcodeID = const Value.absent(),
     this.tertiaryID = const Value.absent(),
     this.type = const Value.absent(),
     this.count = const Value.absent(),
@@ -10680,10 +10708,11 @@ class PartCompanion extends UpdateCompanion<PartData> {
     this.museumLoan = const Value.absent(),
     this.remark = const Value.absent(),
   });
-  PartCompanion.insert({
+  SpecimenPartCompanion.insert({
+    this.id = const Value.absent(),
     this.specimenUuid = const Value.absent(),
-    this.primaryID = const Value.absent(),
-    this.secondaryID = const Value.absent(),
+    this.tissueID = const Value.absent(),
+    this.barcodeID = const Value.absent(),
     this.tertiaryID = const Value.absent(),
     this.type = const Value.absent(),
     this.count = const Value.absent(),
@@ -10695,10 +10724,11 @@ class PartCompanion extends UpdateCompanion<PartData> {
     this.museumLoan = const Value.absent(),
     this.remark = const Value.absent(),
   });
-  static Insertable<PartData> custom({
+  static Insertable<SpecimenPartData> custom({
+    Expression<int>? id,
     Expression<String>? specimenUuid,
-    Expression<String>? primaryID,
-    Expression<String>? secondaryID,
+    Expression<String>? tissueID,
+    Expression<String>? barcodeID,
     Expression<String>? tertiaryID,
     Expression<String>? type,
     Expression<String>? count,
@@ -10711,9 +10741,10 @@ class PartCompanion extends UpdateCompanion<PartData> {
     Expression<String>? remark,
   }) {
     return RawValuesInsertable({
+      if (id != null) 'id': id,
       if (specimenUuid != null) 'specimenUuid': specimenUuid,
-      if (primaryID != null) 'primaryID': primaryID,
-      if (secondaryID != null) 'secondaryID': secondaryID,
+      if (tissueID != null) 'tissueID': tissueID,
+      if (barcodeID != null) 'barcodeID': barcodeID,
       if (tertiaryID != null) 'tertiaryID': tertiaryID,
       if (type != null) 'type': type,
       if (count != null) 'count': count,
@@ -10728,10 +10759,11 @@ class PartCompanion extends UpdateCompanion<PartData> {
     });
   }
 
-  PartCompanion copyWith(
-      {Value<String?>? specimenUuid,
-      Value<String?>? primaryID,
-      Value<String?>? secondaryID,
+  SpecimenPartCompanion copyWith(
+      {Value<int?>? id,
+      Value<String?>? specimenUuid,
+      Value<String?>? tissueID,
+      Value<String?>? barcodeID,
       Value<String?>? tertiaryID,
       Value<String?>? type,
       Value<String?>? count,
@@ -10742,10 +10774,11 @@ class PartCompanion extends UpdateCompanion<PartData> {
       Value<String?>? museumPermanent,
       Value<String?>? museumLoan,
       Value<String?>? remark}) {
-    return PartCompanion(
+    return SpecimenPartCompanion(
+      id: id ?? this.id,
       specimenUuid: specimenUuid ?? this.specimenUuid,
-      primaryID: primaryID ?? this.primaryID,
-      secondaryID: secondaryID ?? this.secondaryID,
+      tissueID: tissueID ?? this.tissueID,
+      barcodeID: barcodeID ?? this.barcodeID,
       tertiaryID: tertiaryID ?? this.tertiaryID,
       type: type ?? this.type,
       count: count ?? this.count,
@@ -10762,14 +10795,17 @@ class PartCompanion extends UpdateCompanion<PartData> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
     if (specimenUuid.present) {
       map['specimenUuid'] = Variable<String>(specimenUuid.value);
     }
-    if (primaryID.present) {
-      map['primaryID'] = Variable<String>(primaryID.value);
+    if (tissueID.present) {
+      map['tissueID'] = Variable<String>(tissueID.value);
     }
-    if (secondaryID.present) {
-      map['secondaryID'] = Variable<String>(secondaryID.value);
+    if (barcodeID.present) {
+      map['barcodeID'] = Variable<String>(barcodeID.value);
     }
     if (tertiaryID.present) {
       map['tertiaryID'] = Variable<String>(tertiaryID.value);
@@ -10806,10 +10842,11 @@ class PartCompanion extends UpdateCompanion<PartData> {
 
   @override
   String toString() {
-    return (StringBuffer('PartCompanion(')
+    return (StringBuffer('SpecimenPartCompanion(')
+          ..write('id: $id, ')
           ..write('specimenUuid: $specimenUuid, ')
-          ..write('primaryID: $primaryID, ')
-          ..write('secondaryID: $secondaryID, ')
+          ..write('tissueID: $tissueID, ')
+          ..write('barcodeID: $barcodeID, ')
           ..write('tertiaryID: $tertiaryID, ')
           ..write('type: $type, ')
           ..write('count: $count, ')
@@ -11222,7 +11259,7 @@ abstract class _$Database extends GeneratedDatabase {
   late final Specimen specimen = Specimen(this);
   late final MammalMeasurement mammalMeasurement = MammalMeasurement(this);
   late final BirdMeasurement birdMeasurement = BirdMeasurement(this);
-  late final Part part = Part(this);
+  late final SpecimenPart specimenPart = SpecimenPart(this);
   late final Expense expense = Expense(this);
   Selectable<ListProjectResult> listProject() {
     return customSelect('SELECT uuid, name, created, lastAccessed FROM project',
@@ -11263,7 +11300,7 @@ abstract class _$Database extends GeneratedDatabase {
         specimen,
         mammalMeasurement,
         birdMeasurement,
-        part,
+        specimenPart,
         expense
       ];
 }

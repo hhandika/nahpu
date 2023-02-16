@@ -612,9 +612,8 @@ class BirdMeasurementCtrModel {
 
 class PartFormCtrModel {
   PartFormCtrModel({
-    required this.primaryIdCtr,
-    required this.secondaryIdCtr,
-    required this.tertiaryIdCtr,
+    required this.tissueIdCtr,
+    required this.barcodeIdCtr,
     required this.typeCtr,
     required this.countCtr,
     required this.treatmentCtr,
@@ -626,9 +625,8 @@ class PartFormCtrModel {
     required this.remarkCtr,
   });
 
-  TextEditingController primaryIdCtr;
-  TextEditingController secondaryIdCtr;
-  TextEditingController tertiaryIdCtr;
+  TextEditingController tissueIdCtr;
+  TextEditingController barcodeIdCtr;
   TextEditingController typeCtr;
   TextEditingController countCtr;
   TextEditingController treatmentCtr;
@@ -640,9 +638,8 @@ class PartFormCtrModel {
   TextEditingController remarkCtr = TextEditingController();
 
   factory PartFormCtrModel.empty() => PartFormCtrModel(
-        primaryIdCtr: TextEditingController(),
-        secondaryIdCtr: TextEditingController(),
-        tertiaryIdCtr: TextEditingController(),
+        tissueIdCtr: TextEditingController(),
+        barcodeIdCtr: TextEditingController(),
         typeCtr: TextEditingController(),
         countCtr: TextEditingController(),
         treatmentCtr: TextEditingController(),
@@ -654,10 +651,9 @@ class PartFormCtrModel {
         remarkCtr: TextEditingController(),
       );
 
-  factory PartFormCtrModel.fromData(PartData data) => PartFormCtrModel(
-        primaryIdCtr: TextEditingController(text: data.primaryID ?? ''),
-        secondaryIdCtr: TextEditingController(text: data.secondaryID ?? ''),
-        tertiaryIdCtr: TextEditingController(text: data.tertiaryID ?? ''),
+  factory PartFormCtrModel.fromData(SpecimenPartData data) => PartFormCtrModel(
+        tissueIdCtr: TextEditingController(text: data.tissueID ?? ''),
+        barcodeIdCtr: TextEditingController(text: data.barcodeID ?? ''),
         typeCtr: TextEditingController(text: data.type ?? ''),
         countCtr: TextEditingController(text: data.count?.toString() ?? ''),
         treatmentCtr: TextEditingController(text: data.treatment ?? ''),
@@ -672,9 +668,8 @@ class PartFormCtrModel {
       );
 
   void dispose() {
-    primaryIdCtr.dispose();
-    secondaryIdCtr.dispose();
-    tertiaryIdCtr.dispose();
+    tissueIdCtr.dispose();
+    barcodeIdCtr.dispose();
     typeCtr.dispose();
     countCtr.dispose();
     treatmentCtr.dispose();
