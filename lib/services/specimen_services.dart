@@ -125,6 +125,11 @@ class SpecimenServices {
     ref.invalidate(partBySpecimenProvider);
   }
 
+  void deleteSpecimenPart(int partId) {
+    SpecimenPartQuery(ref.read(databaseProvider)).deleteSpecimenPart(partId);
+    ref.invalidate(partBySpecimenProvider);
+  }
+
   void _invalidateSpecimenList() {
     ref.invalidate(specimenEntryProvider);
     ref.invalidate(taxonDataProvider);
