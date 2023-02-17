@@ -111,3 +111,8 @@ final personnelInitialProvider =
       PersonnelQuery(ref.read(databaseProvider)).getInitial(uuid);
   return personInitial;
 });
+
+final taxonProvider = FutureProvider.autoDispose<List<TaxonomyData>>((ref) {
+  final taxonList = TaxonomyQuery(ref.read(databaseProvider)).getTaxonList();
+  return taxonList;
+});

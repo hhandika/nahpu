@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/database.dart';
@@ -51,6 +52,47 @@ class SpeciesAutoComplete extends ConsumerWidget {
         );
       },
       onSuggestionSelected: onSelected,
+    );
+  }
+}
+
+class TaxonDropdownMenu extends ConsumerWidget {
+  const TaxonDropdownMenu({
+    super.key,
+    required this.onSelected,
+    required this.controller,
+  });
+
+  final void Function(int?) onSelected;
+  final SpecimenFormCtrModel controller;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return DropdownButtonFormField<int?>(
+      value: controller.speciesCtr,
+      decoration: const InputDecoration(
+        labelText: 'Taxon',
+        hintText: 'Choose a taxon',
+      ),
+      items: ref.watch(taxonProvider).when(
+            data: (taxa) {
+              if (taxa.isEmpty) {
+                return const [];
+              } else {
+                return taxa
+                    .map(
+                      (taxon) => DropdownMenuItem<int>(
+                        value: taxon.id,
+                        child: Text('${taxon.genus} ${taxon.specificEpithet}'),
+                      ),
+                    )
+                    .toList();
+              }
+            },
+            loading: () => const [],
+            error: (error, stack) => const [],
+          ),
+      onChanged: onSelected,
     );
   }
 }

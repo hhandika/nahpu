@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/controllers.dart';
 import 'package:flutter/material.dart';
@@ -54,25 +56,37 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
           PersonnelRecords(
               specimenUuid: widget.specimenUuid,
               specimenCtr: widget.specimenCtr),
-          SpeciesAutoComplete(
-              controller: speciesCtr,
-              onSelected: (String value) {
-                _speciesFocusNode.requestFocus();
-                setState(
-                  () {
-                    speciesCtr.text = value;
-                    var taxon = value.split(' ');
-                    TaxonomyQuery(ref.read(databaseProvider))
-                        .getTaxonIdByGenusEpithet(taxon[0], taxon[1])
-                        .then(
-                          (data) => SpecimenServices(ref).updateSpecimen(
-                            widget.specimenUuid,
-                            SpecimenCompanion(speciesID: db.Value(data.id)),
-                          ),
-                        );
+          Platform.isMacOS
+              ? SpeciesAutoComplete(
+                  controller: speciesCtr,
+                  onSelected: (String value) {
+                    _speciesFocusNode.requestFocus();
+                    setState(
+                      () {
+                        speciesCtr.text = value;
+                        var taxon = value.split(' ');
+                        TaxonomyQuery(ref.read(databaseProvider))
+                            .getTaxonIdByGenusEpithet(taxon[0], taxon[1])
+                            .then(
+                              (data) => SpecimenServices(ref).updateSpecimen(
+                                widget.specimenUuid,
+                                SpecimenCompanion(speciesID: db.Value(data.id)),
+                              ),
+                            );
+                      },
+                    );
+                  })
+              : TaxonDropdownMenu(
+                  onSelected: (int? value) {
+                    if (value != null) {
+                      SpecimenServices(ref).updateSpecimen(
+                        widget.specimenUuid,
+                        SpecimenCompanion(speciesID: db.Value(value)),
+                      );
+                    }
                   },
-                );
-              }),
+                  controller: widget.specimenCtr,
+                ),
           DropdownButtonFormField(
             value: widget.specimenCtr.conditionCtr,
             onChanged: (String? value) {
