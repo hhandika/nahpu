@@ -27,9 +27,6 @@ class CaptureRecordFields extends ConsumerStatefulWidget {
 }
 
 class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
-  bool isRelativeTime = false;
-  bool isMultipleCollectors = false;
-
   @override
   Widget build(BuildContext context) {
     List<CollEventData> eventEntry = [];
@@ -44,20 +41,34 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
               CheckboxListTile(
-                value: isRelativeTime,
-                onChanged: (value) {
+                value: _getCheckBoxValue(widget.specimenCtr.relativeTimeCtr),
+                onChanged: (bool? value) {
                   setState(() {
-                    isRelativeTime = value!;
+                    if (value != null) {
+                      int newValue = value ? 1 : 0;
+                      widget.specimenCtr.relativeTimeCtr = newValue;
+                      _updateSpecimen(
+                        SpecimenCompanion(isRelativeTime: db.Value(newValue)),
+                      );
+                    }
                   });
                 },
                 title: const Text('Relative time'),
                 controlAffinity: ListTileControlAffinity.leading,
               ),
               CheckboxListTile(
-                  value: isMultipleCollectors,
-                  onChanged: (value) {
+                  value: _getCheckBoxValue(
+                      widget.specimenCtr.multipleCollectorCtr),
+                  onChanged: (bool? value) {
                     setState(() {
-                      isMultipleCollectors = value!;
+                      if (value != null) {
+                        int newValue = value ? 1 : 0;
+                        widget.specimenCtr.multipleCollectorCtr = newValue;
+                        _updateSpecimen(
+                          SpecimenCompanion(
+                              isMultipleCollector: db.Value(newValue)),
+                        );
+                      }
                     });
                   },
                   title: const Text('Multiple collectors'),
@@ -81,8 +92,9 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
               onChanged: (int? newValue) {
                 setState(() {
                   widget.specimenCtr.collEventIDCtr = newValue;
-                  SpecimenServices(ref).updateSpecimen(widget.specimenUuid,
-                      SpecimenCompanion(collEventID: db.Value(newValue)));
+                  _updateSpecimen(
+                    SpecimenCompanion(collEventID: db.Value(newValue)),
+                  );
                 });
               },
             ),
@@ -106,8 +118,7 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                     if (date != null) {
                       widget.specimenCtr.captureDateCtr.text =
                           DateFormat.yMMMd().format(date);
-                      SpecimenServices(ref).updateSpecimen(
-                        widget.specimenUuid,
+                      _updateSpecimen(
                         SpecimenCompanion(
                           captureDate:
                               db.Value(widget.specimenCtr.captureDateCtr.text),
@@ -120,7 +131,6 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
               CaptureTime(
                 specimenUuid: widget.specimenUuid,
                 specimenCtr: widget.specimenCtr,
-                isRelativeTime: isRelativeTime,
               ),
             ],
           ),
@@ -154,8 +164,7 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                     onChanged: (int? newValue) {
                       setState(() {
                         widget.specimenCtr.collPersonnelCtr = newValue;
-                        SpecimenServices(ref).updateSpecimen(
-                          widget.specimenUuid,
+                        _updateSpecimen(
                           SpecimenCompanion(
                             collPersonnelID: db.Value(newValue),
                           ),
@@ -187,8 +196,7 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                     onChanged: (int? newValue) {
                       setState(() {
                         widget.specimenCtr.captureMethodCtr = newValue;
-                        SpecimenServices(ref).updateSpecimen(
-                          widget.specimenUuid,
+                        _updateSpecimen(
                           SpecimenCompanion(
                             collMethodID:
                                 db.Value(widget.specimenCtr.captureMethodCtr),
@@ -200,6 +208,18 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
         ],
       ),
     );
+  }
+
+  void _updateSpecimen(SpecimenCompanion form) {
+    SpecimenServices(ref).updateSpecimen(widget.specimenUuid, form);
+  }
+
+  bool _getCheckBoxValue(int? value) {
+    if (value == null) {
+      return false;
+    } else {
+      return value == 0 ? false : true;
+    }
   }
 }
 
@@ -228,15 +248,14 @@ class PersonnelName extends ConsumerWidget {
 }
 
 class CaptureTime extends ConsumerStatefulWidget {
-  const CaptureTime(
-      {super.key,
-      required this.specimenUuid,
-      required this.specimenCtr,
-      required this.isRelativeTime});
+  const CaptureTime({
+    super.key,
+    required this.specimenUuid,
+    required this.specimenCtr,
+  });
 
   final String specimenUuid;
   final SpecimenFormCtrModel specimenCtr;
-  final bool isRelativeTime;
 
   @override
   CaptureTimeState createState() => CaptureTimeState();
@@ -245,7 +264,7 @@ class CaptureTime extends ConsumerStatefulWidget {
 class CaptureTimeState extends ConsumerState<CaptureTime> {
   @override
   Widget build(BuildContext context) {
-    return widget.isRelativeTime
+    return widget.specimenCtr.relativeTimeCtr == 1
         ? DropdownButtonFormField(
             decoration: const InputDecoration(
               labelText: 'Capture time',

@@ -204,6 +204,7 @@ CREATE TABLE specimen (
     catalogerID TEXT,
     fieldNumber INT,
     collEventID INT,
+    isMultipleCollector INT,
     collPersonnelID INT,
     collMethodID INT,
     preparatorID TEXT REFERENCES personnel(uuid),

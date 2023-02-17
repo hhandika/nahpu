@@ -6603,6 +6603,13 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _isRelativeTimeMeta =
+      const VerificationMeta('isRelativeTime');
+  late final GeneratedColumn<int> isRelativeTime = GeneratedColumn<int>(
+      'isRelativeTime', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _captureTimeMeta =
       const VerificationMeta('captureTime');
   late final GeneratedColumn<String> captureTime = GeneratedColumn<String>(
@@ -6638,6 +6645,13 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _isMultipleCollectorMeta =
+      const VerificationMeta('isMultipleCollector');
+  late final GeneratedColumn<int> isMultipleCollector = GeneratedColumn<int>(
+      'isMultipleCollector', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _collPersonnelIDMeta =
       const VerificationMeta('collPersonnelID');
   late final GeneratedColumn<int> collPersonnelID = GeneratedColumn<int>(
@@ -6669,11 +6683,13 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
         prepDate,
         prepTime,
         captureDate,
+        isRelativeTime,
         captureTime,
         trapType,
         catalogerID,
         fieldNumber,
         collEventID,
+        isMultipleCollector,
         collPersonnelID,
         collMethodID,
         preparatorID
@@ -6727,6 +6743,12 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
           captureDate.isAcceptableOrUnknown(
               data['captureDate']!, _captureDateMeta));
     }
+    if (data.containsKey('isRelativeTime')) {
+      context.handle(
+          _isRelativeTimeMeta,
+          isRelativeTime.isAcceptableOrUnknown(
+              data['isRelativeTime']!, _isRelativeTimeMeta));
+    }
     if (data.containsKey('captureTime')) {
       context.handle(
           _captureTimeMeta,
@@ -6754,6 +6776,12 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
           _collEventIDMeta,
           collEventID.isAcceptableOrUnknown(
               data['collEventID']!, _collEventIDMeta));
+    }
+    if (data.containsKey('isMultipleCollector')) {
+      context.handle(
+          _isMultipleCollectorMeta,
+          isMultipleCollector.isAcceptableOrUnknown(
+              data['isMultipleCollector']!, _isMultipleCollectorMeta));
     }
     if (data.containsKey('collPersonnelID')) {
       context.handle(
@@ -6798,6 +6826,8 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
           .read(DriftSqlType.string, data['${effectivePrefix}prepTime']),
       captureDate: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}captureDate']),
+      isRelativeTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}isRelativeTime']),
       captureTime: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}captureTime']),
       trapType: attachedDatabase.typeMapping
@@ -6808,6 +6838,8 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
           .read(DriftSqlType.int, data['${effectivePrefix}fieldNumber']),
       collEventID: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}collEventID']),
+      isMultipleCollector: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}isMultipleCollector']),
       collPersonnelID: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}collPersonnelID']),
       collMethodID: attachedDatabase.typeMapping
@@ -6844,11 +6876,13 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
   final String? prepDate;
   final String? prepTime;
   final String? captureDate;
+  final int? isRelativeTime;
   final String? captureTime;
   final String? trapType;
   final String? catalogerID;
   final int? fieldNumber;
   final int? collEventID;
+  final int? isMultipleCollector;
   final int? collPersonnelID;
   final int? collMethodID;
   final String? preparatorID;
@@ -6861,11 +6895,13 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       this.prepDate,
       this.prepTime,
       this.captureDate,
+      this.isRelativeTime,
       this.captureTime,
       this.trapType,
       this.catalogerID,
       this.fieldNumber,
       this.collEventID,
+      this.isMultipleCollector,
       this.collPersonnelID,
       this.collMethodID,
       this.preparatorID});
@@ -6894,6 +6930,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
     if (!nullToAbsent || captureDate != null) {
       map['captureDate'] = Variable<String>(captureDate);
     }
+    if (!nullToAbsent || isRelativeTime != null) {
+      map['isRelativeTime'] = Variable<int>(isRelativeTime);
+    }
     if (!nullToAbsent || captureTime != null) {
       map['captureTime'] = Variable<String>(captureTime);
     }
@@ -6908,6 +6947,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
     }
     if (!nullToAbsent || collEventID != null) {
       map['collEventID'] = Variable<int>(collEventID);
+    }
+    if (!nullToAbsent || isMultipleCollector != null) {
+      map['isMultipleCollector'] = Variable<int>(isMultipleCollector);
     }
     if (!nullToAbsent || collPersonnelID != null) {
       map['collPersonnelID'] = Variable<int>(collPersonnelID);
@@ -6945,6 +6987,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       captureDate: captureDate == null && nullToAbsent
           ? const Value.absent()
           : Value(captureDate),
+      isRelativeTime: isRelativeTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isRelativeTime),
       captureTime: captureTime == null && nullToAbsent
           ? const Value.absent()
           : Value(captureTime),
@@ -6960,6 +7005,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       collEventID: collEventID == null && nullToAbsent
           ? const Value.absent()
           : Value(collEventID),
+      isMultipleCollector: isMultipleCollector == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isMultipleCollector),
       collPersonnelID: collPersonnelID == null && nullToAbsent
           ? const Value.absent()
           : Value(collPersonnelID),
@@ -6984,11 +7032,14 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       prepDate: serializer.fromJson<String?>(json['prepDate']),
       prepTime: serializer.fromJson<String?>(json['prepTime']),
       captureDate: serializer.fromJson<String?>(json['captureDate']),
+      isRelativeTime: serializer.fromJson<int?>(json['isRelativeTime']),
       captureTime: serializer.fromJson<String?>(json['captureTime']),
       trapType: serializer.fromJson<String?>(json['trapType']),
       catalogerID: serializer.fromJson<String?>(json['catalogerID']),
       fieldNumber: serializer.fromJson<int?>(json['fieldNumber']),
       collEventID: serializer.fromJson<int?>(json['collEventID']),
+      isMultipleCollector:
+          serializer.fromJson<int?>(json['isMultipleCollector']),
       collPersonnelID: serializer.fromJson<int?>(json['collPersonnelID']),
       collMethodID: serializer.fromJson<int?>(json['collMethodID']),
       preparatorID: serializer.fromJson<String?>(json['preparatorID']),
@@ -7006,11 +7057,13 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       'prepDate': serializer.toJson<String?>(prepDate),
       'prepTime': serializer.toJson<String?>(prepTime),
       'captureDate': serializer.toJson<String?>(captureDate),
+      'isRelativeTime': serializer.toJson<int?>(isRelativeTime),
       'captureTime': serializer.toJson<String?>(captureTime),
       'trapType': serializer.toJson<String?>(trapType),
       'catalogerID': serializer.toJson<String?>(catalogerID),
       'fieldNumber': serializer.toJson<int?>(fieldNumber),
       'collEventID': serializer.toJson<int?>(collEventID),
+      'isMultipleCollector': serializer.toJson<int?>(isMultipleCollector),
       'collPersonnelID': serializer.toJson<int?>(collPersonnelID),
       'collMethodID': serializer.toJson<int?>(collMethodID),
       'preparatorID': serializer.toJson<String?>(preparatorID),
@@ -7026,11 +7079,13 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           Value<String?> prepDate = const Value.absent(),
           Value<String?> prepTime = const Value.absent(),
           Value<String?> captureDate = const Value.absent(),
+          Value<int?> isRelativeTime = const Value.absent(),
           Value<String?> captureTime = const Value.absent(),
           Value<String?> trapType = const Value.absent(),
           Value<String?> catalogerID = const Value.absent(),
           Value<int?> fieldNumber = const Value.absent(),
           Value<int?> collEventID = const Value.absent(),
+          Value<int?> isMultipleCollector = const Value.absent(),
           Value<int?> collPersonnelID = const Value.absent(),
           Value<int?> collMethodID = const Value.absent(),
           Value<String?> preparatorID = const Value.absent()}) =>
@@ -7043,11 +7098,16 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
         prepDate: prepDate.present ? prepDate.value : this.prepDate,
         prepTime: prepTime.present ? prepTime.value : this.prepTime,
         captureDate: captureDate.present ? captureDate.value : this.captureDate,
+        isRelativeTime:
+            isRelativeTime.present ? isRelativeTime.value : this.isRelativeTime,
         captureTime: captureTime.present ? captureTime.value : this.captureTime,
         trapType: trapType.present ? trapType.value : this.trapType,
         catalogerID: catalogerID.present ? catalogerID.value : this.catalogerID,
         fieldNumber: fieldNumber.present ? fieldNumber.value : this.fieldNumber,
         collEventID: collEventID.present ? collEventID.value : this.collEventID,
+        isMultipleCollector: isMultipleCollector.present
+            ? isMultipleCollector.value
+            : this.isMultipleCollector,
         collPersonnelID: collPersonnelID.present
             ? collPersonnelID.value
             : this.collPersonnelID,
@@ -7067,11 +7127,13 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           ..write('prepDate: $prepDate, ')
           ..write('prepTime: $prepTime, ')
           ..write('captureDate: $captureDate, ')
+          ..write('isRelativeTime: $isRelativeTime, ')
           ..write('captureTime: $captureTime, ')
           ..write('trapType: $trapType, ')
           ..write('catalogerID: $catalogerID, ')
           ..write('fieldNumber: $fieldNumber, ')
           ..write('collEventID: $collEventID, ')
+          ..write('isMultipleCollector: $isMultipleCollector, ')
           ..write('collPersonnelID: $collPersonnelID, ')
           ..write('collMethodID: $collMethodID, ')
           ..write('preparatorID: $preparatorID')
@@ -7089,11 +7151,13 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       prepDate,
       prepTime,
       captureDate,
+      isRelativeTime,
       captureTime,
       trapType,
       catalogerID,
       fieldNumber,
       collEventID,
+      isMultipleCollector,
       collPersonnelID,
       collMethodID,
       preparatorID);
@@ -7109,11 +7173,13 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           other.prepDate == this.prepDate &&
           other.prepTime == this.prepTime &&
           other.captureDate == this.captureDate &&
+          other.isRelativeTime == this.isRelativeTime &&
           other.captureTime == this.captureTime &&
           other.trapType == this.trapType &&
           other.catalogerID == this.catalogerID &&
           other.fieldNumber == this.fieldNumber &&
           other.collEventID == this.collEventID &&
+          other.isMultipleCollector == this.isMultipleCollector &&
           other.collPersonnelID == this.collPersonnelID &&
           other.collMethodID == this.collMethodID &&
           other.preparatorID == this.preparatorID);
@@ -7128,11 +7194,13 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
   final Value<String?> prepDate;
   final Value<String?> prepTime;
   final Value<String?> captureDate;
+  final Value<int?> isRelativeTime;
   final Value<String?> captureTime;
   final Value<String?> trapType;
   final Value<String?> catalogerID;
   final Value<int?> fieldNumber;
   final Value<int?> collEventID;
+  final Value<int?> isMultipleCollector;
   final Value<int?> collPersonnelID;
   final Value<int?> collMethodID;
   final Value<String?> preparatorID;
@@ -7145,11 +7213,13 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     this.prepDate = const Value.absent(),
     this.prepTime = const Value.absent(),
     this.captureDate = const Value.absent(),
+    this.isRelativeTime = const Value.absent(),
     this.captureTime = const Value.absent(),
     this.trapType = const Value.absent(),
     this.catalogerID = const Value.absent(),
     this.fieldNumber = const Value.absent(),
     this.collEventID = const Value.absent(),
+    this.isMultipleCollector = const Value.absent(),
     this.collPersonnelID = const Value.absent(),
     this.collMethodID = const Value.absent(),
     this.preparatorID = const Value.absent(),
@@ -7163,11 +7233,13 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     this.prepDate = const Value.absent(),
     this.prepTime = const Value.absent(),
     this.captureDate = const Value.absent(),
+    this.isRelativeTime = const Value.absent(),
     this.captureTime = const Value.absent(),
     this.trapType = const Value.absent(),
     this.catalogerID = const Value.absent(),
     this.fieldNumber = const Value.absent(),
     this.collEventID = const Value.absent(),
+    this.isMultipleCollector = const Value.absent(),
     this.collPersonnelID = const Value.absent(),
     this.collMethodID = const Value.absent(),
     this.preparatorID = const Value.absent(),
@@ -7181,11 +7253,13 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     Expression<String>? prepDate,
     Expression<String>? prepTime,
     Expression<String>? captureDate,
+    Expression<int>? isRelativeTime,
     Expression<String>? captureTime,
     Expression<String>? trapType,
     Expression<String>? catalogerID,
     Expression<int>? fieldNumber,
     Expression<int>? collEventID,
+    Expression<int>? isMultipleCollector,
     Expression<int>? collPersonnelID,
     Expression<int>? collMethodID,
     Expression<String>? preparatorID,
@@ -7199,11 +7273,14 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       if (prepDate != null) 'prepDate': prepDate,
       if (prepTime != null) 'prepTime': prepTime,
       if (captureDate != null) 'captureDate': captureDate,
+      if (isRelativeTime != null) 'isRelativeTime': isRelativeTime,
       if (captureTime != null) 'captureTime': captureTime,
       if (trapType != null) 'trapType': trapType,
       if (catalogerID != null) 'catalogerID': catalogerID,
       if (fieldNumber != null) 'fieldNumber': fieldNumber,
       if (collEventID != null) 'collEventID': collEventID,
+      if (isMultipleCollector != null)
+        'isMultipleCollector': isMultipleCollector,
       if (collPersonnelID != null) 'collPersonnelID': collPersonnelID,
       if (collMethodID != null) 'collMethodID': collMethodID,
       if (preparatorID != null) 'preparatorID': preparatorID,
@@ -7219,11 +7296,13 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       Value<String?>? prepDate,
       Value<String?>? prepTime,
       Value<String?>? captureDate,
+      Value<int?>? isRelativeTime,
       Value<String?>? captureTime,
       Value<String?>? trapType,
       Value<String?>? catalogerID,
       Value<int?>? fieldNumber,
       Value<int?>? collEventID,
+      Value<int?>? isMultipleCollector,
       Value<int?>? collPersonnelID,
       Value<int?>? collMethodID,
       Value<String?>? preparatorID}) {
@@ -7236,11 +7315,13 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       prepDate: prepDate ?? this.prepDate,
       prepTime: prepTime ?? this.prepTime,
       captureDate: captureDate ?? this.captureDate,
+      isRelativeTime: isRelativeTime ?? this.isRelativeTime,
       captureTime: captureTime ?? this.captureTime,
       trapType: trapType ?? this.trapType,
       catalogerID: catalogerID ?? this.catalogerID,
       fieldNumber: fieldNumber ?? this.fieldNumber,
       collEventID: collEventID ?? this.collEventID,
+      isMultipleCollector: isMultipleCollector ?? this.isMultipleCollector,
       collPersonnelID: collPersonnelID ?? this.collPersonnelID,
       collMethodID: collMethodID ?? this.collMethodID,
       preparatorID: preparatorID ?? this.preparatorID,
@@ -7274,6 +7355,9 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     if (captureDate.present) {
       map['captureDate'] = Variable<String>(captureDate.value);
     }
+    if (isRelativeTime.present) {
+      map['isRelativeTime'] = Variable<int>(isRelativeTime.value);
+    }
     if (captureTime.present) {
       map['captureTime'] = Variable<String>(captureTime.value);
     }
@@ -7288,6 +7372,9 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     }
     if (collEventID.present) {
       map['collEventID'] = Variable<int>(collEventID.value);
+    }
+    if (isMultipleCollector.present) {
+      map['isMultipleCollector'] = Variable<int>(isMultipleCollector.value);
     }
     if (collPersonnelID.present) {
       map['collPersonnelID'] = Variable<int>(collPersonnelID.value);
@@ -7312,11 +7399,13 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
           ..write('prepDate: $prepDate, ')
           ..write('prepTime: $prepTime, ')
           ..write('captureDate: $captureDate, ')
+          ..write('isRelativeTime: $isRelativeTime, ')
           ..write('captureTime: $captureTime, ')
           ..write('trapType: $trapType, ')
           ..write('catalogerID: $catalogerID, ')
           ..write('fieldNumber: $fieldNumber, ')
           ..write('collEventID: $collEventID, ')
+          ..write('isMultipleCollector: $isMultipleCollector, ')
           ..write('collPersonnelID: $collPersonnelID, ')
           ..write('collMethodID: $collMethodID, ')
           ..write('preparatorID: $preparatorID')
