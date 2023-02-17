@@ -37,6 +37,12 @@ class PersonnelQuery extends DatabaseAccessor<Database>
     }
   }
 
+  Future<String?> getInitial(String personnelUuid) {
+    return (select(personnel)..where((t) => t.uuid.equals(personnelUuid)))
+        .map((e) => e.initial)
+        .getSingle();
+  }
+
   Future<void> deletePersonnel(String uuid) {
     return (delete(personnel)..where((t) => t.uuid.equals(uuid))).go();
   }

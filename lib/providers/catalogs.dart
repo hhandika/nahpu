@@ -104,3 +104,10 @@ final partBySpecimenProvider = FutureProvider.family
     .autoDispose<List<SpecimenPartData>, String>((ref, specimenUuid) =>
         SpecimenPartQuery(ref.read(databaseProvider))
             .getSpecimenParts(specimenUuid));
+
+final personnelInitialProvider =
+    FutureProvider.family.autoDispose<String?, String>((ref, uuid) async {
+  final personInitial =
+      PersonnelQuery(ref.read(databaseProvider)).getInitial(uuid);
+  return personInitial;
+});

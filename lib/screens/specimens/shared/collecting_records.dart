@@ -173,7 +173,6 @@ class PersonnelRecords extends ConsumerStatefulWidget {
 class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
   List<PersonnelData> personnelList = [];
   bool hasChanged = false;
-  String catalogerInitial = '';
 
   @override
   Widget build(BuildContext context) {
@@ -183,11 +182,13 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
     );
     return Column(
       children: [
-        SpecimenIdTile(
-          specimenUuid: widget.specimenUuid,
-          specimenCtr: widget.specimenCtr,
-          catalogerInitial: catalogerInitial,
-        ),
+        widget.specimenCtr.catalogerCtr != null
+            ? SpecimenIdTile(
+                specimenUuid: widget.specimenUuid,
+                specimenCtr: widget.specimenCtr,
+                catalogerUuid: widget.specimenCtr.catalogerCtr!,
+              )
+            : Container(),
         DropdownButtonFormField(
           value: widget.specimenCtr.catalogerCtr,
           decoration: const InputDecoration(
@@ -209,7 +210,7 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
                 widget.specimenCtr.catalogerCtr = uuid;
                 widget.specimenCtr.preparatorCtr = uuid;
                 widget.specimenCtr.fieldNumberCtr.text = fieldNumber.toString();
-                catalogerInitial = _getCatalogerInitial(uuid);
+
                 if (!hasChanged) {
                   PersonnelServices(ref).updatePersonnelEntry(
                       uuid,
@@ -263,13 +264,6 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
 
     return fieldNumber;
   }
-
-  String _getCatalogerInitial(String personnelUuid) {
-    String? catalogerInitial = personnelList
-        .firstWhere((element) => element.uuid == personnelUuid)
-        .initial;
-    return catalogerInitial ?? '';
-  }
 }
 
 class SpecimenIdTile extends ConsumerWidget {
@@ -277,15 +271,16 @@ class SpecimenIdTile extends ConsumerWidget {
     Key? key,
     required this.specimenUuid,
     required this.specimenCtr,
-    required this.catalogerInitial,
+    required this.catalogerUuid,
   }) : super(key: key);
 
   final SpecimenFormCtrModel specimenCtr;
   final String specimenUuid;
-  final String catalogerInitial;
+  final String catalogerUuid;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final initial = ref.watch(personnelInitialProvider(catalogerUuid));
     return ListTile(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
@@ -294,8 +289,12 @@ class SpecimenIdTile extends ConsumerWidget {
           width: 0.5,
         ),
       ),
-      title: Text(
-        'Field ID: $catalogerInitial${specimenCtr.fieldNumberCtr.text}',
+      title: initial.when(
+        data: (initial) => Text(
+          'Field ID: $initial${specimenCtr.fieldNumberCtr.text}',
+        ),
+        loading: () => const Text('Loading...'),
+        error: (error, stack) => Text('Error: $error'),
       ),
       trailing: Visibility(
           visible: specimenCtr.fieldNumberCtr.text.isNotEmpty,
