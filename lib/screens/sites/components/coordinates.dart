@@ -10,6 +10,7 @@ import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/database/coordinate_queries.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
+import 'package:nahpu/services/site_services.dart';
 
 class CoordinateFields extends StatelessWidget {
   const CoordinateFields({super.key, required this.siteId});
@@ -46,6 +47,149 @@ class CoordinateFields extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class CoordinateList extends ConsumerWidget {
+  const CoordinateList({
+    super.key,
+    required this.sideId,
+  });
+
+  final int sideId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final coordinates = ref.watch(coordinateBySiteProvider(sideId));
+    return coordinates.when(
+      data: (data) {
+        return ListView.builder(
+          shrinkWrap: true,
+          itemCount: data.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text('${data[index].nameId}'),
+              subtitle: CoordinateSubtitle(coordinate: data[index]),
+              trailing: CoordinateMenu(
+                coordinateId: data[index].id!,
+                siteId: data[index].siteID!,
+                coordCtr: CoordinateCtrModel.fromData(data[index]),
+              ),
+            );
+          },
+        );
+      },
+      loading: () => const CommonProgressIndicator(),
+      error: (error, stack) => Text(error.toString()),
+    );
+  }
+}
+
+class CoordinateSubtitle extends StatelessWidget {
+  const CoordinateSubtitle({
+    super.key,
+    required this.coordinate,
+  });
+
+  final CoordinateData coordinate;
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+        children: [
+          const WidgetSpan(
+            child: TileIcon(icon: Icons.pin_drop_outlined),
+          ),
+          TextSpan(
+              style: Theme.of(context).textTheme.labelLarge,
+              text:
+                  '${coordinate.decimalLatitude}, ${coordinate.decimalLongitude}'),
+          const TextSpan(text: '  '),
+          const WidgetSpan(
+            child: TileIcon(icon: Icons.landscape_outlined),
+          ),
+          TextSpan(
+            style: Theme.of(context).textTheme.labelLarge,
+            text: '${coordinate.elevationInMeter} m',
+          ),
+          const TextSpan(text: '  '),
+          const WidgetSpan(
+            child: TileIcon(icon: Icons.circle_outlined),
+          ),
+          TextSpan(
+            style: Theme.of(context).textTheme.labelLarge,
+            text: '±${coordinate.uncertaintyInMeters} m',
+          ),
+          const TextSpan(text: '  '),
+          const WidgetSpan(
+            child: TileIcon(icon: Icons.map_outlined),
+          ),
+          TextSpan(
+            style: Theme.of(context).textTheme.labelLarge,
+            text: '${coordinate.datum}',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CoordinateMenu extends ConsumerStatefulWidget {
+  const CoordinateMenu({
+    super.key,
+    required this.coordinateId,
+    required this.siteId,
+    required this.coordCtr,
+  });
+
+  final int coordinateId;
+  final int siteId;
+  final CoordinateCtrModel coordCtr;
+
+  @override
+  CoordinateMenuState createState() => CoordinateMenuState();
+}
+
+class CoordinateMenuState extends ConsumerState<CoordinateMenu> {
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+      icon: const Icon(Icons.more_vert),
+      onSelected: _onSelected,
+      itemBuilder: (context) => [
+        const PopupMenuItem<CommonPopUpMenuItems>(
+          value: CommonPopUpMenuItems.edit,
+          child: Text('Edit'),
+        ),
+        const PopupMenuItem(
+          value: CommonPopUpMenuItems.delete,
+          child: Text('Delete'),
+        ),
+      ],
+    );
+  }
+
+  void _onSelected(CommonPopUpMenuItems item) {
+    switch (item) {
+      case CommonPopUpMenuItems.edit:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EditCoordinate(
+              coordinateId: widget.coordinateId,
+              siteId: widget.siteId,
+              coordCtr: widget.coordCtr,
+            ),
+          ),
+        );
+        break;
+      case CommonPopUpMenuItems.delete:
+        CoordinateQuery(ref.read(databaseProvider))
+            .deleteCoordinate(widget.coordinateId);
+        ref.invalidate(coordinateBySiteProvider);
+        break;
+    }
   }
 }
 
@@ -219,7 +363,9 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
                   ),
                   PrimaryButton(
                     onPressed: () {
-                      widget.isEditing ? _updateCoordinate() : _getCoordinate();
+                      widget.isEditing
+                          ? _updateCoordinate()
+                          : _createCoordinate();
                       ref.invalidate(coordinateBySiteProvider);
                       Navigator.pop(context);
                     },
@@ -232,18 +378,17 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
     );
   }
 
-  Future<void> _getCoordinate() async {
+  Future<void> _createCoordinate() async {
     CoordinateCompanion form = _getform();
 
-    await CoordinateQuery(ref.read(databaseProvider)).createCoordinate(form);
+    await SiteServices(ref).createCoordinate(form);
   }
 
   Future<void> _updateCoordinate() async {
     CoordinateCompanion form = _getform();
 
     try {
-      await CoordinateQuery(ref.read(databaseProvider))
-          .updateCoordinate(widget.coordinateId!, form);
+      await SiteServices(ref).updateCoordinate(widget.coordinateId!, form);
     } catch (e) {
       // Error dialog box
       AlertDialog alert = AlertDialog(
@@ -283,148 +428,5 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
       siteID: db.Value(widget.siteId),
       notes: db.Value(widget.coordCtr.noteCtr.text),
     );
-  }
-}
-
-class CoordinateList extends ConsumerWidget {
-  const CoordinateList({
-    super.key,
-    required this.sideId,
-  });
-
-  final int sideId;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final coordinates = ref.watch(coordinateBySiteProvider(sideId));
-    return coordinates.when(
-      data: (data) {
-        return ListView.builder(
-          shrinkWrap: true,
-          itemCount: data.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text('${data[index].nameId}'),
-              subtitle: CoordinateSubtitle(coordinate: data[index]),
-              trailing: CoordinateMenu(
-                coordinateId: data[index].id!,
-                siteId: data[index].siteID!,
-                coordCtr: CoordinateCtrModel.fromData(data[index]),
-              ),
-            );
-          },
-        );
-      },
-      loading: () => const CommonProgressIndicator(),
-      error: (error, stack) => Text(error.toString()),
-    );
-  }
-}
-
-class CoordinateSubtitle extends StatelessWidget {
-  const CoordinateSubtitle({
-    super.key,
-    required this.coordinate,
-  });
-
-  final CoordinateData coordinate;
-
-  @override
-  Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-        children: [
-          const WidgetSpan(
-            child: TileIcon(icon: Icons.pin_drop_outlined),
-          ),
-          TextSpan(
-              style: Theme.of(context).textTheme.labelLarge,
-              text:
-                  '${coordinate.decimalLatitude}, ${coordinate.decimalLongitude}'),
-          const TextSpan(text: '  '),
-          const WidgetSpan(
-            child: TileIcon(icon: Icons.landscape_outlined),
-          ),
-          TextSpan(
-            style: Theme.of(context).textTheme.labelLarge,
-            text: '${coordinate.elevationInMeter} m',
-          ),
-          const TextSpan(text: '  '),
-          const WidgetSpan(
-            child: TileIcon(icon: Icons.circle_outlined),
-          ),
-          TextSpan(
-            style: Theme.of(context).textTheme.labelLarge,
-            text: '±${coordinate.uncertaintyInMeters} m',
-          ),
-          const TextSpan(text: '  '),
-          const WidgetSpan(
-            child: TileIcon(icon: Icons.map_outlined),
-          ),
-          TextSpan(
-            style: Theme.of(context).textTheme.labelLarge,
-            text: '${coordinate.datum}',
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class CoordinateMenu extends ConsumerStatefulWidget {
-  const CoordinateMenu({
-    super.key,
-    required this.coordinateId,
-    required this.siteId,
-    required this.coordCtr,
-  });
-
-  final int coordinateId;
-  final int siteId;
-  final CoordinateCtrModel coordCtr;
-
-  @override
-  CoordinateMenuState createState() => CoordinateMenuState();
-}
-
-class CoordinateMenuState extends ConsumerState<CoordinateMenu> {
-  @override
-  Widget build(BuildContext context) {
-    return PopupMenuButton(
-      icon: const Icon(Icons.more_vert),
-      onSelected: _onSelected,
-      itemBuilder: (context) => [
-        const PopupMenuItem<CommonPopUpMenuItems>(
-          value: CommonPopUpMenuItems.edit,
-          child: Text('Edit'),
-        ),
-        const PopupMenuItem(
-          value: CommonPopUpMenuItems.delete,
-          child: Text('Delete'),
-        ),
-      ],
-    );
-  }
-
-  void _onSelected(CommonPopUpMenuItems item) {
-    switch (item) {
-      case CommonPopUpMenuItems.edit:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => EditCoordinate(
-              coordinateId: widget.coordinateId,
-              siteId: widget.siteId,
-              coordCtr: widget.coordCtr,
-            ),
-          ),
-        );
-        break;
-      case CommonPopUpMenuItems.delete:
-        CoordinateQuery(ref.read(databaseProvider))
-            .deleteCoordinate(widget.coordinateId);
-        ref.invalidate(coordinateBySiteProvider);
-        break;
-    }
   }
 }
