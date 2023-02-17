@@ -11,6 +11,7 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/associated_data.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
+import 'package:nahpu/services/specimen_services.dart';
 
 class PartDataForm extends ConsumerStatefulWidget {
   const PartDataForm({
@@ -130,7 +131,7 @@ class PartList extends ConsumerWidget {
             final part = data[index];
             return ListTile(
               title: Text(part.type ?? 'No type'),
-              subtitle: Text(part.count.toString()),
+              subtitle: Text('Count: ${part.count.toString()}'),
               trailing: IconButton(
                 icon: const Icon(Icons.edit),
                 onPressed: () {
@@ -139,6 +140,7 @@ class PartList extends ConsumerWidget {
                       builder: (context) => EditPart(
                         specimenUuid: specimenUuid,
                         specimenPartId: part.id,
+                        partCtr: PartFormCtrModel.fromData(part),
                       ),
                     ),
                   );
@@ -171,7 +173,7 @@ class NewPart extends StatelessWidget {
         automaticallyImplyLeading: false,
       ),
       body: Center(
-        child: PartForms(
+        child: PartForm(
           specimenUuid: specimenUuid,
           specimenPartId: null,
           partCtr: partCtr,
@@ -186,21 +188,22 @@ class EditPart extends StatelessWidget {
     super.key,
     required this.specimenUuid,
     required this.specimenPartId,
+    required this.partCtr,
   });
 
   final String specimenUuid;
   final int? specimenPartId;
+  final PartFormCtrModel partCtr;
 
   @override
   Widget build(BuildContext context) {
-    final PartFormCtrModel partCtr = PartFormCtrModel.empty();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit specimen parts'),
         automaticallyImplyLeading: false,
       ),
       body: Center(
-        child: PartForms(
+        child: PartForm(
           specimenUuid: specimenUuid,
           specimenPartId: specimenPartId,
           partCtr: partCtr,
@@ -211,8 +214,8 @@ class EditPart extends StatelessWidget {
   }
 }
 
-class PartForms extends ConsumerWidget {
-  const PartForms({
+class PartForm extends ConsumerStatefulWidget {
+  const PartForm({
     super.key,
     required this.specimenUuid,
     required this.specimenPartId,
@@ -226,7 +229,12 @@ class PartForms extends ConsumerWidget {
   final bool isEditing;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  PartFormState createState() => PartFormState();
+}
+
+class PartFormState extends ConsumerState<PartForm> {
+  @override
+  Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 500),
       child: SingleChildScrollView(
@@ -234,29 +242,29 @@ class PartForms extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             PartIdForm(
-              specimenUuid: specimenUuid,
-              partCtr: partCtr,
+              specimenUuid: widget.specimenUuid,
+              partCtr: widget.partCtr,
             ),
             CommonTextField(
-              controller: partCtr.typeCtr,
+              controller: widget.partCtr.typeCtr,
               labelText: 'Preparation type',
               hintText: 'Enter prep type: e.g. "skin", "liver", etc."',
               isLastField: false,
             ),
             CommonNumField(
-              controller: partCtr.countCtr,
+              controller: widget.partCtr.countCtr,
               labelText: 'Counts',
               hintText: 'Enter part counts',
               isLastField: false,
             ),
             CommonTextField(
-              controller: partCtr.treatmentCtr,
+              controller: widget.partCtr.treatmentCtr,
               labelText: 'Treatment',
               hintText: 'Enter a treatment: e.g. "formalin", "alcohol", etc."',
               isLastField: false,
             ),
             CommonTextField(
-              controller: partCtr.additionalTreatmentCtr,
+              controller: widget.partCtr.additionalTreatmentCtr,
               labelText: 'Additional treatment',
               hintText: 'Enter a treatment: e.g. "formalin", "alcohol", etc."',
               isLastField: false,
@@ -266,7 +274,7 @@ class PartForms extends ConsumerWidget {
                 labelText: 'Date taken',
                 hintText: 'Enter date',
               ),
-              controller: partCtr.dateTakenCtr,
+              controller: widget.partCtr.dateTakenCtr,
               onTap: () async {
                 final selectedDate = await showDatePicker(
                     context: context,
@@ -275,7 +283,7 @@ class PartForms extends ConsumerWidget {
                     lastDate: DateTime.now());
 
                 if (selectedDate != null) {
-                  partCtr.dateTakenCtr.text =
+                  widget.partCtr.dateTakenCtr.text =
                       DateFormat.yMMMd().format(selectedDate);
                 }
               },
@@ -285,30 +293,30 @@ class PartForms extends ConsumerWidget {
                 labelText: 'Time taken',
                 hintText: 'Enter time',
               ),
-              controller: partCtr.timeTakenCtr,
+              controller: widget.partCtr.timeTakenCtr,
               onTap: () {
                 showTimePicker(context: context, initialTime: TimeOfDay.now())
                     .then((time) {
                   if (time != null) {
-                    partCtr.timeTakenCtr.text = time.format(context);
+                    widget.partCtr.timeTakenCtr.text = time.format(context);
                   }
                 });
               },
             ),
             CommonTextField(
-              controller: partCtr.museumPermanentCtr,
+              controller: widget.partCtr.museumPermanentCtr,
               labelText: 'Museum permanent',
               hintText: 'Enter a museum name or abbreviation',
               isLastField: false,
             ),
             CommonTextField(
-              controller: partCtr.museumLoanCtr,
+              controller: widget.partCtr.museumLoanCtr,
               labelText: 'Museum loan',
               hintText: 'Enter a museum name or abbreviation',
               isLastField: false,
             ),
             CommonTextField(
-              controller: partCtr.remarkCtr,
+              controller: widget.partCtr.remarkCtr,
               maxLines: 3,
               labelText: 'Remarks',
               hintText: 'Enter a remark specific to this part',
@@ -325,8 +333,9 @@ class PartForms extends ConsumerWidget {
                 ),
                 const SizedBox(width: 10),
                 PrimaryButton(
-                  text: isEditing ? 'Update' : 'Add',
+                  text: widget.isEditing ? 'Update' : 'Add',
                   onPressed: () {
+                    widget.isEditing ? _updatePart() : _createPart();
                     Navigator.of(context).pop();
                   },
                 ),
@@ -338,20 +347,33 @@ class PartForms extends ConsumerWidget {
     );
   }
 
+  Future<void> _createPart() async {
+    SpecimenPartCompanion form = _getForm();
+
+    await SpecimenServices(ref).createSpecimenPart(form);
+  }
+
+  Future<void> _updatePart() async {
+    SpecimenPartCompanion form = _getForm();
+
+    await SpecimenServices(ref)
+        .updateSpecimenPart(widget.specimenPartId!, form);
+  }
+
   SpecimenPartCompanion _getForm() {
     return SpecimenPartCompanion(
-      specimenUuid: db.Value(specimenUuid),
-      tissueID: db.Value(partCtr.tissueIdCtr.text),
-      barcodeID: db.Value(partCtr.barcodeIdCtr.text),
-      type: db.Value(partCtr.typeCtr.text),
-      count: db.Value(partCtr.countCtr.text),
-      treatment: db.Value(partCtr.treatmentCtr.text),
-      additionalTreatment: db.Value(partCtr.additionalTreatmentCtr.text),
-      dateTaken: db.Value(partCtr.dateTakenCtr.text),
-      timeTaken: db.Value(partCtr.timeTakenCtr.text),
-      museumPermanent: db.Value(partCtr.museumPermanentCtr.text),
-      museumLoan: db.Value(partCtr.museumLoanCtr.text),
-      remark: db.Value(partCtr.remarkCtr.text),
+      specimenUuid: db.Value(widget.specimenUuid),
+      tissueID: db.Value(widget.partCtr.tissueIdCtr.text),
+      barcodeID: db.Value(widget.partCtr.barcodeIdCtr.text),
+      type: db.Value(widget.partCtr.typeCtr.text),
+      count: db.Value(widget.partCtr.countCtr.text),
+      treatment: db.Value(widget.partCtr.treatmentCtr.text),
+      additionalTreatment: db.Value(widget.partCtr.additionalTreatmentCtr.text),
+      dateTaken: db.Value(widget.partCtr.dateTakenCtr.text),
+      timeTaken: db.Value(widget.partCtr.timeTakenCtr.text),
+      museumPermanent: db.Value(widget.partCtr.museumPermanentCtr.text),
+      museumLoan: db.Value(widget.partCtr.museumLoanCtr.text),
+      remark: db.Value(widget.partCtr.remarkCtr.text),
     );
   }
 }

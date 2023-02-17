@@ -114,6 +114,10 @@ class SpecimenPartQuery extends DatabaseAccessor<Database>
         .get();
   }
 
+  Future<void> updateSpecimenPart(int id, SpecimenPartCompanion entry) {
+    return (update(specimenPart)..where((t) => t.id.equals(id))).write(entry);
+  }
+
   Future<void> deleteSpecimenPart(String uuid) {
     return (delete(specimenPart)..where((t) => t.specimenUuid.equals(uuid)))
         .go();

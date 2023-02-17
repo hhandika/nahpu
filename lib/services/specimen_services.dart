@@ -113,9 +113,16 @@ class SpecimenServices {
         .updateBirdMeasurements(specimenUuid, entries);
   }
 
-  Future<List<SpecimenPartData>> getSpecimenParts(String specimenUuid) {
-    return SpecimenPartQuery(ref.read(databaseProvider))
-        .getSpecimenParts(specimenUuid);
+  Future<void> createSpecimenPart(SpecimenPartCompanion form) async {
+    SpecimenPartQuery(ref.read(databaseProvider)).createSpecimenPart(form);
+    ref.invalidate(partBySpecimenProvider);
+  }
+
+  Future<void> updateSpecimenPart(
+      int partId, SpecimenPartCompanion form) async {
+    SpecimenPartQuery(ref.read(databaseProvider))
+        .updateSpecimenPart(partId, form);
+    ref.invalidate(partBySpecimenProvider);
   }
 
   void _invalidateSpecimenList() {
