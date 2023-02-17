@@ -173,6 +173,7 @@ class PersonnelRecords extends ConsumerStatefulWidget {
 class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
   List<PersonnelData> personnelList = [];
   bool hasChanged = false;
+  String catalogerInitial = '';
 
   @override
   Widget build(BuildContext context) {
@@ -185,6 +186,7 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
         SpecimenIdTile(
           specimenUuid: widget.specimenUuid,
           specimenCtr: widget.specimenCtr,
+          catalogerInitial: catalogerInitial,
         ),
         DropdownButtonFormField(
           value: widget.specimenCtr.catalogerCtr,
@@ -206,8 +208,8 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
               setState(() {
                 widget.specimenCtr.catalogerCtr = uuid;
                 widget.specimenCtr.preparatorCtr = uuid;
-                _getCurrentCollectorNumber(uuid);
                 widget.specimenCtr.fieldNumberCtr.text = fieldNumber.toString();
+                catalogerInitial = _getCatalogerInitial(uuid);
                 if (!hasChanged) {
                   PersonnelServices(ref).updatePersonnelEntry(
                       uuid,
@@ -261,6 +263,13 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
 
     return fieldNumber;
   }
+
+  String _getCatalogerInitial(String personnelUuid) {
+    String? catalogerInitial = personnelList
+        .firstWhere((element) => element.uuid == personnelUuid)
+        .initial;
+    return catalogerInitial ?? '';
+  }
 }
 
 class SpecimenIdTile extends ConsumerWidget {
@@ -268,10 +277,12 @@ class SpecimenIdTile extends ConsumerWidget {
     Key? key,
     required this.specimenUuid,
     required this.specimenCtr,
+    required this.catalogerInitial,
   }) : super(key: key);
 
   final SpecimenFormCtrModel specimenCtr;
   final String specimenUuid;
+  final String catalogerInitial;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -283,7 +294,9 @@ class SpecimenIdTile extends ConsumerWidget {
           width: 0.5,
         ),
       ),
-      title: Text('Field ID: ${specimenCtr.fieldNumberCtr.text}'),
+      title: Text(
+        'Field ID: $catalogerInitial${specimenCtr.fieldNumberCtr.text}',
+      ),
       trailing: Visibility(
           visible: specimenCtr.fieldNumberCtr.text.isNotEmpty,
           child: IconButton(

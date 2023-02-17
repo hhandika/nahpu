@@ -198,6 +198,7 @@ CREATE TABLE specimen (
     prepDate TEXT,
     prepTime TEXT,
     captureDate TEXT,
+    isRelativeTime INT,
     captureTime TEXT,
     trapType TEXT,
     catalogerID TEXT,
