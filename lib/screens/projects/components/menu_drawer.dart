@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/screens/exports/exports.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/screens/home/home.dart';
@@ -57,8 +58,8 @@ class ProjectMenuDrawer extends ConsumerWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.table_view_rounded),
-            title: const Text('Export to csv/tsv'),
+            leading: const Icon(Icons.picture_as_pdf_rounded),
+            title: const Text('Export to pdf'),
             onTap: () {
               Navigator.push(
                 context,
@@ -67,12 +68,12 @@ class ProjectMenuDrawer extends ConsumerWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.picture_as_pdf_rounded),
-            title: const Text('Export to pdf'),
+            leading: const Icon(Icons.table_view_rounded),
+            title: const Text('Export to ...'),
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const Home()),
+                MaterialPageRoute(builder: (context) => const ExportForm()),
               );
             },
           ),

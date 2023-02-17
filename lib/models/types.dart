@@ -6,6 +6,14 @@ enum CatalogFmt { generalMammals, birds, bats }
 
 enum CommonPopUpMenuItems { edit, delete }
 
+enum ExportFormat { csv, tsv, json }
+
+const List<String> exportFormats = [
+  'Comma Separated Values (CSV)',
+  'Tab Separated Values (TSV)',
+  'JSON',
+];
+
 // Database read through index.
 // and stored as integer.
 // DON'T CHANGE ORDER!
