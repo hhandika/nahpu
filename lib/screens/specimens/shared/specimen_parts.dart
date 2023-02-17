@@ -4,10 +4,13 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:nahpu/models/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/models/types.dart';
+import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/associated_data.dart';
+import 'package:nahpu/services/database/database.dart';
+import 'package:drift/drift.dart' as db;
 
 class PartDataForm extends ConsumerStatefulWidget {
   const PartDataForm({
@@ -80,7 +83,11 @@ class SpecimenPartFields extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         const TitleForm(text: 'Specimen Parts'),
-        const Expanded(child: PartList()),
+        Expanded(
+          child: PartList(
+            specimenUuid: specimenUuid,
+          ),
+        ),
         PrimaryButton(
           onPressed: () {
             Navigator.of(context).push(
@@ -104,12 +111,45 @@ class SpecimenPartFields extends ConsumerWidget {
 }
 
 class PartList extends ConsumerWidget {
-  const PartList({super.key});
+  const PartList({
+    super.key,
+    required this.specimenUuid,
+  });
+
+  final String specimenUuid;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ListView(
-      children: const [Text('Parts'), Text('data')],
+    final specimenPartList = ref.watch(partBySpecimenProvider(specimenUuid));
+    return specimenPartList.when(
+      data: (data) {
+        return ListView.builder(
+          shrinkWrap: true,
+          itemCount: data.length,
+          itemBuilder: (context, index) {
+            final part = data[index];
+            return ListTile(
+              title: Text(part.type ?? 'No type'),
+              subtitle: Text(part.count.toString()),
+              trailing: IconButton(
+                icon: const Icon(Icons.edit),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => EditPart(
+                        specimenUuid: specimenUuid,
+                        specimenPartId: part.id,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (err, stack) => Text('Error: $err'),
     );
   }
 }
@@ -133,6 +173,7 @@ class NewPart extends StatelessWidget {
       body: Center(
         child: PartForms(
           specimenUuid: specimenUuid,
+          specimenPartId: null,
           partCtr: partCtr,
         ),
       ),
@@ -144,11 +185,11 @@ class EditPart extends StatelessWidget {
   const EditPart({
     super.key,
     required this.specimenUuid,
-    required this.partUuid,
+    required this.specimenPartId,
   });
 
   final String specimenUuid;
-  final String partUuid;
+  final int? specimenPartId;
 
   @override
   Widget build(BuildContext context) {
@@ -161,6 +202,7 @@ class EditPart extends StatelessWidget {
       body: Center(
         child: PartForms(
           specimenUuid: specimenUuid,
+          specimenPartId: specimenPartId,
           partCtr: partCtr,
           isEditing: true,
         ),
@@ -173,11 +215,13 @@ class PartForms extends ConsumerWidget {
   const PartForms({
     super.key,
     required this.specimenUuid,
+    required this.specimenPartId,
     required this.partCtr,
     this.isEditing = false,
   });
 
   final String specimenUuid;
+  final int? specimenPartId;
   final PartFormCtrModel partCtr;
   final bool isEditing;
 
@@ -291,6 +335,23 @@ class PartForms extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+
+  SpecimenPartCompanion _getForm() {
+    return SpecimenPartCompanion(
+      specimenUuid: db.Value(specimenUuid),
+      tissueID: db.Value(partCtr.tissueIdCtr.text),
+      barcodeID: db.Value(partCtr.barcodeIdCtr.text),
+      type: db.Value(partCtr.typeCtr.text),
+      count: db.Value(partCtr.countCtr.text),
+      treatment: db.Value(partCtr.treatmentCtr.text),
+      additionalTreatment: db.Value(partCtr.additionalTreatmentCtr.text),
+      dateTaken: db.Value(partCtr.dateTakenCtr.text),
+      timeTaken: db.Value(partCtr.timeTakenCtr.text),
+      museumPermanent: db.Value(partCtr.museumPermanentCtr.text),
+      museumLoan: db.Value(partCtr.museumLoanCtr.text),
+      remark: db.Value(partCtr.remarkCtr.text),
     );
   }
 }

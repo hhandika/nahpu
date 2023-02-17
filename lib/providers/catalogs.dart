@@ -99,3 +99,8 @@ final taxonDataProvider = FutureProvider.family
     return null;
   }
 });
+
+final partBySpecimenProvider = FutureProvider.family
+    .autoDispose<List<SpecimenPartData>, String>((ref, specimenUuid) =>
+        SpecimenPartQuery(ref.read(databaseProvider))
+            .getSpecimenParts(specimenUuid));

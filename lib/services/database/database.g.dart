@@ -10212,13 +10212,6 @@ class SpecimenPart extends Table
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _tertiaryIDMeta =
-      const VerificationMeta('tertiaryID');
-  late final GeneratedColumn<String> tertiaryID = GeneratedColumn<String>(
-      'tertiaryID', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
   static const VerificationMeta _typeMeta = const VerificationMeta('type');
   late final GeneratedColumn<String> type = GeneratedColumn<String>(
       'type', aliasedName, true,
@@ -10285,7 +10278,6 @@ class SpecimenPart extends Table
         specimenUuid,
         tissueID,
         barcodeID,
-        tertiaryID,
         type,
         count,
         treatment,
@@ -10321,12 +10313,6 @@ class SpecimenPart extends Table
     if (data.containsKey('barcodeID')) {
       context.handle(_barcodeIDMeta,
           barcodeID.isAcceptableOrUnknown(data['barcodeID']!, _barcodeIDMeta));
-    }
-    if (data.containsKey('tertiaryID')) {
-      context.handle(
-          _tertiaryIDMeta,
-          tertiaryID.isAcceptableOrUnknown(
-              data['tertiaryID']!, _tertiaryIDMeta));
     }
     if (data.containsKey('type')) {
       context.handle(
@@ -10387,8 +10373,6 @@ class SpecimenPart extends Table
           .read(DriftSqlType.string, data['${effectivePrefix}tissueID']),
       barcodeID: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}barcodeID']),
-      tertiaryID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}tertiaryID']),
       type: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}type']),
       count: attachedDatabase.typeMapping
@@ -10428,7 +10412,6 @@ class SpecimenPartData extends DataClass
   final String? specimenUuid;
   final String? tissueID;
   final String? barcodeID;
-  final String? tertiaryID;
   final String? type;
   final String? count;
   final String? treatment;
@@ -10443,7 +10426,6 @@ class SpecimenPartData extends DataClass
       this.specimenUuid,
       this.tissueID,
       this.barcodeID,
-      this.tertiaryID,
       this.type,
       this.count,
       this.treatment,
@@ -10467,9 +10449,6 @@ class SpecimenPartData extends DataClass
     }
     if (!nullToAbsent || barcodeID != null) {
       map['barcodeID'] = Variable<String>(barcodeID);
-    }
-    if (!nullToAbsent || tertiaryID != null) {
-      map['tertiaryID'] = Variable<String>(tertiaryID);
     }
     if (!nullToAbsent || type != null) {
       map['type'] = Variable<String>(type);
@@ -10513,9 +10492,6 @@ class SpecimenPartData extends DataClass
       barcodeID: barcodeID == null && nullToAbsent
           ? const Value.absent()
           : Value(barcodeID),
-      tertiaryID: tertiaryID == null && nullToAbsent
-          ? const Value.absent()
-          : Value(tertiaryID),
       type: type == null && nullToAbsent ? const Value.absent() : Value(type),
       count:
           count == null && nullToAbsent ? const Value.absent() : Value(count),
@@ -10550,7 +10526,6 @@ class SpecimenPartData extends DataClass
       specimenUuid: serializer.fromJson<String?>(json['specimenUuid']),
       tissueID: serializer.fromJson<String?>(json['tissueID']),
       barcodeID: serializer.fromJson<String?>(json['barcodeID']),
-      tertiaryID: serializer.fromJson<String?>(json['tertiaryID']),
       type: serializer.fromJson<String?>(json['type']),
       count: serializer.fromJson<String?>(json['count']),
       treatment: serializer.fromJson<String?>(json['treatment']),
@@ -10571,7 +10546,6 @@ class SpecimenPartData extends DataClass
       'specimenUuid': serializer.toJson<String?>(specimenUuid),
       'tissueID': serializer.toJson<String?>(tissueID),
       'barcodeID': serializer.toJson<String?>(barcodeID),
-      'tertiaryID': serializer.toJson<String?>(tertiaryID),
       'type': serializer.toJson<String?>(type),
       'count': serializer.toJson<String?>(count),
       'treatment': serializer.toJson<String?>(treatment),
@@ -10589,7 +10563,6 @@ class SpecimenPartData extends DataClass
           Value<String?> specimenUuid = const Value.absent(),
           Value<String?> tissueID = const Value.absent(),
           Value<String?> barcodeID = const Value.absent(),
-          Value<String?> tertiaryID = const Value.absent(),
           Value<String?> type = const Value.absent(),
           Value<String?> count = const Value.absent(),
           Value<String?> treatment = const Value.absent(),
@@ -10605,7 +10578,6 @@ class SpecimenPartData extends DataClass
             specimenUuid.present ? specimenUuid.value : this.specimenUuid,
         tissueID: tissueID.present ? tissueID.value : this.tissueID,
         barcodeID: barcodeID.present ? barcodeID.value : this.barcodeID,
-        tertiaryID: tertiaryID.present ? tertiaryID.value : this.tertiaryID,
         type: type.present ? type.value : this.type,
         count: count.present ? count.value : this.count,
         treatment: treatment.present ? treatment.value : this.treatment,
@@ -10627,7 +10599,6 @@ class SpecimenPartData extends DataClass
           ..write('specimenUuid: $specimenUuid, ')
           ..write('tissueID: $tissueID, ')
           ..write('barcodeID: $barcodeID, ')
-          ..write('tertiaryID: $tertiaryID, ')
           ..write('type: $type, ')
           ..write('count: $count, ')
           ..write('treatment: $treatment, ')
@@ -10647,7 +10618,6 @@ class SpecimenPartData extends DataClass
       specimenUuid,
       tissueID,
       barcodeID,
-      tertiaryID,
       type,
       count,
       treatment,
@@ -10665,7 +10635,6 @@ class SpecimenPartData extends DataClass
           other.specimenUuid == this.specimenUuid &&
           other.tissueID == this.tissueID &&
           other.barcodeID == this.barcodeID &&
-          other.tertiaryID == this.tertiaryID &&
           other.type == this.type &&
           other.count == this.count &&
           other.treatment == this.treatment &&
@@ -10682,7 +10651,6 @@ class SpecimenPartCompanion extends UpdateCompanion<SpecimenPartData> {
   final Value<String?> specimenUuid;
   final Value<String?> tissueID;
   final Value<String?> barcodeID;
-  final Value<String?> tertiaryID;
   final Value<String?> type;
   final Value<String?> count;
   final Value<String?> treatment;
@@ -10697,7 +10665,6 @@ class SpecimenPartCompanion extends UpdateCompanion<SpecimenPartData> {
     this.specimenUuid = const Value.absent(),
     this.tissueID = const Value.absent(),
     this.barcodeID = const Value.absent(),
-    this.tertiaryID = const Value.absent(),
     this.type = const Value.absent(),
     this.count = const Value.absent(),
     this.treatment = const Value.absent(),
@@ -10713,7 +10680,6 @@ class SpecimenPartCompanion extends UpdateCompanion<SpecimenPartData> {
     this.specimenUuid = const Value.absent(),
     this.tissueID = const Value.absent(),
     this.barcodeID = const Value.absent(),
-    this.tertiaryID = const Value.absent(),
     this.type = const Value.absent(),
     this.count = const Value.absent(),
     this.treatment = const Value.absent(),
@@ -10729,7 +10695,6 @@ class SpecimenPartCompanion extends UpdateCompanion<SpecimenPartData> {
     Expression<String>? specimenUuid,
     Expression<String>? tissueID,
     Expression<String>? barcodeID,
-    Expression<String>? tertiaryID,
     Expression<String>? type,
     Expression<String>? count,
     Expression<String>? treatment,
@@ -10745,7 +10710,6 @@ class SpecimenPartCompanion extends UpdateCompanion<SpecimenPartData> {
       if (specimenUuid != null) 'specimenUuid': specimenUuid,
       if (tissueID != null) 'tissueID': tissueID,
       if (barcodeID != null) 'barcodeID': barcodeID,
-      if (tertiaryID != null) 'tertiaryID': tertiaryID,
       if (type != null) 'type': type,
       if (count != null) 'count': count,
       if (treatment != null) 'treatment': treatment,
@@ -10764,7 +10728,6 @@ class SpecimenPartCompanion extends UpdateCompanion<SpecimenPartData> {
       Value<String?>? specimenUuid,
       Value<String?>? tissueID,
       Value<String?>? barcodeID,
-      Value<String?>? tertiaryID,
       Value<String?>? type,
       Value<String?>? count,
       Value<String?>? treatment,
@@ -10779,7 +10742,6 @@ class SpecimenPartCompanion extends UpdateCompanion<SpecimenPartData> {
       specimenUuid: specimenUuid ?? this.specimenUuid,
       tissueID: tissueID ?? this.tissueID,
       barcodeID: barcodeID ?? this.barcodeID,
-      tertiaryID: tertiaryID ?? this.tertiaryID,
       type: type ?? this.type,
       count: count ?? this.count,
       treatment: treatment ?? this.treatment,
@@ -10806,9 +10768,6 @@ class SpecimenPartCompanion extends UpdateCompanion<SpecimenPartData> {
     }
     if (barcodeID.present) {
       map['barcodeID'] = Variable<String>(barcodeID.value);
-    }
-    if (tertiaryID.present) {
-      map['tertiaryID'] = Variable<String>(tertiaryID.value);
     }
     if (type.present) {
       map['type'] = Variable<String>(type.value);
@@ -10847,7 +10806,6 @@ class SpecimenPartCompanion extends UpdateCompanion<SpecimenPartData> {
           ..write('specimenUuid: $specimenUuid, ')
           ..write('tissueID: $tissueID, ')
           ..write('barcodeID: $barcodeID, ')
-          ..write('tertiaryID: $tertiaryID, ')
           ..write('type: $type, ')
           ..write('count: $count, ')
           ..write('treatment: $treatment, ')
