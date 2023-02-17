@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/services/database/coordinate_queries.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/site_queries.dart';
 import 'package:drift/drift.dart' as db;
@@ -17,6 +18,17 @@ class SiteServices {
     ));
     invalidateSite();
     return siteID;
+  }
+
+  Future<void> createCoordinate(CoordinateCompanion form) async {
+    final db = ref.read(databaseProvider);
+    await CoordinateQuery(db).createCoordinate(form);
+  }
+
+  Future<void> updateCoordinate(
+      int coordinateId, CoordinateCompanion form) async {
+    final db = ref.read(databaseProvider);
+    await CoordinateQuery(db).updateCoordinate(coordinateId, form);
   }
 
   void updateSite(int id, SiteCompanion entries) {
