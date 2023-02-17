@@ -199,7 +199,7 @@ class SpecimenFormCtrModel {
   SpecimenFormCtrModel({
     required this.taxonDataCtr,
     required this.catalogerCtr,
-    required this.collectorNumberCtr,
+    required this.fieldNumberCtr,
     required this.collEventIDCtr,
     required this.collPersonnelCtr,
     required this.captureMethodCtr,
@@ -219,7 +219,7 @@ class SpecimenFormCtrModel {
   int? collEventIDCtr;
   int? collPersonnelCtr;
   int? captureMethodCtr;
-  TextEditingController collectorNumberCtr;
+  TextEditingController fieldNumberCtr;
   TextEditingController prepDateCtr;
   TextEditingController prepTimeCtr;
   TextEditingController captureDateCtr;
@@ -233,7 +233,7 @@ class SpecimenFormCtrModel {
         collEventIDCtr: null,
         collPersonnelCtr: null,
         captureMethodCtr: null,
-        collectorNumberCtr: TextEditingController(),
+        fieldNumberCtr: TextEditingController(),
         taxonDataCtr: TaxonData(),
         prepDateCtr: TextEditingController(),
         prepTimeCtr: TextEditingController(),
@@ -251,7 +251,7 @@ class SpecimenFormCtrModel {
         collEventIDCtr: specimen.collEventID,
         collPersonnelCtr: specimen.collPersonnelID,
         captureMethodCtr: specimen.collMethodID,
-        collectorNumberCtr:
+        fieldNumberCtr:
             TextEditingController(text: specimen.fieldNumber?.toString() ?? ''),
         taxonDataCtr: taxonData,
         prepDateCtr: TextEditingController(text: specimen.prepDate),
@@ -262,7 +262,7 @@ class SpecimenFormCtrModel {
       );
 
   void dispose() {
-    collectorNumberCtr.dispose();
+    fieldNumberCtr.dispose();
     prepDateCtr.dispose();
     prepTimeCtr.dispose();
     captureDateCtr.dispose();

@@ -182,6 +182,10 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
     );
     return Column(
       children: [
+        SpecimenIdTile(
+          specimenUuid: widget.specimenUuid,
+          specimenCtr: widget.specimenCtr,
+        ),
         DropdownButtonFormField(
           value: widget.specimenCtr.catalogerCtr,
           decoration: const InputDecoration(
@@ -203,8 +207,7 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
                 widget.specimenCtr.catalogerCtr = uuid;
                 widget.specimenCtr.preparatorCtr = uuid;
                 _getCurrentCollectorNumber(uuid);
-                widget.specimenCtr.collectorNumberCtr.text =
-                    fieldNumber.toString();
+                widget.specimenCtr.fieldNumberCtr.text = fieldNumber.toString();
                 if (!hasChanged) {
                   PersonnelServices(ref).updatePersonnelEntry(
                       uuid,
@@ -225,14 +228,6 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
               });
             }
           },
-        ),
-        TextFormField(
-          controller: widget.specimenCtr.collectorNumberCtr,
-          enabled: false,
-          decoration: const InputDecoration(
-            labelText: 'Field Number',
-            hintText: 'Autofill',
-          ),
         ),
         DropdownButtonFormField(
           value: widget.specimenCtr.preparatorCtr,
@@ -265,5 +260,75 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
         .getSpecimenFieldNumber(personnelUuid, widget.specimenUuid);
 
     return fieldNumber;
+  }
+}
+
+class SpecimenIdTile extends ConsumerWidget {
+  const SpecimenIdTile({
+    Key? key,
+    required this.specimenUuid,
+    required this.specimenCtr,
+  }) : super(key: key);
+
+  final SpecimenFormCtrModel specimenCtr;
+  final String specimenUuid;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ListTile(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        side: BorderSide(
+          color: Theme.of(context).colorScheme.onSurface,
+          width: 0.5,
+        ),
+      ),
+      title: Text('Field ID: ${specimenCtr.fieldNumberCtr.text}'),
+      trailing: Visibility(
+          visible: specimenCtr.fieldNumberCtr.text.isNotEmpty,
+          child: IconButton(
+            icon: const Icon(Icons.edit_rounded),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text('Edit field number'),
+                    content: TextFormField(
+                      controller: specimenCtr.fieldNumberCtr,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        labelText: 'Field number',
+                        hintText: 'Enter field number',
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          SpecimenServices(ref).updateSpecimen(
+                            specimenUuid,
+                            SpecimenCompanion(
+                              fieldNumber: db.Value(
+                                int.tryParse(specimenCtr.fieldNumberCtr.text),
+                              ),
+                            ),
+                          );
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Save'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          )),
+    );
   }
 }
