@@ -49,13 +49,20 @@ class CsvFormState extends ConsumerState<CsvForm> {
           children: [
             SecondaryButton(
                 text: 'Share',
-                onPressed: () {
-                  Share.share('Hello World');
+                onPressed: () async {
+                  await _onShare(context);
                 }),
             PrimaryButton(text: 'Save', onPressed: () {}),
           ],
         )
       ],
     );
+  }
+
+  Future<void> _onShare(BuildContext context) async {
+    final box = context.findRenderObject() as RenderBox?;
+    Share.shareXFiles([XFile('$selectedDir/image.txt')],
+        text: 'Share',
+        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
   }
 }
