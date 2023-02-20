@@ -9,10 +9,10 @@ enum CommonPopUpMenuItems { edit, delete }
 enum ExportFormat { excel, csv, tsv, json }
 
 const List<String> exportFormats = [
-  'Excel (.xlsx))',
-  'Comma-separated values (.csv)',
-  'Tab-separated Values (.tsv)',
-  'JSON',
+  'Excel (.xlsx)',
+  'Comma-separated (.csv)',
+  'Tab-separated (.tsv)',
+  'JSON (.json)',
 ];
 
 // Database read through index.

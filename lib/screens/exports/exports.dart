@@ -42,7 +42,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
               DropdownButtonFormField<ExportFormat>(
                 value: exportFormat,
                 decoration: const InputDecoration(
-                  labelText: 'Export format',
+                  labelText: 'Format',
                 ),
                 items: exportFormats
                     .map((e) => DropdownMenuItem(
