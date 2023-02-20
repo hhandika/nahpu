@@ -20,6 +20,14 @@ class SiteServices {
     return siteID;
   }
 
+  Future<SiteData?> getSite(int? id) async {
+    if (id == null) {
+      return null;
+    } else {
+      return SiteQuery(ref.read(databaseProvider)).getSiteById(id);
+    }
+  }
+
   Future<void> createCoordinate(CoordinateCompanion form) async {
     final db = ref.read(databaseProvider);
     await CoordinateQuery(db).createCoordinate(form);

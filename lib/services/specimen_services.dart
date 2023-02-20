@@ -42,6 +42,12 @@ class SpecimenServices {
     return specimenUuid;
   }
 
+  Future<List<SpecimenData>> getSpecimenList() async {
+    String projectUuid = ref.read(projectUuidProvider);
+    final db = ref.read(databaseProvider);
+    return SpecimenQuery(db).getAllSpecimens(projectUuid);
+  }
+
   Future<int> getSpecimenFieldNumber(
       String personnelUuid, String specimenUuid) async {
     String projectUuid = ref.read(projectUuidProvider);

@@ -3,17 +3,26 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:nahpu/services/export_services.dart';
 import 'package:share_plus/share_plus.dart';
 
 class CsvForm extends ConsumerStatefulWidget {
-  const CsvForm({super.key});
+  const CsvForm({super.key, required this.fileName});
 
+  final String fileName;
   @override
   CsvFormState createState() => CsvFormState();
 }
 
 class CsvFormState extends ConsumerState<CsvForm> {
   String selectedDir = '...';
+  String finalPath = '';
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -36,6 +45,7 @@ class CsvFormState extends ConsumerState<CsvForm> {
                   }
                   setState(() {
                     selectedDir = result;
+                    finalPath = '$selectedDir/${widget.fileName}.csv';
                   });
                 }
               },
@@ -52,16 +62,32 @@ class CsvFormState extends ConsumerState<CsvForm> {
                 onPressed: () async {
                   await _onShare(context);
                 }),
-            PrimaryButton(text: 'Save', onPressed: () {}),
+            PrimaryButton(
+                text: 'Save',
+                onPressed: () {
+                  _writeCsv();
+                }),
           ],
         )
       ],
     );
   }
 
+  Future<void> _writeCsv() async {
+    try {
+      await CsvWriter(ref).writeCsv(finalPath);
+    } catch (e) {
+      // show error dialog
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
+
   Future<void> _onShare(BuildContext context) async {
     final box = context.findRenderObject() as RenderBox?;
-    Share.shareXFiles([XFile('$selectedDir/image.txt')],
+    await _writeCsv();
+    Share.shareXFiles([XFile(finalPath)],
         text: 'Share',
         sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
   }

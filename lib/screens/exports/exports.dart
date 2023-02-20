@@ -15,6 +15,12 @@ class ExportForm extends ConsumerStatefulWidget {
 class ExportFormState extends ConsumerState<ExportForm> {
   ExportFormat exportFormat = ExportFormat.excel;
   ExportCtrModel exportCtr = ExportCtrModel.empty();
+  String fileName = 'export';
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -38,6 +44,13 @@ class ExportFormState extends ConsumerState<ExportForm> {
                 labelText: 'File name',
                 hintText: 'Enter file name',
                 isLastField: false,
+                onChanged: (String? value) {
+                  if (value != null) {
+                    setState(() {
+                      fileName = value;
+                    });
+                  }
+                },
               ),
               DropdownButtonFormField<ExportFormat>(
                 value: exportFormat,
@@ -58,7 +71,9 @@ class ExportFormState extends ConsumerState<ExportForm> {
                   }
                 },
               ),
-              const CsvForm(),
+              CsvForm(
+                fileName: fileName,
+              ),
             ],
           ),
         ),
