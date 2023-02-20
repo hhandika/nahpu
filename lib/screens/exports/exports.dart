@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/types.dart';
+import 'package:nahpu/screens/exports/csv.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 
 class ExportForm extends ConsumerStatefulWidget {
   const ExportForm({Key? key}) : super(key: key);
@@ -10,6 +13,15 @@ class ExportForm extends ConsumerStatefulWidget {
 }
 
 class ExportFormState extends ConsumerState<ExportForm> {
+  ExportFormat exportFormat = ExportFormat.excel;
+  ExportCtrModel exportCtr = ExportCtrModel.empty();
+
+  @override
+  void dispose() {
+    exportCtr.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,8 +33,14 @@ class ExportFormState extends ConsumerState<ExportForm> {
           constraints: const BoxConstraints(maxWidth: 600),
           child: ListView(
             children: [
+              CommonTextField(
+                controller: exportCtr.fileNameCtr,
+                labelText: 'File name',
+                hintText: 'Enter file name',
+                isLastField: false,
+              ),
               DropdownButtonFormField<ExportFormat>(
-                value: ExportFormat.csv,
+                value: exportFormat,
                 decoration: const InputDecoration(
                   labelText: 'Export format',
                 ),
@@ -32,8 +50,15 @@ class ExportFormState extends ConsumerState<ExportForm> {
                           child: Text(e),
                         ))
                     .toList(),
-                onChanged: (value) {},
+                onChanged: (ExportFormat? value) {
+                  if (value != null) {
+                    setState(() {
+                      exportFormat = value;
+                    });
+                  }
+                },
               ),
+              const CsvForm(),
             ],
           ),
         ),

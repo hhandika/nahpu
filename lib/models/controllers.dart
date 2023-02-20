@@ -972,3 +972,26 @@ class CollWeatherCtrModel {
     noteCtr.dispose();
   }
 }
+
+class ExportCtrModel {
+  ExportCtrModel({
+    required this.formatCtr,
+    required this.pathCtr,
+    required this.fileNameCtr,
+  });
+
+  TextEditingController formatCtr;
+  TextEditingController pathCtr;
+  TextEditingController fileNameCtr;
+
+  factory ExportCtrModel.empty() => ExportCtrModel(
+      formatCtr: TextEditingController(),
+      pathCtr: TextEditingController(),
+      fileNameCtr: TextEditingController());
+
+  void dispose() {
+    formatCtr.dispose();
+    pathCtr.dispose();
+    fileNameCtr.dispose();
+  }
+}
