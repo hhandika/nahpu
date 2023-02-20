@@ -337,14 +337,22 @@ class SpecimenIdTile extends ConsumerWidget {
                       ),
                       TextButton(
                         onPressed: () {
+                          int fieldNumber =
+                              int.tryParse(specimenCtr.fieldNumberCtr.text) ??
+                                  0;
                           SpecimenServices(ref).updateSpecimen(
                             specimenUuid,
                             SpecimenCompanion(
                               fieldNumber: db.Value(
-                                int.tryParse(specimenCtr.fieldNumberCtr.text),
+                                fieldNumber,
                               ),
                             ),
                           );
+                          PersonnelServices(ref).updatePersonnelEntry(
+                              specimenUuid,
+                              PersonnelCompanion(
+                                  currentFieldNumber:
+                                      db.Value(fieldNumber + 1)));
                           Navigator.pop(context);
                         },
                         child: const Text('Save'),
