@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/services/export_services.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 class CsvForm extends ConsumerStatefulWidget {
@@ -15,7 +18,7 @@ class CsvForm extends ConsumerStatefulWidget {
 }
 
 class CsvFormState extends ConsumerState<CsvForm> {
-  String selectedDir = '...';
+  String selectedDir = '';
   String finalPath = '';
 
   @override
@@ -66,6 +69,11 @@ class CsvFormState extends ConsumerState<CsvForm> {
                 text: 'Save',
                 onPressed: () {
                   _writeCsv();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('File saved as $finalPath'),
+                    ),
+                  );
                 }),
           ],
         )
@@ -76,11 +84,18 @@ class CsvFormState extends ConsumerState<CsvForm> {
   Future<void> _writeCsv() async {
     try {
       await CsvWriter(ref).writeCsv(finalPath);
+    } on PathNotFoundException {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please select a directory'),
+        ),
+      );
     } catch (e) {
-      // show error dialog
-      if (kDebugMode) {
-        print(e);
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Something went wrong: $e'),
+        ),
+      );
     }
   }
 
