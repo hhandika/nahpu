@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/site_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
 
 const String endLine = '\n';
@@ -17,23 +19,46 @@ class CsvWriter {
     File file = File(filePath);
     IOSink writer = file.openWrite();
     for (var element in specimenList) {
-      // CollEventData? collEventData =
-      //     await CollEventServices(ref).getCollEvent(element.collEventID);
-      // SiteData? siteData =
-      //     await SiteServices(ref).getSite(collEventData.siteID);
-      String line = writeLine(element);
-
+      String siteRecords = ',,,'
+          ',,,'
+          ',,,'
+          ',';
+      String collRecords = writeCollectingRecords(element);
+      CollEventData? collEventData =
+          await CollEventServices(ref).getCollEvent(element.collEventID);
+      if (collEventData != null) {
+        SiteData? siteData =
+            await SiteServices(ref).getSite(collEventData.siteID);
+        if (siteData != null) {
+          String records = writeSite(siteData);
+          if (records.isNotEmpty) {
+            siteRecords = records;
+          }
+        }
+      }
+      String line = '$siteRecords$collRecords';
       writer.write('$line$endLine');
     }
     writer.close();
   }
 
-  String writeLine(SpecimenData specimenData) {
+  String writeCollectingRecords(SpecimenData specimenData) {
     String collectingRecord =
-        '${specimenData.projectUuid},${specimenData.catalogerID},${specimenData.fieldNumber}';
-    String measurement =
-        '${specimenData.speciesID},${specimenData.captureDate}';
-    String line = '$collectingRecord,$measurement';
-    return line;
+        '${specimenData.projectUuid},${specimenData.catalogerID},${specimenData.fieldNumber},'
+        '${specimenData.condition},${specimenData.prepDate},${specimenData.prepTime},'
+        '${specimenData.captureDate},${specimenData.captureTime},${specimenData.trapType},'
+        '${specimenData.collEventID},${specimenData.collPersonnelID},${specimenData.taxonGroup},';
+
+    return collectingRecord;
+  }
+
+  String writeSite(SiteData siteData) {
+    String siteRecords =
+        '${siteData.siteID},${siteData.leadStaffId},${siteData.country},'
+        '${siteData.stateProvince},${siteData.county},${siteData.municipality},'
+        '${siteData.locality},${siteData.remark},${siteData.habitatType},'
+        '${siteData.habitatCondition},${siteData.habitatDescription}';
+
+    return siteRecords;
   }
 }
