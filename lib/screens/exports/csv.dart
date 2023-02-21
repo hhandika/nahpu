@@ -50,7 +50,7 @@ class CsvFormState extends ConsumerState<CsvForm> {
                     selectedDir = result;
                     String path = '$selectedDir/${widget.fileName}.csv';
                     if (widget.isDb) {
-                      finalPath = '$selectedDir/${widget.fileName}.db';
+                      finalPath = '$selectedDir/${widget.fileName}.sqlite3';
                     } else {
                       finalPath = '$selectedDir/${widget.fileName}.csv';
                     }

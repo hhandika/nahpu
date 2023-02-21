@@ -12,7 +12,7 @@ const List<String> exportFormats = [
   'Excel (.xlsx)',
   'Comma-separated (.csv)',
   'Tab-separated (.tsv)',
-  'Database (.db)',
+  'Database (.sqlite3)',
   'JSON (.json)',
 ];
 
