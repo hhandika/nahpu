@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/services/export_services.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 class CsvForm extends ConsumerStatefulWidget {
-  const CsvForm({super.key, required this.fileName});
+  const CsvForm({super.key, required this.fileName, required this.isDb});
 
   final String fileName;
+  final bool isDb;
   @override
   CsvFormState createState() => CsvFormState();
 }
@@ -48,7 +48,12 @@ class CsvFormState extends ConsumerState<CsvForm> {
                   }
                   setState(() {
                     selectedDir = result;
-                    finalPath = '$selectedDir/${widget.fileName}.csv';
+                    String path = '$selectedDir/${widget.fileName}.csv';
+                    if (widget.isDb) {
+                      finalPath = '$selectedDir/${widget.fileName}.db';
+                    } else {
+                      finalPath = '$selectedDir/${widget.fileName}.csv';
+                    }
                   });
                 }
               },
@@ -68,7 +73,7 @@ class CsvFormState extends ConsumerState<CsvForm> {
             PrimaryButton(
                 text: 'Save',
                 onPressed: () {
-                  _writeCsv();
+                  widget.isDb ? _writeDb() : _writeCsv();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('File saved as $finalPath'),
@@ -79,6 +84,24 @@ class CsvFormState extends ConsumerState<CsvForm> {
         )
       ],
     );
+  }
+
+  Future<void> _writeDb() async {
+    try {
+      await DbWriter(ref).writeDb(finalPath);
+    } on PathNotFoundException {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please select a directory'),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Something went wrong: $e'),
+        ),
+      );
+    }
   }
 
   Future<void> _writeCsv() async {
