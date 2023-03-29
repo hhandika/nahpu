@@ -1,11 +1,7 @@
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
-import 'package:nahpu/services/collevent_services.dart';
-import 'package:nahpu/services/database/database.dart';
-import 'package:nahpu/services/site_services.dart';
-import 'package:nahpu/services/specimen_services.dart';
-import 'package:nahpu/services/exports/common.dart';
+import 'package:nahpu/services/exports/report_writer.dart';
 
 class DbWriter {
   DbWriter(this.ref);
@@ -26,39 +22,40 @@ class CsvWriter {
   final WidgetRef ref;
 
   Future<void> writeCsv(String filePath) async {
-    List<SpecimenData> specimenList =
-        await SpecimenServices(ref).getSpecimenList();
+    SpeciesListWriter(ref).writeSpeciesList(filePath);
+    // List<SpecimenData> specimenList =
+    //     await SpecimenServices(ref).getSpecimenList();
 
-    File file = File(filePath);
-    IOSink writer = file.openWrite();
+    // File file = File(filePath);
+    // IOSink writer = file.openWrite();
+    // // for (var element in specimenList) {
+    // //   String siteRecords = ',,,'
+    // //       ',,,'
+    // //       ',,,'
+    // //       ',';
+    // //   String collRecords = writeCollectingRecords(element);
+    // //   CollEventData? collEventData =
+    // //       await CollEventServices(ref).getCollEvent(element.collEventID);
+    // //   if (collEventData != null) {
+    // //     SiteData? siteData =
+    // //         await SiteServices(ref).getSite(collEventData.siteID);
+    // //     if (siteData != null) {
+    // //       String records = writeSite(siteData);
+    // //       if (records.isNotEmpty) {
+    // //         siteRecords = records;
+    // //       }
+    // //     }
+    // //   }
+    // //   String line = '$siteRecords$collRecords';
+    // //   writer.write('$line$endLine');
+    // // }
+
     // for (var element in specimenList) {
-    //   String siteRecords = ',,,'
-    //       ',,,'
-    //       ',,,'
-    //       ',';
-    //   String collRecords = writeCollectingRecords(element);
-    //   CollEventData? collEventData =
-    //       await CollEventServices(ref).getCollEvent(element.collEventID);
-    //   if (collEventData != null) {
-    //     SiteData? siteData =
-    //         await SiteServices(ref).getSite(collEventData.siteID);
-    //     if (siteData != null) {
-    //       String records = writeSite(siteData);
-    //       if (records.isNotEmpty) {
-    //         siteRecords = records;
-    //       }
-    //     }
-    //   }
-    //   String line = '$siteRecords$collRecords';
+    //   String line = '${element.speciesID}';
     //   writer.write('$line$endLine');
     // }
 
-    for (var element in specimenList) {
-      String line = '${element.speciesID}';
-      writer.write('$line$endLine');
-    }
-
-    writer.close();
+    // writer.close();
   }
 
   // String writeCollectingRecords(SpecimenData specimenData) {
