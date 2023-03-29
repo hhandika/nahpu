@@ -28,9 +28,5 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>UILaunchStoryboardName</key>
-	<string>MainMenu.xib</string>
-	<key>LSApplicationCategoryType</key>
-	<string>public.app-category.education</string>
 </dict>
 </plist>

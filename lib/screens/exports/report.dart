@@ -5,15 +5,15 @@ import 'package:nahpu/models/types.dart';
 import 'package:nahpu/screens/exports/csv_export.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 
-class ExportForm extends ConsumerStatefulWidget {
-  const ExportForm({Key? key}) : super(key: key);
+class ReportForm extends ConsumerStatefulWidget {
+  const ReportForm({Key? key}) : super(key: key);
 
   @override
-  ExportFormState createState() => ExportFormState();
+  ReportFormState createState() => ReportFormState();
 }
 
-class ExportFormState extends ConsumerState<ExportForm> {
-  ExportFormat exportFormat = ExportFormat.excel;
+class ReportFormState extends ConsumerState<ReportForm> {
+  ExportFormat exportFormat = ExportFormat.csv;
   ExportCtrModel exportCtr = ExportCtrModel.empty();
   String fileName = 'export';
 
@@ -32,7 +32,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Export to ...'),
+        title: const Text('Create a report'),
       ),
       body: Center(
         child: ConstrainedBox(
@@ -48,25 +48,6 @@ class ExportFormState extends ConsumerState<ExportForm> {
                   if (value != null) {
                     setState(() {
                       fileName = value;
-                    });
-                  }
-                },
-              ),
-              DropdownButtonFormField<ExportFormat>(
-                value: exportFormat,
-                decoration: const InputDecoration(
-                  labelText: 'Format',
-                ),
-                items: exportFormats
-                    .map((e) => DropdownMenuItem(
-                          value: ExportFormat.values[exportFormats.indexOf(e)],
-                          child: Text(e),
-                        ))
-                    .toList(),
-                onChanged: (ExportFormat? value) {
-                  if (value != null) {
-                    setState(() {
-                      exportFormat = value;
                     });
                   }
                 },
