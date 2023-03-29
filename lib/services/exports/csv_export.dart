@@ -5,8 +5,7 @@ import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/site_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
-
-const String endLine = '\n';
+import 'package:nahpu/services/exports/common.dart';
 
 class DbWriter {
   DbWriter(this.ref);
@@ -53,6 +52,7 @@ class CsvWriter {
       String line = '$siteRecords$collRecords';
       writer.write('$line$endLine');
     }
+
     writer.close();
   }
 
