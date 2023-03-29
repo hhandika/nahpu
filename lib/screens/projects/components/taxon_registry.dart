@@ -133,18 +133,33 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
                             _ctr.taxonClassCtr.text = value ?? '';
                           }),
                       TextFormField(
-                        controller: _ctr.taxonOrderCtr,
-                        decoration: const InputDecoration(
-                          labelText: 'Order',
-                          hintText: 'Enter an order',
-                        ),
-                      ),
+                          controller: _ctr.taxonOrderCtr,
+                          decoration: const InputDecoration(
+                            labelText: 'Order',
+                            hintText: 'Enter an order',
+                          ),
+                          onChanged: (String? value) {
+                            if (value != null) {
+                              _ctr.taxonOrderCtr.value = TextEditingValue(
+                                text: value.toSentenceCase(),
+                                selection: _ctr.taxonOrderCtr.selection,
+                              );
+                            }
+                          }),
                       TextFormField(
                         controller: _ctr.taxonFamilyCtr,
                         decoration: const InputDecoration(
                           labelText: 'Family',
                           hintText: 'Enter a family',
                         ),
+                        onChanged: (String? value) {
+                          if (value != null) {
+                            _ctr.taxonFamilyCtr.value = TextEditingValue(
+                              text: value.toSentenceCase(),
+                              selection: _ctr.taxonFamilyCtr.selection,
+                            );
+                          }
+                        },
                       ),
                       TextFormField(
                         controller: _ctr.genusCtr,
@@ -152,6 +167,14 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
                           labelText: 'Genus',
                           hintText: 'Enter a genus',
                         ),
+                        onChanged: (String? value) {
+                          if (value != null) {
+                            _ctr.genusCtr.value = TextEditingValue(
+                              text: value.toSentenceCase(),
+                              selection: _ctr.genusCtr.selection,
+                            );
+                          }
+                        },
                       ),
                       TextFormField(
                         controller: _ctr.specificEpithetCtr,
@@ -159,6 +182,14 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
                           labelText: 'Specific epithet',
                           hintText: 'Enter specific epithet',
                         ),
+                        onChanged: (String? value) {
+                          if (value != null) {
+                            _ctr.specificEpithetCtr.value = TextEditingValue(
+                              text: value.toLowerCase(),
+                              selection: _ctr.specificEpithetCtr.selection,
+                            );
+                          }
+                        },
                       ),
                       TextFormField(
                         controller: _ctr.commonNameCtr,
@@ -166,6 +197,14 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
                           labelText: 'Common name',
                           hintText: 'Enter a common name',
                         ),
+                        onChanged: (String? value) {
+                          if (value != null) {
+                            _ctr.commonNameCtr.value = TextEditingValue(
+                              text: value.toSentenceCase(),
+                              selection: _ctr.commonNameCtr.selection,
+                            );
+                          }
+                        },
                       ),
                       TextFormField(
                         controller: _ctr.noteCtr,

@@ -12,12 +12,12 @@ import 'package:nahpu/screens/specimens/shared/specimen_parts.dart';
 import 'package:nahpu/screens/specimens/shared/taxa.dart';
 
 class MammalForms extends ConsumerStatefulWidget {
-  const MammalForms(
-      {Key? key,
-      required this.specimenUuid,
-      required this.specimenCtr,
-      this.isBats = false})
-      : super(key: key);
+  const MammalForms({
+    super.key,
+    required this.specimenUuid,
+    required this.specimenCtr,
+    this.isBats = false,
+  });
 
   final String specimenUuid;
   final SpecimenFormCtrModel specimenCtr;
@@ -57,7 +57,7 @@ class MammalFormsState extends ConsumerState<MammalForms> {
                     children: [
                       TaxonomicForm(
                         useHorizontalLayout: useHorizontalLayout,
-                        taxonData: widget.specimenCtr.taxonDataCtr,
+                        specimenUuid: widget.specimenUuid,
                       ),
                       CaptureRecordFields(
                         specimenUuid: widget.specimenUuid,
@@ -77,7 +77,7 @@ class MammalFormsState extends ConsumerState<MammalForms> {
                     isBats: widget.isBats,
                   ),
                   PartDataForm(
-                    specimenCtr: widget.specimenCtr,
+                    specimenUuid: widget.specimenUuid,
                     catalogFmt: CatalogFmt.generalMammals,
                   ),
                 ],

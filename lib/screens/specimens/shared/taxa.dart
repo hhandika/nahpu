@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:nahpu/models/controllers.dart';
+import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/models/types.dart';
@@ -54,34 +56,79 @@ class SpeciesAutoComplete extends ConsumerWidget {
   }
 }
 
-class TaxonomicForm extends ConsumerWidget {
-  const TaxonomicForm(
-      {Key? key, required this.useHorizontalLayout, required this.taxonData})
-      : super(key: key);
+class TaxonDropdownMenu extends ConsumerWidget {
+  const TaxonDropdownMenu({
+    super.key,
+    required this.onSelected,
+    required this.controller,
+  });
 
-  final bool useHorizontalLayout;
-  final TaxonData? taxonData;
+  final void Function(int?) onSelected;
+  final SpecimenFormCtrModel controller;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<String> terms = ['Class', 'Order', 'Family'];
-    List<String> taxonomy = [
-      taxonData?.taxonClass ?? '',
-      taxonData?.taxonOrder ?? '',
-      taxonData?.taxonFamily ?? '',
-    ];
+    return DropdownButtonFormField<int?>(
+      value: controller.speciesCtr,
+      decoration: const InputDecoration(
+        labelText: 'Taxon',
+        hintText: 'Choose a taxon',
+      ),
+      items: ref.watch(taxonProvider).when(
+            data: (taxa) {
+              if (taxa.isEmpty) {
+                return const [];
+              } else {
+                return taxa
+                    .map(
+                      (taxon) => DropdownMenuItem<int>(
+                        value: taxon.id,
+                        child: Text('${taxon.genus} ${taxon.specificEpithet}'),
+                      ),
+                    )
+                    .toList();
+              }
+            },
+            loading: () => const [],
+            error: (error, stack) => const [],
+          ),
+      onChanged: onSelected,
+    );
+  }
+}
+
+class TaxonomicForm extends ConsumerWidget {
+  const TaxonomicForm({
+    super.key,
+    required this.useHorizontalLayout,
+    required this.specimenUuid,
+  });
+
+  final bool useHorizontalLayout;
+  final String specimenUuid;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     return FormCard(
       title: 'Taxonomy',
-      child: AdaptiveLayout(
-        useHorizontalLayout: useHorizontalLayout,
-        children: [
-          for (var i = 0; i < terms.length; i++)
-            ListTile(
-              title: Text(terms[i]),
-              subtitle: Text(taxonomy[i]),
-            ),
-        ],
-      ),
+      child: ref.watch(taxonDataProvider(specimenUuid)).when(
+            data: (taxonData) {
+              if (taxonData == null) {
+                return const Text('No species added!');
+              } else {
+                return AdaptiveLayout(
+                  useHorizontalLayout: useHorizontalLayout,
+                  children: [
+                    Text('Class: ${taxonData.taxonClass}'),
+                    Text('Order: ${taxonData.taxonOrder}'),
+                    Text('Family: ${taxonData.taxonFamily}'),
+                  ],
+                );
+              }
+            },
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (error, stack) => Text('Error: $error'),
+          ),
     );
   }
 }

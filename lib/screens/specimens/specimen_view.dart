@@ -5,9 +5,8 @@ import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/providers/projects.dart';
-import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/common.dart';
-import 'package:nahpu/screens/shared/navbar.dart';
+import 'package:nahpu/screens/shared/navigation.dart';
 import 'package:nahpu/screens/specimens/new_specimens.dart';
 import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
 import 'package:nahpu/screens/specimens/specimen_form.dart';
@@ -65,7 +64,7 @@ class SpecimensState extends ConsumerState<Specimens> {
                       // We want to view the last page first.
                       // Dart uses 0-based indexing. Technically, this is out-of-bound.
                       // But, what happens here is that it will trigger the PageView onPageChanged.
-                      // It fixes the issues that the curentPage state does not show the current page value.
+                      // It fixes the issues that the currentPage state does not show the current page value.
                       pageController =
                           PageController(initialPage: specimenSize);
                     });

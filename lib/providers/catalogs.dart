@@ -85,3 +85,34 @@ final personnelNameProvider =
       PersonnelQuery(ref.read(databaseProvider)).getPersonnelByUuid(uuid);
   return person;
 });
+
+final taxonDataProvider = FutureProvider.family
+    .autoDispose<TaxonomyData?, String>((ref, specimenUuid) async {
+  int? taxonId = await SpecimenQuery(ref.read(databaseProvider))
+      .getSpecimenByUuid(specimenUuid);
+
+  if (taxonId != null) {
+    final taxonData =
+        TaxonomyQuery(ref.read(databaseProvider)).getTaxonById(taxonId);
+    return taxonData;
+  } else {
+    return null;
+  }
+});
+
+final partBySpecimenProvider = FutureProvider.family
+    .autoDispose<List<SpecimenPartData>, String>((ref, specimenUuid) =>
+        SpecimenPartQuery(ref.read(databaseProvider))
+            .getSpecimenParts(specimenUuid));
+
+final personnelInitialProvider =
+    FutureProvider.family.autoDispose<String?, String>((ref, uuid) async {
+  final personInitial =
+      PersonnelQuery(ref.read(databaseProvider)).getInitial(uuid);
+  return personInitial;
+});
+
+final taxonProvider = FutureProvider.autoDispose<List<TaxonomyData>>((ref) {
+  final taxonList = TaxonomyQuery(ref.read(databaseProvider)).getTaxonList();
+  return taxonList;
+});

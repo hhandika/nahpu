@@ -7,9 +7,8 @@ import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/collecting/coll_event_form.dart';
 import 'package:nahpu/screens/collecting/components/menu_bar.dart';
-import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/common.dart';
-import 'package:nahpu/screens/shared/navbar.dart';
+import 'package:nahpu/screens/shared/navigation.dart';
 
 class CollEvents extends ConsumerStatefulWidget {
   const CollEvents({Key? key}) : super(key: key);

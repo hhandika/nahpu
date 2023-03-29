@@ -4,6 +4,7 @@ import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/database/personnel_queries.dart';
 import 'package:nahpu/services/database/specimen_queries.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/project_services.dart';
@@ -22,6 +23,7 @@ class SpecimenServices {
       projectUuid: db.Value(projectUuid),
       taxonGroup: db.Value(matchCatFmtToTaxonGroup(catalogFmt)),
     ));
+
     switch (catalogFmt) {
       case CatalogFmt.birds:
         _createBirdSpecimen(specimenUuid);
@@ -36,8 +38,47 @@ class SpecimenServices {
         _createMammalSpecimen(specimenUuid);
         break;
     }
-    ref.invalidate(specimenEntryProvider);
+    _invalidateSpecimenList();
     return specimenUuid;
+  }
+
+  Future<List<SpecimenData>> getSpecimenList() async {
+    String projectUuid = ref.read(projectUuidProvider);
+    final db = ref.read(databaseProvider);
+    return SpecimenQuery(db).getAllSpecimens(projectUuid);
+  }
+
+  Future<int> getSpecimenFieldNumber(
+      String personnelUuid, String specimenUuid) async {
+    String projectUuid = ref.read(projectUuidProvider);
+    final db = ref.read(databaseProvider);
+    SpecimenData? specimenData = await SpecimenQuery(db)
+        .getLastCatFieldNumber(projectUuid, specimenUuid, personnelUuid);
+
+    ref.invalidate(personnelListProvider);
+    if (specimenData == null) {
+      try {
+        int? fieldNumber =
+            await PersonnelQuery(db).getCurrentFieldNumberByUuid(personnelUuid);
+        return _getCurrentFieldNumber(fieldNumber);
+      } catch (e) {
+        return 0;
+      }
+    } else {
+      return _getFieldNumber(specimenData.fieldNumber!);
+    }
+  }
+
+  int _getCurrentFieldNumber(int? currentFieldNum) {
+    if (currentFieldNum == null) {
+      return 0;
+    } else {
+      return currentFieldNum;
+    }
+  }
+
+  int _getFieldNumber(int lastFieldNumber) {
+    return lastFieldNumber + 1;
   }
 
   void _createMammalSpecimen(String specimenUuid) {
@@ -64,6 +105,7 @@ class SpecimenServices {
   void updateSpecimen(String uuid, SpecimenCompanion entries) {
     SpecimenQuery(ref.read(databaseProvider))
         .updateSpecimenEntry(uuid, entries);
+    ref.invalidate(taxonDataProvider);
   }
 
   Future<BirdMeasurementData> getBirdMeasurementData(String specimenUuid) {
@@ -75,5 +117,28 @@ class SpecimenServices {
       String specimenUuid, BirdMeasurementCompanion entries) {
     BirdSpecimenQuery(ref.read(databaseProvider))
         .updateBirdMeasurements(specimenUuid, entries);
+  }
+
+  Future<void> createSpecimenPart(SpecimenPartCompanion form) async {
+    SpecimenPartQuery(ref.read(databaseProvider)).createSpecimenPart(form);
+    ref.invalidate(partBySpecimenProvider);
+  }
+
+  Future<void> updateSpecimenPart(
+      int partId, SpecimenPartCompanion form) async {
+    SpecimenPartQuery(ref.read(databaseProvider))
+        .updateSpecimenPart(partId, form);
+    ref.invalidate(partBySpecimenProvider);
+  }
+
+  void deleteSpecimenPart(int partId) {
+    SpecimenPartQuery(ref.read(databaseProvider)).deleteSpecimenPart(partId);
+    ref.invalidate(partBySpecimenProvider);
+  }
+
+  void _invalidateSpecimenList() {
+    ref.invalidate(specimenEntryProvider);
+    ref.invalidate(taxonDataProvider);
+    ref.invalidate(personnelListProvider);
   }
 }

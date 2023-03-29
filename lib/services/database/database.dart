@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/foundation.dart';
@@ -59,6 +58,16 @@ class Database extends _$Database {
 
   Future<void> updateProjectEntry(String uuid, ProjectCompanion entry) {
     return (update(project)..where((t) => t.uuid.equals(uuid))).write(entry);
+  }
+
+  Future<void> exportInto(File file) async {
+    await file.parent.create(recursive: true);
+
+    if (file.existsSync()) {
+      file.deleteSync();
+    }
+
+    await customStatement('VACUUM INTO ?', [file.path]);
   }
 }
 

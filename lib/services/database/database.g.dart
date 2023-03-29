@@ -6603,6 +6603,13 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _isRelativeTimeMeta =
+      const VerificationMeta('isRelativeTime');
+  late final GeneratedColumn<int> isRelativeTime = GeneratedColumn<int>(
+      'isRelativeTime', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _captureTimeMeta =
       const VerificationMeta('captureTime');
   late final GeneratedColumn<String> captureTime = GeneratedColumn<String>(
@@ -6638,6 +6645,13 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _isMultipleCollectorMeta =
+      const VerificationMeta('isMultipleCollector');
+  late final GeneratedColumn<int> isMultipleCollector = GeneratedColumn<int>(
+      'isMultipleCollector', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _collPersonnelIDMeta =
       const VerificationMeta('collPersonnelID');
   late final GeneratedColumn<int> collPersonnelID = GeneratedColumn<int>(
@@ -6669,11 +6683,13 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
         prepDate,
         prepTime,
         captureDate,
+        isRelativeTime,
         captureTime,
         trapType,
         catalogerID,
         fieldNumber,
         collEventID,
+        isMultipleCollector,
         collPersonnelID,
         collMethodID,
         preparatorID
@@ -6727,6 +6743,12 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
           captureDate.isAcceptableOrUnknown(
               data['captureDate']!, _captureDateMeta));
     }
+    if (data.containsKey('isRelativeTime')) {
+      context.handle(
+          _isRelativeTimeMeta,
+          isRelativeTime.isAcceptableOrUnknown(
+              data['isRelativeTime']!, _isRelativeTimeMeta));
+    }
     if (data.containsKey('captureTime')) {
       context.handle(
           _captureTimeMeta,
@@ -6754,6 +6776,12 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
           _collEventIDMeta,
           collEventID.isAcceptableOrUnknown(
               data['collEventID']!, _collEventIDMeta));
+    }
+    if (data.containsKey('isMultipleCollector')) {
+      context.handle(
+          _isMultipleCollectorMeta,
+          isMultipleCollector.isAcceptableOrUnknown(
+              data['isMultipleCollector']!, _isMultipleCollectorMeta));
     }
     if (data.containsKey('collPersonnelID')) {
       context.handle(
@@ -6798,6 +6826,8 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
           .read(DriftSqlType.string, data['${effectivePrefix}prepTime']),
       captureDate: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}captureDate']),
+      isRelativeTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}isRelativeTime']),
       captureTime: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}captureTime']),
       trapType: attachedDatabase.typeMapping
@@ -6808,6 +6838,8 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
           .read(DriftSqlType.int, data['${effectivePrefix}fieldNumber']),
       collEventID: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}collEventID']),
+      isMultipleCollector: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}isMultipleCollector']),
       collPersonnelID: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}collPersonnelID']),
       collMethodID: attachedDatabase.typeMapping
@@ -6844,11 +6876,13 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
   final String? prepDate;
   final String? prepTime;
   final String? captureDate;
+  final int? isRelativeTime;
   final String? captureTime;
   final String? trapType;
   final String? catalogerID;
   final int? fieldNumber;
   final int? collEventID;
+  final int? isMultipleCollector;
   final int? collPersonnelID;
   final int? collMethodID;
   final String? preparatorID;
@@ -6861,11 +6895,13 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       this.prepDate,
       this.prepTime,
       this.captureDate,
+      this.isRelativeTime,
       this.captureTime,
       this.trapType,
       this.catalogerID,
       this.fieldNumber,
       this.collEventID,
+      this.isMultipleCollector,
       this.collPersonnelID,
       this.collMethodID,
       this.preparatorID});
@@ -6894,6 +6930,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
     if (!nullToAbsent || captureDate != null) {
       map['captureDate'] = Variable<String>(captureDate);
     }
+    if (!nullToAbsent || isRelativeTime != null) {
+      map['isRelativeTime'] = Variable<int>(isRelativeTime);
+    }
     if (!nullToAbsent || captureTime != null) {
       map['captureTime'] = Variable<String>(captureTime);
     }
@@ -6908,6 +6947,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
     }
     if (!nullToAbsent || collEventID != null) {
       map['collEventID'] = Variable<int>(collEventID);
+    }
+    if (!nullToAbsent || isMultipleCollector != null) {
+      map['isMultipleCollector'] = Variable<int>(isMultipleCollector);
     }
     if (!nullToAbsent || collPersonnelID != null) {
       map['collPersonnelID'] = Variable<int>(collPersonnelID);
@@ -6945,6 +6987,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       captureDate: captureDate == null && nullToAbsent
           ? const Value.absent()
           : Value(captureDate),
+      isRelativeTime: isRelativeTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isRelativeTime),
       captureTime: captureTime == null && nullToAbsent
           ? const Value.absent()
           : Value(captureTime),
@@ -6960,6 +7005,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       collEventID: collEventID == null && nullToAbsent
           ? const Value.absent()
           : Value(collEventID),
+      isMultipleCollector: isMultipleCollector == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isMultipleCollector),
       collPersonnelID: collPersonnelID == null && nullToAbsent
           ? const Value.absent()
           : Value(collPersonnelID),
@@ -6984,11 +7032,14 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       prepDate: serializer.fromJson<String?>(json['prepDate']),
       prepTime: serializer.fromJson<String?>(json['prepTime']),
       captureDate: serializer.fromJson<String?>(json['captureDate']),
+      isRelativeTime: serializer.fromJson<int?>(json['isRelativeTime']),
       captureTime: serializer.fromJson<String?>(json['captureTime']),
       trapType: serializer.fromJson<String?>(json['trapType']),
       catalogerID: serializer.fromJson<String?>(json['catalogerID']),
       fieldNumber: serializer.fromJson<int?>(json['fieldNumber']),
       collEventID: serializer.fromJson<int?>(json['collEventID']),
+      isMultipleCollector:
+          serializer.fromJson<int?>(json['isMultipleCollector']),
       collPersonnelID: serializer.fromJson<int?>(json['collPersonnelID']),
       collMethodID: serializer.fromJson<int?>(json['collMethodID']),
       preparatorID: serializer.fromJson<String?>(json['preparatorID']),
@@ -7006,11 +7057,13 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       'prepDate': serializer.toJson<String?>(prepDate),
       'prepTime': serializer.toJson<String?>(prepTime),
       'captureDate': serializer.toJson<String?>(captureDate),
+      'isRelativeTime': serializer.toJson<int?>(isRelativeTime),
       'captureTime': serializer.toJson<String?>(captureTime),
       'trapType': serializer.toJson<String?>(trapType),
       'catalogerID': serializer.toJson<String?>(catalogerID),
       'fieldNumber': serializer.toJson<int?>(fieldNumber),
       'collEventID': serializer.toJson<int?>(collEventID),
+      'isMultipleCollector': serializer.toJson<int?>(isMultipleCollector),
       'collPersonnelID': serializer.toJson<int?>(collPersonnelID),
       'collMethodID': serializer.toJson<int?>(collMethodID),
       'preparatorID': serializer.toJson<String?>(preparatorID),
@@ -7026,11 +7079,13 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           Value<String?> prepDate = const Value.absent(),
           Value<String?> prepTime = const Value.absent(),
           Value<String?> captureDate = const Value.absent(),
+          Value<int?> isRelativeTime = const Value.absent(),
           Value<String?> captureTime = const Value.absent(),
           Value<String?> trapType = const Value.absent(),
           Value<String?> catalogerID = const Value.absent(),
           Value<int?> fieldNumber = const Value.absent(),
           Value<int?> collEventID = const Value.absent(),
+          Value<int?> isMultipleCollector = const Value.absent(),
           Value<int?> collPersonnelID = const Value.absent(),
           Value<int?> collMethodID = const Value.absent(),
           Value<String?> preparatorID = const Value.absent()}) =>
@@ -7043,11 +7098,16 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
         prepDate: prepDate.present ? prepDate.value : this.prepDate,
         prepTime: prepTime.present ? prepTime.value : this.prepTime,
         captureDate: captureDate.present ? captureDate.value : this.captureDate,
+        isRelativeTime:
+            isRelativeTime.present ? isRelativeTime.value : this.isRelativeTime,
         captureTime: captureTime.present ? captureTime.value : this.captureTime,
         trapType: trapType.present ? trapType.value : this.trapType,
         catalogerID: catalogerID.present ? catalogerID.value : this.catalogerID,
         fieldNumber: fieldNumber.present ? fieldNumber.value : this.fieldNumber,
         collEventID: collEventID.present ? collEventID.value : this.collEventID,
+        isMultipleCollector: isMultipleCollector.present
+            ? isMultipleCollector.value
+            : this.isMultipleCollector,
         collPersonnelID: collPersonnelID.present
             ? collPersonnelID.value
             : this.collPersonnelID,
@@ -7067,11 +7127,13 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           ..write('prepDate: $prepDate, ')
           ..write('prepTime: $prepTime, ')
           ..write('captureDate: $captureDate, ')
+          ..write('isRelativeTime: $isRelativeTime, ')
           ..write('captureTime: $captureTime, ')
           ..write('trapType: $trapType, ')
           ..write('catalogerID: $catalogerID, ')
           ..write('fieldNumber: $fieldNumber, ')
           ..write('collEventID: $collEventID, ')
+          ..write('isMultipleCollector: $isMultipleCollector, ')
           ..write('collPersonnelID: $collPersonnelID, ')
           ..write('collMethodID: $collMethodID, ')
           ..write('preparatorID: $preparatorID')
@@ -7089,11 +7151,13 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       prepDate,
       prepTime,
       captureDate,
+      isRelativeTime,
       captureTime,
       trapType,
       catalogerID,
       fieldNumber,
       collEventID,
+      isMultipleCollector,
       collPersonnelID,
       collMethodID,
       preparatorID);
@@ -7109,11 +7173,13 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           other.prepDate == this.prepDate &&
           other.prepTime == this.prepTime &&
           other.captureDate == this.captureDate &&
+          other.isRelativeTime == this.isRelativeTime &&
           other.captureTime == this.captureTime &&
           other.trapType == this.trapType &&
           other.catalogerID == this.catalogerID &&
           other.fieldNumber == this.fieldNumber &&
           other.collEventID == this.collEventID &&
+          other.isMultipleCollector == this.isMultipleCollector &&
           other.collPersonnelID == this.collPersonnelID &&
           other.collMethodID == this.collMethodID &&
           other.preparatorID == this.preparatorID);
@@ -7128,11 +7194,13 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
   final Value<String?> prepDate;
   final Value<String?> prepTime;
   final Value<String?> captureDate;
+  final Value<int?> isRelativeTime;
   final Value<String?> captureTime;
   final Value<String?> trapType;
   final Value<String?> catalogerID;
   final Value<int?> fieldNumber;
   final Value<int?> collEventID;
+  final Value<int?> isMultipleCollector;
   final Value<int?> collPersonnelID;
   final Value<int?> collMethodID;
   final Value<String?> preparatorID;
@@ -7145,11 +7213,13 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     this.prepDate = const Value.absent(),
     this.prepTime = const Value.absent(),
     this.captureDate = const Value.absent(),
+    this.isRelativeTime = const Value.absent(),
     this.captureTime = const Value.absent(),
     this.trapType = const Value.absent(),
     this.catalogerID = const Value.absent(),
     this.fieldNumber = const Value.absent(),
     this.collEventID = const Value.absent(),
+    this.isMultipleCollector = const Value.absent(),
     this.collPersonnelID = const Value.absent(),
     this.collMethodID = const Value.absent(),
     this.preparatorID = const Value.absent(),
@@ -7163,11 +7233,13 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     this.prepDate = const Value.absent(),
     this.prepTime = const Value.absent(),
     this.captureDate = const Value.absent(),
+    this.isRelativeTime = const Value.absent(),
     this.captureTime = const Value.absent(),
     this.trapType = const Value.absent(),
     this.catalogerID = const Value.absent(),
     this.fieldNumber = const Value.absent(),
     this.collEventID = const Value.absent(),
+    this.isMultipleCollector = const Value.absent(),
     this.collPersonnelID = const Value.absent(),
     this.collMethodID = const Value.absent(),
     this.preparatorID = const Value.absent(),
@@ -7181,11 +7253,13 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     Expression<String>? prepDate,
     Expression<String>? prepTime,
     Expression<String>? captureDate,
+    Expression<int>? isRelativeTime,
     Expression<String>? captureTime,
     Expression<String>? trapType,
     Expression<String>? catalogerID,
     Expression<int>? fieldNumber,
     Expression<int>? collEventID,
+    Expression<int>? isMultipleCollector,
     Expression<int>? collPersonnelID,
     Expression<int>? collMethodID,
     Expression<String>? preparatorID,
@@ -7199,11 +7273,14 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       if (prepDate != null) 'prepDate': prepDate,
       if (prepTime != null) 'prepTime': prepTime,
       if (captureDate != null) 'captureDate': captureDate,
+      if (isRelativeTime != null) 'isRelativeTime': isRelativeTime,
       if (captureTime != null) 'captureTime': captureTime,
       if (trapType != null) 'trapType': trapType,
       if (catalogerID != null) 'catalogerID': catalogerID,
       if (fieldNumber != null) 'fieldNumber': fieldNumber,
       if (collEventID != null) 'collEventID': collEventID,
+      if (isMultipleCollector != null)
+        'isMultipleCollector': isMultipleCollector,
       if (collPersonnelID != null) 'collPersonnelID': collPersonnelID,
       if (collMethodID != null) 'collMethodID': collMethodID,
       if (preparatorID != null) 'preparatorID': preparatorID,
@@ -7219,11 +7296,13 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       Value<String?>? prepDate,
       Value<String?>? prepTime,
       Value<String?>? captureDate,
+      Value<int?>? isRelativeTime,
       Value<String?>? captureTime,
       Value<String?>? trapType,
       Value<String?>? catalogerID,
       Value<int?>? fieldNumber,
       Value<int?>? collEventID,
+      Value<int?>? isMultipleCollector,
       Value<int?>? collPersonnelID,
       Value<int?>? collMethodID,
       Value<String?>? preparatorID}) {
@@ -7236,11 +7315,13 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       prepDate: prepDate ?? this.prepDate,
       prepTime: prepTime ?? this.prepTime,
       captureDate: captureDate ?? this.captureDate,
+      isRelativeTime: isRelativeTime ?? this.isRelativeTime,
       captureTime: captureTime ?? this.captureTime,
       trapType: trapType ?? this.trapType,
       catalogerID: catalogerID ?? this.catalogerID,
       fieldNumber: fieldNumber ?? this.fieldNumber,
       collEventID: collEventID ?? this.collEventID,
+      isMultipleCollector: isMultipleCollector ?? this.isMultipleCollector,
       collPersonnelID: collPersonnelID ?? this.collPersonnelID,
       collMethodID: collMethodID ?? this.collMethodID,
       preparatorID: preparatorID ?? this.preparatorID,
@@ -7274,6 +7355,9 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     if (captureDate.present) {
       map['captureDate'] = Variable<String>(captureDate.value);
     }
+    if (isRelativeTime.present) {
+      map['isRelativeTime'] = Variable<int>(isRelativeTime.value);
+    }
     if (captureTime.present) {
       map['captureTime'] = Variable<String>(captureTime.value);
     }
@@ -7288,6 +7372,9 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     }
     if (collEventID.present) {
       map['collEventID'] = Variable<int>(collEventID.value);
+    }
+    if (isMultipleCollector.present) {
+      map['isMultipleCollector'] = Variable<int>(isMultipleCollector.value);
     }
     if (collPersonnelID.present) {
       map['collPersonnelID'] = Variable<int>(collPersonnelID.value);
@@ -7312,11 +7399,13 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
           ..write('prepDate: $prepDate, ')
           ..write('prepTime: $prepTime, ')
           ..write('captureDate: $captureDate, ')
+          ..write('isRelativeTime: $isRelativeTime, ')
           ..write('captureTime: $captureTime, ')
           ..write('trapType: $trapType, ')
           ..write('catalogerID: $catalogerID, ')
           ..write('fieldNumber: $fieldNumber, ')
           ..write('collEventID: $collEventID, ')
+          ..write('isMultipleCollector: $isMultipleCollector, ')
           ..write('collPersonnelID: $collPersonnelID, ')
           ..write('collMethodID: $collMethodID, ')
           ..write('preparatorID: $preparatorID')
@@ -8759,13 +8848,6 @@ class BirdMeasurement extends Table
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _ovaryWidthMeta =
-      const VerificationMeta('ovaryWidth');
-  late final GeneratedColumn<int> ovaryWidth = GeneratedColumn<int>(
-      'ovaryWidth', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
   static const VerificationMeta _oviductWidthMeta =
       const VerificationMeta('oviductWidth');
   late final GeneratedColumn<int> oviductWidth = GeneratedColumn<int>(
@@ -8798,6 +8880,13 @@ class BirdMeasurement extends Table
       const VerificationMeta('thirdOvaSize');
   late final GeneratedColumn<int> thirdOvaSize = GeneratedColumn<int>(
       'thirdOvaSize', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _ovaryWidthMeta =
+      const VerificationMeta('ovaryWidth');
+  late final GeneratedColumn<int> ovaryWidth = GeneratedColumn<int>(
+      'ovaryWidth', aliasedName, true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -8891,12 +8980,12 @@ class BirdMeasurement extends Table
         testisWidth,
         testisRemark,
         ovaryLength,
-        ovaryWidth,
         oviductWidth,
         ovaryAppearance,
         firstOvaSize,
         secondOvaSize,
         thirdOvaSize,
+        ovaryWidth,
         oviductAppearance,
         ovaryRemark,
         wingRightPrimary,
@@ -9012,12 +9101,6 @@ class BirdMeasurement extends Table
           ovaryLength.isAcceptableOrUnknown(
               data['ovaryLength']!, _ovaryLengthMeta));
     }
-    if (data.containsKey('ovaryWidth')) {
-      context.handle(
-          _ovaryWidthMeta,
-          ovaryWidth.isAcceptableOrUnknown(
-              data['ovaryWidth']!, _ovaryWidthMeta));
-    }
     if (data.containsKey('oviductWidth')) {
       context.handle(
           _oviductWidthMeta,
@@ -9047,6 +9130,12 @@ class BirdMeasurement extends Table
           _thirdOvaSizeMeta,
           thirdOvaSize.isAcceptableOrUnknown(
               data['thirdOvaSize']!, _thirdOvaSizeMeta));
+    }
+    if (data.containsKey('ovaryWidth')) {
+      context.handle(
+          _ovaryWidthMeta,
+          ovaryWidth.isAcceptableOrUnknown(
+              data['ovaryWidth']!, _ovaryWidthMeta));
     }
     if (data.containsKey('oviductAppearance')) {
       context.handle(
@@ -9151,8 +9240,6 @@ class BirdMeasurement extends Table
           .read(DriftSqlType.string, data['${effectivePrefix}testisRemark']),
       ovaryLength: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}ovaryLength']),
-      ovaryWidth: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}ovaryWidth']),
       oviductWidth: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}oviductWidth']),
       ovaryAppearance: attachedDatabase.typeMapping
@@ -9163,6 +9250,8 @@ class BirdMeasurement extends Table
           .read(DriftSqlType.int, data['${effectivePrefix}secondOvaSize']),
       thirdOvaSize: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}thirdOvaSize']),
+      ovaryWidth: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}ovaryWidth']),
       oviductAppearance: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}oviductAppearance']),
       ovaryRemark: attachedDatabase.typeMapping
@@ -9218,12 +9307,12 @@ class BirdMeasurementData extends DataClass
   final int? testisWidth;
   final String? testisRemark;
   final int? ovaryLength;
-  final int? ovaryWidth;
   final int? oviductWidth;
   final int? ovaryAppearance;
   final int? firstOvaSize;
   final int? secondOvaSize;
   final int? thirdOvaSize;
+  final int? ovaryWidth;
   final int? oviductAppearance;
   final String? ovaryRemark;
   final String? wingRightPrimary;
@@ -9253,12 +9342,12 @@ class BirdMeasurementData extends DataClass
       this.testisWidth,
       this.testisRemark,
       this.ovaryLength,
-      this.ovaryWidth,
       this.oviductWidth,
       this.ovaryAppearance,
       this.firstOvaSize,
       this.secondOvaSize,
       this.thirdOvaSize,
+      this.ovaryWidth,
       this.oviductAppearance,
       this.ovaryRemark,
       this.wingRightPrimary,
@@ -9324,9 +9413,6 @@ class BirdMeasurementData extends DataClass
     if (!nullToAbsent || ovaryLength != null) {
       map['ovaryLength'] = Variable<int>(ovaryLength);
     }
-    if (!nullToAbsent || ovaryWidth != null) {
-      map['ovaryWidth'] = Variable<int>(ovaryWidth);
-    }
     if (!nullToAbsent || oviductWidth != null) {
       map['oviductWidth'] = Variable<int>(oviductWidth);
     }
@@ -9341,6 +9427,9 @@ class BirdMeasurementData extends DataClass
     }
     if (!nullToAbsent || thirdOvaSize != null) {
       map['thirdOvaSize'] = Variable<int>(thirdOvaSize);
+    }
+    if (!nullToAbsent || ovaryWidth != null) {
+      map['ovaryWidth'] = Variable<int>(ovaryWidth);
     }
     if (!nullToAbsent || oviductAppearance != null) {
       map['oviductAppearance'] = Variable<int>(oviductAppearance);
@@ -9424,9 +9513,6 @@ class BirdMeasurementData extends DataClass
       ovaryLength: ovaryLength == null && nullToAbsent
           ? const Value.absent()
           : Value(ovaryLength),
-      ovaryWidth: ovaryWidth == null && nullToAbsent
-          ? const Value.absent()
-          : Value(ovaryWidth),
       oviductWidth: oviductWidth == null && nullToAbsent
           ? const Value.absent()
           : Value(oviductWidth),
@@ -9442,6 +9528,9 @@ class BirdMeasurementData extends DataClass
       thirdOvaSize: thirdOvaSize == null && nullToAbsent
           ? const Value.absent()
           : Value(thirdOvaSize),
+      ovaryWidth: ovaryWidth == null && nullToAbsent
+          ? const Value.absent()
+          : Value(ovaryWidth),
       oviductAppearance: oviductAppearance == null && nullToAbsent
           ? const Value.absent()
           : Value(oviductAppearance),
@@ -9497,12 +9586,12 @@ class BirdMeasurementData extends DataClass
       testisWidth: serializer.fromJson<int?>(json['testisWidth']),
       testisRemark: serializer.fromJson<String?>(json['testisRemark']),
       ovaryLength: serializer.fromJson<int?>(json['ovaryLength']),
-      ovaryWidth: serializer.fromJson<int?>(json['ovaryWidth']),
       oviductWidth: serializer.fromJson<int?>(json['oviductWidth']),
       ovaryAppearance: serializer.fromJson<int?>(json['ovaryAppearance']),
       firstOvaSize: serializer.fromJson<int?>(json['firstOvaSize']),
       secondOvaSize: serializer.fromJson<int?>(json['secondOvaSize']),
       thirdOvaSize: serializer.fromJson<int?>(json['thirdOvaSize']),
+      ovaryWidth: serializer.fromJson<int?>(json['ovaryWidth']),
       oviductAppearance: serializer.fromJson<int?>(json['oviductAppearance']),
       ovaryRemark: serializer.fromJson<String?>(json['ovaryRemark']),
       wingRightPrimary: serializer.fromJson<String?>(json['wingRightPrimary']),
@@ -9541,12 +9630,12 @@ class BirdMeasurementData extends DataClass
       'testisWidth': serializer.toJson<int?>(testisWidth),
       'testisRemark': serializer.toJson<String?>(testisRemark),
       'ovaryLength': serializer.toJson<int?>(ovaryLength),
-      'ovaryWidth': serializer.toJson<int?>(ovaryWidth),
       'oviductWidth': serializer.toJson<int?>(oviductWidth),
       'ovaryAppearance': serializer.toJson<int?>(ovaryAppearance),
       'firstOvaSize': serializer.toJson<int?>(firstOvaSize),
       'secondOvaSize': serializer.toJson<int?>(secondOvaSize),
       'thirdOvaSize': serializer.toJson<int?>(thirdOvaSize),
+      'ovaryWidth': serializer.toJson<int?>(ovaryWidth),
       'oviductAppearance': serializer.toJson<int?>(oviductAppearance),
       'ovaryRemark': serializer.toJson<String?>(ovaryRemark),
       'wingRightPrimary': serializer.toJson<String?>(wingRightPrimary),
@@ -9579,12 +9668,12 @@ class BirdMeasurementData extends DataClass
           Value<int?> testisWidth = const Value.absent(),
           Value<String?> testisRemark = const Value.absent(),
           Value<int?> ovaryLength = const Value.absent(),
-          Value<int?> ovaryWidth = const Value.absent(),
           Value<int?> oviductWidth = const Value.absent(),
           Value<int?> ovaryAppearance = const Value.absent(),
           Value<int?> firstOvaSize = const Value.absent(),
           Value<int?> secondOvaSize = const Value.absent(),
           Value<int?> thirdOvaSize = const Value.absent(),
+          Value<int?> ovaryWidth = const Value.absent(),
           Value<int?> oviductAppearance = const Value.absent(),
           Value<String?> ovaryRemark = const Value.absent(),
           Value<String?> wingRightPrimary = const Value.absent(),
@@ -9619,7 +9708,6 @@ class BirdMeasurementData extends DataClass
         testisRemark:
             testisRemark.present ? testisRemark.value : this.testisRemark,
         ovaryLength: ovaryLength.present ? ovaryLength.value : this.ovaryLength,
-        ovaryWidth: ovaryWidth.present ? ovaryWidth.value : this.ovaryWidth,
         oviductWidth:
             oviductWidth.present ? oviductWidth.value : this.oviductWidth,
         ovaryAppearance: ovaryAppearance.present
@@ -9631,6 +9719,7 @@ class BirdMeasurementData extends DataClass
             secondOvaSize.present ? secondOvaSize.value : this.secondOvaSize,
         thirdOvaSize:
             thirdOvaSize.present ? thirdOvaSize.value : this.thirdOvaSize,
+        ovaryWidth: ovaryWidth.present ? ovaryWidth.value : this.ovaryWidth,
         oviductAppearance: oviductAppearance.present
             ? oviductAppearance.value
             : this.oviductAppearance,
@@ -9677,12 +9766,12 @@ class BirdMeasurementData extends DataClass
           ..write('testisWidth: $testisWidth, ')
           ..write('testisRemark: $testisRemark, ')
           ..write('ovaryLength: $ovaryLength, ')
-          ..write('ovaryWidth: $ovaryWidth, ')
           ..write('oviductWidth: $oviductWidth, ')
           ..write('ovaryAppearance: $ovaryAppearance, ')
           ..write('firstOvaSize: $firstOvaSize, ')
           ..write('secondOvaSize: $secondOvaSize, ')
           ..write('thirdOvaSize: $thirdOvaSize, ')
+          ..write('ovaryWidth: $ovaryWidth, ')
           ..write('oviductAppearance: $oviductAppearance, ')
           ..write('ovaryRemark: $ovaryRemark, ')
           ..write('wingRightPrimary: $wingRightPrimary, ')
@@ -9717,12 +9806,12 @@ class BirdMeasurementData extends DataClass
         testisWidth,
         testisRemark,
         ovaryLength,
-        ovaryWidth,
         oviductWidth,
         ovaryAppearance,
         firstOvaSize,
         secondOvaSize,
         thirdOvaSize,
+        ovaryWidth,
         oviductAppearance,
         ovaryRemark,
         wingRightPrimary,
@@ -9756,12 +9845,12 @@ class BirdMeasurementData extends DataClass
           other.testisWidth == this.testisWidth &&
           other.testisRemark == this.testisRemark &&
           other.ovaryLength == this.ovaryLength &&
-          other.ovaryWidth == this.ovaryWidth &&
           other.oviductWidth == this.oviductWidth &&
           other.ovaryAppearance == this.ovaryAppearance &&
           other.firstOvaSize == this.firstOvaSize &&
           other.secondOvaSize == this.secondOvaSize &&
           other.thirdOvaSize == this.thirdOvaSize &&
+          other.ovaryWidth == this.ovaryWidth &&
           other.oviductAppearance == this.oviductAppearance &&
           other.ovaryRemark == this.ovaryRemark &&
           other.wingRightPrimary == this.wingRightPrimary &&
@@ -9793,12 +9882,12 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
   final Value<int?> testisWidth;
   final Value<String?> testisRemark;
   final Value<int?> ovaryLength;
-  final Value<int?> ovaryWidth;
   final Value<int?> oviductWidth;
   final Value<int?> ovaryAppearance;
   final Value<int?> firstOvaSize;
   final Value<int?> secondOvaSize;
   final Value<int?> thirdOvaSize;
+  final Value<int?> ovaryWidth;
   final Value<int?> oviductAppearance;
   final Value<String?> ovaryRemark;
   final Value<String?> wingRightPrimary;
@@ -9828,12 +9917,12 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
     this.testisWidth = const Value.absent(),
     this.testisRemark = const Value.absent(),
     this.ovaryLength = const Value.absent(),
-    this.ovaryWidth = const Value.absent(),
     this.oviductWidth = const Value.absent(),
     this.ovaryAppearance = const Value.absent(),
     this.firstOvaSize = const Value.absent(),
     this.secondOvaSize = const Value.absent(),
     this.thirdOvaSize = const Value.absent(),
+    this.ovaryWidth = const Value.absent(),
     this.oviductAppearance = const Value.absent(),
     this.ovaryRemark = const Value.absent(),
     this.wingRightPrimary = const Value.absent(),
@@ -9864,12 +9953,12 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
     this.testisWidth = const Value.absent(),
     this.testisRemark = const Value.absent(),
     this.ovaryLength = const Value.absent(),
-    this.ovaryWidth = const Value.absent(),
     this.oviductWidth = const Value.absent(),
     this.ovaryAppearance = const Value.absent(),
     this.firstOvaSize = const Value.absent(),
     this.secondOvaSize = const Value.absent(),
     this.thirdOvaSize = const Value.absent(),
+    this.ovaryWidth = const Value.absent(),
     this.oviductAppearance = const Value.absent(),
     this.ovaryRemark = const Value.absent(),
     this.wingRightPrimary = const Value.absent(),
@@ -9900,12 +9989,12 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
     Expression<int>? testisWidth,
     Expression<String>? testisRemark,
     Expression<int>? ovaryLength,
-    Expression<int>? ovaryWidth,
     Expression<int>? oviductWidth,
     Expression<int>? ovaryAppearance,
     Expression<int>? firstOvaSize,
     Expression<int>? secondOvaSize,
     Expression<int>? thirdOvaSize,
+    Expression<int>? ovaryWidth,
     Expression<int>? oviductAppearance,
     Expression<String>? ovaryRemark,
     Expression<String>? wingRightPrimary,
@@ -9936,12 +10025,12 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
       if (testisWidth != null) 'testisWidth': testisWidth,
       if (testisRemark != null) 'testisRemark': testisRemark,
       if (ovaryLength != null) 'ovaryLength': ovaryLength,
-      if (ovaryWidth != null) 'ovaryWidth': ovaryWidth,
       if (oviductWidth != null) 'oviductWidth': oviductWidth,
       if (ovaryAppearance != null) 'ovaryAppearance': ovaryAppearance,
       if (firstOvaSize != null) 'firstOvaSize': firstOvaSize,
       if (secondOvaSize != null) 'secondOvaSize': secondOvaSize,
       if (thirdOvaSize != null) 'thirdOvaSize': thirdOvaSize,
+      if (ovaryWidth != null) 'ovaryWidth': ovaryWidth,
       if (oviductAppearance != null) 'oviductAppearance': oviductAppearance,
       if (ovaryRemark != null) 'ovaryRemark': ovaryRemark,
       if (wingRightPrimary != null) 'wingRightPrimary': wingRightPrimary,
@@ -9974,12 +10063,12 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
       Value<int?>? testisWidth,
       Value<String?>? testisRemark,
       Value<int?>? ovaryLength,
-      Value<int?>? ovaryWidth,
       Value<int?>? oviductWidth,
       Value<int?>? ovaryAppearance,
       Value<int?>? firstOvaSize,
       Value<int?>? secondOvaSize,
       Value<int?>? thirdOvaSize,
+      Value<int?>? ovaryWidth,
       Value<int?>? oviductAppearance,
       Value<String?>? ovaryRemark,
       Value<String?>? wingRightPrimary,
@@ -10009,12 +10098,12 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
       testisWidth: testisWidth ?? this.testisWidth,
       testisRemark: testisRemark ?? this.testisRemark,
       ovaryLength: ovaryLength ?? this.ovaryLength,
-      ovaryWidth: ovaryWidth ?? this.ovaryWidth,
       oviductWidth: oviductWidth ?? this.oviductWidth,
       ovaryAppearance: ovaryAppearance ?? this.ovaryAppearance,
       firstOvaSize: firstOvaSize ?? this.firstOvaSize,
       secondOvaSize: secondOvaSize ?? this.secondOvaSize,
       thirdOvaSize: thirdOvaSize ?? this.thirdOvaSize,
+      ovaryWidth: ovaryWidth ?? this.ovaryWidth,
       oviductAppearance: oviductAppearance ?? this.oviductAppearance,
       ovaryRemark: ovaryRemark ?? this.ovaryRemark,
       wingRightPrimary: wingRightPrimary ?? this.wingRightPrimary,
@@ -10085,9 +10174,6 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
     if (ovaryLength.present) {
       map['ovaryLength'] = Variable<int>(ovaryLength.value);
     }
-    if (ovaryWidth.present) {
-      map['ovaryWidth'] = Variable<int>(ovaryWidth.value);
-    }
     if (oviductWidth.present) {
       map['oviductWidth'] = Variable<int>(oviductWidth.value);
     }
@@ -10102,6 +10188,9 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
     }
     if (thirdOvaSize.present) {
       map['thirdOvaSize'] = Variable<int>(thirdOvaSize.value);
+    }
+    if (ovaryWidth.present) {
+      map['ovaryWidth'] = Variable<int>(ovaryWidth.value);
     }
     if (oviductAppearance.present) {
       map['oviductAppearance'] = Variable<int>(oviductAppearance.value);
@@ -10157,12 +10246,12 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
           ..write('testisWidth: $testisWidth, ')
           ..write('testisRemark: $testisRemark, ')
           ..write('ovaryLength: $ovaryLength, ')
-          ..write('ovaryWidth: $ovaryWidth, ')
           ..write('oviductWidth: $oviductWidth, ')
           ..write('ovaryAppearance: $ovaryAppearance, ')
           ..write('firstOvaSize: $firstOvaSize, ')
           ..write('secondOvaSize: $secondOvaSize, ')
           ..write('thirdOvaSize: $thirdOvaSize, ')
+          ..write('ovaryWidth: $ovaryWidth, ')
           ..write('oviductAppearance: $oviductAppearance, ')
           ..write('ovaryRemark: $ovaryRemark, ')
           ..write('wingRightPrimary: $wingRightPrimary, ')
@@ -10178,11 +10267,19 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
   }
 }
 
-class Part extends Table with TableInfo<Part, PartData> {
+class SpecimenPart extends Table
+    with TableInfo<SpecimenPart, SpecimenPartData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Part(this.attachedDatabase, [this._alias]);
+  SpecimenPart(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, true,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: 'UNIQUE PRIMARY KEY AUTOINCREMENT');
   static const VerificationMeta _specimenUuidMeta =
       const VerificationMeta('specimenUuid');
   late final GeneratedColumn<String> specimenUuid = GeneratedColumn<String>(
@@ -10190,17 +10287,17 @@ class Part extends Table with TableInfo<Part, PartData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _secondaryIDMeta =
-      const VerificationMeta('secondaryID');
-  late final GeneratedColumn<String> secondaryID = GeneratedColumn<String>(
-      'secondaryID', aliasedName, true,
+  static const VerificationMeta _tissueIDMeta =
+      const VerificationMeta('tissueID');
+  late final GeneratedColumn<String> tissueID = GeneratedColumn<String>(
+      'tissueID', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _tertiaryIDMeta =
-      const VerificationMeta('tertiaryID');
-  late final GeneratedColumn<String> tertiaryID = GeneratedColumn<String>(
-      'tertiaryID', aliasedName, true,
+  static const VerificationMeta _barcodeIDMeta =
+      const VerificationMeta('barcodeID');
+  late final GeneratedColumn<String> barcodeID = GeneratedColumn<String>(
+      'barcodeID', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -10230,6 +10327,20 @@ class Part extends Table with TableInfo<Part, PartData> {
           type: DriftSqlType.string,
           requiredDuringInsert: false,
           $customConstraints: '');
+  static const VerificationMeta _dateTakenMeta =
+      const VerificationMeta('dateTaken');
+  late final GeneratedColumn<String> dateTaken = GeneratedColumn<String>(
+      'dateTaken', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _timeTakenMeta =
+      const VerificationMeta('timeTaken');
+  late final GeneratedColumn<String> timeTaken = GeneratedColumn<String>(
+      'timeTaken', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _museumPermanentMeta =
       const VerificationMeta('museumPermanent');
   late final GeneratedColumn<String> museumPermanent = GeneratedColumn<String>(
@@ -10244,44 +10355,53 @@ class Part extends Table with TableInfo<Part, PartData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _remarkMeta = const VerificationMeta('remark');
+  late final GeneratedColumn<String> remark = GeneratedColumn<String>(
+      'remark', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
+        id,
         specimenUuid,
-        secondaryID,
-        tertiaryID,
+        tissueID,
+        barcodeID,
         type,
         count,
         treatment,
         additionalTreatment,
+        dateTaken,
+        timeTaken,
         museumPermanent,
-        museumLoan
+        museumLoan,
+        remark
       ];
   @override
-  String get aliasedName => _alias ?? 'part';
+  String get aliasedName => _alias ?? 'specimenPart';
   @override
-  String get actualTableName => 'part';
+  String get actualTableName => 'specimenPart';
   @override
-  VerificationContext validateIntegrity(Insertable<PartData> instance,
+  VerificationContext validateIntegrity(Insertable<SpecimenPartData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
     if (data.containsKey('specimenUuid')) {
       context.handle(
           _specimenUuidMeta,
           specimenUuid.isAcceptableOrUnknown(
               data['specimenUuid']!, _specimenUuidMeta));
     }
-    if (data.containsKey('secondaryID')) {
-      context.handle(
-          _secondaryIDMeta,
-          secondaryID.isAcceptableOrUnknown(
-              data['secondaryID']!, _secondaryIDMeta));
+    if (data.containsKey('tissueID')) {
+      context.handle(_tissueIDMeta,
+          tissueID.isAcceptableOrUnknown(data['tissueID']!, _tissueIDMeta));
     }
-    if (data.containsKey('tertiaryID')) {
-      context.handle(
-          _tertiaryIDMeta,
-          tertiaryID.isAcceptableOrUnknown(
-              data['tertiaryID']!, _tertiaryIDMeta));
+    if (data.containsKey('barcodeID')) {
+      context.handle(_barcodeIDMeta,
+          barcodeID.isAcceptableOrUnknown(data['barcodeID']!, _barcodeIDMeta));
     }
     if (data.containsKey('type')) {
       context.handle(
@@ -10301,6 +10421,14 @@ class Part extends Table with TableInfo<Part, PartData> {
           additionalTreatment.isAcceptableOrUnknown(
               data['additionalTreatment']!, _additionalTreatmentMeta));
     }
+    if (data.containsKey('dateTaken')) {
+      context.handle(_dateTakenMeta,
+          dateTaken.isAcceptableOrUnknown(data['dateTaken']!, _dateTakenMeta));
+    }
+    if (data.containsKey('timeTaken')) {
+      context.handle(_timeTakenMeta,
+          timeTaken.isAcceptableOrUnknown(data['timeTaken']!, _timeTakenMeta));
+    }
     if (data.containsKey('museumPermanent')) {
       context.handle(
           _museumPermanentMeta,
@@ -10313,21 +10441,27 @@ class Part extends Table with TableInfo<Part, PartData> {
           museumLoan.isAcceptableOrUnknown(
               data['museumLoan']!, _museumLoanMeta));
     }
+    if (data.containsKey('remark')) {
+      context.handle(_remarkMeta,
+          remark.isAcceptableOrUnknown(data['remark']!, _remarkMeta));
+    }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => const {};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  PartData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  SpecimenPartData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return PartData(
+    return SpecimenPartData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id']),
       specimenUuid: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}specimenUuid']),
-      secondaryID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}secondaryID']),
-      tertiaryID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}tertiaryID']),
+      tissueID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}tissueID']),
+      barcodeID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}barcodeID']),
       type: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}type']),
       count: attachedDatabase.typeMapping
@@ -10336,53 +10470,74 @@ class Part extends Table with TableInfo<Part, PartData> {
           .read(DriftSqlType.string, data['${effectivePrefix}treatment']),
       additionalTreatment: attachedDatabase.typeMapping.read(
           DriftSqlType.string, data['${effectivePrefix}additionalTreatment']),
+      dateTaken: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}dateTaken']),
+      timeTaken: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}timeTaken']),
       museumPermanent: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}museumPermanent']),
       museumLoan: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}museumLoan']),
+      remark: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}remark']),
     );
   }
 
   @override
-  Part createAlias(String alias) {
-    return Part(attachedDatabase, alias);
+  SpecimenPart createAlias(String alias) {
+    return SpecimenPart(attachedDatabase, alias);
   }
 
+  @override
+  List<String> get customConstraints =>
+      const ['FOREIGN KEY(specimenUuid)REFERENCES specimen(uuid)'];
   @override
   bool get dontWriteConstraints => true;
 }
 
-class PartData extends DataClass implements Insertable<PartData> {
+class SpecimenPartData extends DataClass
+    implements Insertable<SpecimenPartData> {
+  final int? id;
   final String? specimenUuid;
-  final String? secondaryID;
-  final String? tertiaryID;
+  final String? tissueID;
+  final String? barcodeID;
   final String? type;
   final String? count;
   final String? treatment;
   final String? additionalTreatment;
+  final String? dateTaken;
+  final String? timeTaken;
   final String? museumPermanent;
   final String? museumLoan;
-  const PartData(
-      {this.specimenUuid,
-      this.secondaryID,
-      this.tertiaryID,
+  final String? remark;
+  const SpecimenPartData(
+      {this.id,
+      this.specimenUuid,
+      this.tissueID,
+      this.barcodeID,
       this.type,
       this.count,
       this.treatment,
       this.additionalTreatment,
+      this.dateTaken,
+      this.timeTaken,
       this.museumPermanent,
-      this.museumLoan});
+      this.museumLoan,
+      this.remark});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
     if (!nullToAbsent || specimenUuid != null) {
       map['specimenUuid'] = Variable<String>(specimenUuid);
     }
-    if (!nullToAbsent || secondaryID != null) {
-      map['secondaryID'] = Variable<String>(secondaryID);
+    if (!nullToAbsent || tissueID != null) {
+      map['tissueID'] = Variable<String>(tissueID);
     }
-    if (!nullToAbsent || tertiaryID != null) {
-      map['tertiaryID'] = Variable<String>(tertiaryID);
+    if (!nullToAbsent || barcodeID != null) {
+      map['barcodeID'] = Variable<String>(barcodeID);
     }
     if (!nullToAbsent || type != null) {
       map['type'] = Variable<String>(type);
@@ -10396,26 +10551,36 @@ class PartData extends DataClass implements Insertable<PartData> {
     if (!nullToAbsent || additionalTreatment != null) {
       map['additionalTreatment'] = Variable<String>(additionalTreatment);
     }
+    if (!nullToAbsent || dateTaken != null) {
+      map['dateTaken'] = Variable<String>(dateTaken);
+    }
+    if (!nullToAbsent || timeTaken != null) {
+      map['timeTaken'] = Variable<String>(timeTaken);
+    }
     if (!nullToAbsent || museumPermanent != null) {
       map['museumPermanent'] = Variable<String>(museumPermanent);
     }
     if (!nullToAbsent || museumLoan != null) {
       map['museumLoan'] = Variable<String>(museumLoan);
     }
+    if (!nullToAbsent || remark != null) {
+      map['remark'] = Variable<String>(remark);
+    }
     return map;
   }
 
-  PartCompanion toCompanion(bool nullToAbsent) {
-    return PartCompanion(
+  SpecimenPartCompanion toCompanion(bool nullToAbsent) {
+    return SpecimenPartCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       specimenUuid: specimenUuid == null && nullToAbsent
           ? const Value.absent()
           : Value(specimenUuid),
-      secondaryID: secondaryID == null && nullToAbsent
+      tissueID: tissueID == null && nullToAbsent
           ? const Value.absent()
-          : Value(secondaryID),
-      tertiaryID: tertiaryID == null && nullToAbsent
+          : Value(tissueID),
+      barcodeID: barcodeID == null && nullToAbsent
           ? const Value.absent()
-          : Value(tertiaryID),
+          : Value(barcodeID),
       type: type == null && nullToAbsent ? const Value.absent() : Value(type),
       count:
           count == null && nullToAbsent ? const Value.absent() : Value(count),
@@ -10425,198 +10590,273 @@ class PartData extends DataClass implements Insertable<PartData> {
       additionalTreatment: additionalTreatment == null && nullToAbsent
           ? const Value.absent()
           : Value(additionalTreatment),
+      dateTaken: dateTaken == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dateTaken),
+      timeTaken: timeTaken == null && nullToAbsent
+          ? const Value.absent()
+          : Value(timeTaken),
       museumPermanent: museumPermanent == null && nullToAbsent
           ? const Value.absent()
           : Value(museumPermanent),
       museumLoan: museumLoan == null && nullToAbsent
           ? const Value.absent()
           : Value(museumLoan),
+      remark:
+          remark == null && nullToAbsent ? const Value.absent() : Value(remark),
     );
   }
 
-  factory PartData.fromJson(Map<String, dynamic> json,
+  factory SpecimenPartData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return PartData(
+    return SpecimenPartData(
+      id: serializer.fromJson<int?>(json['id']),
       specimenUuid: serializer.fromJson<String?>(json['specimenUuid']),
-      secondaryID: serializer.fromJson<String?>(json['secondaryID']),
-      tertiaryID: serializer.fromJson<String?>(json['tertiaryID']),
+      tissueID: serializer.fromJson<String?>(json['tissueID']),
+      barcodeID: serializer.fromJson<String?>(json['barcodeID']),
       type: serializer.fromJson<String?>(json['type']),
       count: serializer.fromJson<String?>(json['count']),
       treatment: serializer.fromJson<String?>(json['treatment']),
       additionalTreatment:
           serializer.fromJson<String?>(json['additionalTreatment']),
+      dateTaken: serializer.fromJson<String?>(json['dateTaken']),
+      timeTaken: serializer.fromJson<String?>(json['timeTaken']),
       museumPermanent: serializer.fromJson<String?>(json['museumPermanent']),
       museumLoan: serializer.fromJson<String?>(json['museumLoan']),
+      remark: serializer.fromJson<String?>(json['remark']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
+      'id': serializer.toJson<int?>(id),
       'specimenUuid': serializer.toJson<String?>(specimenUuid),
-      'secondaryID': serializer.toJson<String?>(secondaryID),
-      'tertiaryID': serializer.toJson<String?>(tertiaryID),
+      'tissueID': serializer.toJson<String?>(tissueID),
+      'barcodeID': serializer.toJson<String?>(barcodeID),
       'type': serializer.toJson<String?>(type),
       'count': serializer.toJson<String?>(count),
       'treatment': serializer.toJson<String?>(treatment),
       'additionalTreatment': serializer.toJson<String?>(additionalTreatment),
+      'dateTaken': serializer.toJson<String?>(dateTaken),
+      'timeTaken': serializer.toJson<String?>(timeTaken),
       'museumPermanent': serializer.toJson<String?>(museumPermanent),
       'museumLoan': serializer.toJson<String?>(museumLoan),
+      'remark': serializer.toJson<String?>(remark),
     };
   }
 
-  PartData copyWith(
-          {Value<String?> specimenUuid = const Value.absent(),
-          Value<String?> secondaryID = const Value.absent(),
-          Value<String?> tertiaryID = const Value.absent(),
+  SpecimenPartData copyWith(
+          {Value<int?> id = const Value.absent(),
+          Value<String?> specimenUuid = const Value.absent(),
+          Value<String?> tissueID = const Value.absent(),
+          Value<String?> barcodeID = const Value.absent(),
           Value<String?> type = const Value.absent(),
           Value<String?> count = const Value.absent(),
           Value<String?> treatment = const Value.absent(),
           Value<String?> additionalTreatment = const Value.absent(),
+          Value<String?> dateTaken = const Value.absent(),
+          Value<String?> timeTaken = const Value.absent(),
           Value<String?> museumPermanent = const Value.absent(),
-          Value<String?> museumLoan = const Value.absent()}) =>
-      PartData(
+          Value<String?> museumLoan = const Value.absent(),
+          Value<String?> remark = const Value.absent()}) =>
+      SpecimenPartData(
+        id: id.present ? id.value : this.id,
         specimenUuid:
             specimenUuid.present ? specimenUuid.value : this.specimenUuid,
-        secondaryID: secondaryID.present ? secondaryID.value : this.secondaryID,
-        tertiaryID: tertiaryID.present ? tertiaryID.value : this.tertiaryID,
+        tissueID: tissueID.present ? tissueID.value : this.tissueID,
+        barcodeID: barcodeID.present ? barcodeID.value : this.barcodeID,
         type: type.present ? type.value : this.type,
         count: count.present ? count.value : this.count,
         treatment: treatment.present ? treatment.value : this.treatment,
         additionalTreatment: additionalTreatment.present
             ? additionalTreatment.value
             : this.additionalTreatment,
+        dateTaken: dateTaken.present ? dateTaken.value : this.dateTaken,
+        timeTaken: timeTaken.present ? timeTaken.value : this.timeTaken,
         museumPermanent: museumPermanent.present
             ? museumPermanent.value
             : this.museumPermanent,
         museumLoan: museumLoan.present ? museumLoan.value : this.museumLoan,
+        remark: remark.present ? remark.value : this.remark,
       );
   @override
   String toString() {
-    return (StringBuffer('PartData(')
+    return (StringBuffer('SpecimenPartData(')
+          ..write('id: $id, ')
           ..write('specimenUuid: $specimenUuid, ')
-          ..write('secondaryID: $secondaryID, ')
-          ..write('tertiaryID: $tertiaryID, ')
+          ..write('tissueID: $tissueID, ')
+          ..write('barcodeID: $barcodeID, ')
           ..write('type: $type, ')
           ..write('count: $count, ')
           ..write('treatment: $treatment, ')
           ..write('additionalTreatment: $additionalTreatment, ')
+          ..write('dateTaken: $dateTaken, ')
+          ..write('timeTaken: $timeTaken, ')
           ..write('museumPermanent: $museumPermanent, ')
-          ..write('museumLoan: $museumLoan')
+          ..write('museumLoan: $museumLoan, ')
+          ..write('remark: $remark')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(specimenUuid, secondaryID, tertiaryID, type,
-      count, treatment, additionalTreatment, museumPermanent, museumLoan);
+  int get hashCode => Object.hash(
+      id,
+      specimenUuid,
+      tissueID,
+      barcodeID,
+      type,
+      count,
+      treatment,
+      additionalTreatment,
+      dateTaken,
+      timeTaken,
+      museumPermanent,
+      museumLoan,
+      remark);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is PartData &&
+      (other is SpecimenPartData &&
+          other.id == this.id &&
           other.specimenUuid == this.specimenUuid &&
-          other.secondaryID == this.secondaryID &&
-          other.tertiaryID == this.tertiaryID &&
+          other.tissueID == this.tissueID &&
+          other.barcodeID == this.barcodeID &&
           other.type == this.type &&
           other.count == this.count &&
           other.treatment == this.treatment &&
           other.additionalTreatment == this.additionalTreatment &&
+          other.dateTaken == this.dateTaken &&
+          other.timeTaken == this.timeTaken &&
           other.museumPermanent == this.museumPermanent &&
-          other.museumLoan == this.museumLoan);
+          other.museumLoan == this.museumLoan &&
+          other.remark == this.remark);
 }
 
-class PartCompanion extends UpdateCompanion<PartData> {
+class SpecimenPartCompanion extends UpdateCompanion<SpecimenPartData> {
+  final Value<int?> id;
   final Value<String?> specimenUuid;
-  final Value<String?> secondaryID;
-  final Value<String?> tertiaryID;
+  final Value<String?> tissueID;
+  final Value<String?> barcodeID;
   final Value<String?> type;
   final Value<String?> count;
   final Value<String?> treatment;
   final Value<String?> additionalTreatment;
+  final Value<String?> dateTaken;
+  final Value<String?> timeTaken;
   final Value<String?> museumPermanent;
   final Value<String?> museumLoan;
-  const PartCompanion({
+  final Value<String?> remark;
+  const SpecimenPartCompanion({
+    this.id = const Value.absent(),
     this.specimenUuid = const Value.absent(),
-    this.secondaryID = const Value.absent(),
-    this.tertiaryID = const Value.absent(),
+    this.tissueID = const Value.absent(),
+    this.barcodeID = const Value.absent(),
     this.type = const Value.absent(),
     this.count = const Value.absent(),
     this.treatment = const Value.absent(),
     this.additionalTreatment = const Value.absent(),
+    this.dateTaken = const Value.absent(),
+    this.timeTaken = const Value.absent(),
     this.museumPermanent = const Value.absent(),
     this.museumLoan = const Value.absent(),
+    this.remark = const Value.absent(),
   });
-  PartCompanion.insert({
+  SpecimenPartCompanion.insert({
+    this.id = const Value.absent(),
     this.specimenUuid = const Value.absent(),
-    this.secondaryID = const Value.absent(),
-    this.tertiaryID = const Value.absent(),
+    this.tissueID = const Value.absent(),
+    this.barcodeID = const Value.absent(),
     this.type = const Value.absent(),
     this.count = const Value.absent(),
     this.treatment = const Value.absent(),
     this.additionalTreatment = const Value.absent(),
+    this.dateTaken = const Value.absent(),
+    this.timeTaken = const Value.absent(),
     this.museumPermanent = const Value.absent(),
     this.museumLoan = const Value.absent(),
+    this.remark = const Value.absent(),
   });
-  static Insertable<PartData> custom({
+  static Insertable<SpecimenPartData> custom({
+    Expression<int>? id,
     Expression<String>? specimenUuid,
-    Expression<String>? secondaryID,
-    Expression<String>? tertiaryID,
+    Expression<String>? tissueID,
+    Expression<String>? barcodeID,
     Expression<String>? type,
     Expression<String>? count,
     Expression<String>? treatment,
     Expression<String>? additionalTreatment,
+    Expression<String>? dateTaken,
+    Expression<String>? timeTaken,
     Expression<String>? museumPermanent,
     Expression<String>? museumLoan,
+    Expression<String>? remark,
   }) {
     return RawValuesInsertable({
+      if (id != null) 'id': id,
       if (specimenUuid != null) 'specimenUuid': specimenUuid,
-      if (secondaryID != null) 'secondaryID': secondaryID,
-      if (tertiaryID != null) 'tertiaryID': tertiaryID,
+      if (tissueID != null) 'tissueID': tissueID,
+      if (barcodeID != null) 'barcodeID': barcodeID,
       if (type != null) 'type': type,
       if (count != null) 'count': count,
       if (treatment != null) 'treatment': treatment,
       if (additionalTreatment != null)
         'additionalTreatment': additionalTreatment,
+      if (dateTaken != null) 'dateTaken': dateTaken,
+      if (timeTaken != null) 'timeTaken': timeTaken,
       if (museumPermanent != null) 'museumPermanent': museumPermanent,
       if (museumLoan != null) 'museumLoan': museumLoan,
+      if (remark != null) 'remark': remark,
     });
   }
 
-  PartCompanion copyWith(
-      {Value<String?>? specimenUuid,
-      Value<String?>? secondaryID,
-      Value<String?>? tertiaryID,
+  SpecimenPartCompanion copyWith(
+      {Value<int?>? id,
+      Value<String?>? specimenUuid,
+      Value<String?>? tissueID,
+      Value<String?>? barcodeID,
       Value<String?>? type,
       Value<String?>? count,
       Value<String?>? treatment,
       Value<String?>? additionalTreatment,
+      Value<String?>? dateTaken,
+      Value<String?>? timeTaken,
       Value<String?>? museumPermanent,
-      Value<String?>? museumLoan}) {
-    return PartCompanion(
+      Value<String?>? museumLoan,
+      Value<String?>? remark}) {
+    return SpecimenPartCompanion(
+      id: id ?? this.id,
       specimenUuid: specimenUuid ?? this.specimenUuid,
-      secondaryID: secondaryID ?? this.secondaryID,
-      tertiaryID: tertiaryID ?? this.tertiaryID,
+      tissueID: tissueID ?? this.tissueID,
+      barcodeID: barcodeID ?? this.barcodeID,
       type: type ?? this.type,
       count: count ?? this.count,
       treatment: treatment ?? this.treatment,
       additionalTreatment: additionalTreatment ?? this.additionalTreatment,
+      dateTaken: dateTaken ?? this.dateTaken,
+      timeTaken: timeTaken ?? this.timeTaken,
       museumPermanent: museumPermanent ?? this.museumPermanent,
       museumLoan: museumLoan ?? this.museumLoan,
+      remark: remark ?? this.remark,
     );
   }
 
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
     if (specimenUuid.present) {
       map['specimenUuid'] = Variable<String>(specimenUuid.value);
     }
-    if (secondaryID.present) {
-      map['secondaryID'] = Variable<String>(secondaryID.value);
+    if (tissueID.present) {
+      map['tissueID'] = Variable<String>(tissueID.value);
     }
-    if (tertiaryID.present) {
-      map['tertiaryID'] = Variable<String>(tertiaryID.value);
+    if (barcodeID.present) {
+      map['barcodeID'] = Variable<String>(barcodeID.value);
     }
     if (type.present) {
       map['type'] = Variable<String>(type.value);
@@ -10630,27 +10870,40 @@ class PartCompanion extends UpdateCompanion<PartData> {
     if (additionalTreatment.present) {
       map['additionalTreatment'] = Variable<String>(additionalTreatment.value);
     }
+    if (dateTaken.present) {
+      map['dateTaken'] = Variable<String>(dateTaken.value);
+    }
+    if (timeTaken.present) {
+      map['timeTaken'] = Variable<String>(timeTaken.value);
+    }
     if (museumPermanent.present) {
       map['museumPermanent'] = Variable<String>(museumPermanent.value);
     }
     if (museumLoan.present) {
       map['museumLoan'] = Variable<String>(museumLoan.value);
     }
+    if (remark.present) {
+      map['remark'] = Variable<String>(remark.value);
+    }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('PartCompanion(')
+    return (StringBuffer('SpecimenPartCompanion(')
+          ..write('id: $id, ')
           ..write('specimenUuid: $specimenUuid, ')
-          ..write('secondaryID: $secondaryID, ')
-          ..write('tertiaryID: $tertiaryID, ')
+          ..write('tissueID: $tissueID, ')
+          ..write('barcodeID: $barcodeID, ')
           ..write('type: $type, ')
           ..write('count: $count, ')
           ..write('treatment: $treatment, ')
           ..write('additionalTreatment: $additionalTreatment, ')
+          ..write('dateTaken: $dateTaken, ')
+          ..write('timeTaken: $timeTaken, ')
           ..write('museumPermanent: $museumPermanent, ')
-          ..write('museumLoan: $museumLoan')
+          ..write('museumLoan: $museumLoan, ')
+          ..write('remark: $remark')
           ..write(')'))
         .toString();
   }
@@ -11053,7 +11306,7 @@ abstract class _$Database extends GeneratedDatabase {
   late final Specimen specimen = Specimen(this);
   late final MammalMeasurement mammalMeasurement = MammalMeasurement(this);
   late final BirdMeasurement birdMeasurement = BirdMeasurement(this);
-  late final Part part = Part(this);
+  late final SpecimenPart specimenPart = SpecimenPart(this);
   late final Expense expense = Expense(this);
   Selectable<ListProjectResult> listProject() {
     return customSelect('SELECT uuid, name, created, lastAccessed FROM project',
@@ -11094,7 +11347,7 @@ abstract class _$Database extends GeneratedDatabase {
         specimen,
         mammalMeasurement,
         birdMeasurement,
-        part,
+        specimenPart,
         expense
       ];
 }

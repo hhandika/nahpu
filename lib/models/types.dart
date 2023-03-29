@@ -6,6 +6,16 @@ enum CatalogFmt { generalMammals, birds, bats }
 
 enum CommonPopUpMenuItems { edit, delete }
 
+enum ExportFormat { excel, csv, tsv, db, json }
+
+const List<String> exportFormats = [
+  'Excel (.xlsx)',
+  'Comma-separated (.csv)',
+  'Tab-separated (.tsv)',
+  'Database (.sqlite3)',
+  'JSON (.json)',
+];
+
 // Database read through index.
 // and stored as integer.
 // DON'T CHANGE ORDER!
@@ -30,6 +40,14 @@ const List<String> siteTypeList = [
   'Trail',
   'Trapline',
   'Netline'
+];
+
+const List<String> relativeTimeList = [
+  'Dawn',
+  'Morning',
+  'Afternoon',
+  'Dusk',
+  'Night',
 ];
 
 CatalogFmt matchTaxonGroupToCatFmt(String? taxonGroup) {

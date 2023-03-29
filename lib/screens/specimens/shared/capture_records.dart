@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/controllers.dart';
 import 'package:flutter/material.dart';
+import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:intl/intl.dart';
@@ -36,6 +37,44 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
       title: 'Capture Records',
       child: Column(
         children: [
+          AdaptiveLayout(
+            useHorizontalLayout: widget.useHorizontalLayout,
+            children: [
+              CheckboxListTile(
+                value: _getCheckBoxValue(widget.specimenCtr.relativeTimeCtr),
+                onChanged: (bool? value) {
+                  setState(() {
+                    if (value != null) {
+                      int newValue = value ? 1 : 0;
+                      widget.specimenCtr.relativeTimeCtr = newValue;
+                      _updateSpecimen(
+                        SpecimenCompanion(isRelativeTime: db.Value(newValue)),
+                      );
+                    }
+                  });
+                },
+                title: const Text('Relative time'),
+                controlAffinity: ListTileControlAffinity.leading,
+              ),
+              CheckboxListTile(
+                  value: _getCheckBoxValue(
+                      widget.specimenCtr.multipleCollectorCtr),
+                  onChanged: (bool? value) {
+                    setState(() {
+                      if (value != null) {
+                        int newValue = value ? 1 : 0;
+                        widget.specimenCtr.multipleCollectorCtr = newValue;
+                        _updateSpecimen(
+                          SpecimenCompanion(
+                              isMultipleCollector: db.Value(newValue)),
+                        );
+                      }
+                    });
+                  },
+                  title: const Text('Multiple collectors'),
+                  controlAffinity: ListTileControlAffinity.leading),
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.all(5),
             child: DropdownButtonFormField(
@@ -53,8 +92,9 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
               onChanged: (int? newValue) {
                 setState(() {
                   widget.specimenCtr.collEventIDCtr = newValue;
-                  SpecimenServices(ref).updateSpecimen(widget.specimenUuid,
-                      SpecimenCompanion(collEventID: db.Value(newValue)));
+                  _updateSpecimen(
+                    SpecimenCompanion(collEventID: db.Value(newValue)),
+                  );
                 });
               },
             ),
@@ -78,8 +118,7 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                     if (date != null) {
                       widget.specimenCtr.captureDateCtr.text =
                           DateFormat.yMMMd().format(date);
-                      SpecimenServices(ref).updateSpecimen(
-                        widget.specimenUuid,
+                      _updateSpecimen(
                         SpecimenCompanion(
                           captureDate:
                               db.Value(widget.specimenCtr.captureDateCtr.text),
@@ -89,30 +128,9 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                   });
                 },
               ),
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Capture time',
-                  hintText: 'Enter time',
-                ),
-                controller: widget.specimenCtr.captureTimeCtr,
-                onTap: () async {
-                  showTimePicker(
-                    context: context,
-                    initialTime: TimeOfDay.now(),
-                  ).then((time) {
-                    if (time != null) {
-                      widget.specimenCtr.captureTimeCtr.text =
-                          time.format(context).toString();
-                      SpecimenServices(ref).updateSpecimen(
-                        widget.specimenUuid,
-                        SpecimenCompanion(
-                          captureTime:
-                              db.Value(widget.specimenCtr.captureTimeCtr.text),
-                        ),
-                      );
-                    }
-                  });
-                },
+              CaptureTime(
+                specimenUuid: widget.specimenUuid,
+                specimenCtr: widget.specimenCtr,
               ),
             ],
           ),
@@ -146,8 +164,7 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                     onChanged: (int? newValue) {
                       setState(() {
                         widget.specimenCtr.collPersonnelCtr = newValue;
-                        SpecimenServices(ref).updateSpecimen(
-                          widget.specimenUuid,
+                        _updateSpecimen(
                           SpecimenCompanion(
                             collPersonnelID: db.Value(newValue),
                           ),
@@ -179,8 +196,7 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                     onChanged: (int? newValue) {
                       setState(() {
                         widget.specimenCtr.captureMethodCtr = newValue;
-                        SpecimenServices(ref).updateSpecimen(
-                          widget.specimenUuid,
+                        _updateSpecimen(
                           SpecimenCompanion(
                             collMethodID:
                                 db.Value(widget.specimenCtr.captureMethodCtr),
@@ -192,6 +208,18 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
         ],
       ),
     );
+  }
+
+  void _updateSpecimen(SpecimenCompanion form) {
+    SpecimenServices(ref).updateSpecimen(widget.specimenUuid, form);
+  }
+
+  bool _getCheckBoxValue(int? value) {
+    if (value == null) {
+      return false;
+    } else {
+      return value == 0 ? false : true;
+    }
   }
 }
 
@@ -216,5 +244,77 @@ class PersonnelName extends ConsumerWidget {
     } catch (e) {
       return const Text('Error');
     }
+  }
+}
+
+class CaptureTime extends ConsumerStatefulWidget {
+  const CaptureTime({
+    super.key,
+    required this.specimenUuid,
+    required this.specimenCtr,
+  });
+
+  final String specimenUuid;
+  final SpecimenFormCtrModel specimenCtr;
+
+  @override
+  CaptureTimeState createState() => CaptureTimeState();
+}
+
+class CaptureTimeState extends ConsumerState<CaptureTime> {
+  @override
+  Widget build(BuildContext context) {
+    return widget.specimenCtr.relativeTimeCtr == 1
+        ? DropdownButtonFormField(
+            decoration: const InputDecoration(
+              labelText: 'Capture time',
+              hintText: 'Enter time',
+            ),
+            items: relativeTimeList
+                .map(
+                  (e) => DropdownMenuItem(
+                    value: e,
+                    child: Text(e),
+                  ),
+                )
+                .toList(),
+            onChanged: (String? newValue) {
+              setState(() {
+                widget.specimenCtr.captureTimeCtr.text = newValue ?? '';
+                SpecimenServices(ref).updateSpecimen(
+                  widget.specimenUuid,
+                  SpecimenCompanion(
+                    captureTime:
+                        db.Value(widget.specimenCtr.captureTimeCtr.text),
+                  ),
+                );
+              });
+            },
+          )
+        : TextField(
+            decoration: const InputDecoration(
+              labelText: 'Capture time',
+              hintText: 'Enter time',
+            ),
+            controller: widget.specimenCtr.captureTimeCtr,
+            onTap: () async {
+              showTimePicker(
+                context: context,
+                initialTime: TimeOfDay.now(),
+              ).then((time) {
+                if (time != null) {
+                  widget.specimenCtr.captureTimeCtr.text =
+                      time.format(context).toString();
+                  SpecimenServices(ref).updateSpecimen(
+                    widget.specimenUuid,
+                    SpecimenCompanion(
+                      captureTime:
+                          db.Value(widget.specimenCtr.captureTimeCtr.text),
+                    ),
+                  );
+                }
+              });
+            },
+          );
   }
 }

@@ -26,6 +26,15 @@ class CollEventServices {
     return eventID;
   }
 
+  Future<CollEventData?> getCollEvent(int? eventID) async {
+    if (eventID == null) {
+      return null;
+    } else {
+      return CollEventQuery(ref.read(databaseProvider))
+          .getCollEventById(eventID);
+    }
+  }
+
   Future<int> createCollPersonnel(CollPersonnelCompanion form) async {
     int id = await CollPersonnelQuery(ref.read(databaseProvider))
         .createCollPersonnel(form);

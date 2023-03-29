@@ -9,7 +9,7 @@ import 'package:nahpu/screens/projects/components/overview.dart';
 import 'package:nahpu/screens/projects/components/personnel.dart';
 import 'package:nahpu/screens/projects/components/taxon_registry.dart';
 import 'package:nahpu/screens/projects/edit_project.dart';
-import 'package:nahpu/screens/shared/navbar.dart';
+import 'package:nahpu/screens/shared/navigation.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 
 class Dashboard extends ConsumerStatefulWidget {

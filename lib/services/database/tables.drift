@@ -198,11 +198,13 @@ CREATE TABLE specimen (
     prepDate TEXT,
     prepTime TEXT,
     captureDate TEXT,
+    isRelativeTime INT,
     captureTime TEXT,
     trapType TEXT,
     catalogerID TEXT,
     fieldNumber INT,
     collEventID INT,
+    isMultipleCollector INT,
     collPersonnelID INT,
     collMethodID INT,
     preparatorID TEXT REFERENCES personnel(uuid),
@@ -284,16 +286,21 @@ CREATE TABLE birdMeasurement (
     FOREIGN KEY(specimenUuid) REFERENCES specimen(uuid)
 );
 
-CREATE TABLE part (
+CREATE TABLE specimenPart (
+    id INT UNIQUE PRIMARY KEY AUTOINCREMENT, -- internal id
     specimenUuid TEXT,
-    secondaryID TEXT, -- primary use prep number
-    tertiaryID TEXT,
+    tissueID TEXT,
+    barcodeID TEXT, -- primary use prep number
     type TEXT,
     count TEXT,
     treatment TEXT,
     additionalTreatment TEXT,
+    dateTaken TEXT,
+    timeTaken TEXT,
     museumPermanent TEXT,
-    museumLoan TEXT 
+    museumLoan TEXT,
+    remark TEXT,
+    FOREIGN KEY(specimenUuid) REFERENCES specimen(uuid) 
 );
 
 CREATE TABLE expense (

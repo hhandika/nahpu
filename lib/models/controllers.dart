@@ -198,11 +198,14 @@ class NarrativeFormCtrModel {
 class SpecimenFormCtrModel {
   SpecimenFormCtrModel({
     required this.taxonDataCtr,
+    required this.speciesCtr,
     required this.catalogerCtr,
-    required this.collectorNumberCtr,
+    required this.fieldNumberCtr,
     required this.collEventIDCtr,
+    required this.multipleCollectorCtr,
     required this.collPersonnelCtr,
     required this.captureMethodCtr,
+    required this.relativeTimeCtr,
     required this.preparatorCtr,
     required this.conditionCtr,
     required this.prepDateCtr,
@@ -216,10 +219,13 @@ class SpecimenFormCtrModel {
   String? preparatorCtr;
   String? conditionCtr;
   TaxonData taxonDataCtr;
+  int? speciesCtr;
   int? collEventIDCtr;
+  int? multipleCollectorCtr;
   int? collPersonnelCtr;
   int? captureMethodCtr;
-  TextEditingController collectorNumberCtr;
+  int? relativeTimeCtr;
+  TextEditingController fieldNumberCtr;
   TextEditingController prepDateCtr;
   TextEditingController prepTimeCtr;
   TextEditingController captureDateCtr;
@@ -231,10 +237,13 @@ class SpecimenFormCtrModel {
         preparatorCtr: null,
         conditionCtr: null,
         collEventIDCtr: null,
+        multipleCollectorCtr: null,
         collPersonnelCtr: null,
+        relativeTimeCtr: null,
         captureMethodCtr: null,
-        collectorNumberCtr: TextEditingController(),
+        fieldNumberCtr: TextEditingController(),
         taxonDataCtr: TaxonData(),
+        speciesCtr: null,
         prepDateCtr: TextEditingController(),
         prepTimeCtr: TextEditingController(),
         captureDateCtr: TextEditingController(),
@@ -249,11 +258,14 @@ class SpecimenFormCtrModel {
         preparatorCtr: specimen.preparatorID,
         conditionCtr: specimen.condition,
         collEventIDCtr: specimen.collEventID,
+        multipleCollectorCtr: specimen.isMultipleCollector,
         collPersonnelCtr: specimen.collPersonnelID,
         captureMethodCtr: specimen.collMethodID,
-        collectorNumberCtr:
+        relativeTimeCtr: specimen.isRelativeTime,
+        fieldNumberCtr:
             TextEditingController(text: specimen.fieldNumber?.toString() ?? ''),
         taxonDataCtr: taxonData,
+        speciesCtr: specimen.speciesID,
         prepDateCtr: TextEditingController(text: specimen.prepDate),
         prepTimeCtr: TextEditingController(text: specimen.prepTime),
         captureDateCtr: TextEditingController(text: specimen.captureDate),
@@ -262,7 +274,7 @@ class SpecimenFormCtrModel {
       );
 
   void dispose() {
-    collectorNumberCtr.dispose();
+    fieldNumberCtr.dispose();
     prepDateCtr.dispose();
     prepTimeCtr.dispose();
     captureDateCtr.dispose();
@@ -610,6 +622,78 @@ class BirdMeasurementCtrModel {
   }
 }
 
+class PartFormCtrModel {
+  PartFormCtrModel({
+    required this.tissueIdCtr,
+    required this.barcodeIdCtr,
+    required this.typeCtr,
+    required this.countCtr,
+    required this.treatmentCtr,
+    required this.additionalTreatmentCtr,
+    required this.dateTakenCtr,
+    required this.timeTakenCtr,
+    required this.museumPermanentCtr,
+    required this.museumLoanCtr,
+    required this.remarkCtr,
+  });
+
+  TextEditingController tissueIdCtr;
+  TextEditingController barcodeIdCtr;
+  TextEditingController typeCtr;
+  TextEditingController countCtr;
+  TextEditingController treatmentCtr;
+  TextEditingController additionalTreatmentCtr;
+  TextEditingController dateTakenCtr;
+  TextEditingController timeTakenCtr;
+  TextEditingController museumPermanentCtr;
+  TextEditingController museumLoanCtr;
+  TextEditingController remarkCtr = TextEditingController();
+
+  factory PartFormCtrModel.empty() => PartFormCtrModel(
+        tissueIdCtr: TextEditingController(),
+        barcodeIdCtr: TextEditingController(),
+        typeCtr: TextEditingController(),
+        countCtr: TextEditingController(),
+        treatmentCtr: TextEditingController(),
+        additionalTreatmentCtr: TextEditingController(),
+        dateTakenCtr: TextEditingController(),
+        timeTakenCtr: TextEditingController(),
+        museumPermanentCtr: TextEditingController(),
+        museumLoanCtr: TextEditingController(),
+        remarkCtr: TextEditingController(),
+      );
+
+  factory PartFormCtrModel.fromData(SpecimenPartData data) => PartFormCtrModel(
+        tissueIdCtr: TextEditingController(text: data.tissueID ?? ''),
+        barcodeIdCtr: TextEditingController(text: data.barcodeID ?? ''),
+        typeCtr: TextEditingController(text: data.type ?? ''),
+        countCtr: TextEditingController(text: data.count?.toString() ?? ''),
+        treatmentCtr: TextEditingController(text: data.treatment ?? ''),
+        additionalTreatmentCtr:
+            TextEditingController(text: data.additionalTreatment ?? ''),
+        dateTakenCtr: TextEditingController(text: data.dateTaken ?? ''),
+        timeTakenCtr: TextEditingController(text: data.timeTaken ?? ''),
+        museumPermanentCtr:
+            TextEditingController(text: data.museumPermanent ?? ''),
+        museumLoanCtr: TextEditingController(text: data.museumLoan ?? ''),
+        remarkCtr: TextEditingController(text: data.remark ?? ''),
+      );
+
+  void dispose() {
+    tissueIdCtr.dispose();
+    barcodeIdCtr.dispose();
+    typeCtr.dispose();
+    countCtr.dispose();
+    treatmentCtr.dispose();
+    additionalTreatmentCtr.dispose();
+    dateTakenCtr.dispose();
+    timeTakenCtr.dispose();
+    museumPermanentCtr.dispose();
+    museumLoanCtr.dispose();
+    remarkCtr.dispose();
+  }
+}
+
 class PersonnelFormCtrModel {
   PersonnelFormCtrModel({
     required this.nameCtr,
@@ -886,5 +970,28 @@ class CollWeatherCtrModel {
     sunriseTimeCtr.dispose();
     sunsetTimeCtr.dispose();
     noteCtr.dispose();
+  }
+}
+
+class ExportCtrModel {
+  ExportCtrModel({
+    required this.formatCtr,
+    required this.pathCtr,
+    required this.fileNameCtr,
+  });
+
+  TextEditingController formatCtr;
+  TextEditingController pathCtr;
+  TextEditingController fileNameCtr;
+
+  factory ExportCtrModel.empty() => ExportCtrModel(
+      formatCtr: TextEditingController(),
+      pathCtr: TextEditingController(),
+      fileNameCtr: TextEditingController());
+
+  void dispose() {
+    formatCtr.dispose();
+    pathCtr.dispose();
+    fileNameCtr.dispose();
   }
 }

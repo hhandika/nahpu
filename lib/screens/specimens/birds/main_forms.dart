@@ -12,9 +12,11 @@ import 'package:nahpu/screens/specimens/shared/specimen_parts.dart';
 import 'package:nahpu/screens/specimens/shared/taxa.dart';
 
 class BirdForms extends ConsumerStatefulWidget {
-  const BirdForms(
-      {Key? key, required this.specimenUuid, required this.specimenCtr})
-      : super(key: key);
+  const BirdForms({
+    super.key,
+    required this.specimenUuid,
+    required this.specimenCtr,
+  });
 
   final String specimenUuid;
   final SpecimenFormCtrModel specimenCtr;
@@ -52,8 +54,9 @@ class BirdFormsState extends ConsumerState<BirdForms> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       TaxonomicForm(
-                          useHorizontalLayout: useHorizontalLayout,
-                          taxonData: widget.specimenCtr.taxonDataCtr),
+                        useHorizontalLayout: useHorizontalLayout,
+                        specimenUuid: widget.specimenUuid,
+                      ),
                       CaptureRecordFields(
                         specimenUuid: widget.specimenUuid,
                         useHorizontalLayout: useHorizontalLayout,
@@ -70,7 +73,7 @@ class BirdFormsState extends ConsumerState<BirdForms> {
                       useHorizontalLayout: useHorizontalLayout,
                       specimenUuid: widget.specimenUuid),
                   PartDataForm(
-                    specimenCtr: widget.specimenCtr,
+                    specimenUuid: widget.specimenUuid,
                     catalogFmt: CatalogFmt.birds,
                   ),
                 ],

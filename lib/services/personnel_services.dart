@@ -19,6 +19,20 @@ class PersonnelServices {
     PersonnelQuery(db).updatePersonnelEntry(uuid, personnel);
   }
 
+  void updateAllCatalogerFieldNumbers() async {
+    List<PersonnelData> allPersonnel = [];
+    ref.read(personnelListProvider).whenData((value) => allPersonnel = value);
+    for (PersonnelData person in allPersonnel) {
+      await PersonnelQuery(ref.read(databaseProvider))
+          .updateCatalogerFieldNumber(person.uuid);
+    }
+  }
+
+  Future<int?> getCurrentPersonnelFieldNumber(String personnelUuid) async {
+    final db = ref.read(databaseProvider);
+    return await PersonnelQuery(db).getCurrentFieldNumberByUuid(personnelUuid);
+  }
+
   Future<PersonnelData> getPersonnelByUuid(String uuid) async {
     final db = ref.read(databaseProvider);
     return await PersonnelQuery(db).getPersonnelByUuid(uuid);

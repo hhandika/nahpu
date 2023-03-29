@@ -19,6 +19,30 @@ class SpecimenQuery extends DatabaseAccessor<Database>
         .get();
   }
 
+  Future<int?> getSpecimenByUuid(String uuid) async {
+    SpecimenData? specimenData =
+        await (select(specimen)..where((t) => t.uuid.equals(uuid))).getSingle();
+
+    return specimenData.speciesID;
+  }
+
+  Future<SpecimenData?> getLastCatFieldNumber(
+      String projectUuid, String specimenUuid, String catalogerUuid) async {
+    try {
+      return await (select(specimen)
+            ..where((t) => t.projectUuid.equals(projectUuid))
+            ..where((t) => t.uuid.equals(specimenUuid))
+            ..where((t) => t.catalogerID.equals(catalogerUuid))
+            ..orderBy([
+              (t) => OrderingTerm(
+                  expression: t.fieldNumber, mode: OrderingMode.desc)
+            ]))
+          .getSingle();
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<void> deleteSpecimen(String uuid) {
     return (delete(specimen)..where((t) => t.uuid.equals(uuid))).go();
   }
@@ -74,5 +98,38 @@ class BirdSpecimenQuery extends DatabaseAccessor<Database>
     return await (select(birdMeasurement)
           ..where((t) => t.specimenUuid.equals(specimenUuid)))
         .getSingle();
+  }
+}
+
+class SpecimenPartQuery extends DatabaseAccessor<Database>
+    with _$SpecimenQueryMixin {
+  SpecimenPartQuery(Database db) : super(db);
+
+  Future<int> createSpecimenPart(SpecimenPartCompanion form) =>
+      into(specimenPart).insert(form);
+
+  Future<List<SpecimenPartData>> getSpecimenParts(String specimenUuid) {
+    return (select(specimenPart)
+          ..where((t) => t.specimenUuid.equals(specimenUuid)))
+        .get();
+  }
+
+  Future<void> updateSpecimenPart(int id, SpecimenPartCompanion entry) {
+    return (update(specimenPart)..where((t) => t.id.equals(id))).write(entry);
+  }
+
+  Future<void> deleteSpecimenPart(int partId) {
+    return (delete(specimenPart)..where((t) => t.id.equals(partId))).go();
+  }
+
+  Future<void> deleteAllSpecimenParts(String specimenUuid) {
+    return (delete(specimenPart)
+          ..where((t) => t.specimenUuid.equals(specimenUuid)))
+        .go();
+  }
+
+  Future updateSpecimenPartEntry(String uuid, SpecimenPartCompanion entry) {
+    return (update(specimenPart)..where((t) => t.specimenUuid.equals(uuid)))
+        .write(entry);
   }
 }
