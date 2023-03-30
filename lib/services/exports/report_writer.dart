@@ -5,6 +5,7 @@ import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/specimen_queries.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
+import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/site_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/exports/common.dart';
@@ -21,14 +22,17 @@ class SpeciesListWriter {
     File file = File(filePath);
     IOSink writer = file.openWrite();
     writer.write(
-        'fieldNumber,family,species,preparation,condition,site,habitatType$endLine');
+        'cataloger,fieldID,preparator,family,species,preparation,condition,site,habitatType$endLine');
     for (var element in specimenList) {
+      String cataloger = await _getCatalogerName(element.catalogerID);
       String fieldId = '${element.fieldNumber ?? ''}';
+      String preparator = await _getPreparatorName(element.preparatorID);
       String species = await _getSpeciesName(element.speciesID);
       String parts = await _getPartList(element.uuid);
       String condition = element.condition ?? '';
       String collId = await _getCollEventName(element.collEventID);
-      writer.write('$fieldId,$species,$parts,$condition,$collId$endLine');
+      writer.write(
+          '$cataloger$fieldId,$preparator,$species,$parts,$condition,$collId$endLine');
     }
 
     writer.close();
@@ -42,6 +46,26 @@ class SpeciesListWriter {
           .getTaxonById(speciesId);
 
       return '${taxon.taxonFamily},${taxon.genus} ${taxon.specificEpithet}';
+    }
+  }
+
+  Future<String> _getCatalogerName(String? catalogerUuid) async {
+    if (catalogerUuid == null) {
+      return '';
+    } else {
+      PersonnelData person =
+          await PersonnelServices(ref).getPersonnelByUuid(catalogerUuid);
+      return '${person.name},${person.initial}';
+    }
+  }
+
+  Future<String> _getPreparatorName(String? preparatorUuid) async {
+    if (preparatorUuid == null) {
+      return '';
+    } else {
+      PersonnelData person =
+          await PersonnelServices(ref).getPersonnelByUuid(preparatorUuid);
+      return '${person.name}';
     }
   }
 
