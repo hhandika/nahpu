@@ -34,7 +34,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
           icon: Icon(
             Icons.dashboard_rounded,
           ),
-          label: 'Dahsboard',
+          label: 'Dashboard',
         ),
         NavigationDestination(
           icon: Icon(
