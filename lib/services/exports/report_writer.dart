@@ -106,7 +106,7 @@ class SpeciesListWriter {
         return '';
       } else {
         String siteDetails = '${data.country}: ${data.stateProvince};'
-            ' ${data.county};${data.municipality};${data.locality}';
+            ' ${data.county}; ${data.municipality}; ${data.locality}';
         return '${data.siteID},${data.habitatType},"$siteDetails"';
       }
     }
