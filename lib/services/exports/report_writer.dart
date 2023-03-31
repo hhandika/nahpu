@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/models/mammals.dart';
+import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database/database.dart';
@@ -21,8 +23,15 @@ class SpeciesListWriter {
 
     File file = File(filePath);
     IOSink writer = file.openWrite();
-    writer.write(
-        'cataloger,fieldID,preparator,family,species,preparation,condition,site,habitatType$endLine');
+    String mainHeader =
+        'cataloger,fieldID,preparator,family,species,preparation,condition';
+    String siteHeader = 'site,habitatType,locality';
+    String measureHeader =
+        'TotalLength,TailLength,HindFootLength,EarLength,Weight,Accuracy,'
+        'age,sex,testisPos,testisSize,'
+        'ovaryOpening,MammaeCondition,MammaeFormula';
+    writer.write('$mainHeader,$siteHeader,$measureHeader$endLine');
+
     for (var element in specimenList) {
       String cataloger = await _getCatalogerName(element.catalogerID);
       String fieldId = '${element.fieldNumber ?? ''}';
@@ -31,8 +40,11 @@ class SpeciesListWriter {
       String parts = await _getPartList(element.uuid);
       String condition = element.condition ?? '';
       String collId = await _getCollEventName(element.collEventID);
-      writer.write(
-          '$cataloger$fieldId,$preparator,$species,$parts,$condition,$collId$endLine');
+      String measurement =
+          await _getMeasurement(element.taxonGroup, element.uuid);
+      String mainLine =
+          '$cataloger$fieldId,$preparator,$species,$parts,$condition,$collId';
+      writer.write('$mainLine,$measurement$endLine');
     }
 
     writer.close();
@@ -88,12 +100,14 @@ class SpeciesListWriter {
     if (siteId == null) {
       return '';
     } else {
-      SiteData? siteData = await SiteServices(ref).getSite(siteId);
+      SiteData? data = await SiteServices(ref).getSite(siteId);
 
-      if (siteData == null) {
+      if (data == null) {
         return '';
       } else {
-        return '${siteData.siteID},${siteData.habitatType}';
+        String siteDetails = '${data.country}: ${data.stateProvince};'
+            ' ${data.county};${data.municipality};${data.locality}';
+        return '${data.siteID},${data.habitatType},"$siteDetails"';
       }
     }
   }
@@ -103,5 +117,40 @@ class SpeciesListWriter {
         await SpecimenPartQuery(ref.read(databaseProvider))
             .getSpecimenParts(specimenUuid);
     return partList.map((e) => '[${e.type}: ${e.treatment}]').join(';');
+  }
+
+  Future<String> _getMeasurement(
+      String? taxonGroup, String? specimenUuid) async {
+    CatalogFmt catalogFmt = matchTaxonGroupToCatFmt(taxonGroup);
+
+    switch (catalogFmt) {
+      case CatalogFmt.generalMammals:
+        return await _getMeasurementGeneralMammals(specimenUuid);
+      case CatalogFmt.birds:
+        return ' ';
+      default:
+        return ' ';
+    }
+  }
+
+  Future<String> _getMeasurementGeneralMammals(String? specimenUuid) async {
+    if (specimenUuid != null) {
+      MammalMeasurementData data =
+          await SpecimenServices(ref).getMammalMeasurementData(specimenUuid);
+      String measurement = '${data.totalLength ?? ''},${data.tailLength ?? ''},'
+          '${data.hindFootLength ?? ''},${data.earLength ?? ''},'
+          '${data.weight ?? ''}';
+      String accuracy = data.accuracy ?? '';
+      String maleGonad =
+          '${data.testisPosition ?? ''},${data.testisLength ?? ''} x ${data.testisWidth ?? ''}mm';
+      String femaleGonad =
+          '${data.vaginaOpening ?? ''},${data.mammaeCondition},'
+          '${data.mammaeInguinalCount ?? ''} ing;${data.mammaeAbdominalCount ?? ''} abd;${data.mammaeAxillaryCount ?? ''} ax';
+      String age = data.age != null ? specimenAgeList[data.age!] : '';
+      String sex = data.sex != null ? specimenSexList[data.sex!] : '';
+      return '$measurement,$accuracy,$age,$sex,$maleGonad,$femaleGonad';
+    } else {
+      return ',,';
+    }
   }
 }
