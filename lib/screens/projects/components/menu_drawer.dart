@@ -49,16 +49,6 @@ class ProjectMenuDrawer extends ConsumerWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.save_rounded),
-            title: const Text('Save project as'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Home()),
-              );
-            },
-          ),
-          ListTile(
             leading: const Icon(Icons.table_view_rounded),
             title: const Text('Create report'),
             onTap: () {
@@ -81,6 +71,17 @@ class ProjectMenuDrawer extends ConsumerWidget {
           ListTile(
             leading: const Icon(Icons.share_rounded),
             title: const Text('Export to ...'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ExportForm()),
+              );
+            },
+          ),
+          const Divider(color: Colors.grey),
+          ListTile(
+            leading: const Icon(Icons.storage_rounded),
+            title: const Text('Backup database'),
             onTap: () {
               Navigator.push(
                 context,
