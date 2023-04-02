@@ -56,23 +56,23 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                 title: const Text('Relative time'),
                 controlAffinity: ListTileControlAffinity.leading,
               ),
-              CheckboxListTile(
-                  value: _getCheckBoxValue(
-                      widget.specimenCtr.multipleCollectorCtr),
-                  onChanged: (bool? value) {
-                    setState(() {
-                      if (value != null) {
-                        int newValue = value ? 1 : 0;
-                        widget.specimenCtr.multipleCollectorCtr = newValue;
-                        _updateSpecimen(
-                          SpecimenCompanion(
-                              isMultipleCollector: db.Value(newValue)),
-                        );
-                      }
-                    });
-                  },
-                  title: const Text('Multiple collectors'),
-                  controlAffinity: ListTileControlAffinity.leading),
+              // CheckboxListTile(
+              //     value: _getCheckBoxValue(
+              //         widget.specimenCtr.multipleCollectorCtr),
+              //     onChanged: (bool? value) {
+              //       setState(() {
+              //         if (value != null) {
+              //           int newValue = value ? 1 : 0;
+              //           widget.specimenCtr.multipleCollectorCtr = newValue;
+              //           _updateSpecimen(
+              //             SpecimenCompanion(
+              //                 isMultipleCollector: db.Value(newValue)),
+              //           );
+              //         }
+              //       });
+              //     },
+              //     title: const Text('Multiple collectors'),
+              //     controlAffinity: ListTileControlAffinity.leading),
             ],
           ),
           Padding(
@@ -137,40 +137,40 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
           AdaptiveLayout(
               useHorizontalLayout: widget.useHorizontalLayout,
               children: [
-                DropdownButtonFormField<int>(
-                    value: widget.specimenCtr.collPersonnelCtr,
-                    decoration: const InputDecoration(
-                      labelText: 'Collected by',
-                      hintText: 'Choose a person',
-                    ),
-                    items: widget.specimenCtr.collEventIDCtr != null
-                        ? ref
-                            .watch(collPersonnelProvider(
-                                widget.specimenCtr.collEventIDCtr!))
-                            .when(
-                              data: (data) {
-                                return data.map((person) {
-                                  return DropdownMenuItem(
-                                      value: person.id,
-                                      child: PersonnelName(
-                                        personnelUuid: person.personnelId,
-                                      ));
-                                }).toList();
-                              },
-                              loading: () => const [],
-                              error: (e, s) => const [],
-                            )
-                        : [],
-                    onChanged: (int? newValue) {
-                      setState(() {
-                        widget.specimenCtr.collPersonnelCtr = newValue;
-                        _updateSpecimen(
-                          SpecimenCompanion(
-                            collPersonnelID: db.Value(newValue),
-                          ),
-                        );
-                      });
-                    }),
+                // DropdownButtonFormField<int>(
+                //     value: widget.specimenCtr.collPersonnelCtr,
+                //     decoration: const InputDecoration(
+                //       labelText: 'Collected by',
+                //       hintText: 'Choose a person',
+                //     ),
+                //     items: widget.specimenCtr.collEventIDCtr != null
+                //         ? ref
+                //             .watch(collPersonnelProvider(
+                //                 widget.specimenCtr.collEventIDCtr!))
+                //             .when(
+                //               data: (data) {
+                //                 return data.map((person) {
+                //                   return DropdownMenuItem(
+                //                       value: person.id,
+                //                       child: PersonnelName(
+                //                         personnelUuid: person.personnelId,
+                //                       ));
+                //                 }).toList();
+                //               },
+                //               loading: () => const [],
+                //               error: (e, s) => const [],
+                //             )
+                //         : [],
+                //     onChanged: (int? newValue) {
+                //       setState(() {
+                //         widget.specimenCtr.collPersonnelCtr = newValue;
+                //         _updateSpecimen(
+                //           SpecimenCompanion(
+                //             collPersonnelID: db.Value(newValue),
+                //           ),
+                //         );
+                //       });
+                //     }),
                 DropdownButtonFormField<int?>(
                     value: widget.specimenCtr.captureMethodCtr,
                     decoration: const InputDecoration(
