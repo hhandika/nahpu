@@ -99,13 +99,6 @@ class SpecimenPartFields extends ConsumerWidget {
           },
           text: 'Add Part',
         ),
-        TextFormField(
-          maxLines: 5,
-          decoration: const InputDecoration(
-            labelText: 'Notes',
-            hintText: 'Add notes',
-          ),
-        ),
       ],
     );
   }
