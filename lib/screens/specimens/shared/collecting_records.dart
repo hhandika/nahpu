@@ -56,7 +56,7 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
           PersonnelRecords(
               specimenUuid: widget.specimenUuid,
               specimenCtr: widget.specimenCtr),
-          Platform.isMacOS
+          Platform.isWindows
               ? SpeciesAutoComplete(
                   controller: speciesCtr,
                   onSelected: (String value) {
