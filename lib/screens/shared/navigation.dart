@@ -107,7 +107,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
         ref.invalidate(narrativeEntryProvider);
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const NarrativeView()),
+          MaterialPageRoute(builder: (context) => const Narrative()),
         );
         break;
     }
