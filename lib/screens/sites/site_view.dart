@@ -88,7 +88,7 @@ class SitesState extends ConsumerState<Sites> {
       ),
       bottomSheet: Visibility(
           visible: _isVisible,
-          child: CustomPageNavButton(
+          child: PageNavButton(
             pageController: pageController,
             pageNav: _pageNav,
           )),

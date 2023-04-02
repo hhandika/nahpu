@@ -92,7 +92,7 @@ class CollEventsState extends ConsumerState<CollEvents> {
       ),
       bottomSheet: Visibility(
         visible: _isVisible,
-        child: CustomPageNavButton(
+        child: PageNavButton(
           pageController: pageController,
           pageNav: _pageNav,
         ),

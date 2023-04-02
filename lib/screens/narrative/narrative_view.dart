@@ -95,7 +95,7 @@ class NarrativeState extends ConsumerState<Narrative> {
       ),
       bottomSheet: Visibility(
         visible: isVisible,
-        child: CustomPageNavButton(
+        child: PageNavButton(
           pageController: pageController,
           pageNav: _pageNav,
         ),

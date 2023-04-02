@@ -122,10 +122,10 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
   }
 }
 
-class CustomPageNavButton extends ConsumerWidget {
+class PageNavButton extends ConsumerWidget {
   final Curve _curve = Curves.easeInOut;
 
-  const CustomPageNavButton({
+  const PageNavButton({
     Key? key,
     required this.pageController,
     required this.pageNav,

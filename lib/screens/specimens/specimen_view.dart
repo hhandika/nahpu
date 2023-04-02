@@ -104,7 +104,7 @@ class SpecimensState extends ConsumerState<Specimens> {
       ),
       bottomSheet: Visibility(
         visible: isVisible,
-        child: CustomPageNavButton(
+        child: PageNavButton(
           pageController: pageController,
           pageNav: _pageNav,
         ),
