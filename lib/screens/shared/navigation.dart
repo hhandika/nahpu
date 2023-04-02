@@ -107,7 +107,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
         ref.invalidate(narrativeEntryProvider);
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const Narrative()),
+          MaterialPageRoute(builder: (context) => const NarrativeView()),
         );
         break;
     }
@@ -122,9 +122,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
   }
 }
 
-class PageNavButton extends ConsumerWidget {
-  final Curve _curve = Curves.easeInOut;
-
+class PageNavButton extends ConsumerStatefulWidget {
   const PageNavButton({
     Key? key,
     required this.pageController,
@@ -135,64 +133,156 @@ class PageNavButton extends ConsumerWidget {
   final PageNavigation pageNav;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  PageNavButtonState createState() => PageNavButtonState();
+}
+
+class PageNavButtonState extends ConsumerState<PageNavButton> {
+  final Curve _curve = Curves.easeInOut;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.1,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextButton(
-            onPressed: pageNav.isFirstPage
-                ? null
-                : () {
-                    if (pageController.hasClients) {
-                      pageController.jumpToPage(0);
-                    }
-                  },
-            child: const Icon(Icons.keyboard_double_arrow_left),
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.1,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton(
+              onPressed: widget.pageNav.isFirstPage
+                  ? null
+                  : () {
+                      if (widget.pageController.hasClients) {
+                        widget.pageController.animateToPage(0,
+                            duration: kTabScrollDuration, curve: _curve);
+                      }
+                    },
+              child: const Icon(Icons.keyboard_double_arrow_left),
+            ),
+            TextButton(
+              onPressed: widget.pageNav.isFirstPage
+                  ? null
+                  : () {
+                      if (widget.pageController.hasClients) {
+                        widget.pageController.previousPage(
+                            duration: kTabScrollDuration, curve: _curve);
+                      }
+                    },
+              child: const Icon(Icons.navigate_before),
+            ),
+            TextButton(
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) => NavSheet(
+                    pageNav: widget.pageNav,
+                    pageController: widget.pageController,
+                  ),
+                );
+              },
+              child: const Icon(Icons.circle_outlined),
+            ),
+            TextButton(
+              onPressed: widget.pageNav.isLastPage
+                  ? null
+                  : () {
+                      if (widget.pageController.hasClients) {
+                        widget.pageController.nextPage(
+                            duration: kTabScrollDuration, curve: _curve);
+                      }
+                    },
+              child: const Icon(Icons.navigate_next),
+            ),
+            TextButton(
+              onPressed: widget.pageNav.isLastPage
+                  ? null
+                  : () {
+                      if (widget.pageController.hasClients) {
+                        widget.pageController.animateToPage(
+                            widget.pageNav.pageCounts - 1,
+                            duration: kTabScrollDuration,
+                            curve: _curve);
+                      }
+                    },
+              child: const Icon(Icons.keyboard_double_arrow_right),
+            )
+          ],
+        ));
+  }
+}
+
+class PageInfo extends StatelessWidget {
+  const PageInfo({super.key, required this.pageNav});
+
+  final PageNavigation pageNav;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'Page ${pageNav.currentPage} of ${pageNav.pageCounts}',
+      style: Theme.of(context).textTheme.bodyMedium,
+    );
+  }
+}
+
+class NavSheet extends ConsumerStatefulWidget {
+  const NavSheet({
+    Key? key,
+    required this.pageController,
+    required this.pageNav,
+  }) : super(key: key);
+
+  final PageController pageController;
+  final PageNavigation pageNav;
+
+  @override
+  NavSheetState createState() => NavSheetState();
+}
+
+class NavSheetState extends ConsumerState<NavSheet> {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.2,
+      child: Center(
+        child: Column(children: [
+          const SizedBox(
+            height: 10,
           ),
-          TextButton(
-            onPressed: pageNav.isFirstPage
-                ? null
-                : () {
-                    if (pageController.hasClients) {
-                      pageController.previousPage(
-                          duration: kTabScrollDuration, curve: _curve);
-                    }
-                  },
-            child: const Icon(Icons.navigate_before),
-          ),
-          FittedBox(
-            child: Text(
-              'Page ${pageNav.currentPage} of ${pageNav.pageCounts}',
-              style: Theme.of(context).textTheme.bodyMedium,
+          Container(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.height * 0.2,
+            ),
+            child: TextField(
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Jump to page',
+              ),
+              keyboardType: TextInputType.number,
+              onSubmitted: (String value) {
+                if (widget.pageController.hasClients) {
+                  setState(() {
+                    int pageNum = int.parse(value);
+                    int targetPage = pageNum > widget.pageNav.pageCounts
+                        ? widget.pageNav.pageCounts - 1
+                        : pageNum - 1;
+                    widget.pageController.animateToPage(targetPage,
+                        duration: kTabScrollDuration, curve: Curves.easeInOut);
+                  });
+                  Navigator.pop(context);
+                }
+              },
             ),
           ),
-          TextButton(
-            onPressed: pageNav.isLastPage
-                ? null
-                : () {
-                    if (pageController.hasClients) {
-                      pageController.nextPage(
-                          duration: kTabScrollDuration, curve: _curve);
-                    }
-                  },
-            child: const Icon(Icons.navigate_next),
+          const SizedBox(
+            height: 10,
           ),
-          TextButton(
-            onPressed: pageNav.isLastPage
-                ? null
-                : () {
-                    if (pageController.hasClients) {
-                      pageController.jumpToPage(pageNav.pageCounts - 1);
-                    }
-                  },
-            child: const Icon(Icons.keyboard_double_arrow_right),
-          )
-        ],
+          Text(
+            'Page ${widget.pageNav.currentPage} of ${widget.pageNav.pageCounts}',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        ]),
       ),
     );
   }
