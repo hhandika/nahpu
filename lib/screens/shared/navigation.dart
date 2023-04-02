@@ -136,7 +136,6 @@ class CustomPageNavButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final page = ref.watch(pageNavigationProvider);
     return Container(
       constraints: BoxConstraints(
         maxHeight: MediaQuery.of(context).size.height * 0.1,
@@ -145,6 +144,16 @@ class CustomPageNavButton extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          TextButton(
+            onPressed: pageNav.isFirstPage
+                ? null
+                : () {
+                    if (pageController.hasClients) {
+                      pageController.jumpToPage(0);
+                    }
+                  },
+            child: const Icon(Icons.keyboard_double_arrow_left),
+          ),
           TextButton(
             onPressed: pageNav.isFirstPage
                 ? null
@@ -173,6 +182,16 @@ class CustomPageNavButton extends ConsumerWidget {
                   },
             child: const Icon(Icons.navigate_next),
           ),
+          TextButton(
+            onPressed: pageNav.isLastPage
+                ? null
+                : () {
+                    if (pageController.hasClients) {
+                      pageController.jumpToPage(pageNav.pageCounts - 1);
+                    }
+                  },
+            child: const Icon(Icons.keyboard_double_arrow_right),
+          )
         ],
       ),
     );
