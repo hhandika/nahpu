@@ -6,7 +6,7 @@ enum CatalogFmt { generalMammals, birds, bats }
 
 enum CommonPopUpMenuItems { edit, delete }
 
-enum ExportFormat { excel, csv, tsv, json }
+enum ExportFmt { excel, csv, tsv, json }
 
 const List<String> exportFormats = [
   'Excel (.xlsx)',

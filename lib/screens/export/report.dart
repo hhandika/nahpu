@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/types.dart';
-import 'package:nahpu/screens/exports/csv_export.dart';
+import 'package:nahpu/screens/export/forms.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 
 class ReportForm extends ConsumerStatefulWidget {
@@ -13,7 +13,7 @@ class ReportForm extends ConsumerStatefulWidget {
 }
 
 class ReportFormState extends ConsumerState<ReportForm> {
-  ExportFormat exportFormat = ExportFormat.csv;
+  ExportFmt exportFmt = ExportFmt.csv;
   ExportCtrModel exportCtr = ExportCtrModel.empty();
   String fileName = 'export';
 
@@ -52,8 +52,10 @@ class ReportFormState extends ConsumerState<ReportForm> {
                   }
                 },
               ),
-              CsvForm(
+              CommonExportForm(
+                dirPath: '',
                 fileName: fileName,
+                exportFmt: exportFmt,
               ),
             ],
           ),

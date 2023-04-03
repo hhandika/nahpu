@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
-import 'package:nahpu/screens/exports/exports.dart';
-import 'package:nahpu/screens/exports/report.dart';
+import 'package:nahpu/screens/export/export_to.dart';
+import 'package:nahpu/screens/export/report.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/screens/home/home.dart';
