@@ -83,7 +83,7 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                 labelText: 'Collecting Event ID',
                 hintText: 'Choose a collecting event ID',
               ),
-              items: eventEntry
+              items: eventEntry.reversed
                   .map((event) => DropdownMenuItem(
                         value: event.id,
                         child: Text(event.eventID ?? ''),
