@@ -39,6 +39,7 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Backup database'),
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: ConstrainedBox(
