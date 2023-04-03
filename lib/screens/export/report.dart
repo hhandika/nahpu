@@ -1,9 +1,12 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/screens/export/common.dart';
+import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
+import 'package:nahpu/services/exports/csv_export.dart';
 
 class ReportForm extends ConsumerStatefulWidget {
   const ReportForm({Key? key}) : super(key: key);
@@ -13,9 +16,13 @@ class ReportForm extends ConsumerStatefulWidget {
 }
 
 class ReportFormState extends ConsumerState<ReportForm> {
-  ExportFmt exportFmt = ExportFmt.csv;
+  ReportFmt reportFmt = ReportFmt.csv;
+  ReportType _reportType = ReportType.compact;
   ExportCtrModel exportCtr = ExportCtrModel.empty();
-  String fileName = 'export';
+  String _fileName = 'export';
+  String _selectedDir = '';
+  String _savePath = '';
+  bool _hasSaved = false;
 
   @override
   void initState() {
@@ -33,12 +40,51 @@ class ReportFormState extends ConsumerState<ReportForm> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create a report'),
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 600),
-          child: ListView(
+          child: Column(
             children: [
+              DropdownButtonFormField<ReportType>(
+                value: _reportType,
+                decoration: const InputDecoration(
+                  labelText: 'Type',
+                ),
+                items: reportTypeList
+                    .map((e) => DropdownMenuItem(
+                          value: ReportType.values[reportTypeList.indexOf(e)],
+                          child: Text(e),
+                        ))
+                    .toList(),
+                onChanged: (ReportType? value) {
+                  if (value != null) {
+                    setState(() {
+                      _reportType = value;
+                    });
+                  }
+                },
+              ),
+              DropdownButtonFormField<ReportFmt>(
+                value: reportFmt,
+                decoration: const InputDecoration(
+                  labelText: 'Format',
+                ),
+                items: reportFmtList
+                    .map((e) => DropdownMenuItem(
+                          value: ReportFmt.values[reportFmtList.indexOf(e)],
+                          child: Text(e),
+                        ))
+                    .toList(),
+                onChanged: (ReportFmt? value) {
+                  if (value != null) {
+                    setState(() {
+                      reportFmt = value;
+                    });
+                  }
+                },
+              ),
               CommonTextField(
                 controller: exportCtr.fileNameCtr,
                 labelText: 'File name',
@@ -47,20 +93,70 @@ class ReportFormState extends ConsumerState<ReportForm> {
                 onChanged: (String? value) {
                   if (value != null) {
                     setState(() {
-                      fileName = value;
+                      _fileName = value;
                     });
                   }
                 },
               ),
-              CommonExportForm(
-                dirPath: '',
-                fileName: fileName,
-                exportFmt: exportFmt,
+              SelectDirField(
+                dirPath: _selectedDir,
+                onChanged: _getDir,
+              ),
+              const SizedBox(height: 10),
+              Wrap(
+                spacing: 10,
+                children: [
+                  SaveSecondaryButton(hasSaved: _hasSaved),
+                  PrimaryButton(
+                    text: 'Save',
+                    onPressed: _selectedDir.isEmpty
+                        ? null
+                        : () async {
+                            await _createReport();
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('File saved as $_savePath'),
+                                ),
+                              );
+                            }
+                          },
+                  ),
+                ],
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _createReport() async {
+    try {
+      String savePath = '$_selectedDir/$_fileName.csv';
+      await CsvWriter(ref).writeCsv(savePath);
+      setState(() {
+        _hasSaved = true;
+        _savePath = savePath;
+      });
+    } on PathNotFoundException {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: PathNotFoundText(),
+      ));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: ErrorText(error: e.toString()),
+        ),
+      );
+    }
+  }
+
+  void _getDir(String? path) {
+    if (path != null) {
+      setState(() {
+        _selectedDir = path;
+      });
+    }
   }
 }

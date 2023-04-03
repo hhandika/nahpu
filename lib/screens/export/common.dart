@@ -166,7 +166,7 @@ class SelectDirField extends ConsumerStatefulWidget {
   });
 
   final String dirPath;
-  final void Function(void) onChanged;
+  final void Function(String?) onChanged;
 
   @override
   SelectDirFieldState createState() => SelectDirFieldState();

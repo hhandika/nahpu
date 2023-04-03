@@ -15,8 +15,8 @@ class ExportForm extends ConsumerStatefulWidget {
 class ExportFormState extends ConsumerState<ExportForm> {
   ExportFmt exportFmt = ExportFmt.excel;
   ExportCtrModel exportCtr = ExportCtrModel.empty();
-  String fileName = 'export';
-  String selectedDir = '';
+  String _fileName = 'export';
+  String _selectedDir = '';
 
   @override
   void initState() {
@@ -68,42 +68,16 @@ class ExportFormState extends ConsumerState<ExportForm> {
                 onChanged: (String? value) {
                   if (value != null) {
                     setState(() {
-                      fileName = value;
+                      _fileName = value;
                     });
                   }
                 },
               ),
-              SelectDirField(dirPath: selectedDir, onChanged: _getDir),
-              // Row(
-              //   children: [
-              //     Expanded(
-              //       child: Text(
-              //         'Choose a directory: $selectedDir',
-              //         overflow: TextOverflow.ellipsis,
-              //       ),
-              //     ),
-              //     const SizedBox(width: 10),
-              //     IconButton(
-              //       onPressed: () async {
-              //         final result =
-              //             await FilePicker.platform.getDirectoryPath();
-              //         if (result != null) {
-              //           if (kDebugMode) {
-              //             print('Selected directory: $result');
-              //           }
-              //           setState(() {
-              //             selectedDir = result;
-              //           });
-              //         }
-              //       },
-              //       icon: const Icon(Icons.folder_open_rounded),
-              //     ),
-              //   ],
-              // ),
+              SelectDirField(dirPath: _selectedDir, onChanged: _getDir),
               CommonExportForm(
                 exportFmt: exportFmt,
-                dirPath: selectedDir,
-                fileName: fileName,
+                dirPath: _selectedDir,
+                fileName: _fileName,
               ),
             ],
           ),
@@ -112,9 +86,11 @@ class ExportFormState extends ConsumerState<ExportForm> {
     );
   }
 
-  void _getDir(path) {
-    setState(() {
-      selectedDir = path;
-    });
+  void _getDir(String? path) {
+    if (path != null) {
+      setState(() {
+        _selectedDir = path;
+      });
+    }
   }
 }

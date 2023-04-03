@@ -21,6 +21,20 @@ const List<String> dbExportFmtList = [
   'Database (.sqlite3)',
 ];
 
+enum ReportFmt { excel, csv }
+
+const List<String> reportFmtList = [
+  'Excel (.xlsx)',
+  'Comma-separated (.csv)',
+];
+
+enum ReportType { compact, detailed }
+
+const List<String> reportTypeList = [
+  'Species count (compact)',
+  'Species count (detailed)',
+];
+
 // Database read through index.
 // and stored as integer.
 // DON'T CHANGE ORDER!

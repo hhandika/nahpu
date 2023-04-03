@@ -38,7 +38,7 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Export database'),
+        title: const Text('Backup database'),
       ),
       body: Center(
         child: ConstrainedBox(
@@ -133,9 +133,11 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
     }
   }
 
-  void _getDir(path) {
-    setState(() {
-      _selectedDir = path;
-    });
+  void _getDir(String? path) {
+    if (path != null) {
+      setState(() {
+        _selectedDir = path;
+      });
+    }
   }
 }
