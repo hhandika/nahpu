@@ -172,10 +172,10 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                 //       });
                 //     }),
                 DropdownButtonFormField<int?>(
-                    value: widget.specimenCtr.captureMethodCtr,
+                    value: widget.specimenCtr.collMethodCtr,
                     decoration: const InputDecoration(
-                      labelText: 'Capture Method',
-                      hintText: 'Choose a trap type',
+                      labelText: 'Collecting Method',
+                      hintText: 'Choose a method type',
                     ),
                     items: widget.specimenCtr.collEventIDCtr != null
                         ? ref
@@ -195,11 +195,11 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                         : const [],
                     onChanged: (int? newValue) {
                       setState(() {
-                        widget.specimenCtr.captureMethodCtr = newValue;
+                        widget.specimenCtr.collMethodCtr = newValue;
                         _updateSpecimen(
                           SpecimenCompanion(
                             collMethodID:
-                                db.Value(widget.specimenCtr.captureMethodCtr),
+                                db.Value(widget.specimenCtr.collMethodCtr),
                           ),
                         );
                       });

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nahpu/screens/collecting/components/collecting_personnel.dart';
+import 'package:nahpu/screens/collecting/components/personnel.dart';
 import 'package:nahpu/screens/collecting/components/weather_data.dart';
 import 'package:nahpu/screens/collecting/components/tool_management.dart';
 import 'package:nahpu/screens/shared/forms.dart';

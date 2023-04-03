@@ -11,8 +11,8 @@ import 'package:nahpu/services/database/collevent_queries.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 
-class CollectingEffortFrom extends StatelessWidget {
-  const CollectingEffortFrom({
+class CollMethodForm extends StatelessWidget {
+  const CollMethodForm({
     super.key,
     required this.collEventId,
   });
@@ -22,7 +22,7 @@ class CollectingEffortFrom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FormCard(
-      title: 'Collecting Effort',
+      title: 'Collecting Methods',
       child: SizedBox(
         height: MediaQuery.of(context).size.height * 0.5,
         child: Column(

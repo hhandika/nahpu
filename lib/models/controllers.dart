@@ -204,7 +204,7 @@ class SpecimenFormCtrModel {
     required this.collEventIDCtr,
     required this.multipleCollectorCtr,
     required this.collPersonnelCtr,
-    required this.captureMethodCtr,
+    required this.collMethodCtr,
     required this.relativeTimeCtr,
     required this.preparatorCtr,
     required this.conditionCtr,
@@ -223,7 +223,7 @@ class SpecimenFormCtrModel {
   int? collEventIDCtr;
   int? multipleCollectorCtr;
   int? collPersonnelCtr;
-  int? captureMethodCtr;
+  int? collMethodCtr;
   int? relativeTimeCtr;
   TextEditingController fieldNumberCtr;
   TextEditingController prepDateCtr;
@@ -240,7 +240,7 @@ class SpecimenFormCtrModel {
         multipleCollectorCtr: null,
         collPersonnelCtr: null,
         relativeTimeCtr: null,
-        captureMethodCtr: null,
+        collMethodCtr: null,
         fieldNumberCtr: TextEditingController(),
         taxonDataCtr: TaxonData(),
         speciesCtr: null,
@@ -260,7 +260,7 @@ class SpecimenFormCtrModel {
         collEventIDCtr: specimen.collEventID,
         multipleCollectorCtr: specimen.isMultipleCollector,
         collPersonnelCtr: specimen.collPersonnelID,
-        captureMethodCtr: specimen.collMethodID,
+        collMethodCtr: specimen.collMethodID,
         relativeTimeCtr: specimen.isRelativeTime,
         fieldNumberCtr:
             TextEditingController(text: specimen.fieldNumber?.toString() ?? ''),
