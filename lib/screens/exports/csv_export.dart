@@ -9,10 +9,12 @@ import 'package:nahpu/services/exports/csv_export.dart';
 import 'package:share_plus/share_plus.dart';
 
 class CsvForm extends ConsumerStatefulWidget {
-  const CsvForm({super.key, required this.fileName, required this.isDb});
+  const CsvForm({
+    super.key,
+    required this.fileName,
+  });
 
   final String fileName;
-  final bool isDb;
   @override
   CsvFormState createState() => CsvFormState();
 }
@@ -48,12 +50,7 @@ class CsvFormState extends ConsumerState<CsvForm> {
                   }
                   setState(() {
                     selectedDir = result;
-                    String path = '$selectedDir/${widget.fileName}.csv';
-                    if (widget.isDb) {
-                      finalPath = '$selectedDir/${widget.fileName}.sqlite3';
-                    } else {
-                      finalPath = '$selectedDir/${widget.fileName}.csv';
-                    }
+                    finalPath = '$selectedDir/${widget.fileName}.csv';
                   });
                 }
               },
@@ -73,7 +70,7 @@ class CsvFormState extends ConsumerState<CsvForm> {
             PrimaryButton(
                 text: 'Save',
                 onPressed: () {
-                  widget.isDb ? _writeDb() : _writeCsv();
+                  _writeCsv();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('File saved as $finalPath'),

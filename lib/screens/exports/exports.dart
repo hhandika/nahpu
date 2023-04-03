@@ -73,7 +73,6 @@ class ExportFormState extends ConsumerState<ExportForm> {
               ),
               CsvForm(
                 fileName: fileName,
-                isDb: exportFormat == ExportFormat.db,
               ),
             ],
           ),

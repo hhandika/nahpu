@@ -6,14 +6,19 @@ enum CatalogFmt { generalMammals, birds, bats }
 
 enum CommonPopUpMenuItems { edit, delete }
 
-enum ExportFormat { excel, csv, tsv, db, json }
+enum ExportFormat { excel, csv, tsv, json }
 
 const List<String> exportFormats = [
   'Excel (.xlsx)',
   'Comma-separated (.csv)',
   'Tab-separated (.tsv)',
-  'Database (.sqlite3)',
   'JSON (.json)',
+];
+
+enum DbExportFormat { sqlite3 }
+
+const List<String> dbExportFmtList = [
+  'Database (.sqlite3)',
 ];
 
 // Database read through index.

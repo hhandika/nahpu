@@ -54,7 +54,6 @@ class ReportFormState extends ConsumerState<ReportForm> {
               ),
               CsvForm(
                 fileName: fileName,
-                isDb: exportFormat == ExportFormat.db,
               ),
             ],
           ),
