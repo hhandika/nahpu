@@ -15,7 +15,7 @@ const List<String> exportFormats = [
   'JSON (.json)',
 ];
 
-enum DbExportFormat { sqlite3 }
+enum DbExportFmt { sqlite3 }
 
 const List<String> dbExportFmtList = [
   'Database (.sqlite3)',

@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,7 +25,7 @@ class CommonExportForm extends ConsumerStatefulWidget {
 }
 
 class CsvFormState extends ConsumerState<CommonExportForm> {
-  bool hasSaved = false;
+  bool _hasSaved = false;
   String _finalPath = '';
 
   @override
@@ -39,24 +41,22 @@ class CsvFormState extends ConsumerState<CommonExportForm> {
         Wrap(
           spacing: 10,
           children: [
-            SecondaryButton(
-              text: hasSaved ? 'Exit' : 'Cancel',
-              onPressed: () async {
-                Navigator.of(context).pop();
-              },
-            ),
+            SaveSecondaryButton(hasSaved: _hasSaved),
             PrimaryButton(
-                text: 'Save',
-                onPressed: () async {
-                  await _exportFile();
-                  if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('File saved as $_finalPath'),
-                      ),
-                    );
-                  }
-                }),
+              text: 'Save',
+              onPressed: widget.dirPath.isEmpty
+                  ? null
+                  : () async {
+                      await _exportFile();
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('File saved as $_finalPath'),
+                          ),
+                        );
+                      }
+                    },
+            ),
           ],
         )
       ],
@@ -85,24 +85,6 @@ class CsvFormState extends ConsumerState<CommonExportForm> {
     return path.join(widget.dirPath, fileName);
   }
 
-  // Future<void> _writeDb() async {
-  //   try {
-  //     await DbWriter(ref).writeDb(widget.filePath);
-  //   } on PathNotFoundException {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(
-  //         content: Text('Please select a directory'),
-  //       ),
-  //     );
-  //   } catch (e) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text('Something went wrong: $e'),
-  //       ),
-  //     );
-  //   }
-  // }
-
   Future<void> _writeExcel() async {
     await _writeCsv();
   }
@@ -113,19 +95,17 @@ class CsvFormState extends ConsumerState<CommonExportForm> {
       String savePath = _createSavePath(fileName);
       await CsvWriter(ref).writeCsv(savePath);
       setState(() {
-        hasSaved = true;
+        _hasSaved = true;
         _finalPath = savePath;
       });
     } on PathNotFoundException {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please select a directory'),
-        ),
-      );
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: PathNotFoundText(),
+      ));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Something went wrong: $e'),
+          content: ErrorText(error: e.toString()),
         ),
       );
     }
@@ -138,4 +118,93 @@ class CsvFormState extends ConsumerState<CommonExportForm> {
   //       text: 'Share',
   //       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
   // }
+}
+
+class SaveSecondaryButton extends StatelessWidget {
+  const SaveSecondaryButton({
+    super.key,
+    required this.hasSaved,
+  });
+
+  final bool hasSaved;
+  @override
+  Widget build(BuildContext context) {
+    return SecondaryButton(
+      text: hasSaved ? 'Exit' : 'Cancel',
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+  }
+}
+
+class ErrorText extends StatelessWidget {
+  const ErrorText({super.key, required this.error});
+
+  final String error;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('Something went wrong: $error');
+  }
+}
+
+class PathNotFoundText extends StatelessWidget {
+  const PathNotFoundText({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('Please select a directory');
+  }
+}
+
+class SelectDirField extends ConsumerStatefulWidget {
+  const SelectDirField({
+    super.key,
+    required this.dirPath,
+    required this.onChanged,
+  });
+
+  final String dirPath;
+  final void Function(void) onChanged;
+
+  @override
+  SelectDirFieldState createState() => SelectDirFieldState();
+}
+
+class SelectDirFieldState extends ConsumerState<SelectDirField> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            'Choose a directory: ${widget.dirPath}',
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        const SizedBox(width: 10),
+        IconButton(
+          icon: const Icon(Icons.folder),
+          onPressed: () async {
+            final dir = await _selectDir();
+            if (dir != null) {
+              widget.onChanged(dir.path);
+            }
+          },
+        ),
+      ],
+    );
+  }
+
+  Future<Directory?> _selectDir() async {
+    final result = await FilePicker.platform.getDirectoryPath();
+    if (result != null) {
+      if (kDebugMode) {
+        print('Selected directory: $result');
+      }
+      return Directory(result);
+    }
+    return null;
+  }
 }

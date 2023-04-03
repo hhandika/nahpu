@@ -3,12 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/screens/export/forms.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 
 class ExportForm extends ConsumerStatefulWidget {
-  const ExportForm({Key? key}) : super(key: key);
+  const ExportForm({super.key});
 
   @override
   ExportFormState createState() => ExportFormState();
@@ -67,44 +65,56 @@ class ExportFormState extends ConsumerState<ExportForm> {
                 labelText: 'File name',
                 hintText: 'Enter file name',
                 isLastField: false,
+                onChanged: (String? value) {
+                  if (value != null) {
+                    setState(() {
+                      fileName = value;
+                    });
+                  }
+                },
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Choose a directory: $selectedDir',
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  IconButton(
-                    onPressed: () async {
-                      final result =
-                          await FilePicker.platform.getDirectoryPath();
-                      if (result != null) {
-                        if (kDebugMode) {
-                          print('Selected directory: $result');
-                        }
-                        setState(() {
-                          selectedDir = result;
-                        });
-                      }
-                    },
-                    icon: const Icon(Icons.folder_open_rounded),
-                  ),
-                ],
-              ),
+              SelectDirField(dirPath: selectedDir, onChanged: _getDir),
+              // Row(
+              //   children: [
+              //     Expanded(
+              //       child: Text(
+              //         'Choose a directory: $selectedDir',
+              //         overflow: TextOverflow.ellipsis,
+              //       ),
+              //     ),
+              //     const SizedBox(width: 10),
+              //     IconButton(
+              //       onPressed: () async {
+              //         final result =
+              //             await FilePicker.platform.getDirectoryPath();
+              //         if (result != null) {
+              //           if (kDebugMode) {
+              //             print('Selected directory: $result');
+              //           }
+              //           setState(() {
+              //             selectedDir = result;
+              //           });
+              //         }
+              //       },
+              //       icon: const Icon(Icons.folder_open_rounded),
+              //     ),
+              //   ],
+              // ),
               CommonExportForm(
                 exportFmt: exportFmt,
                 dirPath: selectedDir,
-                fileName: exportCtr.fileNameCtr.text.isEmpty
-                    ? fileName
-                    : exportCtr.fileNameCtr.text,
+                fileName: fileName,
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void _getDir(path) {
+    setState(() {
+      selectedDir = path;
+    });
   }
 }
