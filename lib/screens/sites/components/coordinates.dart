@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
@@ -9,6 +10,7 @@ import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/site_services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CoordinateFields extends StatelessWidget {
   const CoordinateFields({super.key, required this.siteId});
@@ -156,21 +158,25 @@ class CoordinateMenuState extends ConsumerState<CoordinateMenu> {
       icon: const Icon(Icons.more_vert),
       onSelected: _onSelected,
       itemBuilder: (context) => [
-        const PopupMenuItem<CommonPopUpMenuItems>(
-          value: CommonPopUpMenuItems.edit,
+        const PopupMenuItem<CoordinatePopUpMenuItems>(
+          value: CoordinatePopUpMenuItems.edit,
           child: Text('Edit'),
         ),
-        const PopupMenuItem(
-          value: CommonPopUpMenuItems.delete,
+        const PopupMenuItem<CoordinatePopUpMenuItems>(
+          value: CoordinatePopUpMenuItems.open,
+          child: Text('Open in browser'),
+        ),
+        const PopupMenuItem<CoordinatePopUpMenuItems>(
+          value: CoordinatePopUpMenuItems.delete,
           child: Text('Delete'),
         ),
       ],
     );
   }
 
-  void _onSelected(CommonPopUpMenuItems item) {
+  Future<void> _onSelected(CoordinatePopUpMenuItems item) async {
     switch (item) {
-      case CommonPopUpMenuItems.edit:
+      case CoordinatePopUpMenuItems.edit:
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -182,10 +188,28 @@ class CoordinateMenuState extends ConsumerState<CoordinateMenu> {
           ),
         );
         break;
-      case CommonPopUpMenuItems.delete:
+      case CoordinatePopUpMenuItems.open:
+        await _launchGoogleMap();
+        break;
+      case CoordinatePopUpMenuItems.delete:
         CoordinateServices(ref).deleteCoordinate(widget.coordinateId);
         ref.invalidate(coordinateBySiteProvider);
         break;
+    }
+  }
+
+  Future<void> _launchGoogleMap() async {
+    const host = 'www.google.com';
+    const path = 'maps/search/';
+    final queryParameters = {
+      'api': '1',
+      'query': '${widget.coordCtr.latitudeCtr.text},'
+          '${widget.coordCtr.longitudeCtr.text}',
+    };
+    Uri url = Uri.https(host, path, queryParameters);
+    if (kDebugMode) print(url.toString());
+    if (!await launchUrl(url, mode: LaunchMode.platformDefault)) {
+      throw 'Could not launch $url';
     }
   }
 }
