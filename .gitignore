@@ -48,3 +48,7 @@ app.*.map.json
 
 # Coverage
 coverage/
+
+# MacOS DMG Creation
+*.dmg
+/installer/*.dmg
