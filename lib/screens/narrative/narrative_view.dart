@@ -66,8 +66,8 @@ class NarrativeState extends ConsumerState<Narrative> {
                       // Dart uses 0-based indexing. Technically, this is out-of-bound.
                       // But, what happens here is that it will trigger the PageView onPageChanged.
                       // It fixes the issues that the currentPage state does not show the current page value.
-                      pageController =
-                          PageController(initialPage: narrativeSize);
+                      pageController = PageController(
+                          initialPage: narrativeSize + 1, keepPage: false);
                     });
                     return PageView.builder(
                       controller: pageController,
@@ -75,9 +75,12 @@ class NarrativeState extends ConsumerState<Narrative> {
                       itemBuilder: (context, index) {
                         final narrativeCtr =
                             _updateController(narrativeEntries, index);
-                        return NarrativeForm(
-                          narrativeId: narrativeEntries[index].id,
-                          narrativeCtr: narrativeCtr,
+                        return Viewer(
+                          pageNav: _pageNav,
+                          child: NarrativeForm(
+                            narrativeId: narrativeEntries[index].id,
+                            narrativeCtr: narrativeCtr,
+                          ),
                         );
                       },
                       onPageChanged: (value) => setState(() {
@@ -111,6 +114,42 @@ class NarrativeState extends ConsumerState<Narrative> {
       siteCtr: narrativeEntries[index].siteID,
       narrativeCtr:
           TextEditingController(text: narrativeEntries[index].narrative),
+    );
+  }
+}
+
+// View page number
+class Viewer extends StatelessWidget {
+  const Viewer({super.key, required this.pageNav, required this.child});
+
+  final PageNavigation pageNav;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        child,
+        Positioned(
+          bottom: 50,
+          right: 0,
+          child: Container(
+            height: 40,
+            width: 100,
+            color: Colors.grey,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Page ${pageNav.currentPage} of ${pageNav.pageCounts}",
+                  style: const TextStyle(fontSize: 14, color: Colors.white),
+                  overflow: TextOverflow.visible,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

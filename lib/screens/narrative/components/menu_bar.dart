@@ -1,19 +1,17 @@
+import 'package:nahpu/screens/narrative/narrative_view.dart';
 import 'package:nahpu/services/narrative_services.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/screens/narrative/new_narrative.dart';
+// import 'package:nahpu/screens/narrative/new_narrative.dart';
 import 'package:flutter/material.dart';
 
 enum MenuSelection { newNarrative, pdfExport, deleteRecords, deleteAllRecords }
 
 Future<void> createNewNarrative(BuildContext context, WidgetRef ref) {
   String projectUuid = ref.watch(projectUuidProvider);
-
-  return NarrativeServices(ref).createNewNarrative(projectUuid).then((value) {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => NewNarrativeForm(
-              narrativeId: value,
-            )));
+  return NarrativeServices(ref).createNewNarrative(projectUuid).then((_) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => const Narrative()));
   });
 }
 
@@ -24,7 +22,7 @@ class NewNarrative extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return IconButton(
       icon: const Icon(Icons.add_circle_outline_rounded),
-      onPressed: () async {
+      onPressed: () {
         createNewNarrative(context, ref);
       },
     );
