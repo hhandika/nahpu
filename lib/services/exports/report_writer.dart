@@ -93,7 +93,7 @@ class SpeciesListWriter {
       } else {
         String siteDetails = await _getSiteDetails(collEventData.siteID);
         String coordinateDetails = await _getCoordinates(collEventData.siteID);
-        return '$siteDetails,$coordinateDetails';
+        return '$siteDetails,"$coordinateDetails"';
       }
     }
   }
@@ -111,6 +111,19 @@ class SpeciesListWriter {
             ' ${data.county}; ${data.municipality}; ${data.locality}';
         return '${data.siteID},${data.habitatType},"$siteDetails"';
       }
+    }
+  }
+
+  Future<String> _getCoordinates(int? siteID) async {
+    if (siteID == null) {
+      return '';
+    } else {
+      List<CoordinateData> coordinateList =
+          await CoordinateServices(ref).getCoordinatesBySiteID(siteID);
+      return coordinateList
+          .map((e) =>
+              '[${e.nameId ?? ''}: ${e.decimalLatitude ?? ''},${e.decimalLongitude ?? ''}; ${e.elevationInMeter ?? ''} m; ±${e.uncertaintyInMeters ?? ''} m; ${e.datum ?? ''}]')
+          .join(';');
     }
   }
 
@@ -146,26 +159,13 @@ class SpeciesListWriter {
       String maleGonad =
           '${data.testisPosition ?? ''},${data.testisLength ?? ''} x ${data.testisWidth ?? ''}mm';
       String femaleGonad =
-          '${data.vaginaOpening ?? ''},${data.mammaeCondition},'
+          '${data.vaginaOpening ?? ''},${data.mammaeCondition ?? ''},'
           '${data.mammaeInguinalCount ?? ''} ing;${data.mammaeAbdominalCount ?? ''} abd;${data.mammaeAxillaryCount ?? ''} ax';
       String age = data.age != null ? specimenAgeList[data.age!] : '';
       String sex = data.sex != null ? specimenSexList[data.sex!] : '';
       return '$measurement,$accuracy,$age,$sex,$maleGonad,$femaleGonad';
     } else {
       return ',,';
-    }
-  }
-
-  Future<String> _getCoordinates(int? siteID) async {
-    if (siteID == null) {
-      return '';
-    } else {
-      List<CoordinateData> coordinateList =
-          await CoordinateServices(ref).getCoordinatesBySiteID(siteID);
-      return coordinateList
-          .map((e) =>
-              '"[${e.nameId ?? ''}: ${e.decimalLatitude ?? ''},${e.decimalLongitude ?? ''}; ${e.elevationInMeter ?? ''} m; ±${e.uncertaintyInMeters ?? ''} m; ${e.datum ?? ''}]"')
-          .join(';');
     }
   }
 }
