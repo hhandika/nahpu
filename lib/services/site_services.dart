@@ -28,17 +28,6 @@ class SiteServices {
     }
   }
 
-  Future<void> createCoordinate(CoordinateCompanion form) async {
-    final db = ref.read(databaseProvider);
-    await CoordinateQuery(db).createCoordinate(form);
-  }
-
-  Future<void> updateCoordinate(
-      int coordinateId, CoordinateCompanion form) async {
-    final db = ref.read(databaseProvider);
-    await CoordinateQuery(db).updateCoordinate(coordinateId, form);
-  }
-
   void updateSite(int id, SiteCompanion entries) {
     SiteQuery(ref.read(databaseProvider)).updateSiteEntry(id, entries);
   }
@@ -57,5 +46,32 @@ class SiteServices {
 
   void invalidateSite() {
     ref.invalidate(siteEntryProvider);
+  }
+}
+
+class CoordinateServices {
+  CoordinateServices(this.ref);
+
+  final WidgetRef ref;
+
+  Future<List<CoordinateData>> getCoordinatesBySiteID(int siteID) async {
+    return CoordinateQuery(ref.read(databaseProvider))
+        .getCoordinatesBySiteID(siteID);
+  }
+
+  Future<void> createCoordinate(CoordinateCompanion form) async {
+    final db = ref.read(databaseProvider);
+    await CoordinateQuery(db).createCoordinate(form);
+  }
+
+  Future<void> updateCoordinate(
+      int coordinateId, CoordinateCompanion form) async {
+    final db = ref.read(databaseProvider);
+    await CoordinateQuery(db).updateCoordinate(coordinateId, form);
+  }
+
+  Future<void> deleteCoordinate(int coordinateId) async {
+    final db = ref.read(databaseProvider);
+    await CoordinateQuery(db).deleteCoordinate(coordinateId);
   }
 }

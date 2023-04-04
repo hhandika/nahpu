@@ -4,6 +4,7 @@ import 'package:nahpu/models/mammals.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/collevent_services.dart';
+import 'package:nahpu/services/database/coordinate_queries.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/specimen_queries.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';

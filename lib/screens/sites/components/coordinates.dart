@@ -3,11 +3,9 @@ import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/common.dart';
-import 'package:nahpu/services/database/coordinate_queries.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/site_services.dart';
@@ -185,8 +183,7 @@ class CoordinateMenuState extends ConsumerState<CoordinateMenu> {
         );
         break;
       case CommonPopUpMenuItems.delete:
-        CoordinateQuery(ref.read(databaseProvider))
-            .deleteCoordinate(widget.coordinateId);
+        CoordinateServices(ref).deleteCoordinate(widget.coordinateId);
         ref.invalidate(coordinateBySiteProvider);
         break;
     }
@@ -381,14 +378,15 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
   Future<void> _createCoordinate() async {
     CoordinateCompanion form = _getform();
 
-    await SiteServices(ref).createCoordinate(form);
+    await CoordinateServices(ref).createCoordinate(form);
   }
 
   Future<void> _updateCoordinate() async {
     CoordinateCompanion form = _getform();
 
     try {
-      await SiteServices(ref).updateCoordinate(widget.coordinateId!, form);
+      await CoordinateServices(ref)
+          .updateCoordinate(widget.coordinateId!, form);
     } catch (e) {
       // Error dialog box
       AlertDialog alert = AlertDialog(
