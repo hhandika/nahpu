@@ -142,7 +142,7 @@ class Viewer extends StatelessWidget {
               children: [
                 Text(
                   "Page ${pageNav.currentPage} of ${pageNav.pageCounts}",
-                  style: const TextStyle(fontSize: 14, color: Colors.white),
+                  style: const TextStyle(fontSize: 12, color: Colors.white),
                   overflow: TextOverflow.visible,
                 ),
               ],
