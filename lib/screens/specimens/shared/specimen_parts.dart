@@ -81,10 +81,10 @@ class SpecimenPartFields extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         const TitleForm(text: 'Specimen Parts'),
-        Expanded(
+        Flexible(
           child: PartList(
             specimenUuid: specimenUuid,
           ),
