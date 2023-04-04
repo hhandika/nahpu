@@ -4,7 +4,6 @@ import 'package:nahpu/models/mammals.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/collevent_services.dart';
-import 'package:nahpu/services/database/coordinate_queries.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/specimen_queries.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
@@ -26,12 +25,12 @@ class SpeciesListWriter {
     IOSink writer = file.openWrite();
     String mainHeader =
         'cataloger,fieldID,preparator,family,species,preparation,condition';
-    String siteHeader = 'site,habitatType,locality';
+    String eventHeader = 'site,habitatType,locality,coordinates';
     String measureHeader =
         'TotalLength,TailLength,HindFootLength,EarLength,Weight,Accuracy,'
         'age,sex,testisPos,testisSize,'
         'ovaryOpening,MammaeCondition,MammaeFormula';
-    writer.write('$mainHeader,$siteHeader,$measureHeader$endLine');
+    writer.write('$mainHeader,$eventHeader,$measureHeader$endLine');
 
     for (var element in specimenList) {
       String cataloger = await _getCatalogerName(element.catalogerID);
@@ -90,14 +89,16 @@ class SpeciesListWriter {
           await CollEventServices(ref).getCollEvent(collEventId);
 
       if (collEventData == null) {
-        return ',';
+        return ',,';
       } else {
-        return _getSiteName(collEventData.siteID);
+        String siteDetails = await _getSiteDetails(collEventData.siteID);
+        String coordinateDetails = await _getCoordinates(collEventData.siteID);
+        return '$siteDetails,$coordinateDetails';
       }
     }
   }
 
-  Future<String> _getSiteName(int? siteId) async {
+  Future<String> _getSiteDetails(int? siteId) async {
     if (siteId == null) {
       return '';
     } else {
@@ -152,6 +153,19 @@ class SpeciesListWriter {
       return '$measurement,$accuracy,$age,$sex,$maleGonad,$femaleGonad';
     } else {
       return ',,';
+    }
+  }
+
+  Future<String> _getCoordinates(int? siteID) async {
+    if (siteID == null) {
+      return '';
+    } else {
+      List<CoordinateData> coordinateList =
+          await CoordinateServices(ref).getCoordinatesBySiteID(siteID);
+      return coordinateList
+          .map((e) =>
+              '"[${e.nameId ?? ''}: ${e.decimalLatitude ?? ''},${e.decimalLongitude ?? ''}; ${e.elevationInMeter ?? ''} m; ±${e.uncertaintyInMeters ?? ''} m; ${e.datum ?? ''}]"')
+          .join(';');
     }
   }
 }
