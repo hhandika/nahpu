@@ -1,8 +1,7 @@
 {
   "title": "NAHPU",
-  "icon": "ic_nahpu.icns",
   "contents": [
-    { "x": 180, "y": 100, "type": "link", "path": "/Applications" },
+    { "x": 200, "y": 100, "type": "link", "path": "/Applications" },
     {
       "x": 50,
       "y": 100,
