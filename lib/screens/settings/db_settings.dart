@@ -25,6 +25,7 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Database Settings'),
+        automaticallyImplyLeading: true,
       ),
       body: FileOperationPage(
         children: [

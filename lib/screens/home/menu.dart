@@ -36,7 +36,7 @@ class HomeMenuDrawer extends StatelessWidget {
             leading: const Icon(Icons.settings_rounded),
             title: const Text('Settings'),
             onTap: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const AppSettings()),
               );
