@@ -10,10 +10,10 @@ import 'package:nahpu/services/database/taxonomy_queries.dart';
 import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/site_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
-import 'package:nahpu/services/exports/common.dart';
+import 'package:nahpu/services/writer/common.dart';
 
-class SpeciesListWriter {
-  SpeciesListWriter(this.ref);
+class SpecimenRecordWriter {
+  SpecimenRecordWriter(this.ref);
 
   final WidgetRef ref;
 

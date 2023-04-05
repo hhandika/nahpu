@@ -6,7 +6,7 @@ import 'package:nahpu/models/types.dart';
 import 'package:nahpu/screens/export/common.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
-import 'package:nahpu/services/exports/csv_export.dart';
+import 'package:nahpu/services/writer/report_writer.dart';
 
 class ReportForm extends ConsumerStatefulWidget {
   const ReportForm({Key? key}) : super(key: key);
@@ -17,7 +17,7 @@ class ReportForm extends ConsumerStatefulWidget {
 
 class ReportFormState extends ConsumerState<ReportForm> {
   ReportFmt reportFmt = ReportFmt.csv;
-  ReportType _reportType = ReportType.compact;
+  ReportType _reportType = ReportType.speciesCount;
   ExportCtrModel exportCtr = ExportCtrModel.empty();
   String _fileName = 'export';
   String _selectedDir = '';
@@ -134,7 +134,7 @@ class ReportFormState extends ConsumerState<ReportForm> {
   Future<void> _createReport() async {
     try {
       String savePath = '$_selectedDir/$_fileName.csv';
-      await CsvWriter(ref).writeCsv(savePath);
+      await _writeReport(savePath);
       setState(() {
         _hasSaved = true;
         _savePath = savePath;
@@ -149,6 +149,17 @@ class ReportFormState extends ConsumerState<ReportForm> {
           content: ErrorText(error: e.toString()),
         ),
       );
+    }
+  }
+
+  Future<void> _writeReport(String savePath) async {
+    switch (_reportType) {
+      case ReportType.speciesCount:
+        await SpeciesListWriter(ref).writeSpeciesListCompact(savePath);
+        break;
+      default:
+        await SpeciesListWriter(ref).writeSpeciesListCompact(savePath);
+        break;
     }
   }
 
