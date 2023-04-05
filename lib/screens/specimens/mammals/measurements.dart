@@ -313,9 +313,9 @@ class MammalMeasurementFormsState
   }
 
   Future<void> _updateCtr(String specimenUuid) async {
-    SpecimenServices(ref)
-        .getMammalMeasurementData(specimenUuid)
-        .then((value) => ctr = MammalMeasurementCtrModel.fromData(value));
+    MammalMeasurementData data =
+        await SpecimenServices(ref).getMammalMeasurementData(specimenUuid);
+    ctr = MammalMeasurementCtrModel.fromData(data);
   }
 }
 
@@ -338,8 +338,6 @@ class MaleGonadForm extends ConsumerStatefulWidget {
 }
 
 class MaleGonadFormState extends ConsumerState<MaleGonadForm> {
-  bool _isScrotal = false;
-
   @override
   Widget build(BuildContext context) {
     return Visibility(
@@ -367,7 +365,6 @@ class MaleGonadFormState extends ConsumerState<MaleGonadForm> {
                 if (newValue != null) {
                   setState(
                     () {
-                      _isScrotal = newValue == TestisPosition.scrotal;
                       SpecimenServices(ref).updateMammalMeasurement(
                         widget.specimenUuid,
                         MammalMeasurementCompanion(
@@ -384,7 +381,7 @@ class MaleGonadFormState extends ConsumerState<MaleGonadForm> {
           ),
           ScrotalMaleForm(
             specimenUuid: widget.specimenUuid,
-            visible: _isScrotal,
+            visible: _getTestisPosition() == TestisPosition.scrotal,
             useHorizontalLayout: widget.useHorizontalLayout,
             ctr: widget.ctr,
           ),
