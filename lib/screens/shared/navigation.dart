@@ -336,9 +336,13 @@ class NavSheetState extends ConsumerState<NavSheet> {
               maxWidth: MediaQuery.of(context).size.height * 0.2,
             ),
             child: TextField(
+              textAlign: TextAlign.center,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Jump to page',
+                hintText: 'Enter page number',
+                alignLabelWithHint: true,
+                floatingLabelAlignment: FloatingLabelAlignment.center,
               ),
               keyboardType: TextInputType.number,
               onSubmitted: (String value) {
