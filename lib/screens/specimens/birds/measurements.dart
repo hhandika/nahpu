@@ -30,8 +30,10 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
 
   @override
   void initState() {
-    _updateCtr(widget.specimenUuid);
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _updateCtr(widget.specimenUuid);
+    });
   }
 
   @override
@@ -322,9 +324,11 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
   }
 
   Future<void> _updateCtr(String specimenUuid) async {
-    SpecimenServices(ref)
-        .getBirdMeasurementData(specimenUuid)
-        .then((value) => ctr = BirdMeasurementCtrModel.fromData(value));
+    BirdMeasurementData data =
+        await SpecimenServices(ref).getBirdMeasurementData(specimenUuid);
+    setState(() {
+      ctr = BirdMeasurementCtrModel.fromData(data);
+    });
   }
 
   SpecimenSex? _getSpecimenSex() {

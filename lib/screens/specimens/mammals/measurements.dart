@@ -33,8 +33,10 @@ class MammalMeasurementFormsState
 
   @override
   void initState() {
-    _updateCtr(widget.specimenUuid);
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _updateCtr(widget.specimenUuid);
+    });
   }
 
   @override
@@ -315,7 +317,9 @@ class MammalMeasurementFormsState
   Future<void> _updateCtr(String specimenUuid) async {
     MammalMeasurementData data =
         await SpecimenServices(ref).getMammalMeasurementData(specimenUuid);
-    ctr = MammalMeasurementCtrModel.fromData(data);
+    setState(() {
+      ctr = MammalMeasurementCtrModel.fromData(data);
+    });
   }
 }
 
