@@ -271,7 +271,7 @@ class PageNumberViewer extends StatelessWidget {
       right: 10,
       child: Container(
         decoration: BoxDecoration(
-          color: Color.lerp(Theme.of(context).colorScheme.primaryContainer,
+          color: Color.lerp(Theme.of(context).colorScheme.secondaryContainer,
               Theme.of(context).colorScheme.surface, 0.5),
           borderRadius: const BorderRadius.all(
             Radius.circular(10),
