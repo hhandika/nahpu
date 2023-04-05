@@ -179,6 +179,7 @@ class PageNavButtonState extends ConsumerState<PageNavButton> {
                     pageNav: widget.pageNav,
                     pageController: widget.pageController,
                   ),
+                  isScrollControlled: true,
                 );
               },
               child: const Icon(Icons.circle_outlined),
@@ -231,7 +232,7 @@ class _PageViewerState extends State<PageViewer> {
   @override
   void initState() {
     super.initState();
-    Future<void>.delayed(const Duration(seconds: 5), () {
+    Future<void>.delayed(const Duration(seconds: 3), () {
       if (mounted) {
         setState(() {
           _visible = false;
@@ -327,12 +328,10 @@ class NavSheet extends ConsumerStatefulWidget {
 class NavSheetState extends ConsumerState<NavSheet> {
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        maxHeight: WidgetsBinding.instance.window.viewInsets.bottom == 0
-            ? MediaQuery.of(context).size.height * 0.2
-            : MediaQuery.of(context).size.height * 0.6,
-      ),
+    return SizedBox(
+      height: WidgetsBinding.instance.window.viewInsets.bottom == 0
+          ? MediaQuery.of(context).size.height * 0.2
+          : MediaQuery.of(context).viewInsets.bottom + 120,
       child: Center(
         child: Padding(
           padding: EdgeInsets.only(
@@ -355,7 +354,6 @@ class NavSheetState extends ConsumerState<NavSheet> {
                     floatingLabelAlignment: FloatingLabelAlignment.center,
                   ),
                   keyboardType: const TextInputType.numberWithOptions(
-                    decimal: false,
                     signed: true,
                   ),
                   onSubmitted: (String value) {
@@ -376,10 +374,7 @@ class NavSheetState extends ConsumerState<NavSheet> {
               const SizedBox(height: 10),
               FittedBox(
                 fit: BoxFit.scaleDown,
-                child: Text(
-                  'Page ${widget.pageNav.currentPage} of ${widget.pageNav.pageCounts}',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
+                child: PageInfo(pageNav: widget.pageNav),
               ),
             ],
           ),
