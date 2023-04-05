@@ -267,24 +267,27 @@ class PageNumberViewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: 45,
-      right: 10,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Color.lerp(Theme.of(context).colorScheme.secondaryContainer,
-              Theme.of(context).colorScheme.surface, 0.5),
-          borderRadius: const BorderRadius.all(
-            Radius.circular(10),
+      bottom: 50,
+      right: 0,
+      left: 0,
+      child: Center(
+        child: Container(
+          decoration: BoxDecoration(
+            color: Color.lerp(Theme.of(context).colorScheme.secondaryContainer,
+                Theme.of(context).colorScheme.surface, 0.5),
+            borderRadius: const BorderRadius.all(
+              Radius.circular(10),
+            ),
           ),
-        ),
-        height: 40,
-        width: 120,
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: PageInfo(pageNav: pageNav),
+          height: 40,
+          width: 120,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: PageInfo(pageNav: pageNav),
+              ),
             ),
           ),
         ),
