@@ -39,7 +39,7 @@ class CsvFormState extends ConsumerState<CommonExportForm> {
       children: [
         const SizedBox(height: 10),
         Wrap(
-          spacing: 10,
+          spacing: 20,
           children: [
             SaveSecondaryButton(hasSaved: _hasSaved),
             PrimaryButton(

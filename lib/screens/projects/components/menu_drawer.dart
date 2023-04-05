@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/export/export_db.dart';
+import 'package:nahpu/screens/export/export_pdf.dart';
 import 'package:nahpu/screens/export/export_to.dart';
 import 'package:nahpu/screens/export/report.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
@@ -39,16 +40,16 @@ class ProjectMenuDrawer extends ConsumerWidget {
             },
           ),
           const Divider(color: Colors.grey),
-          ListTile(
-            leading: const Icon(Icons.add_box_rounded),
-            title: const Text('Bundle records'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Home()),
-              );
-            },
-          ),
+          // ListTile(
+          //   leading: const Icon(Icons.add_box_rounded),
+          //   title: const Text('Bundle records'),
+          //   onTap: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => const Home()),
+          //     );
+          //   },
+          // ),
           ListTile(
             leading: const Icon(Icons.table_view_rounded),
             title: const Text('Create report'),
@@ -65,7 +66,7 @@ class ProjectMenuDrawer extends ConsumerWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const Home()),
+                MaterialPageRoute(builder: (context) => const ExportPdfForm()),
               );
             },
           ),
