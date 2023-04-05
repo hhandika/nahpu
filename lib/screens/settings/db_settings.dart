@@ -65,7 +65,10 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
           Wrap(
             spacing: 20,
             children: [
-              SaveSecondaryButton(hasSaved: _hasSelected),
+              SecondaryButton(
+                text: 'Cancel',
+                onPressed: () => Navigator.of(context).pop(),
+              ),
               PrimaryButton(
                 text: 'Replace',
                 onPressed: !_hasSelected
@@ -76,7 +79,9 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
                           context: context,
                           builder: (context) => AlertDialog(
                             title: const Text('Replace Database'),
-                            content: const Text('This action is irreversible. '
+                            content: const Text(
+                                'This will replace the current database with the selected one. '
+                                'It cannot be undone! '
                                 'Are you sure you want to replace the database?'),
                             actions: [
                               PrimaryButton(
