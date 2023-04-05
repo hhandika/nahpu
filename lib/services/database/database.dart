@@ -73,12 +73,16 @@ class Database extends _$Database {
 
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
-    // We save database to the default document directory locations.
-    final dbDir = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbDir.path, 'nahpu/nahpu.db'));
+    final file = await dBPath;
     if (kDebugMode) {
       print('App database path: ${file.path}');
     }
     return NativeDatabase.createInBackground(file, logStatements: true);
   });
+}
+
+Future<File> get dBPath async {
+  // We save database to the default document directory locations.
+  final dbDir = await getApplicationDocumentsDirectory();
+  return File(p.join(dbDir.path, 'nahpu/nahpu.db'));
 }

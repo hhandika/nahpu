@@ -1,9 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/models/controllers.dart';
-import 'package:nahpu/screens/export/common.dart';
+import 'package:nahpu/screens/shared/file_operation.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
-import 'package:nahpu/screens/shared/fields.dart';
 
 class ExportPdfForm extends ConsumerStatefulWidget {
   const ExportPdfForm({super.key});
@@ -13,7 +12,7 @@ class ExportPdfForm extends ConsumerStatefulWidget {
 }
 
 class ExportPdfFormState extends ConsumerState<ExportPdfForm> {
-  ExportCtrModel exportCtr = ExportCtrModel.empty();
+  FileOpCtrModel exportCtr = FileOpCtrModel.empty();
   String _selectedDir = '';
   // String _fileName = 'export';
   final bool _hasSaved = false;
@@ -26,13 +25,10 @@ class ExportPdfFormState extends ConsumerState<ExportPdfForm> {
         automaticallyImplyLeading: false,
       ),
       resizeToAvoidBottomInset: false,
-      body: ExportPage(
+      body: FileOperationPage(
         children: [
-          CommonTextField(
-            controller: exportCtr.fileNameCtr,
-            labelText: 'File name',
-            hintText: 'Enter file name',
-            isLastField: false,
+          FileNameField(
+            controller: exportCtr,
             onChanged: (String? value) {
               if (value != null) {
                 setState(() {

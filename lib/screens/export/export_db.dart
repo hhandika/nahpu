@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/types.dart';
-import 'package:nahpu/screens/export/common.dart';
+import 'package:nahpu/screens/shared/file_operation.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
-import 'package:nahpu/screens/shared/fields.dart';
-import 'package:nahpu/services/writer/csv.dart';
+import 'package:nahpu/services/writer/db_writer.dart';
 
 class ExportDbForm extends ConsumerStatefulWidget {
   const ExportDbForm({super.key});
@@ -17,7 +16,7 @@ class ExportDbForm extends ConsumerStatefulWidget {
 
 class ExportDbFormState extends ConsumerState<ExportDbForm> {
   DbExportFmt exportFmt = DbExportFmt.sqlite3;
-  ExportCtrModel exportCtr = ExportCtrModel.empty();
+  FileOpCtrModel exportCtr = FileOpCtrModel.empty();
   String _fileName = 'backup';
   String _selectedDir = '';
   String _savePath = '';
@@ -41,7 +40,7 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
         title: const Text('Backup database'),
         automaticallyImplyLeading: false,
       ),
-      body: ExportPage(
+      body: FileOperationPage(
         children: [
           DropdownButtonFormField(
             value: exportFmt,
@@ -62,11 +61,8 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
               }
             },
           ),
-          CommonTextField(
-            controller: exportCtr.fileNameCtr,
-            labelText: 'File name',
-            hintText: 'Enter file name',
-            isLastField: false,
+          FileNameField(
+            controller: exportCtr,
             onChanged: (String? value) {
               if (value != null) {
                 setState(() {

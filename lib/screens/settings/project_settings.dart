@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/settings.dart';
+import 'package:nahpu/screens/settings/db_settings.dart';
 import 'package:nahpu/screens/settings/shared.dart';
 import 'package:settings_ui/settings_ui.dart';
 
@@ -41,11 +42,11 @@ class GeneralSettings {
     final catalogFmt = ref.watch(catalogFmtNotifier);
     final selectedFmt = matchCatFmtToTaxonGroup(catalogFmt);
     return SettingsSection(
-      title: const Text('General Settings'),
+      title: const Text('Catalog Settings'),
       tiles: [
         SettingsTile.navigation(
           leading: const Icon(MdiIcons.fileCabinet),
-          title: const Text('Catalog Format'),
+          title: const Text('Format'),
           value: Text(selectedFmt),
           onPressed: (context) => Navigator.push(
             context,

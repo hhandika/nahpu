@@ -973,8 +973,8 @@ class CollWeatherCtrModel {
   }
 }
 
-class ExportCtrModel {
-  ExportCtrModel({
+class FileOpCtrModel {
+  FileOpCtrModel({
     required this.formatCtr,
     required this.pathCtr,
     required this.fileNameCtr,
@@ -984,7 +984,7 @@ class ExportCtrModel {
   TextEditingController pathCtr;
   TextEditingController fileNameCtr;
 
-  factory ExportCtrModel.empty() => ExportCtrModel(
+  factory FileOpCtrModel.empty() => FileOpCtrModel(
       formatCtr: TextEditingController(),
       pathCtr: TextEditingController(),
       fileNameCtr: TextEditingController());

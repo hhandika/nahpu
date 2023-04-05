@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/types.dart';
-import 'package:nahpu/screens/export/common.dart';
-import 'package:nahpu/screens/shared/fields.dart';
+import 'package:nahpu/screens/shared/file_operation.dart';
 
 class ExportForm extends ConsumerStatefulWidget {
   const ExportForm({super.key});
@@ -14,7 +13,7 @@ class ExportForm extends ConsumerStatefulWidget {
 
 class ExportFormState extends ConsumerState<ExportForm> {
   ExportFmt exportFmt = ExportFmt.excel;
-  ExportCtrModel exportCtr = ExportCtrModel.empty();
+  FileOpCtrModel exportCtr = FileOpCtrModel.empty();
   String _fileName = 'export';
   String _selectedDir = '';
 
@@ -36,7 +35,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
         title: const Text('Export to ...'),
         automaticallyImplyLeading: false,
       ),
-      body: ExportPage(
+      body: FileOperationPage(
         children: [
           DropdownButtonFormField<ExportFmt>(
             value: exportFmt,
@@ -57,11 +56,8 @@ class ExportFormState extends ConsumerState<ExportForm> {
               }
             },
           ),
-          CommonTextField(
-            controller: exportCtr.fileNameCtr,
-            labelText: 'File name',
-            hintText: 'Enter file name',
-            isLastField: false,
+          FileNameField(
+            controller: exportCtr,
             onChanged: (String? value) {
               if (value != null) {
                 setState(() {

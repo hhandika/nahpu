@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
+import 'package:nahpu/models/controllers.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,8 +10,8 @@ import 'package:nahpu/models/types.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/services/writer/csv.dart';
 
-class ExportPage extends StatelessWidget {
-  const ExportPage({super.key, required this.children});
+class FileOperationPage extends StatelessWidget {
+  const FileOperationPage({super.key, required this.children});
 
   final List<Widget> children;
 
@@ -27,6 +29,25 @@ class ExportPage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class FileNameField extends StatelessWidget {
+  const FileNameField(
+      {super.key, required this.controller, required this.onChanged});
+
+  final FileOpCtrModel controller;
+  final Function(String?) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return CommonTextField(
+      controller: controller.fileNameCtr,
+      labelText: 'File name',
+      hintText: 'Enter file name',
+      isLastField: false,
+      onChanged: onChanged,
     );
   }
 }
