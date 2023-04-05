@@ -14,11 +14,12 @@ class SpecimenServices {
 
   final WidgetRef ref;
 
-  String createSpecimen() {
+  Future<void> createSpecimen() async {
     String projectUuid = ref.watch(projectUuidProvider);
     CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
     final String specimenUuid = uuid;
-    SpecimenQuery(ref.read(databaseProvider)).createSpecimen(SpecimenCompanion(
+    await SpecimenQuery(ref.read(databaseProvider))
+        .createSpecimen(SpecimenCompanion(
       uuid: db.Value(specimenUuid),
       projectUuid: db.Value(projectUuid),
       taxonGroup: db.Value(matchCatFmtToTaxonGroup(catalogFmt)),
@@ -39,7 +40,6 @@ class SpecimenServices {
         break;
     }
     _invalidateSpecimenList();
-    return specimenUuid;
   }
 
   Future<List<SpecimenData>> getSpecimenList() async {

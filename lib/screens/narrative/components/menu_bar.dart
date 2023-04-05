@@ -11,7 +11,7 @@ Future<void> createNewNarrative(BuildContext context, WidgetRef ref) {
   String projectUuid = ref.watch(projectUuidProvider);
   return NarrativeServices(ref).createNewNarrative(projectUuid).then((_) {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => const Narrative()));
+        .pushReplacement(MaterialPageRoute(builder: (_) => const Narrative()));
   });
 }
 

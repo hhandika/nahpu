@@ -99,7 +99,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
         ref.invalidate(specimenEntryProvider);
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const Specimens()),
+          MaterialPageRoute(builder: (context) => const SpecimenViewer()),
         );
         break;
       case 4:

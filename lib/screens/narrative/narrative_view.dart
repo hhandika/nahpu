@@ -66,8 +66,7 @@ class NarrativeState extends ConsumerState<Narrative> {
                       // Dart uses 0-based indexing. Technically, this is out-of-bound.
                       // But, what happens here is that it will trigger the PageView onPageChanged.
                       // It fixes the issues that the currentPage state does not show the current page value.
-                      pageController = PageController(
-                          initialPage: narrativeSize + 1, keepPage: false);
+                      pageController = updatePageCtr(narrativeSize);
                     });
                     return PageView.builder(
                       controller: pageController,

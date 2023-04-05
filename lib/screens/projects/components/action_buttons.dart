@@ -3,8 +3,8 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:nahpu/screens/collecting/components/menu_bar.dart';
 import 'package:nahpu/screens/sites/components/menu_bar.dart';
 import 'package:nahpu/screens/narrative/components/menu_bar.dart';
-import 'package:nahpu/screens/specimens/new_specimens.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
 
 class ActionButtons extends ConsumerWidget {
   const ActionButtons({super.key});
