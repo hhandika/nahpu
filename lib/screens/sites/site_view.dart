@@ -12,14 +12,14 @@ import 'package:nahpu/services/database/database.dart';
 
 enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
 
-class Sites extends ConsumerStatefulWidget {
-  const Sites({Key? key}) : super(key: key);
+class SiteViewer extends ConsumerStatefulWidget {
+  const SiteViewer({super.key});
 
   @override
-  SitesState createState() => SitesState();
+  SiteViewerState createState() => SiteViewerState();
 }
 
-class SitesState extends ConsumerState<Sites> {
+class SiteViewerState extends ConsumerState<SiteViewer> {
   bool _isVisible = false;
   PageController pageController = PageController();
   PageNavigation _pageNav = PageNavigation();
@@ -60,23 +60,22 @@ class SitesState extends ConsumerState<Sites> {
                   _isVisible = false;
                 }
                 _pageNav.pageCounts = siteSize;
-                pageController = PageController(initialPage: siteSize);
+                pageController = updatePageCtr(siteSize);
               });
               return PageView.builder(
                 controller: pageController,
                 itemCount: siteSize,
                 itemBuilder: (context, index) {
                   final siteForm = _updateController(siteEntries[index]);
-                  return SiteForm(
-                    id: siteEntries[index].id,
-                    siteFormCtr: siteForm,
+                  return PageViewer(
+                    pageNav: _pageNav,
+                    child: SiteForm(
+                      id: siteEntries[index].id,
+                      siteFormCtr: siteForm,
+                    ),
                   );
                 },
-                onPageChanged: (value) => setState(() {
-                  _pageNav.currentPage = value + 1;
-                  _pageNav = updatePageNavigation(_pageNav);
-                  ref.invalidate(siteEntryProvider);
-                }),
+                onPageChanged: (value) => _updatePageNav(value),
               );
             }
           }, loading: () {
@@ -94,6 +93,14 @@ class SitesState extends ConsumerState<Sites> {
           )),
       bottomNavigationBar: const ProjectBottomNavbar(),
     );
+  }
+
+  void _updatePageNav(int value) {
+    setState(() {
+      _pageNav.currentPage = value + 1;
+      _pageNav = updatePageNavigation(_pageNav);
+      ref.invalidate(siteEntryProvider);
+    });
   }
 
   SiteFormCtrModel _updateController(SiteData siteEntries) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
-import 'package:nahpu/screens/sites/new_sites.dart';
+import 'package:nahpu/screens/sites/site_view.dart';
 import 'package:nahpu/services/site_services.dart';
 
 enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
@@ -9,11 +9,9 @@ enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
 Future<void> createNewSite(BuildContext context, WidgetRef ref) {
   String projectUuid = ref.watch(projectUuidProvider);
 
-  return SiteServices(ref).createNewSite(projectUuid).then((value) {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => NewSites(
-              id: value,
-            )));
+  return SiteServices(ref).createNewSite(projectUuid).then((_) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => const SiteViewer()));
   });
 }
 

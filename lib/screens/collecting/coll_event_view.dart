@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/collevent_services.dart';
+import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/navigation_services.dart';
 import 'package:nahpu/models/navigation.dart';
 import 'package:nahpu/models/controllers.dart';
@@ -67,9 +68,8 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
                       controller: pageController,
                       itemCount: collEventSize,
                       itemBuilder: (context, index) {
-                        final collEventForm = CollEventFormCtrModel.fromData(
-                          collEventEntries[index],
-                        );
+                        final collEventForm =
+                            _updateController(collEventEntries[index]);
 
                         return PageViewer(
                           pageNav: _pageNav,
@@ -105,5 +105,9 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
       _pageNav = updatePageNavigation(_pageNav);
       CollEventServices(ref).invalidateCollEvent();
     });
+  }
+
+  CollEventFormCtrModel _updateController(CollEventData collEventData) {
+    return CollEventFormCtrModel.fromData(collEventData);
   }
 }

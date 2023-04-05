@@ -83,7 +83,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
         ref.invalidate(siteEntryProvider);
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const Sites()),
+          MaterialPageRoute(builder: (context) => const SiteViewer()),
         );
         break;
       case 2:
