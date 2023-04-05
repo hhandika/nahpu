@@ -74,17 +74,17 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                 ),
                 const TaxonGroupFields(),
                 ProjectFormField(
-                  controller: widget.projectCtr.pICtr,
+                  controller: widget.projectCtr.locationCtr,
                   labelText: 'Location',
                   hintText: 'Enter location of the project (optional)',
                 ),
                 ProjectFormField(
-                  controller: widget.projectCtr.pICtr,
+                  controller: widget.projectCtr.startDateCtr,
                   labelText: 'Start date',
                   hintText: 'Enter start date of the project (optional)',
                 ),
                 ProjectFormField(
-                  controller: widget.projectCtr.pICtr,
+                  controller: widget.projectCtr.endDateCtr,
                   labelText: 'End date',
                   hintText: 'Enter end date of the project (optional)',
                 ),
