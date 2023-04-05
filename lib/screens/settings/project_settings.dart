@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/settings.dart';
-import 'package:nahpu/screens/settings/db_settings.dart';
 import 'package:nahpu/screens/settings/shared.dart';
 import 'package:settings_ui/settings_ui.dart';
 
