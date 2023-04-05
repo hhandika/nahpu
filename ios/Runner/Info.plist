@@ -55,8 +55,10 @@
    		<string>remote-notification</string>
 	</array>
 	<key>UISupportsDocumentBrowser</key>
+	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
-<true/>
-<true/>
+	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
 </dict>
 </plist>
