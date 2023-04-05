@@ -327,46 +327,43 @@ class NavSheetState extends ConsumerState<NavSheet> {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.2,
       child: Center(
-        child: Column(children: [
-          const SizedBox(
-            height: 20,
-          ),
-          Container(
-            constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.height * 0.2,
-            ),
-            child: TextField(
-              textAlign: TextAlign.center,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Jump to page',
-                hintText: 'Enter page number',
-                alignLabelWithHint: true,
-                floatingLabelAlignment: FloatingLabelAlignment.center,
-              ),
-              keyboardType: TextInputType.number,
-              onSubmitted: (String value) {
-                if (widget.pageController.hasClients) {
-                  int pageNum = int.parse(value);
-                  int targetPage = pageNum > widget.pageNav.pageCounts
-                      ? widget.pageNav.pageCounts - 1
-                      : pageNum - 1;
-                  widget.pageController.animateToPage(targetPage,
-                      duration: kTabScrollDuration, curve: Curves.easeInOut);
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 100,
+              width: 200,
+              child: TextField(
+                textAlign: TextAlign.center,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Jump to page',
+                  hintText: 'Enter page number',
+                  alignLabelWithHint: true,
+                  isDense: true,
+                  floatingLabelAlignment: FloatingLabelAlignment.center,
+                ),
+                keyboardType: TextInputType.number,
+                onSubmitted: (String value) {
+                  if (widget.pageController.hasClients) {
+                    int pageNum = int.parse(value);
+                    int targetPage = pageNum > widget.pageNav.pageCounts
+                        ? widget.pageNav.pageCounts - 1
+                        : pageNum - 1;
+                    widget.pageController.animateToPage(targetPage,
+                        duration: kTabScrollDuration, curve: Curves.easeInOut);
 
-                  Navigator.pop(context);
-                }
-              },
+                    Navigator.pop(context);
+                  }
+                },
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Text(
-            'Page ${widget.pageNav.currentPage} of ${widget.pageNav.pageCounts}',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ]),
+            Text(
+              'Page ${widget.pageNav.currentPage} of ${widget.pageNav.pageCounts}',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ],
+        ),
       ),
     );
   }
