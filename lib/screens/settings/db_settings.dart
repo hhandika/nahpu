@@ -29,9 +29,14 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
       ),
       body: FileOperationPage(
         children: [
+          Icon(
+            Icons.warning,
+            color: Theme.of(context).colorScheme.error,
+            size: 50,
+          ),
           Text(
             'Replace Database',
-            style: Theme.of(context).textTheme.titleMedium,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
           Row(
             children: [
@@ -70,7 +75,8 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('File has been replaced!'),
+                              content: Text(
+                                  'File has been replaced! Close the app and reopen it to see the changes.'),
                             ),
                           );
                           Navigator.of(context).pushReplacement(
@@ -90,9 +96,9 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
 
   Future<File?> _selectFile() async {
     final result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['db', 'sqlite', 'sqlite3'],
-    );
+        // type: FileType.custom,
+        // allowedExtensions: ['db', 'sqlite', 'sqlite3'],
+        );
 
     if (result != null) {
       if (kDebugMode) {

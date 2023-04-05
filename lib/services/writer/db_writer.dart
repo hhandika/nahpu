@@ -18,14 +18,18 @@ class DbWriter {
   }
 
   Future<void> replaceDb(File file) async {
+    final db = ref.read(databaseProvider);
     final newDb = sqlite3.open(file.path);
 
     final appDb = await dBPath;
+
+    db.close();
 
     if (appDb.existsSync()) {
       appDb.deleteSync();
     }
 
     newDb.execute('VACUUM INTO ?', [appDb.path]);
+    newDb.dispose();
   }
 }
