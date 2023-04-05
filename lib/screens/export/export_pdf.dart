@@ -26,43 +26,37 @@ class ExportPdfFormState extends ConsumerState<ExportPdfForm> {
         automaticallyImplyLeading: false,
       ),
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Center(
-          child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 600),
-              child: Column(
-                children: [
-                  CommonTextField(
-                    controller: exportCtr.fileNameCtr,
-                    labelText: 'File name',
-                    hintText: 'Enter file name',
-                    isLastField: false,
-                    onChanged: (String? value) {
-                      if (value != null) {
-                        setState(() {
-                          // _fileName = value;
-                        });
-                      }
-                    },
-                  ),
-                  SelectDirField(
-                    dirPath: _selectedDir,
-                    onChanged: _getDir,
-                  ),
-                  const SizedBox(height: 10),
-                  Wrap(
-                    spacing: 20,
-                    children: [
-                      SaveSecondaryButton(hasSaved: _hasSaved),
-                      const PrimaryButton(
-                        text: 'Save',
-                        onPressed: null,
-                      )
-                    ],
-                  )
-                ],
-              )),
-        ),
+      body: ExportPage(
+        children: [
+          CommonTextField(
+            controller: exportCtr.fileNameCtr,
+            labelText: 'File name',
+            hintText: 'Enter file name',
+            isLastField: false,
+            onChanged: (String? value) {
+              if (value != null) {
+                setState(() {
+                  // _fileName = value;
+                });
+              }
+            },
+          ),
+          SelectDirField(
+            dirPath: _selectedDir,
+            onChanged: _getDir,
+          ),
+          const SizedBox(height: 10),
+          Wrap(
+            spacing: 20,
+            children: [
+              SaveSecondaryButton(hasSaved: _hasSaved),
+              const PrimaryButton(
+                text: 'Save',
+                onPressed: null,
+              )
+            ],
+          )
+        ],
       ),
     );
   }

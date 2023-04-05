@@ -42,91 +42,86 @@ class ReportFormState extends ConsumerState<ReportForm> {
         title: const Text('Create a report'),
         automaticallyImplyLeading: false,
       ),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 600),
-          child: Column(
+      body: ExportPage(
+        children: [
+          DropdownButtonFormField<ReportType>(
+            value: _reportType,
+            decoration: const InputDecoration(
+              labelText: 'Type',
+            ),
+            items: reportTypeList
+                .map((e) => DropdownMenuItem(
+                      value: ReportType.values[reportTypeList.indexOf(e)],
+                      child: Text(e),
+                    ))
+                .toList(),
+            onChanged: (ReportType? value) {
+              if (value != null) {
+                setState(() {
+                  _reportType = value;
+                });
+              }
+            },
+          ),
+          DropdownButtonFormField<ReportFmt>(
+            value: reportFmt,
+            decoration: const InputDecoration(
+              labelText: 'Format',
+            ),
+            items: reportFmtList
+                .map((e) => DropdownMenuItem(
+                      value: ReportFmt.values[reportFmtList.indexOf(e)],
+                      child: Text(e),
+                    ))
+                .toList(),
+            onChanged: (ReportFmt? value) {
+              if (value != null) {
+                setState(() {
+                  reportFmt = value;
+                });
+              }
+            },
+          ),
+          CommonTextField(
+            controller: exportCtr.fileNameCtr,
+            labelText: 'File name',
+            hintText: 'Enter file name',
+            isLastField: false,
+            onChanged: (String? value) {
+              if (value != null) {
+                setState(() {
+                  _fileName = value;
+                });
+              }
+            },
+          ),
+          SelectDirField(
+            dirPath: _selectedDir,
+            onChanged: _getDir,
+          ),
+          const SizedBox(height: 10),
+          Wrap(
+            spacing: 10,
             children: [
-              DropdownButtonFormField<ReportType>(
-                value: _reportType,
-                decoration: const InputDecoration(
-                  labelText: 'Type',
-                ),
-                items: reportTypeList
-                    .map((e) => DropdownMenuItem(
-                          value: ReportType.values[reportTypeList.indexOf(e)],
-                          child: Text(e),
-                        ))
-                    .toList(),
-                onChanged: (ReportType? value) {
-                  if (value != null) {
-                    setState(() {
-                      _reportType = value;
-                    });
-                  }
-                },
-              ),
-              DropdownButtonFormField<ReportFmt>(
-                value: reportFmt,
-                decoration: const InputDecoration(
-                  labelText: 'Format',
-                ),
-                items: reportFmtList
-                    .map((e) => DropdownMenuItem(
-                          value: ReportFmt.values[reportFmtList.indexOf(e)],
-                          child: Text(e),
-                        ))
-                    .toList(),
-                onChanged: (ReportFmt? value) {
-                  if (value != null) {
-                    setState(() {
-                      reportFmt = value;
-                    });
-                  }
-                },
-              ),
-              CommonTextField(
-                controller: exportCtr.fileNameCtr,
-                labelText: 'File name',
-                hintText: 'Enter file name',
-                isLastField: false,
-                onChanged: (String? value) {
-                  if (value != null) {
-                    setState(() {
-                      _fileName = value;
-                    });
-                  }
-                },
-              ),
-              SelectDirField(
-                dirPath: _selectedDir,
-                onChanged: _getDir,
-              ),
-              const SizedBox(height: 10),
-              Wrap(
-                spacing: 10,
-                children: [
-                  SaveSecondaryButton(hasSaved: _hasSaved),
-                  PrimaryButton(
-                    text: 'Save',
-                    onPressed: _selectedDir.isEmpty
-                        ? null
-                        : () async {
-                            await _createReport();
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('File saved as $_savePath'),
-                                ),
-                              );
-                            }
-                          },
-                  ),
-                ],
+              SaveSecondaryButton(hasSaved: _hasSaved),
+              PrimaryButton(
+                text: 'Save',
+                onPressed: _selectedDir.isEmpty
+                    ? null
+                    : () async {
+                        await _createReport();
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('File saved as $_savePath'),
+                            ),
+                          );
+                        }
+                      },
               ),
             ],
           ),
-        ),
+        ],
       ),
     );
   }

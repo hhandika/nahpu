@@ -41,72 +41,67 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
         title: const Text('Backup database'),
         automaticallyImplyLeading: false,
       ),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 600),
-          child: Column(
-            children: [
-              DropdownButtonFormField(
-                value: exportFmt,
-                decoration: const InputDecoration(
-                  labelText: 'Format',
-                ),
-                items: dbExportFmtList
-                    .map((e) => DropdownMenuItem(
-                          value: DbExportFmt.values[dbExportFmtList.indexOf(e)],
-                          child: Text(e),
-                        ))
-                    .toList(),
-                onChanged: (DbExportFmt? value) {
-                  if (value != null) {
-                    setState(() {
-                      exportFmt = value;
-                    });
-                  }
-                },
-              ),
-              CommonTextField(
-                controller: exportCtr.fileNameCtr,
-                labelText: 'File name',
-                hintText: 'Enter file name',
-                isLastField: false,
-                onChanged: (String? value) {
-                  if (value != null) {
-                    setState(() {
-                      _fileName = value;
-                    });
-                  }
-                },
-              ),
-              SelectDirField(
-                dirPath: _selectedDir,
-                onChanged: _getDir,
-              ),
-              const SizedBox(height: 10),
-              Wrap(
-                spacing: 20,
-                children: [
-                  SaveSecondaryButton(hasSaved: _hasSaved),
-                  PrimaryButton(
-                    text: 'Save',
-                    onPressed: _selectedDir.isEmpty
-                        ? null
-                        : () async {
-                            await _writeDb();
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('File saved as $_savePath'),
-                                ),
-                              );
-                            }
-                          },
-                  ),
-                ],
-              )
-            ],
+      body: ExportPage(
+        children: [
+          DropdownButtonFormField(
+            value: exportFmt,
+            decoration: const InputDecoration(
+              labelText: 'Format',
+            ),
+            items: dbExportFmtList
+                .map((e) => DropdownMenuItem(
+                      value: DbExportFmt.values[dbExportFmtList.indexOf(e)],
+                      child: Text(e),
+                    ))
+                .toList(),
+            onChanged: (DbExportFmt? value) {
+              if (value != null) {
+                setState(() {
+                  exportFmt = value;
+                });
+              }
+            },
           ),
-        ),
+          CommonTextField(
+            controller: exportCtr.fileNameCtr,
+            labelText: 'File name',
+            hintText: 'Enter file name',
+            isLastField: false,
+            onChanged: (String? value) {
+              if (value != null) {
+                setState(() {
+                  _fileName = value;
+                });
+              }
+            },
+          ),
+          SelectDirField(
+            dirPath: _selectedDir,
+            onChanged: _getDir,
+          ),
+          const SizedBox(height: 10),
+          Wrap(
+            spacing: 20,
+            children: [
+              SaveSecondaryButton(hasSaved: _hasSaved),
+              PrimaryButton(
+                text: 'Save',
+                onPressed: _selectedDir.isEmpty
+                    ? null
+                    : () async {
+                        await _writeDb();
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('File saved as $_savePath'),
+                            ),
+                          );
+                        }
+                      },
+              ),
+            ],
+          )
+        ],
       ),
     );
   }

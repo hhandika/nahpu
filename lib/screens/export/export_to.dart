@@ -36,52 +36,47 @@ class ExportFormState extends ConsumerState<ExportForm> {
         title: const Text('Export to ...'),
         automaticallyImplyLeading: false,
       ),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 600),
-          child: ListView(
-            children: [
-              DropdownButtonFormField<ExportFmt>(
-                value: exportFmt,
-                decoration: const InputDecoration(
-                  labelText: 'Format',
-                ),
-                items: exportFormats
-                    .map((e) => DropdownMenuItem(
-                          value: ExportFmt.values[exportFormats.indexOf(e)],
-                          child: Text(e),
-                        ))
-                    .toList(),
-                onChanged: (ExportFmt? value) {
-                  if (value != null) {
-                    setState(() {
-                      exportFmt = value;
-                    });
-                  }
-                },
-              ),
-              CommonTextField(
-                controller: exportCtr.fileNameCtr,
-                labelText: 'File name',
-                hintText: 'Enter file name',
-                isLastField: false,
-                onChanged: (String? value) {
-                  if (value != null) {
-                    setState(() {
-                      _fileName = value;
-                    });
-                  }
-                },
-              ),
-              SelectDirField(dirPath: _selectedDir, onChanged: _getDir),
-              CommonExportForm(
-                exportFmt: exportFmt,
-                dirPath: _selectedDir,
-                fileName: _fileName,
-              ),
-            ],
+      body: ExportPage(
+        children: [
+          DropdownButtonFormField<ExportFmt>(
+            value: exportFmt,
+            decoration: const InputDecoration(
+              labelText: 'Format',
+            ),
+            items: exportFormats
+                .map((e) => DropdownMenuItem(
+                      value: ExportFmt.values[exportFormats.indexOf(e)],
+                      child: Text(e),
+                    ))
+                .toList(),
+            onChanged: (ExportFmt? value) {
+              if (value != null) {
+                setState(() {
+                  exportFmt = value;
+                });
+              }
+            },
           ),
-        ),
+          CommonTextField(
+            controller: exportCtr.fileNameCtr,
+            labelText: 'File name',
+            hintText: 'Enter file name',
+            isLastField: false,
+            onChanged: (String? value) {
+              if (value != null) {
+                setState(() {
+                  _fileName = value;
+                });
+              }
+            },
+          ),
+          SelectDirField(dirPath: _selectedDir, onChanged: _getDir),
+          CommonExportForm(
+            exportFmt: exportFmt,
+            dirPath: _selectedDir,
+            fileName: _fileName,
+          ),
+        ],
       ),
     );
   }

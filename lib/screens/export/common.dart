@@ -8,6 +8,29 @@ import 'package:nahpu/models/types.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/services/writer/csv.dart';
 
+class ExportPage extends StatelessWidget {
+  const ExportPage({super.key, required this.children});
+
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: Column(
+              children: children,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class CommonExportForm extends ConsumerStatefulWidget {
   const CommonExportForm({
     super.key,
