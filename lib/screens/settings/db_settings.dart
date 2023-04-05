@@ -4,7 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/screens/home/home.dart';
+import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/file_operation.dart';
 import 'package:nahpu/services/writer/db_writer.dart';
@@ -25,7 +25,7 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Database Settings'),
-        automaticallyImplyLeading: true,
+        automaticallyImplyLeading: false,
       ),
       body: FileOperationPage(
         children: [
@@ -71,20 +71,40 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
                 onPressed: !_hasSelected
                     ? null
                     : () async {
-                        await DbWriter(ref).replaceDb(_dbPath);
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                  'File has been replaced! Close the app and reopen it to see the changes.'),
-                            ),
-                          );
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => const Home(),
-                            ),
-                          );
-                        }
+                        // Alert users before replacing database
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Replace Database'),
+                            content: const Text('This action is irreversible. '
+                                'Are you sure you want to replace the database?'),
+                            actions: [
+                              PrimaryButton(
+                                text: 'Cancel',
+                                onPressed: () => Navigator.of(context).pop(),
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  Navigator.of(context).pop();
+                                  await DbWriter(ref).replaceDb(_dbPath);
+                                  ref.invalidate(projectListProvider);
+                                  if (context.mounted) {
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const DBReplacedPage(),
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: const Text(
+                                  'Replace',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
                       },
               )
             ],
@@ -115,5 +135,41 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
         allowedExtensions: ['db', 'sqlite', 'sqlite3'],
       );
     }
+  }
+}
+
+class DBReplacedPage extends StatelessWidget {
+  const DBReplacedPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Database Settings'),
+          automaticallyImplyLeading: false,
+        ),
+        body: SafeArea(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.done,
+                  color: Colors.green,
+                  size: 50,
+                ),
+                Text(
+                  'Success',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                Text(
+                  'Database has been replaced! '
+                  'Close the app and reopen it to see the changes.',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ],
+            ),
+          ),
+        ));
   }
 }
