@@ -10,14 +10,14 @@ import 'package:nahpu/screens/collecting/components/menu_bar.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/navigation.dart';
 
-class CollEvents extends ConsumerStatefulWidget {
-  const CollEvents({Key? key}) : super(key: key);
+class CollEventViewer extends ConsumerStatefulWidget {
+  const CollEventViewer({Key? key}) : super(key: key);
 
   @override
-  CollEventsState createState() => CollEventsState();
+  CollEventViewerState createState() => CollEventViewerState();
 }
 
-class CollEventsState extends ConsumerState<CollEvents> {
+class CollEventViewerState extends ConsumerState<CollEventViewer> {
   bool _isVisible = false;
   PageController pageController = PageController();
   PageNavigation _pageNav = PageNavigation();
@@ -60,9 +60,8 @@ class CollEventsState extends ConsumerState<CollEvents> {
                       // We want to view the last page first.
                       // Dart uses 0-based indexing. Technically, this is out-of-bound.
                       // But, what happens here is that it will trigger the PageView onPageChanged.
-                      // It fixes the issues that the curentPage state does not show the current page value.
-                      pageController =
-                          PageController(initialPage: collEventSize);
+                      // It fixes the issues that the currentPage state does not show the current page value.
+                      pageController = updatePageCtr(collEventSize);
                     });
                     return PageView.builder(
                       controller: pageController,
@@ -72,16 +71,15 @@ class CollEventsState extends ConsumerState<CollEvents> {
                           collEventEntries[index],
                         );
 
-                        return CollEventForm(
-                          id: collEventEntries[index].id,
-                          collEventCtr: collEventForm,
+                        return PageViewer(
+                          pageNav: _pageNav,
+                          child: CollEventForm(
+                            id: collEventEntries[index].id,
+                            collEventCtr: collEventForm,
+                          ),
                         );
                       },
-                      onPageChanged: (value) => setState(() {
-                        _pageNav.currentPage = value + 1;
-                        _pageNav = updatePageNavigation(_pageNav);
-                        CollEventServices(ref).invalidateCollEvent();
-                      }),
+                      onPageChanged: (value) => _updatePageNav(value),
                     );
                   }
                 },
@@ -99,5 +97,13 @@ class CollEventsState extends ConsumerState<CollEvents> {
       ),
       bottomNavigationBar: const ProjectBottomNavbar(),
     );
+  }
+
+  void _updatePageNav(int value) {
+    setState(() {
+      _pageNav.currentPage = value + 1;
+      _pageNav = updatePageNavigation(_pageNav);
+      CollEventServices(ref).invalidateCollEvent();
+    });
   }
 }

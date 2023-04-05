@@ -91,7 +91,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
         ref.invalidate(collEventEntryProvider);
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const CollEvents()),
+          MaterialPageRoute(builder: (context) => const CollEventViewer()),
         );
         break;
       case 3:
