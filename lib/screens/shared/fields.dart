@@ -99,8 +99,8 @@ class CommonNumField extends ConsumerWidget {
           ? [FilteringTextInputFormatter.allow(RegExp(r"[0-9.]"))]
           : [FilteringTextInputFormatter.digitsOnly],
       keyboardType: isDouble
-          ? const TextInputType.numberWithOptions(decimal: true)
-          : TextInputType.number,
+          ? const TextInputType.numberWithOptions(decimal: true, signed: true)
+          : const TextInputType.numberWithOptions(signed: true),
       onChanged: onChanged,
       textInputAction:
           isLastField ? TextInputAction.done : TextInputAction.next,

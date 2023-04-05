@@ -327,45 +327,62 @@ class NavSheet extends ConsumerStatefulWidget {
 class NavSheetState extends ConsumerState<NavSheet> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.2,
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxHeight: WidgetsBinding.instance.window.viewInsets.bottom == 0
+            ? MediaQuery.of(context).size.height * 0.2
+            : MediaQuery.of(context).size.height * 0.6,
+      ),
       child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 100,
-              width: 200,
-              child: TextField(
-                textAlign: TextAlign.center,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Jump to page',
-                  hintText: 'Enter page number',
-                  alignLabelWithHint: true,
-                  isDense: true,
-                  floatingLabelAlignment: FloatingLabelAlignment.center,
-                ),
-                keyboardType: TextInputType.number,
-                onSubmitted: (String value) {
-                  if (widget.pageController.hasClients) {
-                    int pageNum = int.parse(value);
-                    int targetPage = pageNum > widget.pageNav.pageCounts
-                        ? widget.pageNav.pageCounts - 1
-                        : pageNum - 1;
-                    widget.pageController.animateToPage(targetPage,
-                        duration: kTabScrollDuration, curve: Curves.easeInOut);
+        child: Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxHeight: 80, maxWidth: 150),
+                child: TextField(
+                  textAlign: TextAlign.center,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Jump to page',
+                    hintText: 'Enter page number',
+                    alignLabelWithHint: true,
+                    isDense: true,
+                    floatingLabelAlignment: FloatingLabelAlignment.center,
+                  ),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: false,
+                    signed: true,
+                  ),
+                  onSubmitted: (String value) {
+                    if (widget.pageController.hasClients) {
+                      int pageNum = int.parse(value);
+                      int targetPage = pageNum > widget.pageNav.pageCounts
+                          ? widget.pageNav.pageCounts - 1
+                          : pageNum - 1;
+                      widget.pageController.animateToPage(targetPage,
+                          duration: kTabScrollDuration,
+                          curve: Curves.easeInOut);
 
-                    Navigator.pop(context);
-                  }
-                },
+                      Navigator.pop(context);
+                    }
+                  },
+                ),
               ),
-            ),
-            Text(
-              'Page ${widget.pageNav.currentPage} of ${widget.pageNav.pageCounts}',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ],
+              const SizedBox(height: 10),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  'Page ${widget.pageNav.currentPage} of ${widget.pageNav.pageCounts}',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
