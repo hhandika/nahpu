@@ -329,7 +329,7 @@ class NavSheetState extends ConsumerState<NavSheet> {
       child: Center(
         child: Column(children: [
           const SizedBox(
-            height: 10,
+            height: 20,
           ),
           Container(
             constraints: BoxConstraints(
@@ -347,21 +347,20 @@ class NavSheetState extends ConsumerState<NavSheet> {
               keyboardType: TextInputType.number,
               onSubmitted: (String value) {
                 if (widget.pageController.hasClients) {
-                  setState(() {
-                    int pageNum = int.parse(value);
-                    int targetPage = pageNum > widget.pageNav.pageCounts
-                        ? widget.pageNav.pageCounts - 1
-                        : pageNum - 1;
-                    widget.pageController.animateToPage(targetPage,
-                        duration: kTabScrollDuration, curve: Curves.easeInOut);
-                  });
+                  int pageNum = int.parse(value);
+                  int targetPage = pageNum > widget.pageNav.pageCounts
+                      ? widget.pageNav.pageCounts - 1
+                      : pageNum - 1;
+                  widget.pageController.animateToPage(targetPage,
+                      duration: kTabScrollDuration, curve: Curves.easeInOut);
+
                   Navigator.pop(context);
                 }
               },
             ),
           ),
           const SizedBox(
-            height: 10,
+            height: 20,
           ),
           Text(
             'Page ${widget.pageNav.currentPage} of ${widget.pageNav.pageCounts}',
