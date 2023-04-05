@@ -95,10 +95,7 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
   }
 
   Future<File?> _selectFile() async {
-    final result = await FilePicker.platform.pickFiles(
-        // type: FileType.custom,
-        // allowedExtensions: ['db', 'sqlite', 'sqlite3'],
-        );
+    final result = await _matchPicker();
 
     if (result != null) {
       if (kDebugMode) {
@@ -107,5 +104,16 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
       return File(result.files.single.path!);
     }
     return null;
+  }
+
+  Future<FilePickerResult?> _matchPicker() async {
+    if (Platform.isIOS || Platform.isAndroid) {
+      return await FilePicker.platform.pickFiles();
+    } else {
+      return await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['db', 'sqlite', 'sqlite3'],
+      );
+    }
   }
 }
