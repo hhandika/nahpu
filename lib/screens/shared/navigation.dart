@@ -212,6 +212,87 @@ class PageNavButtonState extends ConsumerState<PageNavButton> {
   }
 }
 
+class PageViewer extends StatefulWidget {
+  const PageViewer({
+    super.key,
+    required this.pageNav,
+    required this.child,
+  });
+
+  final PageNavigation pageNav;
+  final Widget child;
+  @override
+  State<PageViewer> createState() => _PageViewerState();
+}
+
+class _PageViewerState extends State<PageViewer> {
+  bool _visible = true;
+
+  @override
+  void initState() {
+    super.initState();
+    Future<void>.delayed(const Duration(seconds: 5), () {
+      if (mounted) {
+        setState(() {
+          _visible = false;
+        });
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        widget.child,
+        Visibility(
+          visible: _visible,
+          child: PageNumberViewer(
+            pageNav: widget.pageNav,
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class PageNumberViewer extends StatelessWidget {
+  const PageNumberViewer({
+    super.key,
+    required this.pageNav,
+  });
+
+  final PageNavigation pageNav;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      bottom: 45,
+      right: 10,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Color.lerp(Theme.of(context).colorScheme.primaryContainer,
+              Theme.of(context).colorScheme.surface, 0.5),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(10),
+          ),
+        ),
+        height: 40,
+        width: 120,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: PageInfo(pageNav: pageNav),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class PageInfo extends StatelessWidget {
   const PageInfo({super.key, required this.pageNav});
 
@@ -221,7 +302,7 @@ class PageInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       'Page ${pageNav.currentPage} of ${pageNav.pageCounts}',
-      style: Theme.of(context).textTheme.bodyMedium,
+      style: Theme.of(context).textTheme.labelLarge,
     );
   }
 }

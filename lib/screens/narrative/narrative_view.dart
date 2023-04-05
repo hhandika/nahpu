@@ -75,7 +75,7 @@ class NarrativeState extends ConsumerState<Narrative> {
                       itemBuilder: (context, index) {
                         final narrativeCtr =
                             _updateController(narrativeEntries, index);
-                        return Viewer(
+                        return PageViewer(
                           pageNav: _pageNav,
                           child: NarrativeForm(
                             narrativeId: narrativeEntries[index].id,
@@ -83,11 +83,7 @@ class NarrativeState extends ConsumerState<Narrative> {
                           ),
                         );
                       },
-                      onPageChanged: (value) => setState(() {
-                        _pageNav.currentPage = value + 1;
-                        _pageNav = updatePageNavigation(_pageNav);
-                        NarrativeServices(ref).invalidateNarrative();
-                      }),
+                      onPageChanged: (value) => _updatePageNav(value),
                     );
                   }
                 },
@@ -107,6 +103,14 @@ class NarrativeState extends ConsumerState<Narrative> {
     );
   }
 
+  void _updatePageNav(int value) {
+    setState(() {
+      _pageNav.currentPage = value + 1;
+      _pageNav = updatePageNavigation(_pageNav);
+      NarrativeServices(ref).invalidateNarrative();
+    });
+  }
+
   NarrativeFormCtrModel _updateController(
       List<NarrativeData> narrativeEntries, int index) {
     return NarrativeFormCtrModel(
@@ -114,42 +118,6 @@ class NarrativeState extends ConsumerState<Narrative> {
       siteCtr: narrativeEntries[index].siteID,
       narrativeCtr:
           TextEditingController(text: narrativeEntries[index].narrative),
-    );
-  }
-}
-
-// View page number
-class Viewer extends StatelessWidget {
-  const Viewer({super.key, required this.pageNav, required this.child});
-
-  final PageNavigation pageNav;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        child,
-        Positioned(
-          bottom: 50,
-          right: 0,
-          child: Container(
-            height: 40,
-            width: 100,
-            color: Colors.grey,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Page ${pageNav.currentPage} of ${pageNav.pageCounts}",
-                  style: const TextStyle(fontSize: 12, color: Colors.white),
-                  overflow: TextOverflow.visible,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
