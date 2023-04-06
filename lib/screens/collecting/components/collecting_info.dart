@@ -193,29 +193,29 @@ class CollEventIdTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ListTile(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-        side: BorderSide(
-          color: Theme.of(context).colorScheme.onSurface,
-          width: 0.5,
+    return Visibility(
+      visible: collEventCtr.eventIDCtr.text.isNotEmpty,
+      child: ListTile(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          side: BorderSide(
+            color: Theme.of(context).colorScheme.onSurface,
+            width: 0.5,
+          ),
         ),
-      ),
-      title: RichText(
-        text: TextSpan(
-          text: 'Coll. Event ID: ',
-          style: Theme.of(context).textTheme.titleMedium,
-          children: [
-            TextSpan(
-              text: collEventCtr.eventIDCtr.text,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ],
+        title: RichText(
+          text: TextSpan(
+            text: 'Coll. Event ID: ',
+            style: Theme.of(context).textTheme.titleMedium,
+            children: [
+              TextSpan(
+                text: collEventCtr.eventIDCtr.text,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ],
+          ),
         ),
-      ),
-      trailing: Visibility(
-        visible: collEventCtr.eventIDCtr.text.isNotEmpty,
-        child: IconButton(
+        trailing: IconButton(
           icon: const Icon(
             Icons.edit_rounded,
             size: 20,

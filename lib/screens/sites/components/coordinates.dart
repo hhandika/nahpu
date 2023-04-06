@@ -297,7 +297,7 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 500),
         child: Padding(
-          padding: EdgeInsets.only(left: 10, right: 10),
+          padding: const EdgeInsets.only(left: 10, right: 10),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
