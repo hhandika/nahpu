@@ -213,15 +213,22 @@ class CollEffortMenuState extends ConsumerState<CollEffortMenu> {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<CommonPopUpMenuItems>(
+      icon: const Icon(Icons.more_vert),
       onSelected: _onSelected,
       itemBuilder: (context) => [
         const PopupMenuItem(
           value: CommonPopUpMenuItems.edit,
-          child: Text('Edit'),
+          child: ListTile(
+            leading: Icon(Icons.edit_outlined),
+            title: Text('Edit'),
+          ),
         ),
         const PopupMenuItem(
           value: CommonPopUpMenuItems.delete,
-          child: Text('Delete'),
+          child: ListTile(
+            leading: Icon(Icons.delete_outline),
+            title: Text('Delete'),
+          ),
         ),
       ],
     );
