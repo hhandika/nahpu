@@ -295,7 +295,9 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 500),
+        constraints: const BoxConstraints(maxWidth: 500),
+        child: Padding(
+          padding: EdgeInsets.only(left: 10, right: 10),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -333,9 +335,7 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
                 keyboardType: TextInputType.number,
               ),
               DropdownButtonFormField(
-                value: widget.coordCtr.datumCtr.text.isEmpty
-                    ? _datum[0]
-                    : widget.coordCtr.datumCtr.text,
+                value: _getDatum(),
                 decoration: const InputDecoration(
                   labelText: 'Datum',
                   hintText: 'Specify the datum',
@@ -395,8 +395,21 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
                 ],
               )
             ],
-          )),
+          ),
+        ),
+      ),
     );
+  }
+
+  String _getDatum() {
+    if (widget.coordCtr.datumCtr.text.isEmpty) {
+      setState(() {
+        widget.coordCtr.datumCtr.text = _datum[0];
+      });
+      return widget.coordCtr.datumCtr.text;
+    } else {
+      return widget.coordCtr.datumCtr.text;
+    }
   }
 
   Future<void> _createCoordinate() async {
