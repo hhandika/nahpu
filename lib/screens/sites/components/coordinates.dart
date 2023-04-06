@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
@@ -163,6 +164,10 @@ class CoordinateMenuState extends ConsumerState<CoordinateMenu> {
           child: Text('Edit'),
         ),
         const PopupMenuItem<CoordinatePopUpMenuItems>(
+          value: CoordinatePopUpMenuItems.copy,
+          child: Text('Copy'),
+        ),
+        const PopupMenuItem<CoordinatePopUpMenuItems>(
           value: CoordinatePopUpMenuItems.open,
           child: Text('Open in browser'),
         ),
@@ -188,6 +193,16 @@ class CoordinateMenuState extends ConsumerState<CoordinateMenu> {
           ),
         );
         break;
+      case CoordinatePopUpMenuItems.copy:
+        await Clipboard.setData(ClipboardData(text: _latLong));
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Latitude and Longitude copied to clipboard'),
+            ),
+          );
+        }
+        break;
       case CoordinatePopUpMenuItems.open:
         await _launchGoogleMap();
         break;
@@ -203,14 +218,18 @@ class CoordinateMenuState extends ConsumerState<CoordinateMenu> {
     const path = 'maps/search/';
     final queryParameters = {
       'api': '1',
-      'query': '${widget.coordCtr.latitudeCtr.text},'
-          '${widget.coordCtr.longitudeCtr.text}',
+      'query': _latLong,
     };
     Uri url = Uri.https(host, path, queryParameters);
     if (kDebugMode) print(url.toString());
     if (!await launchUrl(url, mode: LaunchMode.platformDefault)) {
       throw 'Could not launch $url';
     }
+  }
+
+  String get _latLong {
+    return '${widget.coordCtr.latitudeCtr.text},'
+        '${widget.coordCtr.longitudeCtr.text}';
   }
 }
 
