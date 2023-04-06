@@ -316,47 +316,23 @@ class PartFormState extends ConsumerState<PartForm> {
               isLastField: false,
             ),
             const SizedBox(height: 10),
-            widget.isEditing
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            if (widget.specimenPartId != null) {
-                              SpecimenServices(ref)
-                                  .deleteSpecimenPart(widget.specimenPartId!);
-                              Navigator.pop(context);
-                            }
-                          },
-                          icon: const Icon(Icons.delete_rounded)),
-                      _buildButtons(),
-                    ],
-                  )
-                : _buildButtons(),
+            FormButtonWithDelete(
+              isEditing: widget.isEditing,
+              onDeleted: () {
+                if (widget.specimenPartId != null) {
+                  SpecimenServices(ref)
+                      .deleteSpecimenPart(widget.specimenPartId!);
+                  Navigator.pop(context);
+                }
+              },
+              onSubmitted: () {
+                widget.isEditing ? _updatePart() : _createPart();
+                Navigator.of(context).pop();
+              },
+            ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildButtons() {
-    return Wrap(
-      children: [
-        SecondaryButton(
-          text: 'Cancel',
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        const SizedBox(width: 10),
-        PrimaryButton(
-          text: widget.isEditing ? 'Update' : 'Add',
-          onPressed: () {
-            widget.isEditing ? _updatePart() : _createPart();
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
     );
   }
 

@@ -272,9 +272,12 @@ class TaxonRegistryListState extends ConsumerState<TaxonRegistryList> {
       ),
       body: ref.watch(taxonRegistryProvider).when(
             data: (data) {
-              return data.isEmpty
-                  ? const Text('No taxon found')
-                  : TaxonList(taxonList: data);
+              if (data.isEmpty) {
+                return const Center(
+                  child: Text('No taxon found'),
+                );
+              }
+              return TaxonList(taxonList: data);
             },
             loading: () => const CommonProgressIndicator(),
             error: (error, stack) => Text('Error: $error'),

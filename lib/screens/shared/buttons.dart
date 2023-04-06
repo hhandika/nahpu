@@ -47,6 +47,45 @@ class FormElevButton extends StatelessWidget {
   }
 }
 
+class FormButtonWithDelete extends StatelessWidget {
+  const FormButtonWithDelete({
+    super.key,
+    required this.isEditing,
+    required this.onDeleted,
+    required this.onSubmitted,
+  });
+
+  final bool isEditing;
+  final VoidCallback onDeleted;
+  final VoidCallback onSubmitted;
+
+  @override
+  Widget build(BuildContext context) {
+    return isEditing
+        ? Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                onPressed: onDeleted,
+                icon: const Icon(
+                  Icons.delete_rounded,
+                ),
+              ),
+              _buildFormButton(),
+            ],
+          )
+        : _buildFormButton();
+  }
+
+  Widget _buildFormButton() {
+    return FormButton(
+      isEditing: isEditing,
+      onDeleted: onDeleted,
+      onSubmitted: onSubmitted,
+    );
+  }
+}
+
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({super.key, required this.text, required this.onPressed});
 
@@ -63,6 +102,38 @@ class PrimaryButton extends StatelessWidget {
       ),
       onPressed: onPressed,
       child: Text(text),
+    );
+  }
+}
+
+class FormButton extends StatelessWidget {
+  const FormButton({
+    super.key,
+    required this.isEditing,
+    required this.onDeleted,
+    required this.onSubmitted,
+  });
+
+  final bool isEditing;
+  final VoidCallback onDeleted;
+  final VoidCallback onSubmitted;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      children: [
+        SecondaryButton(
+          text: 'Cancel',
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        const SizedBox(width: 10),
+        PrimaryButton(
+          text: isEditing ? 'Update' : 'Add',
+          onPressed: onSubmitted,
+        ),
+      ],
     );
   }
 }
