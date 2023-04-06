@@ -177,7 +177,7 @@ class CoordinateMenuState extends ConsumerState<CoordinateMenu> {
           value: CoordinatePopUpMenuItems.open,
           child: ListTile(
             leading: Icon(Icons.open_in_browser_outlined),
-            title: Text('Open in browser'),
+            title: Text('Open'),
           ),
         ),
         const PopupMenuItem<CoordinatePopUpMenuItems>(
