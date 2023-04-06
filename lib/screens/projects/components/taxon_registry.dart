@@ -3,13 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
-import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
-import 'package:nahpu/services/database/taxonomy_queries.dart';
 import 'package:nahpu/services/taxonomy_services.dart';
 
 class TaxonRegistryViewer extends ConsumerStatefulWidget {
@@ -271,8 +269,7 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
               FormButtonWithDelete(
                 isEditing: widget.isEditing,
                 onDeleted: () async {
-                  await TaxonomyQuery(ref.read(databaseProvider))
-                      .deleteTaxon(widget.taxonId!);
+                  await TaxonomyService(ref).deleteTaxon(widget.taxonId!);
                   ref.invalidate(taxonRegistryProvider);
                   if (context.mounted) {
                     Navigator.of(context).pop();
@@ -302,8 +299,7 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
 
   Future<void> _updateTaxon() async {
     final taxon = _getForm();
-    await TaxonomyQuery(ref.read(databaseProvider))
-        .updateTaxonEntry(widget.taxonId!, taxon);
+    await TaxonomyService(ref).updateTaxonEntry(widget.taxonId!, taxon);
   }
 
   TaxonomyCompanion _getForm() {
