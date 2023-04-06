@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/sites/site_view.dart';
 import 'package:nahpu/services/site_services.dart';
-
-enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
 
 Future<void> createNewSite(BuildContext context, WidgetRef ref) {
   String projectUuid = ref.watch(projectUuidProvider);
@@ -39,41 +38,76 @@ class SiteMenu extends ConsumerStatefulWidget {
 class SiteMenuState extends ConsumerState<SiteMenu> {
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<MenuSelection>(
+    return PopupMenuButton<SiteMenuSelection>(
         // Callback that sets the selected popup menu item.
         onSelected: _onPopupMenuSelected,
-        itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuSelection>>[
-              const PopupMenuItem<MenuSelection>(
-                value: MenuSelection.newSite,
-                child: Text('Create a new site'),
+        itemBuilder: (BuildContext context) =>
+            <PopupMenuEntry<SiteMenuSelection>>[
+              const PopupMenuItem<SiteMenuSelection>(
+                value: SiteMenuSelection.newSite,
+                child: ListTile(
+                  leading: Icon(Icons.create_outlined),
+                  title: Text('Create a new site'),
+                ),
               ),
-              const PopupMenuItem<MenuSelection>(
-                value: MenuSelection.pdfExport,
-                child: Text('Export to PDF'),
+              const PopupMenuItem<SiteMenuSelection>(
+                value: SiteMenuSelection.duplicate,
+                child: ListTile(
+                  leading: Icon(Icons.copy_outlined),
+                  title: Text('Duplicate site'),
+                ),
               ),
-              const PopupMenuItem<MenuSelection>(
-                value: MenuSelection.deleteRecords,
-                child: Text('Delete current record',
-                    style: TextStyle(color: Colors.red)),
-              ),
-              const PopupMenuItem<MenuSelection>(
-                value: MenuSelection.deleteAllRecords,
-                child: Text('Delete all records',
-                    style: TextStyle(color: Colors.red)),
+              const PopupMenuItem<SiteMenuSelection>(
+                  value: SiteMenuSelection.pdfExport,
+                  child: ListTile(
+                    leading: Icon(Icons.picture_as_pdf_outlined),
+                    title: Text('Export to PDF'),
+                  )),
+              const PopupMenuDivider(height: 10),
+              const PopupMenuItem<SiteMenuSelection>(
+                  value: SiteMenuSelection.deleteRecords,
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.delete_outline,
+                      color: Colors.red,
+                    ),
+                    title: Text(
+                      'Delete record',
+                      style: TextStyle(
+                        color: Colors.red,
+                      ),
+                    ),
+                  )),
+              const PopupMenuItem<SiteMenuSelection>(
+                value: SiteMenuSelection.deleteAllRecords,
+                child: ListTile(
+                  leading: Icon(
+                    Icons.delete_forever_outlined,
+                    color: Colors.red,
+                  ),
+                  title: Text(
+                    'Delete all records',
+                    style: TextStyle(
+                      color: Colors.red,
+                    ),
+                  ),
+                ),
               ),
             ]);
   }
 
-  void _onPopupMenuSelected(MenuSelection item) {
+  void _onPopupMenuSelected(SiteMenuSelection item) {
     switch (item) {
-      case MenuSelection.newSite:
+      case SiteMenuSelection.newSite:
         createNewSite(context, ref);
         break;
-      case MenuSelection.pdfExport:
+      case SiteMenuSelection.duplicate:
         break;
-      case MenuSelection.deleteRecords:
+      case SiteMenuSelection.pdfExport:
         break;
-      case MenuSelection.deleteAllRecords:
+      case SiteMenuSelection.deleteRecords:
+        break;
+      case SiteMenuSelection.deleteAllRecords:
         SiteServices(ref).deleteAllSites();
         break;
     }

@@ -68,7 +68,8 @@ class FormButtonWithDelete extends StatelessWidget {
               IconButton(
                 onPressed: onDeleted,
                 icon: const Icon(
-                  Icons.delete_rounded,
+                  Icons.delete_outline,
+                  color: Colors.red,
                 ),
               ),
               _buildFormButton(),
