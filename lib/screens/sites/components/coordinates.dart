@@ -161,20 +161,31 @@ class CoordinateMenuState extends ConsumerState<CoordinateMenu> {
       itemBuilder: (context) => [
         const PopupMenuItem<CoordinatePopUpMenuItems>(
           value: CoordinatePopUpMenuItems.edit,
-          child: Text('Edit'),
+          child: ListTile(
+            leading: Icon(Icons.edit_outlined),
+            title: Text('Edit'),
+          ),
         ),
         const PopupMenuItem<CoordinatePopUpMenuItems>(
           value: CoordinatePopUpMenuItems.copy,
-          child: Text('Copy'),
+          child: ListTile(
+            leading: Icon(Icons.copy_outlined),
+            title: Text('Copy'),
+          ),
         ),
         const PopupMenuItem<CoordinatePopUpMenuItems>(
           value: CoordinatePopUpMenuItems.open,
-          child: Text('Open in browser'),
+          child: ListTile(
+            leading: Icon(Icons.open_in_browser_outlined),
+            title: Text('Open in browser'),
+          ),
         ),
         const PopupMenuItem<CoordinatePopUpMenuItems>(
-          value: CoordinatePopUpMenuItems.delete,
-          child: Text('Delete'),
-        ),
+            value: CoordinatePopUpMenuItems.delete,
+            child: ListTile(
+              leading: Icon(Icons.delete_outline),
+              title: Text('Delete'),
+            )),
       ],
     );
   }
