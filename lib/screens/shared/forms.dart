@@ -135,7 +135,7 @@ class MediaTabBars extends ConsumerWidget {
           ),
         ),
         SizedBox(
-          height: MediaQuery.of(context).size.height * height,
+          height: MediaQuery.of(context).size.height,
           child: TabBarView(
             controller: tabController,
             children: children,
