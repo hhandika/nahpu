@@ -2,8 +2,8 @@ import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
 
-class TaxonService extends DbAccess {
-  TaxonService(super.ref);
+class TaxonomyService extends DbAccess {
+  TaxonomyService(super.ref);
 
   Database get db => ref.read(databaseProvider);
 

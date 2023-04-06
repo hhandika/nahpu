@@ -771,6 +771,18 @@ class TaxonRegistryCtrModel {
       commonNameCtr: TextEditingController(),
       noteCtr: TextEditingController());
 
+  factory TaxonRegistryCtrModel.fromData(TaxonomyData data) =>
+      TaxonRegistryCtrModel(
+        taxonClassCtr: TextEditingController(text: data.taxonClass ?? ''),
+        taxonOrderCtr: TextEditingController(text: data.taxonOrder ?? ''),
+        taxonFamilyCtr: TextEditingController(text: data.taxonFamily ?? ''),
+        genusCtr: TextEditingController(text: data.genus ?? ''),
+        specificEpithetCtr:
+            TextEditingController(text: data.specificEpithet ?? ''),
+        commonNameCtr: TextEditingController(text: data.commonName ?? ''),
+        noteCtr: TextEditingController(text: data.notes ?? ''),
+      );
+
   void dispose() {
     taxonClassCtr.dispose();
     taxonOrderCtr.dispose();

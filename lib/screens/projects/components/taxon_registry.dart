@@ -10,6 +10,7 @@ import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/database/taxonomy_queries.dart';
+import 'package:nahpu/services/taxonomy_services.dart';
 
 class TaxonRegistryViewer extends ConsumerStatefulWidget {
   const TaxonRegistryViewer({super.key});
@@ -50,7 +51,7 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const TaxonRegistryForm(),
+                        builder: (context) => const NewTaxon(),
                       ),
                     );
                   },
@@ -93,166 +94,227 @@ class TaxonRegistryInfo extends ConsumerWidget {
   }
 }
 
+class NewTaxon extends StatelessWidget {
+  const NewTaxon({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final TaxonRegistryCtrModel ctr = TaxonRegistryCtrModel.empty();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('New Taxon'),
+        automaticallyImplyLeading: false,
+      ),
+      body: SafeArea(
+        child: Center(
+          child: TaxonRegistryForm(
+            taxonId: null,
+            ctr: ctr,
+            isEditing: false,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class EditTaxon extends StatelessWidget {
+  const EditTaxon({
+    super.key,
+    required this.taxonId,
+    required this.ctr,
+  });
+
+  final int taxonId;
+  final TaxonRegistryCtrModel ctr;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Edit Taxon'),
+        automaticallyImplyLeading: false,
+      ),
+      body: SafeArea(
+        child: Center(
+          child: TaxonRegistryForm(
+            taxonId: taxonId,
+            ctr: ctr,
+            isEditing: true,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class TaxonRegistryForm extends ConsumerStatefulWidget {
-  const TaxonRegistryForm({super.key});
+  const TaxonRegistryForm(
+      {super.key,
+      required this.taxonId,
+      required this.ctr,
+      required this.isEditing});
+
+  final int? taxonId;
+  final TaxonRegistryCtrModel ctr;
+  final bool isEditing;
 
   @override
   TaxonRegistryFormState createState() => TaxonRegistryFormState();
 }
 
 class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
-  final TaxonRegistryCtrModel _ctr = TaxonRegistryCtrModel.empty();
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Taxon Registry'),
-        automaticallyImplyLeading: false,
-      ),
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 500),
-              child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      DropdownButtonFormField(
-                          decoration: const InputDecoration(
-                            labelText: 'Class',
-                            hintText: 'Select a taxon class',
-                          ),
-                          items: supportedTaxonClass
-                              .map((e) =>
-                                  DropdownMenuItem(value: e, child: Text(e)))
-                              .toList(),
-                          onChanged: (value) {
-                            _ctr.taxonClassCtr.text = value ?? '';
-                          }),
-                      TextFormField(
-                          controller: _ctr.taxonOrderCtr,
-                          decoration: const InputDecoration(
-                            labelText: 'Order',
-                            hintText: 'Enter an order',
-                          ),
-                          onChanged: (String? value) {
-                            if (value != null) {
-                              _ctr.taxonOrderCtr.value = TextEditingValue(
-                                text: value.toSentenceCase(),
-                                selection: _ctr.taxonOrderCtr.selection,
-                              );
-                            }
-                          }),
-                      TextFormField(
-                        controller: _ctr.taxonFamilyCtr,
-                        decoration: const InputDecoration(
-                          labelText: 'Family',
-                          hintText: 'Enter a family',
-                        ),
-                        onChanged: (String? value) {
-                          if (value != null) {
-                            _ctr.taxonFamilyCtr.value = TextEditingValue(
-                              text: value.toSentenceCase(),
-                              selection: _ctr.taxonFamilyCtr.selection,
-                            );
-                          }
-                        },
-                      ),
-                      TextFormField(
-                        controller: _ctr.genusCtr,
-                        decoration: const InputDecoration(
-                          labelText: 'Genus',
-                          hintText: 'Enter a genus',
-                        ),
-                        onChanged: (String? value) {
-                          if (value != null) {
-                            _ctr.genusCtr.value = TextEditingValue(
-                              text: value.toSentenceCase(),
-                              selection: _ctr.genusCtr.selection,
-                            );
-                          }
-                        },
-                      ),
-                      TextFormField(
-                        controller: _ctr.specificEpithetCtr,
-                        decoration: const InputDecoration(
-                          labelText: 'Specific epithet',
-                          hintText: 'Enter specific epithet',
-                        ),
-                        onChanged: (String? value) {
-                          if (value != null) {
-                            _ctr.specificEpithetCtr.value = TextEditingValue(
-                              text: value.toLowerCase(),
-                              selection: _ctr.specificEpithetCtr.selection,
-                            );
-                          }
-                        },
-                      ),
-                      TextFormField(
-                        controller: _ctr.commonNameCtr,
-                        decoration: const InputDecoration(
-                          labelText: 'Common name',
-                          hintText: 'Enter a common name',
-                        ),
-                        onChanged: (String? value) {
-                          if (value != null) {
-                            _ctr.commonNameCtr.value = TextEditingValue(
-                              text: value.toSentenceCase(),
-                              selection: _ctr.commonNameCtr.selection,
-                            );
-                          }
-                        },
-                      ),
-                      TextFormField(
-                        controller: _ctr.noteCtr,
-                        decoration: const InputDecoration(
-                          labelText: 'Notes',
-                          hintText: 'Enter notes',
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      Wrap(
-                        spacing: 10,
-                        children: [
-                          SecondaryButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            text: 'Cancel',
-                          ),
-                          PrimaryButton(
-                            onPressed: () {
-                              _saveTaxon();
-                              ref.invalidate(taxonRegistryProvider);
-                              Navigator.of(context).pop();
-                            },
-                            text: 'Add',
-                          ),
-                        ],
-                      ),
-                    ],
-                  )),
-            ),
+    return SingleChildScrollView(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 500),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              DropdownButtonFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Class',
+                    hintText: 'Select a taxon class',
+                  ),
+                  items: supportedTaxonClass
+                      .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                      .toList(),
+                  onChanged: (value) {
+                    widget.ctr.taxonClassCtr.text = value ?? '';
+                  }),
+              TextFormField(
+                  controller: widget.ctr.taxonOrderCtr,
+                  decoration: const InputDecoration(
+                    labelText: 'Order',
+                    hintText: 'Enter an order',
+                  ),
+                  onChanged: (String? value) {
+                    if (value != null) {
+                      widget.ctr.taxonOrderCtr.value = TextEditingValue(
+                        text: value.toSentenceCase(),
+                        selection: widget.ctr.taxonOrderCtr.selection,
+                      );
+                    }
+                  }),
+              TextFormField(
+                controller: widget.ctr.taxonFamilyCtr,
+                decoration: const InputDecoration(
+                  labelText: 'Family',
+                  hintText: 'Enter a family',
+                ),
+                onChanged: (String? value) {
+                  if (value != null) {
+                    widget.ctr.taxonFamilyCtr.value = TextEditingValue(
+                      text: value.toSentenceCase(),
+                      selection: widget.ctr.taxonFamilyCtr.selection,
+                    );
+                  }
+                },
+              ),
+              TextFormField(
+                controller: widget.ctr.genusCtr,
+                decoration: const InputDecoration(
+                  labelText: 'Genus',
+                  hintText: 'Enter a genus',
+                ),
+                onChanged: (String? value) {
+                  if (value != null) {
+                    widget.ctr.genusCtr.value = TextEditingValue(
+                      text: value.toSentenceCase(),
+                      selection: widget.ctr.genusCtr.selection,
+                    );
+                  }
+                },
+              ),
+              TextFormField(
+                controller: widget.ctr.specificEpithetCtr,
+                decoration: const InputDecoration(
+                  labelText: 'Specific epithet',
+                  hintText: 'Enter specific epithet',
+                ),
+                onChanged: (String? value) {
+                  if (value != null) {
+                    widget.ctr.specificEpithetCtr.value = TextEditingValue(
+                      text: value.toLowerCase(),
+                      selection: widget.ctr.specificEpithetCtr.selection,
+                    );
+                  }
+                },
+              ),
+              TextFormField(
+                controller: widget.ctr.commonNameCtr,
+                decoration: const InputDecoration(
+                  labelText: 'Common name',
+                  hintText: 'Enter a common name',
+                ),
+                onChanged: (String? value) {
+                  if (value != null) {
+                    widget.ctr.commonNameCtr.value = TextEditingValue(
+                      text: value.toSentenceCase(),
+                      selection: widget.ctr.commonNameCtr.selection,
+                    );
+                  }
+                },
+              ),
+              TextFormField(
+                controller: widget.ctr.noteCtr,
+                decoration: const InputDecoration(
+                  labelText: 'Notes',
+                  hintText: 'Enter notes',
+                ),
+              ),
+              const SizedBox(height: 20),
+              FormButtonWithDelete(
+                isEditing: widget.isEditing,
+                onDeleted: () async {
+                  await TaxonomyQuery(ref.read(databaseProvider))
+                      .deleteTaxon(widget.taxonId!);
+                  ref.invalidate(taxonRegistryProvider);
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                  }
+                },
+                onSubmitted: () async {
+                  widget.isEditing
+                      ? await _updateTaxon()
+                      : await _createTaxon();
+                  ref.invalidate(taxonRegistryProvider);
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                  }
+                },
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 
-  Future<void> _saveTaxon() async {
-    final taxon = TaxonomyCompanion(
-      taxonClass: db.Value(_ctr.taxonClassCtr.text),
-      taxonOrder: db.Value(_ctr.taxonOrderCtr.text),
-      taxonFamily: db.Value(_ctr.taxonFamilyCtr.text),
-      genus: db.Value(_ctr.genusCtr.text),
-      specificEpithet: db.Value(_ctr.specificEpithetCtr.text),
-      commonName: db.Value(_ctr.commonNameCtr.text),
-      notes: db.Value(_ctr.noteCtr.text),
+  Future<void> _createTaxon() async {
+    final taxon = _getForm();
+    await TaxonomyService(ref).createTaxon(taxon);
+  }
+
+  Future<void> _updateTaxon() async {
+    final taxon = _getForm();
+    await TaxonomyQuery(ref.read(databaseProvider))
+        .updateTaxonEntry(widget.taxonId!, taxon);
+  }
+
+  TaxonomyCompanion _getForm() {
+    return TaxonomyCompanion(
+      taxonClass: db.Value(widget.ctr.taxonClassCtr.text),
+      taxonOrder: db.Value(widget.ctr.taxonOrderCtr.text),
+      taxonFamily: db.Value(widget.ctr.taxonFamilyCtr.text),
+      genus: db.Value(widget.ctr.genusCtr.text),
+      specificEpithet: db.Value(widget.ctr.specificEpithetCtr.text),
+      commonName: db.Value(widget.ctr.commonNameCtr.text),
+      notes: db.Value(widget.ctr.noteCtr.text),
     );
-    await TaxonomyQuery(ref.read(databaseProvider)).createTaxon(taxon);
   }
 }
 
@@ -305,11 +367,16 @@ class TaxonList extends ConsumerWidget {
             '${taxonList[index].taxonFamily}',
           ),
           trailing: IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: () async {
-              await TaxonomyQuery(ref.read(databaseProvider))
-                  .deleteTaxon(taxonList[index].id);
-              ref.invalidate(taxonRegistryProvider);
+            icon: const Icon(Icons.edit),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => EditTaxon(
+                    taxonId: taxonList[index].id,
+                    ctr: TaxonRegistryCtrModel.fromData(taxonList[index]),
+                  ),
+                ),
+              );
             },
           ),
           onTap: () {},
