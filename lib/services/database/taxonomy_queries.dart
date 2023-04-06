@@ -36,4 +36,8 @@ class TaxonomyQuery extends DatabaseAccessor<Database>
   Future<void> deleteTaxon(int id) {
     return (delete(taxonomy)..where((t) => t.id.equals(id))).go();
   }
+
+  Future<void> deleteAllTaxon() {
+    return delete(taxonomy).go();
+  }
 }

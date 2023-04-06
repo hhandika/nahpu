@@ -2,32 +2,31 @@ import 'package:nahpu/providers/validation.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:uuid/uuid.dart';
 import 'package:nahpu/providers/projects.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 get uuid => const Uuid().v4();
 
 get defaultCatalog => 'general-mammals';
 
-class ProjectServices {
-  ProjectServices(this.ref);
+class ProjectServices extends DbAccess {
+  ProjectServices(super.ref);
 
-  final WidgetRef ref;
+  Database get db => ref.read(databaseProvider);
 
   void createProject(ProjectCompanion form) {
-    ref.read(databaseProvider).createProject(form);
+    db.createProject(form);
     _updateProjectUuid(form.uuid.value);
     ref.invalidate(projectListProvider);
     ref.invalidate(projectFormValidation);
   }
 
   void updateProject(String projectUuid, ProjectCompanion form) {
-    ref.read(databaseProvider).updateProjectEntry(projectUuid, form);
+    db.updateProjectEntry(projectUuid, form);
     ref.invalidate(projectFormValidation);
     invalidateProject();
   }
 
   Future<ProjectData> getProjectByUuid(String uuid) {
-    return ref.read(databaseProvider).getProjectByUuid(uuid);
+    return db.getProjectByUuid(uuid);
   }
 
   String getProjectUuid() {
@@ -35,7 +34,7 @@ class ProjectServices {
   }
 
   void deleteProject(String uuid) {
-    ref.read(databaseProvider).deleteProject(uuid);
+    db.deleteProject(uuid);
     ref.invalidate(projectListProvider);
   }
 
