@@ -233,7 +233,7 @@ class CoordinateMenuState extends ConsumerState<CoordinateMenu> {
     };
     Uri url = Uri.https(host, path, queryParameters);
     if (kDebugMode) print(url.toString());
-    if (!await launchUrl(url, mode: LaunchMode.platformDefault)) {
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       throw 'Could not launch $url';
     }
   }
