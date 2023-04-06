@@ -100,32 +100,32 @@ class CoordinateSubtitle extends StatelessWidget {
       text: TextSpan(
         children: [
           const WidgetSpan(
-            child: TileIcon(icon: Icons.pin_drop_outlined),
-          ),
+              child: TileIcon(icon: Icons.pin_drop_outlined),
+              alignment: PlaceholderAlignment.middle),
           TextSpan(
               style: Theme.of(context).textTheme.labelLarge,
               text:
                   '${coordinate.decimalLatitude}, ${coordinate.decimalLongitude}'),
           const TextSpan(text: '  '),
           const WidgetSpan(
-            child: TileIcon(icon: Icons.landscape_outlined),
-          ),
+              child: TileIcon(icon: Icons.landscape_outlined),
+              alignment: PlaceholderAlignment.middle),
           TextSpan(
             style: Theme.of(context).textTheme.labelLarge,
             text: '${coordinate.elevationInMeter} m',
           ),
           const TextSpan(text: '  '),
           const WidgetSpan(
-            child: TileIcon(icon: Icons.circle_outlined),
-          ),
+              child: TileIcon(icon: Icons.circle_outlined),
+              alignment: PlaceholderAlignment.middle),
           TextSpan(
             style: Theme.of(context).textTheme.labelLarge,
             text: '±${coordinate.uncertaintyInMeters} m',
           ),
           const TextSpan(text: '  '),
           const WidgetSpan(
-            child: TileIcon(icon: Icons.map_outlined),
-          ),
+              child: TileIcon(icon: Icons.map_outlined),
+              alignment: PlaceholderAlignment.middle),
           TextSpan(
             style: Theme.of(context).textTheme.labelLarge,
             text: '${coordinate.datum}',

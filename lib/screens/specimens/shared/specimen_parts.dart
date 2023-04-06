@@ -124,7 +124,7 @@ class PartList extends ConsumerWidget {
             final part = data[index];
             return ListTile(
               title: Text(part.type ?? 'No type'),
-              subtitle: Text('Count: ${part.count.toString()}'),
+              subtitle: PartSubTitle(part: part),
               trailing: IconButton(
                 icon: const Icon(Icons.edit),
                 onPressed: () {
@@ -146,6 +146,39 @@ class PartList extends ConsumerWidget {
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (err, stack) => Text('Error: $err'),
     );
+  }
+}
+
+class PartSubTitle extends StatelessWidget {
+  const PartSubTitle({super.key, required this.part});
+
+  final SpecimenPartData part;
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+        children: <InlineSpan>[
+          const WidgetSpan(
+            child: Icon(Icons.science_outlined),
+            alignment: PlaceholderAlignment.middle,
+          ),
+          TextSpan(
+              text: _getTreatmentText(),
+              style: Theme.of(context).textTheme.labelLarge),
+        ],
+      ),
+    );
+  }
+
+  String _getTreatmentText() {
+    if (part.treatment == null) {
+      return 'None';
+    } else if (part.treatment!.isEmpty) {
+      return 'None';
+    } else {
+      return part.treatment!;
+    }
   }
 }
 

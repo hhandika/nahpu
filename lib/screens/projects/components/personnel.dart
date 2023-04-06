@@ -145,8 +145,8 @@ class PersonnelSubtitle extends StatelessWidget {
       role != null
           ? TextSpan(children: [
               const WidgetSpan(
-                child: TileIcon(icon: Icons.account_circle_outlined),
-              ),
+                  child: TileIcon(icon: Icons.account_circle_outlined),
+                  alignment: PlaceholderAlignment.middle),
               TextSpan(
                 text: '$role ',
                 style: Theme.of(context).textTheme.labelLarge,
@@ -157,8 +157,8 @@ class PersonnelSubtitle extends StatelessWidget {
           ? TextSpan(
               children: [
                 const WidgetSpan(
-                  child: TileIcon(icon: Icons.business_rounded),
-                ),
+                    child: TileIcon(icon: Icons.business_rounded),
+                    alignment: PlaceholderAlignment.middle),
                 TextSpan(
                   text: '$affiliation ',
                   style: Theme.of(context).textTheme.labelLarge,
@@ -170,8 +170,8 @@ class PersonnelSubtitle extends StatelessWidget {
           ? TextSpan(
               children: [
                 const WidgetSpan(
-                  child: TileIcon(icon: MdiIcons.counter),
-                ),
+                    child: TileIcon(icon: MdiIcons.counter),
+                    alignment: PlaceholderAlignment.middle),
                 TextSpan(
                   text: '$currentFieldNumber',
                   style: Theme.of(context).textTheme.labelLarge,

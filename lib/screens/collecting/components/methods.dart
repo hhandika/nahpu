@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
@@ -173,23 +174,48 @@ class Subtitle extends StatelessWidget {
     return RichText(
       text: TextSpan(
         children: [
+          const WidgetSpan(
+              child: Icon(Icons.shopping_bag_outlined),
+              alignment: PlaceholderAlignment.middle),
           TextSpan(
-            text: 'Count: ${data.count}',
+            text: data.count != null ? '${data.count}' : '0',
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
+          const TextSpan(text: ' '),
+          const WidgetSpan(
+              child: Icon(Icons.domain),
+              alignment: PlaceholderAlignment.middle),
+          TextSpan(
+            text: _getBrand(),
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
+          const TextSpan(text: ' '),
+          const WidgetSpan(
+              child: Icon(MdiIcons.weight),
+              alignment: PlaceholderAlignment.middle),
+          TextSpan(
+            text: _getSize(),
             style: Theme.of(context).textTheme.labelMedium,
           ),
-          if (data.size != null && data.size!.isNotEmpty)
-            TextSpan(
-              text: ' | Size: ${data.size}',
-              style: Theme.of(context).textTheme.labelMedium,
-            ),
-          if (data.notes != null && data.notes!.isNotEmpty)
-            TextSpan(
-              text: ' | Notes: ${data.notes}',
-              style: Theme.of(context).textTheme.labelMedium,
-            ),
         ],
       ),
     );
+  }
+
+  String _getBrand() {
+    if (data.brand == null || data.brand!.isEmpty) {
+      return 'Unknown';
+    } else {
+      return data.brand!;
+    }
+  }
+
+  String _getSize() {
+    if (data.size == null || data.size!.isEmpty) {
+      return 'N/A';
+    } else {
+      return data.size!;
+    }
   }
 }
 
