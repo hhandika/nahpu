@@ -29,10 +29,13 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
     return FormCard(
       title: 'Personnel',
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(
-              height: MediaQuery.of(context).size.height * 0.28,
-              child: const PersonnelList()),
+          const SizedBox(
+            height: 300,
+            child: PersonnelList(),
+          ),
           PrimaryButton(
             onPressed: () {
               Navigator.push(
@@ -63,6 +66,8 @@ class PersonnelList extends ConsumerWidget {
       data: (data) {
         return data.isEmpty
             ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: const [
                   Text(
                     'No personnel found!',
@@ -74,6 +79,7 @@ class PersonnelList extends ConsumerWidget {
               )
             : ListView.builder(
                 itemCount: data.length,
+                shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return PersonalListTile(
                     personnelData: data[index],

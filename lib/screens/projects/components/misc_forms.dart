@@ -43,7 +43,7 @@ class MiscFormState extends ConsumerState<MiscForm>
         child: MediaTabBars(
           tabController: _tabController,
           length: _length,
-          height: MediaQuery.of(context).size.height * 0.4,
+          height: 320,
           tabs: [
             Tab(
                 icon: Icon(MdiIcons.chartLine,

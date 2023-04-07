@@ -7,6 +7,7 @@ import 'package:nahpu/screens/collecting/components/collecting_info.dart';
 import 'package:nahpu/screens/collecting/components/tab_bar.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/layout.dart';
+import 'package:nahpu/styles/catalogs.dart';
 
 class CollEventForm extends ConsumerStatefulWidget {
   const CollEventForm({Key? key, required this.id, required this.collEventCtr})
@@ -35,7 +36,7 @@ class CollEventFormState extends ConsumerState<CollEventForm> {
           children: [
             AdaptiveMainLayout(
               useHorizontalLayout: useHorizontalLayout,
-              height: MediaQuery.of(context).size.height * 0.45,
+              height: topCollEventHeight,
               children: [
                 CollectingInfoFields(
                     collEventId: widget.id,

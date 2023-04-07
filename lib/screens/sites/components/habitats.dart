@@ -24,6 +24,7 @@ class Habitat extends ConsumerWidget {
       child: Padding(
         padding: const EdgeInsets.all(5),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
@@ -51,7 +52,7 @@ class Habitat extends ConsumerWidget {
               ),
             ),
             TextFormField(
-              maxLines: 5,
+              maxLines: 6,
               controller: siteFormCtr.habitatDescriptionCtr,
               decoration: const InputDecoration(
                 labelText: 'Description',

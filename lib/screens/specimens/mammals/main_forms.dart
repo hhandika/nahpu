@@ -10,6 +10,7 @@ import 'package:nahpu/screens/specimens/shared/collecting_records.dart';
 import 'package:nahpu/screens/specimens/shared/media.dart';
 import 'package:nahpu/screens/specimens/shared/specimen_parts.dart';
 import 'package:nahpu/screens/specimens/shared/taxa.dart';
+import 'package:nahpu/styles/catalogs.dart';
 
 class MammalForms extends ConsumerStatefulWidget {
   const MammalForms({
@@ -48,7 +49,7 @@ class MammalFormsState extends ConsumerState<MammalForms> {
             children: [
               AdaptiveMainLayout(
                 useHorizontalLayout: useHorizontalLayout,
-                height: MediaQuery.of(context).size.height * 0.55,
+                height: topSpecimenRecordHeight,
                 children: [
                   CollectingRecordField(
                       specimenUuid: widget.specimenUuid,

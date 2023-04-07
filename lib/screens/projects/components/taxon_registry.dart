@@ -28,7 +28,7 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-                height: MediaQuery.of(context).size.height * 0.3,
+                height: 320,
                 child: Container(
                   padding: const EdgeInsets.all(10),
                   child: const TaxonRegistryInfo(),

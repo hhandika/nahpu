@@ -11,6 +11,7 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/services/database/collevent_queries.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
+import 'package:nahpu/styles/catalogs.dart';
 
 class CollMethodForm extends StatelessWidget {
   const CollMethodForm({
@@ -25,7 +26,7 @@ class CollMethodForm extends StatelessWidget {
     return FormCard(
       title: 'Collecting Methods',
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.65,
+        height: bottomCollEventHeight,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

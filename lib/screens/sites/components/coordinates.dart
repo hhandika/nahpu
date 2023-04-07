@@ -24,12 +24,13 @@ class CoordinateFields extends StatelessWidget {
       title: 'Coordinates',
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(
             height: 10,
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.3,
+            height: 255,
             child: CoordinateList(
               sideId: siteId,
             ),

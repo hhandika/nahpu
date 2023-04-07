@@ -10,6 +10,7 @@ import 'package:nahpu/screens/shared/photos.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/screens/shared/videos.dart';
 import 'package:nahpu/screens/sites/components/coordinates.dart';
+import 'package:nahpu/styles/catalogs.dart';
 
 class SiteForm extends ConsumerStatefulWidget {
   const SiteForm({Key? key, required this.id, required this.siteFormCtr})
@@ -58,7 +59,7 @@ class SiteFormState extends ConsumerState<SiteForm>
             ),
             AdaptiveMainLayout(
               useHorizontalLayout: useHorizontalLayout,
-              height: MediaQuery.of(context).size.height * 0.5,
+              height: bottomSiteHeight,
               children: [
                 Habitat(
                   id: widget.id,
