@@ -44,7 +44,7 @@ class Habitat extends ConsumerWidget {
               decoration: const InputDecoration(
                 labelText: 'Condition',
                 hintText:
-                    'Enter habitat condition, e.g. "Prestine", "Disturbed", "etc."',
+                    'Enter habitat condition, e.g. "Pristine", "Disturbed", "etc."',
               ),
               onChanged: (value) => SiteServices(ref).updateSite(
                 id,
