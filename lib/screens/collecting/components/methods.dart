@@ -25,11 +25,11 @@ class CollMethodForm extends StatelessWidget {
     return FormCard(
       title: 'Collecting Methods',
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.5,
+        height: MediaQuery.of(context).size.height * 0.65,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
+            Flexible(
               child: CollEffortList(collEventId: collEventId),
             ),
             PrimaryButton(
@@ -46,7 +46,7 @@ class CollMethodForm extends StatelessWidget {
             const CommonTextField(
               labelText: 'Notes',
               hintText: 'Notes',
-              maxLines: 3,
+              maxLines: 5,
               isLastField: true,
             ),
           ],

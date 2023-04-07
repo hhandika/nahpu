@@ -72,6 +72,7 @@ class SiteFormState extends ConsumerState<SiteForm>
             MediaTabBars(
               tabController: _tabController,
               length: 2,
+              height: MediaQuery.of(context).size.height * 0.5,
               tabs: [
                 Tab(
                     icon: Icon(Icons.photo_library_rounded,

@@ -46,8 +46,9 @@ class MammalFormsState extends ConsumerState<MammalForms> {
         return SingleChildScrollView(
           child: Column(
             children: [
-              AdaptiveLayout(
+              AdaptiveMainLayout(
                 useHorizontalLayout: useHorizontalLayout,
+                height: MediaQuery.of(context).size.height * 0.55,
                 children: [
                   CollectingRecordField(
                       specimenUuid: widget.specimenUuid,
@@ -68,7 +69,7 @@ class MammalFormsState extends ConsumerState<MammalForms> {
                   ),
                 ],
               ),
-              AdaptiveLayout(
+              AdaptiveLayoutIntrinsic(
                 useHorizontalLayout: useHorizontalLayout,
                 children: [
                   MammalMeasurementForms(

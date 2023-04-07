@@ -47,8 +47,9 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
               FormCard(
                 isPrimary: true,
                 withTitle: false,
-                child: AdaptiveLayout(
+                child: AdaptiveMainLayout(
                   useHorizontalLayout: useHorizontalLayout,
+                  height: MediaQuery.of(context).size.height * 0.5,
                   children: [
                     DateForm(
                       narrativeId: widget.narrativeId,

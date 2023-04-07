@@ -41,12 +41,14 @@ class CollPersonnelFormState extends ConsumerState<CollPersonnelForm> {
       }
     });
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         const TitleForm(text: 'Collecting Personnel'),
         Expanded(
           child: _personnel.isNotEmpty
               ? ListView.builder(
+                  shrinkWrap: true,
                   itemCount: _personnel.length,
                   itemBuilder: (context, index) {
                     return CollPersonnelField(
@@ -69,7 +71,7 @@ class CollPersonnelFormState extends ConsumerState<CollPersonnelForm> {
           },
         ),
         const CommonTextField(
-            maxLines: 3,
+            maxLines: 5,
             labelText: 'Notes',
             hintText: 'Enter notes',
             isLastField: true),

@@ -37,6 +37,7 @@ class MediaFormsState extends ConsumerState<MediaForms>
     return MediaTabBars(
       tabController: _tabController,
       length: _length,
+      height: MediaQuery.of(context).size.height * 0.5,
       tabs: [
         Tab(
             icon: Icon(Icons.photo_library_rounded,

@@ -44,6 +44,7 @@ class _CollEventTabBarState extends State<CollEventTabBar>
       child: MediaTabBars(
         length: 2,
         tabController: _tabController,
+        height: MediaQuery.of(context).size.height * 0.65,
         tabs: [
           Tab(
             icon: Icon(Icons.group_outlined,

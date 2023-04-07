@@ -44,8 +44,9 @@ class BirdFormsState extends ConsumerState<BirdForms> {
         return SingleChildScrollView(
           child: Column(
             children: [
-              AdaptiveLayout(
+              AdaptiveMainLayout(
                 useHorizontalLayout: useHorizontalLayout,
+                height: MediaQuery.of(context).size.height * 0.55,
                 children: [
                   CollectingRecordField(
                       specimenUuid: widget.specimenUuid,
@@ -66,7 +67,7 @@ class BirdFormsState extends ConsumerState<BirdForms> {
                   ),
                 ],
               ),
-              AdaptiveLayout(
+              AdaptiveLayoutIntrinsic(
                 useHorizontalLayout: useHorizontalLayout,
                 children: [
                   BirdMeasurementForms(

@@ -33,8 +33,9 @@ class CollEventFormState extends ConsumerState<CollEventForm> {
         bool useHorizontalLayout = c.maxWidth > 600;
         return ListView(
           children: [
-            AdaptiveLayout(
+            AdaptiveMainLayout(
               useHorizontalLayout: useHorizontalLayout,
+              height: MediaQuery.of(context).size.height * 0.45,
               children: [
                 CollectingInfoFields(
                     collEventId: widget.id,
@@ -46,7 +47,7 @@ class CollEventFormState extends ConsumerState<CollEventForm> {
                 ),
               ],
             ),
-            AdaptiveLayout(
+            AdaptiveLayoutIntrinsic(
               useHorizontalLayout: useHorizontalLayout,
               children: [
                 CollMethodForm(

@@ -49,8 +49,9 @@ class DashboardState extends ConsumerState<Dashboard> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  AdaptiveLayout(
+                  AdaptiveMainLayout(
                     useHorizontalLayout: useHorizontalLayout,
+                    height: MediaQuery.of(context).size.height * 0.45,
                     children: [
                       Stack(
                         alignment: Alignment.bottomRight,
@@ -77,7 +78,7 @@ class DashboardState extends ConsumerState<Dashboard> {
                       const PersonnelViewer(),
                     ],
                   ),
-                  AdaptiveLayout(
+                  AdaptiveLayoutIntrinsic(
                     useHorizontalLayout: useHorizontalLayout,
                     children: const [TaxonRegistryViewer(), MiscForm()],
                   )

@@ -31,7 +31,7 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
       child: Column(
         children: [
           SizedBox(
-              height: MediaQuery.of(context).size.height * 0.3,
+              height: MediaQuery.of(context).size.height * 0.28,
               child: const PersonnelList()),
           PrimaryButton(
             onPressed: () {
