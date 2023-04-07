@@ -56,8 +56,9 @@ class SiteFormState extends ConsumerState<SiteForm>
               useHorizontalLayout: useHorizontalLayout,
               siteFormCtr: widget.siteFormCtr,
             ),
-            AdaptiveLayout(
+            AdaptiveMainLayout(
               useHorizontalLayout: useHorizontalLayout,
+              height: MediaQuery.of(context).size.height * 0.5,
               children: [
                 Habitat(
                   id: widget.id,
