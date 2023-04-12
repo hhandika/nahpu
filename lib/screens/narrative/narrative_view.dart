@@ -11,14 +11,14 @@ import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/navigation.dart';
 import 'package:nahpu/services/database/database.dart';
 
-class Narrative extends ConsumerStatefulWidget {
-  const Narrative({Key? key}) : super(key: key);
+class NarrativeViewer extends ConsumerStatefulWidget {
+  const NarrativeViewer({Key? key}) : super(key: key);
 
   @override
-  NarrativeState createState() => NarrativeState();
+  NarrativeViewerState createState() => NarrativeViewerState();
 }
 
-class NarrativeState extends ConsumerState<Narrative> {
+class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
   bool isVisible = false;
   PageController pageController = PageController();
   PageNavigation _pageNav = PageNavigation();
@@ -82,7 +82,12 @@ class NarrativeState extends ConsumerState<Narrative> {
                           ),
                         );
                       },
-                      onPageChanged: (value) => _updatePageNav(value),
+                      onPageChanged: (index) {
+                        setState(() {
+                          narrativeId = narrativeEntries[index].id;
+                          _updatePageNav(index);
+                        });
+                      },
                     );
                   }
                 },
@@ -103,11 +108,9 @@ class NarrativeState extends ConsumerState<Narrative> {
   }
 
   void _updatePageNav(int value) {
-    setState(() {
-      _pageNav.currentPage = value + 1;
-      _pageNav = updatePageNavigation(_pageNav);
-      NarrativeServices(ref).invalidateNarrative();
-    });
+    _pageNav.currentPage = value + 1;
+    _pageNav = updatePageNavigation(_pageNav);
+    NarrativeServices(ref).invalidateNarrative();
   }
 
   NarrativeFormCtrModel _updateController(
