@@ -23,7 +23,7 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
   bool _isVisible = false;
   PageController pageController = PageController();
   PageNavigation _pageNav = PageNavigation();
-
+  int? _siteId;
   @override
   void dispose() {
     pageController.dispose();
@@ -37,9 +37,11 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
       appBar: AppBar(
         title: const Text("Sites"),
         automaticallyImplyLeading: false,
-        actions: const [
-          NewSite(),
-          SiteMenu(),
+        actions: [
+          const NewSite(),
+          SiteMenu(
+            siteId: _siteId,
+          ),
         ],
       ),
       // resizeToAvoidBottomInset: false,
@@ -75,7 +77,12 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
                     ),
                   );
                 },
-                onPageChanged: (value) => _updatePageNav(value),
+                onPageChanged: (index) {
+                  setState(() {
+                    _siteId = siteEntries[index].id;
+                    _updatePageNav(index);
+                  });
+                },
               );
             }
           }, loading: () {
@@ -96,11 +103,9 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
   }
 
   void _updatePageNav(int value) {
-    setState(() {
-      _pageNav.currentPage = value + 1;
-      _pageNav = updatePageNavigation(_pageNav);
-      ref.invalidate(siteEntryProvider);
-    });
+    _pageNav.currentPage = value + 1;
+    _pageNav = updatePageNavigation(_pageNav);
+    ref.invalidate(siteEntryProvider);
   }
 
   SiteFormCtrModel _updateController(SiteData siteEntries) {
