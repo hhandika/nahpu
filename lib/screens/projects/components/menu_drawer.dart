@@ -71,7 +71,7 @@ class ProjectMenuDrawer extends ConsumerWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.share_rounded),
+            leading: const Icon(Icons.ios_share_rounded),
             title: const Text('Export to ...'),
             onTap: () {
               Navigator.push(
