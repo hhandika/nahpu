@@ -15,7 +15,7 @@ Future<void> createNewSite(BuildContext context, WidgetRef ref) {
 }
 
 class NewSite extends ConsumerWidget {
-  const NewSite({Key? key}) : super(key: key);
+  const NewSite({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,7 +29,12 @@ class NewSite extends ConsumerWidget {
 }
 
 class SiteMenu extends ConsumerStatefulWidget {
-  const SiteMenu({Key? key}) : super(key: key);
+  const SiteMenu({
+    super.key,
+    required this.siteId,
+  });
+
+  final int? siteId;
 
   @override
   SiteMenuState createState() => SiteMenuState();
@@ -106,6 +111,9 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
       case SiteMenuSelection.pdfExport:
         break;
       case SiteMenuSelection.deleteRecords:
+        if (widget.siteId != null) {
+          SiteServices(ref).deleteSite(widget.siteId!);
+        }
         break;
       case SiteMenuSelection.deleteAllRecords:
         SiteServices(ref).deleteAllSites();
