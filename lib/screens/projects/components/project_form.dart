@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/services/project_services.dart';
 import 'package:nahpu/services/utility_services.dart';
@@ -67,26 +68,60 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                   labelText: 'Project description',
                   hintText: 'Enter a description of the project (optional)',
                 ),
-                ProjectFormField(
-                  controller: widget.projectCtr.pICtr,
-                  labelText: 'Principal Investigator',
-                  hintText: 'Enter PI name of the project (optional)',
+                Visibility(
+                  visible: widget.isEditing,
+                  child: ProjectFormField(
+                    controller: widget.projectCtr.pICtr,
+                    labelText: 'Principal Investigator',
+                    hintText: 'Enter PI name of the project (optional)',
+                  ),
                 ),
                 const TaxonGroupFields(),
-                ProjectFormField(
-                  controller: widget.projectCtr.locationCtr,
-                  labelText: 'Location',
-                  hintText: 'Enter location of the project (optional)',
+                Visibility(
+                  visible: widget.isEditing,
+                  child: ProjectFormField(
+                    controller: widget.projectCtr.locationCtr,
+                    labelText: 'Location',
+                    hintText: 'Enter location of the project (optional)',
+                  ),
                 ),
-                ProjectFormField(
-                  controller: widget.projectCtr.startDateCtr,
-                  labelText: 'Start date',
-                  hintText: 'Enter start date of the project (optional)',
+                Visibility(
+                  visible: widget.isEditing,
+                  child: TextField(
+                    controller: widget.projectCtr.startDateCtr,
+                    decoration: const InputDecoration(
+                      labelText: 'Start date',
+                      hintText: 'Enter the project start date',
+                    ),
+                    onTap: () async {
+                      DateTime? selectedDate = await _showDate(
+                        context,
+                      );
+                      if (selectedDate != null) {
+                        widget.projectCtr.startDateCtr.text =
+                            DateFormat.yMMMd().format(selectedDate);
+                      }
+                    },
+                  ),
                 ),
-                ProjectFormField(
-                  controller: widget.projectCtr.endDateCtr,
-                  labelText: 'End date',
-                  hintText: 'Enter end date of the project (optional)',
+                Visibility(
+                  visible: widget.isEditing,
+                  child: TextField(
+                    controller: widget.projectCtr.endDateCtr,
+                    decoration: const InputDecoration(
+                      labelText: 'End date',
+                      hintText: 'Enter the project end date',
+                    ),
+                    onTap: () async {
+                      DateTime? selectedDate = await _showDate(
+                        context,
+                      );
+                      if (selectedDate != null) {
+                        widget.projectCtr.endDateCtr.text =
+                            DateFormat.yMMMd().format(selectedDate);
+                      }
+                    },
+                  ),
                 ),
                 const SizedBox(height: 20),
                 Wrap(spacing: 10, children: [
@@ -116,27 +151,39 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
     );
   }
 
+  Future<DateTime?> _showDate(BuildContext context) {
+    return showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2000),
+        lastDate: DateTime.now()); // Prevent user from selecting future dates
+  }
+
   void _createProject() {
-    final projectData = _getForm();
+    final projectData = ProjectCompanion(
+      uuid: db.Value(widget.projectUuid),
+      name: db.Value(widget.projectCtr.projectNameCtr.text),
+      description: db.Value(widget.projectCtr.descriptionCtr.text),
+      created: db.Value(getSystemDateTime()),
+      lastAccessed: db.Value(getSystemDateTime()),
+    );
 
     ProjectServices(ref).createProject(projectData);
   }
 
   void _updateProject() {
-    final projectData = _getForm();
-
-    ProjectServices(ref).updateProject(widget.projectUuid, projectData);
-  }
-
-  ProjectCompanion _getForm() {
-    return ProjectCompanion(
-      uuid: db.Value(widget.projectUuid),
+    final projectData = ProjectCompanion(
       name: db.Value(widget.projectCtr.projectNameCtr.text),
       description: db.Value(widget.projectCtr.descriptionCtr.text),
       principalInvestigator: db.Value(widget.projectCtr.pICtr.text),
+      location: db.Value(widget.projectCtr.locationCtr.text),
+      startDate: db.Value(widget.projectCtr.startDateCtr.text),
+      endDate: db.Value(widget.projectCtr.endDateCtr.text),
       created: db.Value(getSystemDateTime()),
       lastAccessed: db.Value(getSystemDateTime()),
     );
+
+    ProjectServices(ref).updateProject(widget.projectUuid, projectData);
   }
 
   Future<void> _goToDashboard() async {

@@ -98,7 +98,7 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
                 ),
                 controller: widget.collEventCtr.startDateCtr,
                 onTap: () async {
-                  DateTime? date = await showDate(context, initialStartDate);
+                  DateTime? date = await _showDate(context, initialStartDate);
                   if (date != null) {
                     setState(
                       () {
@@ -127,7 +127,7 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
                 ),
                 controller: widget.collEventCtr.endDateCtr,
                 onTap: () async {
-                  DateTime? date = await showDate(context, initialEndDate);
+                  DateTime? date = await _showDate(context, initialEndDate);
                   if (date != null) {
                     widget.collEventCtr.endDateCtr.text =
                         DateFormat.yMMMd().format(date);
@@ -172,7 +172,7 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
     }
   }
 
-  Future<DateTime?> showDate(BuildContext context, DateTime initialStartDate) {
+  Future<DateTime?> _showDate(BuildContext context, DateTime initialStartDate) {
     return showDatePicker(
         context: context,
         initialDate: initialStartDate,
