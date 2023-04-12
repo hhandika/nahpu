@@ -369,6 +369,7 @@ class MaleGonadFormState extends ConsumerState<MaleGonadForm> {
                 if (newValue != null) {
                   setState(
                     () {
+                      widget.ctr.testisPosCtr = newValue.index;
                       SpecimenServices(ref).updateMammalMeasurement(
                         widget.specimenUuid,
                         MammalMeasurementCompanion(
