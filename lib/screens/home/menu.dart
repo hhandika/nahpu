@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nahpu/screens/export/export_db.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/settings/settings.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -32,6 +33,18 @@ class HomeMenuDrawer extends StatelessWidget {
               );
             },
           ),
+          const Divider(color: Colors.grey),
+          ListTile(
+            leading: const Icon(Icons.storage_rounded),
+            title: const Text('Backup database'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ExportDbForm()),
+              );
+            },
+          ),
+          // const Divider(color: Colors.grey),
           ListTile(
             leading: const Icon(Icons.settings_rounded),
             title: const Text('Settings'),
