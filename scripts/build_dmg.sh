@@ -8,3 +8,7 @@ if [ -f $OUTPUT ]; then
 fi
 
 appdmg $CONFIG $OUTPUT
+
+if [ -f $OUTPUT ]; then
+    open $OUTPUT
+fi
