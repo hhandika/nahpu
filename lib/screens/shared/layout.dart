@@ -100,6 +100,7 @@ class LayoutRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         for (var textField in children)
           Expanded(
