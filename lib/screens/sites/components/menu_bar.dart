@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/sites/site_view.dart';
 import 'package:nahpu/services/site_services.dart';
 
@@ -10,7 +11,7 @@ Future<void> createNewSite(BuildContext context, WidgetRef ref) {
 
   return SiteServices(ref).createNewSite(projectUuid).then((_) {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => const SiteViewer()));
+        .pushReplacement(MaterialPageRoute(builder: (_) => const SiteViewer()));
   });
 }
 
@@ -50,52 +51,30 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
             <PopupMenuEntry<SiteMenuSelection>>[
               const PopupMenuItem<SiteMenuSelection>(
                 value: SiteMenuSelection.newSite,
-                child: ListTile(
-                  leading: Icon(Icons.create_outlined),
-                  title: Text('Create a new site'),
+                child: CreateMenuButton(
+                  text: 'Create site',
                 ),
               ),
               const PopupMenuItem<SiteMenuSelection>(
                 value: SiteMenuSelection.duplicate,
-                child: ListTile(
-                  leading: Icon(Icons.copy_outlined),
-                  title: Text('Duplicate site'),
+                child: DuplicateMenuButton(
+                  text: 'Duplicate site',
                 ),
               ),
               const PopupMenuItem<SiteMenuSelection>(
-                  value: SiteMenuSelection.pdfExport,
-                  child: ListTile(
-                    leading: Icon(Icons.picture_as_pdf_outlined),
-                    title: Text('Export to PDF'),
-                  )),
+                value: SiteMenuSelection.pdfExport,
+                child: PdfExportMenuButton(),
+              ),
               const PopupMenuDivider(height: 10),
               const PopupMenuItem<SiteMenuSelection>(
                   value: SiteMenuSelection.deleteRecords,
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.delete_outline,
-                      color: Colors.red,
-                    ),
-                    title: Text(
-                      'Delete record',
-                      style: TextStyle(
-                        color: Colors.red,
-                      ),
-                    ),
+                  child: DeleteMenuButton(
+                    deleteAll: false,
                   )),
               const PopupMenuItem<SiteMenuSelection>(
                 value: SiteMenuSelection.deleteAllRecords,
-                child: ListTile(
-                  leading: Icon(
-                    Icons.delete_forever_outlined,
-                    color: Colors.red,
-                  ),
-                  title: Text(
-                    'Delete all records',
-                    style: TextStyle(
-                      color: Colors.red,
-                    ),
-                  ),
+                child: DeleteMenuButton(
+                  deleteAll: true,
                 ),
               ),
             ]);
@@ -113,6 +92,9 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
       case SiteMenuSelection.deleteRecords:
         if (widget.siteId != null) {
           SiteServices(ref).deleteSite(widget.siteId!);
+          // Trigger page changes to update the view.
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => const SiteViewer()));
         }
         break;
       case SiteMenuSelection.deleteAllRecords:
