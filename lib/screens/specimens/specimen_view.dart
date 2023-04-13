@@ -24,7 +24,7 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
   bool isVisible = false;
   PageController pageController = PageController();
   PageNavigation _pageNav = PageNavigation();
-
+  String? _specimenUuid;
   TaxonData taxonomy = TaxonData();
 
   @override
@@ -40,7 +40,12 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
         title: const Text(
           "Specimen Records",
         ),
-        actions: const [NewSpecimens(), SpecimenMenu()],
+        actions: [
+          const NewSpecimens(),
+          SpecimenMenu(
+            specimenUuid: _specimenUuid,
+          ),
+        ],
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
@@ -90,7 +95,12 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
                           ),
                         );
                       },
-                      onPageChanged: (value) => _updatePageNav(value),
+                      onPageChanged: (index) {
+                        setState(() {
+                          _specimenUuid = specimenEntry[index].uuid;
+                          _updatePageNav(index);
+                        });
+                      },
                     );
                   }
                 },

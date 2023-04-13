@@ -52,6 +52,12 @@ class CollEventServices extends DbAccess {
     WeatherDataQuery(dbase).updateWeatherDataEntry(eventID, weatherData);
   }
 
+  void deleteCollEvent(int collEvenId) {
+    CollEventQuery(dbase).deleteCollEvent(collEvenId);
+    WeatherDataQuery(dbase).deleteWeatherData(collEvenId);
+    invalidateCollEvent();
+  }
+
   void deleteCollPersonnel(int id) {
     CollPersonnelQuery(dbase).deleteCollPersonnel(id);
     invalidateCollPersonnel();

@@ -22,6 +22,7 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
   bool _isVisible = false;
   PageController pageController = PageController();
   PageNavigation _pageNav = PageNavigation();
+  int? _collEvenId;
 
   @override
   void dispose() {
@@ -34,9 +35,11 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Collecting Events"),
-        actions: const [
-          NewCollEvents(),
-          CollEventMenu(),
+        actions: [
+          const NewCollEvents(),
+          CollEventMenu(
+            collEventId: _collEvenId,
+          ),
         ],
         automaticallyImplyLeading: false,
       ),
@@ -79,7 +82,12 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
                           ),
                         );
                       },
-                      onPageChanged: (value) => _updatePageNav(value),
+                      onPageChanged: (index) {
+                        setState(() {
+                          _collEvenId = collEventEntries[index].id;
+                          _updatePageNav(index);
+                        });
+                      },
                     );
                   }
                 },
