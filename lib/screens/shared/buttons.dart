@@ -162,3 +162,74 @@ class SecondaryButton extends StatelessWidget {
     );
   }
 }
+
+class DeleteMenuButton extends StatelessWidget {
+  const DeleteMenuButton({
+    super.key,
+    required this.deleteAll,
+  });
+
+  final bool deleteAll;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(
+        deleteAll ? Icons.delete_forever_outlined : Icons.delete_outline,
+        color: Colors.red,
+      ),
+      title: Text(
+        deleteAll ? 'Delete all records' : 'Delete record',
+        style: const TextStyle(
+          color: Colors.red,
+        ),
+      ),
+    );
+  }
+}
+
+class CreateMenuButton extends StatelessWidget {
+  const CreateMenuButton({
+    super.key,
+    required this.text,
+  });
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: const Icon(Icons.create_outlined),
+      title: Text(text),
+    );
+  }
+}
+
+class DuplicateMenuButton extends StatelessWidget {
+  const DuplicateMenuButton({
+    super.key,
+    required this.text,
+  });
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: const Icon(Icons.copy_outlined),
+      title: Text(text),
+    );
+  }
+}
+
+class PdfExportMenuButton extends StatelessWidget {
+  const PdfExportMenuButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const ListTile(
+      leading: Icon(Icons.picture_as_pdf_outlined),
+      title: Text('Export to PDF'),
+    );
+  }
+}
