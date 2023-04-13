@@ -53,10 +53,10 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
                 value: MenuSelection.pdfExport,
                 child: Text('Export to PDF'),
               ),
-              const PopupMenuItem<MenuSelection>(
+              PopupMenuItem<MenuSelection>(
                 value: MenuSelection.deleteRecords,
-                child: Text('Delete current record',
-                    style: TextStyle(color: Colors.red)),
+                child: Text('Delete current record: ${widget.narrativeId}',
+                    style: const TextStyle(color: Colors.red)),
               ),
               const PopupMenuItem<MenuSelection>(
                 value: MenuSelection.deleteAllRecords,
@@ -76,6 +76,8 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
       case MenuSelection.deleteRecords:
         if (widget.narrativeId != null) {
           NarrativeServices(ref).deleteNarrative(widget.narrativeId!);
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => const NarrativeViewer()));
         }
         break;
       case MenuSelection.deleteAllRecords:
