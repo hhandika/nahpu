@@ -3,7 +3,6 @@ import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/services/narrative_services.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:nahpu/screens/narrative/new_narrative.dart';
 import 'package:flutter/material.dart';
 
 enum MenuSelection {
@@ -86,6 +85,8 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
     switch (item) {
       case MenuSelection.newNarrative:
         createNewNarrative(context, ref);
+        break;
+      case MenuSelection.duplicate:
         break;
       case MenuSelection.pdfExport:
         break;
