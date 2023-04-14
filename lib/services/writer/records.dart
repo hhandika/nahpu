@@ -122,8 +122,9 @@ class SpecimenRecordWriter {
           await CoordinateServices(ref).getCoordinatesBySiteID(siteID);
       return coordinateList
           .map((e) =>
-              '[${e.nameId ?? ''}: ${e.decimalLatitude ?? ''},${e.decimalLongitude ?? ''}; ${e.elevationInMeter ?? ''} m; ±${e.uncertaintyInMeters ?? ''} m; ${e.datum ?? ''}]')
-          .join(';');
+              '${e.nameId ?? ''};${e.decimalLatitude ?? ''},${e.decimalLongitude ?? ''};'
+              '${e.elevationInMeter ?? ''}m;±${e.uncertaintyInMeters ?? ''}m;${e.datum ?? ''}')
+          .join('|');
     }
   }
 
@@ -131,7 +132,7 @@ class SpecimenRecordWriter {
     List<SpecimenPartData> partList =
         await SpecimenPartQuery(ref.read(databaseProvider))
             .getSpecimenParts(specimenUuid);
-    return partList.map((e) => '[${e.type}: ${e.treatment}]').join(';');
+    return partList.map((e) => '${e.type};${e.treatment}').join('|');
   }
 
   Future<String> _getMeasurement(
