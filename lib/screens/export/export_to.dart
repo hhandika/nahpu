@@ -14,6 +14,7 @@ class ExportForm extends ConsumerStatefulWidget {
 class ExportFormState extends ConsumerState<ExportForm> {
   ExportFmt exportFmt = ExportFmt.excel;
   FileOpCtrModel exportCtr = FileOpCtrModel.empty();
+  RecordType _recordType = RecordType.specimen;
   String _fileName = 'export';
   String _selectedDir = '';
 
@@ -37,6 +38,24 @@ class ExportFormState extends ConsumerState<ExportForm> {
       ),
       body: FileOperationPage(
         children: [
+          DropdownButtonFormField<RecordType>(
+            value: _recordType,
+            decoration: const InputDecoration(
+              labelText: 'Record type',
+            ),
+            items: recordTypeList
+                .map((e) => DropdownMenuItem(
+                    value: RecordType.values[recordTypeList.indexOf(e)],
+                    child: Text(e)))
+                .toList(),
+            onChanged: (RecordType? value) {
+              if (value != null) {
+                setState(() {
+                  _recordType = value;
+                });
+              }
+            },
+          ),
           DropdownButtonFormField<ExportFmt>(
             value: exportFmt,
             decoration: const InputDecoration(

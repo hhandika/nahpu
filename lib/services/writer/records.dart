@@ -108,7 +108,8 @@ class SpecimenRecordWriter {
         return '';
       } else {
         String siteDetails = '${data.country}: ${data.stateProvince};'
-            ' ${data.county}; ${data.municipality}; ${data.locality}';
+                ' ${data.county}; ${data.municipality}; ${data.locality}'
+            .trim();
         return '${data.siteID},${data.habitatType},"$siteDetails"';
       }
     }
