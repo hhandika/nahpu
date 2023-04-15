@@ -206,7 +206,7 @@ class MammalMeasurementFormsState
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
               DropdownButtonFormField<SpecimenSex>(
-                  value: _getSpecimenSex(),
+                  value: getSpecimenSex(ctr.sexCtr),
                   decoration: const InputDecoration(
                     labelText: 'Sex',
                     hintText: 'Choose one',
@@ -234,7 +234,7 @@ class MammalMeasurementFormsState
                     }
                   }),
               DropdownButtonFormField<SpecimenAge>(
-                value: _getSpecimenAge(),
+                value: getSpecimenAge(ctr.ageCtr),
                 decoration: const InputDecoration(
                   labelText: 'Age',
                   hintText: 'Select specimen age',
@@ -267,13 +267,13 @@ class MammalMeasurementFormsState
           ),
           MaleGonadForm(
             specimenUuid: widget.specimenUuid,
-            specimenSex: _getSpecimenSex(),
+            specimenSex: getSpecimenSex(ctr.sexCtr),
             useHorizontalLayout: widget.useHorizontalLayout,
             ctr: ctr,
           ),
           FemaleGonadForm(
             specimenUuid: widget.specimenUuid,
-            specimenSex: _getSpecimenSex(),
+            specimenSex: getSpecimenSex(ctr.sexCtr),
             useHorizontalLayout: widget.useHorizontalLayout,
             ctr: ctr,
           ),
@@ -298,20 +298,6 @@ class MammalMeasurementFormsState
         ],
       ),
     );
-  }
-
-  SpecimenSex? _getSpecimenSex() {
-    if (ctr.sexCtr != null) {
-      return SpecimenSex.values[ctr.sexCtr!];
-    }
-    return null;
-  }
-
-  SpecimenAge? _getSpecimenAge() {
-    if (ctr.ageCtr != null) {
-      return SpecimenAge.values[ctr.ageCtr!];
-    }
-    return null;
   }
 
   Future<void> _updateCtr(String specimenUuid) async {
@@ -353,7 +339,7 @@ class MaleGonadFormState extends ConsumerState<MaleGonadForm> {
           Padding(
             padding: const EdgeInsets.all(5),
             child: DropdownButtonFormField<TestisPosition>(
-              value: _getTestisPosition(),
+              value: getTestisPosition(widget.ctr.testisPosCtr),
               decoration: const InputDecoration(
                 labelText: 'Position',
                 hintText: 'Select testis position',
@@ -386,20 +372,14 @@ class MaleGonadFormState extends ConsumerState<MaleGonadForm> {
           ),
           ScrotalMaleForm(
             specimenUuid: widget.specimenUuid,
-            visible: _getTestisPosition() == TestisPosition.scrotal,
+            visible: getTestisPosition(widget.ctr.testisPosCtr) ==
+                TestisPosition.scrotal,
             useHorizontalLayout: widget.useHorizontalLayout,
             ctr: widget.ctr,
           ),
         ],
       ),
     );
-  }
-
-  TestisPosition? _getTestisPosition() {
-    if (widget.ctr.testisPosCtr != null) {
-      return TestisPosition.values[widget.ctr.testisPosCtr!];
-    }
-    return null;
   }
 }
 

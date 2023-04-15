@@ -10,6 +10,13 @@ const List<String> specimenAgeList = [
   'Unknown',
 ];
 
+SpecimenAge? getSpecimenAge(int? age) {
+  if (age != null) {
+    return SpecimenAge.values[age];
+  }
+  return null;
+}
+
 const List<String> conditionList = [
   'Freshly Euthanized',
   'Good',
@@ -25,6 +32,13 @@ const List<String> testisPositionList = [
   'Scrotal',
   'Abdominal',
 ];
+
+TestisPosition? getTestisPosition(int? pos) {
+  if (pos != null) {
+    return TestisPosition.values[pos];
+  }
+  return null;
+}
 
 enum EpididymisAppearance { tubular, partial, notTubular }
 

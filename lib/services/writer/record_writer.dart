@@ -158,16 +158,72 @@ class SpecimenRecordWriter {
           '${data.hindFootLength ?? ''},${data.earLength ?? ''},'
           '${data.weight ?? ''}';
       String accuracy = data.accuracy ?? '';
-      String maleGonad =
-          '${data.testisPosition ?? ''},${data.testisLength ?? ''} x ${data.testisWidth ?? ''}mm';
-      String femaleGonad =
-          '${data.vaginaOpening ?? ''},${data.mammaeCondition ?? ''},'
-          '${data.mammaeInguinalCount ?? ''} ing;${data.mammaeAbdominalCount ?? ''} abd;${data.mammaeAxillaryCount ?? ''} ax';
       String age = data.age != null ? specimenAgeList[data.age!] : '';
-      String sex = data.sex != null ? specimenSexList[data.sex!] : '';
-      return '$measurement,$accuracy,$age,$sex,$maleGonad,$femaleGonad';
+      String sexData = _getSexData(data);
+      return '$measurement,$accuracy,$age,$sexData';
     } else {
       return ',,';
+    }
+  }
+
+  String _getSexData(MammalMeasurementData data) {
+    SpecimenSex? sexEnum = getSpecimenSex(data.sex);
+    String sex = data.sex != null ? specimenSexList[data.sex!] : '';
+    String emptyMale = ',';
+    String emptyFemale = ',,';
+    switch (sexEnum) {
+      case SpecimenSex.male:
+        String maleGonad = _getMaleGonad(data);
+        return '$sex,$maleGonad$emptyFemale';
+      case SpecimenSex.female:
+        String femaleGonad = _getFemaleGonad(data);
+        return '$sex,$emptyMale,$femaleGonad';
+      case SpecimenSex.unknown:
+        return '$sex,$emptyMale$emptyFemale';
+      default:
+        return '$sex,$emptyMale$emptyFemale';
+    }
+  }
+
+  String _getFemaleGonad(MammalMeasurementData data) {
+    String vaginaOpening = data.vaginaOpening != null
+        ? vaginaOpeningList[data.vaginaOpening!]
+        : '';
+    if (data.mammaeCondition != null) {
+      String mammaeCondition = mammaeConditionList[data.mammaeCondition!];
+      String ingCount = data.mammaeInguinalCount != null
+          ? '${data.mammaeInguinalCount} ing;'
+          : '';
+      String abdCount = data.mammaeAbdominalCount != null
+          ? '${data.mammaeAbdominalCount} abd;'
+          : '';
+      String axCount = data.mammaeAxillaryCount != null
+          ? '${data.mammaeAxillaryCount} ax'
+          : '';
+      String mammaeCount = '$ingCount$abdCount$axCount';
+      return '$vaginaOpening,$mammaeCondition,$mammaeCount';
+    } else {
+      return '$vaginaOpening,,';
+    }
+  }
+
+  String _matchTestisPos(int? testisPos) {
+    if (testisPos == null) {
+      return '';
+    } else {
+      return testisPositionList[testisPos];
+    }
+  }
+
+  String _getMaleGonad(MammalMeasurementData data) {
+    TestisPosition? posEnum = getTestisPosition(data.testisPosition);
+
+    if (posEnum == TestisPosition.scrotal) {
+      String testisPos = _matchTestisPos(data.testisPosition);
+      return '$testisPos,${data.testisLength ?? ''}x'
+          '${data.testisWidth ?? ''}mm';
+    } else {
+      return '';
     }
   }
 }

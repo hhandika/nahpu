@@ -59,6 +59,13 @@ const List<String> specimenSexList = [
   'Unknown',
 ];
 
+SpecimenSex? getSpecimenSex(int? sex) {
+  if (sex != null) {
+    return SpecimenSex.values[sex];
+  }
+  return null;
+}
+
 const List<String> supportedTaxonClass = [
   'Aves',
   'Mammalia',
