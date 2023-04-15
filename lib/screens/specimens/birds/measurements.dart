@@ -164,7 +164,7 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
               DropdownButtonFormField<SpecimenSex>(
-                value: _getSpecimenSex(),
+                value: getSpecimenSex(ctr.sexCtr),
                 decoration: const InputDecoration(
                   labelText: 'Sex',
                   hintText: 'Choose one',
@@ -304,13 +304,13 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
             specimenUuid: widget.specimenUuid,
             ctr: ctr,
             useHorizontalLayout: widget.useHorizontalLayout,
-            sex: _getSpecimenSex(),
+            sex: getSpecimenSex(ctr.sexCtr),
           ),
           FemaleGonadForm(
             specimenUuid: widget.specimenUuid,
             ctr: ctr,
             useHorizontalLayout: widget.useHorizontalLayout,
-            sex: _getSpecimenSex(),
+            sex: getSpecimenSex(ctr.sexCtr),
           ),
           MoltingForm(
             specimenUuid: widget.specimenUuid,
@@ -329,13 +329,6 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
     setState(() {
       ctr = BirdMeasurementCtrModel.fromData(data);
     });
-  }
-
-  SpecimenSex? _getSpecimenSex() {
-    if (ctr.sexCtr != null) {
-      return SpecimenSex.values[ctr.sexCtr!];
-    }
-    return null;
   }
 }
 

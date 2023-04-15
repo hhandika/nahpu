@@ -220,8 +220,11 @@ class SpecimenRecordWriter {
 
     if (posEnum == TestisPosition.scrotal) {
       String testisPos = _matchTestisPos(data.testisPosition);
-      return '$testisPos,${data.testisLength ?? ''}x'
-          '${data.testisWidth ?? ''}mm';
+      String testisLength =
+          data.testisLength != null ? '${data.testisLength}' : '';
+      String testisWidth =
+          data.testisWidth != null ? 'x${data.testisWidth}mm' : '';
+      return '$testisPos,$testisLength$testisWidth';
     } else {
       return '';
     }
