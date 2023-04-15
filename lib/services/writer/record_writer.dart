@@ -17,12 +17,11 @@ class SpecimenRecordWriter {
 
   final WidgetRef ref;
 
-  Future<void> writeSpeciesList(String filePath) async {
+  Future<void> writeSpecimenRecords(File filePath) async {
     List<SpecimenData> specimenList =
         await SpecimenServices(ref).getSpecimenList();
 
-    File file = File(filePath);
-    IOSink writer = file.openWrite();
+    IOSink writer = filePath.openWrite();
     String mainHeader =
         'cataloger,fieldID,preparator,family,species,preparation,condition';
     String eventHeader = 'site,habitatType,locality,coordinates';

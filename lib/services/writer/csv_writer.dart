@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/writer/record_writer.dart';
 
@@ -6,8 +8,8 @@ class CsvWriter {
 
   final WidgetRef ref;
 
-  Future<void> writeCsv(String filePath) async {
-    SpecimenRecordWriter(ref).writeSpeciesList(filePath);
+  Future<void> writeCsv(File filePath) async {
+    SpecimenRecordWriter(ref).writeSpecimenRecords(filePath);
     // List<SpecimenData> specimenList =
     //     await SpecimenServices(ref).getSpecimenList();
 

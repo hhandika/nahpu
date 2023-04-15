@@ -125,8 +125,9 @@ class CsvFormState extends ConsumerState<CommonExportForm> {
     }
   }
 
-  String _createSavePath(String fileName) {
-    return path.join(widget.dirPath, fileName);
+  File _createSavePath(String fileName) {
+    String finalPath = path.join(widget.dirPath, fileName);
+    return File(finalPath);
   }
 
   Future<void> _writeExcel() async {
@@ -136,11 +137,20 @@ class CsvFormState extends ConsumerState<CommonExportForm> {
   Future<void> _writeCsv() async {
     try {
       String fileName = '${widget.fileName}.csv';
-      String savePath = _createSavePath(fileName);
-      await CsvWriter(ref).writeCsv(savePath);
+      // Check if file exists
+      File file = _createSavePath(fileName);
+      if (file.existsSync()) {
+        int i = 1;
+        while (file.existsSync()) {
+          fileName = '${widget.fileName}($i).csv';
+          file = _createSavePath(fileName);
+          i++;
+        }
+      }
+      await CsvWriter(ref).writeCsv(file);
       setState(() {
         _hasSaved = true;
-        _finalPath = savePath;
+        _finalPath = file.path;
       });
     } on PathNotFoundException {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
