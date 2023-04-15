@@ -12,7 +12,7 @@ class ExportForm extends ConsumerStatefulWidget {
 }
 
 class ExportFormState extends ConsumerState<ExportForm> {
-  ExportFmt exportFmt = ExportFmt.excel;
+  ExportFmt exportFmt = ExportFmt.csv;
   FileOpCtrModel exportCtr = FileOpCtrModel.empty();
   RecordType _recordType = RecordType.specimen;
   String _fileName = 'export';
