@@ -17,6 +17,7 @@ class CollActivityFields extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return FormCard(
       title: 'Collecting Activity',
+      mainAxisSize: MainAxisSize.min,
       child: Column(
         children: [
           DropdownButtonFormField(

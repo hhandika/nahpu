@@ -16,6 +16,7 @@ class ProjectOverview extends ConsumerWidget {
     return FormCard(
       title: 'Project Overview',
       isPrimary: true,
+      mainAxisAlignment: MainAxisAlignment.start,
       child: Column(
         children: [
           ref.watch(projectInfoProvider(projectUuid)).when(

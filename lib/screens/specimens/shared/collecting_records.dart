@@ -51,8 +51,11 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
     return FormCard(
       title: 'Collecting Records',
       isPrimary: true,
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       child: Column(
         children: [
+          const SizedBox(height: 10),
           PersonnelRecords(
               specimenUuid: widget.specimenUuid,
               specimenCtr: widget.specimenCtr),
@@ -197,7 +200,7 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
                 specimenCtr: widget.specimenCtr,
                 catalogerUuid: widget.specimenCtr.catalogerCtr!,
               )
-            : Container(),
+            : const SizedBox.shrink(),
         DropdownButtonFormField<String>(
           value: widget.specimenCtr.catalogerCtr,
           decoration: const InputDecoration(

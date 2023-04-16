@@ -49,6 +49,7 @@ class PartDataFormState extends ConsumerState<PartDataForm>
   Widget build(BuildContext context) {
     return FormCard(
       withTitle: false,
+      mainAxisAlignment: MainAxisAlignment.start,
       child: MediaTabBars(
         tabController: _tabController,
         length: _length,
