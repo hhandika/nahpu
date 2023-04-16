@@ -21,23 +21,18 @@ class PersonnelQuery extends DatabaseAccessor<Database>
   Future<void> createProjectPersonnelEntry(PersonnelListCompanion form) =>
       into(personnelList).insert(form);
 
-  // Future updateProjectPersonnelEntry(String id, PersonnelListCompanion entry) {
-  //   return (update(personnelList)..where((t) => t.uuid.equals(id)))
-  //       .write(entry);
-  // }
-
   Future<int?> getCurrentFieldNumberByUuid(String personnelUuid) async {
     return await (select(personnel)..where((t) => t.uuid.equals(personnelUuid)))
         .map((e) => e.currentFieldNumber)
         .getSingle();
   }
 
-  Future<int?> updateCatalogerFieldNumber(String personnelUuid) async {
-    return await (update(personnel)..where((t) => t.uuid.equals(personnelUuid)))
-        .write(PersonnelCompanion(
-            currentFieldNumber: Value(
-                (await getCurrentFieldNumberByUuid(personnelUuid) ?? 0) + 1)));
-  }
+  // Future<int?> updateCatalogerFieldNumber(String personnelUuid) async {
+  //   return await (update(personnel)..where((t) => t.uuid.equals(personnelUuid)))
+  //       .write(PersonnelCompanion(
+  //           currentFieldNumber: Value(
+  //               (await getCurrentFieldNumberByUuid(personnelUuid) ?? 0) + 1)));
+  // }
 
   Future<String?> getInitial(String personnelUuid) {
     return (select(personnel)..where((t) => t.uuid.equals(personnelUuid)))

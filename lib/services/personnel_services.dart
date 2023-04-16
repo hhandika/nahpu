@@ -1,4 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/database.dart';
@@ -22,14 +21,6 @@ class PersonnelServices extends DbAccess {
       String uuid, PersonnelCompanion personnel) async {
     await PersonnelQuery(db).updatePersonnelEntry(uuid, personnel);
     invalidatePersonnel();
-  }
-
-  void updateAllCatalogerFieldNumbers() async {
-    List<PersonnelData> allPersonnel = [];
-    ref.read(personnelListProvider).whenData((value) => allPersonnel = value);
-    for (PersonnelData person in allPersonnel) {
-      await PersonnelQuery(db).updateCatalogerFieldNumber(person.uuid);
-    }
   }
 
   Future<int?> getCurrentPersonnelFieldNumber(String personnelUuid) async {
