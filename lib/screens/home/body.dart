@@ -290,7 +290,7 @@ class ProjectPopUpMenuState extends ConsumerState<ProjectPopUpMenu> {
       itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuSelection>>[
         PopupMenuItem<MenuSelection>(
           value: MenuSelection.details,
-          child: const Text('Info'),
+          child: const Text('Details'),
           onTap: () async {
             _getProjectInfo(widget.project.uuid);
           },
