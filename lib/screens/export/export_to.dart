@@ -1,6 +1,6 @@
 import 'dart:io';
+import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/writer/record_writer.dart';
-import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/controllers.dart';
@@ -19,7 +19,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
   ExportFmt exportFmt = ExportFmt.csv;
   FileOpCtrModel exportCtr = FileOpCtrModel.empty();
   RecordType _recordType = RecordType.specimen;
-  String _fileName = 'export';
+  String _fileStem = 'export';
   String _selectedDir = '';
   bool _hasSaved = false;
   String _finalPath = '';
@@ -86,7 +86,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
             onChanged: (String? value) {
               if (value != null) {
                 setState(() {
-                  _fileName = value;
+                  _fileStem = value;
                 });
               }
             },
@@ -140,11 +140,6 @@ class ExportFormState extends ConsumerState<ExportForm> {
     }
   }
 
-  File _createSavePath(String fileName) {
-    String finalPath = path.join(_selectedDir, fileName);
-    return File(finalPath);
-  }
-
   // Future<void> _writeExcel() async {
   //   await _writeDelimited(true);
   // }
@@ -152,7 +147,11 @@ class ExportFormState extends ConsumerState<ExportForm> {
   Future<void> _writeDelimited(bool isCsv) async {
     String ext = isCsv ? 'csv' : 'tsv';
     try {
-      File file = _getFilename(ext);
+      File file = AppIOServices(
+        dir: _selectedDir,
+        fileStem: _fileStem,
+        ext: ext,
+      ).getFilename();
       await _matchRecordTypeToWriter(file, isCsv);
       setState(() {
         _hasSaved = true;
@@ -183,21 +182,6 @@ class ExportFormState extends ConsumerState<ExportForm> {
         await SpecimenRecordWriter(ref).writeRecordDelimited(file, isCsv);
         break;
     }
-  }
-
-  File _getFilename(String ext) {
-    String fileName = '$_fileName.$ext';
-    // Check if file exists
-    File file = _createSavePath(fileName);
-    if (file.existsSync()) {
-      int i = 1;
-      while (file.existsSync()) {
-        fileName = '$_fileName($i).$ext';
-        file = _createSavePath(fileName);
-        i++;
-      }
-    }
-    return file;
   }
 
   void _getDir(String? path) {
