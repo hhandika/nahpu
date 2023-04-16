@@ -18,8 +18,10 @@ class PersonnelServices extends DbAccess {
     await PersonnelQuery(db).createProjectPersonnelEntry(form);
   }
 
-  void updatePersonnelEntry(String uuid, PersonnelCompanion personnel) {
-    PersonnelQuery(db).updatePersonnelEntry(uuid, personnel);
+  Future<void> updatePersonnelEntry(
+      String uuid, PersonnelCompanion personnel) async {
+    await PersonnelQuery(db).updatePersonnelEntry(uuid, personnel);
+    invalidatePersonnel();
   }
 
   void updateAllCatalogerFieldNumbers() async {
