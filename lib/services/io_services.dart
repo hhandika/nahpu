@@ -19,7 +19,7 @@ class AppIOServices {
     if (file.existsSync()) {
       int i = 1;
       while (file.existsSync()) {
-        fileName = '$fileName($i).$ext';
+        fileName = '$fileStem($i).$ext';
         file = _createSavePath(fileName);
         i++;
       }

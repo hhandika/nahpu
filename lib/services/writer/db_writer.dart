@@ -12,8 +12,7 @@ class DbWriter {
 
   Database get db => ref.read(databaseProvider);
 
-  Future<void> writeDb(String filePath) async {
-    File file = File(filePath);
+  Future<void> writeDb(File file) async {
     db.exportInto(file);
   }
 
