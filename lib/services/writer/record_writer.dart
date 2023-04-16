@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/models/export.dart';
 import 'package:nahpu/models/mammals.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/projects.dart';
@@ -16,20 +17,17 @@ class SpecimenRecordWriter {
   SpecimenRecordWriter(this.ref);
 
   final WidgetRef ref;
+  late String delimiter;
 
-  Future<void> writeSpecimenRecords(File filePath) async {
+  Future<void> writeRecordDelimited(File filePath, bool isCsv) async {
+    delimiter = isCsv ? csvDelimiter : tsvDelimiter;
     List<SpecimenData> specimenList =
         await SpecimenServices(ref).getSpecimenList();
-
     IOSink writer = filePath.openWrite();
-    String mainHeader =
-        'cataloger,fieldID,preparator,family,species,preparation,condition';
-    String eventHeader = 'site,habitatType,locality,coordinates';
-    String measureHeader =
-        'TotalLength,TailLength,HindFootLength,EarLength,Weight,Accuracy,'
-        'age,sex,testisPos,testisSize,'
-        'ovaryOpening,MammaeCondition,MammaeFormula';
-    writer.write('$mainHeader,$eventHeader,$measureHeader$endLine');
+    _writeHeader(writer, collRecordExportList);
+    _writeHeader(writer, specimenExportList);
+    _writeHeader(writer, collEventExportList);
+    _writeHeaderLast(writer, mammalMeasurementExportList);
 
     for (var element in specimenList) {
       String cataloger = await _getCatalogerName(element.catalogerID);
@@ -39,14 +37,33 @@ class SpecimenRecordWriter {
       String parts = await _getPartList(element.uuid);
       String condition = element.condition ?? '';
       String collId = await _getCollEventName(element.collEventID);
-      String measurement =
-          await _getMeasurement(element.taxonGroup, element.uuid);
+      CatalogFmt catalogFmt = matchTaxonGroupToCatFmt(element.taxonGroup);
+      String measurement = await _getMeasurement(catalogFmt, element.uuid);
       String mainLine =
-          '$cataloger$fieldId,$preparator,$species,$parts,$condition,$collId';
-      writer.write('$mainLine,$measurement$endLine');
+          '$cataloger$fieldId$delimiter$preparator$delimiter$species$delimiter$parts$delimiter$condition$delimiter$collId';
+      writer.write('$mainLine$delimiter$measurement$endLine');
     }
 
     writer.close();
+  }
+
+  void _writeHeader(IOSink writer, List<String> headerList) {
+    for (var val in headerList) {
+      writer.write('$val$delimiter');
+    }
+  }
+
+  void _writeHeaderLast(IOSink writer, List<String> headerList) {
+    int last = headerList.length - 1;
+    int count = 0;
+    for (var val in headerList) {
+      if (count == last) {
+        writer.write('$val$endLine');
+      } else {
+        writer.write('$val$delimiter');
+      }
+      count++;
+    }
   }
 
   Future<String> _getSpeciesName(int? speciesId) async {
@@ -56,7 +73,8 @@ class SpecimenRecordWriter {
       TaxonomyData taxon = await TaxonomyQuery(ref.read(databaseProvider))
           .getTaxonById(speciesId);
 
-      return '${taxon.taxonFamily},${taxon.genus} ${taxon.specificEpithet}';
+      return '${taxon.taxonOrder}$delimiter${taxon.taxonFamily}$delimiter'
+          '${taxon.genus}$delimiter${taxon.specificEpithet}';
     }
   }
 
@@ -66,7 +84,7 @@ class SpecimenRecordWriter {
     } else {
       PersonnelData person =
           await PersonnelServices(ref).getPersonnelByUuid(catalogerUuid);
-      return '${person.name},${person.initial}';
+      return '${person.name}$delimiter${person.initial}';
     }
   }
 
@@ -92,7 +110,7 @@ class SpecimenRecordWriter {
       } else {
         String siteDetails = await _getSiteDetails(collEventData.siteID);
         String coordinateDetails = await _getCoordinates(collEventData.siteID);
-        return '$siteDetails,"$coordinateDetails"';
+        return '$siteDetails$delimiter"$coordinateDetails"';
       }
     }
   }
@@ -109,7 +127,7 @@ class SpecimenRecordWriter {
         String siteDetails = '${data.country}: ${data.stateProvince};'
                 ' ${data.county}; ${data.municipality}; ${data.locality}'
             .trim();
-        return '${data.siteID},${data.habitatType},"$siteDetails"';
+        return '${data.siteID}$delimiter${data.habitatType}$delimiter"$siteDetails"';
       }
     }
   }
@@ -121,9 +139,10 @@ class SpecimenRecordWriter {
       List<CoordinateData> coordinateList =
           await CoordinateServices(ref).getCoordinatesBySiteID(siteID);
       return coordinateList
-          .map((e) =>
-              '${e.nameId ?? ''};${e.decimalLatitude ?? ''},${e.decimalLongitude ?? ''};'
-              '${e.elevationInMeter ?? ''}m;±${e.uncertaintyInMeters ?? ''}m;${e.datum ?? ''}')
+          .map((e) => '${e.nameId ?? ''};'
+              '${e.decimalLatitude ?? ''},${e.decimalLongitude ?? ''};'
+              '${e.elevationInMeter ?? ''}m;±${e.uncertaintyInMeters ?? ''}m;'
+              '${e.datum ?? ''}')
           .join('|');
     }
   }
@@ -136,9 +155,7 @@ class SpecimenRecordWriter {
   }
 
   Future<String> _getMeasurement(
-      String? taxonGroup, String? specimenUuid) async {
-    CatalogFmt catalogFmt = matchTaxonGroupToCatFmt(taxonGroup);
-
+      CatalogFmt catalogFmt, String? specimenUuid) async {
     switch (catalogFmt) {
       case CatalogFmt.generalMammals:
         return await _getMeasurementGeneralMammals(specimenUuid);
@@ -153,34 +170,35 @@ class SpecimenRecordWriter {
     if (specimenUuid != null) {
       MammalMeasurementData data =
           await SpecimenServices(ref).getMammalMeasurementData(specimenUuid);
-      String measurement = '${data.totalLength ?? ''},${data.tailLength ?? ''},'
-          '${data.hindFootLength ?? ''},${data.earLength ?? ''},'
+      String measurement =
+          '${data.totalLength ?? ''}$delimiter${data.tailLength ?? ''}$delimiter'
+          '${data.hindFootLength ?? ''}$delimiter${data.earLength ?? ''}$delimiter'
           '${data.weight ?? ''}';
       String accuracy = data.accuracy ?? '';
       String age = data.age != null ? specimenAgeList[data.age!] : '';
       String sexData = _getSexData(data);
-      return '$measurement,$accuracy,$age,$sexData';
+      return '$measurement$delimiter$accuracy$delimiter$age$delimiter$sexData';
     } else {
-      return ',,';
+      return delimiter * 7;
     }
   }
 
   String _getSexData(MammalMeasurementData data) {
     SpecimenSex? sexEnum = getSpecimenSex(data.sex);
     String sex = data.sex != null ? specimenSexList[data.sex!] : '';
-    String emptyMale = ',';
-    String emptyFemale = ',,';
+    String emptyMale = delimiter;
+    String emptyFemale = delimiter * 2;
     switch (sexEnum) {
       case SpecimenSex.male:
         String maleGonad = _getMaleGonad(data);
-        return '$sex,$maleGonad$emptyFemale';
+        return '$sex$delimiter$maleGonad$emptyFemale';
       case SpecimenSex.female:
         String femaleGonad = _getFemaleGonad(data);
-        return '$sex,$emptyMale,$femaleGonad';
+        return '$sex$delimiter$emptyMale$delimiter$femaleGonad';
       case SpecimenSex.unknown:
-        return '$sex,$emptyMale$emptyFemale';
+        return '$sex$delimiter$emptyMale$emptyFemale';
       default:
-        return '$sex,$emptyMale$emptyFemale';
+        return '$sex$delimiter$emptyMale$emptyFemale';
     }
   }
 
@@ -200,9 +218,10 @@ class SpecimenRecordWriter {
           ? '${data.mammaeAxillaryCount} ax'
           : '';
       String mammaeCount = '$ingCount$abdCount$axCount';
-      return '$vaginaOpening,$mammaeCondition,$mammaeCount';
+      return '$vaginaOpening$delimiter$mammaeCondition$delimiter$mammaeCount';
     } else {
-      return '$vaginaOpening,,';
+      String empty = delimiter * 2;
+      return '$vaginaOpening$empty';
     }
   }
 
@@ -223,9 +242,9 @@ class SpecimenRecordWriter {
           data.testisLength != null ? '${data.testisLength}' : '';
       String testisWidth =
           data.testisWidth != null ? 'x${data.testisWidth}mm' : '';
-      return '$testisPos,$testisLength$testisWidth';
+      return '$testisPos$delimiter$testisLength$testisWidth';
     } else {
-      return '';
+      return delimiter;
     }
   }
 }
