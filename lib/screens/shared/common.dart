@@ -59,3 +59,12 @@ class CommonDivider extends StatelessWidget {
     );
   }
 }
+
+class CommonLineDivider extends StatelessWidget {
+  const CommonLineDivider({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Divider(color: Colors.grey);
+  }
+}

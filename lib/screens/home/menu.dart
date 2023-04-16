@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nahpu/screens/export/export_db.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/settings/settings.dart';
+import 'package:nahpu/screens/shared/common.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeMenuDrawer extends StatelessWidget {
@@ -9,82 +10,76 @@ class HomeMenuDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          DrawerHeader(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            child: Image.asset(
-              'assets/images/nahpu_logo_1024.png',
-              fit: BoxFit.contain,
-            ),
+    return NavigationDrawer(
+      children: [
+        DrawerHeader(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.secondary,
           ),
-          ListTile(
-            leading: const Icon(Icons.create_rounded),
-            title: const Text('Create a new project'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const CreateProjectForm()),
-              );
-            },
+          child: Image.asset(
+            'assets/images/nahpu_logo_1024.png',
+            fit: BoxFit.contain,
           ),
-          const Divider(color: Colors.grey),
-          ListTile(
-            leading: const Icon(Icons.storage_rounded),
-            title: const Text('Backup database'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ExportDbForm()),
-              );
-            },
-          ),
-          // const Divider(color: Colors.grey),
-          ListTile(
-            leading: const Icon(Icons.settings_rounded),
-            title: const Text('Settings'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AppSettings()),
-              );
-            },
-          ),
-          const Divider(
-            color: Colors.grey,
-          ),
-          ListTile(
-            leading: const Icon(Icons.info_rounded),
-            title: const Text('About'),
-            onTap: () {
-              return showAboutDialog(
-                context: context,
-                applicationName: 'Nahpu',
-                applicationVersion: '0.0.1',
-                applicationIcon: const Icon(Icons.info_rounded),
-                children: [
-                  const Text(
-                      'A tool for cataloging natural history specimens.'),
-                  const Text('It is a work in progress.'),
-                  const Text('Please report any bugs or feature requests'),
-                ],
-              );
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.help_rounded),
-            title: const Text('Help and feedback'),
-            onTap: () {
-              _launchHelpUrl();
-            },
-          ),
-        ],
-      ),
+        ),
+        ListTile(
+          leading: const Icon(Icons.create_rounded),
+          title: const Text('Create a new project'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const CreateProjectForm()),
+            );
+          },
+        ),
+        const CommonLineDivider(),
+        ListTile(
+          leading: const Icon(Icons.storage_rounded),
+          title: const Text('Backup database'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ExportDbForm()),
+            );
+          },
+        ),
+        // const Divider(color: Colors.grey),
+        ListTile(
+          leading: const Icon(Icons.settings_rounded),
+          title: const Text('Settings'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const AppSettings()),
+            );
+          },
+        ),
+        const CommonLineDivider(),
+        ListTile(
+          leading: const Icon(Icons.info_rounded),
+          title: const Text('About'),
+          onTap: () {
+            return showAboutDialog(
+              context: context,
+              applicationName: 'Nahpu',
+              applicationVersion: '0.0.1',
+              applicationIcon: const Icon(Icons.info_rounded),
+              children: [
+                const Text('A tool for cataloging natural history specimens.'),
+                const Text('It is a work in progress.'),
+                const Text('Please report any bugs or feature requests'),
+              ],
+            );
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.help_rounded),
+          title: const Text('Help and feedback'),
+          onTap: () {
+            _launchHelpUrl();
+          },
+        ),
+      ],
     );
   }
 
