@@ -21,6 +21,8 @@ class ExportFormState extends ConsumerState<ExportForm> {
   RecordType _recordType = RecordType.specimen;
   String _fileName = 'export';
   String _selectedDir = '';
+  bool _hasSaved = false;
+  String _finalPath = '';
 
   @override
   void initState() {
@@ -90,89 +92,39 @@ class ExportFormState extends ConsumerState<ExportForm> {
             },
           ),
           SelectDirField(dirPath: _selectedDir, onChanged: _getDir),
-          ExportButtons(
-            exportFmt: exportFmt,
-            dirPath: _selectedDir,
-            fileName: _fileName,
-            recordType: _recordType,
-          ),
+          const SizedBox(height: 10),
+          Wrap(
+            spacing: 20,
+            children: [
+              SaveSecondaryButton(hasSaved: _hasSaved),
+              PrimaryButton(
+                text: 'Save',
+                onPressed: _selectedDir.isEmpty
+                    ? null
+                    : () async {
+                        await _exportFile();
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('File saved as $_finalPath'),
+                            ),
+                          );
+                        }
+                      },
+              ),
+            ],
+          )
         ],
       ),
     );
   }
 
-  void _getDir(String? path) {
-    if (path != null) {
-      setState(() {
-        _selectedDir = path;
-      });
-    }
-  }
-}
-
-class ExportButtons extends ConsumerStatefulWidget {
-  const ExportButtons({
-    super.key,
-    required this.dirPath,
-    required this.fileName,
-    required this.exportFmt,
-    required this.recordType,
-  });
-
-  final String dirPath;
-  final String fileName;
-  final ExportFmt exportFmt;
-  final RecordType recordType;
-
-  @override
-  ExportButtonState createState() => ExportButtonState();
-}
-
-class ExportButtonState extends ConsumerState<ExportButtons> {
-  bool _hasSaved = false;
-  String _finalPath = '';
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: 10),
-        Wrap(
-          spacing: 20,
-          children: [
-            SaveSecondaryButton(hasSaved: _hasSaved),
-            PrimaryButton(
-              text: 'Save',
-              onPressed: widget.dirPath.isEmpty
-                  ? null
-                  : () async {
-                      await _exportFile();
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('File saved as $_finalPath'),
-                          ),
-                        );
-                      }
-                    },
-            ),
-          ],
-        )
-      ],
-    );
-  }
-
   Future<void> _exportFile() async {
-    final dir = Directory(widget.dirPath);
+    final dir = Directory(_selectedDir);
     if (!dir.existsSync()) {
       dir.createSync(recursive: true);
     }
-    switch (widget.exportFmt) {
+    switch (exportFmt) {
       case ExportFmt.csv:
         await _writeDelimited(true);
         break;
@@ -189,7 +141,7 @@ class ExportButtonState extends ConsumerState<ExportButtons> {
   }
 
   File _createSavePath(String fileName) {
-    String finalPath = path.join(widget.dirPath, fileName);
+    String finalPath = path.join(_selectedDir, fileName);
     return File(finalPath);
   }
 
@@ -201,7 +153,7 @@ class ExportButtonState extends ConsumerState<ExportButtons> {
     String ext = isCsv ? 'csv' : 'tsv';
     try {
       File file = _getFilename(ext);
-      await _matchRecordWithWriter(file, isCsv);
+      await _matchRecordTypeToWriter(file, isCsv);
       setState(() {
         _hasSaved = true;
         _finalPath = file.path;
@@ -219,14 +171,28 @@ class ExportButtonState extends ConsumerState<ExportButtons> {
     }
   }
 
+  Future<void> _matchRecordTypeToWriter(File file, bool isCsv) async {
+    switch (_recordType) {
+      case RecordType.narrative:
+        await NarrativeRecordWriter(ref).writeNarrativeDelimited(file, isCsv);
+        break;
+      case RecordType.specimen:
+        await SpecimenRecordWriter(ref).writeRecordDelimited(file, isCsv);
+        break;
+      default:
+        await SpecimenRecordWriter(ref).writeRecordDelimited(file, isCsv);
+        break;
+    }
+  }
+
   File _getFilename(String ext) {
-    String fileName = '${widget.fileName}.$ext';
+    String fileName = '$_fileName.$ext';
     // Check if file exists
     File file = _createSavePath(fileName);
     if (file.existsSync()) {
       int i = 1;
       while (file.existsSync()) {
-        fileName = '${widget.fileName}($i).$ext';
+        fileName = '$_fileName($i).$ext';
         file = _createSavePath(fileName);
         i++;
       }
@@ -234,22 +200,11 @@ class ExportButtonState extends ConsumerState<ExportButtons> {
     return file;
   }
 
-  Future<void> _matchRecordWithWriter(File file, bool isCsv) async {
-    switch (widget.recordType) {
-      case RecordType.narrative:
-        await NarrativeRecordWriter(ref).writeNarrativeDelimited(file, isCsv);
-        break;
-      case RecordType.specimen:
-        await SpecimenRecordWriter(ref).writeRecordDelimited(file, isCsv);
-        break;
+  void _getDir(String? path) {
+    if (path != null) {
+      setState(() {
+        _selectedDir = path;
+      });
     }
   }
-
-  // Future<void> _onShare(BuildContext context) async {
-  //   final box = context.findRenderObject() as RenderBox?;
-  //   await _writeCsv();
-  //   Share.shareXFiles([XFile(widget.filePath)],
-  //       text: 'Share',
-  //       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
-  // }
 }

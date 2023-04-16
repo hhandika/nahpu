@@ -22,8 +22,8 @@ class SiteWriterServices {
       if (data == null) {
         return '';
       } else {
-        String siteDetails = '${data.country}: ${data.stateProvince};'
-                ' ${data.county}; ${data.municipality}; ${data.locality}'
+        String siteDetails = '${data.country ?? ''}: ${data.stateProvince ?? ''};'
+                ' ${data.county ?? ''}; ${data.municipality ?? ''}; ${data.locality ?? ''}'
             .trim();
         return withHabitat
             ? '${data.siteID}$delimiter${data.habitatType}$delimiter"$siteDetails"'

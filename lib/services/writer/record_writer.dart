@@ -24,7 +24,8 @@ class SpecimenRecordWriter {
     delimiter = isCsv ? csvDelimiter : tsvDelimiter;
     List<SpecimenData> specimenList =
         await SpecimenServices(ref).getSpecimenList();
-    IOSink writer = filePath.openWrite();
+    final file = await filePath.create(recursive: true);
+    final writer = file.openWrite();
     _writeHeader(writer, collRecordExportList);
     _writeHeader(writer, specimenExportList);
     _writeHeader(writer, collEventExportList);
@@ -42,10 +43,9 @@ class SpecimenRecordWriter {
       String measurement = await _getMeasurement(catalogFmt, element.uuid);
       String mainLine =
           '$cataloger$fieldId$delimiter$preparator$delimiter$species$delimiter$parts$delimiter$condition$delimiter$collId';
-      writer.write('$mainLine$delimiter$measurement$endLine');
+      writer.writeln('$mainLine$delimiter$measurement');
     }
 
-    writer.flush();
     writer.close();
   }
 
@@ -58,7 +58,7 @@ class SpecimenRecordWriter {
   void _writeHeaderLast(IOSink writer, List<String> headerList) {
     for (var val in headerList) {
       if (val == headerList.last) {
-        writer.write('$val$endLine');
+        writer.writeln(val);
       } else {
         writer.write('$val$delimiter');
       }
@@ -238,17 +238,16 @@ class NarrativeRecordWriter {
           .getSiteDetails(false);
       writer.write(siteDetails);
       writer.write(delimiter);
-      writer.write('"${narrative.narrative}"');
-      writer.write(endLine);
+      writer.writeln('"${narrative.narrative}"');
     }
-    await writer.flush();
+
     await writer.close();
   }
 
   void _writeHeader(IOSink writer) async {
     for (var val in narrativeExportList) {
       if (val == narrativeExportList.last) {
-        writer.write(val);
+        writer.writeln(val);
       } else {
         writer.write('$val$delimiter');
       }

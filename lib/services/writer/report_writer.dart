@@ -6,7 +6,6 @@ import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/specimen_queries.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
-import 'package:nahpu/services/writer/common.dart';
 
 class SpeciesListWriter {
   SpeciesListWriter(this.ref);
@@ -19,10 +18,10 @@ class SpeciesListWriter {
     File file = File(filePath);
     IOSink writer = file.openWrite();
     String header = 'Species,Count';
-    writer.write('$header$endLine');
+    writer.writeln(header);
     for (var element in speciesListMap.entries) {
       String line = '${element.key},${element.value}';
-      writer.write('$line$endLine');
+      writer.writeln(line);
     }
   }
 
