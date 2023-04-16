@@ -7,11 +7,12 @@ import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/specimen_queries.dart';
-import 'package:nahpu/services/database/taxonomy_queries.dart';
+import 'package:nahpu/services/narrative_services.dart';
 import 'package:nahpu/services/personnel_services.dart';
-import 'package:nahpu/services/site_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
+import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/writer/common.dart';
+import 'package:nahpu/services/writer/site_writer.dart';
 
 class SpecimenRecordWriter {
   SpecimenRecordWriter(this.ref);
@@ -44,6 +45,7 @@ class SpecimenRecordWriter {
       writer.write('$mainLine$delimiter$measurement$endLine');
     }
 
+    writer.flush();
     writer.close();
   }
 
@@ -54,15 +56,12 @@ class SpecimenRecordWriter {
   }
 
   void _writeHeaderLast(IOSink writer, List<String> headerList) {
-    int last = headerList.length - 1;
-    int count = 0;
     for (var val in headerList) {
-      if (count == last) {
+      if (val == headerList.last) {
         writer.write('$val$endLine');
       } else {
         writer.write('$val$delimiter');
       }
-      count++;
     }
   }
 
@@ -70,8 +69,7 @@ class SpecimenRecordWriter {
     if (speciesId == null) {
       return '';
     } else {
-      TaxonomyData taxon = await TaxonomyQuery(ref.read(databaseProvider))
-          .getTaxonById(speciesId);
+      TaxonomyData taxon = await TaxonomyService(ref).getTaxonById(speciesId);
 
       return '${taxon.taxonOrder}$delimiter${taxon.taxonFamily}$delimiter'
           '${taxon.genus}$delimiter${taxon.specificEpithet}';
@@ -108,42 +106,12 @@ class SpecimenRecordWriter {
       if (collEventData == null) {
         return ',,';
       } else {
-        String siteDetails = await _getSiteDetails(collEventData.siteID);
-        String coordinateDetails = await _getCoordinates(collEventData.siteID);
+        SiteWriterServices siteServices = SiteWriterServices(
+            ref: ref, siteID: collEventData.siteID, delimiter: delimiter);
+        String siteDetails = await siteServices.getSiteDetails(true);
+        String coordinateDetails = await siteServices.getCoordinates();
         return '$siteDetails$delimiter"$coordinateDetails"';
       }
-    }
-  }
-
-  Future<String> _getSiteDetails(int? siteId) async {
-    if (siteId == null) {
-      return '';
-    } else {
-      SiteData? data = await SiteServices(ref).getSite(siteId);
-
-      if (data == null) {
-        return '';
-      } else {
-        String siteDetails = '${data.country}: ${data.stateProvince};'
-                ' ${data.county}; ${data.municipality}; ${data.locality}'
-            .trim();
-        return '${data.siteID}$delimiter${data.habitatType}$delimiter"$siteDetails"';
-      }
-    }
-  }
-
-  Future<String> _getCoordinates(int? siteID) async {
-    if (siteID == null) {
-      return '';
-    } else {
-      List<CoordinateData> coordinateList =
-          await CoordinateServices(ref).getCoordinatesBySiteID(siteID);
-      return coordinateList
-          .map((e) => '${e.nameId ?? ''};'
-              '${e.decimalLatitude ?? ''},${e.decimalLongitude ?? ''};'
-              '${e.elevationInMeter ?? ''}m;±${e.uncertaintyInMeters ?? ''}m;'
-              '${e.datum ?? ''}')
-          .join('|');
     }
   }
 
@@ -245,6 +213,45 @@ class SpecimenRecordWriter {
       return '$testisPos$delimiter$testisLength$testisWidth';
     } else {
       return delimiter;
+    }
+  }
+}
+
+class NarrativeRecordWriter {
+  NarrativeRecordWriter(this.ref);
+
+  final WidgetRef ref;
+  late String delimiter;
+
+  Future<void> writeNarrativeDelimited(File filePath, bool isCsv) async {
+    delimiter = isCsv ? ',' : '\t';
+    final file = await filePath.create(recursive: true);
+    final writer = file.openWrite();
+    _writeHeader(writer);
+    List<NarrativeData> narrativeList =
+        await NarrativeServices(ref).getAllNarrative();
+    for (var narrative in narrativeList) {
+      writer.write('"${narrative.date}"');
+      writer.write(delimiter);
+      String siteDetails = await SiteWriterServices(
+              ref: ref, siteID: narrative.siteID, delimiter: delimiter)
+          .getSiteDetails(false);
+      writer.write(siteDetails);
+      writer.write(delimiter);
+      writer.write('"${narrative.narrative}"');
+      writer.write(endLine);
+    }
+    await writer.flush();
+    await writer.close();
+  }
+
+  void _writeHeader(IOSink writer) async {
+    for (var val in narrativeExportList) {
+      if (val == narrativeExportList.last) {
+        writer.write(val);
+      } else {
+        writer.write('$val$delimiter');
+      }
     }
   }
 }

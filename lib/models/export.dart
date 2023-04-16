@@ -35,3 +35,9 @@ const mammalMeasurementExportList = [
   'mammaeCondition',
   'mammaeFormula',
 ];
+
+const narrativeExportList = [
+  'date',
+  'locality',
+  'narrative',
+];

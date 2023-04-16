@@ -94,6 +94,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
             exportFmt: exportFmt,
             dirPath: _selectedDir,
             fileName: _fileName,
+            recordType: _recordType,
           ),
         ],
       ),
@@ -115,11 +116,13 @@ class ExportButtons extends ConsumerStatefulWidget {
     required this.dirPath,
     required this.fileName,
     required this.exportFmt,
+    required this.recordType,
   });
 
   final String dirPath;
   final String fileName;
   final ExportFmt exportFmt;
+  final RecordType recordType;
 
   @override
   ExportButtonState createState() => ExportButtonState();
@@ -197,18 +200,8 @@ class ExportButtonState extends ConsumerState<ExportButtons> {
   Future<void> _writeDelimited(bool isCsv) async {
     String ext = isCsv ? 'csv' : 'tsv';
     try {
-      String fileName = '${widget.fileName}.$ext';
-      // Check if file exists
-      File file = _createSavePath(fileName);
-      if (file.existsSync()) {
-        int i = 1;
-        while (file.existsSync()) {
-          fileName = '${widget.fileName}($i).$ext';
-          file = _createSavePath(fileName);
-          i++;
-        }
-      }
-      await SpecimenRecordWriter(ref).writeRecordDelimited(file, isCsv);
+      File file = _getFilename(ext);
+      await _matchRecordWithWriter(file, isCsv);
       setState(() {
         _hasSaved = true;
         _finalPath = file.path;
@@ -223,6 +216,32 @@ class ExportButtonState extends ConsumerState<ExportButtons> {
           content: ErrorText(error: e.toString()),
         ),
       );
+    }
+  }
+
+  File _getFilename(String ext) {
+    String fileName = '${widget.fileName}.$ext';
+    // Check if file exists
+    File file = _createSavePath(fileName);
+    if (file.existsSync()) {
+      int i = 1;
+      while (file.existsSync()) {
+        fileName = '${widget.fileName}($i).$ext';
+        file = _createSavePath(fileName);
+        i++;
+      }
+    }
+    return file;
+  }
+
+  Future<void> _matchRecordWithWriter(File file, bool isCsv) async {
+    switch (widget.recordType) {
+      case RecordType.narrative:
+        await NarrativeRecordWriter(ref).writeNarrativeDelimited(file, isCsv);
+        break;
+      case RecordType.specimen:
+        await SpecimenRecordWriter(ref).writeRecordDelimited(file, isCsv);
+        break;
     }
   }
 

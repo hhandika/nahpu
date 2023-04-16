@@ -10,8 +10,6 @@ enum CoordinatePopUpMenuItems { edit, copy, open, delete }
 
 enum ExportFmt { csv, tsv }
 
-enum RecordType { specimen }
-
 enum SiteMenuSelection {
   newSite,
   duplicate,
@@ -20,7 +18,12 @@ enum SiteMenuSelection {
   deleteAllRecords
 }
 
-const List<String> recordTypeList = ['Specimen records'];
+enum RecordType { narrative, specimen }
+
+const List<String> recordTypeList = [
+  'Narrative',
+  'Specimen records',
+];
 
 const List<String> exportFormats = [
   // 'Excel (.xlsx)',

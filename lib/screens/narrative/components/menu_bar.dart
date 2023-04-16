@@ -14,8 +14,7 @@ enum MenuSelection {
 }
 
 Future<void> createNewNarrative(BuildContext context, WidgetRef ref) {
-  String projectUuid = ref.watch(projectUuidProvider);
-  return NarrativeServices(ref).createNewNarrative(projectUuid).then((_) {
+  return NarrativeServices(ref).createNewNarrative().then((_) {
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => const NarrativeViewer()));
   });
