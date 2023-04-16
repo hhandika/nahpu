@@ -455,7 +455,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                         enabled: widget.ctr.roleCtr == 'Cataloger',
                         controller: widget.ctr.nextCollectorNumCtr,
                         decoration: InputDecoration(
-                          labelText: 'Last collector Number*',
+                          labelText: 'Next collector Number*',
                           hintText: 'Enter number (required for collectors)',
                           errorText: ref
                               .watch(personnelFormValidation)

@@ -47,24 +47,11 @@ class SpecimenServices extends DbAccess {
   }
 
   Future<int> getSpecimenFieldNumber(
-      String personnelUuid, String specimenUuid) async {
-    String projectUuid = ref.read(projectUuidProvider);
-    // final db = dbase;
-    SpecimenData? specimenData = await SpecimenQuery(dbase)
-        .getLastCatFieldNumber(projectUuid, specimenUuid, personnelUuid);
-
-    ref.invalidate(personnelListProvider);
-    if (specimenData == null) {
-      try {
-        int? fieldNumber = await PersonnelQuery(dbase)
-            .getCurrentFieldNumberByUuid(personnelUuid);
-        return _getCurrentFieldNumber(fieldNumber);
-      } catch (e) {
-        return 0;
-      }
-    } else {
-      return _getFieldNumber(specimenData.fieldNumber!);
-    }
+    String personnelUuid,
+  ) async {
+    int? fieldNumber =
+        await PersonnelQuery(dbase).getCurrentFieldNumberByUuid(personnelUuid);
+    return _getCurrentFieldNumber(fieldNumber);
   }
 
   int _getCurrentFieldNumber(int? currentFieldNum) {
@@ -73,10 +60,6 @@ class SpecimenServices extends DbAccess {
     } else {
       return currentFieldNum;
     }
-  }
-
-  int _getFieldNumber(int lastFieldNumber) {
-    return lastFieldNumber + 1;
   }
 
   void _createMammalSpecimen(String specimenUuid) {
@@ -98,8 +81,8 @@ class SpecimenServices extends DbAccess {
         BirdMeasurementCompanion(specimenUuid: db.Value(specimenUuid)));
   }
 
-  void updateSpecimen(String uuid, SpecimenCompanion entries) {
-    SpecimenQuery(dbase).updateSpecimenEntry(uuid, entries);
+  Future<void> updateSpecimen(String uuid, SpecimenCompanion entries) async {
+    await SpecimenQuery(dbase).updateSpecimenEntry(uuid, entries);
     ref.invalidate(taxonDataProvider);
   }
 

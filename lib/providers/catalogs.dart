@@ -9,10 +9,6 @@ import 'package:nahpu/services/database/collevent_queries.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
 import 'package:nahpu/services/database/personnel_queries.dart';
 
-void createPersonnel(WidgetRef ref, PersonnelCompanion form) {
-  PersonnelQuery(ref.read(databaseProvider)).createPersonnel(form);
-}
-
 final narrativeEntryProvider =
     FutureProvider.autoDispose<List<NarrativeData>>((ref) {
   final projectUuid = ref.watch(projectUuidProvider);
