@@ -51,8 +51,12 @@ final collEventIDprovider =
   return collEventID;
 });
 
-final personnelListProvider = FutureProvider.autoDispose<List<PersonnelData>>(
-    (ref) => PersonnelQuery(ref.read(databaseProvider)).getAllPersonnel());
+final personnelListProvider =
+    FutureProvider.autoDispose<List<PersonnelData>>((ref) {
+  final projectUuid = ref.watch(projectUuidProvider);
+  return PersonnelQuery(ref.read(databaseProvider))
+      .getPersonnelByProjectUuid(projectUuid);
+});
 
 final coordinateBySiteProvider = FutureProvider.family
     .autoDispose<List<CoordinateData>, int>((ref, siteId) =>

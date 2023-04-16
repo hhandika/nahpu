@@ -8,9 +8,14 @@ class PersonnelServices extends DbAccess {
   PersonnelServices(super.ref);
 
   Database get db => ref.read(databaseProvider);
+  String get projectUuid => ref.read(projectUuidProvider);
 
   Future<int> createPersonnel(PersonnelCompanion personnel) async {
     return await PersonnelQuery(db).createPersonnel(personnel);
+  }
+
+  Future<void> createProjectPersonnel(PersonnelListCompanion form) async {
+    await PersonnelQuery(db).createProjectPersonnelEntry(form);
   }
 
   void updatePersonnelEntry(String uuid, PersonnelCompanion personnel) {

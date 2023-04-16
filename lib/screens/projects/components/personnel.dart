@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/models/controllers.dart';
+import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/providers/validation.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
 import 'package:nahpu/services/database/database.dart';
@@ -36,6 +37,9 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
             height: 300,
             child: PersonnelList(),
           ),
+          const SizedBox(
+            height: 10,
+          ),
           PrimaryButton(
             onPressed: () {
               Navigator.push(
@@ -47,7 +51,6 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
             },
             text: 'Add personnel',
           ),
-          const SizedBox(height: 10),
         ],
       ),
     );
@@ -503,15 +506,19 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                             .form
                             .isValidCataloger
                         : ref.read(personnelFormValidation).form.isValid,
-                    onPressed: () {
-                      widget.isAddNew ? _addPersonnel() : _updatePersonnel();
+                    onPressed: () async {
+                      widget.isAddNew
+                          ? await _addPersonnel()
+                          : _updatePersonnel();
                       ref.invalidate(personnelListProvider);
                       ref.invalidate(personnelFormValidation);
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const Dashboard(),
-                        ),
-                      );
+                      if (context.mounted) {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const Dashboard(),
+                          ),
+                        );
+                      }
                     },
                   ),
                 ],
@@ -540,8 +547,10 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
     );
   }
 
-  Future<void> _addPersonnel() {
-    return PersonnelServices(ref).createPersonnel(
+  Future<void> _addPersonnel() async {
+    PersonnelServices personnelServices = PersonnelServices(ref);
+    String projectUuid = ref.read(projectUuidProvider);
+    await personnelServices.createPersonnel(
       PersonnelCompanion(
         uuid: db.Value(widget.personnelUuid),
         name: db.Value(widget.ctr.nameCtr.text),
@@ -555,6 +564,10 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
         ),
       ),
     );
+    await personnelServices.createProjectPersonnel(PersonnelListCompanion(
+      personnelUuid: db.Value(widget.personnelUuid),
+      projectUuid: db.Value(projectUuid),
+    ));
   }
 
   int _getCollectorNumber() {
