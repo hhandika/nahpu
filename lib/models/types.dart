@@ -8,7 +8,7 @@ enum CommonPopUpMenuItems { edit, delete }
 
 enum CoordinatePopUpMenuItems { edit, copy, open, delete }
 
-enum ExportFmt { excel, csv, tsv, json }
+enum ExportFmt { csv, tsv }
 
 enum RecordType { specimen }
 
@@ -23,10 +23,10 @@ enum SiteMenuSelection {
 const List<String> recordTypeList = ['Specimen records'];
 
 const List<String> exportFormats = [
-  'Excel (.xlsx)',
+  // 'Excel (.xlsx)',
   'Comma-separated (.csv)',
   'Tab-separated (.tsv)',
-  'JSON (.json)',
+  // 'JSON (.json)',
 ];
 
 enum DbExportFmt { sqlite3 }

@@ -173,9 +173,9 @@ class ExportButtonState extends ConsumerState<ExportButtons> {
       case ExportFmt.csv:
         await _writeDelimited(true);
         break;
-      case ExportFmt.excel:
-        await _writeExcel();
-        break;
+      // case ExportFmt.excel:
+      //   await _writeExcel();
+      //   break;
       case ExportFmt.tsv:
         await _writeDelimited(false);
         break;
@@ -190,9 +190,9 @@ class ExportButtonState extends ConsumerState<ExportButtons> {
     return File(finalPath);
   }
 
-  Future<void> _writeExcel() async {
-    await _writeDelimited(true);
-  }
+  // Future<void> _writeExcel() async {
+  //   await _writeDelimited(true);
+  // }
 
   Future<void> _writeDelimited(bool isCsv) async {
     String ext = isCsv ? 'csv' : 'tsv';
