@@ -42,7 +42,7 @@ class SiteWriterServices {
           .map((e) => '${e.nameId ?? ''};'
               '${e.decimalLatitude ?? ''},${e.decimalLongitude ?? ''};'
               '${e.elevationInMeter ?? ''}m;±${e.uncertaintyInMeters ?? ''}m;'
-              '${e.datum ?? ''}')
+              '${e.datum ?? ''};${e.gpsUnit ?? ''}')
           .join('|');
     }
   }
