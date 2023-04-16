@@ -185,15 +185,10 @@ class PersonnelRecords extends ConsumerStatefulWidget {
 }
 
 class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
-  List<PersonnelData> personnelList = [];
-  bool hasChanged = false;
+  final List<String> _selectedPersonnel = [];
 
   @override
   Widget build(BuildContext context) {
-    final personnelEntry = ref.watch(personnelListProvider);
-    personnelEntry.whenData(
-      (personnelEntry) => personnelList = personnelEntry,
-    );
     return Column(
       children: [
         widget.specimenCtr.catalogerCtr != null
@@ -203,41 +198,50 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
                 catalogerUuid: widget.specimenCtr.catalogerCtr!,
               )
             : Container(),
-        DropdownButtonFormField(
+        DropdownButtonFormField<String>(
           value: widget.specimenCtr.catalogerCtr,
           decoration: const InputDecoration(
             labelText: 'Cataloger',
             hintText: 'Choose a person with field number',
           ),
-          items: personnelList
-              .where((element) => element.role == 'Cataloger')
-              .map((e) => DropdownMenuItem(
-                    value: e.uuid,
-                    child: Text(e.name ?? ''),
-                  ))
-              .toList(),
+          items: ref.watch(personnelListProvider).when(
+                data: (data) => data
+                    .where((element) => element.role == 'Cataloger')
+                    .map((e) => DropdownMenuItem(
+                          value: e.uuid,
+                          child: Text(e.name ?? ''),
+                        ))
+                    .toList(),
+                loading: () => const [],
+                error: (e, s) => const [],
+              ),
           onChanged: (String? uuid) async {
             // TODO: Apply on-change once.
+
             if (uuid != null) {
               int fieldNumber = await _getCurrentCollectorNumber(uuid);
               setState(() {
+                bool hasSelected = _selectedPersonnel.contains(uuid);
+                int currentFieldNumber =
+                    hasSelected ? fieldNumber - 1 : fieldNumber;
                 widget.specimenCtr.catalogerCtr = uuid;
                 widget.specimenCtr.preparatorCtr = uuid;
-                widget.specimenCtr.fieldNumberCtr.text = fieldNumber.toString();
+                widget.specimenCtr.fieldNumberCtr.text =
+                    currentFieldNumber.toString();
 
-                if (!hasChanged) {
+                if (!hasSelected) {
                   PersonnelServices(ref).updatePersonnelEntry(
                       uuid,
                       PersonnelCompanion(
                           currentFieldNumber: db.Value(fieldNumber + 1)));
-                  hasChanged = true;
+                  _selectedPersonnel.add(uuid);
                 }
                 SpecimenServices(ref).updateSpecimen(
                   widget.specimenUuid,
                   SpecimenCompanion(
                     catalogerID: db.Value(uuid),
                     fieldNumber: db.Value(
-                      fieldNumber,
+                      currentFieldNumber,
                     ),
                     preparatorID: db.Value(uuid),
                   ),
@@ -246,21 +250,25 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
             }
           },
         ),
-        DropdownButtonFormField(
+        DropdownButtonFormField<String>(
           value: widget.specimenCtr.preparatorCtr,
           decoration: const InputDecoration(
             labelText: 'Preparator',
             hintText: 'Choose a preparator (default is cataloger)',
           ),
-          items: personnelList
-              .where((element) =>
-                  element.role == 'Cataloger' ||
-                  element.role == 'Preparator only')
-              .map((e) => DropdownMenuItem(
-                    value: e.uuid,
-                    child: Text(e.name ?? ''),
-                  ))
-              .toList(),
+          items: ref.watch(personnelListProvider).when(
+                data: (data) => data
+                    .where((element) =>
+                        element.role == 'Cataloger' ||
+                        element.role == 'Preparator only')
+                    .map((e) => DropdownMenuItem(
+                          value: e.uuid,
+                          child: Text(e.name ?? ''),
+                        ))
+                    .toList(),
+                loading: () => const [],
+                error: (e, s) => const [],
+              ),
           onChanged: (String? uuid) {
             SpecimenServices(ref).updateSpecimen(
               widget.specimenUuid,
@@ -273,8 +281,9 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
   }
 
   Future<int> _getCurrentCollectorNumber(String personnelUuid) async {
-    int fieldNumber = await SpecimenServices(ref)
-        .getSpecimenFieldNumber(personnelUuid, widget.specimenUuid);
+    int fieldNumber = await SpecimenServices(ref).getSpecimenFieldNumber(
+      personnelUuid,
+    );
 
     return fieldNumber;
   }
@@ -336,11 +345,16 @@ class SpecimenIdTile extends ConsumerWidget {
                         child: const Text('Cancel'),
                       ),
                       TextButton(
-                        onPressed: () {
+                        onPressed: () async {
                           int fieldNumber =
-                              int.tryParse(specimenCtr.fieldNumberCtr.text) ??
-                                  0;
-                          SpecimenServices(ref).updateSpecimen(
+                              int.parse(specimenCtr.fieldNumberCtr.text);
+                          int nextFieldNumber = fieldNumber + 1;
+                          await PersonnelServices(ref).updatePersonnelEntry(
+                              catalogerUuid,
+                              PersonnelCompanion(
+                                  currentFieldNumber:
+                                      db.Value(nextFieldNumber)));
+                          await SpecimenServices(ref).updateSpecimen(
                             specimenUuid,
                             SpecimenCompanion(
                               fieldNumber: db.Value(
@@ -348,12 +362,10 @@ class SpecimenIdTile extends ConsumerWidget {
                               ),
                             ),
                           );
-                          PersonnelServices(ref).updatePersonnelEntry(
-                              specimenUuid,
-                              PersonnelCompanion(
-                                  currentFieldNumber:
-                                      db.Value(fieldNumber + 1)));
-                          Navigator.pop(context);
+
+                          if (context.mounted) {
+                            Navigator.pop(context);
+                          }
                         },
                         child: const Text('Save'),
                       ),
