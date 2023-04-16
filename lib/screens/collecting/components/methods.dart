@@ -97,7 +97,8 @@ class NewCollEffort extends ConsumerWidget {
     final collToolCtr = CollEffortCtrModel.empty();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('New Collecting Effort'),
+        title: const Text('New Collecting Method'),
+        automaticallyImplyLeading: false,
       ),
       body: Center(
           child: CollEffortForm(
@@ -126,7 +127,8 @@ class EditCollEffort extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Collecting Effort'),
+        title: const Text('Edit Collecting Method'),
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: CollEffortForm(
