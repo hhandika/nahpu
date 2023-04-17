@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:nahpu/providers/catalogs.dart';
-import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/models/types.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/specimens/specimen_view.dart';
-import 'package:nahpu/services/database/specimen_queries.dart';
 import 'package:nahpu/services/specimen_services.dart';
 
 enum MenuSelection {
@@ -42,15 +40,17 @@ class SpecimenMenu extends ConsumerStatefulWidget {
   const SpecimenMenu({
     super.key,
     required this.specimenUuid,
+    required this.catalogFmt,
   });
 
   final String? specimenUuid;
+  final CatalogFmt? catalogFmt;
 
   @override
-  NarrativeMenuState createState() => NarrativeMenuState();
+  SpecimenMenuState createState() => SpecimenMenuState();
 }
 
-class NarrativeMenuState extends ConsumerState<SpecimenMenu> {
+class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<MenuSelection>(
@@ -84,7 +84,7 @@ class NarrativeMenuState extends ConsumerState<SpecimenMenu> {
             ]);
   }
 
-  void _onPopupMenuSelected(MenuSelection item) {
+  Future<void> _onPopupMenuSelected(MenuSelection item) async {
     switch (item) {
       case MenuSelection.newSpecimen:
         createNewSpecimens(context, ref);
@@ -94,18 +94,20 @@ class NarrativeMenuState extends ConsumerState<SpecimenMenu> {
       case MenuSelection.pdfExport:
         break;
       case MenuSelection.deleteRecords:
-        if (widget.specimenUuid != null) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => const SpecimenViewer()),
+        if (widget.specimenUuid != null && widget.catalogFmt != null) {
+          await SpecimenServices(ref).deleteSpecimen(
+            widget.specimenUuid!,
+            widget.catalogFmt!,
           );
+          if (context.mounted) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => const SpecimenViewer()),
+            );
+          }
         }
         break;
       case MenuSelection.deleteAllRecords:
-        final projectUuid = ref.read(projectUuidProvider.notifier).state;
-        SpecimenQuery(ref.read(databaseProvider))
-            .deleteAllSpecimens(projectUuid);
-        ref.invalidate(specimenEntryProvider);
-        //ref.invalidate(pageNavigationProvider);
+        SpecimenServices(ref).deleteAllSpecimens();
         break;
     }
   }

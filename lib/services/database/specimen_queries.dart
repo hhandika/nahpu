@@ -84,7 +84,7 @@ class MammalSpecimenQuery extends DatabaseAccessor<Database>
         .getSingle();
   }
 
-  Future<void> deleteMammalMeasurement(String specimenUuid) {
+  Future<void> deleteMammalMeasurements(String specimenUuid) {
     return (delete(mammalMeasurement)
           ..where((t) => t.specimenUuid.equals(specimenUuid)))
         .go();
@@ -112,7 +112,7 @@ class BirdSpecimenQuery extends DatabaseAccessor<Database>
         .getSingle();
   }
 
-  Future<void> deleteBirdMeasurement(String specimenUuid) {
+  Future<void> deleteBirdMeasurements(String specimenUuid) {
     return (delete(birdMeasurement)
           ..where((t) => t.specimenUuid.equals(specimenUuid)))
         .go();

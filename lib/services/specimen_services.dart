@@ -12,9 +12,9 @@ class SpecimenServices extends DbAccess {
   SpecimenServices(super.ref);
 
   Database get dbase => ref.read(databaseProvider);
+  String get projectUuid => ref.read(projectUuidProvider);
 
   Future<void> createSpecimen() async {
-    String projectUuid = ref.watch(projectUuidProvider);
     CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
     final String specimenUuid = uuid;
     await SpecimenQuery(dbase).createSpecimen(SpecimenCompanion(
@@ -95,6 +95,10 @@ class SpecimenServices extends DbAccess {
     BirdSpecimenQuery(dbase).updateBirdMeasurements(specimenUuid, entries);
   }
 
+  Future<void> deleteBirdMeasurements(String specimenUuid) async {
+    await BirdSpecimenQuery(dbase).deleteBirdMeasurements(specimenUuid);
+  }
+
   Future<void> createSpecimenPart(SpecimenPartCompanion form) async {
     SpecimenPartQuery(dbase).createSpecimenPart(form);
     ref.invalidate(partBySpecimenProvider);
@@ -106,9 +110,35 @@ class SpecimenServices extends DbAccess {
     ref.invalidate(partBySpecimenProvider);
   }
 
-  Future<void> deleteSpecimen(String specimenUuid) async {
+  Future<void> deleteMammalMeasurements(String specimenUuid) async {
+    await MammalSpecimenQuery(dbase).deleteMammalMeasurements(specimenUuid);
+  }
+
+  Future<void> deleteSpecimen(
+      String specimenUuid, CatalogFmt catalogFmt) async {
     await SpecimenQuery(dbase).deleteSpecimen(specimenUuid);
+    await deleteAllSpecimenParts(specimenUuid);
+    switch (catalogFmt) {
+      case CatalogFmt.birds:
+        await deleteBirdMeasurements(specimenUuid);
+        break;
+      case CatalogFmt.bats:
+        await deleteMammalMeasurements(specimenUuid);
+        break;
+      case CatalogFmt.generalMammals:
+        await deleteMammalMeasurements(specimenUuid);
+        break;
+    }
     _invalidateSpecimenList();
+  }
+
+  Future<void> deleteAllSpecimens() async {
+    await SpecimenQuery(dbase).deleteAllSpecimens(projectUuid);
+    _invalidateSpecimenList();
+  }
+
+  Future<void> deleteAllSpecimenParts(String specimenUuid) async {
+    await SpecimenPartQuery(dbase).deleteAllSpecimenParts(specimenUuid);
   }
 
   void deleteSpecimenPart(int partId) {
