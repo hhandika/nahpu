@@ -188,7 +188,7 @@ class PersonnelRecords extends ConsumerStatefulWidget {
 }
 
 class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
-  final List<String> _selectedPersonnel = [];
+  final Set<String> _selectedPersonnel = {};
 
   @override
   Widget build(BuildContext context) {
@@ -219,8 +219,6 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
                 error: (e, s) => const [],
               ),
           onChanged: (String? uuid) async {
-            // TODO: Apply on-change once.
-
             if (uuid != null) {
               int fieldNumber = await _getCurrentCollectorNumber(uuid);
               setState(() {
