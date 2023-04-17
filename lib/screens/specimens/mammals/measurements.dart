@@ -209,7 +209,7 @@ class MammalMeasurementFormsState
                   value: getSpecimenSex(ctr.sexCtr),
                   decoration: const InputDecoration(
                     labelText: 'Sex',
-                    hintText: 'Choose one',
+                    hintText: 'Select specimen sex',
                   ),
                   items: specimenSexList
                       .map((e) => DropdownMenuItem(

@@ -95,7 +95,7 @@ class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
           ),
           SettingsTile(
             title: const Text('Birds'),
-            leading: const Icon(MdiIcons.feather),
+            leading: const Icon(MdiIcons.owl),
             trailing:
                 widget.selectedFmt == 'Birds' ? const Icon(Icons.check) : null,
             onPressed: (context) {
