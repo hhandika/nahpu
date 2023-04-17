@@ -106,6 +106,11 @@ class SpecimenServices extends DbAccess {
     ref.invalidate(partBySpecimenProvider);
   }
 
+  Future<void> deleteSpecimen(String specimenUuid) async {
+    await SpecimenQuery(dbase).deleteSpecimen(specimenUuid);
+    _invalidateSpecimenList();
+  }
+
   void deleteSpecimenPart(int partId) {
     SpecimenPartQuery(dbase).deleteSpecimenPart(partId);
     ref.invalidate(partBySpecimenProvider);
