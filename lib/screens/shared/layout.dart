@@ -15,8 +15,10 @@ class AdaptiveMainLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return useHorizontalLayout
-        ? SizedBox(
-            height: height,
+        ? ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: height,
+            ),
             child: LayoutRow(
               children: children,
             ))

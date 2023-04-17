@@ -325,8 +325,6 @@ class PersonnelForm extends ConsumerStatefulWidget {
   PersonnelFormState createState() => PersonnelFormState();
 }
 
-// TODO:
-// 1. Add photo
 class PersonnelFormState extends ConsumerState<PersonnelForm> {
   final _formKey = GlobalKey<FormState>();
 
