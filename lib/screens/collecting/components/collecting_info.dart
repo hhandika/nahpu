@@ -55,10 +55,11 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
     return FormCard(
       title: 'Collecting Info',
       isPrimary: true,
-      mainAxisSize: MainAxisSize.max,
+      mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
       child: Column(
         children: [
+          const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.only(left: 5, right: 5, top: 10),
             child: CollEventIdTile(
