@@ -131,12 +131,12 @@ IconData matchCatFmtToPartIcon(CatalogFmt catalogFmt) {
   }
 }
 
-IconData matchCatFmtToIcon(CatalogFmt catalogFmt) {
+IconData matchCatFmtToIcon(CatalogFmt catalogFmt, bool isSelected) {
   switch (catalogFmt) {
     case CatalogFmt.birds:
-      return MdiIcons.feather;
+      return MdiIcons.owl;
     case CatalogFmt.generalMammals:
-      return MdiIcons.paw;
+      return isSelected ? MdiIcons.paw : MdiIcons.pawOutline;
     case CatalogFmt.bats:
       return MdiIcons.bat;
     default:

@@ -31,31 +31,36 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
       selectedIndex: selectedIndex,
       destinations: const [
         NavigationDestination(
+          selectedIcon: Icon(Icons.dashboard_rounded),
           icon: Icon(
-            Icons.dashboard_rounded,
+            Icons.dashboard_outlined,
           ),
           label: 'Dashboard',
         ),
         NavigationDestination(
+          selectedIcon: Icon(Icons.place_rounded),
           icon: Icon(
-            Icons.place_rounded,
+            Icons.place_outlined,
           ),
           label: 'Sites',
         ),
         NavigationDestination(
+          selectedIcon: Icon(Icons.timeline_rounded),
           icon: Icon(
-            Icons.timeline,
+            Icons.timeline_outlined,
           ),
           label: 'CollEvents',
           tooltip: 'Collection Events',
         ),
         NavigationDestination(
-          icon: SpecimenIcons(),
+          selectedIcon: SpecimenIcons(isSelected: true),
+          icon: SpecimenIcons(isSelected: false),
           label: 'Specimens',
         ),
         NavigationDestination(
+          selectedIcon: Icon(Icons.book_rounded),
           icon: Icon(
-            Icons.book_rounded,
+            Icons.book_outlined,
           ),
           label: 'Narrative',
         ),
@@ -385,11 +390,16 @@ class NavSheetState extends ConsumerState<NavSheet> {
 }
 
 class SpecimenIcons extends ConsumerWidget {
-  const SpecimenIcons({Key? key}) : super(key: key);
+  const SpecimenIcons({
+    super.key,
+    required this.isSelected,
+  });
+
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
-    return Icon(matchCatFmtToIcon(catalogFmt));
+    return Icon(matchCatFmtToIcon(catalogFmt, isSelected));
   }
 }
