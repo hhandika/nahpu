@@ -56,7 +56,7 @@ class TitleForm extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 5, top: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.values[1],
         children: [
           Text(
             text,
@@ -65,10 +65,9 @@ class TitleForm extends StatelessWidget {
           IconButton(
             onPressed: () {},
             padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(),
             icon: Icon(
               Icons.info_outline_rounded,
-              size: 22,
+              size: 20,
               color: Colors.grey[400],
             ),
           ),
