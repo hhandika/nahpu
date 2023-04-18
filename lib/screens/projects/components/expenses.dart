@@ -1,21 +1,23 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:nahpu/models/types.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 
-class ReceiptViewer extends ConsumerStatefulWidget {
-  const ReceiptViewer({Key? key}) : super(key: key);
+class ExpenseViewer extends ConsumerStatefulWidget {
+  const ExpenseViewer({Key? key}) : super(key: key);
 
   @override
-  ReceiptViewerState createState() => ReceiptViewerState();
+  ExpenseViewerState createState() => ExpenseViewerState();
 }
 
-class ReceiptViewerState extends ConsumerState<ReceiptViewer> {
+class ExpenseViewerState extends ConsumerState<ExpenseViewer> {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const TitleForm(text: 'Receipts'),
+        const TitleForm(text: 'Expenses'),
         const SizedBox(height: 100),
         PrimaryButton(
           text: 'Add expense',
@@ -43,34 +45,49 @@ class ExpenseForm extends ConsumerWidget {
         children: [
           TextFormField(
             decoration: const InputDecoration(
-              labelText: 'Name',
-              hintText: 'Enter a name',
+              labelText: 'Item',
+              hintText: 'Enter item2',
             ),
           ),
-          TextFormField(
+          DropdownButtonFormField(
             decoration: const InputDecoration(
-              labelText: 'Initials',
-              hintText: 'Enter intials',
+              labelText: 'Category',
+              hintText: 'Enter category',
             ),
+            items: expenseCategory
+                .map(
+                  (e) => DropdownMenuItem(
+                    value: e,
+                    child: Text(e),
+                  ),
+                )
+                .toList(),
+            onChanged: (value) {},
           ),
-          TextFormField(
+          TextField(
             decoration: const InputDecoration(
-              labelText: 'Email',
-              hintText: 'Enter email',
+              labelText: 'Date',
+              hintText: 'Enter date',
             ),
+            onTap: () async {
+              showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(2015, 8),
+                lastDate: DateTime.now(),
+              ).then((value) => {});
+            },
           ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Phone',
-              hintText: 'Enter phone',
-            ),
+          const CommonNumField(
+            labelText: 'Amount',
+            hintText: 'Enter amount',
+            isLastField: false,
           ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Affiliation',
-              hintText: 'Enter affiliation',
-            ),
-          ),
+          const CommonTextField(
+              maxLines: 5,
+              labelText: 'Description',
+              hintText: 'Enter description',
+              isLastField: true),
         ],
       ),
       actions: [
