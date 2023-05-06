@@ -156,7 +156,7 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(2000),
-        lastDate: DateTime.now()); // Prevent user from selecting future dates
+        lastDate: DateTime(2030)); // Prevent user from selecting future dates
   }
 
   void _createProject() {
