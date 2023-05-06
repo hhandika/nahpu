@@ -71,7 +71,7 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
               CommonNumField(
                 controller: ctr.wingspanCtr,
                 labelText: 'Wingspan (mm)',
-                hintText: 'Enter TL',
+                hintText: 'Enter wingspan length',
                 isLastField: false,
                 onChanged: (String? value) {
                   if (value != null && value.isNotEmpty) {
