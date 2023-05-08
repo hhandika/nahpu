@@ -71,7 +71,7 @@ class MammalFormsState extends ConsumerState<MammalForms> {
                   ),
                 ],
               ),
-              AdaptiveLayoutIntrinsic(
+              AdaptiveLayout(
                 useHorizontalLayout: useHorizontalLayout,
                 children: [
                   MammalMeasurementForms(

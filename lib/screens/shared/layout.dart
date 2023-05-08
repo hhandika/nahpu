@@ -45,28 +45,6 @@ class AdaptiveLayout extends StatelessWidget {
   }
 }
 
-class AdaptiveLayoutIntrinsic extends StatelessWidget {
-  const AdaptiveLayoutIntrinsic({
-    super.key,
-    required this.useHorizontalLayout,
-    required this.children,
-  });
-
-  final List<Widget> children;
-  final bool useHorizontalLayout;
-
-  @override
-  Widget build(BuildContext context) {
-    return useHorizontalLayout
-        ? IntrinsicHeight(
-            child: LayoutRow(
-              children: children,
-            ),
-          )
-        : LayoutContainer(children: children);
-  }
-}
-
 class LayoutContainer extends StatelessWidget {
   const LayoutContainer({
     super.key,

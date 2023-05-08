@@ -68,7 +68,7 @@ class BirdFormsState extends ConsumerState<BirdForms> {
                   ),
                 ],
               ),
-              AdaptiveLayoutIntrinsic(
+              AdaptiveLayout(
                 useHorizontalLayout: useHorizontalLayout,
                 children: [
                   BirdMeasurementForms(
