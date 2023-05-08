@@ -303,6 +303,7 @@ CREATE TABLE specimenPart (
     FOREIGN KEY(specimenUuid) REFERENCES specimen(uuid) 
 );
 
+-- remove the next release
 CREATE TABLE expense (
     id INT PRIMARY KEY AUTOINCREMENT,
     category TEXT,
