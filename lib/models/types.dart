@@ -8,9 +8,7 @@ enum CommonPopUpMenuItems { edit, delete }
 
 enum CoordinatePopUpMenuItems { edit, copy, open, delete }
 
-enum ExportFmt { excel, csv, tsv, json }
-
-enum RecordType { specimen }
+enum ExportFmt { csv, tsv }
 
 enum SiteMenuSelection {
   newSite,
@@ -20,13 +18,26 @@ enum SiteMenuSelection {
   deleteAllRecords
 }
 
-const List<String> recordTypeList = ['Specimen records'];
+enum RecordType { narrative, specimen }
+
+const List<String> recordTypeList = [
+  'Narrative',
+  'Specimen records',
+];
 
 const List<String> exportFormats = [
-  'Excel (.xlsx)',
+  // 'Excel (.xlsx)',
   'Comma-separated (.csv)',
   'Tab-separated (.tsv)',
-  'JSON (.json)',
+  // 'JSON (.json)',
+];
+
+const List<String> expenseCategory = [
+  'Travel',
+  'Food',
+  'Accommodation',
+  'Equipment',
+  'Other',
 ];
 
 enum DbExportFmt { sqlite3 }
@@ -58,6 +69,13 @@ const List<String> specimenSexList = [
   'Female',
   'Unknown',
 ];
+
+SpecimenSex? getSpecimenSex(int? sex) {
+  if (sex != null) {
+    return SpecimenSex.values[sex];
+  }
+  return null;
+}
 
 const List<String> supportedTaxonClass = [
   'Aves',
@@ -121,12 +139,12 @@ IconData matchCatFmtToPartIcon(CatalogFmt catalogFmt) {
   }
 }
 
-IconData matchCatFmtToIcon(CatalogFmt catalogFmt) {
+IconData matchCatFmtToIcon(CatalogFmt catalogFmt, bool isSelected) {
   switch (catalogFmt) {
     case CatalogFmt.birds:
-      return MdiIcons.feather;
+      return MdiIcons.owl;
     case CatalogFmt.generalMammals:
-      return MdiIcons.paw;
+      return isSelected ? MdiIcons.paw : MdiIcons.pawOutline;
     case CatalogFmt.bats:
       return MdiIcons.bat;
     default:

@@ -25,6 +25,7 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
   PageController pageController = PageController();
   PageNavigation _pageNav = PageNavigation();
   String? _specimenUuid;
+  CatalogFmt? _catalogFmt;
   TaxonData taxonomy = TaxonData();
 
   @override
@@ -44,6 +45,7 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
           const NewSpecimens(),
           SpecimenMenu(
             specimenUuid: _specimenUuid,
+            catalogFmt: _catalogFmt,
           ),
         ],
         automaticallyImplyLeading: false,
@@ -76,6 +78,8 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
                       itemCount: specimenSize,
                       itemBuilder: (context, index) {
                         int? speciesId = specimenEntry[index].speciesID;
+                        CatalogFmt catalogFmt = matchTaxonGroupToCatFmt(
+                            specimenEntry[index].taxonGroup);
                         if (speciesId != null) {
                           TaxonomyQuery(ref.read(databaseProvider))
                               .getTaxonById(speciesId)
@@ -90,14 +94,15 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
                           child: SpecimenForm(
                             specimenUuid: specimenEntry[index].uuid,
                             specimenCtr: specimenFormCtr,
-                            catalogFmt: matchTaxonGroupToCatFmt(
-                                specimenEntry[index].taxonGroup),
+                            catalogFmt: catalogFmt,
                           ),
                         );
                       },
                       onPageChanged: (index) {
                         setState(() {
                           _specimenUuid = specimenEntry[index].uuid;
+                          _catalogFmt = matchTaxonGroupToCatFmt(
+                              specimenEntry[index].taxonGroup);
                           _updatePageNav(index);
                         });
                       },

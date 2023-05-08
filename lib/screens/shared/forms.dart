@@ -7,12 +7,16 @@ class FormCard extends StatelessWidget {
       {Key? key,
       required this.child,
       this.title = '',
+      this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
+      this.mainAxisSize = MainAxisSize.max,
       this.isPrimary = false,
       this.withTitle = true})
       : super(key: key);
 
   final Widget child;
   final String title;
+  final MainAxisAlignment mainAxisAlignment;
+  final MainAxisSize mainAxisSize;
   final bool isPrimary;
   final bool withTitle;
 
@@ -24,6 +28,9 @@ class FormCard extends StatelessWidget {
               Theme.of(context).colorScheme.surface, 0.5)
           : Theme.of(context).colorScheme.surface,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: mainAxisAlignment,
+        mainAxisSize: mainAxisSize,
         children: [
           withTitle ? TitleForm(text: title) : const SizedBox.shrink(),
           Padding(
@@ -49,7 +56,7 @@ class TitleForm extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 5, top: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.values[1],
         children: [
           Text(
             text,
@@ -58,10 +65,9 @@ class TitleForm extends StatelessWidget {
           IconButton(
             onPressed: () {},
             padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(),
             icon: Icon(
               Icons.info_outline_rounded,
-              size: 22,
+              size: 20,
               color: Colors.grey[400],
             ),
           ),

@@ -27,6 +27,7 @@ const List<String> oviductAppearanceList = [
 enum BodyMolt { trace, light, moderate, heavy }
 
 const List<String> bodyMoltList = [
+  'None',
   'Trace',
   'Light',
   'Moderate',

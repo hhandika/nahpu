@@ -48,7 +48,7 @@ class CollEventFormState extends ConsumerState<CollEventForm> {
                 ),
               ],
             ),
-            AdaptiveLayoutIntrinsic(
+            AdaptiveLayout(
               useHorizontalLayout: useHorizontalLayout,
               children: [
                 CollMethodForm(

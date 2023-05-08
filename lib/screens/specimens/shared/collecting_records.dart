@@ -51,120 +51,126 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
     return FormCard(
       title: 'Collecting Records',
       isPrimary: true,
-      child: Column(
-        children: [
-          PersonnelRecords(
-              specimenUuid: widget.specimenUuid,
-              specimenCtr: widget.specimenCtr),
-          Platform.isWindows
-              ? SpeciesAutoComplete(
-                  controller: speciesCtr,
-                  onSelected: (String value) {
-                    _speciesFocusNode.requestFocus();
-                    setState(
-                      () {
-                        speciesCtr.text = value;
-                        var taxon = value.split(' ');
-                        TaxonomyQuery(ref.read(databaseProvider))
-                            .getTaxonIdByGenusEpithet(taxon[0], taxon[1])
-                            .then(
-                              (data) => SpecimenServices(ref).updateSpecimen(
-                                widget.specimenUuid,
-                                SpecimenCompanion(speciesID: db.Value(data.id)),
-                              ),
-                            );
-                      },
-                    );
-                  })
-              : TaxonDropdownMenu(
-                  onSelected: (int? value) {
-                    if (value != null) {
-                      SpecimenServices(ref).updateSpecimen(
-                        widget.specimenUuid,
-                        SpecimenCompanion(speciesID: db.Value(value)),
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 5, right: 5, top: 10),
+        child: Column(
+          children: [
+            PersonnelRecords(
+                specimenUuid: widget.specimenUuid,
+                specimenCtr: widget.specimenCtr),
+            Platform.isWindows
+                ? SpeciesAutoComplete(
+                    controller: speciesCtr,
+                    onSelected: (String value) {
+                      _speciesFocusNode.requestFocus();
+                      setState(
+                        () {
+                          speciesCtr.text = value;
+                          var taxon = value.split(' ');
+                          TaxonomyQuery(ref.read(databaseProvider))
+                              .getTaxonIdByGenusEpithet(taxon[0], taxon[1])
+                              .then(
+                                (data) => SpecimenServices(ref).updateSpecimen(
+                                  widget.specimenUuid,
+                                  SpecimenCompanion(
+                                      speciesID: db.Value(data.id)),
+                                ),
+                              );
+                        },
                       );
-                    }
-                  },
-                  controller: widget.specimenCtr,
-                ),
-          DropdownButtonFormField(
-            value: widget.specimenCtr.conditionCtr,
-            onChanged: (String? value) {
-              SpecimenServices(ref).updateSpecimen(
-                widget.specimenUuid,
-                SpecimenCompanion(condition: db.Value(value)),
-              );
-            },
-            decoration: const InputDecoration(
-              labelText: 'Condition',
-              hintText: 'Choose a condition',
-            ),
-            items: conditionList
-                .map((String condition) => DropdownMenuItem(
-                      value: condition,
-                      child: Text(condition),
-                    ))
-                .toList(),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Preparation date',
-                    hintText: 'Enter date',
+                    })
+                : TaxonDropdownMenu(
+                    onSelected: (int? value) {
+                      if (value != null) {
+                        SpecimenServices(ref).updateSpecimen(
+                          widget.specimenUuid,
+                          SpecimenCompanion(speciesID: db.Value(value)),
+                        );
+                      }
+                    },
+                    controller: widget.specimenCtr,
                   ),
-                  controller: widget.specimenCtr.prepDateCtr,
-                  onTap: () async {
-                    final selectedDate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime.now());
-
-                    if (selectedDate != null) {
-                      widget.specimenCtr.prepDateCtr.text =
-                          DateFormat.yMMMd().format(selectedDate);
-                      SpecimenServices(ref).updateSpecimen(
-                        widget.specimenUuid,
-                        SpecimenCompanion(
-                            prepDate:
-                                db.Value(widget.specimenCtr.prepDateCtr.text)),
-                      );
-                    }
-                  },
-                ),
+            DropdownButtonFormField(
+              value: widget.specimenCtr.conditionCtr,
+              onChanged: (String? value) {
+                SpecimenServices(ref).updateSpecimen(
+                  widget.specimenUuid,
+                  SpecimenCompanion(condition: db.Value(value)),
+                );
+              },
+              decoration: const InputDecoration(
+                labelText: 'Condition',
+                hintText: 'Choose a condition',
               ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Prep. time',
-                    hintText: 'Enter time',
-                  ),
-                  controller: widget.specimenCtr.prepTimeCtr,
-                  onTap: () {
-                    showTimePicker(
-                            context: context, initialTime: TimeOfDay.now())
-                        .then((time) {
-                      if (time != null) {
-                        widget.specimenCtr.prepTimeCtr.text =
-                            time.format(context);
+              items: conditionList
+                  .map((String condition) => DropdownMenuItem(
+                        value: condition,
+                        child: Text(condition),
+                      ))
+                  .toList(),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Preparation date',
+                      hintText: 'Enter date',
+                    ),
+                    controller: widget.specimenCtr.prepDateCtr,
+                    onTap: () async {
+                      final selectedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime.now());
+
+                      if (selectedDate != null) {
+                        widget.specimenCtr.prepDateCtr.text =
+                            DateFormat.yMMMd().format(selectedDate);
                         SpecimenServices(ref).updateSpecimen(
                           widget.specimenUuid,
                           SpecimenCompanion(
-                            prepTime:
-                                db.Value(widget.specimenCtr.prepTimeCtr.text),
-                          ),
+                              prepDate: db.Value(
+                                  widget.specimenCtr.prepDateCtr.text)),
                         );
                       }
-                    });
-                  },
+                    },
+                  ),
                 ),
-              ),
-            ],
-          )
-        ],
+                const SizedBox(width: 10),
+                Expanded(
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Prep. time',
+                      hintText: 'Enter time',
+                    ),
+                    controller: widget.specimenCtr.prepTimeCtr,
+                    onTap: () {
+                      showTimePicker(
+                              context: context, initialTime: TimeOfDay.now())
+                          .then((time) {
+                        if (time != null) {
+                          widget.specimenCtr.prepTimeCtr.text =
+                              time.format(context);
+                          SpecimenServices(ref).updateSpecimen(
+                            widget.specimenUuid,
+                            SpecimenCompanion(
+                              prepTime:
+                                  db.Value(widget.specimenCtr.prepTimeCtr.text),
+                            ),
+                          );
+                        }
+                      });
+                    },
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -185,15 +191,10 @@ class PersonnelRecords extends ConsumerStatefulWidget {
 }
 
 class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
-  List<PersonnelData> personnelList = [];
-  bool hasChanged = false;
+  final Set<String> _selectedPersonnel = {};
 
   @override
   Widget build(BuildContext context) {
-    final personnelEntry = ref.watch(personnelListProvider);
-    personnelEntry.whenData(
-      (personnelEntry) => personnelList = personnelEntry,
-    );
     return Column(
       children: [
         widget.specimenCtr.catalogerCtr != null
@@ -202,42 +203,49 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
                 specimenCtr: widget.specimenCtr,
                 catalogerUuid: widget.specimenCtr.catalogerCtr!,
               )
-            : Container(),
-        DropdownButtonFormField(
+            : const SizedBox.shrink(),
+        DropdownButtonFormField<String>(
           value: widget.specimenCtr.catalogerCtr,
           decoration: const InputDecoration(
             labelText: 'Cataloger',
             hintText: 'Choose a person with field number',
           ),
-          items: personnelList
-              .where((element) => element.role == 'Cataloger')
-              .map((e) => DropdownMenuItem(
-                    value: e.uuid,
-                    child: Text(e.name ?? ''),
-                  ))
-              .toList(),
+          items: ref.watch(personnelListProvider).when(
+                data: (data) => data
+                    .where((element) => element.role == 'Cataloger')
+                    .map((e) => DropdownMenuItem(
+                          value: e.uuid,
+                          child: Text(e.name ?? ''),
+                        ))
+                    .toList(),
+                loading: () => const [],
+                error: (e, s) => const [],
+              ),
           onChanged: (String? uuid) async {
-            // TODO: Apply on-change once.
             if (uuid != null) {
               int fieldNumber = await _getCurrentCollectorNumber(uuid);
               setState(() {
+                bool hasSelected = _selectedPersonnel.contains(uuid);
+                int currentFieldNumber =
+                    hasSelected ? fieldNumber - 1 : fieldNumber;
                 widget.specimenCtr.catalogerCtr = uuid;
                 widget.specimenCtr.preparatorCtr = uuid;
-                widget.specimenCtr.fieldNumberCtr.text = fieldNumber.toString();
+                widget.specimenCtr.fieldNumberCtr.text =
+                    currentFieldNumber.toString();
 
-                if (!hasChanged) {
+                if (!hasSelected) {
                   PersonnelServices(ref).updatePersonnelEntry(
                       uuid,
                       PersonnelCompanion(
                           currentFieldNumber: db.Value(fieldNumber + 1)));
-                  hasChanged = true;
+                  _selectedPersonnel.add(uuid);
                 }
                 SpecimenServices(ref).updateSpecimen(
                   widget.specimenUuid,
                   SpecimenCompanion(
                     catalogerID: db.Value(uuid),
                     fieldNumber: db.Value(
-                      fieldNumber,
+                      currentFieldNumber,
                     ),
                     preparatorID: db.Value(uuid),
                   ),
@@ -246,21 +254,25 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
             }
           },
         ),
-        DropdownButtonFormField(
+        DropdownButtonFormField<String>(
           value: widget.specimenCtr.preparatorCtr,
           decoration: const InputDecoration(
             labelText: 'Preparator',
             hintText: 'Choose a preparator (default is cataloger)',
           ),
-          items: personnelList
-              .where((element) =>
-                  element.role == 'Cataloger' ||
-                  element.role == 'Preparator only')
-              .map((e) => DropdownMenuItem(
-                    value: e.uuid,
-                    child: Text(e.name ?? ''),
-                  ))
-              .toList(),
+          items: ref.watch(personnelListProvider).when(
+                data: (data) => data
+                    .where((element) =>
+                        element.role == 'Cataloger' ||
+                        element.role == 'Preparator only')
+                    .map((e) => DropdownMenuItem(
+                          value: e.uuid,
+                          child: Text(e.name ?? ''),
+                        ))
+                    .toList(),
+                loading: () => const [],
+                error: (e, s) => const [],
+              ),
           onChanged: (String? uuid) {
             SpecimenServices(ref).updateSpecimen(
               widget.specimenUuid,
@@ -273,8 +285,9 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
   }
 
   Future<int> _getCurrentCollectorNumber(String personnelUuid) async {
-    int fieldNumber = await SpecimenServices(ref)
-        .getSpecimenFieldNumber(personnelUuid, widget.specimenUuid);
+    int fieldNumber = await SpecimenServices(ref).getSpecimenFieldNumber(
+      personnelUuid,
+    );
 
     return fieldNumber;
   }
@@ -311,58 +324,61 @@ class SpecimenIdTile extends ConsumerWidget {
         error: (error, stack) => Text('Error: $error'),
       ),
       trailing: Visibility(
-          visible: specimenCtr.fieldNumberCtr.text.isNotEmpty,
-          child: IconButton(
-            icon: const Icon(Icons.edit_rounded),
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: const Text('Edit field number'),
-                    content: TextFormField(
-                      controller: specimenCtr.fieldNumberCtr,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: 'Field number',
-                        hintText: 'Enter field number',
-                      ),
+        visible: specimenCtr.fieldNumberCtr.text.isNotEmpty,
+        child: IconButton(
+          icon: const Icon(Icons.edit_rounded),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('Edit field number'),
+                  content: TextFormField(
+                    controller: specimenCtr.fieldNumberCtr,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      labelText: 'Field number',
+                      hintText: 'Enter field number',
                     ),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Text('Cancel'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          int fieldNumber =
-                              int.tryParse(specimenCtr.fieldNumberCtr.text) ??
-                                  0;
-                          SpecimenServices(ref).updateSpecimen(
-                            specimenUuid,
-                            SpecimenCompanion(
-                              fieldNumber: db.Value(
-                                fieldNumber,
-                              ),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        int fieldNumber =
+                            int.parse(specimenCtr.fieldNumberCtr.text);
+                        int nextFieldNumber = fieldNumber + 1;
+                        await PersonnelServices(ref).updatePersonnelEntry(
+                            catalogerUuid,
+                            PersonnelCompanion(
+                                currentFieldNumber: db.Value(nextFieldNumber)));
+                        await SpecimenServices(ref).updateSpecimen(
+                          specimenUuid,
+                          SpecimenCompanion(
+                            fieldNumber: db.Value(
+                              fieldNumber,
                             ),
-                          );
-                          PersonnelServices(ref).updatePersonnelEntry(
-                              specimenUuid,
-                              PersonnelCompanion(
-                                  currentFieldNumber:
-                                      db.Value(fieldNumber + 1)));
+                          ),
+                        );
+
+                        if (context.mounted) {
                           Navigator.pop(context);
-                        },
-                        child: const Text('Save'),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-          )),
+                        }
+                      },
+                      child: const Text('Save'),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+        ),
+      ),
     );
   }
 }

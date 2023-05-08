@@ -251,7 +251,7 @@ CREATE TABLE mammalMeasurement (
 CREATE TABLE birdMeasurement (
     specimenUuid TEXT NOT NULL,
     weight REAL,
-    wingspan INT,
+    wingspan INT, -- change to real
     irisColor TEXT,
     billColor TEXT,
     footColor TEXT,
@@ -303,6 +303,7 @@ CREATE TABLE specimenPart (
     FOREIGN KEY(specimenUuid) REFERENCES specimen(uuid) 
 );
 
+-- remove the next release
 CREATE TABLE expense (
     id INT PRIMARY KEY AUTOINCREMENT,
     category TEXT,

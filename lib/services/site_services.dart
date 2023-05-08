@@ -26,18 +26,19 @@ class SiteServices extends DbAccess {
     }
   }
 
-  void updateSite(int id, SiteCompanion entries) {
-    SiteQuery(dbase).updateSiteEntry(id, entries);
+  Future<void> updateSite(int id, SiteCompanion entries) async {
+    await SiteQuery(dbase).updateSiteEntry(id, entries);
   }
 
-  void deleteSite(int id) {
-    SiteQuery(dbase).deleteSite(id);
+  Future<void> deleteSite(int id) async {
+    await SiteQuery(dbase).deleteSite(id);
+    await CoordinateServices(ref).deleteCoordinateBySiteID(id);
     invalidateSite();
   }
 
   void deleteAllSites() {
     // TODO: prevent deletion of records if they are in used
-    final projectUuid = ref.read(projectUuidProvider.notifier).state;
+    final projectUuid = ref.read(projectUuidProvider);
     SiteQuery(dbase).deleteAllSites(projectUuid);
     invalidateSite();
   }
@@ -63,6 +64,10 @@ class CoordinateServices extends DbAccess {
   Future<void> updateCoordinate(
       int coordinateId, CoordinateCompanion form) async {
     await CoordinateQuery(dbase).updateCoordinate(coordinateId, form);
+  }
+
+  Future<void> deleteCoordinateBySiteID(int siteID) async {
+    await CoordinateQuery(dbase).deleteCoordinateBySiteID(siteID);
   }
 
   Future<void> deleteCoordinate(int coordinateId) async {

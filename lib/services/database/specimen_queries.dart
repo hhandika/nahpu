@@ -83,6 +83,12 @@ class MammalSpecimenQuery extends DatabaseAccessor<Database>
           ..where((t) => t.specimenUuid.equals(specimenUuid)))
         .getSingle();
   }
+
+  Future<void> deleteMammalMeasurements(String specimenUuid) {
+    return (delete(mammalMeasurement)
+          ..where((t) => t.specimenUuid.equals(specimenUuid)))
+        .go();
+  }
 }
 
 class BirdSpecimenQuery extends DatabaseAccessor<Database>
@@ -104,6 +110,12 @@ class BirdSpecimenQuery extends DatabaseAccessor<Database>
     return await (select(birdMeasurement)
           ..where((t) => t.specimenUuid.equals(specimenUuid)))
         .getSingle();
+  }
+
+  Future<void> deleteBirdMeasurements(String specimenUuid) {
+    return (delete(birdMeasurement)
+          ..where((t) => t.specimenUuid.equals(specimenUuid)))
+        .go();
   }
 }
 

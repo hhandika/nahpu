@@ -15,8 +15,10 @@ class AdaptiveMainLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return useHorizontalLayout
-        ? SizedBox(
-            height: height,
+        ? ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: height,
+            ),
             child: LayoutRow(
               children: children,
             ))
@@ -38,28 +40,6 @@ class AdaptiveLayout extends StatelessWidget {
     return useHorizontalLayout
         ? LayoutRow(
             children: children,
-          )
-        : LayoutContainer(children: children);
-  }
-}
-
-class AdaptiveLayoutIntrinsic extends StatelessWidget {
-  const AdaptiveLayoutIntrinsic({
-    super.key,
-    required this.useHorizontalLayout,
-    required this.children,
-  });
-
-  final List<Widget> children;
-  final bool useHorizontalLayout;
-
-  @override
-  Widget build(BuildContext context) {
-    return useHorizontalLayout
-        ? IntrinsicHeight(
-            child: LayoutRow(
-              children: children,
-            ),
           )
         : LayoutContainer(children: children);
   }
@@ -99,7 +79,8 @@ class LayoutRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
         for (var textField in children)
