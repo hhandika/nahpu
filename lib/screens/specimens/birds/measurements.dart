@@ -13,8 +13,9 @@ import 'package:drift/drift.dart' as db;
 
 class BirdMeasurementForms extends ConsumerStatefulWidget {
   const BirdMeasurementForms(
-      {Key? key, required this.useHorizontalLayout, required this.specimenUuid})
-      : super(key: key);
+      {super.key,
+      required this.useHorizontalLayout,
+      required this.specimenUuid});
 
   final bool useHorizontalLayout;
   final String specimenUuid;
