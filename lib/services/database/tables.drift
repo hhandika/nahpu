@@ -251,7 +251,7 @@ CREATE TABLE mammalMeasurement (
 CREATE TABLE birdMeasurement (
     specimenUuid TEXT NOT NULL,
     weight REAL,
-    wingspan INT,
+    wingspan INT, -- change to real
     irisColor TEXT,
     billColor TEXT,
     footColor TEXT,
