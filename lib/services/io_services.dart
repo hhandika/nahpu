@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:path/path.dart' as path;
 
+const String listSeparator = ' | ';
+
 class AppIOServices {
   AppIOServices({
     required this.dir,
@@ -32,5 +34,3 @@ class AppIOServices {
     return File(finalPath);
   }
 }
-
-String get listSeparator => ' | ';
