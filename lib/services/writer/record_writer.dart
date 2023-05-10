@@ -238,6 +238,8 @@ class CollEventRecordWriter {
       String siteDetails = await _getSite(collEvent.siteID, delimiter);
       writer.write(siteDetails);
       _writeDelimiter(writer);
+      writer.write('"${collEvent.primaryCollMethod}"');
+      _writeDelimiter(writer);
       writer.write('"${collEvent.startDate}"');
       _writeDelimiter(writer);
       writer.write('"${collEvent.endDate}"');
