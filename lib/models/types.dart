@@ -26,6 +26,12 @@ const List<String> recordTypeList = [
   'Specimen records',
 ];
 
+enum PdfExportType { narrative }
+
+const List<String> pdfExportList = [
+  'Narrative',
+];
+
 const List<String> exportFormats = [
   // 'Excel (.xlsx)',
   'Comma-separated (.csv)',

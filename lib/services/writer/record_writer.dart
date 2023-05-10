@@ -10,7 +10,6 @@ import 'package:nahpu/services/database/specimen_queries.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/narrative_services.dart';
 import 'package:nahpu/services/personnel_services.dart';
-import 'package:nahpu/services/site_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/writer/common.dart';
