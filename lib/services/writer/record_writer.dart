@@ -242,7 +242,10 @@ class CollEventRecordWriter {
       await _writeEffort(writer, collEvent.id);
       _writeDelimiter(writer);
       await _writePersonnel(writer, collEvent.id);
+      writer.writeln();
     }
+
+    await writer.close();
   }
 
   Future<void> _writeEffort(IOSink writer, int id) async {
