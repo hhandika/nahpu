@@ -44,7 +44,7 @@ const narrativeExportList = [
 
 const collEventExportList = [
   'collEventID',
-  'siteID',
+  'Locality',
   'startDate',
   'endDate',
   'startTime',

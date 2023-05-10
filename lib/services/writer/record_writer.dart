@@ -9,6 +9,7 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/specimen_queries.dart';
 import 'package:nahpu/services/narrative_services.dart';
 import 'package:nahpu/services/personnel_services.dart';
+import 'package:nahpu/services/site_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/writer/common.dart';
@@ -233,6 +234,9 @@ class CollEventRecordWriter {
     for (var collEvent in collEventList) {
       writer.write('"${collEvent.eventID}"');
       _writeDelimiter(writer);
+      String siteDetails = await _getSite(collEvent.siteID, delimiter);
+      writer.write(siteDetails);
+      _writeDelimiter(writer);
       writer.write('"${collEvent.startDate}"');
       _writeDelimiter(writer);
       writer.write('"${collEvent.endDate}"');
@@ -241,25 +245,49 @@ class CollEventRecordWriter {
       _writeDelimiter(writer);
       writer.write('"${collEvent.endTime}"');
       _writeDelimiter(writer);
-      writer.write(_writeEffort(collEvent.id));
+      String effort = await _writeEffort(collEvent.id);
+      writer.write(effort);
       _writeDelimiter(writer);
-      writer.write(_writePersonnel(collEvent.id));
+      String person = await _writePersonnel(collEvent.id);
+      writer.write(person);
       writer.writeln();
     }
 
     await writer.close();
   }
 
+  Future<String> _getSite(int? siteID, String delimiter) async {
+    String siteDetails =
+        await SiteWriterServices(ref: ref, siteID: siteID, delimiter: delimiter)
+            .getSiteDetails(false);
+    return siteDetails;
+  }
+
   Future<String> _writeEffort(int id) async {
     List<CollEffortData> effort =
         await CollEventServices(ref).getAllCollEffort(id);
-    return effort.map((e) => '"${e.type}";${e.count}').join('|');
+    return effort.map((e) => '"${e.type}";${e.count}').join(' | ');
   }
 
   Future<String> _writePersonnel(int id) async {
     List<CollPersonnelData> personnel =
         await CollEventServices(ref).getAllCollPersonnel(id);
-    return personnel.map((e) => '"${e.name}";"${e.role}"').join('|');
+
+    String person =
+        await Future.wait(personnel.map((e) async => await _getPersonnel(e)))
+            .then((value) => value.join(' | '));
+
+    return person;
+  }
+
+  Future<String> _getPersonnel(CollPersonnelData data) async {
+    if (data.personnelId == null) {
+      return '';
+    } else {
+      PersonnelData personnel =
+          await PersonnelServices(ref).getPersonnelByUuid(data.personnelId!);
+      return '${personnel.name};${data.role}';
+    }
   }
 
   void _writeDelimiter(IOSink writer) {
