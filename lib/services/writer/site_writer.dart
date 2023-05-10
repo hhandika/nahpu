@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/site_services.dart';
 
 class SiteWriterServices {
@@ -43,7 +44,7 @@ class SiteWriterServices {
               '${e.decimalLatitude ?? ''},${e.decimalLongitude ?? ''};'
               '${e.elevationInMeter ?? ''}m;±${e.uncertaintyInMeters ?? ''}m;'
               '${e.datum ?? ''};${e.gpsUnit ?? ''}')
-          .join('|');
+          .join(listSeparator);
     }
   }
 }

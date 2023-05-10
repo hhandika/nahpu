@@ -7,6 +7,7 @@ import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/specimen_queries.dart';
+import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/narrative_services.dart';
 import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/site_services.dart';
@@ -120,7 +121,7 @@ class SpecimenRecordWriter {
     List<SpecimenPartData> partList =
         await SpecimenPartQuery(ref.read(databaseProvider))
             .getSpecimenParts(specimenUuid);
-    return partList.map((e) => '${e.type};${e.treatment}').join('|');
+    return partList.map((e) => '${e.type};${e.treatment}').join(listSeparator);
   }
 
   Future<String> _getMeasurement(
@@ -266,7 +267,7 @@ class CollEventRecordWriter {
   Future<String> _writeEffort(int id) async {
     List<CollEffortData> effort =
         await CollEventServices(ref).getAllCollEffort(id);
-    return effort.map((e) => '"${e.type}";${e.count}').join(' | ');
+    return effort.map((e) => '"${e.type}";${e.count}').join(listSeparator);
   }
 
   Future<String> _writePersonnel(int id) async {
@@ -275,7 +276,7 @@ class CollEventRecordWriter {
 
     String person =
         await Future.wait(personnel.map((e) async => await _getPersonnel(e)))
-            .then((value) => value.join(' | '));
+            .then((value) => value.join(listSeparator));
 
     return person;
   }

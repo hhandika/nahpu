@@ -32,3 +32,5 @@ class AppIOServices {
     return File(finalPath);
   }
 }
+
+String get listSeparator => ' | ';
