@@ -239,25 +239,27 @@ class CollEventRecordWriter {
       _writeDelimiter(writer);
       writer.write('"${collEvent.startTime}"');
       _writeDelimiter(writer);
-      await _writeEffort(writer, collEvent.id);
+      writer.write('"${collEvent.endTime}"');
       _writeDelimiter(writer);
-      await _writePersonnel(writer, collEvent.id);
+      writer.write(_writeEffort(collEvent.id));
+      _writeDelimiter(writer);
+      writer.write(_writePersonnel(collEvent.id));
       writer.writeln();
     }
 
     await writer.close();
   }
 
-  Future<void> _writeEffort(IOSink writer, int id) async {
+  Future<String> _writeEffort(int id) async {
     List<CollEffortData> effort =
         await CollEventServices(ref).getAllCollEffort(id);
-    effort.map((e) => writer.write('"${e.type}";${e.count}')).join('|');
+    return effort.map((e) => '"${e.type}";${e.count}').join('|');
   }
 
-  Future<void> _writePersonnel(IOSink writer, int id) async {
+  Future<String> _writePersonnel(int id) async {
     List<CollPersonnelData> personnel =
         await CollEventServices(ref).getAllCollPersonnel(id);
-    personnel.map((e) => writer.write('"${e.name}";"${e.role}"')).join('|');
+    return personnel.map((e) => '"${e.name}";"${e.role}"').join('|');
   }
 
   void _writeDelimiter(IOSink writer) {
