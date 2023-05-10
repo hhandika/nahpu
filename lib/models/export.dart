@@ -13,7 +13,7 @@ const specimenExportList = [
   'condition',
 ];
 
-const collEventExportList = [
+const siteExportList = [
   'site',
   'habitatType',
   'locality',
@@ -40,4 +40,15 @@ const narrativeExportList = [
   'date',
   'locality',
   'narrative',
+];
+
+const collEventExportList = [
+  'collEventID',
+  'siteID',
+  'startDate',
+  'endDate',
+  'startTime',
+  'endTime',
+  'methods',
+  'personnel',
 ];

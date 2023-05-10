@@ -28,7 +28,7 @@ class SpecimenRecordWriter {
     final writer = file.openWrite();
     _writeHeader(writer, collRecordExportList);
     _writeHeader(writer, specimenExportList);
-    _writeHeader(writer, collEventExportList);
+    _writeHeader(writer, siteExportList);
     _writeHeaderLast(writer, mammalMeasurementExportList);
 
     for (var element in specimenList) {
@@ -213,6 +213,61 @@ class SpecimenRecordWriter {
       return '$testisPos$delimiter$testisLength$testisWidth';
     } else {
       return delimiter;
+    }
+  }
+}
+
+class CollEventRecordWriter {
+  CollEventRecordWriter(this.ref);
+
+  final WidgetRef ref;
+  late String delimiter;
+
+  Future<void> writeCollEventDelimited(File filePath, bool isCsv) async {
+    delimiter = isCsv ? ',' : '\t';
+    final file = await filePath.create(recursive: true);
+    final writer = file.openWrite();
+    _writeHeader(writer);
+    List<CollEventData> collEventList =
+        await CollEventServices(ref).getAllCollEvents();
+    for (var collEvent in collEventList) {
+      writer.write('"${collEvent.eventID}"');
+      _writeDelimiter(writer);
+      writer.write('"${collEvent.startDate}"');
+      _writeDelimiter(writer);
+      writer.write('"${collEvent.endDate}"');
+      _writeDelimiter(writer);
+      writer.write('"${collEvent.startTime}"');
+      _writeDelimiter(writer);
+      await _writeEffort(writer, collEvent.id);
+      _writeDelimiter(writer);
+      await _writePersonnel(writer, collEvent.id);
+    }
+  }
+
+  Future<void> _writeEffort(IOSink writer, int id) async {
+    List<CollEffortData> effort =
+        await CollEventServices(ref).getAllCollEffort(id);
+    effort.map((e) => writer.write('"${e.type}";${e.count}')).join('|');
+  }
+
+  Future<void> _writePersonnel(IOSink writer, int id) async {
+    List<CollPersonnelData> personnel =
+        await CollEventServices(ref).getAllCollPersonnel(id);
+    personnel.map((e) => writer.write('"${e.name}";"${e.role}"')).join('|');
+  }
+
+  void _writeDelimiter(IOSink writer) {
+    writer.write(delimiter);
+  }
+
+  void _writeHeader(IOSink writer) {
+    for (var val in collEventExportList) {
+      if (val == collEventExportList.last) {
+        writer.writeln('"$val"');
+      } else {
+        writer.write('"$val"$delimiter');
+      }
     }
   }
 }

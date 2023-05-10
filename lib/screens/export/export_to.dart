@@ -175,6 +175,9 @@ class ExportFormState extends ConsumerState<ExportForm> {
       case RecordType.narrative:
         await NarrativeRecordWriter(ref).writeNarrativeDelimited(file, isCsv);
         break;
+      case RecordType.collEvent:
+        await CollEventRecordWriter(ref).writeCollEventDelimited(file, isCsv);
+        break;
       case RecordType.specimen:
         await SpecimenRecordWriter(ref).writeRecordDelimited(file, isCsv);
         break;

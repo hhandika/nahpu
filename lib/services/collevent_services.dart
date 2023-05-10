@@ -8,10 +8,9 @@ class CollEventServices extends DbAccess {
   CollEventServices(super.ref);
 
   Database get dbase => ref.read(databaseProvider);
+  String get projectUuid => ref.read(projectUuidProvider);
 
   Future<int> createNewCollEvents() async {
-    String projectUuid = ref.read(projectUuidProvider);
-
     int eventID =
         await CollEventQuery(dbase).createCollEvent(CollEventCompanion(
       projectUuid: db.Value(projectUuid),
@@ -23,6 +22,22 @@ class CollEventServices extends DbAccess {
         .createWeatherData(WeatherCompanion(eventID: db.Value(eventID)));
     invalidateCollEvent();
     return eventID;
+  }
+
+  Future<List<CollEventData>> getAllCollEvents() async {
+    return CollEventQuery(dbase).getAllCollEvents(projectUuid);
+  }
+
+  Future<List<CollPersonnelData>> getAllCollPersonnel(int collEventId) async {
+    return CollPersonnelQuery(dbase).getCollPersonnelByEventId(collEventId);
+  }
+
+  Future<List<CollEffortData>> getAllCollEffort(int collEventId) async {
+    return CollEffortQuery(dbase).getCollEffortByEventId(collEventId);
+  }
+
+  Future<WeatherData> getAllWeatherData(int collEventId) async {
+    return WeatherDataQuery(dbase).getWeatherDataByEventId(collEventId);
   }
 
   Future<CollEventData?> getCollEvent(int? eventID) async {

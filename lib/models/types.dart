@@ -18,10 +18,11 @@ enum SiteMenuSelection {
   deleteAllRecords
 }
 
-enum RecordType { narrative, specimen }
+enum RecordType { narrative, collEvent, specimen }
 
 const List<String> recordTypeList = [
   'Narrative',
+  'Collecting event',
   'Specimen records',
 ];
 
