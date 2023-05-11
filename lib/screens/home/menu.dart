@@ -17,7 +17,7 @@ class HomeMenuDrawer extends StatelessWidget {
             color: Theme.of(context).colorScheme.secondary,
           ),
           child: Image.asset(
-            'assets/images/nahpu_logo_1024.png',
+            'assets/images/logo_nobg.png',
             fit: BoxFit.contain,
           ),
         ),

@@ -17,7 +17,19 @@ class HomeState extends ConsumerState<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("NAHPU", style: Theme.of(context).textTheme.titleLarge),
+        title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Image.asset(
+            'assets/images/logo_small.png',
+            fit: BoxFit.contain,
+            height: 32,
+            width: 32,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            "NAHPU",
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ]),
         actions: [
           IconButton(
             icon: const Icon(Icons.search_rounded),
