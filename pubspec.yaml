@@ -75,16 +75,14 @@ flutter_icons:
   ios: true
   android: true
   remove_alpha_ios: true
-  image_path_ios: "assets/launcher/ic_nahpu.png"
-  image_path_android: "assets/launcher/ic_rounded.png"
-  adaptive_icon_background: "assets/launcher/ic_background_adaptive.png"
-  adaptive_icon_foreground: "assets/launcher/ic_nahpu_adaptive.png"
+  image_path_ios: "assets/launcher/icon.png"
+  image_path_android: "assets/launcher/icon.png"
   windows:
     generate: true
-    image_path: "assets/launcher/ic_rounded.png"
+    image_path: "assets/launcher/icon.png"
   macos:
     generate: true
-    image_path: "assets/launcher/ic_rounded.png"
+    image_path: "assets/launcher/icon.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
