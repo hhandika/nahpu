@@ -23,18 +23,16 @@ class CoordinateFields extends StatelessWidget {
     return FormCard(
       title: 'Coordinates',
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(
-            height: 10,
-          ),
           SizedBox(
             height: 255,
             child: CoordinateList(
               sideId: siteId,
             ),
           ),
+          const SizedBox(height: 15),
           PrimaryButton(
             text: 'Add Coordinate',
             onPressed: () {

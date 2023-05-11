@@ -24,7 +24,7 @@ class Habitat extends ConsumerWidget {
       child: Padding(
         padding: const EdgeInsets.all(5),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
