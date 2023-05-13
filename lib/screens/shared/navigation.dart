@@ -334,7 +334,7 @@ class NavSheetState extends ConsumerState<NavSheet> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: WidgetsBinding.instance.window.viewInsets.bottom == 0
+      height: MediaQuery.of(context).viewInsets.bottom == 0
           ? MediaQuery.of(context).size.height * 0.2
           : MediaQuery.of(context).viewInsets.bottom + 120,
       child: Center(
