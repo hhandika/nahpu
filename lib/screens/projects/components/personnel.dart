@@ -68,10 +68,10 @@ class PersonnelList extends ConsumerWidget {
     return personnel.when(
       data: (data) {
         return data.isEmpty
-            ? Column(
+            ? const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Text(
                     'No personnel found!',
                   ),
