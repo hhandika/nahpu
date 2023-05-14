@@ -40,13 +40,13 @@ class MediaFormsState extends ConsumerState<MediaForms>
       height: MediaQuery.of(context).size.height * 0.5,
       tabs: [
         Tab(
-            icon: Icon(Icons.photo_library_rounded,
+            icon: Icon(Icons.photo_library_outlined,
                 color: Theme.of(context).colorScheme.tertiary)),
         Tab(
-            icon: Icon(Icons.video_library_rounded,
+            icon: Icon(Icons.video_library_outlined,
                 color: Theme.of(context).colorScheme.tertiary)),
         Tab(
-            icon: Icon(Icons.library_music_rounded,
+            icon: Icon(Icons.library_music_outlined,
                 color: Theme.of(context).colorScheme.tertiary)),
       ],
       children: const [
