@@ -252,10 +252,10 @@ CREATE TABLE birdMeasurement (
     specimenUuid TEXT NOT NULL,
     weight REAL,
     wingspan INT, -- change to real
-    irisColor TEXT,
-    billColor TEXT,
-    footColor TEXT,
-    tarsusColor TEXT,
+    irisColor TEXT, -- Add color
+    billColor TEXT, -- Add color
+    footColor TEXT, -- Add color
+    tarsusColor TEXT, -- Add color
     sex INT,
     molting INT, -- encode text
     broodPatch INT,
