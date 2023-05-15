@@ -30,19 +30,18 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
   Widget build(BuildContext context) {
     return FormCard(
       title: 'Taxon Registry',
+      mainAxisAlignment: MainAxisAlignment.start,
       child: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-                height: 320,
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  child: TaxonRegistryInfo(
-                    useHorizontalLayout: widget.useHorizontalLayout,
-                  ),
-                )),
+            const SizedBox(height: 20),
+            Container(
+              constraints: const BoxConstraints(maxHeight: 250),
+              padding: const EdgeInsets.all(10),
+              child: TaxonRegistryInfo(
+                useHorizontalLayout: widget.useHorizontalLayout,
+              ),
+            ),
             Wrap(
               spacing: 10,
               children: [
@@ -84,7 +83,7 @@ class TaxonRegistryInfo extends ConsumerWidget {
     return ref.watch(taxonRegistryProvider).when(
           data: (data) => data.isEmpty
               ? const Text('No taxon found')
-              : RegisteredTaxonContainer(
+              : TaxonInfoContainer(
                   taxonData: data,
                   useHorizontalLayout: useHorizontalLayout,
                 ),
@@ -94,8 +93,8 @@ class TaxonRegistryInfo extends ConsumerWidget {
   }
 }
 
-class RegisteredTaxonContainer extends StatelessWidget {
-  const RegisteredTaxonContainer({
+class TaxonInfoContainer extends StatelessWidget {
+  const TaxonInfoContainer({
     super.key,
     required this.taxonData,
     required this.useHorizontalLayout,
@@ -106,53 +105,57 @@ class RegisteredTaxonContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
-      crossAxisCount: useHorizontalLayout ? 2 : 1,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Theme.of(context).colorScheme.secondaryContainer,
-              width: 2,
-            ),
-            borderRadius: BorderRadius.circular(
-              20,
-            ),
-            // color: Color.lerp(
-            //   Theme.of(context).colorScheme.secondaryContainer,
-            //   Theme.of(context).colorScheme.surface,
-            //   0.7,
-            // ),
+    return ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 350),
+        child: GridView.count(
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          crossAxisCount: useHorizontalLayout ? 2 : 1,
+          children: [
+            RegisteredTaxa(taxonData: taxonData),
+            const RecordedTaxa(),
+          ],
+        ));
+  }
+}
+
+class RegisteredTaxa extends StatelessWidget {
+  const RegisteredTaxa({
+    super.key,
+    required this.taxonData,
+  });
+
+  final List<TaxonomyData> taxonData;
+
+  @override
+  Widget build(BuildContext context) {
+    return TaxonDataContainer(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "Registered",
+            style: Theme.of(context).textTheme.titleLarge,
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Registered",
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              Text(
-                  'Family: ${_countFamily(taxonData)}\n'
-                  'Taxa: ${taxonData.length}',
-                  style: Theme.of(context).textTheme.titleMedium),
-              const SizedBox(
-                height: 10,
-              ),
-              SecondaryButton(
-                  text: 'Show',
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const TaxonRegistryList(),
-                      ),
-                    );
-                  }),
-            ],
+          Text(
+              '${_countFamily(taxonData)} families\n'
+              '${taxonData.length} taxa',
+              style: Theme.of(context).textTheme.titleMedium),
+          const SizedBox(
+            height: 10,
           ),
-        )
-      ],
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const TaxonRegistryPage(),
+                ),
+              );
+            },
+            child: const Text('View all'),
+          )
+        ],
+      ),
     );
   }
 
@@ -163,6 +166,137 @@ class RegisteredTaxonContainer extends StatelessWidget {
       }
       return map;
     }).length;
+  }
+}
+
+class RecordedTaxa extends ConsumerWidget {
+  const RecordedTaxa({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ref.watch(specimenEntryProvider).when(
+          data: (data) => data.isEmpty
+              ? const Text('No taxon found')
+              : RegisteredTaxaView(data: data),
+          loading: () => const CommonProgressIndicator(),
+          error: (error, stack) => Text('Error: $error'),
+        );
+  }
+}
+
+class RecordedTaxaPage extends StatefulWidget {
+  const RecordedTaxaPage({
+    super.key,
+    required this.data,
+  });
+
+  final List<SpecimenData> data;
+
+  @override
+  State<RecordedTaxaPage> createState() => _RecordedTaxaPageState();
+}
+
+class _RecordedTaxaPageState extends State<RecordedTaxaPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Recorded Taxa'),
+      ),
+      body: SafeArea(
+          child: Center(
+        child: RecordedTaxaList(data: widget.data),
+      )),
+    );
+  }
+}
+
+class RecordedTaxaList extends StatelessWidget {
+  const RecordedTaxaList({super.key, required this.data});
+
+  final List<SpecimenData> data;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: data.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text('${data[index].fieldNumber ?? ''}',
+              style: Theme.of(context).textTheme.titleMedium),
+          subtitle: Text('${data[index].speciesID ?? ''}'),
+          onTap: () {},
+        );
+      },
+    );
+  }
+}
+
+class RegisteredTaxaView extends StatelessWidget {
+  const RegisteredTaxaView({
+    super.key,
+    required this.data,
+  });
+
+  final List<SpecimenData> data;
+
+  @override
+  Widget build(BuildContext context) {
+    return TaxonDataContainer(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          'Recorded',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        Text(
+          '${data.length} specimens',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => RecordedTaxaPage(
+                  data: data,
+                ),
+              ),
+            );
+          },
+          child: const Text('View all'),
+        )
+      ],
+    ));
+  }
+}
+
+class TaxonDataContainer extends StatelessWidget {
+  const TaxonDataContainer({
+    super.key,
+    required this.child,
+  });
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Theme.of(context).colorScheme.secondary,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(
+          20,
+        ),
+      ),
+      child: child,
+    );
   }
 }
 
@@ -452,14 +586,14 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
   }
 }
 
-class TaxonRegistryList extends ConsumerStatefulWidget {
-  const TaxonRegistryList({super.key});
+class TaxonRegistryPage extends ConsumerStatefulWidget {
+  const TaxonRegistryPage({super.key});
 
   @override
-  TaxonRegistryListState createState() => TaxonRegistryListState();
+  TaxonRegistryPageState createState() => TaxonRegistryPageState();
 }
 
-class TaxonRegistryListState extends ConsumerState<TaxonRegistryList> {
+class TaxonRegistryPageState extends ConsumerState<TaxonRegistryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
