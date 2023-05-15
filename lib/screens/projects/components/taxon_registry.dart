@@ -276,7 +276,7 @@ class _TaxonImportFormState extends State<TaxonImportForm> {
                       }
                     }),
                 const SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                 FormButton(
                   isEditing: false,
@@ -482,13 +482,89 @@ class TaxonRegistryListState extends ConsumerState<TaxonRegistryList> {
   }
 }
 
-class TaxonList extends ConsumerWidget {
-  const TaxonList({super.key, required this.taxonList});
+class TaxonList extends StatefulWidget {
+  const TaxonList({
+    super.key,
+    required this.taxonList,
+  });
 
   final List<TaxonomyData> taxonList;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  State<TaxonList> createState() => _TaxonListState();
+}
+
+class _TaxonListState extends State<TaxonList> {
+  List<TaxonomyData> _filteredTaxonList = [];
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+        child: Center(
+            child: ConstrainedBox(
+      constraints: const BoxConstraints(
+        maxWidth: 480,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TextField(
+            decoration: const InputDecoration(
+              labelText: 'Search',
+              hintText: 'Enter a search term',
+              prefixIcon: Icon(Icons.search),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              ),
+            ),
+            onChanged: (String value) {
+              String searchValue = value.toLowerCase();
+              setState(() {
+                _filteredTaxonList = widget.taxonList
+                    .where((taxon) =>
+                        _getSpecies(taxon).contains(searchValue) ||
+                        _getFamily(taxon).contains(searchValue) ||
+                        _getOrder(taxon).contains(searchValue))
+                    .toList();
+              });
+            },
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+              height: MediaQuery.of(context).size.height * 0.7,
+              child: TaxonListView(
+                taxonList: _filteredTaxonList.isNotEmpty
+                    ? _filteredTaxonList
+                    : widget.taxonList,
+              ))
+        ],
+      ),
+    )));
+  }
+
+  String _getSpecies(TaxonomyData taxon) {
+    return '${taxon.genus ?? ''} ${taxon.specificEpithet ?? ''}'.toLowerCase();
+  }
+
+  String _getFamily(TaxonomyData taxon) {
+    return (taxon.taxonFamily ?? '').toLowerCase();
+  }
+
+  String _getOrder(TaxonomyData taxon) {
+    return (taxon.taxonOrder ?? '').toLowerCase();
+  }
+}
+
+class TaxonListView extends StatelessWidget {
+  const TaxonListView({
+    super.key,
+    required this.taxonList,
+  });
+
+  final List<TaxonomyData> taxonList;
+
+  @override
+  Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: taxonList.length,
       itemBuilder: (context, index) {
