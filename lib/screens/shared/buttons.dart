@@ -154,8 +154,6 @@ class SecondaryButton extends StatelessWidget {
           color: Theme.of(context).colorScheme.secondary,
         ),
         foregroundColor: Theme.of(context).colorScheme.secondary,
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        // elevation: 0,
       ),
       onPressed: onPressed,
       child: Text(text),
