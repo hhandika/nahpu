@@ -110,23 +110,31 @@ class RegisteredTaxonContainer extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
+            border: Border.all(
+              color: Theme.of(context).colorScheme.secondaryContainer,
+              width: 2,
+            ),
             borderRadius: BorderRadius.circular(
               20,
             ),
+            // color: Color.lerp(
+            //   Theme.of(context).colorScheme.secondaryContainer,
+            //   Theme.of(context).colorScheme.surface,
+            //   0.7,
+            // ),
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 "Registered",
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              Text("Family: ${_countFamily(taxonData)}",
-                  style: Theme.of(context).textTheme.titleMedium),
               Text(
-                "Taxa: ${taxonData.length}",
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
+                  'Family: ${_countFamily(taxonData)}\n'
+                  'Taxa: ${taxonData.length}',
+                  style: Theme.of(context).textTheme.titleMedium),
               const SizedBox(
                 height: 10,
               ),
