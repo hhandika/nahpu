@@ -4,10 +4,12 @@ import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/file_operation.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/layout.dart';
+import 'package:nahpu/screens/specimens/shared/specimen_list.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/taxonomy_services.dart';
@@ -177,63 +179,15 @@ class RecordedTaxa extends ConsumerWidget {
     return ref.watch(specimenEntryProvider).when(
           data: (data) => data.isEmpty
               ? const Text('No taxon found')
-              : RegisteredTaxaView(data: data),
+              : RecordedTaxaView(data: data),
           loading: () => const CommonProgressIndicator(),
           error: (error, stack) => Text('Error: $error'),
         );
   }
 }
 
-class RecordedTaxaPage extends StatefulWidget {
-  const RecordedTaxaPage({
-    super.key,
-    required this.data,
-  });
-
-  final List<SpecimenData> data;
-
-  @override
-  State<RecordedTaxaPage> createState() => _RecordedTaxaPageState();
-}
-
-class _RecordedTaxaPageState extends State<RecordedTaxaPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Recorded Taxa'),
-      ),
-      body: SafeArea(
-          child: Center(
-        child: RecordedTaxaList(data: widget.data),
-      )),
-    );
-  }
-}
-
-class RecordedTaxaList extends StatelessWidget {
-  const RecordedTaxaList({super.key, required this.data});
-
-  final List<SpecimenData> data;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: data.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text('${data[index].fieldNumber ?? ''}',
-              style: Theme.of(context).textTheme.titleMedium),
-          subtitle: Text('${data[index].speciesID ?? ''}'),
-          onTap: () {},
-        );
-      },
-    );
-  }
-}
-
-class RegisteredTaxaView extends StatelessWidget {
-  const RegisteredTaxaView({
+class RecordedTaxaView extends StatelessWidget {
+  const RecordedTaxaView({
     super.key,
     required this.data,
   });
@@ -261,7 +215,7 @@ class RegisteredTaxaView extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => RecordedTaxaPage(
+                builder: (context) => SpecimenListPage(
                   data: data,
                 ),
               ),
@@ -288,8 +242,8 @@ class TaxonDataContainer extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         border: Border.all(
-          color: Theme.of(context).colorScheme.secondary,
-          width: 2,
+          color: Theme.of(context).colorScheme.secondaryContainer,
+          width: 1,
         ),
         borderRadius: BorderRadius.circular(
           20,
@@ -374,7 +328,7 @@ class _TaxonImportFormState extends State<TaxonImportForm> {
       ),
       body: SafeArea(
         child: Center(
-          child: ScreenLayout(
+          child: ScrollableLayout(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -443,7 +397,7 @@ class TaxonRegistryForm extends ConsumerStatefulWidget {
 class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
   @override
   Widget build(BuildContext context) {
-    return ScreenLayout(
+    return ScrollableLayout(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -634,46 +588,35 @@ class _TaxonListState extends State<TaxonList> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Center(
-            child: ConstrainedBox(
-      constraints: const BoxConstraints(
-        maxWidth: 480,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextField(
-            decoration: const InputDecoration(
-              labelText: 'Search',
-              hintText: 'Enter a search term',
-              prefixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20.0)),
-              ),
+      child: ScreenLayout(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SearchButtonField(
+              onChanged: (String value) {
+                String searchValue = value.toLowerCase();
+                setState(() {
+                  _filteredTaxonList = widget.taxonList
+                      .where((taxon) =>
+                          _getSpecies(taxon).contains(searchValue) ||
+                          _getFamily(taxon).contains(searchValue) ||
+                          _getOrder(taxon).contains(searchValue))
+                      .toList();
+                });
+              },
             ),
-            onChanged: (String value) {
-              String searchValue = value.toLowerCase();
-              setState(() {
-                _filteredTaxonList = widget.taxonList
-                    .where((taxon) =>
-                        _getSpecies(taxon).contains(searchValue) ||
-                        _getFamily(taxon).contains(searchValue) ||
-                        _getOrder(taxon).contains(searchValue))
-                    .toList();
-              });
-            },
-          ),
-          const SizedBox(height: 20),
-          SizedBox(
-              height: MediaQuery.of(context).size.height * 0.7,
-              child: TaxonListView(
-                taxonList: _filteredTaxonList.isNotEmpty
-                    ? _filteredTaxonList
-                    : widget.taxonList,
-              ))
-        ],
+            const SizedBox(height: 20),
+            SizedBox(
+                height: MediaQuery.of(context).size.height * 0.7,
+                child: TaxonListView(
+                  taxonList: _filteredTaxonList.isNotEmpty
+                      ? _filteredTaxonList
+                      : widget.taxonList,
+                ))
+          ],
+        ),
       ),
-    )));
+    );
   }
 
   String _getSpecies(TaxonomyData taxon) {

@@ -5,6 +5,33 @@ import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/services/database/database.dart';
 
+class SearchButtonField extends StatelessWidget {
+  const SearchButtonField({
+    super.key,
+    required this.onChanged,
+  });
+
+  final void Function(String) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      style: const TextStyle(
+        fontSize: 14,
+      ),
+      decoration: const InputDecoration(
+        labelText: 'Search',
+        hintText: 'Enter a query',
+        prefixIcon: Icon(Icons.search),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        ),
+      ),
+      onChanged: onChanged,
+    );
+  }
+}
+
 class TaxonGroupFields extends ConsumerWidget {
   const TaxonGroupFields({Key? key}) : super(key: key);
 
