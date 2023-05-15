@@ -21,11 +21,10 @@ class Habitat extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return FormCard(
       title: 'Habitat',
+      mainAxisAlignment: MainAxisAlignment.start,
       child: Padding(
         padding: const EdgeInsets.all(5),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
               controller: siteFormCtr.habitatTypeCtr,

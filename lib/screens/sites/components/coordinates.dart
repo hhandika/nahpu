@@ -22,9 +22,8 @@ class CoordinateFields extends StatelessWidget {
   Widget build(BuildContext context) {
     return FormCard(
       title: 'Coordinates',
+      mainAxisAlignment: MainAxisAlignment.start,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(
             height: 255,
