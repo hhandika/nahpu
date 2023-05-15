@@ -156,7 +156,7 @@ class CoordinateMenuState extends ConsumerState<CoordinateMenu> {
     return PopupMenuButton(
       icon: const Icon(Icons.more_vert),
       onSelected: _onSelected,
-      itemBuilder: (context) => [
+      itemBuilder: (context) => <PopupMenuEntry<CoordinatePopUpMenuItems>>[
         const PopupMenuItem<CoordinatePopUpMenuItems>(
           value: CoordinatePopUpMenuItems.edit,
           child: ListTile(
@@ -178,12 +178,17 @@ class CoordinateMenuState extends ConsumerState<CoordinateMenu> {
             title: Text('Open'),
           ),
         ),
+        const PopupMenuDivider(height: 10),
         const PopupMenuItem<CoordinatePopUpMenuItems>(
-            value: CoordinatePopUpMenuItems.delete,
-            child: ListTile(
-              leading: Icon(Icons.delete_outline),
-              title: Text('Delete'),
-            )),
+          value: CoordinatePopUpMenuItems.delete,
+          child: ListTile(
+            leading: Icon(
+              Icons.delete_outline,
+              color: Colors.red,
+            ),
+            title: Text('Delete', style: TextStyle(color: Colors.red)),
+          ),
+        ),
       ],
     );
   }

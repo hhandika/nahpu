@@ -223,7 +223,7 @@ class CollEffortMenuState extends ConsumerState<CollEffortMenu> {
     return PopupMenuButton<CommonPopUpMenuItems>(
       icon: const Icon(Icons.more_vert),
       onSelected: _onSelected,
-      itemBuilder: (context) => [
+      itemBuilder: (context) => <PopupMenuEntry<CommonPopUpMenuItems>>[
         const PopupMenuItem(
           value: CommonPopUpMenuItems.edit,
           child: ListTile(
@@ -231,11 +231,14 @@ class CollEffortMenuState extends ConsumerState<CollEffortMenu> {
             title: Text('Edit'),
           ),
         ),
+        const PopupMenuDivider(
+          height: 10,
+        ),
         const PopupMenuItem(
           value: CommonPopUpMenuItems.delete,
           child: ListTile(
-            leading: Icon(Icons.delete_outline),
-            title: Text('Delete'),
+            leading: Icon(Icons.delete_outline, color: Colors.red),
+            title: Text('Delete', style: TextStyle(color: Colors.red)),
           ),
         ),
       ],
