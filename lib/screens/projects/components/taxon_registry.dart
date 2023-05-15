@@ -4,8 +4,10 @@ import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:nahpu/screens/shared/file_operation.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/common.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/taxonomy_services.dart';
@@ -47,11 +49,11 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
                 SecondaryButton(
                     text: 'Import',
                     onPressed: () {
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (context) => const TaxonRegistryList(),
-                      //   ),
-                      // );
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const TaxonImportForm(),
+                        ),
+                      );
                     }),
                 PrimaryButton(
                   onPressed: () {
@@ -218,6 +220,77 @@ class EditTaxon extends StatelessWidget {
   }
 }
 
+class TaxonImportForm extends StatefulWidget {
+  const TaxonImportForm({super.key});
+
+  @override
+  State<TaxonImportForm> createState() => _TaxonImportFormState();
+}
+
+class _TaxonImportFormState extends State<TaxonImportForm> {
+  TaxonImportFmt _fmt = TaxonImportFmt.csv;
+  String _dirPath = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Import Taxon'),
+        automaticallyImplyLeading: false,
+      ),
+      body: SafeArea(
+        child: Center(
+          child: ScreenLayout(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                DropdownButtonFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Input Format',
+                  ),
+                  value: _fmt,
+                  items: taxonImportFmtList
+                      .map((e) => DropdownMenuItem(
+                            value: TaxonImportFmt
+                                .values[taxonImportFmtList.indexOf(e)],
+                            child: Text(e),
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    if (value != null) {
+                      setState(() {
+                        _fmt = value;
+                      });
+                    }
+                  },
+                ),
+                SelectDirField(
+                    dirPath: _dirPath,
+                    onChanged: (value) {
+                      if (value != null) {
+                        setState(() {
+                          _dirPath = value;
+                        });
+                      }
+                    }),
+                const SizedBox(
+                  height: 10,
+                ),
+                FormButton(
+                  isEditing: false,
+                  onSubmitted: () {},
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class TaxonRegistryForm extends ConsumerStatefulWidget {
   const TaxonRegistryForm(
       {super.key,
@@ -236,130 +309,122 @@ class TaxonRegistryForm extends ConsumerStatefulWidget {
 class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 500),
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              DropdownButtonFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Class',
-                    hintText: 'Select a taxon class',
-                  ),
-                  value: widget.ctr.taxonClassCtr.text,
-                  items: supportedTaxonClass
-                      .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                      .toList(),
-                  onChanged: (value) {
-                    widget.ctr.taxonClassCtr.text = value ?? '';
-                  }),
-              TextFormField(
-                  controller: widget.ctr.taxonOrderCtr,
-                  decoration: const InputDecoration(
-                    labelText: 'Order',
-                    hintText: 'Enter an order',
-                  ),
-                  onChanged: (String? value) {
-                    if (value != null) {
-                      widget.ctr.taxonOrderCtr.value = TextEditingValue(
-                        text: value.toSentenceCase(),
-                        selection: widget.ctr.taxonOrderCtr.selection,
-                      );
-                    }
-                  }),
-              TextFormField(
-                controller: widget.ctr.taxonFamilyCtr,
-                decoration: const InputDecoration(
-                  labelText: 'Family',
-                  hintText: 'Enter a family',
-                ),
-                onChanged: (String? value) {
-                  if (value != null) {
-                    widget.ctr.taxonFamilyCtr.value = TextEditingValue(
-                      text: value.toSentenceCase(),
-                      selection: widget.ctr.taxonFamilyCtr.selection,
-                    );
-                  }
-                },
+    return ScreenLayout(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          DropdownButtonFormField(
+              decoration: const InputDecoration(
+                labelText: 'Class',
+                hintText: 'Select a taxon class',
               ),
-              TextFormField(
-                controller: widget.ctr.genusCtr,
-                decoration: const InputDecoration(
-                  labelText: 'Genus',
-                  hintText: 'Enter a genus',
-                ),
-                onChanged: (String? value) {
-                  if (value != null) {
-                    widget.ctr.genusCtr.value = TextEditingValue(
-                      text: value.toSentenceCase(),
-                      selection: widget.ctr.genusCtr.selection,
-                    );
-                  }
-                },
+              value: widget.ctr.taxonClassCtr.text,
+              items: supportedTaxonClass
+                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                  .toList(),
+              onChanged: (value) {
+                widget.ctr.taxonClassCtr.text = value ?? '';
+              }),
+          TextFormField(
+              controller: widget.ctr.taxonOrderCtr,
+              decoration: const InputDecoration(
+                labelText: 'Order',
+                hintText: 'Enter an order',
               ),
-              TextFormField(
-                controller: widget.ctr.specificEpithetCtr,
-                decoration: const InputDecoration(
-                  labelText: 'Specific epithet',
-                  hintText: 'Enter specific epithet',
-                ),
-                onChanged: (String? value) {
-                  if (value != null) {
-                    widget.ctr.specificEpithetCtr.value = TextEditingValue(
-                      text: value.toLowerCase(),
-                      selection: widget.ctr.specificEpithetCtr.selection,
-                    );
-                  }
-                },
-              ),
-              TextFormField(
-                controller: widget.ctr.commonNameCtr,
-                decoration: const InputDecoration(
-                  labelText: 'Common name',
-                  hintText: 'Enter a common name',
-                ),
-                onChanged: (String? value) {
-                  if (value != null) {
-                    widget.ctr.commonNameCtr.value = TextEditingValue(
-                      text: value.toSentenceCase(),
-                      selection: widget.ctr.commonNameCtr.selection,
-                    );
-                  }
-                },
-              ),
-              TextFormField(
-                controller: widget.ctr.noteCtr,
-                decoration: const InputDecoration(
-                  labelText: 'Notes',
-                  hintText: 'Enter notes',
-                ),
-              ),
-              const SizedBox(height: 20),
-              FormButtonWithDelete(
-                isEditing: widget.isEditing,
-                onDeleted: () async {
-                  await TaxonomyService(ref).deleteTaxon(widget.taxonId!);
-                  ref.invalidate(taxonRegistryProvider);
-                  if (context.mounted) {
-                    Navigator.of(context).pop();
-                  }
-                },
-                onSubmitted: () async {
-                  widget.isEditing
-                      ? await _updateTaxon()
-                      : await _createTaxon();
-                  ref.invalidate(taxonRegistryProvider);
-                  if (context.mounted) {
-                    Navigator.of(context).pop();
-                  }
-                },
-              ),
-            ],
+              onChanged: (String? value) {
+                if (value != null) {
+                  widget.ctr.taxonOrderCtr.value = TextEditingValue(
+                    text: value.toSentenceCase(),
+                    selection: widget.ctr.taxonOrderCtr.selection,
+                  );
+                }
+              }),
+          TextFormField(
+            controller: widget.ctr.taxonFamilyCtr,
+            decoration: const InputDecoration(
+              labelText: 'Family',
+              hintText: 'Enter a family',
+            ),
+            onChanged: (String? value) {
+              if (value != null) {
+                widget.ctr.taxonFamilyCtr.value = TextEditingValue(
+                  text: value.toSentenceCase(),
+                  selection: widget.ctr.taxonFamilyCtr.selection,
+                );
+              }
+            },
           ),
-        ),
+          TextFormField(
+            controller: widget.ctr.genusCtr,
+            decoration: const InputDecoration(
+              labelText: 'Genus',
+              hintText: 'Enter a genus',
+            ),
+            onChanged: (String? value) {
+              if (value != null) {
+                widget.ctr.genusCtr.value = TextEditingValue(
+                  text: value.toSentenceCase(),
+                  selection: widget.ctr.genusCtr.selection,
+                );
+              }
+            },
+          ),
+          TextFormField(
+            controller: widget.ctr.specificEpithetCtr,
+            decoration: const InputDecoration(
+              labelText: 'Specific epithet',
+              hintText: 'Enter specific epithet',
+            ),
+            onChanged: (String? value) {
+              if (value != null) {
+                widget.ctr.specificEpithetCtr.value = TextEditingValue(
+                  text: value.toLowerCase(),
+                  selection: widget.ctr.specificEpithetCtr.selection,
+                );
+              }
+            },
+          ),
+          TextFormField(
+            controller: widget.ctr.commonNameCtr,
+            decoration: const InputDecoration(
+              labelText: 'Common name',
+              hintText: 'Enter a common name',
+            ),
+            onChanged: (String? value) {
+              if (value != null) {
+                widget.ctr.commonNameCtr.value = TextEditingValue(
+                  text: value.toSentenceCase(),
+                  selection: widget.ctr.commonNameCtr.selection,
+                );
+              }
+            },
+          ),
+          TextFormField(
+            controller: widget.ctr.noteCtr,
+            decoration: const InputDecoration(
+              labelText: 'Notes',
+              hintText: 'Enter notes',
+            ),
+          ),
+          const SizedBox(height: 20),
+          FormButtonWithDelete(
+            isEditing: widget.isEditing,
+            onDeleted: () async {
+              await TaxonomyService(ref).deleteTaxon(widget.taxonId!);
+              ref.invalidate(taxonRegistryProvider);
+              if (context.mounted) {
+                Navigator.of(context).pop();
+              }
+            },
+            onSubmitted: () async {
+              widget.isEditing ? await _updateTaxon() : await _createTaxon();
+              ref.invalidate(taxonRegistryProvider);
+              if (context.mounted) {
+                Navigator.of(context).pop();
+              }
+            },
+          ),
+        ],
       ),
     );
   }

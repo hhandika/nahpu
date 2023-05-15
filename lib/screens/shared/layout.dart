@@ -1,5 +1,27 @@
 import 'package:flutter/material.dart';
 
+class ScreenLayout extends StatelessWidget {
+  const ScreenLayout({
+    super.key,
+    required this.child,
+  });
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 500),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: child,
+        ),
+      ),
+    );
+  }
+}
+
 class AdaptiveMainLayout extends StatelessWidget {
   const AdaptiveMainLayout({
     super.key,

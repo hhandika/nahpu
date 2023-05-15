@@ -81,7 +81,6 @@ class FormButtonWithDelete extends StatelessWidget {
   Widget _buildFormButton() {
     return FormButton(
       isEditing: isEditing,
-      onDeleted: onDeleted,
       onSubmitted: onSubmitted,
     );
   }
@@ -111,12 +110,10 @@ class FormButton extends StatelessWidget {
   const FormButton({
     super.key,
     required this.isEditing,
-    required this.onDeleted,
     required this.onSubmitted,
   });
 
   final bool isEditing;
-  final VoidCallback onDeleted;
   final VoidCallback onSubmitted;
 
   @override
