@@ -12,6 +12,7 @@ import 'package:nahpu/screens/shared/associated_data.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/specimen_services.dart';
+import 'package:nahpu/services/utility_services.dart';
 
 class PartDataForm extends ConsumerStatefulWidget {
   const PartDataForm({
@@ -159,18 +160,11 @@ class PartSubTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-        children: <InlineSpan>[
-          const WidgetSpan(
-            child: Icon(Icons.science_outlined),
-            alignment: PlaceholderAlignment.middle,
-          ),
-          TextSpan(
-              text: _getTreatmentText(),
-              style: Theme.of(context).textTheme.labelLarge),
-        ],
-      ),
+    return Text(
+      '${part.count ?? '0'}'
+      '$listSubtitleSeparator'
+      '${_getTreatmentText()}'
+      '${_getAddTreatmentText()}',
     );
   }
 
@@ -181,6 +175,16 @@ class PartSubTitle extends StatelessWidget {
       return 'None';
     } else {
       return part.treatment!;
+    }
+  }
+
+  String _getAddTreatmentText() {
+    if (part.additionalTreatment == null) {
+      return '';
+    } else if (part.additionalTreatment!.isEmpty) {
+      return '';
+    } else {
+      return '$listSubtitleSeparator ${part.additionalTreatment}';
     }
   }
 }

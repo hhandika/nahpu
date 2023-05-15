@@ -11,6 +11,7 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/services/database/collevent_queries.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
+import 'package:nahpu/services/utility_services.dart';
 import 'package:nahpu/styles/catalogs.dart';
 
 class CollMethodForm extends StatelessWidget {
@@ -174,34 +175,12 @@ class Subtitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-        children: [
-          const WidgetSpan(
-              child: Icon(Icons.shopping_bag_outlined),
-              alignment: PlaceholderAlignment.middle),
-          TextSpan(
-            text: data.count != null ? '${data.count}' : '0',
-            style: Theme.of(context).textTheme.labelLarge,
-          ),
-          const TextSpan(text: ' '),
-          const WidgetSpan(
-              child: Icon(Icons.domain),
-              alignment: PlaceholderAlignment.middle),
-          TextSpan(
-            text: _getBrand(),
-            style: Theme.of(context).textTheme.labelLarge,
-          ),
-          const TextSpan(text: ' '),
-          const WidgetSpan(
-              child: Icon(MdiIcons.weight),
-              alignment: PlaceholderAlignment.middle),
-          TextSpan(
-            text: _getSize(),
-            style: Theme.of(context).textTheme.labelMedium,
-          ),
-        ],
-      ),
+    return Text(
+      '${data.count ?? 0}'
+      '$listSubtitleSeparator'
+      '${_getSize()}'
+      '$listSubtitleSeparator'
+      '${_getBrand()}',
     );
   }
 
