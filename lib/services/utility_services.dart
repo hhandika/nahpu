@@ -22,3 +22,5 @@ String getSystemDateTime() {
   DateTime currentDate = DateTime.now();
   return DateFormat('yyyy-MM-dd HH:mm:ss').format(currentDate);
 }
+
+String get listSubtitleSeparator => " · ";

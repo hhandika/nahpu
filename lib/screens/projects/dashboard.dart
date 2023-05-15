@@ -82,7 +82,12 @@ class DashboardState extends ConsumerState<Dashboard> {
                   AdaptiveMainLayout(
                     useHorizontalLayout: useHorizontalLayout,
                     height: bottomDashboardHeight,
-                    children: const [TaxonRegistryViewer(), MiscForm()],
+                    children: [
+                      TaxonRegistryViewer(
+                        useHorizontalLayout: useHorizontalLayout,
+                      ),
+                      const MiscForm()
+                    ],
                   )
                 ],
               ),

@@ -9,9 +9,15 @@ import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/taxonomy_services.dart';
+import 'package:nahpu/services/utility_services.dart';
 
 class TaxonRegistryViewer extends ConsumerStatefulWidget {
-  const TaxonRegistryViewer({super.key});
+  const TaxonRegistryViewer({
+    super.key,
+    required this.useHorizontalLayout,
+  });
+
+  final bool useHorizontalLayout;
 
   @override
   TaxonRegistryViewerState createState() => TaxonRegistryViewerState();
@@ -31,19 +37,21 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
                 height: 320,
                 child: Container(
                   padding: const EdgeInsets.all(10),
-                  child: const TaxonRegistryInfo(),
+                  child: TaxonRegistryInfo(
+                    useHorizontalLayout: widget.useHorizontalLayout,
+                  ),
                 )),
             Wrap(
               spacing: 10,
               children: [
                 SecondaryButton(
-                    text: 'Show',
+                    text: 'Import',
                     onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const TaxonRegistryList(),
-                        ),
-                      );
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      //     builder: (context) => const TaxonRegistryList(),
+                      //   ),
+                      // );
                     }),
                 PrimaryButton(
                   onPressed: () {
@@ -65,30 +73,86 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
 }
 
 class TaxonRegistryInfo extends ConsumerWidget {
-  const TaxonRegistryInfo({super.key});
+  const TaxonRegistryInfo({super.key, required this.useHorizontalLayout});
+
+  final bool useHorizontalLayout;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(taxonRegistryProvider).when(
           data: (data) => data.isEmpty
               ? const Text('No taxon found')
-              : RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: 'Taxon registered: ',
-                        style: Theme.of(context).textTheme.titleSmall,
-                      ),
-                      TextSpan(
-                        text: '${data.length} taxa',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                    ],
-                  ),
+              : RegisteredTaxonContainer(
+                  taxonData: data,
+                  useHorizontalLayout: useHorizontalLayout,
                 ),
           loading: () => const CommonProgressIndicator(),
           error: (error, stack) => Text('Error: $error'),
         );
+  }
+}
+
+class RegisteredTaxonContainer extends StatelessWidget {
+  const RegisteredTaxonContainer({
+    super.key,
+    required this.taxonData,
+    required this.useHorizontalLayout,
+  });
+
+  final bool useHorizontalLayout;
+  final List<TaxonomyData> taxonData;
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.count(
+      crossAxisCount: useHorizontalLayout ? 2 : 1,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(
+              20,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "Registered",
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              Text("Family: ${_countFamily(taxonData)}",
+                  style: Theme.of(context).textTheme.titleMedium),
+              Text(
+                "Taxa: ${taxonData.length}",
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              SecondaryButton(
+                  text: 'Show',
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const TaxonRegistryList(),
+                      ),
+                    );
+                  }),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  int _countFamily(List<TaxonomyData> data) {
+    return data.fold(<String, int>{}, (Map<String, int> map, e) {
+      if (e.taxonFamily != null) {
+        map[e.taxonFamily!] = (map[e.taxonFamily!] ?? 0) + 1;
+      }
+      return map;
+    }).length;
   }
 }
 
@@ -359,8 +423,10 @@ class TaxonList extends ConsumerWidget {
           title: Text(
               '${taxonList[index].genus} ${taxonList[index].specificEpithet}'),
           subtitle: Text(
-            '${taxonList[index].taxonClass} '
-            '${taxonList[index].taxonOrder} '
+            '${taxonList[index].taxonClass}'
+            '$listSubtitleSeparator'
+            '${taxonList[index].taxonOrder}'
+            '$listSubtitleSeparator'
             '${taxonList[index].taxonFamily}',
           ),
           trailing: IconButton(
