@@ -38,22 +38,6 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
       title: 'Capture Records',
       child: Column(
         children: [
-          CheckboxListTile(
-            value: _getCheckBoxValue(widget.specimenCtr.relativeTimeCtr),
-            onChanged: (bool? value) {
-              setState(() {
-                if (value != null) {
-                  int newValue = value ? 1 : 0;
-                  widget.specimenCtr.relativeTimeCtr = newValue;
-                  _updateSpecimen(
-                    SpecimenCompanion(isRelativeTime: db.Value(newValue)),
-                  );
-                }
-              });
-            },
-            title: const Text('Relative time'),
-            controlAffinity: ListTileControlAffinity.leading,
-          ),
           Padding(
             padding: const EdgeInsets.all(5),
             child: DropdownButtonFormField(
@@ -73,6 +57,22 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                   widget.specimenCtr.collEventIDCtr = newValue;
                   _updateSpecimen(
                     SpecimenCompanion(collEventID: db.Value(newValue)),
+                  );
+                });
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: SwitchField(
+              label: 'Relative time',
+              value: _getCheckBoxValue(widget.specimenCtr.relativeTimeCtr),
+              onPressed: (bool value) {
+                setState(() {
+                  int newValue = value ? 1 : 0;
+                  widget.specimenCtr.relativeTimeCtr = newValue;
+                  _updateSpecimen(
+                    SpecimenCompanion(isRelativeTime: db.Value(newValue)),
                   );
                 });
               },

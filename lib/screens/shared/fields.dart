@@ -174,3 +174,30 @@ class CommonTextField extends ConsumerWidget {
     );
   }
 }
+
+class SwitchField extends StatelessWidget {
+  const SwitchField({
+    super.key,
+    required this.label,
+    required this.value,
+    required this.onPressed,
+  });
+
+  final String label;
+  final bool value;
+  final void Function(bool) onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label),
+        Switch(
+          value: value,
+          onChanged: onPressed,
+        ),
+      ],
+    );
+  }
+}
