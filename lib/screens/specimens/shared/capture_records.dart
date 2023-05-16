@@ -37,6 +37,8 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
     return FormCard(
       title: 'Capture Records',
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
             padding: const EdgeInsets.all(5),
@@ -161,7 +163,11 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                 },
               )
             ],
-          )
+          ),
+          CoordinateField(
+            specimenUuid: widget.specimenUuid,
+            specimenCtr: widget.specimenCtr,
+          ),
         ],
       ),
     );
@@ -180,27 +186,52 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
   }
 }
 
-class PersonnelName extends ConsumerWidget {
-  const PersonnelName({
+class CoordinateField extends ConsumerWidget {
+  const CoordinateField({
     Key? key,
-    required this.personnelUuid,
+    required this.specimenUuid,
+    required this.specimenCtr,
   }) : super(key: key);
 
-  final String? personnelUuid;
+  final String specimenUuid;
+  final SpecimenFormCtrModel specimenCtr;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    try {
-      return ref.watch(personnelNameProvider(personnelUuid!)).when(
-            data: (data) {
-              return Text(data.name ?? '');
-            },
-            loading: () => const Text('Loading...'),
-            error: (error, stack) => const Text('Error'),
+    return Padding(
+      padding: const EdgeInsets.all(5),
+      child: DropdownButtonFormField<int?>(
+        value: specimenCtr.coordinateCtr,
+        decoration: const InputDecoration(
+          labelText: 'Coordinate ID',
+          hintText: 'Choose a method type',
+        ),
+        items: specimenCtr.collEventIDCtr != null
+            ? ref
+                .watch(coordinateByEventProvider(specimenCtr.collEventIDCtr!))
+                .when(
+                  data: (data) {
+                    return data.map((coordinate) {
+                      return DropdownMenuItem(
+                        value: coordinate.id,
+                        child: Text(coordinate.nameId ?? ''),
+                      );
+                    }).toList();
+                  },
+                  loading: () => const [],
+                  error: (error, stack) => const [],
+                )
+            : [],
+        onChanged: (int? newValue) {
+          specimenCtr.coordinateCtr = newValue;
+          SpecimenServices(ref).updateSpecimen(
+            specimenUuid,
+            SpecimenCompanion(
+                coordinateID: db.Value(specimenCtr.coordinateCtr)),
           );
-    } catch (e) {
-      return const Text('Error');
-    }
+        },
+      ),
+    );
   }
 }
 
