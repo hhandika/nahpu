@@ -49,6 +49,6 @@ app.*.map.json
 # Coverage
 coverage/
 
-# MacOS DMG Creation
-*.dmg
+# MacOS DMG Creations
 /installer/*.dmg
+/installer/nahpu.dmg
