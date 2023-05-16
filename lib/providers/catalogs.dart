@@ -61,7 +61,8 @@ final coordinateBySiteProvider = FutureProvider.family
 
 final coordinateByEventProvider = FutureProvider.family
     .autoDispose<List<CoordinateData>, int>((ref, collEventId) async {
-  final collEvent = await ref.watch(collEventIDprovider(collEventId).future);
+  final collEvent = await CollEventQuery(ref.read(databaseProvider))
+      .getCollEventById(collEventId);
   if (collEvent.siteID != null) {
     final siteId = collEvent.siteID!;
     final coordinates = CoordinateQuery(ref.read(databaseProvider))

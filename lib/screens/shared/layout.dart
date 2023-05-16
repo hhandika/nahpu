@@ -18,6 +18,21 @@ class ScrollableLayout extends StatelessWidget {
   }
 }
 
+class CommonPadding extends StatelessWidget {
+  const CommonPadding({
+    super.key,
+    required this.child,
+  });
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(5, 0, 5, 0), child: child);
+  }
+}
+
 class ScreenLayout extends StatelessWidget {
   const ScreenLayout({
     super.key,

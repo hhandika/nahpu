@@ -40,8 +40,7 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(5),
+          CommonPadding(
             child: DropdownButtonFormField(
               value: widget.specimenCtr.collEventIDCtr,
               decoration: const InputDecoration(
@@ -57,6 +56,8 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
               onChanged: (int? newValue) {
                 setState(() {
                   widget.specimenCtr.collEventIDCtr = newValue;
+                  widget.specimenCtr.collMethodCtr = null;
+                  widget.specimenCtr.coordinateCtr = null;
                   _updateSpecimen(
                     SpecimenCompanion(collEventID: db.Value(newValue)),
                   );
@@ -64,8 +65,7 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(5),
+          CommonPadding(
             child: SwitchField(
               label: 'Relative time',
               value: _getCheckBoxValue(widget.specimenCtr.relativeTimeCtr),
@@ -186,7 +186,7 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
   }
 }
 
-class CoordinateField extends ConsumerWidget {
+class CoordinateField extends ConsumerStatefulWidget {
   const CoordinateField({
     Key? key,
     required this.specimenUuid,
@@ -197,18 +197,23 @@ class CoordinateField extends ConsumerWidget {
   final SpecimenFormCtrModel specimenCtr;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Padding(
-      padding: const EdgeInsets.all(5),
+  CoordinateFieldState createState() => CoordinateFieldState();
+}
+
+class CoordinateFieldState extends ConsumerState<CoordinateField> {
+  @override
+  Widget build(BuildContext context) {
+    return CommonPadding(
       child: DropdownButtonFormField<int?>(
-        value: specimenCtr.coordinateCtr,
+        value: widget.specimenCtr.coordinateCtr,
         decoration: const InputDecoration(
           labelText: 'Coordinate ID',
           hintText: 'Choose a method type',
         ),
-        items: specimenCtr.collEventIDCtr != null
+        items: widget.specimenCtr.collEventIDCtr != null
             ? ref
-                .watch(coordinateByEventProvider(specimenCtr.collEventIDCtr!))
+                .watch(coordinateByEventProvider(
+                    widget.specimenCtr.collEventIDCtr!))
                 .when(
                   data: (data) {
                     return data.map((coordinate) {
@@ -223,12 +228,11 @@ class CoordinateField extends ConsumerWidget {
                 )
             : [],
         onChanged: (int? newValue) {
-          specimenCtr.coordinateCtr = newValue;
-          SpecimenServices(ref).updateSpecimen(
-            specimenUuid,
-            SpecimenCompanion(
-                coordinateID: db.Value(specimenCtr.coordinateCtr)),
-          );
+          setState(() {
+            widget.specimenCtr.coordinateCtr = newValue;
+            SpecimenServices(ref).updateSpecimen(widget.specimenUuid,
+                SpecimenCompanion(coordinateID: db.Value(newValue)));
+          });
         },
       ),
     );
