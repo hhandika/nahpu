@@ -57,6 +57,7 @@ class MammalMeasurementFormsState
               labelText: 'Total length (mm)',
               hintText: 'Enter TTL',
               isLastField: false,
+              isDouble: true,
               onChanged: (String? value) {
                 if (value != null && value.isNotEmpty) {
                   setState(() {
@@ -74,6 +75,7 @@ class MammalMeasurementFormsState
               controller: ctr.tailLengthCtr,
               labelText: 'Tail length (mm)',
               hintText: 'Enter TL',
+              isDouble: true,
               isLastField: false,
               onChanged: (String? value) {
                 if (value != null && value.isNotEmpty) {
@@ -97,6 +99,7 @@ class MammalMeasurementFormsState
               controller: ctr.hindFootCtr,
               labelText: 'Hind foot length (mm)',
               hintText: 'Enter HF length',
+              isDouble: true,
               isLastField: false,
               onChanged: (String? value) {
                 if (value != null && value.isNotEmpty) {
@@ -116,6 +119,7 @@ class MammalMeasurementFormsState
               labelText: 'Ear length (mm)',
               hintText: 'Enter ER length',
               isLastField: false,
+              isDouble: true,
               onChanged: (String? value) {
                 if (value != null && value.isNotEmpty) {
                   setState(() {
@@ -160,6 +164,7 @@ class MammalMeasurementFormsState
                 labelText: 'Forearm Length (mm)',
                 hintText: 'Enter FL length',
                 isLastField: true,
+                isDouble: true,
                 onChanged: (value) {
                   if (value != null && value.isNotEmpty) {
                     setState(() {
@@ -412,6 +417,7 @@ class ScrotalMaleFormState extends ConsumerState<ScrotalMaleForm> {
                 labelText: 'Length (mm)',
                 hintText: 'Enter the length of the right testes ',
                 isLastField: false,
+                isDouble: true,
                 onChanged: (String? value) {
                   SpecimenServices(ref).updateMammalMeasurement(
                     widget.specimenUuid,
@@ -428,6 +434,7 @@ class ScrotalMaleFormState extends ConsumerState<ScrotalMaleForm> {
                 labelText: 'Width (mm)',
                 hintText: 'Enter the width of the right testes ',
                 isLastField: true,
+                isDouble: true,
                 onChanged: (String? value) {
                   SpecimenServices(ref).updateMammalMeasurement(
                     widget.specimenUuid,
