@@ -213,6 +213,7 @@ class SpecimenFormCtrModel {
     required this.captureDateCtr,
     required this.captureTimeCtr,
     required this.trapTypeCtr,
+    required this.trapIDCtr,
   });
 
   String? catalogerCtr;
@@ -231,6 +232,7 @@ class SpecimenFormCtrModel {
   TextEditingController captureDateCtr;
   TextEditingController captureTimeCtr;
   TextEditingController trapTypeCtr;
+  TextEditingController trapIDCtr;
 
   factory SpecimenFormCtrModel.empty() => SpecimenFormCtrModel(
         catalogerCtr: null,
@@ -249,6 +251,7 @@ class SpecimenFormCtrModel {
         captureDateCtr: TextEditingController(),
         captureTimeCtr: TextEditingController(),
         trapTypeCtr: TextEditingController(),
+        trapIDCtr: TextEditingController(),
       );
 
   factory SpecimenFormCtrModel.fromData(
@@ -271,6 +274,7 @@ class SpecimenFormCtrModel {
         captureDateCtr: TextEditingController(text: specimen.captureDate),
         captureTimeCtr: TextEditingController(text: specimen.captureTime),
         trapTypeCtr: TextEditingController(text: specimen.trapType),
+        trapIDCtr: TextEditingController(text: specimen.trapID),
       );
 
   void dispose() {
