@@ -197,34 +197,35 @@ class RecordedTaxaView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TaxonDataContainer(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          'Recorded',
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        Text(
-          '${data.length} specimens',
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => SpecimenListPage(
-                  data: data,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Recorded',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          Text(
+            '${data.length} specimens',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => SpecimenListPage(
+                    data: data,
+                  ),
                 ),
-              ),
-            );
-          },
-          child: const Text('View all'),
-        )
-      ],
-    ));
+              );
+            },
+            child: const Text('View all'),
+          )
+        ],
+      ),
+    );
   }
 }
 
@@ -596,12 +597,8 @@ class _TaxonListState extends State<TaxonList> {
               onChanged: (String value) {
                 String searchValue = value.toLowerCase();
                 setState(() {
-                  _filteredTaxonList = widget.taxonList
-                      .where((taxon) =>
-                          _getSpecies(taxon).contains(searchValue) ||
-                          _getFamily(taxon).contains(searchValue) ||
-                          _getOrder(taxon).contains(searchValue))
-                      .toList();
+                  _filteredTaxonList = TaxonFilterServices()
+                      .filterTaxonList(widget.taxonList, searchValue);
                 });
               },
             ),
@@ -617,18 +614,6 @@ class _TaxonListState extends State<TaxonList> {
         ),
       ),
     );
-  }
-
-  String _getSpecies(TaxonomyData taxon) {
-    return '${taxon.genus ?? ''} ${taxon.specificEpithet ?? ''}'.toLowerCase();
-  }
-
-  String _getFamily(TaxonomyData taxon) {
-    return (taxon.taxonFamily ?? '').toLowerCase();
-  }
-
-  String _getOrder(TaxonomyData taxon) {
-    return (taxon.taxonOrder ?? '').toLowerCase();
   }
 }
 

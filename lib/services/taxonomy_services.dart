@@ -31,3 +31,32 @@ class TaxonomyService extends DbAccess {
     return TaxonomyQuery(db).deleteAllTaxon();
   }
 }
+
+class TaxonFilterServices {
+  TaxonFilterServices();
+
+  List<TaxonomyData> filterTaxonList(
+      List<TaxonomyData> data, String searchValue) {
+    return data
+        .where((taxon) => _isTaxonMatch(taxon, searchValue.toLowerCase()))
+        .toList();
+  }
+
+  bool _isTaxonMatch(TaxonomyData data, String searchValue) {
+    return _getSpecies(data).contains(searchValue) ||
+        _getFamily(data).contains(searchValue) ||
+        _getOrder(data).contains(searchValue);
+  }
+
+  String _getSpecies(TaxonomyData taxon) {
+    return '${taxon.genus ?? ''} ${taxon.specificEpithet ?? ''}'.toLowerCase();
+  }
+
+  String _getFamily(TaxonomyData taxon) {
+    return (taxon.taxonFamily ?? '').toLowerCase();
+  }
+
+  String _getOrder(TaxonomyData taxon) {
+    return (taxon.taxonOrder ?? '').toLowerCase();
+  }
+}
