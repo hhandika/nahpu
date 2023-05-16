@@ -37,6 +37,7 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
 
   @override
   void dispose() {
+    ctr.dispose();
     super.dispose();
   }
 
@@ -286,6 +287,10 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
         ctr: ctr,
         useHorizontalLayout: widget.useHorizontalLayout,
       ),
+      Notes(
+        specimenUuid: widget.specimenUuid,
+        ctr: ctr,
+      )
     ]);
   }
 
@@ -1007,5 +1012,64 @@ class BodyMoltForm extends ConsumerWidget {
       return BodyMolt.values[ctr.bodyMoltCtr!];
     }
     return null;
+  }
+}
+
+class Notes extends ConsumerWidget {
+  const Notes({
+    super.key,
+    required this.specimenUuid,
+    required this.ctr,
+  });
+
+  final String specimenUuid;
+  final AvianMeasurementCtrModel ctr;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Padding(
+        padding: const EdgeInsets.all(5),
+        child: Column(
+          children: [
+            Text(
+              'Notes',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            CommonTextField(
+              controller: ctr.habitatRemarkCtr,
+              maxLines: 3,
+              labelText: 'Habitat',
+              hintText: 'Add additional information about the habitat',
+              isLastField: true,
+              onChanged: (String? value) {
+                if (value != null) {
+                  SpecimenServices(ref).updateAvianMeasurement(
+                    specimenUuid,
+                    AvianMeasurementCompanion(
+                      habitatRemark: db.Value(value),
+                    ),
+                  );
+                }
+              },
+            ),
+            CommonTextField(
+              controller: ctr.specimenRemarkCtr,
+              maxLines: 3,
+              labelText: 'Specimen',
+              hintText: 'Add additional information about the specimen',
+              isLastField: true,
+              onChanged: (String? value) {
+                if (value != null) {
+                  SpecimenServices(ref).updateAvianMeasurement(
+                    specimenUuid,
+                    AvianMeasurementCompanion(
+                      specimenRemark: db.Value(value),
+                    ),
+                  );
+                }
+              },
+            )
+          ],
+        ));
   }
 }

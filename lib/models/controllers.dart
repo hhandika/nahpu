@@ -471,6 +471,8 @@ class AvianMeasurementCtrModel {
     required this.tailMoltCtr,
     required this.bodyMoltCtr,
     required this.moltRemarkCtr,
+    required this.specimenRemarkCtr,
+    required this.habitatRemarkCtr,
   });
 
   TextEditingController weightCtr;
@@ -503,6 +505,8 @@ class AvianMeasurementCtrModel {
   TextEditingController tailMoltCtr;
   int? bodyMoltCtr;
   TextEditingController moltRemarkCtr;
+  TextEditingController specimenRemarkCtr;
+  TextEditingController habitatRemarkCtr;
 
   factory AvianMeasurementCtrModel.empty() => AvianMeasurementCtrModel(
         weightCtr: TextEditingController(),
@@ -535,6 +539,8 @@ class AvianMeasurementCtrModel {
         tailMoltCtr: TextEditingController(),
         bodyMoltCtr: null,
         moltRemarkCtr: TextEditingController(),
+        specimenRemarkCtr: TextEditingController(),
+        habitatRemarkCtr: TextEditingController(),
       );
 
   factory AvianMeasurementCtrModel.fromData(AvianMeasurementData data) =>
@@ -580,6 +586,9 @@ class AvianMeasurementCtrModel {
         tailMoltCtr: TextEditingController(text: data.tailMolt ?? ''),
         bodyMoltCtr: data.bodyMolt,
         moltRemarkCtr: TextEditingController(text: data.moltRemark ?? ''),
+        specimenRemarkCtr:
+            TextEditingController(text: data.specimenRemark ?? ''),
+        habitatRemarkCtr: TextEditingController(text: data.habitatRemark ?? ''),
       );
 
   void dispose() {
@@ -604,6 +613,8 @@ class AvianMeasurementCtrModel {
     wingMoltCtr.dispose();
     tailMoltCtr.dispose();
     moltRemarkCtr.dispose();
+    specimenRemarkCtr.dispose();
+    habitatRemarkCtr.dispose();
   }
 }
 
