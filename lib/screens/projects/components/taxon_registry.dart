@@ -12,6 +12,7 @@ import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/screens/specimens/shared/specimen_list.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
+import 'package:nahpu/services/stats/captures.dart';
 import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/utility_services.dart';
 
@@ -108,7 +109,7 @@ class TaxonInfoContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 350),
+        constraints: const BoxConstraints(maxWidth: 450),
         child: GridView.count(
           mainAxisSpacing: 10,
           crossAxisSpacing: 10,
@@ -186,7 +187,7 @@ class RecordedTaxa extends ConsumerWidget {
   }
 }
 
-class RecordedTaxaView extends StatelessWidget {
+class RecordedTaxaView extends ConsumerWidget {
   const RecordedTaxaView({
     super.key,
     required this.data,
@@ -195,7 +196,7 @@ class RecordedTaxaView extends StatelessWidget {
   final List<SpecimenData> data;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return TaxonDataContainer(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -204,9 +205,10 @@ class RecordedTaxaView extends StatelessWidget {
             'Recorded',
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          Text(
-            '${data.length} specimens',
-            style: Theme.of(context).textTheme.titleMedium,
+          FittedBox(
+            fit: BoxFit.fill,
+            child:
+                RecordedCounts(stats: CaptureRecordStats.fromData(data, ref)),
           ),
           const SizedBox(
             height: 10,
@@ -225,6 +227,24 @@ class RecordedTaxaView extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class RecordedCounts extends StatelessWidget {
+  const RecordedCounts({super.key, required this.stats});
+
+  final CaptureRecordStats stats;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      // '${stats.orderCount.length} orders\n'
+      '${stats.familyCount.length} families\n'
+      '${stats.speciesCount.length} species\n'
+      '${stats.specimenCount} specimens\n',
+      style: Theme.of(context).textTheme.titleSmall,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }

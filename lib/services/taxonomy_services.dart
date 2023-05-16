@@ -2,6 +2,14 @@ import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
 
+String getSpeciesName(TaxonomyData data) {
+  if (data.genus != null && data.specificEpithet != null) {
+    return '${data.genus} ${data.specificEpithet}';
+  } else {
+    return '';
+  }
+}
+
 class TaxonomyService extends DbAccess {
   TaxonomyService(super.ref);
 
@@ -49,7 +57,7 @@ class TaxonFilterServices {
   }
 
   String _getSpecies(TaxonomyData taxon) {
-    return '${taxon.genus ?? ''} ${taxon.specificEpithet ?? ''}'.toLowerCase();
+    return getSpeciesName(taxon).toLowerCase();
   }
 
   String _getFamily(TaxonomyData taxon) {
