@@ -153,13 +153,37 @@ class CollEffortTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(collEffort.type ?? ''),
+      title: CollEffortTitle(
+        type: collEffort.type,
+        count: collEffort.count,
+      ),
       subtitle: Subtitle(data: collEffort),
       trailing: CollEffortMenu(
         collEventId: collEffort.eventID!,
         collEffortId: collEffort.id,
         collToolCtr: CollEffortCtrModel.fromData(collEffort),
       ),
+    );
+  }
+}
+
+class CollEffortTitle extends StatelessWidget {
+  const CollEffortTitle({
+    super.key,
+    required this.type,
+    required this.count,
+  });
+
+  final String? type;
+  final int? count;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      '${type ?? 'Unknown'}'
+      '$listSeparator'
+      '${count ?? 'No count'}',
+      style: Theme.of(context).textTheme.titleMedium,
     );
   }
 }
@@ -175,10 +199,8 @@ class Subtitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      '${data.count ?? 0}'
-      '$listSubtitleSeparator'
       '${_getSize()}'
-      '$listSubtitleSeparator'
+      '$listSeparator'
       '${_getBrand()}',
     );
   }

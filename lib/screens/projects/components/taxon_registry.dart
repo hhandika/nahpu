@@ -655,9 +655,9 @@ class TaxonListView extends StatelessWidget {
               '${taxonList[index].genus} ${taxonList[index].specificEpithet}'),
           subtitle: Text(
             '${taxonList[index].taxonClass}'
-            '$listSubtitleSeparator'
+            '$listSeparator'
             '${taxonList[index].taxonOrder}'
-            '$listSubtitleSeparator'
+            '$listSeparator'
             '${taxonList[index].taxonFamily}',
           ),
           trailing: IconButton(

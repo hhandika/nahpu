@@ -67,7 +67,7 @@ class CoordinateList extends ConsumerWidget {
           itemCount: data.length,
           itemBuilder: (context, index) {
             return ListTile(
-              title: Text('${data[index].nameId}'),
+              title: CoordinateTitle(coordinateId: data[index].nameId),
               subtitle: CoordinateSubtitle(coordinate: data[index]),
               trailing: CoordinateMenu(
                 coordinateId: data[index].id!,
@@ -80,6 +80,23 @@ class CoordinateList extends ConsumerWidget {
       },
       loading: () => const CommonProgressIndicator(),
       error: (error, stack) => Text(error.toString()),
+    );
+  }
+}
+
+class CoordinateTitle extends StatelessWidget {
+  const CoordinateTitle({
+    super.key,
+    required this.coordinateId,
+  });
+
+  final String? coordinateId;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      coordinateId ?? 'No ID',
+      style: Theme.of(context).textTheme.titleMedium,
     );
   }
 }

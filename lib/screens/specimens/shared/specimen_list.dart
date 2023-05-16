@@ -163,12 +163,10 @@ class SpecimenListSubtitle extends ConsumerWidget {
   }
 
   String _createTaxonInfo(TaxonomyData data) {
-    String order = data.taxonOrder != null
-        ? '${data.taxonOrder}$listSubtitleSeparator'
-        : '';
-    String family = data.taxonFamily != null
-        ? '${data.taxonFamily}$listSubtitleSeparator'
-        : '';
+    String order =
+        data.taxonOrder != null ? '${data.taxonOrder}$listSeparator' : '';
+    String family =
+        data.taxonFamily != null ? '${data.taxonFamily}$listSeparator' : '';
     String species = '${data.genus ?? ''} ${data.specificEpithet ?? ''}';
 
     return '$order$family$species';

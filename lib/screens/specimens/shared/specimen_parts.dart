@@ -127,7 +127,10 @@ class PartList extends ConsumerWidget {
           itemBuilder: (context, index) {
             final part = data[index];
             return ListTile(
-              title: Text(part.type ?? 'No type'),
+              title: PartTitle(
+                partType: part.type,
+                partCount: part.count.toString(),
+              ),
               subtitle: PartSubTitle(part: part),
               trailing: IconButton(
                 icon: const Icon(Icons.edit),
@@ -153,6 +156,27 @@ class PartList extends ConsumerWidget {
   }
 }
 
+class PartTitle extends StatelessWidget {
+  const PartTitle({
+    super.key,
+    required this.partType,
+    required this.partCount,
+  });
+
+  final String? partType;
+  final String? partCount;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      '${partType ?? 'Unknown part'}'
+      '$listSeparator'
+      '${partCount ?? 'No count'}',
+      style: Theme.of(context).textTheme.titleMedium,
+    );
+  }
+}
+
 class PartSubTitle extends StatelessWidget {
   const PartSubTitle({super.key, required this.part});
 
@@ -161,8 +185,6 @@ class PartSubTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      '${part.count ?? '0'}'
-      '$listSubtitleSeparator'
       '${_getTreatmentText()}'
       '${_getAddTreatmentText()}',
     );
@@ -184,7 +206,7 @@ class PartSubTitle extends StatelessWidget {
     } else if (part.additionalTreatment!.isEmpty) {
       return '';
     } else {
-      return '$listSubtitleSeparator ${part.additionalTreatment}';
+      return '$listSeparator ${part.additionalTreatment}';
     }
   }
 }
