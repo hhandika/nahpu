@@ -112,7 +112,10 @@ class PersonalListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(_getTitle(personnelData.name, personnelData.initial)),
+      title: Text(
+        _getTitle(personnelData.name, personnelData.initial),
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
       subtitle: PersonnelSubtitle(
         role: personnelData.role,
         affiliation: personnelData.affiliation,
@@ -157,7 +160,7 @@ class PersonnelSubtitle extends StatelessWidget {
                   child: TileIcon(icon: Icons.account_circle_outlined),
                   alignment: PlaceholderAlignment.middle),
               TextSpan(
-                text: ' $role  ',
+                text: '$role ',
                 style: Theme.of(context).textTheme.labelLarge,
               ),
             ])
@@ -169,7 +172,7 @@ class PersonnelSubtitle extends StatelessWidget {
                     child: TileIcon(icon: Icons.business_rounded),
                     alignment: PlaceholderAlignment.middle),
                 TextSpan(
-                  text: ' $affiliation  ',
+                  text: '$affiliation ',
                   style: Theme.of(context).textTheme.labelLarge,
                 ),
               ],
@@ -182,7 +185,7 @@ class PersonnelSubtitle extends StatelessWidget {
                     child: TileIcon(icon: MdiIcons.counter),
                     alignment: PlaceholderAlignment.middle),
                 TextSpan(
-                  text: ' $currentFieldNumber',
+                  text: '$currentFieldNumber',
                   style: Theme.of(context).textTheme.labelLarge,
                 ),
               ],
