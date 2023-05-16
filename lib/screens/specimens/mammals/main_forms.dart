@@ -56,7 +56,7 @@ class MammalFormsState extends ConsumerState<MammalForms> {
                       specimenCtr: widget.specimenCtr),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
+                    mainAxisSize: MainAxisSize.max,
                     children: [
                       TaxonomicForm(
                         useHorizontalLayout: useHorizontalLayout,
