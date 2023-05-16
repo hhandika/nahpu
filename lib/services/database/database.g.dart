@@ -9127,6 +9127,20 @@ class AvianMeasurement extends Table
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _specimenRemarkMeta =
+      const VerificationMeta('specimenRemark');
+  late final GeneratedColumn<String> specimenRemark = GeneratedColumn<String>(
+      'specimenRemark', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _habitatRemarkMeta =
+      const VerificationMeta('habitatRemark');
+  late final GeneratedColumn<String> habitatRemark = GeneratedColumn<String>(
+      'habitatRemark', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
         specimenUuid,
@@ -9163,7 +9177,9 @@ class AvianMeasurement extends Table
         tailIsMolt,
         tailMolt,
         bodyMolt,
-        moltRemark
+        moltRemark,
+        specimenRemark,
+        habitatRemark
       ];
   @override
   String get aliasedName => _alias ?? 'avianMeasurement';
@@ -9359,6 +9375,18 @@ class AvianMeasurement extends Table
           moltRemark.isAcceptableOrUnknown(
               data['moltRemark']!, _moltRemarkMeta));
     }
+    if (data.containsKey('specimenRemark')) {
+      context.handle(
+          _specimenRemarkMeta,
+          specimenRemark.isAcceptableOrUnknown(
+              data['specimenRemark']!, _specimenRemarkMeta));
+    }
+    if (data.containsKey('habitatRemark')) {
+      context.handle(
+          _habitatRemarkMeta,
+          habitatRemark.isAcceptableOrUnknown(
+              data['habitatRemark']!, _habitatRemarkMeta));
+    }
     return context;
   }
 
@@ -9438,6 +9466,10 @@ class AvianMeasurement extends Table
           .read(DriftSqlType.int, data['${effectivePrefix}bodyMolt']),
       moltRemark: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}moltRemark']),
+      specimenRemark: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}specimenRemark']),
+      habitatRemark: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}habitatRemark']),
     );
   }
 
@@ -9490,6 +9522,8 @@ class AvianMeasurementData extends DataClass
   final String? tailMolt;
   final int? bodyMolt;
   final String? moltRemark;
+  final String? specimenRemark;
+  final String? habitatRemark;
   const AvianMeasurementData(
       {required this.specimenUuid,
       this.weight,
@@ -9525,7 +9559,9 @@ class AvianMeasurementData extends DataClass
       this.tailIsMolt,
       this.tailMolt,
       this.bodyMolt,
-      this.moltRemark});
+      this.moltRemark,
+      this.specimenRemark,
+      this.habitatRemark});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -9632,6 +9668,12 @@ class AvianMeasurementData extends DataClass
     if (!nullToAbsent || moltRemark != null) {
       map['moltRemark'] = Variable<String>(moltRemark);
     }
+    if (!nullToAbsent || specimenRemark != null) {
+      map['specimenRemark'] = Variable<String>(specimenRemark);
+    }
+    if (!nullToAbsent || habitatRemark != null) {
+      map['habitatRemark'] = Variable<String>(habitatRemark);
+    }
     return map;
   }
 
@@ -9735,6 +9777,12 @@ class AvianMeasurementData extends DataClass
       moltRemark: moltRemark == null && nullToAbsent
           ? const Value.absent()
           : Value(moltRemark),
+      specimenRemark: specimenRemark == null && nullToAbsent
+          ? const Value.absent()
+          : Value(specimenRemark),
+      habitatRemark: habitatRemark == null && nullToAbsent
+          ? const Value.absent()
+          : Value(habitatRemark),
     );
   }
 
@@ -9777,6 +9825,8 @@ class AvianMeasurementData extends DataClass
       tailMolt: serializer.fromJson<String?>(json['tailMolt']),
       bodyMolt: serializer.fromJson<int?>(json['bodyMolt']),
       moltRemark: serializer.fromJson<String?>(json['moltRemark']),
+      specimenRemark: serializer.fromJson<String?>(json['specimenRemark']),
+      habitatRemark: serializer.fromJson<String?>(json['habitatRemark']),
     );
   }
   @override
@@ -9818,6 +9868,8 @@ class AvianMeasurementData extends DataClass
       'tailMolt': serializer.toJson<String?>(tailMolt),
       'bodyMolt': serializer.toJson<int?>(bodyMolt),
       'moltRemark': serializer.toJson<String?>(moltRemark),
+      'specimenRemark': serializer.toJson<String?>(specimenRemark),
+      'habitatRemark': serializer.toJson<String?>(habitatRemark),
     };
   }
 
@@ -9856,7 +9908,9 @@ class AvianMeasurementData extends DataClass
           Value<int?> tailIsMolt = const Value.absent(),
           Value<String?> tailMolt = const Value.absent(),
           Value<int?> bodyMolt = const Value.absent(),
-          Value<String?> moltRemark = const Value.absent()}) =>
+          Value<String?> moltRemark = const Value.absent(),
+          Value<String?> specimenRemark = const Value.absent(),
+          Value<String?> habitatRemark = const Value.absent()}) =>
       AvianMeasurementData(
         specimenUuid: specimenUuid ?? this.specimenUuid,
         weight: weight.present ? weight.value : this.weight,
@@ -9906,6 +9960,10 @@ class AvianMeasurementData extends DataClass
         tailMolt: tailMolt.present ? tailMolt.value : this.tailMolt,
         bodyMolt: bodyMolt.present ? bodyMolt.value : this.bodyMolt,
         moltRemark: moltRemark.present ? moltRemark.value : this.moltRemark,
+        specimenRemark:
+            specimenRemark.present ? specimenRemark.value : this.specimenRemark,
+        habitatRemark:
+            habitatRemark.present ? habitatRemark.value : this.habitatRemark,
       );
   @override
   String toString() {
@@ -9944,7 +10002,9 @@ class AvianMeasurementData extends DataClass
           ..write('tailIsMolt: $tailIsMolt, ')
           ..write('tailMolt: $tailMolt, ')
           ..write('bodyMolt: $bodyMolt, ')
-          ..write('moltRemark: $moltRemark')
+          ..write('moltRemark: $moltRemark, ')
+          ..write('specimenRemark: $specimenRemark, ')
+          ..write('habitatRemark: $habitatRemark')
           ..write(')'))
         .toString();
   }
@@ -9985,7 +10045,9 @@ class AvianMeasurementData extends DataClass
         tailIsMolt,
         tailMolt,
         bodyMolt,
-        moltRemark
+        moltRemark,
+        specimenRemark,
+        habitatRemark
       ]);
   @override
   bool operator ==(Object other) =>
@@ -10025,7 +10087,9 @@ class AvianMeasurementData extends DataClass
           other.tailIsMolt == this.tailIsMolt &&
           other.tailMolt == this.tailMolt &&
           other.bodyMolt == this.bodyMolt &&
-          other.moltRemark == this.moltRemark);
+          other.moltRemark == this.moltRemark &&
+          other.specimenRemark == this.specimenRemark &&
+          other.habitatRemark == this.habitatRemark);
 }
 
 class AvianMeasurementCompanion extends UpdateCompanion<AvianMeasurementData> {
@@ -10064,6 +10128,8 @@ class AvianMeasurementCompanion extends UpdateCompanion<AvianMeasurementData> {
   final Value<String?> tailMolt;
   final Value<int?> bodyMolt;
   final Value<String?> moltRemark;
+  final Value<String?> specimenRemark;
+  final Value<String?> habitatRemark;
   final Value<int> rowid;
   const AvianMeasurementCompanion({
     this.specimenUuid = const Value.absent(),
@@ -10101,6 +10167,8 @@ class AvianMeasurementCompanion extends UpdateCompanion<AvianMeasurementData> {
     this.tailMolt = const Value.absent(),
     this.bodyMolt = const Value.absent(),
     this.moltRemark = const Value.absent(),
+    this.specimenRemark = const Value.absent(),
+    this.habitatRemark = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   AvianMeasurementCompanion.insert({
@@ -10139,6 +10207,8 @@ class AvianMeasurementCompanion extends UpdateCompanion<AvianMeasurementData> {
     this.tailMolt = const Value.absent(),
     this.bodyMolt = const Value.absent(),
     this.moltRemark = const Value.absent(),
+    this.specimenRemark = const Value.absent(),
+    this.habitatRemark = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : specimenUuid = Value(specimenUuid);
   static Insertable<AvianMeasurementData> custom({
@@ -10177,6 +10247,8 @@ class AvianMeasurementCompanion extends UpdateCompanion<AvianMeasurementData> {
     Expression<String>? tailMolt,
     Expression<int>? bodyMolt,
     Expression<String>? moltRemark,
+    Expression<String>? specimenRemark,
+    Expression<String>? habitatRemark,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -10215,6 +10287,8 @@ class AvianMeasurementCompanion extends UpdateCompanion<AvianMeasurementData> {
       if (tailMolt != null) 'tailMolt': tailMolt,
       if (bodyMolt != null) 'bodyMolt': bodyMolt,
       if (moltRemark != null) 'moltRemark': moltRemark,
+      if (specimenRemark != null) 'specimenRemark': specimenRemark,
+      if (habitatRemark != null) 'habitatRemark': habitatRemark,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -10255,6 +10329,8 @@ class AvianMeasurementCompanion extends UpdateCompanion<AvianMeasurementData> {
       Value<String?>? tailMolt,
       Value<int?>? bodyMolt,
       Value<String?>? moltRemark,
+      Value<String?>? specimenRemark,
+      Value<String?>? habitatRemark,
       Value<int>? rowid}) {
     return AvianMeasurementCompanion(
       specimenUuid: specimenUuid ?? this.specimenUuid,
@@ -10292,6 +10368,8 @@ class AvianMeasurementCompanion extends UpdateCompanion<AvianMeasurementData> {
       tailMolt: tailMolt ?? this.tailMolt,
       bodyMolt: bodyMolt ?? this.bodyMolt,
       moltRemark: moltRemark ?? this.moltRemark,
+      specimenRemark: specimenRemark ?? this.specimenRemark,
+      habitatRemark: habitatRemark ?? this.habitatRemark,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -10404,6 +10482,12 @@ class AvianMeasurementCompanion extends UpdateCompanion<AvianMeasurementData> {
     if (moltRemark.present) {
       map['moltRemark'] = Variable<String>(moltRemark.value);
     }
+    if (specimenRemark.present) {
+      map['specimenRemark'] = Variable<String>(specimenRemark.value);
+    }
+    if (habitatRemark.present) {
+      map['habitatRemark'] = Variable<String>(habitatRemark.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -10448,6 +10532,8 @@ class AvianMeasurementCompanion extends UpdateCompanion<AvianMeasurementData> {
           ..write('tailMolt: $tailMolt, ')
           ..write('bodyMolt: $bodyMolt, ')
           ..write('moltRemark: $moltRemark, ')
+          ..write('specimenRemark: $specimenRemark, ')
+          ..write('habitatRemark: $habitatRemark, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();

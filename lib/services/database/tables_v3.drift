@@ -291,6 +291,8 @@ CREATE TABLE avianMeasurement (
     tailMolt TEXT,
     bodyMolt INT, -- encode text
     moltRemark TEXT,
+    specimenRemark TEXT,
+    habitatRemark TEXT,
     FOREIGN KEY(specimenUuid) REFERENCES specimen(uuid)
 );
 
