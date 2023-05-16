@@ -163,7 +163,7 @@ CREATE TABLE personnel (
     phone TEXT,
     affiliation TEXT,
     role TEXT,
-    currentFieldNumber INT,
+    currentFieldNumber INT, -- the next input for field number
     photoID INT,
     notes TEXT,
     FOREIGN KEY(photoID) REFERENCES personnelPhoto(id)
