@@ -63,7 +63,7 @@ class MammalMeasurementFormsState
                     SpecimenServices(ref).updateMammalMeasurement(
                       widget.specimenUuid,
                       MammalMeasurementCompanion(
-                        totalLength: db.Value(int.tryParse(value) ?? 0),
+                        totalLength: db.Value(double.tryParse(value) ?? 0),
                       ),
                     );
                   });
@@ -81,7 +81,7 @@ class MammalMeasurementFormsState
                     SpecimenServices(ref).updateMammalMeasurement(
                       widget.specimenUuid,
                       MammalMeasurementCompanion(
-                        tailLength: db.Value(int.tryParse(value)),
+                        tailLength: db.Value(double.tryParse(value)),
                       ),
                     );
                   });
@@ -104,7 +104,7 @@ class MammalMeasurementFormsState
                     SpecimenServices(ref).updateMammalMeasurement(
                       widget.specimenUuid,
                       MammalMeasurementCompanion(
-                        hindFootLength: db.Value(int.tryParse(value)),
+                        hindFootLength: db.Value(double.tryParse(value)),
                       ),
                     );
                   });
@@ -122,7 +122,7 @@ class MammalMeasurementFormsState
                     SpecimenServices(ref).updateMammalMeasurement(
                       widget.specimenUuid,
                       MammalMeasurementCompanion(
-                        earLength: db.Value(int.tryParse(value)),
+                        earLength: db.Value(double.tryParse(value)),
                       ),
                     );
                   });
@@ -166,7 +166,7 @@ class MammalMeasurementFormsState
                       SpecimenServices(ref).updateMammalMeasurement(
                         widget.specimenUuid,
                         MammalMeasurementCompanion(
-                          forearm: db.Value(int.tryParse(value)),
+                          forearm: db.Value(double.tryParse(value)),
                         ),
                       );
                     });
@@ -417,7 +417,7 @@ class ScrotalMaleFormState extends ConsumerState<ScrotalMaleForm> {
                     widget.specimenUuid,
                     MammalMeasurementCompanion(
                       testisLength: db.Value(
-                        int.tryParse(value ?? '0'),
+                        double.tryParse(value ?? '0'),
                       ),
                     ),
                   );
@@ -433,7 +433,7 @@ class ScrotalMaleFormState extends ConsumerState<ScrotalMaleForm> {
                     widget.specimenUuid,
                     MammalMeasurementCompanion(
                       testisWidth: db.Value(
-                        int.tryParse(value ?? '0'),
+                        double.tryParse(value ?? '0'),
                       ),
                     ),
                   );

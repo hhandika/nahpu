@@ -4,7 +4,7 @@ import 'package:nahpu/services/database/database.dart';
 part 'collevent_queries.g.dart';
 
 @DriftAccessor(
-  include: {'tables.drift'},
+  include: {'tables_v3.drift'},
 )
 class CollEventQuery extends DatabaseAccessor<Database>
     with _$CollEventQueryMixin {

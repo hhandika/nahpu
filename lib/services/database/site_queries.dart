@@ -4,7 +4,7 @@ import 'package:nahpu/services/database/database.dart';
 part 'site_queries.g.dart';
 
 @DriftAccessor(
-  include: {'tables.drift'},
+  include: {'tables_v3.drift'},
 )
 class SiteQuery extends DatabaseAccessor<Database> with _$SiteQueryMixin {
   SiteQuery(Database db) : super(db);

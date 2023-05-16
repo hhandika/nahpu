@@ -45,7 +45,7 @@ class SpecimenServices extends DbAccess {
   }
 
   Future<List<SpecimenData>> getBirdSpecimens() async {
-    return SpecimenQuery(dbase).getAllBirdSpecimens(projectUuid);
+    return SpecimenQuery(dbase).getAllAvianSpecimens(projectUuid);
   }
 
   Future<List<SpecimenData>> getBatSpecimens() async {
@@ -89,8 +89,8 @@ class SpecimenServices extends DbAccess {
   }
 
   void _createBirdSpecimen(String specimenUuid) {
-    BirdSpecimenQuery(dbase).createBirdMeasurements(
-        BirdMeasurementCompanion(specimenUuid: db.Value(specimenUuid)));
+    AvianSpecimenQuery(dbase).createAvianMeasurements(
+        AvianMeasurementCompanion(specimenUuid: db.Value(specimenUuid)));
   }
 
   Future<void> updateSpecimen(String uuid, SpecimenCompanion entries) async {
@@ -98,17 +98,17 @@ class SpecimenServices extends DbAccess {
     ref.invalidate(taxonDataProvider);
   }
 
-  Future<BirdMeasurementData> getBirdMeasurementData(String specimenUuid) {
-    return BirdSpecimenQuery(dbase).getBirdMeasurementByUuid(specimenUuid);
+  Future<AvianMeasurementData> getAvianMeasurementData(String specimenUuid) {
+    return AvianSpecimenQuery(dbase).getAvianMeasurementByUuid(specimenUuid);
   }
 
-  void updateBirdMeasurement(
-      String specimenUuid, BirdMeasurementCompanion entries) {
-    BirdSpecimenQuery(dbase).updateBirdMeasurements(specimenUuid, entries);
+  void updateAvianMeasurement(
+      String specimenUuid, AvianMeasurementCompanion entries) {
+    AvianSpecimenQuery(dbase).updateAvianMeasurements(specimenUuid, entries);
   }
 
-  Future<void> deleteBirdMeasurements(String specimenUuid) async {
-    await BirdSpecimenQuery(dbase).deleteBirdMeasurements(specimenUuid);
+  Future<void> deleteAvianMeasurements(String specimenUuid) async {
+    await AvianSpecimenQuery(dbase).deleteAvianMeasurements(specimenUuid);
   }
 
   Future<void> createSpecimenPart(SpecimenPartCompanion form) async {
@@ -132,7 +132,7 @@ class SpecimenServices extends DbAccess {
     await deleteAllSpecimenParts(specimenUuid);
     switch (catalogFmt) {
       case CatalogFmt.birds:
-        await deleteBirdMeasurements(specimenUuid);
+        await deleteAvianMeasurements(specimenUuid);
         break;
       case CatalogFmt.bats:
         await deleteMammalMeasurements(specimenUuid);

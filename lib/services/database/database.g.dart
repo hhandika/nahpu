@@ -361,6 +361,7 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
   final Value<String?> endDate;
   final Value<String?> created;
   final Value<String?> lastAccessed;
+  final Value<int> rowid;
   const ProjectCompanion({
     this.uuid = const Value.absent(),
     this.name = const Value.absent(),
@@ -371,6 +372,7 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
     this.endDate = const Value.absent(),
     this.created = const Value.absent(),
     this.lastAccessed = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   ProjectCompanion.insert({
     required String uuid,
@@ -382,6 +384,7 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
     this.endDate = const Value.absent(),
     this.created = const Value.absent(),
     this.lastAccessed = const Value.absent(),
+    this.rowid = const Value.absent(),
   })  : uuid = Value(uuid),
         name = Value(name);
   static Insertable<ProjectData> custom({
@@ -394,6 +397,7 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
     Expression<String>? endDate,
     Expression<String>? created,
     Expression<String>? lastAccessed,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (uuid != null) 'uuid': uuid,
@@ -406,6 +410,7 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
       if (endDate != null) 'endDate': endDate,
       if (created != null) 'created': created,
       if (lastAccessed != null) 'lastAccessed': lastAccessed,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
@@ -418,7 +423,8 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
       Value<String?>? startDate,
       Value<String?>? endDate,
       Value<String?>? created,
-      Value<String?>? lastAccessed}) {
+      Value<String?>? lastAccessed,
+      Value<int>? rowid}) {
     return ProjectCompanion(
       uuid: uuid ?? this.uuid,
       name: name ?? this.name,
@@ -430,6 +436,7 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
       endDate: endDate ?? this.endDate,
       created: created ?? this.created,
       lastAccessed: lastAccessed ?? this.lastAccessed,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -464,6 +471,9 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
     if (lastAccessed.present) {
       map['lastAccessed'] = Variable<String>(lastAccessed.value);
     }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
     return map;
   }
 
@@ -478,7 +488,8 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
           ..write('startDate: $startDate, ')
           ..write('endDate: $endDate, ')
           ..write('created: $created, ')
-          ..write('lastAccessed: $lastAccessed')
+          ..write('lastAccessed: $lastAccessed, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -1334,6 +1345,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
   final Value<int?> currentFieldNumber;
   final Value<int?> photoID;
   final Value<String?> notes;
+  final Value<int> rowid;
   const PersonnelCompanion({
     this.uuid = const Value.absent(),
     this.name = const Value.absent(),
@@ -1345,6 +1357,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     this.currentFieldNumber = const Value.absent(),
     this.photoID = const Value.absent(),
     this.notes = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   PersonnelCompanion.insert({
     required String uuid,
@@ -1357,6 +1370,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     this.currentFieldNumber = const Value.absent(),
     this.photoID = const Value.absent(),
     this.notes = const Value.absent(),
+    this.rowid = const Value.absent(),
   }) : uuid = Value(uuid);
   static Insertable<PersonnelData> custom({
     Expression<String>? uuid,
@@ -1369,6 +1383,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     Expression<int>? currentFieldNumber,
     Expression<int>? photoID,
     Expression<String>? notes,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (uuid != null) 'uuid': uuid,
@@ -1381,6 +1396,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
       if (currentFieldNumber != null) 'currentFieldNumber': currentFieldNumber,
       if (photoID != null) 'photoID': photoID,
       if (notes != null) 'notes': notes,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
@@ -1394,7 +1410,8 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
       Value<String?>? role,
       Value<int?>? currentFieldNumber,
       Value<int?>? photoID,
-      Value<String?>? notes}) {
+      Value<String?>? notes,
+      Value<int>? rowid}) {
     return PersonnelCompanion(
       uuid: uuid ?? this.uuid,
       name: name ?? this.name,
@@ -1406,6 +1423,7 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
       currentFieldNumber: currentFieldNumber ?? this.currentFieldNumber,
       photoID: photoID ?? this.photoID,
       notes: notes ?? this.notes,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -1442,6 +1460,9 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     if (notes.present) {
       map['notes'] = Variable<String>(notes.value);
     }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
     return map;
   }
 
@@ -1457,7 +1478,8 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
           ..write('role: $role, ')
           ..write('currentFieldNumber: $currentFieldNumber, ')
           ..write('photoID: $photoID, ')
-          ..write('notes: $notes')
+          ..write('notes: $notes, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -4193,6 +4215,7 @@ class WeatherCompanion extends UpdateCompanion<WeatherData> {
   final Value<String?> sunsetTime;
   final Value<String?> moonPhase;
   final Value<String?> notes;
+  final Value<int> rowid;
   const WeatherCompanion({
     this.eventID = const Value.absent(),
     this.lowestDayTempC = const Value.absent(),
@@ -4205,6 +4228,7 @@ class WeatherCompanion extends UpdateCompanion<WeatherData> {
     this.sunsetTime = const Value.absent(),
     this.moonPhase = const Value.absent(),
     this.notes = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   WeatherCompanion.insert({
     this.eventID = const Value.absent(),
@@ -4218,6 +4242,7 @@ class WeatherCompanion extends UpdateCompanion<WeatherData> {
     this.sunsetTime = const Value.absent(),
     this.moonPhase = const Value.absent(),
     this.notes = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   static Insertable<WeatherData> custom({
     Expression<int>? eventID,
@@ -4231,6 +4256,7 @@ class WeatherCompanion extends UpdateCompanion<WeatherData> {
     Expression<String>? sunsetTime,
     Expression<String>? moonPhase,
     Expression<String>? notes,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (eventID != null) 'eventID': eventID,
@@ -4244,6 +4270,7 @@ class WeatherCompanion extends UpdateCompanion<WeatherData> {
       if (sunsetTime != null) 'sunsetTime': sunsetTime,
       if (moonPhase != null) 'moonPhase': moonPhase,
       if (notes != null) 'notes': notes,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
@@ -4258,7 +4285,8 @@ class WeatherCompanion extends UpdateCompanion<WeatherData> {
       Value<String?>? sunriseTime,
       Value<String?>? sunsetTime,
       Value<String?>? moonPhase,
-      Value<String?>? notes}) {
+      Value<String?>? notes,
+      Value<int>? rowid}) {
     return WeatherCompanion(
       eventID: eventID ?? this.eventID,
       lowestDayTempC: lowestDayTempC ?? this.lowestDayTempC,
@@ -4271,6 +4299,7 @@ class WeatherCompanion extends UpdateCompanion<WeatherData> {
       sunsetTime: sunsetTime ?? this.sunsetTime,
       moonPhase: moonPhase ?? this.moonPhase,
       notes: notes ?? this.notes,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -4310,6 +4339,9 @@ class WeatherCompanion extends UpdateCompanion<WeatherData> {
     if (notes.present) {
       map['notes'] = Variable<String>(notes.value);
     }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
     return map;
   }
 
@@ -4326,7 +4358,8 @@ class WeatherCompanion extends UpdateCompanion<WeatherData> {
           ..write('sunriseTime: $sunriseTime, ')
           ..write('sunsetTime: $sunsetTime, ')
           ..write('moonPhase: $moonPhase, ')
-          ..write('notes: $notes')
+          ..write('notes: $notes, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -5829,29 +5862,37 @@ class PersonnelListData extends DataClass
 class PersonnelListCompanion extends UpdateCompanion<PersonnelListData> {
   final Value<String?> projectUuid;
   final Value<String?> personnelUuid;
+  final Value<int> rowid;
   const PersonnelListCompanion({
     this.projectUuid = const Value.absent(),
     this.personnelUuid = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   PersonnelListCompanion.insert({
     this.projectUuid = const Value.absent(),
     this.personnelUuid = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   static Insertable<PersonnelListData> custom({
     Expression<String>? projectUuid,
     Expression<String>? personnelUuid,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (projectUuid != null) 'projectUuid': projectUuid,
       if (personnelUuid != null) 'personnelUuid': personnelUuid,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
   PersonnelListCompanion copyWith(
-      {Value<String?>? projectUuid, Value<String?>? personnelUuid}) {
+      {Value<String?>? projectUuid,
+      Value<String?>? personnelUuid,
+      Value<int>? rowid}) {
     return PersonnelListCompanion(
       projectUuid: projectUuid ?? this.projectUuid,
       personnelUuid: personnelUuid ?? this.personnelUuid,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -5864,6 +5905,9 @@ class PersonnelListCompanion extends UpdateCompanion<PersonnelListData> {
     if (personnelUuid.present) {
       map['personnelUuid'] = Variable<String>(personnelUuid.value);
     }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
     return map;
   }
 
@@ -5871,7 +5915,8 @@ class PersonnelListCompanion extends UpdateCompanion<PersonnelListData> {
   String toString() {
     return (StringBuffer('PersonnelListCompanion(')
           ..write('projectUuid: $projectUuid, ')
-          ..write('personnelUuid: $personnelUuid')
+          ..write('personnelUuid: $personnelUuid, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -6025,29 +6070,37 @@ class ProjectPersonnelData extends DataClass
 class ProjectPersonnelCompanion extends UpdateCompanion<ProjectPersonnelData> {
   final Value<String?> projectUuid;
   final Value<String?> personnelId;
+  final Value<int> rowid;
   const ProjectPersonnelCompanion({
     this.projectUuid = const Value.absent(),
     this.personnelId = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   ProjectPersonnelCompanion.insert({
     this.projectUuid = const Value.absent(),
     this.personnelId = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   static Insertable<ProjectPersonnelData> custom({
     Expression<String>? projectUuid,
     Expression<String>? personnelId,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (projectUuid != null) 'projectUuid': projectUuid,
       if (personnelId != null) 'personnelId': personnelId,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
   ProjectPersonnelCompanion copyWith(
-      {Value<String?>? projectUuid, Value<String?>? personnelId}) {
+      {Value<String?>? projectUuid,
+      Value<String?>? personnelId,
+      Value<int>? rowid}) {
     return ProjectPersonnelCompanion(
       projectUuid: projectUuid ?? this.projectUuid,
       personnelId: personnelId ?? this.personnelId,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -6060,6 +6113,9 @@ class ProjectPersonnelCompanion extends UpdateCompanion<ProjectPersonnelData> {
     if (personnelId.present) {
       map['personnelId'] = Variable<String>(personnelId.value);
     }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
     return map;
   }
 
@@ -6067,7 +6123,8 @@ class ProjectPersonnelCompanion extends UpdateCompanion<ProjectPersonnelData> {
   String toString() {
     return (StringBuffer('ProjectPersonnelCompanion(')
           ..write('projectUuid: $projectUuid, ')
-          ..write('personnelId: $personnelId')
+          ..write('personnelId: $personnelId, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -6624,6 +6681,19 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _trapIDMeta = const VerificationMeta('trapID');
+  late final GeneratedColumn<String> trapID = GeneratedColumn<String>(
+      'trapID', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _coordinateIDMeta =
+      const VerificationMeta('coordinateID');
+  late final GeneratedColumn<int> coordinateID = GeneratedColumn<int>(
+      'coordinateID', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _catalogerIDMeta =
       const VerificationMeta('catalogerID');
   late final GeneratedColumn<String> catalogerID = GeneratedColumn<String>(
@@ -6686,6 +6756,8 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
         isRelativeTime,
         captureTime,
         trapType,
+        trapID,
+        coordinateID,
         catalogerID,
         fieldNumber,
         collEventID,
@@ -6758,6 +6830,16 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
     if (data.containsKey('trapType')) {
       context.handle(_trapTypeMeta,
           trapType.isAcceptableOrUnknown(data['trapType']!, _trapTypeMeta));
+    }
+    if (data.containsKey('trapID')) {
+      context.handle(_trapIDMeta,
+          trapID.isAcceptableOrUnknown(data['trapID']!, _trapIDMeta));
+    }
+    if (data.containsKey('coordinateID')) {
+      context.handle(
+          _coordinateIDMeta,
+          coordinateID.isAcceptableOrUnknown(
+              data['coordinateID']!, _coordinateIDMeta));
     }
     if (data.containsKey('catalogerID')) {
       context.handle(
@@ -6832,6 +6914,10 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
           .read(DriftSqlType.string, data['${effectivePrefix}captureTime']),
       trapType: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}trapType']),
+      trapID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}trapID']),
+      coordinateID: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}coordinateID']),
       catalogerID: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}catalogerID']),
       fieldNumber: attachedDatabase.typeMapping
@@ -6879,6 +6965,8 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
   final int? isRelativeTime;
   final String? captureTime;
   final String? trapType;
+  final String? trapID;
+  final int? coordinateID;
   final String? catalogerID;
   final int? fieldNumber;
   final int? collEventID;
@@ -6898,6 +6986,8 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       this.isRelativeTime,
       this.captureTime,
       this.trapType,
+      this.trapID,
+      this.coordinateID,
       this.catalogerID,
       this.fieldNumber,
       this.collEventID,
@@ -6938,6 +7028,12 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
     }
     if (!nullToAbsent || trapType != null) {
       map['trapType'] = Variable<String>(trapType);
+    }
+    if (!nullToAbsent || trapID != null) {
+      map['trapID'] = Variable<String>(trapID);
+    }
+    if (!nullToAbsent || coordinateID != null) {
+      map['coordinateID'] = Variable<int>(coordinateID);
     }
     if (!nullToAbsent || catalogerID != null) {
       map['catalogerID'] = Variable<String>(catalogerID);
@@ -6996,6 +7092,11 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       trapType: trapType == null && nullToAbsent
           ? const Value.absent()
           : Value(trapType),
+      trapID:
+          trapID == null && nullToAbsent ? const Value.absent() : Value(trapID),
+      coordinateID: coordinateID == null && nullToAbsent
+          ? const Value.absent()
+          : Value(coordinateID),
       catalogerID: catalogerID == null && nullToAbsent
           ? const Value.absent()
           : Value(catalogerID),
@@ -7035,6 +7136,8 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       isRelativeTime: serializer.fromJson<int?>(json['isRelativeTime']),
       captureTime: serializer.fromJson<String?>(json['captureTime']),
       trapType: serializer.fromJson<String?>(json['trapType']),
+      trapID: serializer.fromJson<String?>(json['trapID']),
+      coordinateID: serializer.fromJson<int?>(json['coordinateID']),
       catalogerID: serializer.fromJson<String?>(json['catalogerID']),
       fieldNumber: serializer.fromJson<int?>(json['fieldNumber']),
       collEventID: serializer.fromJson<int?>(json['collEventID']),
@@ -7060,6 +7163,8 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       'isRelativeTime': serializer.toJson<int?>(isRelativeTime),
       'captureTime': serializer.toJson<String?>(captureTime),
       'trapType': serializer.toJson<String?>(trapType),
+      'trapID': serializer.toJson<String?>(trapID),
+      'coordinateID': serializer.toJson<int?>(coordinateID),
       'catalogerID': serializer.toJson<String?>(catalogerID),
       'fieldNumber': serializer.toJson<int?>(fieldNumber),
       'collEventID': serializer.toJson<int?>(collEventID),
@@ -7082,6 +7187,8 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           Value<int?> isRelativeTime = const Value.absent(),
           Value<String?> captureTime = const Value.absent(),
           Value<String?> trapType = const Value.absent(),
+          Value<String?> trapID = const Value.absent(),
+          Value<int?> coordinateID = const Value.absent(),
           Value<String?> catalogerID = const Value.absent(),
           Value<int?> fieldNumber = const Value.absent(),
           Value<int?> collEventID = const Value.absent(),
@@ -7102,6 +7209,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
             isRelativeTime.present ? isRelativeTime.value : this.isRelativeTime,
         captureTime: captureTime.present ? captureTime.value : this.captureTime,
         trapType: trapType.present ? trapType.value : this.trapType,
+        trapID: trapID.present ? trapID.value : this.trapID,
+        coordinateID:
+            coordinateID.present ? coordinateID.value : this.coordinateID,
         catalogerID: catalogerID.present ? catalogerID.value : this.catalogerID,
         fieldNumber: fieldNumber.present ? fieldNumber.value : this.fieldNumber,
         collEventID: collEventID.present ? collEventID.value : this.collEventID,
@@ -7130,6 +7240,8 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           ..write('isRelativeTime: $isRelativeTime, ')
           ..write('captureTime: $captureTime, ')
           ..write('trapType: $trapType, ')
+          ..write('trapID: $trapID, ')
+          ..write('coordinateID: $coordinateID, ')
           ..write('catalogerID: $catalogerID, ')
           ..write('fieldNumber: $fieldNumber, ')
           ..write('collEventID: $collEventID, ')
@@ -7154,6 +7266,8 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       isRelativeTime,
       captureTime,
       trapType,
+      trapID,
+      coordinateID,
       catalogerID,
       fieldNumber,
       collEventID,
@@ -7176,6 +7290,8 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           other.isRelativeTime == this.isRelativeTime &&
           other.captureTime == this.captureTime &&
           other.trapType == this.trapType &&
+          other.trapID == this.trapID &&
+          other.coordinateID == this.coordinateID &&
           other.catalogerID == this.catalogerID &&
           other.fieldNumber == this.fieldNumber &&
           other.collEventID == this.collEventID &&
@@ -7197,6 +7313,8 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
   final Value<int?> isRelativeTime;
   final Value<String?> captureTime;
   final Value<String?> trapType;
+  final Value<String?> trapID;
+  final Value<int?> coordinateID;
   final Value<String?> catalogerID;
   final Value<int?> fieldNumber;
   final Value<int?> collEventID;
@@ -7204,6 +7322,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
   final Value<int?> collPersonnelID;
   final Value<int?> collMethodID;
   final Value<String?> preparatorID;
+  final Value<int> rowid;
   const SpecimenCompanion({
     this.uuid = const Value.absent(),
     this.projectUuid = const Value.absent(),
@@ -7216,6 +7335,8 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     this.isRelativeTime = const Value.absent(),
     this.captureTime = const Value.absent(),
     this.trapType = const Value.absent(),
+    this.trapID = const Value.absent(),
+    this.coordinateID = const Value.absent(),
     this.catalogerID = const Value.absent(),
     this.fieldNumber = const Value.absent(),
     this.collEventID = const Value.absent(),
@@ -7223,6 +7344,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     this.collPersonnelID = const Value.absent(),
     this.collMethodID = const Value.absent(),
     this.preparatorID = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   SpecimenCompanion.insert({
     required String uuid,
@@ -7236,6 +7358,8 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     this.isRelativeTime = const Value.absent(),
     this.captureTime = const Value.absent(),
     this.trapType = const Value.absent(),
+    this.trapID = const Value.absent(),
+    this.coordinateID = const Value.absent(),
     this.catalogerID = const Value.absent(),
     this.fieldNumber = const Value.absent(),
     this.collEventID = const Value.absent(),
@@ -7243,6 +7367,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     this.collPersonnelID = const Value.absent(),
     this.collMethodID = const Value.absent(),
     this.preparatorID = const Value.absent(),
+    this.rowid = const Value.absent(),
   }) : uuid = Value(uuid);
   static Insertable<SpecimenData> custom({
     Expression<String>? uuid,
@@ -7256,6 +7381,8 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     Expression<int>? isRelativeTime,
     Expression<String>? captureTime,
     Expression<String>? trapType,
+    Expression<String>? trapID,
+    Expression<int>? coordinateID,
     Expression<String>? catalogerID,
     Expression<int>? fieldNumber,
     Expression<int>? collEventID,
@@ -7263,6 +7390,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     Expression<int>? collPersonnelID,
     Expression<int>? collMethodID,
     Expression<String>? preparatorID,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (uuid != null) 'uuid': uuid,
@@ -7276,6 +7404,8 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       if (isRelativeTime != null) 'isRelativeTime': isRelativeTime,
       if (captureTime != null) 'captureTime': captureTime,
       if (trapType != null) 'trapType': trapType,
+      if (trapID != null) 'trapID': trapID,
+      if (coordinateID != null) 'coordinateID': coordinateID,
       if (catalogerID != null) 'catalogerID': catalogerID,
       if (fieldNumber != null) 'fieldNumber': fieldNumber,
       if (collEventID != null) 'collEventID': collEventID,
@@ -7284,6 +7414,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       if (collPersonnelID != null) 'collPersonnelID': collPersonnelID,
       if (collMethodID != null) 'collMethodID': collMethodID,
       if (preparatorID != null) 'preparatorID': preparatorID,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
@@ -7299,13 +7430,16 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       Value<int?>? isRelativeTime,
       Value<String?>? captureTime,
       Value<String?>? trapType,
+      Value<String?>? trapID,
+      Value<int?>? coordinateID,
       Value<String?>? catalogerID,
       Value<int?>? fieldNumber,
       Value<int?>? collEventID,
       Value<int?>? isMultipleCollector,
       Value<int?>? collPersonnelID,
       Value<int?>? collMethodID,
-      Value<String?>? preparatorID}) {
+      Value<String?>? preparatorID,
+      Value<int>? rowid}) {
     return SpecimenCompanion(
       uuid: uuid ?? this.uuid,
       projectUuid: projectUuid ?? this.projectUuid,
@@ -7318,6 +7452,8 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       isRelativeTime: isRelativeTime ?? this.isRelativeTime,
       captureTime: captureTime ?? this.captureTime,
       trapType: trapType ?? this.trapType,
+      trapID: trapID ?? this.trapID,
+      coordinateID: coordinateID ?? this.coordinateID,
       catalogerID: catalogerID ?? this.catalogerID,
       fieldNumber: fieldNumber ?? this.fieldNumber,
       collEventID: collEventID ?? this.collEventID,
@@ -7325,6 +7461,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       collPersonnelID: collPersonnelID ?? this.collPersonnelID,
       collMethodID: collMethodID ?? this.collMethodID,
       preparatorID: preparatorID ?? this.preparatorID,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -7364,6 +7501,12 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     if (trapType.present) {
       map['trapType'] = Variable<String>(trapType.value);
     }
+    if (trapID.present) {
+      map['trapID'] = Variable<String>(trapID.value);
+    }
+    if (coordinateID.present) {
+      map['coordinateID'] = Variable<int>(coordinateID.value);
+    }
     if (catalogerID.present) {
       map['catalogerID'] = Variable<String>(catalogerID.value);
     }
@@ -7385,6 +7528,9 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     if (preparatorID.present) {
       map['preparatorID'] = Variable<String>(preparatorID.value);
     }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
     return map;
   }
 
@@ -7402,13 +7548,16 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
           ..write('isRelativeTime: $isRelativeTime, ')
           ..write('captureTime: $captureTime, ')
           ..write('trapType: $trapType, ')
+          ..write('trapID: $trapID, ')
+          ..write('coordinateID: $coordinateID, ')
           ..write('catalogerID: $catalogerID, ')
           ..write('fieldNumber: $fieldNumber, ')
           ..write('collEventID: $collEventID, ')
           ..write('isMultipleCollector: $isMultipleCollector, ')
           ..write('collPersonnelID: $collPersonnelID, ')
           ..write('collMethodID: $collMethodID, ')
-          ..write('preparatorID: $preparatorID')
+          ..write('preparatorID: $preparatorID, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -7429,37 +7578,37 @@ class MammalMeasurement extends Table
       $customConstraints: 'NOT NULL');
   static const VerificationMeta _totalLengthMeta =
       const VerificationMeta('totalLength');
-  late final GeneratedColumn<int> totalLength = GeneratedColumn<int>(
+  late final GeneratedColumn<double> totalLength = GeneratedColumn<double>(
       'totalLength', aliasedName, true,
-      type: DriftSqlType.int,
+      type: DriftSqlType.double,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _tailLengthMeta =
       const VerificationMeta('tailLength');
-  late final GeneratedColumn<int> tailLength = GeneratedColumn<int>(
+  late final GeneratedColumn<double> tailLength = GeneratedColumn<double>(
       'tailLength', aliasedName, true,
-      type: DriftSqlType.int,
+      type: DriftSqlType.double,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _hindFootLengthMeta =
       const VerificationMeta('hindFootLength');
-  late final GeneratedColumn<int> hindFootLength = GeneratedColumn<int>(
+  late final GeneratedColumn<double> hindFootLength = GeneratedColumn<double>(
       'hindFootLength', aliasedName, true,
-      type: DriftSqlType.int,
+      type: DriftSqlType.double,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _earLengthMeta =
       const VerificationMeta('earLength');
-  late final GeneratedColumn<int> earLength = GeneratedColumn<int>(
+  late final GeneratedColumn<double> earLength = GeneratedColumn<double>(
       'earLength', aliasedName, true,
-      type: DriftSqlType.int,
+      type: DriftSqlType.double,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _forearmMeta =
       const VerificationMeta('forearm');
-  late final GeneratedColumn<int> forearm = GeneratedColumn<int>(
+  late final GeneratedColumn<double> forearm = GeneratedColumn<double>(
       'forearm', aliasedName, true,
-      type: DriftSqlType.int,
+      type: DriftSqlType.double,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _weightMeta = const VerificationMeta('weight');
@@ -7503,16 +7652,16 @@ class MammalMeasurement extends Table
       $customConstraints: '');
   static const VerificationMeta _testisLengthMeta =
       const VerificationMeta('testisLength');
-  late final GeneratedColumn<int> testisLength = GeneratedColumn<int>(
+  late final GeneratedColumn<double> testisLength = GeneratedColumn<double>(
       'testisLength', aliasedName, true,
-      type: DriftSqlType.int,
+      type: DriftSqlType.double,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _testisWidthMeta =
       const VerificationMeta('testisWidth');
-  late final GeneratedColumn<int> testisWidth = GeneratedColumn<int>(
+  late final GeneratedColumn<double> testisWidth = GeneratedColumn<double>(
       'testisWidth', aliasedName, true,
-      type: DriftSqlType.int,
+      type: DriftSqlType.double,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _epididymisAppearanceMeta =
@@ -7819,15 +7968,15 @@ class MammalMeasurement extends Table
       specimenUuid: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}specimenUuid'])!,
       totalLength: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}totalLength']),
+          .read(DriftSqlType.double, data['${effectivePrefix}totalLength']),
       tailLength: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}tailLength']),
+          .read(DriftSqlType.double, data['${effectivePrefix}tailLength']),
       hindFootLength: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}hindFootLength']),
+          .read(DriftSqlType.double, data['${effectivePrefix}hindFootLength']),
       earLength: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}earLength']),
+          .read(DriftSqlType.double, data['${effectivePrefix}earLength']),
       forearm: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}forearm']),
+          .read(DriftSqlType.double, data['${effectivePrefix}forearm']),
       weight: attachedDatabase.typeMapping
           .read(DriftSqlType.double, data['${effectivePrefix}weight']),
       accuracy: attachedDatabase.typeMapping
@@ -7841,9 +7990,9 @@ class MammalMeasurement extends Table
       testisPosition: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}testisPosition']),
       testisLength: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}testisLength']),
+          .read(DriftSqlType.double, data['${effectivePrefix}testisLength']),
       testisWidth: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}testisWidth']),
+          .read(DriftSqlType.double, data['${effectivePrefix}testisWidth']),
       epididymisAppearance: attachedDatabase.typeMapping.read(
           DriftSqlType.int, data['${effectivePrefix}epididymisAppearance']),
       reproductiveStage: attachedDatabase.typeMapping
@@ -7890,19 +8039,19 @@ class MammalMeasurement extends Table
 class MammalMeasurementData extends DataClass
     implements Insertable<MammalMeasurementData> {
   final String specimenUuid;
-  final int? totalLength;
-  final int? tailLength;
-  final int? hindFootLength;
-  final int? earLength;
-  final int? forearm;
+  final double? totalLength;
+  final double? tailLength;
+  final double? hindFootLength;
+  final double? earLength;
+  final double? forearm;
   final double? weight;
   final String? accuracy;
   final String? accuracySpecify;
   final int? sex;
   final int? age;
   final int? testisPosition;
-  final int? testisLength;
-  final int? testisWidth;
+  final double? testisLength;
+  final double? testisWidth;
   final int? epididymisAppearance;
   final int? reproductiveStage;
   final int? leftPlacentalScars;
@@ -7951,19 +8100,19 @@ class MammalMeasurementData extends DataClass
     final map = <String, Expression>{};
     map['specimenUuid'] = Variable<String>(specimenUuid);
     if (!nullToAbsent || totalLength != null) {
-      map['totalLength'] = Variable<int>(totalLength);
+      map['totalLength'] = Variable<double>(totalLength);
     }
     if (!nullToAbsent || tailLength != null) {
-      map['tailLength'] = Variable<int>(tailLength);
+      map['tailLength'] = Variable<double>(tailLength);
     }
     if (!nullToAbsent || hindFootLength != null) {
-      map['hindFootLength'] = Variable<int>(hindFootLength);
+      map['hindFootLength'] = Variable<double>(hindFootLength);
     }
     if (!nullToAbsent || earLength != null) {
-      map['earLength'] = Variable<int>(earLength);
+      map['earLength'] = Variable<double>(earLength);
     }
     if (!nullToAbsent || forearm != null) {
-      map['forearm'] = Variable<int>(forearm);
+      map['forearm'] = Variable<double>(forearm);
     }
     if (!nullToAbsent || weight != null) {
       map['weight'] = Variable<double>(weight);
@@ -7984,10 +8133,10 @@ class MammalMeasurementData extends DataClass
       map['testisPosition'] = Variable<int>(testisPosition);
     }
     if (!nullToAbsent || testisLength != null) {
-      map['testisLength'] = Variable<int>(testisLength);
+      map['testisLength'] = Variable<double>(testisLength);
     }
     if (!nullToAbsent || testisWidth != null) {
-      map['testisWidth'] = Variable<int>(testisWidth);
+      map['testisWidth'] = Variable<double>(testisWidth);
     }
     if (!nullToAbsent || epididymisAppearance != null) {
       map['epididymisAppearance'] = Variable<int>(epididymisAppearance);
@@ -8120,19 +8269,19 @@ class MammalMeasurementData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return MammalMeasurementData(
       specimenUuid: serializer.fromJson<String>(json['specimenUuid']),
-      totalLength: serializer.fromJson<int?>(json['totalLength']),
-      tailLength: serializer.fromJson<int?>(json['tailLength']),
-      hindFootLength: serializer.fromJson<int?>(json['hindFootLength']),
-      earLength: serializer.fromJson<int?>(json['earLength']),
-      forearm: serializer.fromJson<int?>(json['forearm']),
+      totalLength: serializer.fromJson<double?>(json['totalLength']),
+      tailLength: serializer.fromJson<double?>(json['tailLength']),
+      hindFootLength: serializer.fromJson<double?>(json['hindFootLength']),
+      earLength: serializer.fromJson<double?>(json['earLength']),
+      forearm: serializer.fromJson<double?>(json['forearm']),
       weight: serializer.fromJson<double?>(json['weight']),
       accuracy: serializer.fromJson<String?>(json['accuracy']),
       accuracySpecify: serializer.fromJson<String?>(json['accuracySpecify']),
       sex: serializer.fromJson<int?>(json['sex']),
       age: serializer.fromJson<int?>(json['age']),
       testisPosition: serializer.fromJson<int?>(json['testisPosition']),
-      testisLength: serializer.fromJson<int?>(json['testisLength']),
-      testisWidth: serializer.fromJson<int?>(json['testisWidth']),
+      testisLength: serializer.fromJson<double?>(json['testisLength']),
+      testisWidth: serializer.fromJson<double?>(json['testisWidth']),
       epididymisAppearance:
           serializer.fromJson<int?>(json['epididymisAppearance']),
       reproductiveStage: serializer.fromJson<int?>(json['reproductiveStage']),
@@ -8159,19 +8308,19 @@ class MammalMeasurementData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'specimenUuid': serializer.toJson<String>(specimenUuid),
-      'totalLength': serializer.toJson<int?>(totalLength),
-      'tailLength': serializer.toJson<int?>(tailLength),
-      'hindFootLength': serializer.toJson<int?>(hindFootLength),
-      'earLength': serializer.toJson<int?>(earLength),
-      'forearm': serializer.toJson<int?>(forearm),
+      'totalLength': serializer.toJson<double?>(totalLength),
+      'tailLength': serializer.toJson<double?>(tailLength),
+      'hindFootLength': serializer.toJson<double?>(hindFootLength),
+      'earLength': serializer.toJson<double?>(earLength),
+      'forearm': serializer.toJson<double?>(forearm),
       'weight': serializer.toJson<double?>(weight),
       'accuracy': serializer.toJson<String?>(accuracy),
       'accuracySpecify': serializer.toJson<String?>(accuracySpecify),
       'sex': serializer.toJson<int?>(sex),
       'age': serializer.toJson<int?>(age),
       'testisPosition': serializer.toJson<int?>(testisPosition),
-      'testisLength': serializer.toJson<int?>(testisLength),
-      'testisWidth': serializer.toJson<int?>(testisWidth),
+      'testisLength': serializer.toJson<double?>(testisLength),
+      'testisWidth': serializer.toJson<double?>(testisWidth),
       'epididymisAppearance': serializer.toJson<int?>(epididymisAppearance),
       'reproductiveStage': serializer.toJson<int?>(reproductiveStage),
       'leftPlacentalScars': serializer.toJson<int?>(leftPlacentalScars),
@@ -8191,19 +8340,19 @@ class MammalMeasurementData extends DataClass
 
   MammalMeasurementData copyWith(
           {String? specimenUuid,
-          Value<int?> totalLength = const Value.absent(),
-          Value<int?> tailLength = const Value.absent(),
-          Value<int?> hindFootLength = const Value.absent(),
-          Value<int?> earLength = const Value.absent(),
-          Value<int?> forearm = const Value.absent(),
+          Value<double?> totalLength = const Value.absent(),
+          Value<double?> tailLength = const Value.absent(),
+          Value<double?> hindFootLength = const Value.absent(),
+          Value<double?> earLength = const Value.absent(),
+          Value<double?> forearm = const Value.absent(),
           Value<double?> weight = const Value.absent(),
           Value<String?> accuracy = const Value.absent(),
           Value<String?> accuracySpecify = const Value.absent(),
           Value<int?> sex = const Value.absent(),
           Value<int?> age = const Value.absent(),
           Value<int?> testisPosition = const Value.absent(),
-          Value<int?> testisLength = const Value.absent(),
-          Value<int?> testisWidth = const Value.absent(),
+          Value<double?> testisLength = const Value.absent(),
+          Value<double?> testisWidth = const Value.absent(),
           Value<int?> epididymisAppearance = const Value.absent(),
           Value<int?> reproductiveStage = const Value.absent(),
           Value<int?> leftPlacentalScars = const Value.absent(),
@@ -8378,19 +8527,19 @@ class MammalMeasurementData extends DataClass
 class MammalMeasurementCompanion
     extends UpdateCompanion<MammalMeasurementData> {
   final Value<String> specimenUuid;
-  final Value<int?> totalLength;
-  final Value<int?> tailLength;
-  final Value<int?> hindFootLength;
-  final Value<int?> earLength;
-  final Value<int?> forearm;
+  final Value<double?> totalLength;
+  final Value<double?> tailLength;
+  final Value<double?> hindFootLength;
+  final Value<double?> earLength;
+  final Value<double?> forearm;
   final Value<double?> weight;
   final Value<String?> accuracy;
   final Value<String?> accuracySpecify;
   final Value<int?> sex;
   final Value<int?> age;
   final Value<int?> testisPosition;
-  final Value<int?> testisLength;
-  final Value<int?> testisWidth;
+  final Value<double?> testisLength;
+  final Value<double?> testisWidth;
   final Value<int?> epididymisAppearance;
   final Value<int?> reproductiveStage;
   final Value<int?> leftPlacentalScars;
@@ -8405,6 +8554,7 @@ class MammalMeasurementCompanion
   final Value<int?> embryoRightCount;
   final Value<int?> embryoCR;
   final Value<String?> remark;
+  final Value<int> rowid;
   const MammalMeasurementCompanion({
     this.specimenUuid = const Value.absent(),
     this.totalLength = const Value.absent(),
@@ -8434,6 +8584,7 @@ class MammalMeasurementCompanion
     this.embryoRightCount = const Value.absent(),
     this.embryoCR = const Value.absent(),
     this.remark = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   MammalMeasurementCompanion.insert({
     required String specimenUuid,
@@ -8464,22 +8615,23 @@ class MammalMeasurementCompanion
     this.embryoRightCount = const Value.absent(),
     this.embryoCR = const Value.absent(),
     this.remark = const Value.absent(),
+    this.rowid = const Value.absent(),
   }) : specimenUuid = Value(specimenUuid);
   static Insertable<MammalMeasurementData> custom({
     Expression<String>? specimenUuid,
-    Expression<int>? totalLength,
-    Expression<int>? tailLength,
-    Expression<int>? hindFootLength,
-    Expression<int>? earLength,
-    Expression<int>? forearm,
+    Expression<double>? totalLength,
+    Expression<double>? tailLength,
+    Expression<double>? hindFootLength,
+    Expression<double>? earLength,
+    Expression<double>? forearm,
     Expression<double>? weight,
     Expression<String>? accuracy,
     Expression<String>? accuracySpecify,
     Expression<int>? sex,
     Expression<int>? age,
     Expression<int>? testisPosition,
-    Expression<int>? testisLength,
-    Expression<int>? testisWidth,
+    Expression<double>? testisLength,
+    Expression<double>? testisWidth,
     Expression<int>? epididymisAppearance,
     Expression<int>? reproductiveStage,
     Expression<int>? leftPlacentalScars,
@@ -8494,6 +8646,7 @@ class MammalMeasurementCompanion
     Expression<int>? embryoRightCount,
     Expression<int>? embryoCR,
     Expression<String>? remark,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (specimenUuid != null) 'specimenUuid': specimenUuid,
@@ -8529,24 +8682,25 @@ class MammalMeasurementCompanion
       if (embryoRightCount != null) 'embryoRightCount': embryoRightCount,
       if (embryoCR != null) 'embryoCR': embryoCR,
       if (remark != null) 'remark': remark,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
   MammalMeasurementCompanion copyWith(
       {Value<String>? specimenUuid,
-      Value<int?>? totalLength,
-      Value<int?>? tailLength,
-      Value<int?>? hindFootLength,
-      Value<int?>? earLength,
-      Value<int?>? forearm,
+      Value<double?>? totalLength,
+      Value<double?>? tailLength,
+      Value<double?>? hindFootLength,
+      Value<double?>? earLength,
+      Value<double?>? forearm,
       Value<double?>? weight,
       Value<String?>? accuracy,
       Value<String?>? accuracySpecify,
       Value<int?>? sex,
       Value<int?>? age,
       Value<int?>? testisPosition,
-      Value<int?>? testisLength,
-      Value<int?>? testisWidth,
+      Value<double?>? testisLength,
+      Value<double?>? testisWidth,
       Value<int?>? epididymisAppearance,
       Value<int?>? reproductiveStage,
       Value<int?>? leftPlacentalScars,
@@ -8560,7 +8714,8 @@ class MammalMeasurementCompanion
       Value<int?>? embryoLeftCount,
       Value<int?>? embryoRightCount,
       Value<int?>? embryoCR,
-      Value<String?>? remark}) {
+      Value<String?>? remark,
+      Value<int>? rowid}) {
     return MammalMeasurementCompanion(
       specimenUuid: specimenUuid ?? this.specimenUuid,
       totalLength: totalLength ?? this.totalLength,
@@ -8590,6 +8745,7 @@ class MammalMeasurementCompanion
       embryoRightCount: embryoRightCount ?? this.embryoRightCount,
       embryoCR: embryoCR ?? this.embryoCR,
       remark: remark ?? this.remark,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -8600,19 +8756,19 @@ class MammalMeasurementCompanion
       map['specimenUuid'] = Variable<String>(specimenUuid.value);
     }
     if (totalLength.present) {
-      map['totalLength'] = Variable<int>(totalLength.value);
+      map['totalLength'] = Variable<double>(totalLength.value);
     }
     if (tailLength.present) {
-      map['tailLength'] = Variable<int>(tailLength.value);
+      map['tailLength'] = Variable<double>(tailLength.value);
     }
     if (hindFootLength.present) {
-      map['hindFootLength'] = Variable<int>(hindFootLength.value);
+      map['hindFootLength'] = Variable<double>(hindFootLength.value);
     }
     if (earLength.present) {
-      map['earLength'] = Variable<int>(earLength.value);
+      map['earLength'] = Variable<double>(earLength.value);
     }
     if (forearm.present) {
-      map['forearm'] = Variable<int>(forearm.value);
+      map['forearm'] = Variable<double>(forearm.value);
     }
     if (weight.present) {
       map['weight'] = Variable<double>(weight.value);
@@ -8633,10 +8789,10 @@ class MammalMeasurementCompanion
       map['testisPosition'] = Variable<int>(testisPosition.value);
     }
     if (testisLength.present) {
-      map['testisLength'] = Variable<int>(testisLength.value);
+      map['testisLength'] = Variable<double>(testisLength.value);
     }
     if (testisWidth.present) {
-      map['testisWidth'] = Variable<int>(testisWidth.value);
+      map['testisWidth'] = Variable<double>(testisWidth.value);
     }
     if (epididymisAppearance.present) {
       map['epididymisAppearance'] = Variable<int>(epididymisAppearance.value);
@@ -8680,6 +8836,9 @@ class MammalMeasurementCompanion
     if (remark.present) {
       map['remark'] = Variable<String>(remark.value);
     }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
     return map;
   }
 
@@ -8713,18 +8872,19 @@ class MammalMeasurementCompanion
           ..write('embryoLeftCount: $embryoLeftCount, ')
           ..write('embryoRightCount: $embryoRightCount, ')
           ..write('embryoCR: $embryoCR, ')
-          ..write('remark: $remark')
+          ..write('remark: $remark, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
 }
 
-class BirdMeasurement extends Table
-    with TableInfo<BirdMeasurement, BirdMeasurementData> {
+class AvianMeasurement extends Table
+    with TableInfo<AvianMeasurement, AvianMeasurementData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  BirdMeasurement(this.attachedDatabase, [this._alias]);
+  AvianMeasurement(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _specimenUuidMeta =
       const VerificationMeta('specimenUuid');
   late final GeneratedColumn<String> specimenUuid = GeneratedColumn<String>(
@@ -8740,15 +8900,22 @@ class BirdMeasurement extends Table
       $customConstraints: '');
   static const VerificationMeta _wingspanMeta =
       const VerificationMeta('wingspan');
-  late final GeneratedColumn<int> wingspan = GeneratedColumn<int>(
+  late final GeneratedColumn<double> wingspan = GeneratedColumn<double>(
       'wingspan', aliasedName, true,
-      type: DriftSqlType.int,
+      type: DriftSqlType.double,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _irisColorMeta =
       const VerificationMeta('irisColor');
   late final GeneratedColumn<String> irisColor = GeneratedColumn<String>(
       'irisColor', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _irisHexMeta =
+      const VerificationMeta('irisHex');
+  late final GeneratedColumn<String> irisHex = GeneratedColumn<String>(
+      'irisHex', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -8759,10 +8926,24 @@ class BirdMeasurement extends Table
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _billHexMeta =
+      const VerificationMeta('billHex');
+  late final GeneratedColumn<String> billHex = GeneratedColumn<String>(
+      'billHex', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _footColorMeta =
       const VerificationMeta('footColor');
   late final GeneratedColumn<String> footColor = GeneratedColumn<String>(
       'footColor', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _footHexMeta =
+      const VerificationMeta('footHex');
+  late final GeneratedColumn<String> footHex = GeneratedColumn<String>(
+      'footHex', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -8773,16 +8954,16 @@ class BirdMeasurement extends Table
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _tarsusHexMeta =
+      const VerificationMeta('tarsusHex');
+  late final GeneratedColumn<String> tarsusHex = GeneratedColumn<String>(
+      'tarsusHex', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _sexMeta = const VerificationMeta('sex');
   late final GeneratedColumn<int> sex = GeneratedColumn<int>(
       'sex', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _moltingMeta =
-      const VerificationMeta('molting');
-  late final GeneratedColumn<int> molting = GeneratedColumn<int>(
-      'molting', aliasedName, true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -8802,9 +8983,9 @@ class BirdMeasurement extends Table
       $customConstraints: '');
   static const VerificationMeta _bursaLengthMeta =
       const VerificationMeta('bursaLength');
-  late final GeneratedColumn<int> bursaLength = GeneratedColumn<int>(
+  late final GeneratedColumn<double> bursaLength = GeneratedColumn<double>(
       'bursaLength', aliasedName, true,
-      type: DriftSqlType.int,
+      type: DriftSqlType.double,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _fatMeta = const VerificationMeta('fat');
@@ -8822,16 +9003,16 @@ class BirdMeasurement extends Table
       $customConstraints: '');
   static const VerificationMeta _testisLengthMeta =
       const VerificationMeta('testisLength');
-  late final GeneratedColumn<int> testisLength = GeneratedColumn<int>(
+  late final GeneratedColumn<double> testisLength = GeneratedColumn<double>(
       'testisLength', aliasedName, true,
-      type: DriftSqlType.int,
+      type: DriftSqlType.double,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _testisWidthMeta =
       const VerificationMeta('testisWidth');
-  late final GeneratedColumn<int> testisWidth = GeneratedColumn<int>(
+  late final GeneratedColumn<double> testisWidth = GeneratedColumn<double>(
       'testisWidth', aliasedName, true,
-      type: DriftSqlType.int,
+      type: DriftSqlType.double,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _testisRemarkMeta =
@@ -8843,16 +9024,23 @@ class BirdMeasurement extends Table
       $customConstraints: '');
   static const VerificationMeta _ovaryLengthMeta =
       const VerificationMeta('ovaryLength');
-  late final GeneratedColumn<int> ovaryLength = GeneratedColumn<int>(
+  late final GeneratedColumn<double> ovaryLength = GeneratedColumn<double>(
       'ovaryLength', aliasedName, true,
-      type: DriftSqlType.int,
+      type: DriftSqlType.double,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _ovaryWidthMeta =
+      const VerificationMeta('ovaryWidth');
+  late final GeneratedColumn<double> ovaryWidth = GeneratedColumn<double>(
+      'ovaryWidth', aliasedName, true,
+      type: DriftSqlType.double,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _oviductWidthMeta =
       const VerificationMeta('oviductWidth');
-  late final GeneratedColumn<int> oviductWidth = GeneratedColumn<int>(
+  late final GeneratedColumn<double> oviductWidth = GeneratedColumn<double>(
       'oviductWidth', aliasedName, true,
-      type: DriftSqlType.int,
+      type: DriftSqlType.double,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _ovaryAppearanceMeta =
@@ -8864,30 +9052,23 @@ class BirdMeasurement extends Table
       $customConstraints: '');
   static const VerificationMeta _firstOvaSizeMeta =
       const VerificationMeta('firstOvaSize');
-  late final GeneratedColumn<int> firstOvaSize = GeneratedColumn<int>(
+  late final GeneratedColumn<double> firstOvaSize = GeneratedColumn<double>(
       'firstOvaSize', aliasedName, true,
-      type: DriftSqlType.int,
+      type: DriftSqlType.double,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _secondOvaSizeMeta =
       const VerificationMeta('secondOvaSize');
-  late final GeneratedColumn<int> secondOvaSize = GeneratedColumn<int>(
+  late final GeneratedColumn<double> secondOvaSize = GeneratedColumn<double>(
       'secondOvaSize', aliasedName, true,
-      type: DriftSqlType.int,
+      type: DriftSqlType.double,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _thirdOvaSizeMeta =
       const VerificationMeta('thirdOvaSize');
-  late final GeneratedColumn<int> thirdOvaSize = GeneratedColumn<int>(
+  late final GeneratedColumn<double> thirdOvaSize = GeneratedColumn<double>(
       'thirdOvaSize', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _ovaryWidthMeta =
-      const VerificationMeta('ovaryWidth');
-  late final GeneratedColumn<int> ovaryWidth = GeneratedColumn<int>(
-      'ovaryWidth', aliasedName, true,
-      type: DriftSqlType.int,
+      type: DriftSqlType.double,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _oviductAppearanceMeta =
@@ -8904,48 +9085,34 @@ class BirdMeasurement extends Table
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _wingRightPrimaryMeta =
-      const VerificationMeta('wingRightPrimary');
-  late final GeneratedColumn<String> wingRightPrimary = GeneratedColumn<String>(
-      'wingRightPrimary', aliasedName, true,
+  static const VerificationMeta _wingIsMoltMeta =
+      const VerificationMeta('wingIsMolt');
+  late final GeneratedColumn<int> wingIsMolt = GeneratedColumn<int>(
+      'wingIsMolt', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _wingMoltMeta =
+      const VerificationMeta('wingMolt');
+  late final GeneratedColumn<String> wingMolt = GeneratedColumn<String>(
+      'wingMolt', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _wingLeftPrimaryMeta =
-      const VerificationMeta('wingLeftPrimary');
-  late final GeneratedColumn<String> wingLeftPrimary = GeneratedColumn<String>(
-      'wingLeftPrimary', aliasedName, true,
+  static const VerificationMeta _tailIsMoltMeta =
+      const VerificationMeta('tailIsMolt');
+  late final GeneratedColumn<int> tailIsMolt = GeneratedColumn<int>(
+      'tailIsMolt', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _tailMoltMeta =
+      const VerificationMeta('tailMolt');
+  late final GeneratedColumn<String> tailMolt = GeneratedColumn<String>(
+      'tailMolt', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _wingRightSecondaryMeta =
-      const VerificationMeta('wingRightSecondary');
-  late final GeneratedColumn<String> wingRightSecondary =
-      GeneratedColumn<String>('wingRightSecondary', aliasedName, true,
-          type: DriftSqlType.string,
-          requiredDuringInsert: false,
-          $customConstraints: '');
-  static const VerificationMeta _wingLeftSecondaryMeta =
-      const VerificationMeta('wingLeftSecondary');
-  late final GeneratedColumn<String> wingLeftSecondary =
-      GeneratedColumn<String>('wingLeftSecondary', aliasedName, true,
-          type: DriftSqlType.string,
-          requiredDuringInsert: false,
-          $customConstraints: '');
-  static const VerificationMeta _tailRightRectricesMeta =
-      const VerificationMeta('tailRightRectrices');
-  late final GeneratedColumn<String> tailRightRectrices =
-      GeneratedColumn<String>('tailRightRectrices', aliasedName, true,
-          type: DriftSqlType.string,
-          requiredDuringInsert: false,
-          $customConstraints: '');
-  static const VerificationMeta _tailLeftRectricesMeta =
-      const VerificationMeta('tailLeftRectrices');
-  late final GeneratedColumn<String> tailLeftRectrices =
-      GeneratedColumn<String>('tailLeftRectrices', aliasedName, true,
-          type: DriftSqlType.string,
-          requiredDuringInsert: false,
-          $customConstraints: '');
   static const VerificationMeta _bodyMoltMeta =
       const VerificationMeta('bodyMolt');
   late final GeneratedColumn<int> bodyMolt = GeneratedColumn<int>(
@@ -8966,11 +9133,14 @@ class BirdMeasurement extends Table
         weight,
         wingspan,
         irisColor,
+        irisHex,
         billColor,
+        billHex,
         footColor,
+        footHex,
         tarsusColor,
+        tarsusHex,
         sex,
-        molting,
         broodPatch,
         skullOssification,
         bursaLength,
@@ -8980,30 +9150,28 @@ class BirdMeasurement extends Table
         testisWidth,
         testisRemark,
         ovaryLength,
+        ovaryWidth,
         oviductWidth,
         ovaryAppearance,
         firstOvaSize,
         secondOvaSize,
         thirdOvaSize,
-        ovaryWidth,
         oviductAppearance,
         ovaryRemark,
-        wingRightPrimary,
-        wingLeftPrimary,
-        wingRightSecondary,
-        wingLeftSecondary,
-        tailRightRectrices,
-        tailLeftRectrices,
+        wingIsMolt,
+        wingMolt,
+        tailIsMolt,
+        tailMolt,
         bodyMolt,
         moltRemark
       ];
   @override
-  String get aliasedName => _alias ?? 'birdMeasurement';
+  String get aliasedName => _alias ?? 'avianMeasurement';
   @override
-  String get actualTableName => 'birdMeasurement';
+  String get actualTableName => 'avianMeasurement';
   @override
   VerificationContext validateIntegrity(
-      Insertable<BirdMeasurementData> instance,
+      Insertable<AvianMeasurementData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -9027,13 +9195,25 @@ class BirdMeasurement extends Table
       context.handle(_irisColorMeta,
           irisColor.isAcceptableOrUnknown(data['irisColor']!, _irisColorMeta));
     }
+    if (data.containsKey('irisHex')) {
+      context.handle(_irisHexMeta,
+          irisHex.isAcceptableOrUnknown(data['irisHex']!, _irisHexMeta));
+    }
     if (data.containsKey('billColor')) {
       context.handle(_billColorMeta,
           billColor.isAcceptableOrUnknown(data['billColor']!, _billColorMeta));
     }
+    if (data.containsKey('billHex')) {
+      context.handle(_billHexMeta,
+          billHex.isAcceptableOrUnknown(data['billHex']!, _billHexMeta));
+    }
     if (data.containsKey('footColor')) {
       context.handle(_footColorMeta,
           footColor.isAcceptableOrUnknown(data['footColor']!, _footColorMeta));
+    }
+    if (data.containsKey('footHex')) {
+      context.handle(_footHexMeta,
+          footHex.isAcceptableOrUnknown(data['footHex']!, _footHexMeta));
     }
     if (data.containsKey('tarsusColor')) {
       context.handle(
@@ -9041,13 +9221,13 @@ class BirdMeasurement extends Table
           tarsusColor.isAcceptableOrUnknown(
               data['tarsusColor']!, _tarsusColorMeta));
     }
+    if (data.containsKey('tarsusHex')) {
+      context.handle(_tarsusHexMeta,
+          tarsusHex.isAcceptableOrUnknown(data['tarsusHex']!, _tarsusHexMeta));
+    }
     if (data.containsKey('sex')) {
       context.handle(
           _sexMeta, sex.isAcceptableOrUnknown(data['sex']!, _sexMeta));
-    }
-    if (data.containsKey('molting')) {
-      context.handle(_moltingMeta,
-          molting.isAcceptableOrUnknown(data['molting']!, _moltingMeta));
     }
     if (data.containsKey('broodPatch')) {
       context.handle(
@@ -9101,6 +9281,12 @@ class BirdMeasurement extends Table
           ovaryLength.isAcceptableOrUnknown(
               data['ovaryLength']!, _ovaryLengthMeta));
     }
+    if (data.containsKey('ovaryWidth')) {
+      context.handle(
+          _ovaryWidthMeta,
+          ovaryWidth.isAcceptableOrUnknown(
+              data['ovaryWidth']!, _ovaryWidthMeta));
+    }
     if (data.containsKey('oviductWidth')) {
       context.handle(
           _oviductWidthMeta,
@@ -9131,12 +9317,6 @@ class BirdMeasurement extends Table
           thirdOvaSize.isAcceptableOrUnknown(
               data['thirdOvaSize']!, _thirdOvaSizeMeta));
     }
-    if (data.containsKey('ovaryWidth')) {
-      context.handle(
-          _ovaryWidthMeta,
-          ovaryWidth.isAcceptableOrUnknown(
-              data['ovaryWidth']!, _ovaryWidthMeta));
-    }
     if (data.containsKey('oviductAppearance')) {
       context.handle(
           _oviductAppearanceMeta,
@@ -9149,41 +9329,25 @@ class BirdMeasurement extends Table
           ovaryRemark.isAcceptableOrUnknown(
               data['ovaryRemark']!, _ovaryRemarkMeta));
     }
-    if (data.containsKey('wingRightPrimary')) {
+    if (data.containsKey('wingIsMolt')) {
       context.handle(
-          _wingRightPrimaryMeta,
-          wingRightPrimary.isAcceptableOrUnknown(
-              data['wingRightPrimary']!, _wingRightPrimaryMeta));
+          _wingIsMoltMeta,
+          wingIsMolt.isAcceptableOrUnknown(
+              data['wingIsMolt']!, _wingIsMoltMeta));
     }
-    if (data.containsKey('wingLeftPrimary')) {
-      context.handle(
-          _wingLeftPrimaryMeta,
-          wingLeftPrimary.isAcceptableOrUnknown(
-              data['wingLeftPrimary']!, _wingLeftPrimaryMeta));
+    if (data.containsKey('wingMolt')) {
+      context.handle(_wingMoltMeta,
+          wingMolt.isAcceptableOrUnknown(data['wingMolt']!, _wingMoltMeta));
     }
-    if (data.containsKey('wingRightSecondary')) {
+    if (data.containsKey('tailIsMolt')) {
       context.handle(
-          _wingRightSecondaryMeta,
-          wingRightSecondary.isAcceptableOrUnknown(
-              data['wingRightSecondary']!, _wingRightSecondaryMeta));
+          _tailIsMoltMeta,
+          tailIsMolt.isAcceptableOrUnknown(
+              data['tailIsMolt']!, _tailIsMoltMeta));
     }
-    if (data.containsKey('wingLeftSecondary')) {
-      context.handle(
-          _wingLeftSecondaryMeta,
-          wingLeftSecondary.isAcceptableOrUnknown(
-              data['wingLeftSecondary']!, _wingLeftSecondaryMeta));
-    }
-    if (data.containsKey('tailRightRectrices')) {
-      context.handle(
-          _tailRightRectricesMeta,
-          tailRightRectrices.isAcceptableOrUnknown(
-              data['tailRightRectrices']!, _tailRightRectricesMeta));
-    }
-    if (data.containsKey('tailLeftRectrices')) {
-      context.handle(
-          _tailLeftRectricesMeta,
-          tailLeftRectrices.isAcceptableOrUnknown(
-              data['tailLeftRectrices']!, _tailLeftRectricesMeta));
+    if (data.containsKey('tailMolt')) {
+      context.handle(_tailMoltMeta,
+          tailMolt.isAcceptableOrUnknown(data['tailMolt']!, _tailMoltMeta));
     }
     if (data.containsKey('bodyMolt')) {
       context.handle(_bodyMoltMeta,
@@ -9201,73 +9365,75 @@ class BirdMeasurement extends Table
   @override
   Set<GeneratedColumn> get $primaryKey => const {};
   @override
-  BirdMeasurementData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  AvianMeasurementData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return BirdMeasurementData(
+    return AvianMeasurementData(
       specimenUuid: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}specimenUuid'])!,
       weight: attachedDatabase.typeMapping
           .read(DriftSqlType.double, data['${effectivePrefix}weight']),
       wingspan: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}wingspan']),
+          .read(DriftSqlType.double, data['${effectivePrefix}wingspan']),
       irisColor: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}irisColor']),
+      irisHex: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}irisHex']),
       billColor: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}billColor']),
+      billHex: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}billHex']),
       footColor: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}footColor']),
+      footHex: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}footHex']),
       tarsusColor: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}tarsusColor']),
+      tarsusHex: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}tarsusHex']),
       sex: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}sex']),
-      molting: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}molting']),
       broodPatch: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}broodPatch']),
       skullOssification: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}skullOssification']),
       bursaLength: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}bursaLength']),
+          .read(DriftSqlType.double, data['${effectivePrefix}bursaLength']),
       fat: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}fat']),
       stomachContent: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}stomachContent']),
       testisLength: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}testisLength']),
+          .read(DriftSqlType.double, data['${effectivePrefix}testisLength']),
       testisWidth: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}testisWidth']),
+          .read(DriftSqlType.double, data['${effectivePrefix}testisWidth']),
       testisRemark: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}testisRemark']),
       ovaryLength: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}ovaryLength']),
+          .read(DriftSqlType.double, data['${effectivePrefix}ovaryLength']),
+      ovaryWidth: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}ovaryWidth']),
       oviductWidth: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}oviductWidth']),
+          .read(DriftSqlType.double, data['${effectivePrefix}oviductWidth']),
       ovaryAppearance: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}ovaryAppearance']),
       firstOvaSize: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}firstOvaSize']),
+          .read(DriftSqlType.double, data['${effectivePrefix}firstOvaSize']),
       secondOvaSize: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}secondOvaSize']),
+          .read(DriftSqlType.double, data['${effectivePrefix}secondOvaSize']),
       thirdOvaSize: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}thirdOvaSize']),
-      ovaryWidth: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}ovaryWidth']),
+          .read(DriftSqlType.double, data['${effectivePrefix}thirdOvaSize']),
       oviductAppearance: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}oviductAppearance']),
       ovaryRemark: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}ovaryRemark']),
-      wingRightPrimary: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}wingRightPrimary']),
-      wingLeftPrimary: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}wingLeftPrimary']),
-      wingRightSecondary: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}wingRightSecondary']),
-      wingLeftSecondary: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}wingLeftSecondary']),
-      tailRightRectrices: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}tailRightRectrices']),
-      tailLeftRectrices: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}tailLeftRectrices']),
+      wingIsMolt: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}wingIsMolt']),
+      wingMolt: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}wingMolt']),
+      tailIsMolt: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}tailIsMolt']),
+      tailMolt: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}tailMolt']),
       bodyMolt: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}bodyMolt']),
       moltRemark: attachedDatabase.typeMapping
@@ -9276,8 +9442,8 @@ class BirdMeasurement extends Table
   }
 
   @override
-  BirdMeasurement createAlias(String alias) {
-    return BirdMeasurement(attachedDatabase, alias);
+  AvianMeasurement createAlias(String alias) {
+    return AvianMeasurement(attachedDatabase, alias);
   }
 
   @override
@@ -9287,52 +9453,56 @@ class BirdMeasurement extends Table
   bool get dontWriteConstraints => true;
 }
 
-class BirdMeasurementData extends DataClass
-    implements Insertable<BirdMeasurementData> {
+class AvianMeasurementData extends DataClass
+    implements Insertable<AvianMeasurementData> {
   final String specimenUuid;
   final double? weight;
-  final int? wingspan;
+  final double? wingspan;
   final String? irisColor;
+  final String? irisHex;
   final String? billColor;
+  final String? billHex;
   final String? footColor;
+  final String? footHex;
   final String? tarsusColor;
+  final String? tarsusHex;
   final int? sex;
-  final int? molting;
   final int? broodPatch;
   final int? skullOssification;
-  final int? bursaLength;
+  final double? bursaLength;
   final int? fat;
   final String? stomachContent;
-  final int? testisLength;
-  final int? testisWidth;
+  final double? testisLength;
+  final double? testisWidth;
   final String? testisRemark;
-  final int? ovaryLength;
-  final int? oviductWidth;
+  final double? ovaryLength;
+  final double? ovaryWidth;
+  final double? oviductWidth;
   final int? ovaryAppearance;
-  final int? firstOvaSize;
-  final int? secondOvaSize;
-  final int? thirdOvaSize;
-  final int? ovaryWidth;
+  final double? firstOvaSize;
+  final double? secondOvaSize;
+  final double? thirdOvaSize;
   final int? oviductAppearance;
   final String? ovaryRemark;
-  final String? wingRightPrimary;
-  final String? wingLeftPrimary;
-  final String? wingRightSecondary;
-  final String? wingLeftSecondary;
-  final String? tailRightRectrices;
-  final String? tailLeftRectrices;
+  final int? wingIsMolt;
+  final String? wingMolt;
+  final int? tailIsMolt;
+  final String? tailMolt;
   final int? bodyMolt;
   final String? moltRemark;
-  const BirdMeasurementData(
+  const AvianMeasurementData(
       {required this.specimenUuid,
       this.weight,
       this.wingspan,
       this.irisColor,
+      this.irisHex,
       this.billColor,
+      this.billHex,
       this.footColor,
+      this.footHex,
       this.tarsusColor,
+      this.tarsusHex,
       this.sex,
-      this.molting,
       this.broodPatch,
       this.skullOssification,
       this.bursaLength,
@@ -9342,20 +9512,18 @@ class BirdMeasurementData extends DataClass
       this.testisWidth,
       this.testisRemark,
       this.ovaryLength,
+      this.ovaryWidth,
       this.oviductWidth,
       this.ovaryAppearance,
       this.firstOvaSize,
       this.secondOvaSize,
       this.thirdOvaSize,
-      this.ovaryWidth,
       this.oviductAppearance,
       this.ovaryRemark,
-      this.wingRightPrimary,
-      this.wingLeftPrimary,
-      this.wingRightSecondary,
-      this.wingLeftSecondary,
-      this.tailRightRectrices,
-      this.tailLeftRectrices,
+      this.wingIsMolt,
+      this.wingMolt,
+      this.tailIsMolt,
+      this.tailMolt,
       this.bodyMolt,
       this.moltRemark});
   @override
@@ -9366,25 +9534,34 @@ class BirdMeasurementData extends DataClass
       map['weight'] = Variable<double>(weight);
     }
     if (!nullToAbsent || wingspan != null) {
-      map['wingspan'] = Variable<int>(wingspan);
+      map['wingspan'] = Variable<double>(wingspan);
     }
     if (!nullToAbsent || irisColor != null) {
       map['irisColor'] = Variable<String>(irisColor);
     }
+    if (!nullToAbsent || irisHex != null) {
+      map['irisHex'] = Variable<String>(irisHex);
+    }
     if (!nullToAbsent || billColor != null) {
       map['billColor'] = Variable<String>(billColor);
+    }
+    if (!nullToAbsent || billHex != null) {
+      map['billHex'] = Variable<String>(billHex);
     }
     if (!nullToAbsent || footColor != null) {
       map['footColor'] = Variable<String>(footColor);
     }
+    if (!nullToAbsent || footHex != null) {
+      map['footHex'] = Variable<String>(footHex);
+    }
     if (!nullToAbsent || tarsusColor != null) {
       map['tarsusColor'] = Variable<String>(tarsusColor);
     }
+    if (!nullToAbsent || tarsusHex != null) {
+      map['tarsusHex'] = Variable<String>(tarsusHex);
+    }
     if (!nullToAbsent || sex != null) {
       map['sex'] = Variable<int>(sex);
-    }
-    if (!nullToAbsent || molting != null) {
-      map['molting'] = Variable<int>(molting);
     }
     if (!nullToAbsent || broodPatch != null) {
       map['broodPatch'] = Variable<int>(broodPatch);
@@ -9393,7 +9570,7 @@ class BirdMeasurementData extends DataClass
       map['skullOssification'] = Variable<int>(skullOssification);
     }
     if (!nullToAbsent || bursaLength != null) {
-      map['bursaLength'] = Variable<int>(bursaLength);
+      map['bursaLength'] = Variable<double>(bursaLength);
     }
     if (!nullToAbsent || fat != null) {
       map['fat'] = Variable<int>(fat);
@@ -9402,34 +9579,34 @@ class BirdMeasurementData extends DataClass
       map['stomachContent'] = Variable<String>(stomachContent);
     }
     if (!nullToAbsent || testisLength != null) {
-      map['testisLength'] = Variable<int>(testisLength);
+      map['testisLength'] = Variable<double>(testisLength);
     }
     if (!nullToAbsent || testisWidth != null) {
-      map['testisWidth'] = Variable<int>(testisWidth);
+      map['testisWidth'] = Variable<double>(testisWidth);
     }
     if (!nullToAbsent || testisRemark != null) {
       map['testisRemark'] = Variable<String>(testisRemark);
     }
     if (!nullToAbsent || ovaryLength != null) {
-      map['ovaryLength'] = Variable<int>(ovaryLength);
+      map['ovaryLength'] = Variable<double>(ovaryLength);
+    }
+    if (!nullToAbsent || ovaryWidth != null) {
+      map['ovaryWidth'] = Variable<double>(ovaryWidth);
     }
     if (!nullToAbsent || oviductWidth != null) {
-      map['oviductWidth'] = Variable<int>(oviductWidth);
+      map['oviductWidth'] = Variable<double>(oviductWidth);
     }
     if (!nullToAbsent || ovaryAppearance != null) {
       map['ovaryAppearance'] = Variable<int>(ovaryAppearance);
     }
     if (!nullToAbsent || firstOvaSize != null) {
-      map['firstOvaSize'] = Variable<int>(firstOvaSize);
+      map['firstOvaSize'] = Variable<double>(firstOvaSize);
     }
     if (!nullToAbsent || secondOvaSize != null) {
-      map['secondOvaSize'] = Variable<int>(secondOvaSize);
+      map['secondOvaSize'] = Variable<double>(secondOvaSize);
     }
     if (!nullToAbsent || thirdOvaSize != null) {
-      map['thirdOvaSize'] = Variable<int>(thirdOvaSize);
-    }
-    if (!nullToAbsent || ovaryWidth != null) {
-      map['ovaryWidth'] = Variable<int>(ovaryWidth);
+      map['thirdOvaSize'] = Variable<double>(thirdOvaSize);
     }
     if (!nullToAbsent || oviductAppearance != null) {
       map['oviductAppearance'] = Variable<int>(oviductAppearance);
@@ -9437,23 +9614,17 @@ class BirdMeasurementData extends DataClass
     if (!nullToAbsent || ovaryRemark != null) {
       map['ovaryRemark'] = Variable<String>(ovaryRemark);
     }
-    if (!nullToAbsent || wingRightPrimary != null) {
-      map['wingRightPrimary'] = Variable<String>(wingRightPrimary);
+    if (!nullToAbsent || wingIsMolt != null) {
+      map['wingIsMolt'] = Variable<int>(wingIsMolt);
     }
-    if (!nullToAbsent || wingLeftPrimary != null) {
-      map['wingLeftPrimary'] = Variable<String>(wingLeftPrimary);
+    if (!nullToAbsent || wingMolt != null) {
+      map['wingMolt'] = Variable<String>(wingMolt);
     }
-    if (!nullToAbsent || wingRightSecondary != null) {
-      map['wingRightSecondary'] = Variable<String>(wingRightSecondary);
+    if (!nullToAbsent || tailIsMolt != null) {
+      map['tailIsMolt'] = Variable<int>(tailIsMolt);
     }
-    if (!nullToAbsent || wingLeftSecondary != null) {
-      map['wingLeftSecondary'] = Variable<String>(wingLeftSecondary);
-    }
-    if (!nullToAbsent || tailRightRectrices != null) {
-      map['tailRightRectrices'] = Variable<String>(tailRightRectrices);
-    }
-    if (!nullToAbsent || tailLeftRectrices != null) {
-      map['tailLeftRectrices'] = Variable<String>(tailLeftRectrices);
+    if (!nullToAbsent || tailMolt != null) {
+      map['tailMolt'] = Variable<String>(tailMolt);
     }
     if (!nullToAbsent || bodyMolt != null) {
       map['bodyMolt'] = Variable<int>(bodyMolt);
@@ -9464,8 +9635,8 @@ class BirdMeasurementData extends DataClass
     return map;
   }
 
-  BirdMeasurementCompanion toCompanion(bool nullToAbsent) {
-    return BirdMeasurementCompanion(
+  AvianMeasurementCompanion toCompanion(bool nullToAbsent) {
+    return AvianMeasurementCompanion(
       specimenUuid: Value(specimenUuid),
       weight:
           weight == null && nullToAbsent ? const Value.absent() : Value(weight),
@@ -9475,19 +9646,28 @@ class BirdMeasurementData extends DataClass
       irisColor: irisColor == null && nullToAbsent
           ? const Value.absent()
           : Value(irisColor),
+      irisHex: irisHex == null && nullToAbsent
+          ? const Value.absent()
+          : Value(irisHex),
       billColor: billColor == null && nullToAbsent
           ? const Value.absent()
           : Value(billColor),
+      billHex: billHex == null && nullToAbsent
+          ? const Value.absent()
+          : Value(billHex),
       footColor: footColor == null && nullToAbsent
           ? const Value.absent()
           : Value(footColor),
+      footHex: footHex == null && nullToAbsent
+          ? const Value.absent()
+          : Value(footHex),
       tarsusColor: tarsusColor == null && nullToAbsent
           ? const Value.absent()
           : Value(tarsusColor),
-      sex: sex == null && nullToAbsent ? const Value.absent() : Value(sex),
-      molting: molting == null && nullToAbsent
+      tarsusHex: tarsusHex == null && nullToAbsent
           ? const Value.absent()
-          : Value(molting),
+          : Value(tarsusHex),
+      sex: sex == null && nullToAbsent ? const Value.absent() : Value(sex),
       broodPatch: broodPatch == null && nullToAbsent
           ? const Value.absent()
           : Value(broodPatch),
@@ -9513,6 +9693,9 @@ class BirdMeasurementData extends DataClass
       ovaryLength: ovaryLength == null && nullToAbsent
           ? const Value.absent()
           : Value(ovaryLength),
+      ovaryWidth: ovaryWidth == null && nullToAbsent
+          ? const Value.absent()
+          : Value(ovaryWidth),
       oviductWidth: oviductWidth == null && nullToAbsent
           ? const Value.absent()
           : Value(oviductWidth),
@@ -9528,33 +9711,24 @@ class BirdMeasurementData extends DataClass
       thirdOvaSize: thirdOvaSize == null && nullToAbsent
           ? const Value.absent()
           : Value(thirdOvaSize),
-      ovaryWidth: ovaryWidth == null && nullToAbsent
-          ? const Value.absent()
-          : Value(ovaryWidth),
       oviductAppearance: oviductAppearance == null && nullToAbsent
           ? const Value.absent()
           : Value(oviductAppearance),
       ovaryRemark: ovaryRemark == null && nullToAbsent
           ? const Value.absent()
           : Value(ovaryRemark),
-      wingRightPrimary: wingRightPrimary == null && nullToAbsent
+      wingIsMolt: wingIsMolt == null && nullToAbsent
           ? const Value.absent()
-          : Value(wingRightPrimary),
-      wingLeftPrimary: wingLeftPrimary == null && nullToAbsent
+          : Value(wingIsMolt),
+      wingMolt: wingMolt == null && nullToAbsent
           ? const Value.absent()
-          : Value(wingLeftPrimary),
-      wingRightSecondary: wingRightSecondary == null && nullToAbsent
+          : Value(wingMolt),
+      tailIsMolt: tailIsMolt == null && nullToAbsent
           ? const Value.absent()
-          : Value(wingRightSecondary),
-      wingLeftSecondary: wingLeftSecondary == null && nullToAbsent
+          : Value(tailIsMolt),
+      tailMolt: tailMolt == null && nullToAbsent
           ? const Value.absent()
-          : Value(wingLeftSecondary),
-      tailRightRectrices: tailRightRectrices == null && nullToAbsent
-          ? const Value.absent()
-          : Value(tailRightRectrices),
-      tailLeftRectrices: tailLeftRectrices == null && nullToAbsent
-          ? const Value.absent()
-          : Value(tailLeftRectrices),
+          : Value(tailMolt),
       bodyMolt: bodyMolt == null && nullToAbsent
           ? const Value.absent()
           : Value(bodyMolt),
@@ -9564,46 +9738,43 @@ class BirdMeasurementData extends DataClass
     );
   }
 
-  factory BirdMeasurementData.fromJson(Map<String, dynamic> json,
+  factory AvianMeasurementData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return BirdMeasurementData(
+    return AvianMeasurementData(
       specimenUuid: serializer.fromJson<String>(json['specimenUuid']),
       weight: serializer.fromJson<double?>(json['weight']),
-      wingspan: serializer.fromJson<int?>(json['wingspan']),
+      wingspan: serializer.fromJson<double?>(json['wingspan']),
       irisColor: serializer.fromJson<String?>(json['irisColor']),
+      irisHex: serializer.fromJson<String?>(json['irisHex']),
       billColor: serializer.fromJson<String?>(json['billColor']),
+      billHex: serializer.fromJson<String?>(json['billHex']),
       footColor: serializer.fromJson<String?>(json['footColor']),
+      footHex: serializer.fromJson<String?>(json['footHex']),
       tarsusColor: serializer.fromJson<String?>(json['tarsusColor']),
+      tarsusHex: serializer.fromJson<String?>(json['tarsusHex']),
       sex: serializer.fromJson<int?>(json['sex']),
-      molting: serializer.fromJson<int?>(json['molting']),
       broodPatch: serializer.fromJson<int?>(json['broodPatch']),
       skullOssification: serializer.fromJson<int?>(json['skullOssification']),
-      bursaLength: serializer.fromJson<int?>(json['bursaLength']),
+      bursaLength: serializer.fromJson<double?>(json['bursaLength']),
       fat: serializer.fromJson<int?>(json['fat']),
       stomachContent: serializer.fromJson<String?>(json['stomachContent']),
-      testisLength: serializer.fromJson<int?>(json['testisLength']),
-      testisWidth: serializer.fromJson<int?>(json['testisWidth']),
+      testisLength: serializer.fromJson<double?>(json['testisLength']),
+      testisWidth: serializer.fromJson<double?>(json['testisWidth']),
       testisRemark: serializer.fromJson<String?>(json['testisRemark']),
-      ovaryLength: serializer.fromJson<int?>(json['ovaryLength']),
-      oviductWidth: serializer.fromJson<int?>(json['oviductWidth']),
+      ovaryLength: serializer.fromJson<double?>(json['ovaryLength']),
+      ovaryWidth: serializer.fromJson<double?>(json['ovaryWidth']),
+      oviductWidth: serializer.fromJson<double?>(json['oviductWidth']),
       ovaryAppearance: serializer.fromJson<int?>(json['ovaryAppearance']),
-      firstOvaSize: serializer.fromJson<int?>(json['firstOvaSize']),
-      secondOvaSize: serializer.fromJson<int?>(json['secondOvaSize']),
-      thirdOvaSize: serializer.fromJson<int?>(json['thirdOvaSize']),
-      ovaryWidth: serializer.fromJson<int?>(json['ovaryWidth']),
+      firstOvaSize: serializer.fromJson<double?>(json['firstOvaSize']),
+      secondOvaSize: serializer.fromJson<double?>(json['secondOvaSize']),
+      thirdOvaSize: serializer.fromJson<double?>(json['thirdOvaSize']),
       oviductAppearance: serializer.fromJson<int?>(json['oviductAppearance']),
       ovaryRemark: serializer.fromJson<String?>(json['ovaryRemark']),
-      wingRightPrimary: serializer.fromJson<String?>(json['wingRightPrimary']),
-      wingLeftPrimary: serializer.fromJson<String?>(json['wingLeftPrimary']),
-      wingRightSecondary:
-          serializer.fromJson<String?>(json['wingRightSecondary']),
-      wingLeftSecondary:
-          serializer.fromJson<String?>(json['wingLeftSecondary']),
-      tailRightRectrices:
-          serializer.fromJson<String?>(json['tailRightRectrices']),
-      tailLeftRectrices:
-          serializer.fromJson<String?>(json['tailLeftRectrices']),
+      wingIsMolt: serializer.fromJson<int?>(json['wingIsMolt']),
+      wingMolt: serializer.fromJson<String?>(json['wingMolt']),
+      tailIsMolt: serializer.fromJson<int?>(json['tailIsMolt']),
+      tailMolt: serializer.fromJson<String?>(json['tailMolt']),
       bodyMolt: serializer.fromJson<int?>(json['bodyMolt']),
       moltRemark: serializer.fromJson<String?>(json['moltRemark']),
     );
@@ -9614,86 +9785,91 @@ class BirdMeasurementData extends DataClass
     return <String, dynamic>{
       'specimenUuid': serializer.toJson<String>(specimenUuid),
       'weight': serializer.toJson<double?>(weight),
-      'wingspan': serializer.toJson<int?>(wingspan),
+      'wingspan': serializer.toJson<double?>(wingspan),
       'irisColor': serializer.toJson<String?>(irisColor),
+      'irisHex': serializer.toJson<String?>(irisHex),
       'billColor': serializer.toJson<String?>(billColor),
+      'billHex': serializer.toJson<String?>(billHex),
       'footColor': serializer.toJson<String?>(footColor),
+      'footHex': serializer.toJson<String?>(footHex),
       'tarsusColor': serializer.toJson<String?>(tarsusColor),
+      'tarsusHex': serializer.toJson<String?>(tarsusHex),
       'sex': serializer.toJson<int?>(sex),
-      'molting': serializer.toJson<int?>(molting),
       'broodPatch': serializer.toJson<int?>(broodPatch),
       'skullOssification': serializer.toJson<int?>(skullOssification),
-      'bursaLength': serializer.toJson<int?>(bursaLength),
+      'bursaLength': serializer.toJson<double?>(bursaLength),
       'fat': serializer.toJson<int?>(fat),
       'stomachContent': serializer.toJson<String?>(stomachContent),
-      'testisLength': serializer.toJson<int?>(testisLength),
-      'testisWidth': serializer.toJson<int?>(testisWidth),
+      'testisLength': serializer.toJson<double?>(testisLength),
+      'testisWidth': serializer.toJson<double?>(testisWidth),
       'testisRemark': serializer.toJson<String?>(testisRemark),
-      'ovaryLength': serializer.toJson<int?>(ovaryLength),
-      'oviductWidth': serializer.toJson<int?>(oviductWidth),
+      'ovaryLength': serializer.toJson<double?>(ovaryLength),
+      'ovaryWidth': serializer.toJson<double?>(ovaryWidth),
+      'oviductWidth': serializer.toJson<double?>(oviductWidth),
       'ovaryAppearance': serializer.toJson<int?>(ovaryAppearance),
-      'firstOvaSize': serializer.toJson<int?>(firstOvaSize),
-      'secondOvaSize': serializer.toJson<int?>(secondOvaSize),
-      'thirdOvaSize': serializer.toJson<int?>(thirdOvaSize),
-      'ovaryWidth': serializer.toJson<int?>(ovaryWidth),
+      'firstOvaSize': serializer.toJson<double?>(firstOvaSize),
+      'secondOvaSize': serializer.toJson<double?>(secondOvaSize),
+      'thirdOvaSize': serializer.toJson<double?>(thirdOvaSize),
       'oviductAppearance': serializer.toJson<int?>(oviductAppearance),
       'ovaryRemark': serializer.toJson<String?>(ovaryRemark),
-      'wingRightPrimary': serializer.toJson<String?>(wingRightPrimary),
-      'wingLeftPrimary': serializer.toJson<String?>(wingLeftPrimary),
-      'wingRightSecondary': serializer.toJson<String?>(wingRightSecondary),
-      'wingLeftSecondary': serializer.toJson<String?>(wingLeftSecondary),
-      'tailRightRectrices': serializer.toJson<String?>(tailRightRectrices),
-      'tailLeftRectrices': serializer.toJson<String?>(tailLeftRectrices),
+      'wingIsMolt': serializer.toJson<int?>(wingIsMolt),
+      'wingMolt': serializer.toJson<String?>(wingMolt),
+      'tailIsMolt': serializer.toJson<int?>(tailIsMolt),
+      'tailMolt': serializer.toJson<String?>(tailMolt),
       'bodyMolt': serializer.toJson<int?>(bodyMolt),
       'moltRemark': serializer.toJson<String?>(moltRemark),
     };
   }
 
-  BirdMeasurementData copyWith(
+  AvianMeasurementData copyWith(
           {String? specimenUuid,
           Value<double?> weight = const Value.absent(),
-          Value<int?> wingspan = const Value.absent(),
+          Value<double?> wingspan = const Value.absent(),
           Value<String?> irisColor = const Value.absent(),
+          Value<String?> irisHex = const Value.absent(),
           Value<String?> billColor = const Value.absent(),
+          Value<String?> billHex = const Value.absent(),
           Value<String?> footColor = const Value.absent(),
+          Value<String?> footHex = const Value.absent(),
           Value<String?> tarsusColor = const Value.absent(),
+          Value<String?> tarsusHex = const Value.absent(),
           Value<int?> sex = const Value.absent(),
-          Value<int?> molting = const Value.absent(),
           Value<int?> broodPatch = const Value.absent(),
           Value<int?> skullOssification = const Value.absent(),
-          Value<int?> bursaLength = const Value.absent(),
+          Value<double?> bursaLength = const Value.absent(),
           Value<int?> fat = const Value.absent(),
           Value<String?> stomachContent = const Value.absent(),
-          Value<int?> testisLength = const Value.absent(),
-          Value<int?> testisWidth = const Value.absent(),
+          Value<double?> testisLength = const Value.absent(),
+          Value<double?> testisWidth = const Value.absent(),
           Value<String?> testisRemark = const Value.absent(),
-          Value<int?> ovaryLength = const Value.absent(),
-          Value<int?> oviductWidth = const Value.absent(),
+          Value<double?> ovaryLength = const Value.absent(),
+          Value<double?> ovaryWidth = const Value.absent(),
+          Value<double?> oviductWidth = const Value.absent(),
           Value<int?> ovaryAppearance = const Value.absent(),
-          Value<int?> firstOvaSize = const Value.absent(),
-          Value<int?> secondOvaSize = const Value.absent(),
-          Value<int?> thirdOvaSize = const Value.absent(),
-          Value<int?> ovaryWidth = const Value.absent(),
+          Value<double?> firstOvaSize = const Value.absent(),
+          Value<double?> secondOvaSize = const Value.absent(),
+          Value<double?> thirdOvaSize = const Value.absent(),
           Value<int?> oviductAppearance = const Value.absent(),
           Value<String?> ovaryRemark = const Value.absent(),
-          Value<String?> wingRightPrimary = const Value.absent(),
-          Value<String?> wingLeftPrimary = const Value.absent(),
-          Value<String?> wingRightSecondary = const Value.absent(),
-          Value<String?> wingLeftSecondary = const Value.absent(),
-          Value<String?> tailRightRectrices = const Value.absent(),
-          Value<String?> tailLeftRectrices = const Value.absent(),
+          Value<int?> wingIsMolt = const Value.absent(),
+          Value<String?> wingMolt = const Value.absent(),
+          Value<int?> tailIsMolt = const Value.absent(),
+          Value<String?> tailMolt = const Value.absent(),
           Value<int?> bodyMolt = const Value.absent(),
           Value<String?> moltRemark = const Value.absent()}) =>
-      BirdMeasurementData(
+      AvianMeasurementData(
         specimenUuid: specimenUuid ?? this.specimenUuid,
         weight: weight.present ? weight.value : this.weight,
         wingspan: wingspan.present ? wingspan.value : this.wingspan,
         irisColor: irisColor.present ? irisColor.value : this.irisColor,
+        irisHex: irisHex.present ? irisHex.value : this.irisHex,
         billColor: billColor.present ? billColor.value : this.billColor,
+        billHex: billHex.present ? billHex.value : this.billHex,
         footColor: footColor.present ? footColor.value : this.footColor,
+        footHex: footHex.present ? footHex.value : this.footHex,
         tarsusColor: tarsusColor.present ? tarsusColor.value : this.tarsusColor,
+        tarsusHex: tarsusHex.present ? tarsusHex.value : this.tarsusHex,
         sex: sex.present ? sex.value : this.sex,
-        molting: molting.present ? molting.value : this.molting,
         broodPatch: broodPatch.present ? broodPatch.value : this.broodPatch,
         skullOssification: skullOssification.present
             ? skullOssification.value
@@ -9708,6 +9884,7 @@ class BirdMeasurementData extends DataClass
         testisRemark:
             testisRemark.present ? testisRemark.value : this.testisRemark,
         ovaryLength: ovaryLength.present ? ovaryLength.value : this.ovaryLength,
+        ovaryWidth: ovaryWidth.present ? ovaryWidth.value : this.ovaryWidth,
         oviductWidth:
             oviductWidth.present ? oviductWidth.value : this.oviductWidth,
         ovaryAppearance: ovaryAppearance.present
@@ -9719,44 +9896,32 @@ class BirdMeasurementData extends DataClass
             secondOvaSize.present ? secondOvaSize.value : this.secondOvaSize,
         thirdOvaSize:
             thirdOvaSize.present ? thirdOvaSize.value : this.thirdOvaSize,
-        ovaryWidth: ovaryWidth.present ? ovaryWidth.value : this.ovaryWidth,
         oviductAppearance: oviductAppearance.present
             ? oviductAppearance.value
             : this.oviductAppearance,
         ovaryRemark: ovaryRemark.present ? ovaryRemark.value : this.ovaryRemark,
-        wingRightPrimary: wingRightPrimary.present
-            ? wingRightPrimary.value
-            : this.wingRightPrimary,
-        wingLeftPrimary: wingLeftPrimary.present
-            ? wingLeftPrimary.value
-            : this.wingLeftPrimary,
-        wingRightSecondary: wingRightSecondary.present
-            ? wingRightSecondary.value
-            : this.wingRightSecondary,
-        wingLeftSecondary: wingLeftSecondary.present
-            ? wingLeftSecondary.value
-            : this.wingLeftSecondary,
-        tailRightRectrices: tailRightRectrices.present
-            ? tailRightRectrices.value
-            : this.tailRightRectrices,
-        tailLeftRectrices: tailLeftRectrices.present
-            ? tailLeftRectrices.value
-            : this.tailLeftRectrices,
+        wingIsMolt: wingIsMolt.present ? wingIsMolt.value : this.wingIsMolt,
+        wingMolt: wingMolt.present ? wingMolt.value : this.wingMolt,
+        tailIsMolt: tailIsMolt.present ? tailIsMolt.value : this.tailIsMolt,
+        tailMolt: tailMolt.present ? tailMolt.value : this.tailMolt,
         bodyMolt: bodyMolt.present ? bodyMolt.value : this.bodyMolt,
         moltRemark: moltRemark.present ? moltRemark.value : this.moltRemark,
       );
   @override
   String toString() {
-    return (StringBuffer('BirdMeasurementData(')
+    return (StringBuffer('AvianMeasurementData(')
           ..write('specimenUuid: $specimenUuid, ')
           ..write('weight: $weight, ')
           ..write('wingspan: $wingspan, ')
           ..write('irisColor: $irisColor, ')
+          ..write('irisHex: $irisHex, ')
           ..write('billColor: $billColor, ')
+          ..write('billHex: $billHex, ')
           ..write('footColor: $footColor, ')
+          ..write('footHex: $footHex, ')
           ..write('tarsusColor: $tarsusColor, ')
+          ..write('tarsusHex: $tarsusHex, ')
           ..write('sex: $sex, ')
-          ..write('molting: $molting, ')
           ..write('broodPatch: $broodPatch, ')
           ..write('skullOssification: $skullOssification, ')
           ..write('bursaLength: $bursaLength, ')
@@ -9766,20 +9931,18 @@ class BirdMeasurementData extends DataClass
           ..write('testisWidth: $testisWidth, ')
           ..write('testisRemark: $testisRemark, ')
           ..write('ovaryLength: $ovaryLength, ')
+          ..write('ovaryWidth: $ovaryWidth, ')
           ..write('oviductWidth: $oviductWidth, ')
           ..write('ovaryAppearance: $ovaryAppearance, ')
           ..write('firstOvaSize: $firstOvaSize, ')
           ..write('secondOvaSize: $secondOvaSize, ')
           ..write('thirdOvaSize: $thirdOvaSize, ')
-          ..write('ovaryWidth: $ovaryWidth, ')
           ..write('oviductAppearance: $oviductAppearance, ')
           ..write('ovaryRemark: $ovaryRemark, ')
-          ..write('wingRightPrimary: $wingRightPrimary, ')
-          ..write('wingLeftPrimary: $wingLeftPrimary, ')
-          ..write('wingRightSecondary: $wingRightSecondary, ')
-          ..write('wingLeftSecondary: $wingLeftSecondary, ')
-          ..write('tailRightRectrices: $tailRightRectrices, ')
-          ..write('tailLeftRectrices: $tailLeftRectrices, ')
+          ..write('wingIsMolt: $wingIsMolt, ')
+          ..write('wingMolt: $wingMolt, ')
+          ..write('tailIsMolt: $tailIsMolt, ')
+          ..write('tailMolt: $tailMolt, ')
           ..write('bodyMolt: $bodyMolt, ')
           ..write('moltRemark: $moltRemark')
           ..write(')'))
@@ -9792,11 +9955,14 @@ class BirdMeasurementData extends DataClass
         weight,
         wingspan,
         irisColor,
+        irisHex,
         billColor,
+        billHex,
         footColor,
+        footHex,
         tarsusColor,
+        tarsusHex,
         sex,
-        molting,
         broodPatch,
         skullOssification,
         bursaLength,
@@ -9806,36 +9972,37 @@ class BirdMeasurementData extends DataClass
         testisWidth,
         testisRemark,
         ovaryLength,
+        ovaryWidth,
         oviductWidth,
         ovaryAppearance,
         firstOvaSize,
         secondOvaSize,
         thirdOvaSize,
-        ovaryWidth,
         oviductAppearance,
         ovaryRemark,
-        wingRightPrimary,
-        wingLeftPrimary,
-        wingRightSecondary,
-        wingLeftSecondary,
-        tailRightRectrices,
-        tailLeftRectrices,
+        wingIsMolt,
+        wingMolt,
+        tailIsMolt,
+        tailMolt,
         bodyMolt,
         moltRemark
       ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is BirdMeasurementData &&
+      (other is AvianMeasurementData &&
           other.specimenUuid == this.specimenUuid &&
           other.weight == this.weight &&
           other.wingspan == this.wingspan &&
           other.irisColor == this.irisColor &&
+          other.irisHex == this.irisHex &&
           other.billColor == this.billColor &&
+          other.billHex == this.billHex &&
           other.footColor == this.footColor &&
+          other.footHex == this.footHex &&
           other.tarsusColor == this.tarsusColor &&
+          other.tarsusHex == this.tarsusHex &&
           other.sex == this.sex &&
-          other.molting == this.molting &&
           other.broodPatch == this.broodPatch &&
           other.skullOssification == this.skullOssification &&
           other.bursaLength == this.bursaLength &&
@@ -9845,69 +10012,72 @@ class BirdMeasurementData extends DataClass
           other.testisWidth == this.testisWidth &&
           other.testisRemark == this.testisRemark &&
           other.ovaryLength == this.ovaryLength &&
+          other.ovaryWidth == this.ovaryWidth &&
           other.oviductWidth == this.oviductWidth &&
           other.ovaryAppearance == this.ovaryAppearance &&
           other.firstOvaSize == this.firstOvaSize &&
           other.secondOvaSize == this.secondOvaSize &&
           other.thirdOvaSize == this.thirdOvaSize &&
-          other.ovaryWidth == this.ovaryWidth &&
           other.oviductAppearance == this.oviductAppearance &&
           other.ovaryRemark == this.ovaryRemark &&
-          other.wingRightPrimary == this.wingRightPrimary &&
-          other.wingLeftPrimary == this.wingLeftPrimary &&
-          other.wingRightSecondary == this.wingRightSecondary &&
-          other.wingLeftSecondary == this.wingLeftSecondary &&
-          other.tailRightRectrices == this.tailRightRectrices &&
-          other.tailLeftRectrices == this.tailLeftRectrices &&
+          other.wingIsMolt == this.wingIsMolt &&
+          other.wingMolt == this.wingMolt &&
+          other.tailIsMolt == this.tailIsMolt &&
+          other.tailMolt == this.tailMolt &&
           other.bodyMolt == this.bodyMolt &&
           other.moltRemark == this.moltRemark);
 }
 
-class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
+class AvianMeasurementCompanion extends UpdateCompanion<AvianMeasurementData> {
   final Value<String> specimenUuid;
   final Value<double?> weight;
-  final Value<int?> wingspan;
+  final Value<double?> wingspan;
   final Value<String?> irisColor;
+  final Value<String?> irisHex;
   final Value<String?> billColor;
+  final Value<String?> billHex;
   final Value<String?> footColor;
+  final Value<String?> footHex;
   final Value<String?> tarsusColor;
+  final Value<String?> tarsusHex;
   final Value<int?> sex;
-  final Value<int?> molting;
   final Value<int?> broodPatch;
   final Value<int?> skullOssification;
-  final Value<int?> bursaLength;
+  final Value<double?> bursaLength;
   final Value<int?> fat;
   final Value<String?> stomachContent;
-  final Value<int?> testisLength;
-  final Value<int?> testisWidth;
+  final Value<double?> testisLength;
+  final Value<double?> testisWidth;
   final Value<String?> testisRemark;
-  final Value<int?> ovaryLength;
-  final Value<int?> oviductWidth;
+  final Value<double?> ovaryLength;
+  final Value<double?> ovaryWidth;
+  final Value<double?> oviductWidth;
   final Value<int?> ovaryAppearance;
-  final Value<int?> firstOvaSize;
-  final Value<int?> secondOvaSize;
-  final Value<int?> thirdOvaSize;
-  final Value<int?> ovaryWidth;
+  final Value<double?> firstOvaSize;
+  final Value<double?> secondOvaSize;
+  final Value<double?> thirdOvaSize;
   final Value<int?> oviductAppearance;
   final Value<String?> ovaryRemark;
-  final Value<String?> wingRightPrimary;
-  final Value<String?> wingLeftPrimary;
-  final Value<String?> wingRightSecondary;
-  final Value<String?> wingLeftSecondary;
-  final Value<String?> tailRightRectrices;
-  final Value<String?> tailLeftRectrices;
+  final Value<int?> wingIsMolt;
+  final Value<String?> wingMolt;
+  final Value<int?> tailIsMolt;
+  final Value<String?> tailMolt;
   final Value<int?> bodyMolt;
   final Value<String?> moltRemark;
-  const BirdMeasurementCompanion({
+  final Value<int> rowid;
+  const AvianMeasurementCompanion({
     this.specimenUuid = const Value.absent(),
     this.weight = const Value.absent(),
     this.wingspan = const Value.absent(),
     this.irisColor = const Value.absent(),
+    this.irisHex = const Value.absent(),
     this.billColor = const Value.absent(),
+    this.billHex = const Value.absent(),
     this.footColor = const Value.absent(),
+    this.footHex = const Value.absent(),
     this.tarsusColor = const Value.absent(),
+    this.tarsusHex = const Value.absent(),
     this.sex = const Value.absent(),
-    this.molting = const Value.absent(),
     this.broodPatch = const Value.absent(),
     this.skullOssification = const Value.absent(),
     this.bursaLength = const Value.absent(),
@@ -9917,33 +10087,35 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
     this.testisWidth = const Value.absent(),
     this.testisRemark = const Value.absent(),
     this.ovaryLength = const Value.absent(),
+    this.ovaryWidth = const Value.absent(),
     this.oviductWidth = const Value.absent(),
     this.ovaryAppearance = const Value.absent(),
     this.firstOvaSize = const Value.absent(),
     this.secondOvaSize = const Value.absent(),
     this.thirdOvaSize = const Value.absent(),
-    this.ovaryWidth = const Value.absent(),
     this.oviductAppearance = const Value.absent(),
     this.ovaryRemark = const Value.absent(),
-    this.wingRightPrimary = const Value.absent(),
-    this.wingLeftPrimary = const Value.absent(),
-    this.wingRightSecondary = const Value.absent(),
-    this.wingLeftSecondary = const Value.absent(),
-    this.tailRightRectrices = const Value.absent(),
-    this.tailLeftRectrices = const Value.absent(),
+    this.wingIsMolt = const Value.absent(),
+    this.wingMolt = const Value.absent(),
+    this.tailIsMolt = const Value.absent(),
+    this.tailMolt = const Value.absent(),
     this.bodyMolt = const Value.absent(),
     this.moltRemark = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
-  BirdMeasurementCompanion.insert({
+  AvianMeasurementCompanion.insert({
     required String specimenUuid,
     this.weight = const Value.absent(),
     this.wingspan = const Value.absent(),
     this.irisColor = const Value.absent(),
+    this.irisHex = const Value.absent(),
     this.billColor = const Value.absent(),
+    this.billHex = const Value.absent(),
     this.footColor = const Value.absent(),
+    this.footHex = const Value.absent(),
     this.tarsusColor = const Value.absent(),
+    this.tarsusHex = const Value.absent(),
     this.sex = const Value.absent(),
-    this.molting = const Value.absent(),
     this.broodPatch = const Value.absent(),
     this.skullOssification = const Value.absent(),
     this.bursaLength = const Value.absent(),
@@ -9953,69 +10125,73 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
     this.testisWidth = const Value.absent(),
     this.testisRemark = const Value.absent(),
     this.ovaryLength = const Value.absent(),
+    this.ovaryWidth = const Value.absent(),
     this.oviductWidth = const Value.absent(),
     this.ovaryAppearance = const Value.absent(),
     this.firstOvaSize = const Value.absent(),
     this.secondOvaSize = const Value.absent(),
     this.thirdOvaSize = const Value.absent(),
-    this.ovaryWidth = const Value.absent(),
     this.oviductAppearance = const Value.absent(),
     this.ovaryRemark = const Value.absent(),
-    this.wingRightPrimary = const Value.absent(),
-    this.wingLeftPrimary = const Value.absent(),
-    this.wingRightSecondary = const Value.absent(),
-    this.wingLeftSecondary = const Value.absent(),
-    this.tailRightRectrices = const Value.absent(),
-    this.tailLeftRectrices = const Value.absent(),
+    this.wingIsMolt = const Value.absent(),
+    this.wingMolt = const Value.absent(),
+    this.tailIsMolt = const Value.absent(),
+    this.tailMolt = const Value.absent(),
     this.bodyMolt = const Value.absent(),
     this.moltRemark = const Value.absent(),
+    this.rowid = const Value.absent(),
   }) : specimenUuid = Value(specimenUuid);
-  static Insertable<BirdMeasurementData> custom({
+  static Insertable<AvianMeasurementData> custom({
     Expression<String>? specimenUuid,
     Expression<double>? weight,
-    Expression<int>? wingspan,
+    Expression<double>? wingspan,
     Expression<String>? irisColor,
+    Expression<String>? irisHex,
     Expression<String>? billColor,
+    Expression<String>? billHex,
     Expression<String>? footColor,
+    Expression<String>? footHex,
     Expression<String>? tarsusColor,
+    Expression<String>? tarsusHex,
     Expression<int>? sex,
-    Expression<int>? molting,
     Expression<int>? broodPatch,
     Expression<int>? skullOssification,
-    Expression<int>? bursaLength,
+    Expression<double>? bursaLength,
     Expression<int>? fat,
     Expression<String>? stomachContent,
-    Expression<int>? testisLength,
-    Expression<int>? testisWidth,
+    Expression<double>? testisLength,
+    Expression<double>? testisWidth,
     Expression<String>? testisRemark,
-    Expression<int>? ovaryLength,
-    Expression<int>? oviductWidth,
+    Expression<double>? ovaryLength,
+    Expression<double>? ovaryWidth,
+    Expression<double>? oviductWidth,
     Expression<int>? ovaryAppearance,
-    Expression<int>? firstOvaSize,
-    Expression<int>? secondOvaSize,
-    Expression<int>? thirdOvaSize,
-    Expression<int>? ovaryWidth,
+    Expression<double>? firstOvaSize,
+    Expression<double>? secondOvaSize,
+    Expression<double>? thirdOvaSize,
     Expression<int>? oviductAppearance,
     Expression<String>? ovaryRemark,
-    Expression<String>? wingRightPrimary,
-    Expression<String>? wingLeftPrimary,
-    Expression<String>? wingRightSecondary,
-    Expression<String>? wingLeftSecondary,
-    Expression<String>? tailRightRectrices,
-    Expression<String>? tailLeftRectrices,
+    Expression<int>? wingIsMolt,
+    Expression<String>? wingMolt,
+    Expression<int>? tailIsMolt,
+    Expression<String>? tailMolt,
     Expression<int>? bodyMolt,
     Expression<String>? moltRemark,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (specimenUuid != null) 'specimenUuid': specimenUuid,
       if (weight != null) 'weight': weight,
       if (wingspan != null) 'wingspan': wingspan,
       if (irisColor != null) 'irisColor': irisColor,
+      if (irisHex != null) 'irisHex': irisHex,
       if (billColor != null) 'billColor': billColor,
+      if (billHex != null) 'billHex': billHex,
       if (footColor != null) 'footColor': footColor,
+      if (footHex != null) 'footHex': footHex,
       if (tarsusColor != null) 'tarsusColor': tarsusColor,
+      if (tarsusHex != null) 'tarsusHex': tarsusHex,
       if (sex != null) 'sex': sex,
-      if (molting != null) 'molting': molting,
       if (broodPatch != null) 'broodPatch': broodPatch,
       if (skullOssification != null) 'skullOssification': skullOssification,
       if (bursaLength != null) 'bursaLength': bursaLength,
@@ -10025,70 +10201,74 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
       if (testisWidth != null) 'testisWidth': testisWidth,
       if (testisRemark != null) 'testisRemark': testisRemark,
       if (ovaryLength != null) 'ovaryLength': ovaryLength,
+      if (ovaryWidth != null) 'ovaryWidth': ovaryWidth,
       if (oviductWidth != null) 'oviductWidth': oviductWidth,
       if (ovaryAppearance != null) 'ovaryAppearance': ovaryAppearance,
       if (firstOvaSize != null) 'firstOvaSize': firstOvaSize,
       if (secondOvaSize != null) 'secondOvaSize': secondOvaSize,
       if (thirdOvaSize != null) 'thirdOvaSize': thirdOvaSize,
-      if (ovaryWidth != null) 'ovaryWidth': ovaryWidth,
       if (oviductAppearance != null) 'oviductAppearance': oviductAppearance,
       if (ovaryRemark != null) 'ovaryRemark': ovaryRemark,
-      if (wingRightPrimary != null) 'wingRightPrimary': wingRightPrimary,
-      if (wingLeftPrimary != null) 'wingLeftPrimary': wingLeftPrimary,
-      if (wingRightSecondary != null) 'wingRightSecondary': wingRightSecondary,
-      if (wingLeftSecondary != null) 'wingLeftSecondary': wingLeftSecondary,
-      if (tailRightRectrices != null) 'tailRightRectrices': tailRightRectrices,
-      if (tailLeftRectrices != null) 'tailLeftRectrices': tailLeftRectrices,
+      if (wingIsMolt != null) 'wingIsMolt': wingIsMolt,
+      if (wingMolt != null) 'wingMolt': wingMolt,
+      if (tailIsMolt != null) 'tailIsMolt': tailIsMolt,
+      if (tailMolt != null) 'tailMolt': tailMolt,
       if (bodyMolt != null) 'bodyMolt': bodyMolt,
       if (moltRemark != null) 'moltRemark': moltRemark,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
-  BirdMeasurementCompanion copyWith(
+  AvianMeasurementCompanion copyWith(
       {Value<String>? specimenUuid,
       Value<double?>? weight,
-      Value<int?>? wingspan,
+      Value<double?>? wingspan,
       Value<String?>? irisColor,
+      Value<String?>? irisHex,
       Value<String?>? billColor,
+      Value<String?>? billHex,
       Value<String?>? footColor,
+      Value<String?>? footHex,
       Value<String?>? tarsusColor,
+      Value<String?>? tarsusHex,
       Value<int?>? sex,
-      Value<int?>? molting,
       Value<int?>? broodPatch,
       Value<int?>? skullOssification,
-      Value<int?>? bursaLength,
+      Value<double?>? bursaLength,
       Value<int?>? fat,
       Value<String?>? stomachContent,
-      Value<int?>? testisLength,
-      Value<int?>? testisWidth,
+      Value<double?>? testisLength,
+      Value<double?>? testisWidth,
       Value<String?>? testisRemark,
-      Value<int?>? ovaryLength,
-      Value<int?>? oviductWidth,
+      Value<double?>? ovaryLength,
+      Value<double?>? ovaryWidth,
+      Value<double?>? oviductWidth,
       Value<int?>? ovaryAppearance,
-      Value<int?>? firstOvaSize,
-      Value<int?>? secondOvaSize,
-      Value<int?>? thirdOvaSize,
-      Value<int?>? ovaryWidth,
+      Value<double?>? firstOvaSize,
+      Value<double?>? secondOvaSize,
+      Value<double?>? thirdOvaSize,
       Value<int?>? oviductAppearance,
       Value<String?>? ovaryRemark,
-      Value<String?>? wingRightPrimary,
-      Value<String?>? wingLeftPrimary,
-      Value<String?>? wingRightSecondary,
-      Value<String?>? wingLeftSecondary,
-      Value<String?>? tailRightRectrices,
-      Value<String?>? tailLeftRectrices,
+      Value<int?>? wingIsMolt,
+      Value<String?>? wingMolt,
+      Value<int?>? tailIsMolt,
+      Value<String?>? tailMolt,
       Value<int?>? bodyMolt,
-      Value<String?>? moltRemark}) {
-    return BirdMeasurementCompanion(
+      Value<String?>? moltRemark,
+      Value<int>? rowid}) {
+    return AvianMeasurementCompanion(
       specimenUuid: specimenUuid ?? this.specimenUuid,
       weight: weight ?? this.weight,
       wingspan: wingspan ?? this.wingspan,
       irisColor: irisColor ?? this.irisColor,
+      irisHex: irisHex ?? this.irisHex,
       billColor: billColor ?? this.billColor,
+      billHex: billHex ?? this.billHex,
       footColor: footColor ?? this.footColor,
+      footHex: footHex ?? this.footHex,
       tarsusColor: tarsusColor ?? this.tarsusColor,
+      tarsusHex: tarsusHex ?? this.tarsusHex,
       sex: sex ?? this.sex,
-      molting: molting ?? this.molting,
       broodPatch: broodPatch ?? this.broodPatch,
       skullOssification: skullOssification ?? this.skullOssification,
       bursaLength: bursaLength ?? this.bursaLength,
@@ -10098,22 +10278,21 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
       testisWidth: testisWidth ?? this.testisWidth,
       testisRemark: testisRemark ?? this.testisRemark,
       ovaryLength: ovaryLength ?? this.ovaryLength,
+      ovaryWidth: ovaryWidth ?? this.ovaryWidth,
       oviductWidth: oviductWidth ?? this.oviductWidth,
       ovaryAppearance: ovaryAppearance ?? this.ovaryAppearance,
       firstOvaSize: firstOvaSize ?? this.firstOvaSize,
       secondOvaSize: secondOvaSize ?? this.secondOvaSize,
       thirdOvaSize: thirdOvaSize ?? this.thirdOvaSize,
-      ovaryWidth: ovaryWidth ?? this.ovaryWidth,
       oviductAppearance: oviductAppearance ?? this.oviductAppearance,
       ovaryRemark: ovaryRemark ?? this.ovaryRemark,
-      wingRightPrimary: wingRightPrimary ?? this.wingRightPrimary,
-      wingLeftPrimary: wingLeftPrimary ?? this.wingLeftPrimary,
-      wingRightSecondary: wingRightSecondary ?? this.wingRightSecondary,
-      wingLeftSecondary: wingLeftSecondary ?? this.wingLeftSecondary,
-      tailRightRectrices: tailRightRectrices ?? this.tailRightRectrices,
-      tailLeftRectrices: tailLeftRectrices ?? this.tailLeftRectrices,
+      wingIsMolt: wingIsMolt ?? this.wingIsMolt,
+      wingMolt: wingMolt ?? this.wingMolt,
+      tailIsMolt: tailIsMolt ?? this.tailIsMolt,
+      tailMolt: tailMolt ?? this.tailMolt,
       bodyMolt: bodyMolt ?? this.bodyMolt,
       moltRemark: moltRemark ?? this.moltRemark,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -10127,25 +10306,34 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
       map['weight'] = Variable<double>(weight.value);
     }
     if (wingspan.present) {
-      map['wingspan'] = Variable<int>(wingspan.value);
+      map['wingspan'] = Variable<double>(wingspan.value);
     }
     if (irisColor.present) {
       map['irisColor'] = Variable<String>(irisColor.value);
     }
+    if (irisHex.present) {
+      map['irisHex'] = Variable<String>(irisHex.value);
+    }
     if (billColor.present) {
       map['billColor'] = Variable<String>(billColor.value);
+    }
+    if (billHex.present) {
+      map['billHex'] = Variable<String>(billHex.value);
     }
     if (footColor.present) {
       map['footColor'] = Variable<String>(footColor.value);
     }
+    if (footHex.present) {
+      map['footHex'] = Variable<String>(footHex.value);
+    }
     if (tarsusColor.present) {
       map['tarsusColor'] = Variable<String>(tarsusColor.value);
     }
+    if (tarsusHex.present) {
+      map['tarsusHex'] = Variable<String>(tarsusHex.value);
+    }
     if (sex.present) {
       map['sex'] = Variable<int>(sex.value);
-    }
-    if (molting.present) {
-      map['molting'] = Variable<int>(molting.value);
     }
     if (broodPatch.present) {
       map['broodPatch'] = Variable<int>(broodPatch.value);
@@ -10154,7 +10342,7 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
       map['skullOssification'] = Variable<int>(skullOssification.value);
     }
     if (bursaLength.present) {
-      map['bursaLength'] = Variable<int>(bursaLength.value);
+      map['bursaLength'] = Variable<double>(bursaLength.value);
     }
     if (fat.present) {
       map['fat'] = Variable<int>(fat.value);
@@ -10163,34 +10351,34 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
       map['stomachContent'] = Variable<String>(stomachContent.value);
     }
     if (testisLength.present) {
-      map['testisLength'] = Variable<int>(testisLength.value);
+      map['testisLength'] = Variable<double>(testisLength.value);
     }
     if (testisWidth.present) {
-      map['testisWidth'] = Variable<int>(testisWidth.value);
+      map['testisWidth'] = Variable<double>(testisWidth.value);
     }
     if (testisRemark.present) {
       map['testisRemark'] = Variable<String>(testisRemark.value);
     }
     if (ovaryLength.present) {
-      map['ovaryLength'] = Variable<int>(ovaryLength.value);
+      map['ovaryLength'] = Variable<double>(ovaryLength.value);
+    }
+    if (ovaryWidth.present) {
+      map['ovaryWidth'] = Variable<double>(ovaryWidth.value);
     }
     if (oviductWidth.present) {
-      map['oviductWidth'] = Variable<int>(oviductWidth.value);
+      map['oviductWidth'] = Variable<double>(oviductWidth.value);
     }
     if (ovaryAppearance.present) {
       map['ovaryAppearance'] = Variable<int>(ovaryAppearance.value);
     }
     if (firstOvaSize.present) {
-      map['firstOvaSize'] = Variable<int>(firstOvaSize.value);
+      map['firstOvaSize'] = Variable<double>(firstOvaSize.value);
     }
     if (secondOvaSize.present) {
-      map['secondOvaSize'] = Variable<int>(secondOvaSize.value);
+      map['secondOvaSize'] = Variable<double>(secondOvaSize.value);
     }
     if (thirdOvaSize.present) {
-      map['thirdOvaSize'] = Variable<int>(thirdOvaSize.value);
-    }
-    if (ovaryWidth.present) {
-      map['ovaryWidth'] = Variable<int>(ovaryWidth.value);
+      map['thirdOvaSize'] = Variable<double>(thirdOvaSize.value);
     }
     if (oviductAppearance.present) {
       map['oviductAppearance'] = Variable<int>(oviductAppearance.value);
@@ -10198,23 +10386,17 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
     if (ovaryRemark.present) {
       map['ovaryRemark'] = Variable<String>(ovaryRemark.value);
     }
-    if (wingRightPrimary.present) {
-      map['wingRightPrimary'] = Variable<String>(wingRightPrimary.value);
+    if (wingIsMolt.present) {
+      map['wingIsMolt'] = Variable<int>(wingIsMolt.value);
     }
-    if (wingLeftPrimary.present) {
-      map['wingLeftPrimary'] = Variable<String>(wingLeftPrimary.value);
+    if (wingMolt.present) {
+      map['wingMolt'] = Variable<String>(wingMolt.value);
     }
-    if (wingRightSecondary.present) {
-      map['wingRightSecondary'] = Variable<String>(wingRightSecondary.value);
+    if (tailIsMolt.present) {
+      map['tailIsMolt'] = Variable<int>(tailIsMolt.value);
     }
-    if (wingLeftSecondary.present) {
-      map['wingLeftSecondary'] = Variable<String>(wingLeftSecondary.value);
-    }
-    if (tailRightRectrices.present) {
-      map['tailRightRectrices'] = Variable<String>(tailRightRectrices.value);
-    }
-    if (tailLeftRectrices.present) {
-      map['tailLeftRectrices'] = Variable<String>(tailLeftRectrices.value);
+    if (tailMolt.present) {
+      map['tailMolt'] = Variable<String>(tailMolt.value);
     }
     if (bodyMolt.present) {
       map['bodyMolt'] = Variable<int>(bodyMolt.value);
@@ -10222,21 +10404,27 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
     if (moltRemark.present) {
       map['moltRemark'] = Variable<String>(moltRemark.value);
     }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('BirdMeasurementCompanion(')
+    return (StringBuffer('AvianMeasurementCompanion(')
           ..write('specimenUuid: $specimenUuid, ')
           ..write('weight: $weight, ')
           ..write('wingspan: $wingspan, ')
           ..write('irisColor: $irisColor, ')
+          ..write('irisHex: $irisHex, ')
           ..write('billColor: $billColor, ')
+          ..write('billHex: $billHex, ')
           ..write('footColor: $footColor, ')
+          ..write('footHex: $footHex, ')
           ..write('tarsusColor: $tarsusColor, ')
+          ..write('tarsusHex: $tarsusHex, ')
           ..write('sex: $sex, ')
-          ..write('molting: $molting, ')
           ..write('broodPatch: $broodPatch, ')
           ..write('skullOssification: $skullOssification, ')
           ..write('bursaLength: $bursaLength, ')
@@ -10246,22 +10434,21 @@ class BirdMeasurementCompanion extends UpdateCompanion<BirdMeasurementData> {
           ..write('testisWidth: $testisWidth, ')
           ..write('testisRemark: $testisRemark, ')
           ..write('ovaryLength: $ovaryLength, ')
+          ..write('ovaryWidth: $ovaryWidth, ')
           ..write('oviductWidth: $oviductWidth, ')
           ..write('ovaryAppearance: $ovaryAppearance, ')
           ..write('firstOvaSize: $firstOvaSize, ')
           ..write('secondOvaSize: $secondOvaSize, ')
           ..write('thirdOvaSize: $thirdOvaSize, ')
-          ..write('ovaryWidth: $ovaryWidth, ')
           ..write('oviductAppearance: $oviductAppearance, ')
           ..write('ovaryRemark: $ovaryRemark, ')
-          ..write('wingRightPrimary: $wingRightPrimary, ')
-          ..write('wingLeftPrimary: $wingLeftPrimary, ')
-          ..write('wingRightSecondary: $wingRightSecondary, ')
-          ..write('wingLeftSecondary: $wingLeftSecondary, ')
-          ..write('tailRightRectrices: $tailRightRectrices, ')
-          ..write('tailLeftRectrices: $tailLeftRectrices, ')
+          ..write('wingIsMolt: $wingIsMolt, ')
+          ..write('wingMolt: $wingMolt, ')
+          ..write('tailIsMolt: $tailIsMolt, ')
+          ..write('tailMolt: $tailMolt, ')
           ..write('bodyMolt: $bodyMolt, ')
-          ..write('moltRemark: $moltRemark')
+          ..write('moltRemark: $moltRemark, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -11305,7 +11492,7 @@ abstract class _$Database extends GeneratedDatabase {
   late final Taxonomy taxonomy = Taxonomy(this);
   late final Specimen specimen = Specimen(this);
   late final MammalMeasurement mammalMeasurement = MammalMeasurement(this);
-  late final BirdMeasurement birdMeasurement = BirdMeasurement(this);
+  late final AvianMeasurement avianMeasurement = AvianMeasurement(this);
   late final SpecimenPart specimenPart = SpecimenPart(this);
   late final Expense expense = Expense(this);
   Selectable<ListProjectResult> listProject() {
@@ -11346,7 +11533,7 @@ abstract class _$Database extends GeneratedDatabase {
         taxonomy,
         specimen,
         mammalMeasurement,
-        birdMeasurement,
+        avianMeasurement,
         specimenPart,
         expense
       ];

@@ -4,7 +4,7 @@ import 'package:nahpu/services/database/database.dart';
 part 'specimen_queries.g.dart';
 
 @DriftAccessor(
-  include: {'tables.drift'},
+  include: {'tables_v3.drift'},
 )
 class SpecimenQuery extends DatabaseAccessor<Database>
     with _$SpecimenQueryMixin {
@@ -19,10 +19,10 @@ class SpecimenQuery extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<List<SpecimenData>> getAllBirdSpecimens(String projectUuid) {
+  Future<List<SpecimenData>> getAllAvianSpecimens(String projectUuid) {
     return (select(specimen)
           ..where((t) => t.projectUuid.equals(projectUuid))
-          ..where((t) => t.taxonGroup.equals('Birds')))
+          ..where((t) => t.taxonGroup.equals('Avians')))
         .get();
   }
 
@@ -112,29 +112,29 @@ class MammalSpecimenQuery extends DatabaseAccessor<Database>
   }
 }
 
-class BirdSpecimenQuery extends DatabaseAccessor<Database>
+class AvianSpecimenQuery extends DatabaseAccessor<Database>
     with _$SpecimenQueryMixin {
-  BirdSpecimenQuery(Database db) : super(db);
+  AvianSpecimenQuery(Database db) : super(db);
 
-  Future<int> createBirdMeasurements(BirdMeasurementCompanion form) =>
-      into(birdMeasurement).insert(form);
+  Future<int> createAvianMeasurements(AvianMeasurementCompanion form) =>
+      into(avianMeasurement).insert(form);
 
-  Future updateBirdMeasurements(
-      String specimenUuid, BirdMeasurementCompanion entry) {
-    return (update(birdMeasurement)
+  Future updateAvianMeasurements(
+      String specimenUuid, AvianMeasurementCompanion entry) {
+    return (update(avianMeasurement)
           ..where((t) => t.specimenUuid.equals(specimenUuid)))
         .write(entry);
   }
 
-  Future<BirdMeasurementData> getBirdMeasurementByUuid(
+  Future<AvianMeasurementData> getAvianMeasurementByUuid(
       String specimenUuid) async {
-    return await (select(birdMeasurement)
+    return await (select(avianMeasurement)
           ..where((t) => t.specimenUuid.equals(specimenUuid)))
         .getSingle();
   }
 
-  Future<void> deleteBirdMeasurements(String specimenUuid) {
-    return (delete(birdMeasurement)
+  Future<void> deleteAvianMeasurements(String specimenUuid) {
+    return (delete(avianMeasurement)
           ..where((t) => t.specimenUuid.equals(specimenUuid)))
         .go();
   }

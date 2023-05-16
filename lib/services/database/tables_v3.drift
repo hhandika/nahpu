@@ -90,6 +90,11 @@ CREATE TABLE collPersonnel (
     FOREIGN KEY(personnelId) REFERENCES personnel(uuid)
 );
 
+/*
+Called method in the App.
+It is too complex for migrating this this table
+to a new name.
+*/
 CREATE TABLE collEffort (
     id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
     eventID INT,
@@ -201,6 +206,8 @@ CREATE TABLE specimen (
     isRelativeTime INT,
     captureTime TEXT,
     trapType TEXT,
+    trapID TEXT,
+    coordinateID INT,
     catalogerID TEXT,
     fieldNumber INT,
     collEventID INT,
@@ -218,19 +225,19 @@ CREATE TABLE specimen (
 
 CREATE TABLE mammalMeasurement (
     specimenUuid TEXT NOT NULL,
-    totalLength INT,
-    tailLength INT,
-    hindFootLength INT,
-    earLength INT,
-    forearm INT,
+    totalLength REAL,
+    tailLength REAL,
+    hindFootLength REAL,
+    earLength REAL,
+    forearm REAL,
     weight REAL,
     accuracy TEXT,
     accuracySpecify TEXT,
     sex INT,
     age INT,
     testisPosition INT, -- encode using enum
-    testisLength INT,
-    testisWidth INT,
+    testisLength REAL,
+    testisWidth REAL,
     epididymisAppearance INT,
     reproductiveStage INT,
     leftPlacentalScars INT,
@@ -248,43 +255,45 @@ CREATE TABLE mammalMeasurement (
     FOREIGN KEY(specimenUuid) REFERENCES specimen(uuid)
 );
 
-CREATE TABLE birdMeasurement (
+CREATE TABLE avianMeasurement (
     specimenUuid TEXT NOT NULL,
     weight REAL,
-    wingspan INT, -- change to real
-    irisColor TEXT, -- Add color
-    billColor TEXT, -- Add color
-    footColor TEXT, -- Add color
-    tarsusColor TEXT, -- Add color
+    wingspan REAL,
+    irisColor TEXT,
+    irisHex TEXT, -- Hex number for iris color
+    billColor TEXT, 
+    billHex TEXT,
+    footColor TEXT, 
+    footHex TEXT,
+    tarsusColor TEXT, 
+    tarsusHex TEXT,
     sex INT,
-    molting INT, -- encode text
     broodPatch INT,
     skullOssification INT,
-    bursaLength INT,
+    bursaLength REAL,
     fat INT,
     stomachContent TEXT,
-    testisLength INT,
-    testisWidth INT,
+    testisLength REAL,
+    testisWidth REAL,
     testisRemark TEXT,
-    ovaryLength INT,
-    oviductWidth INT,
+    ovaryLength REAL,
+    ovaryWidth REAL,
+    oviductWidth REAL,
     ovaryAppearance INT,
-    firstOvaSize INT,
-    secondOvaSize INT,
-    thirdOvaSize INT,
-    ovaryWidth INT,
+    firstOvaSize REAL,
+    secondOvaSize REAL,
+    thirdOvaSize REAL,
     oviductAppearance INT, -- encode to int to save space
     ovaryRemark TEXT,
-    wingRightPrimary TEXT,
-    wingLeftPrimary TEXT,
-    wingRightSecondary TEXT,
-    wingLeftSecondary TEXT,
-    tailRightRectrices TEXT,
-    tailLeftRectrices TEXT,
+    wingIsMolt INT, -- encode text
+    wingMolt TEXT,
+    tailIsMolt INT,
+    tailMolt TEXT,
     bodyMolt INT, -- encode text
     moltRemark TEXT,
     FOREIGN KEY(specimenUuid) REFERENCES specimen(uuid)
 );
+
 
 CREATE TABLE specimenPart (
     id INT UNIQUE PRIMARY KEY AUTOINCREMENT, -- internal id
