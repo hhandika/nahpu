@@ -371,22 +371,25 @@ class MammalMeasurementCtrModel {
   factory MammalMeasurementCtrModel.fromData(MammalMeasurementData data) =>
       MammalMeasurementCtrModel(
         totalLengthCtr:
-            TextEditingController(text: data.totalLength?.toString() ?? ''),
+            TextEditingController(text: data.totalLength?.truncateZero() ?? ''),
         tailLengthCtr:
-            TextEditingController(text: data.tailLength?.toString() ?? ''),
-        hindFootCtr:
-            TextEditingController(text: data.hindFootLength?.toString() ?? ''),
-        earCtr: TextEditingController(text: data.earLength?.toString() ?? ''),
-        forearmCtr: TextEditingController(text: data.forearm?.toString() ?? ''),
-        weightCtr: TextEditingController(text: data.weight?.toString() ?? ''),
+            TextEditingController(text: data.tailLength?.truncateZero() ?? ''),
+        hindFootCtr: TextEditingController(
+            text: data.hindFootLength?.truncateZero() ?? ''),
+        earCtr:
+            TextEditingController(text: data.earLength?.truncateZero() ?? ''),
+        forearmCtr:
+            TextEditingController(text: data.forearm?.truncateZero() ?? ''),
+        weightCtr:
+            TextEditingController(text: data.weight?.truncateZero() ?? ''),
         accuracyCtr: data.accuracy?.toString(),
         sexCtr: data.sex,
         ageCtr: data.age,
         testisPosCtr: data.testisPosition,
-        testisLengthCtr:
-            TextEditingController(text: data.testisLength?.toString() ?? ''),
+        testisLengthCtr: TextEditingController(
+            text: data.testisLength?.truncateZero() ?? ''),
         testisWidthCtr:
-            TextEditingController(text: data.testisWidth?.toString() ?? ''),
+            TextEditingController(text: data.testisWidth?.truncateZero() ?? ''),
         epididymisCtr: data.epididymisAppearance,
         reproductiveStageCtr: data.reproductiveStage,
         leftPlacentaCtr: TextEditingController(
