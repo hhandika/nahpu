@@ -29,7 +29,13 @@ class SpecimenQuery extends DatabaseAccessor<Database>
   Future<List<SpecimenData>> getAllMammalSpecimens(String projectUuid) {
     return (select(specimen)
           ..where((t) => t.projectUuid.equals(projectUuid))
-          ..where((t) => t.taxonGroup.equals('General Mammals'))
+          ..where((t) => t.taxonGroup.equals('General Mammals')))
+        .get();
+  }
+
+  Future<List<SpecimenData>> getAllBatSpecimens(String projectUuid) {
+    return (select(specimen)
+          ..where((t) => t.projectUuid.equals(projectUuid))
           ..where((t) => t.taxonGroup.equals('Bats')))
         .get();
   }
