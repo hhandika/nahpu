@@ -157,7 +157,7 @@ class PersonnelSubtitle extends StatelessWidget {
                   child: TileIcon(icon: Icons.account_circle_outlined),
                   alignment: PlaceholderAlignment.middle),
               TextSpan(
-                text: '$role ',
+                text: ' $role  ',
                 style: Theme.of(context).textTheme.labelLarge,
               ),
             ])
@@ -169,7 +169,7 @@ class PersonnelSubtitle extends StatelessWidget {
                     child: TileIcon(icon: Icons.business_rounded),
                     alignment: PlaceholderAlignment.middle),
                 TextSpan(
-                  text: '$affiliation ',
+                  text: ' $affiliation  ',
                   style: Theme.of(context).textTheme.labelLarge,
                 ),
               ],
@@ -182,7 +182,7 @@ class PersonnelSubtitle extends StatelessWidget {
                     child: TileIcon(icon: MdiIcons.counter),
                     alignment: PlaceholderAlignment.middle),
                 TextSpan(
-                  text: '$currentFieldNumber',
+                  text: ' $currentFieldNumber',
                   style: Theme.of(context).textTheme.labelLarge,
                 ),
               ],
