@@ -34,13 +34,16 @@ class ProjectInfo extends StatelessWidget {
           title: 'End date: ',
           text: projectData?.endDate,
         ),
+        const SizedBox(height: 20),
         ProjectInfoText(
           title: 'Created: ',
           text: projectData?.created,
+          isSmall: true,
         ),
         ProjectInfoText(
           title: 'Accessed: ',
           text: projectData?.lastAccessed,
+          isSmall: true,
         ),
       ],
     );
@@ -52,10 +55,12 @@ class ProjectInfoText extends StatelessWidget {
     super.key,
     required this.title,
     required this.text,
+    this.isSmall = false,
   });
 
   final String title;
   final String? text;
+  final bool isSmall;
 
   @override
   Widget build(BuildContext context) {
@@ -63,11 +68,15 @@ class ProjectInfoText extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
       text: TextSpan(
         text: title,
-        style: Theme.of(context).textTheme.titleSmall,
+        style: isSmall
+            ? Theme.of(context).textTheme.bodyMedium
+            : Theme.of(context).textTheme.titleSmall,
         children: [
           TextSpan(
             text: text ?? '',
-            style: Theme.of(context).textTheme.bodyLarge,
+            style: isSmall
+                ? Theme.of(context).textTheme.bodyMedium
+                : Theme.of(context).textTheme.bodyLarge,
           )
         ],
       ),
