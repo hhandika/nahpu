@@ -870,34 +870,21 @@ class WingMoltForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      children: [
-        Text(
-          'Wing Molt',
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        AdaptiveLayout(
-          useHorizontalLayout: useHorizontalLayout,
-          children: [
-            CommonNumField(
-              controller: ctr.wingMoltCtr,
-              labelText: 'Wing Molt',
-              hintText: 'Enter wing molt',
-              isLastField: false,
-              onChanged: (String? value) {
-                if (value != null) {
-                  SpecimenServices(ref).updateAvianMeasurement(
-                    specimenUuid,
-                    AvianMeasurementCompanion(
-                      wingMolt: db.Value(value),
-                    ),
-                  );
-                }
-              },
+    return CommonNumField(
+      controller: ctr.wingMoltCtr,
+      labelText: 'Wing Molt',
+      hintText: 'Enter wing molt',
+      isLastField: false,
+      onChanged: (String? value) {
+        if (value != null) {
+          SpecimenServices(ref).updateAvianMeasurement(
+            specimenUuid,
+            AvianMeasurementCompanion(
+              wingMolt: db.Value(value),
             ),
-          ],
-        ),
-      ],
+          );
+        }
+      },
     );
   }
 }
@@ -916,29 +903,21 @@ class TailMoltForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      children: [
-        Text(
-          'Tail Molt',
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        CommonNumField(
-          controller: ctr.tailMoltCtr,
-          labelText: 'Left retrices',
-          hintText: 'Enter left retrices molt',
-          isLastField: false,
-          onChanged: (String? value) {
-            if (value != null) {
-              SpecimenServices(ref).updateAvianMeasurement(
-                specimenUuid,
-                AvianMeasurementCompanion(
-                  tailMolt: db.Value(value),
-                ),
-              );
-            }
-          },
-        ),
-      ],
+    return CommonNumField(
+      controller: ctr.tailMoltCtr,
+      labelText: 'Tail Molt',
+      hintText: 'Enter tail molt',
+      isLastField: false,
+      onChanged: (String? value) {
+        if (value != null) {
+          SpecimenServices(ref).updateAvianMeasurement(
+            specimenUuid,
+            AvianMeasurementCompanion(
+              tailMolt: db.Value(value),
+            ),
+          );
+        }
+      },
     );
   }
 }
