@@ -22,7 +22,7 @@ mixin _$PersonnelQueryMixin on DatabaseAccessor<Database> {
   Taxonomy get taxonomy => attachedDatabase.taxonomy;
   Specimen get specimen => attachedDatabase.specimen;
   MammalMeasurement get mammalMeasurement => attachedDatabase.mammalMeasurement;
-  BirdMeasurement get birdMeasurement => attachedDatabase.birdMeasurement;
+  AvianMeasurement get avianMeasurement => attachedDatabase.avianMeasurement;
   SpecimenPart get specimenPart => attachedDatabase.specimenPart;
   Expense get expense => attachedDatabase.expense;
   Selectable<ListProjectResult> listProject() {

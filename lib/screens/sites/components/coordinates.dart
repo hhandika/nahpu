@@ -1,16 +1,17 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/common.dart';
-import 'package:nahpu/services/database/coordinate_queries.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/site_services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CoordinateFields extends StatelessWidget {
   const CoordinateFields({super.key, required this.siteId});
@@ -21,18 +22,16 @@ class CoordinateFields extends StatelessWidget {
   Widget build(BuildContext context) {
     return FormCard(
       title: 'Coordinates',
+      mainAxisAlignment: MainAxisAlignment.start,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const SizedBox(
-            height: 10,
-          ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.3,
+            height: 255,
             child: CoordinateList(
               sideId: siteId,
             ),
           ),
+          const SizedBox(height: 15),
           PrimaryButton(
             text: 'Add Coordinate',
             onPressed: () {
@@ -68,7 +67,7 @@ class CoordinateList extends ConsumerWidget {
           itemCount: data.length,
           itemBuilder: (context, index) {
             return ListTile(
-              title: Text('${data[index].nameId}'),
+              title: CoordinateTitle(coordinateId: data[index].nameId),
               subtitle: CoordinateSubtitle(coordinate: data[index]),
               trailing: CoordinateMenu(
                 coordinateId: data[index].id!,
@@ -81,6 +80,23 @@ class CoordinateList extends ConsumerWidget {
       },
       loading: () => const CommonProgressIndicator(),
       error: (error, stack) => Text(error.toString()),
+    );
+  }
+}
+
+class CoordinateTitle extends StatelessWidget {
+  const CoordinateTitle({
+    super.key,
+    required this.coordinateId,
+  });
+
+  final String? coordinateId;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      coordinateId ?? 'No ID',
+      style: Theme.of(context).textTheme.titleMedium,
     );
   }
 }
@@ -99,32 +115,32 @@ class CoordinateSubtitle extends StatelessWidget {
       text: TextSpan(
         children: [
           const WidgetSpan(
-            child: TileIcon(icon: Icons.pin_drop_outlined),
-          ),
+              child: TileIcon(icon: Icons.pin_drop_outlined),
+              alignment: PlaceholderAlignment.middle),
           TextSpan(
               style: Theme.of(context).textTheme.labelLarge,
               text:
                   '${coordinate.decimalLatitude}, ${coordinate.decimalLongitude}'),
           const TextSpan(text: '  '),
           const WidgetSpan(
-            child: TileIcon(icon: Icons.landscape_outlined),
-          ),
+              child: TileIcon(icon: Icons.landscape_outlined),
+              alignment: PlaceholderAlignment.middle),
           TextSpan(
             style: Theme.of(context).textTheme.labelLarge,
             text: '${coordinate.elevationInMeter} m',
           ),
           const TextSpan(text: '  '),
           const WidgetSpan(
-            child: TileIcon(icon: Icons.circle_outlined),
-          ),
+              child: TileIcon(icon: Icons.circle_outlined),
+              alignment: PlaceholderAlignment.middle),
           TextSpan(
             style: Theme.of(context).textTheme.labelLarge,
             text: '±${coordinate.uncertaintyInMeters} m',
           ),
           const TextSpan(text: '  '),
           const WidgetSpan(
-            child: TileIcon(icon: Icons.map_outlined),
-          ),
+              child: TileIcon(icon: Icons.map_outlined),
+              alignment: PlaceholderAlignment.middle),
           TextSpan(
             style: Theme.of(context).textTheme.labelLarge,
             text: '${coordinate.datum}',
@@ -157,22 +173,46 @@ class CoordinateMenuState extends ConsumerState<CoordinateMenu> {
     return PopupMenuButton(
       icon: const Icon(Icons.more_vert),
       onSelected: _onSelected,
-      itemBuilder: (context) => [
-        const PopupMenuItem<CommonPopUpMenuItems>(
-          value: CommonPopUpMenuItems.edit,
-          child: Text('Edit'),
+      itemBuilder: (context) => <PopupMenuEntry<CoordinatePopUpMenuItems>>[
+        const PopupMenuItem<CoordinatePopUpMenuItems>(
+          value: CoordinatePopUpMenuItems.edit,
+          child: ListTile(
+            leading: Icon(Icons.edit_outlined),
+            title: Text('Edit'),
+          ),
         ),
-        const PopupMenuItem(
-          value: CommonPopUpMenuItems.delete,
-          child: Text('Delete'),
+        const PopupMenuItem<CoordinatePopUpMenuItems>(
+          value: CoordinatePopUpMenuItems.copy,
+          child: ListTile(
+            leading: Icon(Icons.copy_outlined),
+            title: Text('Copy'),
+          ),
+        ),
+        const PopupMenuItem<CoordinatePopUpMenuItems>(
+          value: CoordinatePopUpMenuItems.open,
+          child: ListTile(
+            leading: Icon(Icons.open_in_browser_outlined),
+            title: Text('Open'),
+          ),
+        ),
+        const PopupMenuDivider(height: 10),
+        const PopupMenuItem<CoordinatePopUpMenuItems>(
+          value: CoordinatePopUpMenuItems.delete,
+          child: ListTile(
+            leading: Icon(
+              Icons.delete_outline,
+              color: Colors.red,
+            ),
+            title: Text('Delete', style: TextStyle(color: Colors.red)),
+          ),
         ),
       ],
     );
   }
 
-  void _onSelected(CommonPopUpMenuItems item) {
+  Future<void> _onSelected(CoordinatePopUpMenuItems item) async {
     switch (item) {
-      case CommonPopUpMenuItems.edit:
+      case CoordinatePopUpMenuItems.edit:
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -184,12 +224,43 @@ class CoordinateMenuState extends ConsumerState<CoordinateMenu> {
           ),
         );
         break;
-      case CommonPopUpMenuItems.delete:
-        CoordinateQuery(ref.read(databaseProvider))
-            .deleteCoordinate(widget.coordinateId);
+      case CoordinatePopUpMenuItems.copy:
+        await Clipboard.setData(ClipboardData(text: _latLong));
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Latitude and Longitude copied to clipboard'),
+            ),
+          );
+        }
+        break;
+      case CoordinatePopUpMenuItems.open:
+        await _launchGoogleMap();
+        break;
+      case CoordinatePopUpMenuItems.delete:
+        CoordinateServices(ref).deleteCoordinate(widget.coordinateId);
         ref.invalidate(coordinateBySiteProvider);
         break;
     }
+  }
+
+  Future<void> _launchGoogleMap() async {
+    const host = 'www.google.com';
+    const path = 'maps/search/';
+    final queryParameters = {
+      'api': '1',
+      'query': _latLong,
+    };
+    Uri url = Uri.https(host, path, queryParameters);
+    if (kDebugMode) print(url.toString());
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch $url';
+    }
+  }
+
+  String get _latLong {
+    return '${widget.coordCtr.latitudeCtr.text},'
+        '${widget.coordCtr.longitudeCtr.text}';
   }
 }
 
@@ -274,7 +345,9 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 500),
+        constraints: const BoxConstraints(maxWidth: 500),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -312,9 +385,7 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
                 keyboardType: TextInputType.number,
               ),
               DropdownButtonFormField(
-                value: widget.coordCtr.datumCtr.text.isEmpty
-                    ? _datum[0]
-                    : widget.coordCtr.datumCtr.text,
+                value: _getDatum(),
                 decoration: const InputDecoration(
                   labelText: 'Datum',
                   hintText: 'Specify the datum',
@@ -374,21 +445,35 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
                 ],
               )
             ],
-          )),
+          ),
+        ),
+      ),
     );
+  }
+
+  String _getDatum() {
+    if (widget.coordCtr.datumCtr.text.isEmpty) {
+      setState(() {
+        widget.coordCtr.datumCtr.text = _datum[0];
+      });
+      return widget.coordCtr.datumCtr.text;
+    } else {
+      return widget.coordCtr.datumCtr.text;
+    }
   }
 
   Future<void> _createCoordinate() async {
     CoordinateCompanion form = _getform();
 
-    await SiteServices(ref).createCoordinate(form);
+    await CoordinateServices(ref).createCoordinate(form);
   }
 
   Future<void> _updateCoordinate() async {
     CoordinateCompanion form = _getform();
 
     try {
-      await SiteServices(ref).updateCoordinate(widget.coordinateId!, form);
+      await CoordinateServices(ref)
+          .updateCoordinate(widget.coordinateId!, form);
     } catch (e) {
       // Error dialog box
       AlertDialog alert = AlertDialog(

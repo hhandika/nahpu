@@ -3,8 +3,8 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:nahpu/screens/collecting/components/menu_bar.dart';
 import 'package:nahpu/screens/sites/components/menu_bar.dart';
 import 'package:nahpu/screens/narrative/components/menu_bar.dart';
-import 'package:nahpu/screens/specimens/new_specimens.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
 
 class ActionButtons extends ConsumerWidget {
   const ActionButtons({super.key});
@@ -18,18 +18,10 @@ class ActionButtons extends ConsumerWidget {
       direction: SpeedDialDirection.down,
       children: [
         SpeedDialChild(
-            child: Icon(Icons.book_rounded,
-                color: Theme.of(context).colorScheme.onSecondary),
-            backgroundColor: Theme.of(context).colorScheme.secondary,
-            label: 'New Narrative',
-            onTap: () async {
-              await createNewNarrative(context, ref);
-            }),
-        SpeedDialChild(
           child: Icon(Icons.place_rounded,
               color: Theme.of(context).colorScheme.onSecondary),
           backgroundColor: Theme.of(context).colorScheme.secondary,
-          label: 'New Sites',
+          label: 'Create Site',
           onTap: () async {
             await createNewSite(context, ref);
           },
@@ -38,7 +30,7 @@ class ActionButtons extends ConsumerWidget {
           child: Icon(Icons.timeline,
               color: Theme.of(context).colorScheme.onSecondary),
           backgroundColor: Theme.of(context).colorScheme.secondary,
-          label: 'New CollEvents',
+          label: 'Create CollEvent',
           onTap: () async {
             await createNewCollEvents(context, ref);
           },
@@ -47,11 +39,19 @@ class ActionButtons extends ConsumerWidget {
           child: Icon(Icons.pets_rounded,
               color: Theme.of(context).colorScheme.onSecondary),
           backgroundColor: Theme.of(context).colorScheme.secondary,
-          label: 'New Specimens',
+          label: 'Create Specimen',
           onTap: () async {
             await createNewSpecimens(context, ref);
           },
         ),
+        SpeedDialChild(
+            child: Icon(Icons.book_rounded,
+                color: Theme.of(context).colorScheme.onSecondary),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            label: 'Create Narrative',
+            onTap: () async {
+              await createNewNarrative(context, ref);
+            }),
       ],
     );
   }

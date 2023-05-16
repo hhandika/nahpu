@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:nahpu/screens/collecting/components/collecting_personnel.dart';
+import 'package:nahpu/screens/collecting/components/personnel.dart';
 import 'package:nahpu/screens/collecting/components/weather_data.dart';
-import 'package:nahpu/screens/collecting/components/tool_management.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:nahpu/styles/catalogs.dart';
 
 class CollEventTabBar extends StatefulWidget {
   const CollEventTabBar({
@@ -23,7 +23,7 @@ class _CollEventTabBarState extends State<CollEventTabBar>
     with TickerProviderStateMixin {
   late TabController _tabController;
 
-  final int _length = 3;
+  final int _length = 2;
 
   @override
   void initState() {
@@ -42,8 +42,9 @@ class _CollEventTabBarState extends State<CollEventTabBar>
     return FormCard(
       withTitle: false,
       child: MediaTabBars(
-        length: 2,
+        length: _length,
         tabController: _tabController,
+        height: bottomCollEventHeight,
         tabs: [
           Tab(
             icon: Icon(Icons.group_outlined,
@@ -52,9 +53,6 @@ class _CollEventTabBarState extends State<CollEventTabBar>
           Tab(
               icon: Icon(MdiIcons.weatherPartlyCloudy,
                   color: Theme.of(context).colorScheme.tertiary)),
-          Tab(
-              icon: Icon(MdiIcons.toolboxOutline,
-                  color: Theme.of(context).colorScheme.tertiary)),
         ],
         children: [
           CollPersonnelForm(eventID: widget.eventID),
@@ -62,7 +60,6 @@ class _CollEventTabBarState extends State<CollEventTabBar>
             useHorizontalLayout: widget.useHorizontalLayout,
             eventID: widget.eventID,
           ),
-          const ToolManagement(),
         ],
       ),
     );

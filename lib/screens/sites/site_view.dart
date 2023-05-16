@@ -12,18 +12,18 @@ import 'package:nahpu/services/database/database.dart';
 
 enum MenuSelection { newSite, pdfExport, deleteRecords, deleteAllRecords }
 
-class Sites extends ConsumerStatefulWidget {
-  const Sites({Key? key}) : super(key: key);
+class SiteViewer extends ConsumerStatefulWidget {
+  const SiteViewer({super.key});
 
   @override
-  SitesState createState() => SitesState();
+  SiteViewerState createState() => SiteViewerState();
 }
 
-class SitesState extends ConsumerState<Sites> {
+class SiteViewerState extends ConsumerState<SiteViewer> {
   bool _isVisible = false;
   PageController pageController = PageController();
   PageNavigation _pageNav = PageNavigation();
-
+  int? _siteId;
   @override
   void dispose() {
     pageController.dispose();
@@ -37,9 +37,11 @@ class SitesState extends ConsumerState<Sites> {
       appBar: AppBar(
         title: const Text("Sites"),
         automaticallyImplyLeading: false,
-        actions: const [
-          NewSite(),
-          SiteMenu(),
+        actions: [
+          const NewSite(),
+          SiteMenu(
+            siteId: _siteId,
+          ),
         ],
       ),
       // resizeToAvoidBottomInset: false,
@@ -60,23 +62,27 @@ class SitesState extends ConsumerState<Sites> {
                   _isVisible = false;
                 }
                 _pageNav.pageCounts = siteSize;
-                pageController = PageController(initialPage: siteSize);
+                pageController = updatePageCtr(siteSize);
               });
               return PageView.builder(
                 controller: pageController,
                 itemCount: siteSize,
                 itemBuilder: (context, index) {
                   final siteForm = _updateController(siteEntries[index]);
-                  return SiteForm(
-                    id: siteEntries[index].id,
-                    siteFormCtr: siteForm,
+                  return PageViewer(
+                    pageNav: _pageNav,
+                    child: SiteForm(
+                      id: siteEntries[index].id,
+                      siteFormCtr: siteForm,
+                    ),
                   );
                 },
-                onPageChanged: (value) => setState(() {
-                  _pageNav.currentPage = value + 1;
-                  _pageNav = updatePageNavigation(_pageNav);
-                  ref.invalidate(siteEntryProvider);
-                }),
+                onPageChanged: (index) {
+                  setState(() {
+                    _siteId = siteEntries[index].id;
+                    _updatePageNav(index);
+                  });
+                },
               );
             }
           }, loading: () {
@@ -88,12 +94,18 @@ class SitesState extends ConsumerState<Sites> {
       ),
       bottomSheet: Visibility(
           visible: _isVisible,
-          child: CustomPageNavButton(
+          child: PageNavButton(
             pageController: pageController,
             pageNav: _pageNav,
           )),
       bottomNavigationBar: const ProjectBottomNavbar(),
     );
+  }
+
+  void _updatePageNav(int value) {
+    _pageNav.currentPage = value + 1;
+    _pageNav = updatePageNavigation(_pageNav);
+    ref.invalidate(siteEntryProvider);
   }
 
   SiteFormCtrModel _updateController(SiteData siteEntries) {

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:nahpu/models/navigation.dart';
 
 PageNavigation updatePageNavigation(PageNavigation pageState) {
@@ -13,4 +14,8 @@ PageNavigation updatePageNavigation(PageNavigation pageState) {
   }
 
   return pageState;
+}
+
+PageController updatePageCtr(int size) {
+  return PageController(initialPage: size + 1, keepPage: false);
 }

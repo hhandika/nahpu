@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/controllers.dart';
-import 'package:nahpu/screens/collecting/components/collecting_activities.dart';
-import 'package:nahpu/screens/collecting/components/collecting_effort.dart';
+import 'package:nahpu/screens/collecting/components/activities.dart';
+import 'package:nahpu/screens/collecting/components/methods.dart';
 import 'package:nahpu/screens/collecting/components/collecting_info.dart';
 import 'package:nahpu/screens/collecting/components/tab_bar.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/layout.dart';
+import 'package:nahpu/styles/catalogs.dart';
 
 class CollEventForm extends ConsumerStatefulWidget {
   const CollEventForm({Key? key, required this.id, required this.collEventCtr})
@@ -33,8 +34,9 @@ class CollEventFormState extends ConsumerState<CollEventForm> {
         bool useHorizontalLayout = c.maxWidth > 600;
         return ListView(
           children: [
-            AdaptiveLayout(
+            AdaptiveMainLayout(
               useHorizontalLayout: useHorizontalLayout,
+              height: topCollEventHeight,
               children: [
                 CollectingInfoFields(
                     collEventId: widget.id,
@@ -49,7 +51,7 @@ class CollEventFormState extends ConsumerState<CollEventForm> {
             AdaptiveLayout(
               useHorizontalLayout: useHorizontalLayout,
               children: [
-                CollectingEffortFrom(
+                CollMethodForm(
                   collEventId: widget.id,
                 ),
                 CollEventTabBar(

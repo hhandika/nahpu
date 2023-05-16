@@ -4,7 +4,7 @@ import 'package:nahpu/services/database/database.dart';
 part 'taxonomy_queries.g.dart';
 
 @DriftAccessor(
-  include: {'tables.drift'},
+  include: {'tables_v3.drift'},
 )
 class TaxonomyQuery extends DatabaseAccessor<Database>
     with _$TaxonomyQueryMixin {
@@ -35,5 +35,9 @@ class TaxonomyQuery extends DatabaseAccessor<Database>
 
   Future<void> deleteTaxon(int id) {
     return (delete(taxonomy)..where((t) => t.id.equals(id))).go();
+  }
+
+  Future<void> deleteAllTaxon() {
+    return delete(taxonomy).go();
   }
 }

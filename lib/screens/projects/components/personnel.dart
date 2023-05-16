@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/models/controllers.dart';
+import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/providers/validation.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
 import 'package:nahpu/services/database/database.dart';
@@ -29,10 +30,16 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
     return FormCard(
       title: 'Personnel',
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(
-              height: MediaQuery.of(context).size.height * 0.3,
-              child: const PersonnelList()),
+          const SizedBox(
+            height: 300,
+            child: PersonnelList(),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
           PrimaryButton(
             onPressed: () {
               Navigator.push(
@@ -44,7 +51,6 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
             },
             text: 'Add personnel',
           ),
-          const SizedBox(height: 10),
         ],
       ),
     );
@@ -62,8 +68,10 @@ class PersonnelList extends ConsumerWidget {
     return personnel.when(
       data: (data) {
         return data.isEmpty
-            ? Column(
-                children: const [
+            ? const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
                   Text(
                     'No personnel found!',
                   ),
@@ -74,6 +82,7 @@ class PersonnelList extends ConsumerWidget {
               )
             : ListView.builder(
                 itemCount: data.length,
+                shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return PersonalListTile(
                     personnelData: data[index],
@@ -145,10 +154,10 @@ class PersonnelSubtitle extends StatelessWidget {
       role != null
           ? TextSpan(children: [
               const WidgetSpan(
-                child: TileIcon(icon: Icons.account_circle_outlined),
-              ),
+                  child: TileIcon(icon: Icons.account_circle_outlined),
+                  alignment: PlaceholderAlignment.middle),
               TextSpan(
-                text: '$role ',
+                text: ' $role  ',
                 style: Theme.of(context).textTheme.labelLarge,
               ),
             ])
@@ -157,10 +166,10 @@ class PersonnelSubtitle extends StatelessWidget {
           ? TextSpan(
               children: [
                 const WidgetSpan(
-                  child: TileIcon(icon: Icons.business_rounded),
-                ),
+                    child: TileIcon(icon: Icons.business_rounded),
+                    alignment: PlaceholderAlignment.middle),
                 TextSpan(
-                  text: '$affiliation ',
+                  text: ' $affiliation  ',
                   style: Theme.of(context).textTheme.labelLarge,
                 ),
               ],
@@ -170,10 +179,10 @@ class PersonnelSubtitle extends StatelessWidget {
           ? TextSpan(
               children: [
                 const WidgetSpan(
-                  child: TileIcon(icon: MdiIcons.counter),
-                ),
+                    child: TileIcon(icon: MdiIcons.counter),
+                    alignment: PlaceholderAlignment.middle),
                 TextSpan(
-                  text: '$currentFieldNumber',
+                  text: ' $currentFieldNumber',
                   style: Theme.of(context).textTheme.labelLarge,
                 ),
               ],
@@ -316,8 +325,6 @@ class PersonnelForm extends ConsumerStatefulWidget {
   PersonnelFormState createState() => PersonnelFormState();
 }
 
-// TODO:
-// 1. Add photo
 class PersonnelFormState extends ConsumerState<PersonnelForm> {
   final _formKey = GlobalKey<FormState>();
 
@@ -446,7 +453,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                         enabled: widget.ctr.roleCtr == 'Cataloger',
                         controller: widget.ctr.nextCollectorNumCtr,
                         decoration: InputDecoration(
-                          labelText: 'Last collector Number*',
+                          labelText: 'Next collector Number*',
                           hintText: 'Enter number (required for collectors)',
                           errorText: ref
                               .watch(personnelFormValidation)
@@ -497,15 +504,19 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                             .form
                             .isValidCataloger
                         : ref.read(personnelFormValidation).form.isValid,
-                    onPressed: () {
-                      widget.isAddNew ? _addPersonnel() : _updatePersonnel();
+                    onPressed: () async {
+                      widget.isAddNew
+                          ? await _addPersonnel()
+                          : _updatePersonnel();
                       ref.invalidate(personnelListProvider);
                       ref.invalidate(personnelFormValidation);
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const Dashboard(),
-                        ),
-                      );
+                      if (context.mounted) {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const Dashboard(),
+                          ),
+                        );
+                      }
                     },
                   ),
                 ],
@@ -534,8 +545,10 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
     );
   }
 
-  Future<void> _addPersonnel() {
-    return PersonnelServices(ref).createPersonnel(
+  Future<void> _addPersonnel() async {
+    PersonnelServices personnelServices = PersonnelServices(ref);
+    String projectUuid = ref.read(projectUuidProvider);
+    await personnelServices.createPersonnel(
       PersonnelCompanion(
         uuid: db.Value(widget.personnelUuid),
         name: db.Value(widget.ctr.nameCtr.text),
@@ -549,6 +562,10 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
         ),
       ),
     );
+    await personnelServices.createProjectPersonnel(PersonnelListCompanion(
+      personnelUuid: db.Value(widget.personnelUuid),
+      projectUuid: db.Value(projectUuid),
+    ));
   }
 
   int _getCollectorNumber() {

@@ -11,14 +11,14 @@ import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/navigation.dart';
 import 'package:nahpu/services/database/database.dart';
 
-class Narrative extends ConsumerStatefulWidget {
-  const Narrative({Key? key}) : super(key: key);
+class NarrativeViewer extends ConsumerStatefulWidget {
+  const NarrativeViewer({Key? key}) : super(key: key);
 
   @override
-  NarrativeState createState() => NarrativeState();
+  NarrativeViewerState createState() => NarrativeViewerState();
 }
 
-class NarrativeState extends ConsumerState<Narrative> {
+class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
   bool isVisible = false;
   PageController pageController = PageController();
   PageNavigation _pageNav = PageNavigation();
@@ -65,9 +65,8 @@ class NarrativeState extends ConsumerState<Narrative> {
                       // We want to view the last page first.
                       // Dart uses 0-based indexing. Technically, this is out-of-bound.
                       // But, what happens here is that it will trigger the PageView onPageChanged.
-                      // It fixes the issues that the curentPage state does not show the current page value.
-                      pageController =
-                          PageController(initialPage: narrativeSize);
+                      // It fixes the issues that the currentPage state does not show the current page value.
+                      pageController = updatePageCtr(narrativeSize);
                     });
                     return PageView.builder(
                       controller: pageController,
@@ -75,16 +74,20 @@ class NarrativeState extends ConsumerState<Narrative> {
                       itemBuilder: (context, index) {
                         final narrativeCtr =
                             _updateController(narrativeEntries, index);
-                        return NarrativeForm(
-                          narrativeId: narrativeEntries[index].id,
-                          narrativeCtr: narrativeCtr,
+                        return PageViewer(
+                          pageNav: _pageNav,
+                          child: NarrativeForm(
+                            narrativeId: narrativeEntries[index].id,
+                            narrativeCtr: narrativeCtr,
+                          ),
                         );
                       },
-                      onPageChanged: (value) => setState(() {
-                        _pageNav.currentPage = value + 1;
-                        _pageNav = updatePageNavigation(_pageNav);
-                        NarrativeServices(ref).invalidateNarrative();
-                      }),
+                      onPageChanged: (index) {
+                        setState(() {
+                          narrativeId = narrativeEntries[index].id;
+                          _updatePageNav(index);
+                        });
+                      },
                     );
                   }
                 },
@@ -95,13 +98,19 @@ class NarrativeState extends ConsumerState<Narrative> {
       ),
       bottomSheet: Visibility(
         visible: isVisible,
-        child: CustomPageNavButton(
+        child: PageNavButton(
           pageController: pageController,
           pageNav: _pageNav,
         ),
       ),
       bottomNavigationBar: const ProjectBottomNavbar(),
     );
+  }
+
+  void _updatePageNav(int value) {
+    _pageNav.currentPage = value + 1;
+    _pageNav = updatePageNavigation(_pageNav);
+    NarrativeServices(ref).invalidateNarrative();
   }
 
   NarrativeFormCtrModel _updateController(

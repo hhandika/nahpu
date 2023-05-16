@@ -1,19 +1,22 @@
+import 'package:nahpu/screens/narrative/narrative_view.dart';
+import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/services/narrative_services.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/screens/narrative/new_narrative.dart';
 import 'package:flutter/material.dart';
 
-enum MenuSelection { newNarrative, pdfExport, deleteRecords, deleteAllRecords }
+enum MenuSelection {
+  newNarrative,
+  duplicate,
+  pdfExport,
+  deleteRecords,
+  deleteAllRecords
+}
 
 Future<void> createNewNarrative(BuildContext context, WidgetRef ref) {
-  String projectUuid = ref.watch(projectUuidProvider);
-
-  return NarrativeServices(ref).createNewNarrative(projectUuid).then((value) {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => NewNarrativeForm(
-              narrativeId: value,
-            )));
+  return NarrativeServices(ref).createNewNarrative().then((_) {
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const NarrativeViewer()));
   });
 }
 
@@ -24,7 +27,7 @@ class NewNarrative extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return IconButton(
       icon: const Icon(Icons.add_circle_outline_rounded),
-      onPressed: () async {
+      onPressed: () {
         createNewNarrative(context, ref);
       },
     );
@@ -49,21 +52,30 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
         itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuSelection>>[
               const PopupMenuItem<MenuSelection>(
                 value: MenuSelection.newNarrative,
-                child: Text('Create a new narrative'),
+                child: CreateMenuButton(text: 'Create narrative'),
+              ),
+              const PopupMenuItem<MenuSelection>(
+                value: MenuSelection.duplicate,
+                child: DuplicateMenuButton(
+                  text: 'Duplicate site',
+                ),
               ),
               const PopupMenuItem<MenuSelection>(
                 value: MenuSelection.pdfExport,
-                child: Text('Export to PDF'),
+                child: PdfExportMenuButton(),
               ),
+              const PopupMenuDivider(height: 10),
               const PopupMenuItem<MenuSelection>(
                 value: MenuSelection.deleteRecords,
-                child: Text('Delete current record',
-                    style: TextStyle(color: Colors.red)),
+                child: DeleteMenuButton(
+                  deleteAll: false,
+                ),
               ),
               const PopupMenuItem<MenuSelection>(
                 value: MenuSelection.deleteAllRecords,
-                child: Text('Delete all records',
-                    style: TextStyle(color: Colors.red)),
+                child: DeleteMenuButton(
+                  deleteAll: true,
+                ),
               ),
             ]);
   }
@@ -73,11 +85,15 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
       case MenuSelection.newNarrative:
         createNewNarrative(context, ref);
         break;
+      case MenuSelection.duplicate:
+        break;
       case MenuSelection.pdfExport:
         break;
       case MenuSelection.deleteRecords:
         if (widget.narrativeId != null) {
           NarrativeServices(ref).deleteNarrative(widget.narrativeId!);
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => const NarrativeViewer()));
         }
         break;
       case MenuSelection.deleteAllRecords:

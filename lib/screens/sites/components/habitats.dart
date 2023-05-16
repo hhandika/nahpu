@@ -21,6 +21,7 @@ class Habitat extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return FormCard(
       title: 'Habitat',
+      mainAxisAlignment: MainAxisAlignment.start,
       child: Padding(
         padding: const EdgeInsets.all(5),
         child: Column(
@@ -42,7 +43,7 @@ class Habitat extends ConsumerWidget {
               decoration: const InputDecoration(
                 labelText: 'Condition',
                 hintText:
-                    'Enter habitat condition, e.g. "Prestine", "Disturbed", "etc."',
+                    'Enter habitat condition, e.g. "Pristine", "Disturbed", "etc."',
               ),
               onChanged: (value) => SiteServices(ref).updateSite(
                 id,
@@ -50,7 +51,7 @@ class Habitat extends ConsumerWidget {
               ),
             ),
             TextFormField(
-              maxLines: 5,
+              maxLines: 6,
               controller: siteFormCtr.habitatDescriptionCtr,
               decoration: const InputDecoration(
                 labelText: 'Description',

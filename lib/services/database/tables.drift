@@ -163,7 +163,7 @@ CREATE TABLE personnel (
     phone TEXT,
     affiliation TEXT,
     role TEXT,
-    currentFieldNumber INT,
+    currentFieldNumber INT, -- the next input for field number
     photoID INT,
     notes TEXT,
     FOREIGN KEY(photoID) REFERENCES personnelPhoto(id)
@@ -251,11 +251,11 @@ CREATE TABLE mammalMeasurement (
 CREATE TABLE birdMeasurement (
     specimenUuid TEXT NOT NULL,
     weight REAL,
-    wingspan INT,
-    irisColor TEXT,
-    billColor TEXT,
-    footColor TEXT,
-    tarsusColor TEXT,
+    wingspan INT, -- change to real
+    irisColor TEXT, -- Add color
+    billColor TEXT, -- Add color
+    footColor TEXT, -- Add color
+    tarsusColor TEXT, -- Add color
     sex INT,
     molting INT, -- encode text
     broodPatch INT,
@@ -303,6 +303,7 @@ CREATE TABLE specimenPart (
     FOREIGN KEY(specimenUuid) REFERENCES specimen(uuid) 
 );
 
+-- remove the next release
 CREATE TABLE expense (
     id INT PRIMARY KEY AUTOINCREMENT,
     category TEXT,

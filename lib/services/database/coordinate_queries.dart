@@ -4,7 +4,7 @@ import 'package:nahpu/services/database/database.dart';
 part 'coordinate_queries.g.dart';
 
 @DriftAccessor(
-  include: {'tables.drift'},
+  include: {'tables_v3.drift'},
 )
 class CoordinateQuery extends DatabaseAccessor<Database>
     with _$CoordinateQueryMixin {
@@ -23,6 +23,10 @@ class CoordinateQuery extends DatabaseAccessor<Database>
 
   Future<void> updateCoordinate(int id, CoordinateCompanion entry) {
     return (update(coordinate)..where((t) => t.id.equals(id))).write(entry);
+  }
+
+  Future<void> deleteCoordinateBySiteID(int siteID) {
+    return (delete(coordinate)..where((t) => t.siteID.equals(siteID))).go();
   }
 
   Future<void> deleteCoordinate(int id) {

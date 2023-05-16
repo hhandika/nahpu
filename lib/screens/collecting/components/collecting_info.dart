@@ -55,6 +55,8 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
     return FormCard(
       title: 'Collecting Info',
       isPrimary: true,
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
       child: Column(
         children: [
           Padding(
@@ -98,7 +100,7 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
                 ),
                 controller: widget.collEventCtr.startDateCtr,
                 onTap: () async {
-                  DateTime? date = await showDate(context, initialStartDate);
+                  DateTime? date = await _showDate(context, initialStartDate);
                   if (date != null) {
                     setState(
                       () {
@@ -127,7 +129,7 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
                 ),
                 controller: widget.collEventCtr.endDateCtr,
                 onTap: () async {
-                  DateTime? date = await showDate(context, initialEndDate);
+                  DateTime? date = await _showDate(context, initialEndDate);
                   if (date != null) {
                     widget.collEventCtr.endDateCtr.text =
                         DateFormat.yMMMd().format(date);
@@ -172,7 +174,7 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
     }
   }
 
-  Future<DateTime?> showDate(BuildContext context, DateTime initialStartDate) {
+  Future<DateTime?> _showDate(BuildContext context, DateTime initialStartDate) {
     return showDatePicker(
         context: context,
         initialDate: initialStartDate,
@@ -193,74 +195,73 @@ class CollEventIdTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ListTile(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-        side: BorderSide(
-          color: Theme.of(context).colorScheme.onSurface,
-          width: 0.5,
-        ),
-      ),
-      title: RichText(
-        text: TextSpan(
-          text: 'Coll. Event ID: ',
-          style: Theme.of(context).textTheme.titleMedium,
-          children: [
-            TextSpan(
-              text: collEventCtr.eventIDCtr.text,
-              style: Theme.of(context).textTheme.bodyMedium,
+    return collEventCtr.eventIDCtr.text.isNotEmpty
+        ? ListTile(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              side: BorderSide(
+                color: Theme.of(context).colorScheme.onSurface,
+                width: 0.5,
+              ),
             ),
-          ],
-        ),
-      ),
-      trailing: Visibility(
-        visible: collEventCtr.eventIDCtr.text.isNotEmpty,
-        child: IconButton(
-          icon: const Icon(
-            Icons.edit_rounded,
-            size: 20,
-          ),
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Edit Collecting Event ID'),
-                  content: TextFormField(
-                    controller: collEventCtr.eventIDCtr,
-                    decoration: const InputDecoration(
-                      labelText: 'Collecting Event ID',
-                      hintText: 'Enter collecting event ID',
-                    ),
+            title: RichText(
+              text: TextSpan(
+                text: 'Coll. Event ID: ',
+                style: Theme.of(context).textTheme.titleMedium,
+                children: [
+                  TextSpan(
+                    text: collEventCtr.eventIDCtr.text,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('Cancel'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        CollEventServices(ref).updateCollEvent(
-                          collEventId,
-                          CollEventCompanion(
-                            eventID: db.Value(collEventCtr.eventIDCtr.text),
-                          ),
-                        );
-                        ref.invalidate(siteEntryProvider);
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('Save'),
-                    ),
-                  ],
+                ],
+              ),
+            ),
+            trailing: IconButton(
+              icon: const Icon(
+                Icons.edit_rounded,
+                size: 20,
+              ),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Edit Collecting Event ID'),
+                      content: TextFormField(
+                        controller: collEventCtr.eventIDCtr,
+                        decoration: const InputDecoration(
+                          labelText: 'Collecting Event ID',
+                          hintText: 'Enter collecting event ID',
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            CollEventServices(ref).updateCollEvent(
+                              collEventId,
+                              CollEventCompanion(
+                                eventID: db.Value(collEventCtr.eventIDCtr.text),
+                              ),
+                            );
+                            ref.invalidate(siteEntryProvider);
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Save'),
+                        ),
+                      ],
+                    );
+                  },
                 );
               },
-            );
-          },
-        ),
-      ),
-    );
+            ),
+          )
+        : const SizedBox.shrink();
   }
 }
 

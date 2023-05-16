@@ -204,7 +204,7 @@ class SpecimenFormCtrModel {
     required this.collEventIDCtr,
     required this.multipleCollectorCtr,
     required this.collPersonnelCtr,
-    required this.captureMethodCtr,
+    required this.collMethodCtr,
     required this.relativeTimeCtr,
     required this.preparatorCtr,
     required this.conditionCtr,
@@ -223,7 +223,7 @@ class SpecimenFormCtrModel {
   int? collEventIDCtr;
   int? multipleCollectorCtr;
   int? collPersonnelCtr;
-  int? captureMethodCtr;
+  int? collMethodCtr;
   int? relativeTimeCtr;
   TextEditingController fieldNumberCtr;
   TextEditingController prepDateCtr;
@@ -240,7 +240,7 @@ class SpecimenFormCtrModel {
         multipleCollectorCtr: null,
         collPersonnelCtr: null,
         relativeTimeCtr: null,
-        captureMethodCtr: null,
+        collMethodCtr: null,
         fieldNumberCtr: TextEditingController(),
         taxonDataCtr: TaxonData(),
         speciesCtr: null,
@@ -260,7 +260,7 @@ class SpecimenFormCtrModel {
         collEventIDCtr: specimen.collEventID,
         multipleCollectorCtr: specimen.isMultipleCollector,
         collPersonnelCtr: specimen.collPersonnelID,
-        captureMethodCtr: specimen.collMethodID,
+        collMethodCtr: specimen.collMethodID,
         relativeTimeCtr: specimen.isRelativeTime,
         fieldNumberCtr:
             TextEditingController(text: specimen.fieldNumber?.toString() ?? ''),
@@ -371,22 +371,25 @@ class MammalMeasurementCtrModel {
   factory MammalMeasurementCtrModel.fromData(MammalMeasurementData data) =>
       MammalMeasurementCtrModel(
         totalLengthCtr:
-            TextEditingController(text: data.totalLength?.toString() ?? ''),
+            TextEditingController(text: data.totalLength?.truncateZero() ?? ''),
         tailLengthCtr:
-            TextEditingController(text: data.tailLength?.toString() ?? ''),
-        hindFootCtr:
-            TextEditingController(text: data.hindFootLength?.toString() ?? ''),
-        earCtr: TextEditingController(text: data.earLength?.toString() ?? ''),
-        forearmCtr: TextEditingController(text: data.forearm?.toString() ?? ''),
-        weightCtr: TextEditingController(text: data.weight?.toString() ?? ''),
+            TextEditingController(text: data.tailLength?.truncateZero() ?? ''),
+        hindFootCtr: TextEditingController(
+            text: data.hindFootLength?.truncateZero() ?? ''),
+        earCtr:
+            TextEditingController(text: data.earLength?.truncateZero() ?? ''),
+        forearmCtr:
+            TextEditingController(text: data.forearm?.truncateZero() ?? ''),
+        weightCtr:
+            TextEditingController(text: data.weight?.truncateZero() ?? ''),
         accuracyCtr: data.accuracy?.toString(),
         sexCtr: data.sex,
         ageCtr: data.age,
         testisPosCtr: data.testisPosition,
-        testisLengthCtr:
-            TextEditingController(text: data.testisLength?.toString() ?? ''),
+        testisLengthCtr: TextEditingController(
+            text: data.testisLength?.truncateZero() ?? ''),
         testisWidthCtr:
-            TextEditingController(text: data.testisWidth?.toString() ?? ''),
+            TextEditingController(text: data.testisWidth?.truncateZero() ?? ''),
         epididymisCtr: data.epididymisAppearance,
         reproductiveStageCtr: data.reproductiveStage,
         leftPlacentaCtr: TextEditingController(
@@ -432,8 +435,8 @@ class MammalMeasurementCtrModel {
   }
 }
 
-class BirdMeasurementCtrModel {
-  BirdMeasurementCtrModel({
+class AvianMeasurementCtrModel {
+  AvianMeasurementCtrModel({
     required this.weightCtr,
     required this.wingspanCtr,
     required this.irisCtr,
@@ -441,7 +444,6 @@ class BirdMeasurementCtrModel {
     required this.footCtr,
     required this.tarsusCtr,
     required this.sexCtr,
-    required this.moltCtr,
     required this.broodPatchCtr,
     required this.skullOssCtr,
     required this.bursaCtr,
@@ -459,12 +461,10 @@ class BirdMeasurementCtrModel {
     required this.oviductWidthCtr,
     required this.oviductAppearanceCtr,
     required this.ovaryRemarkCtr,
-    required this.wingLeftPrimaryMoltCtr,
-    required this.wingRightPrimaryMoltCtr,
-    required this.wingLeftSecondaryMoltCtr,
-    required this.wingRightSecondaryMoltCtr,
-    required this.tailLeftRectriceCtr,
-    required this.tailRightRectriceCtr,
+    required this.wingIsMoltCtr,
+    required this.wingMoltCtr,
+    required this.tailIsMoltCtr,
+    required this.tailMoltCtr,
     required this.bodyMoltCtr,
     required this.moltRemarkCtr,
   });
@@ -476,7 +476,6 @@ class BirdMeasurementCtrModel {
   TextEditingController footCtr;
   TextEditingController tarsusCtr;
   int? sexCtr;
-  int? moltCtr;
   int? broodPatchCtr;
   int? skullOssCtr;
   TextEditingController bursaCtr;
@@ -494,16 +493,14 @@ class BirdMeasurementCtrModel {
   TextEditingController oviductWidthCtr;
   int? oviductAppearanceCtr;
   TextEditingController ovaryRemarkCtr;
-  TextEditingController wingRightPrimaryMoltCtr;
-  TextEditingController wingLeftPrimaryMoltCtr;
-  TextEditingController wingRightSecondaryMoltCtr;
-  TextEditingController wingLeftSecondaryMoltCtr;
-  TextEditingController tailRightRectriceCtr;
-  TextEditingController tailLeftRectriceCtr;
+  int? wingIsMoltCtr;
+  TextEditingController wingMoltCtr;
+  int? tailIsMoltCtr;
+  TextEditingController tailMoltCtr;
   int? bodyMoltCtr;
   TextEditingController moltRemarkCtr;
 
-  factory BirdMeasurementCtrModel.empty() => BirdMeasurementCtrModel(
+  factory AvianMeasurementCtrModel.empty() => AvianMeasurementCtrModel(
         weightCtr: TextEditingController(),
         wingspanCtr: TextEditingController(),
         irisCtr: TextEditingController(),
@@ -511,7 +508,6 @@ class BirdMeasurementCtrModel {
         footCtr: TextEditingController(),
         tarsusCtr: TextEditingController(),
         sexCtr: null,
-        moltCtr: null,
         broodPatchCtr: null,
         skullOssCtr: null,
         bursaCtr: TextEditingController(),
@@ -529,18 +525,16 @@ class BirdMeasurementCtrModel {
         thirdOvaSizeCtr: TextEditingController(),
         oviductAppearanceCtr: null,
         ovaryRemarkCtr: TextEditingController(),
-        wingRightPrimaryMoltCtr: TextEditingController(),
-        wingLeftPrimaryMoltCtr: TextEditingController(),
-        wingRightSecondaryMoltCtr: TextEditingController(),
-        wingLeftSecondaryMoltCtr: TextEditingController(),
-        tailRightRectriceCtr: TextEditingController(),
-        tailLeftRectriceCtr: TextEditingController(),
+        wingIsMoltCtr: null,
+        wingMoltCtr: TextEditingController(),
+        tailIsMoltCtr: null,
+        tailMoltCtr: TextEditingController(),
         bodyMoltCtr: null,
         moltRemarkCtr: TextEditingController(),
       );
 
-  factory BirdMeasurementCtrModel.fromData(BirdMeasurementData data) =>
-      BirdMeasurementCtrModel(
+  factory AvianMeasurementCtrModel.fromData(AvianMeasurementData data) =>
+      AvianMeasurementCtrModel(
         weightCtr: TextEditingController(text: data.weight?.toString() ?? ''),
         wingspanCtr:
             TextEditingController(text: data.wingspan?.toString() ?? ''),
@@ -549,7 +543,6 @@ class BirdMeasurementCtrModel {
         footCtr: TextEditingController(text: data.footColor ?? ''),
         tarsusCtr: TextEditingController(text: data.tarsusColor ?? ''),
         sexCtr: data.sex,
-        moltCtr: data.molting,
         broodPatchCtr: data.broodPatch,
         skullOssCtr: data.skullOssification,
         bursaCtr:
@@ -577,18 +570,10 @@ class BirdMeasurementCtrModel {
             TextEditingController(text: data.oviductWidth?.toString() ?? ''),
         oviductAppearanceCtr: data.oviductAppearance,
         ovaryRemarkCtr: TextEditingController(text: data.ovaryRemark ?? ''),
-        wingRightPrimaryMoltCtr: TextEditingController(
-            text: data.wingRightPrimary?.toString() ?? ''),
-        wingLeftPrimaryMoltCtr:
-            TextEditingController(text: data.wingLeftPrimary?.toString() ?? ''),
-        wingRightSecondaryMoltCtr: TextEditingController(
-            text: data.wingRightSecondary?.toString() ?? ''),
-        wingLeftSecondaryMoltCtr: TextEditingController(
-            text: data.wingLeftSecondary?.toString() ?? ''),
-        tailRightRectriceCtr: TextEditingController(
-            text: data.tailRightRectrices?.toString() ?? ''),
-        tailLeftRectriceCtr: TextEditingController(
-            text: data.tailLeftRectrices?.toString() ?? ''),
+        wingIsMoltCtr: data.wingIsMolt,
+        wingMoltCtr: TextEditingController(text: data.wingMolt ?? ''),
+        tailIsMoltCtr: data.tailIsMolt,
+        tailMoltCtr: TextEditingController(text: data.tailMolt ?? ''),
         bodyMoltCtr: data.bodyMolt,
         moltRemarkCtr: TextEditingController(text: data.moltRemark ?? ''),
       );
@@ -612,12 +597,8 @@ class BirdMeasurementCtrModel {
     thirdOvaSizeCtr.dispose();
     ovaryRemarkCtr.dispose();
     oviductWidthCtr.dispose();
-    wingRightPrimaryMoltCtr.dispose();
-    wingLeftPrimaryMoltCtr.dispose();
-    wingRightSecondaryMoltCtr.dispose();
-    wingLeftSecondaryMoltCtr.dispose();
-    tailRightRectriceCtr.dispose();
-    tailLeftRectriceCtr.dispose();
+    wingMoltCtr.dispose();
+    tailMoltCtr.dispose();
     moltRemarkCtr.dispose();
   }
 }
@@ -770,6 +751,18 @@ class TaxonRegistryCtrModel {
       specificEpithetCtr: TextEditingController(),
       commonNameCtr: TextEditingController(),
       noteCtr: TextEditingController());
+
+  factory TaxonRegistryCtrModel.fromData(TaxonomyData data) =>
+      TaxonRegistryCtrModel(
+        taxonClassCtr: TextEditingController(text: data.taxonClass ?? ''),
+        taxonOrderCtr: TextEditingController(text: data.taxonOrder ?? ''),
+        taxonFamilyCtr: TextEditingController(text: data.taxonFamily ?? ''),
+        genusCtr: TextEditingController(text: data.genus ?? ''),
+        specificEpithetCtr:
+            TextEditingController(text: data.specificEpithet ?? ''),
+        commonNameCtr: TextEditingController(text: data.commonName ?? ''),
+        noteCtr: TextEditingController(text: data.notes ?? ''),
+      );
 
   void dispose() {
     taxonClassCtr.dispose();
@@ -973,8 +966,8 @@ class CollWeatherCtrModel {
   }
 }
 
-class ExportCtrModel {
-  ExportCtrModel({
+class FileOpCtrModel {
+  FileOpCtrModel({
     required this.formatCtr,
     required this.pathCtr,
     required this.fileNameCtr,
@@ -984,7 +977,7 @@ class ExportCtrModel {
   TextEditingController pathCtr;
   TextEditingController fileNameCtr;
 
-  factory ExportCtrModel.empty() => ExportCtrModel(
+  factory FileOpCtrModel.empty() => FileOpCtrModel(
       formatCtr: TextEditingController(),
       pathCtr: TextEditingController(),
       fileNameCtr: TextEditingController());

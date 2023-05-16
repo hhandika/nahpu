@@ -11,6 +11,7 @@ import 'package:nahpu/screens/projects/components/taxon_registry.dart';
 import 'package:nahpu/screens/projects/edit_project.dart';
 import 'package:nahpu/screens/shared/navigation.dart';
 import 'package:nahpu/screens/shared/layout.dart';
+import 'package:nahpu/styles/catalogs.dart';
 
 class Dashboard extends ConsumerStatefulWidget {
   const Dashboard({
@@ -49,8 +50,9 @@ class DashboardState extends ConsumerState<Dashboard> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  AdaptiveLayout(
+                  AdaptiveMainLayout(
                     useHorizontalLayout: useHorizontalLayout,
+                    height: topDashboardHeight,
                     children: [
                       Stack(
                         alignment: Alignment.bottomRight,
@@ -77,9 +79,15 @@ class DashboardState extends ConsumerState<Dashboard> {
                       const PersonnelViewer(),
                     ],
                   ),
-                  AdaptiveLayout(
+                  AdaptiveMainLayout(
                     useHorizontalLayout: useHorizontalLayout,
-                    children: const [TaxonRegistryViewer(), MiscForm()],
+                    height: bottomDashboardHeight,
+                    children: [
+                      TaxonRegistryViewer(
+                        useHorizontalLayout: useHorizontalLayout,
+                      ),
+                      const MiscForm()
+                    ],
                   )
                 ],
               ),

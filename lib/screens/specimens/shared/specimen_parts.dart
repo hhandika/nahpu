@@ -12,6 +12,7 @@ import 'package:nahpu/screens/shared/associated_data.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/specimen_services.dart';
+import 'package:nahpu/services/utility_services.dart';
 
 class PartDataForm extends ConsumerStatefulWidget {
   const PartDataForm({
@@ -49,9 +50,12 @@ class PartDataFormState extends ConsumerState<PartDataForm>
   Widget build(BuildContext context) {
     return FormCard(
       withTitle: false,
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       child: MediaTabBars(
         tabController: _tabController,
         length: _length,
+        height: MediaQuery.of(context).size.height * 0.5,
         tabs: [
           Tab(
             icon: Icon(matchCatFmtToPartIcon(widget.catalogFmt)),
@@ -81,10 +85,10 @@ class SpecimenPartFields extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         const TitleForm(text: 'Specimen Parts'),
-        Expanded(
+        Flexible(
           child: PartList(
             specimenUuid: specimenUuid,
           ),
@@ -98,13 +102,6 @@ class SpecimenPartFields extends ConsumerWidget {
             );
           },
           text: 'Add Part',
-        ),
-        TextFormField(
-          maxLines: 5,
-          decoration: const InputDecoration(
-            labelText: 'Notes',
-            hintText: 'Add notes',
-          ),
         ),
       ],
     );
@@ -130,8 +127,11 @@ class PartList extends ConsumerWidget {
           itemBuilder: (context, index) {
             final part = data[index];
             return ListTile(
-              title: Text(part.type ?? 'No type'),
-              subtitle: Text('Count: ${part.count.toString()}'),
+              title: PartTitle(
+                partType: part.type,
+                partCount: part.count.toString(),
+              ),
+              subtitle: PartSubTitle(part: part),
               trailing: IconButton(
                 icon: const Icon(Icons.edit),
                 onPressed: () {
@@ -153,6 +153,61 @@ class PartList extends ConsumerWidget {
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (err, stack) => Text('Error: $err'),
     );
+  }
+}
+
+class PartTitle extends StatelessWidget {
+  const PartTitle({
+    super.key,
+    required this.partType,
+    required this.partCount,
+  });
+
+  final String? partType;
+  final String? partCount;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      '${partType ?? 'Unknown part'}'
+      '$listSeparator'
+      '${partCount ?? 'No count'}',
+      style: Theme.of(context).textTheme.titleMedium,
+    );
+  }
+}
+
+class PartSubTitle extends StatelessWidget {
+  const PartSubTitle({super.key, required this.part});
+
+  final SpecimenPartData part;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      '${_getTreatmentText()}'
+      '${_getAddTreatmentText()}',
+    );
+  }
+
+  String _getTreatmentText() {
+    if (part.treatment == null) {
+      return 'None';
+    } else if (part.treatment!.isEmpty) {
+      return 'None';
+    } else {
+      return part.treatment!;
+    }
+  }
+
+  String _getAddTreatmentText() {
+    if (part.additionalTreatment == null) {
+      return '';
+    } else if (part.additionalTreatment!.isEmpty) {
+      return '';
+    } else {
+      return '$listSeparator ${part.additionalTreatment}';
+    }
   }
 }
 
@@ -323,47 +378,23 @@ class PartFormState extends ConsumerState<PartForm> {
               isLastField: false,
             ),
             const SizedBox(height: 10),
-            widget.isEditing
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            if (widget.specimenPartId != null) {
-                              SpecimenServices(ref)
-                                  .deleteSpecimenPart(widget.specimenPartId!);
-                              Navigator.pop(context);
-                            }
-                          },
-                          icon: const Icon(Icons.delete_rounded)),
-                      _buildButtons(),
-                    ],
-                  )
-                : _buildButtons(),
+            FormButtonWithDelete(
+              isEditing: widget.isEditing,
+              onDeleted: () {
+                if (widget.specimenPartId != null) {
+                  SpecimenServices(ref)
+                      .deleteSpecimenPart(widget.specimenPartId!);
+                  Navigator.pop(context);
+                }
+              },
+              onSubmitted: () {
+                widget.isEditing ? _updatePart() : _createPart();
+                Navigator.of(context).pop();
+              },
+            ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildButtons() {
-    return Wrap(
-      children: [
-        SecondaryButton(
-          text: 'Cancel',
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        const SizedBox(width: 10),
-        PrimaryButton(
-          text: widget.isEditing ? 'Update' : 'Add',
-          onPressed: () {
-            widget.isEditing ? _updatePart() : _createPart();
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
     );
   }
 

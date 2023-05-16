@@ -3,7 +3,7 @@ description: Nahpu is a cross-platform cataloging app for natural history specim
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -15,10 +15,10 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+4
+version: 1.0.0+6
 
 environment:
-  sdk: ">=2.18.0 <3.0.0"
+  sdk: ">=2.19.0 <=3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -30,7 +30,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.5
@@ -40,21 +39,22 @@ dependencies:
   path_provider: ^2.0.11
   path: ^1.8.2
   uuid: ^3.0.6
-  dynamic_color: ^1.4.0
+  dynamic_color: ^1.6.3
   url_launcher: ^6.1.5
   intl: ^0.18.0
   freezed_annotation: ^2.1.0
   flutter_riverpod: ^2.1.3
-  flutter_launcher_icons: ^0.11.0
+  flutter_launcher_icons: ^0.13.1
   adaptive_breakpoints: ^0.1.4
   shared_preferences: ^2.0.15
   settings_ui: ^2.0.2
   material_design_icons_flutter: ^6.0.7096
-  fl_chart: ^0.60.0
+  fl_chart: ^0.62.0
   flutter_typeahead: ^4.3.3
-  flex_color_scheme: ^6.1.2
+  flex_color_scheme: ^7.1.0
   file_picker: ^5.2.5
-  share_plus: ^6.3.1
+  sqlite3: ^1.10.1
+  pdf: ^3.8.4
 
 dev_dependencies:
   flutter_test:
@@ -70,24 +70,23 @@ dev_dependencies:
   flutter_lints: ^2.0.1
   freezed: ^2.1.0+1
 
-
 flutter_icons:
   ios: true
   android: true
   remove_alpha_ios: true
-  image_path_ios: "assets/launcher/ic_nahpu.png"
-  image_path_android: "assets/launcher/ic_rounded.png"
-  adaptive_icon_background: "assets/launcher/ic_background_adaptive.png"
-  adaptive_icon_foreground: "assets/launcher/ic_nahpu_adaptive.png"
+  image_path_ios: "assets/launcher/icon.png"
+  image_path_android: "assets/launcher/icon.png"
   windows:
     generate: true
-    image_path: "assets/launcher/ic_rounded.png"
+    image_path: "assets/launcher/icon_desktop.png"
+  macos:
+    generate: true
+    image_path: "assets/launcher/icon_desktop.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -110,7 +109,7 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: 'Merriweather'
+    - family: "Merriweather"
       fonts:
         - asset: assets/fonts/Merriweather-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf

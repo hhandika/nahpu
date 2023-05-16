@@ -169,7 +169,7 @@ class LocalityNote extends ConsumerWidget {
       controller: siteFormCtr.remarkCtr,
       maxLines: 3,
       decoration: const InputDecoration(
-        labelText: 'Remark',
+        labelText: 'Remarks',
         hintText: 'Enter more info about the site (optional)',
       ),
       onChanged: (value) {

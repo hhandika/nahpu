@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/collevent_services.dart';
+import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/navigation_services.dart';
 import 'package:nahpu/models/navigation.dart';
 import 'package:nahpu/models/controllers.dart';
@@ -10,17 +11,18 @@ import 'package:nahpu/screens/collecting/components/menu_bar.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/navigation.dart';
 
-class CollEvents extends ConsumerStatefulWidget {
-  const CollEvents({Key? key}) : super(key: key);
+class CollEventViewer extends ConsumerStatefulWidget {
+  const CollEventViewer({Key? key}) : super(key: key);
 
   @override
-  CollEventsState createState() => CollEventsState();
+  CollEventViewerState createState() => CollEventViewerState();
 }
 
-class CollEventsState extends ConsumerState<CollEvents> {
+class CollEventViewerState extends ConsumerState<CollEventViewer> {
   bool _isVisible = false;
   PageController pageController = PageController();
   PageNavigation _pageNav = PageNavigation();
+  int? _collEvenId;
 
   @override
   void dispose() {
@@ -33,9 +35,11 @@ class CollEventsState extends ConsumerState<CollEvents> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Collecting Events"),
-        actions: const [
-          NewCollEvents(),
-          CollEventMenu(),
+        actions: [
+          const NewCollEvents(),
+          CollEventMenu(
+            collEventId: _collEvenId,
+          ),
         ],
         automaticallyImplyLeading: false,
       ),
@@ -60,28 +64,30 @@ class CollEventsState extends ConsumerState<CollEvents> {
                       // We want to view the last page first.
                       // Dart uses 0-based indexing. Technically, this is out-of-bound.
                       // But, what happens here is that it will trigger the PageView onPageChanged.
-                      // It fixes the issues that the curentPage state does not show the current page value.
-                      pageController =
-                          PageController(initialPage: collEventSize);
+                      // It fixes the issues that the currentPage state does not show the current page value.
+                      pageController = updatePageCtr(collEventSize);
                     });
                     return PageView.builder(
                       controller: pageController,
                       itemCount: collEventSize,
                       itemBuilder: (context, index) {
-                        final collEventForm = CollEventFormCtrModel.fromData(
-                          collEventEntries[index],
-                        );
+                        final collEventForm =
+                            _updateController(collEventEntries[index]);
 
-                        return CollEventForm(
-                          id: collEventEntries[index].id,
-                          collEventCtr: collEventForm,
+                        return PageViewer(
+                          pageNav: _pageNav,
+                          child: CollEventForm(
+                            id: collEventEntries[index].id,
+                            collEventCtr: collEventForm,
+                          ),
                         );
                       },
-                      onPageChanged: (value) => setState(() {
-                        _pageNav.currentPage = value + 1;
-                        _pageNav = updatePageNavigation(_pageNav);
-                        CollEventServices(ref).invalidateCollEvent();
-                      }),
+                      onPageChanged: (index) {
+                        setState(() {
+                          _collEvenId = collEventEntries[index].id;
+                          _updatePageNav(index);
+                        });
+                      },
                     );
                   }
                 },
@@ -92,12 +98,24 @@ class CollEventsState extends ConsumerState<CollEvents> {
       ),
       bottomSheet: Visibility(
         visible: _isVisible,
-        child: CustomPageNavButton(
+        child: PageNavButton(
           pageController: pageController,
           pageNav: _pageNav,
         ),
       ),
       bottomNavigationBar: const ProjectBottomNavbar(),
     );
+  }
+
+  void _updatePageNav(int value) {
+    setState(() {
+      _pageNav.currentPage = value + 1;
+      _pageNav = updatePageNavigation(_pageNav);
+      CollEventServices(ref).invalidateCollEvent();
+    });
+  }
+
+  CollEventFormCtrModel _updateController(CollEventData collEventData) {
+    return CollEventFormCtrModel.fromData(collEventData);
   }
 }

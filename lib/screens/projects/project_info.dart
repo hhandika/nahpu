@@ -11,80 +11,75 @@ class ProjectInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        RichText(
-          text: TextSpan(
-            text: 'Project Name: ',
-            style: Theme.of(context).textTheme.titleSmall,
-            children: [
-              TextSpan(
-                text: projectData?.name ?? 'Empty!',
-                style: Theme.of(context).textTheme.bodyLarge,
-              )
-            ],
-          ),
+        ProjectInfoText(
+          title: 'Project name: ',
+          text: projectData?.name,
         ),
-        RichText(
-          overflow: TextOverflow.ellipsis,
-          text: TextSpan(
-            text: 'UUID: ',
-            style: Theme.of(context).textTheme.titleSmall,
-            children: [
-              TextSpan(
-                text: '${projectData?.uuid}',
-                style: Theme.of(context).textTheme.bodyMedium,
-              )
-            ],
-          ),
+        ProjectInfoText(title: 'UUID: ', text: projectData?.uuid),
+        ProjectInfoText(
+            title: 'Project description: ', text: projectData?.description),
+        ProjectInfoText(
+          title: 'Principal investigator: ',
+          text: projectData?.principalInvestigator,
         ),
-        RichText(
-          text: TextSpan(
-            text: 'Project Description: ',
-            style: Theme.of(context).textTheme.titleSmall,
-            children: [
-              TextSpan(
-                text: projectData?.description ?? 'Empty!',
-                style: Theme.of(context).textTheme.bodyLarge,
-              )
-            ],
-          ),
+        ProjectInfoText(
+          title: 'Location: ',
+          text: projectData?.location,
         ),
-        RichText(
-          text: TextSpan(
-            text: 'Principal Investigator: ',
-            style: Theme.of(context).textTheme.titleSmall,
-            children: [
-              TextSpan(
-                text: projectData?.principalInvestigator ?? 'No PI name found!',
-                style: Theme.of(context).textTheme.bodyLarge,
-              )
-            ],
-          ),
+        ProjectInfoText(
+          title: 'Start date: ',
+          text: projectData?.startDate,
         ),
-        RichText(
-          text: TextSpan(
-            text: 'Created: ',
-            style: Theme.of(context).textTheme.titleSmall,
-            children: [
-              TextSpan(
-                text: projectData?.created ?? 'No DateCreated',
-                style: Theme.of(context).textTheme.bodyLarge,
-              )
-            ],
-          ),
+        ProjectInfoText(
+          title: 'End date: ',
+          text: projectData?.endDate,
         ),
-        RichText(
-          text: TextSpan(
-            text: 'Accessed: ',
-            style: Theme.of(context).textTheme.titleSmall,
-            children: [
-              TextSpan(
-                text: projectData?.lastAccessed ?? 'No DateModified',
-                style: Theme.of(context).textTheme.bodyLarge,
-              )
-            ],
-          ),
+        const SizedBox(height: 20),
+        ProjectInfoText(
+          title: 'Created: ',
+          text: projectData?.created,
+          isSmall: true,
+        ),
+        ProjectInfoText(
+          title: 'Accessed: ',
+          text: projectData?.lastAccessed,
+          isSmall: true,
         ),
       ],
+    );
+  }
+}
+
+class ProjectInfoText extends StatelessWidget {
+  const ProjectInfoText({
+    super.key,
+    required this.title,
+    required this.text,
+    this.isSmall = false,
+  });
+
+  final String title;
+  final String? text;
+  final bool isSmall;
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      overflow: TextOverflow.ellipsis,
+      text: TextSpan(
+        text: title,
+        style: isSmall
+            ? Theme.of(context).textTheme.bodyMedium
+            : Theme.of(context).textTheme.titleSmall,
+        children: [
+          TextSpan(
+            text: text ?? '',
+            style: isSmall
+                ? Theme.of(context).textTheme.bodyMedium
+                : Theme.of(context).textTheme.bodyLarge,
+          )
+        ],
+      ),
     );
   }
 }

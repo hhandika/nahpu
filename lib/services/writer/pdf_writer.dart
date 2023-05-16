@@ -1,0 +1,3 @@
+class NarrativePdfWriter {
+  NarrativePdfWriter();
+}

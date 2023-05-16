@@ -7,25 +7,25 @@ import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/navigation.dart';
-import 'package:nahpu/screens/specimens/new_specimens.dart';
 import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
 import 'package:nahpu/screens/specimens/specimen_form.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/navigation_services.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
 
-class Specimens extends ConsumerStatefulWidget {
-  const Specimens({Key? key}) : super(key: key);
+class SpecimenViewer extends ConsumerStatefulWidget {
+  const SpecimenViewer({Key? key}) : super(key: key);
 
   @override
-  SpecimensState createState() => SpecimensState();
+  SpecimenViewerState createState() => SpecimenViewerState();
 }
 
-class SpecimensState extends ConsumerState<Specimens> {
+class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
   bool isVisible = false;
   PageController pageController = PageController();
   PageNavigation _pageNav = PageNavigation();
-
+  String? _specimenUuid;
+  CatalogFmt? _catalogFmt;
   TaxonData taxonomy = TaxonData();
 
   @override
@@ -41,7 +41,13 @@ class SpecimensState extends ConsumerState<Specimens> {
         title: const Text(
           "Specimen Records",
         ),
-        actions: const [NewSpecimens(), SpecimenMenu()],
+        actions: [
+          const NewSpecimens(),
+          SpecimenMenu(
+            specimenUuid: _specimenUuid,
+            catalogFmt: _catalogFmt,
+          ),
+        ],
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
@@ -65,14 +71,15 @@ class SpecimensState extends ConsumerState<Specimens> {
                       // Dart uses 0-based indexing. Technically, this is out-of-bound.
                       // But, what happens here is that it will trigger the PageView onPageChanged.
                       // It fixes the issues that the currentPage state does not show the current page value.
-                      pageController =
-                          PageController(initialPage: specimenSize);
+                      pageController = updatePageCtr(specimenSize);
                     });
                     return PageView.builder(
                       controller: pageController,
                       itemCount: specimenSize,
                       itemBuilder: (context, index) {
                         int? speciesId = specimenEntry[index].speciesID;
+                        CatalogFmt catalogFmt = matchTaxonGroupToCatFmt(
+                            specimenEntry[index].taxonGroup);
                         if (speciesId != null) {
                           TaxonomyQuery(ref.read(databaseProvider))
                               .getTaxonById(speciesId)
@@ -82,18 +89,23 @@ class SpecimensState extends ConsumerState<Specimens> {
                         }
                         final specimenFormCtr =
                             _updateController(specimenEntry[index]);
-                        return SpecimenForm(
-                          specimenUuid: specimenEntry[index].uuid,
-                          specimenCtr: specimenFormCtr,
-                          catalogFmt: matchTaxonGroupToCatFmt(
-                              specimenEntry[index].taxonGroup),
+                        return PageViewer(
+                          pageNav: _pageNav,
+                          child: SpecimenForm(
+                            specimenUuid: specimenEntry[index].uuid,
+                            specimenCtr: specimenFormCtr,
+                            catalogFmt: catalogFmt,
+                          ),
                         );
                       },
-                      onPageChanged: (value) => setState(() {
-                        _pageNav.currentPage = value + 1;
-                        _pageNav = updatePageNavigation(_pageNav);
-                        ref.invalidate(specimenEntryProvider);
-                      }),
+                      onPageChanged: (index) {
+                        setState(() {
+                          _specimenUuid = specimenEntry[index].uuid;
+                          _catalogFmt = matchTaxonGroupToCatFmt(
+                              specimenEntry[index].taxonGroup);
+                          _updatePageNav(index);
+                        });
+                      },
                     );
                   }
                 },
@@ -104,13 +116,21 @@ class SpecimensState extends ConsumerState<Specimens> {
       ),
       bottomSheet: Visibility(
         visible: isVisible,
-        child: CustomPageNavButton(
+        child: PageNavButton(
           pageController: pageController,
           pageNav: _pageNav,
         ),
       ),
       bottomNavigationBar: const ProjectBottomNavbar(),
     );
+  }
+
+  void _updatePageNav(int value) {
+    setState(() {
+      _pageNav.currentPage = value + 1;
+      _pageNav = updatePageNavigation(_pageNav);
+      ref.invalidate(specimenEntryProvider);
+    });
   }
 
   SpecimenFormCtrModel _updateController(SpecimenData specimenEntry) {

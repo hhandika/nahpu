@@ -1,21 +1,56 @@
 import 'package:flutter/material.dart';
-import 'package:nahpu/providers/catalogs.dart';
-import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/models/types.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:nahpu/providers/page_viewer.dart';
-import 'package:nahpu/screens/specimens/new_specimens.dart';
-import 'package:nahpu/services/database/specimen_queries.dart';
+import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:nahpu/screens/specimens/specimen_view.dart';
+import 'package:nahpu/services/specimen_services.dart';
 
-enum MenuSelection { newSpecimen, pdfExport, deleteRecords, deleteAllRecords }
-
-class SpecimenMenu extends ConsumerStatefulWidget {
-  const SpecimenMenu({Key? key}) : super(key: key);
-
-  @override
-  NarrativeMenuState createState() => NarrativeMenuState();
+enum MenuSelection {
+  newSpecimen,
+  duplicate,
+  pdfExport,
+  deleteRecords,
+  deleteAllRecords
 }
 
-class NarrativeMenuState extends ConsumerState<SpecimenMenu> {
+Future<void> createNewSpecimens(BuildContext context, WidgetRef ref) async {
+  await SpecimenServices(ref).createSpecimen();
+  if (context.mounted) {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (_) => const SpecimenViewer()),
+    );
+  }
+}
+
+class NewSpecimens extends ConsumerWidget {
+  const NewSpecimens({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return IconButton(
+      icon: const Icon(Icons.add_circle_outline_rounded),
+      onPressed: () async {
+        createNewSpecimens(context, ref);
+      },
+    );
+  }
+}
+
+class SpecimenMenu extends ConsumerStatefulWidget {
+  const SpecimenMenu({
+    super.key,
+    required this.specimenUuid,
+    required this.catalogFmt,
+  });
+
+  final String? specimenUuid;
+  final CatalogFmt? catalogFmt;
+
+  @override
+  SpecimenMenuState createState() => SpecimenMenuState();
+}
+
+class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<MenuSelection>(
@@ -23,40 +58,56 @@ class NarrativeMenuState extends ConsumerState<SpecimenMenu> {
         itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuSelection>>[
               const PopupMenuItem<MenuSelection>(
                 value: MenuSelection.newSpecimen,
-                child: Text('Create a new record'),
+                child: CreateMenuButton(text: 'Create record'),
+              ),
+              const PopupMenuItem<MenuSelection>(
+                value: MenuSelection.duplicate,
+                child: DuplicateMenuButton(text: 'Duplicate record'),
               ),
               const PopupMenuItem<MenuSelection>(
                 value: MenuSelection.pdfExport,
-                child: Text('Export to PDF'),
+                child: PdfExportMenuButton(),
               ),
+              const PopupMenuDivider(height: 10),
               const PopupMenuItem<MenuSelection>(
                 value: MenuSelection.deleteRecords,
-                child: Text('Delete current record',
-                    style: TextStyle(color: Colors.red)),
+                child: DeleteMenuButton(
+                  deleteAll: false,
+                ),
               ),
               const PopupMenuItem<MenuSelection>(
                 value: MenuSelection.deleteAllRecords,
-                child: Text('Delete all records',
-                    style: TextStyle(color: Colors.red)),
+                child: DeleteMenuButton(
+                  deleteAll: true,
+                ),
               ),
             ]);
   }
 
-  void _onPopupMenuSelected(MenuSelection item) {
+  Future<void> _onPopupMenuSelected(MenuSelection item) async {
     switch (item) {
       case MenuSelection.newSpecimen:
         createNewSpecimens(context, ref);
         break;
+      case MenuSelection.duplicate:
+        break;
       case MenuSelection.pdfExport:
         break;
       case MenuSelection.deleteRecords:
+        if (widget.specimenUuid != null && widget.catalogFmt != null) {
+          await SpecimenServices(ref).deleteSpecimen(
+            widget.specimenUuid!,
+            widget.catalogFmt!,
+          );
+          if (context.mounted) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => const SpecimenViewer()),
+            );
+          }
+        }
         break;
       case MenuSelection.deleteAllRecords:
-        final projectUuid = ref.read(projectUuidProvider.notifier).state;
-        SpecimenQuery(ref.read(databaseProvider))
-            .deleteAllSpecimens(projectUuid);
-        ref.invalidate(specimenEntryProvider);
-        //ref.invalidate(pageNavigationProvider);
+        SpecimenServices(ref).deleteAllSpecimens();
         break;
     }
   }

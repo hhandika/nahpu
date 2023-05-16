@@ -10,6 +10,7 @@ import 'package:nahpu/screens/specimens/shared/collecting_records.dart';
 import 'package:nahpu/screens/specimens/shared/media.dart';
 import 'package:nahpu/screens/specimens/shared/specimen_parts.dart';
 import 'package:nahpu/screens/specimens/shared/taxa.dart';
+import 'package:nahpu/styles/catalogs.dart';
 
 class BirdForms extends ConsumerStatefulWidget {
   const BirdForms({
@@ -44,8 +45,9 @@ class BirdFormsState extends ConsumerState<BirdForms> {
         return SingleChildScrollView(
           child: Column(
             children: [
-              AdaptiveLayout(
+              AdaptiveMainLayout(
                 useHorizontalLayout: useHorizontalLayout,
+                height: topSpecimenRecordHeight,
                 children: [
                   CollectingRecordField(
                       specimenUuid: widget.specimenUuid,

@@ -10,6 +10,7 @@ import 'package:nahpu/screens/shared/photos.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/screens/shared/videos.dart';
 import 'package:nahpu/screens/sites/components/coordinates.dart';
+import 'package:nahpu/styles/catalogs.dart';
 
 class SiteForm extends ConsumerStatefulWidget {
   const SiteForm({Key? key, required this.id, required this.siteFormCtr})
@@ -56,8 +57,9 @@ class SiteFormState extends ConsumerState<SiteForm>
               useHorizontalLayout: useHorizontalLayout,
               siteFormCtr: widget.siteFormCtr,
             ),
-            AdaptiveLayout(
+            AdaptiveMainLayout(
               useHorizontalLayout: useHorizontalLayout,
+              height: bottomSiteHeight,
               children: [
                 Habitat(
                   id: widget.id,
@@ -72,13 +74,20 @@ class SiteFormState extends ConsumerState<SiteForm>
             MediaTabBars(
               tabController: _tabController,
               length: 2,
+              height: MediaQuery.of(context).size.height * 0.5,
               tabs: [
                 Tab(
-                    icon: Icon(Icons.photo_library_rounded,
-                        color: Theme.of(context).colorScheme.tertiary)),
+                  icon: Icon(
+                    Icons.photo_library_outlined,
+                    color: Theme.of(context).colorScheme.tertiary,
+                  ),
+                ),
                 Tab(
-                    icon: Icon(Icons.video_library_rounded,
-                        color: Theme.of(context).colorScheme.tertiary)),
+                  icon: Icon(
+                    Icons.video_library_outlined,
+                    color: Theme.of(context).colorScheme.tertiary,
+                  ),
+                ),
               ],
               children: const [
                 PhotoViewer(),

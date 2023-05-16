@@ -6,14 +6,70 @@ enum CatalogFmt { generalMammals, birds, bats }
 
 enum CommonPopUpMenuItems { edit, delete }
 
-enum ExportFormat { excel, csv, tsv, db, json }
+enum CoordinatePopUpMenuItems { edit, copy, open, delete }
+
+enum ExportFmt { csv, tsv }
+
+enum TaxonImportFmt { csv }
+
+const List<String> taxonImportFmtList = [
+  'Comma-separated (.csv)',
+];
+
+enum SiteMenuSelection {
+  newSite,
+  duplicate,
+  pdfExport,
+  deleteRecords,
+  deleteAllRecords
+}
+
+enum RecordType { narrative, collEvent, mammalSpecimen }
+
+const List<String> recordTypeList = [
+  'Narrative',
+  'Collecting event',
+  'Mammalian specimen records',
+];
+
+enum PdfExportType { narrative }
+
+const List<String> pdfExportList = [
+  'Narrative',
+];
 
 const List<String> exportFormats = [
-  'Excel (.xlsx)',
+  // 'Excel (.xlsx)',
   'Comma-separated (.csv)',
   'Tab-separated (.tsv)',
+  // 'JSON (.json)',
+];
+
+const List<String> expenseCategory = [
+  'Travel',
+  'Food',
+  'Accommodation',
+  'Equipment',
+  'Other',
+];
+
+enum DbExportFmt { sqlite3 }
+
+const List<String> dbExportFmtList = [
   'Database (.sqlite3)',
-  'JSON (.json)',
+];
+
+enum ReportFmt { excel, csv }
+
+const List<String> reportFmtList = [
+  'Excel (.xlsx)',
+  'Comma-separated (.csv)',
+];
+
+enum ReportType { speciesCount }
+
+const List<String> reportTypeList = [
+  'Species count ',
 ];
 
 // Database read through index.
@@ -26,6 +82,13 @@ const List<String> specimenSexList = [
   'Female',
   'Unknown',
 ];
+
+SpecimenSex? getSpecimenSex(int? sex) {
+  if (sex != null) {
+    return SpecimenSex.values[sex];
+  }
+  return null;
+}
 
 const List<String> supportedTaxonClass = [
   'Aves',
@@ -89,12 +152,12 @@ IconData matchCatFmtToPartIcon(CatalogFmt catalogFmt) {
   }
 }
 
-IconData matchCatFmtToIcon(CatalogFmt catalogFmt) {
+IconData matchCatFmtToIcon(CatalogFmt catalogFmt, bool isSelected) {
   switch (catalogFmt) {
     case CatalogFmt.birds:
-      return MdiIcons.feather;
+      return MdiIcons.owl;
     case CatalogFmt.generalMammals:
-      return MdiIcons.paw;
+      return isSelected ? MdiIcons.paw : MdiIcons.pawOutline;
     case CatalogFmt.bats:
       return MdiIcons.bat;
     default:
@@ -142,6 +205,16 @@ extension StringExtension on String {
       return '${this[0].toUpperCase()}${substring(1)}';
     } catch (e) {
       return '';
+    }
+  }
+}
+
+extension DoubleExtension on double {
+  String truncateZero() {
+    if (toString().endsWith('.0')) {
+      return toString().substring(0, toString().length - 2);
+    } else {
+      return toString();
     }
   }
 }

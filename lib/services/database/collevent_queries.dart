@@ -4,7 +4,7 @@ import 'package:nahpu/services/database/database.dart';
 part 'collevent_queries.g.dart';
 
 @DriftAccessor(
-  include: {'tables.drift'},
+  include: {'tables_v3.drift'},
 )
 class CollEventQuery extends DatabaseAccessor<Database>
     with _$CollEventQueryMixin {
@@ -81,8 +81,13 @@ class CollPersonnelQuery extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<void> deleteCollPersonnel(int id) {
-    return (delete(collPersonnel)..where((t) => t.id.equals(id))).go();
+  Future<void> deleteCollPersonnel(int personnelId) {
+    return (delete(collPersonnel)..where((t) => t.id.equals(personnelId))).go();
+  }
+
+  Future<void> deleteAllEventPersonnel(int eventId) {
+    return (delete(collPersonnel)..where((t) => t.eventID.equals(eventId)))
+        .go();
   }
 
   Future<void> deleteAllCollPersonnel(String projectUuid) {
@@ -106,8 +111,8 @@ class WeatherDataQuery extends DatabaseAccessor<Database>
         .getSingle();
   }
 
-  Future<void> deleteWeatherData(int id) {
-    return (delete(weather)..where((t) => t.eventID.equals(id))).go();
+  Future<void> deleteWeatherData(int eventId) {
+    return (delete(weather)..where((t) => t.eventID.equals(eventId))).go();
   }
 
   Future<void> deleteAllWeatherData(String projectUuid) {

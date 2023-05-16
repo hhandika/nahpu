@@ -37,10 +37,10 @@ class MediaFormState extends ConsumerState<MediaForm>
             controller: _tabController,
             tabs: [
               Tab(
-                  icon: Icon(Icons.photo_library_rounded,
+                  icon: Icon(Icons.photo_library_outlined,
                       color: Theme.of(context).colorScheme.tertiary)),
               Tab(
-                  icon: Icon(Icons.video_library_rounded,
+                  icon: Icon(Icons.video_library_outlined,
                       color: Theme.of(context).colorScheme.tertiary)),
             ],
           ),

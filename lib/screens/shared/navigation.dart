@@ -31,31 +31,36 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
       selectedIndex: selectedIndex,
       destinations: const [
         NavigationDestination(
+          selectedIcon: Icon(Icons.dashboard_rounded),
           icon: Icon(
-            Icons.dashboard_rounded,
+            Icons.dashboard_outlined,
           ),
-          label: 'Dahsboard',
+          label: 'Dashboard',
         ),
         NavigationDestination(
+          selectedIcon: Icon(Icons.place_rounded),
           icon: Icon(
-            Icons.place_rounded,
+            Icons.place_outlined,
           ),
           label: 'Sites',
         ),
         NavigationDestination(
+          selectedIcon: Icon(Icons.timeline_rounded),
           icon: Icon(
-            Icons.timeline,
+            Icons.timeline_outlined,
           ),
           label: 'CollEvents',
           tooltip: 'Collection Events',
         ),
         NavigationDestination(
-          icon: SpecimenIcons(),
+          selectedIcon: SpecimenIcons(isSelected: true),
+          icon: SpecimenIcons(isSelected: false),
           label: 'Specimens',
         ),
         NavigationDestination(
+          selectedIcon: Icon(Icons.book_rounded),
           icon: Icon(
-            Icons.book_rounded,
+            Icons.book_outlined,
           ),
           label: 'Narrative',
         ),
@@ -83,7 +88,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
         ref.invalidate(siteEntryProvider);
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const Sites()),
+          MaterialPageRoute(builder: (context) => const SiteViewer()),
         );
         break;
       case 2:
@@ -91,7 +96,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
         ref.invalidate(collEventEntryProvider);
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const CollEvents()),
+          MaterialPageRoute(builder: (context) => const CollEventViewer()),
         );
         break;
       case 3:
@@ -99,7 +104,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
         ref.invalidate(specimenEntryProvider);
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const Specimens()),
+          MaterialPageRoute(builder: (context) => const SpecimenViewer()),
         );
         break;
       case 4:
@@ -107,7 +112,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
         ref.invalidate(narrativeEntryProvider);
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const Narrative()),
+          MaterialPageRoute(builder: (context) => const NarrativeViewer()),
         );
         break;
     }
@@ -122,10 +127,8 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
   }
 }
 
-class CustomPageNavButton extends ConsumerWidget {
-  final Curve _curve = Curves.easeInOut;
-
-  const CustomPageNavButton({
+class PageNavButton extends ConsumerStatefulWidget {
+  const PageNavButton({
     Key? key,
     required this.pageController,
     required this.pageNav,
@@ -135,56 +138,268 @@ class CustomPageNavButton extends ConsumerWidget {
   final PageNavigation pageNav;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // final page = ref.watch(pageNavigationProvider);
+  PageNavButtonState createState() => PageNavButtonState();
+}
+
+class PageNavButtonState extends ConsumerState<PageNavButton> {
+  final Curve _curve = Curves.easeInOut;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.1,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextButton(
-            onPressed: pageNav.isFirstPage
-                ? null
-                : () {
-                    if (pageController.hasClients) {
-                      pageController.previousPage(
-                          duration: kTabScrollDuration, curve: _curve);
-                    }
-                  },
-            child: const Icon(Icons.navigate_before),
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.1,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton(
+              onPressed: widget.pageNav.isFirstPage
+                  ? null
+                  : () {
+                      if (widget.pageController.hasClients) {
+                        widget.pageController.animateToPage(0,
+                            duration: kTabScrollDuration, curve: _curve);
+                      }
+                    },
+              child: const Icon(Icons.keyboard_double_arrow_left),
+            ),
+            TextButton(
+              onPressed: widget.pageNav.isFirstPage
+                  ? null
+                  : () {
+                      if (widget.pageController.hasClients) {
+                        widget.pageController.previousPage(
+                            duration: kTabScrollDuration, curve: _curve);
+                      }
+                    },
+              child: const Icon(Icons.navigate_before),
+            ),
+            TextButton(
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) => NavSheet(
+                    pageNav: widget.pageNav,
+                    pageController: widget.pageController,
+                  ),
+                  isScrollControlled: true,
+                );
+              },
+              child: const Icon(Icons.circle_outlined),
+            ),
+            TextButton(
+              onPressed: widget.pageNav.isLastPage
+                  ? null
+                  : () {
+                      if (widget.pageController.hasClients) {
+                        widget.pageController.nextPage(
+                            duration: kTabScrollDuration, curve: _curve);
+                      }
+                    },
+              child: const Icon(Icons.navigate_next),
+            ),
+            TextButton(
+              onPressed: widget.pageNav.isLastPage
+                  ? null
+                  : () {
+                      if (widget.pageController.hasClients) {
+                        widget.pageController.animateToPage(
+                            widget.pageNav.pageCounts - 1,
+                            duration: kTabScrollDuration,
+                            curve: _curve);
+                      }
+                    },
+              child: const Icon(Icons.keyboard_double_arrow_right),
+            )
+          ],
+        ));
+  }
+}
+
+class PageViewer extends StatefulWidget {
+  const PageViewer({
+    super.key,
+    required this.pageNav,
+    required this.child,
+  });
+
+  final PageNavigation pageNav;
+  final Widget child;
+  @override
+  State<PageViewer> createState() => _PageViewerState();
+}
+
+class _PageViewerState extends State<PageViewer> {
+  bool _visible = true;
+
+  @override
+  void initState() {
+    super.initState();
+    Future<void>.delayed(const Duration(seconds: 3), () {
+      if (mounted) {
+        setState(() {
+          _visible = false;
+        });
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        widget.child,
+        Visibility(
+          visible: _visible,
+          child: PageNumberViewer(
+            pageNav: widget.pageNav,
           ),
-          FittedBox(
-            child: Text(
-              'Page ${pageNav.currentPage} of ${pageNav.pageCounts}',
-              style: Theme.of(context).textTheme.bodyMedium,
+        )
+      ],
+    );
+  }
+}
+
+class PageNumberViewer extends StatelessWidget {
+  const PageNumberViewer({
+    super.key,
+    required this.pageNav,
+  });
+
+  final PageNavigation pageNav;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      bottom: 50,
+      right: 0,
+      left: 0,
+      child: Center(
+        child: Container(
+          decoration: BoxDecoration(
+            color: Color.lerp(Theme.of(context).colorScheme.secondaryContainer,
+                Theme.of(context).colorScheme.surface, 0.5),
+            borderRadius: const BorderRadius.all(
+              Radius.circular(10),
             ),
           ),
-          TextButton(
-            onPressed: pageNav.isLastPage
-                ? null
-                : () {
-                    if (pageController.hasClients) {
-                      pageController.nextPage(
-                          duration: kTabScrollDuration, curve: _curve);
+          height: 40,
+          width: 120,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: PageInfo(pageNav: pageNav),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PageInfo extends StatelessWidget {
+  const PageInfo({super.key, required this.pageNav});
+
+  final PageNavigation pageNav;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'Page ${pageNav.currentPage} of ${pageNav.pageCounts}',
+      style: Theme.of(context).textTheme.labelLarge,
+    );
+  }
+}
+
+class NavSheet extends ConsumerStatefulWidget {
+  const NavSheet({
+    Key? key,
+    required this.pageController,
+    required this.pageNav,
+  }) : super(key: key);
+
+  final PageController pageController;
+  final PageNavigation pageNav;
+
+  @override
+  NavSheetState createState() => NavSheetState();
+}
+
+class NavSheetState extends ConsumerState<NavSheet> {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.of(context).viewInsets.bottom == 0
+          ? MediaQuery.of(context).size.height * 0.2
+          : MediaQuery.of(context).viewInsets.bottom + 120,
+      child: Center(
+        child: Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxHeight: 80, maxWidth: 150),
+                child: TextField(
+                  textAlign: TextAlign.center,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Jump to page',
+                    hintText: 'Enter page number',
+                    alignLabelWithHint: true,
+                    isDense: true,
+                    floatingLabelAlignment: FloatingLabelAlignment.center,
+                  ),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    signed: true,
+                  ),
+                  onSubmitted: (String value) {
+                    if (widget.pageController.hasClients) {
+                      int pageNum = int.parse(value);
+                      int targetPage = pageNum > widget.pageNav.pageCounts
+                          ? widget.pageNav.pageCounts - 1
+                          : pageNum - 1;
+                      widget.pageController.animateToPage(targetPage,
+                          duration: kTabScrollDuration,
+                          curve: Curves.easeInOut);
+
+                      Navigator.pop(context);
                     }
                   },
-            child: const Icon(Icons.navigate_next),
+                ),
+              ),
+              const SizedBox(height: 10),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: PageInfo(pageNav: widget.pageNav),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
 }
 
 class SpecimenIcons extends ConsumerWidget {
-  const SpecimenIcons({Key? key}) : super(key: key);
+  const SpecimenIcons({
+    super.key,
+    required this.isSelected,
+  });
+
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
-    return Icon(matchCatFmtToIcon(catalogFmt));
+    return Icon(matchCatFmtToIcon(catalogFmt, isSelected));
   }
 }

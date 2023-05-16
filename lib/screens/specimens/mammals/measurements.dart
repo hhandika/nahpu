@@ -4,8 +4,8 @@ import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/fields.dart';
-import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
+import 'package:nahpu/screens/specimens/shared/measurements.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/models/mammals.dart';
@@ -33,8 +33,10 @@ class MammalMeasurementFormsState
 
   @override
   void initState() {
-    _updateCtr(widget.specimenUuid);
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _updateCtr(widget.specimenUuid);
+    });
   }
 
   @override
@@ -45,277 +47,261 @@ class MammalMeasurementFormsState
 
   @override
   Widget build(BuildContext context) {
-    return FormCard(
-      title: 'Measurements',
-      child: Column(
-        children: [
-          AdaptiveLayout(
-            useHorizontalLayout: widget.useHorizontalLayout,
-            children: [
-              CommonNumField(
-                controller: ctr.totalLengthCtr,
-                labelText: 'Total length (mm)',
-                hintText: 'Enter TTL',
-                isLastField: false,
-                onChanged: (String? value) {
-                  if (value != null && value.isNotEmpty) {
-                    setState(() {
-                      SpecimenServices(ref).updateMammalMeasurement(
-                        widget.specimenUuid,
-                        MammalMeasurementCompanion(
-                          totalLength: db.Value(int.tryParse(value) ?? 0),
-                        ),
-                      );
-                    });
-                  }
-                },
-              ),
-              CommonNumField(
-                controller: ctr.tailLengthCtr,
-                labelText: 'Tail length (mm)',
-                hintText: 'Enter TL',
-                isLastField: false,
-                onChanged: (String? value) {
-                  if (value != null && value.isNotEmpty) {
-                    setState(() {
-                      SpecimenServices(ref).updateMammalMeasurement(
-                        widget.specimenUuid,
-                        MammalMeasurementCompanion(
-                          tailLength: db.Value(int.tryParse(value)),
-                        ),
-                      );
-                    });
-                  }
-                },
-              ),
-            ],
-          ),
-          AdaptiveLayout(
-            useHorizontalLayout: widget.useHorizontalLayout,
-            children: [
-              CommonNumField(
-                controller: ctr.hindFootCtr,
-                labelText: 'Hind foot length (mm)',
-                hintText: 'Enter HF length',
-                isLastField: false,
-                onChanged: (String? value) {
-                  if (value != null && value.isNotEmpty) {
-                    setState(() {
-                      SpecimenServices(ref).updateMammalMeasurement(
-                        widget.specimenUuid,
-                        MammalMeasurementCompanion(
-                          hindFootLength: db.Value(int.tryParse(value)),
-                        ),
-                      );
-                    });
-                  }
-                },
-              ),
-              CommonNumField(
-                controller: ctr.earCtr,
-                labelText: 'Ear length (mm)',
-                hintText: 'Enter ER length',
-                isLastField: false,
-                onChanged: (String? value) {
-                  if (value != null && value.isNotEmpty) {
-                    setState(() {
-                      SpecimenServices(ref).updateMammalMeasurement(
-                        widget.specimenUuid,
-                        MammalMeasurementCompanion(
-                          earLength: db.Value(int.tryParse(value)),
-                        ),
-                      );
-                    });
-                  }
-                },
-              ),
-            ],
-          ),
-          AdaptiveLayout(
-            useHorizontalLayout: widget.useHorizontalLayout,
-            children: [
-              CommonNumField(
-                controller: ctr.weightCtr,
-                labelText: 'Weight (grams)',
-                hintText: 'Enter specimen weight',
-                isDouble: true,
-                isLastField: false,
+    return MeasurementForm(
+      children: [
+        AdaptiveLayout(
+          useHorizontalLayout: widget.useHorizontalLayout,
+          children: [
+            CommonNumField(
+              controller: ctr.totalLengthCtr,
+              labelText: 'Total length (mm)',
+              hintText: 'Enter TTL',
+              isLastField: false,
+              onChanged: (String? value) {
+                if (value != null && value.isNotEmpty) {
+                  setState(() {
+                    SpecimenServices(ref).updateMammalMeasurement(
+                      widget.specimenUuid,
+                      MammalMeasurementCompanion(
+                        totalLength: db.Value(double.tryParse(value) ?? 0),
+                      ),
+                    );
+                  });
+                }
+              },
+            ),
+            CommonNumField(
+              controller: ctr.tailLengthCtr,
+              labelText: 'Tail length (mm)',
+              hintText: 'Enter TL',
+              isLastField: false,
+              onChanged: (String? value) {
+                if (value != null && value.isNotEmpty) {
+                  setState(() {
+                    SpecimenServices(ref).updateMammalMeasurement(
+                      widget.specimenUuid,
+                      MammalMeasurementCompanion(
+                        tailLength: db.Value(double.tryParse(value)),
+                      ),
+                    );
+                  });
+                }
+              },
+            ),
+          ],
+        ),
+        AdaptiveLayout(
+          useHorizontalLayout: widget.useHorizontalLayout,
+          children: [
+            CommonNumField(
+              controller: ctr.hindFootCtr,
+              labelText: 'Hind foot length (mm)',
+              hintText: 'Enter HF length',
+              isLastField: false,
+              onChanged: (String? value) {
+                if (value != null && value.isNotEmpty) {
+                  setState(() {
+                    SpecimenServices(ref).updateMammalMeasurement(
+                      widget.specimenUuid,
+                      MammalMeasurementCompanion(
+                        hindFootLength: db.Value(double.tryParse(value)),
+                      ),
+                    );
+                  });
+                }
+              },
+            ),
+            CommonNumField(
+              controller: ctr.earCtr,
+              labelText: 'Ear length (mm)',
+              hintText: 'Enter ER length',
+              isLastField: false,
+              onChanged: (String? value) {
+                if (value != null && value.isNotEmpty) {
+                  setState(() {
+                    SpecimenServices(ref).updateMammalMeasurement(
+                      widget.specimenUuid,
+                      MammalMeasurementCompanion(
+                        earLength: db.Value(double.tryParse(value)),
+                      ),
+                    );
+                  });
+                }
+              },
+            ),
+          ],
+        ),
+        AdaptiveLayout(
+          useHorizontalLayout: widget.useHorizontalLayout,
+          children: [
+            CommonNumField(
+              controller: ctr.weightCtr,
+              labelText: 'Weight (grams)',
+              hintText: 'Enter specimen weight',
+              isDouble: true,
+              isLastField: false,
+              onChanged: (value) {
+                if (value != null && value.isNotEmpty) {
+                  setState(() {
+                    SpecimenServices(ref).updateMammalMeasurement(
+                      widget.specimenUuid,
+                      MammalMeasurementCompanion(
+                        weight: db.Value(double.tryParse(value)),
+                      ),
+                    );
+                  });
+                }
+              },
+            ),
+            Visibility(
+              visible: widget.isBats,
+              child: CommonNumField(
+                controller: ctr.forearmCtr,
+                labelText: 'Forearm Length (mm)',
+                hintText: 'Enter FL length',
+                isLastField: true,
                 onChanged: (value) {
                   if (value != null && value.isNotEmpty) {
                     setState(() {
                       SpecimenServices(ref).updateMammalMeasurement(
                         widget.specimenUuid,
                         MammalMeasurementCompanion(
-                          weight: db.Value(double.tryParse(value)),
+                          forearm: db.Value(double.tryParse(value)),
                         ),
                       );
                     });
                   }
                 },
               ),
-              Visibility(
-                visible: widget.isBats,
-                child: CommonNumField(
-                  controller: ctr.forearmCtr,
-                  labelText: 'Forearm Length (mm)',
-                  hintText: 'Enter FL length',
-                  isLastField: true,
-                  onChanged: (value) {
-                    if (value != null && value.isNotEmpty) {
-                      setState(() {
-                        SpecimenServices(ref).updateMammalMeasurement(
-                          widget.specimenUuid,
-                          MammalMeasurementCompanion(
-                            forearm: db.Value(int.tryParse(value)),
-                          ),
-                        );
-                      });
-                    }
-                  },
-                ),
+            ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.all(5),
+          child: DropdownButtonFormField(
+              value: ctr.accuracyCtr,
+              decoration: const InputDecoration(
+                labelText: 'Accuracy',
+                hintText: 'Select measurement accuracy',
               ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(5),
-            child: DropdownButtonFormField(
-                value: ctr.accuracyCtr,
-                decoration: const InputDecoration(
-                  labelText: 'Accuracy',
-                  hintText: 'Select measurement accuracy',
-                ),
-                items: accuracyList
-                    .map((e) => DropdownMenuItem(
-                          value: e,
-                          child: Text(e),
-                        ))
-                    .toList(),
-                onChanged: (String? newValue) {
-                  ctr.accuracyCtr = newValue;
-                  SpecimenServices(ref).updateMammalMeasurement(
-                    widget.specimenUuid,
-                    MammalMeasurementCompanion(
-                      accuracy: db.Value(newValue),
-                    ),
-                  );
-                }),
-          ),
-          AdaptiveLayout(
-            useHorizontalLayout: widget.useHorizontalLayout,
-            children: [
-              DropdownButtonFormField<SpecimenSex>(
-                  value: _getSpecimenSex(),
-                  decoration: const InputDecoration(
-                    labelText: 'Sex',
-                    hintText: 'Choose one',
-                  ),
-                  items: specimenSexList
-                      .map((e) => DropdownMenuItem(
-                            value:
-                                SpecimenSex.values[specimenSexList.indexOf(e)],
-                            child: Text(e),
-                          ))
-                      .toList(),
-                  onChanged: (SpecimenSex? newValue) {
-                    if (newValue != null) {
-                      setState(() {
-                        ctr.sexCtr = newValue.index;
-                        SpecimenServices(ref).updateMammalMeasurement(
-                          widget.specimenUuid,
-                          MammalMeasurementCompanion(
-                            sex: db.Value(
-                              newValue.index,
-                            ),
-                          ),
-                        );
-                      });
-                    }
-                  }),
-              DropdownButtonFormField<SpecimenAge>(
-                value: _getSpecimenAge(),
-                decoration: const InputDecoration(
-                  labelText: 'Age',
-                  hintText: 'Select specimen age',
-                ),
-                items: specimenAgeList
-                    .map((e) => DropdownMenuItem(
-                          value: SpecimenAge.values[specimenAgeList.indexOf(e)],
-                          child: Text(e),
-                        ))
-                    .toList(),
-                onChanged: (SpecimenAge? newValue) {
-                  if (newValue != null) {
-                    setState(
-                      () {
-                        ctr.ageCtr = newValue.index;
-                        SpecimenServices(ref).updateMammalMeasurement(
-                          widget.specimenUuid,
-                          MammalMeasurementCompanion(
-                            age: db.Value(
-                              newValue.index,
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  }
-                },
-              ),
-            ],
-          ),
-          MaleGonadForm(
-            specimenUuid: widget.specimenUuid,
-            specimenSex: _getSpecimenSex(),
-            useHorizontalLayout: widget.useHorizontalLayout,
-            ctr: ctr,
-          ),
-          FemaleGonadForm(
-            specimenUuid: widget.specimenUuid,
-            specimenSex: _getSpecimenSex(),
-            useHorizontalLayout: widget.useHorizontalLayout,
-            ctr: ctr,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(5),
-            child: CommonTextField(
-              controller: ctr.remarksCtr,
-              maxLines: 5,
-              labelText: 'Remarks',
-              hintText: 'Write notes about the measurements (optional)',
-              isLastField: true,
-              onChanged: (value) {
+              items: accuracyList
+                  .map((e) => DropdownMenuItem(
+                        value: e,
+                        child: Text(e),
+                      ))
+                  .toList(),
+              onChanged: (String? newValue) {
+                ctr.accuracyCtr = newValue;
                 SpecimenServices(ref).updateMammalMeasurement(
                   widget.specimenUuid,
                   MammalMeasurementCompanion(
-                    remark: db.Value(value),
+                    accuracy: db.Value(newValue),
                   ),
                 );
+              }),
+        ),
+        AdaptiveLayout(
+          useHorizontalLayout: widget.useHorizontalLayout,
+          children: [
+            DropdownButtonFormField<SpecimenSex>(
+                value: getSpecimenSex(ctr.sexCtr),
+                decoration: const InputDecoration(
+                  labelText: 'Sex',
+                  hintText: 'Select specimen sex',
+                ),
+                items: specimenSexList
+                    .map((e) => DropdownMenuItem(
+                          value: SpecimenSex.values[specimenSexList.indexOf(e)],
+                          child: Text(e),
+                        ))
+                    .toList(),
+                onChanged: (SpecimenSex? newValue) {
+                  if (newValue != null) {
+                    setState(() {
+                      ctr.sexCtr = newValue.index;
+                      SpecimenServices(ref).updateMammalMeasurement(
+                        widget.specimenUuid,
+                        MammalMeasurementCompanion(
+                          sex: db.Value(
+                            newValue.index,
+                          ),
+                        ),
+                      );
+                    });
+                  }
+                }),
+            DropdownButtonFormField<SpecimenAge>(
+              value: getSpecimenAge(ctr.ageCtr),
+              decoration: const InputDecoration(
+                labelText: 'Age',
+                hintText: 'Select specimen age',
+              ),
+              items: specimenAgeList
+                  .map((e) => DropdownMenuItem(
+                        value: SpecimenAge.values[specimenAgeList.indexOf(e)],
+                        child: Text(e),
+                      ))
+                  .toList(),
+              onChanged: (SpecimenAge? newValue) {
+                if (newValue != null) {
+                  setState(
+                    () {
+                      ctr.ageCtr = newValue.index;
+                      SpecimenServices(ref).updateMammalMeasurement(
+                        widget.specimenUuid,
+                        MammalMeasurementCompanion(
+                          age: db.Value(
+                            newValue.index,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }
               },
             ),
+          ],
+        ),
+        MaleGonadForm(
+          specimenUuid: widget.specimenUuid,
+          specimenSex: getSpecimenSex(ctr.sexCtr),
+          useHorizontalLayout: widget.useHorizontalLayout,
+          ctr: ctr,
+        ),
+        FemaleGonadForm(
+          specimenUuid: widget.specimenUuid,
+          specimenSex: getSpecimenSex(ctr.sexCtr),
+          useHorizontalLayout: widget.useHorizontalLayout,
+          ctr: ctr,
+        ),
+        Padding(
+          padding: const EdgeInsets.all(5),
+          child: CommonTextField(
+            controller: ctr.remarksCtr,
+            maxLines: 5,
+            labelText: 'Remarks',
+            hintText: 'Write notes about the measurements (optional)',
+            isLastField: true,
+            onChanged: (value) {
+              SpecimenServices(ref).updateMammalMeasurement(
+                widget.specimenUuid,
+                MammalMeasurementCompanion(
+                  remark: db.Value(value),
+                ),
+              );
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
-  SpecimenSex? _getSpecimenSex() {
-    if (ctr.sexCtr != null) {
-      return SpecimenSex.values[ctr.sexCtr!];
-    }
-    return null;
-  }
-
-  SpecimenAge? _getSpecimenAge() {
-    if (ctr.ageCtr != null) {
-      return SpecimenAge.values[ctr.ageCtr!];
-    }
-    return null;
-  }
-
   Future<void> _updateCtr(String specimenUuid) async {
-    SpecimenServices(ref)
-        .getMammalMeasurementData(specimenUuid)
-        .then((value) => ctr = MammalMeasurementCtrModel.fromData(value));
+    MammalMeasurementData data =
+        await SpecimenServices(ref).getMammalMeasurementData(specimenUuid);
+    setState(() {
+      ctr = MammalMeasurementCtrModel.fromData(data);
+    });
   }
 }
 
@@ -338,8 +324,6 @@ class MaleGonadForm extends ConsumerStatefulWidget {
 }
 
 class MaleGonadFormState extends ConsumerState<MaleGonadForm> {
-  bool _isScrotal = false;
-
   @override
   Widget build(BuildContext context) {
     return Visibility(
@@ -351,7 +335,7 @@ class MaleGonadFormState extends ConsumerState<MaleGonadForm> {
           Padding(
             padding: const EdgeInsets.all(5),
             child: DropdownButtonFormField<TestisPosition>(
-              value: _getTestisPosition(),
+              value: getTestisPosition(widget.ctr.testisPosCtr),
               decoration: const InputDecoration(
                 labelText: 'Position',
                 hintText: 'Select testis position',
@@ -367,7 +351,7 @@ class MaleGonadFormState extends ConsumerState<MaleGonadForm> {
                 if (newValue != null) {
                   setState(
                     () {
-                      _isScrotal = newValue == TestisPosition.scrotal;
+                      widget.ctr.testisPosCtr = newValue.index;
                       SpecimenServices(ref).updateMammalMeasurement(
                         widget.specimenUuid,
                         MammalMeasurementCompanion(
@@ -384,20 +368,14 @@ class MaleGonadFormState extends ConsumerState<MaleGonadForm> {
           ),
           ScrotalMaleForm(
             specimenUuid: widget.specimenUuid,
-            visible: _isScrotal,
+            visible: getTestisPosition(widget.ctr.testisPosCtr) ==
+                TestisPosition.scrotal,
             useHorizontalLayout: widget.useHorizontalLayout,
             ctr: widget.ctr,
           ),
         ],
       ),
     );
-  }
-
-  TestisPosition? _getTestisPosition() {
-    if (widget.ctr.testisPosCtr != null) {
-      return TestisPosition.values[widget.ctr.testisPosCtr!];
-    }
-    return null;
   }
 }
 
@@ -439,7 +417,7 @@ class ScrotalMaleFormState extends ConsumerState<ScrotalMaleForm> {
                     widget.specimenUuid,
                     MammalMeasurementCompanion(
                       testisLength: db.Value(
-                        int.tryParse(value ?? '0'),
+                        double.tryParse(value ?? '0'),
                       ),
                     ),
                   );
@@ -455,7 +433,7 @@ class ScrotalMaleFormState extends ConsumerState<ScrotalMaleForm> {
                     widget.specimenUuid,
                     MammalMeasurementCompanion(
                       testisWidth: db.Value(
-                        int.tryParse(value ?? '0'),
+                        double.tryParse(value ?? '0'),
                       ),
                     ),
                   );
