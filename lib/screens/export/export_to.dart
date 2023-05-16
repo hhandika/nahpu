@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:nahpu/services/io_services.dart';
+import 'package:nahpu/services/writer/narrative_writer.dart';
 import 'package:nahpu/services/writer/record_writer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,7 +19,7 @@ class ExportForm extends ConsumerStatefulWidget {
 class ExportFormState extends ConsumerState<ExportForm> {
   ExportFmt exportFmt = ExportFmt.csv;
   FileOpCtrModel exportCtr = FileOpCtrModel.empty();
-  RecordType _recordType = RecordType.specimen;
+  RecordType _recordType = RecordType.narrative;
   String _fileStem = 'export';
   String _selectedDir = '';
   bool _hasSaved = false;
@@ -178,11 +179,11 @@ class ExportFormState extends ConsumerState<ExportForm> {
       case RecordType.collEvent:
         await CollEventRecordWriter(ref).writeCollEventDelimited(file, isCsv);
         break;
-      case RecordType.specimen:
-        await SpecimenRecordWriter(ref).writeRecordDelimited(file, isCsv);
+      case RecordType.mammalSpecimen:
+        await MammalRecordWriter(ref).writeRecordDelimited(file, isCsv);
         break;
       default:
-        await SpecimenRecordWriter(ref).writeRecordDelimited(file, isCsv);
+        await MammalRecordWriter(ref).writeRecordDelimited(file, isCsv);
         break;
     }
   }

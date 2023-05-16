@@ -40,6 +40,14 @@ class SpecimenServices extends DbAccess {
     _invalidateSpecimenList();
   }
 
+  Future<List<SpecimenData>> getMammalSpecimens() async {
+    return SpecimenQuery(dbase).getAllMammalSpecimens(projectUuid);
+  }
+
+  Future<List<SpecimenData>> getBirdSpecimens() async {
+    return SpecimenQuery(dbase).getAllBirdSpecimens(projectUuid);
+  }
+
   Future<List<SpecimenData>> getSpecimenList() async {
     String projectUuid = ref.read(projectUuidProvider);
 

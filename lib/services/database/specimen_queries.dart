@@ -19,6 +19,21 @@ class SpecimenQuery extends DatabaseAccessor<Database>
         .get();
   }
 
+  Future<List<SpecimenData>> getAllBirdSpecimens(String projectUuid) {
+    return (select(specimen)
+          ..where((t) => t.projectUuid.equals(projectUuid))
+          ..where((t) => t.taxonGroup.equals('Birds')))
+        .get();
+  }
+
+  Future<List<SpecimenData>> getAllMammalSpecimens(String projectUuid) {
+    return (select(specimen)
+          ..where((t) => t.projectUuid.equals(projectUuid))
+          ..where((t) => t.taxonGroup.equals('General Mammals'))
+          ..where((t) => t.taxonGroup.equals('Bats')))
+        .get();
+  }
+
   Future<List<int?>> getAllSpecies(String uuid) {
     return (select(specimen)..where((t) => t.projectUuid.equals(uuid)))
         .map((e) => e.speciesID)
