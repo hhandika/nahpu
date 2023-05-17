@@ -3,7 +3,7 @@ import 'package:nahpu/models/export.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/writer/coll_event_writer.dart';
 import 'package:nahpu/services/writer/narrative_writer.dart';
-import 'package:nahpu/services/writer/mammal_record_writer.dart';
+import 'package:nahpu/services/writer/mammalian_record_writer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/controllers.dart';
