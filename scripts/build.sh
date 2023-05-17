@@ -7,7 +7,7 @@ OUTPUT_DIR="../NahpuReleases"
 
 create_output_dir() {
     if [ ! -d $OUTPUT_DIR ]; then
-        mkdir output
+        mkdir $OUTPUT_DIR
     fi
 }
 
