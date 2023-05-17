@@ -41,7 +41,7 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
             Container(
               constraints: const BoxConstraints(maxHeight: 250),
               padding: const EdgeInsets.all(10),
-              child: TaxonRegistryInfo(
+              child: RegistryInfo(
                 useHorizontalLayout: widget.useHorizontalLayout,
               ),
             ),
@@ -76,35 +76,33 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
   }
 }
 
-class TaxonRegistryInfo extends ConsumerWidget {
-  const TaxonRegistryInfo({super.key, required this.useHorizontalLayout});
+// class TaxonRegistryInfo extends ConsumerWidget {
+//   const TaxonRegistryInfo({super.key, required this.useHorizontalLayout});
 
-  final bool useHorizontalLayout;
+//   final bool useHorizontalLayout;
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(taxonRegistryProvider).when(
-          data: (data) => data.isEmpty
-              ? const Text('No taxon found')
-              : TaxonInfoContainer(
-                  taxonData: data,
-                  useHorizontalLayout: useHorizontalLayout,
-                ),
-          loading: () => const CommonProgressIndicator(),
-          error: (error, stack) => Text('Error: $error'),
-        );
-  }
-}
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     return ref.watch(taxonRegistryProvider).when(
+//           data: (data) => data.isEmpty
+//               ? const Text('No taxon found')
+//               : TaxonInfoContainer(
+//                   taxonData: data,
+//                   useHorizontalLayout: useHorizontalLayout,
+//                 ),
+//           loading: () => const CommonProgressIndicator(),
+//           error: (error, stack) => Text('Error: $error'),
+//         );
+//   }
+// }
 
-class TaxonInfoContainer extends StatelessWidget {
-  const TaxonInfoContainer({
+class RegistryInfo extends StatelessWidget {
+  const RegistryInfo({
     super.key,
-    required this.taxonData,
     required this.useHorizontalLayout,
   });
 
   final bool useHorizontalLayout;
-  final List<TaxonomyData> taxonData;
 
   @override
   Widget build(BuildContext context) {
@@ -114,16 +112,36 @@ class TaxonInfoContainer extends StatelessWidget {
           mainAxisSpacing: 10,
           crossAxisSpacing: 10,
           crossAxisCount: useHorizontalLayout ? 2 : 1,
-          children: [
-            RegisteredTaxa(taxonData: taxonData),
-            const RecordedTaxa(),
+          children: const [
+            RegisteredTaxa(),
+            RecordedTaxa(),
           ],
         ));
   }
 }
 
-class RegisteredTaxa extends StatelessWidget {
+class RegisteredTaxa extends ConsumerWidget {
   const RegisteredTaxa({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return TaxonDataContainer(
+        child: ref.watch(taxonRegistryProvider).when(
+              data: (data) => data.isEmpty
+                  ? const Text('No taxon found')
+                  : RegisteredData(
+                      taxonData: data,
+                    ),
+              loading: () => const CommonProgressIndicator(),
+              error: (error, stack) => Text('Error: $error'),
+            ));
+  }
+}
+
+class RegisteredData extends StatelessWidget {
+  const RegisteredData({
     super.key,
     required this.taxonData,
   });
@@ -132,33 +150,31 @@ class RegisteredTaxa extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TaxonDataContainer(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            "Registered",
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          Text(
-              '${_countFamily(taxonData)} families\n'
-              '${taxonData.length} taxa',
-              style: Theme.of(context).textTheme.titleMedium),
-          const SizedBox(
-            height: 10,
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const TaxonRegistryPage(),
-                ),
-              );
-            },
-            child: const Text('View all'),
-          )
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          "Registered",
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        Text(
+            '${_countFamily(taxonData)} families\n'
+            '${taxonData.length} taxa',
+            style: Theme.of(context).textTheme.titleMedium),
+        const SizedBox(
+          height: 10,
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const TaxonRegistryPage(),
+              ),
+            );
+          },
+          child: const Text('View all'),
+        )
+      ],
     );
   }
 
@@ -205,10 +221,9 @@ class RecordedTaxaView extends ConsumerWidget {
             'Recorded',
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          FittedBox(
+          const FittedBox(
             fit: BoxFit.fill,
-            child:
-                RecordedCounts(stats: CaptureRecordStats.fromData(data, ref)),
+            child: RecordedCounts(),
           ),
           const SizedBox(
             height: 10,
@@ -231,21 +246,33 @@ class RecordedTaxaView extends ConsumerWidget {
   }
 }
 
-class RecordedCounts extends StatelessWidget {
-  const RecordedCounts({super.key, required this.stats});
-
-  final CaptureRecordStats stats;
+class RecordedCounts extends ConsumerWidget {
+  const RecordedCounts({
+    super.key,
+  });
 
   @override
-  Widget build(BuildContext context) {
-    return Text(
-      // '${stats.orderCount.length} orders\n'
-      '${stats.familyCount.length} families\n'
-      '${stats.speciesCount.length} species\n'
-      '${stats.specimenCount} specimens\n',
-      style: Theme.of(context).textTheme.titleSmall,
-      overflow: TextOverflow.ellipsis,
-    );
+  Widget build(BuildContext context, WidgetRef ref) {
+    return FutureBuilder(
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Text(
+              '${snapshot.data!.specimenCount} specimens\n'
+              '${snapshot.data!.speciesCount.length} species\n'
+              '${snapshot.data!.familyCount.length} families',
+              style: Theme.of(context).textTheme.titleMedium,
+            );
+          } else {
+            return const Text('Loading...');
+          }
+        },
+        future: _getStats(ref));
+  }
+
+  Future<CaptureRecordStats> _getStats(WidgetRef ref) async {
+    CaptureRecordStats stats = CaptureRecordStats.empty();
+    await stats.count(ref);
+    return stats;
   }
 }
 
