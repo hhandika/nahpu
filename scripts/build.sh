@@ -3,7 +3,7 @@
 echo "Build options:"
 PS3='Please select the platform: '
 OPT=("Android" "iOS" "MacOS" "All" "Quit")
-OUTPUT_DIR="../NahpuReleases"
+OUTPUT_DIR="../nahpu-releases"
 
 create_output_dir() {
     if [ ! -d $OUTPUT_DIR ]; then
@@ -11,23 +11,25 @@ create_output_dir() {
     fi
 }
 
-move_apk() {
+copy_apk() {
+    create_output_dir
     if [ -f "build/app/outputs/apk/release/app-release.apk" ]; then
-        echo "Moving APK to $OUTPUT_DIR"
-        mv build/app/outputs/apk/release/app-release.apk $OUTPUT_DIR
+        echo "Copying APK to $OUTPUT_DIR"
+        cp build/app/outputs/apk/release/app-release.apk $OUTPUT_DIR/nahpu_beta_android.apk
     fi
 }
 
-move_dmg() {
+mv_dmg() {
+    create_output_dir
     if [ -f "installer/nahpu.dmg" ]; then
         echo "Moving DMG to $OUTPUT_DIR"
-        mv installer/nahpu.dmg $OUTPUT_DIR
+        mv installer/nahpu.dmg $OUTPUT_DIR/nahpu_beta_macos.dmg
     fi
 }
 
-move_all() {
-    move_apk
-    move_dmg
+copy_and_move_all() {
+    copy_apk
+    mv_dmg
 }
 
 select os in "${OPT[@]}"
@@ -37,7 +39,7 @@ do
         "Android")
             echo "Building for Android..."
             flutter build apk --release
-            move_apk
+            copy_apk
             break
             ;;
         "iOS")
@@ -50,7 +52,7 @@ do
             flutter build macos --release
             echo "Creating DMG installer..."
             scripts/build_dmg.sh
-            move_dmg
+            mv_dmg
             break
             ;;
         "All")
@@ -63,7 +65,7 @@ do
             flutter build macos --release
             echo "Creating DMG installer..."
             scripts/build_dmg.sh
-            move_all
+            copy_and_move_all
             break
             ;;
         "Quit")
