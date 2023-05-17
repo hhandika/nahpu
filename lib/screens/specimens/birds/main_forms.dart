@@ -53,7 +53,7 @@ class BirdFormsState extends ConsumerState<BirdForms> {
                       specimenUuid: widget.specimenUuid,
                       specimenCtr: widget.specimenCtr),
                   Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       TaxonomicForm(
