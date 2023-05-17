@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/export.dart';
-import 'package:nahpu/models/mammals.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/collevent_services.dart';
@@ -12,6 +11,7 @@ import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/writer/common.dart';
+import 'package:nahpu/services/writer/mammalian_records.dart';
 import 'package:nahpu/services/writer/site_writer.dart';
 
 class SpecimenRecordWriter {
@@ -123,7 +123,7 @@ class SpecimenRecordWriter {
     return partList.map((e) => '${e.type};${e.treatment}').join(listSeparator);
   }
 
-  Future<String> _getMeasurement(String? specimenUuid) async {
+  Future<String> _getMeasurement(String specimenUuid) async {
     switch (recordType) {
       case SpecimenRecordType.mammalian:
         return await _getMeasurementGeneralMammals(specimenUuid);
@@ -134,85 +134,9 @@ class SpecimenRecordWriter {
     }
   }
 
-  Future<String> _getMeasurementGeneralMammals(String? specimenUuid) async {
-    if (specimenUuid != null) {
-      MammalMeasurementData data =
-          await SpecimenServices(ref).getMammalMeasurementData(specimenUuid);
-      String measurement =
-          '${data.totalLength ?? ''}$delimiter${data.tailLength ?? ''}$delimiter'
-          '${data.hindFootLength ?? ''}$delimiter${data.earLength ?? ''}$delimiter'
-          '${data.weight ?? ''}';
-      String accuracy = data.accuracy ?? '';
-      String age = data.age != null ? specimenAgeList[data.age!] : '';
-      String sexData = _getSexData(data);
-      return '$measurement$delimiter$accuracy$delimiter$age$delimiter$sexData';
-    } else {
-      return delimiter * 7;
-    }
-  }
-
-  String _getSexData(MammalMeasurementData data) {
-    SpecimenSex? sexEnum = getSpecimenSex(data.sex);
-    String sex = data.sex != null ? specimenSexList[data.sex!] : '';
-    String emptyMale = delimiter;
-    String emptyFemale = delimiter * 2;
-    switch (sexEnum) {
-      case SpecimenSex.male:
-        String maleGonad = _getMaleGonad(data);
-        return '$sex$delimiter$maleGonad$emptyFemale';
-      case SpecimenSex.female:
-        String femaleGonad = _getFemaleGonad(data);
-        return '$sex$delimiter$emptyMale$delimiter$femaleGonad';
-      case SpecimenSex.unknown:
-        return '$sex$delimiter$emptyMale$emptyFemale';
-      default:
-        return '$sex$delimiter$emptyMale$emptyFemale';
-    }
-  }
-
-  String _getFemaleGonad(MammalMeasurementData data) {
-    String vaginaOpening = data.vaginaOpening != null
-        ? vaginaOpeningList[data.vaginaOpening!]
-        : '';
-    if (data.mammaeCondition != null) {
-      String mammaeCondition = mammaeConditionList[data.mammaeCondition!];
-      String ingCount = data.mammaeInguinalCount != null
-          ? '${data.mammaeInguinalCount} ing;'
-          : '';
-      String abdCount = data.mammaeAbdominalCount != null
-          ? '${data.mammaeAbdominalCount} abd;'
-          : '';
-      String axCount = data.mammaeAxillaryCount != null
-          ? '${data.mammaeAxillaryCount} ax'
-          : '';
-      String mammaeCount = '$ingCount$abdCount$axCount';
-      return '$vaginaOpening$delimiter$mammaeCondition$delimiter$mammaeCount';
-    } else {
-      String empty = delimiter * 2;
-      return '$vaginaOpening$empty';
-    }
-  }
-
-  String _matchTestisPos(int? testisPos) {
-    if (testisPos == null) {
-      return '';
-    } else {
-      return testisPositionList[testisPos];
-    }
-  }
-
-  String _getMaleGonad(MammalMeasurementData data) {
-    TestisPosition? posEnum = getTestisPosition(data.testisPosition);
-
-    if (posEnum == TestisPosition.scrotal) {
-      String testisPos = _matchTestisPos(data.testisPosition);
-      String testisLength =
-          data.testisLength != null ? '${data.testisLength}' : '';
-      String testisWidth =
-          data.testisWidth != null ? 'x${data.testisWidth}mm' : '';
-      return '$testisPos$delimiter$testisLength$testisWidth';
-    } else {
-      return delimiter;
-    }
+  Future<String> _getMeasurementGeneralMammals(String specimenUuid) async {
+    MammalianMeasurements mammals = MammalianMeasurements(
+        specimenUuid: specimenUuid, ref: ref, delimiter: delimiter);
+    return await mammals.getMeasurements();
   }
 }

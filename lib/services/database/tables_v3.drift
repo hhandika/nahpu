@@ -315,16 +315,4 @@ CREATE TABLE specimenPart (
     FOREIGN KEY(specimenUuid) REFERENCES specimen(uuid) 
 );
 
--- remove the next release
-CREATE TABLE expense (
-    id INT PRIMARY KEY AUTOINCREMENT,
-    category TEXT,
-    item TEXT,
-    description TEXT,
-    budget REAL,
-    actual REAL,
-    projectUuid TEXT,
-    FOREIGN KEY(projectUuid) REFERENCES project(uuid) 
-);
-
 listProject: SELECT uuid,name,created,lastAccessed FROM project;

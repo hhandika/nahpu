@@ -24,7 +24,6 @@ mixin _$NarrativeQueryMixin on DatabaseAccessor<Database> {
   MammalMeasurement get mammalMeasurement => attachedDatabase.mammalMeasurement;
   AvianMeasurement get avianMeasurement => attachedDatabase.avianMeasurement;
   SpecimenPart get specimenPart => attachedDatabase.specimenPart;
-  Expense get expense => attachedDatabase.expense;
   Selectable<ListProjectResult> listProject() {
     return customSelect('SELECT uuid, name, created, lastAccessed FROM project',
         variables: [],
