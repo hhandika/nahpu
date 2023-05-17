@@ -449,17 +449,21 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          DropdownButtonFormField(
+          DropdownButtonFormField<String?>(
               decoration: const InputDecoration(
                 labelText: 'Class',
                 hintText: 'Select a taxon class',
               ),
-              value: widget.ctr.taxonClassCtr.text,
+              value: widget.ctr.taxonClassCtr,
               items: supportedTaxonClass
                   .map((e) => DropdownMenuItem(value: e, child: Text(e)))
                   .toList(),
-              onChanged: (value) {
-                widget.ctr.taxonClassCtr.text = value ?? '';
+              onChanged: (String? value) {
+                if (value != null) {
+                  setState(() {
+                    widget.ctr.taxonClassCtr = value;
+                  });
+                }
               }),
           TextFormField(
               controller: widget.ctr.taxonOrderCtr,
@@ -577,7 +581,7 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
 
   TaxonomyCompanion _getForm() {
     return TaxonomyCompanion(
-      taxonClass: db.Value(widget.ctr.taxonClassCtr.text),
+      taxonClass: db.Value(widget.ctr.taxonClassCtr),
       taxonOrder: db.Value(widget.ctr.taxonOrderCtr.text),
       taxonFamily: db.Value(widget.ctr.taxonFamilyCtr.text),
       genus: db.Value(widget.ctr.genusCtr.text),

@@ -759,7 +759,7 @@ class TaxonRegistryCtrModel {
     required this.noteCtr,
   });
 
-  TextEditingController taxonClassCtr;
+  String? taxonClassCtr;
   TextEditingController taxonOrderCtr;
   TextEditingController taxonFamilyCtr;
   TextEditingController genusCtr;
@@ -768,7 +768,7 @@ class TaxonRegistryCtrModel {
   TextEditingController noteCtr;
 
   factory TaxonRegistryCtrModel.empty() => TaxonRegistryCtrModel(
-      taxonClassCtr: TextEditingController(),
+      taxonClassCtr: null,
       taxonOrderCtr: TextEditingController(),
       taxonFamilyCtr: TextEditingController(),
       genusCtr: TextEditingController(),
@@ -778,7 +778,7 @@ class TaxonRegistryCtrModel {
 
   factory TaxonRegistryCtrModel.fromData(TaxonomyData data) =>
       TaxonRegistryCtrModel(
-        taxonClassCtr: TextEditingController(text: data.taxonClass ?? ''),
+        taxonClassCtr: data.taxonClass ?? '',
         taxonOrderCtr: TextEditingController(text: data.taxonOrder ?? ''),
         taxonFamilyCtr: TextEditingController(text: data.taxonFamily ?? ''),
         genusCtr: TextEditingController(text: data.genus ?? ''),
@@ -789,7 +789,6 @@ class TaxonRegistryCtrModel {
       );
 
   void dispose() {
-    taxonClassCtr.dispose();
     taxonOrderCtr.dispose();
     taxonFamilyCtr.dispose();
     genusCtr.dispose();
