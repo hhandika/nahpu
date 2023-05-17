@@ -325,7 +325,7 @@ class MaleGonadForm extends ConsumerWidget {
           children: [
             const CommonDivider(),
             Text('Male Gonads', style: Theme.of(context).textTheme.titleLarge),
-            Text('Testis size (mm)',
+            Text('Left testis size (mm)',
                 style: Theme.of(context).textTheme.titleSmall),
             AdaptiveLayout(
               useHorizontalLayout: useHorizontalLayout,
@@ -373,7 +373,7 @@ class MaleGonadForm extends ConsumerWidget {
                 controller: ctr.testisRemarkCtr,
                 maxLines: 3,
                 labelText: 'Remarks',
-                hintText: 'Enter remarks',
+                hintText: 'Enter remarks, e.g. right testis size',
                 isLastField: false,
                 onChanged: (String? value) {
                   if (value != null && value.isNotEmpty) {
@@ -421,7 +421,7 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
           const CommonDivider(),
           Text('Female Gonads', style: Theme.of(context).textTheme.titleLarge),
           Text(
-            'Ovaries',
+            'Ovary size',
             style: Theme.of(context).textTheme.titleMedium,
           ),
           AdaptiveLayout(
@@ -641,7 +641,7 @@ class OvumSizeForm extends ConsumerWidget {
     return Column(
       children: [
         Text(
-          'The Size of Three Largest Ova (mm)',
+          'The Diameter of Three Largest Ova (mm)',
           style: Theme.of(context).textTheme.titleMedium,
         ),
         AdaptiveLayout(
