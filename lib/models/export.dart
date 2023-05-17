@@ -1,3 +1,17 @@
+enum MammalianRecordType {
+  narrative,
+  collEvent,
+  avianSpecimen,
+  mammalianSpecimen
+}
+
+const List<String> mammalianRecordTypeList = [
+  'Narrative',
+  'Collecting event',
+  'Avian specimen records',
+  'Mammalian specimen records',
+];
+
 const collRecordExportList = [
   'cataloger',
   'fieldID',

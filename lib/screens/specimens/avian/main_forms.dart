@@ -4,7 +4,7 @@ import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/layout.dart';
-import 'package:nahpu/screens/specimens/birds/measurements.dart';
+import 'package:nahpu/screens/specimens/avian/measurements.dart';
 import 'package:nahpu/screens/specimens/shared/capture_records.dart';
 import 'package:nahpu/screens/specimens/shared/collecting_records.dart';
 import 'package:nahpu/screens/specimens/shared/media.dart';

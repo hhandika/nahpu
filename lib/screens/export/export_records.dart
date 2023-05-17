@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'package:nahpu/models/export.dart';
 import 'package:nahpu/services/io_services.dart';
+import 'package:nahpu/services/writer/coll_event_writer.dart';
 import 'package:nahpu/services/writer/narrative_writer.dart';
-import 'package:nahpu/services/writer/record_writer.dart';
+import 'package:nahpu/services/writer/mammal_record_writer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/controllers.dart';
@@ -19,7 +21,7 @@ class ExportForm extends ConsumerStatefulWidget {
 class ExportFormState extends ConsumerState<ExportForm> {
   ExportFmt exportFmt = ExportFmt.csv;
   FileOpCtrModel exportCtr = FileOpCtrModel.empty();
-  RecordType _recordType = RecordType.narrative;
+  MammalianRecordType _recordType = MammalianRecordType.narrative;
   String _fileStem = 'export';
   String _selectedDir = '';
   bool _hasSaved = false;
@@ -40,22 +42,23 @@ class ExportFormState extends ConsumerState<ExportForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Export to ...'),
+        title: const Text('Export records'),
         automaticallyImplyLeading: false,
       ),
       body: FileOperationPage(
         children: [
-          DropdownButtonFormField<RecordType>(
+          DropdownButtonFormField<MammalianRecordType>(
             value: _recordType,
             decoration: const InputDecoration(
               labelText: 'Record type',
             ),
-            items: recordTypeList
+            items: mammalianRecordTypeList
                 .map((e) => DropdownMenuItem(
-                    value: RecordType.values[recordTypeList.indexOf(e)],
+                    value: MammalianRecordType
+                        .values[mammalianRecordTypeList.indexOf(e)],
                     child: Text(e)))
                 .toList(),
-            onChanged: (RecordType? value) {
+            onChanged: (MammalianRecordType? value) {
               if (value != null) {
                 setState(() {
                   _recordType = value;
@@ -173,13 +176,13 @@ class ExportFormState extends ConsumerState<ExportForm> {
 
   Future<void> _matchRecordTypeToWriter(File file, bool isCsv) async {
     switch (_recordType) {
-      case RecordType.narrative:
+      case MammalianRecordType.narrative:
         await NarrativeRecordWriter(ref).writeNarrativeDelimited(file, isCsv);
         break;
-      case RecordType.collEvent:
+      case MammalianRecordType.collEvent:
         await CollEventRecordWriter(ref).writeCollEventDelimited(file, isCsv);
         break;
-      case RecordType.mammalSpecimen:
+      case MammalianRecordType.mammalianSpecimen:
         await MammalRecordWriter(ref).writeRecordDelimited(file, isCsv);
         break;
       default:

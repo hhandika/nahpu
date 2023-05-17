@@ -24,14 +24,6 @@ enum SiteMenuSelection {
   deleteAllRecords
 }
 
-enum RecordType { narrative, collEvent, mammalSpecimen }
-
-const List<String> recordTypeList = [
-  'Narrative',
-  'Collecting event',
-  'Mammalian specimen records',
-];
-
 enum PdfExportType { narrative }
 
 const List<String> pdfExportList = [
