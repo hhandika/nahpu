@@ -13,12 +13,14 @@ create_output_dir() {
 
 move_apk() {
     if [ -f "build/app/outputs/apk/release/app-release.apk" ]; then
+        echo "Moving APK to $OUTPUT_DIR"
         mv build/app/outputs/apk/release/app-release.apk $OUTPUT_DIR
     fi
 }
 
 move_dmg() {
     if [ -f "installer/nahpu.dmg" ]; then
+        echo "Moving DMG to $OUTPUT_DIR"
         mv installer/nahpu.dmg $OUTPUT_DIR
     fi
 }
