@@ -918,11 +918,12 @@ class WingMoltForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return CommonNumField(
+    return CommonTextField(
       controller: ctr.wingMoltCtr,
       labelText: 'Wing Molt',
       hintText: 'Enter wing molt',
       isLastField: false,
+      maxLines: 2,
       onChanged: (String? value) {
         if (value != null) {
           SpecimenServices(ref).updateAvianMeasurement(
@@ -951,10 +952,11 @@ class TailMoltForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return CommonNumField(
+    return CommonTextField(
       controller: ctr.tailMoltCtr,
       labelText: 'Tail Molt',
       hintText: 'Enter tail molt',
+      maxLines: 2,
       isLastField: false,
       onChanged: (String? value) {
         if (value != null) {
