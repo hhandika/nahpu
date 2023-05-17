@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/types.dart';
+import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/database/database.dart';
@@ -110,7 +111,7 @@ class SpecimenListTitle extends ConsumerWidget {
             style: Theme.of(context).textTheme.titleMedium,
           );
         } else {
-          return const Text('Loading...');
+          return const CommonProgressIndicator();
         }
       },
       future: _getPersonnelName(catalogerID, ref),

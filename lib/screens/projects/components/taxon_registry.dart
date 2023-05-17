@@ -263,7 +263,7 @@ class RecordedCounts extends ConsumerWidget {
               style: Theme.of(context).textTheme.titleMedium,
             );
           } else {
-            return const Text('Loading...');
+            return const CommonProgressIndicator();
           }
         },
         future: _getStats(ref));
