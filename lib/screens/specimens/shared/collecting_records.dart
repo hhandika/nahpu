@@ -5,6 +5,7 @@ import 'package:nahpu/models/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/models/mammals.dart';
 import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:intl/intl.dart';
 import 'package:nahpu/providers/catalogs.dart';
@@ -198,7 +199,7 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
     return Column(
       children: [
         widget.specimenCtr.catalogerCtr != null
-            ? SpecimenIdTile(
+            ? IdTile(
                 specimenUuid: widget.specimenUuid,
                 specimenCtr: widget.specimenCtr,
                 catalogerUuid: widget.specimenCtr.catalogerCtr!,
@@ -293,6 +294,60 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
   }
 }
 
+class IdTile extends ConsumerWidget {
+  const IdTile({
+    Key? key,
+    required this.specimenUuid,
+    required this.specimenCtr,
+    required this.catalogerUuid,
+  }) : super(key: key);
+
+  final SpecimenFormCtrModel specimenCtr;
+  final String specimenUuid;
+  final String catalogerUuid;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Theme.of(context).colorScheme.onSurface,
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+              child: CommonTextField(
+                controller: specimenCtr.museumIDCtr,
+                labelText: 'Museum ID',
+                hintText: 'Enter museum ID (if applicable)',
+                isLastField: true,
+                onChanged: (String? value) {
+                  if (value != null) {
+                    SpecimenServices(ref).updateSpecimen(
+                      specimenUuid,
+                      SpecimenCompanion(
+                        museumID: db.Value(value),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
+            SpecimenIdTile(
+              specimenUuid: specimenUuid,
+              specimenCtr: specimenCtr,
+              catalogerUuid: catalogerUuid,
+            ),
+          ],
+        ));
+  }
+}
+
 class SpecimenIdTile extends ConsumerWidget {
   const SpecimenIdTile({
     Key? key,
@@ -309,13 +364,6 @@ class SpecimenIdTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final initial = ref.watch(personnelInitialProvider(catalogerUuid));
     return ListTile(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-        side: BorderSide(
-          color: Theme.of(context).colorScheme.onSurface,
-          width: 0.5,
-        ),
-      ),
       title: initial.when(
         data: (initial) => Text(
           'Field ID: $initial${specimenCtr.fieldNumberCtr.text}',
