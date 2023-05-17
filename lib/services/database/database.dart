@@ -39,6 +39,7 @@ class Database extends _$Database {
     // We add coordinateID and trapID to specimen table.
     await m.addColumn(specimen, specimen.coordinateID);
     await m.addColumn(specimen, specimen.trapID);
+    await m.addColumn(specimen, specimen.museumID);
 
     // We switch bird table to revised version
     await m.deleteTable('bird_measurement');

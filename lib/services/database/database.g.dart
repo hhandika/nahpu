@@ -6736,6 +6736,13 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _museumIDMeta =
+      const VerificationMeta('museumID');
+  late final GeneratedColumn<String> museumID = GeneratedColumn<String>(
+      'museumID', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _preparatorIDMeta =
       const VerificationMeta('preparatorID');
   late final GeneratedColumn<String> preparatorID = GeneratedColumn<String>(
@@ -6764,6 +6771,7 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
         isMultipleCollector,
         collPersonnelID,
         collMethodID,
+        museumID,
         preparatorID
       ];
   @override
@@ -6877,6 +6885,10 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
           collMethodID.isAcceptableOrUnknown(
               data['collMethodID']!, _collMethodIDMeta));
     }
+    if (data.containsKey('museumID')) {
+      context.handle(_museumIDMeta,
+          museumID.isAcceptableOrUnknown(data['museumID']!, _museumIDMeta));
+    }
     if (data.containsKey('preparatorID')) {
       context.handle(
           _preparatorIDMeta,
@@ -6930,6 +6942,8 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
           .read(DriftSqlType.int, data['${effectivePrefix}collPersonnelID']),
       collMethodID: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}collMethodID']),
+      museumID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}museumID']),
       preparatorID: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}preparatorID']),
     );
@@ -6973,6 +6987,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
   final int? isMultipleCollector;
   final int? collPersonnelID;
   final int? collMethodID;
+  final String? museumID;
   final String? preparatorID;
   const SpecimenData(
       {required this.uuid,
@@ -6994,6 +7009,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       this.isMultipleCollector,
       this.collPersonnelID,
       this.collMethodID,
+      this.museumID,
       this.preparatorID});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -7052,6 +7068,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
     }
     if (!nullToAbsent || collMethodID != null) {
       map['collMethodID'] = Variable<int>(collMethodID);
+    }
+    if (!nullToAbsent || museumID != null) {
+      map['museumID'] = Variable<String>(museumID);
     }
     if (!nullToAbsent || preparatorID != null) {
       map['preparatorID'] = Variable<String>(preparatorID);
@@ -7115,6 +7134,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       collMethodID: collMethodID == null && nullToAbsent
           ? const Value.absent()
           : Value(collMethodID),
+      museumID: museumID == null && nullToAbsent
+          ? const Value.absent()
+          : Value(museumID),
       preparatorID: preparatorID == null && nullToAbsent
           ? const Value.absent()
           : Value(preparatorID),
@@ -7145,6 +7167,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           serializer.fromJson<int?>(json['isMultipleCollector']),
       collPersonnelID: serializer.fromJson<int?>(json['collPersonnelID']),
       collMethodID: serializer.fromJson<int?>(json['collMethodID']),
+      museumID: serializer.fromJson<String?>(json['museumID']),
       preparatorID: serializer.fromJson<String?>(json['preparatorID']),
     );
   }
@@ -7171,6 +7194,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       'isMultipleCollector': serializer.toJson<int?>(isMultipleCollector),
       'collPersonnelID': serializer.toJson<int?>(collPersonnelID),
       'collMethodID': serializer.toJson<int?>(collMethodID),
+      'museumID': serializer.toJson<String?>(museumID),
       'preparatorID': serializer.toJson<String?>(preparatorID),
     };
   }
@@ -7195,6 +7219,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           Value<int?> isMultipleCollector = const Value.absent(),
           Value<int?> collPersonnelID = const Value.absent(),
           Value<int?> collMethodID = const Value.absent(),
+          Value<String?> museumID = const Value.absent(),
           Value<String?> preparatorID = const Value.absent()}) =>
       SpecimenData(
         uuid: uuid ?? this.uuid,
@@ -7223,6 +7248,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
             : this.collPersonnelID,
         collMethodID:
             collMethodID.present ? collMethodID.value : this.collMethodID,
+        museumID: museumID.present ? museumID.value : this.museumID,
         preparatorID:
             preparatorID.present ? preparatorID.value : this.preparatorID,
       );
@@ -7248,33 +7274,36 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           ..write('isMultipleCollector: $isMultipleCollector, ')
           ..write('collPersonnelID: $collPersonnelID, ')
           ..write('collMethodID: $collMethodID, ')
+          ..write('museumID: $museumID, ')
           ..write('preparatorID: $preparatorID')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      uuid,
-      projectUuid,
-      speciesID,
-      taxonGroup,
-      condition,
-      prepDate,
-      prepTime,
-      captureDate,
-      isRelativeTime,
-      captureTime,
-      trapType,
-      trapID,
-      coordinateID,
-      catalogerID,
-      fieldNumber,
-      collEventID,
-      isMultipleCollector,
-      collPersonnelID,
-      collMethodID,
-      preparatorID);
+  int get hashCode => Object.hashAll([
+        uuid,
+        projectUuid,
+        speciesID,
+        taxonGroup,
+        condition,
+        prepDate,
+        prepTime,
+        captureDate,
+        isRelativeTime,
+        captureTime,
+        trapType,
+        trapID,
+        coordinateID,
+        catalogerID,
+        fieldNumber,
+        collEventID,
+        isMultipleCollector,
+        collPersonnelID,
+        collMethodID,
+        museumID,
+        preparatorID
+      ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -7298,6 +7327,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           other.isMultipleCollector == this.isMultipleCollector &&
           other.collPersonnelID == this.collPersonnelID &&
           other.collMethodID == this.collMethodID &&
+          other.museumID == this.museumID &&
           other.preparatorID == this.preparatorID);
 }
 
@@ -7321,6 +7351,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
   final Value<int?> isMultipleCollector;
   final Value<int?> collPersonnelID;
   final Value<int?> collMethodID;
+  final Value<String?> museumID;
   final Value<String?> preparatorID;
   final Value<int> rowid;
   const SpecimenCompanion({
@@ -7343,6 +7374,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     this.isMultipleCollector = const Value.absent(),
     this.collPersonnelID = const Value.absent(),
     this.collMethodID = const Value.absent(),
+    this.museumID = const Value.absent(),
     this.preparatorID = const Value.absent(),
     this.rowid = const Value.absent(),
   });
@@ -7366,6 +7398,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     this.isMultipleCollector = const Value.absent(),
     this.collPersonnelID = const Value.absent(),
     this.collMethodID = const Value.absent(),
+    this.museumID = const Value.absent(),
     this.preparatorID = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : uuid = Value(uuid);
@@ -7389,6 +7422,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     Expression<int>? isMultipleCollector,
     Expression<int>? collPersonnelID,
     Expression<int>? collMethodID,
+    Expression<String>? museumID,
     Expression<String>? preparatorID,
     Expression<int>? rowid,
   }) {
@@ -7413,6 +7447,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
         'isMultipleCollector': isMultipleCollector,
       if (collPersonnelID != null) 'collPersonnelID': collPersonnelID,
       if (collMethodID != null) 'collMethodID': collMethodID,
+      if (museumID != null) 'museumID': museumID,
       if (preparatorID != null) 'preparatorID': preparatorID,
       if (rowid != null) 'rowid': rowid,
     });
@@ -7438,6 +7473,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       Value<int?>? isMultipleCollector,
       Value<int?>? collPersonnelID,
       Value<int?>? collMethodID,
+      Value<String?>? museumID,
       Value<String?>? preparatorID,
       Value<int>? rowid}) {
     return SpecimenCompanion(
@@ -7460,6 +7496,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       isMultipleCollector: isMultipleCollector ?? this.isMultipleCollector,
       collPersonnelID: collPersonnelID ?? this.collPersonnelID,
       collMethodID: collMethodID ?? this.collMethodID,
+      museumID: museumID ?? this.museumID,
       preparatorID: preparatorID ?? this.preparatorID,
       rowid: rowid ?? this.rowid,
     );
@@ -7525,6 +7562,9 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     if (collMethodID.present) {
       map['collMethodID'] = Variable<int>(collMethodID.value);
     }
+    if (museumID.present) {
+      map['museumID'] = Variable<String>(museumID.value);
+    }
     if (preparatorID.present) {
       map['preparatorID'] = Variable<String>(preparatorID.value);
     }
@@ -7556,6 +7596,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
           ..write('isMultipleCollector: $isMultipleCollector, ')
           ..write('collPersonnelID: $collPersonnelID, ')
           ..write('collMethodID: $collMethodID, ')
+          ..write('museumID: $museumID, ')
           ..write('preparatorID: $preparatorID, ')
           ..write('rowid: $rowid')
           ..write(')'))

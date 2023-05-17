@@ -214,6 +214,7 @@ CREATE TABLE specimen (
     isMultipleCollector INT,
     collPersonnelID INT,
     collMethodID INT,
+    museumID TEXT,
     preparatorID TEXT REFERENCES personnel(uuid),
     FOREIGN KEY(projectUuid) REFERENCES project(uuid),
     FOREIGN KEY(catalogerID) REFERENCES personnel(uuid),
