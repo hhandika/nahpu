@@ -7,13 +7,11 @@ import 'package:nahpu/services/taxonomy_services.dart';
 
 class CaptureRecordStats {
   CaptureRecordStats(
-    this.orderCount,
     this.familyCount,
     this.speciesCount,
     this.specimenCount,
   );
 
-  SplayTreeMap<String, int> orderCount;
   SplayTreeMap<String, int> familyCount;
   SplayTreeMap<String, int> speciesCount;
   int specimenCount;
@@ -29,7 +27,6 @@ class CaptureRecordStats {
 
   factory CaptureRecordStats.empty() {
     return CaptureRecordStats(
-      SplayTreeMap(),
       SplayTreeMap(),
       SplayTreeMap(),
       0,
@@ -51,7 +48,6 @@ class CaptureRecordStats {
       TaxonomyData data = await TaxonomyService(ref).getTaxonById(speciesID);
       _countSpecies(getSpeciesName(data));
       _countFamily(data.taxonFamily ?? '');
-      _countOrder(data.taxonOrder ?? '');
     }
   }
 
@@ -68,14 +64,6 @@ class CaptureRecordStats {
       familyCount[family] = 1;
     } else {
       familyCount[family] = familyCount[family]! + 1;
-    }
-  }
-
-  void _countOrder(String order) {
-    if (!orderCount.containsKey(order)) {
-      orderCount[order] = 1;
-    } else {
-      orderCount[order] = orderCount[order]! + 1;
     }
   }
 }
