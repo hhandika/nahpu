@@ -3,7 +3,7 @@ import 'package:nahpu/models/export.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/writer/coll_event_writer.dart';
 import 'package:nahpu/services/writer/narrative_writer.dart';
-import 'package:nahpu/services/writer/mammalian_record_writer.dart';
+import 'package:nahpu/services/writer/record_writer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/controllers.dart';
@@ -21,7 +21,8 @@ class ExportForm extends ConsumerStatefulWidget {
 class ExportFormState extends ConsumerState<ExportForm> {
   ExportFmt exportFmt = ExportFmt.csv;
   FileOpCtrModel exportCtr = FileOpCtrModel.empty();
-  MammalianRecordType _recordType = MammalianRecordType.narrative;
+  SpecimenRecordType? _taxonRecordType = SpecimenRecordType.mammalian;
+  ExportRecordType? _recordType = ExportRecordType.narrative;
   String _fileStem = 'export';
   String _selectedDir = '';
   bool _hasSaved = false;
@@ -47,18 +48,34 @@ class ExportFormState extends ConsumerState<ExportForm> {
       ),
       body: FileOperationPage(
         children: [
-          DropdownButtonFormField<MammalianRecordType>(
+          DropdownButtonFormField<SpecimenRecordType?>(
+            value: _taxonRecordType,
+            decoration: const InputDecoration(
+              labelText: 'Taxon group',
+            ),
+            items: specimenRecordTypeList
+                .map((e) => DropdownMenuItem(
+                      value: SpecimenRecordType
+                          .values[specimenRecordTypeList.indexOf(e)],
+                      child: Text(e),
+                    ))
+                .toList(),
+            onChanged: (SpecimenRecordType? value) {
+              if (value != null) {
+                setState(() {
+                  _recordType = null;
+                  _taxonRecordType = value;
+                });
+              }
+            },
+          ),
+          DropdownButtonFormField<ExportRecordType>(
             value: _recordType,
             decoration: const InputDecoration(
               labelText: 'Record type',
             ),
-            items: mammalianRecordTypeList
-                .map((e) => DropdownMenuItem(
-                    value: MammalianRecordType
-                        .values[mammalianRecordTypeList.indexOf(e)],
-                    child: Text(e)))
-                .toList(),
-            onChanged: (MammalianRecordType? value) {
+            items: _matchRecordTypeToTaxonGroup(),
+            onChanged: (ExportRecordType? value) {
               if (value != null) {
                 setState(() {
                   _recordType = value;
@@ -123,6 +140,31 @@ class ExportFormState extends ConsumerState<ExportForm> {
     );
   }
 
+  List<DropdownMenuItem<ExportRecordType>> _matchRecordTypeToTaxonGroup() {
+    switch (_taxonRecordType) {
+      case SpecimenRecordType.mammalian:
+        return _recordDropdown(mammalianRecordTypeList);
+      case SpecimenRecordType.avian:
+        return _recordDropdown(avianRecordTypeList);
+      case SpecimenRecordType.allMammals:
+        return _recordDropdown(mammalianRecordTypeList);
+      case SpecimenRecordType.chiropteran:
+        return _recordDropdown(mammalianRecordTypeList);
+      default:
+        return _recordDropdown(mammalianRecordTypeList);
+    }
+  }
+
+  List<DropdownMenuItem<ExportRecordType>> _recordDropdown(
+      List<String> recordTypeList) {
+    return recordTypeList
+        .map((e) => DropdownMenuItem(
+              value: ExportRecordType.values[recordTypeList.indexOf(e)],
+              child: Text(e),
+            ))
+        .toList();
+  }
+
   Future<void> _exportFile() async {
     final dir = Directory(_selectedDir);
     if (!dir.existsSync()) {
@@ -176,17 +218,19 @@ class ExportFormState extends ConsumerState<ExportForm> {
 
   Future<void> _matchRecordTypeToWriter(File file, bool isCsv) async {
     switch (_recordType) {
-      case MammalianRecordType.narrative:
+      case ExportRecordType.narrative:
         await NarrativeRecordWriter(ref).writeNarrativeDelimited(file, isCsv);
         break;
-      case MammalianRecordType.collEvent:
+      case ExportRecordType.collEvent:
         await CollEventRecordWriter(ref).writeCollEventDelimited(file, isCsv);
         break;
-      case MammalianRecordType.mammalianSpecimen:
-        await MammalRecordWriter(ref).writeRecordDelimited(file, isCsv);
+      case ExportRecordType.specimenRecord:
+        await SpecimenRecordWriter(
+                ref: ref, recordType: SpecimenRecordType.mammalian)
+            .writeRecordDelimited(file, isCsv);
         break;
       default:
-        await MammalRecordWriter(ref).writeRecordDelimited(file, isCsv);
+        await NarrativeRecordWriter(ref).writeNarrativeDelimited(file, isCsv);
         break;
     }
   }

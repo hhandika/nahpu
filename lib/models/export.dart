@@ -1,14 +1,28 @@
-enum MammalianRecordType {
-  narrative,
-  collEvent,
-  avianSpecimen,
-  mammalianSpecimen
+enum SpecimenRecordType {
+  avian,
+  chiropteran,
+  mammalian,
+  allMammals,
 }
+
+const List<String> specimenRecordTypeList = [
+  'Birds',
+  'Bats',
+  'Non-bat mammals',
+  'All mammals',
+];
+
+enum ExportRecordType { narrative, collEvent, specimenRecord }
+
+const List<String> avianRecordTypeList = [
+  'Narrative',
+  'Collecting event',
+  'Avian specimen records',
+];
 
 const List<String> mammalianRecordTypeList = [
   'Narrative',
   'Collecting event',
-  'Avian specimen records',
   'Mammalian specimen records',
 ];
 

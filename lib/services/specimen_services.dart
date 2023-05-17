@@ -53,9 +53,16 @@ class SpecimenServices extends DbAccess {
   }
 
   Future<List<SpecimenData>> getSpecimenList() async {
-    String projectUuid = ref.read(projectUuidProvider);
-
     return SpecimenQuery(dbase).getAllSpecimens(projectUuid);
+  }
+
+  Future<List<SpecimenData>> getSpecimenListByTaxonGroup(
+      String taxonGroup) async {
+    List<SpecimenData> specimenList = await getSpecimenList();
+    List<SpecimenData> filteredList = specimenList
+        .where((element) => element.taxonGroup == taxonGroup)
+        .toList();
+    return filteredList;
   }
 
   Future<int> getSpecimenFieldNumber(

@@ -14,16 +14,18 @@ import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/writer/common.dart';
 import 'package:nahpu/services/writer/site_writer.dart';
 
-class MammalRecordWriter {
-  MammalRecordWriter(this.ref);
+class SpecimenRecordWriter {
+  SpecimenRecordWriter({required this.ref, required this.recordType});
 
   final WidgetRef ref;
+  final SpecimenRecordType recordType;
   late String delimiter;
 
   Future<void> writeRecordDelimited(File filePath, bool isCsv) async {
     delimiter = isCsv ? csvDelimiter : tsvDelimiter;
+    String taxonGroup = matchRecordTypeToTaxonGroup(recordType);
     List<SpecimenData> specimenList =
-        await SpecimenServices(ref).getSpecimenList();
+        await SpecimenServices(ref).getSpecimenListByTaxonGroup(taxonGroup);
     final file = await filePath.create(recursive: true);
     final writer = file.openWrite();
     _writeHeader(writer, collRecordExportList);
@@ -39,8 +41,7 @@ class MammalRecordWriter {
       String parts = await _getPartList(element.uuid);
       String condition = element.condition ?? '';
       String collId = await _getCollEventName(element.collEventID);
-      CatalogFmt catalogFmt = matchTaxonGroupToCatFmt(element.taxonGroup);
-      String measurement = await _getMeasurement(catalogFmt, element.uuid);
+      String measurement = await _getMeasurement(element.uuid);
       String mainLine =
           '$cataloger$fieldId$delimiter$preparator$delimiter$species$delimiter$parts$delimiter$condition$delimiter$collId';
       writer.writeln('$mainLine$delimiter$measurement');
@@ -122,12 +123,11 @@ class MammalRecordWriter {
     return partList.map((e) => '${e.type};${e.treatment}').join(listSeparator);
   }
 
-  Future<String> _getMeasurement(
-      CatalogFmt catalogFmt, String? specimenUuid) async {
-    switch (catalogFmt) {
-      case CatalogFmt.generalMammals:
+  Future<String> _getMeasurement(String? specimenUuid) async {
+    switch (recordType) {
+      case SpecimenRecordType.mammalian:
         return await _getMeasurementGeneralMammals(specimenUuid);
-      case CatalogFmt.birds:
+      case SpecimenRecordType.avian:
         return ' ';
       default:
         return ' ';
