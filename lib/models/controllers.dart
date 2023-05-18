@@ -563,29 +563,28 @@ class AvianMeasurementCtrModel {
         sexCtr: data.sex,
         broodPatchCtr: data.broodPatch,
         skullOssCtr: data.skullOssification,
-        bursaCtr:
-            TextEditingController(text: data.bursaLength?.toString() ?? ''),
+        bursaCtr: TextEditingController(text: data.bursaLength?.truncateZero()),
         fatCtr: data.fat,
         stomachContentCtr:
             TextEditingController(text: data.stomachContent ?? ''),
         testisLengthCtr:
-            TextEditingController(text: data.testisLength?.toString() ?? ''),
+            TextEditingController(text: data.testisLength?.truncateZero()),
         testisWidthCtr:
-            TextEditingController(text: data.testisWidth?.toString() ?? ''),
+            TextEditingController(text: data.testisWidth?.truncateZero()),
         testisRemarkCtr: TextEditingController(text: data.testisRemark ?? ''),
         ovaryLengthCtr:
-            TextEditingController(text: data.ovaryLength?.toString() ?? ''),
+            TextEditingController(text: data.ovaryLength?.truncateZero()),
         ovaryWidthCtr:
-            TextEditingController(text: data.ovaryWidth?.toString() ?? ''),
+            TextEditingController(text: data.ovaryWidth?.truncateZero()),
         ovaryAppearanceCtr: data.ovaryAppearance,
         firstOvaSizeCtr:
-            TextEditingController(text: data.firstOvaSize?.toString() ?? ''),
+            TextEditingController(text: data.firstOvaSize?.truncateZero()),
         secondOvaSizeCtr:
-            TextEditingController(text: data.secondOvaSize?.toString() ?? ''),
+            TextEditingController(text: data.secondOvaSize?.truncateZero()),
         thirdOvaSizeCtr:
-            TextEditingController(text: data.thirdOvaSize?.toString() ?? ''),
+            TextEditingController(text: data.thirdOvaSize?.truncateZero()),
         oviductWidthCtr:
-            TextEditingController(text: data.oviductWidth?.toString() ?? ''),
+            TextEditingController(text: data.oviductWidth?.truncateZero()),
         oviductAppearanceCtr: data.oviductAppearance,
         ovaryRemarkCtr: TextEditingController(text: data.ovaryRemark ?? ''),
         wingIsMoltCtr: data.wingIsMolt,
