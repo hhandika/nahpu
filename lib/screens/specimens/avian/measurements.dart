@@ -187,6 +187,7 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
             },
           ),
           DropdownButtonFormField<int?>(
+            value: ctr.broodPatchCtr,
             decoration: const InputDecoration(
               labelText: 'Brood patch',
               hintText: 'Choose one',
@@ -556,6 +557,7 @@ class SkullOssField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return DropdownButtonFormField(
+      value: ctr.skullOssCtr,
       decoration: const InputDecoration(
         labelText: 'Skull ossification (%)',
         hintText: 'Enter percentage',
@@ -568,6 +570,7 @@ class SkullOssField extends ConsumerWidget {
           .toList(),
       onChanged: (int? newValue) {
         if (newValue != null) {
+          ctr.skullOssCtr = newValue;
           SpecimenServices(ref).updateAvianMeasurement(
             specimenUuid,
             AvianMeasurementCompanion(
