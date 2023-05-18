@@ -38,25 +38,64 @@ class GeneralSettings {
   final WidgetRef ref;
 
   SettingsSection getSetting() {
-    final catalogFmt = ref.watch(catalogFmtNotifier);
-    final selectedFmt = matchCatFmtToTaxonGroup(catalogFmt);
     return SettingsSection(
       title: const Text('Catalog Settings'),
       tiles: [
-        SettingsTile.navigation(
-          leading: const Icon(MdiIcons.fileCabinet),
-          title: const Text('Format'),
-          value: Text(selectedFmt),
-          onPressed: (context) => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CatalogFmtSelection(
-                selectedFmt: selectedFmt,
-              ),
-            ),
+        getCatalogFmtSetting(),
+        getSpecimenPartSettings(),
+      ],
+    );
+  }
+
+  SettingsTile getCatalogFmtSetting() {
+    final catalogFmt = ref.watch(catalogFmtNotifier);
+    final selectedFmt = matchCatFmtToTaxonGroup(catalogFmt);
+    return SettingsTile.navigation(
+      leading: const Icon(MdiIcons.fileCabinet),
+      title: const Text('Format'),
+      value: Text(selectedFmt),
+      onPressed: (context) => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CatalogFmtSelection(
+            selectedFmt: selectedFmt,
           ),
         ),
-      ],
+      ),
+    );
+  }
+
+  SettingsTile getSpecimenPartSettings() {
+    return SettingsTile.navigation(
+      leading: const Icon(MdiIcons.bone),
+      title: const Text('Specimen Parts'),
+      onPressed: (context) => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SpecimenPartSelection(),
+        ),
+      ),
+    );
+  }
+}
+
+class SpecimenPartSelection extends ConsumerStatefulWidget {
+  const SpecimenPartSelection({super.key});
+
+  @override
+  SpecimenPartSelectionState createState() => SpecimenPartSelectionState();
+}
+
+class SpecimenPartSelectionState extends ConsumerState<SpecimenPartSelection> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Specimen Parts'),
+      ),
+      body: const Center(
+        child: Text('Specimen Parts'),
+      ),
     );
   }
 }
