@@ -53,5 +53,7 @@
 	<string>$(PRODUCT_NAME) would like access to document folder to read and write results</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(PRODUCT_NAME) needs access to photos</string>
+	<key>UISupportsDocumentBrowser</key>
+	<true/>
 </dict>
 </plist>

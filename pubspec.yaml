@@ -36,7 +36,7 @@ dependencies:
   flutter_speed_dial: ^6.0.0
   drift: ^2.4.0
   sqlite3_flutter_libs: ^0.5.9
-  path_provider: ^2.0.11
+  path_provider: ^2.0.15
   path: ^1.8.2
   uuid: ^3.0.6
   dynamic_color: ^1.6.3
