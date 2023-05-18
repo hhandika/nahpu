@@ -200,8 +200,8 @@ class CollEventIdTile extends ConsumerWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
               side: BorderSide(
-                color: Theme.of(context).colorScheme.onSurface,
-                width: 1,
+                color: Theme.of(context).dividerColor,
+                width: 2,
               ),
             ),
             title: RichText(

@@ -2,6 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/project_services.dart';
 
+class IDFormContainer extends StatelessWidget {
+  const IDFormContainer({
+    super.key,
+    required this.child,
+  });
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Theme.of(context).dividerColor,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: child,
+    );
+  }
+}
+
 class FormCard extends StatelessWidget {
   const FormCard(
       {Key? key,

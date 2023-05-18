@@ -308,43 +308,36 @@ class IdTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Theme.of(context).colorScheme.onSurface,
-            width: 1,
+    return IDFormContainer(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+            child: CommonTextField(
+              controller: specimenCtr.museumIDCtr,
+              labelText: 'Museum ID',
+              hintText: 'Enter museum ID (if applicable)',
+              isLastField: true,
+              onChanged: (String? value) {
+                if (value != null) {
+                  SpecimenServices(ref).updateSpecimen(
+                    specimenUuid,
+                    SpecimenCompanion(
+                      museumID: db.Value(value),
+                    ),
+                  );
+                }
+              },
+            ),
           ),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-              child: CommonTextField(
-                controller: specimenCtr.museumIDCtr,
-                labelText: 'Museum ID',
-                hintText: 'Enter museum ID (if applicable)',
-                isLastField: true,
-                onChanged: (String? value) {
-                  if (value != null) {
-                    SpecimenServices(ref).updateSpecimen(
-                      specimenUuid,
-                      SpecimenCompanion(
-                        museumID: db.Value(value),
-                      ),
-                    );
-                  }
-                },
-              ),
-            ),
-            SpecimenIdTile(
-              specimenUuid: specimenUuid,
-              specimenCtr: specimenCtr,
-              catalogerUuid: catalogerUuid,
-            ),
-          ],
-        ));
+          SpecimenIdTile(
+            specimenUuid: specimenUuid,
+            specimenCtr: specimenCtr,
+            catalogerUuid: catalogerUuid,
+          ),
+        ],
+      ),
+    );
   }
 }
 
