@@ -7,7 +7,7 @@ enum CatalogFmt { generalMammals, birds, bats }
 
 enum CommonPopUpMenuItems { edit, delete }
 
-enum CoordinatePopUpMenuItems { edit, copy, open, delete }
+enum CoordinatePopUpMenuItems { edit, copy, open }
 
 enum ExportFmt { csv, tsv }
 

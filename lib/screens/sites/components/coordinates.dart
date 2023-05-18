@@ -195,17 +195,6 @@ class CoordinateMenuState extends ConsumerState<CoordinateMenu> {
             title: Text('Open'),
           ),
         ),
-        const PopupMenuDivider(height: 10),
-        const PopupMenuItem<CoordinatePopUpMenuItems>(
-          value: CoordinatePopUpMenuItems.delete,
-          child: ListTile(
-            leading: Icon(
-              Icons.delete_outline,
-              color: Colors.red,
-            ),
-            title: Text('Delete', style: TextStyle(color: Colors.red)),
-          ),
-        ),
       ],
     );
   }
@@ -236,10 +225,6 @@ class CoordinateMenuState extends ConsumerState<CoordinateMenu> {
         break;
       case CoordinatePopUpMenuItems.open:
         await _launchGoogleMap();
-        break;
-      case CoordinatePopUpMenuItems.delete:
-        CoordinateServices(ref).deleteCoordinate(widget.coordinateId);
-        ref.invalidate(coordinateBySiteProvider);
         break;
     }
   }
@@ -421,29 +406,20 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
               const SizedBox(
                 height: 10,
               ),
-              Wrap(
-                children: [
-                  SecondaryButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    text: 'Cancel',
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  PrimaryButton(
-                    onPressed: () {
-                      widget.isEditing
-                          ? _updateCoordinate()
-                          : _createCoordinate();
-                      ref.invalidate(coordinateBySiteProvider);
-                      Navigator.pop(context);
-                    },
-                    text: widget.isEditing ? 'Update' : 'Add',
-                  ),
-                ],
-              )
+              FormButtonWithDelete(
+                  isEditing: widget.isEditing,
+                  onDeleted: () {
+                    CoordinateServices(ref)
+                        .deleteCoordinate(widget.coordinateId!);
+                    ref.invalidate(coordinateBySiteProvider);
+                  },
+                  onSubmitted: () {
+                    widget.isEditing
+                        ? _updateCoordinate()
+                        : _createCoordinate();
+                    ref.invalidate(coordinateBySiteProvider);
+                    Navigator.pop(context);
+                  }),
             ],
           ),
         ),
