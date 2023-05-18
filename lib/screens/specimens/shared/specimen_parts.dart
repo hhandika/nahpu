@@ -455,17 +455,68 @@ class PartIdForm extends ConsumerWidget {
           'Additional Part ID',
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        CommonTextField(
-            controller: partCtr.tissueIdCtr,
-            labelText: 'Tissue ID',
-            hintText: 'Enter tissue ID (if applicable)',
-            isLastField: false),
+        TissueIDform(
+          specimenUuid: specimenUuid,
+          partCtr: partCtr,
+        ),
         CommonTextField(
             controller: partCtr.barcodeIdCtr,
             labelText: 'Barcode ID',
             hintText: 'Enter barcode ID (if applicable)',
             isLastField: false),
       ]),
+    );
+  }
+}
+
+class TissueIDform extends ConsumerWidget {
+  const TissueIDform({
+    super.key,
+    required this.specimenUuid,
+    required this.partCtr,
+  });
+
+  final String specimenUuid;
+  final PartFormCtrModel partCtr;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Expanded(
+          child: TextField(
+            controller: partCtr.tissueIdCtr,
+            decoration: InputDecoration(
+                labelText: 'Tissue ID',
+                hintText: 'Enter tissue ID',
+                suffix: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.paste_outlined,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.add_circle_outline_rounded,
+                      ),
+                    )
+                  ],
+                )),
+            textInputAction: TextInputAction.done,
+          ),
+        ),
+        IconButton(
+          iconSize: 25,
+          onPressed: () {},
+          icon: const Icon(Icons.settings_outlined),
+        ),
+      ],
     );
   }
 }
