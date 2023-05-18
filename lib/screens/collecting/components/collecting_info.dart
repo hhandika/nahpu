@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/controllers.dart';
+import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
+import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
@@ -29,10 +31,6 @@ class CollectingInfoFields extends ConsumerStatefulWidget {
 class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
   List<SiteData> data = [];
   String? siteID;
-
-  final DateTime initialStartDate =
-      DateTime.now().subtract(const Duration(days: 1));
-  final DateTime initialEndDate = DateTime.now();
 
   @override
   void initState() {
@@ -68,7 +66,7 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
           ),
           Padding(
             // Match adaptive layout padding
-            padding: const EdgeInsets.only(left: 5.0, right: 5.0, bottom: 5.0),
+            padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
             child: SiteIdField(
               value: widget.collEventCtr.siteIDCtr,
               siteData: data,
@@ -93,19 +91,15 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
-              TextField(
-                decoration: const InputDecoration(
+              CommonDateField(
                   labelText: 'Start Date',
                   hintText: 'Enter date',
-                ),
-                controller: widget.collEventCtr.startDateCtr,
-                onTap: () async {
-                  DateTime? date = await _showDate(context, initialStartDate);
-                  if (date != null) {
+                  controller: widget.collEventCtr.startDateCtr,
+                  initialDate: _getInitialStartDate(),
+                  lastDate: DateTime.now(),
+                  onTap: () {
                     setState(
                       () {
-                        widget.collEventCtr.startDateCtr.text =
-                            DateFormat.yMMMd().format(date);
                         _getEventID();
                         CollEventServices(ref).updateCollEvent(
                           widget.collEventId,
@@ -119,28 +113,10 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
                         );
                       },
                     );
-                  }
-                },
-              ),
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'End Date',
-                  hintText: 'Enter date',
-                ),
-                controller: widget.collEventCtr.endDateCtr,
-                onTap: () async {
-                  DateTime? date = await _showDate(context, initialEndDate);
-                  if (date != null) {
-                    widget.collEventCtr.endDateCtr.text =
-                        DateFormat.yMMMd().format(date);
-                    CollEventServices(ref).updateCollEvent(
-                      widget.collEventId,
-                      CollEventCompanion(
-                        endDate: db.Value(widget.collEventCtr.endDateCtr.text),
-                      ),
-                    );
-                  }
-                },
+                  }),
+              EndDateField(
+                collEventId: widget.collEventId,
+                collEventCtr: widget.collEventCtr,
               ),
             ],
           ),
@@ -154,6 +130,20 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
     );
   }
 
+  DateTime _getInitialStartDate() {
+    CatalogFmt catalogFmt = ref.read(catalogFmtNotifier);
+    switch (catalogFmt) {
+      case CatalogFmt.birds:
+        return DateTime.now();
+      case CatalogFmt.generalMammals:
+        return DateTime.now().subtract(const Duration(days: 1));
+      case CatalogFmt.bats:
+        return DateTime.now().subtract(const Duration(days: 1));
+      default:
+        return DateTime.now();
+    }
+  }
+
   void _getEventID() {
     try {
       siteID = data
@@ -165,7 +155,7 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
       if (widget.collEventCtr.startDateCtr.text.isNotEmpty) {
         date = widget.collEventCtr.startDateCtr.text;
       } else {
-        date = DateFormat.yMMMd().format(initialStartDate);
+        date = DateFormat.yMMMd().format(_getInitialStartDate());
       }
 
       widget.collEventCtr.eventIDCtr.text = '$siteID-$date';
@@ -173,13 +163,35 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
       siteID = '';
     }
   }
+}
 
-  Future<DateTime?> _showDate(BuildContext context, DateTime initialStartDate) {
-    return showDatePicker(
-        context: context,
-        initialDate: initialStartDate,
-        firstDate: DateTime(2000),
-        lastDate: DateTime.now()); // Prevent user from selecting future dates
+class EndDateField extends ConsumerWidget {
+  const EndDateField({
+    super.key,
+    required this.collEventId,
+    required this.collEventCtr,
+  });
+
+  final int collEventId;
+  final CollEventFormCtrModel collEventCtr;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return CommonDateField(
+      labelText: 'End Date',
+      hintText: 'Enter date',
+      controller: collEventCtr.endDateCtr,
+      initialDate: DateTime.now(),
+      lastDate: DateTime.now(),
+      onTap: () {
+        CollEventServices(ref).updateCollEvent(
+          collEventId,
+          CollEventCompanion(
+            endDate: db.Value(collEventCtr.endDateCtr.text),
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -265,7 +277,7 @@ class CollEventIdTile extends ConsumerWidget {
   }
 }
 
-class EventTimeField extends ConsumerStatefulWidget {
+class EventTimeField extends ConsumerWidget {
   const EventTimeField({
     super.key,
     required this.collEventId,
@@ -278,64 +290,53 @@ class EventTimeField extends ConsumerStatefulWidget {
   final bool useHorizontalLayout;
 
   @override
-  EventTimeFieldState createState() => EventTimeFieldState();
-}
-
-class EventTimeFieldState extends ConsumerState<EventTimeField> {
-  @override
-  Widget build(BuildContext context) {
-    final TimeOfDay initialStartTime = TimeOfDay.now();
-    final TimeOfDay initialEndTime = TimeOfDay.now();
+  Widget build(BuildContext context, WidgetRef ref) {
     return AdaptiveLayout(
-      useHorizontalLayout: widget.useHorizontalLayout,
+      useHorizontalLayout: useHorizontalLayout,
       children: [
-        TextFormField(
-          decoration: const InputDecoration(
-            labelText: 'Start time',
-            hintText: 'Enter date',
-          ),
-          controller: widget.collEventCtr.startTimeCtr,
-          onTap: () async {
-            TimeOfDay? time = await showTime(initialStartTime);
-            if (time != null) {
-              if (!mounted) return;
-
-              widget.collEventCtr.startTimeCtr.text = time.format(context);
-              CollEventServices(ref).updateCollEvent(
-                widget.collEventId,
-                CollEventCompanion(
-                  startTime: db.Value(widget.collEventCtr.startTimeCtr.text),
-                ),
-              );
-            }
+        CommonTimeField(
+          labelText: 'Start time',
+          hintText: 'Enter date',
+          controller: collEventCtr.startTimeCtr,
+          initialTime: _getInitialTime(ref),
+          onTap: () {
+            CollEventServices(ref).updateCollEvent(
+              collEventId,
+              CollEventCompanion(
+                startTime: db.Value(collEventCtr.startTimeCtr.text),
+              ),
+            );
           },
         ),
-        TextFormField(
-          decoration: const InputDecoration(
-            labelText: 'End time',
-            hintText: 'Enter date',
-          ),
-          controller: widget.collEventCtr.endTimeCtr,
-          onTap: () async {
-            TimeOfDay? time = await showTime(initialEndTime);
-            if (time != null) {
-              if (!mounted) return;
-
-              widget.collEventCtr.endTimeCtr.text = time.format(context);
-              CollEventServices(ref).updateCollEvent(
-                widget.collEventId,
-                CollEventCompanion(
-                  endTime: db.Value(widget.collEventCtr.endTimeCtr.text),
-                ),
-              );
-            }
+        CommonTimeField(
+          labelText: 'End time',
+          hintText: 'Enter date',
+          controller: collEventCtr.endTimeCtr,
+          initialTime: _getInitialTime(ref),
+          onTap: () {
+            CollEventServices(ref).updateCollEvent(
+              collEventId,
+              CollEventCompanion(
+                endTime: db.Value(collEventCtr.endTimeCtr.text),
+              ),
+            );
           },
         ),
       ],
     );
   }
 
-  Future<TimeOfDay?> showTime(TimeOfDay initialStartTime) {
-    return showTimePicker(context: context, initialTime: initialStartTime);
+  TimeOfDay _getInitialTime(WidgetRef ref) {
+    CatalogFmt catalogFmt = ref.read(catalogFmtNotifier);
+    switch (catalogFmt) {
+      case CatalogFmt.birds:
+        return TimeOfDay.now();
+      case CatalogFmt.generalMammals:
+        return const TimeOfDay(hour: 7, minute: 0);
+      case CatalogFmt.bats:
+        return TimeOfDay.now();
+      default:
+        return TimeOfDay.now();
+    }
   }
 }
