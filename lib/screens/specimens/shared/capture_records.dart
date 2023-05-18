@@ -65,21 +65,6 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
               },
             ),
           ),
-          CommonPadding(
-            child: SwitchField(
-              label: 'Relative time',
-              value: _getCheckBoxValue(widget.specimenCtr.relativeTimeCtr),
-              onPressed: (bool value) {
-                setState(() {
-                  int newValue = value ? 1 : 0;
-                  widget.specimenCtr.relativeTimeCtr = newValue;
-                  _updateSpecimen(
-                    SpecimenCompanion(isRelativeTime: db.Value(newValue)),
-                  );
-                });
-              },
-            ),
-          ),
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
@@ -114,6 +99,21 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                 specimenCtr: widget.specimenCtr,
               ),
             ],
+          ),
+          CommonPadding(
+            child: SwitchField(
+              label: 'Relative time',
+              value: _getCheckBoxValue(widget.specimenCtr.relativeTimeCtr),
+              onPressed: (bool value) {
+                setState(() {
+                  int newValue = value ? 1 : 0;
+                  widget.specimenCtr.relativeTimeCtr = newValue;
+                  _updateSpecimen(
+                    SpecimenCompanion(isRelativeTime: db.Value(newValue)),
+                  );
+                });
+              },
+            ),
           ),
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
