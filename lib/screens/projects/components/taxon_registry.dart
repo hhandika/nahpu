@@ -19,10 +19,7 @@ import 'package:nahpu/services/utility_services.dart';
 class TaxonRegistryViewer extends ConsumerStatefulWidget {
   const TaxonRegistryViewer({
     super.key,
-    required this.useHorizontalLayout,
   });
-
-  final bool useHorizontalLayout;
 
   @override
   TaxonRegistryViewerState createState() => TaxonRegistryViewerState();
@@ -41,9 +38,7 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
             Container(
               constraints: const BoxConstraints(maxHeight: 250),
               padding: const EdgeInsets.all(10),
-              child: RegistryInfo(
-                useHorizontalLayout: widget.useHorizontalLayout,
-              ),
+              child: const RegistryInfo(),
             ),
             Wrap(
               spacing: 10,
@@ -76,47 +71,45 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
   }
 }
 
-// class TaxonRegistryInfo extends ConsumerWidget {
-//   const TaxonRegistryInfo({super.key, required this.useHorizontalLayout});
-
-//   final bool useHorizontalLayout;
-
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     return ref.watch(taxonRegistryProvider).when(
-//           data: (data) => data.isEmpty
-//               ? const Text('No taxon found')
-//               : TaxonInfoContainer(
-//                   taxonData: data,
-//                   useHorizontalLayout: useHorizontalLayout,
-//                 ),
-//           loading: () => const CommonProgressIndicator(),
-//           error: (error, stack) => Text('Error: $error'),
-//         );
-//   }
-// }
-
 class RegistryInfo extends StatelessWidget {
   const RegistryInfo({
     super.key,
-    required this.useHorizontalLayout,
   });
-
-  final bool useHorizontalLayout;
 
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 450),
-        child: GridView.count(
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          crossAxisCount: useHorizontalLayout ? 2 : 1,
-          children: const [
+        constraints: const BoxConstraints(maxWidth: 450, maxHeight: 280),
+        child: const TaxonRegistryLayout(
+          children: [
             RegisteredTaxa(),
+            SizedBox(width: 10),
             RecordedTaxa(),
           ],
         ));
+  }
+}
+
+class TaxonRegistryLayout extends StatelessWidget {
+  const TaxonRegistryLayout({
+    super.key,
+    required this.children,
+  });
+  final List<Widget> children;
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (context, constraints) {
+      bool viewRow = constraints.maxWidth > 200;
+      return viewRow
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: children,
+            )
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: children,
+            );
+    });
   }
 }
 
@@ -129,11 +122,9 @@ class RegisteredTaxa extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return TaxonDataContainer(
         child: ref.watch(taxonRegistryProvider).when(
-              data: (data) => data.isEmpty
-                  ? const Text('No taxon found')
-                  : RegisteredData(
-                      taxonData: data,
-                    ),
+              data: (data) => RegisteredData(
+                taxonData: data,
+              ),
               loading: () => const CommonProgressIndicator(),
               error: (error, stack) => Text('Error: $error'),
             ));
@@ -157,10 +148,20 @@ class RegisteredData extends StatelessWidget {
           "Registered",
           style: Theme.of(context).textTheme.titleLarge,
         ),
-        Text(
-            '${_countFamily(taxonData)} families\n'
-            '${taxonData.length} taxa',
-            style: Theme.of(context).textTheme.titleMedium),
+        taxonData.isEmpty
+            ? const Text('No taxon found')
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CountText(
+                    text: '${taxonData.length} species',
+                  ),
+                  CountText(
+                    text: '${_countFamily(taxonData)} families',
+                  ),
+                ],
+              ),
         const SizedBox(
           height: 10,
         ),
@@ -194,9 +195,7 @@ class RecordedTaxa extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(specimenEntryProvider).when(
-          data: (data) => data.isEmpty
-              ? const Text('No taxon found')
-              : RecordedTaxaView(data: data),
+          data: (data) => RecordedTaxaView(data: data),
           loading: () => const CommonProgressIndicator(),
           error: (error, stack) => Text('Error: $error'),
         );
@@ -221,10 +220,12 @@ class RecordedTaxaView extends ConsumerWidget {
             'Recorded',
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          const FittedBox(
-            fit: BoxFit.fill,
-            child: RecordedCounts(),
-          ),
+          data.isEmpty
+              ? const Text('No specimens found')
+              : const FittedBox(
+                  fit: BoxFit.fill,
+                  child: RecordedCounts(),
+                ),
           const SizedBox(
             height: 10,
           ),
@@ -256,11 +257,20 @@ class RecordedCounts extends ConsumerWidget {
     return FutureBuilder(
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Text(
-              '${snapshot.data!.specimenCount} specimens\n'
-              '${snapshot.data!.speciesCount.length} species\n'
-              '${snapshot.data!.familyCount.length} families',
-              style: Theme.of(context).textTheme.titleMedium,
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                CountText(
+                  text: '${snapshot.data!.specimenCount} specimens',
+                ),
+                CountText(
+                  text: '${snapshot.data!.speciesCount.length} species',
+                ),
+                CountText(
+                  text: '${snapshot.data!.familyCount.length} families',
+                ),
+              ],
             );
           } else {
             return const CommonProgressIndicator();
@@ -273,6 +283,23 @@ class RecordedCounts extends ConsumerWidget {
     CaptureRecordStats stats = CaptureRecordStats.empty();
     await stats.count(ref);
     return stats;
+  }
+}
+
+class CountText extends StatelessWidget {
+  const CountText({
+    super.key,
+    required this.text,
+  });
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: Theme.of(context).textTheme.titleMedium,
+    );
   }
 }
 
@@ -291,7 +318,7 @@ class TaxonDataContainer extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border.all(
           color: Theme.of(context).colorScheme.secondaryContainer,
-          width: 1,
+          width: 2,
         ),
         borderRadius: BorderRadius.circular(
           20,

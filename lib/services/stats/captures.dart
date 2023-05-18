@@ -21,7 +21,7 @@ class CaptureRecordStats {
         await SpecimenServices(ref).getSpecimenList();
     specimenCount = specimenList.length;
     for (var specimen in specimenList) {
-      _countTaxa(specimen.speciesID, ref);
+      await _countTaxa(specimen.speciesID, ref);
     }
   }
 
