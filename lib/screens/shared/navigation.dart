@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/providers/projects.dart';
@@ -45,7 +46,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
           label: 'Sites',
         ),
         NavigationDestination(
-          selectedIcon: Icon(Icons.timeline_rounded),
+          selectedIcon: Icon(Icons.timeline),
           icon: Icon(
             Icons.timeline_outlined,
           ),
