@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/controllers.dart';
 import 'package:nahpu/models/types.dart';
@@ -497,12 +498,17 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
                   });
                 }
               }),
-          TextFormField(
+          TextField(
               controller: widget.ctr.taxonOrderCtr,
               decoration: const InputDecoration(
                 labelText: 'Order',
                 hintText: 'Enter an order',
               ),
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(
+                  RegExp(r'[a-zA-Z]+'),
+                ),
+              ],
               onChanged: (String? value) {
                 if (value != null) {
                   widget.ctr.taxonOrderCtr.value = TextEditingValue(
@@ -511,12 +517,17 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
                   );
                 }
               }),
-          TextFormField(
+          TextField(
             controller: widget.ctr.taxonFamilyCtr,
             decoration: const InputDecoration(
               labelText: 'Family',
               hintText: 'Enter a family',
             ),
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(
+                RegExp(r'[a-zA-Z]+'),
+              ),
+            ],
             onChanged: (String? value) {
               if (value != null) {
                 widget.ctr.taxonFamilyCtr.value = TextEditingValue(
@@ -526,12 +537,17 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
               }
             },
           ),
-          TextFormField(
+          TextField(
             controller: widget.ctr.genusCtr,
             decoration: const InputDecoration(
               labelText: 'Genus',
               hintText: 'Enter a genus',
             ),
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(
+                RegExp(r'[a-zA-Z]+'),
+              ),
+            ],
             onChanged: (String? value) {
               if (value != null) {
                 widget.ctr.genusCtr.value = TextEditingValue(
@@ -541,12 +557,17 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
               }
             },
           ),
-          TextFormField(
+          TextField(
             controller: widget.ctr.specificEpithetCtr,
             decoration: const InputDecoration(
               labelText: 'Specific epithet',
               hintText: 'Enter specific epithet',
             ),
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(
+                RegExp(r'[a-zA-Z]+'),
+              ),
+            ],
             onChanged: (String? value) {
               if (value != null) {
                 widget.ctr.specificEpithetCtr.value = TextEditingValue(
@@ -556,7 +577,7 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
               }
             },
           ),
-          TextFormField(
+          TextField(
             controller: widget.ctr.commonNameCtr,
             decoration: const InputDecoration(
               labelText: 'Common name',
@@ -571,12 +592,13 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
               }
             },
           ),
-          TextFormField(
+          TextField(
             controller: widget.ctr.noteCtr,
             decoration: const InputDecoration(
               labelText: 'Notes',
               hintText: 'Enter notes',
             ),
+            maxLines: 3,
           ),
           const SizedBox(height: 20),
           FormButtonWithDelete(
