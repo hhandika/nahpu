@@ -4,6 +4,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/screens/settings/shared.dart';
+import 'package:nahpu/screens/settings/specimen_settings.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class ProjectSettings extends ConsumerStatefulWidget {
@@ -68,34 +69,13 @@ class GeneralSettings {
   SettingsTile getSpecimenPartSettings() {
     CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
     return SettingsTile.navigation(
-      leading: Icon(matchCatFmtToIcon(catalogFmt, true)),
+      leading: Icon(matchCatFmtToIcon(catalogFmt, false)),
       title: const Text('Specimen Parts'),
       onPressed: (context) => Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => const SpecimenPartSelection(),
         ),
-      ),
-    );
-  }
-}
-
-class SpecimenPartSelection extends ConsumerStatefulWidget {
-  const SpecimenPartSelection({super.key});
-
-  @override
-  SpecimenPartSelectionState createState() => SpecimenPartSelectionState();
-}
-
-class SpecimenPartSelectionState extends ConsumerState<SpecimenPartSelection> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Specimen Parts'),
-      ),
-      body: const Center(
-        child: Text('Specimen Parts'),
       ),
     );
   }

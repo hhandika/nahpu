@@ -18,7 +18,7 @@ class AppearanceSettings {
       title: const Text('App Settings'),
       tiles: [
         SettingsTile.navigation(
-          leading: const Icon(Icons.color_lens_rounded),
+          leading: const Icon(Icons.color_lens_outlined),
           title: const Text('Theme'),
           value: Text(themeValue),
           onPressed: (context) => Navigator.push(
@@ -29,7 +29,7 @@ class AppearanceSettings {
           ),
         ),
         SettingsTile.navigation(
-          leading: const Icon(MdiIcons.database),
+          leading: const Icon(MdiIcons.databaseOutline),
           title: const Text('Database'),
           onPressed: (context) => Navigator.push(
             context,
