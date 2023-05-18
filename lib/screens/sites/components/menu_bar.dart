@@ -46,8 +46,6 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<SiteMenuSelection>(
-        // Callback that sets the selected popup menu item.
-        onSelected: _onPopupMenuSelected,
         itemBuilder: (BuildContext context) =>
             <PopupMenuEntry<SiteMenuSelection>>[
               PopupMenuItem<SiteMenuSelection>(
@@ -83,21 +81,6 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
                 onTap: () => _deleteAllSites(),
               ),
             ]);
-  }
-
-  void _onPopupMenuSelected(SiteMenuSelection item) {
-    switch (item) {
-      case SiteMenuSelection.newSite:
-        break;
-      case SiteMenuSelection.duplicate:
-        break;
-      case SiteMenuSelection.pdfExport:
-        break;
-      case SiteMenuSelection.deleteRecords:
-        break;
-      case SiteMenuSelection.deleteAllRecords:
-        break;
-    }
   }
 
   void _deleteSite() {
