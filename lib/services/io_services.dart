@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:path/path.dart' as path;
 
-const String listSeparator = ' | ';
+const String writerSeparator = ' | ';
 
 class AppIOServices {
   AppIOServices({

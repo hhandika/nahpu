@@ -44,7 +44,7 @@ class SiteWriterServices {
               '${e.decimalLatitude ?? ''},${e.decimalLongitude ?? ''};'
               '${e.elevationInMeter ?? ''}m;±${e.uncertaintyInMeters ?? ''}m;'
               '${e.datum ?? ''};${e.gpsUnit ?? ''}')
-          .join(listSeparator);
+          .join(writerSeparator);
     }
   }
 }

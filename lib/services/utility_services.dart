@@ -23,4 +23,4 @@ String getSystemDateTime() {
   return DateFormat('yyyy-MM-dd HH:mm:ss').format(currentDate);
 }
 
-String get listSeparator => " · ";
+String get listTileSeparator => " · ";

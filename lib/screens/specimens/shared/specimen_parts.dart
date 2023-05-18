@@ -170,7 +170,7 @@ class PartTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       '${partType ?? 'Unknown part'}'
-      '$listSeparator'
+      '$listTileSeparator'
       '${partCount ?? 'No count'}',
       style: Theme.of(context).textTheme.titleMedium,
     );
@@ -206,7 +206,7 @@ class PartSubTitle extends StatelessWidget {
     } else if (part.additionalTreatment!.isEmpty) {
       return '';
     } else {
-      return '$listSeparator ${part.additionalTreatment}';
+      return '$listTileSeparator ${part.additionalTreatment}';
     }
   }
 }

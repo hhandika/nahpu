@@ -121,7 +121,9 @@ class SpecimenRecordWriter {
     List<SpecimenPartData> partList =
         await SpecimenPartQuery(ref.read(databaseProvider))
             .getSpecimenParts(specimenUuid);
-    return partList.map((e) => '${e.type};${e.treatment}').join(listSeparator);
+    return partList
+        .map((e) => '${e.type};${e.treatment}')
+        .join(writerSeparator);
   }
 
   List<String> _getMeasurementHeader() {

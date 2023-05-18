@@ -181,7 +181,7 @@ class CollEffortTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       '${type ?? 'Unknown'}'
-      '$listSeparator'
+      '$listTileSeparator'
       '${count ?? 'No count'}',
       style: Theme.of(context).textTheme.titleMedium,
     );
@@ -200,7 +200,7 @@ class Subtitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       '${_getSize()}'
-      '$listSeparator'
+      '$listTileSeparator'
       '${_getBrand()}',
     );
   }
