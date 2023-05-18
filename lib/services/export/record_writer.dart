@@ -10,10 +10,10 @@ import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/taxonomy_services.dart';
-import 'package:nahpu/services/writer/avian_records.dart';
-import 'package:nahpu/services/writer/common.dart';
-import 'package:nahpu/services/writer/mammalian_records.dart';
-import 'package:nahpu/services/writer/site_writer.dart';
+import 'package:nahpu/services/export/avian_records.dart';
+import 'package:nahpu/services/export/common.dart';
+import 'package:nahpu/services/export/mammalian_records.dart';
+import 'package:nahpu/services/export/site_writer.dart';
 
 class SpecimenRecordWriter {
   SpecimenRecordWriter({required this.ref, required this.recordType});

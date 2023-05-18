@@ -6,7 +6,7 @@ import 'package:nahpu/models/types.dart';
 import 'package:nahpu/screens/shared/file_operation.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/services/io_services.dart';
-import 'package:nahpu/services/writer/db_writer.dart';
+import 'package:nahpu/services/export/db_writer.dart';
 
 const String _dbExtension = 'sqlite3';
 

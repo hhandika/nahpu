@@ -6,7 +6,7 @@ import 'package:nahpu/models/types.dart';
 import 'package:nahpu/screens/shared/file_operation.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
-import 'package:nahpu/services/writer/report_writer.dart';
+import 'package:nahpu/services/export/report_writer.dart';
 
 class ReportForm extends ConsumerStatefulWidget {
   const ReportForm({Key? key}) : super(key: key);

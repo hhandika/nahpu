@@ -6,7 +6,7 @@ import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/personnel_services.dart';
-import 'package:nahpu/services/writer/site_writer.dart';
+import 'package:nahpu/services/export/site_writer.dart';
 
 class CollEventRecordWriter {
   CollEventRecordWriter(this.ref);

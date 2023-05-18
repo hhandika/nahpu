@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/file_operation.dart';
-import 'package:nahpu/services/writer/db_writer.dart';
+import 'package:nahpu/services/export/db_writer.dart';
 
 class DatabaseSettings extends ConsumerStatefulWidget {
   const DatabaseSettings({super.key});

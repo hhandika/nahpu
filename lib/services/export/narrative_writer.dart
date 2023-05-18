@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/export.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/narrative_services.dart';
-import 'package:nahpu/services/writer/site_writer.dart';
+import 'package:nahpu/services/export/site_writer.dart';
 
 class NarrativeRecordWriter {
   NarrativeRecordWriter(this.ref);
