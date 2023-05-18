@@ -185,9 +185,20 @@ class PartSubTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
+      '${_getTissueID()}'
       '${_getTreatmentText()}'
       '${_getAddTreatmentText()}',
     );
+  }
+
+  String _getTissueID() {
+    if (part.tissueID == null) {
+      return '';
+    } else if (part.tissueID!.isEmpty) {
+      return '';
+    } else {
+      return '${part.tissueID}$listTileSeparator';
+    }
   }
 
   String _getTreatmentText() {
@@ -206,7 +217,7 @@ class PartSubTitle extends StatelessWidget {
     } else if (part.additionalTreatment!.isEmpty) {
       return '';
     } else {
-      return '$listTileSeparator ${part.additionalTreatment}';
+      return '$listTileSeparator${part.additionalTreatment}';
     }
   }
 }

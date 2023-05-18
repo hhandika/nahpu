@@ -554,9 +554,8 @@ class AvianMeasurementCtrModel {
 
   factory AvianMeasurementCtrModel.fromData(AvianMeasurementData data) =>
       AvianMeasurementCtrModel(
-        weightCtr: TextEditingController(text: data.weight?.toString() ?? ''),
-        wingspanCtr:
-            TextEditingController(text: data.wingspan?.toString() ?? ''),
+        weightCtr: TextEditingController(text: data.weight?.truncateZero()),
+        wingspanCtr: TextEditingController(text: data.wingspan?.truncateZero()),
         irisCtr: TextEditingController(text: data.irisColor ?? ''),
         billCtr: TextEditingController(text: data.billColor ?? ''),
         footCtr: TextEditingController(text: data.footColor ?? ''),

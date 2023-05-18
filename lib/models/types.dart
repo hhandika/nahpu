@@ -216,6 +216,7 @@ extension StringExtension on String {
 extension DoubleExtension on double {
   String truncateZero() {
     if (toString().endsWith('.0')) {
+      // Remove trailing .0
       return toString().substring(0, toString().length - 2);
     } else {
       return toString();
