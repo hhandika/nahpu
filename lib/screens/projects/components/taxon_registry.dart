@@ -36,10 +36,10 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
           children: [
             const SizedBox(height: 20),
             Container(
-              constraints: const BoxConstraints(maxHeight: 250),
               padding: const EdgeInsets.all(10),
               child: const RegistryInfo(),
             ),
+            const SizedBox(height: 18),
             Wrap(
               spacing: 10,
               children: [
@@ -83,33 +83,9 @@ class RegistryInfo extends StatelessWidget {
         child: const TaxonRegistryLayout(
           children: [
             RegisteredTaxa(),
-            SizedBox(width: 10),
             RecordedTaxa(),
           ],
         ));
-  }
-}
-
-class TaxonRegistryLayout extends StatelessWidget {
-  const TaxonRegistryLayout({
-    super.key,
-    required this.children,
-  });
-  final List<Widget> children;
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      bool viewRow = constraints.maxWidth > 200;
-      return viewRow
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: children,
-            )
-          : Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: children,
-            );
-    });
   }
 }
 
@@ -313,19 +289,48 @@ class TaxonDataContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Theme.of(context).colorScheme.secondaryContainer,
-          width: 2,
-        ),
-        borderRadius: BorderRadius.circular(
-          20,
-        ),
-      ),
-      child: child,
-    );
+    return Padding(
+        padding: const EdgeInsets.all(10),
+        child: Container(
+          height: 180,
+          width: 180,
+          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Theme.of(context).dividerColor,
+              width: 1.5,
+            ),
+            borderRadius: BorderRadius.circular(
+              20,
+            ),
+          ),
+          child: child,
+        ));
+  }
+}
+
+class TaxonRegistryLayout extends StatelessWidget {
+  const TaxonRegistryLayout({
+    super.key,
+    required this.children,
+  });
+  final List<Widget> children;
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (context, constraints) {
+      bool viewRow = constraints.maxWidth > 400;
+      return viewRow
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: children,
+            )
+          : SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: children,
+              ),
+            );
+    });
   }
 }
 
