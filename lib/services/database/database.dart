@@ -86,8 +86,8 @@ class Database extends _$Database {
 
   Future<List<ListProjectResult>> getProjectList() => listProject().get();
 
-  Future<void> deleteProject(String id) {
-    return (delete(project)..where((t) => t.uuid.equals(id))).go();
+  Future<int> deleteProject(String id) async {
+    return await (delete(project)..where((t) => t.uuid.equals(id))).go();
   }
 
   Future<void> deleteAllProjects() {

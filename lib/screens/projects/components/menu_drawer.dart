@@ -15,11 +15,16 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/project_services.dart';
 import 'package:nahpu/services/utility_services.dart';
 
-class ProjectMenuDrawer extends ConsumerWidget {
-  const ProjectMenuDrawer({Key? key}) : super(key: key);
+class ProjectMenuDrawer extends ConsumerStatefulWidget {
+  const ProjectMenuDrawer({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ProjectMenuDrawerState createState() => ProjectMenuDrawerState();
+}
+
+class ProjectMenuDrawerState extends ConsumerState<ProjectMenuDrawer> {
+  @override
+  Widget build(BuildContext context) {
     final projectUuid = ref.watch(projectUuidProvider);
     return Drawer(
       child: ListView(
@@ -124,12 +129,18 @@ class ProjectMenuDrawer extends ConsumerWidget {
                 context: context,
                 builder: (BuildContext context) {
                   return DeleteAlerts(
-                    projectUuid: projectUuid,
-                    onDelete: () => Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Home()),
-                    ),
-                  );
+                      deletePrompt:
+                          'Are you sure you want to delete this project?',
+                      onDelete: () async {
+                        await ProjectServices(ref).deleteProject(projectUuid);
+                        if (mounted) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Home()),
+                          );
+                        }
+                      });
                 },
               );
             },

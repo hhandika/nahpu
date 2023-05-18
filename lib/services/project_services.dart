@@ -33,8 +33,8 @@ class ProjectServices extends DbAccess {
     return ref.read(projectUuidProvider);
   }
 
-  void deleteProject(String uuid) {
-    db.deleteProject(uuid);
+  Future<void> deleteProject(String uuid) async {
+    await db.deleteProject(uuid);
     ref.invalidate(projectListProvider);
   }
 

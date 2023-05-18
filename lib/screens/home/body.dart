@@ -6,6 +6,7 @@ import 'package:nahpu/screens/projects/dashboard.dart';
 import 'package:nahpu/screens/projects/project_info.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/common.dart';
+import 'package:nahpu/services/project_services.dart';
 
 enum MenuSelection { details, deleteProject }
 
@@ -286,12 +287,11 @@ class ProjectPopUpMenuState extends ConsumerState<ProjectPopUpMenu> {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<MenuSelection>(
-      onSelected: _onPopupMenuSelected,
       itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuSelection>>[
         PopupMenuItem<MenuSelection>(
           value: MenuSelection.details,
           child: const Text('Details'),
-          onTap: () async {
+          onTap: () {
             _getProjectInfo(widget.project.uuid);
           },
         ),
@@ -310,23 +310,17 @@ class ProjectPopUpMenuState extends ConsumerState<ProjectPopUpMenu> {
       () => showDialog<String>(
         context: context,
         builder: (BuildContext context) => DeleteAlerts(
-          projectUuid: projectUuid,
-          onDelete: () => {
-            ref.invalidate(projectListProvider),
-            Navigator.of(context).pop(),
+          deletePrompt: 'Are you sure you want to delete this project?',
+          onDelete: () async {
+            await ProjectServices(ref).deleteProject(projectUuid);
+            ref.invalidate(projectListProvider);
+            if (mounted) {
+              Navigator.of(context).pop();
+            }
           },
         ),
       ),
     );
-  }
-
-  void _onPopupMenuSelected(MenuSelection item) {
-    switch (item) {
-      case MenuSelection.details:
-        break;
-      case MenuSelection.deleteProject:
-        break;
-    }
   }
 
   void _getProjectInfo(String projectUuid) {

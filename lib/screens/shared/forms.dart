@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/services/project_services.dart';
 
 class IDFormContainer extends StatelessWidget {
   const IDFormContainer({
@@ -100,21 +99,37 @@ class TitleForm extends StatelessWidget {
   }
 }
 
+void showDeleteAlertOnMenu(
+    VoidCallback onDelete, String deletePrompt, BuildContext context) {
+  Future.delayed(
+    const Duration(milliseconds: 0),
+    () => showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return DeleteAlerts(
+          deletePrompt: deletePrompt,
+          onDelete: onDelete,
+        );
+      },
+    ),
+  );
+}
+
 class DeleteAlerts extends ConsumerWidget {
   const DeleteAlerts({
     Key? key,
-    required this.projectUuid,
+    required this.deletePrompt,
     required this.onDelete,
   }) : super(key: key);
 
-  final String projectUuid;
+  final String deletePrompt;
   final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AlertDialog(
       title: const Text('Delete'),
-      content: const Text('Are you sure you want to delete this project?'),
+      content: Text(deletePrompt),
       actions: [
         TextButton(
           onPressed: () {
@@ -124,7 +139,6 @@ class DeleteAlerts extends ConsumerWidget {
         ),
         TextButton(
           onPressed: () {
-            ProjectServices(ref).deleteProject(projectUuid);
             onDelete();
           },
           child: const Text('Delete', style: TextStyle(color: Colors.red)),

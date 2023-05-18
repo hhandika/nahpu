@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/collecting/coll_event_view.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -59,60 +60,62 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<MenuSelection>(
-        // Callback that sets the selected popup menu item.
-        onSelected: _onPopupMenuSelected,
-        itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuSelection>>[
-              const PopupMenuItem<MenuSelection>(
-                value: MenuSelection.newEvent,
-                child: CreateMenuButton(text: 'Create event'),
-              ),
-              const PopupMenuItem<MenuSelection>(
-                value: MenuSelection.duplicate,
-                child: DuplicateMenuButton(text: 'Duplicate event'),
-              ),
-              const PopupMenuItem<MenuSelection>(
-                value: MenuSelection.pdfExport,
-                child: PdfExportMenuButton(),
-              ),
-              const PopupMenuDivider(height: 10),
-              const PopupMenuItem<MenuSelection>(
-                value: MenuSelection.deleteRecords,
-                child: DeleteMenuButton(deleteAll: false),
-              ),
-              const PopupMenuItem<MenuSelection>(
-                value: MenuSelection.deleteAllRecords,
-                child: DeleteMenuButton(deleteAll: true),
-              ),
-            ]);
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuSelection>>[
+        PopupMenuItem<MenuSelection>(
+          value: MenuSelection.newEvent,
+          child: const CreateMenuButton(text: 'Create event'),
+          onTap: () => createNewCollEvents(context, ref),
+        ),
+        const PopupMenuItem<MenuSelection>(
+          value: MenuSelection.duplicate,
+          child: DuplicateMenuButton(text: 'Duplicate event'),
+        ),
+        const PopupMenuItem<MenuSelection>(
+          value: MenuSelection.pdfExport,
+          child: PdfExportMenuButton(),
+        ),
+        const PopupMenuDivider(height: 10),
+        PopupMenuItem<MenuSelection>(
+          value: MenuSelection.deleteRecords,
+          child: const DeleteMenuButton(deleteAll: false),
+          onTap: () => _deleteEvent(),
+        ),
+        PopupMenuItem<MenuSelection>(
+          value: MenuSelection.deleteAllRecords,
+          child: const DeleteMenuButton(deleteAll: true),
+          onTap: () => _deleteAllEvents(),
+        ),
+      ],
+    );
   }
 
-  void _onPopupMenuSelected(MenuSelection item) {
-    switch (item) {
-      case MenuSelection.newEvent:
-        createNewCollEvents(context, ref);
-        break;
-      case MenuSelection.duplicate:
-        break;
-      case MenuSelection.pdfExport:
-        break;
-
-      case MenuSelection.deleteRecords:
-        if (widget.collEventId != null) {
+  void _deleteEvent() {
+    if (widget.collEventId != null) {
+      showDeleteAlertOnMenu(
+        () {
           CollEventServices(ref).deleteCollEvent(widget.collEventId!);
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (_) => const CollEventViewer(),
             ),
           );
-        }
-        break;
-      case MenuSelection.deleteAllRecords:
-        // TODO: Prevent deleting all records if there are being used.
-        final projectUuid = ref.read(projectUuidProvider.notifier).state;
+        },
+        'Delete this record?',
+        context,
+      );
+    }
+  }
+
+  void _deleteAllEvents() {
+    final projectUuid = ref.read(projectUuidProvider.notifier).state;
+    showDeleteAlertOnMenu(
+      () {
         CollEventQuery(ref.read(databaseProvider))
             .deleteAllCollEvents(projectUuid);
         ref.invalidate(collEventEntryProvider);
-        break;
-    }
+      },
+      'Delete all records?\nThis cannot be undone.',
+      context,
+    );
   }
 }
