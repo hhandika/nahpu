@@ -37,7 +37,6 @@ class SiteServices extends DbAccess {
   }
 
   void deleteAllSites() {
-    // TODO: prevent deletion of records if they are in used
     final projectUuid = ref.read(projectUuidProvider);
     SiteQuery(dbase).deleteAllSites(projectUuid);
     invalidateSite();

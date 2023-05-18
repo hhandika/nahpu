@@ -100,7 +100,7 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
             ),
           );
         },
-        'Delete this record?',
+        'Delete this collecting event?',
         context,
       );
     }
@@ -114,7 +114,7 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
             .deleteAllCollEvents(projectUuid);
         ref.invalidate(collEventEntryProvider);
       },
-      'Delete all records?\nThis cannot be undone.',
+      'Delete all collecting events?\nTHIS ACTION CANNOT BE UNDONE!.',
       context,
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/specimens/specimen_view.dart';
 import 'package:nahpu/services/specimen_services.dart';
 
@@ -54,11 +55,11 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<MenuSelection>(
-        onSelected: _onPopupMenuSelected,
         itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuSelection>>[
-              const PopupMenuItem<MenuSelection>(
+              PopupMenuItem<MenuSelection>(
                 value: MenuSelection.newSpecimen,
-                child: CreateMenuButton(text: 'Create record'),
+                child: const CreateMenuButton(text: 'Create record'),
+                onTap: () => createNewSpecimens(context, ref),
               ),
               const PopupMenuItem<MenuSelection>(
                 value: MenuSelection.duplicate,
@@ -69,46 +70,42 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
                 child: PdfExportMenuButton(),
               ),
               const PopupMenuDivider(height: 10),
-              const PopupMenuItem<MenuSelection>(
+              PopupMenuItem<MenuSelection>(
                 value: MenuSelection.deleteRecords,
-                child: DeleteMenuButton(
+                child: const DeleteMenuButton(
                   deleteAll: false,
                 ),
+                onTap: () => _deleteSpecimen(),
               ),
-              const PopupMenuItem<MenuSelection>(
+              PopupMenuItem<MenuSelection>(
                 value: MenuSelection.deleteAllRecords,
-                child: DeleteMenuButton(
+                child: const DeleteMenuButton(
                   deleteAll: true,
                 ),
+                onTap: () => _deleteAllSpecimens(),
               ),
             ]);
   }
 
-  Future<void> _onPopupMenuSelected(MenuSelection item) async {
-    switch (item) {
-      case MenuSelection.newSpecimen:
-        createNewSpecimens(context, ref);
-        break;
-      case MenuSelection.duplicate:
-        break;
-      case MenuSelection.pdfExport:
-        break;
-      case MenuSelection.deleteRecords:
-        if (widget.specimenUuid != null && widget.catalogFmt != null) {
-          await SpecimenServices(ref).deleteSpecimen(
-            widget.specimenUuid!,
-            widget.catalogFmt!,
+  void _deleteSpecimen() {
+    showDeleteAlertOnMenu(() async {
+      if (widget.specimenUuid != null && widget.catalogFmt != null) {
+        await SpecimenServices(ref).deleteSpecimen(
+          widget.specimenUuid!,
+          widget.catalogFmt!,
+        );
+        if (context.mounted) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => const SpecimenViewer()),
           );
-          if (context.mounted) {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => const SpecimenViewer()),
-            );
-          }
         }
-        break;
-      case MenuSelection.deleteAllRecords:
-        SpecimenServices(ref).deleteAllSpecimens();
-        break;
-    }
+      }
+    }, 'Delete this specimen?', context);
+  }
+
+  void _deleteAllSpecimens() {
+    showDeleteAlertOnMenu(() async {
+      await SpecimenServices(ref).deleteAllSpecimens();
+    }, 'Delete all specimens?\nTHIS ACTION CANNOT BE UNDONE!', context);
   }
 }

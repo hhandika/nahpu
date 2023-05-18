@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/sites/site_view.dart';
 import 'package:nahpu/services/site_services.dart';
 
@@ -49,11 +50,12 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
         onSelected: _onPopupMenuSelected,
         itemBuilder: (BuildContext context) =>
             <PopupMenuEntry<SiteMenuSelection>>[
-              const PopupMenuItem<SiteMenuSelection>(
+              PopupMenuItem<SiteMenuSelection>(
                 value: SiteMenuSelection.newSite,
-                child: CreateMenuButton(
+                child: const CreateMenuButton(
                   text: 'Create site',
                 ),
+                onTap: () => createNewSite(context, ref),
               ),
               const PopupMenuItem<SiteMenuSelection>(
                 value: SiteMenuSelection.duplicate,
@@ -66,16 +68,19 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
                 child: PdfExportMenuButton(),
               ),
               const PopupMenuDivider(height: 10),
-              const PopupMenuItem<SiteMenuSelection>(
-                  value: SiteMenuSelection.deleteRecords,
-                  child: DeleteMenuButton(
-                    deleteAll: false,
-                  )),
-              const PopupMenuItem<SiteMenuSelection>(
+              PopupMenuItem<SiteMenuSelection>(
+                value: SiteMenuSelection.deleteRecords,
+                child: const DeleteMenuButton(
+                  deleteAll: false,
+                ),
+                onTap: () => _deleteSite(),
+              ),
+              PopupMenuItem<SiteMenuSelection>(
                 value: SiteMenuSelection.deleteAllRecords,
-                child: DeleteMenuButton(
+                child: const DeleteMenuButton(
                   deleteAll: true,
                 ),
+                onTap: () => _deleteAllSites(),
               ),
             ]);
   }
@@ -83,23 +88,32 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
   void _onPopupMenuSelected(SiteMenuSelection item) {
     switch (item) {
       case SiteMenuSelection.newSite:
-        createNewSite(context, ref);
         break;
       case SiteMenuSelection.duplicate:
         break;
       case SiteMenuSelection.pdfExport:
         break;
       case SiteMenuSelection.deleteRecords:
-        if (widget.siteId != null) {
-          SiteServices(ref).deleteSite(widget.siteId!);
-          // Trigger page changes to update the view.
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => const SiteViewer()));
-        }
         break;
       case SiteMenuSelection.deleteAllRecords:
-        SiteServices(ref).deleteAllSites();
         break;
     }
+  }
+
+  void _deleteSite() {
+    showDeleteAlertOnMenu(() {
+      if (widget.siteId != null) {
+        SiteServices(ref).deleteSite(widget.siteId!);
+        // Trigger page changes to update the view.
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => const SiteViewer()));
+      }
+    }, 'Delete this site?', context);
+  }
+
+  void _deleteAllSites() {
+    showDeleteAlertOnMenu(() {
+      SiteServices(ref).deleteAllSites();
+    }, 'Delete all sites?\nTHIS ACTION CANNOT BE UNDONE!', context);
   }
 }

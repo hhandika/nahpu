@@ -1,5 +1,6 @@
 import 'package:nahpu/screens/narrative/narrative_view.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/services/narrative_services.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -47,12 +48,11 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<MenuSelection>(
-        // Callback that sets the selected popup menu item.
-        onSelected: _onPopupMenuSelected,
         itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuSelection>>[
-              const PopupMenuItem<MenuSelection>(
+              PopupMenuItem<MenuSelection>(
                 value: MenuSelection.newNarrative,
-                child: CreateMenuButton(text: 'Create narrative'),
+                child: const CreateMenuButton(text: 'Create narrative'),
+                onTap: () => createNewNarrative(context, ref),
               ),
               const PopupMenuItem<MenuSelection>(
                 value: MenuSelection.duplicate,
@@ -65,42 +65,45 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
                 child: PdfExportMenuButton(),
               ),
               const PopupMenuDivider(height: 10),
-              const PopupMenuItem<MenuSelection>(
+              PopupMenuItem<MenuSelection>(
                 value: MenuSelection.deleteRecords,
-                child: DeleteMenuButton(
+                child: const DeleteMenuButton(
                   deleteAll: false,
                 ),
+                onTap: () => _deleteNarrative(),
               ),
-              const PopupMenuItem<MenuSelection>(
+              PopupMenuItem<MenuSelection>(
                 value: MenuSelection.deleteAllRecords,
-                child: DeleteMenuButton(
+                child: const DeleteMenuButton(
                   deleteAll: true,
                 ),
+                onTap: () => _deleteAllNarrative(),
               ),
             ]);
   }
 
-  void _onPopupMenuSelected(MenuSelection item) {
-    switch (item) {
-      case MenuSelection.newNarrative:
-        createNewNarrative(context, ref);
-        break;
-      case MenuSelection.duplicate:
-        break;
-      case MenuSelection.pdfExport:
-        break;
-      case MenuSelection.deleteRecords:
+  void _deleteNarrative() {
+    showDeleteAlertOnMenu(
+      () {
         if (widget.narrativeId != null) {
           NarrativeServices(ref).deleteNarrative(widget.narrativeId!);
           Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (_) => const NarrativeViewer()));
         }
-        break;
-      case MenuSelection.deleteAllRecords:
+      },
+      'Delete this narrative?',
+      context,
+    );
+  }
+
+  void _deleteAllNarrative() {
+    showDeleteAlertOnMenu(
+      () {
         final projectUuid = ref.read(projectUuidProvider.notifier).state;
         NarrativeServices(ref).deleteAllNarrative(projectUuid);
-
-        break;
-    }
+      },
+      'Delete all narrative\nTHIS ACTION CANNOT BE UNDONE!',
+      context,
+    );
   }
 }
