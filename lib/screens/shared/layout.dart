@@ -111,11 +111,7 @@ class LayoutContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(
-        left: 5.0,
-        right: 5.0,
-        bottom: 5.0,
-      ),
+      padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
       child: Column(
         children: children,
       ),
@@ -141,8 +137,7 @@ class LayoutRow extends StatelessWidget {
         for (var textField in children)
           Expanded(
             child: Padding(
-              padding:
-                  const EdgeInsets.only(left: 5.0, right: 5.0, bottom: 5.0),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
               child: textField,
             ),
           ),

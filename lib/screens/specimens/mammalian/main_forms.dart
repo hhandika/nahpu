@@ -52,8 +52,10 @@ class MammalFormsState extends ConsumerState<MammalForms> {
                 height: topSpecimenRecordHeight,
                 children: [
                   CollectingRecordField(
-                      specimenUuid: widget.specimenUuid,
-                      specimenCtr: widget.specimenCtr),
+                    specimenUuid: widget.specimenUuid,
+                    specimenCtr: widget.specimenCtr,
+                    useHorizontalLayout: useHorizontalLayout,
+                  ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,

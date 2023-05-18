@@ -5,6 +5,84 @@ import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/services/database/database.dart';
 
+class CommonDateField extends StatelessWidget {
+  const CommonDateField({
+    super.key,
+    required this.controller,
+    required this.labelText,
+    required this.hintText,
+    required this.initialDate,
+    required this.lastDate,
+    required this.onTap,
+  });
+
+  final TextEditingController controller;
+  final String labelText;
+  final String hintText;
+  final DateTime initialDate;
+  final DateTime lastDate;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      decoration: InputDecoration(
+        labelText: labelText,
+        hintText: hintText,
+      ),
+      controller: controller,
+      onTap: () async {
+        final selectedDate = await showDatePicker(
+            context: context,
+            initialDate: initialDate,
+            firstDate: DateTime(2000),
+            lastDate: lastDate);
+
+        if (selectedDate != null) {
+          onTap();
+        }
+      },
+    );
+  }
+}
+
+class CommonTimeField extends StatelessWidget {
+  const CommonTimeField({
+    super.key,
+    required this.controller,
+    required this.labelText,
+    required this.hintText,
+    required this.initialTime,
+    required this.onTap,
+  });
+
+  final TextEditingController controller;
+  final String labelText;
+  final String hintText;
+  final TimeOfDay initialTime;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      decoration: InputDecoration(
+        labelText: labelText,
+        hintText: hintText,
+      ),
+      controller: controller,
+      onTap: () {
+        showTimePicker(context: context, initialTime: TimeOfDay.now())
+            .then((time) {
+          if (time != null) {
+            controller.text = time.format(context);
+            onTap();
+          }
+        });
+      },
+    );
+  }
+}
+
 class SearchButtonField extends StatelessWidget {
   const SearchButtonField({
     super.key,
