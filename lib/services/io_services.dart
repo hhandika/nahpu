@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'package:path/path.dart' as path;
 
-const String writerSeparator = ' | ';
-
 class AppIOServices {
   AppIOServices({
     required this.dir,
