@@ -21,7 +21,7 @@ class ExportForm extends ConsumerStatefulWidget {
 class ExportFormState extends ConsumerState<ExportForm> {
   ExportFmt exportFmt = ExportFmt.csv;
   FileOpCtrModel exportCtr = FileOpCtrModel.empty();
-  SpecimenRecordType? _taxonRecordType = SpecimenRecordType.mammalian;
+  SpecimenRecordType _taxonRecordType = SpecimenRecordType.mammalian;
   ExportRecordType? _recordType = ExportRecordType.narrative;
   String _fileStem = 'export';
   String _selectedDir = '';
@@ -225,8 +225,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
         await CollEventRecordWriter(ref).writeCollEventDelimited(file, isCsv);
         break;
       case ExportRecordType.specimenRecord:
-        await SpecimenRecordWriter(
-                ref: ref, recordType: SpecimenRecordType.mammalian)
+        await SpecimenRecordWriter(ref: ref, recordType: _taxonRecordType)
             .writeRecordDelimited(file, isCsv);
         break;
       default:

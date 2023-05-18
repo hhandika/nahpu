@@ -64,6 +64,59 @@ const mammalMeasurementExportList = [
   'mammaeFormula',
 ];
 
+const batMeasurementExportList = [
+  'totalLength',
+  'tailLength',
+  'hindFootLength',
+  'earLength',
+  'weight',
+  'accuracy',
+  'forearmLength',
+  'age',
+  'sex',
+  'testisPos',
+  'testisSize',
+  'ovaryOpening',
+  'mammaeCondition',
+  'mammaeFormula',
+];
+
+const avianMeasurementExportList = [
+  'weight',
+  'wingspan',
+  'irisColor',
+  'billColor',
+  'footColor',
+  'tarsusColor',
+  'sex',
+  // Male gonad
+  'testisSize',
+  'testisRemark',
+  // Female gonad
+  'ovarySize',
+  'ovaryAppearance',
+  'oviductWidth',
+  'ovaSize',
+  'oviductAppearance',
+  'ovaryRemark',
+  // End gonad data
+  'broodPatch',
+  'percentSkullOssification',
+  'bursaLength',
+  'fat',
+  'stomachContent',
+  // Molt
+  'wingIsMolt',
+  'wingMolt',
+  'tailIsMolt',
+  'tailMolt',
+  'bodyMolt',
+  'moltRemark',
+  // Notes
+  'specimenRemark',
+  'habitatRemark',
+];
+
 const narrativeExportList = [
   'date',
   'locality',

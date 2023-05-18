@@ -10,6 +10,7 @@ import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/taxonomy_services.dart';
+import 'package:nahpu/services/writer/avian_records.dart';
 import 'package:nahpu/services/writer/common.dart';
 import 'package:nahpu/services/writer/mammalian_records.dart';
 import 'package:nahpu/services/writer/site_writer.dart';
@@ -31,7 +32,7 @@ class SpecimenRecordWriter {
     _writeHeader(writer, collRecordExportList);
     _writeHeader(writer, specimenExportList);
     _writeHeader(writer, siteExportList);
-    _writeHeaderLast(writer, mammalMeasurementExportList);
+    _writeHeaderLast(writer, _getMeasurementHeader());
 
     for (var element in specimenList) {
       String cataloger = await _getCatalogerName(element.catalogerID);
@@ -123,12 +124,25 @@ class SpecimenRecordWriter {
     return partList.map((e) => '${e.type};${e.treatment}').join(listSeparator);
   }
 
+  List<String> _getMeasurementHeader() {
+    switch (recordType) {
+      case SpecimenRecordType.mammalian:
+        return mammalMeasurementExportList;
+      case SpecimenRecordType.avian:
+        return avianMeasurementExportList;
+      case SpecimenRecordType.chiropteran:
+        return batMeasurementExportList;
+      default:
+        return mammalMeasurementExportList;
+    }
+  }
+
   Future<String> _getMeasurement(String specimenUuid) async {
     switch (recordType) {
       case SpecimenRecordType.mammalian:
         return await _getMeasurementGeneralMammals(specimenUuid);
       case SpecimenRecordType.avian:
-        return ' ';
+        return await _getMeasurementBirds(specimenUuid);
       default:
         return ' ';
     }
@@ -138,5 +152,11 @@ class SpecimenRecordWriter {
     MammalianMeasurements mammals = MammalianMeasurements(
         specimenUuid: specimenUuid, ref: ref, delimiter: delimiter);
     return await mammals.getMeasurements();
+  }
+
+  Future<String> _getMeasurementBirds(String specimenUuid) async {
+    AvianMeasurements birds = AvianMeasurements(
+        specimenUuid: specimenUuid, ref: ref, delimiter: delimiter);
+    return await birds.getMeasurements();
   }
 }
