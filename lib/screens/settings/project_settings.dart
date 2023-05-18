@@ -66,8 +66,9 @@ class GeneralSettings {
   }
 
   SettingsTile getSpecimenPartSettings() {
+    CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
     return SettingsTile.navigation(
-      leading: const Icon(MdiIcons.bone),
+      leading: Icon(matchCatFmtToIcon(catalogFmt, true)),
       title: const Text('Specimen Parts'),
       onPressed: (context) => Navigator.push(
         context,
