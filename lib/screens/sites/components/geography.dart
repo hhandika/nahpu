@@ -69,7 +69,7 @@ class MainSiteLocality extends ConsumerWidget {
           controller: siteFormCtr.countryCtr,
           decoration: const InputDecoration(
             labelText: 'Country',
-            hintText: 'Enter a country location',
+            hintText: 'Enter a country',
           ),
           onChanged: (value) {
             SiteServices(ref).updateSite(

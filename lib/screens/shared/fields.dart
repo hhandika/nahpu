@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/services/database/database.dart';
@@ -39,6 +40,7 @@ class CommonDateField extends StatelessWidget {
             lastDate: lastDate);
 
         if (selectedDate != null) {
+          controller.text = DateFormat.yMMMd().format(selectedDate);
           onTap();
         }
       },
@@ -71,8 +73,7 @@ class CommonTimeField extends StatelessWidget {
       ),
       controller: controller,
       onTap: () {
-        showTimePicker(context: context, initialTime: TimeOfDay.now())
-            .then((time) {
+        showTimePicker(context: context, initialTime: initialTime).then((time) {
           if (time != null) {
             controller.text = time.format(context);
             onTap();

@@ -5,7 +5,6 @@ import 'package:nahpu/models/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
-import 'package:intl/intl.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
@@ -68,31 +67,9 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Capture date',
-                  hintText: 'Enter date',
-                ),
-                controller: widget.specimenCtr.captureDateCtr,
-                onTap: () async {
-                  showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime.now())
-                      .then((date) {
-                    if (date != null) {
-                      widget.specimenCtr.captureDateCtr.text =
-                          DateFormat.yMMMd().format(date);
-                      _updateSpecimen(
-                        SpecimenCompanion(
-                          captureDate:
-                              db.Value(widget.specimenCtr.captureDateCtr.text),
-                        ),
-                      );
-                    }
-                  });
-                },
+              CaptureDate(
+                specimenUuid: widget.specimenUuid,
+                specimenCtr: widget.specimenCtr,
               ),
               CaptureTime(
                 specimenUuid: widget.specimenUuid,
@@ -183,6 +160,35 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
     } else {
       return value == 0 ? false : true;
     }
+  }
+}
+
+class CaptureDate extends ConsumerWidget {
+  const CaptureDate({
+    super.key,
+    required this.specimenUuid,
+    required this.specimenCtr,
+  });
+
+  final String specimenUuid;
+  final SpecimenFormCtrModel specimenCtr;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return CommonDateField(
+        labelText: 'Capture date',
+        hintText: 'Enter date',
+        controller: specimenCtr.captureDateCtr,
+        initialDate: DateTime.now(),
+        lastDate: DateTime.now(),
+        onTap: () {
+          SpecimenServices(ref).updateSpecimen(
+            specimenUuid,
+            SpecimenCompanion(
+              captureDate: db.Value(specimenCtr.captureDateCtr.text),
+            ),
+          );
+        });
   }
 }
 
@@ -283,29 +289,18 @@ class CaptureTimeState extends ConsumerState<CaptureTime> {
               });
             },
           )
-        : TextField(
-            decoration: const InputDecoration(
-              labelText: 'Capture time',
-              hintText: 'Enter time',
-            ),
+        : CommonTimeField(
+            labelText: 'Capture time',
+            hintText: 'Enter time',
             controller: widget.specimenCtr.captureTimeCtr,
-            onTap: () async {
-              showTimePicker(
-                context: context,
-                initialTime: TimeOfDay.now(),
-              ).then((time) {
-                if (time != null) {
-                  widget.specimenCtr.captureTimeCtr.text =
-                      time.format(context).toString();
-                  SpecimenServices(ref).updateSpecimen(
-                    widget.specimenUuid,
-                    SpecimenCompanion(
-                      captureTime:
-                          db.Value(widget.specimenCtr.captureTimeCtr.text),
-                    ),
-                  );
-                }
-              });
+            initialTime: TimeOfDay.now(),
+            onTap: () {
+              SpecimenServices(ref).updateSpecimen(
+                widget.specimenUuid,
+                SpecimenCompanion(
+                  captureTime: db.Value(widget.specimenCtr.captureTimeCtr.text),
+                ),
+              );
             },
           );
   }
