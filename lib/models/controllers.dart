@@ -282,7 +282,7 @@ class SpecimenFormCtrModel {
         speciesCtr: specimen.speciesID,
         prepDateCtr: TextEditingController(text: specimen.prepDate),
         prepTimeCtr: TextEditingController(text: specimen.prepTime),
-        collTimeCtr: TextEditingController(text: specimen.prepTime),
+        collTimeCtr: TextEditingController(text: specimen.collectedTime),
         captureDateCtr: TextEditingController(text: specimen.captureDate),
         captureTimeCtr: TextEditingController(text: specimen.captureTime),
         trapTypeCtr: TextEditingController(text: specimen.trapType),

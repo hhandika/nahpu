@@ -138,12 +138,19 @@ class SpecimenCollectedField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return CommonTimeField(
-      controller: specimenCtr.collTimeCtr,
-      labelText: 'Coll. time',
-      hintText: 'Enter time',
-      initialTime: TimeOfDay.now(),
-      onTap: () {},
-    );
+        controller: specimenCtr.collTimeCtr,
+        labelText: 'Collected time',
+        hintText: 'Enter time',
+        initialTime: TimeOfDay.now(),
+        onTap: () {
+          SpecimenServices(ref).updateSpecimen(
+            specimenUuid,
+            SpecimenCompanion(
+                collectedTime: db.Value(
+              specimenCtr.collTimeCtr.text,
+            )),
+          );
+        });
   }
 }
 

@@ -65,6 +65,10 @@ class Database extends _$Database {
     }));
   }
 
+  Future<void> addColumnToTable(String tableName, String columnName) async {
+    await customStatement('ALTER TABLE $tableName ADD COLUMN $columnName');
+  }
+
   Future<void> createProject(ProjectCompanion form) =>
       into(project).insert(form);
 

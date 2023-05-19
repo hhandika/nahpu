@@ -101,8 +101,12 @@ class SpecimenServices extends DbAccess {
   }
 
   Future<void> updateSpecimen(String uuid, SpecimenCompanion entries) async {
-    await SpecimenQuery(dbase).updateSpecimenEntry(uuid, entries);
-    ref.invalidate(taxonDataProvider);
+    try {
+      await SpecimenQuery(dbase).updateSpecimenEntry(uuid, entries);
+    } catch (_) {
+      await dbase.addColumnToTable('specimen', 'collectedTime');
+      await SpecimenQuery(dbase).updateSpecimenEntry(uuid, entries);
+    }
   }
 
   Future<AvianMeasurementData> getAvianMeasurementData(String specimenUuid) {
