@@ -464,7 +464,9 @@ class AvianMeasurementCtrModel {
     required this.sexCtr,
     required this.broodPatchCtr,
     required this.skullOssCtr,
-    required this.bursaCtr,
+    required this.hasBursaCtr,
+    required this.bursaLengthCtr,
+    required this.bursaWidthCtr,
     required this.fatCtr,
     required this.stomachContentCtr,
     required this.testisLengthCtr,
@@ -498,7 +500,9 @@ class AvianMeasurementCtrModel {
   int? sexCtr;
   int? broodPatchCtr;
   int? skullOssCtr;
-  TextEditingController bursaCtr;
+  TextEditingController bursaLengthCtr;
+  TextEditingController bursaWidthCtr;
+  int? hasBursaCtr;
   int? fatCtr;
   TextEditingController stomachContentCtr;
   TextEditingController testisLengthCtr;
@@ -532,7 +536,9 @@ class AvianMeasurementCtrModel {
         sexCtr: null,
         broodPatchCtr: null,
         skullOssCtr: null,
-        bursaCtr: TextEditingController(),
+        hasBursaCtr: null,
+        bursaLengthCtr: TextEditingController(),
+        bursaWidthCtr: TextEditingController(),
         fatCtr: null,
         stomachContentCtr: TextEditingController(),
         testisLengthCtr: TextEditingController(),
@@ -568,7 +574,11 @@ class AvianMeasurementCtrModel {
         sexCtr: data.sex,
         broodPatchCtr: data.broodPatch,
         skullOssCtr: data.skullOssification,
-        bursaCtr: TextEditingController(text: data.bursaLength?.truncateZero()),
+        hasBursaCtr: data.hasBursa,
+        bursaLengthCtr:
+            TextEditingController(text: data.bursaLength?.truncateZero()),
+        bursaWidthCtr:
+            TextEditingController(text: data.bursaWidth?.truncateZero()),
         fatCtr: data.fat,
         stomachContentCtr:
             TextEditingController(text: data.stomachContent ?? ''),
@@ -610,7 +620,8 @@ class AvianMeasurementCtrModel {
     billCtr.dispose();
     footCtr.dispose();
     tarsusCtr.dispose();
-    bursaCtr.dispose();
+    bursaLengthCtr.dispose();
+    bursaWidthCtr.dispose();
     stomachContentCtr.dispose();
     testisLengthCtr.dispose();
     testisWidthCtr.dispose();
