@@ -3,15 +3,12 @@ import 'dart:io';
 import 'package:nahpu/services/io_services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqlite3/sqlite3.dart' as sqlite3;
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:path/path.dart' as p;
 
-class DbWriter {
-  DbWriter(this.ref);
-
-  final WidgetRef ref;
+class DbWriter extends DbAccess {
+  DbWriter(super.ref);
 
   Database get db => ref.read(databaseProvider);
 
