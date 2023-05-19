@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/models/validation.dart';
+import 'package:nahpu/services/types/validation.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/validation_services.dart';
 

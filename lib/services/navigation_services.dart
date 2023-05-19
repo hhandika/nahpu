@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nahpu/models/navigation.dart';
+import 'package:nahpu/services/types/navigation.dart';
 
 PageNavigation updatePageNavigation(PageNavigation pageState) {
   if (pageState.currentPage == 1) {

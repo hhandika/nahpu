@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/models/types.dart';
+import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/narrative/narrative_view.dart';
@@ -9,7 +9,7 @@ import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/sites/site_view.dart';
 import 'package:nahpu/screens/specimens/specimen_view.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
-import 'package:nahpu/models/navigation.dart';
+import 'package:nahpu/services/types/navigation.dart';
 
 class ProjectBottomNavbar extends ConsumerStatefulWidget {
   const ProjectBottomNavbar({Key? key}) : super(key: key);

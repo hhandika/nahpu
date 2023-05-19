@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:nahpu/models/controllers.dart';
+import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/project_services.dart';
 import 'package:nahpu/services/utility_services.dart';
 import 'package:nahpu/screens/shared/buttons.dart';

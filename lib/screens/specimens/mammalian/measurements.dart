@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/models/controllers.dart';
-import 'package:nahpu/models/types.dart';
+import 'package:nahpu/services/types/controllers.dart';
+import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/screens/specimens/shared/measurements.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/specimen_services.dart';
-import 'package:nahpu/models/mammals.dart';
+import 'package:nahpu/services/types/mammals.dart';
 import 'package:drift/drift.dart' as db;
 
 class MammalMeasurementForms extends ConsumerStatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:nahpu/models/controllers.dart';
+import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/providers/validation.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';

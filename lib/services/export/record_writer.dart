@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/models/export.dart';
-import 'package:nahpu/models/types.dart';
+import 'package:nahpu/services/types/export.dart';
+import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database/database.dart';

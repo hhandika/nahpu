@@ -1,11 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:nahpu/models/controllers.dart';
+import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/database.dart';
-import 'package:nahpu/models/types.dart';
+import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';

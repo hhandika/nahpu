@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:nahpu/models/controllers.dart';
+import 'package:nahpu/services/types/controllers.dart';
 import 'package:flutter/material.dart';
-import 'package:nahpu/models/types.dart';
+import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';

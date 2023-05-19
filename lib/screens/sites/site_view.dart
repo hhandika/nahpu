@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/navigation_services.dart';
-import 'package:nahpu/models/navigation.dart';
-import 'package:nahpu/models/controllers.dart';
+import 'package:nahpu/services/types/navigation.dart';
+import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/navigation.dart';

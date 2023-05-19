@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/models/birds.dart';
-import 'package:nahpu/models/controllers.dart';
-import 'package:nahpu/models/types.dart';
+import 'package:nahpu/services/types/birds.dart';
+import 'package:nahpu/services/types/controllers.dart';
+import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';

@@ -1,4 +1,4 @@
-import 'package:nahpu/models/types.dart';
+import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/services/database/database.dart';

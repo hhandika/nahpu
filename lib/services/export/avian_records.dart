@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/models/birds.dart';
-import 'package:nahpu/models/types.dart';
+import 'package:nahpu/services/types/birds.dart';
+import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/specimen_services.dart';
 
