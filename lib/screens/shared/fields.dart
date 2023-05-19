@@ -119,7 +119,7 @@ class TaxonGroupFields extends ConsumerWidget {
     final List<String> taxonGroups = [
       'Birds',
       'Bats',
-      'General Mammals',
+      'Non-Bat Mammals',
     ];
 
     CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);

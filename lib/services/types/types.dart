@@ -110,7 +110,7 @@ CatalogFmt matchTaxonGroupToCatFmt(String? taxonGroup) {
   switch (taxonGroup) {
     case 'Birds':
       return CatalogFmt.birds;
-    case 'General Mammals':
+    case 'Non-Bat Mammals':
       return CatalogFmt.generalMammals;
     case 'Bats':
       return CatalogFmt.bats;
@@ -119,14 +119,29 @@ CatalogFmt matchTaxonGroupToCatFmt(String? taxonGroup) {
   }
 }
 
+SpecimenRecordType matchCatalogFmtToRecordType(CatalogFmt catalogFmt) {
+  switch (catalogFmt) {
+    case CatalogFmt.birds:
+      return SpecimenRecordType.birds;
+    case CatalogFmt.generalMammals:
+      return SpecimenRecordType.generalMammals;
+    case CatalogFmt.bats:
+      return SpecimenRecordType.bats;
+    default:
+      return SpecimenRecordType.generalMammals;
+  }
+}
+
 String matchRecordTypeToTaxonGroup(SpecimenRecordType recordType) {
   switch (recordType) {
-    case SpecimenRecordType.avian:
+    case SpecimenRecordType.birds:
       return 'Birds';
-    case SpecimenRecordType.mammalian:
+    case SpecimenRecordType.generalMammals:
       return 'General Mammals';
+    case SpecimenRecordType.bats:
+      return 'Bats';
     default:
-      return 'General Mammals';
+      return 'Non-Bat Mammals';
   }
 }
 
@@ -139,7 +154,7 @@ String matchCatFmtToTaxonGroup(CatalogFmt catalogFmt) {
     case CatalogFmt.bats:
       return 'Bats';
     default:
-      return 'General Mammals';
+      return 'Non-Bat Mammals';
   }
 }
 

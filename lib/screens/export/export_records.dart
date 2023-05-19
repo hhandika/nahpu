@@ -19,10 +19,11 @@ class ExportForm extends ConsumerStatefulWidget {
 }
 
 class ExportFormState extends ConsumerState<ExportForm> {
-  ExportFmt exportFmt = ExportFmt.csv;
   FileOpCtrModel exportCtr = FileOpCtrModel.empty();
-  SpecimenRecordType _taxonRecordType = SpecimenRecordType.mammalian;
   ExportRecordType? _recordType = ExportRecordType.narrative;
+  TaxonRecordType? _taxonRecordType;
+  SpecimenRecordType _specimenRecordType = SpecimenRecordType.generalMammals;
+  MammalRecordType _mammalRecordType = MammalRecordType.excludeBats;
   String _fileStem = 'export';
   Directory? _selectedDir;
   bool _hasSaved = false;
@@ -48,23 +49,24 @@ class ExportFormState extends ConsumerState<ExportForm> {
       ),
       body: FileOperationPage(
         children: [
-          DropdownButtonFormField<SpecimenRecordType?>(
+          DropdownButtonFormField<TaxonRecordType?>(
             value: _taxonRecordType,
             decoration: const InputDecoration(
               labelText: 'Taxon group',
             ),
-            items: specimenRecordTypeList
+            items: taxonRecordTypeList
                 .map((e) => DropdownMenuItem(
-                      value: SpecimenRecordType
-                          .values[specimenRecordTypeList.indexOf(e)],
+                      value: TaxonRecordType
+                          .values[taxonRecordTypeList.indexOf(e)],
                       child: Text(e),
                     ))
                 .toList(),
-            onChanged: (SpecimenRecordType? value) {
+            onChanged: (TaxonRecordType? value) {
               if (value != null) {
                 setState(() {
                   _recordType = null;
                   _taxonRecordType = value;
+                  _matchTaxonToRecordType();
                 });
               }
             },
@@ -83,8 +85,32 @@ class ExportFormState extends ConsumerState<ExportForm> {
               }
             },
           ),
+          Visibility(
+            visible: _isMammalSpecimenRecord(),
+            child: DropdownButtonFormField<MammalRecordType>(
+              value: _mammalRecordType,
+              decoration: const InputDecoration(
+                labelText: 'Mammal group',
+              ),
+              items: mammalGroupList
+                  .map((e) => DropdownMenuItem(
+                        value:
+                            MammalRecordType.values[mammalGroupList.indexOf(e)],
+                        child: Text(e),
+                      ))
+                  .toList(),
+              onChanged: (MammalRecordType? value) {
+                if (value != null) {
+                  setState(() {
+                    _mammalRecordType = value;
+                    _matchTaxonToRecordType();
+                  });
+                }
+              },
+            ),
+          ),
           DropdownButtonFormField<ExportFmt>(
-            value: exportFmt,
+            value: exportCtr.exportFmtCtr,
             decoration: const InputDecoration(
               labelText: 'Format',
             ),
@@ -97,7 +123,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
             onChanged: (ExportFmt? value) {
               if (value != null) {
                 setState(() {
-                  exportFmt = value;
+                  exportCtr.exportFmtCtr = value;
                 });
               }
             },
@@ -143,18 +169,41 @@ class ExportFormState extends ConsumerState<ExportForm> {
     );
   }
 
+  bool _isMammalSpecimenRecord() {
+    return _recordType == ExportRecordType.specimenRecord &&
+        _taxonRecordType == TaxonRecordType.mammals;
+  }
+
   List<DropdownMenuItem<ExportRecordType>> _matchRecordTypeToTaxonGroup() {
-    switch (_taxonRecordType) {
-      case SpecimenRecordType.mammalian:
+    switch (_specimenRecordType) {
+      case SpecimenRecordType.generalMammals:
         return _recordDropdown(mammalianRecordTypeList);
-      case SpecimenRecordType.avian:
+      case SpecimenRecordType.birds:
         return _recordDropdown(avianRecordTypeList);
-      case SpecimenRecordType.allMammals:
+      case SpecimenRecordType.bats:
         return _recordDropdown(mammalianRecordTypeList);
-      case SpecimenRecordType.chiropteran:
+      case SpecimenRecordType.allMammals:
         return _recordDropdown(mammalianRecordTypeList);
       default:
         return _recordDropdown(mammalianRecordTypeList);
+    }
+  }
+
+  void _matchTaxonToRecordType() {
+    if (_taxonRecordType == TaxonRecordType.birds) {
+      _specimenRecordType = SpecimenRecordType.birds;
+    } else {
+      switch (_mammalRecordType) {
+        case MammalRecordType.excludeBats:
+          _specimenRecordType = SpecimenRecordType.generalMammals;
+          break;
+        case MammalRecordType.onlyBats:
+          _specimenRecordType = SpecimenRecordType.bats;
+          break;
+        default:
+          _specimenRecordType = SpecimenRecordType.allMammals;
+          break;
+      }
     }
   }
 
@@ -169,13 +218,10 @@ class ExportFormState extends ConsumerState<ExportForm> {
   }
 
   Future<void> _exportFile() async {
-    switch (exportFmt) {
+    switch (exportCtr.exportFmtCtr) {
       case ExportFmt.csv:
         await _writeDelimited(true);
         break;
-      // case ExportFmt.excel:
-      //   await _writeExcel();
-      //   break;
       case ExportFmt.tsv:
         await _writeDelimited(false);
         break;
@@ -184,10 +230,6 @@ class ExportFormState extends ConsumerState<ExportForm> {
         break;
     }
   }
-
-  // Future<void> _writeExcel() async {
-  //   await _writeDelimited(true);
-  // }
 
   Future<void> _writeDelimited(bool isCsv) async {
     String ext = isCsv ? 'csv' : 'tsv';
@@ -224,7 +266,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
         await CollEventRecordWriter(ref).writeCollEventDelimited(file, isCsv);
         break;
       case ExportRecordType.specimenRecord:
-        await SpecimenRecordWriter(ref: ref, recordType: _taxonRecordType)
+        await SpecimenRecordWriter(ref: ref, recordType: _specimenRecordType)
             .writeRecordDelimited(file, isCsv);
         break;
       default:

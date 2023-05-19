@@ -1005,22 +1005,21 @@ class CollWeatherCtrModel {
 
 class FileOpCtrModel {
   FileOpCtrModel({
-    required this.formatCtr,
+    required this.exportFmtCtr,
     required this.fileNameCtr,
   });
 
-  TextEditingController formatCtr;
+  ExportFmt exportFmtCtr;
   TextEditingController fileNameCtr;
 
   factory FileOpCtrModel.empty() => FileOpCtrModel(
-      formatCtr: TextEditingController(), fileNameCtr: TextEditingController());
+      exportFmtCtr: ExportFmt.csv, fileNameCtr: TextEditingController());
 
   void dispose() {
-    formatCtr.dispose();
     fileNameCtr.dispose();
   }
 
   bool isValid() {
-    return formatCtr.text.isNotEmpty && fileNameCtr.text.isNotEmpty;
+    return fileNameCtr.text.isNotEmpty;
   }
 }

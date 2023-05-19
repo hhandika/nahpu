@@ -127,11 +127,11 @@ class SpecimenRecordWriter {
 
   List<String> _getMeasurementHeader() {
     switch (recordType) {
-      case SpecimenRecordType.mammalian:
+      case SpecimenRecordType.generalMammals:
         return mammalMeasurementExportList;
-      case SpecimenRecordType.avian:
+      case SpecimenRecordType.birds:
         return avianMeasurementExportList;
-      case SpecimenRecordType.chiropteran:
+      case SpecimenRecordType.bats:
         return batMeasurementExportList;
       default:
         return mammalMeasurementExportList;
@@ -140,9 +140,9 @@ class SpecimenRecordWriter {
 
   Future<String> _getMeasurement(String specimenUuid) async {
     switch (recordType) {
-      case SpecimenRecordType.mammalian:
+      case SpecimenRecordType.generalMammals:
         return await _getMeasurementGeneralMammals(specimenUuid);
-      case SpecimenRecordType.avian:
+      case SpecimenRecordType.birds:
         return await _getMeasurementBirds(specimenUuid);
       default:
         return ' ';

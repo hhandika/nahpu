@@ -1,14 +1,29 @@
 enum SpecimenRecordType {
-  avian,
-  chiropteran,
-  mammalian,
+  birds,
+  generalMammals,
+  bats,
   allMammals,
 }
 
-const List<String> specimenRecordTypeList = [
+enum TaxonRecordType {
+  birds,
+  mammals,
+}
+
+const List<String> taxonRecordTypeList = [
   'Birds',
-  'Bats',
-  'Non-bat mammals',
+  'Mammals',
+];
+
+enum MammalRecordType {
+  excludeBats,
+  onlyBats,
+  allMammals,
+}
+
+const List<String> mammalGroupList = [
+  'Exclude bats',
+  'Only bats',
   'All mammals',
 ];
 
