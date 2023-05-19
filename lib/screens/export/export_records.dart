@@ -153,13 +153,6 @@ class ExportFormState extends ConsumerState<ExportForm> {
                     ? null
                     : () async {
                         await _exportFile();
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('File saved as $_finalPath'),
-                            ),
-                          );
-                        }
                       },
               ),
             ],
@@ -244,6 +237,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
         _hasSaved = true;
         _finalPath = file.path;
       });
+      _showSavedPath();
     } on PathNotFoundException {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: PathNotFoundText(),
@@ -252,6 +246,16 @@ class ExportFormState extends ConsumerState<ExportForm> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: ErrorText(error: e.toString()),
+        ),
+      );
+    }
+  }
+
+  void _showSavedPath() {
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('File saved as $_finalPath'),
         ),
       );
     }

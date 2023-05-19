@@ -59,7 +59,12 @@ const specimenExportList = [
 const siteExportList = [
   'site',
   'habitatType',
+  'country',
+  'stateProvince',
+  'county',
+  'municipality',
   'locality',
+  'verbatimLocality',
   'coordinates',
 ];
 

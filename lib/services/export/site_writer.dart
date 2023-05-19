@@ -21,15 +21,69 @@ class SiteWriterServices {
       SiteData? data = await SiteServices(ref).getSite(siteID);
 
       if (data == null) {
-        return '';
+        return delimiter * 5;
       } else {
-        String siteDetails = '${data.country ?? ''}: ${data.stateProvince ?? ''};'
-                ' ${data.county ?? ''}; ${data.municipality ?? ''}; ${data.locality ?? ''}'
-            .trim();
+        String siteSeparated = _getSiteSeparated(data);
+        String country = _getCountry(data.country);
+        String stateProvince = _getStateProvince(data.stateProvince);
+        String county = _getCounty(data.county);
+        String municipality = _getMunicipality(data.municipality);
+        String locality = _getLocality(data.locality);
+        String siteDetails =
+            '$country$stateProvince$county$municipality$locality'.trim();
+        String siteLocality = '$siteSeparated$siteDetails';
         return withHabitat
-            ? '${data.siteID}$delimiter${data.habitatType}$delimiter"$siteDetails"'
-            : '"$siteDetails"';
+            ? '${data.siteID}$delimiter${data.habitatType}$delimiter$siteLocality'
+            : siteLocality;
       }
+    }
+  }
+
+  String _getSiteSeparated(SiteData data) {
+    return '${data.country ?? ''}$delimiter'
+        '${data.stateProvince ?? ''}$delimiter'
+        '${data.county ?? ''}$delimiter'
+        '${data.municipality ?? ''}$delimiter'
+        '"${data.locality ?? ''}"$delimiter';
+  }
+
+  String _getCountry(String? country) {
+    if (country == null) {
+      return '';
+    } else {
+      return '$country: ';
+    }
+  }
+
+  String _getStateProvince(String? stateProvince) {
+    if (stateProvince == null) {
+      return '';
+    } else {
+      return '$stateProvince; ';
+    }
+  }
+
+  String _getCounty(String? county) {
+    if (county == null) {
+      return '';
+    } else {
+      return '$county; ';
+    }
+  }
+
+  String _getMunicipality(String? municipality) {
+    if (municipality == null) {
+      return '';
+    } else {
+      return '$municipality; ';
+    }
+  }
+
+  String _getLocality(String? locality) {
+    if (locality == null) {
+      return '';
+    } else {
+      return '"$locality"';
     }
   }
 
