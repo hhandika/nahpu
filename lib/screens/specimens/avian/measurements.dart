@@ -26,6 +26,7 @@ class BirdMeasurementForms extends ConsumerStatefulWidget {
 
 class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
   AvianMeasurementCtrModel ctr = AvianMeasurementCtrModel.empty();
+  bool _hasBursa = false;
 
   @override
   void initState() {
@@ -84,6 +85,24 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
           ),
         ],
       ),
+      CommonPadding(
+        child: CommonTextField(
+          controller: ctr.billCtr,
+          labelText: 'Bill color',
+          hintText: 'Enter bill color',
+          isLastField: false,
+          onChanged: (String? value) {
+            if (value != null && value.isNotEmpty) {
+              SpecimenServices(ref).updateAvianMeasurement(
+                widget.specimenUuid,
+                AvianMeasurementCompanion(
+                  billColor: db.Value(value),
+                ),
+              );
+            }
+          },
+        ),
+      ),
       AdaptiveLayout(
         useHorizontalLayout: widget.useHorizontalLayout,
         children: [
@@ -104,27 +123,6 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
             },
           ),
           CommonTextField(
-            controller: ctr.billCtr,
-            labelText: 'Bill color',
-            hintText: 'Enter bill color',
-            isLastField: false,
-            onChanged: (String? value) {
-              if (value != null && value.isNotEmpty) {
-                SpecimenServices(ref).updateAvianMeasurement(
-                  widget.specimenUuid,
-                  AvianMeasurementCompanion(
-                    billColor: db.Value(value),
-                  ),
-                );
-              }
-            },
-          ),
-        ],
-      ),
-      AdaptiveLayout(
-        useHorizontalLayout: widget.useHorizontalLayout,
-        children: [
-          CommonTextField(
             controller: ctr.footCtr,
             labelText: 'Foot color',
             hintText: 'Enter foot color',
@@ -140,6 +138,11 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
               }
             },
           ),
+        ],
+      ),
+      AdaptiveLayout(
+        useHorizontalLayout: widget.useHorizontalLayout,
+        children: [
           CommonTextField(
             controller: ctr.tarsusCtr,
             labelText: 'Tarsus color',
@@ -156,11 +159,6 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
               }
             },
           ),
-        ],
-      ),
-      AdaptiveLayout(
-        useHorizontalLayout: widget.useHorizontalLayout,
-        children: [
           DropdownButtonFormField<SpecimenSex>(
             value: getSpecimenSex(ctr.sexCtr),
             decoration: const InputDecoration(
@@ -186,6 +184,11 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
               }
             },
           ),
+        ],
+      ),
+      AdaptiveLayout(
+        useHorizontalLayout: widget.useHorizontalLayout,
+        children: [
           DropdownButtonFormField<int?>(
             value: ctr.broodPatchCtr,
             decoration: const InputDecoration(
@@ -214,7 +217,42 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
               }
             },
           ),
+          DropdownButtonFormField<int?>(
+            value: ctr.hasBursaCtr,
+            decoration: const InputDecoration(
+              labelText: 'Bursa present',
+              hintText: 'Choose one',
+            ),
+            items: const [
+              DropdownMenuItem(
+                value: 1,
+                child: Text('Yes'),
+              ),
+              DropdownMenuItem(
+                value: 0,
+                child: Text('No'),
+              ),
+            ],
+            onChanged: (int? newValue) {
+              if (newValue != null) {
+                setState(() {
+                  _hasBursa = newValue == 1;
+                  SpecimenServices(ref).updateAvianMeasurement(
+                      widget.specimenUuid,
+                      AvianMeasurementCompanion(
+                        hasBursa: db.Value(newValue),
+                      ));
+                });
+              }
+            },
+          ),
         ],
+      ),
+      BursaField(
+        specimenUuid: widget.specimenUuid,
+        useHorizontalLayout: widget.useHorizontalLayout,
+        hasBursa: _hasBursa,
+        ctr: ctr,
       ),
       AdaptiveLayout(
         useHorizontalLayout: widget.useHorizontalLayout,
@@ -248,11 +286,6 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
             }
           },
         ),
-      ),
-      BursaField(
-        specimenUuid: widget.specimenUuid,
-        useHorizontalLayout: widget.useHorizontalLayout,
-        ctr: ctr,
       ),
       MaleGonadForm(
         specimenUuid: widget.specimenUuid,
@@ -292,11 +325,13 @@ class BursaField extends ConsumerStatefulWidget {
     super.key,
     required this.specimenUuid,
     required this.useHorizontalLayout,
+    required this.hasBursa,
     required this.ctr,
   });
 
   final String specimenUuid;
   final bool useHorizontalLayout;
+  final bool hasBursa;
   final AvianMeasurementCtrModel ctr;
 
   @override
@@ -304,86 +339,49 @@ class BursaField extends ConsumerStatefulWidget {
 }
 
 class BursaFieldState extends ConsumerState<BursaField> {
-  bool _hasBursa = false;
-
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        CommonPadding(
-          child: DropdownButtonFormField<int?>(
-            value: widget.ctr.hasBursaCtr,
-            decoration: const InputDecoration(
-              labelText: 'Bursa present',
-              hintText: 'Choose one',
-            ),
-            items: const [
-              DropdownMenuItem(
-                value: 1,
-                child: Text('Yes'),
-              ),
-              DropdownMenuItem(
-                value: 0,
-                child: Text('No'),
-              ),
-            ],
-            onChanged: (int? newValue) {
-              if (newValue != null) {
-                setState(() {
-                  _hasBursa = newValue == 1;
-                  SpecimenServices(ref).updateAvianMeasurement(
-                      widget.specimenUuid,
-                      AvianMeasurementCompanion(
-                        hasBursa: db.Value(newValue),
-                      ));
-                });
+    return Visibility(
+      visible: widget.hasBursa,
+      child: AdaptiveLayout(
+        useHorizontalLayout: widget.useHorizontalLayout,
+        children: [
+          CommonNumField(
+            controller: widget.ctr.bursaLengthCtr,
+            labelText: 'Bursa length (mm)',
+            hintText: 'Enter bursa length',
+            isDouble: true,
+            isLastField: false,
+            onChanged: (String? value) {
+              if (value != null && value.isNotEmpty) {
+                SpecimenServices(ref).updateAvianMeasurement(
+                  widget.specimenUuid,
+                  AvianMeasurementCompanion(
+                    bursaLength: db.Value(double.tryParse(value) ?? 0),
+                  ),
+                );
               }
             },
           ),
-        ),
-        Visibility(
-          visible: _hasBursa,
-          child: AdaptiveLayout(
-            useHorizontalLayout: widget.useHorizontalLayout,
-            children: [
-              CommonNumField(
-                controller: widget.ctr.bursaLengthCtr,
-                labelText: 'Bursa length (mm)',
-                hintText: 'Enter bursa length',
-                isDouble: true,
-                isLastField: false,
-                onChanged: (String? value) {
-                  if (value != null && value.isNotEmpty) {
-                    SpecimenServices(ref).updateAvianMeasurement(
-                      widget.specimenUuid,
-                      AvianMeasurementCompanion(
-                        bursaLength: db.Value(double.tryParse(value) ?? 0),
-                      ),
-                    );
-                  }
-                },
-              ),
-              CommonNumField(
-                controller: widget.ctr.bursaWidthCtr,
-                labelText: 'Bursa size (mm)',
-                hintText: 'Enter bursa length',
-                isDouble: true,
-                isLastField: false,
-                onChanged: (String? value) {
-                  if (value != null && value.isNotEmpty) {
-                    SpecimenServices(ref).updateAvianMeasurement(
-                      widget.specimenUuid,
-                      AvianMeasurementCompanion(
-                        bursaWidth: db.Value(double.tryParse(value) ?? 0),
-                      ),
-                    );
-                  }
-                },
-              ),
-            ],
+          CommonNumField(
+            controller: widget.ctr.bursaWidthCtr,
+            labelText: 'Bursa size (mm)',
+            hintText: 'Enter bursa length',
+            isDouble: true,
+            isLastField: false,
+            onChanged: (String? value) {
+              if (value != null && value.isNotEmpty) {
+                SpecimenServices(ref).updateAvianMeasurement(
+                  widget.specimenUuid,
+                  AvianMeasurementCompanion(
+                    bursaWidth: db.Value(double.tryParse(value) ?? 0),
+                  ),
+                );
+              }
+            },
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
