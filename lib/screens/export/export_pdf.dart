@@ -17,7 +17,7 @@ class ExportPdfForm extends ConsumerStatefulWidget {
 
 class ExportPdfFormState extends ConsumerState<ExportPdfForm> {
   FileOpCtrModel exportCtr = FileOpCtrModel.empty();
-  String _selectedDir = '';
+  Directory? _selectedDir;
   PdfExportType _pdfExportType = PdfExportType.narrative;
   String _fileStem = 'export';
   final bool _hasSaved = false;
@@ -59,7 +59,9 @@ class ExportPdfFormState extends ConsumerState<ExportPdfForm> {
           ),
           SelectDirField(
             dirPath: _selectedDir,
-            onChanged: _getDir,
+            onPressed: () {
+              _getDir();
+            },
           ),
           const SizedBox(height: 10),
           Wrap(
@@ -79,7 +81,8 @@ class ExportPdfFormState extends ConsumerState<ExportPdfForm> {
     );
   }
 
-  void _getDir(String? path) {
+  Future<void> _getDir() async {
+    Directory? path = await FilePickerServices().selectDir();
     if (path != null) {
       setState(() {
         _selectedDir = path;
@@ -89,10 +92,10 @@ class ExportPdfFormState extends ConsumerState<ExportPdfForm> {
 
   Future<void> _writePdf() async {
     try {
-      File file =
-          AppIOServices(dir: _selectedDir, fileStem: _fileStem, ext: 'pdf')
-              .getFilename();
-      await _matchExportTypeToWriter(file);
+      File savePath = await AppIOServices(
+              dir: _selectedDir, fileStem: _fileStem, ext: 'pdf')
+          .getSavePath();
+      await _matchExportTypeToWriter(savePath);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

@@ -3,12 +3,53 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
+import 'package:path_provider/path_provider.dart';
 
 String get dateTimeStamp {
   DateTime now = DateTime.now();
   String date = '${now.year}-${now.month}-${now.day}';
   String time = '${now.hour}-${now.minute}-${now.second}';
   return '$date-$time';
+}
+
+class FilePickerServices {
+  FilePickerServices();
+
+  Future<Directory?> selectDir() async {
+    final result = await FilePicker.platform.getDirectoryPath();
+    if (result != null) {
+      if (kDebugMode) {
+        print('Selected directory: $result');
+      }
+      return Directory(result);
+    }
+    return null;
+  }
+
+  Future<File?> selectFile(List<String> allowedExtension) async {
+    final result = await _matchPicker(allowedExtension);
+
+    if (result != null) {
+      if (kDebugMode) {
+        print('Selected file: ${result.files.single.path}');
+      }
+      return File(result.files.single.path!);
+    }
+    return null;
+  }
+
+  Future<FilePickerResult?> _matchPicker(List<String> allowedExt) async {
+    if (Platform.isIOS || Platform.isAndroid) {
+      return await FilePicker.platform.pickFiles();
+    } else {
+      return await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['db', 'sqlite', 'sqlite3'],
+      );
+    }
+  }
 }
 
 class AppIOServices {
@@ -18,28 +59,41 @@ class AppIOServices {
     required this.ext,
   });
 
-  final String dir;
+  final Directory? dir;
   final String fileStem;
   final String ext;
 
-  File getFilename() {
+  Future<File> getSavePath() async {
     String fileName = '$fileStem.$ext';
     // Check if file exists
-    File file = _createSavePath(fileName);
+    File file = await _createSavePath(fileName);
     if (file.existsSync()) {
       int i = 1;
       while (file.existsSync()) {
         fileName = '$fileStem($i).$ext';
-        file = _createSavePath(fileName);
+        file = await _createSavePath(fileName);
         i++;
       }
     }
     return file;
   }
 
-  File _createSavePath(String fileName) {
-    String finalPath = path.join(dir, fileName);
+  Future<File> _createSavePath(String fileName) async {
+    Directory finalDir = await _getSaveDir();
+
+    if (finalDir.existsSync()) {
+      finalDir.createSync(recursive: true);
+    }
+
+    String finalPath = path.join(finalDir.path, fileName);
     return File(finalPath);
+  }
+
+  Future<Directory> _getSaveDir() async {
+    if (dir == null) {
+      return await getApplicationDocumentsDirectory();
+    }
+    return dir!;
   }
 }
 

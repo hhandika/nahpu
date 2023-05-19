@@ -1,13 +1,14 @@
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/screens/settings/common.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/file_operation.dart';
 import 'package:nahpu/services/export/db_writer.dart';
+import 'package:nahpu/services/io_services.dart';
+import 'package:path/path.dart' as p;
 
 class DatabaseSettings extends ConsumerStatefulWidget {
   const DatabaseSettings({super.key});
@@ -29,28 +30,18 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
       ),
       body: FileOperationPage(
         children: [
-          Icon(
-            Icons.warning,
-            color: Theme.of(context).colorScheme.error,
-            size: 50,
-          ),
           Text(
             'Replace Database',
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          Row(
+          SettingCard(
             children: [
-              Expanded(
-                child: Text(
-                  'Choose a file: ${_dbPath.path}',
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              const SizedBox(width: 10),
-              IconButton(
-                icon: const Icon(Icons.folder),
+              SelectFileField(
+                path: _dbPath,
                 onPressed: () async {
-                  final dbPath = await _selectFile();
+                  final dbPath = await FilePickerServices().selectFile(
+                    ['db', 'sqlite', 'sqlite3'],
+                  );
                   if (dbPath != null) {
                     setState(() {
                       _dbPath = dbPath;
@@ -59,94 +50,103 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
                   }
                 },
               ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Wrap(
-            spacing: 20,
-            children: [
-              SecondaryButton(
-                text: 'Cancel',
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-              PrimaryButton(
-                text: 'Replace',
-                onPressed: !_hasSelected
-                    ? null
-                    : () async {
-                        // Alert users before replacing database
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text('Replace Database'),
-                            content: const Text(
-                              'This will replace the current database with the selected one. '
-                              'It cannot be undone! '
-                              'Are you sure you want to replace the database?',
-                              textAlign: TextAlign.center,
-                            ),
-                            actions: [
-                              PrimaryButton(
-                                text: 'Cancel',
-                                onPressed: () => Navigator.of(context).pop(),
-                              ),
-                              TextButton(
-                                onPressed: () async {
-                                  Navigator.of(context).pop();
-                                  await DbWriter(ref).replaceDb(_dbPath);
-                                  ref.invalidate(projectListProvider);
-                                  if (context.mounted) {
-                                    Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const DBReplacedPage(),
-                                      ),
-                                    );
-                                  }
-                                },
-                                child: const Text(
-                                  'Replace',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
+              const SizedBox(height: 10),
+              DbReplaceButtons(
+                hasSelected: _hasSelected,
+                onPressed: _replaceDb,
               )
             ],
-          )
+          ),
         ],
       ),
     );
   }
 
-  Future<File?> _selectFile() async {
-    final result = await _matchPicker();
-
-    if (result != null) {
-      if (kDebugMode) {
-        print('Selected file: ${result.files.single.path}');
-      }
-      return File(result.files.single.path!);
-    }
-    return null;
-  }
-
-  Future<FilePickerResult?> _matchPicker() async {
-    if (Platform.isIOS || Platform.isAndroid) {
-      return await FilePicker.platform.pickFiles();
-    } else {
-      return await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['db', 'sqlite', 'sqlite3'],
+  Future<void> _replaceDb() async {
+    Navigator.of(context).pop();
+    File backupPath = await DbWriter(ref).replaceDb(_dbPath);
+    ref.invalidate(projectListProvider);
+    if (context.mounted) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => DBReplacedPage(
+            dbBackupPath: backupPath,
+          ),
+        ),
       );
     }
   }
 }
 
+class DbReplaceButtons extends StatelessWidget {
+  const DbReplaceButtons({
+    super.key,
+    required this.hasSelected,
+    required this.onPressed,
+  });
+
+  final bool hasSelected;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 20,
+      children: [
+        SecondaryButton(
+          text: 'Cancel',
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        PrimaryButton(
+          text: 'Replace',
+          onPressed: !hasSelected
+              ? null
+              : () async {
+                  // Alert users before replacing database
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Replace Database'),
+                      content: const DbWarningText(),
+                      actions: [
+                        PrimaryButton(
+                          text: 'Cancel',
+                          onPressed: () => Navigator.of(context).pop(),
+                        ),
+                        TextButton(
+                          onPressed: onPressed,
+                          child: const Text(
+                            'Replace',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+        )
+      ],
+    );
+  }
+}
+
+class DbWarningText extends StatelessWidget {
+  const DbWarningText({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text(
+      'This will replace the current database with the selected one.\n'
+      'Are you sure you want to replace the database?',
+      textAlign: TextAlign.center,
+    );
+  }
+}
+
 class DBReplacedPage extends StatelessWidget {
-  const DBReplacedPage({super.key});
+  const DBReplacedPage({super.key, required this.dbBackupPath});
+
+  final File dbBackupPath;
 
   @override
   Widget build(BuildContext context) {
@@ -166,18 +166,34 @@ class DBReplacedPage extends StatelessWidget {
                   size: 50,
                 ),
                 Text(
-                  'Success',
+                  'Success 🎉',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 Text(
-                  'Database has been replaced! '
-                  'Close the app and reopen it to see the changes.',
+                  'Database has been replaced!\n'
+                  'Backup file path:',
                   style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 ),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 500),
+                  child: Text(
+                    Platform.isIOS ? iOSPath : dbBackupPath.path,
+                    style: Theme.of(context).textTheme.bodySmall,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Text(
+                  '\nClose the app and reopen it to see the changes!',
+                  style: Theme.of(context).textTheme.titleMedium,
+                )
               ],
             ),
           ),
         ));
+  }
+
+  String get iOSPath {
+    return 'Files app/On my Devices/${p.basename(dbBackupPath.path)}';
   }
 }

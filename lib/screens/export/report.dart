@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/screens/shared/file_operation.dart';
@@ -20,7 +21,7 @@ class ReportFormState extends ConsumerState<ReportForm> {
   ReportType _reportType = ReportType.speciesCount;
   FileOpCtrModel exportCtr = FileOpCtrModel.empty();
   String _fileName = 'export';
-  String _selectedDir = '';
+  Directory? _selectedDir;
   String _savePath = '';
   bool _hasSaved = false;
 
@@ -97,7 +98,9 @@ class ReportFormState extends ConsumerState<ReportForm> {
           ),
           SelectDirField(
             dirPath: _selectedDir,
-            onChanged: _getDir,
+            onPressed: () async {
+              await _getDir();
+            },
           ),
           const SizedBox(height: 10),
           Wrap(
@@ -106,7 +109,7 @@ class ReportFormState extends ConsumerState<ReportForm> {
               SaveSecondaryButton(hasSaved: _hasSaved),
               PrimaryButton(
                 text: 'Save',
-                onPressed: _selectedDir.isEmpty
+                onPressed: !exportCtr.isValid()
                     ? null
                     : () async {
                         await _createReport();
@@ -158,7 +161,8 @@ class ReportFormState extends ConsumerState<ReportForm> {
     }
   }
 
-  void _getDir(String? path) {
+  Future<void> _getDir() async {
+    final path = await FilePickerServices().selectDir();
     if (path != null) {
       setState(() {
         _selectedDir = path;

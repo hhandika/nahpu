@@ -1006,22 +1006,21 @@ class CollWeatherCtrModel {
 class FileOpCtrModel {
   FileOpCtrModel({
     required this.formatCtr,
-    required this.pathCtr,
     required this.fileNameCtr,
   });
 
   TextEditingController formatCtr;
-  TextEditingController pathCtr;
   TextEditingController fileNameCtr;
 
   factory FileOpCtrModel.empty() => FileOpCtrModel(
-      formatCtr: TextEditingController(),
-      pathCtr: TextEditingController(),
-      fileNameCtr: TextEditingController());
+      formatCtr: TextEditingController(), fileNameCtr: TextEditingController());
 
   void dispose() {
     formatCtr.dispose();
-    pathCtr.dispose();
     fileNameCtr.dispose();
+  }
+
+  bool isValid() {
+    return formatCtr.text.isNotEmpty && fileNameCtr.text.isNotEmpty;
   }
 }

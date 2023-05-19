@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
@@ -395,7 +398,7 @@ class TaxonImportForm extends StatefulWidget {
 
 class _TaxonImportFormState extends State<TaxonImportForm> {
   TaxonImportFmt _fmt = TaxonImportFmt.csv;
-  String _dirPath = '';
+  Directory? _dirPath;
 
   @override
   Widget build(BuildContext context) {
@@ -434,12 +437,8 @@ class _TaxonImportFormState extends State<TaxonImportForm> {
                 ),
                 SelectDirField(
                     dirPath: _dirPath,
-                    onChanged: (value) {
-                      if (value != null) {
-                        setState(() {
-                          _dirPath = value;
-                        });
-                      }
+                    onPressed: () async {
+                      await _getDir();
                     }),
                 const SizedBox(
                   height: 20,
@@ -454,6 +453,15 @@ class _TaxonImportFormState extends State<TaxonImportForm> {
         ),
       ),
     );
+  }
+
+  Future<void> _getDir() async {
+    Directory? dir = await FilePickerServices().selectDir();
+    if (dir != null) {
+      setState(() {
+        _dirPath = dir;
+      });
+    }
   }
 }
 

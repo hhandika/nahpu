@@ -1,10 +1,8 @@
 import 'dart:io';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 
 class FileOperationPage extends StatelessWidget {
@@ -16,13 +14,9 @@ class FileOperationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 600),
-            child: Column(
-              children: children,
-            ),
+        child: ScrollableLayout(
+          child: Column(
+            children: children,
           ),
         ),
       ),
@@ -87,53 +81,64 @@ class PathNotFoundText extends StatelessWidget {
   }
 }
 
-class SelectDirField extends ConsumerStatefulWidget {
+class SelectDirField extends StatelessWidget {
   const SelectDirField({
     super.key,
     required this.dirPath,
-    required this.onChanged,
+    required this.onPressed,
   });
 
-  final String dirPath;
-  final void Function(String?) onChanged;
+  final Directory? dirPath;
+  final VoidCallback onPressed;
 
   @override
-  SelectDirFieldState createState() => SelectDirFieldState();
+  Widget build(BuildContext context) {
+    return Platform.isIOS
+        ? const SizedBox.shrink()
+        : Row(
+            children: [
+              Expanded(
+                child: Text(
+                  'Choose a directory: ${dirPath == null ? '' : dirPath!.path}',
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(width: 10),
+              IconButton(
+                icon: const Icon(Icons.folder),
+                onPressed: onPressed,
+              ),
+            ],
+          );
+  }
 }
 
-class SelectDirFieldState extends ConsumerState<SelectDirField> {
+class SelectFileField extends StatelessWidget {
+  const SelectFileField({
+    super.key,
+    required this.path,
+    required this.onPressed,
+  });
+
+  final File path;
+  final VoidCallback onPressed;
+
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Expanded(
           child: Text(
-            'Choose a directory: ${widget.dirPath}',
+            'Choose a file: ${path.path}',
             overflow: TextOverflow.ellipsis,
           ),
         ),
         const SizedBox(width: 10),
         IconButton(
           icon: const Icon(Icons.folder),
-          onPressed: () async {
-            final dir = await _selectDir();
-            if (dir != null) {
-              widget.onChanged(dir.path);
-            }
-          },
+          onPressed: onPressed,
         ),
       ],
     );
-  }
-
-  Future<Directory?> _selectDir() async {
-    final result = await FilePicker.platform.getDirectoryPath();
-    if (result != null) {
-      if (kDebugMode) {
-        print('Selected directory: $result');
-      }
-      return Directory(result);
-    }
-    return null;
   }
 }

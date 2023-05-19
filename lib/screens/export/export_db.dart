@@ -21,7 +21,7 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
   DbExportFmt exportFmt = DbExportFmt.sqlite3;
   FileOpCtrModel exportCtr = FileOpCtrModel.empty();
   String _fileStem = 'backup';
-  String _selectedDir = '';
+  Directory? _selectedDir;
   String _savePath = '';
   bool _hasSaved = false;
 
@@ -75,9 +75,10 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
             },
           ),
           SelectDirField(
-            dirPath: _selectedDir,
-            onChanged: _getDir,
-          ),
+              dirPath: _selectedDir,
+              onPressed: () async {
+                await _getDir();
+              }),
           const SizedBox(height: 10),
           Wrap(
             spacing: 20,
@@ -85,7 +86,7 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
               SaveSecondaryButton(hasSaved: _hasSaved),
               PrimaryButton(
                 text: 'Save',
-                onPressed: _selectedDir.isEmpty
+                onPressed: _selectedDir == null
                     ? null
                     : () async {
                         await _writeDb();
@@ -107,11 +108,11 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
 
   Future<void> _writeDb() async {
     try {
-      File file = AppIOServices(
+      File file = await AppIOServices(
         dir: _selectedDir,
         fileStem: _fileStem,
         ext: _dbExtension,
-      ).getFilename();
+      ).getSavePath();
       await DbWriter(ref).writeDb(file);
       setState(() {
         _savePath = file.path;
@@ -132,7 +133,8 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
     }
   }
 
-  void _getDir(String? path) {
+  Future<void> _getDir() async {
+    final path = await FilePickerServices().selectDir();
     if (path != null) {
       setState(() {
         _selectedDir = path;

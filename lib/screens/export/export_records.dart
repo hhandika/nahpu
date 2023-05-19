@@ -24,7 +24,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
   SpecimenRecordType _taxonRecordType = SpecimenRecordType.mammalian;
   ExportRecordType? _recordType = ExportRecordType.narrative;
   String _fileStem = 'export';
-  String _selectedDir = '';
+  Directory? _selectedDir;
   bool _hasSaved = false;
   String _finalPath = '';
 
@@ -112,7 +112,10 @@ class ExportFormState extends ConsumerState<ExportForm> {
               }
             },
           ),
-          SelectDirField(dirPath: _selectedDir, onChanged: _getDir),
+          SelectDirField(
+            dirPath: _selectedDir,
+            onPressed: () async => await _getDir(),
+          ),
           const SizedBox(height: 10),
           Wrap(
             spacing: 20,
@@ -120,7 +123,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
               SaveSecondaryButton(hasSaved: _hasSaved),
               PrimaryButton(
                 text: 'Save',
-                onPressed: _selectedDir.isEmpty
+                onPressed: !exportCtr.isValid()
                     ? null
                     : () async {
                         await _exportFile();
@@ -166,10 +169,6 @@ class ExportFormState extends ConsumerState<ExportForm> {
   }
 
   Future<void> _exportFile() async {
-    final dir = Directory(_selectedDir);
-    if (!dir.existsSync()) {
-      dir.createSync(recursive: true);
-    }
     switch (exportFmt) {
       case ExportFmt.csv:
         await _writeDelimited(true);
@@ -193,11 +192,11 @@ class ExportFormState extends ConsumerState<ExportForm> {
   Future<void> _writeDelimited(bool isCsv) async {
     String ext = isCsv ? 'csv' : 'tsv';
     try {
-      File file = AppIOServices(
+      File file = await AppIOServices(
         dir: _selectedDir,
         fileStem: _fileStem,
         ext: ext,
-      ).getFilename();
+      ).getSavePath();
       await _matchRecordTypeToWriter(file, isCsv);
       setState(() {
         _hasSaved = true;
@@ -234,7 +233,8 @@ class ExportFormState extends ConsumerState<ExportForm> {
     }
   }
 
-  void _getDir(String? path) {
+  Future<void> _getDir() async {
+    final path = await FilePickerServices().selectDir();
     if (path != null) {
       setState(() {
         _selectedDir = path;
