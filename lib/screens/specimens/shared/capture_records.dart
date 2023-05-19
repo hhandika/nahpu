@@ -130,8 +130,8 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                   }),
               CommonTextField(
                 controller: widget.specimenCtr.trapIDCtr,
-                labelText: 'Trap ID',
-                hintText: 'Enter trap ID',
+                labelText: 'Method ID',
+                hintText: 'Enter ID, e.g. trap/net number, etc.',
                 isLastField: true,
                 onChanged: (String? value) {
                   _updateSpecimen(
