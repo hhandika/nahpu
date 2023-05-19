@@ -4,14 +4,13 @@ import 'package:nahpu/services/database/coordinate_queries.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/site_queries.dart';
 import 'package:drift/drift.dart' as db;
+import 'package:nahpu/services/io_services.dart';
 
 class SiteServices extends DbAccess {
   SiteServices(super.ref);
 
-  Database get dbase => ref.read(databaseProvider);
-
   Future<int> createNewSite(String projectUuid) async {
-    int siteID = await SiteQuery(dbase).createSite(SiteCompanion(
+    int siteID = await SiteQuery(dbAccess).createSite(SiteCompanion(
       projectUuid: db.Value(projectUuid),
     ));
     invalidateSite();
@@ -22,23 +21,23 @@ class SiteServices extends DbAccess {
     if (id == null) {
       return null;
     } else {
-      return SiteQuery(dbase).getSiteById(id);
+      return SiteQuery(dbAccess).getSiteById(id);
     }
   }
 
   Future<void> updateSite(int id, SiteCompanion entries) async {
-    await SiteQuery(dbase).updateSiteEntry(id, entries);
+    await SiteQuery(dbAccess).updateSiteEntry(id, entries);
   }
 
   Future<void> deleteSite(int id) async {
-    await SiteQuery(dbase).deleteSite(id);
+    await SiteQuery(dbAccess).deleteSite(id);
     await CoordinateServices(ref).deleteCoordinateBySiteID(id);
     invalidateSite();
   }
 
   void deleteAllSites() {
     final projectUuid = ref.read(projectUuidProvider);
-    SiteQuery(dbase).deleteAllSites(projectUuid);
+    SiteQuery(dbAccess).deleteAllSites(projectUuid);
     invalidateSite();
   }
 
@@ -50,26 +49,24 @@ class SiteServices extends DbAccess {
 class CoordinateServices extends DbAccess {
   CoordinateServices(super.ref);
 
-  Database get dbase => ref.read(databaseProvider);
-
   Future<List<CoordinateData>> getCoordinatesBySiteID(int siteID) async {
-    return CoordinateQuery(dbase).getCoordinatesBySiteID(siteID);
+    return CoordinateQuery(dbAccess).getCoordinatesBySiteID(siteID);
   }
 
   Future<void> createCoordinate(CoordinateCompanion form) async {
-    await CoordinateQuery(dbase).createCoordinate(form);
+    await CoordinateQuery(dbAccess).createCoordinate(form);
   }
 
   Future<void> updateCoordinate(
       int coordinateId, CoordinateCompanion form) async {
-    await CoordinateQuery(dbase).updateCoordinate(coordinateId, form);
+    await CoordinateQuery(dbAccess).updateCoordinate(coordinateId, form);
   }
 
   Future<void> deleteCoordinateBySiteID(int siteID) async {
-    await CoordinateQuery(dbase).deleteCoordinateBySiteID(siteID);
+    await CoordinateQuery(dbAccess).deleteCoordinateBySiteID(siteID);
   }
 
   Future<void> deleteCoordinate(int coordinateId) async {
-    await CoordinateQuery(dbase).deleteCoordinate(coordinateId);
+    await CoordinateQuery(dbAccess).deleteCoordinate(coordinateId);
   }
 }

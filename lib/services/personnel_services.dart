@@ -1,47 +1,45 @@
 import 'package:nahpu/providers/catalogs.dart';
-import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/personnel_queries.dart';
+import 'package:nahpu/services/io_services.dart';
 
 class PersonnelServices extends DbAccess {
   PersonnelServices(super.ref);
 
-  Database get db => ref.read(databaseProvider);
-  String get projectUuid => ref.read(projectUuidProvider);
-
   Future<int> createPersonnel(PersonnelCompanion personnel) async {
-    return await PersonnelQuery(db).createPersonnel(personnel);
+    return await PersonnelQuery(dbAccess).createPersonnel(personnel);
   }
 
   Future<void> createProjectPersonnel(PersonnelListCompanion form) async {
-    await PersonnelQuery(db).createProjectPersonnelEntry(form);
+    await PersonnelQuery(dbAccess).createProjectPersonnelEntry(form);
   }
 
   Future<void> updatePersonnelEntry(
       String uuid, PersonnelCompanion personnel) async {
-    await PersonnelQuery(db).updatePersonnelEntry(uuid, personnel);
+    await PersonnelQuery(dbAccess).updatePersonnelEntry(uuid, personnel);
     invalidatePersonnel();
   }
 
   Future<int?> getCurrentPersonnelFieldNumber(String personnelUuid) async {
-    return await PersonnelQuery(db).getCurrentFieldNumberByUuid(personnelUuid);
+    return await PersonnelQuery(dbAccess)
+        .getCurrentFieldNumberByUuid(personnelUuid);
   }
 
   Future<PersonnelData> getPersonnelByUuid(String uuid) async {
-    return await PersonnelQuery(db).getPersonnelByUuid(uuid);
+    return await PersonnelQuery(dbAccess).getPersonnelByUuid(uuid);
   }
 
   Future<List<PersonnelData>> getAllPersonnel() async {
-    return await PersonnelQuery(db).getAllPersonnel();
+    return await PersonnelQuery(dbAccess).getAllPersonnel();
   }
 
   void deletePersonnel(String uuid) {
-    PersonnelQuery(db).deletePersonnel(uuid);
+    PersonnelQuery(dbAccess).deletePersonnel(uuid);
     invalidatePersonnel();
   }
 
   void deleteAllPersonnelDb() {
-    PersonnelQuery(db).deleteAllPersonnel();
+    PersonnelQuery(dbAccess).deleteAllPersonnel();
     invalidatePersonnel();
   }
 

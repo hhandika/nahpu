@@ -1,6 +1,6 @@
-import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
+import 'package:nahpu/services/io_services.dart';
 
 String getSpeciesName(TaxonomyData data) {
   if (data.genus != null && data.specificEpithet != null) {
@@ -13,30 +13,28 @@ String getSpeciesName(TaxonomyData data) {
 class TaxonomyService extends DbAccess {
   TaxonomyService(super.ref);
 
-  Database get db => ref.read(databaseProvider);
-
   Future<TaxonomyData> getTaxonById(int id) async {
-    return await TaxonomyQuery(db).getTaxonById(id);
+    return await TaxonomyQuery(dbAccess).getTaxonById(id);
   }
 
   Future<List<TaxonomyData>> getTaxonList() {
-    return TaxonomyQuery(db).getTaxonList();
+    return TaxonomyQuery(dbAccess).getTaxonList();
   }
 
   Future<void> createTaxon(TaxonomyCompanion form) {
-    return TaxonomyQuery(db).createTaxon(form);
+    return TaxonomyQuery(dbAccess).createTaxon(form);
   }
 
   Future<void> updateTaxonEntry(int id, TaxonomyCompanion entry) {
-    return TaxonomyQuery(db).updateTaxonEntry(id, entry);
+    return TaxonomyQuery(dbAccess).updateTaxonEntry(id, entry);
   }
 
   Future<void> deleteTaxon(int id) {
-    return TaxonomyQuery(db).deleteTaxon(id);
+    return TaxonomyQuery(dbAccess).deleteTaxon(id);
   }
 
   Future<void> deleteAllTaxon() {
-    return TaxonomyQuery(db).deleteAllTaxon();
+    return TaxonomyQuery(dbAccess).deleteAllTaxon();
   }
 }
 

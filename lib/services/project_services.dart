@@ -1,5 +1,6 @@
 import 'package:nahpu/providers/validation.dart';
 import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/io_services.dart';
 import 'package:uuid/uuid.dart';
 import 'package:nahpu/providers/projects.dart';
 
@@ -10,23 +11,21 @@ get defaultCatalog => 'general-mammals';
 class ProjectServices extends DbAccess {
   ProjectServices(super.ref);
 
-  Database get db => ref.read(databaseProvider);
-
   void createProject(ProjectCompanion form) {
-    db.createProject(form);
+    dbAccess.createProject(form);
     _updateProjectUuid(form.uuid.value);
     ref.invalidate(projectListProvider);
     ref.invalidate(projectFormValidation);
   }
 
   void updateProject(String projectUuid, ProjectCompanion form) {
-    db.updateProjectEntry(projectUuid, form);
+    dbAccess.updateProjectEntry(projectUuid, form);
     ref.invalidate(projectFormValidation);
     invalidateProject();
   }
 
   Future<ProjectData> getProjectByUuid(String uuid) {
-    return db.getProjectByUuid(uuid);
+    return dbAccess.getProjectByUuid(uuid);
   }
 
   String getProjectUuid() {
@@ -34,7 +33,7 @@ class ProjectServices extends DbAccess {
   }
 
   Future<void> deleteProject(String uuid) async {
-    await db.deleteProject(uuid);
+    await dbAccess.deleteProject(uuid);
     ref.invalidate(projectListProvider);
   }
 

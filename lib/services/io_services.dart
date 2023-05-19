@@ -1,5 +1,8 @@
 import 'dart:io';
+import 'package:nahpu/services/database/database.dart';
 import 'package:path/path.dart' as path;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/providers/projects.dart';
 
 String get dateTimeStamp {
   DateTime now = DateTime.now();
@@ -38,4 +41,15 @@ class AppIOServices {
     String finalPath = path.join(dir, fileName);
     return File(finalPath);
   }
+}
+
+/// This class is used to access the database
+/// from the service classes.
+class DbAccess {
+  DbAccess(this.ref);
+
+  final WidgetRef ref;
+
+  Database get dbAccess => ref.read(databaseProvider);
+  String get projectUuid => ref.read(projectUuidProvider);
 }

@@ -1,80 +1,77 @@
 import 'package:nahpu/providers/catalogs.dart';
-import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/collevent_queries.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
+import 'package:nahpu/services/io_services.dart';
 
 class CollEventServices extends DbAccess {
   CollEventServices(super.ref);
 
-  Database get dbase => ref.read(databaseProvider);
-  String get projectUuid => ref.read(projectUuidProvider);
-
   Future<int> createNewCollEvents() async {
     int eventID =
-        await CollEventQuery(dbase).createCollEvent(CollEventCompanion(
+        await CollEventQuery(dbAccess).createCollEvent(CollEventCompanion(
       projectUuid: db.Value(projectUuid),
     ));
     // Weather data used collecting event id as a foreign key
     // so we need to create a new weather data entry
     // for the new collecting event
-    WeatherDataQuery(dbase)
+    WeatherDataQuery(dbAccess)
         .createWeatherData(WeatherCompanion(eventID: db.Value(eventID)));
     invalidateCollEvent();
     return eventID;
   }
 
   Future<List<CollEventData>> getAllCollEvents() async {
-    return CollEventQuery(dbase).getAllCollEvents(projectUuid);
+    return CollEventQuery(dbAccess).getAllCollEvents(projectUuid);
   }
 
   Future<List<CollPersonnelData>> getAllCollPersonnel(int collEventId) async {
-    return CollPersonnelQuery(dbase).getCollPersonnelByEventId(collEventId);
+    return CollPersonnelQuery(dbAccess).getCollPersonnelByEventId(collEventId);
   }
 
   Future<List<CollEffortData>> getAllCollEffort(int collEventId) async {
-    return CollEffortQuery(dbase).getCollEffortByEventId(collEventId);
+    return CollEffortQuery(dbAccess).getCollEffortByEventId(collEventId);
   }
 
   Future<WeatherData> getAllWeatherData(int collEventId) async {
-    return WeatherDataQuery(dbase).getWeatherDataByEventId(collEventId);
+    return WeatherDataQuery(dbAccess).getWeatherDataByEventId(collEventId);
   }
 
   Future<CollEventData?> getCollEvent(int? eventID) async {
     if (eventID == null) {
       return null;
     } else {
-      return CollEventQuery(dbase).getCollEventById(eventID);
+      return CollEventQuery(dbAccess).getCollEventById(eventID);
     }
   }
 
   Future<int> createCollPersonnel(CollPersonnelCompanion form) async {
-    int id = await CollPersonnelQuery(dbase).createCollPersonnel(form);
+    int id = await CollPersonnelQuery(dbAccess).createCollPersonnel(form);
     invalidateCollPersonnel();
     return id;
   }
 
   void updateCollPersonnel(int id, CollPersonnelCompanion form) async {
-    CollPersonnelQuery(dbase).updateCollPersonnelEntry(id, form);
+    CollPersonnelQuery(dbAccess).updateCollPersonnelEntry(id, form);
     invalidateCollPersonnel();
   }
 
   void updateCollEvent(int id, CollEventCompanion entries) {
-    CollEventQuery(dbase).updateCollEventEntry(id, entries);
+    CollEventQuery(dbAccess).updateCollEventEntry(id, entries);
   }
 
   void updateWeatherData(int eventID, WeatherCompanion weatherData) {
-    WeatherDataQuery(dbase).updateWeatherDataEntry(eventID, weatherData);
+    WeatherDataQuery(dbAccess).updateWeatherDataEntry(eventID, weatherData);
   }
 
   void deleteCollEvent(int collEvenId) {
-    CollEventQuery(dbase).deleteCollEvent(collEvenId);
-    WeatherDataQuery(dbase).deleteWeatherData(collEvenId);
+    CollEventQuery(dbAccess).deleteCollEvent(collEvenId);
+    WeatherDataQuery(dbAccess).deleteWeatherData(collEvenId);
     invalidateCollEvent();
   }
 
   void deleteCollPersonnel(int id) {
-    CollPersonnelQuery(dbase).deleteCollPersonnel(id);
+    CollPersonnelQuery(dbAccess).deleteCollPersonnel(id);
     invalidateCollPersonnel();
   }
 
