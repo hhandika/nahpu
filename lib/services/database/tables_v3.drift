@@ -126,6 +126,7 @@ CREATE TABLE media (
     camera TEXT,
     lenses TEXT,
     personnelId TEXT,
+    thumbnailPath TEXT,
     FOREIGN KEY(personnelId) REFERENCES personnel(uuid),
     FOREIGN KEY(fileId) REFERENCES fileMetadata(id)
 );
@@ -133,8 +134,8 @@ CREATE TABLE media (
 CREATE TABLE associatedData (
     primaryId INT PRIMARY KEY AUTOINCREMENT,
     secondaryId TEXT,
-    secondaryIdRef,
-    type,
+    secondaryIdRef TEXT,
+    type TEXT,
     description TEXT,
     fileId TEXT
 );
@@ -143,7 +144,7 @@ CREATE TABLE fileMetadata (
     id INT PRIMARY KEY AUTOINCREMENT,
     filename TEXT,
     sizeKb REAL,
-    relativePath,
+    relativePath TEXT,
     created TEXT
 );
 
@@ -271,6 +272,8 @@ CREATE TABLE avianMeasurement (
     sex INT,
     broodPatch INT,
     skullOssification INT,
+    hasBursa INT, -- newly add
+    bursaWidth REAL, -- Newly add
     bursaLength REAL,
     fat INT,
     stomachContent TEXT,

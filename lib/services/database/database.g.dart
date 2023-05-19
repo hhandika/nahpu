@@ -523,11 +523,11 @@ class FileMetadata extends Table
       $customConstraints: '');
   static const VerificationMeta _relativePathMeta =
       const VerificationMeta('relativePath');
-  late final GeneratedColumn<Uint8List> relativePath =
-      GeneratedColumn<Uint8List>('relativePath', aliasedName, true,
-          type: DriftSqlType.blob,
-          requiredDuringInsert: false,
-          $customConstraints: '');
+  late final GeneratedColumn<String> relativePath = GeneratedColumn<String>(
+      'relativePath', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _createdMeta =
       const VerificationMeta('created');
   late final GeneratedColumn<String> created = GeneratedColumn<String>(
@@ -584,7 +584,7 @@ class FileMetadata extends Table
       sizeKb: attachedDatabase.typeMapping
           .read(DriftSqlType.double, data['${effectivePrefix}sizeKb']),
       relativePath: attachedDatabase.typeMapping
-          .read(DriftSqlType.blob, data['${effectivePrefix}relativePath']),
+          .read(DriftSqlType.string, data['${effectivePrefix}relativePath']),
       created: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}created']),
     );
@@ -604,7 +604,7 @@ class FileMetadataData extends DataClass
   final int? id;
   final String? filename;
   final double? sizeKb;
-  final Uint8List? relativePath;
+  final String? relativePath;
   final String? created;
   const FileMetadataData(
       {this.id, this.filename, this.sizeKb, this.relativePath, this.created});
@@ -621,7 +621,7 @@ class FileMetadataData extends DataClass
       map['sizeKb'] = Variable<double>(sizeKb);
     }
     if (!nullToAbsent || relativePath != null) {
-      map['relativePath'] = Variable<Uint8List>(relativePath);
+      map['relativePath'] = Variable<String>(relativePath);
     }
     if (!nullToAbsent || created != null) {
       map['created'] = Variable<String>(created);
@@ -653,7 +653,7 @@ class FileMetadataData extends DataClass
       id: serializer.fromJson<int?>(json['id']),
       filename: serializer.fromJson<String?>(json['filename']),
       sizeKb: serializer.fromJson<double?>(json['sizeKb']),
-      relativePath: serializer.fromJson<Uint8List?>(json['relativePath']),
+      relativePath: serializer.fromJson<String?>(json['relativePath']),
       created: serializer.fromJson<String?>(json['created']),
     );
   }
@@ -664,7 +664,7 @@ class FileMetadataData extends DataClass
       'id': serializer.toJson<int?>(id),
       'filename': serializer.toJson<String?>(filename),
       'sizeKb': serializer.toJson<double?>(sizeKb),
-      'relativePath': serializer.toJson<Uint8List?>(relativePath),
+      'relativePath': serializer.toJson<String?>(relativePath),
       'created': serializer.toJson<String?>(created),
     };
   }
@@ -673,7 +673,7 @@ class FileMetadataData extends DataClass
           {Value<int?> id = const Value.absent(),
           Value<String?> filename = const Value.absent(),
           Value<double?> sizeKb = const Value.absent(),
-          Value<Uint8List?> relativePath = const Value.absent(),
+          Value<String?> relativePath = const Value.absent(),
           Value<String?> created = const Value.absent()}) =>
       FileMetadataData(
         id: id.present ? id.value : this.id,
@@ -696,8 +696,7 @@ class FileMetadataData extends DataClass
   }
 
   @override
-  int get hashCode => Object.hash(
-      id, filename, sizeKb, $driftBlobEquality.hash(relativePath), created);
+  int get hashCode => Object.hash(id, filename, sizeKb, relativePath, created);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -705,7 +704,7 @@ class FileMetadataData extends DataClass
           other.id == this.id &&
           other.filename == this.filename &&
           other.sizeKb == this.sizeKb &&
-          $driftBlobEquality.equals(other.relativePath, this.relativePath) &&
+          other.relativePath == this.relativePath &&
           other.created == this.created);
 }
 
@@ -713,7 +712,7 @@ class FileMetadataCompanion extends UpdateCompanion<FileMetadataData> {
   final Value<int?> id;
   final Value<String?> filename;
   final Value<double?> sizeKb;
-  final Value<Uint8List?> relativePath;
+  final Value<String?> relativePath;
   final Value<String?> created;
   const FileMetadataCompanion({
     this.id = const Value.absent(),
@@ -733,7 +732,7 @@ class FileMetadataCompanion extends UpdateCompanion<FileMetadataData> {
     Expression<int>? id,
     Expression<String>? filename,
     Expression<double>? sizeKb,
-    Expression<Uint8List>? relativePath,
+    Expression<String>? relativePath,
     Expression<String>? created,
   }) {
     return RawValuesInsertable({
@@ -749,7 +748,7 @@ class FileMetadataCompanion extends UpdateCompanion<FileMetadataData> {
       {Value<int?>? id,
       Value<String?>? filename,
       Value<double?>? sizeKb,
-      Value<Uint8List?>? relativePath,
+      Value<String?>? relativePath,
       Value<String?>? created}) {
     return FileMetadataCompanion(
       id: id ?? this.id,
@@ -773,7 +772,7 @@ class FileMetadataCompanion extends UpdateCompanion<FileMetadataData> {
       map['sizeKb'] = Variable<double>(sizeKb.value);
     }
     if (relativePath.present) {
-      map['relativePath'] = Variable<Uint8List>(relativePath.value);
+      map['relativePath'] = Variable<String>(relativePath.value);
     }
     if (created.present) {
       map['created'] = Variable<String>(created.value);
@@ -1167,6 +1166,8 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
   final String? affiliation;
   final String? role;
   final int? currentFieldNumber;
+
+  /// the next input for field number
   final int? photoID;
   final String? notes;
   const PersonnelData(
@@ -1543,6 +1544,13 @@ class Media extends Table with TableInfo<Media, MediaData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _thumbnailPathMeta =
+      const VerificationMeta('thumbnailPath');
+  late final GeneratedColumn<String> thumbnailPath = GeneratedColumn<String>(
+      'thumbnailPath', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
         primaryId,
@@ -1552,7 +1560,8 @@ class Media extends Table with TableInfo<Media, MediaData> {
         taken,
         camera,
         lenses,
-        personnelId
+        personnelId,
+        thumbnailPath
       ];
   @override
   String get aliasedName => _alias ?? 'media';
@@ -1601,6 +1610,12 @@ class Media extends Table with TableInfo<Media, MediaData> {
           personnelId.isAcceptableOrUnknown(
               data['personnelId']!, _personnelIdMeta));
     }
+    if (data.containsKey('thumbnailPath')) {
+      context.handle(
+          _thumbnailPathMeta,
+          thumbnailPath.isAcceptableOrUnknown(
+              data['thumbnailPath']!, _thumbnailPathMeta));
+    }
     return context;
   }
 
@@ -1626,6 +1641,8 @@ class Media extends Table with TableInfo<Media, MediaData> {
           .read(DriftSqlType.string, data['${effectivePrefix}lenses']),
       personnelId: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}personnelId']),
+      thumbnailPath: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}thumbnailPath']),
     );
   }
 
@@ -1652,6 +1669,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
   final String? camera;
   final String? lenses;
   final String? personnelId;
+  final String? thumbnailPath;
   const MediaData(
       {this.primaryId,
       this.secondaryId,
@@ -1660,7 +1678,8 @@ class MediaData extends DataClass implements Insertable<MediaData> {
       this.taken,
       this.camera,
       this.lenses,
-      this.personnelId});
+      this.personnelId,
+      this.thumbnailPath});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1688,6 +1707,9 @@ class MediaData extends DataClass implements Insertable<MediaData> {
     if (!nullToAbsent || personnelId != null) {
       map['personnelId'] = Variable<String>(personnelId);
     }
+    if (!nullToAbsent || thumbnailPath != null) {
+      map['thumbnailPath'] = Variable<String>(thumbnailPath);
+    }
     return map;
   }
 
@@ -1713,6 +1735,9 @@ class MediaData extends DataClass implements Insertable<MediaData> {
       personnelId: personnelId == null && nullToAbsent
           ? const Value.absent()
           : Value(personnelId),
+      thumbnailPath: thumbnailPath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(thumbnailPath),
     );
   }
 
@@ -1728,6 +1753,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
       camera: serializer.fromJson<String?>(json['camera']),
       lenses: serializer.fromJson<String?>(json['lenses']),
       personnelId: serializer.fromJson<String?>(json['personnelId']),
+      thumbnailPath: serializer.fromJson<String?>(json['thumbnailPath']),
     );
   }
   @override
@@ -1742,6 +1768,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
       'camera': serializer.toJson<String?>(camera),
       'lenses': serializer.toJson<String?>(lenses),
       'personnelId': serializer.toJson<String?>(personnelId),
+      'thumbnailPath': serializer.toJson<String?>(thumbnailPath),
     };
   }
 
@@ -1753,7 +1780,8 @@ class MediaData extends DataClass implements Insertable<MediaData> {
           Value<String?> taken = const Value.absent(),
           Value<String?> camera = const Value.absent(),
           Value<String?> lenses = const Value.absent(),
-          Value<String?> personnelId = const Value.absent()}) =>
+          Value<String?> personnelId = const Value.absent(),
+          Value<String?> thumbnailPath = const Value.absent()}) =>
       MediaData(
         primaryId: primaryId.present ? primaryId.value : this.primaryId,
         secondaryId: secondaryId.present ? secondaryId.value : this.secondaryId,
@@ -1764,6 +1792,8 @@ class MediaData extends DataClass implements Insertable<MediaData> {
         camera: camera.present ? camera.value : this.camera,
         lenses: lenses.present ? lenses.value : this.lenses,
         personnelId: personnelId.present ? personnelId.value : this.personnelId,
+        thumbnailPath:
+            thumbnailPath.present ? thumbnailPath.value : this.thumbnailPath,
       );
   @override
   String toString() {
@@ -1775,14 +1805,15 @@ class MediaData extends DataClass implements Insertable<MediaData> {
           ..write('taken: $taken, ')
           ..write('camera: $camera, ')
           ..write('lenses: $lenses, ')
-          ..write('personnelId: $personnelId')
+          ..write('personnelId: $personnelId, ')
+          ..write('thumbnailPath: $thumbnailPath')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(primaryId, secondaryId, secondaryIdRef,
-      fileId, taken, camera, lenses, personnelId);
+      fileId, taken, camera, lenses, personnelId, thumbnailPath);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1794,7 +1825,8 @@ class MediaData extends DataClass implements Insertable<MediaData> {
           other.taken == this.taken &&
           other.camera == this.camera &&
           other.lenses == this.lenses &&
-          other.personnelId == this.personnelId);
+          other.personnelId == this.personnelId &&
+          other.thumbnailPath == this.thumbnailPath);
 }
 
 class MediaCompanion extends UpdateCompanion<MediaData> {
@@ -1806,6 +1838,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
   final Value<String?> camera;
   final Value<String?> lenses;
   final Value<String?> personnelId;
+  final Value<String?> thumbnailPath;
   const MediaCompanion({
     this.primaryId = const Value.absent(),
     this.secondaryId = const Value.absent(),
@@ -1815,6 +1848,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
     this.camera = const Value.absent(),
     this.lenses = const Value.absent(),
     this.personnelId = const Value.absent(),
+    this.thumbnailPath = const Value.absent(),
   });
   MediaCompanion.insert({
     this.primaryId = const Value.absent(),
@@ -1825,6 +1859,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
     this.camera = const Value.absent(),
     this.lenses = const Value.absent(),
     this.personnelId = const Value.absent(),
+    this.thumbnailPath = const Value.absent(),
   });
   static Insertable<MediaData> custom({
     Expression<int>? primaryId,
@@ -1835,6 +1870,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
     Expression<String>? camera,
     Expression<String>? lenses,
     Expression<String>? personnelId,
+    Expression<String>? thumbnailPath,
   }) {
     return RawValuesInsertable({
       if (primaryId != null) 'primaryId': primaryId,
@@ -1845,6 +1881,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
       if (camera != null) 'camera': camera,
       if (lenses != null) 'lenses': lenses,
       if (personnelId != null) 'personnelId': personnelId,
+      if (thumbnailPath != null) 'thumbnailPath': thumbnailPath,
     });
   }
 
@@ -1856,7 +1893,8 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
       Value<String?>? taken,
       Value<String?>? camera,
       Value<String?>? lenses,
-      Value<String?>? personnelId}) {
+      Value<String?>? personnelId,
+      Value<String?>? thumbnailPath}) {
     return MediaCompanion(
       primaryId: primaryId ?? this.primaryId,
       secondaryId: secondaryId ?? this.secondaryId,
@@ -1866,6 +1904,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
       camera: camera ?? this.camera,
       lenses: lenses ?? this.lenses,
       personnelId: personnelId ?? this.personnelId,
+      thumbnailPath: thumbnailPath ?? this.thumbnailPath,
     );
   }
 
@@ -1896,6 +1935,9 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
     if (personnelId.present) {
       map['personnelId'] = Variable<String>(personnelId.value);
     }
+    if (thumbnailPath.present) {
+      map['thumbnailPath'] = Variable<String>(thumbnailPath.value);
+    }
     return map;
   }
 
@@ -1909,7 +1951,8 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
           ..write('taken: $taken, ')
           ..write('camera: $camera, ')
           ..write('lenses: $lenses, ')
-          ..write('personnelId: $personnelId')
+          ..write('personnelId: $personnelId, ')
+          ..write('thumbnailPath: $thumbnailPath')
           ..write(')'))
         .toString();
   }
@@ -2190,6 +2233,8 @@ class SiteData extends DataClass implements Insertable<SiteData> {
   final String? municipality;
   final String? mediaID;
   final String? locality;
+
+  /// verbatim locality in DWC
   final String? remark;
   final String? habitatType;
   final String? habitatCondition;
@@ -2862,7 +2907,11 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
 
 class CoordinateData extends DataClass implements Insertable<CoordinateData> {
   final int? id;
+
+  /// internal id for easy access
   final String? nameId;
+
+  /// users assigned id.
   final double? decimalLatitude;
   final double? decimalLongitude;
   final int? elevationInMeter;
@@ -4478,6 +4527,8 @@ class CollPersonnelData extends DataClass
   final int? eventID;
   final String? personnelId;
   final String? name;
+
+  /// we add it here to save time pulling it from personnel data
   final String? role;
   const CollPersonnelData(
       {required this.id, this.eventID, this.personnelId, this.name, this.role});
@@ -5385,15 +5436,15 @@ class AssociatedData extends Table
       $customConstraints: '');
   static const VerificationMeta _secondaryIdRefMeta =
       const VerificationMeta('secondaryIdRef');
-  late final GeneratedColumn<Uint8List> secondaryIdRef =
-      GeneratedColumn<Uint8List>('secondaryIdRef', aliasedName, true,
-          type: DriftSqlType.blob,
-          requiredDuringInsert: false,
-          $customConstraints: '');
+  late final GeneratedColumn<String> secondaryIdRef = GeneratedColumn<String>(
+      'secondaryIdRef', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _typeMeta = const VerificationMeta('type');
-  late final GeneratedColumn<Uint8List> type = GeneratedColumn<Uint8List>(
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
       'type', aliasedName, true,
-      type: DriftSqlType.blob,
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
   static const VerificationMeta _descriptionMeta =
@@ -5465,9 +5516,9 @@ class AssociatedData extends Table
       secondaryId: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}secondaryId']),
       secondaryIdRef: attachedDatabase.typeMapping
-          .read(DriftSqlType.blob, data['${effectivePrefix}secondaryIdRef']),
+          .read(DriftSqlType.string, data['${effectivePrefix}secondaryIdRef']),
       type: attachedDatabase.typeMapping
-          .read(DriftSqlType.blob, data['${effectivePrefix}type']),
+          .read(DriftSqlType.string, data['${effectivePrefix}type']),
       description: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}description']),
       fileId: attachedDatabase.typeMapping
@@ -5488,8 +5539,8 @@ class AssociatedDataData extends DataClass
     implements Insertable<AssociatedDataData> {
   final int? primaryId;
   final String? secondaryId;
-  final Uint8List? secondaryIdRef;
-  final Uint8List? type;
+  final String? secondaryIdRef;
+  final String? type;
   final String? description;
   final String? fileId;
   const AssociatedDataData(
@@ -5509,10 +5560,10 @@ class AssociatedDataData extends DataClass
       map['secondaryId'] = Variable<String>(secondaryId);
     }
     if (!nullToAbsent || secondaryIdRef != null) {
-      map['secondaryIdRef'] = Variable<Uint8List>(secondaryIdRef);
+      map['secondaryIdRef'] = Variable<String>(secondaryIdRef);
     }
     if (!nullToAbsent || type != null) {
-      map['type'] = Variable<Uint8List>(type);
+      map['type'] = Variable<String>(type);
     }
     if (!nullToAbsent || description != null) {
       map['description'] = Variable<String>(description);
@@ -5549,8 +5600,8 @@ class AssociatedDataData extends DataClass
     return AssociatedDataData(
       primaryId: serializer.fromJson<int?>(json['primaryId']),
       secondaryId: serializer.fromJson<String?>(json['secondaryId']),
-      secondaryIdRef: serializer.fromJson<Uint8List?>(json['secondaryIdRef']),
-      type: serializer.fromJson<Uint8List?>(json['type']),
+      secondaryIdRef: serializer.fromJson<String?>(json['secondaryIdRef']),
+      type: serializer.fromJson<String?>(json['type']),
       description: serializer.fromJson<String?>(json['description']),
       fileId: serializer.fromJson<String?>(json['fileId']),
     );
@@ -5561,8 +5612,8 @@ class AssociatedDataData extends DataClass
     return <String, dynamic>{
       'primaryId': serializer.toJson<int?>(primaryId),
       'secondaryId': serializer.toJson<String?>(secondaryId),
-      'secondaryIdRef': serializer.toJson<Uint8List?>(secondaryIdRef),
-      'type': serializer.toJson<Uint8List?>(type),
+      'secondaryIdRef': serializer.toJson<String?>(secondaryIdRef),
+      'type': serializer.toJson<String?>(type),
       'description': serializer.toJson<String?>(description),
       'fileId': serializer.toJson<String?>(fileId),
     };
@@ -5571,8 +5622,8 @@ class AssociatedDataData extends DataClass
   AssociatedDataData copyWith(
           {Value<int?> primaryId = const Value.absent(),
           Value<String?> secondaryId = const Value.absent(),
-          Value<Uint8List?> secondaryIdRef = const Value.absent(),
-          Value<Uint8List?> type = const Value.absent(),
+          Value<String?> secondaryIdRef = const Value.absent(),
+          Value<String?> type = const Value.absent(),
           Value<String?> description = const Value.absent(),
           Value<String?> fileId = const Value.absent()}) =>
       AssociatedDataData(
@@ -5599,21 +5650,15 @@ class AssociatedDataData extends DataClass
 
   @override
   int get hashCode => Object.hash(
-      primaryId,
-      secondaryId,
-      $driftBlobEquality.hash(secondaryIdRef),
-      $driftBlobEquality.hash(type),
-      description,
-      fileId);
+      primaryId, secondaryId, secondaryIdRef, type, description, fileId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is AssociatedDataData &&
           other.primaryId == this.primaryId &&
           other.secondaryId == this.secondaryId &&
-          $driftBlobEquality.equals(
-              other.secondaryIdRef, this.secondaryIdRef) &&
-          $driftBlobEquality.equals(other.type, this.type) &&
+          other.secondaryIdRef == this.secondaryIdRef &&
+          other.type == this.type &&
           other.description == this.description &&
           other.fileId == this.fileId);
 }
@@ -5621,8 +5666,8 @@ class AssociatedDataData extends DataClass
 class AssociatedDataCompanion extends UpdateCompanion<AssociatedDataData> {
   final Value<int?> primaryId;
   final Value<String?> secondaryId;
-  final Value<Uint8List?> secondaryIdRef;
-  final Value<Uint8List?> type;
+  final Value<String?> secondaryIdRef;
+  final Value<String?> type;
   final Value<String?> description;
   final Value<String?> fileId;
   const AssociatedDataCompanion({
@@ -5644,8 +5689,8 @@ class AssociatedDataCompanion extends UpdateCompanion<AssociatedDataData> {
   static Insertable<AssociatedDataData> custom({
     Expression<int>? primaryId,
     Expression<String>? secondaryId,
-    Expression<Uint8List>? secondaryIdRef,
-    Expression<Uint8List>? type,
+    Expression<String>? secondaryIdRef,
+    Expression<String>? type,
     Expression<String>? description,
     Expression<String>? fileId,
   }) {
@@ -5662,8 +5707,8 @@ class AssociatedDataCompanion extends UpdateCompanion<AssociatedDataData> {
   AssociatedDataCompanion copyWith(
       {Value<int?>? primaryId,
       Value<String?>? secondaryId,
-      Value<Uint8List?>? secondaryIdRef,
-      Value<Uint8List?>? type,
+      Value<String?>? secondaryIdRef,
+      Value<String?>? type,
       Value<String?>? description,
       Value<String?>? fileId}) {
     return AssociatedDataCompanion(
@@ -5686,10 +5731,10 @@ class AssociatedDataCompanion extends UpdateCompanion<AssociatedDataData> {
       map['secondaryId'] = Variable<String>(secondaryId.value);
     }
     if (secondaryIdRef.present) {
-      map['secondaryIdRef'] = Variable<Uint8List>(secondaryIdRef.value);
+      map['secondaryIdRef'] = Variable<String>(secondaryIdRef.value);
     }
     if (type.present) {
-      map['type'] = Variable<Uint8List>(type.value);
+      map['type'] = Variable<String>(type.value);
     }
     if (description.present) {
       map['description'] = Variable<String>(description.value);
@@ -6972,6 +7017,8 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
   final String? projectUuid;
   final int? speciesID;
   final String? taxonGroup;
+
+  /// use for catalog formats
   final String? condition;
   final String? prepDate;
   final String? prepTime;
@@ -8091,6 +8138,8 @@ class MammalMeasurementData extends DataClass
   final int? sex;
   final int? age;
   final int? testisPosition;
+
+  /// encode using enum
   final double? testisLength;
   final double? testisWidth;
   final int? epididymisAppearance;
@@ -9022,6 +9071,20 @@ class AvianMeasurement extends Table
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _hasBursaMeta =
+      const VerificationMeta('hasBursa');
+  late final GeneratedColumn<int> hasBursa = GeneratedColumn<int>(
+      'hasBursa', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _bursaWidthMeta =
+      const VerificationMeta('bursaWidth');
+  late final GeneratedColumn<double> bursaWidth = GeneratedColumn<double>(
+      'bursaWidth', aliasedName, true,
+      type: DriftSqlType.double,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _bursaLengthMeta =
       const VerificationMeta('bursaLength');
   late final GeneratedColumn<double> bursaLength = GeneratedColumn<double>(
@@ -9198,6 +9261,8 @@ class AvianMeasurement extends Table
         sex,
         broodPatch,
         skullOssification,
+        hasBursa,
+        bursaWidth,
         bursaLength,
         fat,
         stomachContent,
@@ -9297,6 +9362,16 @@ class AvianMeasurement extends Table
           _skullOssificationMeta,
           skullOssification.isAcceptableOrUnknown(
               data['skullOssification']!, _skullOssificationMeta));
+    }
+    if (data.containsKey('hasBursa')) {
+      context.handle(_hasBursaMeta,
+          hasBursa.isAcceptableOrUnknown(data['hasBursa']!, _hasBursaMeta));
+    }
+    if (data.containsKey('bursaWidth')) {
+      context.handle(
+          _bursaWidthMeta,
+          bursaWidth.isAcceptableOrUnknown(
+              data['bursaWidth']!, _bursaWidthMeta));
     }
     if (data.containsKey('bursaLength')) {
       context.handle(
@@ -9465,6 +9540,10 @@ class AvianMeasurement extends Table
           .read(DriftSqlType.int, data['${effectivePrefix}broodPatch']),
       skullOssification: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}skullOssification']),
+      hasBursa: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}hasBursa']),
+      bursaWidth: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}bursaWidth']),
       bursaLength: attachedDatabase.typeMapping
           .read(DriftSqlType.double, data['${effectivePrefix}bursaLength']),
       fat: attachedDatabase.typeMapping
@@ -9533,6 +9612,8 @@ class AvianMeasurementData extends DataClass
   final double? wingspan;
   final String? irisColor;
   final String? irisHex;
+
+  /// Hex number for iris color
   final String? billColor;
   final String? billHex;
   final String? footColor;
@@ -9542,6 +9623,12 @@ class AvianMeasurementData extends DataClass
   final int? sex;
   final int? broodPatch;
   final int? skullOssification;
+  final int? hasBursa;
+
+  /// newly add
+  final double? bursaWidth;
+
+  /// Newly add
   final double? bursaLength;
   final int? fat;
   final String? stomachContent;
@@ -9556,12 +9643,18 @@ class AvianMeasurementData extends DataClass
   final double? secondOvaSize;
   final double? thirdOvaSize;
   final int? oviductAppearance;
+
+  /// encode to int to save space
   final String? ovaryRemark;
   final int? wingIsMolt;
+
+  /// encode text
   final String? wingMolt;
   final int? tailIsMolt;
   final String? tailMolt;
   final int? bodyMolt;
+
+  /// encode text
   final String? moltRemark;
   final String? specimenRemark;
   final String? habitatRemark;
@@ -9580,6 +9673,8 @@ class AvianMeasurementData extends DataClass
       this.sex,
       this.broodPatch,
       this.skullOssification,
+      this.hasBursa,
+      this.bursaWidth,
       this.bursaLength,
       this.fat,
       this.stomachContent,
@@ -9645,6 +9740,12 @@ class AvianMeasurementData extends DataClass
     }
     if (!nullToAbsent || skullOssification != null) {
       map['skullOssification'] = Variable<int>(skullOssification);
+    }
+    if (!nullToAbsent || hasBursa != null) {
+      map['hasBursa'] = Variable<int>(hasBursa);
+    }
+    if (!nullToAbsent || bursaWidth != null) {
+      map['bursaWidth'] = Variable<double>(bursaWidth);
     }
     if (!nullToAbsent || bursaLength != null) {
       map['bursaLength'] = Variable<double>(bursaLength);
@@ -9757,6 +9858,12 @@ class AvianMeasurementData extends DataClass
       skullOssification: skullOssification == null && nullToAbsent
           ? const Value.absent()
           : Value(skullOssification),
+      hasBursa: hasBursa == null && nullToAbsent
+          ? const Value.absent()
+          : Value(hasBursa),
+      bursaWidth: bursaWidth == null && nullToAbsent
+          ? const Value.absent()
+          : Value(bursaWidth),
       bursaLength: bursaLength == null && nullToAbsent
           ? const Value.absent()
           : Value(bursaLength),
@@ -9845,6 +9952,8 @@ class AvianMeasurementData extends DataClass
       sex: serializer.fromJson<int?>(json['sex']),
       broodPatch: serializer.fromJson<int?>(json['broodPatch']),
       skullOssification: serializer.fromJson<int?>(json['skullOssification']),
+      hasBursa: serializer.fromJson<int?>(json['hasBursa']),
+      bursaWidth: serializer.fromJson<double?>(json['bursaWidth']),
       bursaLength: serializer.fromJson<double?>(json['bursaLength']),
       fat: serializer.fromJson<int?>(json['fat']),
       stomachContent: serializer.fromJson<String?>(json['stomachContent']),
@@ -9888,6 +9997,8 @@ class AvianMeasurementData extends DataClass
       'sex': serializer.toJson<int?>(sex),
       'broodPatch': serializer.toJson<int?>(broodPatch),
       'skullOssification': serializer.toJson<int?>(skullOssification),
+      'hasBursa': serializer.toJson<int?>(hasBursa),
+      'bursaWidth': serializer.toJson<double?>(bursaWidth),
       'bursaLength': serializer.toJson<double?>(bursaLength),
       'fat': serializer.toJson<int?>(fat),
       'stomachContent': serializer.toJson<String?>(stomachContent),
@@ -9929,6 +10040,8 @@ class AvianMeasurementData extends DataClass
           Value<int?> sex = const Value.absent(),
           Value<int?> broodPatch = const Value.absent(),
           Value<int?> skullOssification = const Value.absent(),
+          Value<int?> hasBursa = const Value.absent(),
+          Value<double?> bursaWidth = const Value.absent(),
           Value<double?> bursaLength = const Value.absent(),
           Value<int?> fat = const Value.absent(),
           Value<String?> stomachContent = const Value.absent(),
@@ -9969,6 +10082,8 @@ class AvianMeasurementData extends DataClass
         skullOssification: skullOssification.present
             ? skullOssification.value
             : this.skullOssification,
+        hasBursa: hasBursa.present ? hasBursa.value : this.hasBursa,
+        bursaWidth: bursaWidth.present ? bursaWidth.value : this.bursaWidth,
         bursaLength: bursaLength.present ? bursaLength.value : this.bursaLength,
         fat: fat.present ? fat.value : this.fat,
         stomachContent:
@@ -10023,6 +10138,8 @@ class AvianMeasurementData extends DataClass
           ..write('sex: $sex, ')
           ..write('broodPatch: $broodPatch, ')
           ..write('skullOssification: $skullOssification, ')
+          ..write('hasBursa: $hasBursa, ')
+          ..write('bursaWidth: $bursaWidth, ')
           ..write('bursaLength: $bursaLength, ')
           ..write('fat: $fat, ')
           ..write('stomachContent: $stomachContent, ')
@@ -10066,6 +10183,8 @@ class AvianMeasurementData extends DataClass
         sex,
         broodPatch,
         skullOssification,
+        hasBursa,
+        bursaWidth,
         bursaLength,
         fat,
         stomachContent,
@@ -10108,6 +10227,8 @@ class AvianMeasurementData extends DataClass
           other.sex == this.sex &&
           other.broodPatch == this.broodPatch &&
           other.skullOssification == this.skullOssification &&
+          other.hasBursa == this.hasBursa &&
+          other.bursaWidth == this.bursaWidth &&
           other.bursaLength == this.bursaLength &&
           other.fat == this.fat &&
           other.stomachContent == this.stomachContent &&
@@ -10148,6 +10269,8 @@ class AvianMeasurementCompanion extends UpdateCompanion<AvianMeasurementData> {
   final Value<int?> sex;
   final Value<int?> broodPatch;
   final Value<int?> skullOssification;
+  final Value<int?> hasBursa;
+  final Value<double?> bursaWidth;
   final Value<double?> bursaLength;
   final Value<int?> fat;
   final Value<String?> stomachContent;
@@ -10187,6 +10310,8 @@ class AvianMeasurementCompanion extends UpdateCompanion<AvianMeasurementData> {
     this.sex = const Value.absent(),
     this.broodPatch = const Value.absent(),
     this.skullOssification = const Value.absent(),
+    this.hasBursa = const Value.absent(),
+    this.bursaWidth = const Value.absent(),
     this.bursaLength = const Value.absent(),
     this.fat = const Value.absent(),
     this.stomachContent = const Value.absent(),
@@ -10227,6 +10352,8 @@ class AvianMeasurementCompanion extends UpdateCompanion<AvianMeasurementData> {
     this.sex = const Value.absent(),
     this.broodPatch = const Value.absent(),
     this.skullOssification = const Value.absent(),
+    this.hasBursa = const Value.absent(),
+    this.bursaWidth = const Value.absent(),
     this.bursaLength = const Value.absent(),
     this.fat = const Value.absent(),
     this.stomachContent = const Value.absent(),
@@ -10267,6 +10394,8 @@ class AvianMeasurementCompanion extends UpdateCompanion<AvianMeasurementData> {
     Expression<int>? sex,
     Expression<int>? broodPatch,
     Expression<int>? skullOssification,
+    Expression<int>? hasBursa,
+    Expression<double>? bursaWidth,
     Expression<double>? bursaLength,
     Expression<int>? fat,
     Expression<String>? stomachContent,
@@ -10307,6 +10436,8 @@ class AvianMeasurementCompanion extends UpdateCompanion<AvianMeasurementData> {
       if (sex != null) 'sex': sex,
       if (broodPatch != null) 'broodPatch': broodPatch,
       if (skullOssification != null) 'skullOssification': skullOssification,
+      if (hasBursa != null) 'hasBursa': hasBursa,
+      if (bursaWidth != null) 'bursaWidth': bursaWidth,
       if (bursaLength != null) 'bursaLength': bursaLength,
       if (fat != null) 'fat': fat,
       if (stomachContent != null) 'stomachContent': stomachContent,
@@ -10349,6 +10480,8 @@ class AvianMeasurementCompanion extends UpdateCompanion<AvianMeasurementData> {
       Value<int?>? sex,
       Value<int?>? broodPatch,
       Value<int?>? skullOssification,
+      Value<int?>? hasBursa,
+      Value<double?>? bursaWidth,
       Value<double?>? bursaLength,
       Value<int?>? fat,
       Value<String?>? stomachContent,
@@ -10388,6 +10521,8 @@ class AvianMeasurementCompanion extends UpdateCompanion<AvianMeasurementData> {
       sex: sex ?? this.sex,
       broodPatch: broodPatch ?? this.broodPatch,
       skullOssification: skullOssification ?? this.skullOssification,
+      hasBursa: hasBursa ?? this.hasBursa,
+      bursaWidth: bursaWidth ?? this.bursaWidth,
       bursaLength: bursaLength ?? this.bursaLength,
       fat: fat ?? this.fat,
       stomachContent: stomachContent ?? this.stomachContent,
@@ -10459,6 +10594,12 @@ class AvianMeasurementCompanion extends UpdateCompanion<AvianMeasurementData> {
     }
     if (skullOssification.present) {
       map['skullOssification'] = Variable<int>(skullOssification.value);
+    }
+    if (hasBursa.present) {
+      map['hasBursa'] = Variable<int>(hasBursa.value);
+    }
+    if (bursaWidth.present) {
+      map['bursaWidth'] = Variable<double>(bursaWidth.value);
     }
     if (bursaLength.present) {
       map['bursaLength'] = Variable<double>(bursaLength.value);
@@ -10552,6 +10693,8 @@ class AvianMeasurementCompanion extends UpdateCompanion<AvianMeasurementData> {
           ..write('sex: $sex, ')
           ..write('broodPatch: $broodPatch, ')
           ..write('skullOssification: $skullOssification, ')
+          ..write('hasBursa: $hasBursa, ')
+          ..write('bursaWidth: $bursaWidth, ')
           ..write('bursaLength: $bursaLength, ')
           ..write('fat: $fat, ')
           ..write('stomachContent: $stomachContent, ')
@@ -10812,9 +10955,13 @@ class SpecimenPart extends Table
 class SpecimenPartData extends DataClass
     implements Insertable<SpecimenPartData> {
   final int? id;
+
+  /// internal id
   final String? specimenUuid;
   final String? tissueID;
   final String? barcodeID;
+
+  /// primary use prep number
   final String? type;
   final String? count;
   final String? treatment;
