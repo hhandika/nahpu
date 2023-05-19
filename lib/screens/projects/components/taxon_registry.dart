@@ -139,9 +139,6 @@ class RegisteredData extends StatelessWidget {
                   ),
                 ],
               ),
-        const SizedBox(
-          height: 10,
-        ),
         TextButton(
           onPressed: () {
             Navigator.of(context).push(
@@ -293,7 +290,7 @@ class TaxonDataContainer extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.all(10),
         child: Container(
-          height: 180,
+          height: 200,
           width: 180,
           padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
           decoration: BoxDecoration(
