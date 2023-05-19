@@ -1,6 +1,13 @@
 import 'dart:io';
 import 'package:path/path.dart' as path;
 
+String get dateTimeStamp {
+  DateTime now = DateTime.now();
+  String date = '${now.year}-${now.month}-${now.day}';
+  String time = '${now.hour}-${now.minute}-${now.second}';
+  return '$date-$time';
+}
+
 class AppIOServices {
   AppIOServices({
     required this.dir,

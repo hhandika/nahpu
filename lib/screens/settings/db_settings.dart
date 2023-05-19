@@ -80,9 +80,11 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
                           builder: (context) => AlertDialog(
                             title: const Text('Replace Database'),
                             content: const Text(
-                                'This will replace the current database with the selected one. '
-                                'It cannot be undone! '
-                                'Are you sure you want to replace the database?'),
+                              'This will replace the current database with the selected one. '
+                              'It cannot be undone! '
+                              'Are you sure you want to replace the database?',
+                              textAlign: TextAlign.center,
+                            ),
                             actions: [
                               PrimaryButton(
                                 text: 'Cancel',
@@ -171,6 +173,7 @@ class DBReplacedPage extends StatelessWidget {
                   'Database has been replaced! '
                   'Close the app and reopen it to see the changes.',
                   style: Theme.of(context).textTheme.bodyLarge,
+                  textAlign: TextAlign.center,
                 ),
               ],
             ),
