@@ -6,18 +6,25 @@ import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 
 class FileOperationPage extends StatelessWidget {
-  const FileOperationPage({super.key, required this.children});
+  const FileOperationPage({
+    super.key,
+    this.mainAxisAlignment = MainAxisAlignment.center,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
+    required this.children,
+  });
 
+  final MainAxisAlignment mainAxisAlignment;
+  final CrossAxisAlignment crossAxisAlignment;
   final List<Widget> children;
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Center(
-        child: ScrollableLayout(
-          child: Column(
-            children: children,
-          ),
+      child: ScrollableLayout(
+        child: Column(
+          mainAxisAlignment: mainAxisAlignment,
+          crossAxisAlignment: crossAxisAlignment,
+          children: children,
         ),
       ),
     );

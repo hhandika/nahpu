@@ -29,10 +29,12 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
         automaticallyImplyLeading: false,
       ),
       body: FileOperationPage(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Replace Database',
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
           SettingCard(
             children: [
