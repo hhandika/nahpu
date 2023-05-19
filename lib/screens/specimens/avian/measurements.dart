@@ -249,6 +249,11 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
           },
         ),
       ),
+      BursaField(
+        specimenUuid: widget.specimenUuid,
+        useHorizontalLayout: widget.useHorizontalLayout,
+        ctr: ctr,
+      ),
       MaleGonadForm(
         specimenUuid: widget.specimenUuid,
         ctr: ctr,
