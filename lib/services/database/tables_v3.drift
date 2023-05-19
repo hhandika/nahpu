@@ -203,6 +203,7 @@ CREATE TABLE specimen (
     condition TEXT,
     prepDate TEXT,
     prepTime TEXT,
+    collectedTime TEXT, -- late update
     captureDate TEXT,
     isRelativeTime INT,
     captureTime TEXT,

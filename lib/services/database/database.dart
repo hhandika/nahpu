@@ -36,17 +36,17 @@ class Database extends _$Database {
     // We remove expense table. NO NEED for the app.
     await m.deleteTable('expense');
 
-    // We add coordinateID and trapID to specimen table.
+    // We add missing columns in the specimen table.
     await m.addColumn(specimen, specimen.coordinateID);
     await m.addColumn(specimen, specimen.trapID);
     await m.addColumn(specimen, specimen.museumID);
+    await m.addColumn(specimen, specimen.collectedTime);
 
     // We switch bird table to revised version
     await m.deleteTable('bird_measurement');
     await m.createTable(avianMeasurement);
 
     _castMammalType(m);
-    // Alter wing and tail molt columns
   }
 
   Future<void> _castMammalType(Migrator m) async {

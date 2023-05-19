@@ -6698,6 +6698,13 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _collectedTimeMeta =
+      const VerificationMeta('collectedTime');
+  late final GeneratedColumn<String> collectedTime = GeneratedColumn<String>(
+      'collectedTime', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _captureDateMeta =
       const VerificationMeta('captureDate');
   late final GeneratedColumn<String> captureDate = GeneratedColumn<String>(
@@ -6804,6 +6811,7 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
         condition,
         prepDate,
         prepTime,
+        collectedTime,
         captureDate,
         isRelativeTime,
         captureTime,
@@ -6861,6 +6869,12 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
     if (data.containsKey('prepTime')) {
       context.handle(_prepTimeMeta,
           prepTime.isAcceptableOrUnknown(data['prepTime']!, _prepTimeMeta));
+    }
+    if (data.containsKey('collectedTime')) {
+      context.handle(
+          _collectedTimeMeta,
+          collectedTime.isAcceptableOrUnknown(
+              data['collectedTime']!, _collectedTimeMeta));
     }
     if (data.containsKey('captureDate')) {
       context.handle(
@@ -6963,6 +6977,8 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
           .read(DriftSqlType.string, data['${effectivePrefix}prepDate']),
       prepTime: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}prepTime']),
+      collectedTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}collectedTime']),
       captureDate: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}captureDate']),
       isRelativeTime: attachedDatabase.typeMapping
@@ -7022,6 +7038,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
   final String? condition;
   final String? prepDate;
   final String? prepTime;
+  final String? collectedTime;
   final String? captureDate;
   final int? isRelativeTime;
   final String? captureTime;
@@ -7044,6 +7061,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       this.condition,
       this.prepDate,
       this.prepTime,
+      this.collectedTime,
       this.captureDate,
       this.isRelativeTime,
       this.captureTime,
@@ -7079,6 +7097,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
     }
     if (!nullToAbsent || prepTime != null) {
       map['prepTime'] = Variable<String>(prepTime);
+    }
+    if (!nullToAbsent || collectedTime != null) {
+      map['collectedTime'] = Variable<String>(collectedTime);
     }
     if (!nullToAbsent || captureDate != null) {
       map['captureDate'] = Variable<String>(captureDate);
@@ -7146,6 +7167,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       prepTime: prepTime == null && nullToAbsent
           ? const Value.absent()
           : Value(prepTime),
+      collectedTime: collectedTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(collectedTime),
       captureDate: captureDate == null && nullToAbsent
           ? const Value.absent()
           : Value(captureDate),
@@ -7201,6 +7225,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       condition: serializer.fromJson<String?>(json['condition']),
       prepDate: serializer.fromJson<String?>(json['prepDate']),
       prepTime: serializer.fromJson<String?>(json['prepTime']),
+      collectedTime: serializer.fromJson<String?>(json['collectedTime']),
       captureDate: serializer.fromJson<String?>(json['captureDate']),
       isRelativeTime: serializer.fromJson<int?>(json['isRelativeTime']),
       captureTime: serializer.fromJson<String?>(json['captureTime']),
@@ -7229,6 +7254,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       'condition': serializer.toJson<String?>(condition),
       'prepDate': serializer.toJson<String?>(prepDate),
       'prepTime': serializer.toJson<String?>(prepTime),
+      'collectedTime': serializer.toJson<String?>(collectedTime),
       'captureDate': serializer.toJson<String?>(captureDate),
       'isRelativeTime': serializer.toJson<int?>(isRelativeTime),
       'captureTime': serializer.toJson<String?>(captureTime),
@@ -7254,6 +7280,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           Value<String?> condition = const Value.absent(),
           Value<String?> prepDate = const Value.absent(),
           Value<String?> prepTime = const Value.absent(),
+          Value<String?> collectedTime = const Value.absent(),
           Value<String?> captureDate = const Value.absent(),
           Value<int?> isRelativeTime = const Value.absent(),
           Value<String?> captureTime = const Value.absent(),
@@ -7276,6 +7303,8 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
         condition: condition.present ? condition.value : this.condition,
         prepDate: prepDate.present ? prepDate.value : this.prepDate,
         prepTime: prepTime.present ? prepTime.value : this.prepTime,
+        collectedTime:
+            collectedTime.present ? collectedTime.value : this.collectedTime,
         captureDate: captureDate.present ? captureDate.value : this.captureDate,
         isRelativeTime:
             isRelativeTime.present ? isRelativeTime.value : this.isRelativeTime,
@@ -7309,6 +7338,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           ..write('condition: $condition, ')
           ..write('prepDate: $prepDate, ')
           ..write('prepTime: $prepTime, ')
+          ..write('collectedTime: $collectedTime, ')
           ..write('captureDate: $captureDate, ')
           ..write('isRelativeTime: $isRelativeTime, ')
           ..write('captureTime: $captureTime, ')
@@ -7336,6 +7366,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
         condition,
         prepDate,
         prepTime,
+        collectedTime,
         captureDate,
         isRelativeTime,
         captureTime,
@@ -7362,6 +7393,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           other.condition == this.condition &&
           other.prepDate == this.prepDate &&
           other.prepTime == this.prepTime &&
+          other.collectedTime == this.collectedTime &&
           other.captureDate == this.captureDate &&
           other.isRelativeTime == this.isRelativeTime &&
           other.captureTime == this.captureTime &&
@@ -7386,6 +7418,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
   final Value<String?> condition;
   final Value<String?> prepDate;
   final Value<String?> prepTime;
+  final Value<String?> collectedTime;
   final Value<String?> captureDate;
   final Value<int?> isRelativeTime;
   final Value<String?> captureTime;
@@ -7409,6 +7442,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     this.condition = const Value.absent(),
     this.prepDate = const Value.absent(),
     this.prepTime = const Value.absent(),
+    this.collectedTime = const Value.absent(),
     this.captureDate = const Value.absent(),
     this.isRelativeTime = const Value.absent(),
     this.captureTime = const Value.absent(),
@@ -7433,6 +7467,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     this.condition = const Value.absent(),
     this.prepDate = const Value.absent(),
     this.prepTime = const Value.absent(),
+    this.collectedTime = const Value.absent(),
     this.captureDate = const Value.absent(),
     this.isRelativeTime = const Value.absent(),
     this.captureTime = const Value.absent(),
@@ -7457,6 +7492,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     Expression<String>? condition,
     Expression<String>? prepDate,
     Expression<String>? prepTime,
+    Expression<String>? collectedTime,
     Expression<String>? captureDate,
     Expression<int>? isRelativeTime,
     Expression<String>? captureTime,
@@ -7481,6 +7517,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       if (condition != null) 'condition': condition,
       if (prepDate != null) 'prepDate': prepDate,
       if (prepTime != null) 'prepTime': prepTime,
+      if (collectedTime != null) 'collectedTime': collectedTime,
       if (captureDate != null) 'captureDate': captureDate,
       if (isRelativeTime != null) 'isRelativeTime': isRelativeTime,
       if (captureTime != null) 'captureTime': captureTime,
@@ -7508,6 +7545,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       Value<String?>? condition,
       Value<String?>? prepDate,
       Value<String?>? prepTime,
+      Value<String?>? collectedTime,
       Value<String?>? captureDate,
       Value<int?>? isRelativeTime,
       Value<String?>? captureTime,
@@ -7531,6 +7569,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       condition: condition ?? this.condition,
       prepDate: prepDate ?? this.prepDate,
       prepTime: prepTime ?? this.prepTime,
+      collectedTime: collectedTime ?? this.collectedTime,
       captureDate: captureDate ?? this.captureDate,
       isRelativeTime: isRelativeTime ?? this.isRelativeTime,
       captureTime: captureTime ?? this.captureTime,
@@ -7572,6 +7611,9 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     }
     if (prepTime.present) {
       map['prepTime'] = Variable<String>(prepTime.value);
+    }
+    if (collectedTime.present) {
+      map['collectedTime'] = Variable<String>(collectedTime.value);
     }
     if (captureDate.present) {
       map['captureDate'] = Variable<String>(captureDate.value);
@@ -7631,6 +7673,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
           ..write('condition: $condition, ')
           ..write('prepDate: $prepDate, ')
           ..write('prepTime: $prepTime, ')
+          ..write('collectedTime: $collectedTime, ')
           ..write('captureDate: $captureDate, ')
           ..write('isRelativeTime: $isRelativeTime, ')
           ..write('captureTime: $captureTime, ')
