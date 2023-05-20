@@ -1,57 +1,92 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/providers/catalogs.dart';
-import 'package:nahpu/providers/projects.dart';
-import 'package:nahpu/services/database/database.dart';
-import 'package:nahpu/services/types/types.dart';
-import 'package:nahpu/services/database/taxonomy_queries.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 
-class SpeciesAutoComplete extends ConsumerWidget {
-  const SpeciesAutoComplete({
+class SpeciesInputField extends ConsumerWidget {
+  const SpeciesInputField({
     super.key,
-    required this.onSelected,
     required this.controller,
+    required this.onFieldSubmitted,
   });
 
-  final void Function(String) onSelected;
-  final TextEditingController? controller;
+  final TextEditingController controller;
+  final VoidCallback onFieldSubmitted;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return TypeAheadField(
-      textFieldConfiguration: TextFieldConfiguration(
-        controller: controller,
-        decoration: const InputDecoration(
-          labelText: 'Species',
-          hintText: 'Choose a species',
-        ),
-      ),
-      hideSuggestionsOnKeyboardHide: false,
-      suggestionsCallback: (pattern) async {
-        List<TaxonomyData> speciesList =
-            await TaxonomyQuery(ref.watch(databaseProvider)).getTaxonList();
-        List<String> sortedList = speciesList
-            .map((e) => '${e.genus} ${e.specificEpithet}')
-            .where((element) => element.contains(pattern.toSentenceCase()))
-            .toList();
-        if (pattern.isEmpty) {
-          return ['Enter a species name'];
-        } else if (sortedList.isEmpty) {
-          return ['No species found'];
-        } else {
-          return sortedList;
+    List<String> options = ref.watch(taxonProvider).when(
+          data: (taxa) {
+            return taxa
+                .map((taxon) => '${taxon.genus} ${taxon.specificEpithet}')
+                .toList();
+          },
+          loading: () => const [],
+          error: (error, stack) => const [],
+        );
+    return RawAutocomplete<String>(
+      focusNode: FocusNode(),
+      textEditingController: controller,
+      optionsBuilder: (TextEditingValue textEditingValue) {
+        if (textEditingValue.text == '') {
+          return const Iterable<String>.empty();
         }
+        return options.where((String option) {
+          return option
+              .toLowerCase()
+              .contains(textEditingValue.text.toLowerCase());
+        });
       },
-      itemBuilder: (context, suggestion) {
-        return ListTile(
-          title: Text(suggestion),
+      // onSelected: widget.onSelected,
+      fieldViewBuilder: (
+        BuildContext context,
+        controller,
+        FocusNode focusNode,
+        VoidCallback onFieldSubmitted,
+      ) {
+        return TextFormField(
+          controller: controller,
+          decoration: const InputDecoration(
+            labelText: 'Species',
+            hintText: 'Choose a species',
+          ),
+          focusNode: focusNode,
+          onFieldSubmitted: (String value) {
+            controller.text = value;
+            onFieldSubmitted();
+          },
         );
       },
-      onSuggestionSelected: onSelected,
+      optionsViewBuilder: (BuildContext context,
+          AutocompleteOnSelected<String> onSelected, Iterable<String> options) {
+        return Align(
+          alignment: Alignment.topLeft,
+          child: Material(
+            elevation: 4.0,
+            child: SizedBox(
+              height: 200.0,
+              width: 250,
+              child: ListView.builder(
+                padding: const EdgeInsets.all(8.0),
+                itemCount: options.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final String option = options.elementAt(index);
+                  return GestureDetector(
+                    onTap: () {
+                      onSelected(option);
+                    },
+                    child: ListTile(
+                      title: Text(option),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

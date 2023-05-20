@@ -36,13 +36,13 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
   List<PersonnelData> personnelList = [];
 
   final speciesCtr = TextEditingController();
-  late FocusNode _speciesFocusNode;
+  // late FocusNode _speciesFocusNode;
 
   @override
   void initState() {
     super.initState();
     speciesCtr.text = widget.specimenCtr.taxonDataCtr.speciesName;
-    _speciesFocusNode = FocusNode();
+    // _speciesFocusNode = FocusNode();
   }
 
   @override
@@ -62,15 +62,13 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
           PersonnelRecords(
               specimenUuid: widget.specimenUuid,
               specimenCtr: widget.specimenCtr),
-          Platform.isWindows
-              ? SpeciesAutoComplete(
+          !Platform.isAndroid
+              ? SpeciesInputField(
                   controller: speciesCtr,
-                  onSelected: (String value) {
-                    _speciesFocusNode.requestFocus();
+                  onFieldSubmitted: () {
                     setState(
                       () {
-                        speciesCtr.text = value;
-                        var taxon = value.split(' ');
+                        var taxon = speciesCtr.text.split(' ');
                         TaxonomyQuery(ref.read(databaseProvider))
                             .getTaxonIdByGenusEpithet(taxon[0], taxon[1])
                             .then(
