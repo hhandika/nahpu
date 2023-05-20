@@ -467,7 +467,7 @@ class PartIdForm extends ConsumerWidget {
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         border: Border.all(
-          color: Theme.of(context).colorScheme.primaryContainer,
+          color: Theme.of(context).dividerColor,
           width: 2,
         ),
         borderRadius: BorderRadius.circular(10),
