@@ -139,7 +139,7 @@ class SpecimenCollectedField extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return CommonTimeField(
         controller: specimenCtr.collTimeCtr,
-        labelText: 'Collected time',
+        labelText: 'Collection time',
         hintText: 'Enter time',
         initialTime: TimeOfDay.now(),
         onTap: () {
@@ -204,7 +204,7 @@ class PrepDateField extends ConsumerWidget {
       controller: specimenCtr.prepDateCtr,
       labelText: 'Prep. date',
       hintText: 'Enter date',
-      initialDate: DateTime(2000),
+      initialDate: DateTime.now(),
       lastDate: DateTime.now(),
       onTap: () {
         SpecimenServices(ref).updateSpecimen(

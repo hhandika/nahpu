@@ -127,7 +127,7 @@ class CoordinateSubtitle extends StatelessWidget {
               alignment: PlaceholderAlignment.middle),
           TextSpan(
             style: Theme.of(context).textTheme.labelLarge,
-            text: '${coordinate.elevationInMeter} m',
+            text: _getCoordinateElevation(),
           ),
           const TextSpan(text: '  '),
           const WidgetSpan(
@@ -135,7 +135,7 @@ class CoordinateSubtitle extends StatelessWidget {
               alignment: PlaceholderAlignment.middle),
           TextSpan(
             style: Theme.of(context).textTheme.labelLarge,
-            text: '±${coordinate.uncertaintyInMeters} m',
+            text: _getCoordinateUncertainty(),
           ),
           const TextSpan(text: '  '),
           const WidgetSpan(
@@ -148,6 +148,24 @@ class CoordinateSubtitle extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _getCoordinateUncertainty() {
+    if (coordinate.uncertaintyInMeters == null ||
+        coordinate.uncertaintyInMeters == 0) {
+      return '± ? m';
+    } else {
+      return '±${coordinate.uncertaintyInMeters} m';
+    }
+  }
+
+  String _getCoordinateElevation() {
+    if (coordinate.elevationInMeter == null ||
+        coordinate.elevationInMeter == 0) {
+      return '? m';
+    } else {
+      return '${coordinate.elevationInMeter} m';
+    }
   }
 }
 

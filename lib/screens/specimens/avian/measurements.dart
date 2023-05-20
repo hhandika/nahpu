@@ -365,8 +365,8 @@ class BursaFieldState extends ConsumerState<BursaField> {
           ),
           CommonNumField(
             controller: widget.ctr.bursaWidthCtr,
-            labelText: 'Bursa size (mm)',
-            hintText: 'Enter bursa length',
+            labelText: 'Bursa width (mm)',
+            hintText: 'Enter bursa width',
             isDouble: true,
             isLastField: false,
             onChanged: (String? value) {
@@ -970,7 +970,7 @@ class MoltingFormState extends ConsumerState<MoltingForm> {
             controller: widget.ctr.moltRemarkCtr,
             maxLines: 3,
             labelText: 'Remarks',
-            hintText: 'Add additional information about the molting',
+            hintText: 'Add additional molt information',
             isLastField: true,
             onChanged: (String? value) {
               if (value != null) {
