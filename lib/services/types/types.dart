@@ -106,11 +106,17 @@ const List<String> relativeTimeList = [
   'Night',
 ];
 
+const List<String> taxonGroupList = [
+  'Birds',
+  'General Mammals',
+  'Bats',
+];
+
 CatalogFmt matchTaxonGroupToCatFmt(String? taxonGroup) {
   switch (taxonGroup) {
     case 'Birds':
       return CatalogFmt.birds;
-    case 'Non-Bat Mammals':
+    case 'General Mammals':
       return CatalogFmt.generalMammals;
     case 'Bats':
       return CatalogFmt.bats;
@@ -154,7 +160,7 @@ String matchCatFmtToTaxonGroup(CatalogFmt catalogFmt) {
     case CatalogFmt.bats:
       return 'Bats';
     default:
-      return 'Non-Bat Mammals';
+      return 'General Mammals';
   }
 }
 

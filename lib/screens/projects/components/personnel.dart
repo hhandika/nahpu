@@ -312,6 +312,88 @@ class EditPersonnelForm extends ConsumerWidget {
   }
 }
 
+class PersonnelNameField extends ConsumerWidget {
+  const PersonnelNameField({super.key, required this.ctr});
+
+  final PersonnelFormCtrModel ctr;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return TextFormField(
+      controller: ctr.nameCtr,
+      decoration: InputDecoration(
+        labelText: 'Name*',
+        hintText: 'Enter a name (required)',
+        errorText: ref.watch(personnelFormValidation).form.name.errMsg,
+      ),
+      onChanged: (value) {
+        ref.watch(personnelFormValidation.notifier).validateName(value);
+      },
+    );
+  }
+}
+
+class PersonnelInitialField extends ConsumerWidget {
+  const PersonnelInitialField({super.key, required this.ctr});
+
+  final PersonnelFormCtrModel ctr;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return TextFormField(
+      controller: ctr.initialCtr,
+      maxLength: 8,
+      decoration: InputDecoration(
+        labelText: 'Initials*',
+        hintText: 'Enter initials (required for catalogers)',
+        errorText: ref.watch(personnelFormValidation).form.initial.errMsg,
+      ),
+      inputFormatters: [
+        LengthLimitingTextInputFormatter(5),
+        FilteringTextInputFormatter.allow(
+          RegExp(r'[a-zA-Z]+|\s'),
+        ),
+      ],
+      onChanged: (value) {
+        ctr.initialCtr.value = TextEditingValue(
+          text: value.toUpperCase(),
+          selection: ctr.initialCtr.selection,
+        );
+        ref.watch(personnelFormValidation.notifier).validateInitial(
+              value,
+            );
+      },
+    );
+  }
+}
+
+class CatalogerNumberField extends ConsumerWidget {
+  const CatalogerNumberField({super.key, required this.ctr});
+
+  final PersonnelFormCtrModel ctr;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return TextField(
+        enabled: ctr.roleCtr == 'Cataloger',
+        controller: ctr.nextCollectorNumCtr,
+        decoration: InputDecoration(
+          labelText: 'Collector Number*',
+          hintText: 'Enter current number',
+          errorText: ref.watch(personnelFormValidation).form.collNum.errMsg,
+        ),
+        keyboardType: TextInputType.number,
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(
+            RegExp(r'[0-9]+'),
+          ),
+        ],
+        onChanged: (value) {
+          ref.watch(personnelFormValidation.notifier).validateCollNum(value);
+        });
+  }
+}
+
 class PersonnelForm extends ConsumerStatefulWidget {
   const PersonnelForm({
     super.key,
@@ -350,20 +432,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextFormField(
-                controller: widget.ctr.nameCtr,
-                decoration: InputDecoration(
-                  labelText: 'Name*',
-                  hintText: 'Enter a name (required)',
-                  errorText:
-                      ref.watch(personnelFormValidation).form.name.errMsg,
-                ),
-                onChanged: (value) {
-                  ref
-                      .watch(personnelFormValidation.notifier)
-                      .validateName(value);
-                },
-              ),
+              PersonnelNameField(ctr: widget.ctr),
               TextFormField(
                 controller: widget.ctr.affiliationCtr,
                 decoration: const InputDecoration(
@@ -423,58 +492,8 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                 visible: widget.ctr.roleCtr == 'Cataloger',
                 child: Column(
                   children: [
-                    TextFormField(
-                      controller: widget.ctr.initialCtr,
-                      maxLength: 8,
-                      decoration: InputDecoration(
-                        labelText: 'Initials*',
-                        hintText: 'Enter initials (required for catalogers)',
-                        errorText: ref
-                            .watch(personnelFormValidation)
-                            .form
-                            .initial
-                            .errMsg,
-                      ),
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(5),
-                        FilteringTextInputFormatter.allow(
-                          RegExp(r'[a-zA-Z]+|\s'),
-                        ),
-                      ],
-                      onChanged: (value) {
-                        widget.ctr.initialCtr.value = TextEditingValue(
-                            text: value.toUpperCase(),
-                            selection: widget.ctr.initialCtr.selection);
-                        ref
-                            .watch(personnelFormValidation.notifier)
-                            .validateInitial(
-                              value,
-                            );
-                      },
-                    ),
-                    TextField(
-                        enabled: widget.ctr.roleCtr == 'Cataloger',
-                        controller: widget.ctr.nextCollectorNumCtr,
-                        decoration: InputDecoration(
-                          labelText: 'Next collector Number*',
-                          hintText: 'Enter number (required for collectors)',
-                          errorText: ref
-                              .watch(personnelFormValidation)
-                              .form
-                              .collNum
-                              .errMsg,
-                        ),
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(
-                            RegExp(r'[0-9]+'),
-                          ),
-                        ],
-                        onChanged: (value) {
-                          ref
-                              .watch(personnelFormValidation.notifier)
-                              .validateCollNum(value);
-                        }),
+                    PersonnelInitialField(ctr: widget.ctr),
+                    CatalogerNumberField(ctr: widget.ctr),
                   ],
                 ),
               ),

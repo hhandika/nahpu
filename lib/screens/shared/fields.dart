@@ -116,25 +116,18 @@ class TaxonGroupFields extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final List<String> taxonGroups = [
-      'Birds',
-      'Bats',
-      'Non-Bat Mammals',
-    ];
-
     CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
     return DropdownButtonFormField(
       decoration: const InputDecoration(
         labelText: 'Main Taxon Group',
         hintText: 'Choose a taxon group',
       ),
-      items: [
-        for (var i in taxonGroups)
-          DropdownMenuItem(
-            value: i,
-            child: Text(i),
-          )
-      ],
+      items: taxonGroupList
+          .map((taxonGroup) => DropdownMenuItem(
+                value: taxonGroup,
+                child: Text(taxonGroup),
+              ))
+          .toList(),
       value: matchCatFmtToTaxonGroup(catalogFmt),
       onChanged: (String? newValue) {
         catalogFmt = matchTaxonGroupToCatFmt(newValue!);

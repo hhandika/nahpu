@@ -33,17 +33,10 @@ class FormElevButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (enabled) {
-      return PrimaryButton(
-        onPressed: onPressed,
-        text: text,
-      );
-    } else {
-      return PrimaryButton(
-        onPressed: null,
-        text: text,
-      );
-    }
+    return PrimaryButton(
+      onPressed: enabled ? onPressed : null,
+      text: text,
+    );
   }
 }
 

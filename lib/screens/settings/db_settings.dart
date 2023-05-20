@@ -80,8 +80,8 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text(
+        const SnackBar(
+          content: Text(
             'Failed to replace database!',
           ),
         ),
