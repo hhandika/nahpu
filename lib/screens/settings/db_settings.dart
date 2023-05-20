@@ -66,13 +66,23 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
 
   Future<void> _replaceDb() async {
     Navigator.of(context).pop();
-    File backupPath = await DbWriter(ref).replaceDb(_dbPath);
-    ref.invalidate(projectListProvider);
-    if (context.mounted) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => DBReplacedPage(
-            dbBackupPath: backupPath,
+    try {
+      File backupPath = await DbWriter(ref).replaceDb(_dbPath);
+      ref.invalidate(projectListProvider);
+      if (context.mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => DBReplacedPage(
+              dbBackupPath: backupPath,
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text(
+            'Failed to replace database!',
           ),
         ),
       );
@@ -172,11 +182,13 @@ class DBReplacedPage extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 Text(
-                  'Database has been replaced!\n'
-                  'Backup file path:',
+                  'Database has been replaced!',
                   style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 ),
+                const SizedBox(height: 10),
+                Text('Backup file path:',
+                    style: Theme.of(context).textTheme.bodyMedium),
                 ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 500),
                   child: Text(
@@ -185,8 +197,9 @@ class DBReplacedPage extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                 ),
+                const SizedBox(height: 18),
                 Text(
-                  '\nClose the app and reopen it to see the changes!',
+                  'Close the app and reopen it to see the changes!',
                   style: Theme.of(context).textTheme.titleMedium,
                 )
               ],
