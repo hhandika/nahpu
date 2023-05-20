@@ -8,8 +8,8 @@ import 'package:nahpu/screens/shared/layout.dart';
 
 import 'package:drift/drift.dart' as db;
 
-class SpeciesInputField extends ConsumerStatefulWidget {
-  const SpeciesInputField({
+class SpeciesAutoComplete extends ConsumerStatefulWidget {
+  const SpeciesAutoComplete({
     super.key,
     required this.specimenUuid,
     required this.speciesCtr,
@@ -21,81 +21,77 @@ class SpeciesInputField extends ConsumerStatefulWidget {
   final List<String> options;
 
   @override
-  SpeciesInputFieldState createState() => SpeciesInputFieldState();
+  SpeciesAutoCompleteState createState() => SpeciesAutoCompleteState();
 }
 
-class SpeciesInputFieldState extends ConsumerState<SpeciesInputField> {
+class SpeciesAutoCompleteState extends ConsumerState<SpeciesAutoComplete> {
   @override
   Widget build(BuildContext context) {
-    return CommonPadding(
-      child: RawAutocomplete<String>(
-        focusNode: FocusNode(),
-        textEditingController: widget.speciesCtr,
-        optionsBuilder: (TextEditingValue textEditingValue) {
-          if (textEditingValue.text == '') {
-            return const Iterable<String>.empty();
-          }
-          return widget.options.where((String option) {
-            return option
-                .toLowerCase()
-                .contains(textEditingValue.text.toLowerCase());
-          });
-        },
-        onSelected: (String selection) {
-          setState(() {
-            widget.speciesCtr.text = selection;
-            _inputTaxon();
-          });
-        },
-        fieldViewBuilder: (
-          BuildContext context,
-          speciesCtr,
-          FocusNode focusNode,
-          VoidCallback onFieldSubmitted,
-        ) {
-          return TextFormField(
-            controller: speciesCtr,
-            decoration: const InputDecoration(
-              labelText: 'Species',
-              hintText: 'Choose a species',
-            ),
-            focusNode: focusNode,
-            onFieldSubmitted: (String value) {
-              speciesCtr.text = value;
-              onFieldSubmitted();
-            },
+    return RawAutocomplete<String>(
+      focusNode: FocusNode(),
+      textEditingController: widget.speciesCtr,
+      optionsBuilder: (TextEditingValue textEditingValue) {
+        if (textEditingValue.text == '') {
+          return const Iterable<String>.empty();
+        }
+        return widget.options.where((String option) {
+          return option
+              .toLowerCase()
+              .contains(textEditingValue.text.toLowerCase());
+        });
+      },
+      onSelected: (String selection) {
+        setState(() {
+          widget.speciesCtr.value = widget.speciesCtr.value.copyWith(
+            text: selection,
+            selection: TextSelection.collapsed(offset: selection.length),
           );
-        },
-        optionsViewBuilder: (BuildContext context,
-            AutocompleteOnSelected<String> onSelected,
-            Iterable<String> options) {
-          return Align(
-            alignment: Alignment.topLeft,
-            child: Material(
-              elevation: 4.0,
-              child: SizedBox(
-                height: 200.0,
-                width: 250,
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(8.0),
-                  itemCount: options.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final String option = options.elementAt(index);
-                    return GestureDetector(
-                      onTap: () {
-                        onSelected(option);
-                      },
-                      child: ListTile(
-                        title: Text(option),
-                      ),
-                    );
-                  },
-                ),
+          _inputTaxon();
+        });
+      },
+      fieldViewBuilder: (
+        BuildContext context,
+        speciesCtr,
+        FocusNode focusNode,
+        VoidCallback onFieldSubmitted,
+      ) {
+        return SpeciesField(
+          speciesCtr: speciesCtr,
+          enable: true,
+          focusNode: focusNode,
+          onFieldSubmitted: (String value) {
+            onFieldSubmitted();
+          },
+        );
+      },
+      optionsViewBuilder: (BuildContext context,
+          AutocompleteOnSelected<String> onSelected, Iterable<String> options) {
+        return Align(
+          alignment: Alignment.topLeft,
+          child: Material(
+            elevation: 4.0,
+            child: SizedBox(
+              height: 200.0,
+              width: 250,
+              child: ListView.builder(
+                padding: const EdgeInsets.all(8.0),
+                itemCount: options.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final String option = options.elementAt(index);
+                  return GestureDetector(
+                    onTap: () {
+                      onSelected(option);
+                    },
+                    child: ListTile(
+                      title: Text(option),
+                    ),
+                  );
+                },
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -107,6 +103,86 @@ class SpeciesInputFieldState extends ConsumerState<SpeciesInputField> {
             SpecimenCompanion(speciesID: db.Value(data.id)),
           ),
         );
+  }
+}
+
+class SpeciesInputField extends StatelessWidget {
+  const SpeciesInputField({
+    super.key,
+    required this.specimenUuid,
+    required this.speciesCtr,
+    required this.taxonList,
+  });
+
+  final String specimenUuid;
+  final int? speciesCtr;
+  final List<TaxonomyData> taxonList;
+
+  @override
+  Widget build(BuildContext context) {
+    return CommonPadding(
+        child: SpeciesAutoComplete(
+      specimenUuid: specimenUuid,
+      speciesCtr: _getSpeciesCtr,
+      options: _options,
+    ));
+  }
+
+  TextEditingController get _getSpeciesCtr {
+    var data = taxonList.firstWhere((taxon) => taxon.id == speciesCtr);
+    TextEditingController ctr =
+        TextEditingController(text: '${data.genus} ${data.specificEpithet}');
+    return ctr;
+  }
+
+  List<String> get _options => taxonList
+      .map((taxon) => '${taxon.genus} ${taxon.specificEpithet}')
+      .toList();
+}
+
+class DisabledSpeciesField extends StatelessWidget {
+  const DisabledSpeciesField({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return CommonPadding(
+      child: TextFormField(
+        enabled: false,
+        decoration: const InputDecoration(
+          labelText: 'Species',
+          hintText: 'Enter species',
+        ),
+      ),
+    );
+  }
+}
+
+class SpeciesField extends StatelessWidget {
+  const SpeciesField({
+    super.key,
+    required this.speciesCtr,
+    required this.focusNode,
+    required this.onFieldSubmitted,
+    required this.enable,
+  });
+
+  final TextEditingController speciesCtr;
+  final FocusNode focusNode;
+  final void Function(String) onFieldSubmitted;
+  final bool enable;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      enabled: enable,
+      controller: speciesCtr,
+      decoration: const InputDecoration(
+        labelText: 'Species',
+        hintText: 'Choose a species',
+      ),
+      focusNode: focusNode,
+      onFieldSubmitted: onFieldSubmitted,
+    );
   }
 }
 

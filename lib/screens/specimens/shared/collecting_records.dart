@@ -56,21 +56,10 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
           PersonnelRecords(
               specimenUuid: widget.specimenUuid,
               specimenCtr: widget.specimenCtr),
-          ref.watch(taxonProvider).when(
-              data: (taxa) {
-                var data = taxa.firstWhere(
-                    (taxon) => taxon.id == widget.specimenCtr.speciesCtr);
-                speciesCtr.text = '${data.genus} ${data.specificEpithet}';
-                return SpeciesInputField(
-                  specimenUuid: widget.specimenUuid,
-                  speciesCtr: speciesCtr,
-                  options: taxa
-                      .map((taxon) => '${taxon.genus} ${taxon.specificEpithet}')
-                      .toList(),
-                );
-              },
-              loading: () => const CircularProgressIndicator(),
-              error: (error, stack) => const Text('Error loading taxa')),
+          SpeciesFieldCtr(
+            specimenUuid: widget.specimenUuid,
+            speciesCtr: widget.specimenCtr.speciesCtr,
+          ),
           AdaptiveLayout(
               useHorizontalLayout: widget.useHorizontalLayout,
               children: [
@@ -99,6 +88,35 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
         ],
       ),
     );
+  }
+}
+
+class SpeciesFieldCtr extends ConsumerWidget {
+  const SpeciesFieldCtr({
+    super.key,
+    required this.specimenUuid,
+    required this.speciesCtr,
+  });
+
+  final String specimenUuid;
+  final int? speciesCtr;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ref.watch(taxonProvider).when(
+          data: (taxa) {
+            if (taxa.isEmpty) {
+              return const DisabledSpeciesField();
+            }
+            return SpeciesInputField(
+              specimenUuid: specimenUuid,
+              speciesCtr: speciesCtr,
+              taxonList: taxa,
+            );
+          },
+          loading: () => const CircularProgressIndicator(),
+          error: (error, stack) => const Text('Error loading taxa'),
+        );
   }
 }
 
