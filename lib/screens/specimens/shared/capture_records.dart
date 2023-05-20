@@ -128,23 +128,20 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                       );
                     });
                   }),
-              CommonTextField(
-                controller: widget.specimenCtr.trapIDCtr,
-                labelText: 'Method ID',
-                hintText: 'Enter ID, e.g. trap/net number, etc.',
-                isLastField: true,
-                onChanged: (String? value) {
-                  _updateSpecimen(
-                    SpecimenCompanion(trapID: db.Value(value)),
-                  );
-                },
-              )
+              MethodIdField(
+                specimenUuid: widget.specimenUuid,
+                specimenCtr: widget.specimenCtr,
+              ),
             ],
           ),
           CoordinateField(
             specimenUuid: widget.specimenUuid,
             specimenCtr: widget.specimenCtr,
           ),
+          CollPersonnelField(
+            specimenUuid: widget.specimenUuid,
+            specimenCtr: widget.specimenCtr,
+          )
         ],
       ),
     );
@@ -160,6 +157,33 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
     } else {
       return value == 0 ? false : true;
     }
+  }
+}
+
+class MethodIdField extends ConsumerWidget {
+  const MethodIdField({
+    super.key,
+    required this.specimenUuid,
+    required this.specimenCtr,
+  });
+
+  final String specimenUuid;
+  final SpecimenFormCtrModel specimenCtr;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return CommonTextField(
+      controller: specimenCtr.trapIDCtr,
+      labelText: 'Method ID',
+      hintText: 'Enter ID, e.g. trap/net number, etc.',
+      isLastField: true,
+      onChanged: (String? value) {
+        SpecimenServices(ref).updateSpecimen(
+          specimenUuid,
+          SpecimenCompanion(trapID: db.Value(value)),
+        );
+      },
+    );
   }
 }
 
@@ -303,5 +327,79 @@ class CaptureTimeState extends ConsumerState<CaptureTime> {
               );
             },
           );
+  }
+}
+
+class CollPersonnelField extends ConsumerWidget {
+  const CollPersonnelField({
+    super.key,
+    required this.specimenUuid,
+    required this.specimenCtr,
+  });
+
+  final String specimenUuid;
+  final SpecimenFormCtrModel specimenCtr;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return CommonPadding(
+      child: DropdownButtonFormField<int>(
+        value: specimenCtr.collPersonnelCtr,
+        decoration: const InputDecoration(
+          labelText: 'Collector',
+          hintText: 'Choose a person',
+        ),
+        items: specimenCtr.collEventIDCtr != null
+            ? ref
+                .watch(collPersonnelProvider(specimenCtr.collEventIDCtr!))
+                .when(
+                  data: (data) {
+                    return data.map((person) {
+                      return DropdownMenuItem(
+                          value: person.id,
+                          child: PersonnelName(
+                            personnelUuid: person.personnelId,
+                          ));
+                    }).toList();
+                  },
+                  loading: () => const [],
+                  error: (e, s) => const [],
+                )
+            : [],
+        onChanged: (int? newValue) {
+          specimenCtr.collPersonnelCtr = newValue;
+          SpecimenServices(ref).updateSpecimen(
+            specimenUuid,
+            SpecimenCompanion(
+              collPersonnelID: db.Value(newValue),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class PersonnelName extends ConsumerWidget {
+  const PersonnelName({
+    Key? key,
+    required this.personnelUuid,
+  }) : super(key: key);
+
+  final String? personnelUuid;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    try {
+      return ref.watch(personnelNameProvider(personnelUuid!)).when(
+            data: (data) {
+              return Text(data.name ?? '');
+            },
+            loading: () => const Text('Loading...'),
+            error: (error, stack) => const Text('Error'),
+          );
+    } catch (e) {
+      return const Text('Error');
+    }
   }
 }
