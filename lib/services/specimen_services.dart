@@ -1,3 +1,4 @@
+import 'package:nahpu/services/database/taxonomy_queries.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/providers/settings.dart';
@@ -60,6 +61,11 @@ class SpecimenServices extends DbAccess {
         .where((element) => element.taxonGroup == taxonGroup)
         .toList();
     return filteredList;
+  }
+
+  Future<TaxonomyData> getTaxonIdByGenusEpithet(
+      String genus, String epithet) async {
+    return TaxonomyQuery(dbAccess).getTaxonIdByGenusEpithet(genus, epithet);
   }
 
   Future<int> getSpecimenFieldNumber(

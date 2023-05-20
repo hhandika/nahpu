@@ -1,8 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/database.dart';
-import 'package:nahpu/services/database/taxonomy_queries.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/forms.dart';
@@ -10,7 +8,7 @@ import 'package:nahpu/screens/shared/layout.dart';
 
 import 'package:drift/drift.dart' as db;
 
-class SpeciesInputField extends ConsumerWidget {
+class SpeciesInputField extends ConsumerStatefulWidget {
   const SpeciesInputField({
     super.key,
     required this.specimenUuid,
@@ -23,32 +21,31 @@ class SpeciesInputField extends ConsumerWidget {
   final List<String> options;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  SpeciesInputFieldState createState() => SpeciesInputFieldState();
+}
+
+class SpeciesInputFieldState extends ConsumerState<SpeciesInputField> {
+  @override
+  Widget build(BuildContext context) {
     return CommonPadding(
       child: RawAutocomplete<String>(
         focusNode: FocusNode(),
-        textEditingController: speciesCtr,
+        textEditingController: widget.speciesCtr,
         optionsBuilder: (TextEditingValue textEditingValue) {
           if (textEditingValue.text == '') {
             return const Iterable<String>.empty();
           }
-          return options.where((String option) {
+          return widget.options.where((String option) {
             return option
                 .toLowerCase()
                 .contains(textEditingValue.text.toLowerCase());
           });
         },
         onSelected: (String selection) {
-          speciesCtr.text = selection;
-          var taxon = speciesCtr.text.split(' ');
-          TaxonomyQuery(ref.read(databaseProvider))
-              .getTaxonIdByGenusEpithet(taxon[0], taxon[1])
-              .then(
-                (data) => SpecimenServices(ref).updateSpecimen(
-                  specimenUuid,
-                  SpecimenCompanion(speciesID: db.Value(data.id)),
-                ),
-              );
+          setState(() {
+            widget.speciesCtr.text = selection;
+            _inputTaxon();
+          });
         },
         fieldViewBuilder: (
           BuildContext context,
@@ -100,6 +97,16 @@ class SpeciesInputField extends ConsumerWidget {
         },
       ),
     );
+  }
+
+  void _inputTaxon() {
+    var taxon = widget.speciesCtr.text.split(' ');
+    SpecimenServices(ref).getTaxonIdByGenusEpithet(taxon[0], taxon[1]).then(
+          (data) => SpecimenServices(ref).updateSpecimen(
+            widget.specimenUuid,
+            SpecimenCompanion(speciesID: db.Value(data.id)),
+          ),
+        );
   }
 }
 
