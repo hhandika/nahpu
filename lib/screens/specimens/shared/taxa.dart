@@ -1,92 +1,103 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/database/taxonomy_queries.dart';
+import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 
+import 'package:drift/drift.dart' as db;
+
 class SpeciesInputField extends ConsumerWidget {
   const SpeciesInputField({
     super.key,
+    required this.specimenUuid,
     required this.speciesCtr,
-    required this.onFieldSubmitted,
+    required this.options,
   });
 
+  final String specimenUuid;
   final TextEditingController speciesCtr;
-  final VoidCallback onFieldSubmitted;
+  final List<String> options;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<String> options = ref.watch(taxonProvider).when(
-          data: (taxa) {
-            return taxa
-                .map((taxon) => '${taxon.genus} ${taxon.specificEpithet}')
-                .toList();
-          },
-          loading: () => const [],
-          error: (error, stack) => const [],
-        );
-    return RawAutocomplete<String>(
-      focusNode: FocusNode(),
-      textEditingController: speciesCtr,
-      optionsBuilder: (TextEditingValue textEditingValue) {
-        if (textEditingValue.text == '') {
-          return const Iterable<String>.empty();
-        }
-        return options.where((String option) {
-          return option
-              .toLowerCase()
-              .contains(textEditingValue.text.toLowerCase());
-        });
-      },
-      // onSelected: widget.onSelected,
-      fieldViewBuilder: (
-        BuildContext context,
-        TextEditingController controller,
-        FocusNode focusNode,
-        VoidCallback onFieldSubmitted,
-      ) {
-        return TextFormField(
-          controller: controller,
-          decoration: const InputDecoration(
-            labelText: 'Species',
-            hintText: 'Choose a species',
-          ),
-          focusNode: focusNode,
-          onFieldSubmitted: (String value) {
-            controller.text = value;
-            onFieldSubmitted();
-          },
-        );
-      },
-      optionsViewBuilder: (BuildContext context,
-          AutocompleteOnSelected<String> onSelected, Iterable<String> options) {
-        return Align(
-          alignment: Alignment.topLeft,
-          child: Material(
-            elevation: 4.0,
-            child: SizedBox(
-              height: 200.0,
-              width: 250,
-              child: ListView.builder(
-                padding: const EdgeInsets.all(8.0),
-                itemCount: options.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final String option = options.elementAt(index);
-                  return GestureDetector(
-                    onTap: () {
-                      onSelected(option);
-                    },
-                    child: ListTile(
-                      title: Text(option),
+    return CommonPadding(
+      child: RawAutocomplete<String>(
+        focusNode: FocusNode(),
+        textEditingController: speciesCtr,
+        optionsBuilder: (TextEditingValue textEditingValue) {
+          if (textEditingValue.text == '') {
+            return const Iterable<String>.empty();
+          }
+          return options.where((String option) {
+            return option
+                .toLowerCase()
+                .contains(textEditingValue.text.toLowerCase());
+          });
+        },
+        fieldViewBuilder: (
+          BuildContext context,
+          speciesCtr,
+          FocusNode focusNode,
+          VoidCallback onFieldSubmitted,
+        ) {
+          return TextFormField(
+            controller: speciesCtr,
+            decoration: const InputDecoration(
+              labelText: 'Species',
+              hintText: 'Choose a species',
+            ),
+            focusNode: focusNode,
+            onFieldSubmitted: (String value) {
+              speciesCtr.text = value;
+              onFieldSubmitted();
+              var taxon = speciesCtr.text.split(' ');
+              TaxonomyQuery(ref.read(databaseProvider))
+                  .getTaxonIdByGenusEpithet(taxon[0], taxon[1])
+                  .then(
+                    (data) => SpecimenServices(ref).updateSpecimen(
+                      specimenUuid,
+                      SpecimenCompanion(speciesID: db.Value(data.id)),
                     ),
                   );
-                },
+              ref.invalidate(taxonProvider);
+            },
+          );
+        },
+        optionsViewBuilder: (BuildContext context,
+            AutocompleteOnSelected<String> onSelected,
+            Iterable<String> options) {
+          return Align(
+            alignment: Alignment.topLeft,
+            child: Material(
+              elevation: 4.0,
+              child: SizedBox(
+                height: 200.0,
+                width: 250,
+                child: ListView.builder(
+                  padding: const EdgeInsets.all(8.0),
+                  itemCount: options.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final String option = options.elementAt(index);
+                    return GestureDetector(
+                      onTap: () {
+                        onSelected(option);
+                      },
+                      child: ListTile(
+                        title: Text(option),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

@@ -33,12 +33,11 @@ class CollectingRecordField extends ConsumerStatefulWidget {
 class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
   List<PersonnelData> personnelList = [];
 
-  final speciesCtr = TextEditingController();
-  // late FocusNode _speciesFocusNode;
+  TextEditingController speciesCtr =
+      TextEditingController(text: 'Species found');
 
   @override
   void initState() {
-    speciesCtr.text = widget.specimenCtr.taxonDataCtr.speciesName;
     super.initState();
   }
 
@@ -60,24 +59,22 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
               specimenUuid: widget.specimenUuid,
               specimenCtr: widget.specimenCtr),
           !Platform.isAndroid
-              ? Text(speciesCtr.text.isEmpty ? 'No Species' : speciesCtr.text)
-              // ? SpeciesInputField(
-              //     speciesCtr: speciesCtr,
-              //     onFieldSubmitted: () {
-              //       setState(
-              //         () {
-              //           var taxon = speciesCtr.text.split(' ');
-              //           TaxonomyQuery(ref.read(databaseProvider))
-              //               .getTaxonIdByGenusEpithet(taxon[0], taxon[1])
-              //               .then(
-              //                 (data) => SpecimenServices(ref).updateSpecimen(
-              //                   widget.specimenUuid,
-              //                   SpecimenCompanion(speciesID: db.Value(data.id)),
-              //                 ),
-              //               );
-              //         },
-              //       );
-              //     })
+              ? ref.watch(taxonProvider).when(
+                  data: (taxa) {
+                    var data = taxa.firstWhere(
+                        (taxon) => taxon.id == widget.specimenCtr.speciesCtr);
+                    speciesCtr.text = '${data.genus} ${data.specificEpithet}';
+                    return SpeciesInputField(
+                      specimenUuid: widget.specimenUuid,
+                      speciesCtr: speciesCtr,
+                      options: taxa
+                          .map((taxon) =>
+                              '${taxon.genus} ${taxon.specificEpithet}')
+                          .toList(),
+                    );
+                  },
+                  loading: () => const CircularProgressIndicator(),
+                  error: (error, stack) => const Text('Error loading taxa'))
               : CommonPadding(
                   child: TaxonDropdownMenu(
                   onSelected: (int? value) {
