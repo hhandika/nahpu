@@ -39,6 +39,18 @@ class SpeciesInputField extends ConsumerWidget {
                 .contains(textEditingValue.text.toLowerCase());
           });
         },
+        onSelected: (String selection) {
+          speciesCtr.text = selection;
+          var taxon = speciesCtr.text.split(' ');
+          TaxonomyQuery(ref.read(databaseProvider))
+              .getTaxonIdByGenusEpithet(taxon[0], taxon[1])
+              .then(
+                (data) => SpecimenServices(ref).updateSpecimen(
+                  specimenUuid,
+                  SpecimenCompanion(speciesID: db.Value(data.id)),
+                ),
+              );
+        },
         fieldViewBuilder: (
           BuildContext context,
           speciesCtr,
@@ -55,16 +67,6 @@ class SpeciesInputField extends ConsumerWidget {
             onFieldSubmitted: (String value) {
               speciesCtr.text = value;
               onFieldSubmitted();
-              var taxon = speciesCtr.text.split(' ');
-              TaxonomyQuery(ref.read(databaseProvider))
-                  .getTaxonIdByGenusEpithet(taxon[0], taxon[1])
-                  .then(
-                    (data) => SpecimenServices(ref).updateSpecimen(
-                      specimenUuid,
-                      SpecimenCompanion(speciesID: db.Value(data.id)),
-                    ),
-                  );
-              ref.invalidate(taxonProvider);
             },
           );
         },
