@@ -42,6 +42,10 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
       builder: (BuildContext context, BoxConstraints constraints) {
         bool useHorizontalLayout = constraints.maxWidth > 400.0;
         return SingleChildScrollView(
+            child: GestureDetector(
+          onTap: () {
+            FocusManager.instance.primaryFocus?.unfocus();
+          },
           child: Column(
             children: [
               FormCard(
@@ -84,7 +88,7 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
               const BottomPadding()
             ],
           ),
-        );
+        ));
       },
     );
   }
