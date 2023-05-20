@@ -25,12 +25,12 @@ class SpeciesAutoComplete extends ConsumerStatefulWidget {
 }
 
 class SpeciesAutoCompleteState extends ConsumerState<SpeciesAutoComplete> {
-  FocusNode focusNode = FocusNode();
+  FocusNode _focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     return RawAutocomplete<String>(
-      focusNode: focusNode,
+      focusNode: _focusNode,
       textEditingController: widget.speciesCtr,
       optionsBuilder: (TextEditingValue textEditingValue) {
         if (textEditingValue.text == '') {
@@ -46,8 +46,7 @@ class SpeciesAutoCompleteState extends ConsumerState<SpeciesAutoComplete> {
         setState(() {
           _inputTaxon(selection);
         });
-        _invalidateEntryProvider();
-        focusNode.unfocus();
+        _focusNode.unfocus();
       },
       fieldViewBuilder: (
         BuildContext context,
@@ -112,11 +111,6 @@ class SpeciesAutoCompleteState extends ConsumerState<SpeciesAutoComplete> {
       text: selection,
       selection: TextSelection.collapsed(offset: selection.length),
     );
-  }
-
-  void _invalidateEntryProvider() {
-    ref.invalidate(specimenEntryProvider);
-    ref.invalidate(taxonDataProvider);
   }
 }
 

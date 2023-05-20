@@ -273,3 +273,122 @@ class SwitchField extends StatelessWidget {
     );
   }
 }
+
+class AutoCompleteField extends StatelessWidget {
+  const AutoCompleteField({
+    super.key,
+    required this.focusNode,
+    required this.controller,
+    required this.options,
+    required this.onSelected,
+    required this.labelText,
+    required this.hintText,
+  });
+
+  final FocusNode focusNode;
+  final TextEditingController controller;
+  final List<String> options;
+  final void Function(String) onSelected;
+  final String labelText;
+  final String hintText;
+
+  @override
+  Widget build(BuildContext context) {
+    return RawAutocomplete<String>(
+      focusNode: focusNode,
+      textEditingController: controller,
+      optionsBuilder: (TextEditingValue textEditingValue) {
+        if (textEditingValue.text == '') {
+          return const Iterable<String>.empty();
+        }
+        return options.where((String option) {
+          return option
+              .toLowerCase()
+              .contains(textEditingValue.text.toLowerCase());
+        });
+      },
+      onSelected: onSelected,
+      fieldViewBuilder: (
+        BuildContext context,
+        TextEditingController controller,
+        FocusNode focusNode,
+        VoidCallback onFieldSubmitted,
+      ) {
+        return AutoCompleteText(
+          controller: controller,
+          enable: true,
+          focusNode: focusNode,
+          labelText: labelText,
+          hintText: hintText,
+          onFieldSubmitted: (String value) {
+            onFieldSubmitted();
+          },
+        );
+      },
+      optionsViewBuilder: (BuildContext context,
+          AutocompleteOnSelected<String> onSelected, Iterable<String> options) {
+        return Align(
+          alignment: Alignment.topLeft,
+          child: Material(
+            elevation: 4.0,
+            child: Container(
+              width: 300,
+              constraints: const BoxConstraints(maxHeight: 350),
+              child: ListView.builder(
+                shrinkWrap: true,
+                padding: const EdgeInsets.all(8.0),
+                itemCount: options.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final String option = options.elementAt(index);
+                  return GestureDetector(
+                    onTap: () {
+                      onSelected(option);
+                    },
+                    child: ListTile(
+                      title: Text(option),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class AutoCompleteText extends StatelessWidget {
+  const AutoCompleteText({
+    super.key,
+    required this.controller,
+    required this.focusNode,
+    required this.labelText,
+    required this.hintText,
+    required this.onFieldSubmitted,
+    required this.enable,
+  });
+
+  final TextEditingController controller;
+  final FocusNode focusNode;
+  final void Function(String) onFieldSubmitted;
+  final String labelText;
+  final String hintText;
+  final bool enable;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      enabled: enable,
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: labelText,
+        hintText: hintText,
+      ),
+      focusNode: focusNode,
+      onFieldSubmitted: onFieldSubmitted,
+      keyboardType: TextInputType.text,
+      textInputAction: TextInputAction.done,
+    );
+  }
+}
