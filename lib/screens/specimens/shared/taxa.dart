@@ -42,21 +42,17 @@ class SpeciesAutoCompleteState extends ConsumerState<SpeciesAutoComplete> {
       },
       onSelected: (String selection) {
         setState(() {
-          widget.speciesCtr.value = widget.speciesCtr.value.copyWith(
-            text: selection,
-            selection: TextSelection.collapsed(offset: selection.length),
-          );
-          _inputTaxon();
+          _inputTaxon(selection);
         });
       },
       fieldViewBuilder: (
         BuildContext context,
-        speciesCtr,
+        TextEditingController controller,
         FocusNode focusNode,
         VoidCallback onFieldSubmitted,
       ) {
         return SpeciesField(
-          speciesCtr: speciesCtr,
+          speciesCtr: controller,
           enable: true,
           focusNode: focusNode,
           onFieldSubmitted: (String value) {
@@ -70,9 +66,8 @@ class SpeciesAutoCompleteState extends ConsumerState<SpeciesAutoComplete> {
           alignment: Alignment.topLeft,
           child: Material(
             elevation: 4.0,
-            child: SizedBox(
-              height: 200.0,
-              width: 250,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxHeight: 200, minWidth: 100),
               child: ListView.builder(
                 padding: const EdgeInsets.all(8.0),
                 itemCount: options.length,
@@ -95,8 +90,12 @@ class SpeciesAutoCompleteState extends ConsumerState<SpeciesAutoComplete> {
     );
   }
 
-  void _inputTaxon() {
+  void _inputTaxon(String selection) {
     var taxon = widget.speciesCtr.text.split(' ');
+    widget.speciesCtr.value = widget.speciesCtr.value.copyWith(
+      text: selection,
+      selection: TextSelection.collapsed(offset: selection.length),
+    );
     SpecimenServices(ref).getTaxonIdByGenusEpithet(taxon[0], taxon[1]).then(
           (data) => SpecimenServices(ref).updateSpecimen(
             widget.specimenUuid,
@@ -140,6 +139,8 @@ class SpeciesInputField extends StatelessWidget {
       .toList();
 }
 
+/// Species field that is disabled
+/// Used when the taxon list is empty
 class DisabledSpeciesField extends StatelessWidget {
   const DisabledSpeciesField({super.key});
 
@@ -182,6 +183,9 @@ class SpeciesField extends StatelessWidget {
       ),
       focusNode: focusNode,
       onFieldSubmitted: onFieldSubmitted,
+      validator: (value) => value!.isEmpty ? 'Please enter a species' : null,
+      keyboardType: TextInputType.text,
+      textInputAction: TextInputAction.next,
     );
   }
 }
