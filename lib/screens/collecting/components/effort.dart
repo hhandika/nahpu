@@ -13,8 +13,8 @@ import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/utility_services.dart';
 import 'package:nahpu/styles/catalogs.dart';
 
-class CollMethodForm extends StatelessWidget {
-  const CollMethodForm({
+class CollEffort extends StatelessWidget {
+  const CollEffort({
     super.key,
     required this.collEventId,
   });
@@ -24,7 +24,7 @@ class CollMethodForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FormCard(
-      title: 'Collecting Methods',
+      title: 'Collecting Effort',
       child: SizedBox(
         height: bottomCollEventHeight,
         child: Column(
@@ -43,7 +43,7 @@ class CollMethodForm extends StatelessWidget {
                     ),
                   );
                 },
-                text: 'Add Tool'),
+                text: 'Add Method'),
             const CommonTextField(
               labelText: 'Notes',
               hintText: 'Notes',

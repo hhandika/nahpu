@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/screens/collecting/components/activities.dart';
-import 'package:nahpu/screens/collecting/components/methods.dart';
+import 'package:nahpu/screens/collecting/components/effort.dart';
 import 'package:nahpu/screens/collecting/components/collecting_info.dart';
 import 'package:nahpu/screens/collecting/components/tab_bar.dart';
 import 'package:nahpu/screens/shared/common.dart';
@@ -51,7 +51,7 @@ class CollEventFormState extends ConsumerState<CollEventForm> {
             AdaptiveLayout(
               useHorizontalLayout: useHorizontalLayout,
               children: [
-                CollMethodForm(
+                CollEffort(
                   collEventId: widget.id,
                 ),
                 CollEventTabBar(
