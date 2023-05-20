@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:flutter/material.dart';
@@ -299,6 +298,8 @@ class PartForm extends ConsumerStatefulWidget {
 }
 
 class PartFormState extends ConsumerState<PartForm> {
+  bool _showMore = false;
+
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
@@ -329,64 +330,14 @@ class PartFormState extends ConsumerState<PartForm> {
               hintText: 'Enter a treatment: e.g. "formalin", "alcohol", etc."',
               isLastField: false,
             ),
-            CommonTextField(
-              controller: widget.partCtr.additionalTreatmentCtr,
-              labelText: 'Additional treatment',
-              hintText: 'Enter a treatment: e.g. "formalin", "alcohol", etc."',
-              isLastField: false,
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Date taken',
-                hintText: 'Enter date',
-              ),
-              controller: widget.partCtr.dateTakenCtr,
-              onTap: () async {
-                final selectedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime.now());
-
-                if (selectedDate != null) {
-                  widget.partCtr.dateTakenCtr.text =
-                      DateFormat.yMMMd().format(selectedDate);
-                }
-              },
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Time taken',
-                hintText: 'Enter time',
-              ),
-              controller: widget.partCtr.timeTakenCtr,
-              onTap: () {
-                showTimePicker(context: context, initialTime: TimeOfDay.now())
-                    .then((time) {
-                  if (time != null) {
-                    widget.partCtr.timeTakenCtr.text = time.format(context);
-                  }
+            AdditionalPartFields(visible: _showMore, partCtr: widget.partCtr),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  _showMore = !_showMore;
                 });
               },
-            ),
-            CommonTextField(
-              controller: widget.partCtr.museumPermanentCtr,
-              labelText: 'Museum permanent',
-              hintText: 'Enter a museum name or abbreviation',
-              isLastField: false,
-            ),
-            CommonTextField(
-              controller: widget.partCtr.museumLoanCtr,
-              labelText: 'Museum loan',
-              hintText: 'Enter a museum name or abbreviation',
-              isLastField: false,
-            ),
-            CommonTextField(
-              controller: widget.partCtr.remarkCtr,
-              maxLines: 3,
-              labelText: 'Remarks',
-              hintText: 'Enter a remark specific to this part',
-              isLastField: false,
+              child: Text(_showMore ? 'Show less' : 'Show more'),
             ),
             const SizedBox(height: 10),
             FormButtonWithDelete(
@@ -436,6 +387,66 @@ class PartFormState extends ConsumerState<PartForm> {
       museumPermanent: db.Value(widget.partCtr.museumPermanentCtr.text),
       museumLoan: db.Value(widget.partCtr.museumLoanCtr.text),
       remark: db.Value(widget.partCtr.remarkCtr.text),
+    );
+  }
+}
+
+class AdditionalPartFields extends StatelessWidget {
+  const AdditionalPartFields({
+    super.key,
+    required this.visible,
+    required this.partCtr,
+  });
+
+  final bool visible;
+  final PartFormCtrModel partCtr;
+
+  @override
+  Widget build(BuildContext context) {
+    return Visibility(
+      visible: visible,
+      child: Column(children: [
+        CommonTextField(
+          controller: partCtr.additionalTreatmentCtr,
+          labelText: 'Additional treatment',
+          hintText: 'Enter a treatment: e.g. "formalin", "alcohol", etc."',
+          isLastField: false,
+        ),
+        CommonDateField(
+          labelText: 'Date taken',
+          hintText: 'Enter date',
+          controller: partCtr.dateTakenCtr,
+          initialDate: DateTime.now(),
+          lastDate: DateTime.now(),
+          onTap: () {},
+        ),
+        CommonTimeField(
+          labelText: 'Time taken',
+          hintText: 'Enter time',
+          controller: partCtr.timeTakenCtr,
+          initialTime: TimeOfDay.now(),
+          onTap: () {},
+        ),
+        CommonTextField(
+          controller: partCtr.museumPermanentCtr,
+          labelText: 'Museum permanent',
+          hintText: 'Enter a museum name or abbreviation',
+          isLastField: false,
+        ),
+        CommonTextField(
+          controller: partCtr.museumLoanCtr,
+          labelText: 'Museum loan',
+          hintText: 'Enter a museum name or abbreviation',
+          isLastField: false,
+        ),
+        CommonTextField(
+          controller: partCtr.remarkCtr,
+          maxLines: 3,
+          labelText: 'Remarks',
+          hintText: 'Enter a remark specific to this part',
+          isLastField: false,
+        )
+      ]),
     );
   }
 }
