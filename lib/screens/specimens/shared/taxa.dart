@@ -8,11 +8,11 @@ import 'package:nahpu/screens/shared/layout.dart';
 class SpeciesInputField extends ConsumerWidget {
   const SpeciesInputField({
     super.key,
-    required this.controller,
+    required this.speciesCtr,
     required this.onFieldSubmitted,
   });
 
-  final TextEditingController controller;
+  final TextEditingController speciesCtr;
   final VoidCallback onFieldSubmitted;
 
   @override
@@ -28,7 +28,7 @@ class SpeciesInputField extends ConsumerWidget {
         );
     return RawAutocomplete<String>(
       focusNode: FocusNode(),
-      textEditingController: controller,
+      textEditingController: speciesCtr,
       optionsBuilder: (TextEditingValue textEditingValue) {
         if (textEditingValue.text == '') {
           return const Iterable<String>.empty();
@@ -42,7 +42,7 @@ class SpeciesInputField extends ConsumerWidget {
       // onSelected: widget.onSelected,
       fieldViewBuilder: (
         BuildContext context,
-        controller,
+        TextEditingController controller,
         FocusNode focusNode,
         VoidCallback onFieldSubmitted,
       ) {

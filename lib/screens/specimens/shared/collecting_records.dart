@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/services/types/mammals.dart';
-import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/providers/catalogs.dart';
@@ -14,7 +13,6 @@ import 'package:nahpu/screens/specimens/shared/taxa.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
-import 'package:nahpu/services/database/taxonomy_queries.dart';
 
 class CollectingRecordField extends ConsumerStatefulWidget {
   const CollectingRecordField({
@@ -40,9 +38,8 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
 
   @override
   void initState() {
-    super.initState();
     speciesCtr.text = widget.specimenCtr.taxonDataCtr.speciesName;
-    // _speciesFocusNode = FocusNode();
+    super.initState();
   }
 
   @override
@@ -63,23 +60,24 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
               specimenUuid: widget.specimenUuid,
               specimenCtr: widget.specimenCtr),
           !Platform.isAndroid
-              ? SpeciesInputField(
-                  controller: speciesCtr,
-                  onFieldSubmitted: () {
-                    setState(
-                      () {
-                        var taxon = speciesCtr.text.split(' ');
-                        TaxonomyQuery(ref.read(databaseProvider))
-                            .getTaxonIdByGenusEpithet(taxon[0], taxon[1])
-                            .then(
-                              (data) => SpecimenServices(ref).updateSpecimen(
-                                widget.specimenUuid,
-                                SpecimenCompanion(speciesID: db.Value(data.id)),
-                              ),
-                            );
-                      },
-                    );
-                  })
+              ? Text(speciesCtr.text.isEmpty ? 'No Species' : speciesCtr.text)
+              // ? SpeciesInputField(
+              //     speciesCtr: speciesCtr,
+              //     onFieldSubmitted: () {
+              //       setState(
+              //         () {
+              //           var taxon = speciesCtr.text.split(' ');
+              //           TaxonomyQuery(ref.read(databaseProvider))
+              //               .getTaxonIdByGenusEpithet(taxon[0], taxon[1])
+              //               .then(
+              //                 (data) => SpecimenServices(ref).updateSpecimen(
+              //                   widget.specimenUuid,
+              //                   SpecimenCompanion(speciesID: db.Value(data.id)),
+              //                 ),
+              //               );
+              //         },
+              //       );
+              //     })
               : CommonPadding(
                   child: TaxonDropdownMenu(
                   onSelected: (int? value) {
