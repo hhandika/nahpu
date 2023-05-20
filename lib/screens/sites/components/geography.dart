@@ -82,7 +82,7 @@ class MainSiteLocality extends ConsumerWidget {
           controller: siteFormCtr.stateProvinceCtr,
           decoration: const InputDecoration(
             labelText: 'State/Province',
-            hintText: 'Enter a state/province location',
+            hintText: 'Enter a state/province',
           ),
           onChanged: (value) {
             SiteServices(ref).updateSite(
@@ -95,7 +95,7 @@ class MainSiteLocality extends ConsumerWidget {
           controller: siteFormCtr.countyCtr,
           decoration: const InputDecoration(
             labelText: 'County/Parish/District',
-            hintText: 'Enter a county/parish/district location',
+            hintText: 'Enter a county/parish/district',
           ),
           onChanged: (value) {
             SiteServices(ref).updateSite(
@@ -108,7 +108,7 @@ class MainSiteLocality extends ConsumerWidget {
           controller: siteFormCtr.municipalityCtr,
           decoration: const InputDecoration(
             labelText: 'Municipality/City/Town',
-            hintText: 'Enter municipality/city/town name',
+            hintText: 'Enter a municipality/city/town',
           ),
           onChanged: (value) {
             SiteServices(ref).updateSite(
