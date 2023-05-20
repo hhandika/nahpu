@@ -71,7 +71,10 @@ class DashboardState extends ConsumerState<Dashboard> {
                                     builder: (context) =>
                                         EditProject(projectUuid: projectUuid)));
                               },
-                              icon: const Icon(Icons.edit),
+                              icon: Icon(
+                                Icons.edit_rounded,
+                                color: Theme.of(context).disabledColor,
+                              ),
                             ),
                           ),
                         ],

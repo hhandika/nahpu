@@ -438,7 +438,10 @@ class SpecimenIdTile extends ConsumerWidget {
       trailing: Visibility(
         visible: specimenCtr.fieldNumberCtr.text.isNotEmpty,
         child: IconButton(
-          icon: const Icon(Icons.edit_rounded),
+          icon: Icon(
+            Icons.edit_rounded,
+            color: Theme.of(context).disabledColor,
+          ),
           onPressed: () {
             showDialog(
               context: context,

@@ -229,9 +229,9 @@ class CollEventIdTile extends ConsumerWidget {
               ),
             ),
             trailing: IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.edit_rounded,
-                size: 20,
+                color: Theme.of(context).disabledColor,
               ),
               onPressed: () {
                 showDialog(
