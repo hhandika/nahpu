@@ -1,4 +1,4 @@
-double get topSpecimenRecordHeight => 555;
+double get topSpecimenRecordHeight => 560;
 
 double get topCollEventHeight => 368;
 

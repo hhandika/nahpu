@@ -25,10 +25,12 @@ class SpeciesAutoComplete extends ConsumerStatefulWidget {
 }
 
 class SpeciesAutoCompleteState extends ConsumerState<SpeciesAutoComplete> {
+  FocusNode focusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     return RawAutocomplete<String>(
-      focusNode: FocusNode(),
+      focusNode: focusNode,
       textEditingController: widget.speciesCtr,
       optionsBuilder: (TextEditingValue textEditingValue) {
         if (textEditingValue.text == '') {
@@ -44,6 +46,8 @@ class SpeciesAutoCompleteState extends ConsumerState<SpeciesAutoComplete> {
         setState(() {
           _inputTaxon(selection);
         });
+        ref.invalidate(specimenEntryProvider);
+        focusNode.unfocus();
       },
       fieldViewBuilder: (
         BuildContext context,
@@ -66,8 +70,9 @@ class SpeciesAutoCompleteState extends ConsumerState<SpeciesAutoComplete> {
           alignment: Alignment.topLeft,
           child: Material(
             elevation: 4.0,
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxHeight: 200, minWidth: 100),
+            child: SizedBox(
+              height: 250.0,
+              width: 300,
               child: ListView.builder(
                 padding: const EdgeInsets.all(8.0),
                 itemCount: options.length,
@@ -91,17 +96,21 @@ class SpeciesAutoCompleteState extends ConsumerState<SpeciesAutoComplete> {
   }
 
   void _inputTaxon(String selection) {
+    _copyTaxon(selection);
     var taxon = widget.speciesCtr.text.split(' ');
-    widget.speciesCtr.value = widget.speciesCtr.value.copyWith(
-      text: selection,
-      selection: TextSelection.collapsed(offset: selection.length),
-    );
     SpecimenServices(ref).getTaxonIdByGenusEpithet(taxon[0], taxon[1]).then(
           (data) => SpecimenServices(ref).updateSpecimen(
             widget.specimenUuid,
             SpecimenCompanion(speciesID: db.Value(data.id)),
           ),
         );
+  }
+
+  void _copyTaxon(String selection) {
+    widget.speciesCtr.value = widget.speciesCtr.value.copyWith(
+      text: selection,
+      selection: TextSelection.collapsed(offset: selection.length),
+    );
   }
 }
 
@@ -131,6 +140,8 @@ class SpeciesInputField extends StatelessWidget {
     var data = taxonList.firstWhere((taxon) => taxon.id == speciesCtr);
     TextEditingController ctr =
         TextEditingController(text: '${data.genus} ${data.specificEpithet}');
+    ctr.selection =
+        TextSelection.fromPosition(TextPosition(offset: ctr.text.length));
     return ctr;
   }
 
@@ -185,7 +196,7 @@ class SpeciesField extends StatelessWidget {
       onFieldSubmitted: onFieldSubmitted,
       validator: (value) => value!.isEmpty ? 'Please enter a species' : null,
       keyboardType: TextInputType.text,
-      textInputAction: TextInputAction.next,
+      textInputAction: TextInputAction.done,
     );
   }
 }
