@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:flutter/material.dart';
@@ -58,35 +56,21 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
           PersonnelRecords(
               specimenUuid: widget.specimenUuid,
               specimenCtr: widget.specimenCtr),
-          !Platform.isAndroid
-              ? ref.watch(taxonProvider).when(
-                  data: (taxa) {
-                    var data = taxa.firstWhere(
-                        (taxon) => taxon.id == widget.specimenCtr.speciesCtr);
-                    speciesCtr.text = '${data.genus} ${data.specificEpithet}';
-                    return SpeciesInputField(
-                      specimenUuid: widget.specimenUuid,
-                      speciesCtr: speciesCtr,
-                      options: taxa
-                          .map((taxon) =>
-                              '${taxon.genus} ${taxon.specificEpithet}')
-                          .toList(),
-                    );
-                  },
-                  loading: () => const CircularProgressIndicator(),
-                  error: (error, stack) => const Text('Error loading taxa'))
-              : CommonPadding(
-                  child: TaxonDropdownMenu(
-                  onSelected: (int? value) {
-                    if (value != null) {
-                      SpecimenServices(ref).updateSpecimen(
-                        widget.specimenUuid,
-                        SpecimenCompanion(speciesID: db.Value(value)),
-                      );
-                    }
-                  },
-                  controller: widget.specimenCtr,
-                )),
+          ref.watch(taxonProvider).when(
+              data: (taxa) {
+                var data = taxa.firstWhere(
+                    (taxon) => taxon.id == widget.specimenCtr.speciesCtr);
+                speciesCtr.text = '${data.genus} ${data.specificEpithet}';
+                return SpeciesInputField(
+                  specimenUuid: widget.specimenUuid,
+                  speciesCtr: speciesCtr,
+                  options: taxa
+                      .map((taxon) => '${taxon.genus} ${taxon.specificEpithet}')
+                      .toList(),
+                );
+              },
+              loading: () => const CircularProgressIndicator(),
+              error: (error, stack) => const Text('Error loading taxa')),
           AdaptiveLayout(
               useHorizontalLayout: widget.useHorizontalLayout,
               children: [
