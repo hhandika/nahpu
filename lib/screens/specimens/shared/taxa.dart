@@ -46,7 +46,7 @@ class SpeciesAutoCompleteState extends ConsumerState<SpeciesAutoComplete> {
         setState(() {
           _inputTaxon(selection);
         });
-        ref.invalidate(specimenEntryProvider);
+        _invalidateEntryProvider();
         focusNode.unfocus();
       },
       fieldViewBuilder: (
@@ -70,10 +70,11 @@ class SpeciesAutoCompleteState extends ConsumerState<SpeciesAutoComplete> {
           alignment: Alignment.topLeft,
           child: Material(
             elevation: 4.0,
-            child: SizedBox(
-              height: 250.0,
+            child: Container(
               width: 300,
+              constraints: const BoxConstraints(maxHeight: 300),
               child: ListView.builder(
+                shrinkWrap: true,
                 padding: const EdgeInsets.all(8.0),
                 itemCount: options.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -112,6 +113,11 @@ class SpeciesAutoCompleteState extends ConsumerState<SpeciesAutoComplete> {
       selection: TextSelection.collapsed(offset: selection.length),
     );
   }
+
+  void _invalidateEntryProvider() {
+    ref.invalidate(specimenEntryProvider);
+    ref.invalidate(taxonDataProvider);
+  }
 }
 
 class SpeciesInputField extends StatelessWidget {
@@ -137,6 +143,9 @@ class SpeciesInputField extends StatelessWidget {
   }
 
   TextEditingController get _getSpeciesCtr {
+    if (speciesCtr == null) {
+      return TextEditingController();
+    }
     var data = taxonList.firstWhere((taxon) => taxon.id == speciesCtr);
     TextEditingController ctr =
         TextEditingController(text: '${data.genus} ${data.specificEpithet}');
