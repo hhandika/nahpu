@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/services/types/types.dart';
@@ -129,6 +130,7 @@ class PartList extends ConsumerWidget {
               title: PartTitle(
                 partType: part.type,
                 partCount: part.count.toString(),
+                barcodeID: part.barcodeID,
               ),
               subtitle: PartSubTitle(part: part),
               trailing: IconButton(
@@ -160,19 +162,64 @@ class PartTitle extends StatelessWidget {
     super.key,
     required this.partType,
     required this.partCount,
+    required this.barcodeID,
   });
 
   final String? partType;
   final String? partCount;
+  final String? barcodeID;
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      '${partType ?? 'Unknown part'}'
-      '$listTileSeparator'
-      '${partCount ?? 'No count'}',
-      style: Theme.of(context).textTheme.titleMedium,
+    return Row(children: [
+      Text(
+        '${partType ?? 'Unknown part'}'
+        '$listTileSeparator'
+        '${partCount ?? 'No count'}',
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
+      barcodeID == null || barcodeID!.isEmpty
+          ? const SizedBox.shrink()
+          : BarcodeText(barcodeID: barcodeID),
+    ]);
+  }
+}
+
+class BarcodeText extends StatelessWidget {
+  const BarcodeText({
+    super.key,
+    required this.barcodeID,
+  });
+
+  final String? barcodeID;
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      text: TextSpan(children: [
+        TextSpan(
+          text: listTileSeparator,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        const WidgetSpan(
+            child: TileIcon(icon: MdiIcons.barcode),
+            alignment: PlaceholderAlignment.middle),
+        TextSpan(
+          text: barcodeIDText,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+      ]),
     );
+  }
+
+  String get barcodeIDText {
+    if (barcodeID == null) {
+      return '';
+    } else if (barcodeID!.isEmpty) {
+      return '';
+    } else {
+      return '$barcodeID';
+    }
   }
 }
 
@@ -185,7 +232,7 @@ class PartSubTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       '${_getTextFirst(part.tissueID)}'
-      '${_getText(part.treatment)}'
+      '$treatment'
       '${_getText(part.additionalTreatment)}'
       '${_getText(part.dateTaken)}'
       '${_getText(part.timeTaken)}'
@@ -200,6 +247,16 @@ class PartSubTitle extends StatelessWidget {
       return '';
     } else {
       return '$text$listTileSeparator';
+    }
+  }
+
+  String get treatment {
+    if (part.treatment == null) {
+      return 'None';
+    } else if (part.treatment!.isEmpty) {
+      return 'None';
+    } else {
+      return '${part.treatment}';
     }
   }
 
@@ -219,7 +276,7 @@ class PartSubTitle extends StatelessWidget {
     } else if (part.remark!.isEmpty) {
       return '';
     } else {
-      return '${listTileSeparator}with remark';
+      return '${listTileSeparator}has remark';
     }
   }
 }
