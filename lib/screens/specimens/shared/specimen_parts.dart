@@ -184,39 +184,42 @@ class PartSubTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      '${_getTissueID()}'
-      '${_getTreatmentText()}'
-      '${_getAddTreatmentText()}',
+      '${_getTextFirst(part.tissueID)}'
+      '${_getText(part.treatment)}'
+      '${_getText(part.additionalTreatment)}'
+      '${_getText(part.dateTaken)}'
+      '${_getText(part.timeTaken)}'
+      '$remark',
     );
   }
 
-  String _getTissueID() {
-    if (part.tissueID == null) {
+  String _getTextFirst(String? text) {
+    if (text == null) {
       return '';
-    } else if (part.tissueID!.isEmpty) {
+    } else if (text.isEmpty) {
       return '';
     } else {
-      return '${part.tissueID}$listTileSeparator';
+      return '$text$listTileSeparator';
     }
   }
 
-  String _getTreatmentText() {
-    if (part.treatment == null) {
-      return 'None';
-    } else if (part.treatment!.isEmpty) {
-      return 'None';
+  String _getText(String? text) {
+    if (text == null) {
+      return '';
+    } else if (text.isEmpty) {
+      return '';
     } else {
-      return part.treatment!;
+      return '$listTileSeparator$text';
     }
   }
 
-  String _getAddTreatmentText() {
-    if (part.additionalTreatment == null) {
+  String get remark {
+    if (part.remark == null) {
       return '';
-    } else if (part.additionalTreatment!.isEmpty) {
+    } else if (part.remark!.isEmpty) {
       return '';
     } else {
-      return '$listTileSeparator${part.additionalTreatment}';
+      return '${listTileSeparator}with remark';
     }
   }
 }
