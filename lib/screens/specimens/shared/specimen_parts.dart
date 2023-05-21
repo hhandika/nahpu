@@ -130,7 +130,7 @@ class PartList extends ConsumerWidget {
               title: PartTitle(
                 partType: part.type,
                 partCount: part.count.toString(),
-                barcodeID: part.barcodeID,
+                barcodeID: part.barcodeID ?? '',
               ),
               subtitle: PartSubTitle(part: part),
               trailing: IconButton(
@@ -167,21 +167,24 @@ class PartTitle extends StatelessWidget {
 
   final String? partType;
   final String? partCount;
-  final String? barcodeID;
+  final String barcodeID;
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      Text(
-        '${partType ?? 'Unknown part'}'
-        '$listTileSeparator'
-        '${partCount ?? 'No count'}',
-        style: Theme.of(context).textTheme.titleMedium,
-      ),
-      barcodeID == null || barcodeID!.isEmpty
-          ? const SizedBox.shrink()
-          : BarcodeText(barcodeID: barcodeID),
-    ]);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          '${partType ?? 'Unknown part'}'
+          '$listTileSeparator'
+          '${partCount ?? 'No count'}',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        barcodeID.isNotEmpty
+            ? BarcodeText(barcodeID: barcodeID)
+            : const SizedBox.shrink(),
+      ],
+    );
   }
 }
 
@@ -196,17 +199,15 @@ class BarcodeText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RichText(
+      overflow: TextOverflow.ellipsis,
       text: TextSpan(children: [
-        TextSpan(
-          text: listTileSeparator,
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
         const WidgetSpan(
             child: TileIcon(icon: MdiIcons.barcode),
             alignment: PlaceholderAlignment.middle),
+        const TextSpan(text: ' '),
         TextSpan(
           text: barcodeIDText,
-          style: Theme.of(context).textTheme.titleMedium,
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
       ]),
     );
@@ -237,6 +238,8 @@ class PartSubTitle extends StatelessWidget {
       '${_getText(part.dateTaken)}'
       '${_getText(part.timeTaken)}'
       '$remark',
+      style: Theme.of(context).textTheme.bodyMedium,
+      overflow: TextOverflow.ellipsis,
     );
   }
 
@@ -573,22 +576,11 @@ class TissueIDform extends ConsumerWidget {
             decoration: InputDecoration(
                 labelText: 'Tissue ID',
                 hintText: 'Enter tissue ID',
-                suffix: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.paste_outlined,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.add_circle_outline_rounded,
-                      ),
-                    )
-                  ],
+                suffix: IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.repeat_rounded,
+                  ),
                 )),
             textInputAction: TextInputAction.done,
           ),
