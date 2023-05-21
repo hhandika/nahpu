@@ -585,12 +585,39 @@ class TissueIDform extends ConsumerWidget {
             textInputAction: TextInputAction.done,
           ),
         ),
-        IconButton(
-          iconSize: 25,
-          onPressed: () {},
-          icon: const Icon(Icons.settings_outlined),
-        ),
+        const TissueIDMenu(),
       ],
     );
+  }
+}
+
+class TissueIDMenu extends StatefulWidget {
+  const TissueIDMenu({super.key});
+
+  @override
+  State<TissueIDMenu> createState() => _TissueIDMenuState();
+}
+
+class _TissueIDMenuState extends State<TissueIDMenu> {
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton<int>(itemBuilder: (BuildContext context) {
+      return [
+        const PopupMenuItem(
+            value: 1,
+            child: ListTile(
+              leading: Icon(Icons.add_rounded),
+              title: Text('New number'),
+            )),
+        const PopupMenuDivider(),
+        const PopupMenuItem(
+          value: 2,
+          child: ListTile(
+            leading: Icon(Icons.settings_outlined),
+            title: Text('Settings'),
+          ),
+        ),
+      ];
+    });
   }
 }
