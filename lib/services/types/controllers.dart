@@ -197,7 +197,6 @@ class NarrativeFormCtrModel {
 
 class SpecimenFormCtrModel {
   SpecimenFormCtrModel({
-    required this.taxonDataCtr,
     required this.speciesCtr,
     required this.catalogerCtr,
     required this.museumIDCtr,
@@ -222,7 +221,6 @@ class SpecimenFormCtrModel {
   String? catalogerCtr;
   String? preparatorCtr;
   String? conditionCtr;
-  TaxonData taxonDataCtr;
   int? speciesCtr;
   int? collEventIDCtr;
   int? multipleCollectorCtr;
@@ -251,7 +249,6 @@ class SpecimenFormCtrModel {
         collMethodCtr: null,
         coordinateCtr: null,
         fieldNumberCtr: TextEditingController(),
-        taxonDataCtr: TaxonData(),
         speciesCtr: null,
         museumIDCtr: TextEditingController(),
         prepDateCtr: TextEditingController(),
@@ -278,7 +275,6 @@ class SpecimenFormCtrModel {
         museumIDCtr: TextEditingController(text: specimen.museumID),
         fieldNumberCtr:
             TextEditingController(text: specimen.fieldNumber?.toString() ?? ''),
-        taxonDataCtr: taxonData,
         speciesCtr: specimen.speciesID,
         prepDateCtr: TextEditingController(text: specimen.prepDate),
         prepTimeCtr: TextEditingController(text: specimen.prepTime),
