@@ -323,7 +323,8 @@ class ProjectPopUpMenuState extends ConsumerState<ProjectPopUpMenu> {
       () => showDialog<String>(
         context: context,
         builder: (BuildContext context) => DeleteAlerts(
-          deletePrompt: 'Are you sure you want to delete this project?',
+          deletePrompt: 'THIS ACTION IS IRREVERSIBLE!\n'
+              'Are you sure you want to delete this project?',
           onDelete: () async {
             await ProjectServices(ref).deleteProject(projectUuid);
             if (mounted) {
