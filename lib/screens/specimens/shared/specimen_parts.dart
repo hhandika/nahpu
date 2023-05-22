@@ -572,6 +572,11 @@ class TissueIDformState extends ConsumerState<TissueIDform> {
   bool _hasId = false;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -583,7 +588,7 @@ class TissueIDformState extends ConsumerState<TissueIDform> {
             decoration: InputDecoration(
               labelText: 'Tissue ID',
               hintText: 'Enter tissue ID',
-              suffix: _hasId
+              suffix: _hasId || widget.tissueIdCtr.text.isNotEmpty
                   ? null
                   : IconButton(
                       icon: Icon(
