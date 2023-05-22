@@ -1,4 +1,4 @@
-import 'package:nahpu/providers/catalogs.dart';
+import 'package:nahpu/providers/sites.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/coordinate_queries.dart';
 import 'package:nahpu/services/database/database.dart';
