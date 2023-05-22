@@ -170,7 +170,6 @@ class MediaTabBars extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
-      // Media inputs
       children: [
         DefaultTabController(
           length: length,

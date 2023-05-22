@@ -42,6 +42,26 @@ class ScreenLayout extends StatelessWidget {
   }
 }
 
+class CommonScrollbar extends StatelessWidget {
+  const CommonScrollbar({
+    super.key,
+    required this.scrollController,
+    required this.child,
+  });
+
+  final ScrollController scrollController;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scrollbar(
+        thumbVisibility: true,
+        controller: scrollController,
+        thickness: 3,
+        child: child);
+  }
+}
+
 class CommonPadding extends StatelessWidget {
   const CommonPadding({
     super.key,

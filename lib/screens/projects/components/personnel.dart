@@ -58,40 +58,43 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
   }
 }
 
-class PersonnelList extends ConsumerWidget {
-  const PersonnelList({
-    Key? key,
-  }) : super(key: key);
+class PersonnelList extends ConsumerStatefulWidget {
+  const PersonnelList({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  PersonnelListState createState() => PersonnelListState();
+}
+
+class PersonnelListState extends ConsumerState<PersonnelList> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  Widget build(BuildContext context) {
     final personnel = ref.watch(personnelListProvider);
     return personnel.when(
       data: (data) {
         return data.isEmpty
-            ? const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'No personnel found!',
-                  ),
-                  Text(
-                    'Add at least a cataloger to use the app.',
-                  )
-                ],
+            ? const Center(
+                child: Text(
+                  'No personnel found!\n'
+                  'Add at least a cataloger to use the app.',
+                  textAlign: TextAlign.center,
+                ),
               )
-            : ListView.builder(
-                itemCount: data.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return PersonalListTile(
-                    personnelData: data[index],
-                    trailing: PersonnelMenu(
-                      data: data[index],
-                    ),
-                  );
-                },
+            : CommonScrollbar(
+                scrollController: _scrollController,
+                child: ListView.builder(
+                  itemCount: data.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return PersonalListTile(
+                      personnelData: data[index],
+                      trailing: PersonnelMenu(
+                        data: data[index],
+                      ),
+                    );
+                  },
+                ),
               );
       },
       loading: () => const CommonProgressIndicator(),

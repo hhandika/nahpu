@@ -56,7 +56,7 @@ class PartDataFormState extends ConsumerState<PartDataForm>
       child: MediaTabBars(
         tabController: _tabController,
         length: _length,
-        height: MediaQuery.of(context).size.height * 0.5,
+        height: MediaQuery.of(context).size.height * 0.505,
         tabs: [
           Tab(
             icon: Icon(matchCatFmtToPartIcon(widget.catalogFmt)),
@@ -109,7 +109,7 @@ class SpecimenPartFields extends ConsumerWidget {
   }
 }
 
-class PartList extends ConsumerWidget {
+class PartList extends ConsumerStatefulWidget {
   const PartList({
     super.key,
     required this.specimenUuid,
@@ -118,38 +118,50 @@ class PartList extends ConsumerWidget {
   final String specimenUuid;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final specimenPartList = ref.watch(partBySpecimenProvider(specimenUuid));
+  PartListState createState() => PartListState();
+}
+
+class PartListState extends ConsumerState<PartList> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  Widget build(BuildContext context) {
+    final specimenPartList =
+        ref.watch(partBySpecimenProvider(widget.specimenUuid));
     return specimenPartList.when(
       data: (data) {
-        return ListView.builder(
-          shrinkWrap: true,
-          itemCount: data.length,
-          itemBuilder: (context, index) {
-            final part = data[index];
-            return ListTile(
-              title: PartTitle(
-                partType: part.type,
-                partCount: part.count.toString(),
-                barcodeID: part.barcodeID ?? '',
-              ),
-              subtitle: PartSubTitle(part: part),
-              trailing: IconButton(
-                icon: const Icon(Icons.edit),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => EditPart(
-                        specimenUuid: specimenUuid,
-                        specimenPartId: part.id,
-                        partCtr: PartFormCtrModel.fromData(part),
+        return CommonScrollbar(
+          scrollController: _scrollController,
+          child: ListView.builder(
+            shrinkWrap: true,
+            controller: _scrollController,
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              final part = data[index];
+              return ListTile(
+                title: PartTitle(
+                  partType: part.type,
+                  partCount: part.count.toString(),
+                  barcodeID: part.barcodeID ?? '',
+                ),
+                subtitle: PartSubTitle(part: part),
+                trailing: IconButton(
+                  icon: const Icon(Icons.edit),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => EditPart(
+                          specimenUuid: widget.specimenUuid,
+                          specimenPartId: part.id,
+                          partCtr: PartFormCtrModel.fromData(part),
+                        ),
                       ),
-                    ),
-                  );
-                },
-              ),
-            );
-          },
+                    );
+                  },
+                ),
+              );
+            },
+          ),
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),

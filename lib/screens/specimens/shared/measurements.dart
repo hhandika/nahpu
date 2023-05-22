@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/forms.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 
 class MeasurementForm extends StatefulWidget {
   const MeasurementForm({
@@ -24,10 +25,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
       mainAxisSize: MainAxisSize.min,
       child: SizedBox(
         height: MediaQuery.of(context).size.height * 0.5,
-        child: Scrollbar(
-          thumbVisibility: true,
-          controller: _scrollController,
-          thickness: 5,
+        child: CommonScrollbar(
+          scrollController: _scrollController,
           child: SingleChildScrollView(
             controller: _scrollController,
             child: Column(

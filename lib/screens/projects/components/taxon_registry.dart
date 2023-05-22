@@ -86,9 +86,12 @@ class RegistryInfo extends ConsumerWidget {
     return ref.watch(taxonRegistryProvider).when(
           data: (data) {
             return data.isEmpty
-                ? const Text(
-                    'No taxon found\n'
-                    'Add a new taxon to get started',
+                ? const Center(
+                    child: Text(
+                      'No taxon found!\n'
+                      'Add a new taxon to get started',
+                      textAlign: TextAlign.center,
+                    ),
                   )
                 : TaxonRegistryLayout(
                     children: [
@@ -661,7 +664,10 @@ class TaxonRegistryPageState extends ConsumerState<TaxonRegistryPage> {
             data: (data) {
               if (data.isEmpty) {
                 return const Center(
-                  child: Text('No taxon found'),
+                  child: Text(
+                    'No taxon found',
+                    textAlign: TextAlign.center,
+                  ),
                 );
               }
               return TaxonList(taxonList: data);
