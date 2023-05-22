@@ -38,14 +38,6 @@ const List<String> exportFormats = [
   // 'JSON (.json)',
 ];
 
-const List<String> expenseCategory = [
-  'Travel',
-  'Food',
-  'Accommodation',
-  'Equipment',
-  'Other',
-];
-
 enum DbExportFmt { sqlite3 }
 
 const List<String> dbExportFmtList = [
@@ -90,6 +82,7 @@ const List<String> supportedTaxonClass = [
 
 const List<String> siteTypeList = [
   'City',
+  'Town',
   'Hotel',
   'Village',
   'Camp',
