@@ -2,7 +2,6 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/narrative_queries.dart';
-
 import 'package:nahpu/services/database/specimen_queries.dart';
 import 'package:nahpu/services/database/coordinate_queries.dart';
 import 'package:nahpu/services/database/collevent_queries.dart';
