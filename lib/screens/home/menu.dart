@@ -84,7 +84,7 @@ class HomeMenuDrawer extends StatelessWidget {
   }
 
   Future<void> _launchHelpUrl() async {
-    final Uri url = Uri.parse('https://docs.nahpu.app/EN');
+    final Uri url = Uri.parse('https://docs.nahpu.app/en');
     if (!await launchUrl(
       url,
       mode: LaunchMode.externalApplication,
