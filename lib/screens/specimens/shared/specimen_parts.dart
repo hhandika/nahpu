@@ -542,7 +542,7 @@ class PartIdForm extends ConsumerWidget {
         ),
         TissueIDform(
           specimenUuid: specimenUuid,
-          partCtr: partCtr,
+          tissueIdCtr: partCtr.tissueIdCtr,
         ),
         CommonTextField(
             controller: partCtr.barcodeIdCtr,
@@ -554,45 +554,85 @@ class PartIdForm extends ConsumerWidget {
   }
 }
 
-class TissueIDform extends ConsumerWidget {
+class TissueIDform extends ConsumerStatefulWidget {
   const TissueIDform({
     super.key,
     required this.specimenUuid,
-    required this.partCtr,
+    required this.tissueIdCtr,
   });
 
   final String specimenUuid;
-  final PartFormCtrModel partCtr;
+  final TextEditingController tissueIdCtr;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  TissueIDformState createState() => TissueIDformState();
+}
+
+class TissueIDformState extends ConsumerState<TissueIDform> {
+  bool _hasId = false;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Expanded(
           child: TextField(
-            controller: partCtr.tissueIdCtr,
+            controller: widget.tissueIdCtr,
             decoration: InputDecoration(
-                labelText: 'Tissue ID',
-                hintText: 'Enter tissue ID',
-                suffix: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.repeat_rounded,
-                  ),
-                )),
+              labelText: 'Tissue ID',
+              hintText: 'Enter tissue ID',
+              suffix: _hasId
+                  ? null
+                  : IconButton(
+                      icon: Icon(
+                        Icons.repeat,
+                        color: Theme.of(context).disabledColor,
+                      ),
+                      onPressed: () {
+                        _repeatTissueNum();
+                      },
+                    ),
+            ),
+            onChanged: (value) {
+              setState(() {
+                _hasId = value.isNotEmpty;
+              });
+            },
             textInputAction: TextInputAction.done,
           ),
         ),
-        const TissueIDMenu(),
+        TissueIDMenu(
+          tissueIDct: widget.tissueIdCtr,
+          onNewNumber: () {
+            setState(() {
+              _hasId = true;
+            });
+          },
+        ),
       ],
     );
+  }
+
+  void _repeatTissueNum() {
+    String tissueId = 'B12233';
+    setState(() {
+      widget.tissueIdCtr.text = tissueId;
+      _hasId = true;
+    });
   }
 }
 
 class TissueIDMenu extends StatefulWidget {
-  const TissueIDMenu({super.key});
+  const TissueIDMenu({
+    super.key,
+    required this.tissueIDct,
+    required this.onNewNumber,
+  });
+
+  final TextEditingController tissueIDct;
+  final VoidCallback onNewNumber;
 
   @override
   State<TissueIDMenu> createState() => _TissueIDMenuState();
@@ -601,23 +641,38 @@ class TissueIDMenu extends StatefulWidget {
 class _TissueIDMenuState extends State<TissueIDMenu> {
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<int>(itemBuilder: (BuildContext context) {
-      return [
-        const PopupMenuItem(
-            value: 1,
-            child: ListTile(
-              leading: Icon(Icons.add_rounded),
-              title: Text('New number'),
-            )),
-        const PopupMenuDivider(),
-        const PopupMenuItem(
-          value: 2,
-          child: ListTile(
-            leading: Icon(Icons.settings_outlined),
-            title: Text('Settings'),
-          ),
-        ),
-      ];
+    return PopupMenuButton<int>(
+        icon: const Icon(Icons.more_vert),
+        itemBuilder: (BuildContext context) {
+          return [
+            PopupMenuItem(
+              value: 1,
+              child: const ListTile(
+                leading: Icon(Icons.add_rounded),
+                title: Text('New number'),
+              ),
+              onTap: () => {
+                widget.onNewNumber(),
+                _getNewNumber(),
+              },
+            ),
+            const PopupMenuDivider(),
+            const PopupMenuItem(
+              value: 2,
+              child: ListTile(
+                leading: Icon(Icons.settings_outlined),
+                title: Text('Settings'),
+              ),
+            ),
+          ];
+        });
+  }
+
+  void _getNewNumber() {
+    String numberId = 'B';
+    String number = '1';
+    setState(() {
+      widget.tissueIDct.text = '$numberId$number';
     });
   }
 }
