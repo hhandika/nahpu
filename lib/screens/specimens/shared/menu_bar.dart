@@ -100,7 +100,11 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
           );
         }
       }
-    }, 'Delete this specimen?', context);
+    },
+        'Deleting a specimen WILL NOT '
+        'update the cataloger field number\n'
+        'Delete this specimen?',
+        context);
   }
 
   void _deleteAllSpecimens() {
