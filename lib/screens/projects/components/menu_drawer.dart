@@ -119,10 +119,10 @@ class ProjectMenuDrawerState extends ConsumerState<ProjectMenuDrawer> {
             color: Colors.grey,
           ),
           ListTile(
-            leading: const Icon(Icons.delete_rounded),
+            leading: const Icon(Icons.delete_rounded, color: Colors.red),
             title: const Text(
               'Delete project',
-              style: TextStyle(color: Colors.redAccent),
+              style: TextStyle(color: Colors.red),
             ),
             onTap: () async {
               return showDialog(
