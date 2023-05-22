@@ -129,7 +129,10 @@ class DeleteAlerts extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return AlertDialog(
       title: const Text('Delete'),
-      content: Text(deletePrompt),
+      content: Text(
+        deletePrompt,
+        textAlign: TextAlign.center,
+      ),
       actions: [
         TextButton(
           onPressed: () {

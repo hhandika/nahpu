@@ -129,7 +129,7 @@ class ProjectMenuDrawerState extends ConsumerState<ProjectMenuDrawer> {
                 context: context,
                 builder: (BuildContext context) {
                   return DeleteAlerts(
-                      deletePrompt:
+                      deletePrompt: 'THIS ACTION IS IRREVERSIBLE.\n'
                           'Are you sure you want to delete this project?',
                       onDelete: () async {
                         await ProjectServices(ref).deleteProject(projectUuid);
