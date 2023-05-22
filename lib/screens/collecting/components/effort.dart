@@ -12,7 +12,7 @@ import 'package:nahpu/services/database/collevent_queries.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/utility_services.dart';
-import 'package:nahpu/styles/catalogs.dart';
+import 'package:nahpu/styles/catalog_pages.dart';
 
 class CollEffort extends StatelessWidget {
   const CollEffort({

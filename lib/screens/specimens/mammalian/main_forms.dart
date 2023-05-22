@@ -10,7 +10,7 @@ import 'package:nahpu/screens/specimens/shared/collecting_records.dart';
 import 'package:nahpu/screens/specimens/shared/media.dart';
 import 'package:nahpu/screens/specimens/shared/specimen_parts.dart';
 import 'package:nahpu/screens/specimens/shared/taxa.dart';
-import 'package:nahpu/styles/catalogs.dart';
+import 'package:nahpu/styles/catalog_pages.dart';
 
 class MammalForms extends ConsumerStatefulWidget {
   const MammalForms({

@@ -10,7 +10,7 @@ import 'package:nahpu/screens/shared/photos.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/screens/shared/videos.dart';
 import 'package:nahpu/screens/sites/components/coordinates.dart';
-import 'package:nahpu/styles/catalogs.dart';
+import 'package:nahpu/styles/catalog_pages.dart';
 
 class SiteForm extends ConsumerStatefulWidget {
   const SiteForm({Key? key, required this.id, required this.siteFormCtr})
