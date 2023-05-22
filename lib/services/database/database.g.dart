@@ -7039,6 +7039,8 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
   final String? prepDate;
   final String? prepTime;
   final String? collectedTime;
+
+  /// late update
   final String? captureDate;
   final int? isRelativeTime;
   final String? captureTime;

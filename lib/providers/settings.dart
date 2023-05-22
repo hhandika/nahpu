@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-final settingProvider = Provider<SharedPreferences>((ref) {
-  throw UnimplementedError();
-});
+part 'settings.g.dart';
+part 'settings.freezed.dart';
+
+@riverpod
+SharedPreferences setting(SettingRef ref) {
+  return throw UnimplementedError();
+}
 
 final themeSettingProvider =
     StateNotifierProvider<ThemeSettingNotifier, ThemeMode>((ref) {
@@ -48,15 +54,13 @@ class ThemeSettingNotifier extends StateNotifier<ThemeMode> {
     state = ThemeMode.system;
   }
 
-  void saveThemeMode(WidgetRef ref) {
-    final setting = ref.read(settingProvider);
-
+  void saveThemeMode() {
     if (state == ThemeMode.light) {
-      setting.setString('themeMode', 'light');
+      prefs.setString('themeMode', 'light');
     } else if (state == ThemeMode.dark) {
-      setting.setString('themeMode', 'dark');
+      prefs.setString('themeMode', 'dark');
     } else {
-      setting.setString('themeMode', 'system');
+      prefs.setString('themeMode', 'system');
     }
   }
 }
@@ -73,36 +77,39 @@ class CatalogFmtNotifier extends StateNotifier<CatalogFmt> {
   }
 }
 
-// // We need to save the catalog number to the shared preferences
-// // so that we can retrieve it when the app is restarted.
-// // and also we can use it to generate the catalog number for the
-// // next project.
-// final catalogNumberNotifier =
-//     StateNotifierProvider<CatalogNumberNotifier, int>((ref) {
-//   return CatalogNumberNotifier();
-// });
+@freezed
+class TissueID with _$TissueID {
+  factory TissueID({
+    required String prefix,
+    required String number,
+  }) = _TissueID;
+}
 
-// class CatalogNumberNotifier extends StateNotifier<int> {
-//   CatalogNumberNotifier() : super(0);
+@riverpod
+class TissueIDNotifier extends _$TissueIDNotifier {
+  Future<TissueID> _fetchSettings() async {
+    final prefs = ref.watch(settingProvider);
+    final prefix = prefs.getString('tissueIDPrefix');
+    final number = prefs.getInt('tissueIDNumber');
+    if (prefix != null && number != null) {
+      return TissueID(prefix: prefix, number: number.toString());
+    } else {
+      return TissueID(prefix: '', number: '');
+    }
+  }
 
-//   void initCatNum(WidgetRef ref) {
-//     final prefs = ref.read(settingProvider);
-//     final lastCatNum = prefs.getInt('catNum');
-//     if (lastCatNum != null) {
-//       state = lastCatNum;
-//     }
-//   }
+  @override
+  FutureOr<TissueID> build() async {
+    return await _fetchSettings();
+  }
 
-//   void increaseCatNum() {
-//     state++;
-//   }
+  void setPrefix(String prefix) {
+    final prefs = ref.watch(settingProvider);
+    prefs.setString('tissueIDPrefix', prefix);
+  }
 
-//   void decreaseCatNum() {
-//     state--;
-//   }
-
-//   void saveCatNum(WidgetRef ref) {
-//     final prefs = ref.read(settingProvider);
-//     prefs.setInt('catNum', state);
-//   }
-// }
+  void setNumber(int number) {
+    final prefs = ref.watch(settingProvider);
+    prefs.setInt('tissueIDNumber', number);
+  }
+}
