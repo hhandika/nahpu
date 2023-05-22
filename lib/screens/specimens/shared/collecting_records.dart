@@ -60,18 +60,24 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
             specimenUuid: widget.specimenUuid,
             speciesCtr: widget.specimenCtr.speciesCtr,
           ),
-          AdaptiveLayout(
-              useHorizontalLayout: widget.useHorizontalLayout,
-              children: [
-                SpecimenConditionField(
+          widget.specimenCtr.conditionCtr == 'Freshly Euthanized'
+              ? AdaptiveLayout(
+                  useHorizontalLayout: widget.useHorizontalLayout,
+                  children: [
+                      SpecimenConditionField(
+                        specimenCtr: widget.specimenCtr,
+                        specimenUuid: widget.specimenUuid,
+                      ),
+                      SpecimenCollectedField(
+                        specimenCtr: widget.specimenCtr,
+                        specimenUuid: widget.specimenUuid,
+                      ),
+                    ])
+              : CommonPadding(
+                  child: SpecimenConditionField(
                   specimenCtr: widget.specimenCtr,
                   specimenUuid: widget.specimenUuid,
-                ),
-                SpecimenCollectedField(
-                  specimenCtr: widget.specimenCtr,
-                  specimenUuid: widget.specimenUuid,
-                ),
-              ]),
+                )),
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
