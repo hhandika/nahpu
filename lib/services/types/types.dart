@@ -95,7 +95,8 @@ const List<String> siteTypeList = [
   'Camp',
   'Trail',
   'Trapline',
-  'Netline'
+  'Netline',
+  'Other',
 ];
 
 const List<String> relativeTimeList = [
