@@ -18,32 +18,42 @@ class SpecimenPartSelectionState extends ConsumerState<SpecimenPartSelection> {
       appBar: AppBar(
         title: const Text('Specimen Parts'),
       ),
-      body: SafeArea(
+      body: const SafeArea(
         child: ScreenLayout(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Tissue ID',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SettingCard(children: [
-                CommonTextField(
-                  labelText: 'Prefix',
-                  hintText: 'Enter tissue ID prefix, e.g. M',
-                  isLastField: false,
-                ),
-                CommonNumField(
-                  labelText: 'Tissue no.',
-                  hintText: 'Enter the initial starting number',
-                  isLastField: true,
-                )
-              ])
-            ],
-          ),
+          child: TissueNumSettings(),
         ),
       ),
+    );
+  }
+}
+
+class TissueNumSettings extends StatelessWidget {
+  const TissueNumSettings({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          'Tissue ID',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        const SettingCard(children: [
+          CommonTextField(
+            labelText: 'Prefix',
+            hintText: 'Enter tissue ID prefix, e.g. M',
+            isLastField: false,
+          ),
+          CommonNumField(
+            labelText: 'Tissue no.',
+            hintText: 'Enter the initial starting number',
+            isLastField: true,
+          )
+        ])
+      ],
     );
   }
 }

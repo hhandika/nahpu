@@ -657,15 +657,57 @@ class _TissueIDMenuState extends State<TissueIDMenu> {
               },
             ),
             const PopupMenuDivider(),
-            const PopupMenuItem(
-              value: 2,
-              child: ListTile(
-                leading: Icon(Icons.settings_outlined),
-                title: Text('Settings'),
-              ),
-            ),
+            PopupMenuItem(
+                value: 2,
+                child: const ListTile(
+                  leading: Icon(Icons.settings_outlined),
+                  title: Text('Settings'),
+                ),
+                onTap: () => {
+                      Future.delayed(
+                        const Duration(milliseconds: 0),
+                      ).then(
+                        (value) => _showTissueSettings(),
+                      ),
+                    }),
           ];
         });
+  }
+
+  void _showTissueSettings() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Tissue ID settings'),
+          content: const Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CommonTextField(
+                labelText: 'Prefix',
+                hintText: 'Enter tissue ID prefix',
+                isLastField: false,
+              ),
+              CommonNumField(
+                labelText: 'Number',
+                hintText: 'Enter tissue ID number',
+                isLastField: false,
+              ),
+            ],
+          ),
+          actions: [
+            SecondaryButton(
+              onPressed: () => Navigator.of(context).pop(),
+              text: 'Cancel',
+            ),
+            PrimaryButton(
+              onPressed: () => Navigator.of(context).pop(),
+              text: 'Save',
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _getNewNumber() {
