@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nahpu/providers/catalogs.dart';
+import 'package:nahpu/providers/collevents.dart';
 import 'package:nahpu/screens/collecting/coll_event_view.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/forms.dart';

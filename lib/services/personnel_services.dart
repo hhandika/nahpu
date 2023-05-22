@@ -1,4 +1,4 @@
-import 'package:nahpu/providers/catalogs.dart';
+import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/personnel_queries.dart';
 import 'package:nahpu/services/io_services.dart';

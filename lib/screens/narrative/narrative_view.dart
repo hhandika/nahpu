@@ -4,7 +4,7 @@ import 'package:nahpu/services/narrative_services.dart';
 import 'package:nahpu/services/navigation_services.dart';
 import 'package:nahpu/services/types/navigation.dart';
 import 'package:nahpu/services/types/controllers.dart';
-import 'package:nahpu/providers/catalogs.dart';
+import 'package:nahpu/providers/narrative.dart';
 import 'package:nahpu/screens/narrative/components/menu_bar.dart';
 import 'package:nahpu/screens/narrative/narrative_form.dart';
 import 'package:nahpu/screens/shared/common.dart';

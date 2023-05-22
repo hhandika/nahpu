@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/providers/collevents.dart';
 import 'package:nahpu/services/types/controllers.dart';
-import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
@@ -30,7 +30,7 @@ class WeatherDataView extends ConsumerWidget {
               data: (weatherData) => WeatherDataForm(
                 useHorizontalLayout: useHorizontalLayout,
                 eventID: eventID,
-                weatherCtr: _getweatherData(weatherData),
+                weatherCtr: _getWeatherData(weatherData),
               ),
               loading: () => const CircularProgressIndicator(),
               error: (error, stack) => const Center(
@@ -41,7 +41,7 @@ class WeatherDataView extends ConsumerWidget {
     );
   }
 
-  CollWeatherCtrModel _getweatherData(WeatherData weatherData) {
+  CollWeatherCtrModel _getWeatherData(WeatherData weatherData) {
     return CollWeatherCtrModel.fromData(weatherData);
   }
 }
@@ -106,7 +106,7 @@ class WeatherDataFormState extends ConsumerState<WeatherDataForm> {
             CommonNumField(
               controller: widget.weatherCtr.highestDayTempCtr,
               labelText: 'Day Highest',
-              hintText: 'Enter highest temprature',
+              hintText: 'Enter highest temperature',
               isLastField: false,
               onChanged: (String? value) {
                 if (value != null) {
@@ -141,7 +141,7 @@ class WeatherDataFormState extends ConsumerState<WeatherDataForm> {
             CommonNumField(
               controller: widget.weatherCtr.highestNightTempCtr,
               labelText: 'Night Highest',
-              hintText: 'Enter highest temprature',
+              hintText: 'Enter highest temperature',
               isLastField: false,
               onChanged: (String? value) {
                 if (value != null) {

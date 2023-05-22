@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/providers/collevents.dart';
+import 'package:nahpu/providers/narrative.dart';
 import 'package:nahpu/providers/sites.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/narrative/narrative_view.dart';
 import 'package:nahpu/screens/collecting/coll_event_view.dart';
-import 'package:nahpu/providers/catalogs.dart';
+import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/screens/sites/site_view.dart';
 import 'package:nahpu/screens/specimens/specimen_view.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';

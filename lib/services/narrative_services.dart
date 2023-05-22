@@ -1,4 +1,4 @@
-import 'package:nahpu/providers/catalogs.dart';
+import 'package:nahpu/providers/narrative.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/narrative_queries.dart';
 import 'package:drift/drift.dart' as db;

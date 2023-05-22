@@ -1,6 +1,8 @@
+import 'package:nahpu/providers/personnel.dart';
+import 'package:nahpu/providers/taxa.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
 import 'package:nahpu/services/types/types.dart';
-import 'package:nahpu/providers/catalogs.dart';
+import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/personnel_queries.dart';

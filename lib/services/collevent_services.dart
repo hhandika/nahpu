@@ -1,4 +1,4 @@
-import 'package:nahpu/providers/catalogs.dart';
+import 'package:nahpu/providers/collevents.dart';
 import 'package:nahpu/services/database/collevent_queries.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;

@@ -5,7 +5,7 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/navigation_services.dart';
 import 'package:nahpu/services/types/navigation.dart';
 import 'package:nahpu/services/types/controllers.dart';
-import 'package:nahpu/providers/catalogs.dart';
+import 'package:nahpu/providers/collevents.dart';
 import 'package:nahpu/screens/collecting/coll_event_form.dart';
 import 'package:nahpu/screens/collecting/components/menu_bar.dart';
 import 'package:nahpu/screens/shared/common.dart';

@@ -1,8 +1,9 @@
 import 'package:drift/drift.dart' as db;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/providers/collevents.dart';
+import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/services/types/controllers.dart';
-import 'package:nahpu/providers/catalogs.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
