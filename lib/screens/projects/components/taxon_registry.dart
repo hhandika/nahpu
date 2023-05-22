@@ -89,7 +89,7 @@ class RegistryInfo extends ConsumerWidget {
                 ? const Center(
                     child: Text(
                       'No taxon found!\n'
-                      'Add a new taxon to get started',
+                      'Add a new taxon to get started.',
                       textAlign: TextAlign.center,
                     ),
                   )
@@ -193,7 +193,7 @@ class RecordedTaxaView extends ConsumerWidget {
             style: Theme.of(context).textTheme.titleLarge,
           ),
           data.isEmpty
-              ? const Text('No specimens found')
+              ? const Text('No specimens found!')
               : const FittedBox(
                   fit: BoxFit.fill,
                   child: RecordedCounts(),
