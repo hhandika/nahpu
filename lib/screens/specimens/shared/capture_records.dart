@@ -27,6 +27,8 @@ class CaptureRecordFields extends ConsumerStatefulWidget {
 }
 
 class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
+  bool _showMore = false;
+
   @override
   Widget build(BuildContext context) {
     List<CollEventData> eventEntry = [];
@@ -77,19 +79,11 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
               ),
             ],
           ),
-          CommonPadding(
-            child: SwitchField(
-              label: 'Relative time',
-              value: _getCheckBoxValue(widget.specimenCtr.relativeTimeCtr),
-              onPressed: (bool value) {
-                setState(() {
-                  int newValue = value ? 1 : 0;
-                  widget.specimenCtr.relativeTimeCtr = newValue;
-                  _updateSpecimen(
-                    SpecimenCompanion(isRelativeTime: db.Value(newValue)),
-                  );
-                });
-              },
+          Visibility(
+            visible: _showMore || widget.specimenCtr.relativeTimeCtr != null,
+            child: RelativeTimeSwitch(
+              specimenUuid: widget.specimenUuid,
+              specimenCtr: widget.specimenCtr,
             ),
           ),
           AdaptiveLayout(
@@ -138,10 +132,22 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
             specimenUuid: widget.specimenUuid,
             specimenCtr: widget.specimenCtr,
           ),
-          CollPersonnelField(
-            specimenUuid: widget.specimenUuid,
-            specimenCtr: widget.specimenCtr,
-          )
+          Visibility(
+            visible: _showMore || widget.specimenCtr.collPersonnelCtr != null,
+            child: CollPersonnelField(
+              specimenUuid: widget.specimenUuid,
+              specimenCtr: widget.specimenCtr,
+            ),
+          ),
+          TextButton(
+              onPressed: () {
+                setState(
+                  () {
+                    _showMore = !_showMore;
+                  },
+                );
+              },
+              child: Text(_showMore ? 'Show less' : 'Show more')),
         ],
       ),
     );
@@ -150,8 +156,44 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
   void _updateSpecimen(SpecimenCompanion form) {
     SpecimenServices(ref).updateSpecimen(widget.specimenUuid, form);
   }
+}
 
-  bool _getCheckBoxValue(int? value) {
+class RelativeTimeSwitch extends ConsumerStatefulWidget {
+  const RelativeTimeSwitch({
+    super.key,
+    required this.specimenUuid,
+    required this.specimenCtr,
+  });
+
+  final String specimenUuid;
+  final SpecimenFormCtrModel specimenCtr;
+
+  @override
+  RelativeTimeSwitchState createState() => RelativeTimeSwitchState();
+}
+
+class RelativeTimeSwitchState extends ConsumerState<RelativeTimeSwitch> {
+  @override
+  Widget build(BuildContext context) {
+    return CommonPadding(
+      child: SwitchField(
+        label: 'Relative time',
+        value: _isSwitched(widget.specimenCtr.relativeTimeCtr),
+        onPressed: (bool value) {
+          setState(() {
+            int newValue = value ? 1 : 0;
+            widget.specimenCtr.relativeTimeCtr = newValue;
+            SpecimenServices(ref).updateSpecimen(
+              widget.specimenUuid,
+              SpecimenCompanion(isRelativeTime: db.Value(newValue)),
+            );
+          });
+        },
+      ),
+    );
+  }
+
+  bool _isSwitched(int? value) {
     if (value == null) {
       return false;
     } else {
