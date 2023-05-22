@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/providers/validation.dart';
@@ -263,7 +264,7 @@ class NewPersonnel extends ConsumerWidget {
         automaticallyImplyLeading: false,
       ),
       body: Center(
-        child: SingleChildScrollView(
+        child: ScrollableLayout(
           child: PersonnelForm(
             ctr: ctr,
             personnelUuid: uuid,
@@ -289,7 +290,7 @@ class EditPersonnelForm extends ConsumerWidget {
         automaticallyImplyLeading: false,
       ),
       body: Center(
-        child: SingleChildScrollView(
+        child: ScrollableLayout(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -432,129 +433,117 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 500),
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+    return Form(
+      key: _formKey,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          PersonnelNameField(ctr: widget.ctr),
+          TextFormField(
+            controller: widget.ctr.affiliationCtr,
+            decoration: const InputDecoration(
+              labelText: 'Affiliation',
+              hintText: 'Enter Affiliation',
+            ),
+          ),
+          TextFormField(
+            controller: widget.ctr.emailCtr,
+            decoration: InputDecoration(
+              labelText: 'Email',
+              hintText: 'Enter email',
+              errorText: ref.watch(personnelFormValidation).form.email.errMsg,
+            ),
+            onChanged: (value) {
+              ref.watch(personnelFormValidation.notifier).validateEmail(
+                    value,
+                  );
+              widget.ctr.emailCtr.value = TextEditingValue(
+                  text: value.toLowerCase(),
+                  selection: widget.ctr.emailCtr.selection);
+            },
+          ),
+          TextFormField(
+            controller: widget.ctr.phoneCtr,
+            decoration: const InputDecoration(
+              labelText: 'Phone',
+              hintText: 'Enter phone',
+            ),
+            keyboardType: TextInputType.phone,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+            ],
+          ),
+          DropdownButtonFormField(
+            value: widget.ctr.roleCtr,
+            decoration: const InputDecoration(
+              labelText: 'Role',
+              hintText: 'Enter role',
+            ),
+            items: _roleList
+                .map(
+                  (role) => DropdownMenuItem(
+                    value: role,
+                    child: Text(role),
+                  ),
+                )
+                .toList(),
+            onChanged: (String? newValue) {
+              setState(() {
+                widget.ctr.roleCtr = newValue;
+              });
+            },
+          ),
+          Visibility(
+            visible: widget.ctr.roleCtr == 'Cataloger',
+            child: Column(
+              children: [
+                PersonnelInitialField(ctr: widget.ctr),
+                CatalogerNumberField(ctr: widget.ctr),
+              ],
+            ),
+          ),
+          TextField(
+            controller: widget.ctr.noteCtr,
+            decoration: const InputDecoration(
+              labelText: 'Notes',
+              hintText: 'Write notes',
+            ),
+            maxLines: 3,
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Wrap(
+            spacing: 10,
             children: [
-              PersonnelNameField(ctr: widget.ctr),
-              TextFormField(
-                controller: widget.ctr.affiliationCtr,
-                decoration: const InputDecoration(
-                  labelText: 'Affiliation',
-                  hintText: 'Enter Affiliation',
-                ),
-              ),
-              TextFormField(
-                controller: widget.ctr.emailCtr,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  hintText: 'Enter email',
-                  errorText:
-                      ref.watch(personnelFormValidation).form.email.errMsg,
-                ),
-                onChanged: (value) {
-                  ref.watch(personnelFormValidation.notifier).validateEmail(
-                        value,
-                      );
-                  widget.ctr.emailCtr.value = TextEditingValue(
-                      text: value.toLowerCase(),
-                      selection: widget.ctr.emailCtr.selection);
+              SecondaryButton(
+                text: 'Cancel',
+                onPressed: () {
+                  ref.invalidate(personnelFormValidation);
+                  Navigator.of(context).pop();
                 },
               ),
-              TextFormField(
-                controller: widget.ctr.phoneCtr,
-                decoration: const InputDecoration(
-                  labelText: 'Phone',
-                  hintText: 'Enter phone',
-                ),
-                keyboardType: TextInputType.phone,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                ],
-              ),
-              DropdownButtonFormField(
-                value: widget.ctr.roleCtr,
-                decoration: const InputDecoration(
-                  labelText: 'Role',
-                  hintText: 'Enter role',
-                ),
-                items: _roleList
-                    .map(
-                      (role) => DropdownMenuItem(
-                        value: role,
-                        child: Text(role),
+              FormElevButton(
+                text: widget.isAddNew ? 'Add' : 'Update',
+                enabled: widget.ctr.roleCtr == 'Cataloger'
+                    ? ref.read(personnelFormValidation).form.isValidCataloger
+                    : ref.read(personnelFormValidation).form.isValid,
+                onPressed: () async {
+                  widget.isAddNew ? await _addPersonnel() : _updatePersonnel();
+                  ref.invalidate(personnelListProvider);
+                  ref.invalidate(personnelFormValidation);
+                  if (context.mounted) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const Dashboard(),
                       ),
-                    )
-                    .toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    widget.ctr.roleCtr = newValue;
-                  });
+                    );
+                  }
                 },
-              ),
-              Visibility(
-                visible: widget.ctr.roleCtr == 'Cataloger',
-                child: Column(
-                  children: [
-                    PersonnelInitialField(ctr: widget.ctr),
-                    CatalogerNumberField(ctr: widget.ctr),
-                  ],
-                ),
-              ),
-              TextField(
-                controller: widget.ctr.noteCtr,
-                decoration: const InputDecoration(
-                  labelText: 'Notes',
-                  hintText: 'Write notes',
-                ),
-                maxLines: 3,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Wrap(
-                spacing: 10,
-                children: [
-                  SecondaryButton(
-                    text: 'Cancel',
-                    onPressed: () {
-                      ref.invalidate(personnelFormValidation);
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  FormElevButton(
-                    text: widget.isAddNew ? 'Add' : 'Update',
-                    enabled: widget.ctr.roleCtr == 'Cataloger'
-                        ? ref
-                            .read(personnelFormValidation)
-                            .form
-                            .isValidCataloger
-                        : ref.read(personnelFormValidation).form.isValid,
-                    onPressed: () async {
-                      widget.isAddNew
-                          ? await _addPersonnel()
-                          : _updatePersonnel();
-                      ref.invalidate(personnelListProvider);
-                      ref.invalidate(personnelFormValidation);
-                      if (context.mounted) {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const Dashboard(),
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                ],
               ),
             ],
           ),
-        ),
+        ],
       ),
     );
   }

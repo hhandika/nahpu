@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/screens/shared/common.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/services/types/types.dart';
@@ -365,60 +366,57 @@ class PartFormState extends ConsumerState<PartForm> {
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 500),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            PartIdForm(
-              specimenUuid: widget.specimenUuid,
-              partCtr: widget.partCtr,
-            ),
-            CommonTextField(
-              controller: widget.partCtr.typeCtr,
-              labelText: 'Preparation type',
-              hintText: 'Enter prep type: e.g. "skin", "liver", etc."',
-              isLastField: false,
-            ),
-            CommonNumField(
-              controller: widget.partCtr.countCtr,
-              labelText: 'Counts',
-              hintText: 'Enter part counts',
-              isLastField: false,
-            ),
-            CommonTextField(
-              controller: widget.partCtr.treatmentCtr,
-              labelText: 'Treatment',
-              hintText: 'Enter a treatment: e.g. "formalin", "alcohol", etc."',
-              isLastField: false,
-            ),
-            AdditionalPartFields(visible: _showMore, partCtr: widget.partCtr),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  _showMore = !_showMore;
-                });
-              },
-              child: Text(_showMore ? 'Show less' : 'Show more'),
-            ),
-            const SizedBox(height: 10),
-            FormButtonWithDelete(
-              isEditing: widget.isEditing,
-              onDeleted: () {
-                if (widget.specimenPartId != null) {
-                  SpecimenServices(ref)
-                      .deleteSpecimenPart(widget.specimenPartId!);
-                  Navigator.pop(context);
-                }
-              },
-              onSubmitted: () {
-                widget.isEditing ? _updatePart() : _createPart();
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        ),
+    return ScrollableLayout(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          PartIdForm(
+            specimenUuid: widget.specimenUuid,
+            partCtr: widget.partCtr,
+          ),
+          CommonTextField(
+            controller: widget.partCtr.typeCtr,
+            labelText: 'Preparation type',
+            hintText: 'Enter prep type: e.g. "skin", "liver", etc."',
+            isLastField: false,
+          ),
+          CommonNumField(
+            controller: widget.partCtr.countCtr,
+            labelText: 'Counts',
+            hintText: 'Enter part counts',
+            isLastField: false,
+          ),
+          CommonTextField(
+            controller: widget.partCtr.treatmentCtr,
+            labelText: 'Treatment',
+            hintText: 'Enter a treatment: e.g. "formalin", "alcohol", etc."',
+            isLastField: false,
+          ),
+          AdditionalPartFields(visible: _showMore, partCtr: widget.partCtr),
+          TextButton(
+            onPressed: () {
+              setState(() {
+                _showMore = !_showMore;
+              });
+            },
+            child: Text(_showMore ? 'Show less' : 'Show more'),
+          ),
+          const SizedBox(height: 10),
+          FormButtonWithDelete(
+            isEditing: widget.isEditing,
+            onDeleted: () {
+              if (widget.specimenPartId != null) {
+                SpecimenServices(ref)
+                    .deleteSpecimenPart(widget.specimenPartId!);
+                Navigator.pop(context);
+              }
+            },
+            onSubmitted: () {
+              widget.isEditing ? _updatePart() : _createPart();
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
       ),
     );
   }

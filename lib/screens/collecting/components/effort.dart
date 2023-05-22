@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
@@ -311,69 +312,66 @@ class CollEffortForm extends ConsumerStatefulWidget {
 class CollEffortFormState extends ConsumerState<CollEffortForm> {
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 500),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            TextFormField(
-              controller: widget.collToolCtr.typeCtr,
-              decoration: const InputDecoration(
-                labelText: 'Type',
-                hintText: 'Enter the type of the tool',
+    return ScrollableLayout(
+      child: Column(
+        children: [
+          TextFormField(
+            controller: widget.collToolCtr.typeCtr,
+            decoration: const InputDecoration(
+              labelText: 'Type',
+              hintText: 'Enter the type of the tool',
+            ),
+          ),
+          TextFormField(
+            controller: widget.collToolCtr.brandCtr,
+            decoration: const InputDecoration(
+              labelText: 'Brand and Model',
+              hintText: 'Enter brand and Model of the tool',
+            ),
+          ),
+          TextFormField(
+            controller: widget.collToolCtr.countCtr,
+            decoration: const InputDecoration(
+              labelText: 'Count',
+              hintText: 'How many of this tool were used?',
+            ),
+          ),
+          TextFormField(
+            controller: widget.collToolCtr.sizeCtr,
+            decoration: const InputDecoration(
+              labelText: 'Size',
+              hintText: 'Enter size of the tool (if applicable)',
+            ),
+          ),
+          TextFormField(
+            controller: widget.collToolCtr.noteCtr,
+            decoration: const InputDecoration(
+              labelText: 'Notes',
+              hintText: 'Enter any notes about the tool (if applicable)',
+            ),
+          ),
+          const SizedBox(height: 20),
+          Wrap(
+            alignment: WrapAlignment.center,
+            children: [
+              SecondaryButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                text: 'Cancel',
               ),
-            ),
-            TextFormField(
-              controller: widget.collToolCtr.brandCtr,
-              decoration: const InputDecoration(
-                labelText: 'Brand and Model',
-                hintText: 'Enter brand and Model of the tool',
+              const SizedBox(width: 20),
+              PrimaryButton(
+                onPressed: () {
+                  widget.isEditing ? _updateCollEffort() : _addCollEffort();
+                  ref.invalidate(collEffortByEventProvider);
+                  Navigator.pop(context);
+                },
+                text: widget.isEditing ? 'Update' : 'Add',
               ),
-            ),
-            TextFormField(
-              controller: widget.collToolCtr.countCtr,
-              decoration: const InputDecoration(
-                labelText: 'Count',
-                hintText: 'How many of this tool were used?',
-              ),
-            ),
-            TextFormField(
-              controller: widget.collToolCtr.sizeCtr,
-              decoration: const InputDecoration(
-                labelText: 'Size',
-                hintText: 'Enter size of the tool (if applicable)',
-              ),
-            ),
-            TextFormField(
-              controller: widget.collToolCtr.noteCtr,
-              decoration: const InputDecoration(
-                labelText: 'Notes',
-                hintText: 'Enter any notes about the tool (if applicable)',
-              ),
-            ),
-            const SizedBox(height: 20),
-            Wrap(
-              alignment: WrapAlignment.center,
-              children: [
-                SecondaryButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  text: 'Cancel',
-                ),
-                const SizedBox(width: 20),
-                PrimaryButton(
-                  onPressed: () {
-                    widget.isEditing ? _updateCollEffort() : _addCollEffort();
-                    ref.invalidate(collEffortByEventProvider);
-                    Navigator.pop(context);
-                  },
-                  text: widget.isEditing ? 'Update' : 'Add',
-                ),
-              ],
-            ),
-          ],
-        ),
+            ],
+          ),
+        ],
       ),
     );
   }

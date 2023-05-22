@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/providers/catalogs.dart';
@@ -346,101 +347,90 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 500),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                controller: widget.coordCtr.nameIdCtr,
-                decoration: const InputDecoration(
-                  labelText: 'Name',
-                  hintText: 'Add a name',
-                ),
-              ),
-              TextFormField(
-                controller: widget.coordCtr.latitudeCtr,
-                decoration: const InputDecoration(
-                  labelText: 'Decimal Latitude',
-                  hintText: 'Add a latitude',
-                ),
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
-              ),
-              TextFormField(
-                controller: widget.coordCtr.longitudeCtr,
-                decoration: const InputDecoration(
-                  labelText: 'Decimal Longitude',
-                  hintText: 'Add a longitude',
-                ),
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
-              ),
-              TextFormField(
-                controller: widget.coordCtr.elevationCtr,
-                decoration: const InputDecoration(
-                  labelText: 'Elevation (m)',
-                  hintText: 'Add an elevation',
-                ),
-                keyboardType: TextInputType.number,
-              ),
-              DropdownButtonFormField(
-                value: _getDatum(),
-                decoration: const InputDecoration(
-                  labelText: 'Datum',
-                  hintText: 'Specify the datum',
-                ),
-                items: _datum
-                    .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                    .toList(),
-                onChanged: (value) {
-                  widget.coordCtr.datumCtr.text = value.toString();
-                },
-              ),
-              TextFormField(
-                controller: widget.coordCtr.uncertaintyCtr,
-                decoration: const InputDecoration(
-                  labelText: 'Uncertainty (m)',
-                  hintText: 'Add an uncertainty',
-                ),
-              ),
-              TextFormField(
-                controller: widget.coordCtr.gpsUnitCtr,
-                decoration: const InputDecoration(
-                  labelText: 'GPS Unit',
-                  hintText: 'Specify the GPS unit',
-                ),
-              ),
-              TextFormField(
-                maxLines: 3,
-                decoration: const InputDecoration(
-                  labelText: 'Notes',
-                  hintText: 'Add notes (optional)',
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              FormButtonWithDelete(
-                  isEditing: widget.isEditing,
-                  onDeleted: () {
-                    CoordinateServices(ref)
-                        .deleteCoordinate(widget.coordinateId!);
-                    ref.invalidate(coordinateBySiteProvider);
-                  },
-                  onSubmitted: () {
-                    widget.isEditing
-                        ? _updateCoordinate()
-                        : _createCoordinate();
-                    ref.invalidate(coordinateBySiteProvider);
-                    Navigator.pop(context);
-                  }),
-            ],
+    return ScrollableLayout(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextFormField(
+            controller: widget.coordCtr.nameIdCtr,
+            decoration: const InputDecoration(
+              labelText: 'Name',
+              hintText: 'Add a name',
+            ),
           ),
-        ),
+          TextFormField(
+            controller: widget.coordCtr.latitudeCtr,
+            decoration: const InputDecoration(
+              labelText: 'Decimal Latitude',
+              hintText: 'Add a latitude',
+            ),
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+          ),
+          TextFormField(
+            controller: widget.coordCtr.longitudeCtr,
+            decoration: const InputDecoration(
+              labelText: 'Decimal Longitude',
+              hintText: 'Add a longitude',
+            ),
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+          ),
+          TextFormField(
+            controller: widget.coordCtr.elevationCtr,
+            decoration: const InputDecoration(
+              labelText: 'Elevation (m)',
+              hintText: 'Add an elevation',
+            ),
+            keyboardType: TextInputType.number,
+          ),
+          DropdownButtonFormField(
+            value: _getDatum(),
+            decoration: const InputDecoration(
+              labelText: 'Datum',
+              hintText: 'Specify the datum',
+            ),
+            items: _datum
+                .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                .toList(),
+            onChanged: (value) {
+              widget.coordCtr.datumCtr.text = value.toString();
+            },
+          ),
+          TextFormField(
+            controller: widget.coordCtr.uncertaintyCtr,
+            decoration: const InputDecoration(
+              labelText: 'Uncertainty (m)',
+              hintText: 'Add an uncertainty',
+            ),
+          ),
+          TextFormField(
+            controller: widget.coordCtr.gpsUnitCtr,
+            decoration: const InputDecoration(
+              labelText: 'GPS Unit',
+              hintText: 'Specify the GPS unit',
+            ),
+          ),
+          TextFormField(
+            maxLines: 3,
+            decoration: const InputDecoration(
+              labelText: 'Notes',
+              hintText: 'Add notes (optional)',
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          FormButtonWithDelete(
+              isEditing: widget.isEditing,
+              onDeleted: () {
+                CoordinateServices(ref).deleteCoordinate(widget.coordinateId!);
+                ref.invalidate(coordinateBySiteProvider);
+              },
+              onSubmitted: () {
+                widget.isEditing ? _updateCoordinate() : _createCoordinate();
+                ref.invalidate(coordinateBySiteProvider);
+                Navigator.pop(context);
+              }),
+        ],
       ),
     );
   }
