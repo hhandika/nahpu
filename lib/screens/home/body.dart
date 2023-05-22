@@ -287,6 +287,7 @@ class ProjectPopUpMenuState extends ConsumerState<ProjectPopUpMenu> {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<MenuSelection>(
+      icon: const Icon(Icons.more_vert),
       itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuSelection>>[
         PopupMenuItem<MenuSelection>(
           value: MenuSelection.details,
@@ -298,6 +299,7 @@ class ProjectPopUpMenuState extends ConsumerState<ProjectPopUpMenu> {
             _getProjectInfo(widget.project.uuid);
           },
         ),
+        const PopupMenuDivider(),
         PopupMenuItem<MenuSelection>(
           value: MenuSelection.deleteProject,
           onTap: () => _deleteProject(widget.project.uuid),

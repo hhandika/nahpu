@@ -207,18 +207,27 @@ class PersonnelMenu extends ConsumerStatefulWidget {
 class PersonnelMenuState extends ConsumerState<PersonnelMenu> {
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton(
+    return PopupMenuButton<PersonnelMenuAction>(
       onSelected: _onPopUpMenuSelected,
       icon: const Icon(Icons.more_vert_rounded),
       itemBuilder: (context) => [
         const PopupMenuItem(
           value: PersonnelMenuAction.edit,
-          child: Text('Edit'),
+          child: ListTile(
+            leading: Icon(Icons.edit),
+            title: Text('Edit'),
+          ),
         ),
+        const PopupMenuDivider(),
         const PopupMenuItem(
-          value: PersonnelMenuAction.delete,
-          child: Text('Delete', style: TextStyle(color: Colors.red)),
-        ),
+            value: PersonnelMenuAction.delete,
+            child: ListTile(
+              leading: Icon(Icons.delete, color: Colors.red),
+              title: Text(
+                'Delete',
+                style: TextStyle(color: Colors.red),
+              ),
+            )),
       ],
     );
   }
