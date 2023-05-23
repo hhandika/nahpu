@@ -63,7 +63,8 @@ class SpecimenQuery extends DatabaseAccessor<Database>
             ..orderBy([
               (t) => OrderingTerm(
                   expression: t.fieldNumber, mode: OrderingMode.desc)
-            ]))
+            ])
+            ..limit(1))
           .getSingle();
     } catch (e) {
       return null;
@@ -153,14 +154,15 @@ class SpecimenPartQuery extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String?> getLastEnteredTissueID(String specimenUuid) async {
-    return await (select(specimenPart)
-          ..where((t) => t.specimenUuid.equals(specimenUuid))
+  Future<String?> getLastEnteredTissueID(String uuid) async {
+    SpecimenPartData data = await (select(specimenPart)
+          ..where((t) => t.specimenUuid.equals(uuid))
           ..orderBy([
             (t) => OrderingTerm(expression: t.tissueID, mode: OrderingMode.desc)
-          ]))
-        .getSingle()
-        .then((value) => value.tissueID);
+          ])
+          ..limit(1))
+        .getSingle();
+    return data.tissueID;
   }
 
   Future<void> updateSpecimenPart(int id, SpecimenPartCompanion entry) {

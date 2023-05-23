@@ -637,17 +637,17 @@ class TissueIDformState extends ConsumerState<TissueIDform> {
   Future<void> _repeatTissueNum() async {
     String? tissueID =
         await TissueIdServices(ref).repeatNumber(widget.specimenUuid);
-    if (tissueID != null) {
-      widget.tissueIdCtr.text = tissueID;
-    } else {
+    if (tissueID == null || tissueID.isEmpty) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('No tissue ID available'),
+            content: Text('No tissue ID available!'),
             duration: Duration(seconds: 3),
           ),
         );
       }
+    } else {
+      widget.tissueIdCtr.text = tissueID;
     }
   }
 }

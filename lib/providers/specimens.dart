@@ -129,31 +129,19 @@ class TissueIDNotifier extends _$TissueIDNotifier {
     return await _fetchSettings();
   }
 
-  Future<void> setPrefix(String prefix) async {
-    final prefs = ref.read(settingProvider);
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() {
-      prefs.setString('tissueIDPrefix', prefix);
-      return _fetchSettings();
-    });
-  }
-
-  Future<void> setNumber(int number) async {
-    final prefs = ref.read(settingProvider);
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() {
-      prefs.setInt('tissueIDNumber', number);
-      return _fetchSettings();
-    });
-  }
-
-  Future<void> incrementNumber() async {
+  void setPrefix(String prefix) {
     final prefs = ref.watch(settingProvider);
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() {
-      final number = prefs.getInt('tissueIDNumber') ?? 0;
-      prefs.setInt('tissueIDNumber', number + 1);
-      return _fetchSettings();
-    });
+    prefs.setString('tissueIDPrefix', prefix);
+  }
+
+  void setNumber(int number) {
+    final prefs = ref.watch(settingProvider);
+    prefs.setInt('tissueIDNumber', number);
+  }
+
+  void incrementNumber() {
+    final prefs = ref.watch(settingProvider);
+    final number = prefs.getInt('tissueIDNumber') ?? 0;
+    prefs.setInt('tissueIDNumber', number + 1);
   }
 }
