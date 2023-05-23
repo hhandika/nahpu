@@ -26,12 +26,11 @@ class CoordinateFields extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       child: Column(
         children: [
-          SizedBox(
-            height: 255,
-            child: CoordinateList(
-              sideId: siteId,
-            ),
-          ),
+          ConstrainedBox(
+              constraints: const BoxConstraints(maxHeight: 255),
+              child: CoordinateList(
+                sideId: siteId,
+              )),
           const SizedBox(height: 15),
           PrimaryButton(
             text: 'Add Coordinate',
