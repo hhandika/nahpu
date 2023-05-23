@@ -66,8 +66,9 @@ class SpecimenTypeNotifier extends _$SpecimenTypeNotifier {
     }
   }
 
-  void addTreatment(String treatment) {
+  Future<void> addTreatment(String treatment) async {
     final prefs = ref.watch(settingProvider);
+    // final prefs = await SharedPreferences.getInstance();
     final treatmentList = prefs.getStringList('specimenPreservation');
     if (treatmentList != null && treatmentList.contains(treatment)) {
       return;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/specimens.dart';
+import 'package:nahpu/screens/settings/common.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/services/specimen_services.dart';
@@ -20,14 +21,15 @@ class SpecimenPartSelectionState extends ConsumerState<SpecimenPartSelection> {
       appBar: AppBar(
         title: const Text('Specimen Parts'),
       ),
-      body: const SafeArea(
+      body: SafeArea(
         child: SettingsList(
           sections: [
             SettingsSection(
               title: Text(
                 'Tissue ID',
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
-              tiles: [
+              tiles: const [
                 CustomSettingsTile(
                   child: TissueIDFields(),
                 )
@@ -51,13 +53,11 @@ class TissueIDFields extends ConsumerWidget {
           data: (data) {
             prefixController.text = data.prefix;
             numberController.text = data.number.toString();
-            return Row(
+            return SettingCard(
               children: [
-                Expanded(child: TissuePrefixField(prefixCtr: prefixController)),
+                TissuePrefixField(prefixCtr: prefixController),
                 const SizedBox(width: 10),
-                SizedBox(
-                    width: 200,
-                    child: TissueNumField(tissueNumCtr: numberController)),
+                TissueNumField(tissueNumCtr: numberController),
               ],
             );
           },
