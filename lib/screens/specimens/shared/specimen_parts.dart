@@ -685,12 +685,6 @@ class AdditionalPartFields extends StatelessWidget {
     return Visibility(
       visible: visible,
       child: Column(children: [
-        CommonTextField(
-          controller: partCtr.additionalTreatmentCtr,
-          labelText: 'Additional treatment',
-          hintText: 'Enter a treatment: e.g. "formalin", "alcohol", etc."',
-          isLastField: false,
-        ),
         CommonDateField(
           labelText: 'Date taken',
           hintText: 'Enter date',
