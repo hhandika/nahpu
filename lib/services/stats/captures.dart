@@ -12,8 +12,8 @@ class CaptureRecordStats {
     this.specimenCount,
   );
 
-  SplayTreeMap<String, int> familyCount;
-  SplayTreeMap<String, int> speciesCount;
+  Map<String, int> familyCount;
+  Map<String, int> speciesCount;
   int specimenCount;
 
   Future<void> count(WidgetRef ref) async {
@@ -47,7 +47,9 @@ class CaptureRecordStats {
     if (speciesID != null) {
       TaxonomyData data = await TaxonomyService(ref).getTaxonById(speciesID);
       _countSpecies(getSpeciesName(data));
-      _countFamily(data.taxonFamily ?? '');
+      if (data.taxonFamily != null) {
+        _countFamily(data.taxonFamily!.trim());
+      }
     }
   }
 

@@ -1,14 +1,51 @@
-import 'dart:collection';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:nahpu/screens/projects/dashboard.dart';
 import 'package:nahpu/services/stats/captures.dart';
+import 'package:nahpu/services/stats/common.dart';
+import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/types/statistics.dart';
 import 'package:nahpu/services/types/types.dart';
 
+/// TODO: Clean all the code in this file
+class StatisticFullScreen extends StatelessWidget {
+  const StatisticFullScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Statistics'),
+        leading: IconButton(
+          icon: Icon(Icons.adaptive.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const Dashboard(),
+              ),
+            );
+          },
+        ),
+      ),
+      body: SafeArea(
+        child: Center(
+            child: StatisticViewer(
+          maxCount: true,
+        )),
+      ),
+    );
+  }
+}
+
 class StatisticViewer extends ConsumerStatefulWidget {
-  const StatisticViewer({Key? key}) : super(key: key);
+  const StatisticViewer({
+    super.key,
+    this.maxCount = false,
+  });
+
+  final bool maxCount;
 
   @override
   StatisticViewerState createState() => StatisticViewerState();
@@ -46,55 +83,56 @@ class StatisticViewerState extends ConsumerState<StatisticViewer> {
                 },
               ),
               IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.fullscreen_outlined,
-                  ))
+                icon: const Icon(
+                  Icons.fullscreen_outlined,
+                ),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const StatisticFullScreen(),
+                    ),
+                  );
+                },
+              )
             ],
           ),
         ),
         Expanded(
-            child: GraphViewer(
-          selectedGraph: selectedGraph,
+            child: CountBarChart(
+          isFamily: selectedGraph == GraphType.familyCount,
+          maxCount: widget.maxCount,
         )),
       ],
     );
   }
 }
 
-class GraphViewer extends StatelessWidget {
-  const GraphViewer({
+class CountBarChart extends ConsumerWidget {
+  const CountBarChart({
     super.key,
-    required this.selectedGraph,
+    required this.isFamily,
+    required this.maxCount,
   });
 
-  final GraphType selectedGraph;
-
-  @override
-  Widget build(BuildContext context) {
-    switch (selectedGraph) {
-      case GraphType.speciesCount:
-        return const SpeciesCountBarChart();
-      default:
-        return const Text('No graph selected');
-    }
-  }
-}
-
-class SpeciesCountBarChart extends ConsumerWidget {
-  const SpeciesCountBarChart({super.key});
+  final bool isFamily;
+  final bool maxCount;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return FutureBuilder(
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            Map<String, int> data = _getCountData(snapshot.data!);
             return Padding(
               padding: const EdgeInsets.only(top: 40, left: 20, right: 20),
               child: BarChartViewer(
                 title: 'Species Count',
-                data: snapshot.data!.speciesCount,
-                dataPoints: _createDataPoints(snapshot.data!.speciesCount),
+                data: data,
+                dataPoints: createDataPoints(
+                  data,
+                  maxCount ? data.length : 5,
+                ),
               ),
             );
           } else {
@@ -110,23 +148,8 @@ class SpeciesCountBarChart extends ConsumerWidget {
     return stats;
   }
 
-  List<DataPoint> _createDataPoints(SplayTreeMap<String, int> speciesCount) {
-    List<DataPoint> dataPoints = [];
-    int index = 0;
-    speciesCount.forEach((key, value) {
-      dataPoints.add(DataPoint(index.toDouble(), value.toDouble()));
-      index++;
-    });
-
-    // Sort the data points by y value
-    dataPoints.sort((b, a) => a.y.compareTo(b.y));
-
-    // If list >5 return top 5
-    if (dataPoints.length > 5) {
-      return dataPoints.sublist(0, 5);
-    } else {
-      return dataPoints;
-    }
+  Map<String, int> _getCountData(CaptureRecordStats data) {
+    return isFamily ? data.familyCount : data.speciesCount;
   }
 }
 
@@ -138,7 +161,7 @@ class BarChartViewer extends StatelessWidget {
     required this.title,
   });
 
-  final SplayTreeMap<String, int> data;
+  final Map<String, int> data;
   final List<DataPoint> dataPoints;
   final String title;
 
@@ -152,7 +175,7 @@ class BarChartViewer extends StatelessWidget {
                     BarChartRodData(
                         toY: e.y,
                         color: Theme.of(context).colorScheme.secondaryContainer,
-                        width: 25,
+                        width: 28,
                         borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(5),
                             topRight: Radius.circular(5))),
@@ -212,22 +235,11 @@ class BarChartViewer extends StatelessWidget {
       interval: 5,
       getTitlesWidget: (value, meta) {
         return Text(
-          _getFirstLetter(data.keys.elementAt(value.toInt())),
+          getTaxonFirstThreeLetters(data.keys.elementAt(value.toInt())),
           overflow: TextOverflow.ellipsis,
         );
       },
     );
-  }
-
-  String _getFirstLetter(String value) {
-    List<String> splitAtSpace = value.split(' ');
-    if (splitAtSpace.length > 1) {
-      String genus = splitAtSpace[0].substring(0, 1);
-      String species = splitAtSpace[1].substring(0, 3);
-      return '$genus. $species';
-    } else {
-      return value.substring(0, 1);
-    }
   }
 }
 
@@ -300,11 +312,4 @@ class LineChartViewer extends StatelessWidget {
       ),
     );
   }
-}
-
-class DataPoint {
-  final double x;
-  final double y;
-
-  DataPoint(this.x, this.y);
 }
