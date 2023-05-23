@@ -81,7 +81,7 @@ class CatalogFmtNotifier extends StateNotifier<CatalogFmt> {
 class TissueID with _$TissueID {
   factory TissueID({
     required String prefix,
-    required String number,
+    required int number,
   }) = _TissueID;
 }
 
@@ -92,9 +92,9 @@ class TissueIDNotifier extends _$TissueIDNotifier {
     final prefix = prefs.getString('tissueIDPrefix');
     final number = prefs.getInt('tissueIDNumber');
     if (prefix != null && number != null) {
-      return TissueID(prefix: prefix, number: number.toString());
+      return TissueID(prefix: prefix, number: number);
     } else {
-      return TissueID(prefix: '', number: '');
+      return TissueID(prefix: '', number: 0);
     }
   }
 
@@ -111,5 +111,13 @@ class TissueIDNotifier extends _$TissueIDNotifier {
   void setNumber(int number) {
     final prefs = ref.watch(settingProvider);
     prefs.setInt('tissueIDNumber', number);
+  }
+
+  void incrementNumber() {
+    final prefs = ref.watch(settingProvider);
+    final number = prefs.getInt('tissueIDNumber');
+    if (number != null) {
+      prefs.setInt('tissueIDNumber', number + 1);
+    }
   }
 }

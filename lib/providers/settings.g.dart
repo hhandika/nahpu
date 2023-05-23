@@ -20,7 +20,7 @@ final settingProvider = AutoDisposeProvider<SharedPreferences>.internal(
 );
 
 typedef SettingRef = AutoDisposeProviderRef<SharedPreferences>;
-String _$tissueIDNotifierHash() => r'a6f5548a57150755cc9270453593df469b480b5f';
+String _$tissueIDNotifierHash() => r'48c55dcf25dad806287816f8de392f51cb209b11';
 
 /// See also [TissueIDNotifier].
 @ProviderFor(TissueIDNotifier)

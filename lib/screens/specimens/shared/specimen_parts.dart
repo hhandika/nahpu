@@ -620,26 +620,27 @@ class TissueIDformState extends ConsumerState<TissueIDform> {
         ),
         TissueIDMenu(
           tissueIDct: widget.tissueIdCtr,
-          onNewNumber: () {
-            setState(() {
-              _hasId = true;
-            });
-          },
+          onNewNumber: widget.tissueIdCtr.text.isNotEmpty
+              ? null
+              : () {
+                  setState(
+                    () {
+                      _hasId = true;
+                    },
+                  );
+                },
         ),
       ],
     );
   }
 
-  void _repeatTissueNum() {
-    String tissueId = 'B12233';
-    setState(() {
-      widget.tissueIdCtr.text = tissueId;
-      _hasId = true;
-    });
+  Future<void> _repeatTissueNum() async {
+    String tissueID = await TissueIdServices(ref).repeatNumber();
+    widget.tissueIdCtr.text = tissueID;
   }
 }
 
-class TissueIDMenu extends StatefulWidget {
+class TissueIDMenu extends ConsumerStatefulWidget {
   const TissueIDMenu({
     super.key,
     required this.tissueIDct,
@@ -647,13 +648,13 @@ class TissueIDMenu extends StatefulWidget {
   });
 
   final TextEditingController tissueIDct;
-  final VoidCallback onNewNumber;
+  final VoidCallback? onNewNumber;
 
   @override
-  State<TissueIDMenu> createState() => _TissueIDMenuState();
+  TissueIDMenuState createState() => TissueIDMenuState();
 }
 
-class _TissueIDMenuState extends State<TissueIDMenu> {
+class TissueIDMenuState extends ConsumerState<TissueIDMenu> {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<int>(
@@ -662,13 +663,19 @@ class _TissueIDMenuState extends State<TissueIDMenu> {
           return [
             PopupMenuItem(
               value: 1,
+              enabled: _hasNoId(),
               child: const ListTile(
-                leading: Icon(Icons.add_rounded),
+                leading: Icon(Icons.add),
                 title: Text('New number'),
               ),
               onTap: () => {
-                widget.onNewNumber(),
-                _getNewNumber(),
+                if (widget.onNewNumber != null)
+                  {
+                    widget.onNewNumber!(),
+                    setState(() {
+                      _getNewNumber();
+                    }),
+                  }
               },
             ),
             const PopupMenuDivider(),
@@ -726,10 +733,12 @@ class _TissueIDMenuState extends State<TissueIDMenu> {
   }
 
   void _getNewNumber() {
-    String numberId = 'B';
-    String number = '1';
-    setState(() {
-      widget.tissueIDct.text = '$numberId$number';
+    TissueIdServices(ref).getNewNumber().then((value) {
+      widget.tissueIDct.text = value;
     });
+  }
+
+  bool _hasNoId() {
+    return widget.tissueIDct.text.isEmpty;
   }
 }

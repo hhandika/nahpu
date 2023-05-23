@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$TissueID {
   String get prefix => throw _privateConstructorUsedError;
-  String get number => throw _privateConstructorUsedError;
+  int get number => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TissueIDCopyWith<TissueID> get copyWith =>
@@ -29,7 +29,7 @@ abstract class $TissueIDCopyWith<$Res> {
   factory $TissueIDCopyWith(TissueID value, $Res Function(TissueID) then) =
       _$TissueIDCopyWithImpl<$Res, TissueID>;
   @useResult
-  $Res call({String prefix, String number});
+  $Res call({String prefix, int number});
 }
 
 /// @nodoc
@@ -56,7 +56,7 @@ class _$TissueIDCopyWithImpl<$Res, $Val extends TissueID>
       number: null == number
           ? _value.number
           : number // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
     ) as $Val);
   }
 }
@@ -68,7 +68,7 @@ abstract class _$$_TissueIDCopyWith<$Res> implements $TissueIDCopyWith<$Res> {
       __$$_TissueIDCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String prefix, String number});
+  $Res call({String prefix, int number});
 }
 
 /// @nodoc
@@ -93,7 +93,7 @@ class __$$_TissueIDCopyWithImpl<$Res>
       number: null == number
           ? _value.number
           : number // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
     ));
   }
 }
@@ -106,7 +106,7 @@ class _$_TissueID implements _TissueID {
   @override
   final String prefix;
   @override
-  final String number;
+  final int number;
 
   @override
   String toString() {
@@ -133,14 +133,13 @@ class _$_TissueID implements _TissueID {
 }
 
 abstract class _TissueID implements TissueID {
-  factory _TissueID(
-      {required final String prefix,
-      required final String number}) = _$_TissueID;
+  factory _TissueID({required final String prefix, required final int number}) =
+      _$_TissueID;
 
   @override
   String get prefix;
   @override
-  String get number;
+  int get number;
   @override
   @JsonKey(ignore: true)
   _$$_TissueIDCopyWith<_$_TissueID> get copyWith =>

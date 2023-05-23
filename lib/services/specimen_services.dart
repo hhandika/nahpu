@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/providers/taxa.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
@@ -181,5 +182,39 @@ class SpecimenServices extends DbAccess {
     ref.invalidate(specimenEntryProvider);
     ref.invalidate(taxonDataProvider);
     ref.invalidate(personnelListProvider);
+  }
+}
+
+class TissueIdServices {
+  const TissueIdServices(this.ref);
+  final WidgetRef ref;
+
+  Future<String> getNewNumber() async {
+    TissueID tissueID = await _getTissueID();
+    String prefix = tissueID.prefix;
+    int number = tissueID.number;
+    ref.read(tissueIDNotifierProvider.notifier).incrementNumber();
+    return '$prefix$number';
+  }
+
+  Future<String> repeatNumber() async {
+    TissueID tissueID = await _getTissueID();
+    String prefix = tissueID.prefix;
+    int number = tissueID.number - 1;
+    return '$prefix$number';
+  }
+
+  Future<void> setPrefix(String prefix) async {
+    ref.read(tissueIDNotifierProvider.notifier).setPrefix(prefix);
+  }
+
+  Future<void> setNumber(String number) async {
+    ref
+        .read(tissueIDNotifierProvider.notifier)
+        .setNumber(int.tryParse(number) ?? 0);
+  }
+
+  Future<TissueID> _getTissueID() async {
+    return ref.read(tissueIDNotifierProvider.future);
   }
 }
