@@ -237,36 +237,38 @@ class SpecimenPartServices {
   final List<String> typeList;
   final List<String> treatmentList;
 
-  void checkType(String specimenType) {
+  Future<void> checkType(String specimenType) async {
     if (!typeList.contains(specimenType)) {
-      _addSpecimenType(specimenType);
+      await _addSpecimenType(specimenType);
       _invalidateNotifier();
     }
   }
 
-  void checkTreatment(String treatment) {
+  Future<void> checkTreatment(String treatment) async {
     if (!treatmentList.contains(treatment)) {
-      _addTreatment(treatment);
+      await _addTreatment(treatment);
       _invalidateNotifier();
     }
   }
 
-  void deleteType(String specimenType) {
-    ref.watch(specimenTypeNotifierProvider.notifier).deleteType(specimenType);
+  Future<void> deleteType(String specimenType) async {
+    ref.read(specimenTypeNotifierProvider.notifier).deleteType(specimenType);
     _invalidateNotifier();
   }
 
-  void _addSpecimenType(String part) {
-    ref.watch(specimenTypeNotifierProvider.notifier).addType(part);
+  Future<void> _addSpecimenType(String part) async {
+    await ref.read(specimenTypeNotifierProvider.notifier).addType(part);
     _invalidateNotifier();
   }
 
-  void _addTreatment(String treatment) {
-    ref.watch(specimenTypeNotifierProvider.notifier).addTreatment(treatment);
+  Future<void> _addTreatment(String treatment) async {
+    await ref
+        .read(specimenTypeNotifierProvider.notifier)
+        .addTreatment(treatment);
     _invalidateNotifier();
   }
 
-  void _invalidateNotifier() {
+  void _invalidateNotifier() async {
     ref.invalidate(specimenTypeNotifierProvider);
   }
 }

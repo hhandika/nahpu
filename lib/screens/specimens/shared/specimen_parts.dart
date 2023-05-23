@@ -390,18 +390,6 @@ class PartFormState extends ConsumerState<PartForm> {
             partCtr: widget.partCtr,
             isVisible: _showMore,
           ),
-          // CommonTextField(
-          //   controller: widget.partCtr.typeCtr,
-          //   labelText: 'Preparation type',
-          //   hintText: 'Enter prep type: e.g. "skin", "liver", etc."',
-          //   isLastField: false,
-          // ),
-          // CommonTextField(
-          //   controller: widget.partCtr.treatmentCtr,
-          //   labelText: 'Treatment',
-          //   hintText: 'Enter a treatment: e.g. "formalin", "alcohol", etc."',
-          //   isLastField: false,
-          // ),
           AdditionalPartFields(visible: _showMore, partCtr: widget.partCtr),
           TextButton(
             onPressed: () {
@@ -481,7 +469,12 @@ class SpecimenPreparationState extends ConsumerState<SpecimenPreparation> {
   Widget build(BuildContext context) {
     return ref.watch(specimenTypeNotifierProvider).when(
           data: (data) {
-            _checkType(data);
+            if (widget.partCtr.typeCtr.text.isNotEmpty ||
+                widget.partCtr.treatmentCtr.text.isNotEmpty) {
+              setState(() {
+                _checkType(data);
+              });
+            }
             return Column(
               children: [
                 SpecimenTypeField(
@@ -508,7 +501,7 @@ class SpecimenPreparationState extends ConsumerState<SpecimenPreparation> {
         );
   }
 
-  void _checkType(SpecimenType data) {
+  Future<void> _checkType(SpecimenType data) async {
     final part = SpecimenPartServices(
       ref: ref,
       typeList: data.typeList,
@@ -516,11 +509,11 @@ class SpecimenPreparationState extends ConsumerState<SpecimenPreparation> {
     );
 
     if (widget.partCtr.typeCtr.text.isNotEmpty) {
-      part.checkType(widget.partCtr.typeCtr.text);
+      await part.checkType(widget.partCtr.typeCtr.text);
     }
 
     if (widget.partCtr.treatmentCtr.text.isNotEmpty) {
-      part.checkTreatment(widget.partCtr.treatmentCtr.text);
+      await part.checkTreatment(widget.partCtr.treatmentCtr.text);
     }
   }
 }

@@ -55,44 +55,43 @@ class SpecimenTypeNotifier extends _$SpecimenTypeNotifier {
     return _fetchSettings();
   }
 
-  void addType(String type) async {
+  Future<void> addType(String type) async {
     final prefs = ref.watch(settingProvider);
     final typeList = prefs.getStringList('specimenTypes');
     if (typeList != null && typeList.contains(type)) {
       return;
     } else {
       List<String> newList = [...typeList ?? [], type];
-      prefs.setStringList('specimenTypes', newList);
+      await prefs.setStringList('specimenTypes', newList);
     }
   }
 
   Future<void> addTreatment(String treatment) async {
     final prefs = ref.watch(settingProvider);
-    // final prefs = await SharedPreferences.getInstance();
     final treatmentList = prefs.getStringList('specimenPreservation');
     if (treatmentList != null && treatmentList.contains(treatment)) {
       return;
     } else {
       List<String> newList = [...treatmentList ?? [], treatment];
-      prefs.setStringList('specimenPreservation', newList);
+      await prefs.setStringList('specimenPreservation', newList);
     }
   }
 
-  void deleteType(String type) {
+  Future<void> deleteType(String type) async {
     final prefs = ref.watch(settingProvider);
     final typeList = prefs.getStringList('specimenTypes');
     if (typeList != null && typeList.contains(type)) {
       typeList.remove(type);
-      prefs.setStringList('specimenTypes', typeList);
+      await prefs.setStringList('specimenTypes', typeList);
     }
   }
 
-  void deleteTreatment(String type) {
+  Future<void> deleteTreatment(String type) async {
     final prefs = ref.watch(settingProvider);
     final treatmentList = prefs.getStringList('specimenPreservation');
     if (treatmentList != null && treatmentList.contains(type)) {
       treatmentList.remove(type);
-      prefs.setStringList('specimenPreservation', treatmentList);
+      await prefs.setStringList('specimenPreservation', treatmentList);
     }
   }
 }
