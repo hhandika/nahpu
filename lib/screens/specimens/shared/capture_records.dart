@@ -53,7 +53,7 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
               items: eventEntry.reversed
                   .map((event) => DropdownMenuItem(
                         value: event.id,
-                        child: Text(event.eventID ?? ''),
+                        child: CommonDropdownText(text: event.eventID ?? ''),
                       ))
                   .toList(),
               onChanged: (int? newValue) {
@@ -105,7 +105,8 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                                 return data.map((effort) {
                                   return DropdownMenuItem(
                                     value: effort.id,
-                                    child: Text(effort.type ?? ''),
+                                    child: CommonDropdownText(
+                                        text: effort.type ?? ''),
                                   );
                                 }).toList();
                               },
@@ -291,7 +292,8 @@ class CoordinateFieldState extends ConsumerState<CoordinateField> {
                     return data.map((coordinate) {
                       return DropdownMenuItem(
                         value: coordinate.id,
-                        child: Text(coordinate.nameId ?? ''),
+                        child:
+                            CommonDropdownText(text: coordinate.nameId ?? ''),
                       );
                     }).toList();
                   },
@@ -338,7 +340,7 @@ class CaptureTimeState extends ConsumerState<CaptureTime> {
                 .map(
                   (e) => DropdownMenuItem(
                     value: e,
-                    child: Text(e),
+                    child: CommonDropdownText(text: e),
                   ),
                 )
                 .toList(),
@@ -435,13 +437,13 @@ class PersonnelName extends ConsumerWidget {
     try {
       return ref.watch(personnelNameProvider(personnelUuid!)).when(
             data: (data) {
-              return Text(data.name ?? '');
+              return CommonDropdownText(text: data.name ?? '');
             },
-            loading: () => const Text('Loading...'),
-            error: (error, stack) => const Text('Error'),
+            loading: () => const CommonDropdownText(text: 'Loading...'),
+            error: (error, stack) => const CommonDropdownText(text: 'Error'),
           );
     } catch (e) {
-      return const Text('Error');
+      return const CommonDropdownText(text: 'Error');
     }
   }
 }

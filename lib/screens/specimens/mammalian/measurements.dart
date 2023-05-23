@@ -192,7 +192,7 @@ class MammalMeasurementFormsState
               items: accuracyList
                   .map((e) => DropdownMenuItem(
                         value: e,
-                        child: Text(e),
+                        child: CommonDropdownText(text: e),
                       ))
                   .toList(),
               onChanged: (String? newValue) {
@@ -217,7 +217,7 @@ class MammalMeasurementFormsState
                 items: specimenSexList
                     .map((e) => DropdownMenuItem(
                           value: SpecimenSex.values[specimenSexList.indexOf(e)],
-                          child: Text(e),
+                          child: CommonDropdownText(text: e),
                         ))
                     .toList(),
                 onChanged: (SpecimenSex? newValue) {
@@ -244,7 +244,7 @@ class MammalMeasurementFormsState
               items: specimenAgeList
                   .map((e) => DropdownMenuItem(
                         value: SpecimenAge.values[specimenAgeList.indexOf(e)],
-                        child: Text(e),
+                        child: CommonDropdownText(text: e),
                       ))
                   .toList(),
               onChanged: (SpecimenAge? newValue) {
@@ -349,7 +349,7 @@ class MaleGonadFormState extends ConsumerState<MaleGonadForm> {
                   .map((e) => DropdownMenuItem(
                         value: TestisPosition
                             .values[testisPositionList.indexOf(e)],
-                        child: Text(e),
+                        child: CommonDropdownText(text: e),
                       ))
                   .toList(),
               onChanged: (TestisPosition? newValue) {
@@ -460,7 +460,7 @@ class ScrotalMaleFormState extends ConsumerState<ScrotalMaleForm> {
                   .map((e) => DropdownMenuItem(
                         value: EpididymisAppearance
                             .values[epididymisAppearanceList.indexOf(e)],
-                        child: Text(e),
+                        child: CommonDropdownText(text: e),
                       ))
                   .toList(),
               onChanged: (value) {
@@ -528,7 +528,7 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
                     .map((e) => DropdownMenuItem(
                           value: VaginaOpening
                               .values[vaginaOpeningList.indexOf(e)],
-                          child: Text(e),
+                          child: CommonDropdownText(text: e),
                         ))
                     .toList(),
                 onChanged: (VaginaOpening? newValue) {
@@ -554,7 +554,7 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
                     .map((e) => DropdownMenuItem(
                           value: PubicSymphysis
                               .values[pubicSymphysisList.indexOf(e)],
-                          child: Text(e),
+                          child: CommonDropdownText(text: e),
                         ))
                     .toList(),
                 onChanged: (PubicSymphysis? newValue) {
@@ -584,7 +584,7 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
                   .map((e) => DropdownMenuItem(
                         value: ReproductiveStage
                             .values[reproductiveStageList.indexOf(e)],
-                        child: Text(e),
+                        child: CommonDropdownText(text: e),
                       ))
                   .toList(),
               onChanged: (ReproductiveStage? newValue) {
@@ -620,7 +620,7 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
                   .map((e) => DropdownMenuItem(
                         value: MammaeCondition
                             .values[mammaeConditionList.indexOf(e)],
-                        child: Text(e),
+                        child: CommonDropdownText(text: e),
                       ))
                   .toList(),
               onChanged: (MammaeCondition? newValue) {

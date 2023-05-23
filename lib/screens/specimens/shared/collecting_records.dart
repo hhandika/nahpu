@@ -53,7 +53,7 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       child: Column(
         children: [
-          const SizedBox(height: 10),
+          const SizedBox(height: 20),
           PersonnelRecords(
               specimenUuid: widget.specimenUuid,
               specimenCtr: widget.specimenCtr),
@@ -183,7 +183,7 @@ class SpecimenConditionField extends ConsumerWidget {
       items: conditionList
           .map((String condition) => DropdownMenuItem(
                 value: condition,
-                child: Text(condition),
+                child: CommonDropdownText(text: condition),
               ))
           .toList(),
     );
@@ -288,7 +288,7 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
                       .where((element) => element.role == 'Cataloger')
                       .map((e) => DropdownMenuItem(
                             value: e.uuid,
-                            child: Text(e.name ?? ''),
+                            child: CommonDropdownText(text: e.name ?? ''),
                           ))
                       .toList(),
                   loading: () => const [],
@@ -340,7 +340,7 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
                           element.role == 'Preparator only')
                       .map((e) => DropdownMenuItem(
                             value: e.uuid,
-                            child: Text(e.name ?? ''),
+                            child: CommonDropdownText(text: e.name ?? ''),
                           ))
                       .toList(),
                   loading: () => const [],

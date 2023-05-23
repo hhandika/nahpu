@@ -168,7 +168,7 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
             items: specimenSexList
                 .map((e) => DropdownMenuItem(
                       value: SpecimenSex.values[specimenSexList.indexOf(e)],
-                      child: Text(e),
+                      child: CommonDropdownText(text: e),
                     ))
                 .toList(),
             onChanged: (SpecimenSex? newValue) {
@@ -198,11 +198,11 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
             items: const [
               DropdownMenuItem(
                 value: 1,
-                child: Text('Yes'),
+                child: CommonDropdownText(text: 'Yes'),
               ),
               DropdownMenuItem(
                 value: 0,
-                child: Text('No'),
+                child: CommonDropdownText(text: 'No'),
               ),
             ],
             onChanged: (int? newValue) {
@@ -226,11 +226,11 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
             items: const [
               DropdownMenuItem(
                 value: 1,
-                child: Text('Yes'),
+                child: CommonDropdownText(text: 'Yes'),
               ),
               DropdownMenuItem(
                 value: 0,
-                child: Text('No'),
+                child: CommonDropdownText(text: 'No'),
               ),
             ],
             onChanged: (int? newValue) {
@@ -558,7 +558,7 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
                   .map((e) => DropdownMenuItem(
                         value: OvaryAppearance
                             .values[ovaryAppearanceList.indexOf(e)],
-                        child: Text(e),
+                        child: CommonDropdownText(text: e),
                       ))
                   .toList(),
               onChanged: (OvaryAppearance? newValue) {
@@ -647,7 +647,7 @@ class SkullOssField extends ConsumerWidget {
       items: skullOssificationList
           .map((e) => DropdownMenuItem(
                 value: e,
-                child: Text('$e %'),
+                child: CommonDropdownText(text: '$e %'),
               ))
           .toList(),
       onChanged: (int? newValue) {
@@ -686,7 +686,7 @@ class FatField extends ConsumerWidget {
         items: fatCategoryList
             .map((e) => DropdownMenuItem(
                   value: FatCategory.values[fatCategoryList.indexOf(e)],
-                  child: Text(e),
+                  child: CommonDropdownText(text: e),
                 ))
             .toList(),
         onChanged: (FatCategory? newValue) {
@@ -832,7 +832,7 @@ class OviductForm extends ConsumerWidget {
             .map((e) => DropdownMenuItem(
                   value: OviductAppearance
                       .values[oviductAppearanceList.indexOf(e)],
-                  child: Text(e),
+                  child: CommonDropdownText(text: e),
                 ))
             .toList(),
         onChanged: (OviductAppearance? newValue) {
@@ -901,11 +901,11 @@ class MoltingFormState extends ConsumerState<MoltingForm> {
             items: const [
               DropdownMenuItem(
                 value: 1,
-                child: Text('Yes'),
+                child: CommonDropdownText(text: 'Yes'),
               ),
               DropdownMenuItem(
                 value: 0,
-                child: Text('No'),
+                child: CommonDropdownText(text: 'No'),
               ),
             ],
             onChanged: (int? newValue) {
@@ -938,11 +938,11 @@ class MoltingFormState extends ConsumerState<MoltingForm> {
             items: const [
               DropdownMenuItem(
                 value: 1,
-                child: Text('Yes'),
+                child: CommonDropdownText(text: 'Yes'),
               ),
               DropdownMenuItem(
                 value: 0,
-                child: Text('No'),
+                child: CommonDropdownText(text: 'No'),
               ),
             ],
             onChanged: (int? newValue) {
@@ -1078,7 +1078,7 @@ class BodyMoltForm extends ConsumerWidget {
       items: bodyMoltList
           .map((e) => DropdownMenuItem(
                 value: BodyMolt.values[bodyMoltList.indexOf(e)],
-                child: Text(e),
+                child: CommonDropdownText(text: e),
               ))
           .toList(),
       onChanged: (BodyMolt? newValue) {
