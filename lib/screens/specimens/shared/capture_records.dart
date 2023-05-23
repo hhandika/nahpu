@@ -81,13 +81,12 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
               ),
             ],
           ),
-          Visibility(
-            visible: _showMore || widget.specimenCtr.relativeTimeCtr != null,
-            child: RelativeTimeSwitch(
-              specimenUuid: widget.specimenUuid,
-              specimenCtr: widget.specimenCtr,
-            ),
-          ),
+          _showMore || widget.specimenCtr.relativeTimeCtr != null
+              ? RelativeTimeSwitch(
+                  specimenUuid: widget.specimenUuid,
+                  specimenCtr: widget.specimenCtr,
+                )
+              : const SizedBox.shrink(),
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
             children: [
@@ -134,13 +133,12 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
             specimenUuid: widget.specimenUuid,
             specimenCtr: widget.specimenCtr,
           ),
-          Visibility(
-            visible: _showMore || widget.specimenCtr.collPersonnelCtr != null,
-            child: CollPersonnelField(
-              specimenUuid: widget.specimenUuid,
-              specimenCtr: widget.specimenCtr,
-            ),
-          ),
+          _showMore || widget.specimenCtr.collPersonnelCtr != null
+              ? CollPersonnelField(
+                  specimenUuid: widget.specimenUuid,
+                  specimenCtr: widget.specimenCtr,
+                )
+              : const SizedBox.shrink(),
           TextButton(
               onPressed: () {
                 setState(
