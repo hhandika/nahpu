@@ -56,7 +56,7 @@ class PartDataFormState extends ConsumerState<PartDataForm>
       child: MediaTabBars(
         tabController: _tabController,
         length: _length,
-        height: MediaQuery.of(context).size.height * 0.505,
+        height: MediaQuery.of(context).size.height * 0.5,
         tabs: [
           Tab(
             icon: Icon(matchCatFmtToPartIcon(widget.catalogFmt)),

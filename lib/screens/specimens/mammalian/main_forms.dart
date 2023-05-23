@@ -72,8 +72,9 @@ class MammalFormsState extends ConsumerState<MammalForms> {
                   ),
                 ],
               ),
-              AdaptiveLayout(
+              AdaptiveMainLayout(
                 useHorizontalLayout: useHorizontalLayout,
+                height: bottomSpecimenRecordHeight,
                 children: [
                   MammalMeasurementForms(
                     useHorizontalLayout: useHorizontalLayout,
