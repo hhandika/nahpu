@@ -240,20 +240,33 @@ class SpecimenPartServices {
   void checkType(String specimenType) {
     if (!typeList.contains(specimenType)) {
       _addSpecimenType(specimenType);
+      _invalidateNotifier();
     }
   }
 
   void checkTreatment(String treatment) {
     if (!treatmentList.contains(treatment)) {
       _addTreatment(treatment);
+      _invalidateNotifier();
     }
+  }
+
+  void deleteType(String specimenType) {
+    ref.watch(specimenTypeNotifierProvider.notifier).deleteType(specimenType);
+    _invalidateNotifier();
   }
 
   void _addSpecimenType(String part) {
     ref.watch(specimenTypeNotifierProvider.notifier).addType(part);
+    _invalidateNotifier();
   }
 
   void _addTreatment(String treatment) {
     ref.watch(specimenTypeNotifierProvider.notifier).addTreatment(treatment);
+    _invalidateNotifier();
+  }
+
+  void _invalidateNotifier() {
+    ref.invalidate(specimenTypeNotifierProvider);
   }
 }
