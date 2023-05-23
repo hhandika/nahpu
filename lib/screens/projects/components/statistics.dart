@@ -29,7 +29,7 @@ class StatisticFullScreen extends StatelessWidget {
           },
         ),
       ),
-      body: SafeArea(
+      body: const SafeArea(
         child: Center(
             child: StatisticViewer(
           maxCount: true,
