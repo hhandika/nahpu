@@ -79,7 +79,7 @@ class SpecimenPartMenuState extends ConsumerState<SpecimenPartMenu> {
                           backgroundColor: Color.lerp(
                               Theme.of(context).colorScheme.secondaryContainer,
                               Theme.of(context).colorScheme.surface,
-                              0.5),
+                              0.9),
                           onDeleted: () {
                             ref
                                 .read(specimenTypeNotifierProvider.notifier)
@@ -95,7 +95,7 @@ class SpecimenPartMenuState extends ConsumerState<SpecimenPartMenu> {
               child: Text('Error loading data'),
             ),
           ),
-      const SizedBox(height: 20),
+      const SizedBox(height: 10),
       Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -110,7 +110,6 @@ class SpecimenPartMenuState extends ConsumerState<SpecimenPartMenu> {
                 ),
               ),
             ),
-            const SizedBox(width: 5),
             IconButton(
               iconSize: 25,
               color: Theme.of(context).colorScheme.onSurface,
