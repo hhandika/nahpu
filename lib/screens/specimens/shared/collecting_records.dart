@@ -50,7 +50,7 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
       title: 'Collecting Records',
       isPrimary: true,
       mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       child: Column(
         children: [
           const SizedBox(height: 10),
