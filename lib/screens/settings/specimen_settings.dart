@@ -6,6 +6,7 @@ import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/specimen_services.dart';
+import 'package:settings_ui/settings_ui.dart';
 
 class SpecimenPartSelection extends ConsumerStatefulWidget {
   const SpecimenPartSelection({super.key});
@@ -22,30 +23,21 @@ class SpecimenPartSelectionState extends ConsumerState<SpecimenPartSelection> {
         title: const Text('Specimen Parts'),
       ),
       body: const SafeArea(
-        child: ScreenLayout(
-          child: TissueNumSettings(),
+        child: SettingsList(
+          sections: [
+            SettingsSection(
+              title: Text(
+                'Tissue ID',
+              ),
+              tiles: [
+                CustomSettingsTile(
+                  child: TissueIDFields(),
+                )
+              ],
+            )
+          ],
         ),
       ),
-    );
-  }
-}
-
-class TissueNumSettings extends StatelessWidget {
-  const TissueNumSettings({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          'Tissue ID',
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        const TissueIDFields(),
-      ],
     );
   }
 }
@@ -61,10 +53,13 @@ class TissueIDFields extends ConsumerWidget {
           data: (data) {
             prefixController.text = data.prefix;
             numberController.text = data.number.toString();
-            return SettingCard(
+            return Row(
               children: [
-                TissuePrefixField(prefixCtr: prefixController),
-                TissueNumField(tissueNumCtr: numberController),
+                Expanded(child: TissuePrefixField(prefixCtr: prefixController)),
+                const SizedBox(width: 10),
+                SizedBox(
+                    width: 200,
+                    child: TissueNumField(tissueNumCtr: numberController)),
               ],
             );
           },
