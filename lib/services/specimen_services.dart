@@ -205,6 +205,12 @@ class TissueIdServices {
     return await SpecimenServices(ref).getLastEnteredTissueID(specimenUuid);
   }
 
+  Future<String> setTissueID(String prefix, String number) async {
+    await setPrefix(prefix);
+    await setNumber(number);
+    return '$prefix$number';
+  }
+
   Future<void> setPrefix(String prefix) async {
     ref.read(tissueIDNotifierProvider.notifier).setPrefix(prefix);
   }

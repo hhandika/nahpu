@@ -709,20 +709,24 @@ class TissueIDMenuState extends ConsumerState<TissueIDMenu> {
   }
 
   void _showTissueSettings() {
+    TextEditingController prefixCtr = TextEditingController();
+    TextEditingController numberCtr = TextEditingController();
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Tissue ID settings'),
-          content: const Column(
+          content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               CommonTextField(
+                controller: prefixCtr,
                 labelText: 'Prefix',
                 hintText: 'Enter tissue ID prefix',
                 isLastField: false,
               ),
               CommonNumField(
+                controller: numberCtr,
                 labelText: 'Number',
                 hintText: 'Enter tissue ID number',
                 isLastField: false,
@@ -735,7 +739,16 @@ class TissueIDMenuState extends ConsumerState<TissueIDMenu> {
               text: 'Cancel',
             ),
             PrimaryButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () async {
+                String tissueID = await TissueIdServices(ref).setTissueID(
+                  prefixCtr.text,
+                  numberCtr.text,
+                );
+                widget.tissueIDct.text = tissueID;
+                if (mounted) {
+                  Navigator.of(context).pop();
+                }
+              },
               text: 'Save',
             ),
           ],
