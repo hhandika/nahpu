@@ -153,6 +153,16 @@ class SpecimenPartQuery extends DatabaseAccessor<Database>
         .get();
   }
 
+  Future<String?> getLastEnteredTissueID(String specimenUuid) async {
+    return await (select(specimenPart)
+          ..where((t) => t.specimenUuid.equals(specimenUuid))
+          ..orderBy([
+            (t) => OrderingTerm(expression: t.tissueID, mode: OrderingMode.desc)
+          ]))
+        .getSingle()
+        .then((value) => value.tissueID);
+  }
+
   Future<void> updateSpecimenPart(int id, SpecimenPartCompanion entry) {
     return (update(specimenPart)..where((t) => t.id.equals(id))).write(entry);
   }

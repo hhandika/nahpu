@@ -20,20 +20,4 @@ final settingProvider = AutoDisposeProvider<SharedPreferences>.internal(
 );
 
 typedef SettingRef = AutoDisposeProviderRef<SharedPreferences>;
-String _$tissueIDNotifierHash() => r'48c55dcf25dad806287816f8de392f51cb209b11';
-
-/// See also [TissueIDNotifier].
-@ProviderFor(TissueIDNotifier)
-final tissueIDNotifierProvider =
-    AutoDisposeAsyncNotifierProvider<TissueIDNotifier, TissueID>.internal(
-  TissueIDNotifier.new,
-  name: r'tissueIDNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$tissueIDNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$TissueIDNotifier = AutoDisposeAsyncNotifier<TissueID>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

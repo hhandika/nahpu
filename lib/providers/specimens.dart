@@ -102,3 +102,58 @@ class SpecimenTypeNotifier extends _$SpecimenTypeNotifier {
     });
   }
 }
+
+@freezed
+class TissueID with _$TissueID {
+  factory TissueID({
+    required String prefix,
+    required int number,
+  }) = _TissueID;
+}
+
+@riverpod
+class TissueIDNotifier extends _$TissueIDNotifier {
+  Future<TissueID> _fetchSettings() async {
+    final prefs = ref.watch(settingProvider);
+    final prefix = prefs.getString('tissueIDPrefix');
+    final number = prefs.getInt('tissueIDNumber');
+    if (prefix != null && number != null) {
+      return TissueID(prefix: prefix, number: number);
+    } else {
+      return TissueID(prefix: '', number: 0);
+    }
+  }
+
+  @override
+  FutureOr<TissueID> build() async {
+    return await _fetchSettings();
+  }
+
+  Future<void> setPrefix(String prefix) async {
+    final prefs = ref.read(settingProvider);
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() {
+      prefs.setString('tissueIDPrefix', prefix);
+      return _fetchSettings();
+    });
+  }
+
+  Future<void> setNumber(int number) async {
+    final prefs = ref.read(settingProvider);
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() {
+      prefs.setInt('tissueIDNumber', number);
+      return _fetchSettings();
+    });
+  }
+
+  Future<void> incrementNumber() async {
+    final prefs = ref.watch(settingProvider);
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() {
+      final number = prefs.getInt('tissueIDNumber') ?? 0;
+      prefs.setInt('tissueIDNumber', number + 1);
+      return _fetchSettings();
+    });
+  }
+}

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/providers/settings.dart';
+import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/services/specimen_services.dart';
@@ -84,9 +84,9 @@ class TissuePrefixField extends ConsumerWidget {
         labelText: 'Prefix',
         hintText: 'Enter tissue ID prefix, e.g. M',
         isLastField: false,
-        onChanged: (String? value) {
+        onChanged: (String? value) async {
           if (value != null) {
-            TissueIdServices(ref).setPrefix(value);
+            await TissueIdServices(ref).setPrefix(value);
           }
         });
   }
@@ -107,9 +107,9 @@ class TissueNumField extends ConsumerWidget {
       labelText: 'Tissue no.',
       hintText: 'Enter the initial starting number',
       isLastField: true,
-      onChanged: (String? value) {
+      onChanged: (String? value) async {
         if (value != null) {
-          TissueIdServices(ref).setNumber(value);
+          await TissueIdServices(ref).setNumber(value);
         }
       },
     );

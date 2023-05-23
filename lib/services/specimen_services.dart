@@ -79,6 +79,10 @@ class SpecimenServices extends DbAccess {
     return _getCurrentFieldNumber(fieldNumber);
   }
 
+  Future<String?> getLastEnteredTissueID(String specimenUuid) async {
+    return SpecimenPartQuery(dbAccess).getLastEnteredTissueID(specimenUuid);
+  }
+
   int _getCurrentFieldNumber(int? currentFieldNum) {
     if (currentFieldNum == null) {
       return 0;
@@ -197,11 +201,8 @@ class TissueIdServices {
     return '$prefix$number';
   }
 
-  Future<String> repeatNumber() async {
-    TissueID tissueID = await _getTissueID();
-    String prefix = tissueID.prefix;
-    int number = tissueID.number - 1;
-    return '$prefix$number';
+  Future<String?> repeatNumber(String specimenUuid) async {
+    return await SpecimenServices(ref).getLastEnteredTissueID(specimenUuid);
   }
 
   Future<void> setPrefix(String prefix) async {
