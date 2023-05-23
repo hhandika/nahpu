@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$SpecimenType {
   List<String> get typeList => throw _privateConstructorUsedError;
-  List<String> get preservationList => throw _privateConstructorUsedError;
+  List<String> get treatmentList => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $SpecimenTypeCopyWith<SpecimenType> get copyWith =>
@@ -30,7 +30,7 @@ abstract class $SpecimenTypeCopyWith<$Res> {
           SpecimenType value, $Res Function(SpecimenType) then) =
       _$SpecimenTypeCopyWithImpl<$Res, SpecimenType>;
   @useResult
-  $Res call({List<String> typeList, List<String> preservationList});
+  $Res call({List<String> typeList, List<String> treatmentList});
 }
 
 /// @nodoc
@@ -47,16 +47,16 @@ class _$SpecimenTypeCopyWithImpl<$Res, $Val extends SpecimenType>
   @override
   $Res call({
     Object? typeList = null,
-    Object? preservationList = null,
+    Object? treatmentList = null,
   }) {
     return _then(_value.copyWith(
       typeList: null == typeList
           ? _value.typeList
           : typeList // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      preservationList: null == preservationList
-          ? _value.preservationList
-          : preservationList // ignore: cast_nullable_to_non_nullable
+      treatmentList: null == treatmentList
+          ? _value.treatmentList
+          : treatmentList // ignore: cast_nullable_to_non_nullable
               as List<String>,
     ) as $Val);
   }
@@ -70,7 +70,7 @@ abstract class _$$_SpecimenTypeCopyWith<$Res>
       __$$_SpecimenTypeCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<String> typeList, List<String> preservationList});
+  $Res call({List<String> typeList, List<String> treatmentList});
 }
 
 /// @nodoc
@@ -85,16 +85,16 @@ class __$$_SpecimenTypeCopyWithImpl<$Res>
   @override
   $Res call({
     Object? typeList = null,
-    Object? preservationList = null,
+    Object? treatmentList = null,
   }) {
     return _then(_$_SpecimenType(
       typeList: null == typeList
           ? _value._typeList
           : typeList // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      preservationList: null == preservationList
-          ? _value._preservationList
-          : preservationList // ignore: cast_nullable_to_non_nullable
+      treatmentList: null == treatmentList
+          ? _value._treatmentList
+          : treatmentList // ignore: cast_nullable_to_non_nullable
               as List<String>,
     ));
   }
@@ -105,9 +105,9 @@ class __$$_SpecimenTypeCopyWithImpl<$Res>
 class _$_SpecimenType implements _SpecimenType {
   const _$_SpecimenType(
       {required final List<String> typeList,
-      required final List<String> preservationList})
+      required final List<String> treatmentList})
       : _typeList = typeList,
-        _preservationList = preservationList;
+        _treatmentList = treatmentList;
 
   final List<String> _typeList;
   @override
@@ -117,18 +117,17 @@ class _$_SpecimenType implements _SpecimenType {
     return EqualUnmodifiableListView(_typeList);
   }
 
-  final List<String> _preservationList;
+  final List<String> _treatmentList;
   @override
-  List<String> get preservationList {
-    if (_preservationList is EqualUnmodifiableListView)
-      return _preservationList;
+  List<String> get treatmentList {
+    if (_treatmentList is EqualUnmodifiableListView) return _treatmentList;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_preservationList);
+    return EqualUnmodifiableListView(_treatmentList);
   }
 
   @override
   String toString() {
-    return 'SpecimenType(typeList: $typeList, preservationList: $preservationList)';
+    return 'SpecimenType(typeList: $typeList, treatmentList: $treatmentList)';
   }
 
   @override
@@ -138,14 +137,14 @@ class _$_SpecimenType implements _SpecimenType {
             other is _$_SpecimenType &&
             const DeepCollectionEquality().equals(other._typeList, _typeList) &&
             const DeepCollectionEquality()
-                .equals(other._preservationList, _preservationList));
+                .equals(other._treatmentList, _treatmentList));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_typeList),
-      const DeepCollectionEquality().hash(_preservationList));
+      const DeepCollectionEquality().hash(_treatmentList));
 
   @JsonKey(ignore: true)
   @override
@@ -157,12 +156,12 @@ class _$_SpecimenType implements _SpecimenType {
 abstract class _SpecimenType implements SpecimenType {
   const factory _SpecimenType(
       {required final List<String> typeList,
-      required final List<String> preservationList}) = _$_SpecimenType;
+      required final List<String> treatmentList}) = _$_SpecimenType;
 
   @override
   List<String> get typeList;
   @override
-  List<String> get preservationList;
+  List<String> get treatmentList;
   @override
   @JsonKey(ignore: true)
   _$$_SpecimenTypeCopyWith<_$_SpecimenType> get copyWith =>

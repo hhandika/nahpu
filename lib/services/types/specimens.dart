@@ -8,9 +8,9 @@ const List<String> defaultSpecimenType = [
   'Kidney',
 ];
 
-const List<String> defaultSpecimenPreservation = [
+const List<String> defaultSpecimenTreatment = [
   'None',
-  'Alcohol',
+  'ETOH',
   'Formalin',
   'LN2',
   'DMSO',

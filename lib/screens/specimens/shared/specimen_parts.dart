@@ -386,24 +386,22 @@ class PartFormState extends ConsumerState<PartForm> {
             specimenUuid: widget.specimenUuid,
             partCtr: widget.partCtr,
           ),
-          CommonTextField(
-            controller: widget.partCtr.typeCtr,
-            labelText: 'Preparation type',
-            hintText: 'Enter prep type: e.g. "skin", "liver", etc."',
-            isLastField: false,
+          SpecimenPreparation(
+            partCtr: widget.partCtr,
+            isVisible: _showMore,
           ),
-          CommonNumField(
-            controller: widget.partCtr.countCtr,
-            labelText: 'Counts',
-            hintText: 'Enter part counts',
-            isLastField: false,
-          ),
-          CommonTextField(
-            controller: widget.partCtr.treatmentCtr,
-            labelText: 'Treatment',
-            hintText: 'Enter a treatment: e.g. "formalin", "alcohol", etc."',
-            isLastField: false,
-          ),
+          // CommonTextField(
+          //   controller: widget.partCtr.typeCtr,
+          //   labelText: 'Preparation type',
+          //   hintText: 'Enter prep type: e.g. "skin", "liver", etc."',
+          //   isLastField: false,
+          // ),
+          // CommonTextField(
+          //   controller: widget.partCtr.treatmentCtr,
+          //   labelText: 'Treatment',
+          //   hintText: 'Enter a treatment: e.g. "formalin", "alcohol", etc."',
+          //   isLastField: false,
+          // ),
           AdditionalPartFields(visible: _showMore, partCtr: widget.partCtr),
           TextButton(
             onPressed: () {
@@ -461,6 +459,214 @@ class PartFormState extends ConsumerState<PartForm> {
       museumLoan: db.Value(widget.partCtr.museumLoanCtr.text),
       remark: db.Value(widget.partCtr.remarkCtr.text),
     );
+  }
+}
+
+class SpecimenPreparation extends ConsumerStatefulWidget {
+  const SpecimenPreparation({
+    super.key,
+    required this.partCtr,
+    required this.isVisible,
+  });
+
+  final PartFormCtrModel partCtr;
+  final bool isVisible;
+
+  @override
+  SpecimenPreparationState createState() => SpecimenPreparationState();
+}
+
+class SpecimenPreparationState extends ConsumerState<SpecimenPreparation> {
+  @override
+  Widget build(BuildContext context) {
+    return ref.watch(specimenTypeNotifierProvider).when(
+          data: (data) {
+            _checkType(data);
+            return Column(
+              children: [
+                SpecimenTypeField(
+                  partCtr: widget.partCtr,
+                  specimenTypeList: data.typeList,
+                ),
+                SpecimenCountField(partCtr: widget.partCtr),
+                SpecimenTreatmentField(
+                  partCtr: widget.partCtr,
+                  treatmentList: data.treatmentList,
+                ),
+                AdditionalTreatmentField(
+                  partCtr: widget.partCtr,
+                  treatmentList: data.treatmentList,
+                  isVisible: widget.isVisible,
+                ),
+              ],
+            );
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stackTrace) => Center(
+            child: Text('Error: $error'),
+          ),
+        );
+  }
+
+  void _checkType(SpecimenType data) {
+    final part = SpecimenPartServices(
+      ref: ref,
+      typeList: data.typeList,
+      treatmentList: data.treatmentList,
+    );
+
+    if (widget.partCtr.typeCtr.text.isNotEmpty) {
+      part.checkType(widget.partCtr.typeCtr.text);
+    }
+
+    if (widget.partCtr.treatmentCtr.text.isNotEmpty) {
+      part.checkTreatment(widget.partCtr.treatmentCtr.text);
+    }
+  }
+}
+
+class SpecimenCountField extends StatelessWidget {
+  const SpecimenCountField({
+    super.key,
+    required this.partCtr,
+  });
+
+  final PartFormCtrModel partCtr;
+
+  @override
+  Widget build(BuildContext context) {
+    return CommonNumField(
+      controller: partCtr.countCtr,
+      labelText: 'Counts',
+      hintText: 'Enter part counts',
+      isLastField: false,
+    );
+  }
+}
+
+class SpecimenTypeField extends StatelessWidget {
+  const SpecimenTypeField({
+    super.key,
+    required this.partCtr,
+    required this.specimenTypeList,
+  });
+
+  final PartFormCtrModel partCtr;
+  final List<String> specimenTypeList;
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField(
+      value: _getValue(),
+      decoration: const InputDecoration(
+        labelText: 'Preparation type',
+        hintText: 'Enter preparation type',
+      ),
+      items: specimenTypeList.map((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: CommonDropdownText(text: value),
+        );
+      }).toList(),
+      onChanged: (String? value) {
+        if (value != null) {
+          partCtr.typeCtr.text = value;
+        }
+      },
+    );
+  }
+
+  String? _getValue() {
+    if (partCtr.typeCtr.text.isNotEmpty) {
+      return partCtr.typeCtr.text;
+    } else {
+      return null;
+    }
+  }
+}
+
+class SpecimenTreatmentField extends StatelessWidget {
+  const SpecimenTreatmentField({
+    super.key,
+    required this.partCtr,
+    required this.treatmentList,
+  });
+
+  final PartFormCtrModel partCtr;
+  final List<String> treatmentList;
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField(
+      value: _getValue(),
+      decoration: const InputDecoration(
+        labelText: 'Treatment',
+        hintText: 'Enter treatment',
+      ),
+      items: treatmentList.map((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: CommonDropdownText(text: value),
+        );
+      }).toList(),
+      onChanged: (String? value) {
+        if (value != null) {
+          partCtr.treatmentCtr.text = value;
+        }
+      },
+    );
+  }
+
+  String? _getValue() {
+    if (partCtr.additionalTreatmentCtr.text.isNotEmpty) {
+      return partCtr.additionalTreatmentCtr.text;
+    } else {
+      return null;
+    }
+  }
+}
+
+class AdditionalTreatmentField extends StatelessWidget {
+  const AdditionalTreatmentField({
+    super.key,
+    required this.partCtr,
+    required this.isVisible,
+    required this.treatmentList,
+  });
+
+  final PartFormCtrModel partCtr;
+  final bool isVisible;
+  final List<String> treatmentList;
+
+  @override
+  Widget build(BuildContext context) {
+    return Visibility(
+      visible: isVisible,
+      child: DropdownButtonFormField(
+        value: _getValue(),
+        decoration: const InputDecoration(
+          labelText: 'Additional treatment',
+          hintText: 'Enter additional treatment',
+        ),
+        items: treatmentList.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: CommonDropdownText(text: value),
+          );
+        }).toList(),
+        onChanged: (String? value) {
+          if (value != null) {
+            partCtr.additionalTreatmentCtr.text = value;
+          }
+        },
+      ),
+    );
+  }
+
+  String? _getValue() {
+    return partCtr.additionalTreatmentCtr.text.isEmpty
+        ? null
+        : partCtr.additionalTreatmentCtr.text;
   }
 }
 

@@ -225,3 +225,35 @@ class TissueIdServices {
     return ref.read(tissueIDNotifierProvider.future);
   }
 }
+
+class SpecimenPartServices {
+  SpecimenPartServices({
+    required this.ref,
+    required this.typeList,
+    required this.treatmentList,
+  });
+
+  final WidgetRef ref;
+  final List<String> typeList;
+  final List<String> treatmentList;
+
+  void checkType(String specimenType) {
+    if (!typeList.contains(specimenType)) {
+      _addSpecimenType(specimenType);
+    }
+  }
+
+  void checkTreatment(String treatment) {
+    if (!treatmentList.contains(treatment)) {
+      _addTreatment(treatment);
+    }
+  }
+
+  void _addSpecimenType(String part) {
+    ref.watch(specimenTypeNotifierProvider.notifier).addType(part);
+  }
+
+  void _addTreatment(String treatment) {
+    ref.watch(specimenTypeNotifierProvider.notifier).addTreatment(treatment);
+  }
+}

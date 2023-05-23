@@ -26,12 +26,12 @@ final partBySpecimenProvider = FutureProvider.family
 class SpecimenType with _$SpecimenType {
   const factory SpecimenType({
     required List<String> typeList,
-    required List<String> preservationList,
+    required List<String> treatmentList,
   }) = _SpecimenType;
 
   factory SpecimenType.defaultType() => const SpecimenType(
         typeList: defaultSpecimenType,
-        preservationList: defaultSpecimenPreservation,
+        treatmentList: defaultSpecimenTreatment,
       );
 }
 
@@ -46,7 +46,7 @@ class SpecimenTypeNotifier extends _$SpecimenTypeNotifier {
     }
     return SpecimenType(
       typeList: typeList,
-      preservationList: preservationList ?? defaultSpecimenPreservation,
+      treatmentList: preservationList ?? defaultSpecimenTreatment,
     );
   }
 
@@ -55,51 +55,44 @@ class SpecimenTypeNotifier extends _$SpecimenTypeNotifier {
     return _fetchSettings();
   }
 
-  Future<void> addType(String type) async {
-    final prefs = ref.read(settingProvider);
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() {
-      final List<String> typeList = [...state.value?.typeList ?? [], type];
-      prefs.setStringList('specimenTypes', typeList);
-      return _fetchSettings();
-    });
+  void addType(String type) async {
+    final prefs = ref.watch(settingProvider);
+    final typeList = prefs.getStringList('specimenTypes');
+    if (typeList != null && typeList.contains(type)) {
+      return;
+    } else {
+      List<String> newList = [...typeList ?? [], type];
+      prefs.setStringList('specimenTypes', newList);
+    }
   }
 
-  Future<void> addPreservation(String preservation) async {
-    final prefs = ref.read(settingProvider);
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() {
-      final List<String> preservationList = [
-        ...state.value?.preservationList ?? [],
-        preservation
-      ];
-      prefs.setStringList('specimenPreservation', preservationList);
-      return _fetchSettings();
-    });
+  void addTreatment(String treatment) {
+    final prefs = ref.watch(settingProvider);
+    final treatmentList = prefs.getStringList('specimenPreservation');
+    if (treatmentList != null && treatmentList.contains(treatment)) {
+      return;
+    } else {
+      List<String> newList = [...treatmentList ?? [], treatment];
+      prefs.setStringList('specimenPreservation', newList);
+    }
   }
 
-  Future<void> deleteType(String type) async {
-    final prefs = ref.read(settingProvider);
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() {
-      final List<String> typeList = [...state.value?.typeList ?? []];
+  void deleteType(String type) {
+    final prefs = ref.watch(settingProvider);
+    final typeList = prefs.getStringList('specimenTypes');
+    if (typeList != null && typeList.contains(type)) {
       typeList.remove(type);
       prefs.setStringList('specimenTypes', typeList);
-      return _fetchSettings();
-    });
+    }
   }
 
-  Future<void> deletePreservation(String preservation) async {
-    final prefs = ref.read(settingProvider);
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() {
-      final List<String> preservationList = [
-        ...state.value?.preservationList ?? []
-      ];
-      preservationList.remove(preservation);
-      prefs.setStringList('specimenPreservation', preservationList);
-      return _fetchSettings();
-    });
+  void deleteTreatment(String type) {
+    final prefs = ref.watch(settingProvider);
+    final treatmentList = prefs.getStringList('specimenPreservation');
+    if (treatmentList != null && treatmentList.contains(type)) {
+      treatmentList.remove(type);
+      prefs.setStringList('specimenPreservation', treatmentList);
+    }
   }
 }
 

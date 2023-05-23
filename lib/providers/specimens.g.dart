@@ -23,7 +23,7 @@ final specimenTypeNotifierProvider = AutoDisposeAsyncNotifierProvider<
 );
 
 typedef _$SpecimenTypeNotifier = AutoDisposeAsyncNotifier<SpecimenType>;
-String _$tissueIDNotifierHash() => r'8eb7b2d2a5933b8c30c910f88fc12fa3673566bb';
+String _$tissueIDNotifierHash() => r'10cb6afba1f666937efae846ee000aa024dcda20';
 
 /// See also [TissueIDNotifier].
 @ProviderFor(TissueIDNotifier)
