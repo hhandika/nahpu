@@ -87,6 +87,11 @@ class SettingChip extends StatelessWidget {
                   labelText: labelText,
                   hintText: hintText,
                 ),
+                onSubmitted: (String? value) {
+                  if (value != null && value.isNotEmpty) {
+                    onPressed();
+                  }
+                },
               ),
             ),
             IconButton(
