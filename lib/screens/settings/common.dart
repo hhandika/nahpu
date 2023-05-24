@@ -65,7 +65,7 @@ class SettingChip extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 250),
+              constraints: const BoxConstraints(maxWidth: 270),
               child: TextField(
                 controller: controller,
                 decoration: InputDecoration(

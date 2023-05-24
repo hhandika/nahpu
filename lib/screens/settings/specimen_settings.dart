@@ -4,6 +4,7 @@ import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/screens/settings/common.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/fields.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:settings_ui/settings_ui.dart';
 
@@ -21,60 +22,65 @@ class SpecimenPartSelectionState extends ConsumerState<SpecimenPartSelection> {
       appBar: AppBar(
         title: const Text('Specimen Parts'),
       ),
-      body: SafeArea(
-          child: SettingsList(sections: [
-        const SettingsSection(
-          tiles: [
-            CustomSettingsTile(
-              child: TissueIDFields(),
-            )
-          ],
-        ),
-        ref.watch(specimenTypeNotifierProvider).when(
-              data: (data) {
-                return SettingsSection(tiles: [
-                  CustomSettingsTile(
-                    child: TypeList(typeList: data.typeList),
+      body: SafeArea(child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          bool isMobile = constraints.maxWidth < 600;
+          return SettingsList(sections: [
+            SettingsSection(
+              tiles: [
+                CustomSettingsTile(
+                  child: TissueIDFields(
+                    isMobile: isMobile,
                   ),
-                  const CustomSettingsTile(
-                      child: SizedBox(
-                    height: 20,
-                  )),
-                  CustomSettingsTile(
-                    child: TreatmentList(data: data.treatmentList),
-                  ),
-                  CustomSettingsTile(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 30, 0, 20),
-                      child: TextButton(
-                        onPressed: () {
-                          SpecimenServices(ref).getAllDistinctTypes();
-                        },
-                        child: const Text(
-                          'Reset settings',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ),
-                    ),
-                  )
-                ]);
-              },
-              loading: () => const SettingsSection(
-                tiles: [
-                  CustomSettingsTile(
-                    child: CommonProgressIndicator(),
-                  )
-                ],
-              ),
-              error: (err, stack) => const SettingsSection(
-                tiles: [
-                  CustomSettingsTile(
-                    child: Text('Error loading data'),
-                  )
-                ],
-              ),
+                )
+              ],
             ),
-      ])),
+            ref.watch(specimenTypeNotifierProvider).when(
+                  data: (data) {
+                    return SettingsSection(tiles: [
+                      CustomSettingsTile(
+                        child: TypeList(typeList: data.typeList),
+                      ),
+                      const CustomSettingsTile(
+                          child: SizedBox(
+                        height: 20,
+                      )),
+                      CustomSettingsTile(
+                        child: TreatmentList(data: data.treatmentList),
+                      ),
+                      CustomSettingsTile(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 30, 0, 20),
+                          child: TextButton(
+                            onPressed: () {
+                              SpecimenServices(ref).getAllDistinctTypes();
+                            },
+                            child: const Text(
+                              'Sync settings',
+                            ),
+                          ),
+                        ),
+                      )
+                    ]);
+                  },
+                  loading: () => const SettingsSection(
+                    tiles: [
+                      CustomSettingsTile(
+                        child: CommonProgressIndicator(),
+                      )
+                    ],
+                  ),
+                  error: (err, stack) => const SettingsSection(
+                    tiles: [
+                      CustomSettingsTile(
+                        child: Text('Error loading data'),
+                      )
+                    ],
+                  ),
+                ),
+          ]);
+        },
+      )),
     );
   }
 }
@@ -135,7 +141,7 @@ class TreatmentList extends ConsumerWidget {
       chipList: data
           .map((e) => CommonChip(
                 text: e,
-                primaryColor: Theme.of(context).primaryColor,
+                primaryColor: Theme.of(context).colorScheme.tertiary,
                 onDeleted: () {
                   ref
                       .read(specimenTypeNotifierProvider.notifier)
@@ -160,7 +166,9 @@ class TreatmentList extends ConsumerWidget {
 }
 
 class TissueIDFields extends ConsumerWidget {
-  const TissueIDFields({super.key});
+  const TissueIDFields({super.key, required this.isMobile});
+
+  final bool isMobile;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -178,13 +186,10 @@ class TissueIDFields extends ConsumerWidget {
                 ),
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  child: AdaptiveLayout(
+                    useHorizontalLayout: !isMobile,
                     children: [
                       TissuePrefixField(prefixCtr: prefixController),
-                      const SizedBox(
-                        width: 20,
-                      ),
                       TissueNumField(tissueNumCtr: numberController),
                     ],
                   ),
@@ -210,8 +215,8 @@ class TissuePrefixField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SizedBox(
-      width: 250,
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 320),
       child: CommonTextField(
           controller: prefixCtr,
           labelText: 'Prefix',
@@ -236,8 +241,8 @@ class TissueNumField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SizedBox(
-      width: 250,
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 320),
       child: CommonNumField(
         controller: tissueNumCtr,
         labelText: 'Tissue no.',
