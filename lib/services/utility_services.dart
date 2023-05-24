@@ -24,3 +24,16 @@ String getSystemDateTime() {
 }
 
 String get listTileSeparator => " · ";
+
+// Insert only unique values
+List<String> getDistinctList(List<String?> list) {
+  // Get unique value and remove empty string
+  List<String> newList = list
+      .toSet()
+      .toList()
+      .map((e) => e ?? '')
+      .where((element) => element.isNotEmpty)
+      .toList();
+
+  return newList;
+}

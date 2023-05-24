@@ -28,11 +28,13 @@ class SpecimenPartSelectionState extends ConsumerState<SpecimenPartSelection> {
           return SettingsList(sections: [
             SettingsSection(
               tiles: [
+                androidPadding,
                 CustomSettingsTile(
                   child: TissueIDFields(
                     isMobile: isMobile,
                   ),
-                )
+                ),
+                androidPadding,
               ],
             ),
             ref.watch(specimenTypeNotifierProvider).when(
@@ -43,7 +45,7 @@ class SpecimenPartSelectionState extends ConsumerState<SpecimenPartSelection> {
                       ),
                       const CustomSettingsTile(
                           child: SizedBox(
-                        height: 20,
+                        height: 22,
                       )),
                       CustomSettingsTile(
                         child: TreatmentList(data: data.treatmentList),

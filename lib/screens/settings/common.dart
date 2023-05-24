@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:settings_ui/settings_ui.dart';
 
 class SettingCard extends StatelessWidget {
   const SettingCard({super.key, required this.children});
@@ -20,6 +23,18 @@ class SettingCard extends StatelessWidget {
       ),
     );
   }
+}
+
+CustomSettingsTile get androidPadding {
+  return Platform.isAndroid
+      ? const CustomSettingsTile(
+          child: SizedBox(
+            height: 20,
+          ),
+        )
+      : const CustomSettingsTile(
+          child: SizedBox.shrink(),
+        );
 }
 
 class SettingChip extends StatelessWidget {

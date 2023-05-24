@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/types/specimens.dart';
+import 'package:nahpu/services/utility_services.dart';
 
 part 'specimen_queries.g.dart';
 
@@ -169,9 +170,10 @@ class SpecimenPartQuery extends DatabaseAccessor<Database>
 
   Future<SpecimenPartDistinctTypes> getDistinctTypeAndTreatments() async {
     List<SpecimenPartData> data = await (select(specimenPart)).get();
-    List<String> types = _getDistinct(data.map((e) => e.type ?? '').toList());
+    List<String> types =
+        getDistinctList(data.map((e) => e.type ?? '').toList());
     List<String> treatments =
-        _getDistinct(data.map((e) => e.treatment ?? '').toList());
+        getDistinctList(data.map((e) => e.treatment ?? '').toList());
     if (kDebugMode) {
       for (var i in treatments) {
         print(i);
@@ -181,19 +183,6 @@ class SpecimenPartQuery extends DatabaseAccessor<Database>
     List<String> sortedTreatments = _sortTreatment(treatments);
     return SpecimenPartDistinctTypes(
         type: sortedTypes, treatment: sortedTreatments);
-  }
-
-  // Insert only unique values
-  List<String> _getDistinct(List<String?> list) {
-    // Get unique value and remove empty string
-    List<String> newList = list
-        .toSet()
-        .toList()
-        .map((e) => e ?? '')
-        .where((element) => element.isNotEmpty)
-        .toList();
-
-    return newList;
   }
 
   // Sort by priority
