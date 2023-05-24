@@ -20,7 +20,7 @@ class SpecimenPartSelectionState extends ConsumerState<SpecimenPartSelection> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Specimen Parts'),
+        title: const Text('Specimen Part Settings'),
       ),
       body: SafeArea(child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
@@ -56,7 +56,11 @@ class SpecimenPartSelectionState extends ConsumerState<SpecimenPartSelection> {
                               SpecimenServices(ref).getAllDistinctTypes();
                             },
                             child: const Text(
-                              'Sync settings',
+                              'Reset settings',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                         ),
