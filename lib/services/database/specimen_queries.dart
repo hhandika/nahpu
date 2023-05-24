@@ -172,8 +172,9 @@ class SpecimenPartQuery extends DatabaseAccessor<Database>
     List<String> treatments =
         _getUnique(data.map((e) => e.treatment ?? '').toList());
     List<String> sortedTypes = _sortType(types);
+    List<String> sortedTreatments = _sortTreatment(treatments);
     return SpecimenPartDistinctTypes(
-        type: sortedTypes, treatment: treatments.toSet().toList());
+        type: sortedTypes, treatment: sortedTreatments);
   }
 
   // Insert only unique values
@@ -188,6 +189,21 @@ class SpecimenPartQuery extends DatabaseAccessor<Database>
     return [
       ...{...newList}
     ];
+  }
+
+  // Sort by priority
+  List<String> _sortTreatment(List<String> treatmentList) {
+    List<String> mainTreatment = [];
+    List<String> subTreatment = [];
+    for (var treatment in treatmentList) {
+      if (priorityTreatment.contains(treatment)) {
+        mainTreatment = [...mainTreatment, treatment];
+      } else {
+        subTreatment = [...subTreatment, treatment];
+      }
+    }
+    subTreatment.sort();
+    return [...mainTreatment, ...subTreatment];
   }
 
   // Sort by main nature first

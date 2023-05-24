@@ -24,3 +24,11 @@ const List<String> priorityType = [
   'Skull',
   'Skeleton',
 ];
+
+const List<String> priorityTreatment = [
+  'None',
+  'Formalin',
+  'ETOH',
+  'LN2',
+  'DMSO',
+];
