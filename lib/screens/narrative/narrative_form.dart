@@ -70,7 +70,7 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
                   padding: const EdgeInsets.all(10),
                   child: TextFormField(
                     controller: widget.narrativeCtr.narrativeCtr,
-                    maxLines: useHorizontalLayout ? 20 : 10,
+                    maxLines: 20,
                     decoration: const InputDecoration(
                       labelText: 'Narrative',
                       hintText: 'Enter narrative',
