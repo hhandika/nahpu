@@ -177,7 +177,7 @@ class SpecimenPartQuery extends DatabaseAccessor<Database>
   List<String> _getUnique(List<String?> list) {
     List<String> newList = [];
     for (var data in list) {
-      if (data != null || data!.isNotEmpty) {
+      if (data != null || data!.trim().isNotEmpty) {
         newList = [...newList, data];
       }
     }
