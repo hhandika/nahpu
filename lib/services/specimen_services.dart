@@ -173,6 +173,15 @@ class SpecimenServices extends DbAccess {
     _invalidateSpecimenList();
   }
 
+  Future<void> getAllTypes() async {
+    final typeList = await SpecimenPartQuery(dbAccess).getUniqueSpecimenType();
+    final notifier = ref.read(specimenTypeNotifierProvider.notifier);
+    for (var type in typeList) {
+      await notifier.addType(type);
+    }
+    ref.invalidate(specimenTypeNotifierProvider);
+  }
+
   Future<void> deleteAllSpecimenParts(String specimenUuid) async {
     await SpecimenPartQuery(dbAccess).deleteAllSpecimenParts(specimenUuid);
   }

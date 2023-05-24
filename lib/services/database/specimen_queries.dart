@@ -165,6 +165,19 @@ class SpecimenPartQuery extends DatabaseAccessor<Database>
     return data.tissueID;
   }
 
+  Future<List<String>> getUniqueSpecimenType() async {
+    List<String> data = await (select(specimenPart)
+          ..where((tbl) => tbl.type.isNotNull()))
+        .get()
+        .then(
+          (value) => value.map((e) => e.type ?? '').toList(),
+        );
+    return [
+      // Get unique list
+      ...{...data}
+    ];
+  }
+
   Future<void> updateSpecimenPart(int id, SpecimenPartCompanion entry) {
     return (update(specimenPart)..where((t) => t.id.equals(id))).write(entry);
   }
