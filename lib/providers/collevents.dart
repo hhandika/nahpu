@@ -3,6 +3,8 @@ import 'package:nahpu/services/database/collevent_queries.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/providers/projects.dart';
 
+// part 'collevents.g.dart';
+
 final collEventEntryProvider =
     FutureProvider.autoDispose<List<CollEventData>>((ref) {
   final projectUuid = ref.watch(projectUuidProvider);
@@ -31,3 +33,10 @@ final collPersonnelProvider = FutureProvider.family
 final weatherDataProvider = FutureProvider.family.autoDispose<WeatherData, int>(
     (ref, collEventId) => WeatherDataQuery(ref.read(databaseProvider))
         .getWeatherDataByEventId(collEventId));
+
+// @riverpod
+// List<String> collMethodType(CollMethodTypeRef ref) {
+//   final prefs = ref.watch(settingProvider);
+
+
+// }

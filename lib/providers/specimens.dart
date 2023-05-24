@@ -40,14 +40,32 @@ class SpecimenTypeNotifier extends _$SpecimenTypeNotifier {
   Future<SpecimenType> _fetchSettings() async {
     final prefs = ref.watch(settingProvider);
     final typeList = prefs.getStringList('specimenTypes');
-    final preservationList = prefs.getStringList('specimenPreservation');
-    if (typeList == null) {
-      return SpecimenType.defaultType();
+    final treatmentList = prefs.getStringList('specimenPreservation');
+    if (typeList == null && treatmentList == null) {
+      final dafaultType = SpecimenType.defaultType();
+      await prefs.setStringList('specimenTypes', dafaultType.typeList);
+      await prefs.setStringList(
+          'specimenPreservation', dafaultType.treatmentList);
+      return dafaultType;
+    } else if (typeList == null) {
+      await prefs.setStringList('specimenTypes', defaultSpecimenType);
+      return SpecimenType(
+        typeList: defaultSpecimenType,
+        treatmentList: treatmentList!,
+      );
+    } else if (treatmentList == null) {
+      await prefs.setStringList(
+          'specimenPreservation', defaultSpecimenTreatment);
+      return SpecimenType(
+        typeList: typeList,
+        treatmentList: defaultSpecimenTreatment,
+      );
+    } else {
+      return SpecimenType(
+        typeList: typeList,
+        treatmentList: treatmentList,
+      );
     }
-    return SpecimenType(
-      typeList: typeList,
-      treatmentList: preservationList ?? defaultSpecimenTreatment,
-    );
   }
 
   @override
