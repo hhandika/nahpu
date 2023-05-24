@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/home/menu.dart';
 import 'package:nahpu/screens/home/body.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
+import 'package:nahpu/screens/shared/common.dart';
+import 'package:nahpu/services/db_services.dart';
 
 class Home extends ConsumerStatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -42,7 +44,15 @@ class HomeState extends ConsumerState<Home> {
       ),
       resizeToAvoidBottomInset: false,
       drawer: const HomeMenuDrawer(),
-      body: const HomeBody(),
+      body: FutureBuilder(
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return const HomeBody();
+            } else {
+              return const Center(child: CommonProgressIndicator());
+            }
+          },
+          future: _checkNewDb()),
       floatingActionButton: SpeedDial(
         icon: Icons.add_rounded,
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
@@ -64,5 +74,13 @@ class HomeState extends ConsumerState<Home> {
         ],
       ),
     );
+  }
+
+  Future<void> _checkNewDb() async {
+    final db = DbServices(ref);
+    final newDb = await db.checkNewDatabase();
+    if (newDb) {
+      await DbServices(ref).syncSettingWithDb();
+    }
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:nahpu/services/db_services.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqlite3/sqlite3.dart' as sqlite3;
@@ -32,6 +33,7 @@ class DbWriter extends DbAccess {
     }
 
     newDb.execute('VACUUM INTO ?', [appDb.path]);
+    await DbServices(ref).setNewDatabase();
     newDb.dispose();
     return backupPath;
   }

@@ -165,17 +165,12 @@ class SpecimenPartQuery extends DatabaseAccessor<Database>
     return data.tissueID;
   }
 
-  Future<List<String>> getUniqueSpecimenType() async {
-    List<String> data = await (select(specimenPart)
-          ..where((tbl) => tbl.type.isNotNull()))
-        .get()
-        .then(
-          (value) => value.map((e) => e.type ?? '').toList(),
-        );
-    return [
-      // Get unique list
-      ...{...data}
-    ];
+  Future<SpecimenPartDistinctTypes> getDistinctTypeAndTreatments() async {
+    List<SpecimenPartData> data = await (select(specimenPart)).get();
+    List<String> types = data.map((e) => e.type ?? '').toSet().toList();
+    List<String> treatments =
+        data.map((e) => e.treatment ?? '').toSet().toList();
+    return SpecimenPartDistinctTypes(type: types, treatment: treatments);
   }
 
   Future<void> updateSpecimenPart(int id, SpecimenPartCompanion entry) {
@@ -196,4 +191,11 @@ class SpecimenPartQuery extends DatabaseAccessor<Database>
     return (update(specimenPart)..where((t) => t.specimenUuid.equals(uuid)))
         .write(entry);
   }
+}
+
+class SpecimenPartDistinctTypes {
+  SpecimenPartDistinctTypes({required this.type, required this.treatment});
+
+  final List<String> type;
+  final List<String> treatment;
 }
