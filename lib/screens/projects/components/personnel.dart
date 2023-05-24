@@ -85,6 +85,7 @@ class PersonnelListState extends ConsumerState<PersonnelList> {
                 scrollController: _scrollController,
                 child: ListView.builder(
                   itemCount: data.length,
+                  controller: _scrollController,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return PersonalListTile(
