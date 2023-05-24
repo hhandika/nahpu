@@ -612,7 +612,7 @@ class SpecimenTreatmentField extends StatelessWidget {
 
   String? _getValue() {
     if (partCtr.additionalTreatmentCtr.text.isNotEmpty) {
-      return partCtr.additionalTreatmentCtr.text;
+      return partCtr.treatmentCtr.text;
     } else {
       return null;
     }
