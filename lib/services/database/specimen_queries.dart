@@ -167,10 +167,22 @@ class SpecimenPartQuery extends DatabaseAccessor<Database>
 
   Future<SpecimenPartDistinctTypes> getDistinctTypeAndTreatments() async {
     List<SpecimenPartData> data = await (select(specimenPart)).get();
-    List<String> types = data.map((e) => e.type ?? '').toSet().toList();
+    List<String> types = _getUnique(data.map((e) => e.type ?? '').toList());
     List<String> treatments =
-        data.map((e) => e.treatment ?? '').toSet().toList();
-    return SpecimenPartDistinctTypes(type: types, treatment: treatments);
+        _getUnique(data.map((e) => e.treatment ?? '').toList());
+    return SpecimenPartDistinctTypes(
+        type: types, treatment: treatments.toSet().toList());
+  }
+
+  List<String> _getUnique(List<String?> list) {
+    List<String> newList = [];
+    for (var data in list) {
+      if (data != null || data!.isNotEmpty) {
+        newList = [...newList, data];
+      }
+    }
+
+    return newList.toSet().toList();
   }
 
   Future<void> updateSpecimenPart(int id, SpecimenPartCompanion entry) {

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:nahpu/services/db_services.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:path_provider/path_provider.dart';
@@ -25,15 +26,21 @@ class DbWriter extends DbAccess {
 
   Future<File> replaceDb(File file) async {
     final backupPath = await _backUpBeforeDelete();
-    dbAccess.close();
+    if (kDebugMode) {
+      print('Original database has closed!');
+    }
     final newDb = sqlite3.sqlite3.open(file.path);
+    dbAccess.close();
     final appDb = await dBPath;
     if (appDb.existsSync()) {
       appDb.deleteSync();
     }
-
-    newDb.execute('VACUUM INTO ?', [appDb.path]);
     await DbServices(ref).setNewDatabase();
+    newDb.execute('VACUUM INTO ?', [appDb.path]);
+    if (kDebugMode) {
+      print('Mark new database!');
+    }
+
     newDb.dispose();
     return backupPath;
   }
