@@ -56,25 +56,40 @@ class SpecimenTypeNotifier extends _$SpecimenTypeNotifier {
   }
 
   Future<void> addType(String type) async {
+    if (type.isEmpty) {
+      return;
+    }
     final prefs = ref.watch(settingProvider);
     final typeList = prefs.getStringList('specimenTypes');
-    if (typeList != null && typeList.contains(type)) {
+    if (typeList != null || typeList!.contains(type)) {
       return;
     } else {
-      List<String> newList = [...typeList ?? [], type];
+      List<String> newList = [...typeList, type];
       await prefs.setStringList('specimenTypes', newList);
     }
   }
 
   Future<void> addTreatment(String treatment) async {
+    if (treatment.isEmpty) {
+      return;
+    }
     final prefs = ref.watch(settingProvider);
     final treatmentList = prefs.getStringList('specimenPreservation');
-    if (treatmentList != null && treatmentList.contains(treatment)) {
+    if (treatmentList != null || treatmentList!.contains(treatment)) {
       return;
     } else {
-      List<String> newList = [...treatmentList ?? [], treatment];
+      List<String> newList = [...treatmentList, treatment];
       await prefs.setStringList('specimenPreservation', newList);
     }
+  }
+
+  Future<void> replaceAll(List<String> types, List<String> treatments) async {
+    if (types.isEmpty || treatments.isEmpty) {
+      return;
+    }
+    final prefs = ref.watch(settingProvider);
+    await prefs.setStringList('specimenTypes', types);
+    await prefs.setStringList('specimenPreservation', treatments);
   }
 
   Future<void> deleteType(String type) async {

@@ -36,19 +36,18 @@ class SpecimenPartSelectionState extends ConsumerState<SpecimenPartSelection> {
         ),
         ref.watch(specimenTypeNotifierProvider).when(
               data: (data) {
-                return SettingsSection(
-                    title: Text(
-                      'Specimen Types',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    tiles: [
-                      CustomSettingsTile(
-                        child: TypeList(typeList: data.typeList),
-                      ),
-                      CustomSettingsTile(
-                        child: TreatmentList(data: data.treatmentList),
-                      ),
-                    ]);
+                return SettingsSection(tiles: [
+                  CustomSettingsTile(
+                    child: TypeList(typeList: data.typeList),
+                  ),
+                  const CustomSettingsTile(
+                      child: SizedBox(
+                    height: 20,
+                  )),
+                  CustomSettingsTile(
+                    child: TreatmentList(data: data.treatmentList),
+                  ),
+                ]);
               },
               loading: () => const SettingsSection(
                 tiles: [
@@ -82,11 +81,12 @@ class TypeList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     TextEditingController partController = TextEditingController();
     return SettingChip(
-      title: 'Nature of Specimens',
+      title: 'Specimen Types',
       controller: partController,
       chipList: typeList
           .map((e) => CommonChip(
                 text: e,
+                primaryColor: Theme.of(context).colorScheme.primary,
                 onDeleted: () {
                   ref.read(specimenTypeNotifierProvider.notifier).deleteType(e);
                   ref.invalidate(specimenTypeNotifierProvider);
@@ -125,6 +125,7 @@ class TreatmentList extends ConsumerWidget {
       chipList: data
           .map((e) => CommonChip(
                 text: e,
+                primaryColor: Theme.of(context).colorScheme.secondary,
                 onDeleted: () {
                   ref
                       .read(specimenTypeNotifierProvider.notifier)

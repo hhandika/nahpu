@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/types/specimens.dart';
 
 part 'specimen_queries.g.dart';
 
@@ -170,19 +171,38 @@ class SpecimenPartQuery extends DatabaseAccessor<Database>
     List<String> types = _getUnique(data.map((e) => e.type ?? '').toList());
     List<String> treatments =
         _getUnique(data.map((e) => e.treatment ?? '').toList());
+    List<String> sortedTypes = _sortType(types);
     return SpecimenPartDistinctTypes(
-        type: types, treatment: treatments.toSet().toList());
+        type: sortedTypes, treatment: treatments.toSet().toList());
   }
 
+  // Insert only unique values
   List<String> _getUnique(List<String?> list) {
     List<String> newList = [];
     for (var data in list) {
       if (data != null || data!.trim().isNotEmpty) {
-        newList = [...newList, data];
+        newList = [...newList, data.trim()];
       }
     }
 
-    return newList.toSet().toList();
+    return [
+      ...{...newList}
+    ];
+  }
+
+  // Sort by main nature first
+  List<String> _sortType(List<String> typeList) {
+    List<String> mainType = [];
+    List<String> subType = [];
+    for (var type in typeList) {
+      if (priorityType.contains(type)) {
+        mainType = [...mainType, type];
+      } else {
+        subType = [...subType, type];
+      }
+    }
+    subType.sort();
+    return [...mainType, ...subType];
   }
 
   Future<void> updateSpecimenPart(int id, SpecimenPartCompanion entry) {

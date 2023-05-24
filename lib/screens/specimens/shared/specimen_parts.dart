@@ -571,7 +571,7 @@ class SpecimenTypeField extends StatelessWidget {
 
   String? _getValue() {
     if (partCtr.typeCtr.text.trim().isNotEmpty) {
-      return partCtr.typeCtr.text;
+      return partCtr.typeCtr.text.trim();
     } else {
       return null;
     }
@@ -612,7 +612,7 @@ class SpecimenTreatmentField extends StatelessWidget {
 
   String? _getValue() {
     if (partCtr.treatmentCtr.text.trim().isNotEmpty) {
-      return partCtr.treatmentCtr.text;
+      return partCtr.treatmentCtr.text.trim();
     } else {
       return null;
     }
@@ -658,7 +658,7 @@ class AdditionalTreatmentField extends StatelessWidget {
 
   String? _getValue() {
     if (partCtr.additionalTreatmentCtr.text.trim().isNotEmpty) {
-      return partCtr.additionalTreatmentCtr.text;
+      return partCtr.additionalTreatmentCtr.text.trim();
     } else {
       return null;
     }

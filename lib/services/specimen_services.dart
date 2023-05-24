@@ -177,12 +177,7 @@ class SpecimenServices extends DbAccess {
     final typeList =
         await SpecimenPartQuery(dbAccess).getDistinctTypeAndTreatments();
     final notifier = ref.read(specimenTypeNotifierProvider.notifier);
-    for (var type in typeList.type) {
-      await notifier.addType(type);
-    }
-    for (var treatment in typeList.treatment) {
-      await notifier.addTreatment(treatment);
-    }
+    notifier.replaceAll(typeList.type, typeList.treatment);
     ref.invalidate(specimenTypeNotifierProvider);
   }
 

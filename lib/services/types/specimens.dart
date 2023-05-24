@@ -15,3 +15,12 @@ const List<String> defaultSpecimenTreatment = [
   'LN2',
   'DMSO',
 ];
+
+const List<String> priorityType = [
+  'Alcohol',
+  'Formalin',
+  'Fluid',
+  'Skin',
+  'Skull',
+  'Skeleton',
+];

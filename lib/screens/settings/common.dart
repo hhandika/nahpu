@@ -44,12 +44,17 @@ class SettingChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return SettingCard(
       children: [
-        Text(title,
-            style: Theme.of(context).textTheme.titleMedium,
-            textAlign: TextAlign.center),
-        const SizedBox(height: 10),
+        Text(
+          title,
+          style: Theme.of(context).textTheme.titleMedium,
+          textAlign: TextAlign.left,
+        ),
+        const SizedBox(
+          height: 18,
+        ),
         Wrap(
-          spacing: 15,
+          spacing: 10,
+          runSpacing: 10,
           alignment: WrapAlignment.center,
           crossAxisAlignment: WrapCrossAlignment.center,
           children: chipList,
@@ -85,10 +90,12 @@ class CommonChip extends StatelessWidget {
   const CommonChip({
     super.key,
     required this.text,
+    required this.primaryColor,
     required this.onDeleted,
   });
 
   final String text;
+  final Color primaryColor;
   final void Function() onDeleted;
 
   @override
@@ -97,9 +104,10 @@ class CommonChip extends StatelessWidget {
       label: Text(text),
       shape: const StadiumBorder(side: BorderSide(color: Colors.transparent)),
       backgroundColor: Color.lerp(
-          Theme.of(context).colorScheme.secondaryContainer,
-          Theme.of(context).colorScheme.surface,
-          0.9),
+        primaryColor,
+        Theme.of(context).colorScheme.surface,
+        0.9,
+      ),
       onDeleted: onDeleted,
     );
   }
