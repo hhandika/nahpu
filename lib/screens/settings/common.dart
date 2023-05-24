@@ -61,26 +61,27 @@ class SettingChip extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 200),
-                child: TextField(
-                  controller: controller,
-                  decoration: InputDecoration(
-                    labelText: labelText,
-                    hintText: hintText,
-                  ),
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 250),
+              child: TextField(
+                controller: controller,
+                decoration: InputDecoration(
+                  labelText: labelText,
+                  hintText: hintText,
                 ),
               ),
-              IconButton(
-                iconSize: 25,
-                color: Theme.of(context).colorScheme.onSurface,
-                icon: const Icon(Icons.add),
-                onPressed: onPressed,
-              ),
-            ])
+            ),
+            IconButton(
+              iconSize: 25,
+              color: Theme.of(context).colorScheme.onSurface,
+              icon: const Icon(Icons.add),
+              onPressed: onPressed,
+            ),
+          ],
+        ),
       ],
     );
   }

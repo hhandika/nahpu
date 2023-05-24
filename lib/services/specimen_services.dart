@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/providers/taxa.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
+import 'package:nahpu/services/types/specimens.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/providers/settings.dart';
@@ -177,7 +178,12 @@ class SpecimenServices extends DbAccess {
     final typeList =
         await SpecimenPartQuery(dbAccess).getDistinctTypeAndTreatments();
     final notifier = ref.read(specimenTypeNotifierProvider.notifier);
-    notifier.replaceAll(typeList.type, typeList.treatment);
+    List<String> finalList =
+        typeList.type.isEmpty ? defaultSpecimenType : typeList.type;
+    List<String> finalTreatmentList = typeList.treatment.isEmpty
+        ? defaultSpecimenTreatment
+        : typeList.treatment;
+    notifier.replaceAll(finalList, finalTreatmentList);
     ref.invalidate(specimenTypeNotifierProvider);
   }
 

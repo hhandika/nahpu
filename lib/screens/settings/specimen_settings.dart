@@ -23,12 +23,8 @@ class SpecimenPartSelectionState extends ConsumerState<SpecimenPartSelection> {
       ),
       body: SafeArea(
           child: SettingsList(sections: [
-        SettingsSection(
-          title: Text(
-            'Tissue ID',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-          tiles: const [
+        const SettingsSection(
+          tiles: [
             CustomSettingsTile(
               child: TissueIDFields(),
             )
@@ -47,6 +43,20 @@ class SpecimenPartSelectionState extends ConsumerState<SpecimenPartSelection> {
                   CustomSettingsTile(
                     child: TreatmentList(data: data.treatmentList),
                   ),
+                  CustomSettingsTile(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 30, 0, 20),
+                      child: TextButton(
+                        onPressed: () {
+                          SpecimenServices(ref).getAllDistinctTypes();
+                        },
+                        child: const Text(
+                          'Reset settings',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ),
+                  )
                 ]);
               },
               loading: () => const SettingsSection(
@@ -162,9 +172,23 @@ class TissueIDFields extends ConsumerWidget {
             numberController.text = data.number.toString();
             return SettingCard(
               children: [
-                TissuePrefixField(prefixCtr: prefixController),
-                const SizedBox(width: 10),
-                TissueNumField(tissueNumCtr: numberController),
+                Text(
+                  'Tissue ID',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TissuePrefixField(prefixCtr: prefixController),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      TissueNumField(tissueNumCtr: numberController),
+                    ],
+                  ),
+                ),
               ],
             );
           },
@@ -186,16 +210,19 @@ class TissuePrefixField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return CommonTextField(
-        controller: prefixCtr,
-        labelText: 'Prefix',
-        hintText: 'Enter tissue ID prefix, e.g. M',
-        isLastField: false,
-        onChanged: (String? value) async {
-          if (value != null) {
-            await TissueIdServices(ref).setPrefix(value);
-          }
-        });
+    return SizedBox(
+      width: 250,
+      child: CommonTextField(
+          controller: prefixCtr,
+          labelText: 'Prefix',
+          hintText: 'Enter tissue ID prefix, e.g. M',
+          isLastField: false,
+          onChanged: (String? value) async {
+            if (value != null) {
+              await TissueIdServices(ref).setPrefix(value);
+            }
+          }),
+    );
   }
 }
 
@@ -209,16 +236,19 @@ class TissueNumField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return CommonNumField(
-      controller: tissueNumCtr,
-      labelText: 'Tissue no.',
-      hintText: 'Enter the initial starting number',
-      isLastField: true,
-      onChanged: (String? value) async {
-        if (value != null) {
-          await TissueIdServices(ref).setNumber(value);
-        }
-      },
+    return SizedBox(
+      width: 250,
+      child: CommonNumField(
+        controller: tissueNumCtr,
+        labelText: 'Tissue no.',
+        hintText: 'Enter the initial starting number',
+        isLastField: true,
+        onChanged: (String? value) async {
+          if (value != null) {
+            await TissueIdServices(ref).setNumber(value);
+          }
+        },
+      ),
     );
   }
 }
