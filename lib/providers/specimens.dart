@@ -61,10 +61,10 @@ class SpecimenTypeNotifier extends _$SpecimenTypeNotifier {
     }
     final prefs = ref.watch(settingProvider);
     final typeList = prefs.getStringList('specimenTypes');
-    if (typeList != null || typeList!.contains(type)) {
+    if (typeList != null && typeList.contains(type)) {
       return;
     } else {
-      List<String> newList = [...typeList, type];
+      List<String> newList = [...typeList ?? [], type];
       await prefs.setStringList('specimenTypes', newList);
     }
   }
@@ -75,10 +75,10 @@ class SpecimenTypeNotifier extends _$SpecimenTypeNotifier {
     }
     final prefs = ref.watch(settingProvider);
     final treatmentList = prefs.getStringList('specimenPreservation');
-    if (treatmentList != null || treatmentList!.contains(treatment)) {
+    if (treatmentList != null && treatmentList.contains(treatment)) {
       return;
     } else {
-      List<String> newList = [...treatmentList, treatment];
+      List<String> newList = [...treatmentList ?? [], treatment];
       await prefs.setStringList('specimenPreservation', newList);
     }
   }
