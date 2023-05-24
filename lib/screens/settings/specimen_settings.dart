@@ -86,7 +86,7 @@ class TypeList extends ConsumerWidget {
       chipList: typeList
           .map((e) => CommonChip(
                 text: e,
-                primaryColor: Theme.of(context).colorScheme.primary,
+                primaryColor: Colors.blue,
                 onDeleted: () {
                   ref.read(specimenTypeNotifierProvider.notifier).deleteType(e);
                   ref.invalidate(specimenTypeNotifierProvider);
@@ -125,7 +125,7 @@ class TreatmentList extends ConsumerWidget {
       chipList: data
           .map((e) => CommonChip(
                 text: e,
-                primaryColor: Theme.of(context).colorScheme.secondary,
+                primaryColor: Colors.red,
                 onDeleted: () {
                   ref
                       .read(specimenTypeNotifierProvider.notifier)
