@@ -22,110 +22,129 @@ class SpecimenPartSelectionState extends ConsumerState<SpecimenPartSelection> {
         title: const Text('Specimen Parts'),
       ),
       body: SafeArea(
-        child: SettingsList(
-          sections: [
-            SettingsSection(
-              title: Text(
-                'Tissue ID',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              tiles: const [
-                CustomSettingsTile(
-                  child: TissueIDFields(),
-                )
-              ],
-            ),
-            SettingsSection(
-                title: Text(
-                  'Specimen Part Type',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                tiles: const [
-                  CustomSettingsTile(
-                    child: SpecimenPartMenu(),
-                  )
-                ])
+          child: SettingsList(sections: [
+        SettingsSection(
+          title: Text(
+            'Tissue ID',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          tiles: const [
+            CustomSettingsTile(
+              child: TissueIDFields(),
+            )
           ],
         ),
-      ),
+        ref.watch(specimenTypeNotifierProvider).when(
+              data: (data) {
+                return SettingsSection(
+                    title: Text(
+                      'Specimen Types',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    tiles: [
+                      CustomSettingsTile(
+                        child: TypeList(typeList: data.typeList),
+                      ),
+                      CustomSettingsTile(
+                        child: TreatmentList(data: data.treatmentList),
+                      ),
+                    ]);
+              },
+              loading: () => const SettingsSection(
+                tiles: [
+                  CustomSettingsTile(
+                    child: CommonProgressIndicator(),
+                  )
+                ],
+              ),
+              error: (err, stack) => const SettingsSection(
+                tiles: [
+                  CustomSettingsTile(
+                    child: Text('Error loading data'),
+                  )
+                ],
+              ),
+            ),
+      ])),
     );
   }
 }
 
-class SpecimenPartMenu extends ConsumerStatefulWidget {
-  const SpecimenPartMenu({super.key});
+class TypeList extends ConsumerWidget {
+  const TypeList({
+    super.key,
+    required this.typeList,
+  });
+
+  final List<String> typeList;
 
   @override
-  SpecimenPartMenuState createState() => SpecimenPartMenuState();
+  Widget build(BuildContext context, WidgetRef ref) {
+    TextEditingController partController = TextEditingController();
+    return SettingChip(
+      title: 'Nature of Specimens',
+      controller: partController,
+      chipList: typeList
+          .map((e) => CommonChip(
+                text: e,
+                onDeleted: () {
+                  ref.read(specimenTypeNotifierProvider.notifier).deleteType(e);
+                  ref.invalidate(specimenTypeNotifierProvider);
+                },
+              ))
+          .toList(),
+      labelText: 'Add Type',
+      hintText: 'Enter part type',
+      onPressed: () {
+        if (partController.text.isNotEmpty) {
+          ref
+              .read(specimenTypeNotifierProvider.notifier)
+              .addType(partController.text.trim());
+          partController.clear();
+          ref.invalidate(specimenTypeNotifierProvider);
+        }
+      },
+    );
+  }
 }
 
-class SpecimenPartMenuState extends ConsumerState<SpecimenPartMenu> {
-  final TextEditingController _partController = TextEditingController();
+class TreatmentList extends ConsumerWidget {
+  const TreatmentList({
+    super.key,
+    required this.data,
+  });
+
+  final List<String> data;
 
   @override
-  Widget build(BuildContext context) {
-    return SettingCard(children: [
-      ref.watch(specimenTypeNotifierProvider).when(
-            data: (data) {
-              return Wrap(
-                spacing: 15,
-                alignment: WrapAlignment.center,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: data.typeList
-                    .map((e) => Chip(
-                          label: Text(e),
-                          shape: const StadiumBorder(
-                              side: BorderSide(color: Colors.transparent)),
-                          backgroundColor: Color.lerp(
-                              Theme.of(context).colorScheme.secondaryContainer,
-                              Theme.of(context).colorScheme.surface,
-                              0.9),
-                          onDeleted: () {
-                            ref
-                                .read(specimenTypeNotifierProvider.notifier)
-                                .deleteType(e);
-                            ref.invalidate(specimenTypeNotifierProvider);
-                          },
-                        ))
-                    .toList(),
-              );
-            },
-            loading: () => const CommonProgressIndicator(),
-            error: (err, stack) => const Center(
-              child: Text('Error loading data'),
-            ),
-          ),
-      const SizedBox(height: 10),
-      Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 200),
-              child: TextField(
-                controller: _partController,
-                decoration: const InputDecoration(
-                  labelText: 'Add Type',
-                  hintText: 'Enter part type',
-                ),
-              ),
-            ),
-            IconButton(
-              iconSize: 25,
-              color: Theme.of(context).colorScheme.onSurface,
-              icon: const Icon(Icons.add),
-              onPressed: () {
-                if (_partController.text.isNotEmpty) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    TextEditingController treatmentController = TextEditingController();
+    return SettingChip(
+      title: 'Treatments',
+      controller: treatmentController,
+      chipList: data
+          .map((e) => CommonChip(
+                text: e,
+                onDeleted: () {
                   ref
                       .read(specimenTypeNotifierProvider.notifier)
-                      .addType(_partController.text.trim());
-                  _partController.clear();
+                      .deleteTreatment(e);
                   ref.invalidate(specimenTypeNotifierProvider);
-                }
-              },
-            ),
-          ]),
-    ]);
+                },
+              ))
+          .toList(),
+      labelText: 'Add Treatment',
+      hintText: 'Enter treatment',
+      onPressed: () {
+        if (treatmentController.text.isNotEmpty) {
+          ref
+              .read(specimenTypeNotifierProvider.notifier)
+              .addTreatment(treatmentController.text.trim());
+          treatmentController.clear();
+          ref.invalidate(specimenTypeNotifierProvider);
+        }
+      },
+    );
   }
 }
 
