@@ -41,31 +41,23 @@ class SpecimenTypeNotifier extends _$SpecimenTypeNotifier {
     final prefs = ref.watch(settingProvider);
     final typeList = prefs.getStringList('specimenTypes');
     final treatmentList = prefs.getStringList('specimenPreservation');
-    if (typeList == null && treatmentList == null) {
-      final dafaultType = SpecimenType.defaultType();
-      await prefs.setStringList('specimenTypes', dafaultType.typeList);
-      await prefs.setStringList(
-          'specimenPreservation', dafaultType.treatmentList);
-      return dafaultType;
-    } else if (typeList == null) {
-      await prefs.setStringList('specimenTypes', defaultSpecimenType);
-      return SpecimenType(
-        typeList: defaultSpecimenType,
-        treatmentList: treatmentList!,
-      );
-    } else if (treatmentList == null) {
-      await prefs.setStringList(
-          'specimenPreservation', defaultSpecimenTreatment);
-      return SpecimenType(
-        typeList: typeList,
-        treatmentList: defaultSpecimenTreatment,
-      );
-    } else {
-      return SpecimenType(
-        typeList: typeList,
-        treatmentList: treatmentList,
-      );
+
+    List<String> currentTypes = typeList ?? SpecimenType.defaultType().typeList;
+    List<String> currentTreatments =
+        treatmentList ?? SpecimenType.defaultType().treatmentList;
+
+    if (typeList == null) {
+      await prefs.setStringList('specimenTypes', currentTypes);
     }
+
+    if (treatmentList == null) {
+      await prefs.setStringList('specimenPreservation', currentTreatments);
+    }
+
+    return SpecimenType(
+      typeList: currentTypes,
+      treatmentList: currentTreatments,
+    );
   }
 
   @override
