@@ -1,5 +1,10 @@
 const List<String> defaultCollMethodTypes = [
-  'hand',
-  'net',
-  'pitfall',
+  'Hand',
+  'Net',
+  'Pitfall',
+];
+
+const List<String> defaultCollPersonnelRoles = [
+  'Leader',
+  'Helper',
 ];

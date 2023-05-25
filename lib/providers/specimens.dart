@@ -87,10 +87,9 @@ class SpecimenTypeNotifier extends _$SpecimenTypeNotifier {
     final treatmentList = prefs.getStringList('specimenPreservation');
     if (treatmentList != null && treatmentList.contains(treatment)) {
       return;
-    } else {
-      List<String> newList = [...treatmentList ?? [], treatment];
-      await prefs.setStringList('specimenPreservation', newList);
     }
+    List<String> newList = [...treatmentList ?? [], treatment];
+    await prefs.setStringList('specimenPreservation', newList);
   }
 
   Future<void> replaceAll(List<String> types, List<String> treatments) async {

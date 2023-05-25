@@ -7,7 +7,7 @@ part of 'specimens.dart';
 // **************************************************************************
 
 String _$specimenTypeNotifierHash() =>
-    r'daa9be9d831ed8d6607775ecdad44d324597050b';
+    r'a0b2eac2c8354687180926f04263df42911d85e9';
 
 /// See also [SpecimenTypeNotifier].
 @ProviderFor(SpecimenTypeNotifier)
