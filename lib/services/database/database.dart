@@ -26,12 +26,12 @@ class Database extends _$Database {
       }
 
       if (from < 3) {
-        await _migrateFrom2(m);
+        await _migrateFromVersion2(m);
       }
     });
   }
 
-  Future<void> _migrateFrom2(Migrator m) async {
+  Future<void> _migrateFromVersion2(Migrator m) async {
     // We remove expense table. NO NEED for the app.
     await m.deleteTable('expense');
 
@@ -66,39 +66,6 @@ class Database extends _$Database {
 
   Future<void> addColumnToTable(String tableName, String columnName) async {
     await customStatement('ALTER TABLE $tableName ADD COLUMN $columnName');
-  }
-
-  Future<void> createProject(ProjectCompanion form) =>
-      into(project).insert(form);
-
-  Future<List<ProjectData>> getAllProjects() => select(project).get();
-
-  Future<ProjectData> getProjectByUuid(String uuid) async {
-    return await (select(project)..where((t) => t.uuid.equals(uuid)))
-        .getSingle();
-  }
-
-  Future<ProjectData?> getProjectByName(String name) async {
-    try {
-      return await (select(project)..where((t) => t.name.equals(name)))
-          .getSingle();
-    } catch (e) {
-      return null;
-    }
-  }
-
-  Future<List<ListProjectResult>> getProjectList() => listProject().get();
-
-  Future<int> deleteProject(String id) async {
-    return await (delete(project)..where((t) => t.uuid.equals(id))).go();
-  }
-
-  Future<void> deleteAllProjects() {
-    return (delete(project)).go();
-  }
-
-  Future<void> updateProjectEntry(String uuid, ProjectCompanion entry) {
-    return (update(project)..where((t) => t.uuid.equals(uuid))).write(entry);
   }
 
   Future<void> exportInto(File file) async {

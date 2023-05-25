@@ -2,7 +2,7 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/database/specimen_queries.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
-import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/providers/database.dart';
 
 final taxonRegistryProvider =
     FutureProvider.autoDispose<List<TaxonomyData>>((ref) async {

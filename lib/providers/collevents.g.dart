@@ -6,7 +6,7 @@ part of 'collevents.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$collEventMethodHash() => r'aa6d72a5df3e89ad90b7b83de3843da22f1f7e48';
+String _$collEventMethodHash() => r'1eac66d117257c626fcf8539e420cb28a467b6f3';
 
 /// See also [CollEventMethod].
 @ProviderFor(CollEventMethod)
@@ -22,7 +22,7 @@ final collEventMethodProvider =
 );
 
 typedef _$CollEventMethod = AutoDisposeAsyncNotifier<List<String>>;
-String _$collPersonnelRoleHash() => r'11dfd2115c60bfb5e77eff2970ac20c9aa3ca69c';
+String _$collPersonnelRoleHash() => r'28a637ec2aa9214cbf4196535ee302eacf761f29';
 
 /// See also [CollPersonnelRole].
 @ProviderFor(CollPersonnelRole)

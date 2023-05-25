@@ -2,10 +2,8 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/types/export.dart';
 import 'package:nahpu/services/types/types.dart';
-import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database/database.dart';
-import 'package:nahpu/services/database/specimen_queries.dart';
 import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/taxonomy_services.dart';
@@ -118,8 +116,7 @@ class SpecimenRecordWriter {
 
   Future<String> _getPartList(String specimenUuid) async {
     List<SpecimenPartData> partList =
-        await SpecimenPartQuery(ref.read(databaseProvider))
-            .getSpecimenParts(specimenUuid);
+        await SpecimenPartServices(ref).getSpecimenParts(specimenUuid);
     return partList
         .map((e) => '${e.type};${e.treatment}')
         .join(writerSeparator);

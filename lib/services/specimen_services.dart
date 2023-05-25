@@ -67,6 +67,14 @@ class SpecimenServices extends DbAccess {
     return filteredList;
   }
 
+  Future<List<int?>> getAllSpecies(String uuid) {
+    return SpecimenQuery(dbAccess).getAllSpecies(uuid);
+  }
+
+  Future<TaxonomyData> getTaxonById(int id) {
+    return TaxonomyQuery(dbAccess).getTaxonById(id);
+  }
+
   Future<TaxonomyData> getTaxonIdByGenusEpithet(
       String genus, String epithet) async {
     return TaxonomyQuery(dbAccess).getTaxonIdByGenusEpithet(genus, epithet);
@@ -222,6 +230,10 @@ class SpecimenPartServices extends DbAccess {
   Future<void> createSpecimenPart(SpecimenPartCompanion form) async {
     SpecimenPartQuery(dbAccess).createSpecimenPart(form);
     ref.invalidate(partBySpecimenProvider);
+  }
+
+  Future<List<SpecimenPartData>> getSpecimenParts(String specimenUuid) {
+    return SpecimenPartQuery(dbAccess).getSpecimenParts(specimenUuid);
   }
 
   Future<void> updateSpecimenPart(

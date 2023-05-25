@@ -6,7 +6,7 @@ part of 'specimens.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$specimenTypesHash() => r'b51d25ebd72105be5f5e1cf7aee571d00bf5dfb6';
+String _$specimenTypesHash() => r'8c713b8bea707b9e74b5d7bea4df0ef5e8529abd';
 
 /// See also [SpecimenTypes].
 @ProviderFor(SpecimenTypes)
@@ -22,7 +22,7 @@ final specimenTypesProvider =
 );
 
 typedef _$SpecimenTypes = AutoDisposeAsyncNotifier<List<String>>;
-String _$treatmentOptionsHash() => r'bfadf1e838822e3496566c28741eb939bc9de3ab';
+String _$treatmentOptionsHash() => r'b907834aa65670c7e556ca6ac7d1f225e882bb7e';
 
 /// See also [TreatmentOptions].
 @ProviderFor(TreatmentOptions)

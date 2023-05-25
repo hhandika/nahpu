@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/layout.dart';
+import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/providers/collevents.dart';
-import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
-import 'package:nahpu/services/database/collevent_queries.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/utility_services.dart';
@@ -283,7 +282,7 @@ class CollEffortMenuState extends ConsumerState<CollEffortMenu> {
         );
         break;
       case CommonPopUpMenuItems.delete:
-        CollEffortQuery(ref.read(databaseProvider)).deleteCollEffort(
+        CollEventServices(ref).deleteCollEffort(
           widget.collEffortId,
         );
         ref.invalidate(collEffortByEventProvider);
@@ -374,7 +373,7 @@ class CollEffortFormState extends ConsumerState<CollEffortForm> {
   Future<void> _updateCollEffort() async {
     final form = _getForm();
     try {
-      await CollEffortQuery(ref.read(databaseProvider))
+      await CollEventServices(ref)
           .updateCollEffortEntry(widget.collEffortId!, form);
     } catch (e) {
       AlertDialog alert = AlertDialog(
@@ -401,7 +400,7 @@ class CollEffortFormState extends ConsumerState<CollEffortForm> {
 
   Future<void> _addCollEffort() async {
     final form = _getForm();
-    await CollEffortQuery(ref.read(databaseProvider)).createCollEffort(form);
+    await CollEventServices(ref).createCollEffort(form);
   }
 
   CollEffortCompanion _getForm() {

@@ -6,7 +6,6 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/services/database/collevent_queries.dart';
 
 enum MenuSelection {
   newEvent,
@@ -110,8 +109,7 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
     final projectUuid = ref.read(projectUuidProvider.notifier).state;
     showDeleteAlertOnMenu(
       () {
-        CollEventQuery(ref.read(databaseProvider))
-            .deleteAllCollEvents(projectUuid);
+        CollEventServices(ref).deleteAllCollEvents(projectUuid);
         ref.invalidate(collEventEntryProvider);
       },
       'Delete all collecting events?\nTHIS ACTION CANNOT BE UNDONE!.',

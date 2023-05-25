@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/services/database/database.dart';
+// import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
 import 'package:nahpu/screens/projects/project_info.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/common.dart';
+import 'package:nahpu/services/database/project_queries.dart';
 import 'package:nahpu/services/project_services.dart';
 
 enum MenuSelection { details, deleteProject }
@@ -342,7 +343,7 @@ class ProjectPopUpMenuState extends ConsumerState<ProjectPopUpMenu> {
     // and call the provider from the onTap function of the popup menu.
     // when we tested this, users have to tap twice to get the popup menu to work.
     // This solution works well.
-    ref.read(databaseProvider).getProjectByUuid(projectUuid).then(
+    ProjectServices(ref).getProjectByUuid(projectUuid).then(
           (value) => showDialog<void>(
             context: context,
             builder: (BuildContext context) {

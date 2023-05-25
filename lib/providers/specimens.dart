@@ -1,3 +1,4 @@
+import 'package:nahpu/providers/database.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/providers/projects.dart';

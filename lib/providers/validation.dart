@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/providers/database.dart';
+import 'package:nahpu/services/database/project_queries.dart';
 import 'package:nahpu/services/types/validation.dart';
-import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/validation_services.dart';
 
 final projectFormValidation = StateNotifierProvider.autoDispose<
@@ -34,17 +35,19 @@ class ProjectFormValidationNotifier extends StateNotifier<ProjectFormState> {
   }
 
   void checkProjectNameExists(WidgetRef ref, String name) {
-    ref.watch(databaseProvider).getProjectByName(name).then((value) => {
-          if (value != null)
-            {
-              state = state.copyWith(
-                  form: state.form.copyWith(
-                      projectName: state.form.projectName.copyWith(
-                          value: name,
-                          errMsg: "Project name already exists",
-                          isValid: false)))
-            }
-        });
+    ProjectQuery(ref.read(databaseProvider))
+        .getProjectByName(name)
+        .then((value) => {
+              if (value != null)
+                {
+                  state = state.copyWith(
+                      form: state.form.copyWith(
+                          projectName: state.form.projectName.copyWith(
+                              value: name,
+                              errMsg: "Project name already exists",
+                              isValid: false)))
+                }
+            });
   }
 
   void isEditing() {

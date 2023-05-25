@@ -4,8 +4,7 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/database.dart';
-import 'package:nahpu/services/database/specimen_queries.dart';
-import 'package:nahpu/services/database/taxonomy_queries.dart';
+import 'package:nahpu/services/specimen_services.dart';
 
 class SpeciesListWriter {
   SpeciesListWriter(this.ref);
@@ -39,14 +38,13 @@ class SpeciesListWriter {
 
   Future<List<int?>> getSpeciesList() async {
     final projectUuid = ref.read(projectUuidProvider);
-    final db = ref.read(databaseProvider);
-    final speciesList = await SpecimenQuery(db).getAllSpecies(projectUuid);
+    final speciesList = await SpecimenServices(ref).getAllSpecies(projectUuid);
     return speciesList;
   }
 
   Future<String> getSpeciesName(int speciesID) async {
     TaxonomyData taxonData =
-        await TaxonomyQuery(ref.read(databaseProvider)).getTaxonById(speciesID);
+        await SpecimenServices(ref).getTaxonById(speciesID);
     return '${taxonData.genus} ${taxonData.specificEpithet}';
   }
 }

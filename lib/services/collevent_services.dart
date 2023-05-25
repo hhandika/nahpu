@@ -59,6 +59,10 @@ class CollEventServices extends DbAccess {
     return id;
   }
 
+  Future<int> createCollEffort(CollEffortCompanion form) async {
+    return await CollEffortQuery(dbAccess).createCollEffort(form);
+  }
+
   void updateCollPersonnel(int id, CollPersonnelCompanion form) async {
     CollPersonnelQuery(dbAccess).updateCollPersonnelEntry(id, form);
     invalidateCollPersonnel();
@@ -72,10 +76,22 @@ class CollEventServices extends DbAccess {
     WeatherDataQuery(dbAccess).updateWeatherDataEntry(eventID, weatherData);
   }
 
+  Future<void> updateCollEffortEntry(int id, CollEffortCompanion entry) async {
+    return await CollEffortQuery(dbAccess).updateCollEffortEntry(id, entry);
+  }
+
   void deleteCollEvent(int collEvenId) {
     CollEventQuery(dbAccess).deleteCollEvent(collEvenId);
     WeatherDataQuery(dbAccess).deleteWeatherData(collEvenId);
     invalidateCollEvent();
+  }
+
+  Future<void> deleteCollEffort(int id) async {
+    return await CollEffortQuery(dbAccess).deleteCollEffort(id);
+  }
+
+  Future<void> deleteAllCollEvents(String projectUuid) {
+    return CollEventQuery(dbAccess).deleteAllCollEvents(projectUuid);
   }
 
   void deleteCollPersonnel(int id) {
