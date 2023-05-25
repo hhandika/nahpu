@@ -6,7 +6,7 @@ part of 'specimens.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$specimenTypesHash() => r'45b5b37655e7eae1c134b70838ae065320ca4caa';
+String _$specimenTypesHash() => r'b51d25ebd72105be5f5e1cf7aee571d00bf5dfb6';
 
 /// See also [SpecimenTypes].
 @ProviderFor(SpecimenTypes)
@@ -22,7 +22,7 @@ final specimenTypesProvider =
 );
 
 typedef _$SpecimenTypes = AutoDisposeAsyncNotifier<List<String>>;
-String _$treatmentOptionsHash() => r'12475c115d76b2d17efd7edd451218b000f22cdb';
+String _$treatmentOptionsHash() => r'bfadf1e838822e3496566c28741eb939bc9de3ab';
 
 /// See also [TreatmentOptions].
 @ProviderFor(TreatmentOptions)
@@ -38,23 +38,6 @@ final treatmentOptionsProvider =
 );
 
 typedef _$TreatmentOptions = AutoDisposeAsyncNotifier<List<String>>;
-String _$specimenTypeNotifierHash() =>
-    r'0499ec4aef72e47b5baf638b2b6df182b3e7822f';
-
-/// See also [SpecimenTypeNotifier].
-@ProviderFor(SpecimenTypeNotifier)
-final specimenTypeNotifierProvider = AutoDisposeAsyncNotifierProvider<
-    SpecimenTypeNotifier, SpecimenType>.internal(
-  SpecimenTypeNotifier.new,
-  name: r'specimenTypeNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$specimenTypeNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$SpecimenTypeNotifier = AutoDisposeAsyncNotifier<SpecimenType>;
 String _$tissueIDNotifierHash() => r'10cb6afba1f666937efae846ee000aa024dcda20';
 
 /// See also [TissueIDNotifier].

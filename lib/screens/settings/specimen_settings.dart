@@ -6,7 +6,6 @@ import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/specimen_services.dart';
-import 'package:nahpu/services/types/types.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class SpecimenPartSelection extends ConsumerStatefulWidget {
@@ -28,6 +27,7 @@ class SpecimenPartSelectionState extends ConsumerState<SpecimenPartSelection> {
           bool isMobile = constraints.maxWidth < 600;
           return SettingsList(sections: [
             SettingsSection(
+              title: const Text('Tissue ID'),
               tiles: [
                 androidPadding,
                 CustomSettingsTile(
@@ -38,53 +38,22 @@ class SpecimenPartSelectionState extends ConsumerState<SpecimenPartSelection> {
                 androidPadding,
               ],
             ),
-            ref.watch(specimenTypeNotifierProvider).when(
-                  data: (data) {
-                    return SettingsSection(tiles: [
-                      CustomSettingsTile(
-                        child: TypeList(typeList: data.typeList),
-                      ),
-                      const CustomSettingsTile(
-                          child: SizedBox(
-                        height: 22,
-                      )),
-                      CustomSettingsTile(
-                        child: TreatmentList(data: data.treatmentList),
-                      ),
-                      CustomSettingsTile(
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 30, 0, 20),
-                          child: TextButton(
-                            onPressed: () {
-                              SpecimenPartServices(ref).getAllDistinctTypes();
-                            },
-                            child: const Text(
-                              'Reset settings',
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ]);
-                  },
-                  loading: () => const SettingsSection(
-                    tiles: [
-                      CustomSettingsTile(
-                        child: CommonProgressIndicator(),
-                      )
-                    ],
-                  ),
-                  error: (err, stack) => const SettingsSection(
-                    tiles: [
-                      CustomSettingsTile(
-                        child: Text('Error loading data'),
-                      )
-                    ],
-                  ),
+            const SettingsSection(
+              title: Text('Specimen Types'),
+              tiles: [
+                CustomSettingsTile(
+                  child: TypeList(),
                 ),
+              ],
+            ),
+            const SettingsSection(
+              title: Text('Treatments'),
+              tiles: [
+                CustomSettingsTile(
+                  child: TreatmentList(),
+                ),
+              ],
+            )
           ]);
         },
       )),
@@ -95,38 +64,43 @@ class SpecimenPartSelectionState extends ConsumerState<SpecimenPartSelection> {
 class TypeList extends ConsumerWidget {
   const TypeList({
     super.key,
-    required this.typeList,
   });
-
-  final List<String> typeList;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     TextEditingController partController = TextEditingController();
     return SettingChip(
-      title: 'Specimen Types',
       controller: partController,
-      chipList: typeList
-          .map((e) => CommonChip(
-                text: e,
-                primaryColor: Theme.of(context).colorScheme.secondary,
-                onDeleted: () {
-                  ref.read(specimenTypeNotifierProvider.notifier).deleteType(e);
-                  ref.invalidate(specimenTypeNotifierProvider);
-                },
-              ))
-          .toList(),
+      chipList: ref.watch(specimenTypesProvider).when(
+            data: (data) {
+              return data
+                  .map((e) => CommonChip(
+                        text: e,
+                        primaryColor: Theme.of(context).colorScheme.secondary,
+                        onDeleted: () {
+                          SpecimenPartServices(ref).removeType(e);
+                        },
+                      ))
+                  .toList();
+            },
+            loading: () => const [CommonProgressIndicator()],
+            error: (error, stackTrace) {
+              return const [Text('Error loading data')];
+            },
+          ),
       labelText: 'Add Type',
       hintText: 'Enter part type',
       onPressed: () {
         if (partController.text.isNotEmpty) {
-          ref.read(specimenTypeNotifierProvider.notifier).addType(
-                partController.text.trim().toSentenceCase(),
-              );
+          SpecimenPartServices(ref).addType(
+            partController.text.trim(),
+          );
           partController.clear();
-          ref.invalidate(specimenTypeNotifierProvider);
+          ref.invalidate(specimenTypesProvider);
         }
       },
+      resetLabel: 'Reset types',
+      onReset: () => SpecimenPartServices(ref).getSpecimenTypes(),
     );
   }
 }
@@ -134,40 +108,42 @@ class TypeList extends ConsumerWidget {
 class TreatmentList extends ConsumerWidget {
   const TreatmentList({
     super.key,
-    required this.data,
   });
-
-  final List<String> data;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     TextEditingController treatmentController = TextEditingController();
     return SettingChip(
-      title: 'Treatments',
       controller: treatmentController,
-      chipList: data
-          .map((e) => CommonChip(
-                text: e,
-                primaryColor: Theme.of(context).colorScheme.tertiary,
-                onDeleted: () {
-                  ref
-                      .read(specimenTypeNotifierProvider.notifier)
-                      .deleteTreatment(e);
-                  ref.invalidate(specimenTypeNotifierProvider);
-                },
-              ))
-          .toList(),
+      chipList: ref.watch(treatmentOptionsProvider).when(
+            data: (data) {
+              return data
+                  .map((e) => CommonChip(
+                        text: e,
+                        primaryColor: Theme.of(context).colorScheme.tertiary,
+                        onDeleted: () {
+                          SpecimenPartServices(ref).removeTreatment(e);
+                        },
+                      ))
+                  .toList();
+            },
+            loading: () => const [CommonProgressIndicator()],
+            error: (error, stackTrace) {
+              return const [Text('Error loading data')];
+            },
+          ),
       labelText: 'Add Treatment',
       hintText: 'Enter treatment',
       onPressed: () {
         if (treatmentController.text.isNotEmpty) {
-          ref.read(specimenTypeNotifierProvider.notifier).addTreatment(
-                treatmentController.text.trim().toSentenceCase(),
-              );
+          SpecimenPartServices(ref).addTreatment(
+            treatmentController.text.trim(),
+          );
           treatmentController.clear();
-          ref.invalidate(specimenTypeNotifierProvider);
         }
       },
+      resetLabel: 'Reset treatments',
+      onReset: () => SpecimenPartServices(ref).getTreatmentOptions(),
     );
   }
 }
@@ -187,10 +163,6 @@ class TissueIDFields extends ConsumerWidget {
             numberController.text = data.number.toString();
             return SettingCard(
               children: [
-                Text(
-                  'Tissue ID',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                   child: AdaptiveLayout(

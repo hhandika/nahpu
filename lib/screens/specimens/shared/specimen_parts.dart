@@ -386,7 +386,11 @@ class PartFormState extends ConsumerState<PartForm> {
             specimenUuid: widget.specimenUuid,
             partCtr: widget.partCtr,
           ),
-          SpecimenPreparation(
+          SpecimenTypeField(
+            partCtr: widget.partCtr,
+          ),
+          SpecimenCountField(partCtr: widget.partCtr),
+          SpecimenTreatmentFields(
             partCtr: widget.partCtr,
             isVisible: _showMore,
           ),
@@ -450,8 +454,8 @@ class PartFormState extends ConsumerState<PartForm> {
   }
 }
 
-class SpecimenPreparation extends ConsumerStatefulWidget {
-  const SpecimenPreparation({
+class SpecimenTreatmentFields extends ConsumerWidget {
+  const SpecimenTreatmentFields({
     super.key,
     required this.partCtr,
     required this.isVisible,
@@ -461,37 +465,25 @@ class SpecimenPreparation extends ConsumerStatefulWidget {
   final bool isVisible;
 
   @override
-  SpecimenPreparationState createState() => SpecimenPreparationState();
-}
-
-class SpecimenPreparationState extends ConsumerState<SpecimenPreparation> {
-  @override
-  Widget build(BuildContext context) {
-    return ref.watch(specimenTypeNotifierProvider).when(
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ref.watch(treatmentOptionsProvider).when(
           data: (data) {
             return Column(
               children: [
-                SpecimenTypeField(
-                  partCtr: widget.partCtr,
-                  specimenTypeList: data.typeList,
-                ),
-                SpecimenCountField(partCtr: widget.partCtr),
                 SpecimenTreatmentField(
-                  partCtr: widget.partCtr,
-                  treatmentList: data.treatmentList,
+                  partCtr: partCtr,
+                  treatmentList: data,
                 ),
                 AdditionalTreatmentField(
-                  partCtr: widget.partCtr,
-                  treatmentList: data.treatmentList,
-                  isVisible: widget.isVisible,
+                  partCtr: partCtr,
+                  treatmentList: data,
+                  isVisible: isVisible,
                 ),
               ],
             );
           },
-          loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, stackTrace) => Center(
-            child: Text('Error: $error'),
-          ),
+          loading: () => const CircularProgressIndicator(),
+          error: (e, s) => Text('Error: $e'),
         );
   }
 }
@@ -515,36 +507,40 @@ class SpecimenCountField extends StatelessWidget {
   }
 }
 
-class SpecimenTypeField extends StatelessWidget {
+class SpecimenTypeField extends ConsumerWidget {
   const SpecimenTypeField({
     super.key,
     required this.partCtr,
-    required this.specimenTypeList,
   });
 
   final PartFormCtrModel partCtr;
-  final List<String> specimenTypeList;
 
   @override
-  Widget build(BuildContext context) {
-    return DropdownButtonFormField(
-      value: _getValue(),
-      decoration: const InputDecoration(
-        labelText: 'Preparation type',
-        hintText: 'Enter preparation type',
-      ),
-      items: specimenTypeList.map((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: CommonDropdownText(text: value),
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ref.watch(specimenTypesProvider).when(
+          data: (data) {
+            return DropdownButtonFormField(
+              value: _getValue(),
+              decoration: const InputDecoration(
+                labelText: 'Preparation type',
+                hintText: 'Enter preparation type',
+              ),
+              items: data.map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: CommonDropdownText(text: value),
+                );
+              }).toList(),
+              onChanged: (String? value) {
+                if (value != null) {
+                  partCtr.typeCtr.text = value;
+                }
+              },
+            );
+          },
+          loading: () => const CircularProgressIndicator(),
+          error: (e, s) => Text('Error: $e'),
         );
-      }).toList(),
-      onChanged: (String? value) {
-        if (value != null) {
-          partCtr.typeCtr.text = value;
-        }
-      },
-    );
   }
 
   String? _getValue() {

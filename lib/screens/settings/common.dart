@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:nahpu/services/types/types.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class SettingCard extends StatelessWidget {
@@ -40,33 +41,27 @@ CustomSettingsTile get androidPadding {
 class SettingChip extends StatelessWidget {
   const SettingChip({
     super.key,
-    required this.title,
     required this.controller,
     required this.labelText,
     required this.chipList,
     required this.hintText,
     required this.onPressed,
+    required this.resetLabel,
+    required this.onReset,
   });
 
-  final String title;
   final String labelText;
   final String hintText;
   final List<Widget> chipList;
   final VoidCallback onPressed;
   final TextEditingController controller;
+  final String resetLabel;
+  final VoidCallback onReset;
 
   @override
   Widget build(BuildContext context) {
     return SettingCard(
       children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.titleMedium,
-          textAlign: TextAlign.left,
-        ),
-        const SizedBox(
-          height: 18,
-        ),
         Wrap(
           spacing: 10,
           runSpacing: 10,
@@ -87,6 +82,14 @@ class SettingChip extends StatelessWidget {
                   labelText: labelText,
                   hintText: hintText,
                 ),
+                onChanged: (String value) {
+                  if (value.isNotEmpty) {
+                    controller.value = TextEditingValue(
+                      text: value.toSentenceCase(),
+                      selection: controller.selection,
+                    );
+                  }
+                },
                 onSubmitted: (String? value) {
                   if (value != null && value.isNotEmpty) {
                     onPressed();
@@ -102,6 +105,19 @@ class SettingChip extends StatelessWidget {
             ),
           ],
         ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+          child: TextButton(
+            onPressed: onReset,
+            child: Text(
+              resetLabel,
+              style: const TextStyle(
+                color: Colors.red,
+                fontSize: 14,
+              ),
+            ),
+          ),
+        )
       ],
     );
   }

@@ -219,17 +219,23 @@ class TissueIdServices {
 class SpecimenPartServices extends DbAccess {
   SpecimenPartServices(super.ref);
 
-  Future<void> getAllDistinctTypes() async {
-    final typeList =
-        await SpecimenPartQuery(dbAccess).getDistinctTypeAndTreatments();
-    final notifier = ref.read(specimenTypeNotifierProvider.notifier);
+  Future<void> getSpecimenTypes() async {
+    final List<String> typeList =
+        await SpecimenPartQuery(dbAccess).getDistinctTypes();
+    final notifier = ref.read(specimenTypesProvider.notifier);
+    List<String> finalList = typeList.isEmpty ? defaultSpecimenType : typeList;
+    notifier.replaceAll(finalList);
+    ref.invalidate(specimenTypesProvider);
+  }
+
+  Future<void> getTreatmentOptions() async {
+    final List<String> treatmentList =
+        await SpecimenPartQuery(dbAccess).getDistinctTreatments();
+    final notifier = ref.read(treatmentOptionsProvider.notifier);
     List<String> finalList =
-        typeList.type.isEmpty ? defaultSpecimenType : typeList.type;
-    List<String> finalTreatmentList = typeList.treatment.isEmpty
-        ? defaultSpecimenTreatment
-        : typeList.treatment;
-    notifier.replaceAll(finalList, finalTreatmentList);
-    ref.invalidate(specimenTypeNotifierProvider);
+        treatmentList.isEmpty ? defaultSpecimenTreatment : treatmentList;
+    notifier.replaceAll(finalList);
+    ref.invalidate(treatmentOptionsProvider);
   }
 
   Future<void> createSpecimenPart(SpecimenPartCompanion form) async {
@@ -243,34 +249,23 @@ class SpecimenPartServices extends DbAccess {
     ref.invalidate(partBySpecimenProvider);
   }
 
-  Future<void> checkType(String specimenType) async {
-    await _addSpecimenType(specimenType);
-    _invalidateNotifier();
+  Future<void> addType(String part) async {
+    await ref.read(specimenTypesProvider.notifier).add(part);
+    ref.invalidate(specimenTypesProvider);
   }
 
-  Future<void> checkTreatment(String treatment) async {
-    await _addTreatment(treatment);
-    _invalidateNotifier();
+  Future<void> removeType(String specimenType) async {
+    ref.read(specimenTypesProvider.notifier).remove(specimenType);
+    ref.invalidate(specimenTypesProvider);
   }
 
-  Future<void> deleteType(String specimenType) async {
-    ref.read(specimenTypeNotifierProvider.notifier).deleteType(specimenType);
-    _invalidateNotifier();
+  Future<void> addTreatment(String treatment) async {
+    await ref.read(treatmentOptionsProvider.notifier).add(treatment);
+    ref.invalidate(treatmentOptionsProvider);
   }
 
-  Future<void> _addSpecimenType(String part) async {
-    await ref.read(specimenTypeNotifierProvider.notifier).addType(part);
-    _invalidateNotifier();
-  }
-
-  Future<void> _addTreatment(String treatment) async {
-    await ref
-        .read(specimenTypeNotifierProvider.notifier)
-        .addTreatment(treatment);
-    _invalidateNotifier();
-  }
-
-  void _invalidateNotifier() async {
-    ref.invalidate(specimenTypeNotifierProvider);
+  Future<void> removeTreatment(String treatment) async {
+    ref.read(treatmentOptionsProvider.notifier).remove(treatment);
+    ref.invalidate(treatmentOptionsProvider);
   }
 }

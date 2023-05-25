@@ -1,5 +1,4 @@
 import 'package:drift/drift.dart';
-import 'package:flutter/foundation.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/types/specimens.dart';
 import 'package:nahpu/services/utility_services.dart';
@@ -168,21 +167,19 @@ class SpecimenPartQuery extends DatabaseAccessor<Database>
     return data.tissueID;
   }
 
-  Future<SpecimenPartDistinctTypes> getDistinctTypeAndTreatments() async {
+  Future<List<String>> getDistinctTypes() async {
     List<SpecimenPartData> data = await (select(specimenPart)).get();
     List<String> types = getDistinctList(data.map((e) => e.type).toList());
+    List<String> sortedTypes = _sortType(types);
+    return sortedTypes;
+  }
+
+  Future<List<String>> getDistinctTreatments() async {
+    List<SpecimenPartData> data = await (select(specimenPart)).get();
     List<String> treatments =
         getDistinctList(data.map((e) => e.treatment).toList());
-
-    if (kDebugMode) {
-      for (var i in treatments) {
-        print(i);
-      }
-    }
-    List<String> sortedTypes = _sortType(types);
     List<String> sortedTreatments = _sortTreatment(treatments);
-    return SpecimenPartDistinctTypes(
-        type: sortedTypes, treatment: sortedTreatments);
+    return sortedTreatments;
   }
 
   // Sort by priority
