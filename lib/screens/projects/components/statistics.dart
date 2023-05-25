@@ -68,10 +68,14 @@ class StatisticViewerState extends ConsumerState<StatisticViewer> {
             children: [
               DropdownButton<GraphType>(
                 value: selectedGraph,
+                underline: const SizedBox.shrink(),
                 items: graphOptions
                     .map((String value) => DropdownMenuItem<GraphType>(
                           value: GraphType.values[graphOptions.indexOf(value)],
-                          child: Text(value),
+                          child: Text(
+                            value,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
                         ))
                     .toList(),
                 onChanged: (value) {
