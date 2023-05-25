@@ -71,8 +71,8 @@ class HomeMenuDrawer extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 const Text(
-                  'Nahpu is a field cataloging app for natural history projects. '
-                  'Developed by museum scientists '
+                  'Nahpu is a field cataloging app for natural history projects.'
+                  ' Developed by museum scientists '
                   'for museum scientists.',
                 ),
               ],
