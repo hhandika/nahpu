@@ -3,6 +3,7 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/specimen_queries.dart';
 import 'package:nahpu/services/types/specimens.dart';
+import 'package:nahpu/services/utility_services.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -71,21 +72,19 @@ class SpecimenTypeNotifier extends _$SpecimenTypeNotifier {
     }
     final prefs = ref.watch(settingProvider);
     final typeList = prefs.getStringList('specimenTypes');
-    if (typeList != null && typeList.contains(type)) {
+    if (typeList != null && isListContains(typeList, type)) {
       return;
-    } else {
-      List<String> newList = [...typeList ?? [], type];
-      await prefs.setStringList('specimenTypes', newList);
     }
+    List<String> newList = [...typeList ?? [], type];
+    await prefs.setStringList('specimenTypes', newList);
   }
 
   Future<void> addTreatment(String treatment) async {
-    if (treatment.isEmpty) {
-      return;
-    }
+    if (treatment.isEmpty) return;
+
     final prefs = ref.watch(settingProvider);
     final treatmentList = prefs.getStringList('specimenPreservation');
-    if (treatmentList != null && treatmentList.contains(treatment)) {
+    if (treatmentList != null && isListContains(treatmentList, treatment)) {
       return;
     }
     List<String> newList = [...treatmentList ?? [], treatment];
@@ -93,9 +92,8 @@ class SpecimenTypeNotifier extends _$SpecimenTypeNotifier {
   }
 
   Future<void> replaceAll(List<String> types, List<String> treatments) async {
-    if (types.isEmpty || treatments.isEmpty) {
-      return;
-    }
+    if (types.isEmpty || treatments.isEmpty) return;
+
     final prefs = ref.watch(settingProvider);
     await prefs.setStringList('specimenTypes', types);
     await prefs.setStringList('specimenPreservation', treatments);

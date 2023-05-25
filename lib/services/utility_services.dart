@@ -37,3 +37,7 @@ List<String> getDistinctList(List<String?> list) {
 
   return newList;
 }
+
+bool isListContains(List<String> list, String value) {
+  return list.map((e) => e.toLowerCase()).contains(value.toLowerCase());
+}
