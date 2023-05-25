@@ -48,7 +48,7 @@ class CollEventMethod extends _$CollEventMethod {
     final prefs = ref.watch(settingProvider);
     final methodList = prefs.getStringList(collEventMethodPrefKey);
 
-    List<String> currentMethods = methodList ?? defaultCollMethodTypes;
+    List<String> currentMethods = methodList ?? defaultCollMethods;
 
     if (methodList == null) {
       await prefs.setStringList(collEventMethodPrefKey, currentMethods);
@@ -104,7 +104,7 @@ class CollEventMethod extends _$CollEventMethod {
     });
   }
 
-  Future<void> removeAll() async {
+  Future<void> clear() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final prefs = ref.watch(settingProvider);
@@ -175,7 +175,7 @@ class CollPersonnelRole extends _$CollPersonnelRole {
     });
   }
 
-  Future<void> removeAll() async {
+  Future<void> clear() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final prefs = ref.watch(settingProvider);

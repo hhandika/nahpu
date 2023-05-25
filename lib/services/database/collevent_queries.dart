@@ -56,6 +56,16 @@ class CollEffortQuery extends DatabaseAccessor<Database>
         .get();
   }
 
+  Future<List<String>> getDistinctMethods() async {
+    List<CollEffortData> data =
+        await (select(collEffort, distinct: true)).get();
+    List<String> methods = getDistinctList(data.map((e) => e.type).toList());
+
+    if (kDebugMode) print('getDistinctMethods: $methods');
+
+    return methods;
+  }
+
   Future<void> deleteCollEffort(int id) {
     return (delete(collEffort)..where((t) => t.id.equals(id))).go();
   }

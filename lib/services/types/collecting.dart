@@ -1,4 +1,4 @@
-const List<String> defaultCollMethodTypes = [
+const List<String> defaultCollMethods = [
   'Hand',
   'Net',
   'Pitfall',

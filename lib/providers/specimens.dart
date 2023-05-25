@@ -90,7 +90,7 @@ class SpecimenTypes extends _$SpecimenTypes {
     });
   }
 
-  Future<void> removeAll() async {
+  Future<void> clear() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final prefs = ref.watch(settingProvider);
@@ -167,7 +167,7 @@ class TreatmentOptions extends _$TreatmentOptions {
     });
   }
 
-  Future<void> removeAll() async {
+  Future<void> clear() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final prefs = ref.watch(settingProvider);

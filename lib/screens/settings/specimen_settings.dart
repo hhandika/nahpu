@@ -8,14 +8,14 @@ import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-class SpecimenPartSelection extends ConsumerStatefulWidget {
+class SpecimenPartSelection extends StatefulWidget {
   const SpecimenPartSelection({super.key});
 
   @override
-  SpecimenPartSelectionState createState() => SpecimenPartSelectionState();
+  State<SpecimenPartSelection> createState() => _SpecimenPartSelectionState();
 }
 
-class SpecimenPartSelectionState extends ConsumerState<SpecimenPartSelection> {
+class _SpecimenPartSelectionState extends State<SpecimenPartSelection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +42,7 @@ class SpecimenPartSelectionState extends ConsumerState<SpecimenPartSelection> {
               title: Text('Specimen Types'),
               tiles: [
                 CustomSettingsTile(
-                  child: TypeList(),
+                  child: SpecimenTypeSettings(),
                 ),
               ],
             ),
@@ -50,7 +50,7 @@ class SpecimenPartSelectionState extends ConsumerState<SpecimenPartSelection> {
               title: Text('Treatments'),
               tiles: [
                 CustomSettingsTile(
-                  child: TreatmentList(),
+                  child: TreatmentOptionSettings(),
                 ),
               ],
             )
@@ -61,8 +61,8 @@ class SpecimenPartSelectionState extends ConsumerState<SpecimenPartSelection> {
   }
 }
 
-class TypeList extends ConsumerWidget {
-  const TypeList({
+class SpecimenTypeSettings extends ConsumerWidget {
+  const SpecimenTypeSettings({
     super.key,
   });
 
@@ -96,7 +96,6 @@ class TypeList extends ConsumerWidget {
             partController.text.trim(),
           );
           partController.clear();
-          ref.invalidate(specimenTypesProvider);
         }
       },
       resetLabel: 'Reset types',
@@ -105,8 +104,8 @@ class TypeList extends ConsumerWidget {
   }
 }
 
-class TreatmentList extends ConsumerWidget {
-  const TreatmentList({
+class TreatmentOptionSettings extends ConsumerWidget {
+  const TreatmentOptionSettings({
     super.key,
   });
 

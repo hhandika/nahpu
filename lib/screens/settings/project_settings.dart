@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:nahpu/screens/settings/collevent_settings.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/screens/settings/shared.dart';
@@ -42,13 +43,14 @@ class GeneralSettings {
     return SettingsSection(
       title: const Text('Catalog Settings'),
       tiles: [
-        getCatalogFmtSetting(),
-        getSpecimenPartSettings(),
+        _getCatalogFmtSetting(),
+        _getCollEventSettings(),
+        _getSpecimenPartSettings(),
       ],
     );
   }
 
-  SettingsTile getCatalogFmtSetting() {
+  SettingsTile _getCatalogFmtSetting() {
     final catalogFmt = ref.watch(catalogFmtNotifier);
     final selectedFmt = matchCatFmtToTaxonGroup(catalogFmt);
     return SettingsTile.navigation(
@@ -66,7 +68,7 @@ class GeneralSettings {
     );
   }
 
-  SettingsTile getSpecimenPartSettings() {
+  SettingsTile _getSpecimenPartSettings() {
     CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
     return SettingsTile.navigation(
       leading: Icon(matchCatFmtToIcon(catalogFmt, false)),
@@ -75,6 +77,19 @@ class GeneralSettings {
         context,
         MaterialPageRoute(
           builder: (context) => const SpecimenPartSelection(),
+        ),
+      ),
+    );
+  }
+
+  SettingsTile _getCollEventSettings() {
+    return SettingsTile.navigation(
+      leading: const Icon(Icons.timeline_outlined),
+      title: const Text('Collecting Events'),
+      onPressed: (context) => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const CollEventSelection(),
         ),
       ),
     );

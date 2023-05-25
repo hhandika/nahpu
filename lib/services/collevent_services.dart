@@ -93,3 +93,65 @@ class CollEventServices extends DbAccess {
     ref.invalidate(collPersonnelProvider);
   }
 }
+
+class CollEvenPersonnelServices extends DbAccess {
+  CollEvenPersonnelServices(super.ref);
+
+  Future<void> getAllRoles() async {
+    List<String> data = await CollPersonnelQuery(dbAccess).getDistinctRoles();
+    final notifier = ref.read(collPersonnelRoleProvider.notifier);
+    List<String> roles = data.isEmpty ? defaultCollPersonnelRoles : data;
+    notifier.replaceAll(roles);
+    _invalidateCollPersonnel();
+  }
+
+  Future<void> addRole(String role) async {
+    await ref.read(collPersonnelRoleProvider.notifier).add(role);
+    _invalidateCollPersonnel();
+  }
+
+  Future<void> removeRole(String role) async {
+    await ref.read(collPersonnelRoleProvider.notifier).remove(role);
+    _invalidateCollPersonnel();
+  }
+
+  Future<void> removeAllRoles() async {
+    await ref.read(collPersonnelRoleProvider.notifier).clear();
+    _invalidateCollPersonnel();
+  }
+
+  void _invalidateCollPersonnel() {
+    ref.invalidate(collPersonnelProvider);
+  }
+}
+
+class CollMethodServices extends DbAccess {
+  CollMethodServices(super.ref);
+
+  Future<void> getAllMethods() async {
+    List<String> data = await CollEffortQuery(dbAccess).getDistinctMethods();
+    final notifier = ref.read(collEventMethodProvider.notifier);
+    List<String> methods = data.isEmpty ? defaultCollMethods : data;
+    notifier.replaceAll(methods);
+    _invalidateCollEffort();
+  }
+
+  Future<void> addMethod(String method) async {
+    await ref.read(collEventMethodProvider.notifier).add(method);
+    _invalidateCollEffort();
+  }
+
+  Future<void> removeMethod(String method) async {
+    await ref.read(collEventMethodProvider.notifier).remove(method);
+    _invalidateCollEffort();
+  }
+
+  Future<void> removeAllMethods() async {
+    await ref.read(collEventMethodProvider.notifier).clear();
+    _invalidateCollEffort();
+  }
+
+  void _invalidateCollEffort() {
+    ref.invalidate(collEventMethodProvider);
+  }
+}
