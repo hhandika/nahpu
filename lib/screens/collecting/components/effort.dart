@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/types.dart';
@@ -315,13 +316,7 @@ class CollEffortFormState extends ConsumerState<CollEffortForm> {
     return ScrollableLayout(
       child: Column(
         children: [
-          TextFormField(
-            controller: widget.collToolCtr.typeCtr,
-            decoration: const InputDecoration(
-              labelText: 'Type',
-              hintText: 'Enter the type of the tool',
-            ),
-          ),
+          CollectionMethods(ctr: widget.collToolCtr),
           TextFormField(
             controller: widget.collToolCtr.brandCtr,
             decoration: const InputDecoration(
@@ -418,5 +413,44 @@ class CollEffortFormState extends ConsumerState<CollEffortForm> {
       size: db.Value(widget.collToolCtr.sizeCtr.text),
       notes: db.Value(widget.collToolCtr.noteCtr.text),
     );
+  }
+}
+
+class CollectionMethods extends ConsumerWidget {
+  const CollectionMethods({
+    super.key,
+    required this.ctr,
+  });
+
+  final CollEffortCtrModel ctr;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ref.watch(collEventMethodProvider).when(
+          data: (data) {
+            return DropdownButtonFormField(
+              value: ctr.typeCtr.text,
+              decoration: const InputDecoration(
+                labelText: 'Method',
+                hintText: 'Select a method',
+              ),
+              items: data
+                  .map(
+                    (e) => DropdownMenuItem(
+                      value: e,
+                      child: Text(e),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (String? newValue) {
+                if (newValue != null) {
+                  ctr.typeCtr.text = newValue;
+                }
+              },
+            );
+          },
+          loading: () => const CommonProgressIndicator(),
+          error: (e, __) => Text(e.toString()),
+        );
   }
 }

@@ -42,43 +42,6 @@ class _CollEventSelectionState extends State<CollEventSelection> {
   }
 }
 
-class PersonnelRoleSetting extends ConsumerWidget {
-  const PersonnelRoleSetting({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    TextEditingController controller = TextEditingController();
-    return SettingChip(
-      controller: controller,
-      chipList: ref.watch(collPersonnelRoleProvider).when(
-            data: (data) {
-              return data.map((e) {
-                return CommonChip(
-                  text: e,
-                  primaryColor: Theme.of(context).colorScheme.secondary,
-                  onDeleted: () {
-                    CollEvenPersonnelServices(ref).removeRole(e);
-                  },
-                );
-              }).toList();
-            },
-            loading: () => [const CommonProgressIndicator()],
-            error: (e, _) => [Text('Error: $e')],
-          ),
-      labelText: 'Add role',
-      hintText: 'Enter role',
-      onPressed: () {
-        CollEvenPersonnelServices(ref).addRole(controller.text);
-        controller.clear();
-      },
-      resetLabel: 'Reset roles',
-      onReset: () {
-        CollEvenPersonnelServices(ref).getAllRoles();
-      },
-    );
-  }
-}
-
 class CollMethodSettings extends ConsumerWidget {
   const CollMethodSettings({super.key});
 
@@ -113,6 +76,43 @@ class CollMethodSettings extends ConsumerWidget {
       resetLabel: 'Reset methods',
       onReset: () {
         CollMethodServices(ref).getAllMethods();
+      },
+    );
+  }
+}
+
+class PersonnelRoleSetting extends ConsumerWidget {
+  const PersonnelRoleSetting({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    TextEditingController controller = TextEditingController();
+    return SettingChip(
+      controller: controller,
+      chipList: ref.watch(collPersonnelRoleProvider).when(
+            data: (data) {
+              return data.map((e) {
+                return CommonChip(
+                  text: e,
+                  primaryColor: Theme.of(context).colorScheme.tertiary,
+                  onDeleted: () {
+                    CollEvenPersonnelServices(ref).removeRole(e);
+                  },
+                );
+              }).toList();
+            },
+            loading: () => [const CommonProgressIndicator()],
+            error: (e, _) => [Text('Error: $e')],
+          ),
+      labelText: 'Add role',
+      hintText: 'Enter role',
+      onPressed: () {
+        CollEvenPersonnelServices(ref).addRole(controller.text);
+        controller.clear();
+      },
+      resetLabel: 'Reset roles',
+      onReset: () {
+        CollEvenPersonnelServices(ref).getAllRoles();
       },
     );
   }
