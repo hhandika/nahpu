@@ -65,9 +65,16 @@ class HomeMenuDrawer extends StatelessWidget {
               applicationVersion: '0.0.1',
               applicationIcon: const Icon(Icons.info_rounded),
               children: [
-                const Text('A tool for cataloging natural history specimens.'),
-                const Text('It is a work in progress.'),
-                const Text('Please report any bugs or feature requests'),
+                Text(
+                  'Rethinking species inventory in the digital age',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  'Nahpu is a field cataloging app for natural history projects. '
+                  'Developed by museum scientists '
+                  'for museum scientists.',
+                ),
               ],
             );
           },
