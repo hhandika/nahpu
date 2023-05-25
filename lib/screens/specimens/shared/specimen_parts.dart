@@ -422,13 +422,13 @@ class PartFormState extends ConsumerState<PartForm> {
   Future<void> _createPart() async {
     SpecimenPartCompanion form = _getForm();
 
-    await SpecimenServices(ref).createSpecimenPart(form);
+    await SpecimenPartServices(ref).createSpecimenPart(form);
   }
 
   Future<void> _updatePart() async {
     SpecimenPartCompanion form = _getForm();
 
-    await SpecimenServices(ref)
+    await SpecimenPartServices(ref)
         .updateSpecimenPart(widget.specimenPartId!, form);
   }
 

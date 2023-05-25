@@ -136,17 +136,6 @@ class SpecimenServices extends DbAccess {
     await AvianSpecimenQuery(dbAccess).deleteAvianMeasurements(specimenUuid);
   }
 
-  Future<void> createSpecimenPart(SpecimenPartCompanion form) async {
-    SpecimenPartQuery(dbAccess).createSpecimenPart(form);
-    ref.invalidate(partBySpecimenProvider);
-  }
-
-  Future<void> updateSpecimenPart(
-      int partId, SpecimenPartCompanion form) async {
-    SpecimenPartQuery(dbAccess).updateSpecimenPart(partId, form);
-    ref.invalidate(partBySpecimenProvider);
-  }
-
   Future<void> deleteMammalMeasurements(String specimenUuid) async {
     await MammalSpecimenQuery(dbAccess).deleteMammalMeasurements(specimenUuid);
   }
@@ -172,19 +161,6 @@ class SpecimenServices extends DbAccess {
   Future<void> deleteAllSpecimens() async {
     await SpecimenQuery(dbAccess).deleteAllSpecimens(projectUuid);
     _invalidateSpecimenList();
-  }
-
-  Future<void> getAllDistinctTypes() async {
-    final typeList =
-        await SpecimenPartQuery(dbAccess).getDistinctTypeAndTreatments();
-    final notifier = ref.read(specimenTypeNotifierProvider.notifier);
-    List<String> finalList =
-        typeList.type.isEmpty ? defaultSpecimenType : typeList.type;
-    List<String> finalTreatmentList = typeList.treatment.isEmpty
-        ? defaultSpecimenTreatment
-        : typeList.treatment;
-    notifier.replaceAll(finalList, finalTreatmentList);
-    ref.invalidate(specimenTypeNotifierProvider);
   }
 
   Future<void> deleteAllSpecimenParts(String specimenUuid) async {
@@ -240,29 +216,41 @@ class TissueIdServices {
   }
 }
 
-class SpecimenPartServices {
-  SpecimenPartServices({
-    required this.ref,
-    required this.typeList,
-    required this.treatmentList,
-  });
+class SpecimenPartServices extends DbAccess {
+  SpecimenPartServices(super.ref);
 
-  final WidgetRef ref;
-  final List<String> typeList;
-  final List<String> treatmentList;
+  Future<void> getAllDistinctTypes() async {
+    final typeList =
+        await SpecimenPartQuery(dbAccess).getDistinctTypeAndTreatments();
+    final notifier = ref.read(specimenTypeNotifierProvider.notifier);
+    List<String> finalList =
+        typeList.type.isEmpty ? defaultSpecimenType : typeList.type;
+    List<String> finalTreatmentList = typeList.treatment.isEmpty
+        ? defaultSpecimenTreatment
+        : typeList.treatment;
+    notifier.replaceAll(finalList, finalTreatmentList);
+    ref.invalidate(specimenTypeNotifierProvider);
+  }
+
+  Future<void> createSpecimenPart(SpecimenPartCompanion form) async {
+    SpecimenPartQuery(dbAccess).createSpecimenPart(form);
+    ref.invalidate(partBySpecimenProvider);
+  }
+
+  Future<void> updateSpecimenPart(
+      int partId, SpecimenPartCompanion form) async {
+    SpecimenPartQuery(dbAccess).updateSpecimenPart(partId, form);
+    ref.invalidate(partBySpecimenProvider);
+  }
 
   Future<void> checkType(String specimenType) async {
-    if (!typeList.contains(specimenType)) {
-      await _addSpecimenType(specimenType);
-      _invalidateNotifier();
-    }
+    await _addSpecimenType(specimenType);
+    _invalidateNotifier();
   }
 
   Future<void> checkTreatment(String treatment) async {
-    if (!treatmentList.contains(treatment)) {
-      await _addTreatment(treatment);
-      _invalidateNotifier();
-    }
+    await _addTreatment(treatment);
+    _invalidateNotifier();
   }
 
   Future<void> deleteType(String specimenType) async {

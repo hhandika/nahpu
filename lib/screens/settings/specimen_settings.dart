@@ -55,7 +55,7 @@ class SpecimenPartSelectionState extends ConsumerState<SpecimenPartSelection> {
                           padding: const EdgeInsets.fromLTRB(0, 30, 0, 20),
                           child: TextButton(
                             onPressed: () {
-                              SpecimenServices(ref).getAllDistinctTypes();
+                              SpecimenPartServices(ref).getAllDistinctTypes();
                             },
                             child: const Text(
                               'Reset settings',
