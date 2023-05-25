@@ -8,6 +8,8 @@ import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/types/statistics.dart';
 import 'package:nahpu/services/types/types.dart';
 
+const double chartWidth = 28;
+
 /// TODO: Clean all the code in this file
 class StatisticFullScreen extends StatelessWidget {
   const StatisticFullScreen({super.key});
@@ -127,6 +129,7 @@ class CountBarChart extends ConsumerWidget {
     return FutureBuilder(
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            int screenSize = MediaQuery.of(context).size.width.toInt();
             Map<String, int> data = _getCountData(snapshot.data!);
             return Padding(
               padding: const EdgeInsets.only(top: 40, left: 20, right: 20),
@@ -134,9 +137,11 @@ class CountBarChart extends ConsumerWidget {
                 title: 'Species Count',
                 data: data,
                 dataPoints: createDataPoints(
-                  data,
-                  maxCount ? data.length : 5,
-                ),
+                    data,
+                    _getLength(
+                      screenSize,
+                      data.length,
+                    )),
               ),
             );
           } else {
@@ -144,6 +149,14 @@ class CountBarChart extends ConsumerWidget {
           }
         },
         future: _getStats(ref));
+  }
+
+  int _getLength(int screenSize, int dataLength) {
+    if (!maxCount) {
+      return 5;
+    }
+    int fit = screenSize ~/ (chartWidth + 25);
+    return dataLength > fit ? fit : dataLength;
   }
 
   Future<CaptureRecordStats> _getStats(WidgetRef ref) async {
@@ -179,7 +192,7 @@ class BarChartViewer extends StatelessWidget {
                     BarChartRodData(
                         toY: e.y,
                         color: Theme.of(context).colorScheme.secondaryContainer,
-                        width: 28,
+                        width: chartWidth,
                         borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(5),
                             topRight: Radius.circular(5))),
