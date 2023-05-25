@@ -55,7 +55,7 @@ class GeneralSettings {
     final selectedFmt = matchCatFmtToTaxonGroup(catalogFmt);
     return SettingsTile.navigation(
       leading: const Icon(MdiIcons.fileCabinet),
-      title: const Text('Format'),
+      title: const Text('Catalog Format'),
       value: Text(selectedFmt),
       onPressed: (context) => Navigator.push(
         context,
