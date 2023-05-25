@@ -6,6 +6,7 @@ import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/specimen_services.dart';
+import 'package:nahpu/services/types/types.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class SpecimenPartSelection extends ConsumerStatefulWidget {
@@ -119,9 +120,9 @@ class TypeList extends ConsumerWidget {
       hintText: 'Enter part type',
       onPressed: () {
         if (partController.text.isNotEmpty) {
-          ref
-              .read(specimenTypeNotifierProvider.notifier)
-              .addType(partController.text.trim());
+          ref.read(specimenTypeNotifierProvider.notifier).addType(
+                partController.text.trim().toSentenceCase(),
+              );
           partController.clear();
           ref.invalidate(specimenTypeNotifierProvider);
         }
@@ -160,9 +161,9 @@ class TreatmentList extends ConsumerWidget {
       hintText: 'Enter treatment',
       onPressed: () {
         if (treatmentController.text.isNotEmpty) {
-          ref
-              .read(specimenTypeNotifierProvider.notifier)
-              .addTreatment(treatmentController.text.trim());
+          ref.read(specimenTypeNotifierProvider.notifier).addTreatment(
+                treatmentController.text.trim().toSentenceCase(),
+              );
           treatmentController.clear();
           ref.invalidate(specimenTypeNotifierProvider);
         }
