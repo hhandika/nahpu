@@ -6,38 +6,36 @@ part of 'collevents.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$collEventMethodNotifierHash() =>
-    r'550930f93889a7fe9ddbb93ff57966448d517485';
+String _$collEventMethodHash() => r'88c92a0e271fbc4587a453fffb610fd75bdc792c';
 
-/// See also [CollEventMethodNotifier].
-@ProviderFor(CollEventMethodNotifier)
-final collEventMethodNotifierProvider = AutoDisposeAsyncNotifierProvider<
-    CollEventMethodNotifier, List<String>>.internal(
-  CollEventMethodNotifier.new,
-  name: r'collEventMethodNotifierProvider',
+/// See also [CollEventMethod].
+@ProviderFor(CollEventMethod)
+final collEventMethodProvider =
+    AutoDisposeAsyncNotifierProvider<CollEventMethod, List<String>>.internal(
+  CollEventMethod.new,
+  name: r'collEventMethodProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$collEventMethodNotifierHash,
+      : _$collEventMethodHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$CollEventMethodNotifier = AutoDisposeAsyncNotifier<List<String>>;
-String _$collPersonnelRoleNotifierHash() =>
-    r'4476902ef6da70036ca72abd3377518f4b370a55';
+typedef _$CollEventMethod = AutoDisposeAsyncNotifier<List<String>>;
+String _$collPersonnelRoleHash() => r'c60fa64859cdadbac743bc5a5c2efda3da290840';
 
-/// See also [CollPersonnelRoleNotifier].
-@ProviderFor(CollPersonnelRoleNotifier)
-final collPersonnelRoleNotifierProvider = AutoDisposeAsyncNotifierProvider<
-    CollPersonnelRoleNotifier, List<String>>.internal(
-  CollPersonnelRoleNotifier.new,
-  name: r'collPersonnelRoleNotifierProvider',
+/// See also [CollPersonnelRole].
+@ProviderFor(CollPersonnelRole)
+final collPersonnelRoleProvider =
+    AutoDisposeAsyncNotifierProvider<CollPersonnelRole, List<String>>.internal(
+  CollPersonnelRole.new,
+  name: r'collPersonnelRoleProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$collPersonnelRoleNotifierHash,
+      : _$collPersonnelRoleHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$CollPersonnelRoleNotifier = AutoDisposeAsyncNotifier<List<String>>;
+typedef _$CollPersonnelRole = AutoDisposeAsyncNotifier<List<String>>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

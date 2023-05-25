@@ -179,7 +179,7 @@ class PersonnelRole extends ConsumerStatefulWidget {
 class PersonnelRoleState extends ConsumerState<PersonnelRole> {
   @override
   Widget build(BuildContext context) {
-    return ref.watch(collPersonnelRoleNotifierProvider).when(
+    return ref.watch(collPersonnelRoleProvider).when(
           data: (data) {
             return DropdownButtonFormField<String>(
               value: widget.controller.roleCtr,

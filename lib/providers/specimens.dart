@@ -23,6 +23,48 @@ final partBySpecimenProvider = FutureProvider.family
         SpecimenPartQuery(ref.read(databaseProvider))
             .getSpecimenParts(specimenUuid));
 
+@riverpod
+class SpecimenTypes extends _$SpecimenTypes {
+  Future<List<String>> _fetchSettings() async {
+    final prefs = ref.watch(settingProvider);
+    final typeList = prefs.getStringList('specimenTypes');
+
+    List<String> currentTypes = typeList ?? defaultSpecimenType;
+
+    if (typeList == null) {
+      await prefs.setStringList('specimenTypes', currentTypes);
+    }
+
+    return currentTypes;
+  }
+
+  @override
+  FutureOr<List<String>> build() async {
+    return await _fetchSettings();
+  }
+}
+
+@riverpod
+class TreatmentOptions extends _$TreatmentOptions {
+  Future<List<String>> _fetchSettings() async {
+    final prefs = ref.watch(settingProvider);
+    final treatmentList = prefs.getStringList('specimenTreatment');
+
+    List<String> currentTreatments = treatmentList ?? defaultSpecimenTreatment;
+
+    if (treatmentList == null) {
+      await prefs.setStringList('specimenTreatment', currentTreatments);
+    }
+
+    return currentTreatments;
+  }
+
+  @override
+  FutureOr<List<String>> build() async {
+    return await _fetchSettings();
+  }
+}
+
 @freezed
 class SpecimenType with _$SpecimenType {
   const factory SpecimenType({
@@ -70,6 +112,7 @@ class SpecimenTypeNotifier extends _$SpecimenTypeNotifier {
     if (type.isEmpty) {
       return;
     }
+
     final prefs = ref.watch(settingProvider);
     final typeList = prefs.getStringList('specimenTypes');
     if (typeList != null && isListContains(typeList, type)) {

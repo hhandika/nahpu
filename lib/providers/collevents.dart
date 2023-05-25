@@ -5,6 +5,7 @@ import 'package:nahpu/services/database/collevent_queries.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/types/collecting.dart';
+import 'package:nahpu/services/utility_services.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'collevents.g.dart';
@@ -39,7 +40,7 @@ final weatherDataProvider = FutureProvider.family.autoDispose<WeatherData, int>(
         .getWeatherDataByEventId(collEventId));
 
 @riverpod
-class CollEventMethodNotifier extends _$CollEventMethodNotifier {
+class CollEventMethod extends _$CollEventMethod {
   Future<List<String>> _fetchSettings() async {
     final prefs = ref.watch(settingProvider);
     final methodList = prefs.getStringList('collEventMethods');
@@ -74,7 +75,7 @@ class CollEventMethodNotifier extends _$CollEventMethodNotifier {
 }
 
 @riverpod
-class CollPersonnelRoleNotifier extends _$CollPersonnelRoleNotifier {
+class CollPersonnelRole extends _$CollPersonnelRole {
   Future<List<String>> _fetchSettings() async {
     final prefs = ref.watch(settingProvider);
     final roleList = prefs.getStringList('collPersonnelRoles');
@@ -105,7 +106,7 @@ class CollPersonnelRoleNotifier extends _$CollPersonnelRoleNotifier {
         return [newRole];
       }
 
-      if (roleList.contains(newRole)) return roleList;
+      if (isListContains(roleList, newRole)) return roleList;
       List<String> newList = [...roleList, newRole];
       await prefs.setStringList('collPersonnelRoles', newList);
       return newList;
@@ -123,6 +124,7 @@ class CollPersonnelRoleNotifier extends _$CollPersonnelRoleNotifier {
   }
 
   Future<void> delete(String role) async {
+    if (role.isEmpty) return;
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final prefs = ref.watch(settingProvider);
