@@ -469,12 +469,6 @@ class SpecimenPreparationState extends ConsumerState<SpecimenPreparation> {
   Widget build(BuildContext context) {
     return ref.watch(specimenTypeNotifierProvider).when(
           data: (data) {
-            if (widget.partCtr.typeCtr.text.isNotEmpty ||
-                widget.partCtr.treatmentCtr.text.isNotEmpty) {
-              setState(() {
-                _checkType(data);
-              });
-            }
             return Column(
               children: [
                 SpecimenTypeField(
@@ -499,22 +493,6 @@ class SpecimenPreparationState extends ConsumerState<SpecimenPreparation> {
             child: Text('Error: $error'),
           ),
         );
-  }
-
-  Future<void> _checkType(SpecimenType data) async {
-    final part = SpecimenPartServices(
-      ref: ref,
-      typeList: data.typeList,
-      treatmentList: data.treatmentList,
-    );
-
-    if (widget.partCtr.typeCtr.text.isNotEmpty) {
-      await part.checkType(widget.partCtr.typeCtr.text);
-    }
-
-    if (widget.partCtr.treatmentCtr.text.isNotEmpty) {
-      await part.checkTreatment(widget.partCtr.treatmentCtr.text);
-    }
   }
 }
 

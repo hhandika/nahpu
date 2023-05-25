@@ -1,5 +1,7 @@
 import 'package:drift/drift.dart';
+import 'package:flutter/foundation.dart';
 import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/utility_services.dart';
 
 part 'collevent_queries.g.dart';
 
@@ -79,6 +81,16 @@ class CollPersonnelQuery extends DatabaseAccessor<Database>
     return await (select(collPersonnel)
           ..where((t) => t.eventID.equals(collEventId)))
         .get();
+  }
+
+  Future<List<String>> getDistinctRoles() async {
+    List<CollPersonnelData> data = await select(collPersonnel).get();
+    List<String> roles = getDistinctList(data.map((e) => e.role).toList());
+    if (kDebugMode) {
+      print('getDistinctRoles: $roles');
+    }
+
+    return roles;
   }
 
   Future<void> deleteCollPersonnel(int personnelId) {

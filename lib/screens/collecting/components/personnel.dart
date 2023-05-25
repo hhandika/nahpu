@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/collevents.dart';
 import 'package:nahpu/providers/personnel.dart';
+import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
@@ -145,29 +146,9 @@ class CollPersonnelFieldState extends ConsumerState<CollPersonnelField> {
         ),
         const SizedBox(width: 10),
         Expanded(
-          child: DropdownButtonFormField<String>(
-            value: widget.controller.roleCtr,
-            decoration: const InputDecoration(
-              labelText: 'Role',
-              hintText: 'Enter a role',
-            ),
-            items: collRoles
-                .map((role) => DropdownMenuItem(
-                      value: role,
-                      child: Text(role),
-                    ))
-                .toList(),
-            onChanged: (String? value) {
-              widget.controller.roleCtr = value;
-
-              CollEventServices(ref).updateCollPersonnel(
-                widget.controller.id!,
-                CollPersonnelCompanion(
-                  eventID: db.Value(widget.eventID),
-                  role: db.Value(widget.controller.roleCtr),
-                ),
-              );
-            },
+          child: PersonnelRole(
+            eventID: widget.eventID,
+            controller: widget.controller,
           ),
         ),
         IconButton(
@@ -178,5 +159,58 @@ class CollPersonnelFieldState extends ConsumerState<CollPersonnelField> {
         ),
       ],
     );
+  }
+}
+
+class PersonnelRole extends ConsumerStatefulWidget {
+  const PersonnelRole({
+    super.key,
+    required this.eventID,
+    required this.controller,
+  });
+
+  final int eventID;
+  final CollPersonnelCtrModel controller;
+
+  @override
+  PersonnelRoleState createState() => PersonnelRoleState();
+}
+
+class PersonnelRoleState extends ConsumerState<PersonnelRole> {
+  @override
+  Widget build(BuildContext context) {
+    return ref.watch(collPersonnelRoleNotifierProvider).when(
+          data: (data) {
+            return DropdownButtonFormField<String>(
+              value: widget.controller.roleCtr,
+              decoration: const InputDecoration(
+                labelText: 'Role',
+                hintText: 'Enter a role',
+              ),
+              items: data
+                  .map((role) => DropdownMenuItem(
+                        value: role,
+                        child: Text(role),
+                      ))
+                  .toList(),
+              onChanged: (value) {
+                if (value != null) {
+                  widget.controller.roleCtr = value;
+                  CollEventServices(ref).updateCollPersonnel(
+                    widget.controller.id!,
+                    CollPersonnelCompanion(
+                      eventID: db.Value(widget.eventID),
+                      role: db.Value(value),
+                    ),
+                  );
+                }
+              },
+            );
+          },
+          loading: () => const CommonProgressIndicator(),
+          error: (error, _) {
+            return const Text('Error');
+          },
+        );
   }
 }

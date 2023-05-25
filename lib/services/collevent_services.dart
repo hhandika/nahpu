@@ -3,6 +3,7 @@ import 'package:nahpu/services/database/collevent_queries.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/io_services.dart';
+import 'package:nahpu/services/types/collecting.dart';
 
 class CollEventServices extends DbAccess {
   CollEventServices(super.ref);
@@ -19,6 +20,13 @@ class CollEventServices extends DbAccess {
         .createWeatherData(WeatherCompanion(eventID: db.Value(eventID)));
     invalidateCollEvent();
     return eventID;
+  }
+
+  Future<void> getAllDistinctRoles() async {
+    List<String> data = await CollPersonnelQuery(dbAccess).getDistinctRoles();
+    final notifier = ref.read(collPersonnelRoleNotifierProvider.notifier);
+    List<String> roles = data.isEmpty ? defaultCollPersonnelRoles : data;
+    notifier.replaceAll(roles);
   }
 
   Future<List<CollEventData>> getAllCollEvents() async {

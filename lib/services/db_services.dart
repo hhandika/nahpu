@@ -1,4 +1,5 @@
 import 'package:nahpu/providers/settings.dart';
+import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,6 +15,7 @@ class DbServices extends DbAccess {
 
   Future<void> syncSettingWithDb() async {
     SpecimenServices(ref).getAllDistinctTypes();
+    CollEventServices(ref).getAllDistinctRoles();
     _inValidateSettings();
   }
 

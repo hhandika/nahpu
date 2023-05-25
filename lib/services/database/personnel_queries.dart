@@ -27,13 +27,6 @@ class PersonnelQuery extends DatabaseAccessor<Database>
         .getSingle();
   }
 
-  // Future<int?> updateCatalogerFieldNumber(String personnelUuid) async {
-  //   return await (update(personnel)..where((t) => t.uuid.equals(personnelUuid)))
-  //       .write(PersonnelCompanion(
-  //           currentFieldNumber: Value(
-  //               (await getCurrentFieldNumberByUuid(personnelUuid) ?? 0) + 1)));
-  // }
-
   Future<String?> getInitial(String personnelUuid) {
     return (select(personnel)..where((t) => t.uuid.equals(personnelUuid)))
         .map((e) => e.initial)
