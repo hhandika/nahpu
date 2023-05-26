@@ -8,7 +8,7 @@ import 'package:nahpu/screens/export/report.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/screens/home/home.dart';
-import 'package:nahpu/screens/settings/project_settings.dart';
+import 'package:nahpu/screens/settings/settings.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/database/database.dart';
@@ -91,10 +91,8 @@ class ProjectMenuDrawerState extends ConsumerState<ProjectMenuDrawer> {
             leading: const Icon(Icons.settings_rounded),
             title: const Text('Settings'),
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ProjectSettings()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const AppSettings()));
             },
           ),
           ListTile(

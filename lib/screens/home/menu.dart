@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/export/export_db.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
-import 'package:nahpu/screens/settings/home_settings.dart';
+import 'package:nahpu/screens/settings/settings.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:url_launcher/url_launcher.dart';
 

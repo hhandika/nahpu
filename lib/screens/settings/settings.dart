@@ -9,14 +9,14 @@ import 'package:nahpu/screens/settings/shared.dart';
 import 'package:nahpu/screens/settings/specimen_settings.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-class ProjectSettings extends ConsumerStatefulWidget {
-  const ProjectSettings({Key? key}) : super(key: key);
+class AppSettings extends ConsumerStatefulWidget {
+  const AppSettings({Key? key}) : super(key: key);
 
   @override
   ProjectSettingState createState() => ProjectSettingState();
 }
 
-class ProjectSettingState extends ConsumerState<ProjectSettings> {
+class ProjectSettingState extends ConsumerState<AppSettings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
