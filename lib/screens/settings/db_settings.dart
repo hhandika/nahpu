@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/settings/common.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
@@ -21,7 +20,6 @@ class DatabaseSettings extends ConsumerStatefulWidget {
 
 class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
   File? _dbPath;
-  File? _backupPath;
   bool _isBackup = false;
   bool _hasSelected = false;
 
@@ -55,15 +53,10 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
                               }
                             },
                             isBackup: _isBackup,
-                            onBackupChosen: (bool value) {
-                              setState(() async {
-                                _isBackup = value;
-                                if (_isBackup) {
-                                  _backupPath = await getDbBackUpPath();
-                                } else {
-                                  _backupPath = null;
-                                }
-                              });
+                            onBackupChosen: (bool value) async {
+                              _isBackup = value;
+
+                              setState(() {});
                             }),
                         const SizedBox(height: 20),
                         DbReplaceButtons(
@@ -83,13 +76,13 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
   Future<void> _replaceDb() async {
     Navigator.of(context).pop();
     try {
-      await DbWriter(ref).replaceDb(_dbPath!, _backupPath);
-      ref.invalidate(projectListProvider);
+      File? backupPath = _isBackup ? await getDbBackUpPath() : null;
+      await DbWriter(ref).replaceDb(_dbPath!, backupPath);
       if (context.mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => DBReplacedPage(
-              dbBackupPath: _backupPath,
+              dbBackupPath: backupPath,
             ),
           ),
         );
@@ -197,7 +190,6 @@ class DbWarningText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Text(
-      'This will replace the current database with the selected one.\n'
       'Are you sure you want to replace the database?',
       textAlign: TextAlign.center,
     );
@@ -236,12 +228,14 @@ class DBReplacedPage extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 10),
-                Text('Backup file path:',
-                    style: Theme.of(context).textTheme.bodyMedium),
+                dbBackupPath == null
+                    ? const SizedBox.shrink()
+                    : Text('Backup file path:',
+                        style: Theme.of(context).textTheme.bodyMedium),
                 dbBackupPath == null
                     ? const SizedBox.shrink()
                     : ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 500),
+                        constraints: const BoxConstraints(maxWidth: 600),
                         child: Text(
                           Platform.isIOS ? _iOSPath : dbBackupPath!.path,
                           style: Theme.of(context).textTheme.bodySmall,

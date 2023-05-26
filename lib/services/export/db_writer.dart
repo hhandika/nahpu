@@ -18,7 +18,7 @@ class DbWriter extends DbAccess {
       await _backUpBeforeDelete(backupPath);
     }
     if (kDebugMode) {
-      print('Original database has closed!');
+      print('Original database has been closed!');
     }
     final newDb = sqlite3.sqlite3.open(file.path);
     dbAccess.close();
@@ -28,6 +28,7 @@ class DbWriter extends DbAccess {
     }
     await DbServices(ref).setNewDatabase();
     newDb.execute('VACUUM INTO ?', [appDb.path]);
+
     if (kDebugMode) {
       print('Mark new database!');
     }

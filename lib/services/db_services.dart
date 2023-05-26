@@ -4,13 +4,15 @@ import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+const String newDbPref = 'isNewDb';
+
 class DbServices extends DbAccess {
   DbServices(super.ref);
 
   SharedPreferences get prefs => ref.read(settingProvider);
 
   Future<void> setNewDatabase() async {
-    await prefs.setBool('isNewDb', true);
+    await prefs.setBool(newDbPref, true);
   }
 
   Future<void> syncSettingWithDb() async {
@@ -21,11 +23,11 @@ class DbServices extends DbAccess {
   }
 
   Future<bool> checkNewDatabase() async {
-    final isNewDb = prefs.getBool('isNewDb') ?? false;
+    final isNewDb = prefs.getBool(newDbPref) ?? false;
     return isNewDb;
   }
 
   Future<void> _inValidateSettings() async {
-    await prefs.setBool('isNewDb', false);
+    await prefs.setBool(newDbPref, false);
   }
 }
