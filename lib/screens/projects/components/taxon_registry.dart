@@ -394,7 +394,7 @@ class TaxonImportForm extends StatefulWidget {
 
 class _TaxonImportFormState extends State<TaxonImportForm> {
   TaxonImportFmt _fmt = TaxonImportFmt.csv;
-  Directory? _dirPath;
+  File? _filePath;
 
   @override
   Widget build(BuildContext context) {
@@ -431,18 +431,37 @@ class _TaxonImportFormState extends State<TaxonImportForm> {
                     }
                   },
                 ),
-                SelectDirField(
-                    dirPath: _dirPath,
-                    onPressed: () async {
-                      await _getDir();
-                    }),
                 const SizedBox(
                   height: 20,
                 ),
-                FormButton(
-                  isEditing: false,
-                  onSubmitted: () {},
+                SelectFileField(
+                  filePath: _filePath,
+                  width: 500,
+                  maxWidth: MediaQuery.of(context).size.width * 0.8,
+                  onPressed: () {
+                    _getFile();
+                  },
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Wrap(
+                  alignment: WrapAlignment.center,
+                  children: [
+                    SecondaryButton(
+                        text: 'Cancel',
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        }),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    PrimaryButton(
+                      text: 'Next',
+                      onPressed: () async {},
+                    ),
+                  ],
+                )
               ],
             ),
           ),
@@ -451,11 +470,13 @@ class _TaxonImportFormState extends State<TaxonImportForm> {
     );
   }
 
-  Future<void> _getDir() async {
-    Directory? dir = await FilePickerServices().selectDir();
-    if (dir != null) {
+  Future<void> _getFile() async {
+    File? file = await FilePickerServices().selectFile([
+      'csv',
+    ]);
+    if (file != null) {
       setState(() {
-        _dirPath = dir;
+        _filePath = file;
       });
     }
   }
