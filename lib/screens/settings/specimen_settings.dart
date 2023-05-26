@@ -98,7 +98,7 @@ class SpecimenTypeSettings extends ConsumerWidget {
           partController.clear();
         }
       },
-      resetLabel: 'Reset types',
+      resetLabel: 'Match database types',
       onReset: () => SpecimenPartServices(ref).getSpecimenTypes(),
     );
   }
@@ -141,7 +141,7 @@ class TreatmentOptionSettings extends ConsumerWidget {
           treatmentController.clear();
         }
       },
-      resetLabel: 'Reset treatments',
+      resetLabel: 'Match database treatments',
       onReset: () => SpecimenPartServices(ref).getTreatmentOptions(),
     );
   }

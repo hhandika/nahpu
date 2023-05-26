@@ -16,7 +16,9 @@ class SettingTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: Theme.of(context).textTheme.bodyMedium,
+      style: const TextStyle(
+        fontSize: 14,
+      ),
     );
   }
 }
@@ -123,13 +125,12 @@ class SettingChip extends StatelessWidget {
           ],
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+          padding: const EdgeInsets.fromLTRB(0, 25, 0, 0),
           child: TextButton(
             onPressed: onReset,
             child: Text(
               resetLabel,
               style: const TextStyle(
-                color: Colors.red,
                 fontSize: 14,
               ),
             ),

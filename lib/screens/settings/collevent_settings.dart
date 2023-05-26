@@ -79,7 +79,7 @@ class CollMethodSettings extends ConsumerWidget {
         );
         controller.clear();
       },
-      resetLabel: 'Reset methods',
+      resetLabel: 'Match database methods',
       onReset: () {
         CollMethodServices(ref).getAllMethods();
       },
@@ -116,7 +116,7 @@ class PersonnelRoleSetting extends ConsumerWidget {
         CollEvenPersonnelServices(ref).addRole(controller.text);
         controller.clear();
       },
-      resetLabel: 'Reset roles',
+      resetLabel: 'Match database roles',
       onReset: () {
         CollEvenPersonnelServices(ref).getAllRoles();
       },

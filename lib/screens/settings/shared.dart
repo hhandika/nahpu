@@ -77,7 +77,7 @@ class ThemeSettingState extends ConsumerState<ThemeSettings> {
       ),
       body: SettingsList(sections: [
         SettingsSection(
-          title: const Text('Theme'),
+          title: const SettingTitle(title: 'Theme'),
           tiles: themes.map(
             (e) {
               return SettingsTile(
