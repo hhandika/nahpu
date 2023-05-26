@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:path/path.dart' as p;
 
 class FileOperationPage extends StatelessWidget {
   const FileOperationPage({
@@ -123,29 +125,63 @@ class SelectDirField extends StatelessWidget {
 class SelectFileField extends StatelessWidget {
   const SelectFileField({
     super.key,
-    required this.path,
+    required this.filePath,
     required this.onPressed,
+    required this.width,
+    required this.maxWidth,
   });
 
-  final File path;
+  final File? filePath;
   final VoidCallback onPressed;
+  final double width;
+  final double maxWidth;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Text(
-            'Choose a file: ${path.path}',
-            overflow: TextOverflow.ellipsis,
-          ),
+    return DottedBorder(
+      borderType: BorderType.RRect,
+      radius: const Radius.circular(20),
+      color: Theme.of(context).dividerColor,
+      strokeWidth: 2,
+      child: Container(
+        width: width,
+        constraints: BoxConstraints(
+          maxWidth: maxWidth,
         ),
-        const SizedBox(width: 10),
-        IconButton(
-          icon: const Icon(Icons.folder),
-          onPressed: onPressed,
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            TextButton(
+              onPressed: onPressed,
+              child: const Text(
+                'Select file',
+              ),
+            ),
+            const Text(' ··· '),
+            const SizedBox(height: 10),
+            Visibility(
+              visible: filePath != null,
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    const WidgetSpan(
+                      child: Icon(Icons.file_present),
+                      alignment: PlaceholderAlignment.middle,
+                    ),
+                    TextSpan(
+                      text:
+                          ' ${p.basename(filePath == null ? '' : filePath!.path)}',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

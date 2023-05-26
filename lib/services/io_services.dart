@@ -108,3 +108,21 @@ class DbAccess {
   Database get dbAccess => ref.read(databaseProvider);
   String get projectUuid => ref.read(projectUuidProvider);
 }
+
+Future<File> getDbBackUpPath() async {
+  final documentDir = await nahpuDocumentDir;
+  final backupDir = Directory(path.join(documentDir.path, 'nahpu/backup'));
+  await backupDir.create(recursive: true);
+  final backupFile =
+      File(path.join(backupDir.path, 'nahpu_backup$dateTimeStamp.sqlite3'));
+  return backupFile;
+}
+
+String get nahpuBackupDir => 'nahpu/backup';
+
+Future<Directory> get nahpuDocumentDir async {
+  final dbDir = await getApplicationDocumentsDirectory();
+  final nahpuDir = Directory(path.join(dbDir.path, 'nahpu'));
+  await nahpuDir.create(recursive: true);
+  return nahpuDir;
+}

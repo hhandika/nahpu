@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/foundation.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:nahpu/services/io_services.dart';
 import 'package:path/path.dart' as p;
 
 part 'database.g.dart';
@@ -91,6 +91,6 @@ LazyDatabase _openConnection() {
 
 Future<File> get dBPath async {
   // We save database to the default document directory locations.
-  final dbDir = await getApplicationDocumentsDirectory();
+  final dbDir = await nahpuDocumentDir;
   return File(p.join(dbDir.path, 'nahpu/nahpu.db'));
 }

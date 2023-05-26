@@ -55,6 +55,7 @@ dependencies:
   pdf: ^3.8.4
   riverpod_annotation: ^2.1.1
   csv: ^5.0.2
+  dotted_border: ^2.0.0+3
 
 dev_dependencies:
   flutter_test:
