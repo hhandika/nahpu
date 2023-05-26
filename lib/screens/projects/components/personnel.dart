@@ -1,11 +1,11 @@
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/providers/personnel.dart';
+import 'package:nahpu/screens/projects/dashboard.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/providers/validation.dart';
-import 'package:nahpu/screens/projects/dashboard.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/project_services.dart';
@@ -240,7 +240,6 @@ class PersonnelMenuState extends ConsumerState<PersonnelMenu> {
   void _onPopUpMenuSelected(PersonnelMenuAction item) {
     switch (item) {
       case PersonnelMenuAction.edit:
-        ref.read(personnelFormValidation.notifier).isEditing();
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => EditPersonnelForm(
@@ -272,7 +271,7 @@ class NewPersonnel extends ConsumerWidget {
           child: PersonnelForm(
             ctr: ctr,
             personnelUuid: uuid,
-            isAddNew: true,
+            isEditing: false,
           ),
         ),
       ),
@@ -301,7 +300,7 @@ class EditPersonnelForm extends ConsumerWidget {
               PersonnelForm(
                 ctr: ctr,
                 personnelUuid: personnelData.uuid,
-                isAddNew: false,
+                isEditing: true,
               ),
             ],
           ),
@@ -413,12 +412,12 @@ class PersonnelForm extends ConsumerStatefulWidget {
     super.key,
     required this.ctr,
     required this.personnelUuid,
-    required this.isAddNew,
+    required this.isEditing,
   });
 
   final PersonnelFormCtrModel ctr;
   final String personnelUuid;
-  final bool isAddNew;
+  final bool isEditing;
 
   @override
   PersonnelFormState createState() => PersonnelFormState();
@@ -429,11 +428,20 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
 
   final List<String> _roleList = const [
     'Cataloger',
-    'Field assistant',
     'Preparator only',
-    'Local helper',
-    'Photographer only',
+    'None',
   ];
+
+  @override
+  void initState() {
+    _getRole();
+    super.initState();
+    if (widget.isEditing) {
+      Future.delayed(Duration.zero, () {
+        _validateEditing();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -480,7 +488,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
           DropdownButtonFormField(
             value: widget.ctr.roleCtr,
             decoration: const InputDecoration(
-              labelText: 'Role',
+              labelText: 'Specimen care role',
               hintText: 'Enter role',
             ),
             items: _roleList
@@ -528,16 +536,14 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                 },
               ),
               FormElevButton(
-                text: widget.isAddNew ? 'Add' : 'Update',
-                enabled: widget.ctr.roleCtr == 'Cataloger'
-                    ? ref.read(personnelFormValidation).form.isValidCataloger
-                    : ref.read(personnelFormValidation).form.isValid,
+                text: widget.isEditing ? 'Update' : 'Add',
+                enabled: _validateForm(),
                 onPressed: () async {
-                  widget.isAddNew ? await _addPersonnel() : _updatePersonnel();
+                  widget.isEditing ? _updatePersonnel() : _addPersonnel();
                   ref.invalidate(personnelListProvider);
                   ref.invalidate(personnelFormValidation);
                   if (context.mounted) {
-                    Navigator.of(context).push(
+                    Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) => const Dashboard(),
                       ),
@@ -550,6 +556,25 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
         ],
       ),
     );
+  }
+
+  void _getRole() {
+    if (widget.ctr.roleCtr != null && widget.ctr.roleCtr!.isNotEmpty) {
+      if (!_roleList.contains(widget.ctr.roleCtr)) {
+        widget.ctr.roleCtr = 'None';
+        _updatePersonnel();
+      }
+    }
+  }
+
+  void _validateEditing() {
+    ref.read(personnelFormValidation.notifier).validateAll(widget.ctr);
+  }
+
+  bool _validateForm() {
+    return widget.ctr.roleCtr == 'Cataloger'
+        ? ref.read(personnelFormValidation).form.isValidCataloger
+        : ref.read(personnelFormValidation).form.isValid;
   }
 
   void _updatePersonnel() {

@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/database.dart';
 import 'package:nahpu/services/database/project_queries.dart';
+import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/validation.dart';
 import 'package:nahpu/services/validation_services.dart';
 
@@ -11,6 +12,10 @@ final projectFormValidation = StateNotifierProvider.autoDispose<
 class ProjectFormValidationNotifier extends StateNotifier<ProjectFormState> {
   ProjectFormValidationNotifier()
       : super(ProjectFormState(ProjectFormValidation.empty()));
+
+  void validateAll(ProjectFormCtrModel ctr) {
+    validateProjectName(ctr.projectNameCtr.text);
+  }
 
   void validateProjectName(String? value) {
     late ProjectFormField projectNameField;
@@ -63,6 +68,13 @@ class PersonnelFormValidationNotifier
     extends StateNotifier<NewPersonnelFormState> {
   PersonnelFormValidationNotifier()
       : super(NewPersonnelFormState(NewPersonnelFormValidation.empty()));
+
+  void validateAll(PersonnelFormCtrModel personnelCtr) {
+    validateName(personnelCtr.nameCtr.text);
+    validateEmail(personnelCtr.emailCtr.text);
+    validateInitial(personnelCtr.initialCtr.text);
+    validateCollNum(personnelCtr.nextCollectorNumCtr.text);
+  }
 
   void validateName(String? value) {
     late NewPersonnelFormField nameField;
@@ -133,9 +145,5 @@ class PersonnelFormValidationNotifier
     }
 
     state = state.copyWith(form: form.copyWith(collNum: collNumField));
-  }
-
-  void isEditing() {
-    state = state.copyWith(form: NewPersonnelFormValidation.isValid());
   }
 }
