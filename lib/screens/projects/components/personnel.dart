@@ -326,99 +326,6 @@ class EditPersonnelForm extends ConsumerWidget {
   }
 }
 
-class PersonnelNameField extends ConsumerWidget {
-  const PersonnelNameField({
-    super.key,
-    required this.ctr,
-    required this.onChanged,
-  });
-
-  final PersonnelFormCtrModel ctr;
-  final void Function(String) onChanged;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return TextFormField(
-      controller: ctr.nameCtr,
-      decoration: InputDecoration(
-        labelText: 'Name*',
-        hintText: 'Enter a name (required)',
-        errorText: ref.watch(personnelFormValidatorProvider).when(
-              data: (data) => data.name.errMsg,
-              loading: () => null,
-              error: (e, s) => null,
-            ),
-      ),
-      onChanged: onChanged,
-    );
-  }
-}
-
-class PersonnelInitialField extends ConsumerWidget {
-  const PersonnelInitialField({
-    super.key,
-    required this.ctr,
-    required this.onChanged,
-  });
-
-  final PersonnelFormCtrModel ctr;
-  final void Function(String) onChanged;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return TextFormField(
-      controller: ctr.initialCtr,
-      maxLength: 8,
-      decoration: InputDecoration(
-          labelText: 'Initials*',
-          hintText: 'Enter initials (required for catalogers)',
-          errorText: ref.watch(personnelFormValidatorProvider).when(
-                data: (data) => data.initial.errMsg,
-                loading: () => null,
-                error: (e, s) => null,
-              )),
-      inputFormatters: [
-        LengthLimitingTextInputFormatter(5),
-      ],
-      onChanged: onChanged,
-    );
-  }
-}
-
-class CatalogerNumberField extends ConsumerWidget {
-  const CatalogerNumberField({
-    super.key,
-    required this.ctr,
-    required this.onChanged,
-  });
-
-  final PersonnelFormCtrModel ctr;
-  final void Function(String) onChanged;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return TextField(
-      enabled: ctr.roleCtr == 'Cataloger',
-      controller: ctr.collectorNumCtr,
-      decoration: InputDecoration(
-          labelText: 'Collector Number*',
-          hintText: 'Enter current number',
-          errorText: ref.watch(personnelFormValidatorProvider).when(
-                data: (data) => data.collNum.errMsg,
-                loading: () => null,
-                error: (e, s) => null,
-              )),
-      keyboardType: TextInputType.number,
-      inputFormatters: [
-        FilteringTextInputFormatter.allow(
-          RegExp(r'[0-9]+'),
-        ),
-      ],
-      onChanged: onChanged,
-    );
-  }
-}
-
 class PersonnelForm extends ConsumerStatefulWidget {
   const PersonnelForm({
     super.key,
@@ -682,5 +589,98 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
     } else {
       return int.parse(widget.ctr.collectorNumCtr.text);
     }
+  }
+}
+
+class PersonnelNameField extends ConsumerWidget {
+  const PersonnelNameField({
+    super.key,
+    required this.ctr,
+    required this.onChanged,
+  });
+
+  final PersonnelFormCtrModel ctr;
+  final void Function(String) onChanged;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return TextFormField(
+      controller: ctr.nameCtr,
+      decoration: InputDecoration(
+        labelText: 'Name*',
+        hintText: 'Enter a name (required)',
+        errorText: ref.watch(personnelFormValidatorProvider).when(
+              data: (data) => data.name.errMsg,
+              loading: () => null,
+              error: (e, s) => null,
+            ),
+      ),
+      onChanged: onChanged,
+    );
+  }
+}
+
+class PersonnelInitialField extends ConsumerWidget {
+  const PersonnelInitialField({
+    super.key,
+    required this.ctr,
+    required this.onChanged,
+  });
+
+  final PersonnelFormCtrModel ctr;
+  final void Function(String) onChanged;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return TextFormField(
+      controller: ctr.initialCtr,
+      maxLength: 8,
+      decoration: InputDecoration(
+          labelText: 'Initials*',
+          hintText: 'Enter initials (required for catalogers)',
+          errorText: ref.watch(personnelFormValidatorProvider).when(
+                data: (data) => data.initial.errMsg,
+                loading: () => null,
+                error: (e, s) => null,
+              )),
+      inputFormatters: [
+        LengthLimitingTextInputFormatter(5),
+      ],
+      onChanged: onChanged,
+    );
+  }
+}
+
+class CatalogerNumberField extends ConsumerWidget {
+  const CatalogerNumberField({
+    super.key,
+    required this.ctr,
+    required this.onChanged,
+  });
+
+  final PersonnelFormCtrModel ctr;
+  final void Function(String) onChanged;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return TextField(
+      enabled: ctr.roleCtr == 'Cataloger',
+      controller: ctr.collectorNumCtr,
+      decoration: InputDecoration(
+          labelText: 'Collector Number*',
+          hintText: 'Enter current number',
+          errorText: ref.watch(personnelFormValidatorProvider).when(
+                data: (data) => data.collNum.errMsg,
+                loading: () => null,
+                error: (e, s) => null,
+              )),
+      keyboardType: TextInputType.number,
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(
+          RegExp(r'[0-9]+'),
+        ),
+      ],
+      onChanged: onChanged,
+    );
   }
 }
