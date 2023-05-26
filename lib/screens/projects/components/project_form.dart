@@ -32,6 +32,16 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.isEditing) {
+      Future.delayed(Duration.zero, () {
+        _validateForm();
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
@@ -139,9 +149,7 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                       _goToDashboard();
                     },
                     text: widget.isEditing ? 'Update' : 'Create',
-                    enabled: widget.isEditing
-                        ? true // Temporary fix to allow editing
-                        : ref.read(projectFormValidation).form.isValid,
+                    enabled: ref.read(projectFormValidation).form.isValid,
                   )
                 ])
               ],
@@ -150,6 +158,10 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
         ),
       ),
     );
+  }
+
+  void _validateForm() {
+    ref.read(projectFormValidation.notifier).validateAll(widget.projectCtr);
   }
 
   Future<DateTime?> _showDate(BuildContext context) {

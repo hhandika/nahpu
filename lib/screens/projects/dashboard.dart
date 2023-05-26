@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
-import 'package:nahpu/providers/validation.dart';
 import 'package:nahpu/screens/projects/components/action_buttons.dart';
 import 'package:nahpu/screens/projects/components/menu_drawer.dart';
 import 'package:nahpu/screens/projects/components/misc_forms.dart';
@@ -64,9 +63,6 @@ class DashboardState extends ConsumerState<Dashboard> {
                             padding: const EdgeInsets.all(10.0),
                             child: IconButton(
                               onPressed: () {
-                                ref
-                                    .read(projectFormValidation.notifier)
-                                    .isEditing();
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) =>
                                         EditProject(projectUuid: projectUuid)));

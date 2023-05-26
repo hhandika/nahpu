@@ -54,10 +54,6 @@ class ProjectFormValidationNotifier extends StateNotifier<ProjectFormState> {
                 }
             });
   }
-
-  void isEditing() {
-    state = state.copyWith(form: ProjectFormValidation.isValid());
-  }
 }
 
 final personnelFormValidation = StateNotifierProvider.autoDispose<
