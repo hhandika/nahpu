@@ -34,11 +34,11 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
   @override
   void initState() {
     super.initState();
-    if (widget.isEditing) {
-      Future.delayed(Duration.zero, () {
-        _validateForm();
-      });
-    }
+    // if (widget.isEditing) {
+    //   Future.delayed(Duration.zero, () {
+    //     _validateForm();
+    //   });
+    // }
   }
 
   @override
@@ -68,9 +68,11 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                       ref
                           .watch(projectFormValidatorProvider.notifier)
                           .validateProjectName(value);
-                      await ref
-                          .watch(projectFormValidatorProvider.notifier)
-                          .checkProjectNameExists(value);
+                      if (!widget.isEditing) {
+                        await ref
+                            .watch(projectFormValidatorProvider.notifier)
+                            .checkProjectNameExists(value);
+                      }
                     },
                     errorText: validator.when(
                       data: (data) => data.projectName.errMsg,
@@ -164,12 +166,6 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
         ),
       ),
     );
-  }
-
-  void _validateForm() {
-    ref
-        .read(projectFormValidatorProvider.notifier)
-        .validateAll(widget.projectCtr);
   }
 
   Future<DateTime?> _showDate(BuildContext context) {

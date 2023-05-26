@@ -100,10 +100,6 @@ class ProjectFormValidator extends _$ProjectFormValidator {
     bool isMatch = isListContains(projectNames, value);
     return isMatch;
   }
-
-  Future<void> validateAll(ProjectFormCtrModel projectCtr) async {
-    await validateProjectName(projectCtr.projectNameCtr.text);
-  }
 }
 
 final personnelFormValidation = StateNotifierProvider.autoDispose<
