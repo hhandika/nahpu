@@ -66,6 +66,11 @@ extension StringValidator on String {
     return nameRegex.hasMatch(this);
   }
 
+  bool get isValidInitial {
+    final initialRegex = RegExp(r'^[a-zA-Z]+$');
+    return initialRegex.hasMatch(this);
+  }
+
   bool get isValidEmail {
     final emailRegex =
         RegExp(r'(^[a-zA-Z0-9_.]+[@]{1}[a-z0-9]+[\.][a-z](.)+$)');

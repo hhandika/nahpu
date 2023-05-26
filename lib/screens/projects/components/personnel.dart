@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/personnel_services.dart';
+import 'package:nahpu/services/types/types.dart';
 
 enum PersonnelMenuAction { edit, delete }
 
@@ -317,7 +318,7 @@ class EditPersonnelForm extends ConsumerWidget {
       affiliationCtr: TextEditingController(text: personnelData.affiliation),
       emailCtr: TextEditingController(text: personnelData.email),
       roleCtr: personnelData.role,
-      nextCollectorNumCtr:
+      collectorNumCtr:
           TextEditingController(text: '${personnelData.currentFieldNumber}'),
       photoIdCtr: personnelData.photoID,
       noteCtr: TextEditingController(text: ''),
@@ -337,19 +338,28 @@ class PersonnelNameField extends ConsumerWidget {
       decoration: InputDecoration(
         labelText: 'Name*',
         hintText: 'Enter a name (required)',
-        errorText: ref.watch(personnelFormValidation).form.name.errMsg,
+        errorText: ref.watch(personnelFormValidatorProvider).when(
+              data: (data) => data.name.errMsg,
+              loading: () => null,
+              error: (e, s) => null,
+            ),
       ),
       onChanged: (value) {
-        ref.watch(personnelFormValidation.notifier).validateName(value);
+        ref.watch(personnelFormValidatorProvider.notifier).validateName(value);
       },
     );
   }
 }
 
 class PersonnelInitialField extends ConsumerWidget {
-  const PersonnelInitialField({super.key, required this.ctr});
+  const PersonnelInitialField({
+    super.key,
+    required this.ctr,
+    required this.onChanged,
+  });
 
   final PersonnelFormCtrModel ctr;
+  final void Function(String) onChanged;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -357,53 +367,52 @@ class PersonnelInitialField extends ConsumerWidget {
       controller: ctr.initialCtr,
       maxLength: 8,
       decoration: InputDecoration(
-        labelText: 'Initials*',
-        hintText: 'Enter initials (required for catalogers)',
-        errorText: ref.watch(personnelFormValidation).form.initial.errMsg,
-      ),
+          labelText: 'Initials*',
+          hintText: 'Enter initials (required for catalogers)',
+          errorText: ref.watch(personnelFormValidatorProvider).when(
+                data: (data) => data.initial.errMsg,
+                loading: () => null,
+                error: (e, s) => null,
+              )),
       inputFormatters: [
         LengthLimitingTextInputFormatter(5),
-        FilteringTextInputFormatter.allow(
-          RegExp(r'[a-zA-Z]+|\s'),
-        ),
       ],
-      onChanged: (value) {
-        ctr.initialCtr.value = TextEditingValue(
-          text: value.toUpperCase(),
-          selection: ctr.initialCtr.selection,
-        );
-        ref.watch(personnelFormValidation.notifier).validateInitial(
-              value,
-            );
-      },
+      onChanged: onChanged,
     );
   }
 }
 
 class CatalogerNumberField extends ConsumerWidget {
-  const CatalogerNumberField({super.key, required this.ctr});
+  const CatalogerNumberField({
+    super.key,
+    required this.ctr,
+    required this.onChanged,
+  });
 
   final PersonnelFormCtrModel ctr;
+  final void Function(String) onChanged;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TextField(
-        enabled: ctr.roleCtr == 'Cataloger',
-        controller: ctr.nextCollectorNumCtr,
-        decoration: InputDecoration(
+      enabled: ctr.roleCtr == 'Cataloger',
+      controller: ctr.collectorNumCtr,
+      decoration: InputDecoration(
           labelText: 'Collector Number*',
           hintText: 'Enter current number',
-          errorText: ref.watch(personnelFormValidation).form.collNum.errMsg,
+          errorText: ref.watch(personnelFormValidatorProvider).when(
+                data: (data) => data.collNum.errMsg,
+                loading: () => null,
+                error: (e, s) => null,
+              )),
+      keyboardType: TextInputType.number,
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(
+          RegExp(r'[0-9]+'),
         ),
-        keyboardType: TextInputType.number,
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(
-            RegExp(r'[0-9]+'),
-          ),
-        ],
-        onChanged: (value) {
-          ref.watch(personnelFormValidation.notifier).validateCollNum(value);
-        });
+      ],
+      onChanged: onChanged,
+    );
   }
 }
 
@@ -426,21 +435,10 @@ class PersonnelForm extends ConsumerStatefulWidget {
 class PersonnelFormState extends ConsumerState<PersonnelForm> {
   final _formKey = GlobalKey<FormState>();
 
-  final List<String> _roleList = const [
-    'Cataloger',
-    'Preparator only',
-    'None',
-  ];
-
   @override
   void initState() {
     _getRole();
     super.initState();
-    if (widget.isEditing) {
-      Future.delayed(Duration.zero, () {
-        _validateEditing();
-      });
-    }
   }
 
   @override
@@ -461,17 +459,26 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
           TextFormField(
             controller: widget.ctr.emailCtr,
             decoration: InputDecoration(
-              labelText: 'Email',
-              hintText: 'Enter email',
-              errorText: ref.watch(personnelFormValidation).form.email.errMsg,
-            ),
+                labelText: 'Email',
+                hintText: 'Enter email',
+                errorText: ref.watch(personnelFormValidatorProvider).when(
+                      data: (data) => data.email.errMsg,
+                      loading: () => null,
+                      error: (e, s) => null,
+                    )),
             onChanged: (value) {
-              ref.watch(personnelFormValidation.notifier).validateEmail(
-                    value,
-                  );
-              widget.ctr.emailCtr.value = TextEditingValue(
-                  text: value.toLowerCase(),
-                  selection: widget.ctr.emailCtr.selection);
+              if (widget.isEditing) {
+                _validateEditing();
+              } else {
+                widget.ctr.emailCtr.value = TextEditingValue(
+                    text: value.toLowerCase(),
+                    selection: widget.ctr.emailCtr.selection);
+                ref
+                    .watch(personnelFormValidatorProvider.notifier)
+                    .validateEmail(
+                      value,
+                    );
+              }
             },
           ),
           TextFormField(
@@ -491,7 +498,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
               labelText: 'Specimen care role',
               hintText: 'Enter role',
             ),
-            items: _roleList
+            items: personnelRoleList
                 .map(
                   (role) => DropdownMenuItem(
                     value: role,
@@ -509,8 +516,34 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
             visible: widget.ctr.roleCtr == 'Cataloger',
             child: Column(
               children: [
-                PersonnelInitialField(ctr: widget.ctr),
-                CatalogerNumberField(ctr: widget.ctr),
+                PersonnelInitialField(
+                  ctr: widget.ctr,
+                  onChanged: (value) {
+                    widget.ctr.initialCtr.value = TextEditingValue(
+                      text: value.toUpperCase(),
+                      selection: widget.ctr.initialCtr.selection,
+                    );
+                    if (widget.isEditing) {
+                      _validateEditing();
+                    } else {
+                      ref
+                          .watch(personnelFormValidatorProvider.notifier)
+                          .validateInitial(value);
+                    }
+                  },
+                ),
+                CatalogerNumberField(
+                  ctr: widget.ctr,
+                  onChanged: (value) {
+                    if (widget.isEditing) {
+                      _validateEditing();
+                    } else {
+                      ref
+                          .watch(personnelFormValidatorProvider.notifier)
+                          .validateCollNum(value);
+                    }
+                  },
+                ),
               ],
             ),
           ),
@@ -531,7 +564,6 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
               SecondaryButton(
                 text: 'Cancel',
                 onPressed: () {
-                  ref.invalidate(personnelFormValidation);
                   Navigator.of(context).pop();
                 },
               ),
@@ -541,7 +573,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                 onPressed: () async {
                   widget.isEditing ? _updatePersonnel() : _addPersonnel();
                   ref.invalidate(personnelListProvider);
-                  ref.invalidate(personnelFormValidation);
+                  ref.invalidate(personnelFormValidatorProvider);
                   if (context.mounted) {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
@@ -560,7 +592,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
 
   void _getRole() {
     if (widget.ctr.roleCtr != null && widget.ctr.roleCtr!.isNotEmpty) {
-      if (!_roleList.contains(widget.ctr.roleCtr)) {
+      if (!personnelRoleList.contains(widget.ctr.roleCtr)) {
         widget.ctr.roleCtr = 'None';
         _updatePersonnel();
       }
@@ -568,13 +600,21 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
   }
 
   void _validateEditing() {
-    ref.read(personnelFormValidation.notifier).validateAll(widget.ctr);
+    ref.watch(personnelFormValidatorProvider.notifier).validateAll(widget.ctr);
   }
 
   bool _validateForm() {
     return widget.ctr.roleCtr == 'Cataloger'
-        ? ref.read(personnelFormValidation).form.isValidCataloger
-        : ref.read(personnelFormValidation).form.isValid;
+        ? ref.read(personnelFormValidatorProvider).when(
+              data: (data) => data.isValidCataloger,
+              loading: () => false,
+              error: (error, stackTrace) => false,
+            )
+        : ref.read(personnelFormValidatorProvider).when(
+              data: (data) => data.isValidOther,
+              loading: () => false,
+              error: (error, stackTrace) => false,
+            );
   }
 
   void _updatePersonnel() {
@@ -618,10 +658,10 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
   }
 
   int _getCollectorNumber() {
-    if (widget.ctr.nextCollectorNumCtr.text == '') {
+    if (widget.ctr.collectorNumCtr.text == '') {
       return 0;
     } else {
-      return int.parse(widget.ctr.nextCollectorNumCtr.text);
+      return int.parse(widget.ctr.collectorNumCtr.text);
     }
   }
 }

@@ -718,7 +718,7 @@ class PersonnelFormCtrModel {
     required this.phoneCtr,
     required this.affiliationCtr,
     required this.roleCtr,
-    required this.nextCollectorNumCtr,
+    required this.collectorNumCtr,
     required this.photoIdCtr,
     required this.noteCtr,
   });
@@ -728,7 +728,7 @@ class PersonnelFormCtrModel {
   TextEditingController emailCtr;
   TextEditingController affiliationCtr;
   String? roleCtr;
-  TextEditingController nextCollectorNumCtr;
+  TextEditingController collectorNumCtr;
   TextEditingController phoneCtr;
   int? photoIdCtr;
   TextEditingController noteCtr;
@@ -740,7 +740,7 @@ class PersonnelFormCtrModel {
       phoneCtr: TextEditingController(),
       affiliationCtr: TextEditingController(),
       roleCtr: null,
-      nextCollectorNumCtr: TextEditingController(),
+      collectorNumCtr: TextEditingController(),
       photoIdCtr: null,
       noteCtr: TextEditingController());
 
@@ -752,7 +752,7 @@ class PersonnelFormCtrModel {
         phoneCtr: TextEditingController(text: personnel.phone),
         affiliationCtr: TextEditingController(text: personnel.affiliation),
         roleCtr: personnel.role,
-        nextCollectorNumCtr: TextEditingController(
+        collectorNumCtr: TextEditingController(
             text: personnel.currentFieldNumber?.toString() ?? ''),
         photoIdCtr: personnel.photoID,
         noteCtr: TextEditingController(text: personnel.notes),

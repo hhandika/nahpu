@@ -25,6 +25,12 @@ enum SiteMenuSelection {
   deleteAllRecords
 }
 
+const List<String> personnelRoleList = [
+  'Cataloger',
+  'Preparator only',
+  'None',
+];
+
 enum PdfExportType { narrative }
 
 const List<String> pdfExportList = [
