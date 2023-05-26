@@ -6,7 +6,6 @@ import 'package:nahpu/services/database/project_queries.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/validation.dart';
 import 'package:nahpu/services/utility_services.dart';
-import 'package:nahpu/services/validation_services.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'validation.g.dart';
@@ -58,6 +57,12 @@ class ProjectFormValidator extends _$ProjectFormValidator {
         return ProjectForm(
             projectName: ProjectFormField(
                 errMsg: "Project name is too short", isValid: false));
+      }
+
+      if (!value.isValidProjectName) {
+        return ProjectForm(
+            projectName:
+                ProjectFormField(errMsg: "Invalid characters", isValid: false));
       }
 
       if (value.length > 25) {

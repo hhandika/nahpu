@@ -60,9 +60,9 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                     hintText: 'Enter the name of the project (required)',
                     inputFormatters: [
                       LengthLimitingTextInputFormatter(25),
-                      FilteringTextInputFormatter.allow(
-                        RegExp(r'[a-zA-Z0-9-_]+|\s'),
-                      ),
+                      // FilteringTextInputFormatter.allow(
+                      //   RegExp(r'[a-zA-Z0-9-_]+|\s'),
+                      // ),
                     ],
                     onChanged: (value) async {
                       ref

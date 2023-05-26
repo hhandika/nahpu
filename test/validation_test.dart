@@ -7,9 +7,15 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nahpu/services/types/types.dart';
-import 'package:nahpu/services/validation_services.dart';
+import 'package:nahpu/services/utility_services.dart';
 
 void main() {
+  test('Test project name is valid', () {
+    String validProjectName = 'Project Name';
+    String invalidProjectName = 'Project Name!?*';
+    expect(validProjectName.isValidProjectName, isTrue);
+    expect(invalidProjectName.isValidProjectName, isFalse);
+  });
   test('Test email is valid', () {
     String validEmail = 'test@gmail.com';
     String invalidEmail = 'test\$\$#%@gmail';
