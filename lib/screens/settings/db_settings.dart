@@ -33,7 +33,7 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
           child: SettingsList(
             sections: [
               SettingsSection(
-                title: const Text('Database'),
+                title: const SettingTitle(title: 'Database'),
                 tiles: [
                   CustomSettingsTile(
                     child: SettingCard(

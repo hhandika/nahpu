@@ -4,6 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:settings_ui/settings_ui.dart';
 
+class SettingTitle extends StatelessWidget {
+  const SettingTitle({
+    super.key,
+    required this.title,
+  });
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title,
+      style: Theme.of(context).textTheme.bodyMedium,
+    );
+  }
+}
+
 class SettingCard extends StatelessWidget {
   const SettingCard({super.key, required this.children});
 

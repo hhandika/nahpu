@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/screens/settings/collevent_settings.dart';
+import 'package:nahpu/screens/settings/common.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/screens/settings/shared.dart';
@@ -41,7 +42,7 @@ class GeneralSettings {
 
   SettingsSection getSetting() {
     return SettingsSection(
-      title: const Text('Catalog Settings'),
+      title: const SettingTitle(title: 'Catalog Settings'),
       tiles: [
         _getCatalogFmtSetting(),
         _getCollEventSettings(),
@@ -55,7 +56,7 @@ class GeneralSettings {
     final selectedFmt = matchCatFmtToTaxonGroup(catalogFmt);
     return SettingsTile.navigation(
       leading: const Icon(MdiIcons.fileCabinet),
-      title: const Text('Catalog Format'),
+      title: const SettingTitle(title: 'Catalog Format'),
       value: Text(selectedFmt),
       onPressed: (context) => Navigator.push(
         context,
@@ -72,7 +73,7 @@ class GeneralSettings {
     CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
     return SettingsTile.navigation(
       leading: Icon(matchCatFmtToIcon(catalogFmt, false)),
-      title: const Text('Specimen Parts'),
+      title: const SettingTitle(title: 'Specimen Parts'),
       onPressed: (context) => Navigator.push(
         context,
         MaterialPageRoute(
@@ -85,7 +86,7 @@ class GeneralSettings {
   SettingsTile _getCollEventSettings() {
     return SettingsTile.navigation(
       leading: const Icon(Icons.timeline_outlined),
-      title: const Text('Collecting Events'),
+      title: const SettingTitle(title: 'Collecting Events'),
       onPressed: (context) => Navigator.push(
         context,
         MaterialPageRoute(
@@ -112,45 +113,49 @@ class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
         title: const Text('Catalog Format'),
       ),
       body: SettingsList(sections: [
-        SettingsSection(title: const Text('Catalog Format'), tiles: [
-          SettingsTile(
-            title: const Text('General Mammals'),
-            leading: const Icon(MdiIcons.paw),
-            trailing: widget.selectedFmt == 'General Mammals'
-                ? const Icon(Icons.check)
-                : null,
-            onPressed: (context) {
-              ref
-                  .read(catalogFmtNotifier.notifier)
-                  .setCatalogFmt(CatalogFmt.generalMammals);
-              Navigator.pop(context);
-            },
-          ),
-          SettingsTile(
-            title: const Text('Birds'),
-            leading: const Icon(MdiIcons.owl),
-            trailing:
-                widget.selectedFmt == 'Birds' ? const Icon(Icons.check) : null,
-            onPressed: (context) {
-              ref
-                  .read(catalogFmtNotifier.notifier)
-                  .setCatalogFmt(CatalogFmt.birds);
-              Navigator.pop(context);
-            },
-          ),
-          SettingsTile(
-            title: const Text('Bats'),
-            leading: const Icon(MdiIcons.bat),
-            trailing:
-                widget.selectedFmt == 'Bats' ? const Icon(Icons.check) : null,
-            onPressed: (context) {
-              ref
-                  .read(catalogFmtNotifier.notifier)
-                  .setCatalogFmt(CatalogFmt.bats);
-              Navigator.pop(context);
-            },
-          ),
-        ])
+        SettingsSection(
+            title: const SettingTitle(title: 'Catalog Format'),
+            tiles: [
+              SettingsTile(
+                title: const Text('General Mammals'),
+                leading: const Icon(MdiIcons.paw),
+                trailing: widget.selectedFmt == 'General Mammals'
+                    ? const Icon(Icons.check)
+                    : null,
+                onPressed: (context) {
+                  ref
+                      .read(catalogFmtNotifier.notifier)
+                      .setCatalogFmt(CatalogFmt.generalMammals);
+                  Navigator.pop(context);
+                },
+              ),
+              SettingsTile(
+                title: const Text('Birds'),
+                leading: const Icon(MdiIcons.owl),
+                trailing: widget.selectedFmt == 'Birds'
+                    ? const Icon(Icons.check)
+                    : null,
+                onPressed: (context) {
+                  ref
+                      .read(catalogFmtNotifier.notifier)
+                      .setCatalogFmt(CatalogFmt.birds);
+                  Navigator.pop(context);
+                },
+              ),
+              SettingsTile(
+                title: const Text('Bats'),
+                leading: const Icon(MdiIcons.bat),
+                trailing: widget.selectedFmt == 'Bats'
+                    ? const Icon(Icons.check)
+                    : null,
+                onPressed: (context) {
+                  ref
+                      .read(catalogFmtNotifier.notifier)
+                      .setCatalogFmt(CatalogFmt.bats);
+                  Navigator.pop(context);
+                },
+              ),
+            ])
       ]),
     );
   }

@@ -27,7 +27,7 @@ class _SpecimenPartSelectionState extends State<SpecimenPartSelection> {
           bool isMobile = constraints.maxWidth < 600;
           return SettingsList(sections: [
             SettingsSection(
-              title: const Text('Tissue ID'),
+              title: const SettingTitle(title: 'Tissue ID'),
               tiles: [
                 androidPadding,
                 CustomSettingsTile(
@@ -39,7 +39,7 @@ class _SpecimenPartSelectionState extends State<SpecimenPartSelection> {
               ],
             ),
             const SettingsSection(
-              title: Text('Specimen Types'),
+              title: SettingTitle(title: 'Specimen Types'),
               tiles: [
                 CustomSettingsTile(
                   child: SpecimenTypeSettings(),
@@ -47,7 +47,7 @@ class _SpecimenPartSelectionState extends State<SpecimenPartSelection> {
               ],
             ),
             const SettingsSection(
-              title: Text('Treatments'),
+              title: SettingTitle(title: 'Treatments'),
               tiles: [
                 CustomSettingsTile(
                   child: TreatmentOptionSettings(),

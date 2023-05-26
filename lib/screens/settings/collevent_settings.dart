@@ -18,19 +18,25 @@ class _CollEventSelectionState extends State<CollEventSelection> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Collection Event Settings'),
+        title: const SettingTitle(
+          title: 'Collection Event Settings',
+        ),
       ),
       body: const SafeArea(
         child: SettingsList(
           sections: [
             SettingsSection(
-              title: Text('Collection Methods'),
+              title: SettingTitle(
+                title: 'Collection Methods',
+              ),
               tiles: [
                 CustomSettingsTile(child: CollMethodSettings()),
               ],
             ),
             SettingsSection(
-              title: Text('Personnel Roles'),
+              title: SettingTitle(
+                title: 'Personnel Roles',
+              ),
               tiles: [
                 CustomSettingsTile(child: PersonnelRoleSetting()),
               ],

@@ -1,4 +1,5 @@
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:nahpu/screens/settings/common.dart';
 import 'package:nahpu/screens/settings/db_settings.dart';
 import 'package:nahpu/services/utility_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,7 +16,7 @@ class AppearanceSettings {
     final theme = ref.watch(themeSettingProvider);
     String themeValue = _getThemeValue(theme);
     return SettingsSection(
-      title: const Text('App Settings'),
+      title: const SettingTitle(title: 'App Settings'),
       tiles: [
         SettingsTile.navigation(
           leading: const Icon(Icons.color_lens_outlined),
