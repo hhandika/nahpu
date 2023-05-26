@@ -327,9 +327,14 @@ class EditPersonnelForm extends ConsumerWidget {
 }
 
 class PersonnelNameField extends ConsumerWidget {
-  const PersonnelNameField({super.key, required this.ctr});
+  const PersonnelNameField({
+    super.key,
+    required this.ctr,
+    required this.onChanged,
+  });
 
   final PersonnelFormCtrModel ctr;
+  final void Function(String) onChanged;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -344,9 +349,7 @@ class PersonnelNameField extends ConsumerWidget {
               error: (e, s) => null,
             ),
       ),
-      onChanged: (value) {
-        ref.watch(personnelFormValidatorProvider.notifier).validateName(value);
-      },
+      onChanged: onChanged,
     );
   }
 }
@@ -448,7 +451,17 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          PersonnelNameField(ctr: widget.ctr),
+          PersonnelNameField(
+              ctr: widget.ctr,
+              onChanged: (value) {
+                if (widget.isEditing) {
+                  _validateEditing();
+                } else {
+                  ref
+                      .watch(personnelFormValidatorProvider.notifier)
+                      .validateName(value);
+                }
+              }),
           TextFormField(
             controller: widget.ctr.affiliationCtr,
             decoration: const InputDecoration(
@@ -506,11 +519,13 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                   ),
                 )
                 .toList(),
-            onChanged: (String? newValue) {
-              setState(() {
-                widget.ctr.roleCtr = newValue;
-              });
-            },
+            onChanged: _isDisabled()
+                ? null
+                : (String? newValue) {
+                    setState(() {
+                      widget.ctr.roleCtr = newValue;
+                    });
+                  },
           ),
           Visibility(
             visible: widget.ctr.roleCtr == 'Cataloger',
@@ -588,6 +603,10 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
         ],
       ),
     );
+  }
+
+  bool _isDisabled() {
+    return widget.isEditing && widget.ctr.roleCtr == 'Cataloger';
   }
 
   void _getRole() {
