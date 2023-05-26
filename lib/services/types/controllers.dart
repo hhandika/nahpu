@@ -176,10 +176,11 @@ class CollEventFormCtrModel {
 }
 
 class NarrativeFormCtrModel {
-  NarrativeFormCtrModel(
-      {required this.dateCtr,
-      required this.siteCtr,
-      required this.narrativeCtr});
+  NarrativeFormCtrModel({
+    required this.dateCtr,
+    required this.siteCtr,
+    required this.narrativeCtr,
+  });
   TextEditingController dateCtr;
   int? siteCtr;
   TextEditingController narrativeCtr;

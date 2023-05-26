@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nahpu/screens/shared/photos.dart';
-import 'package:nahpu/screens/shared/videos.dart';
+import 'package:nahpu/screens/shared/forms.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MediaForm extends ConsumerStatefulWidget {
@@ -10,19 +9,14 @@ class MediaForm extends ConsumerStatefulWidget {
   MediaFormState createState() => MediaFormState();
 }
 
-class MediaFormState extends ConsumerState<MediaForm>
-    with TickerProviderStateMixin {
-  late TabController _tabController;
-
+class MediaFormState extends ConsumerState<MediaForm> {
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
     super.dispose();
   }
 
@@ -30,29 +24,42 @@ class MediaFormState extends ConsumerState<MediaForm>
   Widget build(BuildContext context) {
     return Column(
       children: [
-        DefaultTabController(
-          length: 2,
-          child: TabBar(
-            indicatorColor: Theme.of(context).colorScheme.secondary,
-            controller: _tabController,
-            tabs: [
-              Tab(
-                  icon: Icon(Icons.photo_library_outlined,
-                      color: Theme.of(context).colorScheme.tertiary)),
-              Tab(
-                  icon: Icon(Icons.video_library_outlined,
-                      color: Theme.of(context).colorScheme.tertiary)),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const TitleForm(text: 'Audio/Visual'),
+              Wrap(
+                alignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.start,
+                spacing: 8,
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.add),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor:
+                          Theme.of(context).colorScheme.onPrimaryContainer,
+                      backgroundColor:
+                          Theme.of(context).colorScheme.primaryContainer,
+                      elevation: 0,
+                    ),
+                    onPressed: () {},
+                    child: const Icon(Icons.camera_alt_outlined),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.5,
-          child: TabBarView(
-            controller: _tabController,
-            children: const [
-              PhotoViewer(),
-              VideoViewer(),
-            ],
+          child: const Center(
+            child: Text('No media added'),
           ),
         ),
       ],
