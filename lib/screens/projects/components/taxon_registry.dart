@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/taxa.dart';
+import 'package:nahpu/services/import/taxon_reader.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/types.dart';
@@ -385,14 +386,14 @@ class EditTaxon extends StatelessWidget {
   }
 }
 
-class TaxonImportForm extends StatefulWidget {
+class TaxonImportForm extends ConsumerStatefulWidget {
   const TaxonImportForm({super.key});
 
   @override
-  State<TaxonImportForm> createState() => _TaxonImportFormState();
+  TaxonImportFormState createState() => TaxonImportFormState();
 }
 
-class _TaxonImportFormState extends State<TaxonImportForm> {
+class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
   TaxonImportFmt _fmt = TaxonImportFmt.csv;
   File? _filePath;
 
@@ -458,7 +459,11 @@ class _TaxonImportFormState extends State<TaxonImportForm> {
                     ),
                     PrimaryButton(
                       text: 'Next',
-                      onPressed: () async {},
+                      onPressed: () async {
+                        if (_filePath != null) {
+                          await TaxonEntryReader(ref, _filePath!).parse();
+                        }
+                      },
                     ),
                   ],
                 )
