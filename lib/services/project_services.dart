@@ -16,12 +16,12 @@ class ProjectServices extends DbAccess {
     ProjectQuery(dbAccess).createProject(form);
     _updateProjectUuid(form.uuid.value);
     ref.invalidate(projectListProvider);
-    ref.invalidate(projectFormValidation);
+    ref.invalidate(projectFormValidatorProvider);
   }
 
   void updateProject(String projectUuid, ProjectCompanion form) {
     ProjectQuery(dbAccess).updateProjectEntry(projectUuid, form);
-    ref.invalidate(projectFormValidation);
+    ref.invalidate(projectFormValidatorProvider);
     invalidateProject();
   }
 

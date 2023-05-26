@@ -39,5 +39,11 @@ List<String> getDistinctList(List<String?> list) {
 }
 
 bool isListContains(List<String> list, String value) {
-  return list.map((e) => e.toLowerCase()).contains(value.toLowerCase());
+  return list.any((e) => e.toLowerCase() == value.toLowerCase());
+}
+
+extension StringExtension on String {
+  bool isMatch(String value) {
+    return toLowerCase() == value.toLowerCase();
+  }
 }

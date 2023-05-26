@@ -43,6 +43,7 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
 
   @override
   Widget build(BuildContext context) {
+    final validator = ref.watch(projectFormValidatorProvider);
     return Form(
       key: _formKey,
       child: SingleChildScrollView(
@@ -53,27 +54,29 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
             child: Column(
               children: [
                 ProjectFormField(
-                  controller: widget.projectCtr.projectNameCtr,
-                  maxLength: 25,
-                  labelText: 'Project name*',
-                  hintText: 'Enter the name of the project (required)',
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(25),
-                    FilteringTextInputFormatter.allow(
-                      RegExp(r'[a-zA-Z0-9-_]+|\s'),
-                    ),
-                  ],
-                  onChanged: (value) {
-                    ref
-                        .watch(projectFormValidation.notifier)
-                        .validateProjectName(value);
-                    ref
-                        .watch(projectFormValidation.notifier)
-                        .checkProjectNameExists(ref, value?.trim() ?? '');
-                  },
-                  errorText:
-                      ref.watch(projectFormValidation).form.projectName.errMsg,
-                ),
+                    controller: widget.projectCtr.projectNameCtr,
+                    maxLength: 25,
+                    labelText: 'Project name*',
+                    hintText: 'Enter the name of the project (required)',
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(25),
+                      FilteringTextInputFormatter.allow(
+                        RegExp(r'[a-zA-Z0-9-_]+|\s'),
+                      ),
+                    ],
+                    onChanged: (value) async {
+                      ref
+                          .watch(projectFormValidatorProvider.notifier)
+                          .validateProjectName(value);
+                      await ref
+                          .watch(projectFormValidatorProvider.notifier)
+                          .checkProjectNameExists(value);
+                    },
+                    errorText: validator.when(
+                      data: (data) => data.projectName.errMsg,
+                      loading: () => null,
+                      error: (err, stack) => null,
+                    )),
                 ProjectFormField(
                   controller: widget.projectCtr.descriptionCtr,
                   labelText: 'Project description',
@@ -139,18 +142,21 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                   SecondaryButton(
                     text: 'Cancel',
                     onPressed: () {
-                      ref.invalidate(projectFormValidation);
+                      ref.invalidate(projectFormValidatorProvider);
                       Navigator.pop(context);
                     },
                   ),
                   FormElevButton(
-                    onPressed: () {
-                      widget.isEditing ? _updateProject() : _createProject();
-                      _goToDashboard();
-                    },
-                    text: widget.isEditing ? 'Update' : 'Create',
-                    enabled: ref.read(projectFormValidation).form.isValid,
-                  )
+                      onPressed: () {
+                        widget.isEditing ? _updateProject() : _createProject();
+                        _goToDashboard();
+                      },
+                      text: widget.isEditing ? 'Update' : 'Create',
+                      enabled: validator.when(
+                        data: (data) => data.projectName.isValid,
+                        loading: () => false,
+                        error: (err, stack) => false,
+                      ))
                 ])
               ],
             ),
@@ -161,7 +167,9 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
   }
 
   void _validateForm() {
-    ref.read(projectFormValidation.notifier).validateAll(widget.projectCtr);
+    ref
+        .read(projectFormValidatorProvider.notifier)
+        .validateAll(widget.projectCtr);
   }
 
   Future<DateTime?> _showDate(BuildContext context) {
