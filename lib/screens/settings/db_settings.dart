@@ -20,7 +20,7 @@ class DatabaseSettings extends ConsumerStatefulWidget {
 
 class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
   File? _dbPath;
-  bool _isBackup = false;
+  bool _isBackup = true;
   bool _hasSelected = false;
 
   @override
