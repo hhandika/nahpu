@@ -89,16 +89,6 @@ class TaxonEntry {
   }
 }
 
-class TaxonEntryStatus {
-  TaxonEntryStatus({
-    required this.value,
-    required this.error,
-  });
-
-  final String value;
-  final String? error;
-}
-
 class TaxonEntryCsv {
   TaxonEntryCsv({
     required this.taxonClass,
