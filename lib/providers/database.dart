@@ -1,8 +1,19 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/database/database.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final databaseProvider = Provider<Database>((ref) {
+part 'database.g.dart';
+
+@Riverpod(keepAlive: true)
+Database database(DatabaseRef ref) {
   final db = Database();
-  ref.onDispose(db.close);
+  ref.onDispose(() {
+    db.close();
+  });
   return db;
-});
+}
+
+// final databaseProvider = Provider<Database>((ref) {
+//   final db = Database();
+//   ref.onDispose(db.close);
+//   return db;
+// });

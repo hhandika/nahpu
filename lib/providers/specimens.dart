@@ -178,101 +178,8 @@ class TreatmentOptions extends _$TreatmentOptions {
   }
 }
 
-// @freezed
-// class SpecimenType with _$SpecimenType {
-//   const factory SpecimenType({
-//     required List<String> typeList,
-//     required List<String> treatmentList,
-//   }) = _SpecimenType;
-
-//   factory SpecimenType.defaultType() => const SpecimenType(
-//         typeList: defaultSpecimenType,
-//         treatmentList: defaultSpecimenTreatment,
-//       );
-// }
-
-// @riverpod
-// class SpecimenTypeNotifier extends _$SpecimenTypeNotifier {
-//   Future<SpecimenType> _fetchSettings() async {
-//     final prefs = ref.watch(settingProvider);
-//     final typeList = prefs.getStringList('specimenTypes');
-//     final treatmentList = prefs.getStringList('specimenPreservation');
-
-//     List<String> currentTypes = typeList ?? SpecimenType.defaultType().typeList;
-//     List<String> currentTreatments =
-//         treatmentList ?? SpecimenType.defaultType().treatmentList;
-
-//     if (typeList == null) {
-//       await prefs.setStringList('specimenTypes', currentTypes);
-//     }
-
-//     if (treatmentList == null) {
-//       await prefs.setStringList('specimenPreservation', currentTreatments);
-//     }
-
-//     return SpecimenType(
-//       typeList: currentTypes,
-//       treatmentList: currentTreatments,
-//     );
-//   }
-
-//   @override
-//   FutureOr<SpecimenType> build() async {
-//     return _fetchSettings();
-//   }
-
-//   Future<void> addType(String type) async {
-//     if (type.isEmpty) {
-//       return;
-//     }
-
-//     final prefs = ref.watch(settingProvider);
-//     final typeList = prefs.getStringList('specimenTypes');
-//     if (typeList != null && isListContains(typeList, type)) {
-//       return;
-//     }
-//     List<String> newList = [...typeList ?? [], type];
-//     await prefs.setStringList('specimenTypes', newList);
-//   }
-
-//   Future<void> addTreatment(String treatment) async {
-//     if (treatment.isEmpty) return;
-
-//     final prefs = ref.watch(settingProvider);
-//     final treatmentList = prefs.getStringList('specimenPreservation');
-//     if (treatmentList != null && isListContains(treatmentList, treatment)) {
-//       return;
-//     }
-//     List<String> newList = [...treatmentList ?? [], treatment];
-//     await prefs.setStringList('specimenPreservation', newList);
-//   }
-
-//   Future<void> replaceAll(List<String> types, List<String> treatments) async {
-//     if (types.isEmpty || treatments.isEmpty) return;
-
-//     final prefs = ref.watch(settingProvider);
-//     await prefs.setStringList('specimenTypes', types);
-//     await prefs.setStringList('specimenPreservation', treatments);
-//   }
-
-//   Future<void> deleteType(String type) async {
-//     final prefs = ref.watch(settingProvider);
-//     final typeList = prefs.getStringList('specimenTypes');
-//     if (typeList != null && typeList.contains(type)) {
-//       typeList.remove(type);
-//       await prefs.setStringList('specimenTypes', typeList);
-//     }
-//   }
-
-//   Future<void> deleteTreatment(String type) async {
-//     final prefs = ref.watch(settingProvider);
-//     final treatmentList = prefs.getStringList('specimenPreservation');
-//     if (treatmentList != null && treatmentList.contains(type)) {
-//       treatmentList.remove(type);
-//       await prefs.setStringList('specimenPreservation', treatmentList);
-//     }
-//   }
-// }
+const String tissueIDPrefixKey = 'tissueIDPrefix';
+const String tissueIDNumberKey = 'tissueIDNumber';
 
 @freezed
 class TissueID with _$TissueID {
@@ -286,13 +193,15 @@ class TissueID with _$TissueID {
 class TissueIDNotifier extends _$TissueIDNotifier {
   Future<TissueID> _fetchSettings() async {
     final prefs = ref.watch(settingProvider);
-    final prefix = prefs.getString('tissueIDPrefix');
-    final number = prefs.getInt('tissueIDNumber');
-    if (prefix != null && number != null) {
-      return TissueID(prefix: prefix, number: number);
-    } else {
-      return TissueID(prefix: '', number: 0);
+    final prefix = prefs.getString(tissueIDPrefixKey);
+    final number = prefs.getInt(tissueIDNumberKey);
+    String currentPrefix = prefix ?? '';
+    int currentNumber = number ?? 0;
+    if (prefix == null && number == null) {
+      await prefs.setString(tissueIDPrefixKey, currentPrefix);
+      await prefs.setInt(tissueIDNumberKey, currentNumber);
     }
+    return TissueID(prefix: currentPrefix, number: currentNumber);
   }
 
   @override
@@ -300,19 +209,38 @@ class TissueIDNotifier extends _$TissueIDNotifier {
     return await _fetchSettings();
   }
 
-  void setPrefix(String prefix) {
-    final prefs = ref.watch(settingProvider);
-    prefs.setString('tissueIDPrefix', prefix);
+  Future<void> setPrefix(String prefix) async {
+    if (prefix.isEmpty) return;
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      if (state.value == null) return TissueID(prefix: '', number: 0);
+      final prefs = ref.read(settingProvider);
+      await prefs.setString(tissueIDPrefixKey, prefix);
+      return TissueID(prefix: prefix, number: state.value!.number);
+    });
   }
 
-  void setNumber(int number) {
-    final prefs = ref.watch(settingProvider);
-    prefs.setInt('tissueIDNumber', number);
+  Future<void> setNumber(int number) async {
+    if (number < 0) return;
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      if (state.value == null) return TissueID(prefix: '', number: 0);
+      final prefs = ref.read(settingProvider);
+      await prefs.setInt(tissueIDNumberKey, number);
+      return TissueID(prefix: state.value!.prefix, number: number);
+    });
   }
 
-  void incrementNumber() {
-    final prefs = ref.watch(settingProvider);
-    final number = prefs.getInt('tissueIDNumber') ?? 0;
-    prefs.setInt('tissueIDNumber', number + 1);
+  Future<void> incrementNumber() async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      if (state.value == null) return TissueID(prefix: '', number: 0);
+      final prefs = ref.read(settingProvider);
+      final number = prefs.getInt(tissueIDNumberKey);
+      if (number == null) return state.value!;
+
+      await prefs.setInt(tissueIDNumberKey, number + 1);
+      return TissueID(prefix: state.value!.prefix, number: number + 1);
+    });
   }
 }
