@@ -42,17 +42,10 @@ class FilePickerServices {
   }
 
   Future<FilePickerResult?> _matchPicker(List<String> allowedExt) async {
-    if (Platform.isIOS || Platform.isAndroid) {
-      return await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: allowedExt,
-      );
-    } else {
-      return await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: allowedExt,
-      );
-    }
+    return await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: allowedExt,
+    );
   }
 }
 
