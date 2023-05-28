@@ -1,39 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:nahpu/screens/shared/forms.dart';
 
-class PhotoViewer extends StatefulWidget {
-  const PhotoViewer({super.key});
+class AudioVisualForm extends StatefulWidget {
+  const AudioVisualForm({super.key});
 
   @override
-  State<PhotoViewer> createState() => _PhotoViewerState();
+  State<AudioVisualForm> createState() => _AudioVisualFormState();
 }
 
-class _PhotoViewerState extends State<PhotoViewer> {
+class _AudioVisualFormState extends State<AudioVisualForm> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                foregroundColor:
-                    Theme.of(context).colorScheme.onPrimaryContainer,
-                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                elevation: 0,
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const TitleForm(text: 'Audio/Visual'),
+              Wrap(
+                alignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.start,
+                spacing: 8,
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.add),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor:
+                          Theme.of(context).colorScheme.onPrimaryContainer,
+                      backgroundColor:
+                          Theme.of(context).colorScheme.primaryContainer,
+                      elevation: 0,
+                    ),
+                    onPressed: () {},
+                    child: const Icon(Icons.camera_alt_outlined),
+                  ),
+                ],
               ),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return const PhotoForm();
-                    });
-              },
-              child: const Text(
-                'Add photos',
-              ),
-            ),
-          ],
-        ));
+            ],
+          ),
+        ),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.5,
+          child: const Center(
+            child: Text('No media added'),
+          ),
+        ),
+      ],
+    );
   }
 }
 

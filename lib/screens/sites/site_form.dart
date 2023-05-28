@@ -5,10 +5,8 @@ import 'package:nahpu/screens/sites/components/habitats.dart';
 import 'package:nahpu/screens/sites/components/geography.dart';
 import 'package:nahpu/screens/sites/components/site_info.dart';
 import 'package:nahpu/services/types/controllers.dart';
-import 'package:nahpu/screens/shared/forms.dart';
-import 'package:nahpu/screens/shared/photos.dart';
+import 'package:nahpu/screens/shared/media.dart';
 import 'package:nahpu/screens/shared/layout.dart';
-import 'package:nahpu/screens/shared/videos.dart';
 import 'package:nahpu/screens/sites/components/coordinates.dart';
 import 'package:nahpu/styles/catalog_pages.dart';
 
@@ -23,19 +21,14 @@ class SiteForm extends ConsumerStatefulWidget {
   SiteFormState createState() => SiteFormState();
 }
 
-class SiteFormState extends ConsumerState<SiteForm>
-    with TickerProviderStateMixin {
-  late TabController _tabController;
-
+class SiteFormState extends ConsumerState<SiteForm> {
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
     widget.siteFormCtr.dispose();
     super.dispose();
   }
@@ -71,29 +64,7 @@ class SiteFormState extends ConsumerState<SiteForm>
                 ),
               ],
             ),
-            MediaTabBars(
-              tabController: _tabController,
-              length: 2,
-              height: MediaQuery.of(context).size.height * 0.5,
-              tabs: [
-                Tab(
-                  icon: Icon(
-                    Icons.photo_library_outlined,
-                    color: Theme.of(context).colorScheme.tertiary,
-                  ),
-                ),
-                Tab(
-                  icon: Icon(
-                    Icons.video_library_outlined,
-                    color: Theme.of(context).colorScheme.tertiary,
-                  ),
-                ),
-              ],
-              children: const [
-                PhotoViewer(),
-                VideoViewer(),
-              ],
-            ),
+            const AudioVisualForm(),
             const BottomPadding()
           ],
         );

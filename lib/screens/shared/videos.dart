@@ -1,42 +1,5 @@
 import 'package:flutter/material.dart';
 
-class VideoViewer extends StatefulWidget {
-  const VideoViewer({Key? key}) : super(key: key);
-
-  @override
-  State<VideoViewer> createState() => _VideoViewerState();
-}
-
-class _VideoViewerState extends State<VideoViewer> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                foregroundColor:
-                    Theme.of(context).colorScheme.onPrimaryContainer,
-                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                elevation: 0,
-              ),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return const VideoForm();
-                    });
-              },
-              child: const Text(
-                'Add Videos',
-              ),
-            ),
-          ],
-        ));
-  }
-}
-
 class VideoForm extends StatefulWidget {
   const VideoForm({Key? key}) : super(key: key);
 
