@@ -45,7 +45,7 @@ class ImportButton extends StatelessWidget {
               width: 10,
               child: CircularProgressIndicator(),
             )
-          : const Icon(Icons.play_arrow),
+          : const Icon(Icons.file_download_outlined),
       onPressed: onPressed,
       label: Text(label),
     );

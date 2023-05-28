@@ -1,3 +1,7 @@
+const List<String> taxonImportFmtList = [
+  'CSV UTF-8 (Comma-delimited) (.csv)',
+];
+
 enum TaxonEntryHeader {
   taxonClass,
   taxonOrder,

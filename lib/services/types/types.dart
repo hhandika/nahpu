@@ -13,10 +13,6 @@ enum ExportFmt { csv, tsv }
 
 enum TaxonImportFmt { csv }
 
-const List<String> taxonImportFmtList = [
-  'Comma-separated (.csv)',
-];
-
 enum SiteMenuSelection {
   newSite,
   duplicate,
