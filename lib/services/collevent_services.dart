@@ -22,13 +22,6 @@ class CollEventServices extends DbAccess {
     return eventID;
   }
 
-  Future<void> getAllDistinctRoles() async {
-    List<String> data = await CollPersonnelQuery(dbAccess).getDistinctRoles();
-    final notifier = ref.read(collPersonnelRoleProvider.notifier);
-    List<String> roles = data.isEmpty ? defaultCollPersonnelRoles : data;
-    notifier.replaceAll(roles);
-  }
-
   Future<List<CollEventData>> getAllCollEvents() async {
     return CollEventQuery(dbAccess).getAllCollEvents(projectUuid);
   }

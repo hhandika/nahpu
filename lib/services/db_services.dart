@@ -18,7 +18,8 @@ class DbServices extends DbAccess {
   Future<void> syncSettingWithDb() async {
     SpecimenPartServices(ref).getSpecimenTypes();
     SpecimenPartServices(ref).getTreatmentOptions();
-    CollEventServices(ref).getAllDistinctRoles();
+    CollMethodServices(ref).getAllMethods();
+    CollEvenPersonnelServices(ref).getAllRoles();
     _inValidateSettings();
   }
 
