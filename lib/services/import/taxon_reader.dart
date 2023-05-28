@@ -9,6 +9,7 @@ import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/types/taxon_entry.dart';
 import 'package:drift/drift.dart' as db;
+import 'package:nahpu/services/types/types.dart';
 
 class TaxonEntryReader extends DbAccess {
   TaxonEntryReader(super.ref);
@@ -71,11 +72,11 @@ class TaxonEntryReader extends DbAccess {
 
   TaxonomyCompanion _getDbForm(TaxonEntryData data) {
     return TaxonomyCompanion(
-      taxonClass: db.Value(data.taxonClass),
-      taxonOrder: db.Value(data.taxonOrder),
-      taxonFamily: db.Value(data.taxonFamily),
-      genus: db.Value(data.genus),
-      specificEpithet: db.Value(data.specificEpithet),
+      taxonClass: db.Value(data.taxonClass.toSentenceCase()),
+      taxonOrder: db.Value(data.taxonOrder.toSentenceCase()),
+      taxonFamily: db.Value(data.taxonFamily.toSentenceCase()),
+      genus: db.Value(data.genus.toSentenceCase()),
+      specificEpithet: db.Value(data.specificEpithet.toLowerCase()),
       commonName: db.Value(data.commonName ?? ''),
       notes: db.Value(data.notes ?? ''),
     );
@@ -84,7 +85,7 @@ class TaxonEntryReader extends DbAccess {
   Future<bool> _checkSpeciesExist(TaxonEntryData data) async {
     try {
       TaxonomyData? species = await TaxonomyService(ref)
-          .getTaxonBySpecies(data.genus ?? '', data.specificEpithet ?? '');
+          .getTaxonBySpecies(data.genus, data.specificEpithet);
       return species != null;
     } catch (e) {
       throw Exception('Error checking species: $e');

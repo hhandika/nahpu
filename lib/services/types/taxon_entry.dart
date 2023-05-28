@@ -99,21 +99,21 @@ class TaxonEntryData {
     this.notes,
   });
 
-  String? taxonClass;
-  String? taxonOrder;
-  String? taxonFamily;
-  String? genus;
-  String? specificEpithet;
+  String taxonClass;
+  String taxonOrder;
+  String taxonFamily;
+  String genus;
+  String specificEpithet;
   String? commonName;
   String? notes;
 
   factory TaxonEntryData.empty() {
     return TaxonEntryData(
-      taxonClass: null,
-      taxonOrder: null,
-      taxonFamily: null,
-      genus: null,
-      specificEpithet: null,
+      taxonClass: '',
+      taxonOrder: '',
+      taxonFamily: '',
+      genus: '',
+      specificEpithet: '',
       commonName: null,
       notes: null,
     );
