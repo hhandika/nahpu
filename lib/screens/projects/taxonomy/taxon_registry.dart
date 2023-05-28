@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/taxa.dart';
-import 'package:nahpu/screens/projects/components/import_taxa.dart';
+import 'package:nahpu/screens/projects/taxonomy/import_taxa.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/providers/specimens.dart';
@@ -14,7 +14,7 @@ import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/screens/specimens/shared/specimen_list.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
-import 'package:nahpu/services/stats/captures.dart';
+import 'package:nahpu/services/statistics/captures.dart';
 import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/utility_services.dart';
 

@@ -9,7 +9,7 @@ import 'package:nahpu/services/import/taxon_reader.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/screens/shared/file_operation.dart';
 import 'package:nahpu/services/types/import.dart';
-import 'package:nahpu/services/types/taxon_entry.dart';
+import 'package:nahpu/services/import/taxon_entry.dart';
 import 'package:nahpu/services/types/types.dart';
 
 class TaxonImportForm extends ConsumerStatefulWidget {
