@@ -219,11 +219,11 @@ class CollEventIdTile extends ConsumerWidget {
             title: RichText(
               text: TextSpan(
                 text: 'Coll. Event ID: ',
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.bodyLarge,
                 children: [
                   TextSpan(
                     text: collEventCtr.eventIDCtr.text,
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ],
               ),

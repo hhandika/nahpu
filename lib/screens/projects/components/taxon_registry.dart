@@ -615,6 +615,7 @@ class TaxonList extends StatefulWidget {
 
 class _TaxonListState extends State<TaxonList> {
   List<TaxonomyData> _filteredTaxonList = [];
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -624,6 +625,7 @@ class _TaxonListState extends State<TaxonList> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SearchButtonField(
+              controller: _searchController,
               onChanged: (String value) {
                 String searchValue = value.toLowerCase();
                 setState(() {

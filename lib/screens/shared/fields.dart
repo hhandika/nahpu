@@ -30,6 +30,9 @@ class CommonDateField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
+        floatingLabelStyle: const TextStyle(
+          fontSize: 18,
+        ),
       ),
       controller: controller,
       onTap: () async {
@@ -70,6 +73,9 @@ class CommonTimeField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
+        floatingLabelStyle: const TextStyle(
+          fontSize: 18,
+        ),
       ),
       controller: controller,
       onTap: () {
@@ -87,9 +93,11 @@ class CommonTimeField extends StatelessWidget {
 class SearchButtonField extends StatelessWidget {
   const SearchButtonField({
     super.key,
+    required this.controller,
     required this.onChanged,
   });
 
+  final TextEditingController controller;
   final void Function(String) onChanged;
 
   @override
@@ -98,13 +106,25 @@ class SearchButtonField extends StatelessWidget {
       style: const TextStyle(
         fontSize: 14,
       ),
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         labelText: 'Search',
         hintText: 'Enter a query',
-        prefixIcon: Icon(Icons.search),
-        border: OutlineInputBorder(
+        floatingLabelStyle: const TextStyle(
+          fontSize: 18,
+        ),
+        prefixIcon: const Icon(Icons.search),
+        border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
         ),
+        suffix: controller.text.isNotEmpty
+            ? IconButton(
+                icon: const Icon(Icons.clear),
+                onPressed: () {
+                  controller.clear();
+                  onChanged('');
+                },
+              )
+            : null,
       ),
       onChanged: onChanged,
     );
@@ -156,6 +176,9 @@ class SiteIdField extends ConsumerWidget {
       decoration: const InputDecoration(
         labelText: 'Site ID',
         hintText: 'Enter a site',
+        floatingLabelStyle: TextStyle(
+          fontSize: 18,
+        ),
       ),
       items: siteData
           .map((site) => DropdownMenuItem(
@@ -207,6 +230,9 @@ class CommonNumField extends ConsumerWidget {
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
+        floatingLabelStyle: const TextStyle(
+          fontSize: 18,
+        ),
       ),
       inputFormatters: isDouble
           ? [FilteringTextInputFormatter.allow(RegExp(r"[0-9.]"))]
@@ -252,6 +278,9 @@ class CommonTextField extends ConsumerWidget {
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
+        floatingLabelStyle: const TextStyle(
+          fontSize: 18,
+        ),
       ),
       keyboardType: keyboardType,
       onChanged: onChanged,
@@ -398,6 +427,9 @@ class AutoCompleteText extends StatelessWidget {
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
+        floatingLabelStyle: const TextStyle(
+          fontSize: 18,
+        ),
       ),
       focusNode: focusNode,
       onFieldSubmitted: onFieldSubmitted,

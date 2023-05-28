@@ -23,6 +23,7 @@ class SpecimenListPage extends StatefulWidget {
 
 class _SpecimenListPageState extends State<SpecimenListPage> {
   List<SpecimenData> _filteredData = [];
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,16 +36,19 @@ class _SpecimenListPageState extends State<SpecimenListPage> {
         child: ScreenLayout(
             child: Column(
           children: [
-            SearchButtonField(onChanged: (String value) {
-              setState(() {
-                _filteredData = widget.data
-                    .where((element) => element.fieldNumber
-                        .toString()
-                        .toLowerCase()
-                        .contains(value.toLowerCase()))
-                    .toList();
-              });
-            }),
+            SearchButtonField(
+              controller: _searchController,
+              onChanged: (String value) {
+                setState(() {
+                  _filteredData = widget.data
+                      .where((element) => element.fieldNumber
+                          .toString()
+                          .toLowerCase()
+                          .contains(value.toLowerCase()))
+                      .toList();
+                });
+              },
+            ),
             SpecimenList(
               data: _filteredData.isEmpty ? widget.data : _filteredData,
             ),
