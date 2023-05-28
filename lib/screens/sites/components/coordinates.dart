@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/types.dart';
@@ -388,7 +389,10 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
               hintText: 'Specify the datum',
             ),
             items: _datum
-                .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                .map((e) => DropdownMenuItem(
+                      value: e,
+                      child: CommonDropdownText(text: e),
+                    ))
                 .toList(),
             onChanged: (value) {
               widget.coordCtr.datumCtr.text = value.toString();

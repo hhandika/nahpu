@@ -30,9 +30,6 @@ class CommonDateField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
-        floatingLabelStyle: const TextStyle(
-          fontSize: 18,
-        ),
       ),
       controller: controller,
       onTap: () async {
@@ -73,9 +70,6 @@ class CommonTimeField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
-        floatingLabelStyle: const TextStyle(
-          fontSize: 18,
-        ),
       ),
       controller: controller,
       onTap: () {
@@ -109,9 +103,6 @@ class SearchButtonField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: 'Search',
         hintText: 'Enter a query',
-        floatingLabelStyle: const TextStyle(
-          fontSize: 18,
-        ),
         prefixIcon: const Icon(Icons.search),
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
@@ -145,7 +136,7 @@ class TaxonGroupFields extends ConsumerWidget {
       items: taxonGroupList
           .map((taxonGroup) => DropdownMenuItem(
                 value: taxonGroup,
-                child: Text(taxonGroup),
+                child: CommonDropdownText(text: taxonGroup),
               ))
           .toList(),
       value: matchCatFmtToTaxonGroup(catalogFmt),
@@ -176,14 +167,11 @@ class SiteIdField extends ConsumerWidget {
       decoration: const InputDecoration(
         labelText: 'Site ID',
         hintText: 'Enter a site',
-        floatingLabelStyle: TextStyle(
-          fontSize: 18,
-        ),
       ),
       items: siteData
           .map((site) => DropdownMenuItem(
                 value: site.id,
-                child: Text(site.siteID ?? ''),
+                child: CommonDropdownText(text: site.siteID ?? ''),
               ))
           .toList(),
       onChanged: onChanges,
@@ -230,9 +218,6 @@ class CommonNumField extends ConsumerWidget {
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
-        floatingLabelStyle: const TextStyle(
-          fontSize: 18,
-        ),
       ),
       inputFormatters: isDouble
           ? [FilteringTextInputFormatter.allow(RegExp(r"[0-9.]"))]
@@ -278,9 +263,6 @@ class CommonTextField extends ConsumerWidget {
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
-        floatingLabelStyle: const TextStyle(
-          fontSize: 18,
-        ),
       ),
       keyboardType: keyboardType,
       onChanged: onChanged,
@@ -427,9 +409,6 @@ class AutoCompleteText extends StatelessWidget {
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
-        floatingLabelStyle: const TextStyle(
-          fontSize: 18,
-        ),
       ),
       focusNode: focusNode,
       onFieldSubmitted: onFieldSubmitted,

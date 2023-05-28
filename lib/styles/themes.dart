@@ -60,4 +60,12 @@ class NahpuTheme {
       ),
     );
   }
+
+  static InputDecorationTheme get dropdownButtonTheme {
+    return const InputDecorationTheme(
+      floatingLabelStyle: TextStyle(
+        fontSize: 18,
+      ),
+    );
+  }
 }

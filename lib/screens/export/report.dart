@@ -53,7 +53,7 @@ class ReportFormState extends ConsumerState<ReportForm> {
             items: reportTypeList
                 .map((e) => DropdownMenuItem(
                       value: ReportType.values[reportTypeList.indexOf(e)],
-                      child: Text(e),
+                      child: CommonDropdownText(text: e),
                     ))
                 .toList(),
             onChanged: (ReportType? value) {
@@ -72,7 +72,7 @@ class ReportFormState extends ConsumerState<ReportForm> {
             items: reportFmtList
                 .map((e) => DropdownMenuItem(
                       value: ReportFmt.values[reportFmtList.indexOf(e)],
-                      child: Text(e),
+                      child: CommonDropdownText(text: e),
                     ))
                 .toList(),
             onChanged: (ReportFmt? value) {

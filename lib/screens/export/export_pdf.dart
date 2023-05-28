@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/screens/shared/file_operation.dart';
@@ -37,7 +38,7 @@ class ExportPdfFormState extends ConsumerState<ExportPdfForm> {
               items: pdfExportList
                   .map((e) => DropdownMenuItem(
                         value: PdfExportType.values[pdfExportList.indexOf(e)],
-                        child: Text(e),
+                        child: CommonDropdownText(text: e),
                       ))
                   .toList(),
               onChanged: (PdfExportType? value) {

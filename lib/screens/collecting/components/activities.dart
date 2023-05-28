@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
+
+const List<String> collActivityList = [
+  'Collecting',
+  'Recording',
+  'Observing',
+  'Other',
+];
 
 class CollActivityFields extends ConsumerWidget {
   const CollActivityFields(
@@ -26,24 +34,12 @@ class CollActivityFields extends ConsumerWidget {
               labelText: 'Primary activity',
               hintText: 'Add activity',
             ),
-            items: const [
-              DropdownMenuItem(
-                value: 'Collecting',
-                child: Text('Collecting'),
-              ),
-              DropdownMenuItem(
-                value: 'Recording',
-                child: Text('Recording'),
-              ),
-              DropdownMenuItem(
-                value: 'Observing',
-                child: Text('Observing'),
-              ),
-              DropdownMenuItem(
-                value: 'Other',
-                child: Text('Other'),
-              ),
-            ],
+            items: collActivityList.map((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: CommonDropdownText(text: value),
+              );
+            }).toList(),
             onChanged: (String? newValue) {
               CollEventServices(ref).updateCollEvent(
                 collEventId,

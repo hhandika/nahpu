@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/screens/shared/file_operation.dart';
@@ -53,7 +54,7 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
             items: dbExportFmtList
                 .map((e) => DropdownMenuItem(
                       value: DbExportFmt.values[dbExportFmtList.indexOf(e)],
-                      child: Text(e),
+                      child: CommonDropdownText(text: e),
                     ))
                 .toList(),
             onChanged: (DbExportFmt? value) {

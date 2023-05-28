@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/providers/projects.dart';
@@ -422,7 +423,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                 .map(
                   (role) => DropdownMenuItem(
                     value: role,
-                    child: Text(role),
+                    child: CommonDropdownText(text: role),
                   ),
                 )
                 .toList(),

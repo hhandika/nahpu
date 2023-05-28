@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/services/stats/captures.dart';
 import 'package:nahpu/services/stats/common.dart';
 import 'package:nahpu/services/taxonomy_services.dart';
@@ -74,9 +75,8 @@ class StatisticViewerState extends ConsumerState<StatisticViewer> {
                 items: graphOptions
                     .map((String value) => DropdownMenuItem<GraphType>(
                           value: GraphType.values[graphOptions.indexOf(value)],
-                          child: Text(
-                            value,
-                            style: Theme.of(context).textTheme.titleMedium,
+                          child: CommonDropdownText(
+                            text: value,
                           ),
                         ))
                     .toList(),

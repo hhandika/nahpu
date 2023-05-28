@@ -257,7 +257,7 @@ class WeatherDataFormState extends ConsumerState<WeatherDataForm> {
                 .map(
                   (e) => DropdownMenuItem(
                     value: e,
-                    child: Text(e),
+                    child: CommonDropdownText(text: e),
                   ),
                 )
                 .toList(),

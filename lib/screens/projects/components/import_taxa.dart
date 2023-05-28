@@ -223,7 +223,7 @@ class InputFormatField extends StatelessWidget {
       items: taxonImportFmtList
           .map((e) => DropdownMenuItem(
                 value: TaxonImportFmt.values[taxonImportFmtList.indexOf(e)],
-                child: Text(e),
+                child: CommonDropdownText(text: e),
               ))
           .toList(),
       onChanged: onChanged,

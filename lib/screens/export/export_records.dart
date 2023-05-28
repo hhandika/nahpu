@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/services/types/export.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/export/coll_event_writer.dart';
@@ -58,7 +59,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
                 .map((e) => DropdownMenuItem(
                       value: TaxonRecordType
                           .values[taxonRecordTypeList.indexOf(e)],
-                      child: Text(e),
+                      child: CommonDropdownText(text: e),
                     ))
                 .toList(),
             onChanged: (TaxonRecordType? value) {
@@ -96,7 +97,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
                   .map((e) => DropdownMenuItem(
                         value:
                             MammalRecordType.values[mammalGroupList.indexOf(e)],
-                        child: Text(e),
+                        child: CommonDropdownText(text: e),
                       ))
                   .toList(),
               onChanged: (MammalRecordType? value) {
@@ -117,7 +118,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
             items: exportFormats
                 .map((e) => DropdownMenuItem(
                       value: ExportFmt.values[exportFormats.indexOf(e)],
-                      child: Text(e),
+                      child: CommonDropdownText(text: e),
                     ))
                 .toList(),
             onChanged: (ExportFmt? value) {
@@ -205,7 +206,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
     return recordTypeList
         .map((e) => DropdownMenuItem(
               value: ExportRecordType.values[recordTypeList.indexOf(e)],
-              child: Text(e),
+              child: CommonDropdownText(text: e),
             ))
         .toList();
   }

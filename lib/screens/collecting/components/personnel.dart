@@ -103,13 +103,6 @@ class CollPersonnelField extends ConsumerStatefulWidget {
 }
 
 class CollPersonnelFieldState extends ConsumerState<CollPersonnelField> {
-  final List<String> collRoles = [
-    'Leader',
-    'Field Assistant',
-    'Observer',
-    'Driver',
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -125,7 +118,9 @@ class CollPersonnelFieldState extends ConsumerState<CollPersonnelField> {
                   data: (value) => value
                       .map((person) => DropdownMenuItem(
                             value: person.uuid,
-                            child: Text(person.name ?? ''),
+                            child: CommonDropdownText(
+                              text: person.name ?? '',
+                            ),
                           ))
                       .toList(),
                   loading: () => const [],
@@ -190,7 +185,7 @@ class PersonnelRoleState extends ConsumerState<PersonnelRole> {
               items: data
                   .map((role) => DropdownMenuItem(
                         value: role,
-                        child: Text(role),
+                        child: CommonDropdownText(text: role),
                       ))
                   .toList(),
               onChanged: (value) {

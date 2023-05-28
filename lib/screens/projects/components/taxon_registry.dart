@@ -411,7 +411,10 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
               ),
               value: widget.ctr.taxonClassCtr,
               items: supportedTaxonClass
-                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                  .map((e) => DropdownMenuItem(
+                        value: e,
+                        child: CommonDropdownText(text: e),
+                      ))
                   .toList(),
               onChanged: (String? value) {
                 if (value != null) {

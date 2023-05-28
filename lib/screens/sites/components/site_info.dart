@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/screens/shared/forms.dart';
@@ -70,7 +71,7 @@ class SiteInfo extends ConsumerWidget {
                 .map(
                   (e) => DropdownMenuItem(
                     value: e.uuid,
-                    child: Text(e.name ?? ''),
+                    child: CommonDropdownText(text: e.name ?? ''),
                   ),
                 )
                 .toList(),
@@ -91,7 +92,7 @@ class SiteInfo extends ConsumerWidget {
                 .map(
                   (e) => DropdownMenuItem(
                     value: e,
-                    child: Text(e),
+                    child: CommonDropdownText(text: e),
                   ),
                 )
                 .toList(),
