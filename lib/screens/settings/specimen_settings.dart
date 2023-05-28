@@ -153,12 +153,13 @@ class TissueIDFields extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    TextEditingController prefixController = TextEditingController();
-    TextEditingController numberController = TextEditingController();
     return ref.watch(tissueIDNotifierProvider).when(
           data: (data) {
-            prefixController.text = data.prefix;
-            numberController.text = data.number.toString();
+            TextEditingController prefixController =
+                TextEditingController(text: data.prefix);
+            TextEditingController numberController =
+                TextEditingController(text: data.number.toString());
+
             return SettingCard(children: [
               AdaptiveLayout(
                 useHorizontalLayout: !isMobile,
@@ -177,7 +178,7 @@ class TissueIDFields extends ConsumerWidget {
   }
 }
 
-class TissuePrefixField extends ConsumerWidget {
+class TissuePrefixField extends ConsumerStatefulWidget {
   const TissuePrefixField({
     super.key,
     required this.prefixCtr,
@@ -186,27 +187,34 @@ class TissuePrefixField extends ConsumerWidget {
   final TextEditingController prefixCtr;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  TissuePrefixFieldState createState() => TissuePrefixFieldState();
+}
+
+class TissuePrefixFieldState extends ConsumerState<TissuePrefixField> {
+  @override
+  Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 320),
       child: TextField(
-          controller: prefixCtr,
+          controller: widget.prefixCtr,
           decoration: const InputDecoration(
             labelText: 'Prefix',
             hintText: 'Enter tissue ID prefix, e.g. M',
           ),
           onChanged: (String? value) async {
             if (value != null) {
-              prefixCtr.selection =
-                  TextSelection.collapsed(offset: value.length);
               await TissueIdServices(ref).setPrefix(value.trim());
+              setState(() {
+                widget.prefixCtr.selection = TextSelection(
+                    baseOffset: value.length, extentOffset: value.length);
+              });
             }
           }),
     );
   }
 }
 
-class TissueNumField extends ConsumerWidget {
+class TissueNumField extends ConsumerStatefulWidget {
   const TissueNumField({
     super.key,
     required this.tissueNumCtr,
@@ -215,11 +223,16 @@ class TissueNumField extends ConsumerWidget {
   final TextEditingController tissueNumCtr;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  TissueNumFieldState createState() => TissueNumFieldState();
+}
+
+class TissueNumFieldState extends ConsumerState<TissueNumField> {
+  @override
+  Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 320),
-      child: TextFormField(
-        controller: tissueNumCtr,
+      child: TextField(
+        controller: widget.tissueNumCtr,
         keyboardType: TextInputType.number,
         decoration: const InputDecoration(
           labelText: 'Tissue no.',
@@ -229,6 +242,10 @@ class TissueNumField extends ConsumerWidget {
         onChanged: (String? value) async {
           if (value != null) {
             await TissueIdServices(ref).setNumber(value);
+            setState(() {
+              widget.tissueNumCtr.selection = TextSelection(
+                  baseOffset: value.length, extentOffset: value.length);
+            });
           }
         },
       ),
