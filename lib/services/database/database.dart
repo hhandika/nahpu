@@ -92,5 +92,5 @@ LazyDatabase _openConnection() {
 Future<File> get dBPath async {
   // We save database to the default document directory locations.
   final dbDir = await nahpuDocumentDir;
-  return File(p.join(dbDir.path, 'nahpu/nahpu.db'));
+  return File(p.join(dbDir.path, 'nahpu.db'));
 }
