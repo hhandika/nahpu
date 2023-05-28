@@ -153,11 +153,9 @@ class SelectFileField extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            TextButton(
+            TertiaryButton(
               onPressed: onPressed,
-              child: const Text(
-                'Select file',
-              ),
+              text: 'Select file',
             ),
             const Text(' ··· '),
             const SizedBox(height: 10),

@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/screens/projects/components/taxon_registry.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
@@ -27,6 +26,7 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
   late CsvData _csvData;
   bool _hasData = false;
   bool _isRunning = false;
+  bool _isImported = false;
 
   @override
   Widget build(BuildContext context) {
@@ -89,39 +89,41 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
                       )
                     : const SizedBox.shrink(),
                 const SizedBox(height: 24),
-                Wrap(
-                  alignment: WrapAlignment.center,
-                  children: [
-                    SecondaryButton(
-                        text: 'Cancel',
+                _isImported
+                    ? PrimaryButton(
+                        text: 'Exit',
                         onPressed: () {
                           Navigator.of(context).pop();
-                        }),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    ImportButton(
-                      label: 'Import',
-                      isRunning: _isRunning,
-                      onPressed: _problems.isNotEmpty || _isRunning
-                          ? null
-                          : () async {
-                              setState(() {
-                                _isRunning = true;
-                              });
-                              await _parseData();
-                              if (mounted) {
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const TaxonRegistryPage(),
-                                  ),
-                                );
-                              }
-                            },
-                    ),
-                  ],
-                )
+                        })
+                    : Wrap(
+                        alignment: WrapAlignment.center,
+                        children: [
+                          SecondaryButton(
+                              text: 'Cancel',
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              }),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          ImportButton(
+                            label: 'Import',
+                            isRunning: _isRunning,
+                            onPressed: _problems.isNotEmpty || _isRunning
+                                ? null
+                                : () async {
+                                    setState(() {
+                                      _isRunning = true;
+                                    });
+                                    await _parseData();
+                                    setState(() {
+                                      _isRunning = false;
+                                      _isImported = true;
+                                    });
+                                  },
+                          ),
+                        ],
+                      )
               ],
             ),
           ),
@@ -173,6 +175,7 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
       } catch (e) {
         setState(() {
           _hasData = false;
+          _isRunning = false;
         });
 
         ScaffoldMessenger.of(context).showSnackBar(

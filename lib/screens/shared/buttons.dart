@@ -184,6 +184,25 @@ class SecondaryButton extends StatelessWidget {
   }
 }
 
+class TertiaryButton extends StatelessWidget {
+  const TertiaryButton(
+      {super.key, required this.text, required this.onPressed});
+
+  final String text;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      style: TextButton.styleFrom(
+        foregroundColor: Theme.of(context).colorScheme.primary,
+      ),
+      onPressed: onPressed,
+      child: Text(text, style: const TextStyle(fontSize: 16)),
+    );
+  }
+}
+
 class DeleteMenuButton extends StatelessWidget {
   const DeleteMenuButton({
     super.key,
