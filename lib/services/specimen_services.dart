@@ -213,7 +213,6 @@ class TissueIdServices {
     ref
         .read(tissueIDNotifierProvider.notifier)
         .setNumber(int.tryParse(number) ?? 0);
-    _invalidateTissueID();
   }
 
   Future<TissueID> _getTissueID() async {

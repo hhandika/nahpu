@@ -214,7 +214,7 @@ class TissueIDNotifier extends _$TissueIDNotifier {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       if (state.value == null) return TissueID(prefix: '', number: 0);
-      final prefs = ref.read(settingProvider);
+      final prefs = ref.watch(settingProvider);
       await prefs.setString(tissueIDPrefixKey, prefix);
       return TissueID(prefix: prefix, number: state.value!.number);
     });
@@ -225,7 +225,7 @@ class TissueIDNotifier extends _$TissueIDNotifier {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       if (state.value == null) return TissueID(prefix: '', number: 0);
-      final prefs = ref.read(settingProvider);
+      final prefs = ref.watch(settingProvider);
       await prefs.setInt(tissueIDNumberKey, number);
       return TissueID(prefix: state.value!.prefix, number: number);
     });
@@ -235,7 +235,7 @@ class TissueIDNotifier extends _$TissueIDNotifier {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       if (state.value == null) return TissueID(prefix: '', number: 0);
-      final prefs = ref.read(settingProvider);
+      final prefs = ref.watch(settingProvider);
       final number = prefs.getInt(tissueIDNumberKey);
       if (number == null) return state.value!;
 

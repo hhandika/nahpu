@@ -38,7 +38,7 @@ final treatmentOptionsProvider =
 );
 
 typedef _$TreatmentOptions = AutoDisposeAsyncNotifier<List<String>>;
-String _$tissueIDNotifierHash() => r'a63c2b1bee598133371e843d4741cef3ffa2aa48';
+String _$tissueIDNotifierHash() => r'ff5f3655a9c45b59cc2c7ebccee20cac195bbf51';
 
 /// See also [TissueIDNotifier].
 @ProviderFor(TissueIDNotifier)

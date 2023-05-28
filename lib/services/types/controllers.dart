@@ -272,9 +272,7 @@ class SpecimenFormCtrModel {
         collMethodCtr: specimen.collMethodID,
         relativeTimeCtr: specimen.isRelativeTime,
         coordinateCtr: specimen.coordinateID,
-        museumIDCtr: TextEditingController(text: specimen.museumID ?? '')
-          ..selection =
-              TextSelection.collapsed(offset: specimen.museumID?.length ?? 0),
+        museumIDCtr: TextEditingController(text: specimen.museumID ?? ''),
         fieldNumberCtr:
             TextEditingController(text: specimen.fieldNumber?.toString() ?? ''),
         speciesCtr: specimen.speciesID,
@@ -284,9 +282,7 @@ class SpecimenFormCtrModel {
         captureDateCtr: TextEditingController(text: specimen.captureDate),
         captureTimeCtr: TextEditingController(text: specimen.captureTime),
         trapTypeCtr: TextEditingController(text: specimen.trapType),
-        trapIDCtr: TextEditingController(text: specimen.trapID ?? '')
-          ..selection =
-              TextSelection.collapsed(offset: specimen.trapID?.length ?? 0),
+        trapIDCtr: TextEditingController(text: specimen.trapID ?? ''),
       );
 
   void dispose() {
