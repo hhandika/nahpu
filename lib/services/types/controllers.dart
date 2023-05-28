@@ -261,8 +261,7 @@ class SpecimenFormCtrModel {
         trapIDCtr: TextEditingController(),
       );
 
-  factory SpecimenFormCtrModel.fromData(
-          SpecimenData specimen, TaxonData taxonData) =>
+  factory SpecimenFormCtrModel.fromData(SpecimenData specimen) =>
       SpecimenFormCtrModel(
         catalogerCtr: specimen.catalogerID,
         preparatorCtr: specimen.preparatorID,
@@ -273,7 +272,7 @@ class SpecimenFormCtrModel {
         collMethodCtr: specimen.collMethodID,
         relativeTimeCtr: specimen.isRelativeTime,
         coordinateCtr: specimen.coordinateID,
-        museumIDCtr: TextEditingController(text: specimen.museumID),
+        museumIDCtr: TextEditingController(text: specimen.museumID ?? ''),
         fieldNumberCtr:
             TextEditingController(text: specimen.fieldNumber?.toString() ?? ''),
         speciesCtr: specimen.speciesID,
@@ -283,7 +282,7 @@ class SpecimenFormCtrModel {
         captureDateCtr: TextEditingController(text: specimen.captureDate),
         captureTimeCtr: TextEditingController(text: specimen.captureTime),
         trapTypeCtr: TextEditingController(text: specimen.trapType),
-        trapIDCtr: TextEditingController(text: specimen.trapID),
+        trapIDCtr: TextEditingController(text: specimen.trapID ?? ''),
       );
 
   void dispose() {

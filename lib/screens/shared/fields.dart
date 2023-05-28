@@ -232,7 +232,7 @@ class CommonNumField extends ConsumerWidget {
   }
 }
 
-class CommonTextField extends ConsumerWidget {
+class CommonTextField extends StatelessWidget {
   const CommonTextField({
     Key? key,
     required this.labelText,
@@ -255,7 +255,7 @@ class CommonTextField extends ConsumerWidget {
   final int? maxLines;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return TextField(
       enabled: enabled,
       maxLines: maxLines,

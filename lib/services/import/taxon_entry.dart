@@ -1,4 +1,5 @@
 import 'package:nahpu/services/types/import.dart';
+import 'package:nahpu/services/types/types.dart';
 
 class CsvData {
   CsvData({
@@ -59,22 +60,22 @@ class TaxonParser {
       TaxonEntryHeader header = headerMap[index] ?? TaxonEntryHeader.ignore;
       switch (header) {
         case TaxonEntryHeader.taxonClass:
-          taxonEntryCsv.taxonClass = value;
+          taxonEntryCsv.taxonClass = value.toSentenceCase();
           break;
         case TaxonEntryHeader.taxonOrder:
-          taxonEntryCsv.taxonOrder = value;
+          taxonEntryCsv.taxonOrder = value.toSentenceCase();
           break;
         case TaxonEntryHeader.taxonFamily:
-          taxonEntryCsv.taxonFamily = value;
+          taxonEntryCsv.taxonFamily = value.toSentenceCase();
           break;
         case TaxonEntryHeader.genus:
-          taxonEntryCsv.genus = value;
+          taxonEntryCsv.genus = value.toSentenceCase();
           break;
         case TaxonEntryHeader.specificEpithet:
-          taxonEntryCsv.specificEpithet = value;
+          taxonEntryCsv.specificEpithet = value.toLowerCase();
           break;
         case TaxonEntryHeader.commonName:
-          taxonEntryCsv.commonName = value;
+          taxonEntryCsv.commonName = value.toSentenceCase();
           break;
         case TaxonEntryHeader.notes:
           taxonEntryCsv.notes = value;

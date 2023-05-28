@@ -203,7 +203,7 @@ class RelativeTimeSwitchState extends ConsumerState<RelativeTimeSwitch> {
   }
 }
 
-class MethodIdField extends ConsumerWidget {
+class MethodIdField extends ConsumerStatefulWidget {
   const MethodIdField({
     super.key,
     required this.specimenUuid,
@@ -214,17 +214,33 @@ class MethodIdField extends ConsumerWidget {
   final SpecimenFormCtrModel specimenCtr;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  MethodIdFieldState createState() => MethodIdFieldState();
+}
+
+class MethodIdFieldState extends ConsumerState<MethodIdField> {
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return CommonTextField(
-      controller: specimenCtr.trapIDCtr,
+      controller: widget.specimenCtr.trapIDCtr,
       labelText: 'Method ID',
       hintText: 'Enter ID, e.g. trap/net number, etc.',
-      isLastField: true,
+      isLastField: false,
       onChanged: (String? value) {
-        SpecimenServices(ref).updateSpecimen(
-          specimenUuid,
-          SpecimenCompanion(trapID: db.Value(value)),
-        );
+        if (value != null && value.isNotEmpty) {
+          setState(() {
+            widget.specimenCtr.trapIDCtr.selection = TextSelection.collapsed(
+                offset: widget.specimenCtr.trapIDCtr.text.length);
+            SpecimenServices(ref).updateSpecimen(
+              widget.specimenUuid,
+              SpecimenCompanion(trapID: db.Value(value)),
+            );
+          });
+        }
       },
     );
   }

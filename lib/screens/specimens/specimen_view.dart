@@ -124,6 +124,6 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
   }
 
   SpecimenFormCtrModel _updateController(SpecimenData specimenEntry) {
-    return SpecimenFormCtrModel.fromData(specimenEntry, TaxonData());
+    return SpecimenFormCtrModel.fromData(specimenEntry);
   }
 }

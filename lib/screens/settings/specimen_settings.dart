@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/screens/settings/common.dart';
 import 'package:nahpu/screens/shared/common.dart';
-import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -160,25 +159,20 @@ class TissueIDFields extends ConsumerWidget {
           data: (data) {
             prefixController.text = data.prefix;
             numberController.text = data.number.toString();
-            return SettingCard(
-              children: [
-                Container(
-                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: AdaptiveLayout(
-                    useHorizontalLayout: !isMobile,
-                    children: [
-                      TissuePrefixField(prefixCtr: prefixController),
-                      TissueNumField(tissueNumCtr: numberController),
-                    ],
-                  ),
-                ),
-              ],
-            );
+            return SettingCard(children: [
+              AdaptiveLayout(
+                useHorizontalLayout: !isMobile,
+                children: [
+                  TissuePrefixField(prefixCtr: prefixController),
+                  TissueNumField(tissueNumCtr: numberController),
+                ],
+              ),
+            ]);
           },
           loading: () => const CommonProgressIndicator(),
-          error: (err, stack) => const Center(
-            child: Text('Error loading data'),
-          ),
+          error: (error, stackTrace) {
+            return const Text('Error loading data');
+          },
         );
   }
 }
@@ -195,14 +189,17 @@ class TissuePrefixField extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 320),
-      child: CommonTextField(
+      child: TextField(
           controller: prefixCtr,
-          labelText: 'Prefix',
-          hintText: 'Enter tissue ID prefix, e.g. M',
-          isLastField: false,
+          decoration: const InputDecoration(
+            labelText: 'Prefix',
+            hintText: 'Enter tissue ID prefix, e.g. M',
+          ),
           onChanged: (String? value) async {
             if (value != null) {
-              await TissueIdServices(ref).setPrefix(value);
+              prefixCtr.selection =
+                  TextSelection.collapsed(offset: value.length);
+              await TissueIdServices(ref).setPrefix(value.trim());
             }
           }),
     );
@@ -221,11 +218,14 @@ class TissueNumField extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 320),
-      child: CommonNumField(
+      child: TextFormField(
         controller: tissueNumCtr,
-        labelText: 'Tissue no.',
-        hintText: 'Enter the initial starting number',
-        isLastField: true,
+        keyboardType: TextInputType.number,
+        decoration: const InputDecoration(
+          labelText: 'Tissue no.',
+          hintText: 'Enter the initial starting number',
+        ),
+        textInputAction: TextInputAction.done,
         onChanged: (String? value) async {
           if (value != null) {
             await TissueIdServices(ref).setNumber(value);

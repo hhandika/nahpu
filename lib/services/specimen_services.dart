@@ -191,6 +191,7 @@ class TissueIdServices {
     String prefix = tissueID.prefix;
     int number = tissueID.number;
     ref.read(tissueIDNotifierProvider.notifier).incrementNumber();
+    _invalidateTissueID();
     return '$prefix$number';
   }
 
@@ -212,10 +213,15 @@ class TissueIdServices {
     ref
         .read(tissueIDNotifierProvider.notifier)
         .setNumber(int.tryParse(number) ?? 0);
+    _invalidateTissueID();
   }
 
   Future<TissueID> _getTissueID() async {
     return ref.read(tissueIDNotifierProvider.future);
+  }
+
+  void _invalidateTissueID() {
+    ref.invalidate(tissueIDNotifierProvider);
   }
 }
 
