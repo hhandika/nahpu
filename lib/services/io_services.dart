@@ -29,7 +29,7 @@ class FilePickerServices {
     return null;
   }
 
-  Future<File?> selectFile(List<String> allowedExtension) async {
+  Future<File?> selectFile(List<String>? allowedExtension) async {
     final result = await _matchPicker(allowedExtension);
 
     if (result != null) {
@@ -41,7 +41,11 @@ class FilePickerServices {
     return null;
   }
 
-  Future<FilePickerResult?> _matchPicker(List<String> allowedExt) async {
+  Future<FilePickerResult?> _matchPicker(List<String>? allowedExt) async {
+    if (allowedExt == null) {
+      return await FilePicker.platform.pickFiles();
+    }
+
     return await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: allowedExt,

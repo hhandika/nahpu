@@ -42,9 +42,7 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
                             dbPath: _dbPath,
                             onPressed: () async {
                               final dbPath =
-                                  await FilePickerServices().selectFile(
-                                ['db', 'sqlite', 'sqlite3'],
-                              );
+                                  await FilePickerServices().selectFile(null);
                               if (dbPath != null) {
                                 setState(() {
                                   _dbPath = dbPath;

@@ -26,6 +26,7 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
   List<String> _problems = [];
   late CsvData _csvData;
   bool _hasData = false;
+  bool _isRunning = false;
 
   @override
   Widget build(BuildContext context) {
@@ -99,11 +100,15 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
                     const SizedBox(
                       width: 20,
                     ),
-                    PrimaryButton(
-                      text: 'Import',
-                      onPressed: _problems.isNotEmpty
+                    ImportButton(
+                      label: 'Import',
+                      isRunning: _isRunning,
+                      onPressed: _problems.isNotEmpty || _isRunning
                           ? null
                           : () async {
+                              setState(() {
+                                _isRunning = true;
+                              });
                               await _parseData();
                               if (mounted) {
                                 Navigator.of(context).pushReplacement(
@@ -180,7 +185,18 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
   }
 
   Future<void> _parseData() async {
-    await TaxonEntryReader(ref).parseData(_csvData);
+    try {
+      await TaxonEntryReader(ref).parseData(_csvData);
+      setState(() {
+        _isRunning = false;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+        ),
+      );
+    }
   }
 }
 

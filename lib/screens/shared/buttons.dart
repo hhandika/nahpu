@@ -19,6 +19,39 @@ class ProjectBackButton extends ConsumerWidget {
   }
 }
 
+class ImportButton extends StatelessWidget {
+  const ImportButton({
+    super.key,
+    required this.label,
+    required this.onPressed,
+    required this.isRunning,
+  });
+
+  final String label;
+  final VoidCallback? onPressed;
+  final bool isRunning;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton.icon(
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        elevation: 0,
+      ),
+      icon: isRunning
+          ? const SizedBox(
+              height: 10,
+              width: 10,
+              child: CircularProgressIndicator(),
+            )
+          : const Icon(Icons.play_arrow),
+      onPressed: onPressed,
+      label: Text(label),
+    );
+  }
+}
+
 class FormElevButton extends StatelessWidget {
   const FormElevButton({
     Key? key,
