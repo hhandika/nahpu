@@ -33,7 +33,7 @@ class SettingCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color: Theme.of(context).colorScheme.surface,
       ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
