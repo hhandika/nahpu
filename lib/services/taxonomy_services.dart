@@ -32,6 +32,11 @@ class TaxonomyService extends DbAccess {
     return await TaxonomyQuery(dbAccess).getTaxonById(id);
   }
 
+  Future<TaxonomyData?> getTaxonBySpecies(String genus, String epithet) async {
+    return await TaxonomyQuery(dbAccess)
+        .getTaxonIdByGenusEpithet(genus, epithet);
+  }
+
   Future<List<TaxonomyData>> getTaxonList() {
     return TaxonomyQuery(dbAccess).getTaxonList();
   }

@@ -8,6 +8,7 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 
 import 'package:drift/drift.dart' as db;
+import 'package:nahpu/services/taxonomy_services.dart';
 
 class SpeciesAutoComplete extends ConsumerStatefulWidget {
   const SpeciesAutoComplete({
@@ -47,12 +48,12 @@ class SpeciesAutoCompleteState extends ConsumerState<SpeciesAutoComplete> {
   void _inputTaxon(String selection) {
     _copyTaxon(selection);
     var taxon = widget.speciesCtr.text.split(' ');
-    SpecimenServices(ref).getTaxonIdByGenusEpithet(taxon[0], taxon[1]).then(
-          (data) => SpecimenServices(ref).updateSpecimen(
-            widget.specimenUuid,
-            SpecimenCompanion(speciesID: db.Value(data.id)),
-          ),
-        );
+    TaxonomyService(ref)
+        .getTaxonBySpecies(taxon[0], taxon[1])
+        .then((data) => SpecimenServices(ref).updateSpecimen(
+              widget.specimenUuid,
+              SpecimenCompanion(speciesID: db.Value(data?.id)),
+            ));
   }
 
   void _copyTaxon(String selection) {

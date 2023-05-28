@@ -14,11 +14,11 @@ class TaxonomyQuery extends DatabaseAccessor<Database>
     return (select(taxonomy)..where((t) => t.id.equals(id))).getSingle();
   }
 
-  Future<TaxonomyData> getTaxonIdByGenusEpithet(String genus, String epithet) {
+  Future<TaxonomyData?> getTaxonIdByGenusEpithet(String genus, String epithet) {
     return (select(taxonomy)
           ..where((t) => t.genus.equals(genus))
           ..where((t) => t.specificEpithet.equals(epithet)))
-        .getSingle();
+        .getSingleOrNull();
   }
 
   Future<List<TaxonomyData>> getTaxonList() {

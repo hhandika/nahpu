@@ -75,11 +75,6 @@ class SpecimenServices extends DbAccess {
     return TaxonomyQuery(dbAccess).getTaxonById(id);
   }
 
-  Future<TaxonomyData> getTaxonIdByGenusEpithet(
-      String genus, String epithet) async {
-    return TaxonomyQuery(dbAccess).getTaxonIdByGenusEpithet(genus, epithet);
-  }
-
   Future<int> getSpecimenFieldNumber(
     String personnelUuid,
   ) async {

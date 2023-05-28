@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/projects/components/taxon_registry.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
@@ -100,7 +101,19 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
                     ),
                     PrimaryButton(
                       text: 'Import',
-                      onPressed: _problems.isNotEmpty ? null : () {},
+                      onPressed: _problems.isNotEmpty
+                          ? null
+                          : () async {
+                              await _parseData();
+                              if (mounted) {
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const TaxonRegistryPage(),
+                                  ),
+                                );
+                              }
+                            },
                     ),
                   ],
                 )
@@ -164,6 +177,10 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
         );
       }
     }
+  }
+
+  Future<void> _parseData() async {
+    await TaxonEntryReader(ref).parseData(_csvData);
   }
 }
 

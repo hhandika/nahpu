@@ -22,7 +22,7 @@ class CsvData {
   void parseTaxonEntryFromList(List<List<dynamic>> parsedCsv) {
     header = parsedCsv[0].cast<String>();
     _mapHeader();
-    data = parsedCsv.sublist(1).cast<List<String>>();
+    data = parsedCsv.sublist(1).map((e) => e.cast<String>()).toList();
   }
 
   void _mapHeader() {
@@ -42,76 +42,49 @@ class TaxonParser {
     required this.data,
   });
 
-  final Map<TaxonEntryHeader, int> headerMap;
+  final Map<int, TaxonEntryHeader> headerMap;
   final List<List<String>> data;
 
   List<TaxonEntryData> parseData() {
-    List<TaxonEntryData> parsedData =
-        data.sublist(1).map((e) => _parseData(e.cast<String>())).toList();
+    List<TaxonEntryData> parsedData = data.map((e) => _parseData(e)).toList();
 
     return parsedData;
   }
 
-  TaxonEntryData _parseData(List<String> value) {
+  TaxonEntryData _parseData(List<String> values) {
     TaxonEntryData taxonEntryCsv = TaxonEntryData.empty();
-    taxonEntryCsv.taxonClass = _getTaxonClass(value);
-    taxonEntryCsv.taxonOrder = _getTaxonOrder(value);
-    taxonEntryCsv.taxonFamily = _getTaxonFamily(value);
-    taxonEntryCsv.genus = _getGenus(value);
-    taxonEntryCsv.specificEpithet = _getSpecificEpithet(value);
-    taxonEntryCsv.commonName = _getCommonName(value);
-    taxonEntryCsv.notes = _getNotes(value);
+
+    for (String value in values) {
+      int index = values.indexOf(value);
+      TaxonEntryHeader header = headerMap[index] ?? TaxonEntryHeader.ignore;
+      switch (header) {
+        case TaxonEntryHeader.taxonClass:
+          taxonEntryCsv.taxonClass = value;
+          break;
+        case TaxonEntryHeader.taxonOrder:
+          taxonEntryCsv.taxonOrder = value;
+          break;
+        case TaxonEntryHeader.taxonFamily:
+          taxonEntryCsv.taxonFamily = value;
+          break;
+        case TaxonEntryHeader.genus:
+          taxonEntryCsv.genus = value;
+          break;
+        case TaxonEntryHeader.specificEpithet:
+          taxonEntryCsv.specificEpithet = value;
+          break;
+        case TaxonEntryHeader.commonName:
+          taxonEntryCsv.commonName = value;
+          break;
+        case TaxonEntryHeader.notes:
+          taxonEntryCsv.notes = value;
+          break;
+        default:
+          break;
+      }
+    }
 
     return taxonEntryCsv;
-  }
-
-  String? _getTaxonClass(List<String> value) {
-    if (headerMap[TaxonEntryHeader.taxonClass] == null) {
-      return null;
-    }
-    return value[headerMap[TaxonEntryHeader.taxonClass]!];
-  }
-
-  String? _getTaxonOrder(List<String> value) {
-    if (headerMap[TaxonEntryHeader.taxonOrder] == null) {
-      return null;
-    }
-    return value[headerMap[TaxonEntryHeader.taxonOrder]!];
-  }
-
-  String? _getTaxonFamily(List<String> value) {
-    if (headerMap[TaxonEntryHeader.taxonFamily] == null) {
-      return null;
-    }
-    return value[headerMap[TaxonEntryHeader.taxonFamily]!];
-  }
-
-  String? _getGenus(List<String> value) {
-    if (headerMap[TaxonEntryHeader.genus] == null) {
-      return null;
-    }
-    return value[headerMap[TaxonEntryHeader.genus]!];
-  }
-
-  String? _getSpecificEpithet(List<String> value) {
-    if (headerMap[TaxonEntryHeader.specificEpithet] == null) {
-      return null;
-    }
-    return value[headerMap[TaxonEntryHeader.specificEpithet]!];
-  }
-
-  String? _getCommonName(List<String> value) {
-    if (headerMap[TaxonEntryHeader.commonName] == null) {
-      return null;
-    }
-    return value[headerMap[TaxonEntryHeader.commonName]!];
-  }
-
-  String? _getNotes(List<String> value) {
-    if (headerMap[TaxonEntryHeader.notes] == null) {
-      return null;
-    }
-    return value[headerMap[TaxonEntryHeader.notes]!];
   }
 }
 

@@ -2,9 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:csv/csv.dart';
+import 'package:nahpu/providers/taxa.dart';
+import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/io_services.dart';
+import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/types/taxon_entry.dart';
+import 'package:drift/drift.dart' as db;
 
 class TaxonEntryReader extends DbAccess {
   TaxonEntryReader(super.ref);
@@ -42,6 +46,49 @@ class TaxonEntryReader extends DbAccess {
     }
 
     return problemHeaders;
+  }
+
+  Future<void> parseData(CsvData data) async {
+    try {
+      TaxonParser parser = TaxonParser(
+        headerMap: data.headerMap,
+        data: data.data,
+      );
+      List<TaxonEntryData> parsedData = parser.parseData();
+      for (var data in parsedData) {
+        bool hasSpecies = await _checkSpeciesExist(data);
+        if (hasSpecies) {
+          throw Exception('Species already exists');
+        }
+        TaxonomyCompanion dbForm = _getDbForm(data);
+        TaxonomyService(ref).createTaxon(dbForm);
+      }
+      ref.invalidate(taxonRegistryProvider);
+    } catch (e) {
+      throw Exception('Error parsing data: $e');
+    }
+  }
+
+  TaxonomyCompanion _getDbForm(TaxonEntryData data) {
+    return TaxonomyCompanion(
+      taxonClass: db.Value(data.taxonClass),
+      taxonOrder: db.Value(data.taxonOrder),
+      taxonFamily: db.Value(data.taxonFamily),
+      genus: db.Value(data.genus),
+      specificEpithet: db.Value(data.specificEpithet),
+      commonName: db.Value(data.commonName ?? ''),
+      notes: db.Value(data.notes ?? ''),
+    );
+  }
+
+  Future<bool> _checkSpeciesExist(TaxonEntryData data) async {
+    try {
+      TaxonomyData? species = await TaxonomyService(ref)
+          .getTaxonBySpecies(data.genus ?? '', data.specificEpithet ?? '');
+      return species != null;
+    } catch (e) {
+      throw Exception('Error checking species: $e');
+    }
   }
 
   List<String> _findDuplicateValues(Map<int, TaxonEntryHeader> headerMap) {
