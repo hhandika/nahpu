@@ -1,33 +1,59 @@
-enum TaxonEntryHeader {
-  taxonClass,
-  taxonOrder,
-  taxonFamily,
-  genus,
-  specificEpithet,
-  commonName,
-  notes,
-}
+import 'package:nahpu/services/types/import.dart';
 
-class TaxonEntry {
-  TaxonEntry({
+class CsvData {
+  CsvData({
     required this.header,
     required this.headerMap,
     required this.data,
   });
 
   List<String> header;
-  Map<TaxonEntryHeader, int> headerMap;
-  List<List<dynamic>> data;
+  Map<int, TaxonEntryHeader> headerMap;
+  List<List<String>> data;
 
-  List<TaxonEntryCsv> parseTaxonEntryFromList() {
-    List<TaxonEntryCsv> parsedData =
+  factory CsvData.empty() {
+    return CsvData(
+      header: [],
+      headerMap: {},
+      data: [],
+    );
+  }
+
+  void parseTaxonEntryFromList(List<List<dynamic>> parsedCsv) {
+    header = parsedCsv[0].cast<String>();
+    _mapHeader();
+    data = parsedCsv.sublist(1).cast<List<String>>();
+  }
+
+  void _mapHeader() {
+    for (String value in header) {
+      TaxonEntryHeader headerKey =
+          knownTaxonHeader[value.toLowerCase().replaceAll(' ', '')] ??
+              TaxonEntryHeader.ignore;
+
+      headerMap[header.indexOf(value)] = headerKey;
+    }
+  }
+}
+
+class TaxonParser {
+  TaxonParser({
+    required this.headerMap,
+    required this.data,
+  });
+
+  final Map<TaxonEntryHeader, int> headerMap;
+  final List<List<String>> data;
+
+  List<TaxonEntryData> parseData() {
+    List<TaxonEntryData> parsedData =
         data.sublist(1).map((e) => _parseData(e.cast<String>())).toList();
 
     return parsedData;
   }
 
-  TaxonEntryCsv _parseData(List<String> value) {
-    TaxonEntryCsv taxonEntryCsv = TaxonEntryCsv.empty();
+  TaxonEntryData _parseData(List<String> value) {
+    TaxonEntryData taxonEntryCsv = TaxonEntryData.empty();
     taxonEntryCsv.taxonClass = _getTaxonClass(value);
     taxonEntryCsv.taxonOrder = _getTaxonOrder(value);
     taxonEntryCsv.taxonFamily = _getTaxonFamily(value);
@@ -89,8 +115,8 @@ class TaxonEntry {
   }
 }
 
-class TaxonEntryCsv {
-  TaxonEntryCsv({
+class TaxonEntryData {
+  TaxonEntryData({
     required this.taxonClass,
     required this.taxonOrder,
     required this.taxonFamily,
@@ -108,8 +134,8 @@ class TaxonEntryCsv {
   String? commonName;
   String? notes;
 
-  factory TaxonEntryCsv.empty() {
-    return TaxonEntryCsv(
+  factory TaxonEntryData.empty() {
+    return TaxonEntryData(
       taxonClass: null,
       taxonOrder: null,
       taxonFamily: null,

@@ -1,17 +1,13 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/taxa.dart';
-import 'package:nahpu/services/import/taxon_reader.dart';
-import 'package:nahpu/services/io_services.dart';
+import 'package:nahpu/screens/projects/components/import_taxa.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
-import 'package:nahpu/screens/shared/file_operation.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/layout.dart';
@@ -383,107 +379,6 @@ class EditTaxon extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class TaxonImportForm extends ConsumerStatefulWidget {
-  const TaxonImportForm({super.key});
-
-  @override
-  TaxonImportFormState createState() => TaxonImportFormState();
-}
-
-class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
-  TaxonImportFmt _fmt = TaxonImportFmt.csv;
-  File? _filePath;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Import Taxon'),
-        automaticallyImplyLeading: false,
-      ),
-      body: SafeArea(
-        child: Center(
-          child: ScrollableLayout(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                DropdownButtonFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Input Format',
-                  ),
-                  value: _fmt,
-                  items: taxonImportFmtList
-                      .map((e) => DropdownMenuItem(
-                            value: TaxonImportFmt
-                                .values[taxonImportFmtList.indexOf(e)],
-                            child: Text(e),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    if (value != null) {
-                      setState(() {
-                        _fmt = value;
-                      });
-                    }
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                SelectFileField(
-                  filePath: _filePath,
-                  width: 500,
-                  maxWidth: MediaQuery.of(context).size.width * 0.8,
-                  onPressed: () {
-                    _getFile();
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Wrap(
-                  alignment: WrapAlignment.center,
-                  children: [
-                    SecondaryButton(
-                        text: 'Cancel',
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        }),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    PrimaryButton(
-                      text: 'Next',
-                      onPressed: () async {
-                        if (_filePath != null) {
-                          await TaxonEntryReader(ref, _filePath!).parse();
-                        }
-                      },
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _getFile() async {
-    File? file = await FilePickerServices().selectFile([
-      'csv',
-    ]);
-    if (file != null) {
-      setState(() {
-        _filePath = file;
-      });
-    }
   }
 }
 

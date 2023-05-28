@@ -2,180 +2,53 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:csv/csv.dart';
-import 'package:flutter/foundation.dart';
 import 'package:nahpu/services/io_services.dart';
+import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/types/taxon_entry.dart';
 
 class TaxonEntryReader extends DbAccess {
-  TaxonEntryReader(super.ref, this.inputFile);
+  TaxonEntryReader(super.ref);
 
-  final File inputFile;
-
-  Future<List<TaxonEntryCsv>> parse() async {
+  Future<CsvData> parseCsv(File inputFile) async {
     final reader = inputFile.openRead();
-    List<List<dynamic>> csv = await reader
+    List<List<dynamic>> parsedCsv = await reader
         .transform(utf8.decoder)
         .transform(const CsvToListConverter())
         .toList();
 
-    if (csv.length < 2) {
+    /// We expect at least one line
+    /// of data in the file
+    if (parsedCsv.length < 2) {
       throw Exception('No data found in file');
     }
 
-    List<String> header = csv[0].cast<String>();
+    CsvData data = CsvData.empty();
+    data.parseTaxonEntryFromList(parsedCsv);
 
-    Map<TaxonEntryHeader, int> headerMap = _getHeaderMap(header);
-    if (!_isValidCsv(headerMap)) {
-      throw Exception('Invalid CSV file');
-    } else {
-      if (kDebugMode) {
-        print('Valid CSV file');
-      }
-    }
-    List<List<dynamic>> data = csv.sublist(1);
-    List<TaxonEntryCsv> parsedData = TaxonEntry(
-      header: header,
-      headerMap: headerMap,
-      data: data,
-    ).parseTaxonEntryFromList();
+    return data;
+  }
 
-    if (kDebugMode) {
-      print('TaxonEntryReader: ${inputFile.path}');
-      for (TaxonEntryCsv entry in parsedData) {
-        print('${entry.taxonClass}, ${entry.taxonOrder}, '
-            '${entry.taxonFamily}, ${entry.genus}, ${entry.specificEpithet},'
-            ' ${entry.commonName}, ${entry.notes}');
+  List<String> findProblems(Map<int, TaxonEntryHeader> headerMap) {
+    // Find duplicates and list only the first instance
+    List<String> problemHeaders =
+        _findDuplicateValues(headerMap).toSet().toList();
+    for (var header in requiredTaxonImportHeaders) {
+      if (!headerMap.containsValue(header)) {
+        [...problemHeaders, 'Missing ${matchTaxonEntryHeader(header)}'];
       }
     }
 
-    return parsedData;
+    return problemHeaders;
   }
 
-  bool _isValidCsv(Map<TaxonEntryHeader, int> headerMap) {
-    List<TaxonEntryHeader> requiredHeaders = [
-      TaxonEntryHeader.taxonClass,
-      TaxonEntryHeader.taxonOrder,
-      TaxonEntryHeader.taxonFamily,
-      TaxonEntryHeader.genus,
-      TaxonEntryHeader.specificEpithet,
-    ];
-    for (var header in requiredHeaders) {
-      if (!headerMap.containsKey(header)) {
-        return false;
+  List<String> _findDuplicateValues(Map<int, TaxonEntryHeader> headerMap) {
+    List<String> problemHeaders = [];
+    List<TaxonEntryHeader> values = headerMap.values.toList();
+    for (var header in values) {
+      if (values.where((element) => element == header).length > 1) {
+        problemHeaders.add('Duplicate ${matchTaxonEntryHeader(header)}');
       }
     }
-
-    return true;
-  }
-
-  Map<TaxonEntryHeader, int> _getHeaderMap(List<String> header) {
-    Map<TaxonEntryHeader, int> headerMap = {};
-    for (var value in header) {
-      if (_matchedTaxonClass(value)) {
-        headerMap[TaxonEntryHeader.taxonClass] = header.indexOf(value);
-      } else if (_matchedTaxonOrder(value)) {
-        headerMap[TaxonEntryHeader.taxonOrder] = header.indexOf(value);
-      } else if (_matchedTaxonFamily(value)) {
-        headerMap[TaxonEntryHeader.taxonFamily] = header.indexOf(value);
-      } else if (_matchedGenus(value)) {
-        headerMap[TaxonEntryHeader.genus] = header.indexOf(value);
-      } else if (_matchedSpecificEpithet(value)) {
-        headerMap[TaxonEntryHeader.specificEpithet] = header.indexOf(value);
-      } else if (_matchedCommonName(value)) {
-        headerMap[TaxonEntryHeader.commonName] = header.indexOf(value);
-      } else if (_matchedNotes(value)) {
-        headerMap[TaxonEntryHeader.notes] = header.indexOf(value);
-      }
-    }
-    return headerMap;
-  }
-
-  bool _matchedTaxonClass(String value) {
-    List<String> validKeywords = [
-      'class',
-      'taxon class',
-      'taxonomic class',
-      'taxonclass',
-      'taxonomicclass',
-    ];
-    return validKeywords.contains(value.toLowerCase());
-  }
-
-  bool _matchedTaxonOrder(String value) {
-    List<String> validKeywords = [
-      'order',
-      'taxon order',
-      'taxonomic order',
-      'taxonorder',
-      'taxonomicorder',
-    ];
-    return validKeywords.contains(value.toLowerCase());
-  }
-
-  bool _matchedTaxonFamily(String value) {
-    List<String> validKeywords = [
-      'family',
-      'families',
-      'taxon family',
-      'taxonomic family',
-      'taxonfamily',
-      'taxonomically',
-    ];
-    return validKeywords.contains(value.toLowerCase());
-  }
-
-  bool _matchedGenus(String value) {
-    List<String> validKeywords = [
-      'genus',
-      'taxon genus',
-      'taxonomic genus',
-      'tangents',
-      'taxonomicgenus',
-    ];
-    return validKeywords.contains(value.toLowerCase());
-  }
-
-  bool _matchedSpecificEpithet(String value) {
-    List<String> validKeywords = [
-      'epithet',
-      'specific epithet',
-      'taxon epithet',
-      'taxonomic epithet',
-      'specificepithet',
-      'taxonepithet',
-      'taxonomicepithet',
-      'species',
-    ];
-
-    if (value.contains(' ')) {
-      return false;
-    }
-
-    return validKeywords.contains(value.toLowerCase());
-  }
-
-  bool _matchedCommonName(String value) {
-    List<String> validKeywords = [
-      'common name',
-      'commonname',
-      'common',
-      'common names',
-      'commonnames',
-      'english name',
-      'englishname',
-    ];
-    return validKeywords.contains(value.toLowerCase());
-  }
-
-  bool _matchedNotes(String value) {
-    List<String> validKeywords = [
-      'notes',
-      'note',
-      'remarks',
-      'remark',
-      'comments',
-      'comment',
-    ];
-    return validKeywords.contains(value.toLowerCase());
+    return problemHeaders;
   }
 }
