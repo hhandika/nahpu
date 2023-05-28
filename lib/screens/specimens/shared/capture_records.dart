@@ -32,6 +32,11 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
   bool _showMore = false;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     List<CollEventData> eventEntry = [];
     ref.watch(collEventEntryProvider).whenData(
@@ -203,7 +208,7 @@ class RelativeTimeSwitchState extends ConsumerState<RelativeTimeSwitch> {
   }
 }
 
-class MethodIdField extends ConsumerStatefulWidget {
+class MethodIdField extends ConsumerWidget {
   const MethodIdField({
     super.key,
     required this.specimenUuid,
@@ -214,32 +219,18 @@ class MethodIdField extends ConsumerStatefulWidget {
   final SpecimenFormCtrModel specimenCtr;
 
   @override
-  MethodIdFieldState createState() => MethodIdFieldState();
-}
-
-class MethodIdFieldState extends ConsumerState<MethodIdField> {
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return CommonTextField(
-      controller: widget.specimenCtr.trapIDCtr,
+      controller: specimenCtr.trapIDCtr,
       labelText: 'Method ID',
       hintText: 'Enter ID, e.g. trap/net number, etc.',
       isLastField: false,
       onChanged: (String? value) {
         if (value != null && value.isNotEmpty) {
-          setState(() {
-            widget.specimenCtr.trapIDCtr.selection = TextSelection.collapsed(
-                offset: widget.specimenCtr.trapIDCtr.text.length);
-            SpecimenServices(ref).updateSpecimen(
-              widget.specimenUuid,
-              SpecimenCompanion(trapID: db.Value(value)),
-            );
-          });
+          SpecimenServices(ref).updateSpecimen(
+            specimenUuid,
+            SpecimenCompanion(trapID: db.Value(value)),
+          );
         }
       },
     );

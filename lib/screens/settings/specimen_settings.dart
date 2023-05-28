@@ -159,7 +159,10 @@ class TissueIDFields extends ConsumerWidget {
                 TextEditingController(text: data.prefix);
             TextEditingController numberController =
                 TextEditingController(text: data.number.toString());
-
+            prefixController.selection = TextSelection.fromPosition(
+                TextPosition(offset: prefixController.text.length));
+            numberController.selection = TextSelection.fromPosition(
+                TextPosition(offset: numberController.text.length));
             return SettingCard(children: [
               AdaptiveLayout(
                 useHorizontalLayout: !isMobile,
@@ -204,10 +207,6 @@ class TissuePrefixFieldState extends ConsumerState<TissuePrefixField> {
           onChanged: (String? value) async {
             if (value != null) {
               await TissueIdServices(ref).setPrefix(value.trim());
-              setState(() {
-                widget.prefixCtr.selection = TextSelection(
-                    baseOffset: value.length, extentOffset: value.length);
-              });
             }
           }),
     );
@@ -242,10 +241,6 @@ class TissueNumFieldState extends ConsumerState<TissueNumField> {
         onChanged: (String? value) async {
           if (value != null) {
             await TissueIdServices(ref).setNumber(value);
-            setState(() {
-              widget.tissueNumCtr.selection = TextSelection(
-                  baseOffset: value.length, extentOffset: value.length);
-            });
           }
         },
       ),
