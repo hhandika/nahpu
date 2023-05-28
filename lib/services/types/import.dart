@@ -53,6 +53,7 @@ const Map<String, TaxonEntryHeader> knownTaxonHeader = {
   'genus': TaxonEntryHeader.genus,
   'specificepithet': TaxonEntryHeader.specificEpithet,
   'epithet': TaxonEntryHeader.specificEpithet,
+  'species': TaxonEntryHeader.specificEpithet,
   'commonname': TaxonEntryHeader.commonName,
   'englishname': TaxonEntryHeader.commonName,
   'notes': TaxonEntryHeader.notes,

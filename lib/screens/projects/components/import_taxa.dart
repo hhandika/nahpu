@@ -153,6 +153,10 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
           _hasData = true;
         });
       } catch (e) {
+        setState(() {
+          _hasData = false;
+        });
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(e.toString()),
