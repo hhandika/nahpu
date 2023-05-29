@@ -134,16 +134,18 @@ class RegisteredTaxa extends StatelessWidget {
               ),
             ],
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const TaxonRegistryPage(),
-                ),
-              );
-            },
-            child: const Text('View all'),
-          )
+          taxonData.isEmpty
+              ? const SizedBox.shrink()
+              : TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const TaxonRegistryPage(),
+                      ),
+                    );
+                  },
+                  child: const Text('View all'),
+                )
         ],
       ),
     );
@@ -199,18 +201,20 @@ class RecordedTaxaView extends ConsumerWidget {
           const SizedBox(
             height: 10,
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => SpecimenListPage(
-                    data: data,
-                  ),
-                ),
-              );
-            },
-            child: const Text('View all'),
-          )
+          data.isEmpty
+              ? const SizedBox.shrink()
+              : TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => SpecimenListPage(
+                          data: data,
+                        ),
+                      ),
+                    );
+                  },
+                  child: const Text('View all'),
+                )
         ],
       ),
     );
