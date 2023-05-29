@@ -6,7 +6,7 @@ import 'package:nahpu/services/utility_services.dart';
 part 'specimen_queries.g.dart';
 
 @DriftAccessor(
-  include: {'tables_v3.drift'},
+  include: {'tables.drift'},
 )
 class SpecimenQuery extends DatabaseAccessor<Database>
     with _$SpecimenQueryMixin {

@@ -5413,6 +5413,2248 @@ class NarrativeCompanion extends UpdateCompanion<NarrativeData> {
   }
 }
 
+class NarrativeMedia extends Table
+    with TableInfo<NarrativeMedia, NarrativeMediaData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  NarrativeMedia(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _narrativeIdMeta =
+      const VerificationMeta('narrativeId');
+  late final GeneratedColumn<int> narrativeId = GeneratedColumn<int>(
+      'narrativeId', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _mediaIdMeta =
+      const VerificationMeta('mediaId');
+  late final GeneratedColumn<int> mediaId = GeneratedColumn<int>(
+      'mediaId', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _categoryMeta =
+      const VerificationMeta('category');
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
+      'category', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  @override
+  List<GeneratedColumn> get $columns => [narrativeId, mediaId, category];
+  @override
+  String get aliasedName => _alias ?? 'narrativeMedia';
+  @override
+  String get actualTableName => 'narrativeMedia';
+  @override
+  VerificationContext validateIntegrity(Insertable<NarrativeMediaData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('narrativeId')) {
+      context.handle(
+          _narrativeIdMeta,
+          narrativeId.isAcceptableOrUnknown(
+              data['narrativeId']!, _narrativeIdMeta));
+    }
+    if (data.containsKey('mediaId')) {
+      context.handle(_mediaIdMeta,
+          mediaId.isAcceptableOrUnknown(data['mediaId']!, _mediaIdMeta));
+    }
+    if (data.containsKey('category')) {
+      context.handle(_categoryMeta,
+          category.isAcceptableOrUnknown(data['category']!, _categoryMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  NarrativeMediaData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return NarrativeMediaData(
+      narrativeId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}narrativeId']),
+      mediaId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}mediaId']),
+      category: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}category']),
+    );
+  }
+
+  @override
+  NarrativeMedia createAlias(String alias) {
+    return NarrativeMedia(attachedDatabase, alias);
+  }
+
+  @override
+  List<String> get customConstraints => const [
+        'FOREIGN KEY(narrativeId)REFERENCES narrative(id)',
+        'FOREIGN KEY(mediaId)REFERENCES media(primaryId)'
+      ];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class NarrativeMediaData extends DataClass
+    implements Insertable<NarrativeMediaData> {
+  final int? narrativeId;
+  final int? mediaId;
+  final String? category;
+  const NarrativeMediaData({this.narrativeId, this.mediaId, this.category});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || narrativeId != null) {
+      map['narrativeId'] = Variable<int>(narrativeId);
+    }
+    if (!nullToAbsent || mediaId != null) {
+      map['mediaId'] = Variable<int>(mediaId);
+    }
+    if (!nullToAbsent || category != null) {
+      map['category'] = Variable<String>(category);
+    }
+    return map;
+  }
+
+  NarrativeMediaCompanion toCompanion(bool nullToAbsent) {
+    return NarrativeMediaCompanion(
+      narrativeId: narrativeId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(narrativeId),
+      mediaId: mediaId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(mediaId),
+      category: category == null && nullToAbsent
+          ? const Value.absent()
+          : Value(category),
+    );
+  }
+
+  factory NarrativeMediaData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return NarrativeMediaData(
+      narrativeId: serializer.fromJson<int?>(json['narrativeId']),
+      mediaId: serializer.fromJson<int?>(json['mediaId']),
+      category: serializer.fromJson<String?>(json['category']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'narrativeId': serializer.toJson<int?>(narrativeId),
+      'mediaId': serializer.toJson<int?>(mediaId),
+      'category': serializer.toJson<String?>(category),
+    };
+  }
+
+  NarrativeMediaData copyWith(
+          {Value<int?> narrativeId = const Value.absent(),
+          Value<int?> mediaId = const Value.absent(),
+          Value<String?> category = const Value.absent()}) =>
+      NarrativeMediaData(
+        narrativeId: narrativeId.present ? narrativeId.value : this.narrativeId,
+        mediaId: mediaId.present ? mediaId.value : this.mediaId,
+        category: category.present ? category.value : this.category,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('NarrativeMediaData(')
+          ..write('narrativeId: $narrativeId, ')
+          ..write('mediaId: $mediaId, ')
+          ..write('category: $category')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(narrativeId, mediaId, category);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is NarrativeMediaData &&
+          other.narrativeId == this.narrativeId &&
+          other.mediaId == this.mediaId &&
+          other.category == this.category);
+}
+
+class NarrativeMediaCompanion extends UpdateCompanion<NarrativeMediaData> {
+  final Value<int?> narrativeId;
+  final Value<int?> mediaId;
+  final Value<String?> category;
+  final Value<int> rowid;
+  const NarrativeMediaCompanion({
+    this.narrativeId = const Value.absent(),
+    this.mediaId = const Value.absent(),
+    this.category = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  NarrativeMediaCompanion.insert({
+    this.narrativeId = const Value.absent(),
+    this.mediaId = const Value.absent(),
+    this.category = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  static Insertable<NarrativeMediaData> custom({
+    Expression<int>? narrativeId,
+    Expression<int>? mediaId,
+    Expression<String>? category,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (narrativeId != null) 'narrativeId': narrativeId,
+      if (mediaId != null) 'mediaId': mediaId,
+      if (category != null) 'category': category,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  NarrativeMediaCompanion copyWith(
+      {Value<int?>? narrativeId,
+      Value<int?>? mediaId,
+      Value<String?>? category,
+      Value<int>? rowid}) {
+    return NarrativeMediaCompanion(
+      narrativeId: narrativeId ?? this.narrativeId,
+      mediaId: mediaId ?? this.mediaId,
+      category: category ?? this.category,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (narrativeId.present) {
+      map['narrativeId'] = Variable<int>(narrativeId.value);
+    }
+    if (mediaId.present) {
+      map['mediaId'] = Variable<int>(mediaId.value);
+    }
+    if (category.present) {
+      map['category'] = Variable<String>(category.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NarrativeMediaCompanion(')
+          ..write('narrativeId: $narrativeId, ')
+          ..write('mediaId: $mediaId, ')
+          ..write('category: $category, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class SiteMedia extends Table with TableInfo<SiteMedia, SiteMediaData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  SiteMedia(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _siteIdMeta = const VerificationMeta('siteId');
+  late final GeneratedColumn<int> siteId = GeneratedColumn<int>(
+      'siteId', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _mediaIdMeta =
+      const VerificationMeta('mediaId');
+  late final GeneratedColumn<int> mediaId = GeneratedColumn<int>(
+      'mediaId', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _categoryMeta =
+      const VerificationMeta('category');
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
+      'category', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  @override
+  List<GeneratedColumn> get $columns => [siteId, mediaId, category];
+  @override
+  String get aliasedName => _alias ?? 'siteMedia';
+  @override
+  String get actualTableName => 'siteMedia';
+  @override
+  VerificationContext validateIntegrity(Insertable<SiteMediaData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('siteId')) {
+      context.handle(_siteIdMeta,
+          siteId.isAcceptableOrUnknown(data['siteId']!, _siteIdMeta));
+    }
+    if (data.containsKey('mediaId')) {
+      context.handle(_mediaIdMeta,
+          mediaId.isAcceptableOrUnknown(data['mediaId']!, _mediaIdMeta));
+    }
+    if (data.containsKey('category')) {
+      context.handle(_categoryMeta,
+          category.isAcceptableOrUnknown(data['category']!, _categoryMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  SiteMediaData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SiteMediaData(
+      siteId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}siteId']),
+      mediaId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}mediaId']),
+      category: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}category']),
+    );
+  }
+
+  @override
+  SiteMedia createAlias(String alias) {
+    return SiteMedia(attachedDatabase, alias);
+  }
+
+  @override
+  List<String> get customConstraints => const [
+        'FOREIGN KEY(siteId)REFERENCES site(id)',
+        'FOREIGN KEY(mediaId)REFERENCES media(primaryId)'
+      ];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class SiteMediaData extends DataClass implements Insertable<SiteMediaData> {
+  final int? siteId;
+  final int? mediaId;
+  final String? category;
+  const SiteMediaData({this.siteId, this.mediaId, this.category});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || siteId != null) {
+      map['siteId'] = Variable<int>(siteId);
+    }
+    if (!nullToAbsent || mediaId != null) {
+      map['mediaId'] = Variable<int>(mediaId);
+    }
+    if (!nullToAbsent || category != null) {
+      map['category'] = Variable<String>(category);
+    }
+    return map;
+  }
+
+  SiteMediaCompanion toCompanion(bool nullToAbsent) {
+    return SiteMediaCompanion(
+      siteId:
+          siteId == null && nullToAbsent ? const Value.absent() : Value(siteId),
+      mediaId: mediaId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(mediaId),
+      category: category == null && nullToAbsent
+          ? const Value.absent()
+          : Value(category),
+    );
+  }
+
+  factory SiteMediaData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SiteMediaData(
+      siteId: serializer.fromJson<int?>(json['siteId']),
+      mediaId: serializer.fromJson<int?>(json['mediaId']),
+      category: serializer.fromJson<String?>(json['category']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'siteId': serializer.toJson<int?>(siteId),
+      'mediaId': serializer.toJson<int?>(mediaId),
+      'category': serializer.toJson<String?>(category),
+    };
+  }
+
+  SiteMediaData copyWith(
+          {Value<int?> siteId = const Value.absent(),
+          Value<int?> mediaId = const Value.absent(),
+          Value<String?> category = const Value.absent()}) =>
+      SiteMediaData(
+        siteId: siteId.present ? siteId.value : this.siteId,
+        mediaId: mediaId.present ? mediaId.value : this.mediaId,
+        category: category.present ? category.value : this.category,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('SiteMediaData(')
+          ..write('siteId: $siteId, ')
+          ..write('mediaId: $mediaId, ')
+          ..write('category: $category')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(siteId, mediaId, category);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SiteMediaData &&
+          other.siteId == this.siteId &&
+          other.mediaId == this.mediaId &&
+          other.category == this.category);
+}
+
+class SiteMediaCompanion extends UpdateCompanion<SiteMediaData> {
+  final Value<int?> siteId;
+  final Value<int?> mediaId;
+  final Value<String?> category;
+  final Value<int> rowid;
+  const SiteMediaCompanion({
+    this.siteId = const Value.absent(),
+    this.mediaId = const Value.absent(),
+    this.category = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SiteMediaCompanion.insert({
+    this.siteId = const Value.absent(),
+    this.mediaId = const Value.absent(),
+    this.category = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  static Insertable<SiteMediaData> custom({
+    Expression<int>? siteId,
+    Expression<int>? mediaId,
+    Expression<String>? category,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (siteId != null) 'siteId': siteId,
+      if (mediaId != null) 'mediaId': mediaId,
+      if (category != null) 'category': category,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SiteMediaCompanion copyWith(
+      {Value<int?>? siteId,
+      Value<int?>? mediaId,
+      Value<String?>? category,
+      Value<int>? rowid}) {
+    return SiteMediaCompanion(
+      siteId: siteId ?? this.siteId,
+      mediaId: mediaId ?? this.mediaId,
+      category: category ?? this.category,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (siteId.present) {
+      map['siteId'] = Variable<int>(siteId.value);
+    }
+    if (mediaId.present) {
+      map['mediaId'] = Variable<int>(mediaId.value);
+    }
+    if (category.present) {
+      map['category'] = Variable<String>(category.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SiteMediaCompanion(')
+          ..write('siteId: $siteId, ')
+          ..write('mediaId: $mediaId, ')
+          ..write('category: $category, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  Taxonomy(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
+  static const VerificationMeta _taxonClassMeta =
+      const VerificationMeta('taxonClass');
+  late final GeneratedColumn<String> taxonClass = GeneratedColumn<String>(
+      'taxonClass', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _taxonOrderMeta =
+      const VerificationMeta('taxonOrder');
+  late final GeneratedColumn<String> taxonOrder = GeneratedColumn<String>(
+      'taxonOrder', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _taxonFamilyMeta =
+      const VerificationMeta('taxonFamily');
+  late final GeneratedColumn<String> taxonFamily = GeneratedColumn<String>(
+      'taxonFamily', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _genusMeta = const VerificationMeta('genus');
+  late final GeneratedColumn<String> genus = GeneratedColumn<String>(
+      'genus', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _specificEpithetMeta =
+      const VerificationMeta('specificEpithet');
+  late final GeneratedColumn<String> specificEpithet = GeneratedColumn<String>(
+      'specificEpithet', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _commonNameMeta =
+      const VerificationMeta('commonName');
+  late final GeneratedColumn<String> commonName = GeneratedColumn<String>(
+      'commonName', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+      'notes', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _mediaIdMeta =
+      const VerificationMeta('mediaId');
+  late final GeneratedColumn<int> mediaId = GeneratedColumn<int>(
+      'mediaId', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        taxonClass,
+        taxonOrder,
+        taxonFamily,
+        genus,
+        specificEpithet,
+        commonName,
+        notes,
+        mediaId
+      ];
+  @override
+  String get aliasedName => _alias ?? 'taxonomy';
+  @override
+  String get actualTableName => 'taxonomy';
+  @override
+  VerificationContext validateIntegrity(Insertable<TaxonomyData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('taxonClass')) {
+      context.handle(
+          _taxonClassMeta,
+          taxonClass.isAcceptableOrUnknown(
+              data['taxonClass']!, _taxonClassMeta));
+    }
+    if (data.containsKey('taxonOrder')) {
+      context.handle(
+          _taxonOrderMeta,
+          taxonOrder.isAcceptableOrUnknown(
+              data['taxonOrder']!, _taxonOrderMeta));
+    }
+    if (data.containsKey('taxonFamily')) {
+      context.handle(
+          _taxonFamilyMeta,
+          taxonFamily.isAcceptableOrUnknown(
+              data['taxonFamily']!, _taxonFamilyMeta));
+    }
+    if (data.containsKey('genus')) {
+      context.handle(
+          _genusMeta, genus.isAcceptableOrUnknown(data['genus']!, _genusMeta));
+    }
+    if (data.containsKey('specificEpithet')) {
+      context.handle(
+          _specificEpithetMeta,
+          specificEpithet.isAcceptableOrUnknown(
+              data['specificEpithet']!, _specificEpithetMeta));
+    }
+    if (data.containsKey('commonName')) {
+      context.handle(
+          _commonNameMeta,
+          commonName.isAcceptableOrUnknown(
+              data['commonName']!, _commonNameMeta));
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+          _notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
+    }
+    if (data.containsKey('mediaId')) {
+      context.handle(_mediaIdMeta,
+          mediaId.isAcceptableOrUnknown(data['mediaId']!, _mediaIdMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  TaxonomyData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return TaxonomyData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      taxonClass: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}taxonClass']),
+      taxonOrder: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}taxonOrder']),
+      taxonFamily: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}taxonFamily']),
+      genus: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}genus']),
+      specificEpithet: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}specificEpithet']),
+      commonName: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}commonName']),
+      notes: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}notes']),
+      mediaId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}mediaId']),
+    );
+  }
+
+  @override
+  Taxonomy createAlias(String alias) {
+    return Taxonomy(attachedDatabase, alias);
+  }
+
+  @override
+  List<String> get customConstraints =>
+      const ['FOREIGN KEY(mediaId)REFERENCES media(primaryId)'];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
+  final int id;
+  final String? taxonClass;
+  final String? taxonOrder;
+  final String? taxonFamily;
+  final String? genus;
+  final String? specificEpithet;
+  final String? commonName;
+  final String? notes;
+  final int? mediaId;
+  const TaxonomyData(
+      {required this.id,
+      this.taxonClass,
+      this.taxonOrder,
+      this.taxonFamily,
+      this.genus,
+      this.specificEpithet,
+      this.commonName,
+      this.notes,
+      this.mediaId});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || taxonClass != null) {
+      map['taxonClass'] = Variable<String>(taxonClass);
+    }
+    if (!nullToAbsent || taxonOrder != null) {
+      map['taxonOrder'] = Variable<String>(taxonOrder);
+    }
+    if (!nullToAbsent || taxonFamily != null) {
+      map['taxonFamily'] = Variable<String>(taxonFamily);
+    }
+    if (!nullToAbsent || genus != null) {
+      map['genus'] = Variable<String>(genus);
+    }
+    if (!nullToAbsent || specificEpithet != null) {
+      map['specificEpithet'] = Variable<String>(specificEpithet);
+    }
+    if (!nullToAbsent || commonName != null) {
+      map['commonName'] = Variable<String>(commonName);
+    }
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
+    if (!nullToAbsent || mediaId != null) {
+      map['mediaId'] = Variable<int>(mediaId);
+    }
+    return map;
+  }
+
+  TaxonomyCompanion toCompanion(bool nullToAbsent) {
+    return TaxonomyCompanion(
+      id: Value(id),
+      taxonClass: taxonClass == null && nullToAbsent
+          ? const Value.absent()
+          : Value(taxonClass),
+      taxonOrder: taxonOrder == null && nullToAbsent
+          ? const Value.absent()
+          : Value(taxonOrder),
+      taxonFamily: taxonFamily == null && nullToAbsent
+          ? const Value.absent()
+          : Value(taxonFamily),
+      genus:
+          genus == null && nullToAbsent ? const Value.absent() : Value(genus),
+      specificEpithet: specificEpithet == null && nullToAbsent
+          ? const Value.absent()
+          : Value(specificEpithet),
+      commonName: commonName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(commonName),
+      notes:
+          notes == null && nullToAbsent ? const Value.absent() : Value(notes),
+      mediaId: mediaId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(mediaId),
+    );
+  }
+
+  factory TaxonomyData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return TaxonomyData(
+      id: serializer.fromJson<int>(json['id']),
+      taxonClass: serializer.fromJson<String?>(json['taxonClass']),
+      taxonOrder: serializer.fromJson<String?>(json['taxonOrder']),
+      taxonFamily: serializer.fromJson<String?>(json['taxonFamily']),
+      genus: serializer.fromJson<String?>(json['genus']),
+      specificEpithet: serializer.fromJson<String?>(json['specificEpithet']),
+      commonName: serializer.fromJson<String?>(json['commonName']),
+      notes: serializer.fromJson<String?>(json['notes']),
+      mediaId: serializer.fromJson<int?>(json['mediaId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'taxonClass': serializer.toJson<String?>(taxonClass),
+      'taxonOrder': serializer.toJson<String?>(taxonOrder),
+      'taxonFamily': serializer.toJson<String?>(taxonFamily),
+      'genus': serializer.toJson<String?>(genus),
+      'specificEpithet': serializer.toJson<String?>(specificEpithet),
+      'commonName': serializer.toJson<String?>(commonName),
+      'notes': serializer.toJson<String?>(notes),
+      'mediaId': serializer.toJson<int?>(mediaId),
+    };
+  }
+
+  TaxonomyData copyWith(
+          {int? id,
+          Value<String?> taxonClass = const Value.absent(),
+          Value<String?> taxonOrder = const Value.absent(),
+          Value<String?> taxonFamily = const Value.absent(),
+          Value<String?> genus = const Value.absent(),
+          Value<String?> specificEpithet = const Value.absent(),
+          Value<String?> commonName = const Value.absent(),
+          Value<String?> notes = const Value.absent(),
+          Value<int?> mediaId = const Value.absent()}) =>
+      TaxonomyData(
+        id: id ?? this.id,
+        taxonClass: taxonClass.present ? taxonClass.value : this.taxonClass,
+        taxonOrder: taxonOrder.present ? taxonOrder.value : this.taxonOrder,
+        taxonFamily: taxonFamily.present ? taxonFamily.value : this.taxonFamily,
+        genus: genus.present ? genus.value : this.genus,
+        specificEpithet: specificEpithet.present
+            ? specificEpithet.value
+            : this.specificEpithet,
+        commonName: commonName.present ? commonName.value : this.commonName,
+        notes: notes.present ? notes.value : this.notes,
+        mediaId: mediaId.present ? mediaId.value : this.mediaId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('TaxonomyData(')
+          ..write('id: $id, ')
+          ..write('taxonClass: $taxonClass, ')
+          ..write('taxonOrder: $taxonOrder, ')
+          ..write('taxonFamily: $taxonFamily, ')
+          ..write('genus: $genus, ')
+          ..write('specificEpithet: $specificEpithet, ')
+          ..write('commonName: $commonName, ')
+          ..write('notes: $notes, ')
+          ..write('mediaId: $mediaId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, taxonClass, taxonOrder, taxonFamily,
+      genus, specificEpithet, commonName, notes, mediaId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is TaxonomyData &&
+          other.id == this.id &&
+          other.taxonClass == this.taxonClass &&
+          other.taxonOrder == this.taxonOrder &&
+          other.taxonFamily == this.taxonFamily &&
+          other.genus == this.genus &&
+          other.specificEpithet == this.specificEpithet &&
+          other.commonName == this.commonName &&
+          other.notes == this.notes &&
+          other.mediaId == this.mediaId);
+}
+
+class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
+  final Value<int> id;
+  final Value<String?> taxonClass;
+  final Value<String?> taxonOrder;
+  final Value<String?> taxonFamily;
+  final Value<String?> genus;
+  final Value<String?> specificEpithet;
+  final Value<String?> commonName;
+  final Value<String?> notes;
+  final Value<int?> mediaId;
+  const TaxonomyCompanion({
+    this.id = const Value.absent(),
+    this.taxonClass = const Value.absent(),
+    this.taxonOrder = const Value.absent(),
+    this.taxonFamily = const Value.absent(),
+    this.genus = const Value.absent(),
+    this.specificEpithet = const Value.absent(),
+    this.commonName = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.mediaId = const Value.absent(),
+  });
+  TaxonomyCompanion.insert({
+    this.id = const Value.absent(),
+    this.taxonClass = const Value.absent(),
+    this.taxonOrder = const Value.absent(),
+    this.taxonFamily = const Value.absent(),
+    this.genus = const Value.absent(),
+    this.specificEpithet = const Value.absent(),
+    this.commonName = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.mediaId = const Value.absent(),
+  });
+  static Insertable<TaxonomyData> custom({
+    Expression<int>? id,
+    Expression<String>? taxonClass,
+    Expression<String>? taxonOrder,
+    Expression<String>? taxonFamily,
+    Expression<String>? genus,
+    Expression<String>? specificEpithet,
+    Expression<String>? commonName,
+    Expression<String>? notes,
+    Expression<int>? mediaId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (taxonClass != null) 'taxonClass': taxonClass,
+      if (taxonOrder != null) 'taxonOrder': taxonOrder,
+      if (taxonFamily != null) 'taxonFamily': taxonFamily,
+      if (genus != null) 'genus': genus,
+      if (specificEpithet != null) 'specificEpithet': specificEpithet,
+      if (commonName != null) 'commonName': commonName,
+      if (notes != null) 'notes': notes,
+      if (mediaId != null) 'mediaId': mediaId,
+    });
+  }
+
+  TaxonomyCompanion copyWith(
+      {Value<int>? id,
+      Value<String?>? taxonClass,
+      Value<String?>? taxonOrder,
+      Value<String?>? taxonFamily,
+      Value<String?>? genus,
+      Value<String?>? specificEpithet,
+      Value<String?>? commonName,
+      Value<String?>? notes,
+      Value<int?>? mediaId}) {
+    return TaxonomyCompanion(
+      id: id ?? this.id,
+      taxonClass: taxonClass ?? this.taxonClass,
+      taxonOrder: taxonOrder ?? this.taxonOrder,
+      taxonFamily: taxonFamily ?? this.taxonFamily,
+      genus: genus ?? this.genus,
+      specificEpithet: specificEpithet ?? this.specificEpithet,
+      commonName: commonName ?? this.commonName,
+      notes: notes ?? this.notes,
+      mediaId: mediaId ?? this.mediaId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (taxonClass.present) {
+      map['taxonClass'] = Variable<String>(taxonClass.value);
+    }
+    if (taxonOrder.present) {
+      map['taxonOrder'] = Variable<String>(taxonOrder.value);
+    }
+    if (taxonFamily.present) {
+      map['taxonFamily'] = Variable<String>(taxonFamily.value);
+    }
+    if (genus.present) {
+      map['genus'] = Variable<String>(genus.value);
+    }
+    if (specificEpithet.present) {
+      map['specificEpithet'] = Variable<String>(specificEpithet.value);
+    }
+    if (commonName.present) {
+      map['commonName'] = Variable<String>(commonName.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    if (mediaId.present) {
+      map['mediaId'] = Variable<int>(mediaId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TaxonomyCompanion(')
+          ..write('id: $id, ')
+          ..write('taxonClass: $taxonClass, ')
+          ..write('taxonOrder: $taxonOrder, ')
+          ..write('taxonFamily: $taxonFamily, ')
+          ..write('genus: $genus, ')
+          ..write('specificEpithet: $specificEpithet, ')
+          ..write('commonName: $commonName, ')
+          ..write('notes: $notes, ')
+          ..write('mediaId: $mediaId')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  Specimen(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
+      'uuid', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'UNIQUE NOT NULL PRIMARY KEY');
+  static const VerificationMeta _projectUuidMeta =
+      const VerificationMeta('projectUuid');
+  late final GeneratedColumn<String> projectUuid = GeneratedColumn<String>(
+      'projectUuid', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _speciesIDMeta =
+      const VerificationMeta('speciesID');
+  late final GeneratedColumn<int> speciesID = GeneratedColumn<int>(
+      'speciesID', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _taxonGroupMeta =
+      const VerificationMeta('taxonGroup');
+  late final GeneratedColumn<String> taxonGroup = GeneratedColumn<String>(
+      'taxonGroup', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _conditionMeta =
+      const VerificationMeta('condition');
+  late final GeneratedColumn<String> condition = GeneratedColumn<String>(
+      'condition', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _prepDateMeta =
+      const VerificationMeta('prepDate');
+  late final GeneratedColumn<String> prepDate = GeneratedColumn<String>(
+      'prepDate', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _prepTimeMeta =
+      const VerificationMeta('prepTime');
+  late final GeneratedColumn<String> prepTime = GeneratedColumn<String>(
+      'prepTime', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _collectionTimeMeta =
+      const VerificationMeta('collectionTime');
+  late final GeneratedColumn<String> collectionTime = GeneratedColumn<String>(
+      'collectionTime', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _captureDateMeta =
+      const VerificationMeta('captureDate');
+  late final GeneratedColumn<String> captureDate = GeneratedColumn<String>(
+      'captureDate', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _isRelativeTimeMeta =
+      const VerificationMeta('isRelativeTime');
+  late final GeneratedColumn<int> isRelativeTime = GeneratedColumn<int>(
+      'isRelativeTime', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _captureTimeMeta =
+      const VerificationMeta('captureTime');
+  late final GeneratedColumn<String> captureTime = GeneratedColumn<String>(
+      'captureTime', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _trapTypeMeta =
+      const VerificationMeta('trapType');
+  late final GeneratedColumn<String> trapType = GeneratedColumn<String>(
+      'trapType', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _trapIDMeta = const VerificationMeta('trapID');
+  late final GeneratedColumn<String> trapID = GeneratedColumn<String>(
+      'trapID', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _coordinateIDMeta =
+      const VerificationMeta('coordinateID');
+  late final GeneratedColumn<int> coordinateID = GeneratedColumn<int>(
+      'coordinateID', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _catalogerIDMeta =
+      const VerificationMeta('catalogerID');
+  late final GeneratedColumn<String> catalogerID = GeneratedColumn<String>(
+      'catalogerID', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _fieldNumberMeta =
+      const VerificationMeta('fieldNumber');
+  late final GeneratedColumn<int> fieldNumber = GeneratedColumn<int>(
+      'fieldNumber', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _collEventIDMeta =
+      const VerificationMeta('collEventID');
+  late final GeneratedColumn<int> collEventID = GeneratedColumn<int>(
+      'collEventID', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _isMultipleCollectorMeta =
+      const VerificationMeta('isMultipleCollector');
+  late final GeneratedColumn<int> isMultipleCollector = GeneratedColumn<int>(
+      'isMultipleCollector', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _collPersonnelIDMeta =
+      const VerificationMeta('collPersonnelID');
+  late final GeneratedColumn<int> collPersonnelID = GeneratedColumn<int>(
+      'collPersonnelID', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _collMethodIDMeta =
+      const VerificationMeta('collMethodID');
+  late final GeneratedColumn<int> collMethodID = GeneratedColumn<int>(
+      'collMethodID', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _museumIDMeta =
+      const VerificationMeta('museumID');
+  late final GeneratedColumn<String> museumID = GeneratedColumn<String>(
+      'museumID', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _preparatorIDMeta =
+      const VerificationMeta('preparatorID');
+  late final GeneratedColumn<String> preparatorID = GeneratedColumn<String>(
+      'preparatorID', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: 'REFERENCES personnel(uuid)');
+  @override
+  List<GeneratedColumn> get $columns => [
+        uuid,
+        projectUuid,
+        speciesID,
+        taxonGroup,
+        condition,
+        prepDate,
+        prepTime,
+        collectionTime,
+        captureDate,
+        isRelativeTime,
+        captureTime,
+        trapType,
+        trapID,
+        coordinateID,
+        catalogerID,
+        fieldNumber,
+        collEventID,
+        isMultipleCollector,
+        collPersonnelID,
+        collMethodID,
+        museumID,
+        preparatorID
+      ];
+  @override
+  String get aliasedName => _alias ?? 'specimen';
+  @override
+  String get actualTableName => 'specimen';
+  @override
+  VerificationContext validateIntegrity(Insertable<SpecimenData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('uuid')) {
+      context.handle(
+          _uuidMeta, uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta));
+    } else if (isInserting) {
+      context.missing(_uuidMeta);
+    }
+    if (data.containsKey('projectUuid')) {
+      context.handle(
+          _projectUuidMeta,
+          projectUuid.isAcceptableOrUnknown(
+              data['projectUuid']!, _projectUuidMeta));
+    }
+    if (data.containsKey('speciesID')) {
+      context.handle(_speciesIDMeta,
+          speciesID.isAcceptableOrUnknown(data['speciesID']!, _speciesIDMeta));
+    }
+    if (data.containsKey('taxonGroup')) {
+      context.handle(
+          _taxonGroupMeta,
+          taxonGroup.isAcceptableOrUnknown(
+              data['taxonGroup']!, _taxonGroupMeta));
+    }
+    if (data.containsKey('condition')) {
+      context.handle(_conditionMeta,
+          condition.isAcceptableOrUnknown(data['condition']!, _conditionMeta));
+    }
+    if (data.containsKey('prepDate')) {
+      context.handle(_prepDateMeta,
+          prepDate.isAcceptableOrUnknown(data['prepDate']!, _prepDateMeta));
+    }
+    if (data.containsKey('prepTime')) {
+      context.handle(_prepTimeMeta,
+          prepTime.isAcceptableOrUnknown(data['prepTime']!, _prepTimeMeta));
+    }
+    if (data.containsKey('collectionTime')) {
+      context.handle(
+          _collectionTimeMeta,
+          collectionTime.isAcceptableOrUnknown(
+              data['collectionTime']!, _collectionTimeMeta));
+    }
+    if (data.containsKey('captureDate')) {
+      context.handle(
+          _captureDateMeta,
+          captureDate.isAcceptableOrUnknown(
+              data['captureDate']!, _captureDateMeta));
+    }
+    if (data.containsKey('isRelativeTime')) {
+      context.handle(
+          _isRelativeTimeMeta,
+          isRelativeTime.isAcceptableOrUnknown(
+              data['isRelativeTime']!, _isRelativeTimeMeta));
+    }
+    if (data.containsKey('captureTime')) {
+      context.handle(
+          _captureTimeMeta,
+          captureTime.isAcceptableOrUnknown(
+              data['captureTime']!, _captureTimeMeta));
+    }
+    if (data.containsKey('trapType')) {
+      context.handle(_trapTypeMeta,
+          trapType.isAcceptableOrUnknown(data['trapType']!, _trapTypeMeta));
+    }
+    if (data.containsKey('trapID')) {
+      context.handle(_trapIDMeta,
+          trapID.isAcceptableOrUnknown(data['trapID']!, _trapIDMeta));
+    }
+    if (data.containsKey('coordinateID')) {
+      context.handle(
+          _coordinateIDMeta,
+          coordinateID.isAcceptableOrUnknown(
+              data['coordinateID']!, _coordinateIDMeta));
+    }
+    if (data.containsKey('catalogerID')) {
+      context.handle(
+          _catalogerIDMeta,
+          catalogerID.isAcceptableOrUnknown(
+              data['catalogerID']!, _catalogerIDMeta));
+    }
+    if (data.containsKey('fieldNumber')) {
+      context.handle(
+          _fieldNumberMeta,
+          fieldNumber.isAcceptableOrUnknown(
+              data['fieldNumber']!, _fieldNumberMeta));
+    }
+    if (data.containsKey('collEventID')) {
+      context.handle(
+          _collEventIDMeta,
+          collEventID.isAcceptableOrUnknown(
+              data['collEventID']!, _collEventIDMeta));
+    }
+    if (data.containsKey('isMultipleCollector')) {
+      context.handle(
+          _isMultipleCollectorMeta,
+          isMultipleCollector.isAcceptableOrUnknown(
+              data['isMultipleCollector']!, _isMultipleCollectorMeta));
+    }
+    if (data.containsKey('collPersonnelID')) {
+      context.handle(
+          _collPersonnelIDMeta,
+          collPersonnelID.isAcceptableOrUnknown(
+              data['collPersonnelID']!, _collPersonnelIDMeta));
+    }
+    if (data.containsKey('collMethodID')) {
+      context.handle(
+          _collMethodIDMeta,
+          collMethodID.isAcceptableOrUnknown(
+              data['collMethodID']!, _collMethodIDMeta));
+    }
+    if (data.containsKey('museumID')) {
+      context.handle(_museumIDMeta,
+          museumID.isAcceptableOrUnknown(data['museumID']!, _museumIDMeta));
+    }
+    if (data.containsKey('preparatorID')) {
+      context.handle(
+          _preparatorIDMeta,
+          preparatorID.isAcceptableOrUnknown(
+              data['preparatorID']!, _preparatorIDMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {uuid};
+  @override
+  SpecimenData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SpecimenData(
+      uuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}uuid'])!,
+      projectUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
+      speciesID: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}speciesID']),
+      taxonGroup: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}taxonGroup']),
+      condition: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}condition']),
+      prepDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}prepDate']),
+      prepTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}prepTime']),
+      collectionTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}collectionTime']),
+      captureDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}captureDate']),
+      isRelativeTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}isRelativeTime']),
+      captureTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}captureTime']),
+      trapType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}trapType']),
+      trapID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}trapID']),
+      coordinateID: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}coordinateID']),
+      catalogerID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}catalogerID']),
+      fieldNumber: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}fieldNumber']),
+      collEventID: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}collEventID']),
+      isMultipleCollector: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}isMultipleCollector']),
+      collPersonnelID: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}collPersonnelID']),
+      collMethodID: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}collMethodID']),
+      museumID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}museumID']),
+      preparatorID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}preparatorID']),
+    );
+  }
+
+  @override
+  Specimen createAlias(String alias) {
+    return Specimen(attachedDatabase, alias);
+  }
+
+  @override
+  List<String> get customConstraints => const [
+        'FOREIGN KEY(projectUuid)REFERENCES project(uuid)',
+        'FOREIGN KEY(catalogerID)REFERENCES personnel(uuid)',
+        'FOREIGN KEY(collPersonnelID)REFERENCES collPersonnel(id)',
+        'FOREIGN KEY(collMethodID)REFERENCES collEffort(id)',
+        'FOREIGN KEY(speciesID)REFERENCES taxonomy(id)',
+        'FOREIGN KEY(collEventID)REFERENCES collEvent(id)'
+      ];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class SpecimenData extends DataClass implements Insertable<SpecimenData> {
+  final String uuid;
+  final String? projectUuid;
+  final int? speciesID;
+  final String? taxonGroup;
+
+  /// use for catalog formats
+  final String? condition;
+  final String? prepDate;
+  final String? prepTime;
+  final String? collectionTime;
+
+  /// v4 update
+  final String? captureDate;
+  final int? isRelativeTime;
+  final String? captureTime;
+  final String? trapType;
+  final String? trapID;
+  final int? coordinateID;
+  final String? catalogerID;
+  final int? fieldNumber;
+  final int? collEventID;
+  final int? isMultipleCollector;
+  final int? collPersonnelID;
+  final int? collMethodID;
+  final String? museumID;
+  final String? preparatorID;
+  const SpecimenData(
+      {required this.uuid,
+      this.projectUuid,
+      this.speciesID,
+      this.taxonGroup,
+      this.condition,
+      this.prepDate,
+      this.prepTime,
+      this.collectionTime,
+      this.captureDate,
+      this.isRelativeTime,
+      this.captureTime,
+      this.trapType,
+      this.trapID,
+      this.coordinateID,
+      this.catalogerID,
+      this.fieldNumber,
+      this.collEventID,
+      this.isMultipleCollector,
+      this.collPersonnelID,
+      this.collMethodID,
+      this.museumID,
+      this.preparatorID});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['uuid'] = Variable<String>(uuid);
+    if (!nullToAbsent || projectUuid != null) {
+      map['projectUuid'] = Variable<String>(projectUuid);
+    }
+    if (!nullToAbsent || speciesID != null) {
+      map['speciesID'] = Variable<int>(speciesID);
+    }
+    if (!nullToAbsent || taxonGroup != null) {
+      map['taxonGroup'] = Variable<String>(taxonGroup);
+    }
+    if (!nullToAbsent || condition != null) {
+      map['condition'] = Variable<String>(condition);
+    }
+    if (!nullToAbsent || prepDate != null) {
+      map['prepDate'] = Variable<String>(prepDate);
+    }
+    if (!nullToAbsent || prepTime != null) {
+      map['prepTime'] = Variable<String>(prepTime);
+    }
+    if (!nullToAbsent || collectionTime != null) {
+      map['collectionTime'] = Variable<String>(collectionTime);
+    }
+    if (!nullToAbsent || captureDate != null) {
+      map['captureDate'] = Variable<String>(captureDate);
+    }
+    if (!nullToAbsent || isRelativeTime != null) {
+      map['isRelativeTime'] = Variable<int>(isRelativeTime);
+    }
+    if (!nullToAbsent || captureTime != null) {
+      map['captureTime'] = Variable<String>(captureTime);
+    }
+    if (!nullToAbsent || trapType != null) {
+      map['trapType'] = Variable<String>(trapType);
+    }
+    if (!nullToAbsent || trapID != null) {
+      map['trapID'] = Variable<String>(trapID);
+    }
+    if (!nullToAbsent || coordinateID != null) {
+      map['coordinateID'] = Variable<int>(coordinateID);
+    }
+    if (!nullToAbsent || catalogerID != null) {
+      map['catalogerID'] = Variable<String>(catalogerID);
+    }
+    if (!nullToAbsent || fieldNumber != null) {
+      map['fieldNumber'] = Variable<int>(fieldNumber);
+    }
+    if (!nullToAbsent || collEventID != null) {
+      map['collEventID'] = Variable<int>(collEventID);
+    }
+    if (!nullToAbsent || isMultipleCollector != null) {
+      map['isMultipleCollector'] = Variable<int>(isMultipleCollector);
+    }
+    if (!nullToAbsent || collPersonnelID != null) {
+      map['collPersonnelID'] = Variable<int>(collPersonnelID);
+    }
+    if (!nullToAbsent || collMethodID != null) {
+      map['collMethodID'] = Variable<int>(collMethodID);
+    }
+    if (!nullToAbsent || museumID != null) {
+      map['museumID'] = Variable<String>(museumID);
+    }
+    if (!nullToAbsent || preparatorID != null) {
+      map['preparatorID'] = Variable<String>(preparatorID);
+    }
+    return map;
+  }
+
+  SpecimenCompanion toCompanion(bool nullToAbsent) {
+    return SpecimenCompanion(
+      uuid: Value(uuid),
+      projectUuid: projectUuid == null && nullToAbsent
+          ? const Value.absent()
+          : Value(projectUuid),
+      speciesID: speciesID == null && nullToAbsent
+          ? const Value.absent()
+          : Value(speciesID),
+      taxonGroup: taxonGroup == null && nullToAbsent
+          ? const Value.absent()
+          : Value(taxonGroup),
+      condition: condition == null && nullToAbsent
+          ? const Value.absent()
+          : Value(condition),
+      prepDate: prepDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(prepDate),
+      prepTime: prepTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(prepTime),
+      collectionTime: collectionTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(collectionTime),
+      captureDate: captureDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(captureDate),
+      isRelativeTime: isRelativeTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isRelativeTime),
+      captureTime: captureTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(captureTime),
+      trapType: trapType == null && nullToAbsent
+          ? const Value.absent()
+          : Value(trapType),
+      trapID:
+          trapID == null && nullToAbsent ? const Value.absent() : Value(trapID),
+      coordinateID: coordinateID == null && nullToAbsent
+          ? const Value.absent()
+          : Value(coordinateID),
+      catalogerID: catalogerID == null && nullToAbsent
+          ? const Value.absent()
+          : Value(catalogerID),
+      fieldNumber: fieldNumber == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fieldNumber),
+      collEventID: collEventID == null && nullToAbsent
+          ? const Value.absent()
+          : Value(collEventID),
+      isMultipleCollector: isMultipleCollector == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isMultipleCollector),
+      collPersonnelID: collPersonnelID == null && nullToAbsent
+          ? const Value.absent()
+          : Value(collPersonnelID),
+      collMethodID: collMethodID == null && nullToAbsent
+          ? const Value.absent()
+          : Value(collMethodID),
+      museumID: museumID == null && nullToAbsent
+          ? const Value.absent()
+          : Value(museumID),
+      preparatorID: preparatorID == null && nullToAbsent
+          ? const Value.absent()
+          : Value(preparatorID),
+    );
+  }
+
+  factory SpecimenData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SpecimenData(
+      uuid: serializer.fromJson<String>(json['uuid']),
+      projectUuid: serializer.fromJson<String?>(json['projectUuid']),
+      speciesID: serializer.fromJson<int?>(json['speciesID']),
+      taxonGroup: serializer.fromJson<String?>(json['taxonGroup']),
+      condition: serializer.fromJson<String?>(json['condition']),
+      prepDate: serializer.fromJson<String?>(json['prepDate']),
+      prepTime: serializer.fromJson<String?>(json['prepTime']),
+      collectionTime: serializer.fromJson<String?>(json['collectionTime']),
+      captureDate: serializer.fromJson<String?>(json['captureDate']),
+      isRelativeTime: serializer.fromJson<int?>(json['isRelativeTime']),
+      captureTime: serializer.fromJson<String?>(json['captureTime']),
+      trapType: serializer.fromJson<String?>(json['trapType']),
+      trapID: serializer.fromJson<String?>(json['trapID']),
+      coordinateID: serializer.fromJson<int?>(json['coordinateID']),
+      catalogerID: serializer.fromJson<String?>(json['catalogerID']),
+      fieldNumber: serializer.fromJson<int?>(json['fieldNumber']),
+      collEventID: serializer.fromJson<int?>(json['collEventID']),
+      isMultipleCollector:
+          serializer.fromJson<int?>(json['isMultipleCollector']),
+      collPersonnelID: serializer.fromJson<int?>(json['collPersonnelID']),
+      collMethodID: serializer.fromJson<int?>(json['collMethodID']),
+      museumID: serializer.fromJson<String?>(json['museumID']),
+      preparatorID: serializer.fromJson<String?>(json['preparatorID']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'uuid': serializer.toJson<String>(uuid),
+      'projectUuid': serializer.toJson<String?>(projectUuid),
+      'speciesID': serializer.toJson<int?>(speciesID),
+      'taxonGroup': serializer.toJson<String?>(taxonGroup),
+      'condition': serializer.toJson<String?>(condition),
+      'prepDate': serializer.toJson<String?>(prepDate),
+      'prepTime': serializer.toJson<String?>(prepTime),
+      'collectionTime': serializer.toJson<String?>(collectionTime),
+      'captureDate': serializer.toJson<String?>(captureDate),
+      'isRelativeTime': serializer.toJson<int?>(isRelativeTime),
+      'captureTime': serializer.toJson<String?>(captureTime),
+      'trapType': serializer.toJson<String?>(trapType),
+      'trapID': serializer.toJson<String?>(trapID),
+      'coordinateID': serializer.toJson<int?>(coordinateID),
+      'catalogerID': serializer.toJson<String?>(catalogerID),
+      'fieldNumber': serializer.toJson<int?>(fieldNumber),
+      'collEventID': serializer.toJson<int?>(collEventID),
+      'isMultipleCollector': serializer.toJson<int?>(isMultipleCollector),
+      'collPersonnelID': serializer.toJson<int?>(collPersonnelID),
+      'collMethodID': serializer.toJson<int?>(collMethodID),
+      'museumID': serializer.toJson<String?>(museumID),
+      'preparatorID': serializer.toJson<String?>(preparatorID),
+    };
+  }
+
+  SpecimenData copyWith(
+          {String? uuid,
+          Value<String?> projectUuid = const Value.absent(),
+          Value<int?> speciesID = const Value.absent(),
+          Value<String?> taxonGroup = const Value.absent(),
+          Value<String?> condition = const Value.absent(),
+          Value<String?> prepDate = const Value.absent(),
+          Value<String?> prepTime = const Value.absent(),
+          Value<String?> collectionTime = const Value.absent(),
+          Value<String?> captureDate = const Value.absent(),
+          Value<int?> isRelativeTime = const Value.absent(),
+          Value<String?> captureTime = const Value.absent(),
+          Value<String?> trapType = const Value.absent(),
+          Value<String?> trapID = const Value.absent(),
+          Value<int?> coordinateID = const Value.absent(),
+          Value<String?> catalogerID = const Value.absent(),
+          Value<int?> fieldNumber = const Value.absent(),
+          Value<int?> collEventID = const Value.absent(),
+          Value<int?> isMultipleCollector = const Value.absent(),
+          Value<int?> collPersonnelID = const Value.absent(),
+          Value<int?> collMethodID = const Value.absent(),
+          Value<String?> museumID = const Value.absent(),
+          Value<String?> preparatorID = const Value.absent()}) =>
+      SpecimenData(
+        uuid: uuid ?? this.uuid,
+        projectUuid: projectUuid.present ? projectUuid.value : this.projectUuid,
+        speciesID: speciesID.present ? speciesID.value : this.speciesID,
+        taxonGroup: taxonGroup.present ? taxonGroup.value : this.taxonGroup,
+        condition: condition.present ? condition.value : this.condition,
+        prepDate: prepDate.present ? prepDate.value : this.prepDate,
+        prepTime: prepTime.present ? prepTime.value : this.prepTime,
+        collectionTime:
+            collectionTime.present ? collectionTime.value : this.collectionTime,
+        captureDate: captureDate.present ? captureDate.value : this.captureDate,
+        isRelativeTime:
+            isRelativeTime.present ? isRelativeTime.value : this.isRelativeTime,
+        captureTime: captureTime.present ? captureTime.value : this.captureTime,
+        trapType: trapType.present ? trapType.value : this.trapType,
+        trapID: trapID.present ? trapID.value : this.trapID,
+        coordinateID:
+            coordinateID.present ? coordinateID.value : this.coordinateID,
+        catalogerID: catalogerID.present ? catalogerID.value : this.catalogerID,
+        fieldNumber: fieldNumber.present ? fieldNumber.value : this.fieldNumber,
+        collEventID: collEventID.present ? collEventID.value : this.collEventID,
+        isMultipleCollector: isMultipleCollector.present
+            ? isMultipleCollector.value
+            : this.isMultipleCollector,
+        collPersonnelID: collPersonnelID.present
+            ? collPersonnelID.value
+            : this.collPersonnelID,
+        collMethodID:
+            collMethodID.present ? collMethodID.value : this.collMethodID,
+        museumID: museumID.present ? museumID.value : this.museumID,
+        preparatorID:
+            preparatorID.present ? preparatorID.value : this.preparatorID,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('SpecimenData(')
+          ..write('uuid: $uuid, ')
+          ..write('projectUuid: $projectUuid, ')
+          ..write('speciesID: $speciesID, ')
+          ..write('taxonGroup: $taxonGroup, ')
+          ..write('condition: $condition, ')
+          ..write('prepDate: $prepDate, ')
+          ..write('prepTime: $prepTime, ')
+          ..write('collectionTime: $collectionTime, ')
+          ..write('captureDate: $captureDate, ')
+          ..write('isRelativeTime: $isRelativeTime, ')
+          ..write('captureTime: $captureTime, ')
+          ..write('trapType: $trapType, ')
+          ..write('trapID: $trapID, ')
+          ..write('coordinateID: $coordinateID, ')
+          ..write('catalogerID: $catalogerID, ')
+          ..write('fieldNumber: $fieldNumber, ')
+          ..write('collEventID: $collEventID, ')
+          ..write('isMultipleCollector: $isMultipleCollector, ')
+          ..write('collPersonnelID: $collPersonnelID, ')
+          ..write('collMethodID: $collMethodID, ')
+          ..write('museumID: $museumID, ')
+          ..write('preparatorID: $preparatorID')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hashAll([
+        uuid,
+        projectUuid,
+        speciesID,
+        taxonGroup,
+        condition,
+        prepDate,
+        prepTime,
+        collectionTime,
+        captureDate,
+        isRelativeTime,
+        captureTime,
+        trapType,
+        trapID,
+        coordinateID,
+        catalogerID,
+        fieldNumber,
+        collEventID,
+        isMultipleCollector,
+        collPersonnelID,
+        collMethodID,
+        museumID,
+        preparatorID
+      ]);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SpecimenData &&
+          other.uuid == this.uuid &&
+          other.projectUuid == this.projectUuid &&
+          other.speciesID == this.speciesID &&
+          other.taxonGroup == this.taxonGroup &&
+          other.condition == this.condition &&
+          other.prepDate == this.prepDate &&
+          other.prepTime == this.prepTime &&
+          other.collectionTime == this.collectionTime &&
+          other.captureDate == this.captureDate &&
+          other.isRelativeTime == this.isRelativeTime &&
+          other.captureTime == this.captureTime &&
+          other.trapType == this.trapType &&
+          other.trapID == this.trapID &&
+          other.coordinateID == this.coordinateID &&
+          other.catalogerID == this.catalogerID &&
+          other.fieldNumber == this.fieldNumber &&
+          other.collEventID == this.collEventID &&
+          other.isMultipleCollector == this.isMultipleCollector &&
+          other.collPersonnelID == this.collPersonnelID &&
+          other.collMethodID == this.collMethodID &&
+          other.museumID == this.museumID &&
+          other.preparatorID == this.preparatorID);
+}
+
+class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
+  final Value<String> uuid;
+  final Value<String?> projectUuid;
+  final Value<int?> speciesID;
+  final Value<String?> taxonGroup;
+  final Value<String?> condition;
+  final Value<String?> prepDate;
+  final Value<String?> prepTime;
+  final Value<String?> collectionTime;
+  final Value<String?> captureDate;
+  final Value<int?> isRelativeTime;
+  final Value<String?> captureTime;
+  final Value<String?> trapType;
+  final Value<String?> trapID;
+  final Value<int?> coordinateID;
+  final Value<String?> catalogerID;
+  final Value<int?> fieldNumber;
+  final Value<int?> collEventID;
+  final Value<int?> isMultipleCollector;
+  final Value<int?> collPersonnelID;
+  final Value<int?> collMethodID;
+  final Value<String?> museumID;
+  final Value<String?> preparatorID;
+  final Value<int> rowid;
+  const SpecimenCompanion({
+    this.uuid = const Value.absent(),
+    this.projectUuid = const Value.absent(),
+    this.speciesID = const Value.absent(),
+    this.taxonGroup = const Value.absent(),
+    this.condition = const Value.absent(),
+    this.prepDate = const Value.absent(),
+    this.prepTime = const Value.absent(),
+    this.collectionTime = const Value.absent(),
+    this.captureDate = const Value.absent(),
+    this.isRelativeTime = const Value.absent(),
+    this.captureTime = const Value.absent(),
+    this.trapType = const Value.absent(),
+    this.trapID = const Value.absent(),
+    this.coordinateID = const Value.absent(),
+    this.catalogerID = const Value.absent(),
+    this.fieldNumber = const Value.absent(),
+    this.collEventID = const Value.absent(),
+    this.isMultipleCollector = const Value.absent(),
+    this.collPersonnelID = const Value.absent(),
+    this.collMethodID = const Value.absent(),
+    this.museumID = const Value.absent(),
+    this.preparatorID = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SpecimenCompanion.insert({
+    required String uuid,
+    this.projectUuid = const Value.absent(),
+    this.speciesID = const Value.absent(),
+    this.taxonGroup = const Value.absent(),
+    this.condition = const Value.absent(),
+    this.prepDate = const Value.absent(),
+    this.prepTime = const Value.absent(),
+    this.collectionTime = const Value.absent(),
+    this.captureDate = const Value.absent(),
+    this.isRelativeTime = const Value.absent(),
+    this.captureTime = const Value.absent(),
+    this.trapType = const Value.absent(),
+    this.trapID = const Value.absent(),
+    this.coordinateID = const Value.absent(),
+    this.catalogerID = const Value.absent(),
+    this.fieldNumber = const Value.absent(),
+    this.collEventID = const Value.absent(),
+    this.isMultipleCollector = const Value.absent(),
+    this.collPersonnelID = const Value.absent(),
+    this.collMethodID = const Value.absent(),
+    this.museumID = const Value.absent(),
+    this.preparatorID = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : uuid = Value(uuid);
+  static Insertable<SpecimenData> custom({
+    Expression<String>? uuid,
+    Expression<String>? projectUuid,
+    Expression<int>? speciesID,
+    Expression<String>? taxonGroup,
+    Expression<String>? condition,
+    Expression<String>? prepDate,
+    Expression<String>? prepTime,
+    Expression<String>? collectionTime,
+    Expression<String>? captureDate,
+    Expression<int>? isRelativeTime,
+    Expression<String>? captureTime,
+    Expression<String>? trapType,
+    Expression<String>? trapID,
+    Expression<int>? coordinateID,
+    Expression<String>? catalogerID,
+    Expression<int>? fieldNumber,
+    Expression<int>? collEventID,
+    Expression<int>? isMultipleCollector,
+    Expression<int>? collPersonnelID,
+    Expression<int>? collMethodID,
+    Expression<String>? museumID,
+    Expression<String>? preparatorID,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (uuid != null) 'uuid': uuid,
+      if (projectUuid != null) 'projectUuid': projectUuid,
+      if (speciesID != null) 'speciesID': speciesID,
+      if (taxonGroup != null) 'taxonGroup': taxonGroup,
+      if (condition != null) 'condition': condition,
+      if (prepDate != null) 'prepDate': prepDate,
+      if (prepTime != null) 'prepTime': prepTime,
+      if (collectionTime != null) 'collectionTime': collectionTime,
+      if (captureDate != null) 'captureDate': captureDate,
+      if (isRelativeTime != null) 'isRelativeTime': isRelativeTime,
+      if (captureTime != null) 'captureTime': captureTime,
+      if (trapType != null) 'trapType': trapType,
+      if (trapID != null) 'trapID': trapID,
+      if (coordinateID != null) 'coordinateID': coordinateID,
+      if (catalogerID != null) 'catalogerID': catalogerID,
+      if (fieldNumber != null) 'fieldNumber': fieldNumber,
+      if (collEventID != null) 'collEventID': collEventID,
+      if (isMultipleCollector != null)
+        'isMultipleCollector': isMultipleCollector,
+      if (collPersonnelID != null) 'collPersonnelID': collPersonnelID,
+      if (collMethodID != null) 'collMethodID': collMethodID,
+      if (museumID != null) 'museumID': museumID,
+      if (preparatorID != null) 'preparatorID': preparatorID,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SpecimenCompanion copyWith(
+      {Value<String>? uuid,
+      Value<String?>? projectUuid,
+      Value<int?>? speciesID,
+      Value<String?>? taxonGroup,
+      Value<String?>? condition,
+      Value<String?>? prepDate,
+      Value<String?>? prepTime,
+      Value<String?>? collectionTime,
+      Value<String?>? captureDate,
+      Value<int?>? isRelativeTime,
+      Value<String?>? captureTime,
+      Value<String?>? trapType,
+      Value<String?>? trapID,
+      Value<int?>? coordinateID,
+      Value<String?>? catalogerID,
+      Value<int?>? fieldNumber,
+      Value<int?>? collEventID,
+      Value<int?>? isMultipleCollector,
+      Value<int?>? collPersonnelID,
+      Value<int?>? collMethodID,
+      Value<String?>? museumID,
+      Value<String?>? preparatorID,
+      Value<int>? rowid}) {
+    return SpecimenCompanion(
+      uuid: uuid ?? this.uuid,
+      projectUuid: projectUuid ?? this.projectUuid,
+      speciesID: speciesID ?? this.speciesID,
+      taxonGroup: taxonGroup ?? this.taxonGroup,
+      condition: condition ?? this.condition,
+      prepDate: prepDate ?? this.prepDate,
+      prepTime: prepTime ?? this.prepTime,
+      collectionTime: collectionTime ?? this.collectionTime,
+      captureDate: captureDate ?? this.captureDate,
+      isRelativeTime: isRelativeTime ?? this.isRelativeTime,
+      captureTime: captureTime ?? this.captureTime,
+      trapType: trapType ?? this.trapType,
+      trapID: trapID ?? this.trapID,
+      coordinateID: coordinateID ?? this.coordinateID,
+      catalogerID: catalogerID ?? this.catalogerID,
+      fieldNumber: fieldNumber ?? this.fieldNumber,
+      collEventID: collEventID ?? this.collEventID,
+      isMultipleCollector: isMultipleCollector ?? this.isMultipleCollector,
+      collPersonnelID: collPersonnelID ?? this.collPersonnelID,
+      collMethodID: collMethodID ?? this.collMethodID,
+      museumID: museumID ?? this.museumID,
+      preparatorID: preparatorID ?? this.preparatorID,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (uuid.present) {
+      map['uuid'] = Variable<String>(uuid.value);
+    }
+    if (projectUuid.present) {
+      map['projectUuid'] = Variable<String>(projectUuid.value);
+    }
+    if (speciesID.present) {
+      map['speciesID'] = Variable<int>(speciesID.value);
+    }
+    if (taxonGroup.present) {
+      map['taxonGroup'] = Variable<String>(taxonGroup.value);
+    }
+    if (condition.present) {
+      map['condition'] = Variable<String>(condition.value);
+    }
+    if (prepDate.present) {
+      map['prepDate'] = Variable<String>(prepDate.value);
+    }
+    if (prepTime.present) {
+      map['prepTime'] = Variable<String>(prepTime.value);
+    }
+    if (collectionTime.present) {
+      map['collectionTime'] = Variable<String>(collectionTime.value);
+    }
+    if (captureDate.present) {
+      map['captureDate'] = Variable<String>(captureDate.value);
+    }
+    if (isRelativeTime.present) {
+      map['isRelativeTime'] = Variable<int>(isRelativeTime.value);
+    }
+    if (captureTime.present) {
+      map['captureTime'] = Variable<String>(captureTime.value);
+    }
+    if (trapType.present) {
+      map['trapType'] = Variable<String>(trapType.value);
+    }
+    if (trapID.present) {
+      map['trapID'] = Variable<String>(trapID.value);
+    }
+    if (coordinateID.present) {
+      map['coordinateID'] = Variable<int>(coordinateID.value);
+    }
+    if (catalogerID.present) {
+      map['catalogerID'] = Variable<String>(catalogerID.value);
+    }
+    if (fieldNumber.present) {
+      map['fieldNumber'] = Variable<int>(fieldNumber.value);
+    }
+    if (collEventID.present) {
+      map['collEventID'] = Variable<int>(collEventID.value);
+    }
+    if (isMultipleCollector.present) {
+      map['isMultipleCollector'] = Variable<int>(isMultipleCollector.value);
+    }
+    if (collPersonnelID.present) {
+      map['collPersonnelID'] = Variable<int>(collPersonnelID.value);
+    }
+    if (collMethodID.present) {
+      map['collMethodID'] = Variable<int>(collMethodID.value);
+    }
+    if (museumID.present) {
+      map['museumID'] = Variable<String>(museumID.value);
+    }
+    if (preparatorID.present) {
+      map['preparatorID'] = Variable<String>(preparatorID.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SpecimenCompanion(')
+          ..write('uuid: $uuid, ')
+          ..write('projectUuid: $projectUuid, ')
+          ..write('speciesID: $speciesID, ')
+          ..write('taxonGroup: $taxonGroup, ')
+          ..write('condition: $condition, ')
+          ..write('prepDate: $prepDate, ')
+          ..write('prepTime: $prepTime, ')
+          ..write('collectionTime: $collectionTime, ')
+          ..write('captureDate: $captureDate, ')
+          ..write('isRelativeTime: $isRelativeTime, ')
+          ..write('captureTime: $captureTime, ')
+          ..write('trapType: $trapType, ')
+          ..write('trapID: $trapID, ')
+          ..write('coordinateID: $coordinateID, ')
+          ..write('catalogerID: $catalogerID, ')
+          ..write('fieldNumber: $fieldNumber, ')
+          ..write('collEventID: $collEventID, ')
+          ..write('isMultipleCollector: $isMultipleCollector, ')
+          ..write('collPersonnelID: $collPersonnelID, ')
+          ..write('collMethodID: $collMethodID, ')
+          ..write('museumID: $museumID, ')
+          ..write('preparatorID: $preparatorID, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class SpecimenMedia extends Table
+    with TableInfo<SpecimenMedia, SpecimenMediaData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  SpecimenMedia(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _specimenUuidMeta =
+      const VerificationMeta('specimenUuid');
+  late final GeneratedColumn<String> specimenUuid = GeneratedColumn<String>(
+      'specimenUuid', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _mediaIdMeta =
+      const VerificationMeta('mediaId');
+  late final GeneratedColumn<int> mediaId = GeneratedColumn<int>(
+      'mediaId', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _categoryMeta =
+      const VerificationMeta('category');
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
+      'category', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  @override
+  List<GeneratedColumn> get $columns => [specimenUuid, mediaId, category];
+  @override
+  String get aliasedName => _alias ?? 'specimenMedia';
+  @override
+  String get actualTableName => 'specimenMedia';
+  @override
+  VerificationContext validateIntegrity(Insertable<SpecimenMediaData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('specimenUuid')) {
+      context.handle(
+          _specimenUuidMeta,
+          specimenUuid.isAcceptableOrUnknown(
+              data['specimenUuid']!, _specimenUuidMeta));
+    }
+    if (data.containsKey('mediaId')) {
+      context.handle(_mediaIdMeta,
+          mediaId.isAcceptableOrUnknown(data['mediaId']!, _mediaIdMeta));
+    }
+    if (data.containsKey('category')) {
+      context.handle(_categoryMeta,
+          category.isAcceptableOrUnknown(data['category']!, _categoryMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  SpecimenMediaData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SpecimenMediaData(
+      specimenUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}specimenUuid']),
+      mediaId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}mediaId']),
+      category: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}category']),
+    );
+  }
+
+  @override
+  SpecimenMedia createAlias(String alias) {
+    return SpecimenMedia(attachedDatabase, alias);
+  }
+
+  @override
+  List<String> get customConstraints => const [
+        'FOREIGN KEY(specimenUuid)REFERENCES specimen(uuid)',
+        'FOREIGN KEY(mediaId)REFERENCES media(primaryId)'
+      ];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class SpecimenMediaData extends DataClass
+    implements Insertable<SpecimenMediaData> {
+  final String? specimenUuid;
+  final int? mediaId;
+  final String? category;
+  const SpecimenMediaData({this.specimenUuid, this.mediaId, this.category});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || specimenUuid != null) {
+      map['specimenUuid'] = Variable<String>(specimenUuid);
+    }
+    if (!nullToAbsent || mediaId != null) {
+      map['mediaId'] = Variable<int>(mediaId);
+    }
+    if (!nullToAbsent || category != null) {
+      map['category'] = Variable<String>(category);
+    }
+    return map;
+  }
+
+  SpecimenMediaCompanion toCompanion(bool nullToAbsent) {
+    return SpecimenMediaCompanion(
+      specimenUuid: specimenUuid == null && nullToAbsent
+          ? const Value.absent()
+          : Value(specimenUuid),
+      mediaId: mediaId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(mediaId),
+      category: category == null && nullToAbsent
+          ? const Value.absent()
+          : Value(category),
+    );
+  }
+
+  factory SpecimenMediaData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SpecimenMediaData(
+      specimenUuid: serializer.fromJson<String?>(json['specimenUuid']),
+      mediaId: serializer.fromJson<int?>(json['mediaId']),
+      category: serializer.fromJson<String?>(json['category']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'specimenUuid': serializer.toJson<String?>(specimenUuid),
+      'mediaId': serializer.toJson<int?>(mediaId),
+      'category': serializer.toJson<String?>(category),
+    };
+  }
+
+  SpecimenMediaData copyWith(
+          {Value<String?> specimenUuid = const Value.absent(),
+          Value<int?> mediaId = const Value.absent(),
+          Value<String?> category = const Value.absent()}) =>
+      SpecimenMediaData(
+        specimenUuid:
+            specimenUuid.present ? specimenUuid.value : this.specimenUuid,
+        mediaId: mediaId.present ? mediaId.value : this.mediaId,
+        category: category.present ? category.value : this.category,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('SpecimenMediaData(')
+          ..write('specimenUuid: $specimenUuid, ')
+          ..write('mediaId: $mediaId, ')
+          ..write('category: $category')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(specimenUuid, mediaId, category);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SpecimenMediaData &&
+          other.specimenUuid == this.specimenUuid &&
+          other.mediaId == this.mediaId &&
+          other.category == this.category);
+}
+
+class SpecimenMediaCompanion extends UpdateCompanion<SpecimenMediaData> {
+  final Value<String?> specimenUuid;
+  final Value<int?> mediaId;
+  final Value<String?> category;
+  final Value<int> rowid;
+  const SpecimenMediaCompanion({
+    this.specimenUuid = const Value.absent(),
+    this.mediaId = const Value.absent(),
+    this.category = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SpecimenMediaCompanion.insert({
+    this.specimenUuid = const Value.absent(),
+    this.mediaId = const Value.absent(),
+    this.category = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  static Insertable<SpecimenMediaData> custom({
+    Expression<String>? specimenUuid,
+    Expression<int>? mediaId,
+    Expression<String>? category,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (specimenUuid != null) 'specimenUuid': specimenUuid,
+      if (mediaId != null) 'mediaId': mediaId,
+      if (category != null) 'category': category,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SpecimenMediaCompanion copyWith(
+      {Value<String?>? specimenUuid,
+      Value<int?>? mediaId,
+      Value<String?>? category,
+      Value<int>? rowid}) {
+    return SpecimenMediaCompanion(
+      specimenUuid: specimenUuid ?? this.specimenUuid,
+      mediaId: mediaId ?? this.mediaId,
+      category: category ?? this.category,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (specimenUuid.present) {
+      map['specimenUuid'] = Variable<String>(specimenUuid.value);
+    }
+    if (mediaId.present) {
+      map['mediaId'] = Variable<int>(mediaId.value);
+    }
+    if (category.present) {
+      map['category'] = Variable<String>(category.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SpecimenMediaCompanion(')
+          ..write('specimenUuid: $specimenUuid, ')
+          ..write('mediaId: $mediaId, ')
+          ..write('category: $category, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class AssociatedData extends Table
     with TableInfo<AssociatedData, AssociatedDataData> {
   @override
@@ -6169,1527 +8411,6 @@ class ProjectPersonnelCompanion extends UpdateCompanion<ProjectPersonnelData> {
     return (StringBuffer('ProjectPersonnelCompanion(')
           ..write('projectUuid: $projectUuid, ')
           ..write('personnelId: $personnelId, ')
-          ..write('rowid: $rowid')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  Taxonomy(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
-  static const VerificationMeta _taxonClassMeta =
-      const VerificationMeta('taxonClass');
-  late final GeneratedColumn<String> taxonClass = GeneratedColumn<String>(
-      'taxonClass', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _taxonOrderMeta =
-      const VerificationMeta('taxonOrder');
-  late final GeneratedColumn<String> taxonOrder = GeneratedColumn<String>(
-      'taxonOrder', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _taxonFamilyMeta =
-      const VerificationMeta('taxonFamily');
-  late final GeneratedColumn<String> taxonFamily = GeneratedColumn<String>(
-      'taxonFamily', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _genusMeta = const VerificationMeta('genus');
-  late final GeneratedColumn<String> genus = GeneratedColumn<String>(
-      'genus', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _specificEpithetMeta =
-      const VerificationMeta('specificEpithet');
-  late final GeneratedColumn<String> specificEpithet = GeneratedColumn<String>(
-      'specificEpithet', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _commonNameMeta =
-      const VerificationMeta('commonName');
-  late final GeneratedColumn<String> commonName = GeneratedColumn<String>(
-      'commonName', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
-  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
-      'notes', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _mediaIdMeta =
-      const VerificationMeta('mediaId');
-  late final GeneratedColumn<int> mediaId = GeneratedColumn<int>(
-      'mediaId', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  @override
-  List<GeneratedColumn> get $columns => [
-        id,
-        taxonClass,
-        taxonOrder,
-        taxonFamily,
-        genus,
-        specificEpithet,
-        commonName,
-        notes,
-        mediaId
-      ];
-  @override
-  String get aliasedName => _alias ?? 'taxonomy';
-  @override
-  String get actualTableName => 'taxonomy';
-  @override
-  VerificationContext validateIntegrity(Insertable<TaxonomyData> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('taxonClass')) {
-      context.handle(
-          _taxonClassMeta,
-          taxonClass.isAcceptableOrUnknown(
-              data['taxonClass']!, _taxonClassMeta));
-    }
-    if (data.containsKey('taxonOrder')) {
-      context.handle(
-          _taxonOrderMeta,
-          taxonOrder.isAcceptableOrUnknown(
-              data['taxonOrder']!, _taxonOrderMeta));
-    }
-    if (data.containsKey('taxonFamily')) {
-      context.handle(
-          _taxonFamilyMeta,
-          taxonFamily.isAcceptableOrUnknown(
-              data['taxonFamily']!, _taxonFamilyMeta));
-    }
-    if (data.containsKey('genus')) {
-      context.handle(
-          _genusMeta, genus.isAcceptableOrUnknown(data['genus']!, _genusMeta));
-    }
-    if (data.containsKey('specificEpithet')) {
-      context.handle(
-          _specificEpithetMeta,
-          specificEpithet.isAcceptableOrUnknown(
-              data['specificEpithet']!, _specificEpithetMeta));
-    }
-    if (data.containsKey('commonName')) {
-      context.handle(
-          _commonNameMeta,
-          commonName.isAcceptableOrUnknown(
-              data['commonName']!, _commonNameMeta));
-    }
-    if (data.containsKey('notes')) {
-      context.handle(
-          _notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
-    }
-    if (data.containsKey('mediaId')) {
-      context.handle(_mediaIdMeta,
-          mediaId.isAcceptableOrUnknown(data['mediaId']!, _mediaIdMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  TaxonomyData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return TaxonomyData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      taxonClass: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}taxonClass']),
-      taxonOrder: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}taxonOrder']),
-      taxonFamily: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}taxonFamily']),
-      genus: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}genus']),
-      specificEpithet: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}specificEpithet']),
-      commonName: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}commonName']),
-      notes: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}notes']),
-      mediaId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}mediaId']),
-    );
-  }
-
-  @override
-  Taxonomy createAlias(String alias) {
-    return Taxonomy(attachedDatabase, alias);
-  }
-
-  @override
-  List<String> get customConstraints =>
-      const ['FOREIGN KEY(mediaId)REFERENCES media(primaryId)'];
-  @override
-  bool get dontWriteConstraints => true;
-}
-
-class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
-  final int id;
-  final String? taxonClass;
-  final String? taxonOrder;
-  final String? taxonFamily;
-  final String? genus;
-  final String? specificEpithet;
-  final String? commonName;
-  final String? notes;
-  final int? mediaId;
-  const TaxonomyData(
-      {required this.id,
-      this.taxonClass,
-      this.taxonOrder,
-      this.taxonFamily,
-      this.genus,
-      this.specificEpithet,
-      this.commonName,
-      this.notes,
-      this.mediaId});
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    if (!nullToAbsent || taxonClass != null) {
-      map['taxonClass'] = Variable<String>(taxonClass);
-    }
-    if (!nullToAbsent || taxonOrder != null) {
-      map['taxonOrder'] = Variable<String>(taxonOrder);
-    }
-    if (!nullToAbsent || taxonFamily != null) {
-      map['taxonFamily'] = Variable<String>(taxonFamily);
-    }
-    if (!nullToAbsent || genus != null) {
-      map['genus'] = Variable<String>(genus);
-    }
-    if (!nullToAbsent || specificEpithet != null) {
-      map['specificEpithet'] = Variable<String>(specificEpithet);
-    }
-    if (!nullToAbsent || commonName != null) {
-      map['commonName'] = Variable<String>(commonName);
-    }
-    if (!nullToAbsent || notes != null) {
-      map['notes'] = Variable<String>(notes);
-    }
-    if (!nullToAbsent || mediaId != null) {
-      map['mediaId'] = Variable<int>(mediaId);
-    }
-    return map;
-  }
-
-  TaxonomyCompanion toCompanion(bool nullToAbsent) {
-    return TaxonomyCompanion(
-      id: Value(id),
-      taxonClass: taxonClass == null && nullToAbsent
-          ? const Value.absent()
-          : Value(taxonClass),
-      taxonOrder: taxonOrder == null && nullToAbsent
-          ? const Value.absent()
-          : Value(taxonOrder),
-      taxonFamily: taxonFamily == null && nullToAbsent
-          ? const Value.absent()
-          : Value(taxonFamily),
-      genus:
-          genus == null && nullToAbsent ? const Value.absent() : Value(genus),
-      specificEpithet: specificEpithet == null && nullToAbsent
-          ? const Value.absent()
-          : Value(specificEpithet),
-      commonName: commonName == null && nullToAbsent
-          ? const Value.absent()
-          : Value(commonName),
-      notes:
-          notes == null && nullToAbsent ? const Value.absent() : Value(notes),
-      mediaId: mediaId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(mediaId),
-    );
-  }
-
-  factory TaxonomyData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return TaxonomyData(
-      id: serializer.fromJson<int>(json['id']),
-      taxonClass: serializer.fromJson<String?>(json['taxonClass']),
-      taxonOrder: serializer.fromJson<String?>(json['taxonOrder']),
-      taxonFamily: serializer.fromJson<String?>(json['taxonFamily']),
-      genus: serializer.fromJson<String?>(json['genus']),
-      specificEpithet: serializer.fromJson<String?>(json['specificEpithet']),
-      commonName: serializer.fromJson<String?>(json['commonName']),
-      notes: serializer.fromJson<String?>(json['notes']),
-      mediaId: serializer.fromJson<int?>(json['mediaId']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'taxonClass': serializer.toJson<String?>(taxonClass),
-      'taxonOrder': serializer.toJson<String?>(taxonOrder),
-      'taxonFamily': serializer.toJson<String?>(taxonFamily),
-      'genus': serializer.toJson<String?>(genus),
-      'specificEpithet': serializer.toJson<String?>(specificEpithet),
-      'commonName': serializer.toJson<String?>(commonName),
-      'notes': serializer.toJson<String?>(notes),
-      'mediaId': serializer.toJson<int?>(mediaId),
-    };
-  }
-
-  TaxonomyData copyWith(
-          {int? id,
-          Value<String?> taxonClass = const Value.absent(),
-          Value<String?> taxonOrder = const Value.absent(),
-          Value<String?> taxonFamily = const Value.absent(),
-          Value<String?> genus = const Value.absent(),
-          Value<String?> specificEpithet = const Value.absent(),
-          Value<String?> commonName = const Value.absent(),
-          Value<String?> notes = const Value.absent(),
-          Value<int?> mediaId = const Value.absent()}) =>
-      TaxonomyData(
-        id: id ?? this.id,
-        taxonClass: taxonClass.present ? taxonClass.value : this.taxonClass,
-        taxonOrder: taxonOrder.present ? taxonOrder.value : this.taxonOrder,
-        taxonFamily: taxonFamily.present ? taxonFamily.value : this.taxonFamily,
-        genus: genus.present ? genus.value : this.genus,
-        specificEpithet: specificEpithet.present
-            ? specificEpithet.value
-            : this.specificEpithet,
-        commonName: commonName.present ? commonName.value : this.commonName,
-        notes: notes.present ? notes.value : this.notes,
-        mediaId: mediaId.present ? mediaId.value : this.mediaId,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('TaxonomyData(')
-          ..write('id: $id, ')
-          ..write('taxonClass: $taxonClass, ')
-          ..write('taxonOrder: $taxonOrder, ')
-          ..write('taxonFamily: $taxonFamily, ')
-          ..write('genus: $genus, ')
-          ..write('specificEpithet: $specificEpithet, ')
-          ..write('commonName: $commonName, ')
-          ..write('notes: $notes, ')
-          ..write('mediaId: $mediaId')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(id, taxonClass, taxonOrder, taxonFamily,
-      genus, specificEpithet, commonName, notes, mediaId);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is TaxonomyData &&
-          other.id == this.id &&
-          other.taxonClass == this.taxonClass &&
-          other.taxonOrder == this.taxonOrder &&
-          other.taxonFamily == this.taxonFamily &&
-          other.genus == this.genus &&
-          other.specificEpithet == this.specificEpithet &&
-          other.commonName == this.commonName &&
-          other.notes == this.notes &&
-          other.mediaId == this.mediaId);
-}
-
-class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
-  final Value<int> id;
-  final Value<String?> taxonClass;
-  final Value<String?> taxonOrder;
-  final Value<String?> taxonFamily;
-  final Value<String?> genus;
-  final Value<String?> specificEpithet;
-  final Value<String?> commonName;
-  final Value<String?> notes;
-  final Value<int?> mediaId;
-  const TaxonomyCompanion({
-    this.id = const Value.absent(),
-    this.taxonClass = const Value.absent(),
-    this.taxonOrder = const Value.absent(),
-    this.taxonFamily = const Value.absent(),
-    this.genus = const Value.absent(),
-    this.specificEpithet = const Value.absent(),
-    this.commonName = const Value.absent(),
-    this.notes = const Value.absent(),
-    this.mediaId = const Value.absent(),
-  });
-  TaxonomyCompanion.insert({
-    this.id = const Value.absent(),
-    this.taxonClass = const Value.absent(),
-    this.taxonOrder = const Value.absent(),
-    this.taxonFamily = const Value.absent(),
-    this.genus = const Value.absent(),
-    this.specificEpithet = const Value.absent(),
-    this.commonName = const Value.absent(),
-    this.notes = const Value.absent(),
-    this.mediaId = const Value.absent(),
-  });
-  static Insertable<TaxonomyData> custom({
-    Expression<int>? id,
-    Expression<String>? taxonClass,
-    Expression<String>? taxonOrder,
-    Expression<String>? taxonFamily,
-    Expression<String>? genus,
-    Expression<String>? specificEpithet,
-    Expression<String>? commonName,
-    Expression<String>? notes,
-    Expression<int>? mediaId,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (taxonClass != null) 'taxonClass': taxonClass,
-      if (taxonOrder != null) 'taxonOrder': taxonOrder,
-      if (taxonFamily != null) 'taxonFamily': taxonFamily,
-      if (genus != null) 'genus': genus,
-      if (specificEpithet != null) 'specificEpithet': specificEpithet,
-      if (commonName != null) 'commonName': commonName,
-      if (notes != null) 'notes': notes,
-      if (mediaId != null) 'mediaId': mediaId,
-    });
-  }
-
-  TaxonomyCompanion copyWith(
-      {Value<int>? id,
-      Value<String?>? taxonClass,
-      Value<String?>? taxonOrder,
-      Value<String?>? taxonFamily,
-      Value<String?>? genus,
-      Value<String?>? specificEpithet,
-      Value<String?>? commonName,
-      Value<String?>? notes,
-      Value<int?>? mediaId}) {
-    return TaxonomyCompanion(
-      id: id ?? this.id,
-      taxonClass: taxonClass ?? this.taxonClass,
-      taxonOrder: taxonOrder ?? this.taxonOrder,
-      taxonFamily: taxonFamily ?? this.taxonFamily,
-      genus: genus ?? this.genus,
-      specificEpithet: specificEpithet ?? this.specificEpithet,
-      commonName: commonName ?? this.commonName,
-      notes: notes ?? this.notes,
-      mediaId: mediaId ?? this.mediaId,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
-    if (taxonClass.present) {
-      map['taxonClass'] = Variable<String>(taxonClass.value);
-    }
-    if (taxonOrder.present) {
-      map['taxonOrder'] = Variable<String>(taxonOrder.value);
-    }
-    if (taxonFamily.present) {
-      map['taxonFamily'] = Variable<String>(taxonFamily.value);
-    }
-    if (genus.present) {
-      map['genus'] = Variable<String>(genus.value);
-    }
-    if (specificEpithet.present) {
-      map['specificEpithet'] = Variable<String>(specificEpithet.value);
-    }
-    if (commonName.present) {
-      map['commonName'] = Variable<String>(commonName.value);
-    }
-    if (notes.present) {
-      map['notes'] = Variable<String>(notes.value);
-    }
-    if (mediaId.present) {
-      map['mediaId'] = Variable<int>(mediaId.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('TaxonomyCompanion(')
-          ..write('id: $id, ')
-          ..write('taxonClass: $taxonClass, ')
-          ..write('taxonOrder: $taxonOrder, ')
-          ..write('taxonFamily: $taxonFamily, ')
-          ..write('genus: $genus, ')
-          ..write('specificEpithet: $specificEpithet, ')
-          ..write('commonName: $commonName, ')
-          ..write('notes: $notes, ')
-          ..write('mediaId: $mediaId')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  Specimen(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
-  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
-      'uuid', aliasedName, false,
-      type: DriftSqlType.string,
-      requiredDuringInsert: true,
-      $customConstraints: 'UNIQUE NOT NULL PRIMARY KEY');
-  static const VerificationMeta _projectUuidMeta =
-      const VerificationMeta('projectUuid');
-  late final GeneratedColumn<String> projectUuid = GeneratedColumn<String>(
-      'projectUuid', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _speciesIDMeta =
-      const VerificationMeta('speciesID');
-  late final GeneratedColumn<int> speciesID = GeneratedColumn<int>(
-      'speciesID', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _taxonGroupMeta =
-      const VerificationMeta('taxonGroup');
-  late final GeneratedColumn<String> taxonGroup = GeneratedColumn<String>(
-      'taxonGroup', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _conditionMeta =
-      const VerificationMeta('condition');
-  late final GeneratedColumn<String> condition = GeneratedColumn<String>(
-      'condition', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _prepDateMeta =
-      const VerificationMeta('prepDate');
-  late final GeneratedColumn<String> prepDate = GeneratedColumn<String>(
-      'prepDate', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _prepTimeMeta =
-      const VerificationMeta('prepTime');
-  late final GeneratedColumn<String> prepTime = GeneratedColumn<String>(
-      'prepTime', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _collectedTimeMeta =
-      const VerificationMeta('collectedTime');
-  late final GeneratedColumn<String> collectedTime = GeneratedColumn<String>(
-      'collectedTime', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _captureDateMeta =
-      const VerificationMeta('captureDate');
-  late final GeneratedColumn<String> captureDate = GeneratedColumn<String>(
-      'captureDate', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _isRelativeTimeMeta =
-      const VerificationMeta('isRelativeTime');
-  late final GeneratedColumn<int> isRelativeTime = GeneratedColumn<int>(
-      'isRelativeTime', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _captureTimeMeta =
-      const VerificationMeta('captureTime');
-  late final GeneratedColumn<String> captureTime = GeneratedColumn<String>(
-      'captureTime', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _trapTypeMeta =
-      const VerificationMeta('trapType');
-  late final GeneratedColumn<String> trapType = GeneratedColumn<String>(
-      'trapType', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _trapIDMeta = const VerificationMeta('trapID');
-  late final GeneratedColumn<String> trapID = GeneratedColumn<String>(
-      'trapID', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _coordinateIDMeta =
-      const VerificationMeta('coordinateID');
-  late final GeneratedColumn<int> coordinateID = GeneratedColumn<int>(
-      'coordinateID', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _catalogerIDMeta =
-      const VerificationMeta('catalogerID');
-  late final GeneratedColumn<String> catalogerID = GeneratedColumn<String>(
-      'catalogerID', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _fieldNumberMeta =
-      const VerificationMeta('fieldNumber');
-  late final GeneratedColumn<int> fieldNumber = GeneratedColumn<int>(
-      'fieldNumber', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _collEventIDMeta =
-      const VerificationMeta('collEventID');
-  late final GeneratedColumn<int> collEventID = GeneratedColumn<int>(
-      'collEventID', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _isMultipleCollectorMeta =
-      const VerificationMeta('isMultipleCollector');
-  late final GeneratedColumn<int> isMultipleCollector = GeneratedColumn<int>(
-      'isMultipleCollector', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _collPersonnelIDMeta =
-      const VerificationMeta('collPersonnelID');
-  late final GeneratedColumn<int> collPersonnelID = GeneratedColumn<int>(
-      'collPersonnelID', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _collMethodIDMeta =
-      const VerificationMeta('collMethodID');
-  late final GeneratedColumn<int> collMethodID = GeneratedColumn<int>(
-      'collMethodID', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _museumIDMeta =
-      const VerificationMeta('museumID');
-  late final GeneratedColumn<String> museumID = GeneratedColumn<String>(
-      'museumID', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _preparatorIDMeta =
-      const VerificationMeta('preparatorID');
-  late final GeneratedColumn<String> preparatorID = GeneratedColumn<String>(
-      'preparatorID', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: 'REFERENCES personnel(uuid)');
-  @override
-  List<GeneratedColumn> get $columns => [
-        uuid,
-        projectUuid,
-        speciesID,
-        taxonGroup,
-        condition,
-        prepDate,
-        prepTime,
-        collectedTime,
-        captureDate,
-        isRelativeTime,
-        captureTime,
-        trapType,
-        trapID,
-        coordinateID,
-        catalogerID,
-        fieldNumber,
-        collEventID,
-        isMultipleCollector,
-        collPersonnelID,
-        collMethodID,
-        museumID,
-        preparatorID
-      ];
-  @override
-  String get aliasedName => _alias ?? 'specimen';
-  @override
-  String get actualTableName => 'specimen';
-  @override
-  VerificationContext validateIntegrity(Insertable<SpecimenData> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('uuid')) {
-      context.handle(
-          _uuidMeta, uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta));
-    } else if (isInserting) {
-      context.missing(_uuidMeta);
-    }
-    if (data.containsKey('projectUuid')) {
-      context.handle(
-          _projectUuidMeta,
-          projectUuid.isAcceptableOrUnknown(
-              data['projectUuid']!, _projectUuidMeta));
-    }
-    if (data.containsKey('speciesID')) {
-      context.handle(_speciesIDMeta,
-          speciesID.isAcceptableOrUnknown(data['speciesID']!, _speciesIDMeta));
-    }
-    if (data.containsKey('taxonGroup')) {
-      context.handle(
-          _taxonGroupMeta,
-          taxonGroup.isAcceptableOrUnknown(
-              data['taxonGroup']!, _taxonGroupMeta));
-    }
-    if (data.containsKey('condition')) {
-      context.handle(_conditionMeta,
-          condition.isAcceptableOrUnknown(data['condition']!, _conditionMeta));
-    }
-    if (data.containsKey('prepDate')) {
-      context.handle(_prepDateMeta,
-          prepDate.isAcceptableOrUnknown(data['prepDate']!, _prepDateMeta));
-    }
-    if (data.containsKey('prepTime')) {
-      context.handle(_prepTimeMeta,
-          prepTime.isAcceptableOrUnknown(data['prepTime']!, _prepTimeMeta));
-    }
-    if (data.containsKey('collectedTime')) {
-      context.handle(
-          _collectedTimeMeta,
-          collectedTime.isAcceptableOrUnknown(
-              data['collectedTime']!, _collectedTimeMeta));
-    }
-    if (data.containsKey('captureDate')) {
-      context.handle(
-          _captureDateMeta,
-          captureDate.isAcceptableOrUnknown(
-              data['captureDate']!, _captureDateMeta));
-    }
-    if (data.containsKey('isRelativeTime')) {
-      context.handle(
-          _isRelativeTimeMeta,
-          isRelativeTime.isAcceptableOrUnknown(
-              data['isRelativeTime']!, _isRelativeTimeMeta));
-    }
-    if (data.containsKey('captureTime')) {
-      context.handle(
-          _captureTimeMeta,
-          captureTime.isAcceptableOrUnknown(
-              data['captureTime']!, _captureTimeMeta));
-    }
-    if (data.containsKey('trapType')) {
-      context.handle(_trapTypeMeta,
-          trapType.isAcceptableOrUnknown(data['trapType']!, _trapTypeMeta));
-    }
-    if (data.containsKey('trapID')) {
-      context.handle(_trapIDMeta,
-          trapID.isAcceptableOrUnknown(data['trapID']!, _trapIDMeta));
-    }
-    if (data.containsKey('coordinateID')) {
-      context.handle(
-          _coordinateIDMeta,
-          coordinateID.isAcceptableOrUnknown(
-              data['coordinateID']!, _coordinateIDMeta));
-    }
-    if (data.containsKey('catalogerID')) {
-      context.handle(
-          _catalogerIDMeta,
-          catalogerID.isAcceptableOrUnknown(
-              data['catalogerID']!, _catalogerIDMeta));
-    }
-    if (data.containsKey('fieldNumber')) {
-      context.handle(
-          _fieldNumberMeta,
-          fieldNumber.isAcceptableOrUnknown(
-              data['fieldNumber']!, _fieldNumberMeta));
-    }
-    if (data.containsKey('collEventID')) {
-      context.handle(
-          _collEventIDMeta,
-          collEventID.isAcceptableOrUnknown(
-              data['collEventID']!, _collEventIDMeta));
-    }
-    if (data.containsKey('isMultipleCollector')) {
-      context.handle(
-          _isMultipleCollectorMeta,
-          isMultipleCollector.isAcceptableOrUnknown(
-              data['isMultipleCollector']!, _isMultipleCollectorMeta));
-    }
-    if (data.containsKey('collPersonnelID')) {
-      context.handle(
-          _collPersonnelIDMeta,
-          collPersonnelID.isAcceptableOrUnknown(
-              data['collPersonnelID']!, _collPersonnelIDMeta));
-    }
-    if (data.containsKey('collMethodID')) {
-      context.handle(
-          _collMethodIDMeta,
-          collMethodID.isAcceptableOrUnknown(
-              data['collMethodID']!, _collMethodIDMeta));
-    }
-    if (data.containsKey('museumID')) {
-      context.handle(_museumIDMeta,
-          museumID.isAcceptableOrUnknown(data['museumID']!, _museumIDMeta));
-    }
-    if (data.containsKey('preparatorID')) {
-      context.handle(
-          _preparatorIDMeta,
-          preparatorID.isAcceptableOrUnknown(
-              data['preparatorID']!, _preparatorIDMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {uuid};
-  @override
-  SpecimenData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return SpecimenData(
-      uuid: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}uuid'])!,
-      projectUuid: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
-      speciesID: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}speciesID']),
-      taxonGroup: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}taxonGroup']),
-      condition: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}condition']),
-      prepDate: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}prepDate']),
-      prepTime: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}prepTime']),
-      collectedTime: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}collectedTime']),
-      captureDate: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}captureDate']),
-      isRelativeTime: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}isRelativeTime']),
-      captureTime: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}captureTime']),
-      trapType: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}trapType']),
-      trapID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}trapID']),
-      coordinateID: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}coordinateID']),
-      catalogerID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}catalogerID']),
-      fieldNumber: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}fieldNumber']),
-      collEventID: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}collEventID']),
-      isMultipleCollector: attachedDatabase.typeMapping.read(
-          DriftSqlType.int, data['${effectivePrefix}isMultipleCollector']),
-      collPersonnelID: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}collPersonnelID']),
-      collMethodID: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}collMethodID']),
-      museumID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}museumID']),
-      preparatorID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}preparatorID']),
-    );
-  }
-
-  @override
-  Specimen createAlias(String alias) {
-    return Specimen(attachedDatabase, alias);
-  }
-
-  @override
-  List<String> get customConstraints => const [
-        'FOREIGN KEY(projectUuid)REFERENCES project(uuid)',
-        'FOREIGN KEY(catalogerID)REFERENCES personnel(uuid)',
-        'FOREIGN KEY(collPersonnelID)REFERENCES collPersonnel(id)',
-        'FOREIGN KEY(collMethodID)REFERENCES collEffort(id)',
-        'FOREIGN KEY(speciesID)REFERENCES taxonomy(id)',
-        'FOREIGN KEY(collEventID)REFERENCES collEvent(id)'
-      ];
-  @override
-  bool get dontWriteConstraints => true;
-}
-
-class SpecimenData extends DataClass implements Insertable<SpecimenData> {
-  final String uuid;
-  final String? projectUuid;
-  final int? speciesID;
-  final String? taxonGroup;
-
-  /// use for catalog formats
-  final String? condition;
-  final String? prepDate;
-  final String? prepTime;
-  final String? collectedTime;
-
-  /// late update
-  final String? captureDate;
-  final int? isRelativeTime;
-  final String? captureTime;
-  final String? trapType;
-  final String? trapID;
-  final int? coordinateID;
-  final String? catalogerID;
-  final int? fieldNumber;
-  final int? collEventID;
-  final int? isMultipleCollector;
-  final int? collPersonnelID;
-  final int? collMethodID;
-  final String? museumID;
-  final String? preparatorID;
-  const SpecimenData(
-      {required this.uuid,
-      this.projectUuid,
-      this.speciesID,
-      this.taxonGroup,
-      this.condition,
-      this.prepDate,
-      this.prepTime,
-      this.collectedTime,
-      this.captureDate,
-      this.isRelativeTime,
-      this.captureTime,
-      this.trapType,
-      this.trapID,
-      this.coordinateID,
-      this.catalogerID,
-      this.fieldNumber,
-      this.collEventID,
-      this.isMultipleCollector,
-      this.collPersonnelID,
-      this.collMethodID,
-      this.museumID,
-      this.preparatorID});
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['uuid'] = Variable<String>(uuid);
-    if (!nullToAbsent || projectUuid != null) {
-      map['projectUuid'] = Variable<String>(projectUuid);
-    }
-    if (!nullToAbsent || speciesID != null) {
-      map['speciesID'] = Variable<int>(speciesID);
-    }
-    if (!nullToAbsent || taxonGroup != null) {
-      map['taxonGroup'] = Variable<String>(taxonGroup);
-    }
-    if (!nullToAbsent || condition != null) {
-      map['condition'] = Variable<String>(condition);
-    }
-    if (!nullToAbsent || prepDate != null) {
-      map['prepDate'] = Variable<String>(prepDate);
-    }
-    if (!nullToAbsent || prepTime != null) {
-      map['prepTime'] = Variable<String>(prepTime);
-    }
-    if (!nullToAbsent || collectedTime != null) {
-      map['collectedTime'] = Variable<String>(collectedTime);
-    }
-    if (!nullToAbsent || captureDate != null) {
-      map['captureDate'] = Variable<String>(captureDate);
-    }
-    if (!nullToAbsent || isRelativeTime != null) {
-      map['isRelativeTime'] = Variable<int>(isRelativeTime);
-    }
-    if (!nullToAbsent || captureTime != null) {
-      map['captureTime'] = Variable<String>(captureTime);
-    }
-    if (!nullToAbsent || trapType != null) {
-      map['trapType'] = Variable<String>(trapType);
-    }
-    if (!nullToAbsent || trapID != null) {
-      map['trapID'] = Variable<String>(trapID);
-    }
-    if (!nullToAbsent || coordinateID != null) {
-      map['coordinateID'] = Variable<int>(coordinateID);
-    }
-    if (!nullToAbsent || catalogerID != null) {
-      map['catalogerID'] = Variable<String>(catalogerID);
-    }
-    if (!nullToAbsent || fieldNumber != null) {
-      map['fieldNumber'] = Variable<int>(fieldNumber);
-    }
-    if (!nullToAbsent || collEventID != null) {
-      map['collEventID'] = Variable<int>(collEventID);
-    }
-    if (!nullToAbsent || isMultipleCollector != null) {
-      map['isMultipleCollector'] = Variable<int>(isMultipleCollector);
-    }
-    if (!nullToAbsent || collPersonnelID != null) {
-      map['collPersonnelID'] = Variable<int>(collPersonnelID);
-    }
-    if (!nullToAbsent || collMethodID != null) {
-      map['collMethodID'] = Variable<int>(collMethodID);
-    }
-    if (!nullToAbsent || museumID != null) {
-      map['museumID'] = Variable<String>(museumID);
-    }
-    if (!nullToAbsent || preparatorID != null) {
-      map['preparatorID'] = Variable<String>(preparatorID);
-    }
-    return map;
-  }
-
-  SpecimenCompanion toCompanion(bool nullToAbsent) {
-    return SpecimenCompanion(
-      uuid: Value(uuid),
-      projectUuid: projectUuid == null && nullToAbsent
-          ? const Value.absent()
-          : Value(projectUuid),
-      speciesID: speciesID == null && nullToAbsent
-          ? const Value.absent()
-          : Value(speciesID),
-      taxonGroup: taxonGroup == null && nullToAbsent
-          ? const Value.absent()
-          : Value(taxonGroup),
-      condition: condition == null && nullToAbsent
-          ? const Value.absent()
-          : Value(condition),
-      prepDate: prepDate == null && nullToAbsent
-          ? const Value.absent()
-          : Value(prepDate),
-      prepTime: prepTime == null && nullToAbsent
-          ? const Value.absent()
-          : Value(prepTime),
-      collectedTime: collectedTime == null && nullToAbsent
-          ? const Value.absent()
-          : Value(collectedTime),
-      captureDate: captureDate == null && nullToAbsent
-          ? const Value.absent()
-          : Value(captureDate),
-      isRelativeTime: isRelativeTime == null && nullToAbsent
-          ? const Value.absent()
-          : Value(isRelativeTime),
-      captureTime: captureTime == null && nullToAbsent
-          ? const Value.absent()
-          : Value(captureTime),
-      trapType: trapType == null && nullToAbsent
-          ? const Value.absent()
-          : Value(trapType),
-      trapID:
-          trapID == null && nullToAbsent ? const Value.absent() : Value(trapID),
-      coordinateID: coordinateID == null && nullToAbsent
-          ? const Value.absent()
-          : Value(coordinateID),
-      catalogerID: catalogerID == null && nullToAbsent
-          ? const Value.absent()
-          : Value(catalogerID),
-      fieldNumber: fieldNumber == null && nullToAbsent
-          ? const Value.absent()
-          : Value(fieldNumber),
-      collEventID: collEventID == null && nullToAbsent
-          ? const Value.absent()
-          : Value(collEventID),
-      isMultipleCollector: isMultipleCollector == null && nullToAbsent
-          ? const Value.absent()
-          : Value(isMultipleCollector),
-      collPersonnelID: collPersonnelID == null && nullToAbsent
-          ? const Value.absent()
-          : Value(collPersonnelID),
-      collMethodID: collMethodID == null && nullToAbsent
-          ? const Value.absent()
-          : Value(collMethodID),
-      museumID: museumID == null && nullToAbsent
-          ? const Value.absent()
-          : Value(museumID),
-      preparatorID: preparatorID == null && nullToAbsent
-          ? const Value.absent()
-          : Value(preparatorID),
-    );
-  }
-
-  factory SpecimenData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return SpecimenData(
-      uuid: serializer.fromJson<String>(json['uuid']),
-      projectUuid: serializer.fromJson<String?>(json['projectUuid']),
-      speciesID: serializer.fromJson<int?>(json['speciesID']),
-      taxonGroup: serializer.fromJson<String?>(json['taxonGroup']),
-      condition: serializer.fromJson<String?>(json['condition']),
-      prepDate: serializer.fromJson<String?>(json['prepDate']),
-      prepTime: serializer.fromJson<String?>(json['prepTime']),
-      collectedTime: serializer.fromJson<String?>(json['collectedTime']),
-      captureDate: serializer.fromJson<String?>(json['captureDate']),
-      isRelativeTime: serializer.fromJson<int?>(json['isRelativeTime']),
-      captureTime: serializer.fromJson<String?>(json['captureTime']),
-      trapType: serializer.fromJson<String?>(json['trapType']),
-      trapID: serializer.fromJson<String?>(json['trapID']),
-      coordinateID: serializer.fromJson<int?>(json['coordinateID']),
-      catalogerID: serializer.fromJson<String?>(json['catalogerID']),
-      fieldNumber: serializer.fromJson<int?>(json['fieldNumber']),
-      collEventID: serializer.fromJson<int?>(json['collEventID']),
-      isMultipleCollector:
-          serializer.fromJson<int?>(json['isMultipleCollector']),
-      collPersonnelID: serializer.fromJson<int?>(json['collPersonnelID']),
-      collMethodID: serializer.fromJson<int?>(json['collMethodID']),
-      museumID: serializer.fromJson<String?>(json['museumID']),
-      preparatorID: serializer.fromJson<String?>(json['preparatorID']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'uuid': serializer.toJson<String>(uuid),
-      'projectUuid': serializer.toJson<String?>(projectUuid),
-      'speciesID': serializer.toJson<int?>(speciesID),
-      'taxonGroup': serializer.toJson<String?>(taxonGroup),
-      'condition': serializer.toJson<String?>(condition),
-      'prepDate': serializer.toJson<String?>(prepDate),
-      'prepTime': serializer.toJson<String?>(prepTime),
-      'collectedTime': serializer.toJson<String?>(collectedTime),
-      'captureDate': serializer.toJson<String?>(captureDate),
-      'isRelativeTime': serializer.toJson<int?>(isRelativeTime),
-      'captureTime': serializer.toJson<String?>(captureTime),
-      'trapType': serializer.toJson<String?>(trapType),
-      'trapID': serializer.toJson<String?>(trapID),
-      'coordinateID': serializer.toJson<int?>(coordinateID),
-      'catalogerID': serializer.toJson<String?>(catalogerID),
-      'fieldNumber': serializer.toJson<int?>(fieldNumber),
-      'collEventID': serializer.toJson<int?>(collEventID),
-      'isMultipleCollector': serializer.toJson<int?>(isMultipleCollector),
-      'collPersonnelID': serializer.toJson<int?>(collPersonnelID),
-      'collMethodID': serializer.toJson<int?>(collMethodID),
-      'museumID': serializer.toJson<String?>(museumID),
-      'preparatorID': serializer.toJson<String?>(preparatorID),
-    };
-  }
-
-  SpecimenData copyWith(
-          {String? uuid,
-          Value<String?> projectUuid = const Value.absent(),
-          Value<int?> speciesID = const Value.absent(),
-          Value<String?> taxonGroup = const Value.absent(),
-          Value<String?> condition = const Value.absent(),
-          Value<String?> prepDate = const Value.absent(),
-          Value<String?> prepTime = const Value.absent(),
-          Value<String?> collectedTime = const Value.absent(),
-          Value<String?> captureDate = const Value.absent(),
-          Value<int?> isRelativeTime = const Value.absent(),
-          Value<String?> captureTime = const Value.absent(),
-          Value<String?> trapType = const Value.absent(),
-          Value<String?> trapID = const Value.absent(),
-          Value<int?> coordinateID = const Value.absent(),
-          Value<String?> catalogerID = const Value.absent(),
-          Value<int?> fieldNumber = const Value.absent(),
-          Value<int?> collEventID = const Value.absent(),
-          Value<int?> isMultipleCollector = const Value.absent(),
-          Value<int?> collPersonnelID = const Value.absent(),
-          Value<int?> collMethodID = const Value.absent(),
-          Value<String?> museumID = const Value.absent(),
-          Value<String?> preparatorID = const Value.absent()}) =>
-      SpecimenData(
-        uuid: uuid ?? this.uuid,
-        projectUuid: projectUuid.present ? projectUuid.value : this.projectUuid,
-        speciesID: speciesID.present ? speciesID.value : this.speciesID,
-        taxonGroup: taxonGroup.present ? taxonGroup.value : this.taxonGroup,
-        condition: condition.present ? condition.value : this.condition,
-        prepDate: prepDate.present ? prepDate.value : this.prepDate,
-        prepTime: prepTime.present ? prepTime.value : this.prepTime,
-        collectedTime:
-            collectedTime.present ? collectedTime.value : this.collectedTime,
-        captureDate: captureDate.present ? captureDate.value : this.captureDate,
-        isRelativeTime:
-            isRelativeTime.present ? isRelativeTime.value : this.isRelativeTime,
-        captureTime: captureTime.present ? captureTime.value : this.captureTime,
-        trapType: trapType.present ? trapType.value : this.trapType,
-        trapID: trapID.present ? trapID.value : this.trapID,
-        coordinateID:
-            coordinateID.present ? coordinateID.value : this.coordinateID,
-        catalogerID: catalogerID.present ? catalogerID.value : this.catalogerID,
-        fieldNumber: fieldNumber.present ? fieldNumber.value : this.fieldNumber,
-        collEventID: collEventID.present ? collEventID.value : this.collEventID,
-        isMultipleCollector: isMultipleCollector.present
-            ? isMultipleCollector.value
-            : this.isMultipleCollector,
-        collPersonnelID: collPersonnelID.present
-            ? collPersonnelID.value
-            : this.collPersonnelID,
-        collMethodID:
-            collMethodID.present ? collMethodID.value : this.collMethodID,
-        museumID: museumID.present ? museumID.value : this.museumID,
-        preparatorID:
-            preparatorID.present ? preparatorID.value : this.preparatorID,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('SpecimenData(')
-          ..write('uuid: $uuid, ')
-          ..write('projectUuid: $projectUuid, ')
-          ..write('speciesID: $speciesID, ')
-          ..write('taxonGroup: $taxonGroup, ')
-          ..write('condition: $condition, ')
-          ..write('prepDate: $prepDate, ')
-          ..write('prepTime: $prepTime, ')
-          ..write('collectedTime: $collectedTime, ')
-          ..write('captureDate: $captureDate, ')
-          ..write('isRelativeTime: $isRelativeTime, ')
-          ..write('captureTime: $captureTime, ')
-          ..write('trapType: $trapType, ')
-          ..write('trapID: $trapID, ')
-          ..write('coordinateID: $coordinateID, ')
-          ..write('catalogerID: $catalogerID, ')
-          ..write('fieldNumber: $fieldNumber, ')
-          ..write('collEventID: $collEventID, ')
-          ..write('isMultipleCollector: $isMultipleCollector, ')
-          ..write('collPersonnelID: $collPersonnelID, ')
-          ..write('collMethodID: $collMethodID, ')
-          ..write('museumID: $museumID, ')
-          ..write('preparatorID: $preparatorID')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hashAll([
-        uuid,
-        projectUuid,
-        speciesID,
-        taxonGroup,
-        condition,
-        prepDate,
-        prepTime,
-        collectedTime,
-        captureDate,
-        isRelativeTime,
-        captureTime,
-        trapType,
-        trapID,
-        coordinateID,
-        catalogerID,
-        fieldNumber,
-        collEventID,
-        isMultipleCollector,
-        collPersonnelID,
-        collMethodID,
-        museumID,
-        preparatorID
-      ]);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is SpecimenData &&
-          other.uuid == this.uuid &&
-          other.projectUuid == this.projectUuid &&
-          other.speciesID == this.speciesID &&
-          other.taxonGroup == this.taxonGroup &&
-          other.condition == this.condition &&
-          other.prepDate == this.prepDate &&
-          other.prepTime == this.prepTime &&
-          other.collectedTime == this.collectedTime &&
-          other.captureDate == this.captureDate &&
-          other.isRelativeTime == this.isRelativeTime &&
-          other.captureTime == this.captureTime &&
-          other.trapType == this.trapType &&
-          other.trapID == this.trapID &&
-          other.coordinateID == this.coordinateID &&
-          other.catalogerID == this.catalogerID &&
-          other.fieldNumber == this.fieldNumber &&
-          other.collEventID == this.collEventID &&
-          other.isMultipleCollector == this.isMultipleCollector &&
-          other.collPersonnelID == this.collPersonnelID &&
-          other.collMethodID == this.collMethodID &&
-          other.museumID == this.museumID &&
-          other.preparatorID == this.preparatorID);
-}
-
-class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
-  final Value<String> uuid;
-  final Value<String?> projectUuid;
-  final Value<int?> speciesID;
-  final Value<String?> taxonGroup;
-  final Value<String?> condition;
-  final Value<String?> prepDate;
-  final Value<String?> prepTime;
-  final Value<String?> collectedTime;
-  final Value<String?> captureDate;
-  final Value<int?> isRelativeTime;
-  final Value<String?> captureTime;
-  final Value<String?> trapType;
-  final Value<String?> trapID;
-  final Value<int?> coordinateID;
-  final Value<String?> catalogerID;
-  final Value<int?> fieldNumber;
-  final Value<int?> collEventID;
-  final Value<int?> isMultipleCollector;
-  final Value<int?> collPersonnelID;
-  final Value<int?> collMethodID;
-  final Value<String?> museumID;
-  final Value<String?> preparatorID;
-  final Value<int> rowid;
-  const SpecimenCompanion({
-    this.uuid = const Value.absent(),
-    this.projectUuid = const Value.absent(),
-    this.speciesID = const Value.absent(),
-    this.taxonGroup = const Value.absent(),
-    this.condition = const Value.absent(),
-    this.prepDate = const Value.absent(),
-    this.prepTime = const Value.absent(),
-    this.collectedTime = const Value.absent(),
-    this.captureDate = const Value.absent(),
-    this.isRelativeTime = const Value.absent(),
-    this.captureTime = const Value.absent(),
-    this.trapType = const Value.absent(),
-    this.trapID = const Value.absent(),
-    this.coordinateID = const Value.absent(),
-    this.catalogerID = const Value.absent(),
-    this.fieldNumber = const Value.absent(),
-    this.collEventID = const Value.absent(),
-    this.isMultipleCollector = const Value.absent(),
-    this.collPersonnelID = const Value.absent(),
-    this.collMethodID = const Value.absent(),
-    this.museumID = const Value.absent(),
-    this.preparatorID = const Value.absent(),
-    this.rowid = const Value.absent(),
-  });
-  SpecimenCompanion.insert({
-    required String uuid,
-    this.projectUuid = const Value.absent(),
-    this.speciesID = const Value.absent(),
-    this.taxonGroup = const Value.absent(),
-    this.condition = const Value.absent(),
-    this.prepDate = const Value.absent(),
-    this.prepTime = const Value.absent(),
-    this.collectedTime = const Value.absent(),
-    this.captureDate = const Value.absent(),
-    this.isRelativeTime = const Value.absent(),
-    this.captureTime = const Value.absent(),
-    this.trapType = const Value.absent(),
-    this.trapID = const Value.absent(),
-    this.coordinateID = const Value.absent(),
-    this.catalogerID = const Value.absent(),
-    this.fieldNumber = const Value.absent(),
-    this.collEventID = const Value.absent(),
-    this.isMultipleCollector = const Value.absent(),
-    this.collPersonnelID = const Value.absent(),
-    this.collMethodID = const Value.absent(),
-    this.museumID = const Value.absent(),
-    this.preparatorID = const Value.absent(),
-    this.rowid = const Value.absent(),
-  }) : uuid = Value(uuid);
-  static Insertable<SpecimenData> custom({
-    Expression<String>? uuid,
-    Expression<String>? projectUuid,
-    Expression<int>? speciesID,
-    Expression<String>? taxonGroup,
-    Expression<String>? condition,
-    Expression<String>? prepDate,
-    Expression<String>? prepTime,
-    Expression<String>? collectedTime,
-    Expression<String>? captureDate,
-    Expression<int>? isRelativeTime,
-    Expression<String>? captureTime,
-    Expression<String>? trapType,
-    Expression<String>? trapID,
-    Expression<int>? coordinateID,
-    Expression<String>? catalogerID,
-    Expression<int>? fieldNumber,
-    Expression<int>? collEventID,
-    Expression<int>? isMultipleCollector,
-    Expression<int>? collPersonnelID,
-    Expression<int>? collMethodID,
-    Expression<String>? museumID,
-    Expression<String>? preparatorID,
-    Expression<int>? rowid,
-  }) {
-    return RawValuesInsertable({
-      if (uuid != null) 'uuid': uuid,
-      if (projectUuid != null) 'projectUuid': projectUuid,
-      if (speciesID != null) 'speciesID': speciesID,
-      if (taxonGroup != null) 'taxonGroup': taxonGroup,
-      if (condition != null) 'condition': condition,
-      if (prepDate != null) 'prepDate': prepDate,
-      if (prepTime != null) 'prepTime': prepTime,
-      if (collectedTime != null) 'collectedTime': collectedTime,
-      if (captureDate != null) 'captureDate': captureDate,
-      if (isRelativeTime != null) 'isRelativeTime': isRelativeTime,
-      if (captureTime != null) 'captureTime': captureTime,
-      if (trapType != null) 'trapType': trapType,
-      if (trapID != null) 'trapID': trapID,
-      if (coordinateID != null) 'coordinateID': coordinateID,
-      if (catalogerID != null) 'catalogerID': catalogerID,
-      if (fieldNumber != null) 'fieldNumber': fieldNumber,
-      if (collEventID != null) 'collEventID': collEventID,
-      if (isMultipleCollector != null)
-        'isMultipleCollector': isMultipleCollector,
-      if (collPersonnelID != null) 'collPersonnelID': collPersonnelID,
-      if (collMethodID != null) 'collMethodID': collMethodID,
-      if (museumID != null) 'museumID': museumID,
-      if (preparatorID != null) 'preparatorID': preparatorID,
-      if (rowid != null) 'rowid': rowid,
-    });
-  }
-
-  SpecimenCompanion copyWith(
-      {Value<String>? uuid,
-      Value<String?>? projectUuid,
-      Value<int?>? speciesID,
-      Value<String?>? taxonGroup,
-      Value<String?>? condition,
-      Value<String?>? prepDate,
-      Value<String?>? prepTime,
-      Value<String?>? collectedTime,
-      Value<String?>? captureDate,
-      Value<int?>? isRelativeTime,
-      Value<String?>? captureTime,
-      Value<String?>? trapType,
-      Value<String?>? trapID,
-      Value<int?>? coordinateID,
-      Value<String?>? catalogerID,
-      Value<int?>? fieldNumber,
-      Value<int?>? collEventID,
-      Value<int?>? isMultipleCollector,
-      Value<int?>? collPersonnelID,
-      Value<int?>? collMethodID,
-      Value<String?>? museumID,
-      Value<String?>? preparatorID,
-      Value<int>? rowid}) {
-    return SpecimenCompanion(
-      uuid: uuid ?? this.uuid,
-      projectUuid: projectUuid ?? this.projectUuid,
-      speciesID: speciesID ?? this.speciesID,
-      taxonGroup: taxonGroup ?? this.taxonGroup,
-      condition: condition ?? this.condition,
-      prepDate: prepDate ?? this.prepDate,
-      prepTime: prepTime ?? this.prepTime,
-      collectedTime: collectedTime ?? this.collectedTime,
-      captureDate: captureDate ?? this.captureDate,
-      isRelativeTime: isRelativeTime ?? this.isRelativeTime,
-      captureTime: captureTime ?? this.captureTime,
-      trapType: trapType ?? this.trapType,
-      trapID: trapID ?? this.trapID,
-      coordinateID: coordinateID ?? this.coordinateID,
-      catalogerID: catalogerID ?? this.catalogerID,
-      fieldNumber: fieldNumber ?? this.fieldNumber,
-      collEventID: collEventID ?? this.collEventID,
-      isMultipleCollector: isMultipleCollector ?? this.isMultipleCollector,
-      collPersonnelID: collPersonnelID ?? this.collPersonnelID,
-      collMethodID: collMethodID ?? this.collMethodID,
-      museumID: museumID ?? this.museumID,
-      preparatorID: preparatorID ?? this.preparatorID,
-      rowid: rowid ?? this.rowid,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (uuid.present) {
-      map['uuid'] = Variable<String>(uuid.value);
-    }
-    if (projectUuid.present) {
-      map['projectUuid'] = Variable<String>(projectUuid.value);
-    }
-    if (speciesID.present) {
-      map['speciesID'] = Variable<int>(speciesID.value);
-    }
-    if (taxonGroup.present) {
-      map['taxonGroup'] = Variable<String>(taxonGroup.value);
-    }
-    if (condition.present) {
-      map['condition'] = Variable<String>(condition.value);
-    }
-    if (prepDate.present) {
-      map['prepDate'] = Variable<String>(prepDate.value);
-    }
-    if (prepTime.present) {
-      map['prepTime'] = Variable<String>(prepTime.value);
-    }
-    if (collectedTime.present) {
-      map['collectedTime'] = Variable<String>(collectedTime.value);
-    }
-    if (captureDate.present) {
-      map['captureDate'] = Variable<String>(captureDate.value);
-    }
-    if (isRelativeTime.present) {
-      map['isRelativeTime'] = Variable<int>(isRelativeTime.value);
-    }
-    if (captureTime.present) {
-      map['captureTime'] = Variable<String>(captureTime.value);
-    }
-    if (trapType.present) {
-      map['trapType'] = Variable<String>(trapType.value);
-    }
-    if (trapID.present) {
-      map['trapID'] = Variable<String>(trapID.value);
-    }
-    if (coordinateID.present) {
-      map['coordinateID'] = Variable<int>(coordinateID.value);
-    }
-    if (catalogerID.present) {
-      map['catalogerID'] = Variable<String>(catalogerID.value);
-    }
-    if (fieldNumber.present) {
-      map['fieldNumber'] = Variable<int>(fieldNumber.value);
-    }
-    if (collEventID.present) {
-      map['collEventID'] = Variable<int>(collEventID.value);
-    }
-    if (isMultipleCollector.present) {
-      map['isMultipleCollector'] = Variable<int>(isMultipleCollector.value);
-    }
-    if (collPersonnelID.present) {
-      map['collPersonnelID'] = Variable<int>(collPersonnelID.value);
-    }
-    if (collMethodID.present) {
-      map['collMethodID'] = Variable<int>(collMethodID.value);
-    }
-    if (museumID.present) {
-      map['museumID'] = Variable<String>(museumID.value);
-    }
-    if (preparatorID.present) {
-      map['preparatorID'] = Variable<String>(preparatorID.value);
-    }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('SpecimenCompanion(')
-          ..write('uuid: $uuid, ')
-          ..write('projectUuid: $projectUuid, ')
-          ..write('speciesID: $speciesID, ')
-          ..write('taxonGroup: $taxonGroup, ')
-          ..write('condition: $condition, ')
-          ..write('prepDate: $prepDate, ')
-          ..write('prepTime: $prepTime, ')
-          ..write('collectedTime: $collectedTime, ')
-          ..write('captureDate: $captureDate, ')
-          ..write('isRelativeTime: $isRelativeTime, ')
-          ..write('captureTime: $captureTime, ')
-          ..write('trapType: $trapType, ')
-          ..write('trapID: $trapID, ')
-          ..write('coordinateID: $coordinateID, ')
-          ..write('catalogerID: $catalogerID, ')
-          ..write('fieldNumber: $fieldNumber, ')
-          ..write('collEventID: $collEventID, ')
-          ..write('isMultipleCollector: $isMultipleCollector, ')
-          ..write('collPersonnelID: $collPersonnelID, ')
-          ..write('collMethodID: $collMethodID, ')
-          ..write('museumID: $museumID, ')
-          ..write('preparatorID: $preparatorID, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -9669,11 +10390,7 @@ class AvianMeasurementData extends DataClass
   final int? broodPatch;
   final int? skullOssification;
   final int? hasBursa;
-
-  /// newly add
   final double? bursaWidth;
-
-  /// Newly add
   final double? bursaLength;
   final int? fat;
   final String? stomachContent;
@@ -11005,8 +11722,6 @@ class SpecimenPartData extends DataClass
   final String? specimenUuid;
   final String? tissueID;
   final String? barcodeID;
-
-  /// primary use prep number
   final String? type;
   final String? count;
   final String? treatment;
@@ -11429,11 +12144,14 @@ abstract class _$Database extends GeneratedDatabase {
   late final CollPersonnel collPersonnel = CollPersonnel(this);
   late final CollEffort collEffort = CollEffort(this);
   late final Narrative narrative = Narrative(this);
+  late final NarrativeMedia narrativeMedia = NarrativeMedia(this);
+  late final SiteMedia siteMedia = SiteMedia(this);
+  late final Taxonomy taxonomy = Taxonomy(this);
+  late final Specimen specimen = Specimen(this);
+  late final SpecimenMedia specimenMedia = SpecimenMedia(this);
   late final AssociatedData associatedData = AssociatedData(this);
   late final PersonnelList personnelList = PersonnelList(this);
   late final ProjectPersonnel projectPersonnel = ProjectPersonnel(this);
-  late final Taxonomy taxonomy = Taxonomy(this);
-  late final Specimen specimen = Specimen(this);
   late final MammalMeasurement mammalMeasurement = MammalMeasurement(this);
   late final AvianMeasurement avianMeasurement = AvianMeasurement(this);
   late final SpecimenPart specimenPart = SpecimenPart(this);
@@ -11469,11 +12187,14 @@ abstract class _$Database extends GeneratedDatabase {
         collPersonnel,
         collEffort,
         narrative,
+        narrativeMedia,
+        siteMedia,
+        taxonomy,
+        specimen,
+        specimenMedia,
         associatedData,
         personnelList,
         projectPersonnel,
-        taxonomy,
-        specimen,
         mammalMeasurement,
         avianMeasurement,
         specimenPart

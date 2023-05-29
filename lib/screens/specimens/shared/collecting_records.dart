@@ -147,7 +147,7 @@ class SpecimenCollectedField extends ConsumerWidget {
           SpecimenServices(ref).updateSpecimen(
             specimenUuid,
             SpecimenCompanion(
-                collectedTime: db.Value(
+                collectionTime: db.Value(
               specimenCtr.collTimeCtr.text,
             )),
           );

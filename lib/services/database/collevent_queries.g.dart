@@ -16,11 +16,14 @@ mixin _$CollEventQueryMixin on DatabaseAccessor<Database> {
   CollPersonnel get collPersonnel => attachedDatabase.collPersonnel;
   CollEffort get collEffort => attachedDatabase.collEffort;
   Narrative get narrative => attachedDatabase.narrative;
+  NarrativeMedia get narrativeMedia => attachedDatabase.narrativeMedia;
+  SiteMedia get siteMedia => attachedDatabase.siteMedia;
+  Taxonomy get taxonomy => attachedDatabase.taxonomy;
+  Specimen get specimen => attachedDatabase.specimen;
+  SpecimenMedia get specimenMedia => attachedDatabase.specimenMedia;
   AssociatedData get associatedData => attachedDatabase.associatedData;
   PersonnelList get personnelList => attachedDatabase.personnelList;
   ProjectPersonnel get projectPersonnel => attachedDatabase.projectPersonnel;
-  Taxonomy get taxonomy => attachedDatabase.taxonomy;
-  Specimen get specimen => attachedDatabase.specimen;
   MammalMeasurement get mammalMeasurement => attachedDatabase.mammalMeasurement;
   AvianMeasurement get avianMeasurement => attachedDatabase.avianMeasurement;
   SpecimenPart get specimenPart => attachedDatabase.specimenPart;

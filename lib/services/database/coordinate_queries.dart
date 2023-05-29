@@ -4,7 +4,7 @@ import 'package:nahpu/services/database/database.dart';
 part 'coordinate_queries.g.dart';
 
 @DriftAccessor(
-  include: {'tables_v3.drift'},
+  include: {'tables.drift'},
 )
 class CoordinateQuery extends DatabaseAccessor<Database>
     with _$CoordinateQueryMixin {

@@ -4,7 +4,7 @@ import 'package:nahpu/services/database/database.dart';
 part 'project_queries.g.dart';
 
 @DriftAccessor(
-  include: {'tables_v3.drift'},
+  include: {'tables.drift'},
 )
 class ProjectQuery extends DatabaseAccessor<Database> with _$ProjectQueryMixin {
   ProjectQuery(Database db) : super(db);

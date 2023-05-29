@@ -129,7 +129,7 @@ class SpecimenServices extends DbAccess {
     try {
       await SpecimenQuery(dbAccess).updateSpecimenEntry(uuid, entries);
     } catch (_) {
-      await dbAccess.addColumnToTable('specimen', 'collectedTime');
+      // await dbAccess.addColumnToTable('specimen', 'collectedTime');
       await SpecimenQuery(dbAccess).updateSpecimenEntry(uuid, entries);
     }
   }

@@ -8,7 +8,7 @@ import 'package:path/path.dart' as p;
 part 'database.g.dart';
 
 @DriftDatabase(
-  include: {'tables_v3.drift'},
+  include: {'tables.drift'},
 )
 class Database extends _$Database {
   Database() : super(_openConnection());
@@ -28,7 +28,18 @@ class Database extends _$Database {
       if (from < 3) {
         await _migrateFromVersion2(m);
       }
+
+      if (from < 4) {
+        await _migrateFromVersion3(m);
+      }
     });
+  }
+
+  Future<void> _migrateFromVersion3(Migrator m) async {
+    await m.addColumn(specimen, specimen.collectionTime);
+    await m.create(narrativeMedia);
+    await m.create(siteMedia);
+    await m.create(specimenMedia);
   }
 
   Future<void> _migrateFromVersion2(Migrator m) async {
@@ -39,7 +50,6 @@ class Database extends _$Database {
     await m.addColumn(specimen, specimen.coordinateID);
     await m.addColumn(specimen, specimen.trapID);
     await m.addColumn(specimen, specimen.museumID);
-    await m.addColumn(specimen, specimen.collectedTime);
 
     // We switch bird table to revised version
     await m.deleteTable('bird_measurement');
