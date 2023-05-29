@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
@@ -49,22 +50,38 @@ class TaxonEntryReader extends DbAccess {
     return problemHeaders;
   }
 
-  Future<void> parseData(CsvData data) async {
+  Future<ParsedCSVdata> parseData(CsvData data) async {
     try {
       TaxonParser parser = TaxonParser(
         headerMap: data.headerMap,
         data: data.data,
       );
+      ParsedCSVdata importData = ParsedCSVdata.empty();
+      HashSet<String> importedFamilies = HashSet();
+      HashSet<String> importedSpecies = HashSet();
       List<TaxonEntryData> parsedData = parser.parseData();
       for (var data in parsedData) {
         bool hasSpecies = await _checkSpeciesExist(data);
+        String species = '${data.genus} ${data.specificEpithet}';
         if (hasSpecies) {
-          throw Exception('Species already exists');
+          importData.skippedSpecies.add(species);
+          continue;
         }
         TaxonomyCompanion dbForm = _getDbForm(data);
         TaxonomyService(ref).createTaxon(dbForm);
+        importData.recordCount++;
+
+        if (!importedFamilies.contains(data.taxonFamily)) {
+          importedFamilies.add(data.taxonFamily);
+        }
+
+        if (!importedSpecies.contains(species)) {
+          importedSpecies.add(species);
+        }
       }
+      importData.countAll(importedFamilies, importedSpecies);
       ref.invalidate(taxonRegistryProvider);
+      return importData;
     } catch (e) {
       throw Exception('Error parsing data: $e');
     }

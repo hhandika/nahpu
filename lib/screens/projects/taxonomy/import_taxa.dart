@@ -1,7 +1,9 @@
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/projects/dashboard.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
@@ -26,7 +28,6 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
   late CsvData _csvData;
   bool _hasData = false;
   bool _isRunning = false;
-  bool _isImported = false;
 
   @override
   Widget build(BuildContext context) {
@@ -89,41 +90,31 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
                       )
                     : const SizedBox.shrink(),
                 const SizedBox(height: 24),
-                _isImported
-                    ? PrimaryButton(
-                        text: 'Exit',
+                Wrap(
+                  alignment: WrapAlignment.center,
+                  children: [
+                    SecondaryButton(
+                        text: 'Cancel',
                         onPressed: () {
                           Navigator.of(context).pop();
-                        })
-                    : Wrap(
-                        alignment: WrapAlignment.center,
-                        children: [
-                          SecondaryButton(
-                              text: 'Cancel',
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              }),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          ImportButton(
-                            label: 'Import',
-                            isRunning: _isRunning,
-                            onPressed: _problems.isNotEmpty || _isRunning
-                                ? null
-                                : () async {
-                                    setState(() {
-                                      _isRunning = true;
-                                    });
-                                    await _parseData();
-                                    setState(() {
-                                      _isRunning = false;
-                                      _isImported = true;
-                                    });
-                                  },
-                          ),
-                        ],
-                      )
+                        }),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    ImportButton(
+                      label: 'Import',
+                      isRunning: _isRunning,
+                      onPressed: _problems.isNotEmpty || _isRunning
+                          ? null
+                          : () async {
+                              setState(() {
+                                _isRunning = true;
+                              });
+                              await _parseData();
+                            },
+                    ),
+                  ],
+                )
               ],
             ),
           ),
@@ -189,10 +180,14 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
 
   Future<void> _parseData() async {
     try {
-      await TaxonEntryReader(ref).parseData(_csvData);
-      setState(() {
-        _isRunning = false;
-      });
+      ParsedCSVdata data = await TaxonEntryReader(ref).parseData(_csvData);
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => ImportRecords(importData: data),
+          ),
+        );
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -295,6 +290,168 @@ class HeaderInputField extends StatelessWidget {
             onChanged: onChanged,
           ),
         )
+      ],
+    );
+  }
+}
+
+class ImportRecords extends StatelessWidget {
+  const ImportRecords({super.key, required this.importData});
+
+  final ParsedCSVdata importData;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Import Records'),
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => const Dashboard(),
+                ),
+              );
+            }),
+      ),
+      body: SafeArea(
+        child: ScreenLayout(
+            child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 18),
+              RecordStatistics(importData: importData),
+            ],
+          ),
+        )),
+      ),
+    );
+  }
+}
+
+class RecordStatistics extends StatelessWidget {
+  const RecordStatistics({super.key, required this.importData});
+
+  final ParsedCSVdata importData;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        importData.skippedSpecies.isEmpty
+            ? const SuccessImport()
+            : const WarningImport(),
+        const SizedBox(height: 18),
+        Text(
+          'Imported Records',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'Total: ${importData.recordCount}',
+        ),
+        Text(
+          'Species: ${importData.importedSpeciesCount}',
+        ),
+        Text(
+          'Family: ${importData.importedFamilyCount}',
+        ),
+        const SizedBox(height: 18),
+        Text(
+          'Skipped Records',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'Total: ${importData.skippedSpecies.length}',
+        ),
+        SkippedImport(skippedRecords: importData.skippedSpecies),
+      ],
+    );
+  }
+}
+
+class SkippedImport extends StatelessWidget {
+  const SkippedImport({
+    super.key,
+    required this.skippedRecords,
+  });
+
+  final HashSet<String> skippedRecords;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 4,
+      runSpacing: 4,
+      alignment: WrapAlignment.center,
+      children: [
+        for (var record in skippedRecords)
+          Container(
+            margin: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(record),
+          )
+      ],
+    );
+  }
+}
+
+class SuccessImport extends StatelessWidget {
+  const SuccessImport({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Icon(
+          Icons.done,
+          color: Colors.green,
+          size: 50,
+        ),
+        Text(
+          'Success 🎉',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        const SizedBox(height: 8),
+        const Text(
+          'Records have been imported successfully.',
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+}
+
+class WarningImport extends StatelessWidget {
+  const WarningImport({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Icon(
+          Icons.warning,
+          color: Colors.orange,
+          size: 50,
+        ),
+        Text(
+          'Warning 🙁',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        const SizedBox(height: 8),
+        const Text(
+          'Some records have been skipped.',
+          textAlign: TextAlign.center,
+        ),
       ],
     );
   }

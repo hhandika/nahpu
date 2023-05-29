@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/types/types.dart';
 
@@ -34,6 +36,35 @@ class CsvData {
 
       headerMap[header.indexOf(value)] = headerKey;
     }
+  }
+}
+
+class ParsedCSVdata {
+  ParsedCSVdata({
+    required this.skippedSpecies,
+    required this.importedSpeciesCount,
+    required this.importedFamilyCount,
+  });
+
+  HashSet<String> skippedSpecies;
+  int recordCount = 0;
+  int importedSpeciesCount;
+  int importedFamilyCount;
+
+  factory ParsedCSVdata.empty() {
+    return ParsedCSVdata(
+      skippedSpecies: HashSet(),
+      importedSpeciesCount: 0,
+      importedFamilyCount: 0,
+    );
+  }
+
+  void countAll(
+    HashSet<String> species,
+    HashSet<String> families,
+  ) {
+    importedSpeciesCount = species.length;
+    importedFamilyCount = families.length;
   }
 }
 
