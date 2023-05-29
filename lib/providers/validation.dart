@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nahpu/providers/database.dart';
-import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/project_queries.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/utility_services.dart';
@@ -79,8 +78,8 @@ class ProjectFormValidator extends _$ProjectFormValidator {
 
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      List<ProjectData?> data =
-          await ProjectQuery(ref.read(databaseProvider)).getAllProjects();
+      List<String> data =
+          await ProjectQuery(ref.read(databaseProvider)).getAllProjectNames();
       if (data.isEmpty) {
         return ProjectForm(
             projectName: ProjectFormField(errMsg: null, isValid: true));
@@ -97,11 +96,8 @@ class ProjectFormValidator extends _$ProjectFormValidator {
     });
   }
 
-  bool _findMatching(List<ProjectData?> data, String value) {
-    List<String> projectNames =
-        data.map((e) => e != null ? e.name : "").toList();
-    bool isMatch = isListContains(projectNames, value);
-    return isMatch;
+  bool _findMatching(List<String> projectNames, String value) {
+    return isListContains(projectNames, value);
   }
 }
 

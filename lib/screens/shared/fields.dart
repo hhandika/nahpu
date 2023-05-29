@@ -2,8 +2,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:nahpu/services/types/types.dart';
-import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/services/database/database.dart';
 
 class CommonDateField extends StatelessWidget {
@@ -118,32 +116,6 @@ class SearchButtonField extends StatelessWidget {
             : null,
       ),
       onChanged: onChanged,
-    );
-  }
-}
-
-class TaxonGroupFields extends ConsumerWidget {
-  const TaxonGroupFields({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
-    return DropdownButtonFormField(
-      decoration: const InputDecoration(
-        labelText: 'Main Taxon Group',
-        hintText: 'Choose a taxon group',
-      ),
-      items: taxonGroupList
-          .map((taxonGroup) => DropdownMenuItem(
-                value: taxonGroup,
-                child: CommonDropdownText(text: taxonGroup),
-              ))
-          .toList(),
-      value: matchCatFmtToTaxonGroup(catalogFmt),
-      onChanged: (String? newValue) {
-        catalogFmt = matchTaxonGroupToCatFmt(newValue!);
-        ref.read(catalogFmtNotifier.notifier).setCatalogFmt(catalogFmt);
-      },
     );
   }
 }

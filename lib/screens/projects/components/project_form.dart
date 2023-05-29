@@ -11,6 +11,8 @@ import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/providers/validation.dart';
+import 'package:nahpu/services/types/types.dart';
+import 'package:nahpu/providers/settings.dart';
 
 class ProjectForm extends ConsumerStatefulWidget {
   const ProjectForm({
@@ -87,6 +89,9 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                   controller: widget.projectCtr.descriptionCtr,
                   labelText: 'Project description',
                   hintText: 'Enter a description of the project (optional)',
+                  onChanged: (_) {
+                    _validateEditing();
+                  },
                 ),
                 Visibility(
                   visible: widget.isEditing,
@@ -94,15 +99,23 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                     controller: widget.projectCtr.pICtr,
                     labelText: 'Principal Investigator',
                     hintText: 'Enter PI name of the project (optional)',
+                    onChanged: (_) {
+                      _validateEditing();
+                    },
                   ),
                 ),
-                const TaxonGroupFields(),
+                !widget.isEditing
+                    ? const TaxonGroupFields()
+                    : const SizedBox.shrink(),
                 Visibility(
                   visible: widget.isEditing,
                   child: ProjectFormField(
                     controller: widget.projectCtr.locationCtr,
                     labelText: 'Location',
                     hintText: 'Enter location of the project (optional)',
+                    onChanged: (_) {
+                      _validateEditing();
+                    },
                   ),
                 ),
                 Visibility(
@@ -121,6 +134,7 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                         widget.projectCtr.startDateCtr.text =
                             DateFormat.yMMMd().format(selectedDate);
                       }
+                      _validateEditing();
                     },
                   ),
                 ),
@@ -140,6 +154,7 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                         widget.projectCtr.endDateCtr.text =
                             DateFormat.yMMMd().format(selectedDate);
                       }
+                      _validateEditing();
                     },
                   ),
                 ),
@@ -153,16 +168,13 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                     },
                   ),
                   FormElevButton(
-                      onPressed: () {
-                        widget.isEditing ? _updateProject() : _createProject();
-                        _goToDashboard();
-                      },
-                      text: widget.isEditing ? 'Update' : 'Create',
-                      enabled: validator.when(
-                        data: (data) => data.projectName.isValid,
-                        loading: () => false,
-                        error: (err, stack) => false,
-                      ))
+                    onPressed: () {
+                      widget.isEditing ? _updateProject() : _createProject();
+                      _goToDashboard();
+                    },
+                    text: widget.isEditing ? 'Update' : 'Create',
+                    enabled: _isValid(),
+                  )
                 ])
               ],
             ),
@@ -170,6 +182,23 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
         ),
       ),
     );
+  }
+
+  bool _isValid() {
+    final validator = ref.read(projectFormValidatorProvider);
+    return validator.when(
+      data: (data) => data.projectName.isValid,
+      loading: () => false,
+      error: (err, stack) => false,
+    );
+  }
+
+  Future<void> _validateEditing() async {
+    if (widget.isEditing) {
+      ref
+          .watch(projectFormValidatorProvider.notifier)
+          .validateProjectName(widget.projectCtr.projectNameCtr.text);
+    }
   }
 
   Future<void> _getInitialProjectName() async {
@@ -258,6 +287,32 @@ class ProjectFormField extends StatelessWidget {
       inputFormatters: inputFormatters,
       onSaved: onSaved,
       onChanged: onChanged,
+    );
+  }
+}
+
+class TaxonGroupFields extends ConsumerWidget {
+  const TaxonGroupFields({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
+    return DropdownButtonFormField(
+      decoration: const InputDecoration(
+        labelText: 'Main Taxon Group',
+        hintText: 'Choose a taxon group',
+      ),
+      items: taxonGroupList
+          .map((taxonGroup) => DropdownMenuItem(
+                value: taxonGroup,
+                child: CommonDropdownText(text: taxonGroup),
+              ))
+          .toList(),
+      value: matchCatFmtToTaxonGroup(catalogFmt),
+      onChanged: (String? newValue) {
+        catalogFmt = matchTaxonGroupToCatFmt(newValue!);
+        ref.read(catalogFmtNotifier.notifier).setCatalogFmt(catalogFmt);
+      },
     );
   }
 }
