@@ -885,22 +885,24 @@ class TissueIDMenuState extends ConsumerState<TissueIDMenu> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Tissue ID settings'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CommonTextField(
-                controller: prefixCtr,
-                labelText: 'Prefix',
-                hintText: 'Enter tissue ID prefix',
-                isLastField: false,
-              ),
-              CommonNumField(
-                controller: numberCtr,
-                labelText: 'Number',
-                hintText: 'Enter tissue ID number',
-                isLastField: false,
-              ),
-            ],
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CommonTextField(
+                  controller: prefixCtr,
+                  labelText: 'Prefix',
+                  hintText: 'Enter tissue ID prefix',
+                  isLastField: false,
+                ),
+                CommonNumField(
+                  controller: numberCtr,
+                  labelText: 'Number',
+                  hintText: 'Enter tissue ID number',
+                  isLastField: false,
+                ),
+              ],
+            ),
           ),
           actions: [
             SecondaryButton(

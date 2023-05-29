@@ -38,20 +38,4 @@ final treatmentOptionsProvider =
 );
 
 typedef _$TreatmentOptions = AutoDisposeAsyncNotifier<List<String>>;
-String _$tissueIDNotifierHash() => r'ff5f3655a9c45b59cc2c7ebccee20cac195bbf51';
-
-/// See also [TissueIDNotifier].
-@ProviderFor(TissueIDNotifier)
-final tissueIDNotifierProvider =
-    AutoDisposeAsyncNotifierProvider<TissueIDNotifier, TissueID>.internal(
-  TissueIDNotifier.new,
-  name: r'tissueIDNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$tissueIDNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$TissueIDNotifier = AutoDisposeAsyncNotifier<TissueID>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

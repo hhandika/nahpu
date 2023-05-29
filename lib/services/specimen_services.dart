@@ -1,4 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/providers/taxa.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
@@ -12,6 +11,10 @@ import 'package:nahpu/services/database/specimen_queries.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/project_services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+const String tissueIDPrefixKey = 'tissueIDPrefix';
+const String tissueIDNumberKey = 'tissueIDNumber';
 
 class SpecimenServices extends DbAccess {
   SpecimenServices(super.ref);
@@ -81,10 +84,6 @@ class SpecimenServices extends DbAccess {
     int? fieldNumber = await PersonnelQuery(dbAccess)
         .getCurrentFieldNumberByUuid(personnelUuid);
     return _getCurrentFieldNumber(fieldNumber);
-  }
-
-  Future<String?> getLastEnteredTissueID(String specimenUuid) async {
-    return SpecimenPartQuery(dbAccess).getLastEnteredTissueID(specimenUuid);
   }
 
   int _getCurrentFieldNumber(int? currentFieldNum) {
@@ -183,21 +182,29 @@ class SpecimenServices extends DbAccess {
   }
 }
 
-class TissueIdServices {
-  const TissueIdServices(this.ref);
-  final WidgetRef ref;
+class TissueIdServices extends DbAccess {
+  TissueIdServices(super.ref);
+
+  SharedPreferences get _prefs => ref.read(settingProvider);
 
   Future<String> getNewNumber() async {
-    TissueID tissueID = await _getTissueID();
-    String prefix = tissueID.prefix;
-    int number = tissueID.number;
-    ref.read(tissueIDNotifierProvider.notifier).incrementNumber();
-    _invalidateTissueID();
-    return '$prefix$number';
+    String prefix = getPrefix();
+    int? number = _getSettingNumber();
+    String numberString = getNumberString();
+    await incrementNumber(number ?? 0);
+    return '$prefix$numberString';
+  }
+
+  String getPrefix() {
+    return _geSettingPrefix() ?? '';
+  }
+
+  String getNumberString() {
+    return _getSettingNumber() == null ? '' : _getSettingNumber().toString();
   }
 
   Future<String?> repeatNumber(String specimenUuid) async {
-    return await SpecimenServices(ref).getLastEnteredTissueID(specimenUuid);
+    return SpecimenPartQuery(dbAccess).getLastEnteredTissueID(specimenUuid);
   }
 
   Future<String> setTissueID(String prefix, String number) async {
@@ -206,22 +213,24 @@ class TissueIdServices {
     return '$prefix$number';
   }
 
+  Future<void> incrementNumber(int number) async {
+    await setNumber((number + 1).toString());
+  }
+
   Future<void> setPrefix(String prefix) async {
-    ref.read(tissueIDNotifierProvider.notifier).setPrefix(prefix);
+    await _prefs.setString(tissueIDPrefixKey, prefix);
   }
 
   Future<void> setNumber(String number) async {
-    ref
-        .read(tissueIDNotifierProvider.notifier)
-        .setNumber(int.tryParse(number) ?? 0);
+    await _prefs.setInt(tissueIDNumberKey, int.tryParse(number) ?? 0);
   }
 
-  Future<TissueID> _getTissueID() async {
-    return ref.read(tissueIDNotifierProvider.future);
+  String? _geSettingPrefix() {
+    return _prefs.getString(tissueIDPrefixKey);
   }
 
-  void _invalidateTissueID() {
-    ref.invalidate(tissueIDNotifierProvider);
+  int? _getSettingNumber() {
+    return _prefs.getInt(tissueIDNumberKey);
   }
 }
 

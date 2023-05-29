@@ -153,97 +153,99 @@ class TissueIDFields extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(tissueIDNotifierProvider).when(
-          data: (data) {
-            TextEditingController prefixController =
-                TextEditingController(text: data.prefix)
-                  ..selection = TextSelection.fromPosition(
-                      TextPosition(offset: data.prefix.length));
-            TextEditingController numberController =
-                TextEditingController(text: data.number.toString())
-                  ..selection = TextSelection.fromPosition(
-                      TextPosition(offset: data.number.toString().length));
-            return SettingCard(children: [
-              AdaptiveLayout(
-                useHorizontalLayout: !isMobile,
-                children: [
-                  TissuePrefixField(prefixCtr: prefixController),
-                  TissueNumField(tissueNumCtr: numberController),
-                ],
-              ),
-            ]);
-          },
-          loading: () => const CommonProgressIndicator(),
-          error: (error, stackTrace) {
-            return const Text('Error loading data');
-          },
-        );
+    return SettingCard(children: [
+      AdaptiveLayout(
+        useHorizontalLayout: !isMobile,
+        children: const [
+          TissuePrefixField(),
+          TissueNumField(),
+        ],
+      ),
+    ]);
   }
 }
 
 class TissuePrefixField extends ConsumerStatefulWidget {
   const TissuePrefixField({
     super.key,
-    required this.prefixCtr,
   });
-
-  final TextEditingController prefixCtr;
 
   @override
   TissuePrefixFieldState createState() => TissuePrefixFieldState();
 }
 
 class TissuePrefixFieldState extends ConsumerState<TissuePrefixField> {
+  late TextEditingController prefixCtr;
+
+  @override
+  void initState() {
+    prefixCtr = TextEditingController(text: _getPrefix());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 320),
       child: TextField(
-          controller: widget.prefixCtr,
+          controller: prefixCtr,
           decoration: const InputDecoration(
             labelText: 'Prefix',
             hintText: 'Enter tissue ID prefix, e.g. M',
           ),
-          onSubmitted: (String? value) async {
-            if (value != null) {
+          onChanged: (String? value) async {
+            if (value != null && value.trim().isNotEmpty) {
               await TissueIdServices(ref).setPrefix(value.trim());
             }
           }),
     );
+  }
+
+  String _getPrefix() {
+    return TissueIdServices(ref).getPrefix();
   }
 }
 
 class TissueNumField extends ConsumerStatefulWidget {
   const TissueNumField({
     super.key,
-    required this.tissueNumCtr,
   });
-
-  final TextEditingController tissueNumCtr;
 
   @override
   TissueNumFieldState createState() => TissueNumFieldState();
 }
 
 class TissueNumFieldState extends ConsumerState<TissueNumField> {
+  late TextEditingController tissueNumCtr;
+
+  @override
+  void initState() {
+    tissueNumCtr = TextEditingController(text: _getNumber());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 320),
       child: TextField(
-        controller: widget.tissueNumCtr,
+        controller: tissueNumCtr,
         keyboardType: TextInputType.number,
         decoration: const InputDecoration(
           labelText: 'Tissue no.',
           hintText: 'Enter the initial starting number',
         ),
         textInputAction: TextInputAction.done,
-        onSubmitted: (String? value) async {
-          if (value != null) {
+        onChanged: (String? value) async {
+          if (value != null && value.trim().isNotEmpty) {
             await TissueIdServices(ref).setNumber(value);
           }
         },
       ),
     );
+  }
+
+  String _getNumber() {
+    return TissueIdServices(ref).getNumberString();
   }
 }
