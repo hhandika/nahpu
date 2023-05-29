@@ -184,7 +184,11 @@ class PersonnelFormValidator extends _$PersonnelFormValidator {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       // We allow email to be empty by default it is set to valid
-      if (value == null || value.isEmpty || state.value == null) {
+      if (state.value == null) {
+        return PersonnelForm.empty();
+      }
+
+      if (value == null || value.isEmpty) {
         return state.value!
             .copyWith(email: PersonnelFormField(errMsg: null, isValid: true));
       }
