@@ -27,6 +27,7 @@ class NahpuTheme {
       visualDensity: VisualDensity.adaptivePlatformDensity,
       appBarTheme: appBarDarkTheme,
       cardTheme: cardTheme,
+      inputDecorationTheme: inputDecorationTheme,
     );
   }
 
@@ -61,11 +62,11 @@ class NahpuTheme {
     );
   }
 
-  // InputDecorationTheme get dropdownButtonTheme {
-  //   return const InputDecorationTheme(
-  //     floatingLabelStyle: TextStyle(
-  //       fontSize: 18,
-  //     ),
-  //   );
-  // }
+  static InputDecorationTheme get inputDecorationTheme {
+    return const InputDecorationTheme(
+      floatingLabelStyle: TextStyle(
+        fontSize: 18,
+      ),
+    );
+  }
 }

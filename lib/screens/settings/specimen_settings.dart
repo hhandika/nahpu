@@ -156,13 +156,13 @@ class TissueIDFields extends ConsumerWidget {
     return ref.watch(tissueIDNotifierProvider).when(
           data: (data) {
             TextEditingController prefixController =
-                TextEditingController(text: data.prefix);
+                TextEditingController(text: data.prefix)
+                  ..selection = TextSelection.fromPosition(
+                      TextPosition(offset: data.prefix.length));
             TextEditingController numberController =
-                TextEditingController(text: data.number.toString());
-            // prefixController.selection = TextSelection.fromPosition(
-            //     TextPosition(offset: prefixController.text.length));
-            // numberController.selection = TextSelection.fromPosition(
-            //     TextPosition(offset: numberController.text.length));
+                TextEditingController(text: data.number.toString())
+                  ..selection = TextSelection.fromPosition(
+                      TextPosition(offset: data.number.toString().length));
             return SettingCard(children: [
               AdaptiveLayout(
                 useHorizontalLayout: !isMobile,
@@ -204,7 +204,7 @@ class TissuePrefixFieldState extends ConsumerState<TissuePrefixField> {
             labelText: 'Prefix',
             hintText: 'Enter tissue ID prefix, e.g. M',
           ),
-          onChanged: (String? value) async {
+          onSubmitted: (String? value) async {
             if (value != null) {
               await TissueIdServices(ref).setPrefix(value.trim());
             }
@@ -238,7 +238,7 @@ class TissueNumFieldState extends ConsumerState<TissueNumField> {
           hintText: 'Enter the initial starting number',
         ),
         textInputAction: TextInputAction.done,
-        onChanged: (String? value) async {
+        onSubmitted: (String? value) async {
           if (value != null) {
             await TissueIdServices(ref).setNumber(value);
           }
