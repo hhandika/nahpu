@@ -53,7 +53,6 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       child: Column(
         children: [
-          const SizedBox(height: 20),
           PersonnelRecords(
               specimenUuid: widget.specimenUuid,
               specimenCtr: widget.specimenCtr),

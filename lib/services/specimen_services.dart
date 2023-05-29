@@ -42,7 +42,8 @@ class SpecimenServices extends DbAccess {
         _createMammalSpecimen(specimenUuid);
         break;
     }
-    _invalidateSpecimenList();
+    invalidateSpecimenList();
+    ;
   }
 
   Future<List<SpecimenData>> getMammalSpecimens() async {
@@ -115,21 +116,23 @@ class SpecimenServices extends DbAccess {
         AvianMeasurementCompanion(specimenUuid: db.Value(specimenUuid)));
   }
 
-  Future<void> updateSpecimenInvalidateAll(
+  Future<void> updateSpecimenSkipInvalidation(
       String uuid, SpecimenCompanion entries) async {
-    await updateSpecimen(uuid, entries);
-    ref.invalidate(specimenEntryProvider);
+    await _updateSpecimen(uuid, entries);
   }
 
   Future<void> updateSpecimen(String uuid, SpecimenCompanion entries) async {
+    _updateSpecimen(uuid, entries);
+    invalidateSpecimenList();
+  }
+
+  Future<void> _updateSpecimen(String uuid, SpecimenCompanion entries) async {
     try {
       await SpecimenQuery(dbAccess).updateSpecimenEntry(uuid, entries);
     } catch (_) {
       await dbAccess.addColumnToTable('specimen', 'collectedTime');
       await SpecimenQuery(dbAccess).updateSpecimenEntry(uuid, entries);
     }
-    ref.invalidate(taxonDataProvider);
-    ref.invalidate(personnelListProvider);
   }
 
   Future<AvianMeasurementData> getAvianMeasurementData(String specimenUuid) {
@@ -164,12 +167,14 @@ class SpecimenServices extends DbAccess {
         await deleteMammalMeasurements(specimenUuid);
         break;
     }
-    _invalidateSpecimenList();
+    invalidateSpecimenList();
+    ;
   }
 
   Future<void> deleteAllSpecimens() async {
     await SpecimenQuery(dbAccess).deleteAllSpecimens(projectUuid);
-    _invalidateSpecimenList();
+    invalidateSpecimenList();
+    ;
   }
 
   Future<void> deleteAllSpecimenParts(String specimenUuid) async {
@@ -181,7 +186,7 @@ class SpecimenServices extends DbAccess {
     ref.invalidate(partBySpecimenProvider);
   }
 
-  void _invalidateSpecimenList() {
+  void invalidateSpecimenList() {
     ref.invalidate(specimenEntryProvider);
     ref.invalidate(taxonDataProvider);
     ref.invalidate(personnelListProvider);

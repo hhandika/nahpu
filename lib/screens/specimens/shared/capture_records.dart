@@ -220,18 +220,23 @@ class MethodIdField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return CommonTextField(
+    return TextField(
       controller: specimenCtr.trapIDCtr,
-      labelText: 'Method ID',
-      hintText: 'Enter ID, e.g. trap/net number, etc.',
-      isLastField: false,
+      decoration: const InputDecoration(
+        labelText: 'Method ID',
+        hintText: 'Enter ID, e.g. trap/net number, etc.',
+      ),
+      textInputAction: TextInputAction.next,
       onChanged: (String? value) {
         if (value != null && value.isNotEmpty) {
-          SpecimenServices(ref).updateSpecimen(
+          SpecimenServices(ref).updateSpecimenSkipInvalidation(
             specimenUuid,
             SpecimenCompanion(trapID: db.Value(value)),
           );
         }
+      },
+      onSubmitted: (_) {
+        SpecimenServices(ref).invalidateSpecimenList();
       },
     );
   }
