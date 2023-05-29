@@ -1,5 +1,6 @@
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/services/collevent_services.dart';
+import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,6 +22,18 @@ class DbServices extends DbAccess {
     CollMethodServices(ref).getAllMethods();
     CollEvenPersonnelServices(ref).getAllRoles();
     _inValidateSettings();
+  }
+
+  Future<void> deleteDatabase() async {
+    try {
+      dbAccess.close();
+      final appDb = await dBPath;
+      if (appDb.existsSync()) {
+        appDb.deleteSync();
+      }
+    } catch (e) {
+      throw Exception('Error deleting database: $e');
+    }
   }
 
   Future<bool> checkNewDatabase() async {
