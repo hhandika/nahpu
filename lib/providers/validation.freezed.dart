@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ProjectForm {
   ProjectFormField get projectName => throw _privateConstructorUsedError;
+  ProjectFormField get existingProject => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ProjectFormCopyWith<ProjectForm> get copyWith =>
@@ -29,9 +30,10 @@ abstract class $ProjectFormCopyWith<$Res> {
           ProjectForm value, $Res Function(ProjectForm) then) =
       _$ProjectFormCopyWithImpl<$Res, ProjectForm>;
   @useResult
-  $Res call({ProjectFormField projectName});
+  $Res call({ProjectFormField projectName, ProjectFormField existingProject});
 
   $ProjectFormFieldCopyWith<$Res> get projectName;
+  $ProjectFormFieldCopyWith<$Res> get existingProject;
 }
 
 /// @nodoc
@@ -48,11 +50,16 @@ class _$ProjectFormCopyWithImpl<$Res, $Val extends ProjectForm>
   @override
   $Res call({
     Object? projectName = null,
+    Object? existingProject = null,
   }) {
     return _then(_value.copyWith(
       projectName: null == projectName
           ? _value.projectName
           : projectName // ignore: cast_nullable_to_non_nullable
+              as ProjectFormField,
+      existingProject: null == existingProject
+          ? _value.existingProject
+          : existingProject // ignore: cast_nullable_to_non_nullable
               as ProjectFormField,
     ) as $Val);
   }
@@ -62,6 +69,14 @@ class _$ProjectFormCopyWithImpl<$Res, $Val extends ProjectForm>
   $ProjectFormFieldCopyWith<$Res> get projectName {
     return $ProjectFormFieldCopyWith<$Res>(_value.projectName, (value) {
       return _then(_value.copyWith(projectName: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ProjectFormFieldCopyWith<$Res> get existingProject {
+    return $ProjectFormFieldCopyWith<$Res>(_value.existingProject, (value) {
+      return _then(_value.copyWith(existingProject: value) as $Val);
     });
   }
 }
@@ -74,10 +89,12 @@ abstract class _$$_ProjectFormCopyWith<$Res>
       __$$_ProjectFormCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({ProjectFormField projectName});
+  $Res call({ProjectFormField projectName, ProjectFormField existingProject});
 
   @override
   $ProjectFormFieldCopyWith<$Res> get projectName;
+  @override
+  $ProjectFormFieldCopyWith<$Res> get existingProject;
 }
 
 /// @nodoc
@@ -92,11 +109,16 @@ class __$$_ProjectFormCopyWithImpl<$Res>
   @override
   $Res call({
     Object? projectName = null,
+    Object? existingProject = null,
   }) {
     return _then(_$_ProjectForm(
       projectName: null == projectName
           ? _value.projectName
           : projectName // ignore: cast_nullable_to_non_nullable
+              as ProjectFormField,
+      existingProject: null == existingProject
+          ? _value.existingProject
+          : existingProject // ignore: cast_nullable_to_non_nullable
               as ProjectFormField,
     ));
   }
@@ -105,14 +127,18 @@ class __$$_ProjectFormCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_ProjectForm extends _ProjectForm {
-  const _$_ProjectForm({required this.projectName}) : super._();
+  const _$_ProjectForm(
+      {required this.projectName, required this.existingProject})
+      : super._();
 
   @override
   final ProjectFormField projectName;
+  @override
+  final ProjectFormField existingProject;
 
   @override
   String toString() {
-    return 'ProjectForm(projectName: $projectName)';
+    return 'ProjectForm(projectName: $projectName, existingProject: $existingProject)';
   }
 
   @override
@@ -121,11 +147,13 @@ class _$_ProjectForm extends _ProjectForm {
         (other.runtimeType == runtimeType &&
             other is _$_ProjectForm &&
             (identical(other.projectName, projectName) ||
-                other.projectName == projectName));
+                other.projectName == projectName) &&
+            (identical(other.existingProject, existingProject) ||
+                other.existingProject == existingProject));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, projectName);
+  int get hashCode => Object.hash(runtimeType, projectName, existingProject);
 
   @JsonKey(ignore: true)
   @override
@@ -135,12 +163,15 @@ class _$_ProjectForm extends _ProjectForm {
 }
 
 abstract class _ProjectForm extends ProjectForm {
-  const factory _ProjectForm({required final ProjectFormField projectName}) =
-      _$_ProjectForm;
+  const factory _ProjectForm(
+      {required final ProjectFormField projectName,
+      required final ProjectFormField existingProject}) = _$_ProjectForm;
   const _ProjectForm._() : super._();
 
   @override
   ProjectFormField get projectName;
+  @override
+  ProjectFormField get existingProject;
   @override
   @JsonKey(ignore: true)
   _$$_ProjectFormCopyWith<_$_ProjectForm> get copyWith =>

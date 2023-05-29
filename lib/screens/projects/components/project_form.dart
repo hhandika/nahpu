@@ -65,7 +65,7 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                       LengthLimitingTextInputFormatter(25),
                     ],
                     onChanged: (value) async {
-                      ref
+                      await ref
                           .watch(projectFormValidatorProvider.notifier)
                           .validateProjectName(value);
                       if (widget.isEditing) {
@@ -81,7 +81,22 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                       }
                     },
                     errorText: validator.when(
-                      data: (data) => data.projectName.errMsg,
+                      data: (data) {
+                        if (data.projectName.errMsg != null) {
+                          return data.projectName.errMsg;
+                        }
+
+                        if (data.existingProject.errMsg != null) {
+                          return data.existingProject.errMsg;
+                        }
+
+                        if (data.projectName.errMsg != null &&
+                            data.existingProject.errMsg != null) {
+                          return '${data.projectName.errMsg} '
+                              '${data.existingProject.errMsg}}';
+                        }
+                        return null;
+                      },
                       loading: () => null,
                       error: (err, stack) => null,
                     )),
@@ -187,7 +202,7 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
   bool _isValid() {
     final validator = ref.read(projectFormValidatorProvider);
     return validator.when(
-      data: (data) => data.projectName.isValid,
+      data: (data) => data.isValid,
       loading: () => false,
       error: (err, stack) => false,
     );

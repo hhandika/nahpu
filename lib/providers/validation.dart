@@ -14,13 +14,15 @@ class ProjectForm with _$ProjectForm {
 
   const factory ProjectForm({
     required ProjectFormField projectName,
+    required ProjectFormField existingProject,
   }) = _ProjectForm;
 
   factory ProjectForm.empty() => ProjectForm(
         projectName: ProjectFormField(errMsg: null, isValid: false),
+        existingProject: ProjectFormField(errMsg: null, isValid: false),
       );
 
-  bool get isValid => projectName.isValid;
+  bool get isValid => projectName.isValid && existingProject.isValid;
 }
 
 @freezed
@@ -45,31 +47,32 @@ class ProjectFormValidator extends _$ProjectFormValidator {
   Future<void> validateProjectName(String? value) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
+      if (state.value == null) return ProjectForm.empty();
       if (value == null || value.isEmpty) {
-        return ProjectForm(
+        return state.value!.copyWith(
             projectName: ProjectFormField(errMsg: null, isValid: false));
       }
 
       if (value.length < 3) {
-        return ProjectForm(
+        return state.value!.copyWith(
             projectName: ProjectFormField(
                 errMsg: "Project name is too short", isValid: false));
       }
 
       if (!value.isValidProjectName) {
-        return ProjectForm(
-            projectName:
-                ProjectFormField(errMsg: "Invalid characters", isValid: false));
+        return state.value!.copyWith(
+            projectName: ProjectFormField(
+                errMsg: "Project name is invalid", isValid: false));
       }
 
       if (value.length > 25) {
-        return ProjectForm(
+        return state.value!.copyWith(
             projectName: ProjectFormField(
                 errMsg: "Project name is too long", isValid: false));
       }
 
-      return ProjectForm(
-          projectName: ProjectFormField(errMsg: null, isValid: true));
+      return state.value!
+          .copyWith(projectName: ProjectFormField(errMsg: null, isValid: true));
     });
   }
 
@@ -78,21 +81,22 @@ class ProjectFormValidator extends _$ProjectFormValidator {
 
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
+      if (state.value == null) return ProjectForm.empty();
       List<String> data =
           await ProjectQuery(ref.read(databaseProvider)).getAllProjectNames();
       if (data.isEmpty) {
-        return ProjectForm(
-            projectName: ProjectFormField(errMsg: null, isValid: true));
+        return state.value!.copyWith(
+            existingProject: ProjectFormField(errMsg: null, isValid: true));
       }
 
       bool isMatch = _findMatching(data, value);
       if (isMatch) {
-        return ProjectForm(
-            projectName: ProjectFormField(
+        return state.value!.copyWith(
+            existingProject: ProjectFormField(
                 errMsg: "Project name already exists", isValid: false));
       }
-      return ProjectForm(
-          projectName: ProjectFormField(errMsg: null, isValid: true));
+      return state.value!.copyWith(
+          existingProject: ProjectFormField(errMsg: null, isValid: true));
     });
   }
 
