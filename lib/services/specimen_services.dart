@@ -115,6 +115,12 @@ class SpecimenServices extends DbAccess {
         AvianMeasurementCompanion(specimenUuid: db.Value(specimenUuid)));
   }
 
+  Future<void> updateSpecimenInvalidateAll(
+      String uuid, SpecimenCompanion entries) async {
+    await updateSpecimen(uuid, entries);
+    ref.invalidate(specimenEntryProvider);
+  }
+
   Future<void> updateSpecimen(String uuid, SpecimenCompanion entries) async {
     try {
       await SpecimenQuery(dbAccess).updateSpecimenEntry(uuid, entries);

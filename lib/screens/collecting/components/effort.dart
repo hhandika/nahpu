@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/common.dart';
@@ -406,7 +407,7 @@ class CollEffortFormState extends ConsumerState<CollEffortForm> {
   CollEffortCompanion _getForm() {
     return CollEffortCompanion(
       eventID: db.Value(widget.collEventId),
-      type: db.Value(widget.collToolCtr.typeCtr.text),
+      type: db.Value(widget.collToolCtr.methodCtr),
       brand: db.Value(widget.collToolCtr.brandCtr.text),
       count: db.Value(int.tryParse(widget.collToolCtr.countCtr.text) ?? 0),
       size: db.Value(widget.collToolCtr.sizeCtr.text),
@@ -427,8 +428,11 @@ class CollectionMethods extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(collEventMethodProvider).when(
           data: (data) {
+            if (kDebugMode) {
+              print('Collection Methods: $data');
+            }
             return DropdownButtonFormField(
-              value: ctr.typeCtr.text,
+              value: ctr.methodCtr,
               decoration: const InputDecoration(
                 labelText: 'Method',
                 hintText: 'Select a method',
@@ -443,7 +447,7 @@ class CollectionMethods extends ConsumerWidget {
                   .toList(),
               onChanged: (String? newValue) {
                 if (newValue != null) {
-                  ctr.typeCtr.text = newValue;
+                  ctr.methodCtr = newValue;
                 }
               },
             );

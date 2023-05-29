@@ -871,21 +871,21 @@ class CoordinateCtrModel {
 
 class CollEffortCtrModel {
   CollEffortCtrModel({
-    required this.typeCtr,
+    required this.methodCtr,
     required this.brandCtr,
     required this.countCtr,
     required this.sizeCtr,
     required this.noteCtr,
   });
 
-  TextEditingController typeCtr;
+  String? methodCtr;
   TextEditingController brandCtr;
   TextEditingController countCtr;
   TextEditingController sizeCtr;
   TextEditingController noteCtr;
 
   factory CollEffortCtrModel.empty() => CollEffortCtrModel(
-      typeCtr: TextEditingController(),
+      methodCtr: null,
       brandCtr: TextEditingController(),
       countCtr: TextEditingController(),
       sizeCtr: TextEditingController(),
@@ -893,7 +893,7 @@ class CollEffortCtrModel {
 
   factory CollEffortCtrModel.fromData(CollEffortData data) =>
       CollEffortCtrModel(
-        typeCtr: TextEditingController(text: data.type ?? ''),
+        methodCtr: data.type,
         brandCtr: TextEditingController(text: data.brand ?? ''),
         countCtr: TextEditingController(text: data.count.toString()),
         sizeCtr: TextEditingController(text: data.size.toString()),
@@ -901,7 +901,6 @@ class CollEffortCtrModel {
       );
 
   void dispose() {
-    typeCtr.dispose();
     brandCtr.dispose();
     countCtr.dispose();
     sizeCtr.dispose();
