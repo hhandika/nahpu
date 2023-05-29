@@ -79,7 +79,7 @@ class TaxonEntryReader extends DbAccess {
           importedSpecies.add(species);
         }
       }
-      importData.countAll(importedFamilies, importedSpecies);
+      importData.countAll(importedSpecies, importedFamilies);
       ref.invalidate(taxonRegistryProvider);
       return importData;
     } catch (e) {
