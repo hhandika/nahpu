@@ -123,7 +123,8 @@ class SpecimenServices extends DbAccess {
       await dbAccess.addColumnToTable('specimen', 'collectedTime');
       await SpecimenQuery(dbAccess).updateSpecimenEntry(uuid, entries);
     }
-    _invalidateSpecimenList();
+    ref.invalidate(taxonDataProvider);
+    ref.invalidate(personnelListProvider);
   }
 
   Future<AvianMeasurementData> getAvianMeasurementData(String specimenUuid) {
