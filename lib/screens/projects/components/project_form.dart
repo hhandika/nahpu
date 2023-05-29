@@ -30,15 +30,16 @@ class ProjectForm extends ConsumerStatefulWidget {
 
 class ProjectFormState extends ConsumerState<ProjectForm> {
   final _formKey = GlobalKey<FormState>();
+  String? initialProjectName;
 
   @override
   void initState() {
     super.initState();
-    // if (widget.isEditing) {
-    //   Future.delayed(Duration.zero, () {
-    //     _validateForm();
-    //   });
-    // }
+    if (widget.isEditing) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _getInitialProjectName();
+      });
+    }
   }
 
   @override
@@ -60,15 +61,18 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                     hintText: 'Enter the name of the project (required)',
                     inputFormatters: [
                       LengthLimitingTextInputFormatter(25),
-                      // FilteringTextInputFormatter.allow(
-                      //   RegExp(r'[a-zA-Z0-9-_]+|\s'),
-                      // ),
                     ],
                     onChanged: (value) async {
                       ref
                           .watch(projectFormValidatorProvider.notifier)
                           .validateProjectName(value);
-                      if (!widget.isEditing) {
+                      if (widget.isEditing) {
+                        if (value != initialProjectName) {
+                          await ref
+                              .watch(projectFormValidatorProvider.notifier)
+                              .checkProjectNameExists(value);
+                        }
+                      } else {
                         await ref
                             .watch(projectFormValidatorProvider.notifier)
                             .checkProjectNameExists(value);
@@ -166,6 +170,13 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
         ),
       ),
     );
+  }
+
+  Future<void> _getInitialProjectName() async {
+    final name = await ProjectServices(ref).getProjectName(widget.projectUuid);
+    setState(() {
+      initialProjectName = name;
+    });
   }
 
   Future<DateTime?> _showDate(BuildContext context) {

@@ -14,6 +14,9 @@ class ProjectQuery extends DatabaseAccessor<Database> with _$ProjectQueryMixin {
 
   Future<List<ProjectData>> getAllProjects() => select(project).get();
 
+  Future<List<String>> getAllProjectNames() =>
+      select(project).map((e) => e.name).get();
+
   Future<ProjectData> getProjectByUuid(String uuid) async {
     return await (select(project)..where((t) => t.uuid.equals(uuid)))
         .getSingle();

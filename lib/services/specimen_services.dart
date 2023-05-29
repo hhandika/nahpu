@@ -43,7 +43,6 @@ class SpecimenServices extends DbAccess {
         break;
     }
     invalidateSpecimenList();
-    ;
   }
 
   Future<List<SpecimenData>> getMammalSpecimens() async {
@@ -168,13 +167,11 @@ class SpecimenServices extends DbAccess {
         break;
     }
     invalidateSpecimenList();
-    ;
   }
 
   Future<void> deleteAllSpecimens() async {
     await SpecimenQuery(dbAccess).deleteAllSpecimens(projectUuid);
     invalidateSpecimenList();
-    ;
   }
 
   Future<void> deleteAllSpecimenParts(String specimenUuid) async {

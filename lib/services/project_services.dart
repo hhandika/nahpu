@@ -25,8 +25,17 @@ class ProjectServices extends DbAccess {
     invalidateProject();
   }
 
-  Future<ProjectData> getProjectByUuid(String uuid) {
-    return ProjectQuery(dbAccess).getProjectByUuid(uuid);
+  Future<ProjectData> getProjectByUuid(String uuid) async {
+    return await ProjectQuery(dbAccess).getProjectByUuid(uuid);
+  }
+
+  Future<List<String>> getAllProjectNames() async {
+    return await ProjectQuery(dbAccess).getAllProjectNames();
+  }
+
+  Future<String> getProjectName(String uuid) async {
+    ProjectData data = await getProjectByUuid(uuid);
+    return data.name;
   }
 
   String getProjectUuid() {
