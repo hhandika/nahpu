@@ -66,16 +66,20 @@ class FormCard extends StatelessWidget {
 
 class TitleForm extends StatelessWidget {
   const TitleForm({
-    Key? key,
+    super.key,
     required this.text,
-  }) : super(key: key);
+    this.isCentered = false,
+  });
 
   final String text;
+  final bool isCentered;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(40, 5, 0, 5),
+      padding: isCentered
+          ? const EdgeInsets.fromLTRB(40, 5, 0, 5)
+          : const EdgeInsets.only(right: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.values[1],

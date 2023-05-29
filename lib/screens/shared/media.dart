@@ -19,7 +19,7 @@ class _AudioVisualFormState extends State<AudioVisualForm> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const TitleForm(text: 'Audio/Visual'),
+              const TitleForm(text: 'Audio/Visual', isCentered: false),
               Wrap(
                 alignment: WrapAlignment.center,
                 crossAxisAlignment: WrapCrossAlignment.start,
