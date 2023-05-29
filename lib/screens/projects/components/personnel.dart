@@ -376,6 +376,11 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
               labelText: 'Affiliation',
               hintText: 'Enter Affiliation',
             ),
+            onChanged: (value) {
+              if (widget.isEditing) {
+                _validateEditing();
+              }
+            },
           ),
           TextFormField(
             controller: widget.ctr.emailCtr,
@@ -412,6 +417,11 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,
             ],
+            onChanged: (value) {
+              if (widget.isEditing) {
+                _validateEditing();
+              }
+            },
           ),
           DropdownButtonFormField(
             value: widget.ctr.roleCtr,
@@ -477,6 +487,11 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
               hintText: 'Write notes',
             ),
             maxLines: 3,
+            onChanged: (value) {
+              if (widget.isEditing) {
+                _validateEditing();
+              }
+            },
           ),
           const SizedBox(
             height: 20,

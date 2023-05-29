@@ -124,7 +124,7 @@ class PersonnelForm with _$PersonnelForm {
       );
 
   bool get isValidCataloger =>
-      name.isValid && email.isValid && initial.isValid && collNum.isValid;
+      name.isValid && initial.isValid && collNum.isValid && email.isValid;
 
   bool get isValidOther => name.isValid && email.isValid;
 }
@@ -185,7 +185,8 @@ class PersonnelFormValidator extends _$PersonnelFormValidator {
     state = await AsyncValue.guard(() async {
       // We allow email to be empty by default it is set to valid
       if (value == null || value.isEmpty || state.value == null) {
-        return PersonnelForm.empty();
+        return state.value!
+            .copyWith(email: PersonnelFormField(errMsg: null, isValid: true));
       }
 
       if (!value.isValidEmail) {
@@ -243,91 +244,3 @@ class PersonnelFormValidator extends _$PersonnelFormValidator {
     });
   }
 }
-
-// final personnelFormValidation = StateNotifierProvider.autoDispose<
-//     PersonnelFormValidationNotifier,
-//     NewPersonnelFormState>((ref) => PersonnelFormValidationNotifier());
-
-// class PersonnelFormValidationNotifier
-//     extends StateNotifier<NewPersonnelFormState> {
-//   PersonnelFormValidationNotifier()
-//       : super(NewPersonnelFormState(NewPersonnelFormValidation.empty()));
-
-//   void validateAll(PersonnelFormCtrModel personnelCtr) {
-//     validateName(personnelCtr.nameCtr.text);
-//     validateEmail(personnelCtr.emailCtr.text);
-//     validateInitial(personnelCtr.initialCtr.text);
-//     validateCollNum(personnelCtr.nextCollectorNumCtr.text);
-//   }
-
-//   void validateName(String? value) {
-//     late NewPersonnelFormField nameField;
-
-//     NewPersonnelFormValidation form =
-//         state.form.copyWith(name: state.form.name.copyWith(value: value));
-
-//     if (value == null || value.isEmpty) {
-//       nameField =
-//           form.name.copyWith(errMsg: "Name is required", isValid: false);
-//     } else if (!value.isValidName) {
-//       nameField = form.name.copyWith(errMsg: "Invalid name", isValid: false);
-//     } else if (value.length < 3) {
-//       nameField =
-//           form.name.copyWith(errMsg: "Name is too short", isValid: false);
-//     } else {
-//       nameField = form.name.copyWith(errMsg: null, isValid: true);
-//     }
-
-//     state = state.copyWith(form: form.copyWith(name: nameField));
-//   }
-
-//   void validateEmail(String? value) {
-//     late NewPersonnelFormField emailField;
-
-//     NewPersonnelFormValidation form =
-//         state.form.copyWith(email: state.form.email.copyWith(value: value));
-
-//     if (value != null && value.isNotEmpty && !value.isValidEmail) {
-//       emailField = form.email.copyWith(errMsg: "Invalid email", isValid: false);
-//     } else {
-//       emailField = form.email.copyWith(errMsg: null, isValid: true);
-//     }
-
-//     state = state.copyWith(form: form.copyWith(email: emailField));
-//   }
-
-//   void validateInitial(String? value) {
-//     late NewPersonnelFormField initialField;
-
-//     NewPersonnelFormValidation form =
-//         state.form.copyWith(initial: state.form.initial.copyWith(value: value));
-
-//     if (value == null || value.isEmpty) {
-//       initialField =
-//           form.initial.copyWith(errMsg: "Initial is required", isValid: false);
-//     } else {
-//       initialField = form.initial.copyWith(errMsg: null, isValid: true);
-//     }
-
-//     state = state.copyWith(form: form.copyWith(initial: initialField));
-//   }
-
-//   void validateCollNum(String? value) {
-//     late NewPersonnelFormField collNumField;
-
-//     NewPersonnelFormValidation form =
-//         state.form.copyWith(collNum: state.form.collNum.copyWith(value: value));
-
-//     if (value == null || value.isEmpty) {
-//       collNumField = form.collNum
-//           .copyWith(errMsg: "Collector number is required", isValid: false);
-//     } else if (!value.isValidCollNum) {
-//       collNumField =
-//           form.collNum.copyWith(errMsg: "Invalid number", isValid: false);
-//     } else {
-//       collNumField = form.collNum.copyWith(errMsg: null, isValid: true);
-//     }
-
-//     state = state.copyWith(form: form.copyWith(collNum: collNumField));
-//   }
-// }
