@@ -104,7 +104,7 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
                     ImportButton(
                       label: 'Import',
                       isRunning: _isRunning,
-                      onPressed: _problems.isNotEmpty || _isRunning
+                      onPressed: _isInvalidInput()
                           ? null
                           : () async {
                               setState(() {
@@ -121,6 +121,10 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
         ),
       ),
     );
+  }
+
+  bool _isInvalidInput() {
+    return _problems.isNotEmpty || _isRunning || _filePath == null;
   }
 
   List<Widget> _buildCsvHeaderField() {
@@ -420,11 +424,6 @@ class SuccessImport extends StatelessWidget {
         Text(
           'Success 🎉',
           style: Theme.of(context).textTheme.titleLarge,
-        ),
-        const SizedBox(height: 8),
-        const Text(
-          'Records have been imported successfully.',
-          textAlign: TextAlign.center,
         ),
       ],
     );
