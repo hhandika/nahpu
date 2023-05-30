@@ -16,7 +16,9 @@ New to v4:
 9. Delete personnel photo.
 10. Add photoPath to the personnel table.
 11. Remove fileMetadata table.
-12. Remove personnelPhoto
+12. Remove personnelPhoto.
+13. Remove secondaryIdRef from the media table.
+14. Add projectUuid to the media table.
 */
 
 CREATE TABLE project (
@@ -130,14 +132,15 @@ CREATE TABLE narrative (
 
 CREATE TABLE media (
     primaryId INT PRIMARY KEY AUTOINCREMENT,
+    projectUuid TEXT,
     secondaryId TEXT,
-    secondaryIdRef TEXT,
     taken TEXT,
     camera TEXT,
     lenses TEXT,
     personnelId TEXT,
     filePath TEXT,
-    FOREIGN KEY(personnelId) REFERENCES personnel(uuid)
+    FOREIGN KEY(personnelId) REFERENCES personnel(uuid),
+    FOREIGN KEY(projectUuid) REFERENCES project(uuid)
 );
 
 CREATE TABLE narrativeMedia (

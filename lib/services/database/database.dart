@@ -45,6 +45,7 @@ class Database extends _$Database {
   Future<void> _migrateFromVersion3(Migrator m) async {
     await m.addColumn(personnel, personnel.photoPath);
     await m.addColumn(specimen, specimen.collectionTime);
+    await m.addColumn(media, media.projectUuid);
 
     await m.create(narrativeMedia);
     await m.create(siteMedia);

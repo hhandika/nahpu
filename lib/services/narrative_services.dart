@@ -1,5 +1,6 @@
 import 'package:nahpu/providers/narrative.dart';
 import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/database/media_queries.dart';
 import 'package:nahpu/services/database/narrative_queries.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/io_services.dart';
@@ -24,7 +25,11 @@ class NarrativeServices extends DbAccess {
     NarrativeQuery(dbAccess).updateNarrativeEntry(id, entries);
   }
 
-  Future<void> createNarrativeMedia(NarrativeMediaCompanion entries) async {
+  Future<void> createNarrativeMedia(int narrativeId) async {
+    int mediaId = await MediaQuery(dbAccess)
+        .createMedia(MediaCompanion(projectUuid: db.Value(projectUuid)));
+    NarrativeMediaCompanion entries = NarrativeMediaCompanion(
+        narrativeId: db.Value(narrativeId), mediaId: db.Value(mediaId));
     await NarrativeQuery(dbAccess).createNarrativeMedia(entries);
   }
 

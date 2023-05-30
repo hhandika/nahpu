@@ -1015,17 +1015,17 @@ class Media extends Table with TableInfo<Media, MediaData> {
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  static const VerificationMeta _projectUuidMeta =
+      const VerificationMeta('projectUuid');
+  late final GeneratedColumn<String> projectUuid = GeneratedColumn<String>(
+      'projectUuid', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _secondaryIdMeta =
       const VerificationMeta('secondaryId');
   late final GeneratedColumn<String> secondaryId = GeneratedColumn<String>(
       'secondaryId', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _secondaryIdRefMeta =
-      const VerificationMeta('secondaryIdRef');
-  late final GeneratedColumn<String> secondaryIdRef = GeneratedColumn<String>(
-      'secondaryIdRef', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -1064,8 +1064,8 @@ class Media extends Table with TableInfo<Media, MediaData> {
   @override
   List<GeneratedColumn> get $columns => [
         primaryId,
+        projectUuid,
         secondaryId,
-        secondaryIdRef,
         taken,
         camera,
         lenses,
@@ -1085,17 +1085,17 @@ class Media extends Table with TableInfo<Media, MediaData> {
       context.handle(_primaryIdMeta,
           primaryId.isAcceptableOrUnknown(data['primaryId']!, _primaryIdMeta));
     }
+    if (data.containsKey('projectUuid')) {
+      context.handle(
+          _projectUuidMeta,
+          projectUuid.isAcceptableOrUnknown(
+              data['projectUuid']!, _projectUuidMeta));
+    }
     if (data.containsKey('secondaryId')) {
       context.handle(
           _secondaryIdMeta,
           secondaryId.isAcceptableOrUnknown(
               data['secondaryId']!, _secondaryIdMeta));
-    }
-    if (data.containsKey('secondaryIdRef')) {
-      context.handle(
-          _secondaryIdRefMeta,
-          secondaryIdRef.isAcceptableOrUnknown(
-              data['secondaryIdRef']!, _secondaryIdRefMeta));
     }
     if (data.containsKey('taken')) {
       context.handle(
@@ -1130,10 +1130,10 @@ class Media extends Table with TableInfo<Media, MediaData> {
     return MediaData(
       primaryId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}primaryId']),
+      projectUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
       secondaryId: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}secondaryId']),
-      secondaryIdRef: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}secondaryIdRef']),
       taken: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}taken']),
       camera: attachedDatabase.typeMapping
@@ -1153,16 +1153,18 @@ class Media extends Table with TableInfo<Media, MediaData> {
   }
 
   @override
-  List<String> get customConstraints =>
-      const ['FOREIGN KEY(personnelId)REFERENCES personnel(uuid)'];
+  List<String> get customConstraints => const [
+        'FOREIGN KEY(personnelId)REFERENCES personnel(uuid)',
+        'FOREIGN KEY(projectUuid)REFERENCES project(uuid)'
+      ];
   @override
   bool get dontWriteConstraints => true;
 }
 
 class MediaData extends DataClass implements Insertable<MediaData> {
   final int? primaryId;
+  final String? projectUuid;
   final String? secondaryId;
-  final String? secondaryIdRef;
   final String? taken;
   final String? camera;
   final String? lenses;
@@ -1170,8 +1172,8 @@ class MediaData extends DataClass implements Insertable<MediaData> {
   final String? filePath;
   const MediaData(
       {this.primaryId,
+      this.projectUuid,
       this.secondaryId,
-      this.secondaryIdRef,
       this.taken,
       this.camera,
       this.lenses,
@@ -1183,11 +1185,11 @@ class MediaData extends DataClass implements Insertable<MediaData> {
     if (!nullToAbsent || primaryId != null) {
       map['primaryId'] = Variable<int>(primaryId);
     }
+    if (!nullToAbsent || projectUuid != null) {
+      map['projectUuid'] = Variable<String>(projectUuid);
+    }
     if (!nullToAbsent || secondaryId != null) {
       map['secondaryId'] = Variable<String>(secondaryId);
-    }
-    if (!nullToAbsent || secondaryIdRef != null) {
-      map['secondaryIdRef'] = Variable<String>(secondaryIdRef);
     }
     if (!nullToAbsent || taken != null) {
       map['taken'] = Variable<String>(taken);
@@ -1212,12 +1214,12 @@ class MediaData extends DataClass implements Insertable<MediaData> {
       primaryId: primaryId == null && nullToAbsent
           ? const Value.absent()
           : Value(primaryId),
+      projectUuid: projectUuid == null && nullToAbsent
+          ? const Value.absent()
+          : Value(projectUuid),
       secondaryId: secondaryId == null && nullToAbsent
           ? const Value.absent()
           : Value(secondaryId),
-      secondaryIdRef: secondaryIdRef == null && nullToAbsent
-          ? const Value.absent()
-          : Value(secondaryIdRef),
       taken:
           taken == null && nullToAbsent ? const Value.absent() : Value(taken),
       camera:
@@ -1238,8 +1240,8 @@ class MediaData extends DataClass implements Insertable<MediaData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return MediaData(
       primaryId: serializer.fromJson<int?>(json['primaryId']),
+      projectUuid: serializer.fromJson<String?>(json['projectUuid']),
       secondaryId: serializer.fromJson<String?>(json['secondaryId']),
-      secondaryIdRef: serializer.fromJson<String?>(json['secondaryIdRef']),
       taken: serializer.fromJson<String?>(json['taken']),
       camera: serializer.fromJson<String?>(json['camera']),
       lenses: serializer.fromJson<String?>(json['lenses']),
@@ -1252,8 +1254,8 @@ class MediaData extends DataClass implements Insertable<MediaData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'primaryId': serializer.toJson<int?>(primaryId),
+      'projectUuid': serializer.toJson<String?>(projectUuid),
       'secondaryId': serializer.toJson<String?>(secondaryId),
-      'secondaryIdRef': serializer.toJson<String?>(secondaryIdRef),
       'taken': serializer.toJson<String?>(taken),
       'camera': serializer.toJson<String?>(camera),
       'lenses': serializer.toJson<String?>(lenses),
@@ -1264,8 +1266,8 @@ class MediaData extends DataClass implements Insertable<MediaData> {
 
   MediaData copyWith(
           {Value<int?> primaryId = const Value.absent(),
+          Value<String?> projectUuid = const Value.absent(),
           Value<String?> secondaryId = const Value.absent(),
-          Value<String?> secondaryIdRef = const Value.absent(),
           Value<String?> taken = const Value.absent(),
           Value<String?> camera = const Value.absent(),
           Value<String?> lenses = const Value.absent(),
@@ -1273,9 +1275,8 @@ class MediaData extends DataClass implements Insertable<MediaData> {
           Value<String?> filePath = const Value.absent()}) =>
       MediaData(
         primaryId: primaryId.present ? primaryId.value : this.primaryId,
+        projectUuid: projectUuid.present ? projectUuid.value : this.projectUuid,
         secondaryId: secondaryId.present ? secondaryId.value : this.secondaryId,
-        secondaryIdRef:
-            secondaryIdRef.present ? secondaryIdRef.value : this.secondaryIdRef,
         taken: taken.present ? taken.value : this.taken,
         camera: camera.present ? camera.value : this.camera,
         lenses: lenses.present ? lenses.value : this.lenses,
@@ -1286,8 +1287,8 @@ class MediaData extends DataClass implements Insertable<MediaData> {
   String toString() {
     return (StringBuffer('MediaData(')
           ..write('primaryId: $primaryId, ')
+          ..write('projectUuid: $projectUuid, ')
           ..write('secondaryId: $secondaryId, ')
-          ..write('secondaryIdRef: $secondaryIdRef, ')
           ..write('taken: $taken, ')
           ..write('camera: $camera, ')
           ..write('lenses: $lenses, ')
@@ -1298,15 +1299,15 @@ class MediaData extends DataClass implements Insertable<MediaData> {
   }
 
   @override
-  int get hashCode => Object.hash(primaryId, secondaryId, secondaryIdRef, taken,
+  int get hashCode => Object.hash(primaryId, projectUuid, secondaryId, taken,
       camera, lenses, personnelId, filePath);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is MediaData &&
           other.primaryId == this.primaryId &&
+          other.projectUuid == this.projectUuid &&
           other.secondaryId == this.secondaryId &&
-          other.secondaryIdRef == this.secondaryIdRef &&
           other.taken == this.taken &&
           other.camera == this.camera &&
           other.lenses == this.lenses &&
@@ -1316,8 +1317,8 @@ class MediaData extends DataClass implements Insertable<MediaData> {
 
 class MediaCompanion extends UpdateCompanion<MediaData> {
   final Value<int?> primaryId;
+  final Value<String?> projectUuid;
   final Value<String?> secondaryId;
-  final Value<String?> secondaryIdRef;
   final Value<String?> taken;
   final Value<String?> camera;
   final Value<String?> lenses;
@@ -1325,8 +1326,8 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
   final Value<String?> filePath;
   const MediaCompanion({
     this.primaryId = const Value.absent(),
+    this.projectUuid = const Value.absent(),
     this.secondaryId = const Value.absent(),
-    this.secondaryIdRef = const Value.absent(),
     this.taken = const Value.absent(),
     this.camera = const Value.absent(),
     this.lenses = const Value.absent(),
@@ -1335,8 +1336,8 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
   });
   MediaCompanion.insert({
     this.primaryId = const Value.absent(),
+    this.projectUuid = const Value.absent(),
     this.secondaryId = const Value.absent(),
-    this.secondaryIdRef = const Value.absent(),
     this.taken = const Value.absent(),
     this.camera = const Value.absent(),
     this.lenses = const Value.absent(),
@@ -1345,8 +1346,8 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
   });
   static Insertable<MediaData> custom({
     Expression<int>? primaryId,
+    Expression<String>? projectUuid,
     Expression<String>? secondaryId,
-    Expression<String>? secondaryIdRef,
     Expression<String>? taken,
     Expression<String>? camera,
     Expression<String>? lenses,
@@ -1355,8 +1356,8 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
   }) {
     return RawValuesInsertable({
       if (primaryId != null) 'primaryId': primaryId,
+      if (projectUuid != null) 'projectUuid': projectUuid,
       if (secondaryId != null) 'secondaryId': secondaryId,
-      if (secondaryIdRef != null) 'secondaryIdRef': secondaryIdRef,
       if (taken != null) 'taken': taken,
       if (camera != null) 'camera': camera,
       if (lenses != null) 'lenses': lenses,
@@ -1367,8 +1368,8 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
 
   MediaCompanion copyWith(
       {Value<int?>? primaryId,
+      Value<String?>? projectUuid,
       Value<String?>? secondaryId,
-      Value<String?>? secondaryIdRef,
       Value<String?>? taken,
       Value<String?>? camera,
       Value<String?>? lenses,
@@ -1376,8 +1377,8 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
       Value<String?>? filePath}) {
     return MediaCompanion(
       primaryId: primaryId ?? this.primaryId,
+      projectUuid: projectUuid ?? this.projectUuid,
       secondaryId: secondaryId ?? this.secondaryId,
-      secondaryIdRef: secondaryIdRef ?? this.secondaryIdRef,
       taken: taken ?? this.taken,
       camera: camera ?? this.camera,
       lenses: lenses ?? this.lenses,
@@ -1392,11 +1393,11 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
     if (primaryId.present) {
       map['primaryId'] = Variable<int>(primaryId.value);
     }
+    if (projectUuid.present) {
+      map['projectUuid'] = Variable<String>(projectUuid.value);
+    }
     if (secondaryId.present) {
       map['secondaryId'] = Variable<String>(secondaryId.value);
-    }
-    if (secondaryIdRef.present) {
-      map['secondaryIdRef'] = Variable<String>(secondaryIdRef.value);
     }
     if (taken.present) {
       map['taken'] = Variable<String>(taken.value);
@@ -1420,8 +1421,8 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
   String toString() {
     return (StringBuffer('MediaCompanion(')
           ..write('primaryId: $primaryId, ')
+          ..write('projectUuid: $projectUuid, ')
           ..write('secondaryId: $secondaryId, ')
-          ..write('secondaryIdRef: $secondaryIdRef, ')
           ..write('taken: $taken, ')
           ..write('camera: $camera, ')
           ..write('lenses: $lenses, ')
