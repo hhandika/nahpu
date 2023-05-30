@@ -124,7 +124,7 @@ class SiteFormCtrModel {
 class CollEventFormCtrModel {
   CollEventFormCtrModel({
     required this.siteIDCtr,
-    required this.eventIDCtr,
+    required this.idSuffixCtr,
     required this.startDateCtr,
     required this.endDateCtr,
     required this.startTimeCtr,
@@ -134,7 +134,7 @@ class CollEventFormCtrModel {
   });
 
   int? siteIDCtr;
-  TextEditingController eventIDCtr;
+  TextEditingController idSuffixCtr;
   TextEditingController startDateCtr;
   TextEditingController endDateCtr;
   TextEditingController startTimeCtr;
@@ -144,7 +144,7 @@ class CollEventFormCtrModel {
 
   factory CollEventFormCtrModel.empty() => CollEventFormCtrModel(
         siteIDCtr: null,
-        eventIDCtr: TextEditingController(),
+        idSuffixCtr: TextEditingController(),
         startDateCtr: TextEditingController(),
         endDateCtr: TextEditingController(),
         startTimeCtr: TextEditingController(),
@@ -156,7 +156,7 @@ class CollEventFormCtrModel {
   factory CollEventFormCtrModel.fromData(CollEventData collEvent) =>
       CollEventFormCtrModel(
         siteIDCtr: collEvent.siteID,
-        eventIDCtr: TextEditingController(text: collEvent.eventID),
+        idSuffixCtr: TextEditingController(text: collEvent.idSuffix),
         startDateCtr: TextEditingController(text: collEvent.startDate),
         endDateCtr: TextEditingController(text: collEvent.endDate),
         startTimeCtr: TextEditingController(text: collEvent.startTime),
@@ -166,7 +166,7 @@ class CollEventFormCtrModel {
       );
 
   void dispose() {
-    eventIDCtr.dispose();
+    idSuffixCtr.dispose();
     startDateCtr.dispose();
     endDateCtr.dispose();
     startTimeCtr.dispose();

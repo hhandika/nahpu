@@ -3325,10 +3325,10 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
-  static const VerificationMeta _eventIDMeta =
-      const VerificationMeta('eventID');
-  late final GeneratedColumn<String> eventID = GeneratedColumn<String>(
-      'eventID', aliasedName, true,
+  static const VerificationMeta _idSuffixMeta =
+      const VerificationMeta('idSuffix');
+  late final GeneratedColumn<String> idSuffix = GeneratedColumn<String>(
+      'idSuffix', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -3390,7 +3390,7 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
   @override
   List<GeneratedColumn> get $columns => [
         id,
-        eventID,
+        idSuffix,
         projectUuid,
         startDate,
         startTime,
@@ -3412,9 +3412,9 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('eventID')) {
-      context.handle(_eventIDMeta,
-          eventID.isAcceptableOrUnknown(data['eventID']!, _eventIDMeta));
+    if (data.containsKey('idSuffix')) {
+      context.handle(_idSuffixMeta,
+          idSuffix.isAcceptableOrUnknown(data['idSuffix']!, _idSuffixMeta));
     }
     if (data.containsKey('projectUuid')) {
       context.handle(
@@ -3465,8 +3465,8 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
     return CollEventData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      eventID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}eventID']),
+      idSuffix: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}idSuffix']),
       projectUuid: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
       startDate: attachedDatabase.typeMapping
@@ -3500,7 +3500,9 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
 
 class CollEventData extends DataClass implements Insertable<CollEventData> {
   final int id;
-  final String? eventID;
+  final String? idSuffix;
+
+  /// v4 new name
   final String? projectUuid;
   final String? startDate;
   final String? startTime;
@@ -3511,7 +3513,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
   final int? siteID;
   const CollEventData(
       {required this.id,
-      this.eventID,
+      this.idSuffix,
       this.projectUuid,
       this.startDate,
       this.startTime,
@@ -3524,8 +3526,8 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    if (!nullToAbsent || eventID != null) {
-      map['eventID'] = Variable<String>(eventID);
+    if (!nullToAbsent || idSuffix != null) {
+      map['idSuffix'] = Variable<String>(idSuffix);
     }
     if (!nullToAbsent || projectUuid != null) {
       map['projectUuid'] = Variable<String>(projectUuid);
@@ -3557,9 +3559,9 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
   CollEventCompanion toCompanion(bool nullToAbsent) {
     return CollEventCompanion(
       id: Value(id),
-      eventID: eventID == null && nullToAbsent
+      idSuffix: idSuffix == null && nullToAbsent
           ? const Value.absent()
-          : Value(eventID),
+          : Value(idSuffix),
       projectUuid: projectUuid == null && nullToAbsent
           ? const Value.absent()
           : Value(projectUuid),
@@ -3591,7 +3593,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return CollEventData(
       id: serializer.fromJson<int>(json['id']),
-      eventID: serializer.fromJson<String?>(json['eventID']),
+      idSuffix: serializer.fromJson<String?>(json['idSuffix']),
       projectUuid: serializer.fromJson<String?>(json['projectUuid']),
       startDate: serializer.fromJson<String?>(json['startDate']),
       startTime: serializer.fromJson<String?>(json['startTime']),
@@ -3608,7 +3610,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'eventID': serializer.toJson<String?>(eventID),
+      'idSuffix': serializer.toJson<String?>(idSuffix),
       'projectUuid': serializer.toJson<String?>(projectUuid),
       'startDate': serializer.toJson<String?>(startDate),
       'startTime': serializer.toJson<String?>(startTime),
@@ -3622,7 +3624,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
 
   CollEventData copyWith(
           {int? id,
-          Value<String?> eventID = const Value.absent(),
+          Value<String?> idSuffix = const Value.absent(),
           Value<String?> projectUuid = const Value.absent(),
           Value<String?> startDate = const Value.absent(),
           Value<String?> startTime = const Value.absent(),
@@ -3633,7 +3635,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
           Value<int?> siteID = const Value.absent()}) =>
       CollEventData(
         id: id ?? this.id,
-        eventID: eventID.present ? eventID.value : this.eventID,
+        idSuffix: idSuffix.present ? idSuffix.value : this.idSuffix,
         projectUuid: projectUuid.present ? projectUuid.value : this.projectUuid,
         startDate: startDate.present ? startDate.value : this.startDate,
         startTime: startTime.present ? startTime.value : this.startTime,
@@ -3651,7 +3653,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
   String toString() {
     return (StringBuffer('CollEventData(')
           ..write('id: $id, ')
-          ..write('eventID: $eventID, ')
+          ..write('idSuffix: $idSuffix, ')
           ..write('projectUuid: $projectUuid, ')
           ..write('startDate: $startDate, ')
           ..write('startTime: $startTime, ')
@@ -3665,14 +3667,14 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
   }
 
   @override
-  int get hashCode => Object.hash(id, eventID, projectUuid, startDate,
+  int get hashCode => Object.hash(id, idSuffix, projectUuid, startDate,
       startTime, endDate, endTime, primaryCollMethod, collMethodNotes, siteID);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is CollEventData &&
           other.id == this.id &&
-          other.eventID == this.eventID &&
+          other.idSuffix == this.idSuffix &&
           other.projectUuid == this.projectUuid &&
           other.startDate == this.startDate &&
           other.startTime == this.startTime &&
@@ -3685,7 +3687,7 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
 
 class CollEventCompanion extends UpdateCompanion<CollEventData> {
   final Value<int> id;
-  final Value<String?> eventID;
+  final Value<String?> idSuffix;
   final Value<String?> projectUuid;
   final Value<String?> startDate;
   final Value<String?> startTime;
@@ -3696,7 +3698,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
   final Value<int?> siteID;
   const CollEventCompanion({
     this.id = const Value.absent(),
-    this.eventID = const Value.absent(),
+    this.idSuffix = const Value.absent(),
     this.projectUuid = const Value.absent(),
     this.startDate = const Value.absent(),
     this.startTime = const Value.absent(),
@@ -3708,7 +3710,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
   });
   CollEventCompanion.insert({
     this.id = const Value.absent(),
-    this.eventID = const Value.absent(),
+    this.idSuffix = const Value.absent(),
     this.projectUuid = const Value.absent(),
     this.startDate = const Value.absent(),
     this.startTime = const Value.absent(),
@@ -3720,7 +3722,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
   });
   static Insertable<CollEventData> custom({
     Expression<int>? id,
-    Expression<String>? eventID,
+    Expression<String>? idSuffix,
     Expression<String>? projectUuid,
     Expression<String>? startDate,
     Expression<String>? startTime,
@@ -3732,7 +3734,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (eventID != null) 'eventID': eventID,
+      if (idSuffix != null) 'idSuffix': idSuffix,
       if (projectUuid != null) 'projectUuid': projectUuid,
       if (startDate != null) 'startDate': startDate,
       if (startTime != null) 'startTime': startTime,
@@ -3746,7 +3748,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
 
   CollEventCompanion copyWith(
       {Value<int>? id,
-      Value<String?>? eventID,
+      Value<String?>? idSuffix,
       Value<String?>? projectUuid,
       Value<String?>? startDate,
       Value<String?>? startTime,
@@ -3757,7 +3759,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
       Value<int?>? siteID}) {
     return CollEventCompanion(
       id: id ?? this.id,
-      eventID: eventID ?? this.eventID,
+      idSuffix: idSuffix ?? this.idSuffix,
       projectUuid: projectUuid ?? this.projectUuid,
       startDate: startDate ?? this.startDate,
       startTime: startTime ?? this.startTime,
@@ -3775,8 +3777,8 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (eventID.present) {
-      map['eventID'] = Variable<String>(eventID.value);
+    if (idSuffix.present) {
+      map['idSuffix'] = Variable<String>(idSuffix.value);
     }
     if (projectUuid.present) {
       map['projectUuid'] = Variable<String>(projectUuid.value);
@@ -3809,7 +3811,7 @@ class CollEventCompanion extends UpdateCompanion<CollEventData> {
   String toString() {
     return (StringBuffer('CollEventCompanion(')
           ..write('id: $id, ')
-          ..write('eventID: $eventID, ')
+          ..write('idSuffix: $idSuffix, ')
           ..write('projectUuid: $projectUuid, ')
           ..write('startDate: $startDate, ')
           ..write('startTime: $startTime, ')

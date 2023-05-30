@@ -7,7 +7,6 @@ import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
-import 'package:intl/intl.dart';
 import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
@@ -74,14 +73,11 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
                 if (value != null) {
                   setState(() {
                     widget.collEventCtr.siteIDCtr = value;
-                    _getEventID();
+                    // _getEventID();
                     CollEventServices(ref).updateCollEvent(
                         widget.collEventId,
                         CollEventCompanion(
                           siteID: db.Value(value),
-                          eventID: db.Value(
-                            widget.collEventCtr.eventIDCtr.text,
-                          ),
                         ));
                   });
                 }
@@ -100,15 +96,12 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
                   onTap: () {
                     setState(
                       () {
-                        _getEventID();
+                        // _getEventID();
                         CollEventServices(ref).updateCollEvent(
                           widget.collEventId,
                           CollEventCompanion(
                             startDate:
                                 db.Value(widget.collEventCtr.startDateCtr.text),
-                            eventID: db.Value(
-                              widget.collEventCtr.eventIDCtr.text,
-                            ),
                           ),
                         );
                       },
@@ -144,25 +137,25 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
     }
   }
 
-  void _getEventID() {
-    try {
-      siteID = data
-          .firstWhere(
-            (e) => widget.collEventCtr.siteIDCtr == e.id,
-          )
-          .siteID;
-      String date;
-      if (widget.collEventCtr.startDateCtr.text.isNotEmpty) {
-        date = widget.collEventCtr.startDateCtr.text;
-      } else {
-        date = DateFormat.yMMMd().format(_getInitialStartDate());
-      }
+  // void _getEventID() {
+  //   try {
+  //     siteID = data
+  //         .firstWhere(
+  //           (e) => widget.collEventCtr.siteIDCtr == e.id,
+  //         )
+  //         .siteID;
+  //     String date;
+  //     if (widget.collEventCtr.startDateCtr.text.isNotEmpty) {
+  //       date = widget.collEventCtr.startDateCtr.text;
+  //     } else {
+  //       date = DateFormat.yMMMd().format(_getInitialStartDate());
+  //     }
 
-      widget.collEventCtr.eventIDCtr.text = '$siteID-$date';
-    } catch (e) {
-      siteID = '';
-    }
-  }
+  //     widget.collEventCtr.eventIDCtr.text = '$siteID-$date';
+  //   } catch (e) {
+  //     siteID = '';
+  //   }
+  // }
 }
 
 class EndDateField extends ConsumerWidget {
@@ -207,7 +200,7 @@ class CollEventIdTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return collEventCtr.eventIDCtr.text.isNotEmpty
+    return collEventCtr.siteIDCtr != null
         ? ListTile(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
@@ -216,17 +209,9 @@ class CollEventIdTile extends ConsumerWidget {
                 width: 2,
               ),
             ),
-            title: RichText(
-              text: TextSpan(
-                text: 'Coll. Event ID: ',
-                style: Theme.of(context).textTheme.bodyLarge,
-                children: [
-                  TextSpan(
-                    text: collEventCtr.eventIDCtr.text,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                ],
-              ),
+            title: EventIDText(
+              collEventId: collEventId,
+              collEventCtr: collEventCtr,
             ),
             trailing: IconButton(
               icon: Icon(
@@ -240,10 +225,10 @@ class CollEventIdTile extends ConsumerWidget {
                     return AlertDialog(
                       title: const Text('Edit Collecting Event ID'),
                       content: TextFormField(
-                        controller: collEventCtr.eventIDCtr,
+                        controller: collEventCtr.idSuffixCtr,
                         decoration: const InputDecoration(
-                          labelText: 'Collecting Event ID',
-                          hintText: 'Enter collecting event ID',
+                          labelText: 'ID suffix',
+                          hintText: 'Enter ID suffix',
                         ),
                       ),
                       actions: [
@@ -258,7 +243,8 @@ class CollEventIdTile extends ConsumerWidget {
                             CollEventServices(ref).updateCollEvent(
                               collEventId,
                               CollEventCompanion(
-                                eventID: db.Value(collEventCtr.eventIDCtr.text),
+                                idSuffix:
+                                    db.Value(collEventCtr.idSuffixCtr.text),
                               ),
                             );
                             ref.invalidate(siteEntryProvider);
@@ -274,6 +260,56 @@ class CollEventIdTile extends ConsumerWidget {
             ),
           )
         : const SizedBox.shrink();
+  }
+}
+
+class EventIDText extends ConsumerStatefulWidget {
+  const EventIDText({
+    super.key,
+    required this.collEventId,
+    required this.collEventCtr,
+  });
+
+  final int collEventId;
+  final CollEventFormCtrModel collEventCtr;
+
+  @override
+  EventIDTextState createState() => EventIDTextState();
+}
+
+class EventIDTextState extends ConsumerState<EventIDText> {
+  @override
+  Widget build(BuildContext context) {
+    return widget.collEventCtr.siteIDCtr != null
+        ? FutureBuilder(
+            builder: (builder, snapshot) {
+              return snapshot.hasData
+                  ? RichText(
+                      text: TextSpan(
+                        text: 'Coll. Event ID: ',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                        children: [
+                          TextSpan(
+                            text: snapshot.data.toString(),
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ],
+                      ),
+                    )
+                  : const SizedBox.shrink();
+            },
+            future: _getEventID())
+        : const SizedBox.shrink();
+  }
+
+  Future<String> _getEventID() async {
+    CollEventServices services = CollEventServices(ref);
+    CollEventData? collEvent = await services.getCollEvent(widget.collEventId);
+    if (collEvent != null) {
+      return services.getCollEventID(collEvent);
+    } else {
+      return '';
+    }
   }
 }
 

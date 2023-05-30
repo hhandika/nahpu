@@ -40,6 +40,7 @@ class Database extends _$Database {
     await m.create(narrativeMedia);
     await m.create(siteMedia);
     await m.create(specimenMedia);
+    await m.renameColumn(collEvent, 'eventID', collEvent.idSuffix);
   }
 
   Future<void> _migrateFromVersion2(Migrator m) async {

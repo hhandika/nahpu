@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/collevents.dart';
 import 'package:nahpu/providers/sites.dart';
+import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/services/types/types.dart';
@@ -58,7 +59,7 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
               items: eventEntry.reversed
                   .map((event) => DropdownMenuItem(
                         value: event.id,
-                        child: CommonDropdownText(text: event.eventID ?? ''),
+                        child: CollEventIDText(collEventData: event),
                       ))
                   .toList(),
               onChanged: (int? newValue) {
@@ -161,6 +162,38 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
 
   void _updateSpecimen(SpecimenCompanion form) {
     SpecimenServices(ref).updateSpecimen(widget.specimenUuid, form);
+  }
+}
+
+class CollEventIDText extends ConsumerStatefulWidget {
+  const CollEventIDText({
+    super.key,
+    required this.collEventData,
+  });
+
+  final CollEventData collEventData;
+
+  @override
+  CollEventIDTextState createState() => CollEventIDTextState();
+}
+
+class CollEventIDTextState extends ConsumerState<CollEventIDText> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return CommonDropdownText(text: snapshot.data as String);
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+      future: _getCollEventID(),
+    );
+  }
+
+  Future<String> _getCollEventID() async {
+    return CollEventServices(ref).getCollEventID(widget.collEventData);
   }
 }
 

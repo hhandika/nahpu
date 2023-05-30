@@ -21,8 +21,10 @@ class CollEventRecordWriter {
     _writeHeader(writer);
     List<CollEventData> collEventList =
         await CollEventServices(ref).getAllCollEvents();
+
     for (var collEvent in collEventList) {
-      writer.write('"${collEvent.eventID}"');
+      String eventID = await CollEventServices(ref).getCollEventID(collEvent);
+      writer.write('"$eventID"');
       _writeDelimiter(writer);
       String siteDetails = await _getSite(collEvent.siteID, delimiter);
       writer.write(siteDetails);

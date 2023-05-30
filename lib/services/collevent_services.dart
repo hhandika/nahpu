@@ -3,6 +3,7 @@ import 'package:nahpu/services/database/collevent_queries.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/io_services.dart';
+import 'package:nahpu/services/site_services.dart';
 import 'package:nahpu/services/types/collecting.dart';
 
 class CollEventServices extends DbAccess {
@@ -20,6 +21,19 @@ class CollEventServices extends DbAccess {
         .createWeatherData(WeatherCompanion(eventID: db.Value(eventID)));
     invalidateCollEvent();
     return eventID;
+  }
+
+  Future<String> getCollEventID(CollEventData collEventData) async {
+    final site = await SiteServices(ref).getSite(collEventData.siteID);
+    String siteID = site != null ? site.siteID ?? '' : '';
+    String startDate = collEventData.startDate != null
+        ? collEventData.startDate.toString()
+        : '';
+    String suffix =
+        collEventData.idSuffix != null && collEventData.idSuffix!.isNotEmpty
+            ? '-${collEventData.idSuffix ?? ''}'
+            : '';
+    return '$siteID-$startDate$suffix';
   }
 
   Future<List<CollEventData>> getAllCollEvents() async {
