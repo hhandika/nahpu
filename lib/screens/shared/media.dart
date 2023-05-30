@@ -230,8 +230,7 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
                   builder: (context) {
                     return AlertDialog(
                       title: const Text('Update Details'),
-                      content: SingleChildScrollView(
-                          child: PhotoDetailForm(ctr: widget.ctr)),
+                      content: PhotoDetailForm(ctr: widget.ctr),
                       actions: [
                         TextButton(
                           onPressed: () async {
@@ -275,7 +274,8 @@ class PhotoDetailForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
+    return SingleChildScrollView(
+        child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         CommonTextField(
@@ -332,6 +332,6 @@ class PhotoDetailForm extends ConsumerWidget {
           isLastField: false,
         ),
       ],
-    );
+    ));
   }
 }
