@@ -8,9 +8,11 @@ import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/media_services.dart';
 import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/utility_services.dart';
 import 'package:path/path.dart';
+import 'package:drift/drift.dart' as db;
 
 const int imageSize = 300;
 
@@ -64,6 +66,9 @@ class _MediaViewerState extends State<MediaViewer> {
   }
 }
 
+/// Display option to pick image from gallery or camera
+/// On mobile, display both options
+/// On desktop, display only gallery option
 class MediaButton extends StatelessWidget {
   const MediaButton({
     super.key,
@@ -144,7 +149,7 @@ class MediaViewerBuilder extends StatelessWidget {
   }
 }
 
-class MediaCard extends StatelessWidget {
+class MediaCard extends ConsumerWidget {
   const MediaCard({
     super.key,
     required this.data,
@@ -153,7 +158,7 @@ class MediaCard extends StatelessWidget {
   final MediaData data;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(5),
       child: GridTile(
@@ -162,47 +167,7 @@ class MediaCard extends StatelessWidget {
                 .colorScheme
                 .secondaryContainer
                 .withOpacity(0.9),
-            trailing: PopupMenuButton<MediaPopUpMenu>(
-              icon: Icon(
-                Icons.more_vert,
-                color: Theme.of(context).colorScheme.onSecondaryContainer,
-              ),
-              itemBuilder: (context) {
-                return const [
-                  PopupMenuItem(
-                    value: MediaPopUpMenu.edit,
-                    child: ListTile(
-                      leading: Icon(Icons.edit),
-                      title: Text('Edit details'),
-                    ),
-                  ),
-                  PopupMenuItem(
-                      value: MediaPopUpMenu.details,
-                      child: ListTile(
-                        leading: Icon(Icons.info_outline),
-                        title: Text('Details'),
-                      )),
-                  PopupMenuDivider(),
-                  PopupMenuItem(
-                    value: MediaPopUpMenu.delete,
-                    child: ListTile(
-                        leading: Icon(Icons.delete, color: Colors.red),
-                        title: Text('Delete',
-                            style: TextStyle(color: Colors.red))),
-                  ),
-                ];
-              },
-              onSelected: (value) {
-                if (value == MediaPopUpMenu.edit) {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return const PhotoForm();
-                    },
-                  );
-                }
-              },
-            ),
+            trailing: MediaPopUpMenu(data: data),
             title: Text(
               data.filePath != null ? basename(data.filePath!) : 'No file name',
               style: Theme.of(context).textTheme.labelLarge,
@@ -224,8 +189,79 @@ class MediaCard extends StatelessWidget {
   }
 }
 
+class MediaPopUpMenu extends ConsumerStatefulWidget {
+  const MediaPopUpMenu({
+    super.key,
+    required this.data,
+  });
+
+  final MediaData data;
+
+  @override
+  MediaPopUpMenuState createState() => MediaPopUpMenuState();
+}
+
+class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton<MediaPopUpMenu>(
+      icon: Icon(
+        Icons.more_vert,
+        color: Theme.of(context).colorScheme.onSecondaryContainer,
+      ),
+      itemBuilder: (context) {
+        return [
+          PopupMenuItem(
+            child: ListTile(
+              leading: const Icon(Icons.edit),
+              title: const Text('Edit details'),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return PhotoForm(
+                      mediaId: widget.data.primaryId!,
+                      category: widget.data.category!,
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+          const PopupMenuItem(
+              child: ListTile(
+            leading: Icon(Icons.info_outline),
+            title: Text('Details'),
+          )),
+          const PopupMenuDivider(),
+          PopupMenuItem(
+            onTap: () async {
+              await MediaServices(ref).deleteMedia(
+                widget.data.primaryId!,
+                widget.data.category!,
+              );
+              setState(() {});
+            },
+            child: const ListTile(
+              leading: Icon(Icons.delete, color: Colors.red),
+              title: Text('Delete', style: TextStyle(color: Colors.red)),
+            ),
+          ),
+        ];
+      },
+    );
+  }
+}
+
 class PhotoForm extends ConsumerStatefulWidget {
-  const PhotoForm({Key? key}) : super(key: key);
+  const PhotoForm({
+    super.key,
+    required this.mediaId,
+    required this.category,
+  });
+
+  final int mediaId;
+  final String category;
 
   @override
   PhotoFormState createState() => PhotoFormState();
@@ -236,7 +272,10 @@ class PhotoFormState extends ConsumerState<PhotoForm> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text('Update Details'),
-      content: const PhotoDetailForm(),
+      content: PhotoDetailForm(
+        mediaId: widget.mediaId,
+        category: widget.category,
+      ),
       actions: [
         SecondaryButton(
           text: 'Cancel',
@@ -244,14 +283,25 @@ class PhotoFormState extends ConsumerState<PhotoForm> {
             Navigator.of(context).pop();
           },
         ),
-        PrimaryButton(text: 'Update', onPressed: () {}),
+        PrimaryButton(
+            text: 'Update',
+            onPressed: () {
+              Navigator.of(context).pop();
+            }),
       ],
     );
   }
 }
 
 class PhotoDetailForm extends ConsumerWidget {
-  const PhotoDetailForm({super.key});
+  const PhotoDetailForm({
+    super.key,
+    required this.mediaId,
+    required this.category,
+  });
+
+  final int mediaId;
+  final String category;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -264,7 +314,16 @@ class PhotoDetailForm extends ConsumerWidget {
             hintText: 'Enter caption',
             isLastField: false,
             maxLines: 5,
-            onChanged: (value) {},
+            onChanged: (value) {
+              if (value != null && value.isNotEmpty) {
+                MediaServices(ref).updateMedia(
+                    mediaId,
+                    category,
+                    MediaCompanion(
+                      caption: db.Value(value),
+                    ));
+              }
+            },
           ),
           DropdownButtonFormField<String>(
             decoration: const InputDecoration(

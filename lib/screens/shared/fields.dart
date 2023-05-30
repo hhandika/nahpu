@@ -161,6 +161,7 @@ class CommonDropdownText extends StatelessWidget {
     return Text(
       text,
       style: Theme.of(context).textTheme.bodyLarge,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }

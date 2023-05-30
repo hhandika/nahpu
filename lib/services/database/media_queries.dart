@@ -6,8 +6,8 @@ part 'media_queries.g.dart';
 @DriftAccessor(
   include: {'tables.drift'},
 )
-class MediaQuery extends DatabaseAccessor<Database> with _$MediaQueryMixin {
-  MediaQuery(Database db) : super(db);
+class MediaDbQuery extends DatabaseAccessor<Database> with _$MediaDbQueryMixin {
+  MediaDbQuery(Database db) : super(db);
 
   Future<int> createMedia(MediaCompanion form) {
     return into(media).insert(form);
@@ -15,6 +15,11 @@ class MediaQuery extends DatabaseAccessor<Database> with _$MediaQueryMixin {
 
   Future<List<MediaData>> getAllMedia() {
     return select(media).get();
+  }
+
+  Future<void> updateMedia(int mediaId, MediaCompanion form) {
+    return (update(media)..where((t) => t.primaryId.equals(mediaId)))
+        .write(form);
   }
 
   Future<MediaData> getMedia(int id) {

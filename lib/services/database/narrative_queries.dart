@@ -39,9 +39,8 @@ class NarrativeQuery extends DatabaseAccessor<Database>
         .write(form);
   }
 
-  Future<void> deleteNarrativeMedia(int narrativeId) {
-    return (delete(narrativeMedia)
-          ..where((t) => t.narrativeId.equals(narrativeId)))
+  Future<void> deleteNarrativeMedia(int mediaId) {
+    return (delete(narrativeMedia)..where((t) => t.mediaId.equals(mediaId)))
         .go();
   }
 

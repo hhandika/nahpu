@@ -4,6 +4,7 @@ import 'package:nahpu/services/database/media_queries.dart';
 import 'package:nahpu/services/database/narrative_queries.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/io_services.dart';
+import 'package:nahpu/services/types/import.dart';
 
 class NarrativeServices extends DbAccess {
   NarrativeServices(super.ref);
@@ -26,29 +27,17 @@ class NarrativeServices extends DbAccess {
   }
 
   Future<void> createNarrativeMedia(int narrativeId, String filePath) async {
-    int mediaId = await MediaQuery(dbAccess).createMedia(MediaCompanion(
+    int mediaId = await MediaDbQuery(dbAccess).createMedia(MediaCompanion(
       projectUuid: db.Value(projectUuid),
       filePath: db.Value(filePath),
+      category: db.Value(matchMediaCategory(MediaCategory.narrative)),
     ));
     NarrativeMediaCompanion entries = NarrativeMediaCompanion(
       narrativeId: db.Value(narrativeId),
       mediaId: db.Value(mediaId),
     );
     await NarrativeQuery(dbAccess).createNarrativeMedia(entries);
-  }
-
-  Future<List<MediaData>> getNarrativeMedia(int narrativeId) async {
-    List<NarrativeMediaData> mediaList =
-        await NarrativeQuery(dbAccess).getNarrativeMedia(narrativeId);
-    List<MediaData> mediaDataList = [];
-    for (NarrativeMediaData media in mediaList) {
-      if (media.mediaId != null) {
-        mediaDataList.add(
-          await MediaQuery(dbAccess).getMedia(media.mediaId!),
-        );
-      }
-    }
-    return mediaDataList;
+    ref.invalidate(narrativeMediaProvider);
   }
 
   void deleteNarrative(int id) {

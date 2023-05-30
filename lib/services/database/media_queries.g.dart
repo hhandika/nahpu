@@ -3,7 +3,7 @@
 part of 'media_queries.dart';
 
 // ignore_for_file: type=lint
-mixin _$MediaQueryMixin on DatabaseAccessor<Database> {
+mixin _$MediaDbQueryMixin on DatabaseAccessor<Database> {
   Project get project => attachedDatabase.project;
   Personnel get personnel => attachedDatabase.personnel;
   Media get media => attachedDatabase.media;

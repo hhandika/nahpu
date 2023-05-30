@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/providers/narrative.dart';
 import 'package:nahpu/screens/shared/media.dart';
-import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/import/multimedia.dart';
 import 'package:nahpu/services/narrative_services.dart';
 
@@ -31,11 +31,12 @@ class MediaFormState extends ConsumerState<MediaForm> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
+    return ref
+        .watch(narrativeMediaProvider(narrativeId: widget.narrativeId))
+        .when(
+          data: (data) {
             return MediaViewer(
-              images: snapshot.data ?? [],
+              images: List.from(data),
               onAddImage: () async {
                 try {
                   List<String> images = await ImageServices().pickImages();
@@ -71,16 +72,14 @@ class MediaFormState extends ConsumerState<MediaForm> {
                 }
               },
             );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
-        future: _getMedia());
-  }
-
-  Future<List<MediaData>> _getMedia() async {
-    return await NarrativeServices(ref).getNarrativeMedia(widget.narrativeId);
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stackTrace) => Center(
+            child: Text(
+              error.toString(),
+              style: const TextStyle(color: Colors.red),
+            ),
+          ),
+        );
   }
 }

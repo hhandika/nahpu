@@ -1,7 +1,5 @@
 enum PlatformType { mobile, desktop, unknown }
 
-enum MediaPopUpMenu { edit, details, delete }
-
 const List<String> taxonImportFmtList = [
   'CSV UTF-8 (Comma-delimited) (.csv)',
 ];
@@ -74,4 +72,45 @@ const List<TaxonEntryHeader> requiredTaxonImportHeaders = [
   TaxonEntryHeader.taxonFamily,
   TaxonEntryHeader.genus,
   TaxonEntryHeader.specificEpithet,
+];
+
+enum MediaCategory { site, narrative, specimen }
+
+String matchMediaCategory(MediaCategory category) {
+  switch (category) {
+    case MediaCategory.site:
+      return 'site';
+    case MediaCategory.narrative:
+      return 'narrative';
+    case MediaCategory.specimen:
+      return 'specimen';
+    default:
+      return 'site';
+  }
+}
+
+MediaCategory matchMediaCategoryString(String category) {
+  switch (category) {
+    case 'site':
+      return MediaCategory.site;
+    case 'narrative':
+      return MediaCategory.narrative;
+    case 'specimen':
+      return MediaCategory.specimen;
+    default:
+      return MediaCategory.site;
+  }
+}
+
+const List<String> mediaCategory = [
+  'narrative',
+  'site',
+  'specimen',
+];
+
+const List<String> mediaSiteSubcategory = [
+  'camp',
+  'habitat',
+  'people',
+  'other',
 ];

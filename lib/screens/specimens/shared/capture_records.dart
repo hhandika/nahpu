@@ -51,6 +51,7 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
         children: [
           CommonPadding(
             child: DropdownButtonFormField(
+              isExpanded: true,
               value: widget.specimenCtr.collEventIDCtr,
               decoration: const InputDecoration(
                 labelText: 'Collecting Event ID',

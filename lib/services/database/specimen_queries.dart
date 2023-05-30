@@ -73,6 +73,29 @@ class SpecimenQuery extends DatabaseAccessor<Database>
     }
   }
 
+  Future<void> createSpecimenMedia(
+      SpecimenMediaCompanion specimenMediaCompanion) {
+    return into(specimenMedia).insert(specimenMediaCompanion);
+  }
+
+  Future<List<SpecimenMediaData>> getSpecimenMedia(String specimenUuid) {
+    return (select(specimenMedia)
+          ..where((t) => t.specimenUuid.equals(specimenUuid)))
+        .get();
+  }
+
+  Future<void> deleteSpecimenMedia(int mediaId) {
+    return (delete(specimenMedia)..where((t) => t.mediaId.equals(mediaId)))
+        .go();
+  }
+
+  Future<void> updateSpecimenMedia(
+      String specimenUuid, SpecimenMediaCompanion specimenMediaCompanion) {
+    return (update(specimenMedia)
+          ..where((t) => t.specimenUuid.equals(specimenUuid)))
+        .write(specimenMediaCompanion);
+  }
+
   Future<void> deleteSpecimen(String uuid) {
     return (delete(specimen)..where((t) => t.uuid.equals(uuid))).go();
   }
