@@ -36,7 +36,7 @@ class MediaFormState extends ConsumerState<MediaForm> {
     return FutureBuilder(
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return AudioVisualForm(
+            return MediaViewer(
               images: snapshot.data ?? [],
               onAddImage: () async {
                 try {
@@ -90,6 +90,10 @@ class MediaFormState extends ConsumerState<MediaForm> {
       if (m.filePath != null) {
         media.add(File(m.filePath!));
       }
+    }
+
+    if (kDebugMode) {
+      print(media);
     }
 
     return media;

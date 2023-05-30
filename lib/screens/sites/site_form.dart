@@ -64,7 +64,7 @@ class SiteFormState extends ConsumerState<SiteForm> {
                 ),
               ],
             ),
-            AudioVisualForm(
+            MediaViewer(
               images: const [],
               onAddImage: () {},
               onAccessingCamera: () {},

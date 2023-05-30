@@ -55,5 +55,9 @@
 	<string>$(PRODUCT_NAME) needs access to photos</string>
 	<key>UISupportsDocumentBrowser</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to use your camera</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to use your microphone</string>
 </dict>
 </plist>

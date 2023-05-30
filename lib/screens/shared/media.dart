@@ -7,8 +7,8 @@ import 'package:path/path.dart';
 
 const int imageSize = 300;
 
-class AudioVisualForm extends StatefulWidget {
-  const AudioVisualForm({
+class MediaViewer extends StatefulWidget {
+  const MediaViewer({
     super.key,
     required this.images,
     required this.onAddImage,
@@ -20,10 +20,10 @@ class AudioVisualForm extends StatefulWidget {
   final VoidCallback onAccessingCamera;
 
   @override
-  State<AudioVisualForm> createState() => _AudioVisualFormState();
+  State<MediaViewer> createState() => _MediaViewerState();
 }
 
-class _AudioVisualFormState extends State<AudioVisualForm> {
+class _MediaViewerState extends State<MediaViewer> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -31,12 +31,12 @@ class _AudioVisualFormState extends State<AudioVisualForm> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+          padding: const EdgeInsets.fromLTRB(10, 18, 10, 0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const TitleForm(text: 'Audio/Visual', isCentered: false),
+              const TitleForm(text: 'Media', isCentered: false),
               Wrap(
                 alignment: WrapAlignment.center,
                 crossAxisAlignment: WrapCrossAlignment.start,
@@ -67,7 +67,7 @@ class _AudioVisualFormState extends State<AudioVisualForm> {
           child: Center(
             child: widget.images.isEmpty
                 ? const Text('No images selected')
-                : MediaViewer(images: widget.images),
+                : MediaViewerBuilder(images: widget.images),
           ),
         ),
       ],
@@ -75,8 +75,8 @@ class _AudioVisualFormState extends State<AudioVisualForm> {
   }
 }
 
-class MediaViewer extends StatelessWidget {
-  const MediaViewer({
+class MediaViewerBuilder extends StatelessWidget {
+  const MediaViewerBuilder({
     super.key,
     required this.images,
   });

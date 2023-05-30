@@ -24,7 +24,7 @@ class MediaFormsState extends ConsumerState<MediaForms> {
 
   @override
   Widget build(BuildContext context) {
-    return AudioVisualForm(
+    return MediaViewer(
       images: const [],
       onAddImage: () {},
       onAccessingCamera: () {},
