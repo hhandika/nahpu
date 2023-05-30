@@ -48,18 +48,10 @@ class SpecimenServices extends DbAccess {
   }
 
   Future<void> createSpecimenMedia(String specimenUuid, String filePath) async {
-    int? speciesId =
-        await SpecimenQuery(dbAccess).getSpeciesByUuid(specimenUuid);
-
-    String species = speciesId == null
-        ? ''
-        : await TaxonomyQuery(dbAccess).getSpeciesById(speciesId);
-
     int mediaId = await MediaDbQuery(dbAccess).createMedia(MediaCompanion(
       projectUuid: db.Value(projectUuid),
       filePath: db.Value(filePath),
       category: db.Value(matchMediaCategory(MediaCategory.specimen)),
-      caption: db.Value(species),
     ));
     SpecimenMediaCompanion entries = SpecimenMediaCompanion(
       specimenUuid: db.Value(specimenUuid),

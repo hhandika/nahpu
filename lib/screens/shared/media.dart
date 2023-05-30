@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/personnel.dart';
-import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
@@ -122,20 +121,20 @@ class MediaViewerBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     ScrollController scrollController = ScrollController();
     return CommonScrollbar(
-        scrollController: scrollController,
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: GridView.count(
-            controller: scrollController,
-            crossAxisCount:
-                _getCrossAxisCount(MediaQuery.of(context).size.width),
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
-            children: List.generate(images.length, (index) {
-              return MediaCard(data: images[index]);
-            }),
-          ),
-        ));
+      scrollController: scrollController,
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: GridView.count(
+          controller: scrollController,
+          crossAxisCount: _getCrossAxisCount(MediaQuery.of(context).size.width),
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 8,
+          children: List.generate(images.length, (index) {
+            return MediaCard(data: images[index]);
+          }),
+        ),
+      ),
+    );
   }
 
   int _getCrossAxisCount(double width) {
@@ -149,7 +148,7 @@ class MediaViewerBuilder extends StatelessWidget {
   }
 }
 
-class MediaCard extends ConsumerWidget {
+class MediaCard extends ConsumerStatefulWidget {
   const MediaCard({
     super.key,
     required this.data,
@@ -158,28 +157,33 @@ class MediaCard extends ConsumerWidget {
   final MediaData data;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  MediaCardState createState() => MediaCardState();
+}
+
+class MediaCardState extends ConsumerState<MediaCard> {
+  @override
+  Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(5),
       child: GridTile(
         footer: GridTileBar(
-            backgroundColor: Theme.of(context)
-                .colorScheme
-                .secondaryContainer
-                .withOpacity(0.9),
-            trailing: MediaPopUpMenu(data: data),
-            title: Text(
-              data.filePath != null ? basename(data.filePath!) : 'No file name',
-              style: Theme.of(context).textTheme.labelLarge,
-            ),
-            subtitle: Text(
-              data.caption ?? 'No caption',
-              style: Theme.of(context).textTheme.labelSmall,
-              overflow: TextOverflow.ellipsis,
-            )),
-        child: data.filePath != null
+          backgroundColor:
+              Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.9),
+          trailing: MediaPopUpMenu(data: widget.data),
+          title: Text(
+              widget.data.filePath != null
+                  ? basename(widget.data.filePath!)
+                  : 'No file name',
+              style: Theme.of(context).textTheme.labelLarge),
+          subtitle: Text(
+            widget.data.caption ?? 'No caption',
+            style: Theme.of(context).textTheme.labelSmall,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        child: widget.data.filePath != null
             ? Image.file(
-                File(data.filePath!),
+                File(widget.data.filePath!),
                 fit: BoxFit.cover,
               )
             : const Center(
@@ -208,10 +212,10 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
     return PopupMenuButton<MediaPopUpMenu>(
       icon: Icon(
         Icons.more_vert,
-        color: Theme.of(context).colorScheme.onSecondaryContainer,
+        color: Theme.of(context).colorScheme.onPrimaryContainer,
       ),
       itemBuilder: (context) {
-        return [
+        return <PopupMenuEntry<MediaPopUpMenu>>[
           PopupMenuItem(
             child: ListTile(
               leading: const Icon(Icons.edit),
@@ -220,20 +224,33 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
                 showDialog(
                   context: context,
                   builder: (context) {
-                    return PhotoForm(
-                      mediaId: widget.data.primaryId!,
-                      category: widget.data.category!,
+                    return AlertDialog(
+                      title: const Text('Update Details'),
+                      content: SingleChildScrollView(
+                          child: PhotoDetailForm(
+                        mediaId: widget.data.primaryId!,
+                        category: widget.data.category!,
+                      )),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Update'),
+                        ),
+                      ],
                     );
                   },
                 );
               },
             ),
           ),
-          const PopupMenuItem(
-              child: ListTile(
-            leading: Icon(Icons.info_outline),
-            title: Text('Details'),
-          )),
           const PopupMenuDivider(),
           PopupMenuItem(
             onTap: () async {
@@ -241,7 +258,6 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
                 widget.data.primaryId!,
                 widget.data.category!,
               );
-              setState(() {});
             },
             child: const ListTile(
               leading: Icon(Icons.delete, color: Colors.red),
@@ -250,46 +266,6 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
           ),
         ];
       },
-    );
-  }
-}
-
-class PhotoForm extends ConsumerStatefulWidget {
-  const PhotoForm({
-    super.key,
-    required this.mediaId,
-    required this.category,
-  });
-
-  final int mediaId;
-  final String category;
-
-  @override
-  PhotoFormState createState() => PhotoFormState();
-}
-
-class PhotoFormState extends ConsumerState<PhotoForm> {
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Update Details'),
-      content: PhotoDetailForm(
-        mediaId: widget.mediaId,
-        category: widget.category,
-      ),
-      actions: [
-        SecondaryButton(
-          text: 'Cancel',
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        PrimaryButton(
-            text: 'Update',
-            onPressed: () {
-              Navigator.of(context).pop();
-            }),
-      ],
     );
   }
 }
@@ -306,53 +282,51 @@ class PhotoDetailForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CommonTextField(
-            labelText: 'Caption',
-            hintText: 'Enter caption',
-            isLastField: false,
-            maxLines: 5,
-            onChanged: (value) {
-              if (value != null && value.isNotEmpty) {
-                MediaServices(ref).updateMedia(
-                    mediaId,
-                    category,
-                    MediaCompanion(
-                      caption: db.Value(value),
-                    ));
-              }
-            },
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        CommonTextField(
+          labelText: 'Caption',
+          hintText: 'Enter caption',
+          isLastField: false,
+          maxLines: 5,
+          onChanged: (value) {
+            if (value != null && value.isNotEmpty) {
+              MediaServices(ref).updateMedia(
+                  mediaId,
+                  category,
+                  MediaCompanion(
+                    caption: db.Value(value),
+                  ));
+            }
+          },
+        ),
+        DropdownButtonFormField<String>(
+          decoration: const InputDecoration(
+            labelText: 'Photographer',
+            hintText: 'Select Personnel',
           ),
-          DropdownButtonFormField<String>(
-            decoration: const InputDecoration(
-              labelText: 'Photographer',
-              hintText: 'Select Personnel',
-            ),
-            items: ref.watch(personnelListProvider).when(
-                  data: (value) => value
-                      .map((person) => DropdownMenuItem(
-                            value: person.uuid,
-                            child: CommonDropdownText(
-                              text: person.name ?? '',
-                            ),
-                          ))
-                      .toList(),
-                  loading: () => const [],
-                  error: (error, stack) => const [],
-                ),
-            onChanged: (String? value) {},
-          ),
-          const CommonTextField(
-            enabled: false,
-            labelText: 'Category',
-            hintText: 'Enter Category',
-            isLastField: false,
-          ),
-        ],
-      ),
+          items: ref.watch(personnelListProvider).when(
+                data: (value) => value
+                    .map((person) => DropdownMenuItem(
+                          value: person.uuid,
+                          child: CommonDropdownText(
+                            text: person.name ?? '',
+                          ),
+                        ))
+                    .toList(),
+                loading: () => const [],
+                error: (error, stack) => const [],
+              ),
+          onChanged: (String? value) {},
+        ),
+        const CommonTextField(
+          enabled: false,
+          labelText: 'Category',
+          hintText: 'Enter Category',
+          isLastField: false,
+        ),
+      ],
     );
   }
 }
