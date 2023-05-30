@@ -25,7 +25,10 @@ class CollEventQuery extends DatabaseAccessor<Database>
   }
 
   Future<CollEventData> getCollEventById(int id) async {
-    return await (select(collEvent)..where((t) => t.id.equals(id))).getSingle();
+    return await (select(collEvent)
+          ..where((t) => t.id.equals(id))
+          ..limit(1))
+        .getSingle();
   }
 
   Future<void> deleteCollEvent(int id) {
