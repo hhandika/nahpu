@@ -17,6 +17,10 @@ class MediaQuery extends DatabaseAccessor<Database> with _$MediaQueryMixin {
     return select(media).get();
   }
 
+  Future<MediaData> getMedia(int id) {
+    return (select(media)..where((t) => t.primaryId.equals(id))).getSingle();
+  }
+
   Future<void> deleteMedia(int id) {
     return (delete(media)..where((t) => t.primaryId.equals(id))).go();
   }

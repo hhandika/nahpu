@@ -26,6 +26,12 @@ class NarrativeQuery extends DatabaseAccessor<Database>
     return into(narrativeMedia).insert(form);
   }
 
+  Future<List<NarrativeMediaData>> getNarrativeMedia(int narrativeId) {
+    return (select(narrativeMedia)
+          ..where((t) => t.narrativeId.equals(narrativeId)))
+        .get();
+  }
+
   Future<void> updateNarrativeMedia(
       int narrativeId, NarrativeMediaCompanion form) {
     return (update(narrativeMedia)

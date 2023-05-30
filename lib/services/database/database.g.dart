@@ -1029,6 +1029,13 @@ class Media extends Table with TableInfo<Media, MediaData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _categoryMeta =
+      const VerificationMeta('category');
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
+      'category', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _takenMeta = const VerificationMeta('taken');
   late final GeneratedColumn<String> taken = GeneratedColumn<String>(
       'taken', aliasedName, true,
@@ -1066,6 +1073,7 @@ class Media extends Table with TableInfo<Media, MediaData> {
         primaryId,
         projectUuid,
         secondaryId,
+        category,
         taken,
         camera,
         lenses,
@@ -1096,6 +1104,10 @@ class Media extends Table with TableInfo<Media, MediaData> {
           _secondaryIdMeta,
           secondaryId.isAcceptableOrUnknown(
               data['secondaryId']!, _secondaryIdMeta));
+    }
+    if (data.containsKey('category')) {
+      context.handle(_categoryMeta,
+          category.isAcceptableOrUnknown(data['category']!, _categoryMeta));
     }
     if (data.containsKey('taken')) {
       context.handle(
@@ -1134,6 +1146,8 @@ class Media extends Table with TableInfo<Media, MediaData> {
           .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
       secondaryId: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}secondaryId']),
+      category: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}category']),
       taken: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}taken']),
       camera: attachedDatabase.typeMapping
@@ -1165,6 +1179,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
   final int? primaryId;
   final String? projectUuid;
   final String? secondaryId;
+  final String? category;
   final String? taken;
   final String? camera;
   final String? lenses;
@@ -1174,6 +1189,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
       {this.primaryId,
       this.projectUuid,
       this.secondaryId,
+      this.category,
       this.taken,
       this.camera,
       this.lenses,
@@ -1190,6 +1206,9 @@ class MediaData extends DataClass implements Insertable<MediaData> {
     }
     if (!nullToAbsent || secondaryId != null) {
       map['secondaryId'] = Variable<String>(secondaryId);
+    }
+    if (!nullToAbsent || category != null) {
+      map['category'] = Variable<String>(category);
     }
     if (!nullToAbsent || taken != null) {
       map['taken'] = Variable<String>(taken);
@@ -1220,6 +1239,9 @@ class MediaData extends DataClass implements Insertable<MediaData> {
       secondaryId: secondaryId == null && nullToAbsent
           ? const Value.absent()
           : Value(secondaryId),
+      category: category == null && nullToAbsent
+          ? const Value.absent()
+          : Value(category),
       taken:
           taken == null && nullToAbsent ? const Value.absent() : Value(taken),
       camera:
@@ -1242,6 +1264,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
       primaryId: serializer.fromJson<int?>(json['primaryId']),
       projectUuid: serializer.fromJson<String?>(json['projectUuid']),
       secondaryId: serializer.fromJson<String?>(json['secondaryId']),
+      category: serializer.fromJson<String?>(json['category']),
       taken: serializer.fromJson<String?>(json['taken']),
       camera: serializer.fromJson<String?>(json['camera']),
       lenses: serializer.fromJson<String?>(json['lenses']),
@@ -1256,6 +1279,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
       'primaryId': serializer.toJson<int?>(primaryId),
       'projectUuid': serializer.toJson<String?>(projectUuid),
       'secondaryId': serializer.toJson<String?>(secondaryId),
+      'category': serializer.toJson<String?>(category),
       'taken': serializer.toJson<String?>(taken),
       'camera': serializer.toJson<String?>(camera),
       'lenses': serializer.toJson<String?>(lenses),
@@ -1268,6 +1292,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
           {Value<int?> primaryId = const Value.absent(),
           Value<String?> projectUuid = const Value.absent(),
           Value<String?> secondaryId = const Value.absent(),
+          Value<String?> category = const Value.absent(),
           Value<String?> taken = const Value.absent(),
           Value<String?> camera = const Value.absent(),
           Value<String?> lenses = const Value.absent(),
@@ -1277,6 +1302,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
         primaryId: primaryId.present ? primaryId.value : this.primaryId,
         projectUuid: projectUuid.present ? projectUuid.value : this.projectUuid,
         secondaryId: secondaryId.present ? secondaryId.value : this.secondaryId,
+        category: category.present ? category.value : this.category,
         taken: taken.present ? taken.value : this.taken,
         camera: camera.present ? camera.value : this.camera,
         lenses: lenses.present ? lenses.value : this.lenses,
@@ -1289,6 +1315,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
           ..write('primaryId: $primaryId, ')
           ..write('projectUuid: $projectUuid, ')
           ..write('secondaryId: $secondaryId, ')
+          ..write('category: $category, ')
           ..write('taken: $taken, ')
           ..write('camera: $camera, ')
           ..write('lenses: $lenses, ')
@@ -1299,8 +1326,8 @@ class MediaData extends DataClass implements Insertable<MediaData> {
   }
 
   @override
-  int get hashCode => Object.hash(primaryId, projectUuid, secondaryId, taken,
-      camera, lenses, personnelId, filePath);
+  int get hashCode => Object.hash(primaryId, projectUuid, secondaryId, category,
+      taken, camera, lenses, personnelId, filePath);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1308,6 +1335,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
           other.primaryId == this.primaryId &&
           other.projectUuid == this.projectUuid &&
           other.secondaryId == this.secondaryId &&
+          other.category == this.category &&
           other.taken == this.taken &&
           other.camera == this.camera &&
           other.lenses == this.lenses &&
@@ -1319,6 +1347,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
   final Value<int?> primaryId;
   final Value<String?> projectUuid;
   final Value<String?> secondaryId;
+  final Value<String?> category;
   final Value<String?> taken;
   final Value<String?> camera;
   final Value<String?> lenses;
@@ -1328,6 +1357,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
     this.primaryId = const Value.absent(),
     this.projectUuid = const Value.absent(),
     this.secondaryId = const Value.absent(),
+    this.category = const Value.absent(),
     this.taken = const Value.absent(),
     this.camera = const Value.absent(),
     this.lenses = const Value.absent(),
@@ -1338,6 +1368,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
     this.primaryId = const Value.absent(),
     this.projectUuid = const Value.absent(),
     this.secondaryId = const Value.absent(),
+    this.category = const Value.absent(),
     this.taken = const Value.absent(),
     this.camera = const Value.absent(),
     this.lenses = const Value.absent(),
@@ -1348,6 +1379,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
     Expression<int>? primaryId,
     Expression<String>? projectUuid,
     Expression<String>? secondaryId,
+    Expression<String>? category,
     Expression<String>? taken,
     Expression<String>? camera,
     Expression<String>? lenses,
@@ -1358,6 +1390,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
       if (primaryId != null) 'primaryId': primaryId,
       if (projectUuid != null) 'projectUuid': projectUuid,
       if (secondaryId != null) 'secondaryId': secondaryId,
+      if (category != null) 'category': category,
       if (taken != null) 'taken': taken,
       if (camera != null) 'camera': camera,
       if (lenses != null) 'lenses': lenses,
@@ -1370,6 +1403,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
       {Value<int?>? primaryId,
       Value<String?>? projectUuid,
       Value<String?>? secondaryId,
+      Value<String?>? category,
       Value<String?>? taken,
       Value<String?>? camera,
       Value<String?>? lenses,
@@ -1379,6 +1413,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
       primaryId: primaryId ?? this.primaryId,
       projectUuid: projectUuid ?? this.projectUuid,
       secondaryId: secondaryId ?? this.secondaryId,
+      category: category ?? this.category,
       taken: taken ?? this.taken,
       camera: camera ?? this.camera,
       lenses: lenses ?? this.lenses,
@@ -1398,6 +1433,9 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
     }
     if (secondaryId.present) {
       map['secondaryId'] = Variable<String>(secondaryId.value);
+    }
+    if (category.present) {
+      map['category'] = Variable<String>(category.value);
     }
     if (taken.present) {
       map['taken'] = Variable<String>(taken.value);
@@ -1423,6 +1461,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
           ..write('primaryId: $primaryId, ')
           ..write('projectUuid: $projectUuid, ')
           ..write('secondaryId: $secondaryId, ')
+          ..write('category: $category, ')
           ..write('taken: $taken, ')
           ..write('camera: $camera, ')
           ..write('lenses: $lenses, ')
@@ -4914,15 +4953,8 @@ class NarrativeMedia extends Table
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _categoryMeta =
-      const VerificationMeta('category');
-  late final GeneratedColumn<String> category = GeneratedColumn<String>(
-      'category', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
   @override
-  List<GeneratedColumn> get $columns => [narrativeId, mediaId, category];
+  List<GeneratedColumn> get $columns => [narrativeId, mediaId];
   @override
   String get aliasedName => _alias ?? 'narrativeMedia';
   @override
@@ -4944,10 +4976,6 @@ class NarrativeMedia extends Table
       context.handle(_mediaIdMeta,
           mediaId.isAcceptableOrUnknown(data['mediaId']!, _mediaIdMeta));
     }
-    if (data.containsKey('category')) {
-      context.handle(_categoryMeta,
-          category.isAcceptableOrUnknown(data['category']!, _categoryMeta));
-    }
     return context;
   }
 
@@ -4961,8 +4989,6 @@ class NarrativeMedia extends Table
           .read(DriftSqlType.int, data['${effectivePrefix}narrativeId'])!,
       mediaId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}mediaId']),
-      category: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}category']),
     );
   }
 
@@ -4984,18 +5010,13 @@ class NarrativeMediaData extends DataClass
     implements Insertable<NarrativeMediaData> {
   final int narrativeId;
   final int? mediaId;
-  final String? category;
-  const NarrativeMediaData(
-      {required this.narrativeId, this.mediaId, this.category});
+  const NarrativeMediaData({required this.narrativeId, this.mediaId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['narrativeId'] = Variable<int>(narrativeId);
     if (!nullToAbsent || mediaId != null) {
       map['mediaId'] = Variable<int>(mediaId);
-    }
-    if (!nullToAbsent || category != null) {
-      map['category'] = Variable<String>(category);
     }
     return map;
   }
@@ -5006,9 +5027,6 @@ class NarrativeMediaData extends DataClass
       mediaId: mediaId == null && nullToAbsent
           ? const Value.absent()
           : Value(mediaId),
-      category: category == null && nullToAbsent
-          ? const Value.absent()
-          : Value(category),
     );
   }
 
@@ -5018,7 +5036,6 @@ class NarrativeMediaData extends DataClass
     return NarrativeMediaData(
       narrativeId: serializer.fromJson<int>(json['narrativeId']),
       mediaId: serializer.fromJson<int?>(json['mediaId']),
-      category: serializer.fromJson<String?>(json['category']),
     );
   }
   @override
@@ -5027,80 +5044,65 @@ class NarrativeMediaData extends DataClass
     return <String, dynamic>{
       'narrativeId': serializer.toJson<int>(narrativeId),
       'mediaId': serializer.toJson<int?>(mediaId),
-      'category': serializer.toJson<String?>(category),
     };
   }
 
   NarrativeMediaData copyWith(
-          {int? narrativeId,
-          Value<int?> mediaId = const Value.absent(),
-          Value<String?> category = const Value.absent()}) =>
+          {int? narrativeId, Value<int?> mediaId = const Value.absent()}) =>
       NarrativeMediaData(
         narrativeId: narrativeId ?? this.narrativeId,
         mediaId: mediaId.present ? mediaId.value : this.mediaId,
-        category: category.present ? category.value : this.category,
       );
   @override
   String toString() {
     return (StringBuffer('NarrativeMediaData(')
           ..write('narrativeId: $narrativeId, ')
-          ..write('mediaId: $mediaId, ')
-          ..write('category: $category')
+          ..write('mediaId: $mediaId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(narrativeId, mediaId, category);
+  int get hashCode => Object.hash(narrativeId, mediaId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NarrativeMediaData &&
           other.narrativeId == this.narrativeId &&
-          other.mediaId == this.mediaId &&
-          other.category == this.category);
+          other.mediaId == this.mediaId);
 }
 
 class NarrativeMediaCompanion extends UpdateCompanion<NarrativeMediaData> {
   final Value<int> narrativeId;
   final Value<int?> mediaId;
-  final Value<String?> category;
   final Value<int> rowid;
   const NarrativeMediaCompanion({
     this.narrativeId = const Value.absent(),
     this.mediaId = const Value.absent(),
-    this.category = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   NarrativeMediaCompanion.insert({
     required int narrativeId,
     this.mediaId = const Value.absent(),
-    this.category = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : narrativeId = Value(narrativeId);
   static Insertable<NarrativeMediaData> custom({
     Expression<int>? narrativeId,
     Expression<int>? mediaId,
-    Expression<String>? category,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (narrativeId != null) 'narrativeId': narrativeId,
       if (mediaId != null) 'mediaId': mediaId,
-      if (category != null) 'category': category,
       if (rowid != null) 'rowid': rowid,
     });
   }
 
   NarrativeMediaCompanion copyWith(
-      {Value<int>? narrativeId,
-      Value<int?>? mediaId,
-      Value<String?>? category,
-      Value<int>? rowid}) {
+      {Value<int>? narrativeId, Value<int?>? mediaId, Value<int>? rowid}) {
     return NarrativeMediaCompanion(
       narrativeId: narrativeId ?? this.narrativeId,
       mediaId: mediaId ?? this.mediaId,
-      category: category ?? this.category,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -5114,9 +5116,6 @@ class NarrativeMediaCompanion extends UpdateCompanion<NarrativeMediaData> {
     if (mediaId.present) {
       map['mediaId'] = Variable<int>(mediaId.value);
     }
-    if (category.present) {
-      map['category'] = Variable<String>(category.value);
-    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -5128,7 +5127,6 @@ class NarrativeMediaCompanion extends UpdateCompanion<NarrativeMediaData> {
     return (StringBuffer('NarrativeMediaCompanion(')
           ..write('narrativeId: $narrativeId, ')
           ..write('mediaId: $mediaId, ')
-          ..write('category: $category, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -5153,15 +5151,8 @@ class SiteMedia extends Table with TableInfo<SiteMedia, SiteMediaData> {
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _categoryMeta =
-      const VerificationMeta('category');
-  late final GeneratedColumn<String> category = GeneratedColumn<String>(
-      'category', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
   @override
-  List<GeneratedColumn> get $columns => [siteId, mediaId, category];
+  List<GeneratedColumn> get $columns => [siteId, mediaId];
   @override
   String get aliasedName => _alias ?? 'siteMedia';
   @override
@@ -5181,10 +5172,6 @@ class SiteMedia extends Table with TableInfo<SiteMedia, SiteMediaData> {
       context.handle(_mediaIdMeta,
           mediaId.isAcceptableOrUnknown(data['mediaId']!, _mediaIdMeta));
     }
-    if (data.containsKey('category')) {
-      context.handle(_categoryMeta,
-          category.isAcceptableOrUnknown(data['category']!, _categoryMeta));
-    }
     return context;
   }
 
@@ -5198,8 +5185,6 @@ class SiteMedia extends Table with TableInfo<SiteMedia, SiteMediaData> {
           .read(DriftSqlType.int, data['${effectivePrefix}siteId'])!,
       mediaId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}mediaId']),
-      category: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}category']),
     );
   }
 
@@ -5220,17 +5205,13 @@ class SiteMedia extends Table with TableInfo<SiteMedia, SiteMediaData> {
 class SiteMediaData extends DataClass implements Insertable<SiteMediaData> {
   final int siteId;
   final int? mediaId;
-  final String? category;
-  const SiteMediaData({required this.siteId, this.mediaId, this.category});
+  const SiteMediaData({required this.siteId, this.mediaId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['siteId'] = Variable<int>(siteId);
     if (!nullToAbsent || mediaId != null) {
       map['mediaId'] = Variable<int>(mediaId);
-    }
-    if (!nullToAbsent || category != null) {
-      map['category'] = Variable<String>(category);
     }
     return map;
   }
@@ -5241,9 +5222,6 @@ class SiteMediaData extends DataClass implements Insertable<SiteMediaData> {
       mediaId: mediaId == null && nullToAbsent
           ? const Value.absent()
           : Value(mediaId),
-      category: category == null && nullToAbsent
-          ? const Value.absent()
-          : Value(category),
     );
   }
 
@@ -5253,7 +5231,6 @@ class SiteMediaData extends DataClass implements Insertable<SiteMediaData> {
     return SiteMediaData(
       siteId: serializer.fromJson<int>(json['siteId']),
       mediaId: serializer.fromJson<int?>(json['mediaId']),
-      category: serializer.fromJson<String?>(json['category']),
     );
   }
   @override
@@ -5262,80 +5239,65 @@ class SiteMediaData extends DataClass implements Insertable<SiteMediaData> {
     return <String, dynamic>{
       'siteId': serializer.toJson<int>(siteId),
       'mediaId': serializer.toJson<int?>(mediaId),
-      'category': serializer.toJson<String?>(category),
     };
   }
 
   SiteMediaData copyWith(
-          {int? siteId,
-          Value<int?> mediaId = const Value.absent(),
-          Value<String?> category = const Value.absent()}) =>
+          {int? siteId, Value<int?> mediaId = const Value.absent()}) =>
       SiteMediaData(
         siteId: siteId ?? this.siteId,
         mediaId: mediaId.present ? mediaId.value : this.mediaId,
-        category: category.present ? category.value : this.category,
       );
   @override
   String toString() {
     return (StringBuffer('SiteMediaData(')
           ..write('siteId: $siteId, ')
-          ..write('mediaId: $mediaId, ')
-          ..write('category: $category')
+          ..write('mediaId: $mediaId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(siteId, mediaId, category);
+  int get hashCode => Object.hash(siteId, mediaId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is SiteMediaData &&
           other.siteId == this.siteId &&
-          other.mediaId == this.mediaId &&
-          other.category == this.category);
+          other.mediaId == this.mediaId);
 }
 
 class SiteMediaCompanion extends UpdateCompanion<SiteMediaData> {
   final Value<int> siteId;
   final Value<int?> mediaId;
-  final Value<String?> category;
   final Value<int> rowid;
   const SiteMediaCompanion({
     this.siteId = const Value.absent(),
     this.mediaId = const Value.absent(),
-    this.category = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   SiteMediaCompanion.insert({
     required int siteId,
     this.mediaId = const Value.absent(),
-    this.category = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : siteId = Value(siteId);
   static Insertable<SiteMediaData> custom({
     Expression<int>? siteId,
     Expression<int>? mediaId,
-    Expression<String>? category,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (siteId != null) 'siteId': siteId,
       if (mediaId != null) 'mediaId': mediaId,
-      if (category != null) 'category': category,
       if (rowid != null) 'rowid': rowid,
     });
   }
 
   SiteMediaCompanion copyWith(
-      {Value<int>? siteId,
-      Value<int?>? mediaId,
-      Value<String?>? category,
-      Value<int>? rowid}) {
+      {Value<int>? siteId, Value<int?>? mediaId, Value<int>? rowid}) {
     return SiteMediaCompanion(
       siteId: siteId ?? this.siteId,
       mediaId: mediaId ?? this.mediaId,
-      category: category ?? this.category,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -5349,9 +5311,6 @@ class SiteMediaCompanion extends UpdateCompanion<SiteMediaData> {
     if (mediaId.present) {
       map['mediaId'] = Variable<int>(mediaId.value);
     }
-    if (category.present) {
-      map['category'] = Variable<String>(category.value);
-    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -5363,7 +5322,6 @@ class SiteMediaCompanion extends UpdateCompanion<SiteMediaData> {
     return (StringBuffer('SiteMediaCompanion(')
           ..write('siteId: $siteId, ')
           ..write('mediaId: $mediaId, ')
-          ..write('category: $category, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -6915,15 +6873,8 @@ class SpecimenMedia extends Table
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _categoryMeta =
-      const VerificationMeta('category');
-  late final GeneratedColumn<String> category = GeneratedColumn<String>(
-      'category', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
   @override
-  List<GeneratedColumn> get $columns => [specimenUuid, mediaId, category];
+  List<GeneratedColumn> get $columns => [specimenUuid, mediaId];
   @override
   String get aliasedName => _alias ?? 'specimenMedia';
   @override
@@ -6945,10 +6896,6 @@ class SpecimenMedia extends Table
       context.handle(_mediaIdMeta,
           mediaId.isAcceptableOrUnknown(data['mediaId']!, _mediaIdMeta));
     }
-    if (data.containsKey('category')) {
-      context.handle(_categoryMeta,
-          category.isAcceptableOrUnknown(data['category']!, _categoryMeta));
-    }
     return context;
   }
 
@@ -6962,8 +6909,6 @@ class SpecimenMedia extends Table
           .read(DriftSqlType.string, data['${effectivePrefix}specimenUuid'])!,
       mediaId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}mediaId']),
-      category: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}category']),
     );
   }
 
@@ -6985,18 +6930,13 @@ class SpecimenMediaData extends DataClass
     implements Insertable<SpecimenMediaData> {
   final String specimenUuid;
   final int? mediaId;
-  final String? category;
-  const SpecimenMediaData(
-      {required this.specimenUuid, this.mediaId, this.category});
+  const SpecimenMediaData({required this.specimenUuid, this.mediaId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['specimenUuid'] = Variable<String>(specimenUuid);
     if (!nullToAbsent || mediaId != null) {
       map['mediaId'] = Variable<int>(mediaId);
-    }
-    if (!nullToAbsent || category != null) {
-      map['category'] = Variable<String>(category);
     }
     return map;
   }
@@ -7007,9 +6947,6 @@ class SpecimenMediaData extends DataClass
       mediaId: mediaId == null && nullToAbsent
           ? const Value.absent()
           : Value(mediaId),
-      category: category == null && nullToAbsent
-          ? const Value.absent()
-          : Value(category),
     );
   }
 
@@ -7019,7 +6956,6 @@ class SpecimenMediaData extends DataClass
     return SpecimenMediaData(
       specimenUuid: serializer.fromJson<String>(json['specimenUuid']),
       mediaId: serializer.fromJson<int?>(json['mediaId']),
-      category: serializer.fromJson<String?>(json['category']),
     );
   }
   @override
@@ -7028,80 +6964,65 @@ class SpecimenMediaData extends DataClass
     return <String, dynamic>{
       'specimenUuid': serializer.toJson<String>(specimenUuid),
       'mediaId': serializer.toJson<int?>(mediaId),
-      'category': serializer.toJson<String?>(category),
     };
   }
 
   SpecimenMediaData copyWith(
-          {String? specimenUuid,
-          Value<int?> mediaId = const Value.absent(),
-          Value<String?> category = const Value.absent()}) =>
+          {String? specimenUuid, Value<int?> mediaId = const Value.absent()}) =>
       SpecimenMediaData(
         specimenUuid: specimenUuid ?? this.specimenUuid,
         mediaId: mediaId.present ? mediaId.value : this.mediaId,
-        category: category.present ? category.value : this.category,
       );
   @override
   String toString() {
     return (StringBuffer('SpecimenMediaData(')
           ..write('specimenUuid: $specimenUuid, ')
-          ..write('mediaId: $mediaId, ')
-          ..write('category: $category')
+          ..write('mediaId: $mediaId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(specimenUuid, mediaId, category);
+  int get hashCode => Object.hash(specimenUuid, mediaId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is SpecimenMediaData &&
           other.specimenUuid == this.specimenUuid &&
-          other.mediaId == this.mediaId &&
-          other.category == this.category);
+          other.mediaId == this.mediaId);
 }
 
 class SpecimenMediaCompanion extends UpdateCompanion<SpecimenMediaData> {
   final Value<String> specimenUuid;
   final Value<int?> mediaId;
-  final Value<String?> category;
   final Value<int> rowid;
   const SpecimenMediaCompanion({
     this.specimenUuid = const Value.absent(),
     this.mediaId = const Value.absent(),
-    this.category = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   SpecimenMediaCompanion.insert({
     required String specimenUuid,
     this.mediaId = const Value.absent(),
-    this.category = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : specimenUuid = Value(specimenUuid);
   static Insertable<SpecimenMediaData> custom({
     Expression<String>? specimenUuid,
     Expression<int>? mediaId,
-    Expression<String>? category,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (specimenUuid != null) 'specimenUuid': specimenUuid,
       if (mediaId != null) 'mediaId': mediaId,
-      if (category != null) 'category': category,
       if (rowid != null) 'rowid': rowid,
     });
   }
 
   SpecimenMediaCompanion copyWith(
-      {Value<String>? specimenUuid,
-      Value<int?>? mediaId,
-      Value<String?>? category,
-      Value<int>? rowid}) {
+      {Value<String>? specimenUuid, Value<int?>? mediaId, Value<int>? rowid}) {
     return SpecimenMediaCompanion(
       specimenUuid: specimenUuid ?? this.specimenUuid,
       mediaId: mediaId ?? this.mediaId,
-      category: category ?? this.category,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -7115,9 +7036,6 @@ class SpecimenMediaCompanion extends UpdateCompanion<SpecimenMediaData> {
     if (mediaId.present) {
       map['mediaId'] = Variable<int>(mediaId.value);
     }
-    if (category.present) {
-      map['category'] = Variable<String>(category.value);
-    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -7129,7 +7047,6 @@ class SpecimenMediaCompanion extends UpdateCompanion<SpecimenMediaData> {
     return (StringBuffer('SpecimenMediaCompanion(')
           ..write('specimenUuid: $specimenUuid, ')
           ..write('mediaId: $mediaId, ')
-          ..write('category: $category, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();

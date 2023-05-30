@@ -25,12 +25,30 @@ class NarrativeServices extends DbAccess {
     NarrativeQuery(dbAccess).updateNarrativeEntry(id, entries);
   }
 
-  Future<void> createNarrativeMedia(int narrativeId) async {
-    int mediaId = await MediaQuery(dbAccess)
-        .createMedia(MediaCompanion(projectUuid: db.Value(projectUuid)));
+  Future<void> createNarrativeMedia(int narrativeId, String filePath) async {
+    int mediaId = await MediaQuery(dbAccess).createMedia(MediaCompanion(
+      projectUuid: db.Value(projectUuid),
+      filePath: db.Value(filePath),
+    ));
     NarrativeMediaCompanion entries = NarrativeMediaCompanion(
-        narrativeId: db.Value(narrativeId), mediaId: db.Value(mediaId));
+      narrativeId: db.Value(narrativeId),
+      mediaId: db.Value(mediaId),
+    );
     await NarrativeQuery(dbAccess).createNarrativeMedia(entries);
+  }
+
+  Future<List<MediaData>> getNarrativeMedia(int narrativeId) async {
+    List<NarrativeMediaData> mediaList =
+        await NarrativeQuery(dbAccess).getNarrativeMedia(narrativeId);
+    List<MediaData> mediaDataList = [];
+    for (NarrativeMediaData media in mediaList) {
+      if (media.mediaId != null) {
+        mediaDataList.add(
+          await MediaQuery(dbAccess).getMedia(media.mediaId!),
+        );
+      }
+    }
+    return mediaDataList;
   }
 
   void deleteNarrative(int id) {

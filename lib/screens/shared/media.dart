@@ -1,10 +1,21 @@
-import 'package:flutter/foundation.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/forms.dart';
-import 'package:nahpu/services/import/multimedia.dart';
+
+const int imageSize = 250;
 
 class AudioVisualForm extends StatefulWidget {
-  const AudioVisualForm({super.key});
+  const AudioVisualForm({
+    super.key,
+    required this.images,
+    required this.onAddImage,
+    required this.onAccessingCamera,
+  });
+
+  final List<File> images;
+  final VoidCallback onAddImage;
+  final VoidCallback onAccessingCamera;
 
   @override
   State<AudioVisualForm> createState() => _AudioVisualFormState();
@@ -14,6 +25,8 @@ class _AudioVisualFormState extends State<AudioVisualForm> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -28,7 +41,7 @@ class _AudioVisualFormState extends State<AudioVisualForm> {
                 spacing: 8,
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: widget.onAddImage,
                     icon: const Icon(Icons.add),
                   ),
                   ElevatedButton(
@@ -39,16 +52,7 @@ class _AudioVisualFormState extends State<AudioVisualForm> {
                           Theme.of(context).colorScheme.primaryContainer,
                       elevation: 0,
                     ),
-                    onPressed: () async {
-                      List<String> images = await ImageServices().pickImages();
-                      if (images.isNotEmpty) {
-                        if (kDebugMode) {
-                          for (var image in images) {
-                            print(image);
-                          }
-                        }
-                      }
-                    },
+                    onPressed: widget.onAccessingCamera,
                     child: const Icon(Icons.camera_alt_outlined),
                   ),
                 ],
@@ -58,11 +62,61 @@ class _AudioVisualFormState extends State<AudioVisualForm> {
         ),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.5,
-          child: const Center(
-            child: Text('No media added'),
+          child: Center(
+            child: widget.images.isEmpty
+                ? const Text('No images selected')
+                : MediaViewer(images: widget.images),
           ),
         ),
       ],
+    );
+  }
+}
+
+class MediaViewer extends StatelessWidget {
+  const MediaViewer({
+    super.key,
+    required this.images,
+  });
+
+  final List<File> images;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: GridView.count(
+        crossAxisCount: _getCrossAxisCount(MediaQuery.of(context).size.width),
+        children: List.generate(images.length, (index) {
+          return MediaCard(mediaPath: images[index]);
+        }),
+      ),
+    );
+  }
+
+  int _getCrossAxisCount(double width) {
+    int crossAxisCount = 1;
+    double safeWidth = width - 16;
+    while (safeWidth > imageSize) {
+      crossAxisCount++;
+      safeWidth -= imageSize;
+    }
+    return crossAxisCount;
+  }
+}
+
+class MediaCard extends StatelessWidget {
+  const MediaCard({
+    super.key,
+    required this.mediaPath,
+  });
+
+  final File mediaPath;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Image.file(mediaPath),
     );
   }
 }

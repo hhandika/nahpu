@@ -84,7 +84,9 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
                   ),
                 ),
               ),
-              const MediaForm(),
+              MediaForm(
+                narrativeId: widget.narrativeId,
+              ),
               const BottomPadding()
             ],
           ),

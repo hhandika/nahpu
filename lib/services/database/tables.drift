@@ -134,6 +134,7 @@ CREATE TABLE media (
     primaryId INT PRIMARY KEY AUTOINCREMENT,
     projectUuid TEXT,
     secondaryId TEXT,
+    category TEXT,
     taken TEXT,
     camera TEXT,
     lenses TEXT,
@@ -146,7 +147,6 @@ CREATE TABLE media (
 CREATE TABLE narrativeMedia (
     narrativeId INT NOT NULL,
     mediaId INT,
-    category TEXT,
     FOREIGN KEY (narrativeId) REFERENCES narrative(id),
     FOREIGN KEY (mediaId) REFERENCES media(primaryId)
 );
@@ -154,7 +154,6 @@ CREATE TABLE narrativeMedia (
 CREATE TABLE siteMedia (
     siteId INT NOT NULL,
     mediaId INT,
-    category TEXT,
     FOREIGN KEY (siteId) REFERENCES site(id),
     FOREIGN KEY (mediaId) REFERENCES media(primaryId)
 );
@@ -162,7 +161,6 @@ CREATE TABLE siteMedia (
 CREATE TABLE specimenMedia (
     specimenUuid TEXT NOT NULL,
     mediaId INT,
-    category TEXT,
     FOREIGN KEY (specimenUuid) REFERENCES specimen(uuid),
     FOREIGN KEY (mediaId) REFERENCES media(primaryId)
 );
