@@ -1,4 +1,6 @@
 import 'package:nahpu/providers/narrative.dart';
+import 'package:nahpu/providers/sites.dart';
+import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/media_queries.dart';
 import 'package:nahpu/services/database/narrative_queries.dart';
@@ -53,10 +55,10 @@ class MediaServices extends DbAccess {
         ref.invalidate(narrativeMediaProvider);
         break;
       case MediaCategory.site:
-        // ref.invalidate(siteMediaProvider);
+        ref.invalidate(siteMediaProvider);
         break;
       case MediaCategory.specimen:
-        // ref.invalidate(specimenMediaProvider);
+        ref.invalidate(specimenMediaProvider);
         break;
     }
   }

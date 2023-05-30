@@ -2,6 +2,7 @@ import 'package:nahpu/providers/database.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/services/database/media_queries.dart';
 import 'package:nahpu/services/database/specimen_queries.dart';
 import 'package:nahpu/services/types/specimens.dart';
 import 'package:nahpu/services/utility_services.dart';
@@ -24,6 +25,23 @@ final partBySpecimenProvider = FutureProvider.family
     .autoDispose<List<SpecimenPartData>, String>((ref, specimenUuid) =>
         SpecimenPartQuery(ref.read(databaseProvider))
             .getSpecimenParts(specimenUuid));
+
+@riverpod
+Future<List<MediaData>> specimenMedia(SpecimenMediaRef ref,
+    {required String specimenUuid}) async {
+  List<SpecimenMediaData> mediaList =
+      await SpecimenQuery(ref.read(databaseProvider))
+          .getSpecimenMedia(specimenUuid);
+  List<MediaData> mediaDataList = [];
+  for (SpecimenMediaData media in mediaList) {
+    if (media.mediaId != null) {
+      mediaDataList.add(
+        await MediaDbQuery(ref.read(databaseProvider)).getMedia(media.mediaId!),
+      );
+    }
+  }
+  return mediaDataList;
+}
 
 @riverpod
 class SpecimenTypes extends _$SpecimenTypes {

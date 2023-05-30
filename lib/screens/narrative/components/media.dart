@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/narrative.dart';
@@ -6,8 +5,8 @@ import 'package:nahpu/screens/shared/media.dart';
 import 'package:nahpu/services/import/multimedia.dart';
 import 'package:nahpu/services/narrative_services.dart';
 
-class MediaForm extends ConsumerStatefulWidget {
-  const MediaForm({
+class NarrativeMediaForm extends ConsumerStatefulWidget {
+  const NarrativeMediaForm({
     super.key,
     required this.narrativeId,
   });
@@ -15,10 +14,10 @@ class MediaForm extends ConsumerStatefulWidget {
   final int narrativeId;
 
   @override
-  MediaFormState createState() => MediaFormState();
+  NarrativeMediaFormState createState() => NarrativeMediaFormState();
 }
 
-class MediaFormState extends ConsumerState<MediaForm> {
+class NarrativeMediaFormState extends ConsumerState<NarrativeMediaForm> {
   @override
   void initState() {
     super.initState();
@@ -50,9 +49,13 @@ class MediaFormState extends ConsumerState<MediaForm> {
                     setState(() {});
                   }
                 } catch (e) {
-                  if (kDebugMode) {
-                    print(e);
-                  }
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        e.toString(),
+                      ),
+                    ),
+                  );
                 }
               },
               onAccessingCamera: () async {
@@ -66,9 +69,13 @@ class MediaFormState extends ConsumerState<MediaForm> {
                     setState(() {});
                   }
                 } catch (e) {
-                  if (kDebugMode) {
-                    print(e);
-                  }
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        e.toString(),
+                      ),
+                    ),
+                  );
                 }
               },
             );

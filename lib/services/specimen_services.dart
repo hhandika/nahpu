@@ -1,6 +1,8 @@
 import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/providers/taxa.dart';
+import 'package:nahpu/services/database/media_queries.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
+import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/types/specimens.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/providers/specimens.dart';
@@ -43,6 +45,28 @@ class SpecimenServices extends DbAccess {
         break;
     }
     invalidateSpecimenList();
+  }
+
+  Future<void> createSpecimenMedia(String specimenUuid, String filePath) async {
+    int? speciesId =
+        await SpecimenQuery(dbAccess).getSpeciesByUuid(specimenUuid);
+
+    String species = speciesId == null
+        ? ''
+        : await TaxonomyQuery(dbAccess).getSpeciesById(speciesId);
+
+    int mediaId = await MediaDbQuery(dbAccess).createMedia(MediaCompanion(
+      projectUuid: db.Value(projectUuid),
+      filePath: db.Value(filePath),
+      category: db.Value(matchMediaCategory(MediaCategory.specimen)),
+      caption: db.Value(species),
+    ));
+    SpecimenMediaCompanion entries = SpecimenMediaCompanion(
+      specimenUuid: db.Value(specimenUuid),
+      mediaId: db.Value(mediaId),
+    );
+    await SpecimenQuery(dbAccess).createSpecimenMedia(entries);
+    ref.invalidate(specimenMediaProvider);
   }
 
   Future<List<SpecimenData>> getMammalSpecimens() async {

@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/providers/specimens.dart';
+import 'package:nahpu/providers/sites.dart';
+import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/media.dart';
 import 'package:nahpu/services/import/multimedia.dart';
-import 'package:nahpu/services/specimen_services.dart';
+import 'package:nahpu/services/site_services.dart';
 
-class SpecimenMediaForm extends ConsumerStatefulWidget {
-  const SpecimenMediaForm({super.key, required this.specimenUuid});
+class SiteMediaForm extends ConsumerStatefulWidget {
+  const SiteMediaForm({super.key, required this.siteId});
 
-  final String specimenUuid;
+  final int siteId;
 
   @override
-  SpecimenMediaFormState createState() => SpecimenMediaFormState();
+  SiteMediaFormState createState() => SiteMediaFormState();
 }
 
-class SpecimenMediaFormState extends ConsumerState<SpecimenMediaForm> {
+class SiteMediaFormState extends ConsumerState<SiteMediaForm> {
   @override
   void initState() {
     super.initState();
@@ -27,9 +28,7 @@ class SpecimenMediaFormState extends ConsumerState<SpecimenMediaForm> {
 
   @override
   Widget build(BuildContext context) {
-    return ref
-        .watch(specimenMediaProvider(specimenUuid: widget.specimenUuid))
-        .when(
+    return ref.watch(siteMediaProvider(siteId: widget.siteId)).when(
           data: (data) {
             return MediaViewer(
               images: List.from(data),
@@ -38,8 +37,8 @@ class SpecimenMediaFormState extends ConsumerState<SpecimenMediaForm> {
                   List<String> images = await ImageServices().pickImages();
                   if (images.isNotEmpty) {
                     for (String path in images) {
-                      await SpecimenServices(ref).createSpecimenMedia(
-                        widget.specimenUuid,
+                      await SiteServices(ref).createSiteMedia(
+                        widget.siteId,
                         path,
                       );
                     }
@@ -59,8 +58,8 @@ class SpecimenMediaFormState extends ConsumerState<SpecimenMediaForm> {
                 try {
                   String? image = await ImageServices().accessCamera();
                   if (image != null) {
-                    await SpecimenServices(ref).createSpecimenMedia(
-                      widget.specimenUuid,
+                    await SiteServices(ref).createSiteMedia(
+                      widget.siteId,
                       image,
                     );
                     setState(() {});
@@ -77,13 +76,9 @@ class SpecimenMediaFormState extends ConsumerState<SpecimenMediaForm> {
               },
             );
           },
-          loading: () => const Center(
-            child: CircularProgressIndicator(),
-          ),
-          error: (error, stack) => Center(
-            child: Text(
-              error.toString(),
-            ),
+          loading: () => const CommonProgressIndicator(),
+          error: (e, s) => Text(
+            e.toString(),
           ),
         );
   }

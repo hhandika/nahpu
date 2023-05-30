@@ -87,7 +87,7 @@ class MammalFormsState extends ConsumerState<MammalForms> {
                   ),
                 ],
               ),
-              MediaForms(
+              SpecimenMediaForm(
                 specimenUuid: widget.specimenUuid,
               ),
               const BottomPadding()

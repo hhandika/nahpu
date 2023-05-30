@@ -2,9 +2,11 @@ import 'package:nahpu/providers/sites.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/coordinate_queries.dart';
 import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/database/media_queries.dart';
 import 'package:nahpu/services/database/site_queries.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/io_services.dart';
+import 'package:nahpu/services/types/import.dart';
 
 class SiteServices extends DbAccess {
   SiteServices(super.ref);
@@ -27,6 +29,20 @@ class SiteServices extends DbAccess {
 
   Future<void> updateSite(int id, SiteCompanion entries) async {
     await SiteQuery(dbAccess).updateSiteEntry(id, entries);
+  }
+
+  Future<void> createSiteMedia(int siteId, String filePath) async {
+    int mediaId = await MediaDbQuery(dbAccess).createMedia(MediaCompanion(
+      projectUuid: db.Value(projectUuid),
+      filePath: db.Value(filePath),
+      category: db.Value(matchMediaCategory(MediaCategory.site)),
+    ));
+    SiteMediaCompanion entries = SiteMediaCompanion(
+      siteId: db.Value(siteId),
+      mediaId: db.Value(mediaId),
+    );
+    await SiteQuery(dbAccess).createSiteMedia(entries);
+    ref.invalidate(siteMediaProvider);
   }
 
   Future<void> deleteSite(int id) async {

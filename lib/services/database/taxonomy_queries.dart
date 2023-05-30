@@ -14,6 +14,12 @@ class TaxonomyQuery extends DatabaseAccessor<Database>
     return (select(taxonomy)..where((t) => t.id.equals(id))).getSingle();
   }
 
+  Future<String> getSpeciesById(int id) {
+    return (select(taxonomy)..where((t) => t.id.equals(id)))
+        .map((t) => '${t.genus} ${t.specificEpithet}')
+        .getSingle();
+  }
+
   Future<TaxonomyData?> getTaxonIdByGenusEpithet(String genus, String epithet) {
     return (select(taxonomy)
           ..where((t) => t.genus.equals(genus))

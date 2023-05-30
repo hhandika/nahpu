@@ -175,6 +175,7 @@ class MediaCard extends ConsumerWidget {
             subtitle: Text(
               data.caption ?? 'No caption',
               style: Theme.of(context).textTheme.labelSmall,
+              overflow: TextOverflow.ellipsis,
             )),
         child: data.filePath != null
             ? Image.file(

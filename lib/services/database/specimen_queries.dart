@@ -48,7 +48,7 @@ class SpecimenQuery extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<int?> getSpecimenByUuid(String uuid) async {
+  Future<int?> getSpeciesByUuid(String uuid) async {
     SpecimenData? specimenData =
         await (select(specimen)..where((t) => t.uuid.equals(uuid))).getSingle();
 

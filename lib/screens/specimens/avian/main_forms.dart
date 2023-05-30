@@ -83,7 +83,7 @@ class BirdFormsState extends ConsumerState<BirdForms> {
                   ),
                 ],
               ),
-              MediaForms(
+              SpecimenMediaForm(
                 specimenUuid: widget.specimenUuid,
               ),
               const BottomPadding(),
