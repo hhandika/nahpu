@@ -171,10 +171,11 @@ class MediaCardState extends ConsumerState<MediaCard> {
               Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.9),
           trailing: MediaPopUpMenu(data: widget.data),
           title: Text(
-              widget.data.filePath != null
-                  ? basename(widget.data.filePath!)
-                  : 'No file name',
-              style: Theme.of(context).textTheme.labelLarge),
+            widget.data.filePath != null
+                ? basename(widget.data.filePath!)
+                : 'No file name',
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
           subtitle: Text(
             widget.data.caption ?? 'No caption',
             style: Theme.of(context).textTheme.labelSmall,
@@ -233,16 +234,10 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
                       )),
                       actions: [
                         TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text('Cancel'),
-                        ),
-                        TextButton(
                           onPressed: () async {
                             Navigator.of(context).pop();
                           },
-                          child: const Text('Update'),
+                          child: const Text('Close'),
                         ),
                       ],
                     );

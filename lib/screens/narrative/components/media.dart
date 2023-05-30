@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/narrative.dart';
 import 'package:nahpu/screens/shared/media.dart';
+import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/import/multimedia.dart';
 import 'package:nahpu/services/narrative_services.dart';
 
@@ -34,50 +35,9 @@ class NarrativeMediaFormState extends ConsumerState<NarrativeMediaForm> {
         .watch(narrativeMediaProvider(narrativeId: widget.narrativeId))
         .when(
           data: (data) {
-            return MediaViewer(
-              images: List.from(data),
-              onAddImage: () async {
-                try {
-                  List<String> images = await ImageServices().pickImages();
-                  if (images.isNotEmpty) {
-                    for (String path in images) {
-                      await NarrativeServices(ref).createNarrativeMedia(
-                        widget.narrativeId,
-                        path,
-                      );
-                    }
-                    setState(() {});
-                  }
-                } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        e.toString(),
-                      ),
-                    ),
-                  );
-                }
-              },
-              onAccessingCamera: () async {
-                try {
-                  String? image = await ImageServices().accessCamera();
-                  if (image != null) {
-                    await NarrativeServices(ref).createNarrativeMedia(
-                      widget.narrativeId,
-                      image,
-                    );
-                    setState(() {});
-                  }
-                } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        e.toString(),
-                      ),
-                    ),
-                  );
-                }
-              },
+            return NarrativeMediaViewer(
+              narrativeId: widget.narrativeId,
+              data: List.from(data),
             );
           },
           loading: () => const Center(child: CircularProgressIndicator()),
@@ -88,5 +48,63 @@ class NarrativeMediaFormState extends ConsumerState<NarrativeMediaForm> {
             ),
           ),
         );
+  }
+}
+
+class NarrativeMediaViewer extends ConsumerWidget {
+  const NarrativeMediaViewer({
+    super.key,
+    required this.narrativeId,
+    required this.data,
+  });
+
+  final int narrativeId;
+  final List<MediaData> data;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return MediaViewer(
+      images: data,
+      onAddImage: () async {
+        try {
+          List<String> images = await ImageServices().pickImages();
+          if (images.isNotEmpty) {
+            for (String path in images) {
+              await NarrativeServices(ref).createNarrativeMedia(
+                narrativeId,
+                path,
+              );
+            }
+          }
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                e.toString(),
+              ),
+            ),
+          );
+        }
+      },
+      onAccessingCamera: () async {
+        try {
+          String? image = await ImageServices().accessCamera();
+          if (image != null) {
+            await NarrativeServices(ref).createNarrativeMedia(
+              narrativeId,
+              image,
+            );
+          }
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                e.toString(),
+              ),
+            ),
+          );
+        }
+      },
+    );
   }
 }
