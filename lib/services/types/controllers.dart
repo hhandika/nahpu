@@ -720,7 +720,7 @@ class PersonnelFormCtrModel {
     required this.affiliationCtr,
     required this.roleCtr,
     required this.collectorNumCtr,
-    required this.photoIdCtr,
+    required this.photoPathCtr,
     required this.noteCtr,
   });
 
@@ -731,7 +731,7 @@ class PersonnelFormCtrModel {
   String? roleCtr;
   TextEditingController collectorNumCtr;
   TextEditingController phoneCtr;
-  int? photoIdCtr;
+  TextEditingController photoPathCtr;
   TextEditingController noteCtr;
 
   factory PersonnelFormCtrModel.empty() => PersonnelFormCtrModel(
@@ -742,7 +742,7 @@ class PersonnelFormCtrModel {
       affiliationCtr: TextEditingController(),
       roleCtr: null,
       collectorNumCtr: TextEditingController(),
-      photoIdCtr: null,
+      photoPathCtr: TextEditingController(),
       noteCtr: TextEditingController());
 
   factory PersonnelFormCtrModel.fromData(PersonnelData personnel) =>
@@ -755,9 +755,20 @@ class PersonnelFormCtrModel {
         roleCtr: personnel.role,
         collectorNumCtr: TextEditingController(
             text: personnel.currentFieldNumber?.toString() ?? ''),
-        photoIdCtr: personnel.photoID,
+        photoPathCtr: TextEditingController(text: personnel.photoPath),
         noteCtr: TextEditingController(text: personnel.notes),
       );
+
+  void dispose() {
+    nameCtr.dispose();
+    initialCtr.dispose();
+    emailCtr.dispose();
+    phoneCtr.dispose();
+    affiliationCtr.dispose();
+    collectorNumCtr.dispose();
+    photoPathCtr.dispose();
+    noteCtr.dispose();
+  }
 }
 
 class TaxonRegistryCtrModel {

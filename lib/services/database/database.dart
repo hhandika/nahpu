@@ -43,15 +43,20 @@ class Database extends _$Database {
   }
 
   Future<void> _migrateFromVersion3(Migrator m) async {
+    await m.addColumn(personnel, personnel.photoPath);
     await m.addColumn(specimen, specimen.collectionTime);
+
     await m.create(narrativeMedia);
     await m.create(siteMedia);
     await m.create(specimenMedia);
+
     await m.renameColumn(collEvent, 'eventID', collEvent.idSuffix);
     await m.renameColumn(collEffort, 'type', collEffort.method);
 
     await m.deleteTable('fileMetadata');
-    // delete column from media table
+    await m.deleteTable('personnelPhoto');
+    // delete column from media table and personnel tables
+    await m.alterTable(TableMigration(personnel));
     await m.alterTable(TableMigration(media));
   }
 

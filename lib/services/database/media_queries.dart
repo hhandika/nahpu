@@ -8,4 +8,16 @@ part 'media_queries.g.dart';
 )
 class MediaQuery extends DatabaseAccessor<Database> with _$MediaQueryMixin {
   MediaQuery(Database db) : super(db);
+
+  Future<int> createMedia(MediaCompanion form) {
+    return into(media).insert(form);
+  }
+
+  Future<List<MediaData>> getAllMedia() {
+    return select(media).get();
+  }
+
+  Future<void> deleteMedia(int id) {
+    return (delete(media)..where((t) => t.primaryId.equals(id))).go();
+  }
 }

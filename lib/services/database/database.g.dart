@@ -495,487 +495,6 @@ class ProjectCompanion extends UpdateCompanion<ProjectData> {
   }
 }
 
-class FileMetadata extends Table
-    with TableInfo<FileMetadata, FileMetadataData> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  FileMetadata(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, true,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  static const VerificationMeta _filenameMeta =
-      const VerificationMeta('filename');
-  late final GeneratedColumn<String> filename = GeneratedColumn<String>(
-      'filename', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _sizeKbMeta = const VerificationMeta('sizeKb');
-  late final GeneratedColumn<double> sizeKb = GeneratedColumn<double>(
-      'sizeKb', aliasedName, true,
-      type: DriftSqlType.double,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _relativePathMeta =
-      const VerificationMeta('relativePath');
-  late final GeneratedColumn<String> relativePath = GeneratedColumn<String>(
-      'relativePath', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  static const VerificationMeta _createdMeta =
-      const VerificationMeta('created');
-  late final GeneratedColumn<String> created = GeneratedColumn<String>(
-      'created', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  @override
-  List<GeneratedColumn> get $columns =>
-      [id, filename, sizeKb, relativePath, created];
-  @override
-  String get aliasedName => _alias ?? 'fileMetadata';
-  @override
-  String get actualTableName => 'fileMetadata';
-  @override
-  VerificationContext validateIntegrity(Insertable<FileMetadataData> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('filename')) {
-      context.handle(_filenameMeta,
-          filename.isAcceptableOrUnknown(data['filename']!, _filenameMeta));
-    }
-    if (data.containsKey('sizeKb')) {
-      context.handle(_sizeKbMeta,
-          sizeKb.isAcceptableOrUnknown(data['sizeKb']!, _sizeKbMeta));
-    }
-    if (data.containsKey('relativePath')) {
-      context.handle(
-          _relativePathMeta,
-          relativePath.isAcceptableOrUnknown(
-              data['relativePath']!, _relativePathMeta));
-    }
-    if (data.containsKey('created')) {
-      context.handle(_createdMeta,
-          created.isAcceptableOrUnknown(data['created']!, _createdMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  FileMetadataData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return FileMetadataData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id']),
-      filename: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}filename']),
-      sizeKb: attachedDatabase.typeMapping
-          .read(DriftSqlType.double, data['${effectivePrefix}sizeKb']),
-      relativePath: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}relativePath']),
-      created: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}created']),
-    );
-  }
-
-  @override
-  FileMetadata createAlias(String alias) {
-    return FileMetadata(attachedDatabase, alias);
-  }
-
-  @override
-  bool get dontWriteConstraints => true;
-}
-
-class FileMetadataData extends DataClass
-    implements Insertable<FileMetadataData> {
-  final int? id;
-  final String? filename;
-  final double? sizeKb;
-  final String? relativePath;
-  final String? created;
-  const FileMetadataData(
-      {this.id, this.filename, this.sizeKb, this.relativePath, this.created});
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (!nullToAbsent || id != null) {
-      map['id'] = Variable<int>(id);
-    }
-    if (!nullToAbsent || filename != null) {
-      map['filename'] = Variable<String>(filename);
-    }
-    if (!nullToAbsent || sizeKb != null) {
-      map['sizeKb'] = Variable<double>(sizeKb);
-    }
-    if (!nullToAbsent || relativePath != null) {
-      map['relativePath'] = Variable<String>(relativePath);
-    }
-    if (!nullToAbsent || created != null) {
-      map['created'] = Variable<String>(created);
-    }
-    return map;
-  }
-
-  FileMetadataCompanion toCompanion(bool nullToAbsent) {
-    return FileMetadataCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      filename: filename == null && nullToAbsent
-          ? const Value.absent()
-          : Value(filename),
-      sizeKb:
-          sizeKb == null && nullToAbsent ? const Value.absent() : Value(sizeKb),
-      relativePath: relativePath == null && nullToAbsent
-          ? const Value.absent()
-          : Value(relativePath),
-      created: created == null && nullToAbsent
-          ? const Value.absent()
-          : Value(created),
-    );
-  }
-
-  factory FileMetadataData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return FileMetadataData(
-      id: serializer.fromJson<int?>(json['id']),
-      filename: serializer.fromJson<String?>(json['filename']),
-      sizeKb: serializer.fromJson<double?>(json['sizeKb']),
-      relativePath: serializer.fromJson<String?>(json['relativePath']),
-      created: serializer.fromJson<String?>(json['created']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int?>(id),
-      'filename': serializer.toJson<String?>(filename),
-      'sizeKb': serializer.toJson<double?>(sizeKb),
-      'relativePath': serializer.toJson<String?>(relativePath),
-      'created': serializer.toJson<String?>(created),
-    };
-  }
-
-  FileMetadataData copyWith(
-          {Value<int?> id = const Value.absent(),
-          Value<String?> filename = const Value.absent(),
-          Value<double?> sizeKb = const Value.absent(),
-          Value<String?> relativePath = const Value.absent(),
-          Value<String?> created = const Value.absent()}) =>
-      FileMetadataData(
-        id: id.present ? id.value : this.id,
-        filename: filename.present ? filename.value : this.filename,
-        sizeKb: sizeKb.present ? sizeKb.value : this.sizeKb,
-        relativePath:
-            relativePath.present ? relativePath.value : this.relativePath,
-        created: created.present ? created.value : this.created,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('FileMetadataData(')
-          ..write('id: $id, ')
-          ..write('filename: $filename, ')
-          ..write('sizeKb: $sizeKb, ')
-          ..write('relativePath: $relativePath, ')
-          ..write('created: $created')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(id, filename, sizeKb, relativePath, created);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is FileMetadataData &&
-          other.id == this.id &&
-          other.filename == this.filename &&
-          other.sizeKb == this.sizeKb &&
-          other.relativePath == this.relativePath &&
-          other.created == this.created);
-}
-
-class FileMetadataCompanion extends UpdateCompanion<FileMetadataData> {
-  final Value<int?> id;
-  final Value<String?> filename;
-  final Value<double?> sizeKb;
-  final Value<String?> relativePath;
-  final Value<String?> created;
-  const FileMetadataCompanion({
-    this.id = const Value.absent(),
-    this.filename = const Value.absent(),
-    this.sizeKb = const Value.absent(),
-    this.relativePath = const Value.absent(),
-    this.created = const Value.absent(),
-  });
-  FileMetadataCompanion.insert({
-    this.id = const Value.absent(),
-    this.filename = const Value.absent(),
-    this.sizeKb = const Value.absent(),
-    this.relativePath = const Value.absent(),
-    this.created = const Value.absent(),
-  });
-  static Insertable<FileMetadataData> custom({
-    Expression<int>? id,
-    Expression<String>? filename,
-    Expression<double>? sizeKb,
-    Expression<String>? relativePath,
-    Expression<String>? created,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (filename != null) 'filename': filename,
-      if (sizeKb != null) 'sizeKb': sizeKb,
-      if (relativePath != null) 'relativePath': relativePath,
-      if (created != null) 'created': created,
-    });
-  }
-
-  FileMetadataCompanion copyWith(
-      {Value<int?>? id,
-      Value<String?>? filename,
-      Value<double?>? sizeKb,
-      Value<String?>? relativePath,
-      Value<String?>? created}) {
-    return FileMetadataCompanion(
-      id: id ?? this.id,
-      filename: filename ?? this.filename,
-      sizeKb: sizeKb ?? this.sizeKb,
-      relativePath: relativePath ?? this.relativePath,
-      created: created ?? this.created,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
-    if (filename.present) {
-      map['filename'] = Variable<String>(filename.value);
-    }
-    if (sizeKb.present) {
-      map['sizeKb'] = Variable<double>(sizeKb.value);
-    }
-    if (relativePath.present) {
-      map['relativePath'] = Variable<String>(relativePath.value);
-    }
-    if (created.present) {
-      map['created'] = Variable<String>(created.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('FileMetadataCompanion(')
-          ..write('id: $id, ')
-          ..write('filename: $filename, ')
-          ..write('sizeKb: $sizeKb, ')
-          ..write('relativePath: $relativePath, ')
-          ..write('created: $created')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class PersonnelPhoto extends Table
-    with TableInfo<PersonnelPhoto, PersonnelPhotoData> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  PersonnelPhoto(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, true,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  static const VerificationMeta _fileIdMeta = const VerificationMeta('fileId');
-  late final GeneratedColumn<int> fileId = GeneratedColumn<int>(
-      'fileId', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
-  @override
-  List<GeneratedColumn> get $columns => [id, fileId];
-  @override
-  String get aliasedName => _alias ?? 'personnelPhoto';
-  @override
-  String get actualTableName => 'personnelPhoto';
-  @override
-  VerificationContext validateIntegrity(Insertable<PersonnelPhotoData> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('fileId')) {
-      context.handle(_fileIdMeta,
-          fileId.isAcceptableOrUnknown(data['fileId']!, _fileIdMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  PersonnelPhotoData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return PersonnelPhotoData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id']),
-      fileId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}fileId']),
-    );
-  }
-
-  @override
-  PersonnelPhoto createAlias(String alias) {
-    return PersonnelPhoto(attachedDatabase, alias);
-  }
-
-  @override
-  List<String> get customConstraints =>
-      const ['FOREIGN KEY(fileId)REFERENCES fileMetadata(id)'];
-  @override
-  bool get dontWriteConstraints => true;
-}
-
-class PersonnelPhotoData extends DataClass
-    implements Insertable<PersonnelPhotoData> {
-  final int? id;
-  final int? fileId;
-  const PersonnelPhotoData({this.id, this.fileId});
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (!nullToAbsent || id != null) {
-      map['id'] = Variable<int>(id);
-    }
-    if (!nullToAbsent || fileId != null) {
-      map['fileId'] = Variable<int>(fileId);
-    }
-    return map;
-  }
-
-  PersonnelPhotoCompanion toCompanion(bool nullToAbsent) {
-    return PersonnelPhotoCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      fileId:
-          fileId == null && nullToAbsent ? const Value.absent() : Value(fileId),
-    );
-  }
-
-  factory PersonnelPhotoData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return PersonnelPhotoData(
-      id: serializer.fromJson<int?>(json['id']),
-      fileId: serializer.fromJson<int?>(json['fileId']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int?>(id),
-      'fileId': serializer.toJson<int?>(fileId),
-    };
-  }
-
-  PersonnelPhotoData copyWith(
-          {Value<int?> id = const Value.absent(),
-          Value<int?> fileId = const Value.absent()}) =>
-      PersonnelPhotoData(
-        id: id.present ? id.value : this.id,
-        fileId: fileId.present ? fileId.value : this.fileId,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('PersonnelPhotoData(')
-          ..write('id: $id, ')
-          ..write('fileId: $fileId')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(id, fileId);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is PersonnelPhotoData &&
-          other.id == this.id &&
-          other.fileId == this.fileId);
-}
-
-class PersonnelPhotoCompanion extends UpdateCompanion<PersonnelPhotoData> {
-  final Value<int?> id;
-  final Value<int?> fileId;
-  const PersonnelPhotoCompanion({
-    this.id = const Value.absent(),
-    this.fileId = const Value.absent(),
-  });
-  PersonnelPhotoCompanion.insert({
-    this.id = const Value.absent(),
-    this.fileId = const Value.absent(),
-  });
-  static Insertable<PersonnelPhotoData> custom({
-    Expression<int>? id,
-    Expression<int>? fileId,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (fileId != null) 'fileId': fileId,
-    });
-  }
-
-  PersonnelPhotoCompanion copyWith({Value<int?>? id, Value<int?>? fileId}) {
-    return PersonnelPhotoCompanion(
-      id: id ?? this.id,
-      fileId: fileId ?? this.fileId,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
-    if (fileId.present) {
-      map['fileId'] = Variable<int>(fileId.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('PersonnelPhotoCompanion(')
-          ..write('id: $id, ')
-          ..write('fileId: $fileId')
-          ..write(')'))
-        .toString();
-  }
-}
-
 class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -1032,16 +551,16 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _photoIDMeta =
-      const VerificationMeta('photoID');
-  late final GeneratedColumn<int> photoID = GeneratedColumn<int>(
-      'photoID', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
   static const VerificationMeta _notesMeta = const VerificationMeta('notes');
   late final GeneratedColumn<String> notes = GeneratedColumn<String>(
       'notes', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  static const VerificationMeta _photoPathMeta =
+      const VerificationMeta('photoPath');
+  late final GeneratedColumn<String> photoPath = GeneratedColumn<String>(
+      'photoPath', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -1055,8 +574,8 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
         affiliation,
         role,
         currentFieldNumber,
-        photoID,
-        notes
+        notes,
+        photoPath
       ];
   @override
   String get aliasedName => _alias ?? 'personnel';
@@ -1105,13 +624,13 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
           currentFieldNumber.isAcceptableOrUnknown(
               data['currentFieldNumber']!, _currentFieldNumberMeta));
     }
-    if (data.containsKey('photoID')) {
-      context.handle(_photoIDMeta,
-          photoID.isAcceptableOrUnknown(data['photoID']!, _photoIDMeta));
-    }
     if (data.containsKey('notes')) {
       context.handle(
           _notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
+    }
+    if (data.containsKey('photoPath')) {
+      context.handle(_photoPathMeta,
+          photoPath.isAcceptableOrUnknown(data['photoPath']!, _photoPathMeta));
     }
     return context;
   }
@@ -1138,10 +657,10 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
           .read(DriftSqlType.string, data['${effectivePrefix}role']),
       currentFieldNumber: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}currentFieldNumber']),
-      photoID: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}photoID']),
       notes: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}notes']),
+      photoPath: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}photoPath']),
     );
   }
 
@@ -1150,9 +669,6 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
     return Personnel(attachedDatabase, alias);
   }
 
-  @override
-  List<String> get customConstraints =>
-      const ['FOREIGN KEY(photoID)REFERENCES personnelPhoto(id)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -1168,8 +684,8 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
   final int? currentFieldNumber;
 
   /// the next input for field number
-  final int? photoID;
   final String? notes;
+  final String? photoPath;
   const PersonnelData(
       {required this.uuid,
       this.name,
@@ -1179,8 +695,8 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
       this.affiliation,
       this.role,
       this.currentFieldNumber,
-      this.photoID,
-      this.notes});
+      this.notes,
+      this.photoPath});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1206,11 +722,11 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
     if (!nullToAbsent || currentFieldNumber != null) {
       map['currentFieldNumber'] = Variable<int>(currentFieldNumber);
     }
-    if (!nullToAbsent || photoID != null) {
-      map['photoID'] = Variable<int>(photoID);
-    }
     if (!nullToAbsent || notes != null) {
       map['notes'] = Variable<String>(notes);
+    }
+    if (!nullToAbsent || photoPath != null) {
+      map['photoPath'] = Variable<String>(photoPath);
     }
     return map;
   }
@@ -1233,11 +749,11 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
       currentFieldNumber: currentFieldNumber == null && nullToAbsent
           ? const Value.absent()
           : Value(currentFieldNumber),
-      photoID: photoID == null && nullToAbsent
-          ? const Value.absent()
-          : Value(photoID),
       notes:
           notes == null && nullToAbsent ? const Value.absent() : Value(notes),
+      photoPath: photoPath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(photoPath),
     );
   }
 
@@ -1253,8 +769,8 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
       affiliation: serializer.fromJson<String?>(json['affiliation']),
       role: serializer.fromJson<String?>(json['role']),
       currentFieldNumber: serializer.fromJson<int?>(json['currentFieldNumber']),
-      photoID: serializer.fromJson<int?>(json['photoID']),
       notes: serializer.fromJson<String?>(json['notes']),
+      photoPath: serializer.fromJson<String?>(json['photoPath']),
     );
   }
   @override
@@ -1269,8 +785,8 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
       'affiliation': serializer.toJson<String?>(affiliation),
       'role': serializer.toJson<String?>(role),
       'currentFieldNumber': serializer.toJson<int?>(currentFieldNumber),
-      'photoID': serializer.toJson<int?>(photoID),
       'notes': serializer.toJson<String?>(notes),
+      'photoPath': serializer.toJson<String?>(photoPath),
     };
   }
 
@@ -1283,8 +799,8 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
           Value<String?> affiliation = const Value.absent(),
           Value<String?> role = const Value.absent(),
           Value<int?> currentFieldNumber = const Value.absent(),
-          Value<int?> photoID = const Value.absent(),
-          Value<String?> notes = const Value.absent()}) =>
+          Value<String?> notes = const Value.absent(),
+          Value<String?> photoPath = const Value.absent()}) =>
       PersonnelData(
         uuid: uuid ?? this.uuid,
         name: name.present ? name.value : this.name,
@@ -1296,8 +812,8 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
         currentFieldNumber: currentFieldNumber.present
             ? currentFieldNumber.value
             : this.currentFieldNumber,
-        photoID: photoID.present ? photoID.value : this.photoID,
         notes: notes.present ? notes.value : this.notes,
+        photoPath: photoPath.present ? photoPath.value : this.photoPath,
       );
   @override
   String toString() {
@@ -1310,15 +826,15 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
           ..write('affiliation: $affiliation, ')
           ..write('role: $role, ')
           ..write('currentFieldNumber: $currentFieldNumber, ')
-          ..write('photoID: $photoID, ')
-          ..write('notes: $notes')
+          ..write('notes: $notes, ')
+          ..write('photoPath: $photoPath')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(uuid, name, initial, email, phone,
-      affiliation, role, currentFieldNumber, photoID, notes);
+      affiliation, role, currentFieldNumber, notes, photoPath);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1331,8 +847,8 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
           other.affiliation == this.affiliation &&
           other.role == this.role &&
           other.currentFieldNumber == this.currentFieldNumber &&
-          other.photoID == this.photoID &&
-          other.notes == this.notes);
+          other.notes == this.notes &&
+          other.photoPath == this.photoPath);
 }
 
 class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
@@ -1344,8 +860,8 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
   final Value<String?> affiliation;
   final Value<String?> role;
   final Value<int?> currentFieldNumber;
-  final Value<int?> photoID;
   final Value<String?> notes;
+  final Value<String?> photoPath;
   final Value<int> rowid;
   const PersonnelCompanion({
     this.uuid = const Value.absent(),
@@ -1356,8 +872,8 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     this.affiliation = const Value.absent(),
     this.role = const Value.absent(),
     this.currentFieldNumber = const Value.absent(),
-    this.photoID = const Value.absent(),
     this.notes = const Value.absent(),
+    this.photoPath = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   PersonnelCompanion.insert({
@@ -1369,8 +885,8 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     this.affiliation = const Value.absent(),
     this.role = const Value.absent(),
     this.currentFieldNumber = const Value.absent(),
-    this.photoID = const Value.absent(),
     this.notes = const Value.absent(),
+    this.photoPath = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : uuid = Value(uuid);
   static Insertable<PersonnelData> custom({
@@ -1382,8 +898,8 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     Expression<String>? affiliation,
     Expression<String>? role,
     Expression<int>? currentFieldNumber,
-    Expression<int>? photoID,
     Expression<String>? notes,
+    Expression<String>? photoPath,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -1395,8 +911,8 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
       if (affiliation != null) 'affiliation': affiliation,
       if (role != null) 'role': role,
       if (currentFieldNumber != null) 'currentFieldNumber': currentFieldNumber,
-      if (photoID != null) 'photoID': photoID,
       if (notes != null) 'notes': notes,
+      if (photoPath != null) 'photoPath': photoPath,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1410,8 +926,8 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
       Value<String?>? affiliation,
       Value<String?>? role,
       Value<int?>? currentFieldNumber,
-      Value<int?>? photoID,
       Value<String?>? notes,
+      Value<String?>? photoPath,
       Value<int>? rowid}) {
     return PersonnelCompanion(
       uuid: uuid ?? this.uuid,
@@ -1422,8 +938,8 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
       affiliation: affiliation ?? this.affiliation,
       role: role ?? this.role,
       currentFieldNumber: currentFieldNumber ?? this.currentFieldNumber,
-      photoID: photoID ?? this.photoID,
       notes: notes ?? this.notes,
+      photoPath: photoPath ?? this.photoPath,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1455,11 +971,11 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
     if (currentFieldNumber.present) {
       map['currentFieldNumber'] = Variable<int>(currentFieldNumber.value);
     }
-    if (photoID.present) {
-      map['photoID'] = Variable<int>(photoID.value);
-    }
     if (notes.present) {
       map['notes'] = Variable<String>(notes.value);
+    }
+    if (photoPath.present) {
+      map['photoPath'] = Variable<String>(photoPath.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -1478,8 +994,8 @@ class PersonnelCompanion extends UpdateCompanion<PersonnelData> {
           ..write('affiliation: $affiliation, ')
           ..write('role: $role, ')
           ..write('currentFieldNumber: $currentFieldNumber, ')
-          ..write('photoID: $photoID, ')
           ..write('notes: $notes, ')
+          ..write('photoPath: $photoPath, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -5386,10 +4902,10 @@ class NarrativeMedia extends Table
   static const VerificationMeta _narrativeIdMeta =
       const VerificationMeta('narrativeId');
   late final GeneratedColumn<int> narrativeId = GeneratedColumn<int>(
-      'narrativeId', aliasedName, true,
+      'narrativeId', aliasedName, false,
       type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   static const VerificationMeta _mediaIdMeta =
       const VerificationMeta('mediaId');
   late final GeneratedColumn<int> mediaId = GeneratedColumn<int>(
@@ -5420,6 +4936,8 @@ class NarrativeMedia extends Table
           _narrativeIdMeta,
           narrativeId.isAcceptableOrUnknown(
               data['narrativeId']!, _narrativeIdMeta));
+    } else if (isInserting) {
+      context.missing(_narrativeIdMeta);
     }
     if (data.containsKey('mediaId')) {
       context.handle(_mediaIdMeta,
@@ -5439,7 +4957,7 @@ class NarrativeMedia extends Table
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return NarrativeMediaData(
       narrativeId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}narrativeId']),
+          .read(DriftSqlType.int, data['${effectivePrefix}narrativeId'])!,
       mediaId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}mediaId']),
       category: attachedDatabase.typeMapping
@@ -5463,16 +4981,15 @@ class NarrativeMedia extends Table
 
 class NarrativeMediaData extends DataClass
     implements Insertable<NarrativeMediaData> {
-  final int? narrativeId;
+  final int narrativeId;
   final int? mediaId;
   final String? category;
-  const NarrativeMediaData({this.narrativeId, this.mediaId, this.category});
+  const NarrativeMediaData(
+      {required this.narrativeId, this.mediaId, this.category});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || narrativeId != null) {
-      map['narrativeId'] = Variable<int>(narrativeId);
-    }
+    map['narrativeId'] = Variable<int>(narrativeId);
     if (!nullToAbsent || mediaId != null) {
       map['mediaId'] = Variable<int>(mediaId);
     }
@@ -5484,9 +5001,7 @@ class NarrativeMediaData extends DataClass
 
   NarrativeMediaCompanion toCompanion(bool nullToAbsent) {
     return NarrativeMediaCompanion(
-      narrativeId: narrativeId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(narrativeId),
+      narrativeId: Value(narrativeId),
       mediaId: mediaId == null && nullToAbsent
           ? const Value.absent()
           : Value(mediaId),
@@ -5500,7 +5015,7 @@ class NarrativeMediaData extends DataClass
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return NarrativeMediaData(
-      narrativeId: serializer.fromJson<int?>(json['narrativeId']),
+      narrativeId: serializer.fromJson<int>(json['narrativeId']),
       mediaId: serializer.fromJson<int?>(json['mediaId']),
       category: serializer.fromJson<String?>(json['category']),
     );
@@ -5509,18 +5024,18 @@ class NarrativeMediaData extends DataClass
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'narrativeId': serializer.toJson<int?>(narrativeId),
+      'narrativeId': serializer.toJson<int>(narrativeId),
       'mediaId': serializer.toJson<int?>(mediaId),
       'category': serializer.toJson<String?>(category),
     };
   }
 
   NarrativeMediaData copyWith(
-          {Value<int?> narrativeId = const Value.absent(),
+          {int? narrativeId,
           Value<int?> mediaId = const Value.absent(),
           Value<String?> category = const Value.absent()}) =>
       NarrativeMediaData(
-        narrativeId: narrativeId.present ? narrativeId.value : this.narrativeId,
+        narrativeId: narrativeId ?? this.narrativeId,
         mediaId: mediaId.present ? mediaId.value : this.mediaId,
         category: category.present ? category.value : this.category,
       );
@@ -5546,7 +5061,7 @@ class NarrativeMediaData extends DataClass
 }
 
 class NarrativeMediaCompanion extends UpdateCompanion<NarrativeMediaData> {
-  final Value<int?> narrativeId;
+  final Value<int> narrativeId;
   final Value<int?> mediaId;
   final Value<String?> category;
   final Value<int> rowid;
@@ -5557,11 +5072,11 @@ class NarrativeMediaCompanion extends UpdateCompanion<NarrativeMediaData> {
     this.rowid = const Value.absent(),
   });
   NarrativeMediaCompanion.insert({
-    this.narrativeId = const Value.absent(),
+    required int narrativeId,
     this.mediaId = const Value.absent(),
     this.category = const Value.absent(),
     this.rowid = const Value.absent(),
-  });
+  }) : narrativeId = Value(narrativeId);
   static Insertable<NarrativeMediaData> custom({
     Expression<int>? narrativeId,
     Expression<int>? mediaId,
@@ -5577,7 +5092,7 @@ class NarrativeMediaCompanion extends UpdateCompanion<NarrativeMediaData> {
   }
 
   NarrativeMediaCompanion copyWith(
-      {Value<int?>? narrativeId,
+      {Value<int>? narrativeId,
       Value<int?>? mediaId,
       Value<String?>? category,
       Value<int>? rowid}) {
@@ -5626,10 +5141,10 @@ class SiteMedia extends Table with TableInfo<SiteMedia, SiteMediaData> {
   SiteMedia(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _siteIdMeta = const VerificationMeta('siteId');
   late final GeneratedColumn<int> siteId = GeneratedColumn<int>(
-      'siteId', aliasedName, true,
+      'siteId', aliasedName, false,
       type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: '');
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   static const VerificationMeta _mediaIdMeta =
       const VerificationMeta('mediaId');
   late final GeneratedColumn<int> mediaId = GeneratedColumn<int>(
@@ -5658,6 +5173,8 @@ class SiteMedia extends Table with TableInfo<SiteMedia, SiteMediaData> {
     if (data.containsKey('siteId')) {
       context.handle(_siteIdMeta,
           siteId.isAcceptableOrUnknown(data['siteId']!, _siteIdMeta));
+    } else if (isInserting) {
+      context.missing(_siteIdMeta);
     }
     if (data.containsKey('mediaId')) {
       context.handle(_mediaIdMeta,
@@ -5677,7 +5194,7 @@ class SiteMedia extends Table with TableInfo<SiteMedia, SiteMediaData> {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return SiteMediaData(
       siteId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}siteId']),
+          .read(DriftSqlType.int, data['${effectivePrefix}siteId'])!,
       mediaId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}mediaId']),
       category: attachedDatabase.typeMapping
@@ -5700,16 +5217,14 @@ class SiteMedia extends Table with TableInfo<SiteMedia, SiteMediaData> {
 }
 
 class SiteMediaData extends DataClass implements Insertable<SiteMediaData> {
-  final int? siteId;
+  final int siteId;
   final int? mediaId;
   final String? category;
-  const SiteMediaData({this.siteId, this.mediaId, this.category});
+  const SiteMediaData({required this.siteId, this.mediaId, this.category});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || siteId != null) {
-      map['siteId'] = Variable<int>(siteId);
-    }
+    map['siteId'] = Variable<int>(siteId);
     if (!nullToAbsent || mediaId != null) {
       map['mediaId'] = Variable<int>(mediaId);
     }
@@ -5721,8 +5236,7 @@ class SiteMediaData extends DataClass implements Insertable<SiteMediaData> {
 
   SiteMediaCompanion toCompanion(bool nullToAbsent) {
     return SiteMediaCompanion(
-      siteId:
-          siteId == null && nullToAbsent ? const Value.absent() : Value(siteId),
+      siteId: Value(siteId),
       mediaId: mediaId == null && nullToAbsent
           ? const Value.absent()
           : Value(mediaId),
@@ -5736,7 +5250,7 @@ class SiteMediaData extends DataClass implements Insertable<SiteMediaData> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return SiteMediaData(
-      siteId: serializer.fromJson<int?>(json['siteId']),
+      siteId: serializer.fromJson<int>(json['siteId']),
       mediaId: serializer.fromJson<int?>(json['mediaId']),
       category: serializer.fromJson<String?>(json['category']),
     );
@@ -5745,18 +5259,18 @@ class SiteMediaData extends DataClass implements Insertable<SiteMediaData> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'siteId': serializer.toJson<int?>(siteId),
+      'siteId': serializer.toJson<int>(siteId),
       'mediaId': serializer.toJson<int?>(mediaId),
       'category': serializer.toJson<String?>(category),
     };
   }
 
   SiteMediaData copyWith(
-          {Value<int?> siteId = const Value.absent(),
+          {int? siteId,
           Value<int?> mediaId = const Value.absent(),
           Value<String?> category = const Value.absent()}) =>
       SiteMediaData(
-        siteId: siteId.present ? siteId.value : this.siteId,
+        siteId: siteId ?? this.siteId,
         mediaId: mediaId.present ? mediaId.value : this.mediaId,
         category: category.present ? category.value : this.category,
       );
@@ -5782,7 +5296,7 @@ class SiteMediaData extends DataClass implements Insertable<SiteMediaData> {
 }
 
 class SiteMediaCompanion extends UpdateCompanion<SiteMediaData> {
-  final Value<int?> siteId;
+  final Value<int> siteId;
   final Value<int?> mediaId;
   final Value<String?> category;
   final Value<int> rowid;
@@ -5793,11 +5307,11 @@ class SiteMediaCompanion extends UpdateCompanion<SiteMediaData> {
     this.rowid = const Value.absent(),
   });
   SiteMediaCompanion.insert({
-    this.siteId = const Value.absent(),
+    required int siteId,
     this.mediaId = const Value.absent(),
     this.category = const Value.absent(),
     this.rowid = const Value.absent(),
-  });
+  }) : siteId = Value(siteId);
   static Insertable<SiteMediaData> custom({
     Expression<int>? siteId,
     Expression<int>? mediaId,
@@ -5813,7 +5327,7 @@ class SiteMediaCompanion extends UpdateCompanion<SiteMediaData> {
   }
 
   SiteMediaCompanion copyWith(
-      {Value<int?>? siteId,
+      {Value<int>? siteId,
       Value<int?>? mediaId,
       Value<String?>? category,
       Value<int>? rowid}) {
@@ -7389,10 +6903,10 @@ class SpecimenMedia extends Table
   static const VerificationMeta _specimenUuidMeta =
       const VerificationMeta('specimenUuid');
   late final GeneratedColumn<String> specimenUuid = GeneratedColumn<String>(
-      'specimenUuid', aliasedName, true,
+      'specimenUuid', aliasedName, false,
       type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   static const VerificationMeta _mediaIdMeta =
       const VerificationMeta('mediaId');
   late final GeneratedColumn<int> mediaId = GeneratedColumn<int>(
@@ -7423,6 +6937,8 @@ class SpecimenMedia extends Table
           _specimenUuidMeta,
           specimenUuid.isAcceptableOrUnknown(
               data['specimenUuid']!, _specimenUuidMeta));
+    } else if (isInserting) {
+      context.missing(_specimenUuidMeta);
     }
     if (data.containsKey('mediaId')) {
       context.handle(_mediaIdMeta,
@@ -7442,7 +6958,7 @@ class SpecimenMedia extends Table
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return SpecimenMediaData(
       specimenUuid: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}specimenUuid']),
+          .read(DriftSqlType.string, data['${effectivePrefix}specimenUuid'])!,
       mediaId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}mediaId']),
       category: attachedDatabase.typeMapping
@@ -7466,16 +6982,15 @@ class SpecimenMedia extends Table
 
 class SpecimenMediaData extends DataClass
     implements Insertable<SpecimenMediaData> {
-  final String? specimenUuid;
+  final String specimenUuid;
   final int? mediaId;
   final String? category;
-  const SpecimenMediaData({this.specimenUuid, this.mediaId, this.category});
+  const SpecimenMediaData(
+      {required this.specimenUuid, this.mediaId, this.category});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || specimenUuid != null) {
-      map['specimenUuid'] = Variable<String>(specimenUuid);
-    }
+    map['specimenUuid'] = Variable<String>(specimenUuid);
     if (!nullToAbsent || mediaId != null) {
       map['mediaId'] = Variable<int>(mediaId);
     }
@@ -7487,9 +7002,7 @@ class SpecimenMediaData extends DataClass
 
   SpecimenMediaCompanion toCompanion(bool nullToAbsent) {
     return SpecimenMediaCompanion(
-      specimenUuid: specimenUuid == null && nullToAbsent
-          ? const Value.absent()
-          : Value(specimenUuid),
+      specimenUuid: Value(specimenUuid),
       mediaId: mediaId == null && nullToAbsent
           ? const Value.absent()
           : Value(mediaId),
@@ -7503,7 +7016,7 @@ class SpecimenMediaData extends DataClass
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return SpecimenMediaData(
-      specimenUuid: serializer.fromJson<String?>(json['specimenUuid']),
+      specimenUuid: serializer.fromJson<String>(json['specimenUuid']),
       mediaId: serializer.fromJson<int?>(json['mediaId']),
       category: serializer.fromJson<String?>(json['category']),
     );
@@ -7512,19 +7025,18 @@ class SpecimenMediaData extends DataClass
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'specimenUuid': serializer.toJson<String?>(specimenUuid),
+      'specimenUuid': serializer.toJson<String>(specimenUuid),
       'mediaId': serializer.toJson<int?>(mediaId),
       'category': serializer.toJson<String?>(category),
     };
   }
 
   SpecimenMediaData copyWith(
-          {Value<String?> specimenUuid = const Value.absent(),
+          {String? specimenUuid,
           Value<int?> mediaId = const Value.absent(),
           Value<String?> category = const Value.absent()}) =>
       SpecimenMediaData(
-        specimenUuid:
-            specimenUuid.present ? specimenUuid.value : this.specimenUuid,
+        specimenUuid: specimenUuid ?? this.specimenUuid,
         mediaId: mediaId.present ? mediaId.value : this.mediaId,
         category: category.present ? category.value : this.category,
       );
@@ -7550,7 +7062,7 @@ class SpecimenMediaData extends DataClass
 }
 
 class SpecimenMediaCompanion extends UpdateCompanion<SpecimenMediaData> {
-  final Value<String?> specimenUuid;
+  final Value<String> specimenUuid;
   final Value<int?> mediaId;
   final Value<String?> category;
   final Value<int> rowid;
@@ -7561,11 +7073,11 @@ class SpecimenMediaCompanion extends UpdateCompanion<SpecimenMediaData> {
     this.rowid = const Value.absent(),
   });
   SpecimenMediaCompanion.insert({
-    this.specimenUuid = const Value.absent(),
+    required String specimenUuid,
     this.mediaId = const Value.absent(),
     this.category = const Value.absent(),
     this.rowid = const Value.absent(),
-  });
+  }) : specimenUuid = Value(specimenUuid);
   static Insertable<SpecimenMediaData> custom({
     Expression<String>? specimenUuid,
     Expression<int>? mediaId,
@@ -7581,7 +7093,7 @@ class SpecimenMediaCompanion extends UpdateCompanion<SpecimenMediaData> {
   }
 
   SpecimenMediaCompanion copyWith(
-      {Value<String?>? specimenUuid,
+      {Value<String>? specimenUuid,
       Value<int?>? mediaId,
       Value<String?>? category,
       Value<int>? rowid}) {
@@ -12101,8 +11613,6 @@ class SpecimenPartCompanion extends UpdateCompanion<SpecimenPartData> {
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(e);
   late final Project project = Project(this);
-  late final FileMetadata fileMetadata = FileMetadata(this);
-  late final PersonnelPhoto personnelPhoto = PersonnelPhoto(this);
   late final Personnel personnel = Personnel(this);
   late final Media media = Media(this);
   late final Site site = Site(this);
@@ -12144,8 +11654,6 @@ abstract class _$Database extends GeneratedDatabase {
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
         project,
-        fileMetadata,
-        personnelPhoto,
         personnel,
         media,
         site,

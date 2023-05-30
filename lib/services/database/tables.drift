@@ -9,10 +9,14 @@ New to v4:
 2. Add collectionTime column to the specimen table.
 3. Change eventID to idSuffix in the collEvent.
 4. Change trapID to methodID in the specimen table.
-5 Change type to method in the collEffort table.
+5. Change type to method in the collEffort table.
 6. Remove the fileMetadata table.
 7. Remove fileId column.
 8. Change thumbnail path to path.
+9. Delete personnel photo.
+10. Add photoPath to the personnel table.
+11. Remove fileMetadata table.
+12. Remove personnelPhoto
 */
 
 CREATE TABLE project (
@@ -136,33 +140,24 @@ CREATE TABLE media (
     FOREIGN KEY(personnelId) REFERENCES personnel(uuid)
 );
 
-/*
-New table for v4
-*/
 CREATE TABLE narrativeMedia (
-    narrativeId INT,
+    narrativeId INT NOT NULL,
     mediaId INT,
     category TEXT,
     FOREIGN KEY (narrativeId) REFERENCES narrative(id),
     FOREIGN KEY (mediaId) REFERENCES media(primaryId)
 );
 
-/*
-New table for v4
-*/
 CREATE TABLE siteMedia (
-    siteId INT,
+    siteId INT NOT NULL,
     mediaId INT,
     category TEXT,
     FOREIGN KEY (siteId) REFERENCES site(id),
     FOREIGN KEY (mediaId) REFERENCES media(primaryId)
 );
 
-/*
-New table for v4
-*/
 CREATE TABLE specimenMedia (
-    specimenUuid TEXT,
+    specimenUuid TEXT NOT NULL,
     mediaId INT,
     category TEXT,
     FOREIGN KEY (specimenUuid) REFERENCES specimen(uuid),
@@ -178,25 +173,11 @@ CREATE TABLE associatedData (
     fileId TEXT
 );
 
-CREATE TABLE fileMetadata (
-    id INT PRIMARY KEY AUTOINCREMENT,
-    filename TEXT,
-    sizeKb REAL,
-    relativePath TEXT,
-    created TEXT
-);
-
 CREATE TABLE personnelList (
     projectUuid TEXT,
     personnelUuid TEXT,
     FOREIGN KEY(projectUuid) REFERENCES project(uuid),
     FOREIGN KEY(personnelUuid) REFERENCES personnel(uuid)
-);
-
-CREATE TABLE personnelPhoto (
-    id INT PRIMARY KEY AUTOINCREMENT,
-    fileId INT,
-    FOREIGN KEY(fileId) REFERENCES fileMetadata(id)
 );
 
 CREATE TABLE personnel (
@@ -208,9 +189,8 @@ CREATE TABLE personnel (
     affiliation TEXT,
     role TEXT,
     currentFieldNumber INT, -- the next input for field number
-    photoID INT,
     notes TEXT,
-    FOREIGN KEY(photoID) REFERENCES personnelPhoto(id)
+    photoPath TEXT
 );
 
 CREATE TABLE projectPersonnel (

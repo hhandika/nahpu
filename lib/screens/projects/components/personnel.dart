@@ -321,7 +321,7 @@ class EditPersonnelForm extends ConsumerWidget {
       roleCtr: personnelData.role,
       collectorNumCtr:
           TextEditingController(text: '${personnelData.currentFieldNumber}'),
-      photoIdCtr: personnelData.photoID,
+      photoPathCtr: TextEditingController(text: personnelData.photoPath),
       noteCtr: TextEditingController(text: ''),
     );
   }
@@ -350,6 +350,12 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
   void initState() {
     _getRole();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    widget.ctr.dispose();
+    super.dispose();
   }
 
   @override

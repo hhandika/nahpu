@@ -5,8 +5,6 @@ part of 'personnel_queries.dart';
 // ignore_for_file: type=lint
 mixin _$PersonnelQueryMixin on DatabaseAccessor<Database> {
   Project get project => attachedDatabase.project;
-  FileMetadata get fileMetadata => attachedDatabase.fileMetadata;
-  PersonnelPhoto get personnelPhoto => attachedDatabase.personnelPhoto;
   Personnel get personnel => attachedDatabase.personnel;
   Media get media => attachedDatabase.media;
   Site get site => attachedDatabase.site;
