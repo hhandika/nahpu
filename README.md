@@ -10,28 +10,3 @@ Documentation:
 
 [EN](https://docs.page/hhandika/nahpu-docs/EN)
 [ID](https://docs.page/hhandika/nahpu-docs/ID)
-
-## Development Progress
-
-| Features                        | Progress       |
-| ------------------------------- | -------------- |
-| Project creation form           | Done           |
-| Field narrative form            | Done           |
-| Site form                       | Done           |
-| Collecting event form           | Done           |
-| Mammalian specimen form         | Done           |
-| Bird specimen form              | Done           |
-| Media management form           | Partially done |
-| Project statistics              | Partially done |
-| Project expense receipt manager | Partially done |
-| Project permit manager          | Partially done |
-| CSV export                      | Planned        |
-| Json export                     | Planned        |
-| Pdf export and printing support | Planned        |
-| Zip export                      | planned        |
-| Barcode reader                  | Planned        |
-| Document scanner                | Planned        |
-
-## Status of the Development
-
-`nahpu` development is at an early stage. First working prototype is targeted for mammalian and avian specimens. We welcome ideas and support for other taxon groups. Feel free to contact the maintainer of this project if you all interested.
