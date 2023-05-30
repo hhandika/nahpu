@@ -65,7 +65,7 @@ class NahpuTheme {
   static InputDecorationTheme get inputDecorationTheme {
     return const InputDecorationTheme(
       floatingLabelStyle: TextStyle(
-        fontSize: 18,
+        fontSize: 16,
       ),
     );
   }
