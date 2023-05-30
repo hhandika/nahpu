@@ -73,7 +73,6 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
                 if (value != null) {
                   setState(() {
                     widget.collEventCtr.siteIDCtr = value;
-                    // _getEventID();
                     CollEventServices(ref).updateCollEvent(
                         widget.collEventId,
                         CollEventCompanion(
@@ -136,26 +135,6 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
         return DateTime.now();
     }
   }
-
-  // void _getEventID() {
-  //   try {
-  //     siteID = data
-  //         .firstWhere(
-  //           (e) => widget.collEventCtr.siteIDCtr == e.id,
-  //         )
-  //         .siteID;
-  //     String date;
-  //     if (widget.collEventCtr.startDateCtr.text.isNotEmpty) {
-  //       date = widget.collEventCtr.startDateCtr.text;
-  //     } else {
-  //       date = DateFormat.yMMMd().format(_getInitialStartDate());
-  //     }
-
-  //     widget.collEventCtr.eventIDCtr.text = '$siteID-$date';
-  //   } catch (e) {
-  //     siteID = '';
-  //   }
-  // }
 }
 
 class EndDateField extends ConsumerWidget {
@@ -226,10 +205,15 @@ class CollEventIdTile extends ConsumerWidget {
                       title: const Text('Edit Collecting Event ID'),
                       content: TextFormField(
                         controller: collEventCtr.idSuffixCtr,
-                        decoration: const InputDecoration(
-                          labelText: 'ID suffix',
-                          hintText: 'Enter ID suffix',
-                        ),
+                        decoration: InputDecoration(
+                            labelText: 'ID suffix',
+                            hintText: 'Enter ID suffix',
+                            suffix: IconButton(
+                              icon: const Icon(Icons.clear),
+                              onPressed: () {
+                                collEventCtr.idSuffixCtr.clear();
+                              },
+                            )),
                       ),
                       actions: [
                         TextButton(
