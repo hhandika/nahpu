@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -82,20 +80,7 @@ class MediaFormState extends ConsumerState<MediaForm> {
         future: _getMedia());
   }
 
-  Future<List<File>> _getMedia() async {
-    List<MediaData> mediaData =
-        await NarrativeServices(ref).getNarrativeMedia(widget.narrativeId);
-    List<File> media = [];
-    for (MediaData m in mediaData) {
-      if (m.filePath != null) {
-        media.add(File(m.filePath!));
-      }
-    }
-
-    if (kDebugMode) {
-      print(media);
-    }
-
-    return media;
+  Future<List<MediaData>> _getMedia() async {
+    return await NarrativeServices(ref).getNarrativeMedia(widget.narrativeId);
   }
 }

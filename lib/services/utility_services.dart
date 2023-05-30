@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:nahpu/services/types/import.dart';
 
 get systemIcon {
   if (Platform.isAndroid) {
@@ -15,6 +16,16 @@ get systemIcon {
     return Icons.laptop_windows_rounded;
   } else {
     return Icons.device_unknown_rounded;
+  }
+}
+
+PlatformType get supportedPlatform {
+  if (Platform.isAndroid || Platform.isIOS) {
+    return PlatformType.mobile;
+  } else if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
+    return PlatformType.desktop;
+  } else {
+    return PlatformType.unknown;
   }
 }
 

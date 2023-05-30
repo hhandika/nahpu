@@ -41,6 +41,20 @@ class FilePickerServices {
     return null;
   }
 
+  Future<List<File>> pickMultiFiles(List<String> allowedExtension) async {
+    FilePickerResult? files = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowMultiple: true,
+      allowedExtensions: allowedExtension,
+    );
+
+    if (files != null) {
+      return files.paths.map((e) => File(e!)).toList();
+    } else {
+      return [];
+    }
+  }
+
   Future<FilePickerResult?> _matchPicker(List<String>? allowedExt) async {
     if (allowedExt == null) {
       return await FilePicker.platform.pickFiles();

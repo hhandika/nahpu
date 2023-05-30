@@ -1,3 +1,7 @@
+enum PlatformType { mobile, desktop, unknown }
+
+enum MediaPopUpMenu { edit, details, delete }
+
 const List<String> taxonImportFmtList = [
   'CSV UTF-8 (Comma-delimited) (.csv)',
 ];

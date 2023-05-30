@@ -47,6 +47,9 @@ class Database extends _$Database {
     await m.addColumn(specimen, specimen.collectionTime);
     await m.addColumn(media, media.projectUuid);
     await m.addColumn(media, media.category);
+    await m.addColumn(media, media.caption);
+    await m.addColumn(media, media.subcategory);
+    await m.addColumn(media, media.additionalExif);
 
     await m.create(narrativeMedia);
     await m.create(siteMedia);

@@ -1,8 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/providers/personnel.dart';
+import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
+import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/types/import.dart';
 import 'package:path/path.dart';
 
 const int imageSize = 300;
@@ -15,7 +21,7 @@ class MediaViewer extends StatefulWidget {
     required this.onAccessingCamera,
   });
 
-  final List<File> images;
+  final List<MediaData> images;
   final VoidCallback onAddImage;
   final VoidCallback onAccessingCamera;
 
@@ -81,7 +87,7 @@ class MediaViewerBuilder extends StatelessWidget {
     required this.images,
   });
 
-  final List<File> images;
+  final List<MediaData> images;
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +103,7 @@ class MediaViewerBuilder extends StatelessWidget {
             crossAxisSpacing: 8,
             mainAxisSpacing: 8,
             children: List.generate(images.length, (index) {
-              return MediaCard(mediaPath: images[index]);
+              return MediaCard(data: images[index]);
             }),
           ),
         ));
@@ -117,10 +123,10 @@ class MediaViewerBuilder extends StatelessWidget {
 class MediaCard extends StatelessWidget {
   const MediaCard({
     super.key,
-    required this.mediaPath,
+    required this.data,
   });
 
-  final File mediaPath;
+  final MediaData data;
 
   @override
   Widget build(BuildContext context) {
@@ -128,16 +134,11 @@ class MediaCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(5),
       child: GridTile(
         footer: GridTileBar(
-            leading: Icon(
-              Icons.image_outlined,
-              size: 35,
-              color: Theme.of(context).colorScheme.onSecondaryContainer,
-            ),
             backgroundColor: Theme.of(context)
                 .colorScheme
                 .secondaryContainer
                 .withOpacity(0.9),
-            trailing: PopupMenuButton(
+            trailing: PopupMenuButton<MediaPopUpMenu>(
               icon: Icon(
                 Icons.more_vert,
                 color: Theme.of(context).colorScheme.onSecondaryContainer,
@@ -145,17 +146,30 @@ class MediaCard extends StatelessWidget {
               itemBuilder: (context) {
                 return const [
                   PopupMenuItem(
-                    value: 'edit',
-                    child: Text('Edit'),
+                    value: MediaPopUpMenu.edit,
+                    child: ListTile(
+                      leading: Icon(Icons.edit),
+                      title: Text('Edit details'),
+                    ),
                   ),
                   PopupMenuItem(
-                    value: 'delete',
-                    child: Text('Delete'),
+                      value: MediaPopUpMenu.details,
+                      child: ListTile(
+                        leading: Icon(Icons.info_outline),
+                        title: Text('Details'),
+                      )),
+                  PopupMenuDivider(),
+                  PopupMenuItem(
+                    value: MediaPopUpMenu.delete,
+                    child: ListTile(
+                        leading: Icon(Icons.delete, color: Colors.red),
+                        title: Text('Delete',
+                            style: TextStyle(color: Colors.red))),
                   ),
                 ];
               },
               onSelected: (value) {
-                if (value == 'edit') {
+                if (value == MediaPopUpMenu.edit) {
                   showDialog(
                     context: context,
                     builder: (context) {
@@ -166,76 +180,95 @@ class MediaCard extends StatelessWidget {
               },
             ),
             title: Text(
-              basename(mediaPath.path),
+              data.filePath != null ? basename(data.filePath!) : 'No file name',
               style: Theme.of(context).textTheme.labelLarge,
             ),
             subtitle: Text(
-              'Caption',
+              data.caption ?? 'No caption',
               style: Theme.of(context).textTheme.labelSmall,
             )),
-        child: Image.file(mediaPath, fit: BoxFit.cover),
+        child: data.filePath != null
+            ? Image.file(
+                File(data.filePath!),
+                fit: BoxFit.cover,
+              )
+            : const Center(
+                child: Text('No image'),
+              ),
       ),
     );
   }
 }
 
-class PhotoForm extends StatefulWidget {
+class PhotoForm extends ConsumerStatefulWidget {
   const PhotoForm({Key? key}) : super(key: key);
 
   @override
-  State<PhotoForm> createState() => _PhotoFormState();
+  PhotoFormState createState() => PhotoFormState();
 }
 
-class _PhotoFormState extends State<PhotoForm> {
+class PhotoFormState extends ConsumerState<PhotoForm> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Add Photos'),
-      content: SingleChildScrollView(
-          child: Column(
+      title: const Text('Update Details'),
+      content: const PhotoDetailForm(),
+      actions: [
+        SecondaryButton(
+          text: 'Cancel',
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        PrimaryButton(text: 'Update', onPressed: () {}),
+      ],
+    );
+  }
+}
+
+class PhotoDetailForm extends ConsumerWidget {
+  const PhotoDetailForm({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return SingleChildScrollView(
+      child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const ElevatedButton(onPressed: null, child: Text('Browse Files')),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'File name',
-              hintText: 'Enter file name',
-            ),
+          CommonTextField(
+            labelText: 'Caption',
+            hintText: 'Enter caption',
+            isLastField: false,
+            maxLines: 5,
+            onChanged: (value) {},
           ),
-          TextFormField(
+          DropdownButtonFormField<String>(
             decoration: const InputDecoration(
-              labelText: 'Caption',
-              hintText: 'Enter caption',
+              labelText: 'Photographer',
+              hintText: 'Select Personnel',
             ),
-            keyboardType: TextInputType.number,
+            items: ref.watch(personnelListProvider).when(
+                  data: (value) => value
+                      .map((person) => DropdownMenuItem(
+                            value: person.uuid,
+                            child: CommonDropdownText(
+                              text: person.name ?? '',
+                            ),
+                          ))
+                      .toList(),
+                  loading: () => const [],
+                  error: (error, stack) => const [],
+                ),
+            onChanged: (String? value) {},
           ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Date taken',
-              hintText: 'Enter date taken',
-            ),
-            keyboardType: TextInputType.number,
+          const CommonTextField(
+            enabled: false,
+            labelText: 'Category',
+            hintText: 'Enter Category',
+            isLastField: false,
           ),
         ],
-      )),
-      actions: [
-        ElevatedButton(
-          child: const Text('Cancel'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Theme.of(context).colorScheme.onTertiaryContainer,
-            backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
-          ),
-          child: const Text('Add'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
+      ),
     );
   }
 }
