@@ -9,6 +9,7 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/types/import.dart';
+import 'package:nahpu/services/utility_services.dart';
 import 'package:path/path.dart';
 
 const int imageSize = 300;
@@ -43,27 +44,9 @@ class _MediaViewerState extends State<MediaViewer> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const TitleForm(text: 'Media', isCentered: false),
-              Wrap(
-                alignment: WrapAlignment.center,
-                crossAxisAlignment: WrapCrossAlignment.start,
-                spacing: 8,
-                children: [
-                  IconButton(
-                    onPressed: widget.onAddImage,
-                    icon: const Icon(Icons.add),
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor:
-                          Theme.of(context).colorScheme.onPrimaryContainer,
-                      backgroundColor:
-                          Theme.of(context).colorScheme.primaryContainer,
-                      elevation: 0,
-                    ),
-                    onPressed: widget.onAccessingCamera,
-                    child: const Icon(Icons.camera_alt_outlined),
-                  ),
-                ],
+              MediaButton(
+                onAddImage: widget.onAddImage,
+                onAccessingCamera: widget.onAccessingCamera,
               ),
             ],
           ),
@@ -75,6 +58,47 @@ class _MediaViewerState extends State<MediaViewer> {
                 ? const Text('No images selected')
                 : MediaViewerBuilder(images: widget.images),
           ),
+        ),
+      ],
+    );
+  }
+}
+
+class MediaButton extends StatelessWidget {
+  const MediaButton({
+    super.key,
+    required this.onAddImage,
+    required this.onAccessingCamera,
+  });
+
+  final VoidCallback onAddImage;
+  final VoidCallback onAccessingCamera;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.start,
+      spacing: 8,
+      children: [
+        systemPlatform == PlatformType.mobile
+            ? IconButton(
+                onPressed: onAddImage,
+                icon: const Icon(Icons.add),
+              )
+            : const SizedBox.shrink(),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+            elevation: 0,
+          ),
+          onPressed: systemPlatform == PlatformType.mobile
+              ? onAccessingCamera
+              : onAddImage,
+          child: systemPlatform == PlatformType.mobile
+              ? const Icon(Icons.camera_alt_outlined)
+              : const Icon(Icons.add_photo_alternate_outlined),
         ),
       ],
     );

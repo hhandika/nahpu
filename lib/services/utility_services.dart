@@ -19,7 +19,7 @@ get systemIcon {
   }
 }
 
-PlatformType get supportedPlatform {
+PlatformType get systemPlatform {
   if (Platform.isAndroid || Platform.isIOS) {
     return PlatformType.mobile;
   } else if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {

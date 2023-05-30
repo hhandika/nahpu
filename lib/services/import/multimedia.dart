@@ -7,7 +7,7 @@ import 'package:nahpu/services/utility_services.dart';
 
 class ImageServices {
   Future<List<String>> pickImages() async {
-    switch (supportedPlatform) {
+    switch (systemPlatform) {
       case PlatformType.mobile:
         return await pickFromGallery();
       case PlatformType.desktop:
