@@ -10,6 +10,9 @@ New to v4:
 3. Change eventID to idSuffix in the collEvent.
 4. Change trapID to methodID in the specimen table.
 5 Change type to method in the collEffort table.
+6. Remove the fileMetadata table.
+7. Remove fileId column.
+8. Change thumbnail path to path.
 */
 
 CREATE TABLE project (
@@ -125,14 +128,12 @@ CREATE TABLE media (
     primaryId INT PRIMARY KEY AUTOINCREMENT,
     secondaryId TEXT,
     secondaryIdRef TEXT,
-    fileId INT,
     taken TEXT,
     camera TEXT,
     lenses TEXT,
     personnelId TEXT,
-    thumbnailPath TEXT,
-    FOREIGN KEY(personnelId) REFERENCES personnel(uuid),
-    FOREIGN KEY(fileId) REFERENCES fileMetadata(id)
+    filePath TEXT,
+    FOREIGN KEY(personnelId) REFERENCES personnel(uuid)
 );
 
 /*

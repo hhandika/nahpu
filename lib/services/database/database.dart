@@ -21,6 +21,7 @@ class Database extends _$Database {
     return MigrationStrategy(onCreate: (m) async {
       await m.createAll();
     }, onUpgrade: (Migrator m, int from, int to) async {
+      await customStatement('PRAGMA foreign_keys = OFF');
       if (from < 2) {
         await m.addColumn(specimen, specimen.taxonGroup);
       }
@@ -36,6 +37,8 @@ class Database extends _$Database {
       if (from < 4) {
         await _migrateFromVersion3(m);
       }
+    }, beforeOpen: (details) async {
+      await customStatement('PRAGMA foreign_keys = ON');
     });
   }
 
@@ -46,10 +49,15 @@ class Database extends _$Database {
     await m.create(specimenMedia);
     await m.renameColumn(collEvent, 'eventID', collEvent.idSuffix);
     await m.renameColumn(collEffort, 'type', collEffort.method);
+
+    await m.deleteTable('fileMetadata');
+    // delete column from media table
+    await m.alterTable(TableMigration(media));
   }
 
   Future<void> _migrateV3only(Migrator m) async {
     await m.renameColumn(specimen, 'trapID', specimen.methodID);
+    await m.renameColumn(media, 'thumbnailPath', media.filePath);
   }
 
   Future<void> _migrateFromVersion2(Migrator m) async {
@@ -57,6 +65,7 @@ class Database extends _$Database {
     await m.deleteTable('expense');
 
     // We add missing columns in the specimen table.
+    await m.addColumn(media, media.filePath);
     await m.addColumn(specimen, specimen.coordinateID);
     await m.addColumn(specimen, specimen.methodID);
     await m.addColumn(specimen, specimen.museumID);

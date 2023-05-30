@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/forms.dart';
+import 'package:nahpu/services/import/multimedia.dart';
 
 class AudioVisualForm extends StatefulWidget {
   const AudioVisualForm({super.key});
@@ -37,7 +39,16 @@ class _AudioVisualFormState extends State<AudioVisualForm> {
                           Theme.of(context).colorScheme.primaryContainer,
                       elevation: 0,
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      List<String> images = await ImageServices().pickImages();
+                      if (images.isNotEmpty) {
+                        if (kDebugMode) {
+                          for (var image in images) {
+                            print(image);
+                          }
+                        }
+                      }
+                    },
                     child: const Icon(Icons.camera_alt_outlined),
                   ),
                 ],
