@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/forms.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 import 'package:path/path.dart';
 
 const int imageSize = 300;
@@ -84,17 +85,22 @@ class MediaViewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: GridView.count(
-        crossAxisCount: _getCrossAxisCount(MediaQuery.of(context).size.width),
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 8,
-        children: List.generate(images.length, (index) {
-          return MediaCard(mediaPath: images[index]);
-        }),
-      ),
-    );
+    ScrollController scrollController = ScrollController();
+    return CommonScrollbar(
+        scrollController: scrollController,
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: GridView.count(
+            controller: scrollController,
+            crossAxisCount:
+                _getCrossAxisCount(MediaQuery.of(context).size.width),
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+            children: List.generate(images.length, (index) {
+              return MediaCard(mediaPath: images[index]);
+            }),
+          ),
+        ));
   }
 
   int _getCrossAxisCount(double width) {
@@ -127,10 +133,37 @@ class MediaCard extends StatelessWidget {
               size: 35,
               color: Theme.of(context).colorScheme.onSecondaryContainer,
             ),
-            backgroundColor: Color.lerp(
-              Theme.of(context).colorScheme.secondaryContainer,
-              Theme.of(context).colorScheme.surface,
-              0.2,
+            backgroundColor: Theme.of(context)
+                .colorScheme
+                .secondaryContainer
+                .withOpacity(0.9),
+            trailing: PopupMenuButton(
+              icon: Icon(
+                Icons.more_vert,
+                color: Theme.of(context).colorScheme.onSecondaryContainer,
+              ),
+              itemBuilder: (context) {
+                return const [
+                  PopupMenuItem(
+                    value: 'edit',
+                    child: Text('Edit'),
+                  ),
+                  PopupMenuItem(
+                    value: 'delete',
+                    child: Text('Delete'),
+                  ),
+                ];
+              },
+              onSelected: (value) {
+                if (value == 'edit') {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return const PhotoForm();
+                    },
+                  );
+                }
+              },
             ),
             title: Text(
               basename(mediaPath.path),
