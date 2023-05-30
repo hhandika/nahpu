@@ -2,8 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/forms.dart';
+import 'package:path/path.dart';
 
-const int imageSize = 250;
+const int imageSize = 300;
 
 class AudioVisualForm extends StatefulWidget {
   const AudioVisualForm({
@@ -87,6 +88,8 @@ class MediaViewer extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       child: GridView.count(
         crossAxisCount: _getCrossAxisCount(MediaQuery.of(context).size.width),
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
         children: List.generate(images.length, (index) {
           return MediaCard(mediaPath: images[index]);
         }),
@@ -96,7 +99,7 @@ class MediaViewer extends StatelessWidget {
 
   int _getCrossAxisCount(double width) {
     int crossAxisCount = 1;
-    double safeWidth = width - 16;
+    double safeWidth = width - 24;
     while (safeWidth > imageSize) {
       crossAxisCount++;
       safeWidth -= imageSize;
@@ -115,8 +118,30 @@ class MediaCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Image.file(mediaPath),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(5),
+      child: GridTile(
+        footer: GridTileBar(
+            leading: Icon(
+              Icons.image_outlined,
+              size: 35,
+              color: Theme.of(context).colorScheme.onSecondaryContainer,
+            ),
+            backgroundColor: Color.lerp(
+              Theme.of(context).colorScheme.secondaryContainer,
+              Theme.of(context).colorScheme.surface,
+              0.2,
+            ),
+            title: Text(
+              basename(mediaPath.path),
+              style: Theme.of(context).textTheme.labelLarge,
+            ),
+            subtitle: Text(
+              'Caption',
+              style: Theme.of(context).textTheme.labelSmall,
+            )),
+        child: Image.file(mediaPath, fit: BoxFit.cover),
+      ),
     );
   }
 }
