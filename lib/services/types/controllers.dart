@@ -1031,3 +1031,71 @@ class FileOpCtrModel {
     return fileNameCtr.text.isNotEmpty;
   }
 }
+
+class MediaFormCtr {
+  MediaFormCtr({
+    required this.primaryId,
+    required this.secondaryIdCtr,
+    required this.categoryCtr,
+    required this.subCategoryCtr,
+    required this.dataTakenCtr,
+    required this.cameraModelCtr,
+    required this.lenseModelCtr,
+    required this.additionalExifCtr,
+    required this.photographerCtr,
+    required this.filePathCtr,
+    required this.captionCtr,
+  });
+
+  int? primaryId;
+  TextEditingController secondaryIdCtr;
+  TextEditingController categoryCtr;
+  TextEditingController subCategoryCtr;
+  TextEditingController dataTakenCtr;
+  TextEditingController cameraModelCtr;
+  TextEditingController lenseModelCtr;
+  TextEditingController additionalExifCtr;
+  String? photographerCtr;
+  String? filePathCtr;
+  TextEditingController captionCtr;
+
+  factory MediaFormCtr.empty() => MediaFormCtr(
+        primaryId: null,
+        secondaryIdCtr: TextEditingController(),
+        categoryCtr: TextEditingController(),
+        subCategoryCtr: TextEditingController(),
+        dataTakenCtr: TextEditingController(),
+        cameraModelCtr: TextEditingController(),
+        lenseModelCtr: TextEditingController(),
+        additionalExifCtr: TextEditingController(),
+        photographerCtr: null,
+        filePathCtr: null,
+        captionCtr: TextEditingController(),
+      );
+
+  factory MediaFormCtr.fromData(MediaData data) => MediaFormCtr(
+        primaryId: data.primaryId,
+        secondaryIdCtr: TextEditingController(text: data.secondaryId ?? ''),
+        categoryCtr: TextEditingController(text: data.category ?? ''),
+        subCategoryCtr: TextEditingController(text: data.subcategory ?? ''),
+        dataTakenCtr: TextEditingController(text: data.taken ?? ''),
+        cameraModelCtr: TextEditingController(text: data.camera ?? ''),
+        lenseModelCtr: TextEditingController(text: data.lenses ?? ''),
+        additionalExifCtr:
+            TextEditingController(text: data.additionalExif ?? ''),
+        photographerCtr: data.personnelId,
+        filePathCtr: data.filePath,
+        captionCtr: TextEditingController(text: data.caption ?? 'No caption'),
+      );
+
+  void dispose() {
+    secondaryIdCtr.dispose();
+    categoryCtr.dispose();
+    subCategoryCtr.dispose();
+    dataTakenCtr.dispose();
+    cameraModelCtr.dispose();
+    lenseModelCtr.dispose();
+    additionalExifCtr.dispose();
+    captionCtr.dispose();
+  }
+}

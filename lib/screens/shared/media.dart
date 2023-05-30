@@ -8,6 +8,7 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/media_services.dart';
+import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/utility_services.dart';
 import 'package:path/path.dart';
@@ -130,7 +131,9 @@ class MediaViewerBuilder extends StatelessWidget {
           crossAxisSpacing: 8,
           mainAxisSpacing: 8,
           children: List.generate(images.length, (index) {
-            return MediaCard(data: images[index]);
+            return MediaCard(
+              ctr: MediaFormCtr.fromData(images[index]),
+            );
           }),
         ),
       ),
@@ -151,10 +154,10 @@ class MediaViewerBuilder extends StatelessWidget {
 class MediaCard extends ConsumerStatefulWidget {
   const MediaCard({
     super.key,
-    required this.data,
+    required this.ctr,
   });
 
-  final MediaData data;
+  final MediaFormCtr ctr;
 
   @override
   MediaCardState createState() => MediaCardState();
@@ -169,22 +172,22 @@ class MediaCardState extends ConsumerState<MediaCard> {
         footer: GridTileBar(
           backgroundColor:
               Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.9),
-          trailing: MediaPopUpMenu(data: widget.data),
+          trailing: MediaPopUpMenu(ctr: widget.ctr),
           title: Text(
-            widget.data.filePath != null
-                ? basename(widget.data.filePath!)
+            widget.ctr.filePathCtr != null
+                ? basename(widget.ctr.filePathCtr!)
                 : 'No file name',
             style: Theme.of(context).textTheme.labelLarge,
           ),
           subtitle: Text(
-            widget.data.caption ?? 'No caption',
+            widget.ctr.captionCtr.text,
             style: Theme.of(context).textTheme.labelSmall,
             overflow: TextOverflow.ellipsis,
           ),
         ),
-        child: widget.data.filePath != null
+        child: widget.ctr.filePathCtr != null
             ? Image.file(
-                File(widget.data.filePath!),
+                File(widget.ctr.filePathCtr!),
                 fit: BoxFit.cover,
               )
             : const Center(
@@ -198,10 +201,10 @@ class MediaCardState extends ConsumerState<MediaCard> {
 class MediaPopUpMenu extends ConsumerStatefulWidget {
   const MediaPopUpMenu({
     super.key,
-    required this.data,
+    required this.ctr,
   });
 
-  final MediaData data;
+  final MediaFormCtr ctr;
 
   @override
   MediaPopUpMenuState createState() => MediaPopUpMenuState();
@@ -228,10 +231,7 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
                     return AlertDialog(
                       title: const Text('Update Details'),
                       content: SingleChildScrollView(
-                          child: PhotoDetailForm(
-                        mediaId: widget.data.primaryId!,
-                        category: widget.data.category!,
-                      )),
+                          child: PhotoDetailForm(ctr: widget.ctr)),
                       actions: [
                         TextButton(
                           onPressed: () async {
@@ -250,8 +250,8 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
           PopupMenuItem(
             onTap: () async {
               await MediaServices(ref).deleteMedia(
-                widget.data.primaryId!,
-                widget.data.category!,
+                widget.ctr.primaryId!,
+                widget.ctr.categoryCtr.text,
               );
             },
             child: const ListTile(
@@ -268,12 +268,10 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
 class PhotoDetailForm extends ConsumerWidget {
   const PhotoDetailForm({
     super.key,
-    required this.mediaId,
-    required this.category,
+    required this.ctr,
   });
 
-  final int mediaId;
-  final String category;
+  final MediaFormCtr ctr;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -281,6 +279,7 @@ class PhotoDetailForm extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         CommonTextField(
+          controller: ctr.captionCtr,
           labelText: 'Caption',
           hintText: 'Enter caption',
           isLastField: false,
@@ -288,8 +287,8 @@ class PhotoDetailForm extends ConsumerWidget {
           onChanged: (value) {
             if (value != null && value.isNotEmpty) {
               MediaServices(ref).updateMedia(
-                  mediaId,
-                  category,
+                  ctr.primaryId!,
+                  ctr.categoryCtr.text,
                   MediaCompanion(
                     caption: db.Value(value),
                   ));
@@ -297,6 +296,7 @@ class PhotoDetailForm extends ConsumerWidget {
           },
         ),
         DropdownButtonFormField<String>(
+          value: ctr.photographerCtr,
           decoration: const InputDecoration(
             labelText: 'Photographer',
             hintText: 'Select Personnel',
@@ -313,9 +313,19 @@ class PhotoDetailForm extends ConsumerWidget {
                 loading: () => const [],
                 error: (error, stack) => const [],
               ),
-          onChanged: (String? value) {},
+          onChanged: (String? value) {
+            if (value != null) {
+              MediaServices(ref).updateMedia(
+                  ctr.primaryId!,
+                  ctr.categoryCtr.text,
+                  MediaCompanion(
+                    personnelId: db.Value(value),
+                  ));
+            }
+          },
         ),
-        const CommonTextField(
+        CommonTextField(
+          controller: ctr.categoryCtr,
           enabled: false,
           labelText: 'Category',
           hintText: 'Enter Category',
