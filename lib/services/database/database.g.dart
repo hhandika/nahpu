@@ -4732,9 +4732,9 @@ class CollEffort extends Table with TableInfo<CollEffort, CollEffortData> {
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _typeMeta = const VerificationMeta('type');
-  late final GeneratedColumn<String> type = GeneratedColumn<String>(
-      'type', aliasedName, true,
+  static const VerificationMeta _methodMeta = const VerificationMeta('method');
+  late final GeneratedColumn<String> method = GeneratedColumn<String>(
+      'method', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -4764,7 +4764,7 @@ class CollEffort extends Table with TableInfo<CollEffort, CollEffortData> {
       $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns =>
-      [id, eventID, type, brand, count, size, notes];
+      [id, eventID, method, brand, count, size, notes];
   @override
   String get aliasedName => _alias ?? 'collEffort';
   @override
@@ -4781,9 +4781,9 @@ class CollEffort extends Table with TableInfo<CollEffort, CollEffortData> {
       context.handle(_eventIDMeta,
           eventID.isAcceptableOrUnknown(data['eventID']!, _eventIDMeta));
     }
-    if (data.containsKey('type')) {
-      context.handle(
-          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
+    if (data.containsKey('method')) {
+      context.handle(_methodMeta,
+          method.isAcceptableOrUnknown(data['method']!, _methodMeta));
     }
     if (data.containsKey('brand')) {
       context.handle(
@@ -4814,8 +4814,8 @@ class CollEffort extends Table with TableInfo<CollEffort, CollEffortData> {
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       eventID: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}eventID']),
-      type: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}type']),
+      method: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}method']),
       brand: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}brand']),
       count: attachedDatabase.typeMapping
@@ -4842,7 +4842,9 @@ class CollEffort extends Table with TableInfo<CollEffort, CollEffortData> {
 class CollEffortData extends DataClass implements Insertable<CollEffortData> {
   final int id;
   final int? eventID;
-  final String? type;
+  final String? method;
+
+  /// v4 rename
   final String? brand;
   final int? count;
   final String? size;
@@ -4850,7 +4852,7 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
   const CollEffortData(
       {required this.id,
       this.eventID,
-      this.type,
+      this.method,
       this.brand,
       this.count,
       this.size,
@@ -4862,8 +4864,8 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
     if (!nullToAbsent || eventID != null) {
       map['eventID'] = Variable<int>(eventID);
     }
-    if (!nullToAbsent || type != null) {
-      map['type'] = Variable<String>(type);
+    if (!nullToAbsent || method != null) {
+      map['method'] = Variable<String>(method);
     }
     if (!nullToAbsent || brand != null) {
       map['brand'] = Variable<String>(brand);
@@ -4886,7 +4888,8 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
       eventID: eventID == null && nullToAbsent
           ? const Value.absent()
           : Value(eventID),
-      type: type == null && nullToAbsent ? const Value.absent() : Value(type),
+      method:
+          method == null && nullToAbsent ? const Value.absent() : Value(method),
       brand:
           brand == null && nullToAbsent ? const Value.absent() : Value(brand),
       count:
@@ -4903,7 +4906,7 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
     return CollEffortData(
       id: serializer.fromJson<int>(json['id']),
       eventID: serializer.fromJson<int?>(json['eventID']),
-      type: serializer.fromJson<String?>(json['type']),
+      method: serializer.fromJson<String?>(json['method']),
       brand: serializer.fromJson<String?>(json['brand']),
       count: serializer.fromJson<int?>(json['count']),
       size: serializer.fromJson<String?>(json['size']),
@@ -4916,7 +4919,7 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'eventID': serializer.toJson<int?>(eventID),
-      'type': serializer.toJson<String?>(type),
+      'method': serializer.toJson<String?>(method),
       'brand': serializer.toJson<String?>(brand),
       'count': serializer.toJson<int?>(count),
       'size': serializer.toJson<String?>(size),
@@ -4927,7 +4930,7 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
   CollEffortData copyWith(
           {int? id,
           Value<int?> eventID = const Value.absent(),
-          Value<String?> type = const Value.absent(),
+          Value<String?> method = const Value.absent(),
           Value<String?> brand = const Value.absent(),
           Value<int?> count = const Value.absent(),
           Value<String?> size = const Value.absent(),
@@ -4935,7 +4938,7 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
       CollEffortData(
         id: id ?? this.id,
         eventID: eventID.present ? eventID.value : this.eventID,
-        type: type.present ? type.value : this.type,
+        method: method.present ? method.value : this.method,
         brand: brand.present ? brand.value : this.brand,
         count: count.present ? count.value : this.count,
         size: size.present ? size.value : this.size,
@@ -4946,7 +4949,7 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
     return (StringBuffer('CollEffortData(')
           ..write('id: $id, ')
           ..write('eventID: $eventID, ')
-          ..write('type: $type, ')
+          ..write('method: $method, ')
           ..write('brand: $brand, ')
           ..write('count: $count, ')
           ..write('size: $size, ')
@@ -4956,14 +4959,15 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
   }
 
   @override
-  int get hashCode => Object.hash(id, eventID, type, brand, count, size, notes);
+  int get hashCode =>
+      Object.hash(id, eventID, method, brand, count, size, notes);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is CollEffortData &&
           other.id == this.id &&
           other.eventID == this.eventID &&
-          other.type == this.type &&
+          other.method == this.method &&
           other.brand == this.brand &&
           other.count == this.count &&
           other.size == this.size &&
@@ -4973,7 +4977,7 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
 class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
   final Value<int> id;
   final Value<int?> eventID;
-  final Value<String?> type;
+  final Value<String?> method;
   final Value<String?> brand;
   final Value<int?> count;
   final Value<String?> size;
@@ -4981,7 +4985,7 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
   const CollEffortCompanion({
     this.id = const Value.absent(),
     this.eventID = const Value.absent(),
-    this.type = const Value.absent(),
+    this.method = const Value.absent(),
     this.brand = const Value.absent(),
     this.count = const Value.absent(),
     this.size = const Value.absent(),
@@ -4990,7 +4994,7 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
   CollEffortCompanion.insert({
     this.id = const Value.absent(),
     this.eventID = const Value.absent(),
-    this.type = const Value.absent(),
+    this.method = const Value.absent(),
     this.brand = const Value.absent(),
     this.count = const Value.absent(),
     this.size = const Value.absent(),
@@ -4999,7 +5003,7 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
   static Insertable<CollEffortData> custom({
     Expression<int>? id,
     Expression<int>? eventID,
-    Expression<String>? type,
+    Expression<String>? method,
     Expression<String>? brand,
     Expression<int>? count,
     Expression<String>? size,
@@ -5008,7 +5012,7 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (eventID != null) 'eventID': eventID,
-      if (type != null) 'type': type,
+      if (method != null) 'method': method,
       if (brand != null) 'brand': brand,
       if (count != null) 'count': count,
       if (size != null) 'size': size,
@@ -5019,7 +5023,7 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
   CollEffortCompanion copyWith(
       {Value<int>? id,
       Value<int?>? eventID,
-      Value<String?>? type,
+      Value<String?>? method,
       Value<String?>? brand,
       Value<int?>? count,
       Value<String?>? size,
@@ -5027,7 +5031,7 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
     return CollEffortCompanion(
       id: id ?? this.id,
       eventID: eventID ?? this.eventID,
-      type: type ?? this.type,
+      method: method ?? this.method,
       brand: brand ?? this.brand,
       count: count ?? this.count,
       size: size ?? this.size,
@@ -5044,8 +5048,8 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
     if (eventID.present) {
       map['eventID'] = Variable<int>(eventID.value);
     }
-    if (type.present) {
-      map['type'] = Variable<String>(type.value);
+    if (method.present) {
+      map['method'] = Variable<String>(method.value);
     }
     if (brand.present) {
       map['brand'] = Variable<String>(brand.value);
@@ -5067,7 +5071,7 @@ class CollEffortCompanion extends UpdateCompanion<CollEffortData> {
     return (StringBuffer('CollEffortCompanion(')
           ..write('id: $id, ')
           ..write('eventID: $eventID, ')
-          ..write('type: $type, ')
+          ..write('method: $method, ')
           ..write('brand: $brand, ')
           ..write('count: $count, ')
           ..write('size: $size, ')
@@ -6451,9 +6455,10 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _trapIDMeta = const VerificationMeta('trapID');
-  late final GeneratedColumn<String> trapID = GeneratedColumn<String>(
-      'trapID', aliasedName, true,
+  static const VerificationMeta _methodIDMeta =
+      const VerificationMeta('methodID');
+  late final GeneratedColumn<String> methodID = GeneratedColumn<String>(
+      'methodID', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -6534,7 +6539,7 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
         isRelativeTime,
         captureTime,
         trapType,
-        trapID,
+        methodID,
         coordinateID,
         catalogerID,
         fieldNumber,
@@ -6616,9 +6621,9 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
       context.handle(_trapTypeMeta,
           trapType.isAcceptableOrUnknown(data['trapType']!, _trapTypeMeta));
     }
-    if (data.containsKey('trapID')) {
-      context.handle(_trapIDMeta,
-          trapID.isAcceptableOrUnknown(data['trapID']!, _trapIDMeta));
+    if (data.containsKey('methodID')) {
+      context.handle(_methodIDMeta,
+          methodID.isAcceptableOrUnknown(data['methodID']!, _methodIDMeta));
     }
     if (data.containsKey('coordinateID')) {
       context.handle(
@@ -6705,8 +6710,8 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
           .read(DriftSqlType.string, data['${effectivePrefix}captureTime']),
       trapType: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}trapType']),
-      trapID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}trapID']),
+      methodID: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}methodID']),
       coordinateID: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}coordinateID']),
       catalogerID: attachedDatabase.typeMapping
@@ -6763,7 +6768,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
   final int? isRelativeTime;
   final String? captureTime;
   final String? trapType;
-  final String? trapID;
+  final String? methodID;
+
+  /// v4 rename
   final int? coordinateID;
   final String? catalogerID;
   final int? fieldNumber;
@@ -6786,7 +6793,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       this.isRelativeTime,
       this.captureTime,
       this.trapType,
-      this.trapID,
+      this.methodID,
       this.coordinateID,
       this.catalogerID,
       this.fieldNumber,
@@ -6833,8 +6840,8 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
     if (!nullToAbsent || trapType != null) {
       map['trapType'] = Variable<String>(trapType);
     }
-    if (!nullToAbsent || trapID != null) {
-      map['trapID'] = Variable<String>(trapID);
+    if (!nullToAbsent || methodID != null) {
+      map['methodID'] = Variable<String>(methodID);
     }
     if (!nullToAbsent || coordinateID != null) {
       map['coordinateID'] = Variable<int>(coordinateID);
@@ -6902,8 +6909,9 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       trapType: trapType == null && nullToAbsent
           ? const Value.absent()
           : Value(trapType),
-      trapID:
-          trapID == null && nullToAbsent ? const Value.absent() : Value(trapID),
+      methodID: methodID == null && nullToAbsent
+          ? const Value.absent()
+          : Value(methodID),
       coordinateID: coordinateID == null && nullToAbsent
           ? const Value.absent()
           : Value(coordinateID),
@@ -6950,7 +6958,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       isRelativeTime: serializer.fromJson<int?>(json['isRelativeTime']),
       captureTime: serializer.fromJson<String?>(json['captureTime']),
       trapType: serializer.fromJson<String?>(json['trapType']),
-      trapID: serializer.fromJson<String?>(json['trapID']),
+      methodID: serializer.fromJson<String?>(json['methodID']),
       coordinateID: serializer.fromJson<int?>(json['coordinateID']),
       catalogerID: serializer.fromJson<String?>(json['catalogerID']),
       fieldNumber: serializer.fromJson<int?>(json['fieldNumber']),
@@ -6979,7 +6987,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
       'isRelativeTime': serializer.toJson<int?>(isRelativeTime),
       'captureTime': serializer.toJson<String?>(captureTime),
       'trapType': serializer.toJson<String?>(trapType),
-      'trapID': serializer.toJson<String?>(trapID),
+      'methodID': serializer.toJson<String?>(methodID),
       'coordinateID': serializer.toJson<int?>(coordinateID),
       'catalogerID': serializer.toJson<String?>(catalogerID),
       'fieldNumber': serializer.toJson<int?>(fieldNumber),
@@ -7005,7 +7013,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           Value<int?> isRelativeTime = const Value.absent(),
           Value<String?> captureTime = const Value.absent(),
           Value<String?> trapType = const Value.absent(),
-          Value<String?> trapID = const Value.absent(),
+          Value<String?> methodID = const Value.absent(),
           Value<int?> coordinateID = const Value.absent(),
           Value<String?> catalogerID = const Value.absent(),
           Value<int?> fieldNumber = const Value.absent(),
@@ -7030,7 +7038,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
             isRelativeTime.present ? isRelativeTime.value : this.isRelativeTime,
         captureTime: captureTime.present ? captureTime.value : this.captureTime,
         trapType: trapType.present ? trapType.value : this.trapType,
-        trapID: trapID.present ? trapID.value : this.trapID,
+        methodID: methodID.present ? methodID.value : this.methodID,
         coordinateID:
             coordinateID.present ? coordinateID.value : this.coordinateID,
         catalogerID: catalogerID.present ? catalogerID.value : this.catalogerID,
@@ -7063,7 +7071,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           ..write('isRelativeTime: $isRelativeTime, ')
           ..write('captureTime: $captureTime, ')
           ..write('trapType: $trapType, ')
-          ..write('trapID: $trapID, ')
+          ..write('methodID: $methodID, ')
           ..write('coordinateID: $coordinateID, ')
           ..write('catalogerID: $catalogerID, ')
           ..write('fieldNumber: $fieldNumber, ')
@@ -7091,7 +7099,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
         isRelativeTime,
         captureTime,
         trapType,
-        trapID,
+        methodID,
         coordinateID,
         catalogerID,
         fieldNumber,
@@ -7118,7 +7126,7 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
           other.isRelativeTime == this.isRelativeTime &&
           other.captureTime == this.captureTime &&
           other.trapType == this.trapType &&
-          other.trapID == this.trapID &&
+          other.methodID == this.methodID &&
           other.coordinateID == this.coordinateID &&
           other.catalogerID == this.catalogerID &&
           other.fieldNumber == this.fieldNumber &&
@@ -7143,7 +7151,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
   final Value<int?> isRelativeTime;
   final Value<String?> captureTime;
   final Value<String?> trapType;
-  final Value<String?> trapID;
+  final Value<String?> methodID;
   final Value<int?> coordinateID;
   final Value<String?> catalogerID;
   final Value<int?> fieldNumber;
@@ -7167,7 +7175,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     this.isRelativeTime = const Value.absent(),
     this.captureTime = const Value.absent(),
     this.trapType = const Value.absent(),
-    this.trapID = const Value.absent(),
+    this.methodID = const Value.absent(),
     this.coordinateID = const Value.absent(),
     this.catalogerID = const Value.absent(),
     this.fieldNumber = const Value.absent(),
@@ -7192,7 +7200,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     this.isRelativeTime = const Value.absent(),
     this.captureTime = const Value.absent(),
     this.trapType = const Value.absent(),
-    this.trapID = const Value.absent(),
+    this.methodID = const Value.absent(),
     this.coordinateID = const Value.absent(),
     this.catalogerID = const Value.absent(),
     this.fieldNumber = const Value.absent(),
@@ -7217,7 +7225,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     Expression<int>? isRelativeTime,
     Expression<String>? captureTime,
     Expression<String>? trapType,
-    Expression<String>? trapID,
+    Expression<String>? methodID,
     Expression<int>? coordinateID,
     Expression<String>? catalogerID,
     Expression<int>? fieldNumber,
@@ -7242,7 +7250,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       if (isRelativeTime != null) 'isRelativeTime': isRelativeTime,
       if (captureTime != null) 'captureTime': captureTime,
       if (trapType != null) 'trapType': trapType,
-      if (trapID != null) 'trapID': trapID,
+      if (methodID != null) 'methodID': methodID,
       if (coordinateID != null) 'coordinateID': coordinateID,
       if (catalogerID != null) 'catalogerID': catalogerID,
       if (fieldNumber != null) 'fieldNumber': fieldNumber,
@@ -7270,7 +7278,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       Value<int?>? isRelativeTime,
       Value<String?>? captureTime,
       Value<String?>? trapType,
-      Value<String?>? trapID,
+      Value<String?>? methodID,
       Value<int?>? coordinateID,
       Value<String?>? catalogerID,
       Value<int?>? fieldNumber,
@@ -7294,7 +7302,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
       isRelativeTime: isRelativeTime ?? this.isRelativeTime,
       captureTime: captureTime ?? this.captureTime,
       trapType: trapType ?? this.trapType,
-      trapID: trapID ?? this.trapID,
+      methodID: methodID ?? this.methodID,
       coordinateID: coordinateID ?? this.coordinateID,
       catalogerID: catalogerID ?? this.catalogerID,
       fieldNumber: fieldNumber ?? this.fieldNumber,
@@ -7347,8 +7355,8 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
     if (trapType.present) {
       map['trapType'] = Variable<String>(trapType.value);
     }
-    if (trapID.present) {
-      map['trapID'] = Variable<String>(trapID.value);
+    if (methodID.present) {
+      map['methodID'] = Variable<String>(methodID.value);
     }
     if (coordinateID.present) {
       map['coordinateID'] = Variable<int>(coordinateID.value);
@@ -7398,7 +7406,7 @@ class SpecimenCompanion extends UpdateCompanion<SpecimenData> {
           ..write('isRelativeTime: $isRelativeTime, ')
           ..write('captureTime: $captureTime, ')
           ..write('trapType: $trapType, ')
-          ..write('trapID: $trapID, ')
+          ..write('methodID: $methodID, ')
           ..write('coordinateID: $coordinateID, ')
           ..write('catalogerID: $catalogerID, ')
           ..write('fieldNumber: $fieldNumber, ')

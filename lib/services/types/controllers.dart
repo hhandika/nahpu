@@ -216,7 +216,7 @@ class SpecimenFormCtrModel {
     required this.captureDateCtr,
     required this.captureTimeCtr,
     required this.trapTypeCtr,
-    required this.trapIDCtr,
+    required this.methodIDCtr,
   });
 
   String? catalogerCtr;
@@ -237,7 +237,7 @@ class SpecimenFormCtrModel {
   TextEditingController captureDateCtr;
   TextEditingController captureTimeCtr;
   TextEditingController trapTypeCtr;
-  TextEditingController trapIDCtr;
+  TextEditingController methodIDCtr;
 
   factory SpecimenFormCtrModel.empty() => SpecimenFormCtrModel(
         catalogerCtr: null,
@@ -258,7 +258,7 @@ class SpecimenFormCtrModel {
         captureDateCtr: TextEditingController(),
         captureTimeCtr: TextEditingController(),
         trapTypeCtr: TextEditingController(),
-        trapIDCtr: TextEditingController(),
+        methodIDCtr: TextEditingController(),
       );
 
   factory SpecimenFormCtrModel.fromData(SpecimenData specimen) =>
@@ -282,7 +282,7 @@ class SpecimenFormCtrModel {
         captureDateCtr: TextEditingController(text: specimen.captureDate),
         captureTimeCtr: TextEditingController(text: specimen.captureTime),
         trapTypeCtr: TextEditingController(text: specimen.trapType),
-        trapIDCtr: TextEditingController(text: specimen.trapID ?? ''),
+        methodIDCtr: TextEditingController(text: specimen.methodID ?? ''),
         // ..selection =
         //     TextSelection.collapsed(offset: specimen.trapID?.length ?? 0),
       );
@@ -893,7 +893,7 @@ class CollEffortCtrModel {
 
   factory CollEffortCtrModel.fromData(CollEffortData data) =>
       CollEffortCtrModel(
-        methodCtr: data.type,
+        methodCtr: data.method,
         brandCtr: TextEditingController(text: data.brand ?? ''),
         countCtr: TextEditingController(text: data.count.toString()),
         sizeCtr: TextEditingController(text: data.size.toString()),

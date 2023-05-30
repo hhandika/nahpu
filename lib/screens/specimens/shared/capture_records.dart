@@ -112,7 +112,7 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                                   return DropdownMenuItem(
                                     value: effort.id,
                                     child: CommonDropdownText(
-                                        text: effort.type ?? ''),
+                                        text: effort.method ?? ''),
                                   );
                                 }).toList();
                               },
@@ -254,7 +254,7 @@ class MethodIdField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TextField(
-      controller: specimenCtr.trapIDCtr,
+      controller: specimenCtr.methodIDCtr,
       decoration: const InputDecoration(
         labelText: 'Method ID',
         hintText: 'Enter ID, e.g. trap/net number, etc.',
@@ -264,7 +264,7 @@ class MethodIdField extends ConsumerWidget {
         if (value != null && value.isNotEmpty) {
           SpecimenServices(ref).updateSpecimenSkipInvalidation(
             specimenUuid,
-            SpecimenCompanion(trapID: db.Value(value)),
+            SpecimenCompanion(methodID: db.Value(value)),
           );
         }
       },

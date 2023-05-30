@@ -156,7 +156,7 @@ class CollEffortTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: CollEffortTitle(
-        type: collEffort.type,
+        type: collEffort.method,
         count: collEffort.count,
       ),
       subtitle: Subtitle(data: collEffort),
@@ -407,7 +407,7 @@ class CollEffortFormState extends ConsumerState<CollEffortForm> {
   CollEffortCompanion _getForm() {
     return CollEffortCompanion(
       eventID: db.Value(widget.collEventId),
-      type: db.Value(widget.collToolCtr.methodCtr),
+      method: db.Value(widget.collToolCtr.methodCtr),
       brand: db.Value(widget.collToolCtr.brandCtr.text),
       count: db.Value(int.tryParse(widget.collToolCtr.countCtr.text) ?? 0),
       size: db.Value(widget.collToolCtr.sizeCtr.text),

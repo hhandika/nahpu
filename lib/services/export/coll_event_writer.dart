@@ -60,7 +60,7 @@ class CollEventRecordWriter {
   Future<String> _writeEffort(int id) async {
     List<CollEffortData> effort =
         await CollEventServices(ref).getAllCollEffort(id);
-    return effort.map((e) => '"${e.type}";${e.count}').join(writerSeparator);
+    return effort.map((e) => '"${e.method}";${e.count}').join(writerSeparator);
   }
 
   Future<String> _writePersonnel(int id) async {

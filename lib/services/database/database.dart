@@ -14,7 +14,7 @@ class Database extends _$Database {
   Database() : super(_openConnection());
 
   @override
-  int get schemaVersion => 3; // bump this when you change the schema
+  int get schemaVersion => 4; // bump this when you change the schema
 
   @override
   MigrationStrategy get migration {
@@ -29,6 +29,10 @@ class Database extends _$Database {
         await _migrateFromVersion2(m);
       }
 
+      if (from == 3) {
+        await _migrateV3only(m);
+      }
+
       if (from < 4) {
         await _migrateFromVersion3(m);
       }
@@ -41,6 +45,11 @@ class Database extends _$Database {
     await m.create(siteMedia);
     await m.create(specimenMedia);
     await m.renameColumn(collEvent, 'eventID', collEvent.idSuffix);
+    await m.renameColumn(collEffort, 'type', collEffort.method);
+  }
+
+  Future<void> _migrateV3only(Migrator m) async {
+    await m.renameColumn(specimen, 'trapID', specimen.methodID);
   }
 
   Future<void> _migrateFromVersion2(Migrator m) async {
@@ -49,7 +58,7 @@ class Database extends _$Database {
 
     // We add missing columns in the specimen table.
     await m.addColumn(specimen, specimen.coordinateID);
-    await m.addColumn(specimen, specimen.trapID);
+    await m.addColumn(specimen, specimen.methodID);
     await m.addColumn(specimen, specimen.museumID);
 
     // We switch bird table to revised version
