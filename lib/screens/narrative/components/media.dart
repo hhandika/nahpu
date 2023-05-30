@@ -38,8 +38,7 @@ class MediaFormState extends ConsumerState<MediaForm> {
           if (snapshot.hasData) {
             return AudioVisualForm(
               images: snapshot.data ?? [],
-              onAddImage: () {},
-              onAccessingCamera: () async {
+              onAddImage: () async {
                 try {
                   List<String> images = await ImageServices().pickImages();
                   if (images.isNotEmpty) {
@@ -49,6 +48,22 @@ class MediaFormState extends ConsumerState<MediaForm> {
                         path,
                       );
                     }
+                    setState(() {});
+                  }
+                } catch (e) {
+                  if (kDebugMode) {
+                    print(e);
+                  }
+                }
+              },
+              onAccessingCamera: () async {
+                try {
+                  String? image = await ImageServices().accessCamera();
+                  if (image != null) {
+                    await NarrativeServices(ref).createNarrativeMedia(
+                      widget.narrativeId,
+                      image,
+                    );
                     setState(() {});
                   }
                 } catch (e) {
