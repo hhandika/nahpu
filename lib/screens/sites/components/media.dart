@@ -34,7 +34,7 @@ class SiteMediaFormState extends ConsumerState<SiteMediaForm> {
               images: List.from(data),
               onAddImage: () async {
                 try {
-                  List<String> images = await ImageServices().pickImages();
+                  List<String> images = await ImageServices(ref).pickImages();
                   if (images.isNotEmpty) {
                     for (String path in images) {
                       await SiteServices(ref).createSiteMedia(
@@ -56,7 +56,7 @@ class SiteMediaFormState extends ConsumerState<SiteMediaForm> {
               },
               onAccessingCamera: () async {
                 try {
-                  String? image = await ImageServices().accessCamera();
+                  String? image = await ImageServices(ref).accessCamera();
                   if (image != null) {
                     await SiteServices(ref).createSiteMedia(
                       widget.siteId,

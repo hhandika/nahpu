@@ -67,7 +67,7 @@ class NarrativeMediaViewer extends ConsumerWidget {
       images: data,
       onAddImage: () async {
         try {
-          List<String> images = await ImageServices().pickImages();
+          List<String> images = await ImageServices(ref).pickImages();
           if (images.isNotEmpty) {
             for (String path in images) {
               await NarrativeServices(ref).createNarrativeMedia(
@@ -88,7 +88,7 @@ class NarrativeMediaViewer extends ConsumerWidget {
       },
       onAccessingCamera: () async {
         try {
-          String? image = await ImageServices().accessCamera();
+          String? image = await ImageServices(ref).accessCamera();
           if (image != null) {
             await NarrativeServices(ref).createNarrativeMedia(
               narrativeId,
