@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:nahpu/providers/database.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:path/path.dart' as path;
@@ -7,6 +8,7 @@ import 'package:nahpu/providers/projects.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 String get dateTimeStamp {
   DateTime now = DateTime.now();
@@ -17,6 +19,13 @@ String get dateTimeStamp {
 
 class FilePickerServices {
   FilePickerServices();
+
+  Future<void> shareFile(File file, RenderBox? box) async {
+    await Share.shareXFiles(
+      [XFile(file.path)],
+      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+    );
+  }
 
   Future<Directory?> selectDir() async {
     final result = await FilePicker.platform.getDirectoryPath();

@@ -11,7 +11,6 @@ import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/file_operation.dart';
-import 'package:share_plus/share_plus.dart';
 
 class ExportForm extends ConsumerStatefulWidget {
   const ExportForm({super.key});
@@ -265,7 +264,8 @@ class ExportFormState extends ConsumerState<ExportForm> {
 
   Future<void> _shareFile() async {
     try {
-      await Share.shareXFiles([XFile(_savePath.path)]);
+      await FilePickerServices()
+          .shareFile(_savePath, context.findRenderObject() as RenderBox?);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

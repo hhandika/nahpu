@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/services/types/controllers.dart';
+import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/screens/shared/file_operation.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/export/db_writer.dart';
+import 'package:nahpu/services/utility_services.dart';
 
 const String _dbExtension = 'sqlite3';
 
@@ -23,8 +25,9 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
   FileOpCtrModel exportCtr = FileOpCtrModel.empty();
   String _fileStem = 'backup';
   Directory? _selectedDir;
-  String _savePath = '';
   bool _hasSaved = false;
+
+  late File _savePath;
 
   @override
   void initState() {
@@ -109,22 +112,37 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
 
   Future<void> _writeDb() async {
     try {
-      File file = await AppIOServices(
+      _savePath = await AppIOServices(
         dir: _selectedDir,
         fileStem: _fileStem,
         ext: _dbExtension,
       ).getSavePath();
-      await DbWriter(ref: ref).writeDb(file);
+      await DbWriter(ref: ref).writeDb(_savePath);
       setState(() {
-        _savePath = file.path;
         _hasSaved = true;
       });
+      if (systemPlatform == PlatformType.mobile) {
+        await _shareFile();
+      }
     } on PathNotFoundException {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: PathNotFoundText(),
         ),
       );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: ErrorText(error: e.toString()),
+        ),
+      );
+    }
+  }
+
+  Future<void> _shareFile() async {
+    try {
+      await FilePickerServices()
+          .shareFile(_savePath, context.findRenderObject() as RenderBox?);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

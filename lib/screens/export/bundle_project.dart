@@ -9,7 +9,6 @@ import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/utility_services.dart';
-import 'package:share_plus/share_plus.dart';
 
 class BundleProjectForm extends ConsumerStatefulWidget {
   const BundleProjectForm({Key? key}) : super(key: key);
@@ -104,7 +103,8 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
 
   Future<void> _shareFile() async {
     try {
-      await Share.shareXFiles([XFile(_savePath.path)]);
+      await FilePickerServices()
+          .shareFile(_savePath, context.findRenderObject() as RenderBox?);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
