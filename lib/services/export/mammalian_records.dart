@@ -9,24 +9,28 @@ class MammalianMeasurements {
     required this.ref,
     required this.delimiter,
     required this.specimenUuid,
+    required this.isBatRecord,
   });
 
   final WidgetRef ref;
   final String delimiter;
   final String specimenUuid;
+  final bool isBatRecord;
   late MammalMeasurementData data;
 
   Future<String> getMeasurements() async {
     data =
         await SpecimenServices(ref: ref).getMammalMeasurementData(specimenUuid);
-    String measurement =
+    String standardMeasurement =
         '${data.totalLength ?? ''}$delimiter${data.tailLength ?? ''}$delimiter'
         '${data.hindFootLength ?? ''}$delimiter${data.earLength ?? ''}$delimiter'
-        '${data.weight ?? ''}';
-    String accuracy = data.accuracy ?? '';
+        '${data.weight ?? ''}$delimiter${data.accuracy ?? ''}';
+    String measurement = isBatRecord
+        ? '$standardMeasurement$delimiter${data.forearm ?? ''}'
+        : standardMeasurement;
     String age = data.age != null ? specimenAgeList[data.age!] : '';
     String sexData = _getSexData();
-    return '$measurement$delimiter$accuracy$delimiter$age$delimiter$sexData';
+    return '$measurement$delimiter$age$delimiter$sexData';
   }
 
   String _getSexData() {

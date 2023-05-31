@@ -96,9 +96,6 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
       outputFile: _savePath,
     );
     await archiveServices.createArchive();
-    if (systemPlatform == PlatformType.mobile) {
-      await _shareFile();
-    }
   }
 
   Future<void> _shareFile() async {

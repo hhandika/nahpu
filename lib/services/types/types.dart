@@ -147,6 +147,19 @@ String matchRecordTypeToTaxonGroup(SpecimenRecordType recordType) {
   }
 }
 
+SpecimenRecordType matchTaxonGroupToRecordType(String taxonGroup) {
+  switch (taxonGroup) {
+    case 'Birds':
+      return SpecimenRecordType.birds;
+    case 'General Mammals':
+      return SpecimenRecordType.generalMammals;
+    case 'Bats':
+      return SpecimenRecordType.bats;
+    default:
+      return SpecimenRecordType.generalMammals;
+  }
+}
+
 String matchCatFmtToTaxonGroup(CatalogFmt catalogFmt) {
   switch (catalogFmt) {
     case CatalogFmt.birds:
