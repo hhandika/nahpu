@@ -151,14 +151,13 @@ class FileServices extends DbAccess {
     return projectDir;
   }
 
-  Future<File> moveFileToProjectDir(File from, Directory to) async {
+  Future<File> copyFileToProjectDir(File from, Directory to) async {
     final projectDir = await getProjectDir();
     final fileName = path.basename(from.path);
     final targetDir = path.join(projectDir.path, to.path);
     await Directory(targetDir).create(recursive: true);
     final toPath = path.join(targetDir, fileName);
     await from.copy(toPath);
-    await from.delete();
     return File(toPath);
   }
 }

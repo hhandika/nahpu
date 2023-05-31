@@ -24,32 +24,37 @@ class ImageServices extends DbAccess {
   Future<List<String>> pickFromGallery() async {
     final picker = ImagePicker();
     final result = await picker.pickMultiImage();
-    List<File> files = await _moveFiles(result.map((e) => e.path).toList());
+    List<File> files = await _copyFiles(result.map((e) => e.path).toList());
     return files.map((e) => e.path).toList();
   }
 
   Future<List<String>> pickFromFiles() async {
     List<File> result = await FilePickerServices()
         .pickMultiFiles(['jpg', 'png', 'jpeg', 'heic']);
-    List<File> files = await _moveFiles(result.map((e) => e.path).toList());
+    List<File> files = await _copyFiles(result.map((e) => e.path).toList());
     return files.map((e) => e.path).toList();
   }
 
   Future<String?> accessCamera() async {
     final picker = ImagePicker();
     final result = await picker.pickImage(source: ImageSource.camera);
-
-    return result?.path;
+    File? files = result == null ? null : await _copySingleFile(result.path);
+    return files?.path;
   }
 
-  Future<List<File>> _moveFiles(List<String> paths) async {
+  Future<List<File>> _copyFiles(List<String> paths) async {
     List<File> files = [];
     for (String path in paths) {
-      File file = File(path);
-      File newPath = await FileServices(ref)
-          .moveFileToProjectDir(file, Directory('media'));
+      File newPath = await _copySingleFile(path);
       files.add(newPath);
     }
     return files;
+  }
+
+  Future<File> _copySingleFile(String path) async {
+    File file = File(path);
+    File newPath =
+        await FileServices(ref).copyFileToProjectDir(file, Directory('media'));
+    return newPath;
   }
 }
