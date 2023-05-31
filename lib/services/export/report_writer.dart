@@ -9,11 +9,10 @@ import 'package:nahpu/services/specimen_services.dart';
 class SpeciesListWriter extends DbAccess {
   const SpeciesListWriter({required super.ref});
 
-  Future<void> writeSpeciesListCompact(String filePath) async {
+  Future<void> writeSpeciesListCompact(File filePath) async {
     final speciesListMap = await countSpeciesList();
 
-    File file = File(filePath);
-    IOSink writer = file.openWrite();
+    IOSink writer = filePath.openWrite();
     String header = 'Species,Count';
     writer.writeln(header);
     for (var element in speciesListMap.entries) {

@@ -54,6 +54,29 @@ class ProgressButton extends StatelessWidget {
   }
 }
 
+class ShareButton extends StatelessWidget {
+  const ShareButton({
+    super.key,
+    required this.onPressed,
+  });
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton.icon(
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        elevation: 0,
+      ),
+      icon: Icon(Icons.adaptive.share_outlined),
+      onPressed: onPressed,
+      label: const Text('Share'),
+    );
+  }
+}
+
 class FormElevButton extends StatelessWidget {
   const FormElevButton({
     Key? key,

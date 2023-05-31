@@ -1027,9 +1027,7 @@ class FileOpCtrModel {
     fileNameCtr.dispose();
   }
 
-  bool isValid() {
-    return fileNameCtr.text.isNotEmpty;
-  }
+  bool get isValid => fileNameCtr.text.isNotEmpty;
 }
 
 class MediaFormCtr {

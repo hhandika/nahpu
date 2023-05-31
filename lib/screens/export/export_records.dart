@@ -11,6 +11,7 @@ import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/file_operation.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ExportForm extends ConsumerStatefulWidget {
   const ExportForm({super.key});
@@ -28,7 +29,8 @@ class ExportFormState extends ConsumerState<ExportForm> {
   String _fileStem = 'export';
   Directory? _selectedDir;
   bool _hasSaved = false;
-  String _finalPath = '';
+  late File _savePath;
+  bool _isRunning = false;
 
   @override
   void initState() {
@@ -150,14 +152,28 @@ class ExportFormState extends ConsumerState<ExportForm> {
             spacing: 20,
             children: [
               SaveSecondaryButton(hasSaved: _hasSaved),
-              PrimaryButton(
-                text: 'Save',
-                onPressed: !exportCtr.isValid()
-                    ? null
-                    : () async {
-                        await _exportFile();
+              !_hasSaved
+                  ? ProgressButton(
+                      label: 'Save',
+                      isRunning: _isRunning,
+                      icon: Icons.save_alt_outlined,
+                      onPressed: !exportCtr.isValid
+                          ? null
+                          : () async {
+                              setState(() {
+                                _isRunning = true;
+                              });
+                              await _exportFile();
+                              setState(() {
+                                _isRunning = false;
+                              });
+                            },
+                    )
+                  : ShareButton(
+                      onPressed: () async {
+                        await _shareFile();
                       },
-              ),
+                    ),
             ],
           )
         ],
@@ -214,15 +230,14 @@ class ExportFormState extends ConsumerState<ExportForm> {
   Future<void> _writeDelimited(bool isCsv) async {
     String ext = isCsv ? 'csv' : 'tsv';
     try {
-      File file = await AppIOServices(
+      _savePath = await AppIOServices(
         dir: _selectedDir,
         fileStem: _fileStem,
         ext: ext,
       ).getSavePath();
-      await _matchRecordTypeToWriter(file, isCsv);
+      await _matchRecordTypeToWriter(_savePath, isCsv);
       setState(() {
         _hasSaved = true;
-        _finalPath = file.path;
       });
       _showSavedPath();
     } on PathNotFoundException {
@@ -242,7 +257,20 @@ class ExportFormState extends ConsumerState<ExportForm> {
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('File saved as $_finalPath'),
+          content: Text('File saved as $_savePath'),
+        ),
+      );
+    }
+  }
+
+  Future<void> _shareFile() async {
+    try {
+      await Share.shareXFiles([XFile(_savePath.path)]);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: $e'),
+          duration: const Duration(seconds: 8),
         ),
       );
     }

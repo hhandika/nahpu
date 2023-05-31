@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
+import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/screens/shared/file_operation.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/services/export/report_writer.dart';
+import 'package:nahpu/services/utility_services.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ReportForm extends ConsumerStatefulWidget {
   const ReportForm({Key? key}) : super(key: key);
@@ -20,9 +23,9 @@ class ReportFormState extends ConsumerState<ReportForm> {
   ReportFmt reportFmt = ReportFmt.csv;
   ReportType _reportType = ReportType.speciesCount;
   FileOpCtrModel exportCtr = FileOpCtrModel.empty();
-  String _fileName = 'export';
+  String _fileStem = 'export';
   Directory? _selectedDir;
-  String _savePath = '';
+  late File _savePath;
   bool _hasSaved = false;
 
   @override
@@ -91,7 +94,7 @@ class ReportFormState extends ConsumerState<ReportForm> {
             onChanged: (String? value) {
               if (value != null) {
                 setState(() {
-                  _fileName = value;
+                  _fileStem = value;
                 });
               }
             },
@@ -107,21 +110,27 @@ class ReportFormState extends ConsumerState<ReportForm> {
             spacing: 10,
             children: [
               SaveSecondaryButton(hasSaved: _hasSaved),
-              PrimaryButton(
-                text: 'Save',
-                onPressed: !exportCtr.isValid()
-                    ? null
-                    : () async {
-                        await _createReport();
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('File saved as $_savePath'),
-                            ),
-                          );
-                        }
+              !_hasSaved
+                  ? PrimaryButton(
+                      text: 'Save',
+                      onPressed: !exportCtr.isValid
+                          ? null
+                          : () async {
+                              await _createReport();
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('File saved as $_savePath'),
+                                  ),
+                                );
+                              }
+                            },
+                    )
+                  : ShareButton(
+                      onPressed: () async {
+                        await _shareFile();
                       },
-              ),
+                    ),
             ],
           ),
         ],
@@ -131,12 +140,19 @@ class ReportFormState extends ConsumerState<ReportForm> {
 
   Future<void> _createReport() async {
     try {
-      String savePath = '$_selectedDir/$_fileName.csv';
-      await _writeReport(savePath);
+      _savePath = await AppIOServices(
+        dir: _selectedDir,
+        fileStem: _fileStem,
+        ext: 'csv',
+      ).getSavePath();
+
+      await _writeReport();
       setState(() {
         _hasSaved = true;
-        _savePath = savePath;
       });
+      if (systemPlatform == PlatformType.mobile) {
+        await _shareFile();
+      }
     } on PathNotFoundException {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: PathNotFoundText(),
@@ -150,13 +166,25 @@ class ReportFormState extends ConsumerState<ReportForm> {
     }
   }
 
-  Future<void> _writeReport(String savePath) async {
+  Future<void> _shareFile() async {
+    try {
+      await Share.shareXFiles([XFile(_savePath.path)]);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: ErrorText(error: e.toString()),
+        ),
+      );
+    }
+  }
+
+  Future<void> _writeReport() async {
     switch (_reportType) {
       case ReportType.speciesCount:
-        await SpeciesListWriter(ref: ref).writeSpeciesListCompact(savePath);
+        await SpeciesListWriter(ref: ref).writeSpeciesListCompact(_savePath);
         break;
       default:
-        await SpeciesListWriter(ref: ref).writeSpeciesListCompact(savePath);
+        await SpeciesListWriter(ref: ref).writeSpeciesListCompact(_savePath);
         break;
     }
   }

@@ -67,7 +67,7 @@ class ProjectMenuDrawerState extends ConsumerState<ProjectMenuDrawer> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.ios_share_rounded),
+            leading: Icon(Icons.adaptive.share_rounded),
             title: const Text('Export records'),
             onTap: () {
               Navigator.push(
