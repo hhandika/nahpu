@@ -144,14 +144,14 @@ Future<Directory> get nahpuDocumentDir async {
 class FileServices extends DbAccess {
   FileServices({required super.ref});
 
-  Future<Directory> getProjectDir() async {
+  Future<Directory> get currentProjectDir async {
     final documentDir = await nahpuDocumentDir;
     final projectDir = Directory(path.join(documentDir.path, projectUuid));
     return projectDir;
   }
 
   Future<File> copyFileToProjectDir(File from, Directory to) async {
-    final projectDir = await getProjectDir();
+    final projectDir = await currentProjectDir;
     final fileName = path.basename(from.path);
     final targetDir = path.join(projectDir.path, to.path);
     await Directory(targetDir).create(recursive: true);

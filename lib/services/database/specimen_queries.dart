@@ -21,6 +21,14 @@ class SpecimenQuery extends DatabaseAccessor<Database>
         .get();
   }
 
+  Future<List<String>> getUniqueTaxonGroup(String projectUuid) async {
+    final specimenData = await (select(specimen, distinct: true)
+          ..where((t) => t.projectUuid.equals(projectUuid))
+          ..where((tbl) => tbl.taxonGroup.isNotNull()))
+        .get();
+    return getDistinctList(specimenData.map((e) => e.taxonGroup).toList());
+  }
+
   Future<List<SpecimenData>> getAllAvianSpecimens(String projectUuid) {
     return (select(specimen)
           ..where((t) => t.projectUuid.equals(projectUuid))

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:nahpu/services/export/common.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/types/export.dart';
 import 'package:nahpu/services/database/database.dart';
@@ -12,7 +13,7 @@ class NarrativeRecordWriter extends DbAccess {
   late String delimiter;
 
   Future<void> writeNarrativeDelimited(File filePath, bool isCsv) async {
-    delimiter = isCsv ? ',' : '\t';
+    delimiter = isCsv ? csvDelimiter : tsvDelimiter;
     final file = await filePath.create(recursive: true);
     final writer = file.openWrite();
     _writeHeader(writer);
@@ -21,9 +22,9 @@ class NarrativeRecordWriter extends DbAccess {
     for (var narrative in narrativeList) {
       writer.write('"${narrative.date}"');
       writer.write(delimiter);
-      String siteDetails = await SiteWriterServices(
-              ref: ref, siteID: narrative.siteID, delimiter: delimiter)
-          .getSiteDetails(false);
+      String siteDetails =
+          await SiteWriterServices(ref: ref, delimiter: delimiter)
+              .getSiteDetails(narrative.siteID, false);
       writer.write(siteDetails);
       writer.write(delimiter);
       writer.writeln('"${narrative.narrative}"');

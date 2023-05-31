@@ -14,7 +14,7 @@ class ImageServices extends DbAccess {
   final MediaCategory category;
 
   Future<File> getMediaPath(String filePath) async {
-    Directory projectDir = await FileServices(ref: ref).getProjectDir();
+    Directory projectDir = await FileServices(ref: ref).currentProjectDir;
     Directory mediaDir = _getMediaDir();
     String fullPath = path.join(projectDir.path, mediaDir.path, filePath);
     return File(fullPath);

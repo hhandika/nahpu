@@ -106,10 +106,12 @@ class SpecimenRecordWriter {
       if (collEventData == null) {
         return ',,';
       } else {
-        SiteWriterServices siteServices = SiteWriterServices(
-            ref: ref, siteID: collEventData.siteID, delimiter: delimiter);
-        String siteDetails = await siteServices.getSiteDetails(true);
-        String coordinateDetails = await siteServices.getCoordinates();
+        SiteWriterServices siteServices =
+            SiteWriterServices(ref: ref, delimiter: delimiter);
+        String siteDetails =
+            await siteServices.getSiteDetails(collEventData.siteID, true);
+        String coordinateDetails =
+            await siteServices.getCoordinates(collEventData.siteID);
         return '$siteDetails$delimiter"$coordinateDetails"';
       }
     }

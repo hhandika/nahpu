@@ -1,20 +1,45 @@
+import 'dart:io';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/export/common.dart';
 import 'package:nahpu/services/site_services.dart';
+import 'package:nahpu/services/types/export.dart';
 
 class SiteWriterServices {
   SiteWriterServices({
     required this.ref,
-    required this.siteID,
-    required this.delimiter,
+    this.delimiter = csvDelimiter,
   });
 
   final WidgetRef ref;
-  final int? siteID;
-  final String delimiter;
 
-  Future<String> getSiteDetails(bool withHabitat) async {
+  String delimiter;
+
+  Future<void> writeSiteDelimited(File filePath, bool isCsv) async {
+    delimiter = isCsv ? csvDelimiter : tsvDelimiter;
+    final file = await filePath.create(recursive: true);
+    final writer = file.openWrite();
+    _writeHeaderLast(writer, siteExportList);
+
+    List<SiteData> siteList = await SiteServices(ref: ref).getAllSites();
+    for (var site in siteList) {
+      String siteDetails = await getSiteDetails(site.id, true);
+      writer.writeln(siteDetails);
+    }
+  }
+
+  void _writeHeaderLast(IOSink writer, List<String> headerList) {
+    for (var val in headerList) {
+      if (val == headerList.last) {
+        writer.writeln(val);
+      } else {
+        writer.write('$val$delimiter');
+      }
+    }
+  }
+
+  Future<String> getSiteDetails(int? siteID, bool withHabitat) async {
     if (siteID == null) {
       return '';
     } else {
@@ -29,9 +54,11 @@ class SiteWriterServices {
         String county = _getCounty(data.county);
         String municipality = _getMunicipality(data.municipality);
         String locality = _getLocality(data.locality);
+        String coordinates = await getCoordinates(siteID);
         String siteDetails =
             '$country$stateProvince$county$municipality$locality'.trim();
-        String siteLocality = '$siteSeparated$siteDetails';
+        String siteLocality =
+            '$siteSeparated$siteDetails$delimiter$coordinates';
         return withHabitat
             ? '${data.siteID}$delimiter${data.habitatType}$delimiter$siteLocality'
             : siteLocality;
@@ -87,12 +114,12 @@ class SiteWriterServices {
     }
   }
 
-  Future<String> getCoordinates() async {
+  Future<String> getCoordinates(int? siteID) async {
     if (siteID == null) {
       return '';
     } else {
       List<CoordinateData> coordinateList =
-          await CoordinateServices(ref: ref).getCoordinatesBySiteID(siteID!);
+          await CoordinateServices(ref: ref).getCoordinatesBySiteID(siteID);
       return coordinateList
           .map((e) => '${e.nameId ?? ''};'
               '${e.decimalLatitude ?? ''},${e.decimalLongitude ?? ''};'

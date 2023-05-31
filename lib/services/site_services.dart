@@ -28,6 +28,10 @@ class SiteServices extends DbAccess {
     }
   }
 
+  Future<List<SiteData>> getAllSites() async {
+    return SiteQuery(dbAccess).getAllSites(projectUuid);
+  }
+
   Future<void> updateSite(int id, SiteCompanion entries) async {
     await SiteQuery(dbAccess).updateSiteEntry(id, entries);
   }

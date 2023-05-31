@@ -14,7 +14,7 @@ class CollEventRecordWriter extends DbAccess {
   late String delimiter;
 
   Future<void> writeCollEventDelimited(File filePath, bool isCsv) async {
-    delimiter = isCsv ? ',' : '\t';
+    delimiter = isCsv ? csvDelimiter : tsvDelimiter;
     final file = await filePath.create(recursive: true);
     final writer = file.openWrite();
     _writeHeader(writer);
@@ -52,8 +52,8 @@ class CollEventRecordWriter extends DbAccess {
 
   Future<String> _getSite(int? siteID, String delimiter) async {
     String siteDetails =
-        await SiteWriterServices(ref: ref, siteID: siteID, delimiter: delimiter)
-            .getSiteDetails(false);
+        await SiteWriterServices(ref: ref, delimiter: delimiter)
+            .getSiteDetails(siteID, false);
     return siteDetails;
   }
 
