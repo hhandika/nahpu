@@ -21,9 +21,8 @@ class SpecimenRecordWriter {
 
   Future<void> writeRecordDelimited(File filePath, bool isCsv) async {
     delimiter = isCsv ? csvDelimiter : tsvDelimiter;
-    String taxonGroup = matchRecordTypeToTaxonGroup(recordType);
-    List<SpecimenData> specimenList = await SpecimenServices(ref: ref)
-        .getSpecimenListByTaxonGroup(taxonGroup);
+
+    List<SpecimenData> specimenList = await _getSpecimenListByTaxonGroup();
     final file = await filePath.create(recursive: true);
     final writer = file.openWrite();
     _writeHeader(writer, collRecordExportList);
@@ -38,14 +37,41 @@ class SpecimenRecordWriter {
       String species = await _getSpeciesName(element.speciesID);
       String parts = await _getPartList(element.uuid);
       String condition = element.condition ?? '';
-      String collId = await _getCollEventName(element.collEventID);
+      String collDetails = await _getCollEventDetails(element.collEventID);
       String measurement = await _getMeasurement(element.uuid);
       String mainLine =
-          '$cataloger$fieldId$delimiter$preparator$delimiter$species$delimiter$parts$delimiter$condition$delimiter$collId';
+          '$cataloger$fieldId$delimiter$preparator$delimiter$species$delimiter'
+          '$parts$delimiter$condition$delimiter$collDetails';
       writer.writeln('$mainLine$delimiter$measurement');
     }
 
     writer.close();
+  }
+
+  List<String> _getMeasurementHeader() {
+    switch (recordType) {
+      case SpecimenRecordType.generalMammals:
+        return mammalMeasurementExportList;
+      case SpecimenRecordType.birds:
+        return avianMeasurementExportList;
+      case SpecimenRecordType.bats:
+        return batMeasurementExportList;
+      case SpecimenRecordType.allMammals:
+        return batMeasurementExportList;
+      default:
+        throw Exception('Invalid record type');
+    }
+  }
+
+  Future<List<SpecimenData>> _getSpecimenListByTaxonGroup() async {
+    final service = SpecimenServices(ref: ref);
+
+    if (recordType == SpecimenRecordType.allMammals) {
+      return await service.getSpecimenListForAllMammals();
+    }
+
+    String taxonGroup = matchRecordTypeToTaxonGroup(recordType);
+    return await service.getSpecimenListByTaxonGroup(taxonGroup);
   }
 
   void _writeHeader(IOSink writer, List<String> headerList) {
@@ -96,7 +122,7 @@ class SpecimenRecordWriter {
     }
   }
 
-  Future<String> _getCollEventName(int? collEventId) async {
+  Future<String> _getCollEventDetails(int? collEventId) async {
     if (collEventId == null) {
       return '';
     } else {
@@ -110,9 +136,8 @@ class SpecimenRecordWriter {
             SiteWriterServices(ref: ref, delimiter: delimiter);
         String siteDetails =
             await siteServices.getSiteDetails(collEventData.siteID, true);
-        String coordinateDetails =
-            await siteServices.getCoordinates(collEventData.siteID);
-        return '$siteDetails$delimiter"$coordinateDetails"';
+
+        return '$siteDetails$delimiter';
       }
     }
   }
@@ -123,21 +148,6 @@ class SpecimenRecordWriter {
     return partList
         .map((e) => '${e.type};${e.treatment}')
         .join(writerSeparator);
-  }
-
-  List<String> _getMeasurementHeader() {
-    switch (recordType) {
-      case SpecimenRecordType.generalMammals:
-        return mammalMeasurementExportList;
-      case SpecimenRecordType.birds:
-        return avianMeasurementExportList;
-      case SpecimenRecordType.bats:
-        return batMeasurementExportList;
-      case SpecimenRecordType.allMammals:
-        return batMeasurementExportList;
-      default:
-        throw Exception('Invalid record type');
-    }
   }
 
   Future<String> _getMeasurement(String specimenUuid) async {
