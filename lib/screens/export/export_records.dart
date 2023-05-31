@@ -50,34 +50,12 @@ class ExportFormState extends ConsumerState<ExportForm> {
       ),
       body: FileOperationPage(
         children: [
-          DropdownButtonFormField<TaxonRecordType?>(
-            value: _taxonRecordType,
-            decoration: const InputDecoration(
-              labelText: 'Taxon group',
-            ),
-            items: taxonRecordTypeList
-                .map((e) => DropdownMenuItem(
-                      value: TaxonRecordType
-                          .values[taxonRecordTypeList.indexOf(e)],
-                      child: CommonDropdownText(text: e),
-                    ))
-                .toList(),
-            onChanged: (TaxonRecordType? value) {
-              if (value != null) {
-                setState(() {
-                  _recordType = null;
-                  _taxonRecordType = value;
-                  _matchTaxonToRecordType();
-                });
-              }
-            },
-          ),
           DropdownButtonFormField<ExportRecordType>(
             value: _recordType,
             decoration: const InputDecoration(
               labelText: 'Record type',
             ),
-            items: _matchRecordTypeToTaxonGroup(),
+            items: _recordDropdown(),
             onChanged: (ExportRecordType? value) {
               if (value != null) {
                 setState(() {
@@ -85,6 +63,30 @@ class ExportFormState extends ConsumerState<ExportForm> {
                 });
               }
             },
+          ),
+          Visibility(
+            visible: _recordType == ExportRecordType.specimenRecord,
+            child: DropdownButtonFormField<TaxonRecordType?>(
+              value: _taxonRecordType,
+              decoration: const InputDecoration(
+                labelText: 'Taxon group',
+              ),
+              items: taxonRecordTypeList
+                  .map((e) => DropdownMenuItem(
+                        value: TaxonRecordType
+                            .values[taxonRecordTypeList.indexOf(e)],
+                        child: CommonDropdownText(text: e),
+                      ))
+                  .toList(),
+              onChanged: (TaxonRecordType? value) {
+                if (value != null) {
+                  setState(() {
+                    _taxonRecordType = value;
+                    _matchTaxonToRecordType();
+                  });
+                }
+              },
+            ),
           ),
           Visibility(
             visible: _isMammalSpecimenRecord(),
@@ -168,21 +170,6 @@ class ExportFormState extends ConsumerState<ExportForm> {
         _taxonRecordType == TaxonRecordType.mammals;
   }
 
-  List<DropdownMenuItem<ExportRecordType>> _matchRecordTypeToTaxonGroup() {
-    switch (_specimenRecordType) {
-      case SpecimenRecordType.generalMammals:
-        return _recordDropdown(mammalianRecordTypeList);
-      case SpecimenRecordType.birds:
-        return _recordDropdown(avianRecordTypeList);
-      case SpecimenRecordType.bats:
-        return _recordDropdown(mammalianRecordTypeList);
-      case SpecimenRecordType.allMammals:
-        return _recordDropdown(mammalianRecordTypeList);
-      default:
-        return _recordDropdown(mammalianRecordTypeList);
-    }
-  }
-
   void _matchTaxonToRecordType() {
     if (_taxonRecordType == TaxonRecordType.birds) {
       _specimenRecordType = SpecimenRecordType.birds;
@@ -201,8 +188,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
     }
   }
 
-  List<DropdownMenuItem<ExportRecordType>> _recordDropdown(
-      List<String> recordTypeList) {
+  List<DropdownMenuItem<ExportRecordType>> _recordDropdown() {
     return recordTypeList
         .map((e) => DropdownMenuItem(
               value: ExportRecordType.values[recordTypeList.indexOf(e)],

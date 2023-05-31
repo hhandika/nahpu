@@ -31,16 +31,10 @@ const List<String> mammalGroupList = [
 
 enum ExportRecordType { narrative, collEvent, specimenRecord }
 
-const List<String> avianRecordTypeList = [
+const List<String> recordTypeList = [
   'Narrative',
   'Collecting event',
-  'Avian specimen records',
-];
-
-const List<String> mammalianRecordTypeList = [
-  'Narrative',
-  'Collecting event',
-  'Mammalian specimen records',
+  'Specimen records',
 ];
 
 const collRecordExportList = [
