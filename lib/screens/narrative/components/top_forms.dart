@@ -31,7 +31,7 @@ class SiteForm extends ConsumerWidget {
         value: narrativeCtr.siteCtr,
         siteData: data,
         onChanges: (int? value) {
-          NarrativeServices(ref).updateNarrative(
+          NarrativeServices(ref: ref).updateNarrative(
             narrativeId,
             NarrativeCompanion(siteID: db.Value(value)),
           );
@@ -69,7 +69,7 @@ class DateForm extends ConsumerWidget {
               lastDate: DateTime.now());
           if (selectedDate != null) {
             narrativeCtr.dateCtr.text = DateFormat.yMMMd().format(selectedDate);
-            NarrativeServices(ref).updateNarrative(
+            NarrativeServices(ref: ref).updateNarrative(
               narrativeId,
               NarrativeCompanion(date: db.Value(narrativeCtr.dateCtr.text)),
             );

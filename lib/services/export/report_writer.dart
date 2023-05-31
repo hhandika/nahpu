@@ -1,15 +1,13 @@
 import 'dart:collection';
 import 'dart:io';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
 
-class SpeciesListWriter {
-  SpeciesListWriter(this.ref);
-
-  final WidgetRef ref;
+class SpeciesListWriter extends DbAccess {
+  const SpeciesListWriter({required super.ref});
 
   Future<void> writeSpeciesListCompact(String filePath) async {
     final speciesListMap = await countSpeciesList();
@@ -38,13 +36,14 @@ class SpeciesListWriter {
 
   Future<List<int?>> getSpeciesList() async {
     final projectUuid = ref.read(projectUuidProvider);
-    final speciesList = await SpecimenServices(ref).getAllSpecies(projectUuid);
+    final speciesList =
+        await SpecimenServices(ref: ref).getAllSpecies(projectUuid);
     return speciesList;
   }
 
   Future<String> getSpeciesName(int speciesID) async {
     TaxonomyData taxonData =
-        await SpecimenServices(ref).getTaxonById(speciesID);
+        await SpecimenServices(ref: ref).getTaxonById(speciesID);
     return '${taxonData.genus} ${taxonData.specificEpithet}';
   }
 }

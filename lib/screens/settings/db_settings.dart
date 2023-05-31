@@ -75,7 +75,7 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
     Navigator.of(context).pop();
     try {
       File? backupPath = _isBackup ? await getDbBackUpPath() : null;
-      await DbWriter(ref).replaceDb(_dbPath!, backupPath);
+      await DbWriter(ref: ref).replaceDb(_dbPath!, backupPath);
       if (context.mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(

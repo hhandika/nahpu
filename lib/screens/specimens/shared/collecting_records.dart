@@ -144,7 +144,7 @@ class SpecimenCollectedField extends ConsumerWidget {
         hintText: 'Enter time',
         initialTime: TimeOfDay.now(),
         onTap: () {
-          SpecimenServices(ref).updateSpecimen(
+          SpecimenServices(ref: ref).updateSpecimen(
             specimenUuid,
             SpecimenCompanion(
                 collectionTime: db.Value(
@@ -170,7 +170,7 @@ class SpecimenConditionField extends ConsumerWidget {
     return DropdownButtonFormField(
       value: specimenCtr.conditionCtr,
       onChanged: (String? value) {
-        SpecimenServices(ref).updateSpecimen(
+        SpecimenServices(ref: ref).updateSpecimen(
           specimenUuid,
           SpecimenCompanion(condition: db.Value(value)),
         );
@@ -208,7 +208,7 @@ class PrepDateField extends ConsumerWidget {
       initialDate: DateTime.now(),
       lastDate: DateTime.now(),
       onTap: () {
-        SpecimenServices(ref).updateSpecimen(
+        SpecimenServices(ref: ref).updateSpecimen(
           specimenUuid,
           SpecimenCompanion(
             prepDate: db.Value(specimenCtr.prepDateCtr.text),
@@ -237,7 +237,7 @@ class PrepTimeField extends ConsumerWidget {
         hintText: 'Enter time',
         initialTime: TimeOfDay.now(),
         onTap: () {
-          SpecimenServices(ref).updateSpecimen(
+          SpecimenServices(ref: ref).updateSpecimen(
             specimenUuid,
             SpecimenCompanion(
               prepTime: db.Value(specimenCtr.prepTimeCtr.text),
@@ -306,13 +306,13 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
                       currentFieldNumber.toString();
 
                   if (!hasSelected) {
-                    PersonnelServices(ref).updatePersonnelEntry(
+                    PersonnelServices(ref: ref).updatePersonnelEntry(
                         uuid,
                         PersonnelCompanion(
                             currentFieldNumber: db.Value(fieldNumber + 1)));
                     _selectedPersonnel.add(uuid);
                   }
-                  SpecimenServices(ref).updateSpecimen(
+                  SpecimenServices(ref: ref).updateSpecimen(
                     widget.specimenUuid,
                     SpecimenCompanion(
                       catalogerID: db.Value(uuid),
@@ -346,7 +346,7 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
                   error: (e, s) => const [],
                 ),
             onChanged: (String? uuid) {
-              SpecimenServices(ref).updateSpecimen(
+              SpecimenServices(ref: ref).updateSpecimen(
                 widget.specimenUuid,
                 SpecimenCompanion(preparatorID: db.Value(uuid)),
               );
@@ -358,7 +358,7 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
   }
 
   Future<int> _getCurrentCollectorNumber(String personnelUuid) async {
-    int fieldNumber = await SpecimenServices(ref).getSpecimenFieldNumber(
+    int fieldNumber = await SpecimenServices(ref: ref).getSpecimenFieldNumber(
       personnelUuid,
     );
 
@@ -392,7 +392,7 @@ class IdTile extends ConsumerWidget {
               isLastField: true,
               onChanged: (String? value) {
                 if (value != null) {
-                  SpecimenServices(ref).updateSpecimen(
+                  SpecimenServices(ref: ref).updateSpecimen(
                     specimenUuid,
                     SpecimenCompanion(
                       museumID: db.Value(value),
@@ -469,11 +469,11 @@ class SpecimenIdTile extends ConsumerWidget {
                         int fieldNumber =
                             int.parse(specimenCtr.fieldNumberCtr.text);
                         int nextFieldNumber = fieldNumber + 1;
-                        await PersonnelServices(ref).updatePersonnelEntry(
+                        await PersonnelServices(ref: ref).updatePersonnelEntry(
                             catalogerUuid,
                             PersonnelCompanion(
                                 currentFieldNumber: db.Value(nextFieldNumber)));
-                        await SpecimenServices(ref).updateSpecimen(
+                        await SpecimenServices(ref: ref).updateSpecimen(
                           specimenUuid,
                           SpecimenCompanion(
                             fieldNumber: db.Value(

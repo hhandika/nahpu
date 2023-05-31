@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 const String newDbPref = 'isNewDb';
 
 class DbServices extends DbAccess {
-  DbServices(super.ref);
+  const DbServices({required super.ref});
 
   SharedPreferences get prefs => ref.read(settingProvider);
 
@@ -17,10 +17,10 @@ class DbServices extends DbAccess {
   }
 
   Future<void> syncSettingWithDb() async {
-    SpecimenPartServices(ref).getSpecimenTypes();
-    SpecimenPartServices(ref).getTreatmentOptions();
-    CollMethodServices(ref).getAllMethods();
-    CollEvenPersonnelServices(ref).getAllRoles();
+    SpecimenPartServices(ref: ref).getSpecimenTypes();
+    SpecimenPartServices(ref: ref).getTreatmentOptions();
+    CollMethodServices(ref: ref).getAllMethods();
+    CollEvenPersonnelServices(ref: ref).getAllRoles();
     _inValidateSettings();
   }
 

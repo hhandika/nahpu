@@ -33,7 +33,7 @@ class Habitat extends ConsumerWidget {
                 hintText:
                     'Enter a habitat type, e.g. "Urban", "Montane Forest", "Desert", "etc."',
               ),
-              onChanged: (value) => SiteServices(ref).updateSite(
+              onChanged: (value) => SiteServices(ref: ref).updateSite(
                 id,
                 SiteCompanion(habitatType: db.Value(value)),
               ),
@@ -45,7 +45,7 @@ class Habitat extends ConsumerWidget {
                 hintText:
                     'Enter habitat condition, e.g. "Pristine", "Disturbed", "etc."',
               ),
-              onChanged: (value) => SiteServices(ref).updateSite(
+              onChanged: (value) => SiteServices(ref: ref).updateSite(
                 id,
                 SiteCompanion(habitatCondition: db.Value(value)),
               ),
@@ -58,7 +58,7 @@ class Habitat extends ConsumerWidget {
                 hintText:
                     'Describe the site, e.g. "A camp site in the middle of the forest."',
               ),
-              onChanged: (value) => SiteServices(ref).updateSite(
+              onChanged: (value) => SiteServices(ref: ref).updateSite(
                 id,
                 SiteCompanion(habitatDescription: db.Value(value)),
               ),

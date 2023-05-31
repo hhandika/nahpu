@@ -136,8 +136,8 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
                 if (value != null) {
                   setState(() {
                     _csvData.headerMap[_csvData.header.indexOf(e)] = value;
-                    _problems =
-                        TaxonEntryReader(ref).findProblems(_csvData.headerMap);
+                    _problems = TaxonEntryReader(ref: ref)
+                        .findProblems(_csvData.headerMap);
                   });
                 }
               },
@@ -160,7 +160,7 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
 
   Future<void> _parseFile() async {
     if (_filePath != null) {
-      TaxonEntryReader reader = TaxonEntryReader(ref);
+      TaxonEntryReader reader = TaxonEntryReader(ref: ref);
       try {
         _csvData = await reader.parseCsv(_filePath!);
         _problems = reader.findProblems(_csvData.headerMap);
@@ -184,7 +184,7 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
 
   Future<void> _parseData() async {
     try {
-      ParsedCSVdata data = await TaxonEntryReader(ref).parseData(_csvData);
+      ParsedCSVdata data = await TaxonEntryReader(ref: ref).parseData(_csvData);
       if (mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(

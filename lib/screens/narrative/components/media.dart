@@ -70,10 +70,11 @@ class NarrativeMediaViewer extends ConsumerWidget {
       onAddImage: () async {
         try {
           List<String> images =
-              await ImageServices(ref, mediaCategory).pickImages();
+              await ImageServices(ref: ref, category: mediaCategory)
+                  .pickImages();
           if (images.isNotEmpty) {
             for (String path in images) {
-              await NarrativeServices(ref).createNarrativeMedia(
+              await NarrativeServices(ref: ref).createNarrativeMedia(
                 narrativeId,
                 path,
               );
@@ -91,10 +92,10 @@ class NarrativeMediaViewer extends ConsumerWidget {
       },
       onAccessingCamera: () async {
         try {
-          String? image =
-              await ImageServices(ref, mediaCategory).accessCamera();
+          String? image = await ImageServices(ref: ref, category: mediaCategory)
+              .accessCamera();
           if (image != null) {
-            await NarrativeServices(ref).createNarrativeMedia(
+            await NarrativeServices(ref: ref).createNarrativeMedia(
               narrativeId,
               image,
             );

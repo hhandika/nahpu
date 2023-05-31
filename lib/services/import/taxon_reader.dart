@@ -13,7 +13,7 @@ import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/types/types.dart';
 
 class TaxonEntryReader extends DbAccess {
-  TaxonEntryReader(super.ref);
+  const TaxonEntryReader({required super.ref});
 
   Future<CsvData> parseCsv(File inputFile) async {
     try {
@@ -68,7 +68,7 @@ class TaxonEntryReader extends DbAccess {
           continue;
         }
         TaxonomyCompanion dbForm = _getDbForm(data);
-        TaxonomyService(ref).createTaxon(dbForm);
+        TaxonomyService(ref: ref).createTaxon(dbForm);
         importData.recordCount++;
 
         if (!importedFamilies.contains(data.taxonFamily)) {
@@ -101,7 +101,7 @@ class TaxonEntryReader extends DbAccess {
 
   Future<bool> _checkSpeciesExist(TaxonEntryData data) async {
     try {
-      TaxonomyData? species = await TaxonomyService(ref)
+      TaxonomyData? species = await TaxonomyService(ref: ref)
           .getTaxonBySpecies(data.genus, data.specificEpithet);
       return species != null;
     } catch (e) {

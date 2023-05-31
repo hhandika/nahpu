@@ -18,7 +18,7 @@ class SiteWriterServices {
     if (siteID == null) {
       return '';
     } else {
-      SiteData? data = await SiteServices(ref).getSite(siteID);
+      SiteData? data = await SiteServices(ref: ref).getSite(siteID);
 
       if (data == null) {
         return delimiter * 5;
@@ -92,7 +92,7 @@ class SiteWriterServices {
       return '';
     } else {
       List<CoordinateData> coordinateList =
-          await CoordinateServices(ref).getCoordinatesBySiteID(siteID!);
+          await CoordinateServices(ref: ref).getCoordinatesBySiteID(siteID!);
       return coordinateList
           .map((e) => '${e.nameId ?? ''};'
               '${e.decimalLatitude ?? ''},${e.decimalLongitude ?? ''};'

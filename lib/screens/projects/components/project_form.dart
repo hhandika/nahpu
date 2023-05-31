@@ -217,7 +217,8 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
   }
 
   Future<void> _getInitialProjectName() async {
-    final name = await ProjectServices(ref).getProjectName(widget.projectUuid);
+    final name =
+        await ProjectServices(ref: ref).getProjectName(widget.projectUuid);
     setState(() {
       initialProjectName = name;
     });
@@ -240,7 +241,7 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
       lastAccessed: db.Value(getSystemDateTime()),
     );
 
-    ProjectServices(ref).createProject(projectData);
+    ProjectServices(ref: ref).createProject(projectData);
   }
 
   void _updateProject() {
@@ -255,7 +256,7 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
       lastAccessed: db.Value(getSystemDateTime()),
     );
 
-    ProjectServices(ref).updateProject(widget.projectUuid, projectData);
+    ProjectServices(ref: ref).updateProject(widget.projectUuid, projectData);
   }
 
   Future<void> _goToDashboard() async {

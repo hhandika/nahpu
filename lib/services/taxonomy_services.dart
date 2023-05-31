@@ -26,7 +26,7 @@ String getTaxonFirstThreeLetters(String value) {
 }
 
 class TaxonomyService extends DbAccess {
-  TaxonomyService(super.ref);
+  const TaxonomyService({required super.ref});
 
   Future<TaxonomyData> getTaxonById(int id) async {
     return await TaxonomyQuery(dbAccess).getTaxonById(id);

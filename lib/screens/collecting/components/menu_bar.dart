@@ -16,7 +16,7 @@ enum MenuSelection {
 }
 
 Future<void> createNewCollEvents(BuildContext context, WidgetRef ref) {
-  CollEventServices services = CollEventServices(ref);
+  CollEventServices services = CollEventServices(ref: ref);
 
   return services.createNewCollEvents().then(
     (_) {
@@ -92,7 +92,7 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
     if (widget.collEventId != null) {
       showDeleteAlertOnMenu(
         () {
-          CollEventServices(ref).deleteCollEvent(widget.collEventId!);
+          CollEventServices(ref: ref).deleteCollEvent(widget.collEventId!);
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (_) => const CollEventViewer(),
@@ -109,7 +109,7 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
     final projectUuid = ref.read(projectUuidProvider.notifier).state;
     showDeleteAlertOnMenu(
       () {
-        CollEventServices(ref).deleteAllCollEvents(projectUuid);
+        CollEventServices(ref: ref).deleteAllCollEvents(projectUuid);
         ref.invalidate(collEventEntryProvider);
       },
       'Delete all collecting events?\nTHIS ACTION CANNOT BE UNDONE!.',

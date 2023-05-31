@@ -10,7 +10,7 @@ import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/types/import.dart';
 
 class MediaServices extends DbAccess {
-  MediaServices(super.ref);
+  const MediaServices({required super.ref});
 
   Future<int> createMedia(MediaCompanion form) {
     return MediaDbQuery(dbAccess).createMedia(form);

@@ -17,7 +17,8 @@ class MammalianMeasurements {
   late MammalMeasurementData data;
 
   Future<String> getMeasurements() async {
-    data = await SpecimenServices(ref).getMammalMeasurementData(specimenUuid);
+    data =
+        await SpecimenServices(ref: ref).getMammalMeasurementData(specimenUuid);
     String measurement =
         '${data.totalLength ?? ''}$delimiter${data.tailLength ?? ''}$delimiter'
         '${data.hindFootLength ?? ''}$delimiter${data.earLength ?? ''}$delimiter'

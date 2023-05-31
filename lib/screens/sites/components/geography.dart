@@ -72,7 +72,7 @@ class MainSiteLocality extends ConsumerWidget {
             hintText: 'Enter a country',
           ),
           onChanged: (value) {
-            SiteServices(ref).updateSite(
+            SiteServices(ref: ref).updateSite(
               id,
               SiteCompanion(country: db.Value(value)),
             );
@@ -85,7 +85,7 @@ class MainSiteLocality extends ConsumerWidget {
             hintText: 'Enter a state/province',
           ),
           onChanged: (value) {
-            SiteServices(ref).updateSite(
+            SiteServices(ref: ref).updateSite(
               id,
               SiteCompanion(stateProvince: db.Value(value)),
             );
@@ -98,7 +98,7 @@ class MainSiteLocality extends ConsumerWidget {
             hintText: 'Enter a county/parish/district',
           ),
           onChanged: (value) {
-            SiteServices(ref).updateSite(
+            SiteServices(ref: ref).updateSite(
               id,
               SiteCompanion(county: db.Value(value)),
             );
@@ -111,7 +111,7 @@ class MainSiteLocality extends ConsumerWidget {
             hintText: 'Enter a municipality/city/town',
           ),
           onChanged: (value) {
-            SiteServices(ref).updateSite(
+            SiteServices(ref: ref).updateSite(
               id,
               SiteCompanion(municipality: db.Value(value)),
             );
@@ -143,7 +143,7 @@ class PreciseLocality extends ConsumerWidget {
         hintText: 'Enter a precise locality lower than municipality',
       ),
       onChanged: (value) {
-        SiteServices(ref).updateSite(
+        SiteServices(ref: ref).updateSite(
           id,
           SiteCompanion(locality: db.Value(value)),
         );
@@ -173,7 +173,7 @@ class LocalityNote extends ConsumerWidget {
         hintText: 'Enter more info about the site (optional)',
       ),
       onChanged: (value) {
-        SiteServices(ref).updateSite(
+        SiteServices(ref: ref).updateSite(
           id,
           SiteCompanion(remark: db.Value(value)),
         );

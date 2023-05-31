@@ -1,3 +1,5 @@
+enum ArchiveFmt { zip }
+
 enum SpecimenRecordType {
   birds,
   generalMammals,

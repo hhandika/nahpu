@@ -77,7 +77,7 @@ class SpecimenTypeSettings extends ConsumerWidget {
                         text: e,
                         primaryColor: Theme.of(context).colorScheme.secondary,
                         onDeleted: () {
-                          SpecimenPartServices(ref).removeType(e);
+                          SpecimenPartServices(ref: ref).removeType(e);
                         },
                       ))
                   .toList();
@@ -91,14 +91,14 @@ class SpecimenTypeSettings extends ConsumerWidget {
       hintText: 'Enter part type',
       onPressed: () {
         if (partController.text.isNotEmpty) {
-          SpecimenPartServices(ref).addType(
+          SpecimenPartServices(ref: ref).addType(
             partController.text.trim(),
           );
           partController.clear();
         }
       },
       resetLabel: 'Match database types',
-      onReset: () => SpecimenPartServices(ref).getSpecimenTypes(),
+      onReset: () => SpecimenPartServices(ref: ref).getSpecimenTypes(),
     );
   }
 }
@@ -120,7 +120,7 @@ class TreatmentOptionSettings extends ConsumerWidget {
                         text: e,
                         primaryColor: Theme.of(context).colorScheme.tertiary,
                         onDeleted: () {
-                          SpecimenPartServices(ref).removeTreatment(e);
+                          SpecimenPartServices(ref: ref).removeTreatment(e);
                         },
                       ))
                   .toList();
@@ -134,14 +134,14 @@ class TreatmentOptionSettings extends ConsumerWidget {
       hintText: 'Enter treatment',
       onPressed: () {
         if (treatmentController.text.isNotEmpty) {
-          SpecimenPartServices(ref).addTreatment(
+          SpecimenPartServices(ref: ref).addTreatment(
             treatmentController.text.trim(),
           );
           treatmentController.clear();
         }
       },
       resetLabel: 'Match database treatments',
-      onReset: () => SpecimenPartServices(ref).getTreatmentOptions(),
+      onReset: () => SpecimenPartServices(ref: ref).getTreatmentOptions(),
     );
   }
 }
@@ -195,14 +195,14 @@ class TissuePrefixFieldState extends ConsumerState<TissuePrefixField> {
           ),
           onChanged: (String? value) async {
             if (value != null && value.trim().isNotEmpty) {
-              await TissueIdServices(ref).setPrefix(value.trim());
+              await TissueIdServices(ref: ref).setPrefix(value.trim());
             }
           }),
     );
   }
 
   String _getPrefix() {
-    return TissueIdServices(ref).getPrefix();
+    return TissueIdServices(ref: ref).getPrefix();
   }
 }
 
@@ -238,7 +238,7 @@ class TissueNumFieldState extends ConsumerState<TissueNumField> {
         textInputAction: TextInputAction.done,
         onChanged: (String? value) async {
           if (value != null && value.trim().isNotEmpty) {
-            await TissueIdServices(ref).setNumber(value);
+            await TissueIdServices(ref: ref).setNumber(value);
           }
         },
       ),
@@ -246,6 +246,6 @@ class TissueNumFieldState extends ConsumerState<TissueNumField> {
   }
 
   String _getNumber() {
-    return TissueIdServices(ref).getNumberString();
+    return TissueIdServices(ref: ref).getNumberString();
   }
 }

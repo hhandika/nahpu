@@ -212,7 +212,7 @@ class MediaCardState extends ConsumerState<MediaCard> {
   Future<File> _getMediaPath() async {
     MediaCategory category =
         matchMediaCategoryString(widget.ctr.categoryCtr.text);
-    File path = await ImageServices(ref, category)
+    File path = await ImageServices(ref: ref, category: category)
         .getMediaPath(widget.ctr.fileNameCtr!);
 
     return path;
@@ -269,7 +269,7 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
           const PopupMenuDivider(),
           PopupMenuItem(
             onTap: () async {
-              await MediaServices(ref).deleteMedia(
+              await MediaServices(ref: ref).deleteMedia(
                 widget.ctr.primaryId!,
                 widget.ctr.categoryCtr.text,
               );
@@ -307,7 +307,7 @@ class PhotoDetailForm extends ConsumerWidget {
           maxLines: 5,
           onChanged: (value) {
             if (value != null && value.isNotEmpty) {
-              MediaServices(ref).updateMedia(
+              MediaServices(ref: ref).updateMedia(
                   ctr.primaryId!,
                   ctr.categoryCtr.text,
                   MediaCompanion(
@@ -336,7 +336,7 @@ class PhotoDetailForm extends ConsumerWidget {
               ),
           onChanged: (String? value) {
             if (value != null) {
-              MediaServices(ref).updateMedia(
+              MediaServices(ref: ref).updateMedia(
                   ctr.primaryId!,
                   ctr.categoryCtr.text,
                   MediaCompanion(

@@ -41,7 +41,7 @@ class CollActivityFields extends ConsumerWidget {
               );
             }).toList(),
             onChanged: (String? newValue) {
-              CollEventServices(ref).updateCollEvent(
+              CollEventServices(ref: ref).updateCollEvent(
                 collEventId,
                 CollEventCompanion(primaryCollMethod: db.Value(newValue)),
               );
@@ -55,7 +55,7 @@ class CollActivityFields extends ConsumerWidget {
               hintText: 'Enter notes about the activity',
             ),
             onChanged: (String? newValue) {
-              CollEventServices(ref).updateCollEvent(
+              CollEventServices(ref: ref).updateCollEvent(
                 collEventId,
                 CollEventCompanion(collMethodNotes: db.Value(newValue)),
               );

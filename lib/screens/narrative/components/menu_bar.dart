@@ -15,7 +15,7 @@ enum MenuSelection {
 }
 
 Future<void> createNewNarrative(BuildContext context, WidgetRef ref) {
-  return NarrativeServices(ref).createNewNarrative().then((_) {
+  return NarrativeServices(ref: ref).createNewNarrative().then((_) {
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => const NarrativeViewer()));
   });
@@ -86,7 +86,7 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
     showDeleteAlertOnMenu(
       () {
         if (widget.narrativeId != null) {
-          NarrativeServices(ref).deleteNarrative(widget.narrativeId!);
+          NarrativeServices(ref: ref).deleteNarrative(widget.narrativeId!);
           Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (_) => const NarrativeViewer()));
         }
@@ -100,7 +100,7 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
     showDeleteAlertOnMenu(
       () {
         final projectUuid = ref.read(projectUuidProvider.notifier).state;
-        NarrativeServices(ref).deleteAllNarrative(projectUuid);
+        NarrativeServices(ref: ref).deleteAllNarrative(projectUuid);
       },
       'Delete all narrative\nTHIS ACTION CANNOT BE UNDONE!',
       context,

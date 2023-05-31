@@ -36,11 +36,13 @@ class SiteMediaFormState extends ConsumerState<SiteMediaForm> {
               images: List.from(data),
               onAddImage: () async {
                 try {
-                  List<String> images =
-                      await ImageServices(ref, mediaCategory).pickImages();
+                  List<String> images = await ImageServices(
+                    ref: ref,
+                    category: mediaCategory,
+                  ).pickImages();
                   if (images.isNotEmpty) {
                     for (String path in images) {
-                      await SiteServices(ref).createSiteMedia(
+                      await SiteServices(ref: ref).createSiteMedia(
                         widget.siteId,
                         path,
                       );
@@ -59,10 +61,12 @@ class SiteMediaFormState extends ConsumerState<SiteMediaForm> {
               },
               onAccessingCamera: () async {
                 try {
-                  String? image =
-                      await ImageServices(ref, mediaCategory).accessCamera();
+                  String? image = await ImageServices(
+                    ref: ref,
+                    category: mediaCategory,
+                  ).accessCamera();
                   if (image != null) {
-                    await SiteServices(ref).createSiteMedia(
+                    await SiteServices(ref: ref).createSiteMedia(
                       widget.siteId,
                       image,
                     );

@@ -9,12 +9,12 @@ import 'package:path/path.dart' as path;
 const String mediaDir = 'media';
 
 class ImageServices extends DbAccess {
-  ImageServices(super.ref, this.category);
+  const ImageServices({required super.ref, required this.category});
 
   final MediaCategory category;
 
   Future<File> getMediaPath(String filePath) async {
-    Directory projectDir = await FileServices(ref).getProjectDir();
+    Directory projectDir = await FileServices(ref: ref).getProjectDir();
     Directory mediaDir = _getMediaDir();
     String fullPath = path.join(projectDir.path, mediaDir.path, filePath);
     return File(fullPath);
@@ -66,7 +66,7 @@ class ImageServices extends DbAccess {
   Future<File> _copySingleFile(String path) async {
     File file = File(path);
     File newPath =
-        await FileServices(ref).copyFileToProjectDir(file, _getMediaDir());
+        await FileServices(ref: ref).copyFileToProjectDir(file, _getMediaDir());
     return newPath;
   }
 

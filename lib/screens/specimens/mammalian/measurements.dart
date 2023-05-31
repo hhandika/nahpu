@@ -61,7 +61,7 @@ class MammalMeasurementFormsState
               onChanged: (String? value) {
                 if (value != null && value.isNotEmpty) {
                   setState(() {
-                    SpecimenServices(ref).updateMammalMeasurement(
+                    SpecimenServices(ref: ref).updateMammalMeasurement(
                       widget.specimenUuid,
                       MammalMeasurementCompanion(
                         totalLength: db.Value(double.tryParse(value) ?? 0),
@@ -80,7 +80,7 @@ class MammalMeasurementFormsState
               onChanged: (String? value) {
                 if (value != null && value.isNotEmpty) {
                   setState(() {
-                    SpecimenServices(ref).updateMammalMeasurement(
+                    SpecimenServices(ref: ref).updateMammalMeasurement(
                       widget.specimenUuid,
                       MammalMeasurementCompanion(
                         tailLength: db.Value(double.tryParse(value)),
@@ -104,7 +104,7 @@ class MammalMeasurementFormsState
               onChanged: (String? value) {
                 if (value != null && value.isNotEmpty) {
                   setState(() {
-                    SpecimenServices(ref).updateMammalMeasurement(
+                    SpecimenServices(ref: ref).updateMammalMeasurement(
                       widget.specimenUuid,
                       MammalMeasurementCompanion(
                         hindFootLength: db.Value(double.tryParse(value)),
@@ -123,7 +123,7 @@ class MammalMeasurementFormsState
               onChanged: (String? value) {
                 if (value != null && value.isNotEmpty) {
                   setState(() {
-                    SpecimenServices(ref).updateMammalMeasurement(
+                    SpecimenServices(ref: ref).updateMammalMeasurement(
                       widget.specimenUuid,
                       MammalMeasurementCompanion(
                         earLength: db.Value(double.tryParse(value)),
@@ -147,7 +147,7 @@ class MammalMeasurementFormsState
               onChanged: (value) {
                 if (value != null && value.isNotEmpty) {
                   setState(() {
-                    SpecimenServices(ref).updateMammalMeasurement(
+                    SpecimenServices(ref: ref).updateMammalMeasurement(
                       widget.specimenUuid,
                       MammalMeasurementCompanion(
                         weight: db.Value(double.tryParse(value)),
@@ -168,7 +168,7 @@ class MammalMeasurementFormsState
                 onChanged: (value) {
                   if (value != null && value.isNotEmpty) {
                     setState(() {
-                      SpecimenServices(ref).updateMammalMeasurement(
+                      SpecimenServices(ref: ref).updateMammalMeasurement(
                         widget.specimenUuid,
                         MammalMeasurementCompanion(
                           forearm: db.Value(double.tryParse(value)),
@@ -197,7 +197,7 @@ class MammalMeasurementFormsState
                   .toList(),
               onChanged: (String? newValue) {
                 ctr.accuracyCtr = newValue;
-                SpecimenServices(ref).updateMammalMeasurement(
+                SpecimenServices(ref: ref).updateMammalMeasurement(
                   widget.specimenUuid,
                   MammalMeasurementCompanion(
                     accuracy: db.Value(newValue),
@@ -224,7 +224,7 @@ class MammalMeasurementFormsState
                   if (newValue != null) {
                     setState(() {
                       ctr.sexCtr = newValue.index;
-                      SpecimenServices(ref).updateMammalMeasurement(
+                      SpecimenServices(ref: ref).updateMammalMeasurement(
                         widget.specimenUuid,
                         MammalMeasurementCompanion(
                           sex: db.Value(
@@ -252,7 +252,7 @@ class MammalMeasurementFormsState
                   setState(
                     () {
                       ctr.ageCtr = newValue.index;
-                      SpecimenServices(ref).updateMammalMeasurement(
+                      SpecimenServices(ref: ref).updateMammalMeasurement(
                         widget.specimenUuid,
                         MammalMeasurementCompanion(
                           age: db.Value(
@@ -288,7 +288,7 @@ class MammalMeasurementFormsState
             hintText: 'Write notes about the measurements (optional)',
             isLastField: true,
             onChanged: (value) {
-              SpecimenServices(ref).updateMammalMeasurement(
+              SpecimenServices(ref: ref).updateMammalMeasurement(
                 widget.specimenUuid,
                 MammalMeasurementCompanion(
                   remark: db.Value(value),
@@ -303,7 +303,7 @@ class MammalMeasurementFormsState
 
   Future<void> _updateCtr(String specimenUuid) async {
     MammalMeasurementData data =
-        await SpecimenServices(ref).getMammalMeasurementData(specimenUuid);
+        await SpecimenServices(ref: ref).getMammalMeasurementData(specimenUuid);
     setState(() {
       ctr = MammalMeasurementCtrModel.fromData(data);
     });
@@ -357,7 +357,7 @@ class MaleGonadFormState extends ConsumerState<MaleGonadForm> {
                   setState(
                     () {
                       widget.ctr.testisPosCtr = newValue.index;
-                      SpecimenServices(ref).updateMammalMeasurement(
+                      SpecimenServices(ref: ref).updateMammalMeasurement(
                         widget.specimenUuid,
                         MammalMeasurementCompanion(
                           testisPosition: db.Value(
@@ -419,7 +419,7 @@ class ScrotalMaleFormState extends ConsumerState<ScrotalMaleForm> {
                 isLastField: false,
                 isDouble: true,
                 onChanged: (String? value) {
-                  SpecimenServices(ref).updateMammalMeasurement(
+                  SpecimenServices(ref: ref).updateMammalMeasurement(
                     widget.specimenUuid,
                     MammalMeasurementCompanion(
                       testisLength: db.Value(
@@ -436,7 +436,7 @@ class ScrotalMaleFormState extends ConsumerState<ScrotalMaleForm> {
                 isLastField: true,
                 isDouble: true,
                 onChanged: (String? value) {
-                  SpecimenServices(ref).updateMammalMeasurement(
+                  SpecimenServices(ref: ref).updateMammalMeasurement(
                     widget.specimenUuid,
                     MammalMeasurementCompanion(
                       testisWidth: db.Value(
@@ -465,7 +465,7 @@ class ScrotalMaleFormState extends ConsumerState<ScrotalMaleForm> {
                   .toList(),
               onChanged: (value) {
                 if (value != null) {
-                  SpecimenServices(ref).updateMammalMeasurement(
+                  SpecimenServices(ref: ref).updateMammalMeasurement(
                     widget.specimenUuid,
                     MammalMeasurementCompanion(
                       epididymisAppearance: db.Value(
@@ -533,7 +533,7 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
                     .toList(),
                 onChanged: (VaginaOpening? newValue) {
                   if (newValue != null) {
-                    SpecimenServices(ref).updateMammalMeasurement(
+                    SpecimenServices(ref: ref).updateMammalMeasurement(
                       widget.specimenUuid,
                       MammalMeasurementCompanion(
                         vaginaOpening: db.Value(
@@ -559,7 +559,7 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
                     .toList(),
                 onChanged: (PubicSymphysis? newValue) {
                   if (newValue != null) {
-                    SpecimenServices(ref).updateMammalMeasurement(
+                    SpecimenServices(ref: ref).updateMammalMeasurement(
                       widget.specimenUuid,
                       MammalMeasurementCompanion(
                         pubicSymphysis: db.Value(
@@ -589,7 +589,7 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
                   .toList(),
               onChanged: (ReproductiveStage? newValue) {
                 if (newValue != null) {
-                  SpecimenServices(ref).updateMammalMeasurement(
+                  SpecimenServices(ref: ref).updateMammalMeasurement(
                     widget.specimenUuid,
                     MammalMeasurementCompanion(
                       reproductiveStage: db.Value(
@@ -625,7 +625,7 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
                   .toList(),
               onChanged: (MammaeCondition? newValue) {
                 if (newValue != null) {
-                  SpecimenServices(ref).updateMammalMeasurement(
+                  SpecimenServices(ref: ref).updateMammalMeasurement(
                     widget.specimenUuid,
                     MammalMeasurementCompanion(
                       mammaeCondition: db.Value(
@@ -656,7 +656,7 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
               isLastField: true,
               onChanged: (String? value) {
                 if (value != null) {
-                  SpecimenServices(ref).updateMammalMeasurement(
+                  SpecimenServices(ref: ref).updateMammalMeasurement(
                     widget.specimenUuid,
                     MammalMeasurementCompanion(
                       embryoCR: db.Value(
@@ -732,7 +732,7 @@ class MammaeForm extends ConsumerWidget {
         isLastField: false,
         onChanged: (String? value) {
           if (value != null) {
-            SpecimenServices(ref).updateMammalMeasurement(
+            SpecimenServices(ref: ref).updateMammalMeasurement(
               specimenUuid,
               MammalMeasurementCompanion(
                 mammaeAxillaryCount: db.Value(
@@ -750,7 +750,7 @@ class MammaeForm extends ConsumerWidget {
         isLastField: false,
         onChanged: (String? value) {
           if (value != null) {
-            SpecimenServices(ref).updateMammalMeasurement(
+            SpecimenServices(ref: ref).updateMammalMeasurement(
               specimenUuid,
               MammalMeasurementCompanion(
                 mammaeAbdominalCount: db.Value(
@@ -768,7 +768,7 @@ class MammaeForm extends ConsumerWidget {
         isLastField: false,
         onChanged: (String? value) {
           if (value != null) {
-            SpecimenServices(ref).updateMammalMeasurement(
+            SpecimenServices(ref: ref).updateMammalMeasurement(
               specimenUuid,
               MammalMeasurementCompanion(
                 mammaeInguinalCount: db.Value(
@@ -805,7 +805,7 @@ class EmbryoForm extends ConsumerWidget {
         isLastField: false,
         onChanged: (String? value) {
           if (value != null) {
-            SpecimenServices(ref).updateMammalMeasurement(
+            SpecimenServices(ref: ref).updateMammalMeasurement(
               specimenUuid!,
               MammalMeasurementCompanion(
                 embryoLeftCount: db.Value(
@@ -823,7 +823,7 @@ class EmbryoForm extends ConsumerWidget {
         isLastField: true,
         onChanged: (String? value) {
           if (value != null) {
-            SpecimenServices(ref).updateMammalMeasurement(
+            SpecimenServices(ref: ref).updateMammalMeasurement(
               specimenUuid!,
               MammalMeasurementCompanion(
                 embryoRightCount: db.Value(
@@ -860,7 +860,7 @@ class PlacentalScarForm extends ConsumerWidget {
         isLastField: false,
         onChanged: (String? value) {
           if (value != null) {
-            SpecimenServices(ref).updateMammalMeasurement(
+            SpecimenServices(ref: ref).updateMammalMeasurement(
               specimenUuid,
               MammalMeasurementCompanion(
                 leftPlacentalScars: db.Value(
@@ -878,7 +878,7 @@ class PlacentalScarForm extends ConsumerWidget {
         isLastField: true,
         onChanged: (String? value) {
           if (value != null) {
-            SpecimenServices(ref).updateMammalMeasurement(
+            SpecimenServices(ref: ref).updateMammalMeasurement(
               specimenUuid,
               MammalMeasurementCompanion(
                 rightPlacentalScars: db.Value(

@@ -73,7 +73,7 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
                 if (value != null) {
                   setState(() {
                     widget.collEventCtr.siteIDCtr = value;
-                    CollEventServices(ref).updateCollEvent(
+                    CollEventServices(ref: ref).updateCollEvent(
                         widget.collEventId,
                         CollEventCompanion(
                           siteID: db.Value(value),
@@ -96,7 +96,7 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
                     setState(
                       () {
                         // _getEventID();
-                        CollEventServices(ref).updateCollEvent(
+                        CollEventServices(ref: ref).updateCollEvent(
                           widget.collEventId,
                           CollEventCompanion(
                             startDate:
@@ -156,7 +156,7 @@ class EndDateField extends ConsumerWidget {
       initialDate: DateTime.now(),
       lastDate: DateTime.now(),
       onTap: () {
-        CollEventServices(ref).updateCollEvent(
+        CollEventServices(ref: ref).updateCollEvent(
           collEventId,
           CollEventCompanion(
             endDate: db.Value(collEventCtr.endDateCtr.text),
@@ -224,7 +224,7 @@ class CollEventIdTile extends ConsumerWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            CollEventServices(ref).updateCollEvent(
+                            CollEventServices(ref: ref).updateCollEvent(
                               collEventId,
                               CollEventCompanion(
                                 idSuffix:
@@ -287,7 +287,7 @@ class EventIDTextState extends ConsumerState<EventIDText> {
   }
 
   Future<String> _getEventID() async {
-    CollEventServices services = CollEventServices(ref);
+    CollEventServices services = CollEventServices(ref: ref);
     CollEventData? collEvent = await services.getCollEvent(widget.collEventId);
     if (collEvent != null) {
       return services.getCollEventID(collEvent);
@@ -320,7 +320,7 @@ class EventTimeField extends ConsumerWidget {
           controller: collEventCtr.startTimeCtr,
           initialTime: _getInitialTime(ref),
           onTap: () {
-            CollEventServices(ref).updateCollEvent(
+            CollEventServices(ref: ref).updateCollEvent(
               collEventId,
               CollEventCompanion(
                 startTime: db.Value(collEventCtr.startTimeCtr.text),
@@ -334,7 +334,7 @@ class EventTimeField extends ConsumerWidget {
           controller: collEventCtr.endTimeCtr,
           initialTime: _getInitialTime(ref),
           onTap: () {
-            CollEventServices(ref).updateCollEvent(
+            CollEventServices(ref: ref).updateCollEvent(
               collEventId,
               CollEventCompanion(
                 endTime: db.Value(collEventCtr.endTimeCtr.text),

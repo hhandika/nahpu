@@ -327,7 +327,7 @@ class ProjectPopUpMenuState extends ConsumerState<ProjectPopUpMenu> {
           deletePrompt: 'THIS ACTION IS IRREVERSIBLE!\n'
               'Are you sure you want to delete this project?',
           onDelete: () async {
-            await ProjectServices(ref).deleteProject(projectUuid);
+            await ProjectServices(ref: ref).deleteProject(projectUuid);
             if (mounted) {
               Navigator.of(context).pop();
             }
@@ -343,7 +343,7 @@ class ProjectPopUpMenuState extends ConsumerState<ProjectPopUpMenu> {
     // and call the provider from the onTap function of the popup menu.
     // when we tested this, users have to tap twice to get the popup menu to work.
     // This solution works well.
-    ProjectServices(ref).getProjectByUuid(projectUuid).then(
+    ProjectServices(ref: ref).getProjectByUuid(projectUuid).then(
           (value) => showDialog<void>(
             context: context,
             builder: (BuildContext context) {

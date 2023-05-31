@@ -7,7 +7,7 @@ import 'package:nahpu/services/site_services.dart';
 import 'package:nahpu/services/types/collecting.dart';
 
 class CollEventServices extends DbAccess {
-  CollEventServices(super.ref);
+  const CollEventServices({required super.ref});
 
   Future<int> createNewCollEvents() async {
     int eventID =
@@ -24,7 +24,7 @@ class CollEventServices extends DbAccess {
   }
 
   Future<String> getCollEventID(CollEventData collEventData) async {
-    final site = await SiteServices(ref).getSite(collEventData.siteID);
+    final site = await SiteServices(ref: ref).getSite(collEventData.siteID);
     String siteID = site != null ? site.siteID ?? '' : '';
     String startDate = collEventData.startDate != null
         ? collEventData.startDate.toString()
@@ -118,7 +118,7 @@ class CollEventServices extends DbAccess {
 }
 
 class CollEvenPersonnelServices extends DbAccess {
-  CollEvenPersonnelServices(super.ref);
+  const CollEvenPersonnelServices({required super.ref});
 
   Future<void> getAllRoles() async {
     List<String> data = await CollPersonnelQuery(dbAccess).getDistinctRoles();
@@ -149,7 +149,7 @@ class CollEvenPersonnelServices extends DbAccess {
 }
 
 class CollMethodServices extends DbAccess {
-  CollMethodServices(super.ref);
+  const CollMethodServices({required super.ref});
 
   Future<void> getAllMethods() async {
     List<String> data = await CollEffortQuery(dbAccess).getDistinctMethods();

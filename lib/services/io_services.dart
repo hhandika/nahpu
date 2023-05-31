@@ -115,7 +115,7 @@ class AppIOServices {
 /// This class is used to access the database
 /// from the service classes.
 class DbAccess {
-  DbAccess(this.ref);
+  const DbAccess({required this.ref});
 
   final WidgetRef ref;
 
@@ -142,12 +142,11 @@ Future<Directory> get nahpuDocumentDir async {
 }
 
 class FileServices extends DbAccess {
-  FileServices(super.ref);
+  FileServices({required super.ref});
 
   Future<Directory> getProjectDir() async {
     final documentDir = await nahpuDocumentDir;
     final projectDir = Directory(path.join(documentDir.path, projectUuid));
-    await projectDir.create(recursive: true);
     return projectDir;
   }
 

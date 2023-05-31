@@ -20,7 +20,7 @@ const String tissueIDPrefixKey = 'tissueIDPrefix';
 const String tissueIDNumberKey = 'tissueIDNumber';
 
 class SpecimenServices extends DbAccess {
-  SpecimenServices(super.ref);
+  const SpecimenServices({required super.ref});
 
   Future<void> createSpecimen() async {
     CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
@@ -208,7 +208,7 @@ class SpecimenServices extends DbAccess {
 }
 
 class TissueIdServices extends DbAccess {
-  TissueIdServices(super.ref);
+  const TissueIdServices({required super.ref});
 
   SharedPreferences get _prefs => ref.read(settingProvider);
 
@@ -260,7 +260,7 @@ class TissueIdServices extends DbAccess {
 }
 
 class SpecimenPartServices extends DbAccess {
-  SpecimenPartServices(super.ref);
+  const SpecimenPartServices({required super.ref});
 
   Future<void> createSpecimenPart(SpecimenPartCompanion form) async {
     SpecimenPartQuery(dbAccess).createSpecimenPart(form);

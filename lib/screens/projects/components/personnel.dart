@@ -251,7 +251,7 @@ class PersonnelMenuState extends ConsumerState<PersonnelMenu> {
         );
         break;
       case PersonnelMenuAction.delete:
-        PersonnelServices(ref).deletePersonnel(widget.data.uuid);
+        PersonnelServices(ref: ref).deletePersonnel(widget.data.uuid);
         break;
     }
   }
@@ -566,7 +566,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
   }
 
   void _updatePersonnel() {
-    PersonnelServices(ref).updatePersonnelEntry(
+    PersonnelServices(ref: ref).updatePersonnelEntry(
       widget.personnelUuid,
       PersonnelCompanion(
         name: db.Value(widget.ctr.nameCtr.text),
@@ -583,7 +583,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
   }
 
   Future<void> _addPersonnel() async {
-    PersonnelServices personnelServices = PersonnelServices(ref);
+    PersonnelServices personnelServices = PersonnelServices(ref: ref);
     String projectUuid = ref.read(projectUuidProvider);
     await personnelServices.createPersonnel(
       PersonnelCompanion(

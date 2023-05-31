@@ -283,7 +283,7 @@ class CollEffortMenuState extends ConsumerState<CollEffortMenu> {
         );
         break;
       case CommonPopUpMenuItems.delete:
-        CollEventServices(ref).deleteCollEffort(
+        CollEventServices(ref: ref).deleteCollEffort(
           widget.collEffortId,
         );
         ref.invalidate(collEffortByEventProvider);
@@ -374,7 +374,7 @@ class CollEffortFormState extends ConsumerState<CollEffortForm> {
   Future<void> _updateCollEffort() async {
     final form = _getForm();
     try {
-      await CollEventServices(ref)
+      await CollEventServices(ref: ref)
           .updateCollEffortEntry(widget.collEffortId!, form);
     } catch (e) {
       AlertDialog alert = AlertDialog(
@@ -401,7 +401,7 @@ class CollEffortFormState extends ConsumerState<CollEffortForm> {
 
   Future<void> _addCollEffort() async {
     final form = _getForm();
-    await CollEventServices(ref).createCollEffort(form);
+    await CollEventServices(ref: ref).createCollEffort(form);
   }
 
   CollEffortCompanion _getForm() {

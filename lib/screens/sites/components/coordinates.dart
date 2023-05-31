@@ -425,7 +425,8 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
           FormButtonWithDelete(
               isEditing: widget.isEditing,
               onDeleted: () {
-                CoordinateServices(ref).deleteCoordinate(widget.coordinateId!);
+                CoordinateServices(ref: ref)
+                    .deleteCoordinate(widget.coordinateId!);
                 ref.invalidate(coordinateBySiteProvider);
               },
               onSubmitted: () {
@@ -452,14 +453,14 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
   Future<void> _createCoordinate() async {
     CoordinateCompanion form = _getform();
 
-    await CoordinateServices(ref).createCoordinate(form);
+    await CoordinateServices(ref: ref).createCoordinate(form);
   }
 
   Future<void> _updateCoordinate() async {
     CoordinateCompanion form = _getform();
 
     try {
-      await CoordinateServices(ref)
+      await CoordinateServices(ref: ref)
           .updateCoordinate(widget.coordinateId!, form);
     } catch (e) {
       // Error dialog box

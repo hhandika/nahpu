@@ -57,6 +57,7 @@ dependencies:
   csv: ^5.0.2
   dotted_border: ^2.0.0+3
   image_picker: ^0.8.7+5
+  archive: ^3.3.7
 
 dev_dependencies:
   flutter_test:

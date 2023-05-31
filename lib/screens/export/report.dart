@@ -153,10 +153,10 @@ class ReportFormState extends ConsumerState<ReportForm> {
   Future<void> _writeReport(String savePath) async {
     switch (_reportType) {
       case ReportType.speciesCount:
-        await SpeciesListWriter(ref).writeSpeciesListCompact(savePath);
+        await SpeciesListWriter(ref: ref).writeSpeciesListCompact(savePath);
         break;
       default:
-        await SpeciesListWriter(ref).writeSpeciesListCompact(savePath);
+        await SpeciesListWriter(ref: ref).writeSpeciesListCompact(savePath);
         break;
     }
   }

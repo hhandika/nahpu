@@ -1,15 +1,14 @@
 import 'dart:io';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/types/export.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/narrative_services.dart';
 import 'package:nahpu/services/export/site_writer.dart';
 
-class NarrativeRecordWriter {
-  NarrativeRecordWriter(this.ref);
+class NarrativeRecordWriter extends DbAccess {
+  NarrativeRecordWriter({required super.ref});
 
-  final WidgetRef ref;
   late String delimiter;
 
   Future<void> writeNarrativeDelimited(File filePath, bool isCsv) async {
@@ -18,7 +17,7 @@ class NarrativeRecordWriter {
     final writer = file.openWrite();
     _writeHeader(writer);
     List<NarrativeData> narrativeList =
-        await NarrativeServices(ref).getAllNarrative();
+        await NarrativeServices(ref: ref).getAllNarrative();
     for (var narrative in narrativeList) {
       writer.write('"${narrative.date}"');
       writer.write(delimiter);

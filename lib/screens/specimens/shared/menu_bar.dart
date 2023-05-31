@@ -15,7 +15,7 @@ enum MenuSelection {
 }
 
 Future<void> createNewSpecimens(BuildContext context, WidgetRef ref) async {
-  await SpecimenServices(ref).createSpecimen();
+  await SpecimenServices(ref: ref).createSpecimen();
   if (context.mounted) {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (_) => const SpecimenViewer()),
@@ -90,7 +90,7 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
   void _deleteSpecimen() {
     showDeleteAlertOnMenu(() async {
       if (widget.specimenUuid != null && widget.catalogFmt != null) {
-        await SpecimenServices(ref).deleteSpecimen(
+        await SpecimenServices(ref: ref).deleteSpecimen(
           widget.specimenUuid!,
           widget.catalogFmt!,
         );
@@ -109,7 +109,7 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
 
   void _deleteAllSpecimens() {
     showDeleteAlertOnMenu(() async {
-      await SpecimenServices(ref).deleteAllSpecimens();
+      await SpecimenServices(ref: ref).deleteAllSpecimens();
     }, 'Delete all specimens?\nTHIS ACTION CANNOT BE UNDONE!', context);
   }
 }

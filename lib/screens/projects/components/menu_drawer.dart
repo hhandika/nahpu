@@ -99,7 +99,7 @@ class ProjectMenuDrawerState extends ConsumerState<ProjectMenuDrawer> {
             leading: const Icon(Icons.exit_to_app_rounded),
             title: const Text('Close project'),
             onTap: () {
-              ProjectServices(ref).updateProject(
+              ProjectServices(ref: ref).updateProject(
                 projectUuid,
                 ProjectCompanion(
                   lastAccessed: db.Value(
@@ -130,7 +130,8 @@ class ProjectMenuDrawerState extends ConsumerState<ProjectMenuDrawer> {
                       deletePrompt: 'THIS ACTION IS IRREVERSIBLE.\n'
                           'Are you sure you want to delete this project?',
                       onDelete: () async {
-                        await ProjectServices(ref).deleteProject(projectUuid);
+                        await ProjectServices(ref: ref)
+                            .deleteProject(projectUuid);
                         if (mounted) {
                           Navigator.pushReplacement(
                             context,

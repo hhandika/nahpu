@@ -125,7 +125,7 @@ class SpecimenListTitle extends ConsumerWidget {
   Future<String> _getPersonnelName(String? catalogerID, WidgetRef ref) async {
     if (catalogerID != null) {
       PersonnelData data =
-          await PersonnelServices(ref).getPersonnelByUuid(catalogerID);
+          await PersonnelServices(ref: ref).getPersonnelByUuid(catalogerID);
       return data.name ?? '';
     } else {
       return '';
@@ -160,7 +160,7 @@ class SpecimenListSubtitle extends ConsumerWidget {
 
   Future<String> _getTaxonData(int? taxonId, WidgetRef ref) async {
     if (taxonId != null) {
-      TaxonomyData data = await TaxonomyService(ref).getTaxonById(taxonId);
+      TaxonomyData data = await TaxonomyService(ref: ref).getTaxonById(taxonId);
       return _createTaxonInfo(data);
     } else {
       return '';

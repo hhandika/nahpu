@@ -408,7 +408,7 @@ class PartFormState extends ConsumerState<PartForm> {
             isEditing: widget.isEditing,
             onDeleted: () {
               if (widget.specimenPartId != null) {
-                SpecimenServices(ref)
+                SpecimenServices(ref: ref)
                     .deleteSpecimenPart(widget.specimenPartId!);
                 Navigator.pop(context);
               }
@@ -426,13 +426,13 @@ class PartFormState extends ConsumerState<PartForm> {
   Future<void> _createPart() async {
     SpecimenPartCompanion form = _getForm();
 
-    await SpecimenPartServices(ref).createSpecimenPart(form);
+    await SpecimenPartServices(ref: ref).createSpecimenPart(form);
   }
 
   Future<void> _updatePart() async {
     SpecimenPartCompanion form = _getForm();
 
-    await SpecimenPartServices(ref)
+    await SpecimenPartServices(ref: ref)
         .updateSpecimenPart(widget.specimenPartId!, form);
   }
 
@@ -805,7 +805,7 @@ class TissueIDformState extends ConsumerState<TissueIDform> {
 
   Future<void> _repeatTissueNum() async {
     String? tissueID =
-        await TissueIdServices(ref).repeatNumber(widget.specimenUuid);
+        await TissueIdServices(ref: ref).repeatNumber(widget.specimenUuid);
     if (tissueID == null || tissueID.isEmpty) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -911,7 +911,7 @@ class TissueIDMenuState extends ConsumerState<TissueIDMenu> {
             ),
             PrimaryButton(
               onPressed: () async {
-                String tissueID = await TissueIdServices(ref).setTissueID(
+                String tissueID = await TissueIdServices(ref: ref).setTissueID(
                   prefixCtr.text,
                   numberCtr.text,
                 );
@@ -929,7 +929,7 @@ class TissueIDMenuState extends ConsumerState<TissueIDMenu> {
   }
 
   void _getNewNumber() {
-    TissueIdServices(ref).getNewNumber().then((value) {
+    TissueIdServices(ref: ref).getNewNumber().then((value) {
       widget.tissueIDct.text = value;
     });
   }

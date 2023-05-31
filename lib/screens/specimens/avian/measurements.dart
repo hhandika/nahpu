@@ -57,7 +57,7 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
             onChanged: (String? value) {
               if (value != null && value.isNotEmpty) {
                 final double weight = double.tryParse(value) ?? 0.0;
-                SpecimenServices(ref).updateAvianMeasurement(
+                SpecimenServices(ref: ref).updateAvianMeasurement(
                   widget.specimenUuid,
                   AvianMeasurementCompanion(
                     weight: db.Value(weight),
@@ -74,7 +74,7 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
             isLastField: false,
             onChanged: (String? value) {
               if (value != null && value.isNotEmpty) {
-                SpecimenServices(ref).updateAvianMeasurement(
+                SpecimenServices(ref: ref).updateAvianMeasurement(
                   widget.specimenUuid,
                   AvianMeasurementCompanion(
                     wingspan: db.Value(double.tryParse(value) ?? 0),
@@ -93,7 +93,7 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
           isLastField: false,
           onChanged: (String? value) {
             if (value != null && value.isNotEmpty) {
-              SpecimenServices(ref).updateAvianMeasurement(
+              SpecimenServices(ref: ref).updateAvianMeasurement(
                 widget.specimenUuid,
                 AvianMeasurementCompanion(
                   billColor: db.Value(value),
@@ -113,7 +113,7 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
             isLastField: false,
             onChanged: (String? value) {
               if (value != null && value.isNotEmpty) {
-                SpecimenServices(ref).updateAvianMeasurement(
+                SpecimenServices(ref: ref).updateAvianMeasurement(
                   widget.specimenUuid,
                   AvianMeasurementCompanion(
                     irisColor: db.Value(value),
@@ -129,7 +129,7 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
             isLastField: false,
             onChanged: (String? value) {
               if (value != null && value.isNotEmpty) {
-                SpecimenServices(ref).updateAvianMeasurement(
+                SpecimenServices(ref: ref).updateAvianMeasurement(
                   widget.specimenUuid,
                   AvianMeasurementCompanion(
                     footColor: db.Value(value),
@@ -150,7 +150,7 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
             isLastField: true,
             onChanged: (String? value) {
               if (value != null && value.isNotEmpty) {
-                SpecimenServices(ref).updateAvianMeasurement(
+                SpecimenServices(ref: ref).updateAvianMeasurement(
                   widget.specimenUuid,
                   AvianMeasurementCompanion(
                     tarsusColor: db.Value(value),
@@ -175,7 +175,7 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
               if (newValue != null) {
                 setState(() {
                   ctr.sexCtr = newValue.index;
-                  SpecimenServices(ref).updateAvianMeasurement(
+                  SpecimenServices(ref: ref).updateAvianMeasurement(
                       widget.specimenUuid,
                       AvianMeasurementCompanion(
                         sex: db.Value(newValue.index),
@@ -208,7 +208,7 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
             onChanged: (int? newValue) {
               if (newValue != null) {
                 setState(() {
-                  SpecimenServices(ref).updateAvianMeasurement(
+                  SpecimenServices(ref: ref).updateAvianMeasurement(
                       widget.specimenUuid,
                       AvianMeasurementCompanion(
                         broodPatch: db.Value(newValue),
@@ -237,7 +237,7 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
               if (newValue != null) {
                 setState(() {
                   _hasBursa = newValue == 1;
-                  SpecimenServices(ref).updateAvianMeasurement(
+                  SpecimenServices(ref: ref).updateAvianMeasurement(
                       widget.specimenUuid,
                       AvianMeasurementCompanion(
                         hasBursa: db.Value(newValue),
@@ -277,7 +277,7 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
           isLastField: false,
           onChanged: (String? value) {
             if (value != null && value.isNotEmpty) {
-              SpecimenServices(ref).updateAvianMeasurement(
+              SpecimenServices(ref: ref).updateAvianMeasurement(
                 widget.specimenUuid,
                 AvianMeasurementCompanion(
                   stomachContent: db.Value(value),
@@ -313,7 +313,7 @@ class BirdMeasurementFormsState extends ConsumerState<BirdMeasurementForms> {
 
   Future<void> _updateCtr(String specimenUuid) async {
     AvianMeasurementData data =
-        await SpecimenServices(ref).getAvianMeasurementData(specimenUuid);
+        await SpecimenServices(ref: ref).getAvianMeasurementData(specimenUuid);
     setState(() {
       ctr = AvianMeasurementCtrModel.fromData(data);
     });
@@ -354,7 +354,7 @@ class BursaFieldState extends ConsumerState<BursaField> {
             isLastField: false,
             onChanged: (String? value) {
               if (value != null && value.isNotEmpty) {
-                SpecimenServices(ref).updateAvianMeasurement(
+                SpecimenServices(ref: ref).updateAvianMeasurement(
                   widget.specimenUuid,
                   AvianMeasurementCompanion(
                     bursaLength: db.Value(double.tryParse(value) ?? 0),
@@ -371,7 +371,7 @@ class BursaFieldState extends ConsumerState<BursaField> {
             isLastField: false,
             onChanged: (String? value) {
               if (value != null && value.isNotEmpty) {
-                SpecimenServices(ref).updateAvianMeasurement(
+                SpecimenServices(ref: ref).updateAvianMeasurement(
                   widget.specimenUuid,
                   AvianMeasurementCompanion(
                     bursaWidth: db.Value(double.tryParse(value) ?? 0),
@@ -421,7 +421,7 @@ class MaleGonadForm extends ConsumerWidget {
                   isLastField: false,
                   onChanged: (String? value) {
                     if (value != null && value.isNotEmpty) {
-                      SpecimenServices(ref).updateAvianMeasurement(
+                      SpecimenServices(ref: ref).updateAvianMeasurement(
                         specimenUuid,
                         AvianMeasurementCompanion(
                           testisLength: db.Value(double.tryParse(value) ?? 0),
@@ -438,7 +438,7 @@ class MaleGonadForm extends ConsumerWidget {
                   isLastField: false,
                   onChanged: (String? value) {
                     if (value != null && value.isNotEmpty) {
-                      SpecimenServices(ref).updateAvianMeasurement(
+                      SpecimenServices(ref: ref).updateAvianMeasurement(
                         specimenUuid,
                         AvianMeasurementCompanion(
                           testisWidth: db.Value(double.tryParse(value) ?? 0),
@@ -460,7 +460,7 @@ class MaleGonadForm extends ConsumerWidget {
                 isLastField: false,
                 onChanged: (String? value) {
                   if (value != null && value.isNotEmpty) {
-                    SpecimenServices(ref).updateAvianMeasurement(
+                    SpecimenServices(ref: ref).updateAvianMeasurement(
                       specimenUuid,
                       AvianMeasurementCompanion(
                         testisRemark: db.Value(value),
@@ -518,7 +518,7 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
                 isLastField: false,
                 onChanged: (String? value) {
                   if (value != null && value.isNotEmpty) {
-                    SpecimenServices(ref).updateAvianMeasurement(
+                    SpecimenServices(ref: ref).updateAvianMeasurement(
                       widget.specimenUuid,
                       AvianMeasurementCompanion(
                         ovaryLength: db.Value(double.tryParse(value) ?? 0),
@@ -535,7 +535,7 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
                 isLastField: false,
                 onChanged: (String? value) {
                   if (value != null && value.isNotEmpty) {
-                    SpecimenServices(ref).updateAvianMeasurement(
+                    SpecimenServices(ref: ref).updateAvianMeasurement(
                       widget.specimenUuid,
                       AvianMeasurementCompanion(
                         ovaryWidth: db.Value(double.tryParse(value) ?? 0),
@@ -565,7 +565,7 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
                 if (newValue != null) {
                   setState(() {
                     _isLargeOvum = newValue == OvaryAppearance.large;
-                    SpecimenServices(ref).updateAvianMeasurement(
+                    SpecimenServices(ref: ref).updateAvianMeasurement(
                       widget.specimenUuid,
                       AvianMeasurementCompanion(
                         ovaryAppearance: db.Value(newValue.index),
@@ -603,7 +603,7 @@ class FemaleGonadFormState extends ConsumerState<FemaleGonadForm> {
               isLastField: true,
               onChanged: (String? value) {
                 if (value != null) {
-                  SpecimenServices(ref).updateAvianMeasurement(
+                  SpecimenServices(ref: ref).updateAvianMeasurement(
                     widget.specimenUuid,
                     AvianMeasurementCompanion(
                       ovaryRemark: db.Value(value),
@@ -653,7 +653,7 @@ class SkullOssField extends ConsumerWidget {
       onChanged: (int? newValue) {
         if (newValue != null) {
           ctr.skullOssCtr = newValue;
-          SpecimenServices(ref).updateAvianMeasurement(
+          SpecimenServices(ref: ref).updateAvianMeasurement(
             specimenUuid,
             AvianMeasurementCompanion(
               skullOssification: db.Value(newValue),
@@ -691,7 +691,7 @@ class FatField extends ConsumerWidget {
             .toList(),
         onChanged: (FatCategory? newValue) {
           if (newValue != null) {
-            SpecimenServices(ref).updateAvianMeasurement(
+            SpecimenServices(ref: ref).updateAvianMeasurement(
               specimenUuid,
               AvianMeasurementCompanion(
                 fat: db.Value(newValue.index),
@@ -740,7 +740,7 @@ class OvumSizeForm extends ConsumerWidget {
               isLastField: false,
               onChanged: (String? value) {
                 if (value != null) {
-                  SpecimenServices(ref).updateAvianMeasurement(
+                  SpecimenServices(ref: ref).updateAvianMeasurement(
                     specimenUuid,
                     AvianMeasurementCompanion(
                       firstOvaSize: db.Value(double.parse(value)),
@@ -757,7 +757,7 @@ class OvumSizeForm extends ConsumerWidget {
               isLastField: false,
               onChanged: (String? value) {
                 if (value != null) {
-                  SpecimenServices(ref).updateAvianMeasurement(
+                  SpecimenServices(ref: ref).updateAvianMeasurement(
                     specimenUuid,
                     AvianMeasurementCompanion(
                       secondOvaSize: db.Value(double.parse(value)),
@@ -774,7 +774,7 @@ class OvumSizeForm extends ConsumerWidget {
               isLastField: false,
               onChanged: (String? value) {
                 if (value != null) {
-                  SpecimenServices(ref).updateAvianMeasurement(
+                  SpecimenServices(ref: ref).updateAvianMeasurement(
                     specimenUuid,
                     AvianMeasurementCompanion(
                       thirdOvaSize: db.Value(double.parse(value)),
@@ -813,7 +813,7 @@ class OviductForm extends ConsumerWidget {
         isLastField: false,
         onChanged: (String? value) {
           if (value != null) {
-            SpecimenServices(ref).updateAvianMeasurement(
+            SpecimenServices(ref: ref).updateAvianMeasurement(
               specimenUuid,
               AvianMeasurementCompanion(
                 oviductWidth: db.Value(double.parse(value)),
@@ -837,7 +837,7 @@ class OviductForm extends ConsumerWidget {
             .toList(),
         onChanged: (OviductAppearance? newValue) {
           if (newValue != null) {
-            SpecimenServices(ref).updateAvianMeasurement(
+            SpecimenServices(ref: ref).updateAvianMeasurement(
               specimenUuid,
               AvianMeasurementCompanion(
                 oviductAppearance: db.Value(newValue.index),
@@ -912,7 +912,7 @@ class MoltingFormState extends ConsumerState<MoltingForm> {
               if (newValue != null) {
                 setState(() {
                   _wingMolting = newValue == 0 ? true : false;
-                  SpecimenServices(ref).updateAvianMeasurement(
+                  SpecimenServices(ref: ref).updateAvianMeasurement(
                       widget.specimenUuid,
                       AvianMeasurementCompanion(
                         wingIsMolt: db.Value(newValue),
@@ -949,7 +949,7 @@ class MoltingFormState extends ConsumerState<MoltingForm> {
               if (newValue != null) {
                 setState(() {
                   _tailMolting = newValue == 0 ? true : false;
-                  SpecimenServices(ref).updateAvianMeasurement(
+                  SpecimenServices(ref: ref).updateAvianMeasurement(
                       widget.specimenUuid,
                       AvianMeasurementCompanion(
                         tailIsMolt: db.Value(newValue),
@@ -974,7 +974,7 @@ class MoltingFormState extends ConsumerState<MoltingForm> {
             isLastField: true,
             onChanged: (String? value) {
               if (value != null) {
-                SpecimenServices(ref).updateAvianMeasurement(
+                SpecimenServices(ref: ref).updateAvianMeasurement(
                   widget.specimenUuid,
                   AvianMeasurementCompanion(
                     moltRemark: db.Value(value),
@@ -1011,7 +1011,7 @@ class WingMoltForm extends ConsumerWidget {
       maxLines: 2,
       onChanged: (String? value) {
         if (value != null) {
-          SpecimenServices(ref).updateAvianMeasurement(
+          SpecimenServices(ref: ref).updateAvianMeasurement(
             specimenUuid,
             AvianMeasurementCompanion(
               wingMolt: db.Value(value),
@@ -1045,7 +1045,7 @@ class TailMoltForm extends ConsumerWidget {
       isLastField: false,
       onChanged: (String? value) {
         if (value != null) {
-          SpecimenServices(ref).updateAvianMeasurement(
+          SpecimenServices(ref: ref).updateAvianMeasurement(
             specimenUuid,
             AvianMeasurementCompanion(
               tailMolt: db.Value(value),
@@ -1083,7 +1083,7 @@ class BodyMoltForm extends ConsumerWidget {
           .toList(),
       onChanged: (BodyMolt? newValue) {
         if (newValue != null) {
-          SpecimenServices(ref).updateAvianMeasurement(
+          SpecimenServices(ref: ref).updateAvianMeasurement(
             specimenUuid,
             AvianMeasurementCompanion(
               bodyMolt: db.Value(newValue.index),
@@ -1130,7 +1130,7 @@ class Notes extends ConsumerWidget {
               isLastField: true,
               onChanged: (String? value) {
                 if (value != null) {
-                  SpecimenServices(ref).updateAvianMeasurement(
+                  SpecimenServices(ref: ref).updateAvianMeasurement(
                     specimenUuid,
                     AvianMeasurementCompanion(
                       habitatRemark: db.Value(value),
@@ -1147,7 +1147,7 @@ class Notes extends ConsumerWidget {
               isLastField: true,
               onChanged: (String? value) {
                 if (value != null) {
-                  SpecimenServices(ref).updateAvianMeasurement(
+                  SpecimenServices(ref: ref).updateAvianMeasurement(
                     specimenUuid,
                     AvianMeasurementCompanion(
                       specimenRemark: db.Value(value),

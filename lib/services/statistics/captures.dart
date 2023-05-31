@@ -18,7 +18,7 @@ class CaptureRecordStats {
 
   Future<void> count(WidgetRef ref) async {
     List<SpecimenData> specimenList =
-        await SpecimenServices(ref).getSpecimenList();
+        await SpecimenServices(ref: ref).getSpecimenList();
     specimenCount = specimenList.length;
     for (var specimen in specimenList) {
       await _countTaxa(specimen.speciesID, ref);
@@ -45,7 +45,8 @@ class CaptureRecordStats {
 
   Future<void> _countTaxa(int? speciesID, WidgetRef ref) async {
     if (speciesID != null) {
-      TaxonomyData data = await TaxonomyService(ref).getTaxonById(speciesID);
+      TaxonomyData data =
+          await TaxonomyService(ref: ref).getTaxonById(speciesID);
       _countSpecies(getSpeciesName(data));
       if (data.taxonFamily != null) {
         _countFamily(data.taxonFamily!.trim());

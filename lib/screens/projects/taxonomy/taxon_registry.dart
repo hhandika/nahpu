@@ -533,7 +533,7 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
           FormButtonWithDelete(
             isEditing: widget.isEditing,
             onDeleted: () async {
-              await TaxonomyService(ref).deleteTaxon(widget.taxonId!);
+              await TaxonomyService(ref: ref).deleteTaxon(widget.taxonId!);
               ref.invalidate(taxonRegistryProvider);
               if (context.mounted) {
                 Navigator.of(context).pop();
@@ -554,12 +554,12 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
 
   Future<void> _createTaxon() async {
     final taxon = _getForm();
-    await TaxonomyService(ref).createTaxon(taxon);
+    await TaxonomyService(ref: ref).createTaxon(taxon);
   }
 
   Future<void> _updateTaxon() async {
     final taxon = _getForm();
-    await TaxonomyService(ref).updateTaxonEntry(widget.taxonId!, taxon);
+    await TaxonomyService(ref: ref).updateTaxonEntry(widget.taxonId!, taxon);
   }
 
   TaxonomyCompanion _getForm() {

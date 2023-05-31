@@ -77,10 +77,10 @@ class HomeState extends ConsumerState<Home> {
   }
 
   Future<void> _checkNewDb() async {
-    final db = DbServices(ref);
+    final db = DbServices(ref: ref);
     final newDb = await db.checkNewDatabase();
     if (newDb) {
-      await DbServices(ref).syncSettingWithDb();
+      await DbServices(ref: ref).syncSettingWithDb();
     }
   }
 }

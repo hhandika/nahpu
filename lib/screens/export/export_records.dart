@@ -265,17 +265,20 @@ class ExportFormState extends ConsumerState<ExportForm> {
   Future<void> _matchRecordTypeToWriter(File file, bool isCsv) async {
     switch (_recordType) {
       case ExportRecordType.narrative:
-        await NarrativeRecordWriter(ref).writeNarrativeDelimited(file, isCsv);
+        await NarrativeRecordWriter(ref: ref)
+            .writeNarrativeDelimited(file, isCsv);
         break;
       case ExportRecordType.collEvent:
-        await CollEventRecordWriter(ref).writeCollEventDelimited(file, isCsv);
+        await CollEventRecordWriter(ref: ref)
+            .writeCollEventDelimited(file, isCsv);
         break;
       case ExportRecordType.specimenRecord:
         await SpecimenRecordWriter(ref: ref, recordType: _specimenRecordType)
             .writeRecordDelimited(file, isCsv);
         break;
       default:
-        await NarrativeRecordWriter(ref).writeNarrativeDelimited(file, isCsv);
+        await NarrativeRecordWriter(ref: ref)
+            .writeNarrativeDelimited(file, isCsv);
         break;
     }
   }

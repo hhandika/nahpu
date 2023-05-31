@@ -22,8 +22,8 @@ class SpecimenRecordWriter {
   Future<void> writeRecordDelimited(File filePath, bool isCsv) async {
     delimiter = isCsv ? csvDelimiter : tsvDelimiter;
     String taxonGroup = matchRecordTypeToTaxonGroup(recordType);
-    List<SpecimenData> specimenList =
-        await SpecimenServices(ref).getSpecimenListByTaxonGroup(taxonGroup);
+    List<SpecimenData> specimenList = await SpecimenServices(ref: ref)
+        .getSpecimenListByTaxonGroup(taxonGroup);
     final file = await filePath.create(recursive: true);
     final writer = file.openWrite();
     _writeHeader(writer, collRecordExportList);
@@ -68,7 +68,8 @@ class SpecimenRecordWriter {
     if (speciesId == null) {
       return '';
     } else {
-      TaxonomyData taxon = await TaxonomyService(ref).getTaxonById(speciesId);
+      TaxonomyData taxon =
+          await TaxonomyService(ref: ref).getTaxonById(speciesId);
 
       return '${taxon.taxonOrder}$delimiter${taxon.taxonFamily}$delimiter'
           '${taxon.genus}$delimiter${taxon.specificEpithet}';
@@ -80,7 +81,7 @@ class SpecimenRecordWriter {
       return '';
     } else {
       PersonnelData person =
-          await PersonnelServices(ref).getPersonnelByUuid(catalogerUuid);
+          await PersonnelServices(ref: ref).getPersonnelByUuid(catalogerUuid);
       return '${person.name}$delimiter${person.initial}';
     }
   }
@@ -90,7 +91,7 @@ class SpecimenRecordWriter {
       return '';
     } else {
       PersonnelData person =
-          await PersonnelServices(ref).getPersonnelByUuid(preparatorUuid);
+          await PersonnelServices(ref: ref).getPersonnelByUuid(preparatorUuid);
       return '${person.name}';
     }
   }
@@ -100,7 +101,7 @@ class SpecimenRecordWriter {
       return '';
     } else {
       CollEventData? collEventData =
-          await CollEventServices(ref).getCollEvent(collEventId);
+          await CollEventServices(ref: ref).getCollEvent(collEventId);
 
       if (collEventData == null) {
         return ',,';
@@ -116,7 +117,7 @@ class SpecimenRecordWriter {
 
   Future<String> _getPartList(String specimenUuid) async {
     List<SpecimenPartData> partList =
-        await SpecimenPartServices(ref).getSpecimenParts(specimenUuid);
+        await SpecimenPartServices(ref: ref).getSpecimenParts(specimenUuid);
     return partList
         .map((e) => '${e.type};${e.treatment}')
         .join(writerSeparator);

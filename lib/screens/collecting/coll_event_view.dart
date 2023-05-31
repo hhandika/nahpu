@@ -111,7 +111,7 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
     setState(() {
       _pageNav.currentPage = value + 1;
       _pageNav = updatePageNavigation(_pageNav);
-      CollEventServices(ref).invalidateCollEvent();
+      CollEventServices(ref: ref).invalidateCollEvent();
     });
   }
 

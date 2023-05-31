@@ -4,7 +4,7 @@ import 'package:nahpu/services/database/personnel_queries.dart';
 import 'package:nahpu/services/io_services.dart';
 
 class PersonnelServices extends DbAccess {
-  PersonnelServices(super.ref);
+  const PersonnelServices({required super.ref});
 
   Future<int> createPersonnel(PersonnelCompanion personnel) async {
     return await PersonnelQuery(dbAccess).createPersonnel(personnel);

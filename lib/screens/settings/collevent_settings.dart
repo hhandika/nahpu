@@ -63,7 +63,7 @@ class CollMethodSettings extends ConsumerWidget {
                   text: e,
                   primaryColor: Theme.of(context).colorScheme.secondary,
                   onDeleted: () {
-                    CollMethodServices(ref).removeMethod(e);
+                    CollMethodServices(ref: ref).removeMethod(e);
                   },
                 );
               }).toList();
@@ -74,14 +74,14 @@ class CollMethodSettings extends ConsumerWidget {
       labelText: 'Add method',
       hintText: 'Enter method',
       onPressed: () {
-        CollMethodServices(ref).addMethod(
+        CollMethodServices(ref: ref).addMethod(
           controller.text.trim(),
         );
         controller.clear();
       },
       resetLabel: 'Match database methods',
       onReset: () {
-        CollMethodServices(ref).getAllMethods();
+        CollMethodServices(ref: ref).getAllMethods();
       },
     );
   }
@@ -102,7 +102,7 @@ class PersonnelRoleSetting extends ConsumerWidget {
                   text: e,
                   primaryColor: Theme.of(context).colorScheme.tertiary,
                   onDeleted: () {
-                    CollEvenPersonnelServices(ref).removeRole(e);
+                    CollEvenPersonnelServices(ref: ref).removeRole(e);
                   },
                 );
               }).toList();
@@ -113,12 +113,12 @@ class PersonnelRoleSetting extends ConsumerWidget {
       labelText: 'Add role',
       hintText: 'Enter role',
       onPressed: () {
-        CollEvenPersonnelServices(ref).addRole(controller.text);
+        CollEvenPersonnelServices(ref: ref).addRole(controller.text);
         controller.clear();
       },
       resetLabel: 'Match database roles',
       onReset: () {
-        CollEvenPersonnelServices(ref).getAllRoles();
+        CollEvenPersonnelServices(ref: ref).getAllRoles();
       },
     );
   }

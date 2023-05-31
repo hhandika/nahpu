@@ -76,7 +76,7 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
                       hintText: 'Enter narrative',
                     ),
                     onChanged: (value) {
-                      NarrativeServices(ref).updateNarrative(
+                      NarrativeServices(ref: ref).updateNarrative(
                         widget.narrativeId,
                         NarrativeCompanion(narrative: db.Value(value)),
                       );

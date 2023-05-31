@@ -17,7 +17,8 @@ class AvianMeasurements {
   late AvianMeasurementData data;
 
   Future<String> getMeasurements() async {
-    data = await SpecimenServices(ref).getAvianMeasurementData(specimenUuid);
+    data =
+        await SpecimenServices(ref: ref).getAvianMeasurementData(specimenUuid);
     String mainMeasurement = _getMainMeasurement();
     String gonadData = _getGonadData();
     String broodPatch = _getBroodPatch();

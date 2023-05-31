@@ -110,7 +110,7 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
   void _updatePageNav(int value) {
     _pageNav.currentPage = value + 1;
     _pageNav = updatePageNavigation(_pageNav);
-    NarrativeServices(ref).invalidateNarrative();
+    NarrativeServices(ref: ref).invalidateNarrative();
   }
 
   NarrativeFormCtrModel _updateController(

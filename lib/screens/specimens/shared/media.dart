@@ -37,11 +37,13 @@ class SpecimenMediaFormState extends ConsumerState<SpecimenMediaForm> {
               images: List.from(data),
               onAddImage: () async {
                 try {
-                  List<String> images =
-                      await ImageServices(ref, mediaCategory).pickImages();
+                  List<String> images = await ImageServices(
+                    ref: ref,
+                    category: mediaCategory,
+                  ).pickImages();
                   if (images.isNotEmpty) {
                     for (String path in images) {
-                      await SpecimenServices(ref).createSpecimenMedia(
+                      await SpecimenServices(ref: ref).createSpecimenMedia(
                         widget.specimenUuid,
                         path,
                       );
@@ -60,10 +62,12 @@ class SpecimenMediaFormState extends ConsumerState<SpecimenMediaForm> {
               },
               onAccessingCamera: () async {
                 try {
-                  String? image =
-                      await ImageServices(ref, mediaCategory).accessCamera();
+                  String? image = await ImageServices(
+                    ref: ref,
+                    category: mediaCategory,
+                  ).accessCamera();
                   if (image != null) {
-                    await SpecimenServices(ref).createSpecimenMedia(
+                    await SpecimenServices(ref: ref).createSpecimenMedia(
                       widget.specimenUuid,
                       image,
                     );

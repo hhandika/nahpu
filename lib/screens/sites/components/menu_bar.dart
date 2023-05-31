@@ -10,7 +10,7 @@ import 'package:nahpu/services/site_services.dart';
 Future<void> createNewSite(BuildContext context, WidgetRef ref) {
   String projectUuid = ref.watch(projectUuidProvider);
 
-  return SiteServices(ref).createNewSite(projectUuid).then((_) {
+  return SiteServices(ref: ref).createNewSite(projectUuid).then((_) {
     Navigator.of(context)
         .pushReplacement(MaterialPageRoute(builder: (_) => const SiteViewer()));
   });
@@ -86,7 +86,7 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
   void _deleteSite() {
     showDeleteAlertOnMenu(() {
       if (widget.siteId != null) {
-        SiteServices(ref).deleteSite(widget.siteId!);
+        SiteServices(ref: ref).deleteSite(widget.siteId!);
         // Trigger page changes to update the view.
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (_) => const SiteViewer()));
@@ -96,7 +96,7 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
 
   void _deleteAllSites() {
     showDeleteAlertOnMenu(() {
-      SiteServices(ref).deleteAllSites();
+      SiteServices(ref: ref).deleteAllSites();
     }, 'Delete all sites?\nTHIS ACTION CANNOT BE UNDONE!', context);
   }
 }

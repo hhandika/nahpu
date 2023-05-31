@@ -10,7 +10,7 @@ import 'package:nahpu/services/types/import.dart';
 import 'package:path/path.dart';
 
 class SiteServices extends DbAccess {
-  SiteServices(super.ref);
+  const SiteServices({required super.ref});
 
   Future<int> createNewSite(String projectUuid) async {
     int siteID = await SiteQuery(dbAccess).createSite(SiteCompanion(
@@ -48,7 +48,7 @@ class SiteServices extends DbAccess {
 
   Future<void> deleteSite(int id) async {
     await SiteQuery(dbAccess).deleteSite(id);
-    await CoordinateServices(ref).deleteCoordinateBySiteID(id);
+    await CoordinateServices(ref: ref).deleteCoordinateBySiteID(id);
     invalidateSite();
   }
 
@@ -64,7 +64,7 @@ class SiteServices extends DbAccess {
 }
 
 class CoordinateServices extends DbAccess {
-  CoordinateServices(super.ref);
+  const CoordinateServices({required super.ref});
 
   Future<List<CoordinateData>> getCoordinatesBySiteID(int siteID) async {
     return CoordinateQuery(dbAccess).getCoordinatesBySiteID(siteID);

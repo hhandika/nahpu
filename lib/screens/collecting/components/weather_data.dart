@@ -95,7 +95,7 @@ class WeatherDataFormState extends ConsumerState<WeatherDataForm> {
               isLastField: false,
               onChanged: (String? value) {
                 if (value != null) {
-                  CollEventServices(ref).updateWeatherData(
+                  CollEventServices(ref: ref).updateWeatherData(
                       widget.eventID,
                       WeatherCompanion(
                         lowestDayTempC: db.Value(double.tryParse(value)),
@@ -110,7 +110,7 @@ class WeatherDataFormState extends ConsumerState<WeatherDataForm> {
               isLastField: false,
               onChanged: (String? value) {
                 if (value != null) {
-                  CollEventServices(ref).updateWeatherData(
+                  CollEventServices(ref: ref).updateWeatherData(
                       widget.eventID,
                       WeatherCompanion(
                         highestDayTempC: db.Value(double.tryParse(value)),
@@ -130,7 +130,7 @@ class WeatherDataFormState extends ConsumerState<WeatherDataForm> {
               isLastField: false,
               onChanged: (String? value) {
                 if (value != null) {
-                  CollEventServices(ref).updateWeatherData(
+                  CollEventServices(ref: ref).updateWeatherData(
                       widget.eventID,
                       WeatherCompanion(
                         lowestNightTempC: db.Value(double.tryParse(value)),
@@ -145,7 +145,7 @@ class WeatherDataFormState extends ConsumerState<WeatherDataForm> {
               isLastField: false,
               onChanged: (String? value) {
                 if (value != null) {
-                  CollEventServices(ref).updateWeatherData(
+                  CollEventServices(ref: ref).updateWeatherData(
                       widget.eventID,
                       WeatherCompanion(
                         highestNightTempC: db.Value(double.tryParse(value)),
@@ -167,7 +167,7 @@ class WeatherDataFormState extends ConsumerState<WeatherDataForm> {
               isLastField: false,
               onChanged: (String? value) {
                 if (value != null) {
-                  CollEventServices(ref).updateWeatherData(
+                  CollEventServices(ref: ref).updateWeatherData(
                       widget.eventID,
                       WeatherCompanion(
                         averageHumidity: db.Value(double.tryParse(value)),
@@ -182,7 +182,7 @@ class WeatherDataFormState extends ConsumerState<WeatherDataForm> {
               isLastField: false,
               onChanged: (String? value) {
                 if (value != null) {
-                  CollEventServices(ref).updateWeatherData(
+                  CollEventServices(ref: ref).updateWeatherData(
                       widget.eventID,
                       WeatherCompanion(
                         dewPointTemp: db.Value(double.tryParse(value)),
@@ -211,7 +211,7 @@ class WeatherDataFormState extends ConsumerState<WeatherDataForm> {
                   if (value != null) {
                     widget.weatherCtr.sunriseTimeCtr.text =
                         value.format(context);
-                    CollEventServices(ref).updateWeatherData(
+                    CollEventServices(ref: ref).updateWeatherData(
                         widget.eventID,
                         WeatherCompanion(
                           sunriseTime: db.Value(value.format(context)),
@@ -234,7 +234,7 @@ class WeatherDataFormState extends ConsumerState<WeatherDataForm> {
                   if (value != null) {
                     widget.weatherCtr.sunsetTimeCtr.text =
                         value.format(context);
-                    CollEventServices(ref).updateWeatherData(
+                    CollEventServices(ref: ref).updateWeatherData(
                         widget.eventID,
                         WeatherCompanion(
                           sunsetTime: db.Value(value.format(context)),
@@ -264,7 +264,7 @@ class WeatherDataFormState extends ConsumerState<WeatherDataForm> {
             onChanged: (String? value) {
               if (value != null) {
                 widget.weatherCtr.moonPhaseCtr = value;
-                CollEventServices(ref).updateWeatherData(
+                CollEventServices(ref: ref).updateWeatherData(
                     widget.eventID,
                     WeatherCompanion(
                       moonPhase: db.Value(value),
@@ -283,7 +283,7 @@ class WeatherDataFormState extends ConsumerState<WeatherDataForm> {
             isLastField: true,
             onChanged: (String? value) {
               if (value != null) {
-                CollEventServices(ref).updateWeatherData(
+                CollEventServices(ref: ref).updateWeatherData(
                     widget.eventID,
                     WeatherCompanion(
                       notes: db.Value(value),

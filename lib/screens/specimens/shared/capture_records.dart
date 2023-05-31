@@ -162,7 +162,7 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
   }
 
   void _updateSpecimen(SpecimenCompanion form) {
-    SpecimenServices(ref).updateSpecimen(widget.specimenUuid, form);
+    SpecimenServices(ref: ref).updateSpecimen(widget.specimenUuid, form);
   }
 }
 
@@ -194,7 +194,7 @@ class CollEventIDTextState extends ConsumerState<CollEventIDText> {
   }
 
   Future<String> _getCollEventID() async {
-    return CollEventServices(ref).getCollEventID(widget.collEventData);
+    return CollEventServices(ref: ref).getCollEventID(widget.collEventData);
   }
 }
 
@@ -223,7 +223,7 @@ class RelativeTimeSwitchState extends ConsumerState<RelativeTimeSwitch> {
           setState(() {
             int newValue = value ? 1 : 0;
             widget.specimenCtr.relativeTimeCtr = newValue;
-            SpecimenServices(ref).updateSpecimen(
+            SpecimenServices(ref: ref).updateSpecimen(
               widget.specimenUuid,
               SpecimenCompanion(isRelativeTime: db.Value(newValue)),
             );
@@ -263,14 +263,14 @@ class MethodIdField extends ConsumerWidget {
       textInputAction: TextInputAction.next,
       onChanged: (String? value) {
         if (value != null && value.isNotEmpty) {
-          SpecimenServices(ref).updateSpecimenSkipInvalidation(
+          SpecimenServices(ref: ref).updateSpecimenSkipInvalidation(
             specimenUuid,
             SpecimenCompanion(methodID: db.Value(value)),
           );
         }
       },
       onSubmitted: (_) {
-        SpecimenServices(ref).invalidateSpecimenList();
+        SpecimenServices(ref: ref).invalidateSpecimenList();
       },
     );
   }
@@ -295,7 +295,7 @@ class CaptureDate extends ConsumerWidget {
         initialDate: DateTime.now(),
         lastDate: DateTime.now(),
         onTap: () {
-          SpecimenServices(ref).updateSpecimen(
+          SpecimenServices(ref: ref).updateSpecimen(
             specimenUuid,
             SpecimenCompanion(
               captureDate: db.Value(specimenCtr.captureDateCtr.text),
@@ -350,7 +350,7 @@ class CoordinateFieldState extends ConsumerState<CoordinateField> {
         onChanged: (int? newValue) {
           setState(() {
             widget.specimenCtr.coordinateCtr = newValue;
-            SpecimenServices(ref).updateSpecimen(widget.specimenUuid,
+            SpecimenServices(ref: ref).updateSpecimen(widget.specimenUuid,
                 SpecimenCompanion(coordinateID: db.Value(newValue)));
           });
         },
@@ -393,7 +393,7 @@ class CaptureTimeState extends ConsumerState<CaptureTime> {
             onChanged: (String? newValue) {
               setState(() {
                 widget.specimenCtr.captureTimeCtr.text = newValue ?? '';
-                SpecimenServices(ref).updateSpecimen(
+                SpecimenServices(ref: ref).updateSpecimen(
                   widget.specimenUuid,
                   SpecimenCompanion(
                     captureTime:
@@ -409,7 +409,7 @@ class CaptureTimeState extends ConsumerState<CaptureTime> {
             controller: widget.specimenCtr.captureTimeCtr,
             initialTime: TimeOfDay.now(),
             onTap: () {
-              SpecimenServices(ref).updateSpecimen(
+              SpecimenServices(ref: ref).updateSpecimen(
                 widget.specimenUuid,
                 SpecimenCompanion(
                   captureTime: db.Value(widget.specimenCtr.captureTimeCtr.text),
@@ -458,7 +458,7 @@ class CollPersonnelField extends ConsumerWidget {
             : [],
         onChanged: (int? newValue) {
           specimenCtr.collPersonnelCtr = newValue;
-          SpecimenServices(ref).updateSpecimen(
+          SpecimenServices(ref: ref).updateSpecimen(
             specimenUuid,
             SpecimenCompanion(
               collPersonnelID: db.Value(newValue),

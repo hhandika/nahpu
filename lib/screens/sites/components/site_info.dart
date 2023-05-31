@@ -55,7 +55,7 @@ class SiteInfo extends ConsumerWidget {
                 text: value.toUpperCase(),
                 selection: siteFormCtr.siteIDCtr.selection,
               );
-              SiteServices(ref).updateSite(
+              SiteServices(ref: ref).updateSite(
                 id,
                 SiteCompanion(siteID: db.Value(siteFormCtr.siteIDCtr.text)),
               );
@@ -76,7 +76,7 @@ class SiteInfo extends ConsumerWidget {
                 )
                 .toList(),
             onChanged: (String? uuid) {
-              SiteServices(ref).updateSite(
+              SiteServices(ref: ref).updateSite(
                 id,
                 SiteCompanion(leadStaffId: db.Value(uuid)),
               );
@@ -98,7 +98,7 @@ class SiteInfo extends ConsumerWidget {
                 .toList(),
             onChanged: (String? value) {
               if (value != null) {
-                SiteServices(ref).updateSite(
+                SiteServices(ref: ref).updateSite(
                   id,
                   SiteCompanion(siteType: db.Value(value)),
                 );

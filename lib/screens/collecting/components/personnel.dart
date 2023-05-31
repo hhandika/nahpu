@@ -66,7 +66,8 @@ class CollPersonnelFormState extends ConsumerState<CollPersonnelForm> {
         PrimaryButton(
           text: 'Add Personnel',
           onPressed: () {
-            CollEventServices(ref).createCollPersonnel(CollPersonnelCompanion(
+            CollEventServices(ref: ref)
+                .createCollPersonnel(CollPersonnelCompanion(
               eventID: db.Value(widget.eventID),
             ));
             setState(() {});
@@ -129,7 +130,7 @@ class CollPersonnelFieldState extends ConsumerState<CollPersonnelField> {
             onChanged: (value) {
               widget.controller.nameIDCtr = value ?? '';
 
-              CollEventServices(ref).updateCollPersonnel(
+              CollEventServices(ref: ref).updateCollPersonnel(
                 widget.controller.id!,
                 CollPersonnelCompanion(
                   eventID: db.Value(widget.eventID),
@@ -149,7 +150,8 @@ class CollPersonnelFieldState extends ConsumerState<CollPersonnelField> {
         IconButton(
           icon: const Icon(Icons.delete),
           onPressed: () {
-            CollEventServices(ref).deleteCollPersonnel(widget.controller.id!);
+            CollEventServices(ref: ref)
+                .deleteCollPersonnel(widget.controller.id!);
           },
         ),
       ],
@@ -191,7 +193,7 @@ class PersonnelRoleState extends ConsumerState<PersonnelRole> {
               onChanged: (value) {
                 if (value != null) {
                   widget.controller.roleCtr = value;
-                  CollEventServices(ref).updateCollPersonnel(
+                  CollEventServices(ref: ref).updateCollPersonnel(
                     widget.controller.id!,
                     CollPersonnelCompanion(
                       eventID: db.Value(widget.eventID),

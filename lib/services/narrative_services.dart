@@ -8,7 +8,7 @@ import 'package:nahpu/services/types/import.dart';
 import 'package:path/path.dart';
 
 class NarrativeServices extends DbAccess {
-  NarrativeServices(super.ref);
+  const NarrativeServices({required super.ref});
 
   Future<int> createNewNarrative() async {
     int narrativeID =
