@@ -12,7 +12,7 @@ New to v4:
 5. Change type to method in the collEffort table.
 6. Remove the fileMetadata table.
 7. Remove fileId column.
-8. Change thumbnail path to path.
+8. Change thumbnail path to fileName in the media table.
 9. Delete personnel photo.
 10. Add photoPath to the personnel table.
 11. Remove fileMetadata table.
@@ -142,7 +142,7 @@ CREATE TABLE media (
     lenses TEXT,
     additionalExif TEXT,
     personnelId TEXT,
-    filePath TEXT,
+    fileName TEXT,
     caption TEXT,
     FOREIGN KEY(personnelId) REFERENCES personnel(uuid),
     FOREIGN KEY(projectUuid) REFERENCES project(uuid)

@@ -67,7 +67,7 @@ class Database extends _$Database {
 
   Future<void> _migrateV3only(Migrator m) async {
     await m.renameColumn(specimen, 'trapID', specimen.methodID);
-    await m.renameColumn(media, 'thumbnailPath', media.filePath);
+    await m.renameColumn(media, 'thumbnailPath', media.fileName);
   }
 
   Future<void> _migrateFromVersion2(Migrator m) async {
@@ -75,7 +75,7 @@ class Database extends _$Database {
     await m.deleteTable('expense');
 
     // We add missing columns in the specimen table.
-    await m.addColumn(media, media.filePath);
+    await m.addColumn(media, media.fileName);
     await m.addColumn(specimen, specimen.coordinateID);
     await m.addColumn(specimen, specimen.methodID);
     await m.addColumn(specimen, specimen.museumID);

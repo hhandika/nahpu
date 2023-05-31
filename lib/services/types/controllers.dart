@@ -1043,7 +1043,7 @@ class MediaFormCtr {
     required this.lenseModelCtr,
     required this.additionalExifCtr,
     required this.photographerCtr,
-    required this.filePathCtr,
+    required this.fileNameCtr,
     required this.captionCtr,
   });
 
@@ -1056,7 +1056,7 @@ class MediaFormCtr {
   TextEditingController lenseModelCtr;
   TextEditingController additionalExifCtr;
   String? photographerCtr;
-  String? filePathCtr;
+  String? fileNameCtr;
   TextEditingController captionCtr;
 
   factory MediaFormCtr.empty() => MediaFormCtr(
@@ -1069,7 +1069,7 @@ class MediaFormCtr {
         lenseModelCtr: TextEditingController(),
         additionalExifCtr: TextEditingController(),
         photographerCtr: null,
-        filePathCtr: null,
+        fileNameCtr: null,
         captionCtr: TextEditingController(),
       );
 
@@ -1084,7 +1084,7 @@ class MediaFormCtr {
         additionalExifCtr:
             TextEditingController(text: data.additionalExif ?? ''),
         photographerCtr: data.personnelId,
-        filePathCtr: data.filePath,
+        fileNameCtr: data.fileName,
         captionCtr: TextEditingController(text: data.caption ?? 'No caption'),
       );
 

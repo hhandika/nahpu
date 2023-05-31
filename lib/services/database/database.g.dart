@@ -1010,11 +1010,11 @@ class Media extends Table with TableInfo<Media, MediaData> {
   static const VerificationMeta _primaryIdMeta =
       const VerificationMeta('primaryId');
   late final GeneratedColumn<int> primaryId = GeneratedColumn<int>(
-      'primaryId', aliasedName, false,
+      'primaryId', aliasedName, true,
       hasAutoIncrement: true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
-      $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
+      $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
   static const VerificationMeta _projectUuidMeta =
       const VerificationMeta('projectUuid');
   late final GeneratedColumn<String> projectUuid = GeneratedColumn<String>(
@@ -1075,10 +1075,10 @@ class Media extends Table with TableInfo<Media, MediaData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _filePathMeta =
-      const VerificationMeta('filePath');
-  late final GeneratedColumn<String> filePath = GeneratedColumn<String>(
-      'filePath', aliasedName, true,
+  static const VerificationMeta _fileNameMeta =
+      const VerificationMeta('fileName');
+  late final GeneratedColumn<String> fileName = GeneratedColumn<String>(
+      'fileName', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -1101,7 +1101,7 @@ class Media extends Table with TableInfo<Media, MediaData> {
         lenses,
         additionalExif,
         personnelId,
-        filePath,
+        fileName,
         caption
       ];
   @override
@@ -1163,9 +1163,9 @@ class Media extends Table with TableInfo<Media, MediaData> {
           personnelId.isAcceptableOrUnknown(
               data['personnelId']!, _personnelIdMeta));
     }
-    if (data.containsKey('filePath')) {
-      context.handle(_filePathMeta,
-          filePath.isAcceptableOrUnknown(data['filePath']!, _filePathMeta));
+    if (data.containsKey('fileName')) {
+      context.handle(_fileNameMeta,
+          fileName.isAcceptableOrUnknown(data['fileName']!, _fileNameMeta));
     }
     if (data.containsKey('caption')) {
       context.handle(_captionMeta,
@@ -1181,7 +1181,7 @@ class Media extends Table with TableInfo<Media, MediaData> {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return MediaData(
       primaryId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}primaryId'])!,
+          .read(DriftSqlType.int, data['${effectivePrefix}primaryId']),
       projectUuid: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}projectUuid']),
       secondaryId: attachedDatabase.typeMapping
@@ -1200,8 +1200,8 @@ class Media extends Table with TableInfo<Media, MediaData> {
           .read(DriftSqlType.string, data['${effectivePrefix}additionalExif']),
       personnelId: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}personnelId']),
-      filePath: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}filePath']),
+      fileName: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}fileName']),
       caption: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}caption']),
     );
@@ -1222,7 +1222,7 @@ class Media extends Table with TableInfo<Media, MediaData> {
 }
 
 class MediaData extends DataClass implements Insertable<MediaData> {
-  final int primaryId;
+  final int? primaryId;
   final String? projectUuid;
   final String? secondaryId;
   final String? category;
@@ -1232,10 +1232,10 @@ class MediaData extends DataClass implements Insertable<MediaData> {
   final String? lenses;
   final String? additionalExif;
   final String? personnelId;
-  final String? filePath;
+  final String? fileName;
   final String? caption;
   const MediaData(
-      {required this.primaryId,
+      {this.primaryId,
       this.projectUuid,
       this.secondaryId,
       this.category,
@@ -1245,12 +1245,14 @@ class MediaData extends DataClass implements Insertable<MediaData> {
       this.lenses,
       this.additionalExif,
       this.personnelId,
-      this.filePath,
+      this.fileName,
       this.caption});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['primaryId'] = Variable<int>(primaryId);
+    if (!nullToAbsent || primaryId != null) {
+      map['primaryId'] = Variable<int>(primaryId);
+    }
     if (!nullToAbsent || projectUuid != null) {
       map['projectUuid'] = Variable<String>(projectUuid);
     }
@@ -1278,8 +1280,8 @@ class MediaData extends DataClass implements Insertable<MediaData> {
     if (!nullToAbsent || personnelId != null) {
       map['personnelId'] = Variable<String>(personnelId);
     }
-    if (!nullToAbsent || filePath != null) {
-      map['filePath'] = Variable<String>(filePath);
+    if (!nullToAbsent || fileName != null) {
+      map['fileName'] = Variable<String>(fileName);
     }
     if (!nullToAbsent || caption != null) {
       map['caption'] = Variable<String>(caption);
@@ -1289,7 +1291,9 @@ class MediaData extends DataClass implements Insertable<MediaData> {
 
   MediaCompanion toCompanion(bool nullToAbsent) {
     return MediaCompanion(
-      primaryId: Value(primaryId),
+      primaryId: primaryId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(primaryId),
       projectUuid: projectUuid == null && nullToAbsent
           ? const Value.absent()
           : Value(projectUuid),
@@ -1314,9 +1318,9 @@ class MediaData extends DataClass implements Insertable<MediaData> {
       personnelId: personnelId == null && nullToAbsent
           ? const Value.absent()
           : Value(personnelId),
-      filePath: filePath == null && nullToAbsent
+      fileName: fileName == null && nullToAbsent
           ? const Value.absent()
-          : Value(filePath),
+          : Value(fileName),
       caption: caption == null && nullToAbsent
           ? const Value.absent()
           : Value(caption),
@@ -1327,7 +1331,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return MediaData(
-      primaryId: serializer.fromJson<int>(json['primaryId']),
+      primaryId: serializer.fromJson<int?>(json['primaryId']),
       projectUuid: serializer.fromJson<String?>(json['projectUuid']),
       secondaryId: serializer.fromJson<String?>(json['secondaryId']),
       category: serializer.fromJson<String?>(json['category']),
@@ -1337,7 +1341,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
       lenses: serializer.fromJson<String?>(json['lenses']),
       additionalExif: serializer.fromJson<String?>(json['additionalExif']),
       personnelId: serializer.fromJson<String?>(json['personnelId']),
-      filePath: serializer.fromJson<String?>(json['filePath']),
+      fileName: serializer.fromJson<String?>(json['fileName']),
       caption: serializer.fromJson<String?>(json['caption']),
     );
   }
@@ -1345,7 +1349,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'primaryId': serializer.toJson<int>(primaryId),
+      'primaryId': serializer.toJson<int?>(primaryId),
       'projectUuid': serializer.toJson<String?>(projectUuid),
       'secondaryId': serializer.toJson<String?>(secondaryId),
       'category': serializer.toJson<String?>(category),
@@ -1355,13 +1359,13 @@ class MediaData extends DataClass implements Insertable<MediaData> {
       'lenses': serializer.toJson<String?>(lenses),
       'additionalExif': serializer.toJson<String?>(additionalExif),
       'personnelId': serializer.toJson<String?>(personnelId),
-      'filePath': serializer.toJson<String?>(filePath),
+      'fileName': serializer.toJson<String?>(fileName),
       'caption': serializer.toJson<String?>(caption),
     };
   }
 
   MediaData copyWith(
-          {int? primaryId,
+          {Value<int?> primaryId = const Value.absent(),
           Value<String?> projectUuid = const Value.absent(),
           Value<String?> secondaryId = const Value.absent(),
           Value<String?> category = const Value.absent(),
@@ -1371,10 +1375,10 @@ class MediaData extends DataClass implements Insertable<MediaData> {
           Value<String?> lenses = const Value.absent(),
           Value<String?> additionalExif = const Value.absent(),
           Value<String?> personnelId = const Value.absent(),
-          Value<String?> filePath = const Value.absent(),
+          Value<String?> fileName = const Value.absent(),
           Value<String?> caption = const Value.absent()}) =>
       MediaData(
-        primaryId: primaryId ?? this.primaryId,
+        primaryId: primaryId.present ? primaryId.value : this.primaryId,
         projectUuid: projectUuid.present ? projectUuid.value : this.projectUuid,
         secondaryId: secondaryId.present ? secondaryId.value : this.secondaryId,
         category: category.present ? category.value : this.category,
@@ -1385,7 +1389,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
         additionalExif:
             additionalExif.present ? additionalExif.value : this.additionalExif,
         personnelId: personnelId.present ? personnelId.value : this.personnelId,
-        filePath: filePath.present ? filePath.value : this.filePath,
+        fileName: fileName.present ? fileName.value : this.fileName,
         caption: caption.present ? caption.value : this.caption,
       );
   @override
@@ -1401,7 +1405,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
           ..write('lenses: $lenses, ')
           ..write('additionalExif: $additionalExif, ')
           ..write('personnelId: $personnelId, ')
-          ..write('filePath: $filePath, ')
+          ..write('fileName: $fileName, ')
           ..write('caption: $caption')
           ..write(')'))
         .toString();
@@ -1419,7 +1423,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
       lenses,
       additionalExif,
       personnelId,
-      filePath,
+      fileName,
       caption);
   @override
   bool operator ==(Object other) =>
@@ -1435,12 +1439,12 @@ class MediaData extends DataClass implements Insertable<MediaData> {
           other.lenses == this.lenses &&
           other.additionalExif == this.additionalExif &&
           other.personnelId == this.personnelId &&
-          other.filePath == this.filePath &&
+          other.fileName == this.fileName &&
           other.caption == this.caption);
 }
 
 class MediaCompanion extends UpdateCompanion<MediaData> {
-  final Value<int> primaryId;
+  final Value<int?> primaryId;
   final Value<String?> projectUuid;
   final Value<String?> secondaryId;
   final Value<String?> category;
@@ -1450,7 +1454,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
   final Value<String?> lenses;
   final Value<String?> additionalExif;
   final Value<String?> personnelId;
-  final Value<String?> filePath;
+  final Value<String?> fileName;
   final Value<String?> caption;
   const MediaCompanion({
     this.primaryId = const Value.absent(),
@@ -1463,7 +1467,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
     this.lenses = const Value.absent(),
     this.additionalExif = const Value.absent(),
     this.personnelId = const Value.absent(),
-    this.filePath = const Value.absent(),
+    this.fileName = const Value.absent(),
     this.caption = const Value.absent(),
   });
   MediaCompanion.insert({
@@ -1477,7 +1481,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
     this.lenses = const Value.absent(),
     this.additionalExif = const Value.absent(),
     this.personnelId = const Value.absent(),
-    this.filePath = const Value.absent(),
+    this.fileName = const Value.absent(),
     this.caption = const Value.absent(),
   });
   static Insertable<MediaData> custom({
@@ -1491,7 +1495,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
     Expression<String>? lenses,
     Expression<String>? additionalExif,
     Expression<String>? personnelId,
-    Expression<String>? filePath,
+    Expression<String>? fileName,
     Expression<String>? caption,
   }) {
     return RawValuesInsertable({
@@ -1505,13 +1509,13 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
       if (lenses != null) 'lenses': lenses,
       if (additionalExif != null) 'additionalExif': additionalExif,
       if (personnelId != null) 'personnelId': personnelId,
-      if (filePath != null) 'filePath': filePath,
+      if (fileName != null) 'fileName': fileName,
       if (caption != null) 'caption': caption,
     });
   }
 
   MediaCompanion copyWith(
-      {Value<int>? primaryId,
+      {Value<int?>? primaryId,
       Value<String?>? projectUuid,
       Value<String?>? secondaryId,
       Value<String?>? category,
@@ -1521,7 +1525,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
       Value<String?>? lenses,
       Value<String?>? additionalExif,
       Value<String?>? personnelId,
-      Value<String?>? filePath,
+      Value<String?>? fileName,
       Value<String?>? caption}) {
     return MediaCompanion(
       primaryId: primaryId ?? this.primaryId,
@@ -1534,7 +1538,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
       lenses: lenses ?? this.lenses,
       additionalExif: additionalExif ?? this.additionalExif,
       personnelId: personnelId ?? this.personnelId,
-      filePath: filePath ?? this.filePath,
+      fileName: fileName ?? this.fileName,
       caption: caption ?? this.caption,
     );
   }
@@ -1572,8 +1576,8 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
     if (personnelId.present) {
       map['personnelId'] = Variable<String>(personnelId.value);
     }
-    if (filePath.present) {
-      map['filePath'] = Variable<String>(filePath.value);
+    if (fileName.present) {
+      map['fileName'] = Variable<String>(fileName.value);
     }
     if (caption.present) {
       map['caption'] = Variable<String>(caption.value);
@@ -1594,7 +1598,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
           ..write('lenses: $lenses, ')
           ..write('additionalExif: $additionalExif, ')
           ..write('personnelId: $personnelId, ')
-          ..write('filePath: $filePath, ')
+          ..write('fileName: $fileName, ')
           ..write('caption: $caption')
           ..write(')'))
         .toString();

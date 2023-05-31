@@ -7,6 +7,7 @@ import 'package:nahpu/services/database/site_queries.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/types/import.dart';
+import 'package:path/path.dart';
 
 class SiteServices extends DbAccess {
   SiteServices(super.ref);
@@ -34,7 +35,7 @@ class SiteServices extends DbAccess {
   Future<void> createSiteMedia(int siteId, String filePath) async {
     int mediaId = await MediaDbQuery(dbAccess).createMedia(MediaCompanion(
       projectUuid: db.Value(projectUuid),
-      filePath: db.Value(filePath),
+      fileName: db.Value(basename(filePath)),
       category: db.Value(matchMediaCategory(MediaCategory.site)),
     ));
     SiteMediaCompanion entries = SiteMediaCompanion(

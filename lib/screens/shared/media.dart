@@ -7,6 +7,7 @@ import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/import/multimedia.dart';
 import 'package:nahpu/services/media_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/import.dart';
@@ -174,8 +175,8 @@ class MediaCardState extends ConsumerState<MediaCard> {
               Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.9),
           trailing: MediaPopUpMenu(ctr: widget.ctr),
           title: Text(
-            widget.ctr.filePathCtr != null
-                ? basename(widget.ctr.filePathCtr!)
+            widget.ctr.fileNameCtr != null
+                ? basename(widget.ctr.fileNameCtr!)
                 : 'No file name',
             style: Theme.of(context).textTheme.labelLarge,
           ),
@@ -185,16 +186,36 @@ class MediaCardState extends ConsumerState<MediaCard> {
             overflow: TextOverflow.ellipsis,
           ),
         ),
-        child: widget.ctr.filePathCtr != null
-            ? Image.file(
-                File(widget.ctr.filePathCtr!),
-                fit: BoxFit.cover,
-              )
+        child: widget.ctr.fileNameCtr != null
+            ? FutureBuilder(
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Image.file(
+                      snapshot.data as File,
+                      fit: BoxFit.cover,
+                    );
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+                future: _getMediaPath(),
+                initialData: null)
             : const Center(
                 child: Text('No image'),
               ),
       ),
     );
+  }
+
+  Future<File> _getMediaPath() async {
+    MediaCategory category =
+        matchMediaCategoryString(widget.ctr.categoryCtr.text);
+    File path = await ImageServices(ref, category)
+        .getMediaPath(widget.ctr.fileNameCtr!);
+
+    return path;
   }
 }
 

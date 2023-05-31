@@ -4,9 +4,21 @@ import 'package:image_picker/image_picker.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/utility_services.dart';
+import 'package:path/path.dart' as path;
+
+const String mediaDir = 'media';
 
 class ImageServices extends DbAccess {
-  ImageServices(super.ref);
+  ImageServices(super.ref, this.category);
+
+  final MediaCategory category;
+
+  Future<File> getMediaPath(String filePath) async {
+    Directory projectDir = await FileServices(ref).getProjectDir();
+    Directory mediaDir = _getMediaDir();
+    String fullPath = path.join(projectDir.path, mediaDir.path, filePath);
+    return File(fullPath);
+  }
 
   Future<List<String>> pickImages() async {
     switch (systemPlatform) {
@@ -54,7 +66,20 @@ class ImageServices extends DbAccess {
   Future<File> _copySingleFile(String path) async {
     File file = File(path);
     File newPath =
-        await FileServices(ref).copyFileToProjectDir(file, Directory('media'));
+        await FileServices(ref).copyFileToProjectDir(file, _getMediaDir());
     return newPath;
+  }
+
+  Directory _getMediaDir() {
+    switch (category) {
+      case MediaCategory.site:
+        return Directory('$mediaDir/site');
+      case MediaCategory.specimen:
+        return Directory('$mediaDir/specimen');
+      case MediaCategory.narrative:
+        return Directory('$mediaDir/narrative');
+      default:
+        throw Exception('Unsupported media category');
+    }
   }
 }

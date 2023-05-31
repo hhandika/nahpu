@@ -13,6 +13,7 @@ import 'package:nahpu/services/database/specimen_queries.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/project_services.dart';
+import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const String tissueIDPrefixKey = 'tissueIDPrefix';
@@ -50,7 +51,7 @@ class SpecimenServices extends DbAccess {
   Future<void> createSpecimenMedia(String specimenUuid, String filePath) async {
     int mediaId = await MediaDbQuery(dbAccess).createMedia(MediaCompanion(
       projectUuid: db.Value(projectUuid),
-      filePath: db.Value(filePath),
+      fileName: db.Value(basename(filePath)),
       category: db.Value(matchMediaCategory(MediaCategory.specimen)),
     ));
     SpecimenMediaCompanion entries = SpecimenMediaCompanion(

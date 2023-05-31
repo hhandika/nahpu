@@ -5,6 +5,7 @@ import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/media.dart';
 import 'package:nahpu/services/import/multimedia.dart';
 import 'package:nahpu/services/site_services.dart';
+import 'package:nahpu/services/types/import.dart';
 
 class SiteMediaForm extends ConsumerStatefulWidget {
   const SiteMediaForm({super.key, required this.siteId});
@@ -28,13 +29,15 @@ class SiteMediaFormState extends ConsumerState<SiteMediaForm> {
 
   @override
   Widget build(BuildContext context) {
+    MediaCategory mediaCategory = MediaCategory.site;
     return ref.watch(siteMediaProvider(siteId: widget.siteId)).when(
           data: (data) {
             return MediaViewer(
               images: List.from(data),
               onAddImage: () async {
                 try {
-                  List<String> images = await ImageServices(ref).pickImages();
+                  List<String> images =
+                      await ImageServices(ref, mediaCategory).pickImages();
                   if (images.isNotEmpty) {
                     for (String path in images) {
                       await SiteServices(ref).createSiteMedia(
@@ -56,7 +59,8 @@ class SiteMediaFormState extends ConsumerState<SiteMediaForm> {
               },
               onAccessingCamera: () async {
                 try {
-                  String? image = await ImageServices(ref).accessCamera();
+                  String? image =
+                      await ImageServices(ref, mediaCategory).accessCamera();
                   if (image != null) {
                     await SiteServices(ref).createSiteMedia(
                       widget.siteId,

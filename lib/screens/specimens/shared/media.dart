@@ -4,6 +4,7 @@ import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/screens/shared/media.dart';
 import 'package:nahpu/services/import/multimedia.dart';
 import 'package:nahpu/services/specimen_services.dart';
+import 'package:nahpu/services/types/import.dart';
 
 class SpecimenMediaForm extends ConsumerStatefulWidget {
   const SpecimenMediaForm({super.key, required this.specimenUuid});
@@ -27,6 +28,7 @@ class SpecimenMediaFormState extends ConsumerState<SpecimenMediaForm> {
 
   @override
   Widget build(BuildContext context) {
+    MediaCategory mediaCategory = MediaCategory.specimen;
     return ref
         .watch(specimenMediaProvider(specimenUuid: widget.specimenUuid))
         .when(
@@ -35,7 +37,8 @@ class SpecimenMediaFormState extends ConsumerState<SpecimenMediaForm> {
               images: List.from(data),
               onAddImage: () async {
                 try {
-                  List<String> images = await ImageServices(ref).pickImages();
+                  List<String> images =
+                      await ImageServices(ref, mediaCategory).pickImages();
                   if (images.isNotEmpty) {
                     for (String path in images) {
                       await SpecimenServices(ref).createSpecimenMedia(
@@ -57,7 +60,8 @@ class SpecimenMediaFormState extends ConsumerState<SpecimenMediaForm> {
               },
               onAccessingCamera: () async {
                 try {
-                  String? image = await ImageServices(ref).accessCamera();
+                  String? image =
+                      await ImageServices(ref, mediaCategory).accessCamera();
                   if (image != null) {
                     await SpecimenServices(ref).createSpecimenMedia(
                       widget.specimenUuid,
