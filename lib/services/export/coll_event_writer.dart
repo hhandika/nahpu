@@ -17,17 +17,18 @@ class CollEventRecordWriter extends DbAccess {
     delimiter = isCsv ? csvDelimiter : tsvDelimiter;
     final file = await filePath.create(recursive: true);
     final writer = file.openWrite();
-    _writeHeader(writer);
+    _writeSiteHeader(writer);
+    _writeCollEventHeader(writer);
     List<CollEventData> collEventList =
         await CollEventServices(ref: ref).getAllCollEvents();
 
     for (var collEvent in collEventList) {
       String eventID =
           await CollEventServices(ref: ref).getCollEventID(collEvent);
-      writer.write('"$eventID"');
-      _writeDelimiter(writer);
       String siteDetails = await _getSite(collEvent.siteID, delimiter);
       writer.write(siteDetails);
+      _writeDelimiter(writer);
+      writer.write('"$eventID"');
       _writeDelimiter(writer);
       writer.write('"${collEvent.primaryCollMethod}"');
       _writeDelimiter(writer);
@@ -53,7 +54,7 @@ class CollEventRecordWriter extends DbAccess {
   Future<String> _getSite(int? siteID, String delimiter) async {
     String siteDetails =
         await SiteWriterServices(ref: ref, delimiter: delimiter)
-            .getSiteDetails(siteID, false);
+            .getSiteDetails(siteID, true);
     return siteDetails;
   }
 
@@ -88,7 +89,13 @@ class CollEventRecordWriter extends DbAccess {
     writer.write(delimiter);
   }
 
-  void _writeHeader(IOSink writer) {
+  void _writeSiteHeader(IOSink writer) {
+    for (var val in siteExportList) {
+      writer.write('"$val"$delimiter');
+    }
+  }
+
+  void _writeCollEventHeader(IOSink writer) {
     for (var val in collEventExportList) {
       if (val == collEventExportList.last) {
         writer.writeln('"$val"');
