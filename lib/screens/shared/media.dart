@@ -175,26 +175,8 @@ class MediaCardState extends ConsumerState<MediaCard> {
     return Stack(
       fit: StackFit.loose,
       children: [
-        Positioned(
-            left: 0,
-            right: 0,
-            bottom: 30,
-            child: ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text(
-                widget.ctr.fileNameCtr ?? 'No image',
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-              subtitle: Text(
-                widget.ctr.captionCtr.text,
-                style: Theme.of(context).textTheme.labelSmall,
-                overflow: TextOverflow.ellipsis,
-              ),
-              trailing: MediaPopUpMenu(ctr: widget.ctr),
-            )),
         ClipRRect(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(16),
           child: widget.ctr.fileNameCtr != null
               ? FutureBuilder(
                   builder: (context, snapshot) {
@@ -216,6 +198,38 @@ class MediaCardState extends ConsumerState<MediaCard> {
               : const Center(
                   child: Text('No image'),
                 ),
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 8,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(24)),
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(16, 0, 8, 8),
+                color: Theme.of(context)
+                    .colorScheme
+                    .secondaryContainer
+                    .withOpacity(0.9),
+                child: ListTile(
+                  contentPadding: const EdgeInsets.all(0),
+                  title: Text(
+                    widget.ctr.fileNameCtr ?? 'No image',
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                  subtitle: Text(
+                    widget.ctr.captionCtr.text,
+                    style: Theme.of(context).textTheme.labelSmall,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  trailing: MediaPopUpMenu(ctr: widget.ctr),
+                ),
+              ),
+            ),
+          ),
         ),
       ],
     );
