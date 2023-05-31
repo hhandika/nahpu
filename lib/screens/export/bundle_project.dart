@@ -66,10 +66,11 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
                   await _bundleProject();
                   setState(() {
                     _hasSaved;
+                    _isRunning = false;
                   });
                 },
                 isRunning: _isRunning,
-                icon: Icons.archive,
+                icon: Icons.archive_outlined,
               ),
             ],
           ),

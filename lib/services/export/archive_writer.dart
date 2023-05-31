@@ -13,14 +13,12 @@ class ArchiveServices extends DbAccess {
 
   Future<void> createArchive() async {
     final projectDir = await FileServices(ref: ref).getProjectDir();
-
+    projectDir.createSync(recursive: true);
     // Create the archive
     ZipFileEncoder encoder = ZipFileEncoder();
     encoder.zipDirectory(
       projectDir,
       filename: outputFile.path,
     );
-
-    encoder.close();
   }
 }
