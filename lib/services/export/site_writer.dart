@@ -55,15 +55,31 @@ class SiteWriterServices {
         String municipality = _getMunicipality(data.municipality);
         String locality = _getLocality(data.locality);
         String coordinates = await getCoordinates(siteID);
-        String siteDetails =
-            '$country$stateProvince$county$municipality$locality'.trim();
+        String verbatimLocality =
+            '$country$stateProvince$county$municipality$locality';
         String siteLocality =
-            '$siteSeparated$siteDetails$delimiter$coordinates';
+            '$siteSeparated"$verbatimLocality"$delimiter"$coordinates"';
         return withHabitat
             ? '${data.siteID}$delimiter${data.habitatType}$delimiter$siteLocality'
             : siteLocality;
       }
     }
+  }
+
+  Future<String> getCoordinates(int? siteID) async {
+    if (siteID == null) {
+      return '';
+    }
+    List<CoordinateData> coordinateList =
+        await CoordinateServices(ref: ref).getCoordinatesBySiteID(siteID);
+    String coordinateDetails = coordinateList
+        .map((e) => '${e.nameId ?? ''};'
+            '${e.decimalLatitude ?? ''},${e.decimalLongitude ?? ''};'
+            '${e.elevationInMeter ?? ''}m;±${e.uncertaintyInMeters ?? ''}m;'
+            '${e.datum ?? ''};${e.gpsUnit ?? ''}')
+        .join(writerSeparator);
+
+    return coordinateDetails;
   }
 
   String _getSiteSeparated(SiteData data) {
@@ -110,22 +126,7 @@ class SiteWriterServices {
     if (locality == null) {
       return '';
     } else {
-      return '"$locality"';
-    }
-  }
-
-  Future<String> getCoordinates(int? siteID) async {
-    if (siteID == null) {
-      return '';
-    } else {
-      List<CoordinateData> coordinateList =
-          await CoordinateServices(ref: ref).getCoordinatesBySiteID(siteID);
-      return coordinateList
-          .map((e) => '${e.nameId ?? ''};'
-              '${e.decimalLatitude ?? ''},${e.decimalLongitude ?? ''};'
-              '${e.elevationInMeter ?? ''}m;±${e.uncertaintyInMeters ?? ''}m;'
-              '${e.datum ?? ''};${e.gpsUnit ?? ''}')
-          .join(writerSeparator);
+      return locality;
     }
   }
 }

@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:nahpu/services/export/narrative_writer.dart';
 import 'package:nahpu/services/export/record_writer.dart';
+import 'package:nahpu/services/export/report_writer.dart';
 import 'package:nahpu/services/export/site_writer.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:archive/archive_io.dart';
@@ -27,12 +29,23 @@ class ArchiveServices extends DbAccess {
     await _writeNarrativeRecord();
     await _writeSiteRecord();
     await _writeSpecimenRecords();
+    await _writeReport();
     // Create the archive
     ZipFileEncoder encoder = ZipFileEncoder();
     encoder.zipDirectory(
       projectDir,
       filename: outputFile.path,
     );
+  }
+
+  Future<void> _writeReport() async {
+    final filePath = await _speciesCountPath;
+    if (filePath.existsSync()) {
+      await filePath.delete();
+    }
+
+    await ReportServices(ref: ref)
+        .writeReport(filePath, ReportType.speciesCount);
   }
 
   Future<void> _writeNarrativeRecord() async {
@@ -68,14 +81,16 @@ class ArchiveServices extends DbAccess {
     }
     SpecimenRecordType? mammalRecord = _getMammalRecordType(recordType);
     if (mammalRecord != null) {
-      await _writeMammalSpecimenRecord(recordType);
+      await _writeMammalSpecimenRecord(mammalRecord);
     }
+    if (kDebugMode) print(recordType);
   }
 
   Future<void> _writeMammalSpecimenRecord(
-      List<SpecimenRecordType> recordType) async {
+      SpecimenRecordType mammalRecordType) async {
     final File mammalDir = await _getMammalSpecimenSavePath();
-    SpecimenRecordWriter(ref: ref, recordType: SpecimenRecordType.allMammals)
+
+    SpecimenRecordWriter(ref: ref, recordType: mammalRecordType)
         .writeRecordDelimited(mammalDir, isCsv);
   }
 
@@ -134,5 +149,18 @@ class ArchiveServices extends DbAccess {
     final recordDir = Directory(path.join(projectDir.path, 'records'));
     await recordDir.create(recursive: true);
     return recordDir;
+  }
+
+  Future<File> get _speciesCountPath async {
+    final dir = await _reportDir;
+    final speciesCountFile = File(path.join(dir.path, 'species_count.csv'));
+    return speciesCountFile;
+  }
+
+  Future<Directory> get _reportDir async {
+    final projectDir = await FileServices(ref: ref).currentProjectDir;
+    final reportDir = Directory(path.join(projectDir.path, 'reports'));
+    await reportDir.create(recursive: true);
+    return reportDir;
   }
 }

@@ -5,6 +5,22 @@ import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
+import 'package:nahpu/services/types/types.dart';
+
+class ReportServices extends DbAccess {
+  const ReportServices({required super.ref});
+
+  Future<void> writeReport(File savePath, ReportType reportType) async {
+    switch (reportType) {
+      case ReportType.speciesCount:
+        await SpeciesListWriter(ref: ref).writeSpeciesListCompact(savePath);
+        break;
+      default:
+        await SpeciesListWriter(ref: ref).writeSpeciesListCompact(savePath);
+        break;
+    }
+  }
+}
 
 class SpeciesListWriter extends DbAccess {
   const SpeciesListWriter({required super.ref});

@@ -91,6 +91,16 @@ class SpecimenServices extends DbAccess {
     return filteredList;
   }
 
+  Future<List<SpecimenData>> getSpecimenListForAllMammals() async {
+    List<SpecimenData> specimenList = await getSpecimenList();
+    List<SpecimenData> filteredList = specimenList
+        .where((element) =>
+            element.taxonGroup == 'General Mammals' ||
+            element.taxonGroup == 'Bats')
+        .toList();
+    return filteredList;
+  }
+
   Future<List<int?>> getAllSpecies(String uuid) {
     return SpecimenQuery(dbAccess).getAllSpecies(uuid);
   }

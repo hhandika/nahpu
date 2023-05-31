@@ -137,7 +137,7 @@ class SpecimenRecordWriter {
         String siteDetails =
             await siteServices.getSiteDetails(collEventData.siteID, true);
 
-        return '$siteDetails$delimiter';
+        return siteDetails;
       }
     }
   }
@@ -151,15 +151,17 @@ class SpecimenRecordWriter {
   }
 
   Future<String> _getMeasurement(String specimenUuid) async {
+    bool isBat = recordType == SpecimenRecordType.bats ||
+        recordType == SpecimenRecordType.allMammals;
     switch (recordType) {
       case SpecimenRecordType.generalMammals:
-        return await _getMeasurementGeneralMammals(specimenUuid, false);
+        return await _getMeasurementGeneralMammals(specimenUuid, isBat);
       case SpecimenRecordType.birds:
         return await _getMeasurementBirds(specimenUuid);
       case SpecimenRecordType.bats:
-        return await _getMeasurementGeneralMammals(specimenUuid, true);
+        return await _getMeasurementGeneralMammals(specimenUuid, isBat);
       case SpecimenRecordType.allMammals:
-        return await _getMeasurementGeneralMammals(specimenUuid, true);
+        return await _getMeasurementGeneralMammals(specimenUuid, isBat);
       default:
         throw Exception('Invalid record type');
     }

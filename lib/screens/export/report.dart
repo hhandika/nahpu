@@ -145,7 +145,7 @@ class ReportFormState extends ConsumerState<ReportForm> {
         ext: 'csv',
       ).getSavePath();
 
-      await _writeReport();
+      await ReportServices(ref: ref).writeReport(_savePath, _reportType);
       setState(() {
         _hasSaved = true;
       });
@@ -175,17 +175,6 @@ class ReportFormState extends ConsumerState<ReportForm> {
           content: ErrorText(error: e.toString()),
         ),
       );
-    }
-  }
-
-  Future<void> _writeReport() async {
-    switch (_reportType) {
-      case ReportType.speciesCount:
-        await SpeciesListWriter(ref: ref).writeSpeciesListCompact(_savePath);
-        break;
-      default:
-        await SpeciesListWriter(ref: ref).writeSpeciesListCompact(_savePath);
-        break;
     }
   }
 

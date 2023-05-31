@@ -143,7 +143,7 @@ String matchRecordTypeToTaxonGroup(SpecimenRecordType recordType) {
     case SpecimenRecordType.bats:
       return 'Bats';
     default:
-      return 'Non-Bat Mammals';
+      throw Exception('Invalid record type');
   }
 }
 
