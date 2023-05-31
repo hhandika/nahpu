@@ -29,10 +29,11 @@ const List<String> mammalGroupList = [
   'All mammals',
 ];
 
-enum ExportRecordType { narrative, collEvent, specimenRecord }
+enum ExportRecordType { narrative, site, collEvent, specimenRecord }
 
 const List<String> recordTypeList = [
   'Narrative',
+  'Site',
   'Collecting event',
   'Specimen records',
 ];
