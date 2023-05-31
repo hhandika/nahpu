@@ -133,25 +133,36 @@ class SpecimenRecordWriter {
         return avianMeasurementExportList;
       case SpecimenRecordType.bats:
         return batMeasurementExportList;
+      case SpecimenRecordType.allMammals:
+        return batMeasurementExportList;
       default:
-        return mammalMeasurementExportList;
+        throw Exception('Invalid record type');
     }
   }
 
   Future<String> _getMeasurement(String specimenUuid) async {
     switch (recordType) {
       case SpecimenRecordType.generalMammals:
-        return await _getMeasurementGeneralMammals(specimenUuid);
+        return await _getMeasurementGeneralMammals(specimenUuid, false);
       case SpecimenRecordType.birds:
         return await _getMeasurementBirds(specimenUuid);
+      case SpecimenRecordType.bats:
+        return await _getMeasurementGeneralMammals(specimenUuid, true);
+      case SpecimenRecordType.allMammals:
+        return await _getMeasurementGeneralMammals(specimenUuid, true);
       default:
-        return ' ';
+        throw Exception('Invalid record type');
     }
   }
 
-  Future<String> _getMeasurementGeneralMammals(String specimenUuid) async {
+  Future<String> _getMeasurementGeneralMammals(
+      String specimenUuid, bool isBatRecord) async {
     MammalianMeasurements mammals = MammalianMeasurements(
-        specimenUuid: specimenUuid, ref: ref, delimiter: delimiter);
+      specimenUuid: specimenUuid,
+      ref: ref,
+      delimiter: delimiter,
+      isBatRecord: isBatRecord,
+    );
     return await mammals.getMeasurements();
   }
 

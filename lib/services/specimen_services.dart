@@ -48,6 +48,10 @@ class SpecimenServices extends DbAccess {
     invalidateSpecimenList();
   }
 
+  Future<List<String>> getRecordedGroupList() async {
+    return SpecimenQuery(dbAccess).getUniqueTaxonGroup(projectUuid);
+  }
+
   Future<void> createSpecimenMedia(String specimenUuid, String filePath) async {
     int mediaId = await MediaDbQuery(dbAccess).createMedia(MediaCompanion(
       projectUuid: db.Value(projectUuid),
