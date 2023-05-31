@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/screens/export/bundle_project.dart';
 import 'package:nahpu/screens/export/export_db.dart';
 import 'package:nahpu/screens/export/export_pdf.dart';
 import 'package:nahpu/screens/export/export_records.dart';
@@ -45,6 +46,17 @@ class ProjectMenuDrawerState extends ConsumerState<ProjectMenuDrawer> {
             },
           ),
           const Divider(color: Colors.grey),
+          ListTile(
+            leading: const Icon(Icons.archive_rounded),
+            title: const Text('Bundle project'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const BundleProjectForm()),
+              );
+            },
+          ),
           ListTile(
             leading: const Icon(Icons.table_view_rounded),
             title: const Text('Create report'),

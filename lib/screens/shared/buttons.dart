@@ -19,17 +19,19 @@ class ProjectBackButton extends ConsumerWidget {
   }
 }
 
-class ImportButton extends StatelessWidget {
-  const ImportButton({
+class ProgressButton extends StatelessWidget {
+  const ProgressButton({
     super.key,
     required this.label,
     required this.onPressed,
     required this.isRunning,
+    required this.icon,
   });
 
   final String label;
   final VoidCallback? onPressed;
   final bool isRunning;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +47,7 @@ class ImportButton extends StatelessWidget {
               width: 10,
               child: CircularProgressIndicator(),
             )
-          : const Icon(Icons.file_download_outlined),
+          : Icon(icon),
       onPressed: onPressed,
       label: Text(label),
     );

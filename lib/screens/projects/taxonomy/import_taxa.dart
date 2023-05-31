@@ -101,9 +101,10 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
                     const SizedBox(
                       width: 20,
                     ),
-                    ImportButton(
+                    ProgressButton(
                       label: 'Import',
                       isRunning: _isRunning,
+                      icon: Icons.download_outlined,
                       onPressed: _isInvalidInput()
                           ? null
                           : () async {
