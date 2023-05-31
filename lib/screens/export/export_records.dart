@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:nahpu/screens/shared/fields.dart';
+import 'package:nahpu/services/export/site_writer.dart';
 import 'package:nahpu/services/types/export.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/export/coll_event_writer.dart';
@@ -281,6 +282,9 @@ class ExportFormState extends ConsumerState<ExportForm> {
       case ExportRecordType.narrative:
         await NarrativeRecordWriter(ref: ref)
             .writeNarrativeDelimited(file, isCsv);
+        break;
+      case ExportRecordType.site:
+        await SiteWriterServices(ref: ref).writeSiteDelimited(file, isCsv);
         break;
       case ExportRecordType.collEvent:
         await CollEventRecordWriter(ref: ref)
