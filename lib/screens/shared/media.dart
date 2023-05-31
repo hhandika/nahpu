@@ -12,7 +12,6 @@ import 'package:nahpu/services/media_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/utility_services.dart';
-import 'package:path/path.dart';
 import 'package:drift/drift.dart' as db;
 
 const int imageSize = 300;
@@ -126,16 +125,22 @@ class MediaViewerBuilder extends StatelessWidget {
       scrollController: scrollController,
       child: Padding(
         padding: const EdgeInsets.all(8),
-        child: GridView.count(
+        child: GridView.builder(
           controller: scrollController,
-          crossAxisCount: _getCrossAxisCount(MediaQuery.of(context).size.width),
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
-          children: List.generate(images.length, (index) {
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: _getCrossAxisCount(
+              MediaQuery.of(context).size.width,
+            ),
+            childAspectRatio: 1,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+          ),
+          itemCount: images.length,
+          itemBuilder: (context, index) {
             return MediaCard(
               ctr: MediaFormCtr.fromData(images[index]),
             );
-          }),
+          },
         ),
       ),
     );
@@ -167,45 +172,52 @@ class MediaCard extends ConsumerStatefulWidget {
 class MediaCardState extends ConsumerState<MediaCard> {
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(5),
-      child: GridTile(
-        footer: GridTileBar(
-          backgroundColor:
-              Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.9),
-          trailing: MediaPopUpMenu(ctr: widget.ctr),
-          title: Text(
-            widget.ctr.fileNameCtr != null
-                ? basename(widget.ctr.fileNameCtr!)
-                : 'No file name',
-            style: Theme.of(context).textTheme.labelLarge,
-          ),
-          subtitle: Text(
-            widget.ctr.captionCtr.text,
-            style: Theme.of(context).textTheme.labelSmall,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-        child: widget.ctr.fileNameCtr != null
-            ? FutureBuilder(
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Image.file(
-                      snapshot.data as File,
-                      fit: BoxFit.cover,
-                    );
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-                future: _getMediaPath(),
-                initialData: null)
-            : const Center(
-                child: Text('No image'),
+    return Stack(
+      fit: StackFit.loose,
+      children: [
+        Positioned(
+            left: 0,
+            right: 0,
+            bottom: 30,
+            child: ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text(
+                widget.ctr.fileNameCtr ?? 'No image',
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.labelMedium,
               ),
-      ),
+              subtitle: Text(
+                widget.ctr.captionCtr.text,
+                style: Theme.of(context).textTheme.labelSmall,
+                overflow: TextOverflow.ellipsis,
+              ),
+              trailing: MediaPopUpMenu(ctr: widget.ctr),
+            )),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: widget.ctr.fileNameCtr != null
+              ? FutureBuilder(
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Image.file(
+                        width: imageSize.toDouble(),
+                        height: imageSize.toDouble(),
+                        snapshot.data as File,
+                        fit: BoxFit.cover,
+                      );
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  },
+                  future: _getMediaPath(),
+                  initialData: null)
+              : const Center(
+                  child: Text('No image'),
+                ),
+        ),
+      ],
     );
   }
 
