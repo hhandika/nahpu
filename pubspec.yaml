@@ -58,6 +58,7 @@ dependencies:
   dotted_border: ^2.0.0+3
   image_picker: ^0.8.7+5
   archive: ^3.3.7
+  share_plus: ^7.0.2
 
 dev_dependencies:
   flutter_test:
