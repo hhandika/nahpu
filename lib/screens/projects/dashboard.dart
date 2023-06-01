@@ -5,7 +5,7 @@ import 'package:nahpu/screens/projects/components/action_buttons.dart';
 import 'package:nahpu/screens/projects/components/menu_drawer.dart';
 import 'package:nahpu/screens/projects/components/misc_forms.dart';
 import 'package:nahpu/screens/projects/components/overview.dart';
-import 'package:nahpu/screens/projects/components/personnel.dart';
+import 'package:nahpu/screens/projects/personnel/personnel.dart';
 import 'package:nahpu/screens/projects/taxonomy/taxon_registry.dart';
 import 'package:nahpu/screens/projects/edit_project.dart';
 import 'package:nahpu/screens/shared/navigation.dart';
