@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/services/types/controllers.dart';
-import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/screens/shared/file_operation.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/export/db_writer.dart';
-import 'package:nahpu/services/utility_services.dart';
 
 const String _dbExtension = 'sqlite3';
 
@@ -88,21 +86,31 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
             spacing: 20,
             children: [
               SaveSecondaryButton(hasSaved: _hasSaved),
-              PrimaryButton(
-                text: 'Save',
-                onPressed: _selectedDir == null
-                    ? null
-                    : () async {
-                        await _writeDb();
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('File saved as $_savePath'),
-                            ),
-                          );
-                        }
+              _hasSaved
+                  ? PrimaryButton(
+                      text: 'Save',
+                      onPressed: _selectedDir == null
+                          ? null
+                          : () async {
+                              await _writeDb();
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('File saved as $_savePath'),
+                                  ),
+                                );
+                              }
+                            },
+                    )
+                  : Builder(
+                      builder: (context) {
+                        return ShareButton(
+                          onPressed: () async {
+                            await _shareFile(context);
+                          },
+                        );
                       },
-              ),
+                    ),
             ],
           )
         ],
@@ -121,9 +129,6 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
       setState(() {
         _hasSaved = true;
       });
-      if (systemPlatform == PlatformType.mobile) {
-        await _shareFile();
-      }
     } on PathNotFoundException {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -139,10 +144,9 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
     }
   }
 
-  Future<void> _shareFile() async {
+  Future<void> _shareFile(BuildContext context) async {
     try {
-      await FilePickerServices()
-          .shareFile(_savePath, context.findRenderObject() as RenderBox?);
+      await FilePickerServices().shareFile(context, _savePath);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

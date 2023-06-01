@@ -170,11 +170,13 @@ class ExportFormState extends ConsumerState<ExportForm> {
                               });
                             },
                     )
-                  : ShareButton(
-                      onPressed: () async {
-                        await _shareFile();
-                      },
-                    ),
+                  : Builder(builder: (BuildContext context) {
+                      return ShareButton(
+                        onPressed: () async {
+                          _shareFile(context);
+                        },
+                      );
+                    }),
             ],
           )
         ],
@@ -264,10 +266,9 @@ class ExportFormState extends ConsumerState<ExportForm> {
     }
   }
 
-  Future<void> _shareFile() async {
+  Future<void> _shareFile(BuildContext context) async {
     try {
-      await FilePickerServices()
-          .shareFile(_savePath, context.findRenderObject() as RenderBox?);
+      await FilePickerServices().shareFile(context, _savePath);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

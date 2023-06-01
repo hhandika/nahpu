@@ -73,11 +73,13 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
                       isRunning: _isRunning,
                       icon: Icons.archive_outlined,
                     )
-                  : ShareButton(
-                      onPressed: () async {
-                        await _shareFile();
-                      },
-                    )
+                  : Builder(builder: (context) {
+                      return ShareButton(
+                        onPressed: () async {
+                          await _shareFile(context);
+                        },
+                      );
+                    })
             ],
           ),
         ],
@@ -98,10 +100,9 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
     await archiveServices.createArchive();
   }
 
-  Future<void> _shareFile() async {
+  Future<void> _shareFile(BuildContext context) async {
     try {
-      await FilePickerServices()
-          .shareFile(_savePath, context.findRenderObject() as RenderBox?);
+      await FilePickerServices().shareFile(context, _savePath);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

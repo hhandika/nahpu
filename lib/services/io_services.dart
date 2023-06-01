@@ -20,7 +20,8 @@ String get dateTimeStamp {
 class FilePickerServices {
   FilePickerServices();
 
-  Future<void> shareFile(File file, RenderBox? box) async {
+  Future<void> shareFile(BuildContext context, File file) async {
+    final box = context.findRenderObject() as RenderBox?;
     await Share.shareXFiles(
       [XFile(file.path)],
       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
