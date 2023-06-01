@@ -50,3 +50,15 @@ class PersonnelServices extends DbAccess {
     ref.invalidate(personnelListProvider);
   }
 }
+
+class PersonnelImageService {
+  PersonnelImageService();
+
+  final List<String> availableBirdPhoto = [
+    'assets/avatars/Canton_L_Esquisita.png'
+  ];
+
+  String get imageAssets {
+    return availableBirdPhoto[0];
+  }
+}

@@ -33,6 +33,26 @@ class ImageServices extends DbAccess {
     }
   }
 
+  Future<String> pickImageSingle() async {
+    switch (systemPlatform) {
+      case PlatformType.mobile:
+        return await pickFromGallerySingle();
+      case PlatformType.desktop:
+        return await pickFromFileSingle();
+      case PlatformType.unknown:
+        throw Exception('Unsupported platform');
+      default:
+        return '';
+    }
+  }
+
+  Future<String> pickFromGallerySingle() async {
+    final picker = ImagePicker();
+    final result = await picker.pickImage(source: ImageSource.gallery);
+    File? file = result == null ? null : await _copySingleFile(result.path);
+    return file?.path ?? '';
+  }
+
   Future<List<String>> pickFromGallery() async {
     final picker = ImagePicker();
     final result = await picker.pickMultiImage();
@@ -45,6 +65,13 @@ class ImageServices extends DbAccess {
         .pickMultiFiles(['jpg', 'png', 'jpeg', 'heic']);
     List<File> files = await _copyFiles(result.map((e) => e.path).toList());
     return files.map((e) => e.path).toList();
+  }
+
+  Future<String> pickFromFileSingle() async {
+    File? result =
+        await FilePickerServices().selectFile(['jpg', 'png', 'jpeg']);
+    File? file = result == null ? null : await _copySingleFile(result.path);
+    return file?.path ?? '';
   }
 
   Future<String?> accessCamera() async {

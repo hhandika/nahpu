@@ -399,6 +399,16 @@ class PersonnelAvatar extends StatefulWidget {
 
 class _PersonnelAvatarState extends State<PersonnelAvatar> {
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        _getImagePath();
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: 180,
@@ -408,9 +418,9 @@ class _PersonnelAvatarState extends State<PersonnelAvatar> {
           Positioned.fill(
             child: CircleAvatar(
               backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
-              child: widget.ctr.phoneCtr.text.isEmpty
+              child: widget.ctr.photoPathCtr.text.startsWith('assets')
                   ? Image.asset(
-                      'assets/avatars/Canton_L_Esquisita.png',
+                      widget.ctr.photoPathCtr.text,
                       fit: BoxFit.cover,
                     )
                   : Image.file(File(widget.ctr.phoneCtr.text)),
@@ -436,6 +446,13 @@ class _PersonnelAvatarState extends State<PersonnelAvatar> {
         ],
       ),
     );
+  }
+
+  void _getImagePath() {
+    if (widget.ctr.photoPathCtr.text.isEmpty) {
+      String asset = PersonnelImageService().imageAssets;
+      widget.ctr.photoPathCtr.text = asset;
+    }
   }
 }
 
