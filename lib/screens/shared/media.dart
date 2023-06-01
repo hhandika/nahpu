@@ -129,8 +129,9 @@ class MediaViewerBuilder extends StatelessWidget {
         child: GridView.builder(
           controller: scrollController,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: _getCrossAxisCount(
+            crossAxisCount: getCrossAxisCount(
               MediaQuery.of(context).size.width,
+              imageSize,
             ),
             childAspectRatio: 1,
             crossAxisSpacing: 8,
@@ -145,16 +146,6 @@ class MediaViewerBuilder extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  int _getCrossAxisCount(double width) {
-    int crossAxisCount = 1;
-    double safeWidth = width - 24;
-    while (safeWidth > imageSize) {
-      crossAxisCount++;
-      safeWidth -= imageSize;
-    }
-    return crossAxisCount;
   }
 }
 

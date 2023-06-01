@@ -29,6 +29,16 @@ PlatformType get systemPlatform {
   }
 }
 
+int getCrossAxisCount(double screenWidth, int elementSize) {
+  int crossAxisCount = 1;
+  double safeWidth = screenWidth - 24;
+  while (safeWidth > elementSize) {
+    crossAxisCount++;
+    safeWidth -= elementSize;
+  }
+  return crossAxisCount;
+}
+
 String getSystemDateTime() {
   DateTime currentDate = DateTime.now();
   return DateFormat('yyyy-MM-dd HH:mm:ss').format(currentDate);

@@ -8,6 +8,7 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/database/project_queries.dart';
 import 'package:nahpu/services/project_services.dart';
+import 'package:nahpu/services/utility_services.dart';
 
 enum MenuSelection { details, deleteProject }
 
@@ -163,10 +164,12 @@ class ProjectGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+    const int gridSize = 400;
     return Expanded(
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: getAxisCount(MediaQuery.of(context).size.width),
+          crossAxisCount: getCrossAxisCount(width, gridSize),
           childAspectRatio: 1.5,
           crossAxisSpacing: 8,
           mainAxisSpacing: 8,
@@ -177,16 +180,6 @@ class ProjectGridView extends StatelessWidget {
         },
       ),
     );
-  }
-
-  int getAxisCount(double screenSize) {
-    int axisCount = 1;
-    int safeSize = 400 + 16;
-    while (screenSize > safeSize) {
-      axisCount++;
-      screenSize -= safeSize;
-    }
-    return axisCount;
   }
 }
 
