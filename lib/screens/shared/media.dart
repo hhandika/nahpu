@@ -200,11 +200,13 @@ class MediaCardState extends ConsumerState<MediaCard> {
             child: ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(24)),
               child: Container(
-                padding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
+                padding: const EdgeInsets.fromLTRB(18, 0, 8, 0),
                 color:
-                    Theme.of(context).scaffoldBackgroundColor.withOpacity(0.85),
+                    Theme.of(context).scaffoldBackgroundColor.withOpacity(0.9),
                 child: ListTile(
                   contentPadding: const EdgeInsets.all(0),
+                  dense: true,
+                  minVerticalPadding: 12,
                   title: Text(
                     widget.ctr.fileNameCtr ?? 'No image',
                     overflow: TextOverflow.ellipsis,
