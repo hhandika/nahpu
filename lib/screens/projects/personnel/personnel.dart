@@ -116,7 +116,8 @@ class PersonalListTile extends StatelessWidget {
           height: 48,
           width: 48,
           child: AvatarViewer(
-            filePath: TextEditingController(text: personnelData.photoPath),
+            filePath:
+                TextEditingController(text: personnelData.photoPath ?? ''),
           )),
       title: Text(
         _getTitle(personnelData.name, personnelData.initial),
