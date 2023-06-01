@@ -344,6 +344,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
           _getCollectorNumber(),
         ),
         photoPath: db.Value(_photoPath),
+        notes: db.Value(widget.ctr.noteCtr.text),
       ),
     );
   }
@@ -364,6 +365,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
           _getCollectorNumber(),
         ),
         photoPath: db.Value(_photoPath),
+        notes: db.Value(widget.ctr.noteCtr.text),
       ),
     );
     await personnelServices.createProjectPersonnel(PersonnelListCompanion(
@@ -381,6 +383,9 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
   }
 
   String get _photoPath {
+    if (widget.ctr.photoPathCtr.text.startsWith(avatarPath)) {
+      return widget.ctr.photoPathCtr.text;
+    }
     return basename(widget.ctr.photoPathCtr.text);
   }
 }
@@ -418,7 +423,7 @@ class _PersonnelAvatarState extends State<PersonnelAvatar> {
           Positioned.fill(
             child: CircleAvatar(
               backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
-              child: widget.ctr.photoPathCtr.text.startsWith('assets')
+              child: widget.ctr.photoPathCtr.text.startsWith(avatarPath)
                   ? Image.asset(
                       widget.ctr.photoPathCtr.text,
                       fit: BoxFit.cover,

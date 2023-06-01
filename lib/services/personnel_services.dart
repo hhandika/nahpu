@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/personnel_queries.dart';
@@ -51,14 +53,20 @@ class PersonnelServices extends DbAccess {
   }
 }
 
+const String avatarPath = 'assets/avatars/';
+
 class PersonnelImageService {
   PersonnelImageService();
 
   final List<String> availableBirdPhoto = [
-    'assets/avatars/Canton_L_Esquisita.png'
+    'canton_lep_esquisita.png',
+    'canton_lep_hybrid2.png',
+    'canton_lep_velutina.png',
   ];
 
   String get imageAssets {
-    return availableBirdPhoto[0];
+    final random = Random();
+    final index = random.nextInt(availableBirdPhoto.length);
+    return '$avatarPath${availableBirdPhoto[index]}';
   }
 }
