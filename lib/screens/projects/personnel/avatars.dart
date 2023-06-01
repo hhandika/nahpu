@@ -136,9 +136,9 @@ class AvatarViewerState extends ConsumerState<AvatarViewer> {
     if (widget.filePath == null || widget.filePath!.isEmpty) {
       String asset = PersonnelImageService().imageAssets;
       _imagePath = asset;
+    } else {
+      _imagePath = widget.filePath!;
     }
-
-    _imagePath = widget.filePath!;
   }
 
   Future<File> _getMediaPath() async {

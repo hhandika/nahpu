@@ -113,9 +113,11 @@ class PersonalListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: SizedBox(
+          height: 48,
+          width: 48,
           child: AvatarViewer(
-        filePath: personnelData.photoPath,
-      )),
+            filePath: personnelData.photoPath,
+          )),
       title: Text(
         _getTitle(personnelData.name, personnelData.initial),
         style: Theme.of(context).textTheme.titleMedium,
