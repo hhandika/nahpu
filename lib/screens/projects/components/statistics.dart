@@ -92,7 +92,7 @@ class _StatisticFullScreenState extends State<StatisticFullScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Statistics'),
+        title: const Text('Record Statistics'),
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () {
@@ -205,18 +205,42 @@ class CountBarChart extends ConsumerWidget {
           if (snapshot.hasData) {
             int screenSize = MediaQuery.of(context).size.width.toInt();
             Map<String, int> data = _getCountData(snapshot.data!);
-            return Padding(
-              padding: const EdgeInsets.only(top: 40, left: 20, right: 20),
-              child: BarChartViewer(
-                title: 'Species Count',
-                data: data,
-                dataPoints: createDataPoints(
-                    data,
-                    _getLength(
-                      screenSize,
-                      data.length,
-                    )),
-              ),
+            int dataCount = _getLength(screenSize, data.length);
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                data.isEmpty
+                    ? const Text(
+                        'No data to display',
+                        style: TextStyle(fontSize: 20),
+                      )
+                    : Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 42, left: 16, right: 16),
+                          child: BarChartViewer(
+                            title: 'Species Count',
+                            data: data,
+                            dataPoints: createDataPoints(
+                              data,
+                              _getLength(
+                                screenSize,
+                                data.length,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                maxCount
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: Text(
+                          'Showing top $dataCount of ${data.length} results',
+                          style: Theme.of(context).textTheme.labelLarge,
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+              ],
             );
           } else {
             return const Center(child: CircularProgressIndicator());
