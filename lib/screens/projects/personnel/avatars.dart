@@ -33,7 +33,7 @@ class PersonnelAvatarState extends ConsumerState<PersonnelAvatar> {
         children: [
           Positioned.fill(
             child: AvatarViewer(
-              filePath: widget.ctr.photoPathCtr.text,
+              filePath: widget.ctr.photoPathCtr,
             ),
           ),
           Positioned(
@@ -80,7 +80,8 @@ class PersonnelAvatarState extends ConsumerState<PersonnelAvatar> {
   }
 
   void _validateEditing() {
-    ref.watch(personnelFormValidatorProvider.notifier).validateAll(widget.ctr);
+    ref.read(personnelFormValidatorProvider.notifier).validateAll(widget.ctr);
+    PersonnelServices(ref: ref).invalidatePersonnel();
   }
 }
 
@@ -90,15 +91,13 @@ class AvatarViewer extends ConsumerStatefulWidget {
     required this.filePath,
   });
 
-  final String? filePath;
+  final TextEditingController filePath;
 
   @override
   AvatarViewerState createState() => AvatarViewerState();
 }
 
 class AvatarViewerState extends ConsumerState<AvatarViewer> {
-  late String _imagePath;
-
   @override
   void initState() {
     _getImagePath();
@@ -107,11 +106,11 @@ class AvatarViewerState extends ConsumerState<AvatarViewer> {
 
   @override
   Widget build(BuildContext context) {
-    return _imagePath.startsWith(avatarPath)
+    return widget.filePath.text.startsWith(avatarPath)
         ? CircleAvatar(
             backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
             child: Image.asset(
-              _imagePath,
+              widget.filePath.text,
               fit: BoxFit.cover,
             ))
         : FutureBuilder(
@@ -133,11 +132,9 @@ class AvatarViewerState extends ConsumerState<AvatarViewer> {
   }
 
   void _getImagePath() {
-    if (widget.filePath == null || widget.filePath!.isEmpty) {
+    if (widget.filePath.text.isEmpty) {
       String asset = PersonnelImageService().imageAssets;
-      _imagePath = asset;
-    } else {
-      _imagePath = widget.filePath!;
+      widget.filePath.text = asset;
     }
   }
 
@@ -145,7 +142,7 @@ class AvatarViewerState extends ConsumerState<AvatarViewer> {
     File path = await ImageServices(
       ref: ref,
       category: MediaCategory.personnel,
-    ).getMediaPath(_imagePath);
+    ).getMediaPath(widget.filePath.text);
     return path;
   }
 }
