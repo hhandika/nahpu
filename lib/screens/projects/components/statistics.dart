@@ -291,8 +291,8 @@ class BarChartViewer extends StatelessWidget {
                         color: Theme.of(context).colorScheme.secondaryContainer,
                         width: chartWidth,
                         borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(5),
-                            topRight: Radius.circular(5))),
+                            topLeft: Radius.circular(8),
+                            topRight: Radius.circular(8))),
                   ]))
               .toList(),
           borderData: FlBorderData(
