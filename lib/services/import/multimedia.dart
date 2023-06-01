@@ -46,6 +46,13 @@ class ImageServices extends DbAccess {
     }
   }
 
+  Future<String?> accessCamera() async {
+    final picker = ImagePicker();
+    final result = await picker.pickImage(source: ImageSource.camera);
+    File? files = result == null ? null : await _copySingleFile(result.path);
+    return files?.path;
+  }
+
   Future<String> pickFromGallerySingle() async {
     final picker = ImagePicker();
     final result = await picker.pickImage(source: ImageSource.gallery);
@@ -72,13 +79,6 @@ class ImageServices extends DbAccess {
         await FilePickerServices().selectFile(['jpg', 'png', 'jpeg']);
     File? file = result == null ? null : await _copySingleFile(result.path);
     return file?.path ?? '';
-  }
-
-  Future<String?> accessCamera() async {
-    final picker = ImagePicker();
-    final result = await picker.pickImage(source: ImageSource.camera);
-    File? files = result == null ? null : await _copySingleFile(result.path);
-    return files?.path;
   }
 
   Future<List<File>> _copyFiles(List<String> paths) async {

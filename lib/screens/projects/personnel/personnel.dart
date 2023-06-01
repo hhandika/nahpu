@@ -1,5 +1,6 @@
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/providers/personnel.dart';
+import 'package:nahpu/screens/projects/personnel/avatars.dart';
 import 'package:nahpu/screens/projects/personnel/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/database/database.dart';
@@ -111,6 +112,10 @@ class PersonalListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      leading: SizedBox(
+          child: AvatarViewer(
+        filePath: personnelData.photoPath,
+      )),
       title: Text(
         _getTitle(personnelData.name, personnelData.initial),
         style: Theme.of(context).textTheme.titleMedium,

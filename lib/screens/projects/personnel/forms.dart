@@ -1,16 +1,14 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
+import 'package:nahpu/screens/projects/personnel/avatars.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/types/types.dart';
-import 'package:path/path.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/project_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
@@ -343,7 +341,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
         currentFieldNumber: db.Value(
           _getCollectorNumber(),
         ),
-        photoPath: db.Value(_photoPath),
+        photoPath: db.Value(widget.ctr.photoPathCtr.text),
         notes: db.Value(widget.ctr.noteCtr.text),
       ),
     );
@@ -364,7 +362,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
         currentFieldNumber: db.Value(
           _getCollectorNumber(),
         ),
-        photoPath: db.Value(_photoPath),
+        photoPath: db.Value(widget.ctr.photoPathCtr.text),
         notes: db.Value(widget.ctr.noteCtr.text),
       ),
     );
@@ -379,84 +377,6 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
       return 0;
     } else {
       return int.parse(widget.ctr.collectorNumCtr.text);
-    }
-  }
-
-  String get _photoPath {
-    if (widget.ctr.photoPathCtr.text.startsWith(avatarPath)) {
-      return widget.ctr.photoPathCtr.text;
-    }
-    return basename(widget.ctr.photoPathCtr.text);
-  }
-}
-
-class PersonnelAvatar extends StatefulWidget {
-  const PersonnelAvatar({
-    super.key,
-    required this.ctr,
-  });
-
-  final PersonnelFormCtrModel ctr;
-
-  @override
-  State<PersonnelAvatar> createState() => _PersonnelAvatarState();
-}
-
-class _PersonnelAvatarState extends State<PersonnelAvatar> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        _getImagePath();
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 180,
-      height: 180,
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: CircleAvatar(
-              backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
-              child: widget.ctr.photoPathCtr.text.startsWith(avatarPath)
-                  ? Image.asset(
-                      widget.ctr.photoPathCtr.text,
-                      fit: BoxFit.cover,
-                    )
-                  : Image.file(File(widget.ctr.phoneCtr.text)),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            right: 8,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surfaceVariant,
-                shape: BoxShape.circle,
-              ),
-              child: IconButton(
-                icon: Icon(
-                  Icons.add_a_photo_outlined,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                onPressed: () {},
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _getImagePath() {
-    if (widget.ctr.photoPathCtr.text.isEmpty) {
-      String asset = PersonnelImageService().imageAssets;
-      widget.ctr.photoPathCtr.text = asset;
     }
   }
 }
