@@ -19,7 +19,7 @@ New to v4:
 12. Remove personnelPhoto.
 13. Remove secondaryIdRef from the media table.
 14. Add projectUuid to the media table.
-15. Add caption, additionalExif, and subcategory to the media table.
+15. Add caption, additionalExif, and tag to the media table.
 */
 
 CREATE TABLE project (
@@ -136,7 +136,7 @@ CREATE TABLE media (
     projectUuid TEXT,
     secondaryId TEXT,
     category TEXT,
-    subcategory TEXT,
+    tag TEXT,
     taken TEXT,
     camera TEXT,
     lenses TEXT,

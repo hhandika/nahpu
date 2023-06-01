@@ -180,7 +180,7 @@ class SpecimenRecordWriter {
   }
 
   String _getMedia(MediaData data) {
-    return '"${data.category ?? ''};${data.subcategory ?? ''};'
+    return '"${data.category ?? ''};${data.tag ?? ''};'
         '${data.camera ?? ''};${data.taken ?? ''};'
         '${data.fileName ?? ''}"';
   }

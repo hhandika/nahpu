@@ -1036,10 +1036,9 @@ class Media extends Table with TableInfo<Media, MediaData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _subcategoryMeta =
-      const VerificationMeta('subcategory');
-  late final GeneratedColumn<String> subcategory = GeneratedColumn<String>(
-      'subcategory', aliasedName, true,
+  static const VerificationMeta _tagMeta = const VerificationMeta('tag');
+  late final GeneratedColumn<String> tag = GeneratedColumn<String>(
+      'tag', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -1095,7 +1094,7 @@ class Media extends Table with TableInfo<Media, MediaData> {
         projectUuid,
         secondaryId,
         category,
-        subcategory,
+        tag,
         taken,
         camera,
         lenses,
@@ -1133,11 +1132,9 @@ class Media extends Table with TableInfo<Media, MediaData> {
       context.handle(_categoryMeta,
           category.isAcceptableOrUnknown(data['category']!, _categoryMeta));
     }
-    if (data.containsKey('subcategory')) {
+    if (data.containsKey('tag')) {
       context.handle(
-          _subcategoryMeta,
-          subcategory.isAcceptableOrUnknown(
-              data['subcategory']!, _subcategoryMeta));
+          _tagMeta, tag.isAcceptableOrUnknown(data['tag']!, _tagMeta));
     }
     if (data.containsKey('taken')) {
       context.handle(
@@ -1188,8 +1185,8 @@ class Media extends Table with TableInfo<Media, MediaData> {
           .read(DriftSqlType.string, data['${effectivePrefix}secondaryId']),
       category: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}category']),
-      subcategory: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}subcategory']),
+      tag: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}tag']),
       taken: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}taken']),
       camera: attachedDatabase.typeMapping
@@ -1226,7 +1223,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
   final String? projectUuid;
   final String? secondaryId;
   final String? category;
-  final String? subcategory;
+  final String? tag;
   final String? taken;
   final String? camera;
   final String? lenses;
@@ -1239,7 +1236,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
       this.projectUuid,
       this.secondaryId,
       this.category,
-      this.subcategory,
+      this.tag,
       this.taken,
       this.camera,
       this.lenses,
@@ -1262,8 +1259,8 @@ class MediaData extends DataClass implements Insertable<MediaData> {
     if (!nullToAbsent || category != null) {
       map['category'] = Variable<String>(category);
     }
-    if (!nullToAbsent || subcategory != null) {
-      map['subcategory'] = Variable<String>(subcategory);
+    if (!nullToAbsent || tag != null) {
+      map['tag'] = Variable<String>(tag);
     }
     if (!nullToAbsent || taken != null) {
       map['taken'] = Variable<String>(taken);
@@ -1303,9 +1300,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
       category: category == null && nullToAbsent
           ? const Value.absent()
           : Value(category),
-      subcategory: subcategory == null && nullToAbsent
-          ? const Value.absent()
-          : Value(subcategory),
+      tag: tag == null && nullToAbsent ? const Value.absent() : Value(tag),
       taken:
           taken == null && nullToAbsent ? const Value.absent() : Value(taken),
       camera:
@@ -1335,7 +1330,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
       projectUuid: serializer.fromJson<String?>(json['projectUuid']),
       secondaryId: serializer.fromJson<String?>(json['secondaryId']),
       category: serializer.fromJson<String?>(json['category']),
-      subcategory: serializer.fromJson<String?>(json['subcategory']),
+      tag: serializer.fromJson<String?>(json['tag']),
       taken: serializer.fromJson<String?>(json['taken']),
       camera: serializer.fromJson<String?>(json['camera']),
       lenses: serializer.fromJson<String?>(json['lenses']),
@@ -1353,7 +1348,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
       'projectUuid': serializer.toJson<String?>(projectUuid),
       'secondaryId': serializer.toJson<String?>(secondaryId),
       'category': serializer.toJson<String?>(category),
-      'subcategory': serializer.toJson<String?>(subcategory),
+      'tag': serializer.toJson<String?>(tag),
       'taken': serializer.toJson<String?>(taken),
       'camera': serializer.toJson<String?>(camera),
       'lenses': serializer.toJson<String?>(lenses),
@@ -1369,7 +1364,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
           Value<String?> projectUuid = const Value.absent(),
           Value<String?> secondaryId = const Value.absent(),
           Value<String?> category = const Value.absent(),
-          Value<String?> subcategory = const Value.absent(),
+          Value<String?> tag = const Value.absent(),
           Value<String?> taken = const Value.absent(),
           Value<String?> camera = const Value.absent(),
           Value<String?> lenses = const Value.absent(),
@@ -1382,7 +1377,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
         projectUuid: projectUuid.present ? projectUuid.value : this.projectUuid,
         secondaryId: secondaryId.present ? secondaryId.value : this.secondaryId,
         category: category.present ? category.value : this.category,
-        subcategory: subcategory.present ? subcategory.value : this.subcategory,
+        tag: tag.present ? tag.value : this.tag,
         taken: taken.present ? taken.value : this.taken,
         camera: camera.present ? camera.value : this.camera,
         lenses: lenses.present ? lenses.value : this.lenses,
@@ -1399,7 +1394,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
           ..write('projectUuid: $projectUuid, ')
           ..write('secondaryId: $secondaryId, ')
           ..write('category: $category, ')
-          ..write('subcategory: $subcategory, ')
+          ..write('tag: $tag, ')
           ..write('taken: $taken, ')
           ..write('camera: $camera, ')
           ..write('lenses: $lenses, ')
@@ -1417,7 +1412,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
       projectUuid,
       secondaryId,
       category,
-      subcategory,
+      tag,
       taken,
       camera,
       lenses,
@@ -1433,7 +1428,7 @@ class MediaData extends DataClass implements Insertable<MediaData> {
           other.projectUuid == this.projectUuid &&
           other.secondaryId == this.secondaryId &&
           other.category == this.category &&
-          other.subcategory == this.subcategory &&
+          other.tag == this.tag &&
           other.taken == this.taken &&
           other.camera == this.camera &&
           other.lenses == this.lenses &&
@@ -1448,7 +1443,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
   final Value<String?> projectUuid;
   final Value<String?> secondaryId;
   final Value<String?> category;
-  final Value<String?> subcategory;
+  final Value<String?> tag;
   final Value<String?> taken;
   final Value<String?> camera;
   final Value<String?> lenses;
@@ -1461,7 +1456,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
     this.projectUuid = const Value.absent(),
     this.secondaryId = const Value.absent(),
     this.category = const Value.absent(),
-    this.subcategory = const Value.absent(),
+    this.tag = const Value.absent(),
     this.taken = const Value.absent(),
     this.camera = const Value.absent(),
     this.lenses = const Value.absent(),
@@ -1475,7 +1470,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
     this.projectUuid = const Value.absent(),
     this.secondaryId = const Value.absent(),
     this.category = const Value.absent(),
-    this.subcategory = const Value.absent(),
+    this.tag = const Value.absent(),
     this.taken = const Value.absent(),
     this.camera = const Value.absent(),
     this.lenses = const Value.absent(),
@@ -1489,7 +1484,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
     Expression<String>? projectUuid,
     Expression<String>? secondaryId,
     Expression<String>? category,
-    Expression<String>? subcategory,
+    Expression<String>? tag,
     Expression<String>? taken,
     Expression<String>? camera,
     Expression<String>? lenses,
@@ -1503,7 +1498,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
       if (projectUuid != null) 'projectUuid': projectUuid,
       if (secondaryId != null) 'secondaryId': secondaryId,
       if (category != null) 'category': category,
-      if (subcategory != null) 'subcategory': subcategory,
+      if (tag != null) 'tag': tag,
       if (taken != null) 'taken': taken,
       if (camera != null) 'camera': camera,
       if (lenses != null) 'lenses': lenses,
@@ -1519,7 +1514,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
       Value<String?>? projectUuid,
       Value<String?>? secondaryId,
       Value<String?>? category,
-      Value<String?>? subcategory,
+      Value<String?>? tag,
       Value<String?>? taken,
       Value<String?>? camera,
       Value<String?>? lenses,
@@ -1532,7 +1527,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
       projectUuid: projectUuid ?? this.projectUuid,
       secondaryId: secondaryId ?? this.secondaryId,
       category: category ?? this.category,
-      subcategory: subcategory ?? this.subcategory,
+      tag: tag ?? this.tag,
       taken: taken ?? this.taken,
       camera: camera ?? this.camera,
       lenses: lenses ?? this.lenses,
@@ -1558,8 +1553,8 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
     if (category.present) {
       map['category'] = Variable<String>(category.value);
     }
-    if (subcategory.present) {
-      map['subcategory'] = Variable<String>(subcategory.value);
+    if (tag.present) {
+      map['tag'] = Variable<String>(tag.value);
     }
     if (taken.present) {
       map['taken'] = Variable<String>(taken.value);
@@ -1592,7 +1587,7 @@ class MediaCompanion extends UpdateCompanion<MediaData> {
           ..write('projectUuid: $projectUuid, ')
           ..write('secondaryId: $secondaryId, ')
           ..write('category: $category, ')
-          ..write('subcategory: $subcategory, ')
+          ..write('tag: $tag, ')
           ..write('taken: $taken, ')
           ..write('camera: $camera, ')
           ..write('lenses: $lenses, ')
