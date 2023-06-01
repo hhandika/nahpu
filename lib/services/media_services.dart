@@ -23,6 +23,10 @@ class MediaServices extends DbAccess {
     _invalidateMedia(mediaCategory);
   }
 
+  Future<MediaData> getMediaById(int primaryId) async {
+    return await MediaDbQuery(dbAccess).getMedia(primaryId);
+  }
+
   Future<List<MediaData>> getAllMedia() {
     return MediaDbQuery(dbAccess).getAllMedia();
   }

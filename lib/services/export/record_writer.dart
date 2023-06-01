@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/services/export/coll_event_writer.dart';
+import 'package:nahpu/services/media_services.dart';
 import 'package:nahpu/services/types/export.dart';
 import 'package:nahpu/services/types/types.dart';
-import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
@@ -10,7 +11,6 @@ import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/export/avian_records.dart';
 import 'package:nahpu/services/export/common.dart';
 import 'package:nahpu/services/export/mammalian_records.dart';
-import 'package:nahpu/services/export/site_writer.dart';
 
 class SpecimenRecordWriter {
   SpecimenRecordWriter({required this.ref, required this.recordType});
@@ -28,7 +28,9 @@ class SpecimenRecordWriter {
     _writeHeader(writer, collRecordExportList);
     _writeHeader(writer, specimenExportList);
     _writeHeader(writer, siteExportList);
-    _writeHeaderLast(writer, _getMeasurementHeader());
+    _writeHeader(writer, collEventExportList);
+    _writeHeader(writer, _getMeasurementHeader());
+    writer.writeln('media');
 
     for (var element in specimenList) {
       String cataloger = await _getCatalogerName(element.catalogerID);
@@ -37,12 +39,14 @@ class SpecimenRecordWriter {
       String species = await _getSpeciesName(element.speciesID);
       String parts = await _getPartList(element.uuid);
       String condition = element.condition ?? '';
-      String collDetails = await _getCollEventDetails(element.collEventID);
+      String collSiteDetails =
+          await _getCollEventSiteDetails(element.collEventID);
       String measurement = await _getMeasurement(element.uuid);
+      String media = await _getSpecimenMedia(element.uuid);
       String mainLine =
           '$cataloger$fieldId$delimiter$preparator$delimiter$species$delimiter'
-          '$parts$delimiter$condition$delimiter$collDetails';
-      writer.writeln('$mainLine$delimiter$measurement');
+          '$parts$delimiter$condition$delimiter$collSiteDetails';
+      writer.writeln('$mainLine$delimiter$measurement$delimiter$media');
     }
 
     writer.close();
@@ -122,24 +126,9 @@ class SpecimenRecordWriter {
     }
   }
 
-  Future<String> _getCollEventDetails(int? collEventId) async {
-    if (collEventId == null) {
-      return '';
-    } else {
-      CollEventData? collEventData =
-          await CollEventServices(ref: ref).getCollEvent(collEventId);
-
-      if (collEventData == null) {
-        return ',,';
-      } else {
-        SiteWriterServices siteServices =
-            SiteWriterServices(ref: ref, delimiter: delimiter);
-        String siteDetails =
-            await siteServices.getSiteDetails(collEventData.siteID, true);
-
-        return siteDetails;
-      }
-    }
+  Future<String> _getCollEventSiteDetails(int? collEventId) async {
+    return await CollEventRecordWriter(ref: ref)
+        .getCOllEventSiteDetails(collEventId, delimiter);
   }
 
   Future<String> _getPartList(String specimenUuid) async {
@@ -182,5 +171,25 @@ class SpecimenRecordWriter {
     AvianMeasurements birds = AvianMeasurements(
         specimenUuid: specimenUuid, ref: ref, delimiter: delimiter);
     return await birds.getMeasurements();
+  }
+
+  Future<String> _getSpecimenMedia(String specimenUuid) async {
+    List<SpecimenMediaData> mediaList =
+        await SpecimenServices(ref: ref).getSpecimenMedia(specimenUuid);
+    List<MediaData> mediaDataList = [];
+    for (var media in mediaList) {
+      if (media.mediaId != null) {
+        MediaData mediaData =
+            await MediaServices(ref: ref).getMediaById(media.mediaId!);
+        mediaDataList.add(mediaData);
+      }
+    }
+    return mediaDataList.map((e) => _getMedia(e)).join(writerSeparator);
+  }
+
+  String _getMedia(MediaData data) {
+    return '${data.category ?? ''}$delimiter${data.subcategory ?? ''}$delimiter'
+        '${data.camera ?? ''}$delimiter"${data.taken ?? ''}"$delimiter'
+        '${data.fileName ?? ''}';
   }
 }

@@ -86,8 +86,8 @@ class SpecimenQuery extends DatabaseAccessor<Database>
     return into(specimenMedia).insert(specimenMediaCompanion);
   }
 
-  Future<List<SpecimenMediaData>> getSpecimenMedia(String specimenUuid) {
-    return (select(specimenMedia)
+  Future<List<SpecimenMediaData>> getSpecimenMedia(String specimenUuid) async {
+    return await (select(specimenMedia)
           ..where((t) => t.specimenUuid.equals(specimenUuid)))
         .get();
   }

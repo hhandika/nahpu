@@ -169,6 +169,10 @@ class SpecimenServices extends DbAccess {
     return AvianSpecimenQuery(dbAccess).getAvianMeasurementByUuid(specimenUuid);
   }
 
+  Future<List<SpecimenMediaData>> getSpecimenMedia(String specimenUuid) async {
+    return await SpecimenQuery(dbAccess).getSpecimenMedia(specimenUuid);
+  }
+
   void updateAvianMeasurement(
       String specimenUuid, AvianMeasurementCompanion entries) {
     AvianSpecimenQuery(dbAccess).updateAvianMeasurements(specimenUuid, entries);

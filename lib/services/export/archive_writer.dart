@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:nahpu/services/export/coll_event_writer.dart';
 import 'package:nahpu/services/export/narrative_writer.dart';
 import 'package:nahpu/services/export/record_writer.dart';
 import 'package:nahpu/services/export/report_writer.dart';
@@ -28,6 +29,7 @@ class ArchiveServices extends DbAccess {
     projectDir.createSync(recursive: true);
     await _writeNarrativeRecord();
     await _writeSiteRecord();
+    await _writeCollEventRecord();
     await _writeSpecimenRecords();
     await _writeReport();
     // Create the archive
@@ -67,6 +69,18 @@ class ArchiveServices extends DbAccess {
       await filePath.delete();
     }
     await SiteWriterServices(ref: ref).writeSiteDelimited(
+      filePath,
+      isCsv,
+    );
+  }
+
+  Future<void> _writeCollEventRecord() async {
+    final filePath = await _getCollEventSavePath();
+    bool isCsv = true;
+    if (filePath.existsSync()) {
+      await filePath.delete();
+    }
+    await CollEventRecordWriter(ref: ref).writeCollEventDelimited(
       filePath,
       isCsv,
     );
@@ -130,6 +144,12 @@ class ArchiveServices extends DbAccess {
     final dir = await _recordDir;
     final specimenFile = File(path.join(dir.path, 'bird_specimen_records.csv'));
     return specimenFile;
+  }
+
+  Future<File> _getCollEventSavePath() async {
+    final dir = await _recordDir;
+    final collEventFile = File(path.join(dir.path, 'coll_event_records.csv'));
+    return collEventFile;
   }
 
   Future<File> _getSiteSavePath() async {
