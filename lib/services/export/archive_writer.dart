@@ -89,7 +89,7 @@ class ArchiveServices extends DbAccess {
     final recordType = await _getSpecimenRecordType();
     if (recordType.contains(SpecimenRecordType.birds)) {
       final File birdDir = await _getBirdSpecimenSavePath();
-      SpecimenRecordWriter(ref: ref, recordType: SpecimenRecordType.birds)
+      await SpecimenRecordWriter(ref: ref, recordType: SpecimenRecordType.birds)
           .writeRecordDelimited(birdDir, isCsv);
     }
     SpecimenRecordType? mammalRecord = _getMammalRecordType(recordType);
@@ -103,7 +103,7 @@ class ArchiveServices extends DbAccess {
       SpecimenRecordType mammalRecordType) async {
     final File mammalDir = await _getMammalSpecimenSavePath();
 
-    SpecimenRecordWriter(ref: ref, recordType: mammalRecordType)
+    await SpecimenRecordWriter(ref: ref, recordType: mammalRecordType)
         .writeRecordDelimited(mammalDir, isCsv);
   }
 
