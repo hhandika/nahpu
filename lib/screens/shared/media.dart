@@ -266,7 +266,7 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
                   context: context,
                   builder: (context) {
                     return AlertDialog(
-                      title: const Text('Update Details'),
+                      title: const Text('Edit Details'),
                       content: PhotoDetailForm(ctr: widget.ctr),
                       actions: [
                         TextButton(
