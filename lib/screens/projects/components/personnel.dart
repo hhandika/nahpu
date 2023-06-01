@@ -6,7 +6,6 @@ import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
-import 'package:nahpu/services/import/multimedia.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/providers/validation.dart';
@@ -19,7 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/personnel_services.dart';
-import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:path/path.dart';
 

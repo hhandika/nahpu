@@ -49,6 +49,8 @@ class MediaServices extends DbAccess {
       case MediaCategory.specimen:
         await SpecimenQuery(dbAccess).deleteSpecimenMedia(id);
         break;
+      case MediaCategory.personnel:
+        break;
     }
     _invalidateMedia(category);
   }
@@ -63,6 +65,8 @@ class MediaServices extends DbAccess {
         break;
       case MediaCategory.specimen:
         ref.invalidate(specimenMediaProvider);
+        break;
+      case MediaCategory.personnel:
         break;
     }
   }
