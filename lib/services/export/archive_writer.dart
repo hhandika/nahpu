@@ -80,9 +80,8 @@ class ArchiveServices extends DbAccess {
     if (filePath.existsSync()) {
       await filePath.delete();
     }
-    await CollEventRecordWriter(ref: ref).writeCollEventDelimited(
+    await CollEventRecordWriter(ref: ref, isCsv: isCsv).writeCollEventDelimited(
       filePath,
-      isCsv,
     );
   }
 

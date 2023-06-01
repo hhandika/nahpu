@@ -9,12 +9,16 @@ import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/export/site_writer.dart';
 
 class CollEventRecordWriter extends DbAccess {
-  CollEventRecordWriter({required super.ref});
+  CollEventRecordWriter({
+    required super.ref,
+    required this.isCsv,
+  });
 
-  late String delimiter;
+  final bool isCsv;
 
-  Future<void> writeCollEventDelimited(File filePath, bool isCsv) async {
-    delimiter = isCsv ? csvDelimiter : tsvDelimiter;
+  String get delimiter => isCsv ? csvDelimiter : tsvDelimiter;
+
+  Future<void> writeCollEventDelimited(File filePath) async {
     final file = await filePath.create(recursive: true);
     final writer = file.openWrite();
     _writeSiteHeader(writer);
@@ -23,7 +27,8 @@ class CollEventRecordWriter extends DbAccess {
         await CollEventServices(ref: ref).getAllCollEvents();
 
     for (var collEvent in collEventList) {
-      getCOllEventSiteDetails(collEvent.id, delimiter);
+      String details = await getCOllEventSiteDetails(collEvent.id);
+      writer.writeln(details);
     }
 
     await writer.close();
@@ -45,8 +50,7 @@ class CollEventRecordWriter extends DbAccess {
     }
   }
 
-  Future<String> getCOllEventSiteDetails(
-      int? collEventId, String delimiter) async {
+  Future<String> getCOllEventSiteDetails(int? collEventId) async {
     int columnSize = siteExportList.length + collEventExportList.length;
     String emptyDelimiters = delimiter * columnSize;
     if (collEventId == null) {
@@ -74,7 +78,7 @@ class CollEventRecordWriter extends DbAccess {
     String effort = await _getEffort(data.id);
     String person = await _getAllPersonnel(data.id);
 
-    return '$eventID$delimiter$methods$delimiter'
+    return '"$eventID"$delimiter$methods$delimiter'
         '$startDate$delimiter$endDate$delimiter'
         '$startTime$delimiter$endTime$delimiter'
         '$effort$delimiter$person';

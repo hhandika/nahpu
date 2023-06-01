@@ -39,9 +39,9 @@ class SpecimenRecordWriter {
       String species = await _getSpeciesName(element.speciesID);
       String parts = await _getPartList(element.uuid);
       String condition = element.condition ?? '';
-      String collSiteDetails =
-          await _getCollEventSiteDetails(element.collEventID);
       String measurement = await _getMeasurement(element.uuid);
+      String collSiteDetails =
+          await _getCollEventSiteDetails(element.collEventID, isCsv);
       String media = await _getSpecimenMedia(element.uuid);
       String mainLine =
           '$cataloger$fieldId$delimiter$preparator$delimiter$species$delimiter'
@@ -84,16 +84,6 @@ class SpecimenRecordWriter {
     }
   }
 
-  void _writeHeaderLast(IOSink writer, List<String> headerList) {
-    for (var val in headerList) {
-      if (val == headerList.last) {
-        writer.writeln(val);
-      } else {
-        writer.write('$val$delimiter');
-      }
-    }
-  }
-
   Future<String> _getSpeciesName(int? speciesId) async {
     if (speciesId == null) {
       return '';
@@ -126,9 +116,11 @@ class SpecimenRecordWriter {
     }
   }
 
-  Future<String> _getCollEventSiteDetails(int? collEventId) async {
-    return await CollEventRecordWriter(ref: ref)
-        .getCOllEventSiteDetails(collEventId, delimiter);
+  Future<String> _getCollEventSiteDetails(int? collEventId, bool isCsv) async {
+    return await CollEventRecordWriter(ref: ref, isCsv: isCsv)
+        .getCOllEventSiteDetails(
+      collEventId,
+    );
   }
 
   Future<String> _getPartList(String specimenUuid) async {
@@ -140,17 +132,17 @@ class SpecimenRecordWriter {
   }
 
   Future<String> _getMeasurement(String specimenUuid) async {
-    bool isBat = recordType == SpecimenRecordType.bats ||
-        recordType == SpecimenRecordType.allMammals;
+    // bool isBat = recordType == SpecimenRecordType.bats ||
+    //     recordType == SpecimenRecordType.allMammals;
     switch (recordType) {
       case SpecimenRecordType.generalMammals:
-        return await _getMeasurementGeneralMammals(specimenUuid, isBat);
+        return await _getMeasurementGeneralMammals(specimenUuid, false);
       case SpecimenRecordType.birds:
         return await _getMeasurementBirds(specimenUuid);
       case SpecimenRecordType.bats:
-        return await _getMeasurementGeneralMammals(specimenUuid, isBat);
+        return await _getMeasurementGeneralMammals(specimenUuid, true);
       case SpecimenRecordType.allMammals:
-        return await _getMeasurementGeneralMammals(specimenUuid, isBat);
+        return await _getMeasurementGeneralMammals(specimenUuid, true);
       default:
         throw Exception('Invalid record type');
     }
@@ -188,8 +180,8 @@ class SpecimenRecordWriter {
   }
 
   String _getMedia(MediaData data) {
-    return '${data.category ?? ''}$delimiter${data.subcategory ?? ''}$delimiter'
-        '${data.camera ?? ''}$delimiter"${data.taken ?? ''}"$delimiter'
-        '${data.fileName ?? ''}';
+    return '"${data.category ?? ''};${data.subcategory ?? ''};'
+        '${data.camera ?? ''};${data.taken ?? ''};'
+        '${data.fileName ?? ''}"';
   }
 }

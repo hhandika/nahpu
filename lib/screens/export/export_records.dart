@@ -109,6 +109,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
                   setState(() {
                     _mammalRecordType = value;
                     _matchTaxonToRecordType();
+                    _hasSaved = false;
                   });
                 }
               },
@@ -287,8 +288,8 @@ class ExportFormState extends ConsumerState<ExportForm> {
         await SiteWriterServices(ref: ref).writeSiteDelimited(file, isCsv);
         break;
       case ExportRecordType.collEvent:
-        await CollEventRecordWriter(ref: ref)
-            .writeCollEventDelimited(file, isCsv);
+        await CollEventRecordWriter(ref: ref, isCsv: isCsv)
+            .writeCollEventDelimited(file);
         break;
       case ExportRecordType.specimenRecord:
         await SpecimenRecordWriter(ref: ref, recordType: _specimenRecordType)
