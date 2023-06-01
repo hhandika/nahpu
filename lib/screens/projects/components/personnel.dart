@@ -643,7 +643,7 @@ class _PersonnelAvatarState extends State<PersonnelAvatar> {
         children: [
           Positioned.fill(
             child: CircleAvatar(
-              backgroundColor: Colors.grey[300],
+              backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
               child: widget.ctr.phoneCtr.text.isEmpty
                   ? Image.asset(
                       'assets/avatars/Canton_L_Esquisita.png',
@@ -657,7 +657,7 @@ class _PersonnelAvatarState extends State<PersonnelAvatar> {
             right: 8,
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.grey[300],
+                color: Theme.of(context).colorScheme.surfaceVariant,
                 shape: BoxShape.circle,
               ),
               child: IconButton(

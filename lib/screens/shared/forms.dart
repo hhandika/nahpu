@@ -94,7 +94,7 @@ class TitleForm extends StatelessWidget {
             icon: Icon(
               Icons.info_outline_rounded,
               size: 20,
-              color: Colors.grey[400],
+              color: Theme.of(context).disabledColor,
             ),
           ),
         ],

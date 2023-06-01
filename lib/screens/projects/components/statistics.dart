@@ -108,7 +108,7 @@ class _StatisticFullScreenState extends State<StatisticFullScreen> {
       body: SafeArea(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(18, 8, 18, 18),
+            padding: const EdgeInsets.fromLTRB(15, 8, 18, 18),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,

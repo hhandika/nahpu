@@ -202,7 +202,7 @@ class MediaCardState extends ConsumerState<MediaCard> {
               child: Container(
                 padding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
                 color:
-                    Theme.of(context).scaffoldBackgroundColor.withOpacity(0.9),
+                    Theme.of(context).scaffoldBackgroundColor.withOpacity(0.85),
                 child: ListTile(
                   contentPadding: const EdgeInsets.all(0),
                   title: Text(
@@ -382,13 +382,6 @@ class PhotoDetailForm extends ConsumerWidget {
                   ));
             }
           },
-        ),
-        CommonTextField(
-          controller: ctr.categoryCtr,
-          enabled: false,
-          labelText: 'Category',
-          hintText: 'Enter Category',
-          isLastField: false,
         ),
       ],
     ));
