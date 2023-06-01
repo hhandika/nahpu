@@ -81,7 +81,6 @@ class PersonnelAvatarState extends ConsumerState<PersonnelAvatar> {
 
   void _validateEditing() {
     ref.read(personnelFormValidatorProvider.notifier).validateAll(widget.ctr);
-    PersonnelServices(ref: ref).invalidatePersonnel();
   }
 }
 
