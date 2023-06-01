@@ -41,7 +41,7 @@ class ArchiveServices extends DbAccess {
   }
 
   Future<void> _writeReport() async {
-    final filePath = await _speciesCountPath;
+    final filePath = await _getSpeciesRecordSavePath();
     if (filePath.existsSync()) {
       await filePath.delete();
     }
@@ -161,6 +161,12 @@ class ArchiveServices extends DbAccess {
     final dir = await _recordDir;
     final narrativeFile = File(path.join(dir.path, 'narrative_records.csv'));
     return narrativeFile;
+  }
+
+  Future<File> _getSpeciesRecordSavePath() async {
+    final dir = await _recordDir;
+    final speciesFile = File(path.join(dir.path, 'species_records.csv'));
+    return speciesFile;
   }
 
   Future<Directory> get _recordDir async {
