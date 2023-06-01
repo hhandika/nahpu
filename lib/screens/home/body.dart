@@ -166,8 +166,10 @@ class ProjectGridView extends StatelessWidget {
     return Expanded(
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: MediaQuery.of(context).size.width < 800 ? 2 : 4,
+          crossAxisCount: getAxisCount(MediaQuery.of(context).size.width),
           childAspectRatio: 1.5,
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 8,
         ),
         itemCount: projectList.length,
         itemBuilder: (context, index) {
@@ -175,6 +177,16 @@ class ProjectGridView extends StatelessWidget {
         },
       ),
     );
+  }
+
+  int getAxisCount(double screenSize) {
+    int axisCount = 1;
+    int safeSize = 400 + 16;
+    while (screenSize > safeSize) {
+      axisCount++;
+      screenSize -= safeSize;
+    }
+    return axisCount;
   }
 }
 
@@ -223,7 +235,7 @@ class ListProjectCard extends StatelessWidget {
     return Card(
       child: ListTile(
         leading: Icon(
-          Icons.insert_drive_file_rounded,
+          Icons.insert_drive_file_outlined,
           size: 40,
           color: Theme.of(context).colorScheme.onSurface,
         ),
@@ -266,7 +278,7 @@ class GridProjectCard extends StatelessWidget {
           alignment: Alignment.center,
           fit: BoxFit.cover,
           child: IconButton(
-            icon: const Icon(Icons.insert_drive_file_rounded),
+            icon: const Icon(Icons.insert_drive_file_outlined),
             onPressed: onPressed,
           ),
         ),

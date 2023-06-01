@@ -223,7 +223,7 @@ class PersonnelMenuState extends ConsumerState<PersonnelMenu> {
         PopupMenuItem(
           value: PersonnelMenuAction.edit,
           child: ListTile(
-            leading: const Icon(Icons.edit),
+            leading: const Icon(Icons.edit_outlined),
             title: const Text('Edit'),
             onTap: () {
               Navigator.of(context).push(
@@ -240,7 +240,7 @@ class PersonnelMenuState extends ConsumerState<PersonnelMenu> {
         PopupMenuItem(
             value: PersonnelMenuAction.delete,
             child: ListTile(
-              leading: const Icon(Icons.delete, color: Colors.red),
+              leading: const Icon(Icons.delete_outline, color: Colors.red),
               title: const Text(
                 'Delete',
                 style: TextStyle(color: Colors.red),

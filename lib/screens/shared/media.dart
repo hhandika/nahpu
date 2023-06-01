@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
@@ -57,7 +58,7 @@ class _MediaViewerState extends State<MediaViewer> {
           height: MediaQuery.of(context).size.height * 0.5,
           child: Center(
             child: widget.images.isEmpty
-                ? const Text('No images selected')
+                ? const Text('No media added')
                 : MediaViewerBuilder(images: widget.images),
           ),
         ),
@@ -209,10 +210,8 @@ class MediaCardState extends ConsumerState<MediaCard> {
               borderRadius: const BorderRadius.all(Radius.circular(24)),
               child: Container(
                 padding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
-                color: Theme.of(context)
-                    .colorScheme
-                    .secondaryContainer
-                    .withOpacity(0.9),
+                color:
+                    Theme.of(context).scaffoldBackgroundColor.withOpacity(0.9),
                 child: ListTile(
                   contentPadding: const EdgeInsets.all(0),
                   title: Text(
@@ -269,7 +268,7 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
         return <PopupMenuEntry<MediaPopUpMenu>>[
           PopupMenuItem(
             child: ListTile(
-              leading: const Icon(Icons.edit),
+              leading: const Icon(Icons.edit_outlined),
               title: const Text('Edit details'),
               onTap: () {
                 showDialog(
@@ -292,6 +291,17 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
               },
             ),
           ),
+          PopupMenuItem(
+            child: ListTile(
+              leading: const Icon(
+                MdiIcons.imageEditOutline,
+              ),
+              title: const Text(
+                'Rename',
+              ),
+              onTap: () {},
+            ),
+          ),
           const PopupMenuDivider(),
           PopupMenuItem(
             onTap: () async {
@@ -301,7 +311,7 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
               );
             },
             child: const ListTile(
-              leading: Icon(Icons.delete, color: Colors.red),
+              leading: Icon(Icons.delete_outline, color: Colors.red),
               title: Text('Delete', style: TextStyle(color: Colors.red)),
             ),
           ),
@@ -325,14 +335,25 @@ class PhotoDetailForm extends ConsumerWidget {
         child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        CommonTextField(
+        TextField(
           controller: ctr.captionCtr,
-          labelText: 'Caption',
-          hintText: 'Enter caption',
-          isLastField: false,
-          maxLines: 5,
+          decoration: InputDecoration(
+            labelText: 'Caption',
+            hintText: 'Enter caption',
+            suffix: IconButton(
+              icon: Icon(
+                Icons.clear,
+                color: Theme.of(context).disabledColor,
+              ),
+              onPressed: () {
+                ctr.captionCtr.clear();
+              },
+            ),
+          ),
+          keyboardType: TextInputType.text,
+          maxLines: 3,
           onChanged: (value) {
-            if (value != null && value.isNotEmpty) {
+            if (value.isNotEmpty) {
               MediaServices(ref: ref).updateMedia(
                   ctr.primaryId!,
                   ctr.categoryCtr.text,

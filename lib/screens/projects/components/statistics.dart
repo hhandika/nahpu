@@ -212,7 +212,6 @@ class CountBarChart extends ConsumerWidget {
                 data.isEmpty
                     ? const Text(
                         'No data to display',
-                        style: TextStyle(fontSize: 20),
                       )
                     : Expanded(
                         child: Padding(
