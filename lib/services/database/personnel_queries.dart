@@ -42,6 +42,15 @@ class PersonnelQuery extends DatabaseAccessor<Database>
         .getSingle();
   }
 
+  Future<void> deleteProjectPersonnel(
+      String personnelUuid, String projectUuid) {
+    return (delete(personnelList)
+          ..where((t) =>
+              t.personnelUuid.equals(personnelUuid) &
+              t.projectUuid.equals(projectUuid)))
+        .go();
+  }
+
   Future<List<PersonnelData>> getPersonnelByProjectUuid(
       String projectUuid) async {
     List<PersonnelListData> personnelByProject = await (select(personnelList)

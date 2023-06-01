@@ -7,11 +7,13 @@ class PersonnelServices extends DbAccess {
   const PersonnelServices({required super.ref});
 
   Future<int> createPersonnel(PersonnelCompanion personnel) async {
-    return await PersonnelQuery(dbAccess).createPersonnel(personnel);
+    int id = await PersonnelQuery(dbAccess).createPersonnel(personnel);
+    return id;
   }
 
   Future<void> createProjectPersonnel(PersonnelListCompanion form) async {
     await PersonnelQuery(dbAccess).createProjectPersonnelEntry(form);
+    invalidatePersonnel();
   }
 
   Future<void> updatePersonnelEntry(
@@ -34,6 +36,7 @@ class PersonnelServices extends DbAccess {
   }
 
   void deletePersonnel(String uuid) {
+    PersonnelQuery(dbAccess).deleteProjectPersonnel(uuid, projectUuid);
     PersonnelQuery(dbAccess).deletePersonnel(uuid);
     invalidatePersonnel();
   }
