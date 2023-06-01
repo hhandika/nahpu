@@ -188,8 +188,9 @@ class PersonnelSubtitle extends StatelessWidget {
               ],
             )
           : const TextSpan(),
-      currentFieldNumber != null
-          ? TextSpan(
+      currentFieldNumber == null || currentFieldNumber! == 0
+          ? const TextSpan()
+          : TextSpan(
               children: [
                 const WidgetSpan(
                     child: TileIcon(icon: MdiIcons.counter),
@@ -199,8 +200,7 @@ class PersonnelSubtitle extends StatelessWidget {
                   style: Theme.of(context).textTheme.labelLarge,
                 ),
               ],
-            )
-          : const TextSpan(),
+            ),
     ]));
   }
 }
