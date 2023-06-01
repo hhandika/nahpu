@@ -78,7 +78,7 @@ class TitleForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: isCentered
-          ? const EdgeInsets.fromLTRB(40, 5, 0, 18)
+          ? const EdgeInsets.fromLTRB(46, 5, 0, 16)
           : const EdgeInsets.only(right: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

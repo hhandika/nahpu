@@ -34,7 +34,7 @@ class ProjectInfo extends StatelessWidget {
           title: 'End date: ',
           text: projectData?.endDate,
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 24),
         ProjectInfoText(
           title: 'Created: ',
           text: projectData?.created,
@@ -69,13 +69,13 @@ class ProjectInfoText extends StatelessWidget {
       text: TextSpan(
         text: title,
         style: isSmall
-            ? Theme.of(context).textTheme.bodyMedium
+            ? Theme.of(context).textTheme.labelMedium
             : Theme.of(context).textTheme.titleSmall,
         children: [
           TextSpan(
             text: text ?? '',
             style: isSmall
-                ? Theme.of(context).textTheme.bodyMedium
+                ? Theme.of(context).textTheme.labelMedium
                 : Theme.of(context).textTheme.bodyLarge,
           )
         ],
