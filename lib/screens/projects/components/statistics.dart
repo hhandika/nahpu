@@ -52,11 +52,7 @@ class StatisticViewerState extends ConsumerState<StatisticViewer> {
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => StatisticFullScreen(
-                        startingGraph: _selectedGraph,
-                      ),
-                    ),
+                    _openFullscreen(),
                   );
                 },
               )
@@ -69,6 +65,26 @@ class StatisticViewerState extends ConsumerState<StatisticViewer> {
           maxCount: false,
         )),
       ],
+    );
+  }
+
+  /// We use costum transitions to make the fullscreen graph slide up from the
+  /// bottom of the screen.
+  Route _openFullscreen() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          StatisticFullScreen(
+        startingGraph: _selectedGraph,
+      ),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+        final tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        final offsetAnimation = animation.drive(tween);
+        return SlideTransition(position: offsetAnimation, child: child);
+      },
     );
   }
 }
@@ -98,9 +114,7 @@ class _StatisticFullScreenState extends State<StatisticFullScreen> {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(
-                builder: (context) => const Dashboard(),
-              ),
+              _closeFullscreen(),
             );
           },
         ),
@@ -149,6 +163,20 @@ class _StatisticFullScreenState extends State<StatisticFullScreen> {
     } else {
       return _graphType!;
     }
+  }
+
+  Route _closeFullscreen() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          const Dashboard(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 0.0);
+        const end = Offset.zero;
+        final tween = Tween(begin: begin, end: end);
+        final offsetAnimation = animation.drive(tween);
+        return SlideTransition(position: offsetAnimation, child: child);
+      },
+    );
   }
 }
 
@@ -235,7 +263,7 @@ class CountBarChart extends ConsumerWidget {
                         padding: const EdgeInsets.only(top: 20),
                         child: Text(
                           'Showing top $dataCount of ${data.length} results',
-                          style: Theme.of(context).textTheme.labelLarge,
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       )
                     : const SizedBox.shrink(),
