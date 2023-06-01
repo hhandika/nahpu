@@ -2,60 +2,26 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
-import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/services/statistics/captures.dart';
 import 'package:nahpu/services/statistics/common.dart';
 import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/types/statistics.dart';
 import 'package:nahpu/services/types/types.dart';
 
-const double chartWidth = 28;
-
-/// TODO: Clean all the code in this file
-class StatisticFullScreen extends StatelessWidget {
-  const StatisticFullScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Statistics'),
-        leading: IconButton(
-          icon: Icon(Icons.adaptive.arrow_back),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const Dashboard(),
-              ),
-            );
-          },
-        ),
-      ),
-      body: const SafeArea(
-        child: Center(
-            child: StatisticViewer(
-          maxCount: true,
-        )),
-      ),
-    );
-  }
-}
+const double chartWidth = 32;
 
 class StatisticViewer extends ConsumerStatefulWidget {
   const StatisticViewer({
     super.key,
-    this.maxCount = false,
   });
-
-  final bool maxCount;
 
   @override
   StatisticViewerState createState() => StatisticViewerState();
 }
 
 class StatisticViewerState extends ConsumerState<StatisticViewer> {
-  GraphType selectedGraph = GraphType.speciesCount;
+  GraphType _selectedGraph = GraphType.speciesCount;
+  final bool _isLarge = false;
 
   @override
   Widget build(BuildContext context) {
@@ -69,24 +35,15 @@ class StatisticViewerState extends ConsumerState<StatisticViewer> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              DropdownButton<GraphType>(
-                value: selectedGraph,
-                underline: const SizedBox.shrink(),
-                items: graphOptions
-                    .map((String value) => DropdownMenuItem<GraphType>(
-                          value: GraphType.values[graphOptions.indexOf(value)],
-                          child: CommonDropdownText(
-                            text: value,
-                          ),
-                        ))
-                    .toList(),
-                onChanged: (value) {
-                  if (value != null) {
-                    setState(() {
-                      selectedGraph = value;
-                    });
-                  }
+              StatisticDropdown(
+                selectedGraph: _selectedGraph,
+                isLarge: _isLarge,
+                onChanged: (GraphType? newValue) {
+                  setState(() {
+                    _selectedGraph = newValue!;
+                  });
                 },
+                graphOptions: dashboardGraphOptions,
               ),
               IconButton(
                 icon: const Icon(
@@ -96,7 +53,9 @@ class StatisticViewerState extends ConsumerState<StatisticViewer> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const StatisticFullScreen(),
+                      builder: (context) => StatisticFullScreen(
+                        startingGraph: _selectedGraph,
+                      ),
                     ),
                   );
                 },
@@ -106,10 +65,125 @@ class StatisticViewerState extends ConsumerState<StatisticViewer> {
         ),
         Expanded(
             child: CountBarChart(
-          isFamily: selectedGraph == GraphType.familyCount,
-          maxCount: widget.maxCount,
+          isFamily: _selectedGraph == GraphType.familyCount,
+          maxCount: false,
         )),
       ],
+    );
+  }
+}
+
+class StatisticFullScreen extends StatefulWidget {
+  const StatisticFullScreen({
+    super.key,
+    required this.startingGraph,
+  });
+  final GraphType startingGraph;
+  @override
+  State<StatisticFullScreen> createState() => _StatisticFullScreenState();
+}
+
+class _StatisticFullScreenState extends State<StatisticFullScreen> {
+  GraphType? _graphType;
+  final bool _isMaxCount = true;
+  final bool _isLarge = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Statistics'),
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const Dashboard(),
+              ),
+            );
+          },
+        ),
+      ),
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(18, 8, 18, 18),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 12),
+                  child: StatisticDropdown(
+                    selectedGraph: getGraphType(),
+                    graphOptions: fullScreenGraphOptions,
+                    isLarge: _isLarge,
+                    onChanged: (value) {
+                      if (value != null) {
+                        setState(() {
+                          _graphType = value;
+                        });
+                      }
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: CountBarChart(
+                    isFamily: getGraphType() == GraphType.familyCount,
+                    maxCount: _isMaxCount,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  GraphType getGraphType() {
+    if (_graphType == null) {
+      return widget.startingGraph;
+    } else {
+      return _graphType!;
+    }
+  }
+}
+
+class StatisticDropdown extends StatelessWidget {
+  const StatisticDropdown({
+    super.key,
+    required this.selectedGraph,
+    required this.onChanged,
+    required this.graphOptions,
+    required this.isLarge,
+  });
+
+  final GraphType selectedGraph;
+  final void Function(GraphType?) onChanged;
+  final List<String> graphOptions;
+  final bool isLarge;
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<GraphType>(
+      value: selectedGraph,
+      underline: const SizedBox.shrink(),
+      items: graphOptions
+          .map((String value) => DropdownMenuItem<GraphType>(
+                value: GraphType.values[graphOptions.indexOf(value)],
+                child: Text(
+                  value,
+                  style: isLarge
+                      ? Theme.of(context).textTheme.titleLarge
+                      : Theme.of(context).textTheme.titleMedium,
+                  overflow: TextOverflow.fade,
+                ),
+              ))
+          .toList(),
+      onChanged: onChanged,
     );
   }
 }
@@ -155,7 +229,7 @@ class CountBarChart extends ConsumerWidget {
     if (!maxCount) {
       return 5;
     }
-    int fit = screenSize ~/ (chartWidth + 25);
+    int fit = screenSize ~/ (chartWidth + 22);
     return dataLength > fit ? fit : dataLength;
   }
 

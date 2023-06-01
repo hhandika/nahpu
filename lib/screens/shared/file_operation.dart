@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/types/controllers.dart';
-import 'package:nahpu/screens/shared/fields.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:path/path.dart' as p;
@@ -42,11 +41,21 @@ class FileNameField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CommonTextField(
+    return TextField(
       controller: controller.fileNameCtr,
-      labelText: 'File name',
-      hintText: 'Enter file name',
-      isLastField: false,
+      decoration: InputDecoration(
+          labelText: 'File name',
+          hintText: 'Enter file name',
+          suffix: IconButton(
+            icon: Icon(
+              Icons.clear,
+              color: Theme.of(context).disabledColor,
+            ),
+            onPressed: () {
+              controller.fileNameCtr.clear();
+            },
+          )),
+      keyboardType: TextInputType.text,
       onChanged: onChanged,
     );
   }

@@ -3,7 +3,12 @@ enum GraphType {
   familyCount,
 }
 
-const List<String> graphOptions = [
+const List<String> dashboardGraphOptions = [
   'Top 5 Species Counts',
   'Top 5 Family Counts',
+];
+
+const List<String> fullScreenGraphOptions = [
+  'Species Counts',
+  'Family Counts',
 ];
