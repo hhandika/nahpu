@@ -78,6 +78,8 @@ class ImageServices extends DbAccess {
         return Directory('$mediaDir/specimen');
       case MediaCategory.narrative:
         return Directory('$mediaDir/narrative');
+      case MediaCategory.personnel:
+        return Directory('$mediaDir/personnel');
       default:
         throw Exception('Unsupported media category');
     }

@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
+import 'package:nahpu/services/import/multimedia.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/providers/validation.dart';
@@ -16,7 +19,9 @@ import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/personnel_services.dart';
+import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/types/types.dart';
+import 'package:path/path.dart';
 
 enum PersonnelMenuAction { edit, delete }
 
@@ -215,45 +220,39 @@ class PersonnelMenuState extends ConsumerState<PersonnelMenu> {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<PersonnelMenuAction>(
-      onSelected: _onPopUpMenuSelected,
       icon: const Icon(Icons.more_vert_rounded),
       itemBuilder: (context) => [
-        const PopupMenuItem(
+        PopupMenuItem(
           value: PersonnelMenuAction.edit,
           child: ListTile(
-            leading: Icon(Icons.edit),
-            title: Text('Edit'),
+            leading: const Icon(Icons.edit),
+            title: const Text('Edit'),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => EditPersonnelForm(
+                    personnelData: widget.data,
+                  ),
+                ),
+              );
+            },
           ),
         ),
         const PopupMenuDivider(),
-        const PopupMenuItem(
+        PopupMenuItem(
             value: PersonnelMenuAction.delete,
             child: ListTile(
-              leading: Icon(Icons.delete, color: Colors.red),
-              title: Text(
+              leading: const Icon(Icons.delete, color: Colors.red),
+              title: const Text(
                 'Delete',
                 style: TextStyle(color: Colors.red),
               ),
+              onTap: () {
+                PersonnelServices(ref: ref).deletePersonnel(widget.data.uuid);
+              },
             )),
       ],
     );
-  }
-
-  void _onPopUpMenuSelected(PersonnelMenuAction item) {
-    switch (item) {
-      case PersonnelMenuAction.edit:
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => EditPersonnelForm(
-              personnelData: widget.data,
-            ),
-          ),
-        );
-        break;
-      case PersonnelMenuAction.delete:
-        PersonnelServices(ref: ref).deletePersonnel(widget.data.uuid);
-        break;
-    }
   }
 }
 
@@ -365,6 +364,10 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          PersonnelAvatar(
+            ctr: widget.ctr,
+          ),
+          const SizedBox(height: 18),
           PersonnelNameField(
               ctr: widget.ctr,
               onChanged: (value) {
@@ -578,6 +581,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
         currentFieldNumber: db.Value(
           _getCollectorNumber(),
         ),
+        photoPath: db.Value(_photoPath),
       ),
     );
   }
@@ -597,6 +601,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
         currentFieldNumber: db.Value(
           _getCollectorNumber(),
         ),
+        photoPath: db.Value(_photoPath),
       ),
     );
     await personnelServices.createProjectPersonnel(PersonnelListCompanion(
@@ -611,6 +616,64 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
     } else {
       return int.parse(widget.ctr.collectorNumCtr.text);
     }
+  }
+
+  String get _photoPath {
+    return basename(widget.ctr.photoPathCtr.text);
+  }
+}
+
+class PersonnelAvatar extends StatefulWidget {
+  const PersonnelAvatar({
+    super.key,
+    required this.ctr,
+  });
+
+  final PersonnelFormCtrModel ctr;
+
+  @override
+  State<PersonnelAvatar> createState() => _PersonnelAvatarState();
+}
+
+class _PersonnelAvatarState extends State<PersonnelAvatar> {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 180,
+      height: 180,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: CircleAvatar(
+              backgroundColor: Colors.grey[300],
+              child: widget.ctr.phoneCtr.text.isEmpty
+                  ? Image.asset(
+                      'assets/avatars/Canton_L_Esquisita.png',
+                      fit: BoxFit.cover,
+                    )
+                  : Image.file(File(widget.ctr.phoneCtr.text)),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            right: 8,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                icon: Icon(
+                  Icons.add_a_photo_outlined,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                onPressed: () {},
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
