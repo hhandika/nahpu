@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:nahpu/services/export/common.dart';
+import 'package:nahpu/services/export/media_writer.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/types/export.dart';
 import 'package:nahpu/services/database/database.dart';
@@ -14,32 +15,40 @@ class NarrativeRecordWriter extends DbAccess {
 
   Future<void> writeNarrativeDelimited(File filePath, bool isCsv) async {
     delimiter = isCsv ? csvDelimiter : tsvDelimiter;
+    bool withHabitat = false;
     final file = await filePath.create(recursive: true);
     final writer = file.openWrite();
-    _writeHeader(writer);
+    _writeHeader(writer, siteExportListWithoutHabitat);
+    _writeHeader(writer, narrativeExportList);
+    writer.writeln('media');
     List<NarrativeData> narrativeList =
         await NarrativeServices(ref: ref).getAllNarrative();
     for (var narrative in narrativeList) {
-      writer.write('"${narrative.date}"');
-      writer.write(delimiter);
       String siteDetails =
           await SiteWriterServices(ref: ref, delimiter: delimiter)
-              .getSiteDetails(narrative.siteID, false);
-      writer.write(siteDetails);
-      writer.write(delimiter);
-      writer.writeln('"${narrative.narrative}"');
+              .getSiteDetails(narrative.siteID, withHabitat);
+      String mediaDetails = await getNarrativeMedia(narrative.id);
+      String narrativeDate = '"${narrative.date ?? ''}"';
+      String fieldNote = '"${narrative.narrative ?? ''}"';
+      String narrativeDelimited = '$siteDetails$delimiter'
+          '$narrativeDate$delimiter$fieldNote$delimiter'
+          '$mediaDetails';
+      writer.writeln(narrativeDelimited);
     }
 
     await writer.close();
   }
 
-  void _writeHeader(IOSink writer) async {
-    for (var val in narrativeExportList) {
-      if (val == narrativeExportList.last) {
-        writer.writeln(val);
-      } else {
-        writer.write('$val$delimiter');
-      }
+  void _writeHeader(IOSink writer, List<String> headers) async {
+    for (var val in headers) {
+      writer.write('$val$delimiter');
     }
+  }
+
+  Future<String> getNarrativeMedia(int? narrativeID) async {
+    String mediaDetails =
+        await MediaWriterServices(ref: ref).getNarrativeMedias(narrativeID);
+
+    return mediaDetails;
   }
 }

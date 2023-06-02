@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/export/coll_event_writer.dart';
+import 'package:nahpu/services/export/media_writer.dart';
 import 'package:nahpu/services/export/site_writer.dart';
-import 'package:nahpu/services/media_services.dart';
 import 'package:nahpu/services/types/export.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/services/database/database.dart';
@@ -183,22 +183,8 @@ class SpecimenRecordWriter {
   }
 
   Future<String> _getSpecimenMedia(String specimenUuid) async {
-    List<SpecimenMediaData> mediaList =
-        await SpecimenServices(ref: ref).getSpecimenMedia(specimenUuid);
-    List<MediaData> mediaDataList = [];
-    for (var media in mediaList) {
-      if (media.mediaId != null) {
-        MediaData mediaData =
-            await MediaServices(ref: ref).getMediaById(media.mediaId!);
-        mediaDataList.add(mediaData);
-      }
-    }
-    return mediaDataList.map((e) => _getMedia(e)).join(writerSeparator);
-  }
-
-  String _getMedia(MediaData data) {
-    return '"${data.category ?? ''};${data.tag ?? ''};'
-        '${data.camera ?? ''};${data.taken ?? ''};'
-        '${data.fileName ?? ''}"';
+    String specimenMedia =
+        await MediaWriterServices(ref: ref).getSpecimenMedias(specimenUuid);
+    return specimenMedia;
   }
 }

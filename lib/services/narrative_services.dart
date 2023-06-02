@@ -41,6 +41,10 @@ class NarrativeServices extends DbAccess {
     ref.invalidate(narrativeMediaProvider);
   }
 
+  Future<List<NarrativeMediaData>> getNarrativeMedia(int narrativeId) async {
+    return NarrativeQuery(dbAccess).getNarrativeMedia(narrativeId);
+  }
+
   void deleteNarrative(int id) {
     NarrativeQuery(dbAccess).deleteNarrative(id);
     invalidateNarrative();

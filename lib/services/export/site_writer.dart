@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/export/common.dart';
+import 'package:nahpu/services/export/media_writer.dart';
 import 'package:nahpu/services/site_services.dart';
 import 'package:nahpu/services/types/export.dart';
 
@@ -20,23 +21,28 @@ class SiteWriterServices {
     delimiter = isCsv ? csvDelimiter : tsvDelimiter;
     final file = await filePath.create(recursive: true);
     final writer = file.openWrite();
-    _writeHeaderLast(writer, siteExportList);
+    _writeHeader(writer, siteExportList);
+    writer.writeln('media');
 
     List<SiteData> siteList = await SiteServices(ref: ref).getAllSites();
     for (var site in siteList) {
       String siteDetails = await getSiteDetails(site.id, true);
-      writer.writeln(siteDetails);
+      String mediaDetails = await _getSiteMedia(site.id);
+      writer.writeln('$siteDetails$delimiter$mediaDetails');
     }
   }
 
-  void _writeHeaderLast(IOSink writer, List<String> headerList) {
+  void _writeHeader(IOSink writer, List<String> headerList) {
     for (var val in headerList) {
-      if (val == headerList.last) {
-        writer.writeln(val);
-      } else {
-        writer.write('$val$delimiter');
-      }
+      writer.write('$val$delimiter');
     }
+  }
+
+  Future<String> _getSiteMedia(int? siteID) async {
+    String mediaDetails =
+        await MediaWriterServices(ref: ref).getSiteMedias(siteID);
+
+    return mediaDetails;
   }
 
   Future<String> getSiteDetails(int? siteID, bool withHabitat) async {
@@ -49,15 +55,16 @@ class SiteWriterServices {
         return delimiter * 5;
       } else {
         String verbatimLocality = _getVerbatimLocality(data);
-        String siteDelimited = _getSiteDelimited(data);
-        String coordinates = await getCoordinates(siteID);
-        String siteLocality = '$siteDelimited$delimiter'
-            '$verbatimLocality$delimiter$coordinates';
-        return withHabitat
-            ? '${data.siteID}$delimiter'
-                '${data.habitatType}$delimiter'
-                '$siteLocality'
-            : siteLocality;
+        if (withHabitat) {
+          String siteDelimited = _getSiteDelimited(data);
+          String coordinates = await getCoordinates(siteID);
+          String siteLocality = '$siteDelimited$delimiter'
+              '$verbatimLocality$delimiter$coordinates';
+          return '${data.siteID}$delimiter'
+              '${data.habitatType}$delimiter'
+              '$siteLocality';
+        }
+        return verbatimLocality;
       }
     }
   }

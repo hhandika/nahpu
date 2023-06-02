@@ -50,6 +50,10 @@ class SiteServices extends DbAccess {
     ref.invalidate(siteMediaProvider);
   }
 
+  Future<List<SiteMediaData>> getSiteMedia(int siteId) async {
+    return SiteQuery(dbAccess).getSiteMedia(siteId);
+  }
+
   Future<void> deleteSite(int id) async {
     await SiteQuery(dbAccess).deleteSite(id);
     await CoordinateServices(ref: ref).deleteCoordinateBySiteID(id);
