@@ -62,6 +62,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
               if (value != null) {
                 setState(() {
                   _recordType = value;
+                  _hasSaved = false;
                 });
               }
             },
@@ -85,6 +86,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
                   setState(() {
                     _taxonRecordType = value;
                     _matchTaxonToRecordType();
+                    _hasSaved = false;
                   });
                 }
               },
@@ -130,6 +132,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
               if (value != null) {
                 setState(() {
                   exportCtr.exportFmtCtr = value;
+                  _hasSaved = false;
                 });
               }
             },
@@ -140,6 +143,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
               if (value != null) {
                 setState(() {
                   _fileStem = value;
+                  _hasSaved = false;
                 });
               }
             },

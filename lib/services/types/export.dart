@@ -51,6 +51,7 @@ const specimenExportList = [
   'specificEpithet',
   'preparation',
   'condition',
+  'specimenCoordinates',
 ];
 
 const siteExportList = [
@@ -60,7 +61,7 @@ const siteExportList = [
   'stateProvince',
   'county',
   'municipality',
-  'locality',
+  'specificLocality',
   'verbatimLocality',
   'coordinates',
 ];

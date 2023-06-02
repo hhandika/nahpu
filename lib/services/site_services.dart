@@ -74,6 +74,10 @@ class CoordinateServices extends DbAccess {
     return CoordinateQuery(dbAccess).getCoordinatesBySiteID(siteID);
   }
 
+  Future<CoordinateData?> getCoordinateById(int coordinateId) async {
+    return CoordinateQuery(dbAccess).getCoordinateById(coordinateId);
+  }
+
   Future<void> createCoordinate(CoordinateCompanion form) async {
     await CoordinateQuery(dbAccess).createCoordinate(form);
   }

@@ -48,17 +48,11 @@ class SiteWriterServices {
       if (data == null) {
         return delimiter * 5;
       } else {
-        String siteSeparated = _getSiteSeparated(data);
-        String country = _getCountry(data.country);
-        String stateProvince = _getStateProvince(data.stateProvince);
-        String county = _getCounty(data.county);
-        String municipality = _getMunicipality(data.municipality);
-        String locality = _getLocality(data.locality);
+        String verbatimLocality = _getVerbatimLocality(data);
+        String siteDelimited = _getSiteDelimited(data);
         String coordinates = await getCoordinates(siteID);
-        String verbatimLocality =
-            '$country$stateProvince$county$municipality$locality';
-        String siteLocality =
-            '$siteSeparated"$verbatimLocality"$delimiter"$coordinates"';
+        String siteLocality = '$siteDelimited$delimiter'
+            '$verbatimLocality$delimiter$coordinates';
         return withHabitat
             ? '${data.siteID}$delimiter${data.habitatType}$delimiter$siteLocality'
             : siteLocality;
@@ -72,61 +66,69 @@ class SiteWriterServices {
     }
     List<CoordinateData> coordinateList =
         await CoordinateServices(ref: ref).getCoordinatesBySiteID(siteID);
-    String coordinateDetails = coordinateList
-        .map((e) => '${e.nameId ?? ''};'
-            '${e.decimalLatitude ?? ''},${e.decimalLongitude ?? ''};'
-            '${e.elevationInMeter ?? ''}m;±${e.uncertaintyInMeters ?? ''}m;'
-            '${e.datum ?? ''};${e.gpsUnit ?? ''}')
-        .join(writerSeparator);
+    String coordinateDetails =
+        coordinateList.map((e) => _getCoordinateData(e)).join(writerSeparator);
 
     return coordinateDetails;
   }
 
-  String _getSiteSeparated(SiteData data) {
-    return '${data.country ?? ''}$delimiter'
-        '${data.stateProvince ?? ''}$delimiter'
-        '${data.county ?? ''}$delimiter'
-        '${data.municipality ?? ''}$delimiter'
-        '"${data.locality ?? ''}"$delimiter';
-  }
-
-  String _getCountry(String? country) {
-    if (country == null) {
+  Future<String> getCoordinateById(int? coordinateId) async {
+    if (coordinateId == null) {
+      return '';
+    }
+    CoordinateData? data =
+        await CoordinateServices(ref: ref).getCoordinateById(coordinateId);
+    if (data == null) {
       return '';
     } else {
-      return '$country: ';
+      return _getCoordinateData(data);
     }
   }
 
-  String _getStateProvince(String? stateProvince) {
-    if (stateProvince == null) {
-      return '';
-    } else {
-      return '$stateProvince; ';
-    }
+  String _getCoordinateData(CoordinateData data) {
+    String nameId = data.nameId != null ? '${data.nameId};' : 'No name';
+    String latLong =
+        data.decimalLatitude != null && data.decimalLongitude != null
+            ? '${data.decimalLatitude},${data.decimalLongitude};'
+            : 'Unknown Lat/Long;';
+    String elevation =
+        data.elevationInMeter != null || data.elevationInMeter == 0
+            ? '${data.elevationInMeter}m;'
+            : 'Unknown elevation;';
+    String uncertainty =
+        data.uncertaintyInMeters != null || data.uncertaintyInMeters == 0
+            ? '±${data.uncertaintyInMeters}m;'
+            : 'Unknown uncertainty;';
+    String datum = data.datum != null ? '${data.datum};' : 'Unknown datum;';
+    String gpsUnit =
+        data.gpsUnit != null ? '${data.gpsUnit}' : 'Unknown GPS unit';
+    String notes =
+        data.notes != null || data.notes!.isNotEmpty ? '${data.notes}' : '';
+    return '"$nameId$latLong$elevation$uncertainty$datum$gpsUnit$notes"';
   }
 
-  String _getCounty(String? county) {
-    if (county == null) {
-      return '';
-    } else {
-      return '$county; ';
-    }
+  String _getSiteDelimited(SiteData data) {
+    String country =
+        data.country != null ? '${data.country}$delimiter' : delimiter;
+    String stateProvince = data.stateProvince != null
+        ? '${data.stateProvince}$delimiter'
+        : delimiter;
+    String county =
+        data.county != null ? '${data.county}$delimiter' : delimiter;
+    String municipality =
+        data.municipality != null ? '${data.municipality}$delimiter' : '';
+    String specificLocality = data.locality != null ? '"${data.locality}"' : '';
+    return '$country$stateProvince$county$municipality$specificLocality';
   }
 
-  String _getMunicipality(String? municipality) {
-    if (municipality == null) {
-      return '';
-    } else {
-      return '$municipality; ';
-    }
-  }
-
-  String _getLocality(String? locality) {
-    if (locality == null) {
-      return '';
-    } else {
-      return locality;
-    }
+  String _getVerbatimLocality(SiteData data) {
+    String country = data.country != null ? '${data.country}: ' : '';
+    String stateProvince =
+        data.stateProvince != null ? '${data.stateProvince}; ' : '';
+    String county = data.county != null ? '${data.county}; ' : '';
+    String municipality =
+        data.municipality != null ? '${data.municipality}; ' : '';
+    String locality = data.locality != null ? '${data.locality}' : '';
+    return '"$country$stateProvince$county$municipality$locality"';
   }
 }

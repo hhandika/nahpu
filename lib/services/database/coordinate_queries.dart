@@ -17,6 +17,10 @@ class CoordinateQuery extends DatabaseAccessor<Database>
     return select(coordinate).get();
   }
 
+  Future<CoordinateData> getCoordinateById(int id) {
+    return (select(coordinate)..where((t) => t.id.equals(id))).getSingle();
+  }
+
   Future<List<CoordinateData>> getCoordinatesBySiteID(int siteID) {
     return (select(coordinate)..where((t) => t.siteID.equals(siteID))).get();
   }

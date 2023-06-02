@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/export/coll_event_writer.dart';
+import 'package:nahpu/services/export/site_writer.dart';
 import 'package:nahpu/services/media_services.dart';
 import 'package:nahpu/services/types/export.dart';
 import 'package:nahpu/services/types/types.dart';
@@ -26,7 +27,7 @@ class SpecimenRecordWriter {
     final file = await filePath.create(recursive: true);
     final writer = file.openWrite();
     _writeHeader(writer, collRecordExportList);
-    _writeHeader(writer, specimenExportList);
+    _writeHeader(writer, specimenExportList); // Include specimenCoordinates
     _writeHeader(writer, siteExportList);
     _writeHeader(writer, collEventExportList);
     _writeHeader(writer, _getMeasurementHeader());
@@ -39,13 +40,18 @@ class SpecimenRecordWriter {
       String species = await _getSpeciesName(element.speciesID);
       String parts = await _getPartList(element.uuid);
       String condition = element.condition ?? '';
+      String specimenCoordinate =
+          await _getSpecimenCoordinate(element.coordinateID);
       String measurement = await _getMeasurement(element.uuid);
       String collSiteDetails =
           await _getCollEventSiteDetails(element.collEventID, isCsv);
+
       String media = await _getSpecimenMedia(element.uuid);
       String mainLine =
           '$cataloger$fieldId$delimiter$preparator$delimiter$species$delimiter'
-          '$parts$delimiter$condition$delimiter$collSiteDetails';
+          '$parts$delimiter$condition$delimiter'
+          '$specimenCoordinate$delimiter'
+          '$collSiteDetails';
       writer.writeln('$mainLine$delimiter$measurement$delimiter$media');
     }
 
@@ -121,6 +127,17 @@ class SpecimenRecordWriter {
         .getCOllEventSiteDetails(
       collEventId,
     );
+  }
+
+  Future<String> _getSpecimenCoordinate(int? coordinateId) async {
+    if (coordinateId == null) {
+      return '';
+    } else {
+      String coordinate = await SiteWriterServices(ref: ref).getCoordinateById(
+        coordinateId,
+      );
+      return coordinate;
+    }
   }
 
   Future<String> _getPartList(String specimenUuid) async {
