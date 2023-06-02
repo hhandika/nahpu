@@ -54,7 +54,9 @@ class SiteWriterServices {
         String siteLocality = '$siteDelimited$delimiter'
             '$verbatimLocality$delimiter$coordinates';
         return withHabitat
-            ? '${data.siteID}$delimiter${data.habitatType}$delimiter$siteLocality'
+            ? '${data.siteID}$delimiter'
+                '${data.habitatType}$delimiter'
+                '$siteLocality'
             : siteLocality;
       }
     }
