@@ -54,7 +54,11 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
                     isVisible = false;
                   });
 
-                  return const Text("No specimen records");
+                  return const Center(
+                    child: Text(
+                      'No Specimen Records',
+                    ),
+                  );
                 } else {
                   int specimenSize = specimenEntry.length;
                   setState(() {

@@ -205,6 +205,22 @@ class SpecimenServices extends DbAccess {
   }
 
   Future<void> deleteAllSpecimens() async {
+    List<SpecimenData> specimenList = await getSpecimenList();
+    for (var specimen in specimenList) {
+      await deleteAllSpecimenParts(specimen.uuid);
+      CatalogFmt catalogFmt = matchTaxonGroupToCatFmt(specimen.taxonGroup);
+      switch (catalogFmt) {
+        case CatalogFmt.birds:
+          await deleteAvianMeasurements(specimen.uuid);
+          break;
+        case CatalogFmt.bats:
+          await deleteMammalMeasurements(specimen.uuid);
+          break;
+        case CatalogFmt.generalMammals:
+          await deleteMammalMeasurements(specimen.uuid);
+          break;
+      }
+    }
     await SpecimenQuery(dbAccess).deleteAllSpecimens(projectUuid);
     invalidateSpecimenList();
   }
