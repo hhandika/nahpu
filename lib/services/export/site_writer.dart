@@ -78,7 +78,7 @@ class SiteWriterServices {
     String coordinateDetails =
         coordinateList.map((e) => _getCoordinateData(e)).join(writerSeparator);
 
-    return coordinateDetails;
+    return '"$coordinateDetails"';
   }
 
   Future<String> getCoordinateById(int? coordinateId) async {
@@ -90,7 +90,8 @@ class SiteWriterServices {
     if (data == null) {
       return '';
     } else {
-      return _getCoordinateData(data);
+      String coordinates = _getCoordinateData(data);
+      return '"$coordinates"';
     }
   }
 
@@ -113,7 +114,7 @@ class SiteWriterServices {
         data.gpsUnit != null ? '${data.gpsUnit}' : 'Unknown GPS unit';
     String notes =
         data.notes != null || data.notes!.isNotEmpty ? '${data.notes}' : '';
-    return '"$nameId$latLong$elevation$uncertainty$datum$gpsUnit$notes"';
+    return '$nameId$latLong$elevation$uncertainty$datum$gpsUnit$notes';
   }
 
   String _getSiteDelimited(SiteData data) {
