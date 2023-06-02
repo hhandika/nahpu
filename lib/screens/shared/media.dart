@@ -14,6 +14,7 @@ import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/utility_services.dart';
 import 'package:drift/drift.dart' as db;
+import 'package:path/path.dart' as path;
 
 const int imageSize = 300;
 
@@ -385,7 +386,48 @@ class PhotoDetailForm extends ConsumerWidget {
             }
           },
         ),
+        const SizedBox(height: 24),
+        ExifViewer(ctr: ctr),
       ],
     ));
+  }
+}
+
+class ExifViewer extends StatelessWidget {
+  const ExifViewer({super.key, required this.ctr});
+
+  final MediaFormCtr ctr;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 8,
+            vertical: 4,
+          ),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+            ),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(
+            _getExtension(),
+            // style: Theme.of(context).textTheme.labelMedium,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(ctr.cameraModelCtr.text),
+        Text(ctr.lenseModelCtr.text),
+        Text(ctr.additionalExifCtr.text)
+      ],
+    );
+  }
+
+  String _getExtension() {
+    String ext = path.extension(ctr.fileNameCtr!.toUpperCase());
+    return ext.replaceFirst('.', '');
   }
 }

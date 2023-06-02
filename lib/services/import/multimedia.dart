@@ -114,14 +114,94 @@ class ImageServices extends DbAccess {
   }
 }
 
-class ExifServices {
-  const ExifServices({required this.file});
+class ExifData {
+  ExifData({
+    required this.dateTaken,
+    required this.camera,
+    required this.lenseModel,
+    required this.additionalExif,
+  });
 
-  final File file;
+  String dateTaken;
+  String camera;
+  String lenseModel;
+  String additionalExif;
 
-  Future<Map<String, dynamic>> getExif() async {
+  factory ExifData.empty() {
+    return ExifData(
+      dateTaken: '',
+      camera: '',
+      lenseModel: '',
+      additionalExif: '',
+    );
+  }
+
+  Future<void> readExif(File file) async {
     final Map<String, IfdTag> exif =
         await readExifFromBytes(await file.readAsBytes());
-    return exif;
+    _getExifDate(exif);
+    _getExifCameraModel(exif);
+    _getExifLenseModel(exif);
+    String focalLength = _getExifFocalLength(exif);
+    String aperture = _getExifAperture(exif);
+    String exposure = _getExifExposureTime(exif);
+    String iso = _getExifIso(exif);
+    List<String> exifList = [focalLength, aperture, exposure, iso];
+    additionalExif = exifList.join(listTileSeparator);
+  }
+
+  void _getExifDate(Map<String, IfdTag> exif) {
+    final IfdTag? dateTag = exif['Image DateTime'];
+    if (dateTag != null) {
+      dateTaken = dateTag.toString();
+    }
+  }
+
+  void _getExifCameraModel(Map<String, IfdTag> exif) {
+    final IfdTag? cameraMakerTag = exif['Image Make'];
+    final IfdTag? cameraModelTag = exif['Image Model'];
+    String cameraMaker = cameraMakerTag?.toString() ?? 'Unknown maker';
+    String cameraModel = cameraModelTag?.toString() ?? 'Unknown model';
+
+    camera = '$cameraMaker $cameraModel';
+  }
+
+  void _getExifLenseModel(Map<String, IfdTag> exif) {
+    final IfdTag? lenseModelTag = exif['EXIF LensModel'];
+    lenseModel = lenseModelTag?.toString() ?? 'Unknown lenses';
+  }
+
+  String _getExifFocalLength(Map<String, IfdTag> exif) {
+    final IfdTag? focalLengthTag = exif['EXIF FocalLength'];
+    return '${focalLengthTag?.toString() ?? '?'} mm';
+  }
+
+  String _getExifExposureTime(Map<String, IfdTag> exif) {
+    final IfdTag? exposureTimeTag = exif['EXIF ExposureTime'];
+    return '${exposureTimeTag?.toString() ?? '?'} s';
+  }
+
+  String _getExifAperture(Map<String, IfdTag> exif) {
+    final IfdTag? apertureTag = exif['EXIF FNumber'];
+    if (apertureTag == null) {
+      return 'F?';
+    }
+
+    return 'F${_calculateAperture(apertureTag.toString())}';
+  }
+
+  double _calculateAperture(String aperture) {
+    if (aperture.contains('/')) {
+      List<String> apertureList = aperture.split('/');
+      double numerator = double.parse(apertureList[0]);
+      double denominator = double.parse(apertureList[1]);
+      return numerator / denominator;
+    }
+    return double.tryParse(aperture) ?? 0.0;
+  }
+
+  String _getExifIso(Map<String, IfdTag> exif) {
+    final IfdTag? isoTag = exif['EXIF ISOSpeedRatings'];
+    return 'ISO${isoTag?.toString() ?? '?'}';
   }
 }

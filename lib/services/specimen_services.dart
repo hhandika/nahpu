@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/providers/taxa.dart';
 import 'package:nahpu/services/database/media_queries.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
+import 'package:nahpu/services/import/multimedia.dart';
 import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/types/specimens.dart';
 import 'package:nahpu/services/types/types.dart';
@@ -52,11 +55,20 @@ class SpecimenServices extends DbAccess {
     return SpecimenQuery(dbAccess).getUniqueTaxonGroup(projectUuid);
   }
 
-  Future<void> createSpecimenMedia(String specimenUuid, String filePath) async {
+  Future<void> createSpecimenMedia(
+    String specimenUuid,
+    String filePath,
+  ) async {
+    ExifData exifData = ExifData.empty();
+    await exifData.readExif(File(filePath));
     int mediaId = await MediaDbQuery(dbAccess).createMedia(MediaCompanion(
       projectUuid: db.Value(projectUuid),
       fileName: db.Value(basename(filePath)),
       category: db.Value(matchMediaCategory(MediaCategory.specimen)),
+      taken: db.Value(exifData.dateTaken),
+      camera: db.Value(exifData.camera),
+      lenses: db.Value(exifData.lenseModel),
+      additionalExif: db.Value(exifData.additionalExif),
     ));
     SpecimenMediaCompanion entries = SpecimenMediaCompanion(
       specimenUuid: db.Value(specimenUuid),

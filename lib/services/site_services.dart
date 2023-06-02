@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:nahpu/providers/sites.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/coordinate_queries.dart';
@@ -5,6 +7,7 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/media_queries.dart';
 import 'package:nahpu/services/database/site_queries.dart';
 import 'package:drift/drift.dart' as db;
+import 'package:nahpu/services/import/multimedia.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/types/import.dart';
 import 'package:path/path.dart';
@@ -37,10 +40,17 @@ class SiteServices extends DbAccess {
   }
 
   Future<void> createSiteMedia(int siteId, String filePath) async {
+    ExifData exifData = ExifData.empty();
+    await exifData.readExif(File(filePath));
+
     int mediaId = await MediaDbQuery(dbAccess).createMedia(MediaCompanion(
       projectUuid: db.Value(projectUuid),
       fileName: db.Value(basename(filePath)),
       category: db.Value(matchMediaCategory(MediaCategory.site)),
+      taken: db.Value(exifData.dateTaken),
+      camera: db.Value(exifData.camera),
+      lenses: db.Value(exifData.lenseModel),
+      additionalExif: db.Value(exifData.additionalExif),
     ));
     SiteMediaCompanion entries = SiteMediaCompanion(
       siteId: db.Value(siteId),
