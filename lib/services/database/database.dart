@@ -62,6 +62,7 @@ class Database extends _$Database {
     await m.deleteTable('personnelPhoto');
     // delete column from media table and personnel tables
     await m.alterTable(TableMigration(personnel));
+    await m.alterTable(TableMigration(collPersonnel));
     await m.alterTable(TableMigration(media));
   }
 

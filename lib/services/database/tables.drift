@@ -20,6 +20,7 @@ New to v4:
 13. Remove secondaryIdRef from the media table.
 14. Add projectUuid to the media table.
 15. Add caption, additionalExif, and tag to the media table.
+16. Remove personnel name row from the collPersonnel table.
 */
 
 CREATE TABLE project (
@@ -103,7 +104,6 @@ CREATE TABLE collPersonnel (
     id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
     eventID INT,
     personnelId TEXT,
-    name TEXT, -- we add it here to save time pulling it from personnel data
     role TEXT, -- referring to collecting role, not project role
     FOREIGN KEY(eventID) REFERENCES collEvent(id),
     FOREIGN KEY(personnelId) REFERENCES personnel(uuid)

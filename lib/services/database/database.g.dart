@@ -4085,12 +4085,6 @@ class CollPersonnel extends Table
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _nameMeta = const VerificationMeta('name');
-  late final GeneratedColumn<String> name = GeneratedColumn<String>(
-      'name', aliasedName, true,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      $customConstraints: '');
   static const VerificationMeta _roleMeta = const VerificationMeta('role');
   late final GeneratedColumn<String> role = GeneratedColumn<String>(
       'role', aliasedName, true,
@@ -4098,7 +4092,7 @@ class CollPersonnel extends Table
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
-  List<GeneratedColumn> get $columns => [id, eventID, personnelId, name, role];
+  List<GeneratedColumn> get $columns => [id, eventID, personnelId, role];
   @override
   String get aliasedName => _alias ?? 'collPersonnel';
   @override
@@ -4121,10 +4115,6 @@ class CollPersonnel extends Table
           personnelId.isAcceptableOrUnknown(
               data['personnelId']!, _personnelIdMeta));
     }
-    if (data.containsKey('name')) {
-      context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
-    }
     if (data.containsKey('role')) {
       context.handle(
           _roleMeta, role.isAcceptableOrUnknown(data['role']!, _roleMeta));
@@ -4144,8 +4134,6 @@ class CollPersonnel extends Table
           .read(DriftSqlType.int, data['${effectivePrefix}eventID']),
       personnelId: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}personnelId']),
-      name: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}name']),
       role: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}role']),
     );
@@ -4170,12 +4158,9 @@ class CollPersonnelData extends DataClass
   final int id;
   final int? eventID;
   final String? personnelId;
-  final String? name;
-
-  /// we add it here to save time pulling it from personnel data
   final String? role;
   const CollPersonnelData(
-      {required this.id, this.eventID, this.personnelId, this.name, this.role});
+      {required this.id, this.eventID, this.personnelId, this.role});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -4185,9 +4170,6 @@ class CollPersonnelData extends DataClass
     }
     if (!nullToAbsent || personnelId != null) {
       map['personnelId'] = Variable<String>(personnelId);
-    }
-    if (!nullToAbsent || name != null) {
-      map['name'] = Variable<String>(name);
     }
     if (!nullToAbsent || role != null) {
       map['role'] = Variable<String>(role);
@@ -4204,7 +4186,6 @@ class CollPersonnelData extends DataClass
       personnelId: personnelId == null && nullToAbsent
           ? const Value.absent()
           : Value(personnelId),
-      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
       role: role == null && nullToAbsent ? const Value.absent() : Value(role),
     );
   }
@@ -4216,7 +4197,6 @@ class CollPersonnelData extends DataClass
       id: serializer.fromJson<int>(json['id']),
       eventID: serializer.fromJson<int?>(json['eventID']),
       personnelId: serializer.fromJson<String?>(json['personnelId']),
-      name: serializer.fromJson<String?>(json['name']),
       role: serializer.fromJson<String?>(json['role']),
     );
   }
@@ -4227,7 +4207,6 @@ class CollPersonnelData extends DataClass
       'id': serializer.toJson<int>(id),
       'eventID': serializer.toJson<int?>(eventID),
       'personnelId': serializer.toJson<String?>(personnelId),
-      'name': serializer.toJson<String?>(name),
       'role': serializer.toJson<String?>(role),
     };
   }
@@ -4236,13 +4215,11 @@ class CollPersonnelData extends DataClass
           {int? id,
           Value<int?> eventID = const Value.absent(),
           Value<String?> personnelId = const Value.absent(),
-          Value<String?> name = const Value.absent(),
           Value<String?> role = const Value.absent()}) =>
       CollPersonnelData(
         id: id ?? this.id,
         eventID: eventID.present ? eventID.value : this.eventID,
         personnelId: personnelId.present ? personnelId.value : this.personnelId,
-        name: name.present ? name.value : this.name,
         role: role.present ? role.value : this.role,
       );
   @override
@@ -4251,14 +4228,13 @@ class CollPersonnelData extends DataClass
           ..write('id: $id, ')
           ..write('eventID: $eventID, ')
           ..write('personnelId: $personnelId, ')
-          ..write('name: $name, ')
           ..write('role: $role')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, eventID, personnelId, name, role);
+  int get hashCode => Object.hash(id, eventID, personnelId, role);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -4266,7 +4242,6 @@ class CollPersonnelData extends DataClass
           other.id == this.id &&
           other.eventID == this.eventID &&
           other.personnelId == this.personnelId &&
-          other.name == this.name &&
           other.role == this.role);
 }
 
@@ -4274,34 +4249,29 @@ class CollPersonnelCompanion extends UpdateCompanion<CollPersonnelData> {
   final Value<int> id;
   final Value<int?> eventID;
   final Value<String?> personnelId;
-  final Value<String?> name;
   final Value<String?> role;
   const CollPersonnelCompanion({
     this.id = const Value.absent(),
     this.eventID = const Value.absent(),
     this.personnelId = const Value.absent(),
-    this.name = const Value.absent(),
     this.role = const Value.absent(),
   });
   CollPersonnelCompanion.insert({
     this.id = const Value.absent(),
     this.eventID = const Value.absent(),
     this.personnelId = const Value.absent(),
-    this.name = const Value.absent(),
     this.role = const Value.absent(),
   });
   static Insertable<CollPersonnelData> custom({
     Expression<int>? id,
     Expression<int>? eventID,
     Expression<String>? personnelId,
-    Expression<String>? name,
     Expression<String>? role,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (eventID != null) 'eventID': eventID,
       if (personnelId != null) 'personnelId': personnelId,
-      if (name != null) 'name': name,
       if (role != null) 'role': role,
     });
   }
@@ -4310,13 +4280,11 @@ class CollPersonnelCompanion extends UpdateCompanion<CollPersonnelData> {
       {Value<int>? id,
       Value<int?>? eventID,
       Value<String?>? personnelId,
-      Value<String?>? name,
       Value<String?>? role}) {
     return CollPersonnelCompanion(
       id: id ?? this.id,
       eventID: eventID ?? this.eventID,
       personnelId: personnelId ?? this.personnelId,
-      name: name ?? this.name,
       role: role ?? this.role,
     );
   }
@@ -4333,9 +4301,6 @@ class CollPersonnelCompanion extends UpdateCompanion<CollPersonnelData> {
     if (personnelId.present) {
       map['personnelId'] = Variable<String>(personnelId.value);
     }
-    if (name.present) {
-      map['name'] = Variable<String>(name.value);
-    }
     if (role.present) {
       map['role'] = Variable<String>(role.value);
     }
@@ -4348,7 +4313,6 @@ class CollPersonnelCompanion extends UpdateCompanion<CollPersonnelData> {
           ..write('id: $id, ')
           ..write('eventID: $eventID, ')
           ..write('personnelId: $personnelId, ')
-          ..write('name: $name, ')
           ..write('role: $role')
           ..write(')'))
         .toString();

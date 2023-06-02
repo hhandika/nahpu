@@ -178,7 +178,7 @@ class ExifData {
 
   String _getExifExposureTime(Map<String, IfdTag> exif) {
     final IfdTag? exposureTimeTag = exif['EXIF ExposureTime'];
-    return '${exposureTimeTag?.toString() ?? '?'} s';
+    return '${exposureTimeTag?.toString() ?? '?'}s';
   }
 
   String _getExifAperture(Map<String, IfdTag> exif) {
