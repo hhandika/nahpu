@@ -66,10 +66,6 @@ const siteExportList = [
   'coordinates',
 ];
 
-const siteExportListWithoutHabitat = [
-  'verbatimLocality',
-];
-
 const mammalMeasurementExportList = [
   'totalLength',
   'tailLength',
@@ -141,8 +137,9 @@ const avianMeasurementExportList = [
 
 const narrativeExportList = [
   'date',
-  'locality',
+  'verbatimLocality',
   'narrative',
+  'media',
 ];
 
 const collEventExportList = [

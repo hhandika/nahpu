@@ -41,6 +41,7 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
               if (value != null) {
                 setState(() {
                   _fileStem = value;
+                  _hasSaved = false;
                 });
               }
             },
@@ -49,6 +50,7 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
             dirPath: _selectedDir,
             onPressed: () {
               _getDir();
+              _hasSaved = false;
             },
           ),
           const SizedBox(height: 10),
@@ -67,7 +69,17 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
                               setState(() {
                                 _isRunning = true;
                               });
-                              await _bundleProject();
+                              try {
+                                await _bundleProject();
+                              } catch (e) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      e.toString(),
+                                    ),
+                                  ),
+                                );
+                              }
                               _finishProcessing();
                             },
                       isRunning: _isRunning,
@@ -129,14 +141,13 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
           content: systemPlatform == PlatformType.desktop
               ? Text('Done!\n'
                   '$_savePath')
-              : const Text('Done!\n'),
+              : const Text('Done!'),
           duration: const Duration(seconds: 8),
         ),
       );
       setState(() {
         _hasSaved = true;
         _isRunning = false;
-        exportCtr.fileNameCtr.clear();
       });
     }
   }

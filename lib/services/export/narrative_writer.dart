@@ -15,34 +15,36 @@ class NarrativeRecordWriter extends DbAccess {
 
   Future<void> writeNarrativeDelimited(File filePath, bool isCsv) async {
     delimiter = isCsv ? csvDelimiter : tsvDelimiter;
-    bool withHabitat = false;
     final file = await filePath.create(recursive: true);
     final writer = file.openWrite();
-    _writeHeader(writer, siteExportListWithoutHabitat);
-    _writeHeader(writer, narrativeExportList);
-    writer.writeln('media');
+    String narrativeHeader =
+        narrativeExportList.map((e) => '"$e"').join(delimiter);
+    writer.writeln(narrativeHeader);
     List<NarrativeData> narrativeList =
         await NarrativeServices(ref: ref).getAllNarrative();
     for (var narrative in narrativeList) {
-      String siteDetails =
-          await SiteWriterServices(ref: ref, delimiter: delimiter)
-              .getSiteDetails(narrative.siteID, withHabitat);
-      String mediaDetails = await getNarrativeMedia(narrative.id);
-      String narrativeDate = '"${narrative.date ?? ''}"';
-      String fieldNote = '"${narrative.narrative ?? ''}"';
-      String narrativeDelimited = '$siteDetails$delimiter'
-          '$narrativeDate$delimiter$fieldNote$delimiter'
-          '$mediaDetails';
+      List<String> narrativeList = await getNarrativeExportList(narrative);
+      String narrativeDelimited = narrativeList.join(delimiter);
       writer.writeln(narrativeDelimited);
     }
 
     await writer.close();
   }
 
-  void _writeHeader(IOSink writer, List<String> headers) async {
-    for (var val in headers) {
-      writer.write('$val$delimiter');
-    }
+  Future<List<String>> getNarrativeExportList(NarrativeData narrative) async {
+    String verbatimLocality =
+        await SiteWriterServices(ref: ref, delimiter: delimiter)
+            .getSiteDetails(narrative.siteID, false);
+    String mediaDetails = await getNarrativeMedia(narrative.id);
+    String narrativeDate = narrative.date ?? '';
+    String fieldNote = narrative.narrative ?? '';
+    List<String> narrativeList = [
+      '"$narrativeDate"',
+      verbatimLocality,
+      '"$fieldNote"',
+      mediaDetails
+    ];
+    return narrativeList;
   }
 
   Future<String> getNarrativeMedia(int? narrativeID) async {

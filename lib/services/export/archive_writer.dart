@@ -27,21 +27,26 @@ class ArchiveServices extends DbAccess {
   Future<void> createArchive() async {
     final projectDir = await FileServices(ref: ref).currentProjectDir;
     projectDir.createSync(recursive: true);
-    await _writeNarrativeRecord();
-    await _writeSiteRecord();
-    await _writeCollEventRecord();
-    await _writeSpecimenRecords();
-    await _writeReport();
-    // Create the archive
-    ZipFileEncoder encoder = ZipFileEncoder();
-    encoder.zipDirectory(
-      projectDir,
-      filename: outputFile.path,
-    );
+    try {
+      await _writeReport();
+      await _writeNarrativeRecord();
+      await _writeSiteRecord();
+      await _writeCollEventRecord();
+      await _writeSpecimenRecords();
+
+      // Create the archive
+      ZipFileEncoder encoder = ZipFileEncoder();
+      encoder.zipDirectory(
+        projectDir,
+        filename: outputFile.path,
+      );
+    } catch (e) {
+      throw Exception('Error creating archive: $e');
+    }
   }
 
   Future<void> _writeReport() async {
-    final filePath = await _speciesCountPath;
+    final filePath = await _getSpeciesReportSavePath();
     if (filePath.existsSync()) {
       await filePath.delete();
     }
@@ -163,17 +168,17 @@ class ArchiveServices extends DbAccess {
     return narrativeFile;
   }
 
+  Future<File> _getSpeciesReportSavePath() async {
+    final dir = await _reportDir;
+    final speciesFile = File(path.join(dir.path, 'species_records.csv'));
+    return speciesFile;
+  }
+
   Future<Directory> get _recordDir async {
     final projectDir = await FileServices(ref: ref).currentProjectDir;
     final recordDir = Directory(path.join(projectDir.path, 'records'));
     await recordDir.create(recursive: true);
     return recordDir;
-  }
-
-  Future<File> get _speciesCountPath async {
-    final dir = await _reportDir;
-    final speciesCountFile = File(path.join(dir.path, 'species_count.csv'));
-    return speciesCountFile;
   }
 
   Future<Directory> get _reportDir async {
