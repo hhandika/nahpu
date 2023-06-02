@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:nahpu/providers/narrative.dart';
 import 'package:nahpu/providers/sites.dart';
 import 'package:nahpu/providers/specimens.dart';
@@ -6,8 +8,11 @@ import 'package:nahpu/services/database/media_queries.dart';
 import 'package:nahpu/services/database/narrative_queries.dart';
 import 'package:nahpu/services/database/site_queries.dart';
 import 'package:nahpu/services/database/specimen_queries.dart';
+import 'package:nahpu/services/import/multimedia.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/types/import.dart';
+import 'package:drift/drift.dart' as db;
+import 'package:path/path.dart' as path;
 
 class MediaServices extends DbAccess {
   const MediaServices({required super.ref});
@@ -25,6 +30,35 @@ class MediaServices extends DbAccess {
 
   Future<MediaData> getMediaById(int primaryId) async {
     return await MediaDbQuery(dbAccess).getMedia(primaryId);
+  }
+
+  Future<void> renameMedia(int mediaID, String oldName, String newName,
+      MediaCategory category) async {
+    File oldPath =
+        await ImageServices(ref: ref, category: category).getMediaPath(oldName);
+    if (!oldPath.existsSync()) {
+      throw Exception('File not found');
+    }
+
+    String ext = path.extension(oldPath.path);
+    newName = newName + ext;
+    File newPath =
+        await ImageServices(ref: ref, category: category).getMediaPath(newName);
+    if (newPath.existsSync()) {
+      throw Exception('File already exists');
+    }
+    try {
+      await oldPath.rename(newPath.path);
+      await MediaDbQuery(dbAccess).updateMedia(
+          mediaID,
+          MediaCompanion(
+            fileName: db.Value(newName),
+          ));
+    } catch (e) {
+      throw Exception('Failed to rename file');
+    }
+
+    _invalidateMedia(category);
   }
 
   Future<List<MediaData>> getAllMedia() {

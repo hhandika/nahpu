@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/providers/personnel.dart';
+import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
@@ -293,7 +294,48 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
               title: const Text(
                 'Rename',
               ),
-              onTap: () {},
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    TextEditingController fileNameCtr = TextEditingController(
+                        text: path.basenameWithoutExtension(
+                            widget.ctr.fileNameCtr ?? ''));
+                    return AlertDialog(
+                      title: const Text('Rename'),
+                      content: TextField(
+                        controller: fileNameCtr,
+                        decoration: InputDecoration(
+                          labelText: 'File name',
+                          suffix: IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              fileNameCtr.clear();
+                            },
+                          ),
+                        ),
+                      ),
+                      actions: [
+                        SecondaryButton(
+                          onPressed: () async {
+                            Navigator.of(context).pop();
+                          },
+                          text: 'Close',
+                        ),
+                        PrimaryButton(
+                          onPressed: () async {
+                            await _renameMedia(fileNameCtr);
+                            if (mounted) {
+                              Navigator.of(context).pop();
+                            }
+                          },
+                          text: 'Rename',
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
             ),
           ),
           const PopupMenuDivider(),
@@ -312,6 +354,26 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
         ];
       },
     );
+  }
+
+  Future<void> _renameMedia(TextEditingController fileNameCtr) async {
+    try {
+      await MediaServices(ref: ref).renameMedia(
+        widget.ctr.primaryId!,
+        widget.ctr.fileNameCtr!,
+        fileNameCtr.text,
+        matchMediaCategoryString(widget.ctr.categoryCtr.text),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: e.toString().contains('File exists')
+              ? const Text('File already exists')
+              : Text(e.toString()),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
   }
 }
 
@@ -421,7 +483,8 @@ class ExifViewer extends StatelessWidget {
         const SizedBox(height: 8),
         Text(ctr.cameraModelCtr.text),
         Text(ctr.lenseModelCtr.text),
-        Text(ctr.additionalExifCtr.text)
+        Text(ctr.additionalExifCtr.text),
+        Text(ctr.dataTakenCtr.text),
       ],
     );
   }
