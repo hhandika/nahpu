@@ -61,21 +61,9 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
                       _pageNav.pageCounts = collEventSize;
                       _pageNav.updatePageController();
                     });
-                    return PageView.builder(
-                      controller: _pageNav.pageController,
-                      itemCount: collEventSize,
-                      itemBuilder: (context, index) {
-                        final collEventForm =
-                            _updateController(collEventEntries[index]);
-
-                        return PageViewer(
-                          pageNav: _pageNav,
-                          child: CollEventForm(
-                            id: collEventEntries[index].id,
-                            collEventCtr: collEventForm,
-                          ),
-                        );
-                      },
+                    return CollEventPages(
+                      collEventEntries: collEventEntries,
+                      pageNav: _pageNav,
                       onPageChanged: (index) {
                         setState(() {
                           _collEvenId = collEventEntries[index].id;
@@ -106,6 +94,39 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
       _pageNav.updatePageNavigation();
       CollEventServices(ref: ref).invalidateCollEvent();
     });
+  }
+}
+
+class CollEventPages extends StatelessWidget {
+  const CollEventPages({
+    super.key,
+    required this.collEventEntries,
+    required this.pageNav,
+    required this.onPageChanged,
+  });
+
+  final List<CollEventData> collEventEntries;
+  final PageNavigation pageNav;
+  final void Function(int) onPageChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return PageView.builder(
+      controller: pageNav.pageController,
+      itemCount: collEventEntries.length,
+      itemBuilder: (context, index) {
+        final collEventForm = _updateController(collEventEntries[index]);
+
+        return PageViewer(
+          pageNav: pageNav,
+          child: CollEventForm(
+            id: collEventEntries[index].id,
+            collEventCtr: collEventForm,
+          ),
+        );
+      },
+      onPageChanged: onPageChanged,
+    );
   }
 
   CollEventFormCtrModel _updateController(CollEventData collEventData) {

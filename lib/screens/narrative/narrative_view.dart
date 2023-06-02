@@ -61,20 +61,9 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
                       _pageNav.pageCounts = narrativeSize;
                       _pageNav.updatePageController();
                     });
-                    return PageView.builder(
-                      controller: _pageNav.pageController,
-                      itemCount: narrativeSize,
-                      itemBuilder: (context, index) {
-                        final narrativeCtr =
-                            _updateController(narrativeEntries, index);
-                        return PageViewer(
-                          pageNav: _pageNav,
-                          child: NarrativeForm(
-                            narrativeId: narrativeEntries[index].id,
-                            narrativeCtr: narrativeCtr,
-                          ),
-                        );
-                      },
+                    return NarrativePages(
+                      narrativeEntries: narrativeEntries,
+                      pageNav: _pageNav,
                       onPageChanged: (index) {
                         setState(() {
                           narrativeId = narrativeEntries[index].id;
@@ -103,6 +92,38 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
     _pageNav.currentPage = value + 1;
     _pageNav.updatePageNavigation();
     NarrativeServices(ref: ref).invalidateNarrative();
+  }
+}
+
+class NarrativePages extends StatelessWidget {
+  const NarrativePages({
+    super.key,
+    required this.narrativeEntries,
+    required this.pageNav,
+    required this.onPageChanged,
+  });
+
+  final List<NarrativeData> narrativeEntries;
+  final PageNavigation pageNav;
+  final void Function(int) onPageChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return PageView.builder(
+      controller: pageNav.pageController,
+      itemCount: narrativeEntries.length,
+      itemBuilder: (context, index) {
+        final narrativeCtr = _updateController(narrativeEntries, index);
+        return PageViewer(
+          pageNav: pageNav,
+          child: NarrativeForm(
+            narrativeId: narrativeEntries[index].id,
+            narrativeCtr: narrativeCtr,
+          ),
+        );
+      },
+      onPageChanged: onPageChanged,
+    );
   }
 
   NarrativeFormCtrModel _updateController(

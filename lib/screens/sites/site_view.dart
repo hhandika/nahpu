@@ -62,19 +62,9 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
                 _pageNav.pageCounts = siteSize;
                 _pageNav.updatePageController();
               });
-              return PageView.builder(
-                controller: _pageNav.pageController,
-                itemCount: siteSize,
-                itemBuilder: (context, index) {
-                  final siteForm = _updateController(siteEntries[index]);
-                  return PageViewer(
-                    pageNav: _pageNav,
-                    child: SiteForm(
-                      id: siteEntries[index].id,
-                      siteFormCtr: siteForm,
-                    ),
-                  );
-                },
+              return SitePages(
+                siteEntries: siteEntries,
+                pageNav: _pageNav,
                 onPageChanged: (index) {
                   setState(() {
                     _siteId = siteEntries[index].id;
@@ -103,6 +93,38 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
     _pageNav.currentPage = value + 1;
     _pageNav.updatePageNavigation();
     ref.invalidate(siteEntryProvider);
+  }
+}
+
+class SitePages extends StatelessWidget {
+  const SitePages({
+    super.key,
+    required this.siteEntries,
+    required this.pageNav,
+    required this.onPageChanged,
+  });
+
+  final List<SiteData> siteEntries;
+  final PageNavigation pageNav;
+  final void Function(int) onPageChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return PageView.builder(
+      controller: pageNav.pageController,
+      itemCount: siteEntries.length,
+      itemBuilder: (context, index) {
+        final siteForm = _updateController(siteEntries[index]);
+        return PageViewer(
+          pageNav: pageNav,
+          child: SiteForm(
+            id: siteEntries[index].id,
+            siteFormCtr: siteForm,
+          ),
+        );
+      },
+      onPageChanged: onPageChanged,
+    );
   }
 
   SiteFormCtrModel _updateController(SiteData siteEntries) {

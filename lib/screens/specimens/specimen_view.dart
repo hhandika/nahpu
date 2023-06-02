@@ -103,7 +103,7 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
   }
 }
 
-class SpecimenPages extends ConsumerStatefulWidget {
+class SpecimenPages extends StatelessWidget {
   const SpecimenPages({
     super.key,
     required this.onPageChanged,
@@ -116,34 +116,24 @@ class SpecimenPages extends ConsumerStatefulWidget {
   final PageNavigation pageNav;
 
   @override
-  SpecimenPagesState createState() => SpecimenPagesState();
-}
-
-class SpecimenPagesState extends ConsumerState<SpecimenPages> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return PageView.builder(
-      controller: widget.pageNav.pageController,
-      itemCount: widget.specimenEntry.length,
+      controller: pageNav.pageController,
+      itemCount: specimenEntry.length,
       itemBuilder: (context, index) {
         CatalogFmt catalogFmt =
-            matchTaxonGroupToCatFmt(widget.specimenEntry[index].taxonGroup);
-        final specimenFormCtr = _updateController(widget.specimenEntry[index]);
+            matchTaxonGroupToCatFmt(specimenEntry[index].taxonGroup);
+        final specimenFormCtr = _updateController(specimenEntry[index]);
         return PageViewer(
-          pageNav: widget.pageNav,
+          pageNav: pageNav,
           child: SpecimenForm(
-            specimenUuid: widget.specimenEntry[index].uuid,
+            specimenUuid: specimenEntry[index].uuid,
             specimenCtr: specimenFormCtr,
             catalogFmt: catalogFmt,
           ),
         );
       },
-      onPageChanged: widget.onPageChanged,
+      onPageChanged: onPageChanged,
     );
   }
 
