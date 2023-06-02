@@ -37,6 +37,10 @@ class SiteQuery extends DatabaseAccessor<Database> with _$SiteQueryMixin {
     return (delete(siteMedia)..where((t) => t.mediaId.equals(mediaId))).go();
   }
 
+  Future<void> deleteAllSiteMedias(int siteID) {
+    return (delete(siteMedia)..where((t) => t.siteId.equals(siteID))).go();
+  }
+
   Future<void> deleteSite(int id) {
     return (delete(site)..where((t) => t.id.equals(id))).go();
   }

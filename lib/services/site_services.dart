@@ -55,8 +55,9 @@ class SiteServices extends DbAccess {
   }
 
   Future<void> deleteSite(int id) async {
-    await SiteQuery(dbAccess).deleteSite(id);
     await CoordinateServices(ref: ref).deleteCoordinateBySiteID(id);
+    await SiteQuery(dbAccess).deleteAllSiteMedias(id);
+    await SiteQuery(dbAccess).deleteSite(id);
     invalidateSite();
   }
 

@@ -17,6 +17,13 @@ class NarrativeQuery extends DatabaseAccessor<Database>
     return (update(narrative)..where((t) => t.id.equals(id))).write(entry);
   }
 
+  Future<List<NarrativeData>> searchNarrative(String query) async {
+    return await (select(narrative)
+          ..where(
+              (t) => t.narrative.like('%$query%') | t.date.like('%$query%')))
+        .get();
+  }
+
   Future<List<NarrativeData>> getAllNarrative(String projectUuid) {
     return (select(narrative)..where((t) => t.projectUuid.equals(projectUuid)))
         .get();
@@ -41,6 +48,12 @@ class NarrativeQuery extends DatabaseAccessor<Database>
 
   Future<void> deleteNarrativeMedia(int mediaId) {
     return (delete(narrativeMedia)..where((t) => t.mediaId.equals(mediaId)))
+        .go();
+  }
+
+  Future<void> deleteAllNarrativeMedia(int narrativeId) {
+    return (delete(narrativeMedia)
+          ..where((t) => t.narrativeId.equals(narrativeId)))
         .go();
   }
 

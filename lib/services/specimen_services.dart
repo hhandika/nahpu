@@ -200,6 +200,7 @@ class SpecimenServices extends DbAccess {
         await deleteMammalMeasurements(specimenUuid);
         break;
     }
+    await SpecimenQuery(dbAccess).deleteAllSpecimenMedias(specimenUuid);
     await SpecimenQuery(dbAccess).deleteSpecimen(specimenUuid);
     invalidateSpecimenList();
   }
@@ -208,6 +209,7 @@ class SpecimenServices extends DbAccess {
     List<SpecimenData> specimenList = await getSpecimenList();
     for (var specimen in specimenList) {
       await deleteAllSpecimenParts(specimen.uuid);
+      await SpecimenQuery(dbAccess).deleteAllSpecimenMedias(specimen.uuid);
       CatalogFmt catalogFmt = matchTaxonGroupToCatFmt(specimen.taxonGroup);
       switch (catalogFmt) {
         case CatalogFmt.birds:

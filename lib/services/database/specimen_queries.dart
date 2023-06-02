@@ -97,6 +97,12 @@ class SpecimenQuery extends DatabaseAccessor<Database>
         .go();
   }
 
+  Future<void> deleteAllSpecimenMedias(String specimenUuid) {
+    return (delete(specimenMedia)
+          ..where((t) => t.specimenUuid.equals(specimenUuid)))
+        .go();
+  }
+
   Future<void> updateSpecimenMedia(
       String specimenUuid, SpecimenMediaCompanion specimenMediaCompanion) {
     return (update(specimenMedia)

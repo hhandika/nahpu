@@ -46,11 +46,21 @@ class NarrativeServices extends DbAccess {
   }
 
   void deleteNarrative(int id) {
+    deleteAllNarrativeMedia(id);
     NarrativeQuery(dbAccess).deleteNarrative(id);
     invalidateNarrative();
   }
 
-  void deleteAllNarrative(String projectUuid) {
+  Future<void> deleteAllNarrativeMedia(int narrativeId) async {
+    await NarrativeQuery(dbAccess).deleteAllNarrativeMedia(narrativeId);
+  }
+
+  Future<void> deleteAllNarrative(String projectUuid) async {
+    List<NarrativeData> narratives =
+        await NarrativeQuery(dbAccess).getAllNarrative(projectUuid);
+    for (NarrativeData narrative in narratives) {
+      await deleteAllNarrativeMedia(narrative.id);
+    }
     NarrativeQuery(dbAccess).deleteAllNarrative(projectUuid);
     invalidateNarrative();
   }
