@@ -91,13 +91,20 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
   void _deleteEvent() {
     if (widget.collEventId != null) {
       showDeleteAlertOnMenu(
-        () {
-          CollEventServices(ref: ref).deleteCollEvent(widget.collEventId!);
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (_) => const CollEventViewer(),
-            ),
-          );
+        () async {
+          try {
+            await CollEventServices(ref: ref)
+                .deleteCollEvent(widget.collEventId!);
+            if (mounted) {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (_) => const CollEventViewer(),
+                ),
+              );
+            }
+          } catch (e) {
+            _showError(e.toString());
+          }
         },
         'Delete this collecting event?',
         context,
@@ -108,12 +115,29 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
   void _deleteAllEvents() {
     final projectUuid = ref.read(projectUuidProvider.notifier).state;
     showDeleteAlertOnMenu(
-      () {
-        CollEventServices(ref: ref).deleteAllCollEvents(projectUuid);
-        ref.invalidate(collEventEntryProvider);
+      () async {
+        try {
+          await CollEventServices(ref: ref).deleteAllCollEvents(projectUuid);
+          ref.invalidate(collEventEntryProvider);
+        } catch (e) {
+          _showError(e.toString());
+        }
       },
       'Delete all collecting events?\nTHIS ACTION CANNOT BE UNDONE!.',
       context,
+    );
+  }
+
+  void _showError(String errors) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          errors.contains('SqliteException(787)')
+              ? 'Cannot delete collecting events.'
+                  ' It is being used by other records.'
+              : errors.toString(),
+        ),
+      ),
     );
   }
 }

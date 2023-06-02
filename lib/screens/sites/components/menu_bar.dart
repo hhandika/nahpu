@@ -83,20 +83,43 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
             ]);
   }
 
-  void _deleteSite() {
-    showDeleteAlertOnMenu(() {
+  Future<void> _deleteSite() async {
+    showDeleteAlertOnMenu(() async {
       if (widget.siteId != null) {
-        SiteServices(ref: ref).deleteSite(widget.siteId!);
-        // Trigger page changes to update the view.
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => const SiteViewer()));
+        try {
+          await SiteServices(ref: ref).deleteSite(widget.siteId!);
+
+          // Trigger page changes to update the view.
+          if (mounted) {
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (_) => const SiteViewer()));
+          }
+        } catch (e) {
+          _showError(e.toString());
+        }
       }
     }, 'Delete this site?', context);
   }
 
   void _deleteAllSites() {
-    showDeleteAlertOnMenu(() {
-      SiteServices(ref: ref).deleteAllSites();
+    showDeleteAlertOnMenu(() async {
+      try {
+        await SiteServices(ref: ref).deleteAllSites();
+      } catch (e) {
+        _showError(e.toString());
+      }
     }, 'Delete all sites?\nTHIS ACTION CANNOT BE UNDONE!', context);
+  }
+
+  void _showError(String errors) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          errors.contains('SqliteException(787)')
+              ? 'Cannot delete site. It is being used by other records.'
+              : errors.toString(),
+        ),
+      ),
+    );
   }
 }

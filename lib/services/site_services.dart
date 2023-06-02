@@ -60,9 +60,9 @@ class SiteServices extends DbAccess {
     invalidateSite();
   }
 
-  void deleteAllSites() {
+  Future<void> deleteAllSites() async {
     final projectUuid = ref.read(projectUuidProvider);
-    SiteQuery(dbAccess).deleteAllSites(projectUuid);
+    await SiteQuery(dbAccess).deleteAllSites(projectUuid);
     invalidateSite();
   }
 
