@@ -112,11 +112,12 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
   }
 
   void _showError(String errors) {
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
           errors.contains('SqliteException(787)')
-              ? 'Cannot delete site. It is being used by other records.'
+              ? 'Cannot delete sites. Being used by other records.'
               : errors.toString(),
         ),
       ),

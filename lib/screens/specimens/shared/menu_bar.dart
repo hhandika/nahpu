@@ -88,23 +88,26 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
   }
 
   void _deleteSpecimen() {
-    showDeleteAlertOnMenu(() async {
-      if (widget.specimenUuid != null && widget.catalogFmt != null) {
-        await SpecimenServices(ref: ref).deleteSpecimen(
-          widget.specimenUuid!,
-          widget.catalogFmt!,
-        );
-        if (context.mounted) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => const SpecimenViewer()),
+    showDeleteAlertOnMenu(
+      () async {
+        if (widget.specimenUuid != null && widget.catalogFmt != null) {
+          await SpecimenServices(ref: ref).deleteSpecimen(
+            widget.specimenUuid!,
+            widget.catalogFmt!,
           );
+          if (context.mounted) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => const SpecimenViewer()),
+            );
+          }
         }
-      }
-    },
-        'Deleting a specimen WILL NOT '
-        'update the cataloger field number\n'
-        'Delete this specimen?',
-        context);
+      },
+      'Deleting a specimen WILL NOT '
+      'update the cataloger field number.\n'
+      'Make sure to correct the field number after deleting.\n\n'
+      'Delete this specimen?',
+      context,
+    );
   }
 
   void _deleteAllSpecimens() {

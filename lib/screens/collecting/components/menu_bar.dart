@@ -129,12 +129,12 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
   }
 
   void _showError(String errors) {
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
           errors.contains('SqliteException(787)')
-              ? 'Cannot delete collecting events.'
-                  ' It is being used by other records.'
+              ? 'Cannot delete the events. Being used by other records.'
               : errors.toString(),
         ),
       ),
