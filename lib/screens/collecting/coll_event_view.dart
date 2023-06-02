@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/navigation_services.dart';
-import 'package:nahpu/services/types/navigation.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/providers/collevents.dart';
 import 'package:nahpu/screens/collecting/coll_event_form.dart';
@@ -20,13 +19,12 @@ class CollEventViewer extends ConsumerStatefulWidget {
 
 class CollEventViewerState extends ConsumerState<CollEventViewer> {
   bool _isVisible = false;
-  PageController pageController = PageController();
-  PageNavigation _pageNav = PageNavigation();
+  final PageNavigation _pageNav = PageNavigation.init();
   int? _collEvenId;
 
   @override
   void dispose() {
-    pageController.dispose();
+    _pageNav.dispose();
     super.dispose();
   }
 
@@ -61,14 +59,10 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
                         _isVisible = true;
                       }
                       _pageNav.pageCounts = collEventSize;
-                      // We want to view the last page first.
-                      // Dart uses 0-based indexing. Technically, this is out-of-bound.
-                      // But, what happens here is that it will trigger the PageView onPageChanged.
-                      // It fixes the issues that the currentPage state does not show the current page value.
-                      pageController = updatePageCtr(collEventSize);
+                      _pageNav.updatePageController();
                     });
                     return PageView.builder(
-                      controller: pageController,
+                      controller: _pageNav.pageController,
                       itemCount: collEventSize,
                       itemBuilder: (context, index) {
                         final collEventForm =
@@ -99,7 +93,6 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
       bottomSheet: Visibility(
         visible: _isVisible,
         child: PageNavButton(
-          pageController: pageController,
           pageNav: _pageNav,
         ),
       ),
@@ -110,7 +103,7 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
   void _updatePageNav(int value) {
     setState(() {
       _pageNav.currentPage = value + 1;
-      _pageNav = updatePageNavigation(_pageNav);
+      _pageNav.updatePageNavigation();
       CollEventServices(ref: ref).invalidateCollEvent();
     });
   }

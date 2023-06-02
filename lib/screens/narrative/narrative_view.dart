@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/narrative_services.dart';
 import 'package:nahpu/services/navigation_services.dart';
-import 'package:nahpu/services/types/navigation.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/providers/narrative.dart';
 import 'package:nahpu/screens/narrative/components/menu_bar.dart';
@@ -20,13 +19,12 @@ class NarrativeViewer extends ConsumerStatefulWidget {
 
 class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
   bool isVisible = false;
-  PageController pageController = PageController();
-  PageNavigation _pageNav = PageNavigation();
+  final PageNavigation _pageNav = PageNavigation.init();
   int? narrativeId;
 
   @override
   void dispose() {
-    pageController.dispose();
+    _pageNav.dispose();
     super.dispose();
   }
 
@@ -61,15 +59,10 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
                         isVisible = true;
                       }
                       _pageNav.pageCounts = narrativeSize;
-
-                      // We want to view the last page first.
-                      // Dart uses 0-based indexing. Technically, this is out-of-bound.
-                      // But, what happens here is that it will trigger the PageView onPageChanged.
-                      // It fixes the issues that the currentPage state does not show the current page value.
-                      pageController = updatePageCtr(narrativeSize);
+                      _pageNav.updatePageController();
                     });
                     return PageView.builder(
-                      controller: pageController,
+                      controller: _pageNav.pageController,
                       itemCount: narrativeSize,
                       itemBuilder: (context, index) {
                         final narrativeCtr =
@@ -99,7 +92,6 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
       bottomSheet: Visibility(
         visible: isVisible,
         child: PageNavButton(
-          pageController: pageController,
           pageNav: _pageNav,
         ),
       ),
@@ -109,7 +101,7 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
 
   void _updatePageNav(int value) {
     _pageNav.currentPage = value + 1;
-    _pageNav = updatePageNavigation(_pageNav);
+    _pageNav.updatePageNavigation();
     NarrativeServices(ref: ref).invalidateNarrative();
   }
 

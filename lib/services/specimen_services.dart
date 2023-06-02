@@ -188,7 +188,6 @@ class SpecimenServices extends DbAccess {
 
   Future<void> deleteSpecimen(
       String specimenUuid, CatalogFmt catalogFmt) async {
-    await SpecimenQuery(dbAccess).deleteSpecimen(specimenUuid);
     await deleteAllSpecimenParts(specimenUuid);
     switch (catalogFmt) {
       case CatalogFmt.birds:
@@ -201,6 +200,7 @@ class SpecimenServices extends DbAccess {
         await deleteMammalMeasurements(specimenUuid);
         break;
     }
+    await SpecimenQuery(dbAccess).deleteSpecimen(specimenUuid);
     invalidateSpecimenList();
   }
 

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/collevents.dart';
 import 'package:nahpu/providers/narrative.dart';
 import 'package:nahpu/providers/sites.dart';
+import 'package:nahpu/services/navigation_services.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/providers/projects.dart';
@@ -12,7 +13,6 @@ import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/screens/sites/site_view.dart';
 import 'package:nahpu/screens/specimens/specimen_view.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
-import 'package:nahpu/services/types/navigation.dart';
 
 class ProjectBottomNavbar extends ConsumerStatefulWidget {
   const ProjectBottomNavbar({Key? key}) : super(key: key);
@@ -133,11 +133,9 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
 class PageNavButton extends ConsumerStatefulWidget {
   const PageNavButton({
     Key? key,
-    required this.pageController,
     required this.pageNav,
   }) : super(key: key);
 
-  final PageController pageController;
   final PageNavigation pageNav;
 
   @override
@@ -161,8 +159,8 @@ class PageNavButtonState extends ConsumerState<PageNavButton> {
               onPressed: widget.pageNav.isFirstPage
                   ? null
                   : () {
-                      if (widget.pageController.hasClients) {
-                        widget.pageController.animateToPage(0,
+                      if (widget.pageNav.pageController.hasClients) {
+                        widget.pageNav.pageController.animateToPage(0,
                             duration: kTabScrollDuration, curve: _curve);
                       }
                     },
@@ -172,8 +170,8 @@ class PageNavButtonState extends ConsumerState<PageNavButton> {
               onPressed: widget.pageNav.isFirstPage
                   ? null
                   : () {
-                      if (widget.pageController.hasClients) {
-                        widget.pageController.previousPage(
+                      if (widget.pageNav.pageController.hasClients) {
+                        widget.pageNav.pageController.previousPage(
                             duration: kTabScrollDuration, curve: _curve);
                       }
                     },
@@ -185,7 +183,7 @@ class PageNavButtonState extends ConsumerState<PageNavButton> {
                   context: context,
                   builder: (context) => NavSheet(
                     pageNav: widget.pageNav,
-                    pageController: widget.pageController,
+                    pageController: widget.pageNav.pageController,
                   ),
                   isScrollControlled: true,
                 );
@@ -196,8 +194,8 @@ class PageNavButtonState extends ConsumerState<PageNavButton> {
               onPressed: widget.pageNav.isLastPage
                   ? null
                   : () {
-                      if (widget.pageController.hasClients) {
-                        widget.pageController.nextPage(
+                      if (widget.pageNav.pageController.hasClients) {
+                        widget.pageNav.pageController.nextPage(
                             duration: kTabScrollDuration, curve: _curve);
                       }
                     },
@@ -207,8 +205,8 @@ class PageNavButtonState extends ConsumerState<PageNavButton> {
               onPressed: widget.pageNav.isLastPage
                   ? null
                   : () {
-                      if (widget.pageController.hasClients) {
-                        widget.pageController.animateToPage(
+                      if (widget.pageNav.pageController.hasClients) {
+                        widget.pageNav.pageController.animateToPage(
                             widget.pageNav.pageCounts - 1,
                             duration: kTabScrollDuration,
                             curve: _curve);

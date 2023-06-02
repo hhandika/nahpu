@@ -1,21 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:nahpu/services/types/navigation.dart';
 
-PageNavigation updatePageNavigation(PageNavigation pageState) {
-  if (pageState.currentPage == 1) {
-    pageState.isFirstPage = true;
-    pageState.isLastPage = false;
-  } else if (pageState.currentPage == pageState.pageCounts) {
-    pageState.isFirstPage = false;
-    pageState.isLastPage = true;
-  } else {
-    pageState.isFirstPage = false;
-    pageState.isLastPage = false;
+class PageNavigation {
+  PageNavigation({
+    required this.currentPage,
+    required this.pageCounts,
+    required this.isLastPage,
+    required this.isFirstPage,
+    required this.pageController,
+  });
+  int currentPage;
+  int pageCounts;
+  bool isLastPage;
+  bool isFirstPage;
+  PageController pageController;
+
+  factory PageNavigation.init() {
+    return PageNavigation(
+      currentPage: 0,
+      pageCounts: 0,
+      isLastPage: false,
+      isFirstPage: false,
+      pageController: PageController(),
+    );
   }
 
-  return pageState;
-}
+  void updatePageNavigation() {
+    if (currentPage == 1) {
+      isFirstPage = true;
+      isLastPage = false;
+    } else if (currentPage == pageCounts) {
+      isFirstPage = false;
+      isLastPage = true;
+    } else {
+      isFirstPage = false;
+      isLastPage = false;
+    }
+  }
 
-PageController updatePageCtr(int size) {
-  return PageController(initialPage: size + 1, keepPage: false);
+  void updatePageController() {
+    pageController = PageController(
+      initialPage: pageCounts + 1,
+      keepPage: false,
+    );
+  }
+
+  void dispose() {
+    pageController.dispose();
+  }
 }

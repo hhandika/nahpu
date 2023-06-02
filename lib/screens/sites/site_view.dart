@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/navigation_services.dart';
-import 'package:nahpu/services/types/navigation.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/providers/sites.dart';
 import 'package:nahpu/screens/shared/common.dart';
@@ -21,12 +20,11 @@ class SiteViewer extends ConsumerStatefulWidget {
 
 class SiteViewerState extends ConsumerState<SiteViewer> {
   bool _isVisible = false;
-  PageController pageController = PageController();
-  PageNavigation _pageNav = PageNavigation();
+  final PageNavigation _pageNav = PageNavigation.init();
   int? _siteId;
   @override
   void dispose() {
-    pageController.dispose();
+    _pageNav.dispose();
     super.dispose();
   }
 
@@ -62,10 +60,10 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
                   _isVisible = false;
                 }
                 _pageNav.pageCounts = siteSize;
-                pageController = updatePageCtr(siteSize);
+                _pageNav.updatePageController();
               });
               return PageView.builder(
-                controller: pageController,
+                controller: _pageNav.pageController,
                 itemCount: siteSize,
                 itemBuilder: (context, index) {
                   final siteForm = _updateController(siteEntries[index]);
@@ -95,7 +93,6 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
       bottomSheet: Visibility(
           visible: _isVisible,
           child: PageNavButton(
-            pageController: pageController,
             pageNav: _pageNav,
           )),
       bottomNavigationBar: const ProjectBottomNavbar(),
@@ -104,7 +101,7 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
 
   void _updatePageNav(int value) {
     _pageNav.currentPage = value + 1;
-    _pageNav = updatePageNavigation(_pageNav);
+    _pageNav.updatePageNavigation();
     ref.invalidate(siteEntryProvider);
   }
 
