@@ -243,10 +243,37 @@ class PersonnelMenuState extends ConsumerState<PersonnelMenu> {
                 style: TextStyle(color: Colors.red),
               ),
               onTap: () {
-                PersonnelServices(ref: ref).deletePersonnel(widget.data.uuid);
+                _deletePersonnel();
               },
             )),
       ],
+    );
+  }
+
+  void _deletePersonnel() {
+    showDeleteAlertOnMenu(
+      () async {
+        try {
+          await PersonnelServices(ref: ref).deletePersonnel(widget.data.uuid);
+        } catch (e) {
+          _showError(e.toString());
+        }
+      },
+      'Delete this person?',
+      context,
+    );
+  }
+
+  void _showError(String errors) {
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          errors.contains('SqliteException(787)')
+              ? 'Cannot delete personnel. Being used by other records.'
+              : errors.toString(),
+        ),
+      ),
     );
   }
 }

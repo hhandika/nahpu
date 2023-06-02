@@ -37,9 +37,9 @@ class PersonnelServices extends DbAccess {
     return await PersonnelQuery(dbAccess).getAllPersonnel();
   }
 
-  void deletePersonnel(String uuid) {
-    PersonnelQuery(dbAccess).deleteProjectPersonnel(uuid, projectUuid);
-    PersonnelQuery(dbAccess).deletePersonnel(uuid);
+  Future<void> deletePersonnel(String uuid) async {
+    await PersonnelQuery(dbAccess).deleteProjectPersonnel(uuid, projectUuid);
+    await PersonnelQuery(dbAccess).deletePersonnel(uuid);
     invalidatePersonnel();
   }
 

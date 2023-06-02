@@ -101,8 +101,8 @@ class CollEventServices extends DbAccess {
     return CollEventQuery(dbAccess).deleteAllCollEvents(projectUuid);
   }
 
-  void deleteCollPersonnel(int id) {
-    CollPersonnelQuery(dbAccess).deleteCollPersonnel(id);
+  Future<void> deleteCollPersonnel(int id) async {
+    await CollPersonnelQuery(dbAccess).deleteCollPersonnel(id);
     invalidateCollPersonnel();
   }
 

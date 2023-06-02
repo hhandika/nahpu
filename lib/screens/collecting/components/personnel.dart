@@ -150,11 +150,29 @@ class CollPersonnelFieldState extends ConsumerState<CollPersonnelField> {
         IconButton(
           icon: const Icon(Icons.delete),
           onPressed: () {
-            CollEventServices(ref: ref)
-                .deleteCollPersonnel(widget.controller.id!);
+            _deletePersonnel();
           },
         ),
       ],
+    );
+  }
+
+  void _deletePersonnel() {
+    showDeleteAlertOnMenu(
+      () async {
+        try {
+          await CollEventServices(ref: ref)
+              .deleteCollPersonnel(widget.controller.id!);
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(e.toString()),
+            ),
+          );
+        }
+      },
+      'Delete this person?',
+      context,
     );
   }
 }
