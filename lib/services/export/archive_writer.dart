@@ -51,7 +51,7 @@ class ArchiveServices extends DbAccess {
       await filePath.delete();
     }
 
-    await ReportServices(ref: ref)
+    return await ReportServices(ref: ref)
         .writeReport(filePath, ReportType.speciesCount);
   }
 
