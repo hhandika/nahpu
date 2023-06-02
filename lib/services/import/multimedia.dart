@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:exif/exif.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/types/import.dart';
@@ -110,5 +111,17 @@ class ImageServices extends DbAccess {
       default:
         throw Exception('Unsupported media category');
     }
+  }
+}
+
+class ExifServices {
+  const ExifServices({required this.file});
+
+  final File file;
+
+  Future<Map<String, dynamic>> getExif() async {
+    final Map<String, IfdTag> exif =
+        await readExifFromBytes(await file.readAsBytes());
+    return exif;
   }
 }

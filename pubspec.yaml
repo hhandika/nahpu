@@ -59,6 +59,7 @@ dependencies:
   image_picker: ^0.8.7+5
   archive: ^3.3.7
   share_plus: ^7.0.2
+  exif: ^3.1.4
 
 dev_dependencies:
   flutter_test:
