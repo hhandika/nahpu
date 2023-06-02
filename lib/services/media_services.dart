@@ -45,7 +45,7 @@ class MediaServices extends DbAccess {
     File newPath =
         await ImageServices(ref: ref, category: category).getMediaPath(newName);
     if (newPath.existsSync()) {
-      throw Exception('File already exists');
+      throw Exception('File exists');
     }
     try {
       await oldPath.rename(newPath.path);

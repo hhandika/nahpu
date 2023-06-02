@@ -137,17 +137,21 @@ class ExifData {
   }
 
   Future<void> readExif(File file) async {
-    final Map<String, IfdTag> exif =
-        await readExifFromBytes(await file.readAsBytes());
-    _getExifDate(exif);
-    _getExifCameraModel(exif);
-    _getExifLenseModel(exif);
-    String focalLength = _getExifFocalLength(exif);
-    String aperture = _getExifAperture(exif);
-    String exposure = _getExifExposureTime(exif);
-    String iso = _getExifIso(exif);
-    List<String> exifList = [focalLength, aperture, exposure, iso];
-    additionalExif = exifList.join(listTileSeparator);
+    try {
+      final Map<String, IfdTag> exif =
+          await readExifFromBytes(await file.readAsBytes());
+      _getExifDate(exif);
+      _getExifCameraModel(exif);
+      _getExifLenseModel(exif);
+      String focalLength = _getExifFocalLength(exif);
+      String aperture = _getExifAperture(exif);
+      String exposure = _getExifExposureTime(exif);
+      String iso = _getExifIso(exif);
+      List<String> exifList = [focalLength, aperture, exposure, iso];
+      additionalExif = exifList.join(listTileSeparator);
+    } catch (e) {
+      return;
+    }
   }
 
   void _getExifDate(Map<String, IfdTag> exif) {
