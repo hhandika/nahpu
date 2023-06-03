@@ -17,6 +17,11 @@ class MediaDbQuery extends DatabaseAccessor<Database> with _$MediaDbQueryMixin {
     return select(media).get();
   }
 
+  Future<List<MediaData>> getMediaByProject(String projectUuid) async {
+    return (select(media)..where((t) => t.projectUuid.equals(projectUuid)))
+        .get();
+  }
+
   Future<void> updateMedia(int mediaId, MediaCompanion form) {
     return (update(media)..where((t) => t.primaryId.equals(mediaId)))
         .write(form);

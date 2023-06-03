@@ -22,11 +22,16 @@ class MediaWriterServices {
 
   Future<void> writeAllMediaDelimited(File filePath, bool isCsv) async {
     delimiter = isCsv ? csvDelimiter : tsvDelimiter;
+
     final file = await filePath.create(recursive: true);
     final writer = file.openWrite();
+
     String header = allMediaExportList.join(delimiter);
     writer.writeln(header);
-    List<MediaData> mediaList = await MediaServices(ref: ref).getAllMedia();
+
+    List<MediaData> mediaList =
+        await MediaServices(ref: ref).getAllMediaByProject();
+
     for (var media in mediaList) {
       List<String> mediaDetails = await _getMedia(media);
       writer.writeln(mediaDetails.map((e) => '"$e"').join(delimiter));
@@ -46,12 +51,7 @@ class MediaWriterServices {
         mediaDataList.add(mediaData);
       }
     }
-    List<String> mediaDetails = await Future.wait(mediaDataList.map((e) async {
-      List<String> mediaList = await _getMedia(e);
-      return mediaList.join(';');
-    }));
-    String mediaDetailsString = mediaDetails.join(writerSeparator);
-    return '"$mediaDetailsString"';
+    return await _getConcatenateMediaData(mediaDataList);
   }
 
   Future<String> getSiteMedias(int? siteID) async {
@@ -68,11 +68,7 @@ class MediaWriterServices {
         mediaDataList.add(mediaData);
       }
     }
-
-    String mediaDetails =
-        mediaDataList.map((e) => _getMedia(e)).join(writerSeparator);
-
-    return '"$mediaDetails"';
+    return await _getConcatenateMediaData(mediaDataList);
   }
 
   Future<String> getNarrativeMedias(int? narrativeId) async {
@@ -90,10 +86,17 @@ class MediaWriterServices {
       }
     }
 
-    String mediaDetails =
-        mediaDataList.map((e) => _getMedia(e)).join(writerSeparator);
+    return await _getConcatenateMediaData(mediaDataList);
+  }
 
-    return '"$mediaDetails"';
+  Future<String> _getConcatenateMediaData(List<MediaData> data) async {
+    List<String> mediaDetails = await Future.wait(data.map((e) async {
+      List<String> mediaList = await _getMedia(e);
+      mediaList.removeWhere((e) => e.isEmpty);
+      return mediaList.join(';');
+    }));
+    String mediaDetailsString = mediaDetails.join(writerSeparator);
+    return '"$mediaDetailsString"';
   }
 
   Future<List<String>> _getMedia(MediaData data) async {

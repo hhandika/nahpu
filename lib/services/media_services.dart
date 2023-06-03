@@ -61,8 +61,8 @@ class MediaServices extends DbAccess {
     _invalidateMedia(category);
   }
 
-  Future<List<MediaData>> getAllMedia() {
-    return MediaDbQuery(dbAccess).getAllMedia();
+  Future<List<MediaData>> getAllMediaByProject() {
+    return MediaDbQuery(dbAccess).getMediaByProject(projectUuid);
   }
 
   Future<void> deleteMedia(int id, String category) async {
