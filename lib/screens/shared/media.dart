@@ -321,7 +321,7 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
                           onPressed: () async {
                             Navigator.of(context).pop();
                           },
-                          text: 'Close',
+                          text: 'Cancel',
                         ),
                         PrimaryButton(
                           onPressed: () async {
@@ -482,9 +482,9 @@ class ExifViewer extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        Text(ctr.cameraModelCtr.text),
-        Text(ctr.lenseModelCtr.text),
-        Text(ctr.additionalExifCtr.text),
+        Text(ctr.cameraModelCtr.text, textAlign: TextAlign.center),
+        Text(ctr.lenseModelCtr.text, textAlign: TextAlign.center),
+        Text(ctr.additionalExifCtr.text, textAlign: TextAlign.center),
         const SizedBox(height: 8),
         Text(
           _parseDateTime(),
