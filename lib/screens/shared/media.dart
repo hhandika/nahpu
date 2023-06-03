@@ -307,6 +307,7 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
                         controller: fileNameCtr,
                         decoration: InputDecoration(
                           labelText: 'File name',
+                          hintText: 'Enter file name without extension',
                           suffix: IconButton(
                             icon: const Icon(Icons.clear),
                             onPressed: () {

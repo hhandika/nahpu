@@ -41,9 +41,10 @@ class MediaServices extends DbAccess {
     }
 
     String ext = path.extension(oldPath.path);
-    newName = newName + ext;
-    File newPath =
-        await ImageServices(ref: ref, category: category).getMediaPath(newName);
+    newName = newName.contains(' ') ? newName.replaceAll(' ', '_') : newName;
+    String finalName = newName + ext;
+    File newPath = await ImageServices(ref: ref, category: category)
+        .getMediaPath(finalName);
     if (newPath.existsSync()) {
       throw Exception('File exists');
     }
@@ -52,7 +53,7 @@ class MediaServices extends DbAccess {
       await MediaDbQuery(dbAccess).updateMedia(
           mediaID,
           MediaCompanion(
-            fileName: db.Value(newName),
+            fileName: db.Value(finalName),
           ));
     } catch (e) {
       throw Exception('Failed to rename file');
