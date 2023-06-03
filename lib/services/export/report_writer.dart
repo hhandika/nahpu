@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/export/media_writer.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/types/types.dart';
@@ -14,6 +15,15 @@ class ReportServices extends DbAccess {
     switch (reportType) {
       case ReportType.speciesCount:
         await SpeciesListWriter(ref: ref).writeSpeciesListCompact(savePath);
+        break;
+      case ReportType.mediaData:
+        await MediaWriterServices(ref: ref)
+            .writeAllMediaDelimited(savePath, true);
+        break;
+      case ReportType.all:
+        await SpeciesListWriter(ref: ref).writeSpeciesListCompact(savePath);
+        await MediaWriterServices(ref: ref)
+            .writeAllMediaDelimited(savePath, true);
         break;
       default:
         await SpeciesListWriter(ref: ref).writeSpeciesListCompact(savePath);

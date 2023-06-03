@@ -107,7 +107,7 @@ class SiteWriterServices {
             : 'Unknown elevation;';
     String uncertainty =
         data.uncertaintyInMeters != null || data.uncertaintyInMeters == 0
-            ? '±${data.uncertaintyInMeters}m;'
+            ? '${data.uncertaintyInMeters}m;'
             : 'Unknown uncertainty;';
     String datum = data.datum != null ? '${data.datum};' : 'Unknown datum;';
     String gpsUnit =

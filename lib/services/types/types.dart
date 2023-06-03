@@ -53,10 +53,12 @@ const List<String> reportFmtList = [
   'Comma-separated (.csv)',
 ];
 
-enum ReportType { speciesCount }
+enum ReportType { speciesCount, mediaData, all }
 
 const List<String> reportTypeList = [
   'Species count ',
+  'Media data',
+  'All',
 ];
 
 // Database read through index.

@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/export/common.dart';
 import 'package:nahpu/services/media_services.dart';
 import 'package:nahpu/services/narrative_services.dart';
+import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/site_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
+import 'package:nahpu/services/types/export.dart';
+import 'package:nahpu/services/utility_services.dart';
 
 class MediaWriterServices {
   MediaWriterServices({
@@ -14,6 +19,21 @@ class MediaWriterServices {
 
   final WidgetRef ref;
   String delimiter;
+
+  Future<void> writeAllMediaDelimited(File filePath, bool isCsv) async {
+    delimiter = isCsv ? csvDelimiter : tsvDelimiter;
+    final file = await filePath.create(recursive: true);
+    final writer = file.openWrite();
+    String header = allMediaExportList.join(delimiter);
+    writer.writeln(header);
+    List<MediaData> mediaList = await MediaServices(ref: ref).getAllMedia();
+    for (var media in mediaList) {
+      List<String> mediaDetails = await _getMedia(media);
+      writer.writeln(mediaDetails.map((e) => '"$e"').join(delimiter));
+    }
+
+    writer.close();
+  }
 
   Future<String> getSpecimenMedias(String specimenUuid) async {
     List<SpecimenMediaData> mediaList =
@@ -26,9 +46,12 @@ class MediaWriterServices {
         mediaDataList.add(mediaData);
       }
     }
-    String mediaDetails =
-        mediaDataList.map((e) => _getMedia(e)).join(writerSeparator);
-    return '"$mediaDetails"';
+    List<String> mediaDetails = await Future.wait(mediaDataList.map((e) async {
+      List<String> mediaList = await _getMedia(e);
+      return mediaList.join(';');
+    }));
+    String mediaDetailsString = mediaDetails.join(writerSeparator);
+    return '"$mediaDetailsString"';
   }
 
   Future<String> getSiteMedias(int? siteID) async {
@@ -73,19 +96,45 @@ class MediaWriterServices {
     return '"$mediaDetails"';
   }
 
-  String _getMedia(MediaData data) {
-    String category = data.category != null ? '${data.category};' : '';
-    String tag = data.tag != null ? '${data.tag};' : '';
-    String camera = data.camera != null ? '${data.camera};' : 'unknown camera;';
-    String taken = data.taken != null ? '${data.taken};' : 'unknown date;';
-    String lenses = data.lenses != null ? '${data.lenses};' : 'unknown lenses;';
-    String additionalExif =
-        data.additionalExif != null ? '${data.additionalExif};' : '';
+  Future<List<String>> _getMedia(MediaData data) async {
+    String category = data.category != null ? '${data.category}' : '';
+    String tag = data.tag != null ? '${data.tag}' : '';
+    String camera = data.camera != null ? '${data.camera}' : 'unknown camera';
+    String dateTaken = data.taken != null ? '${data.taken}' : 'unknown date';
+    String lenseModel =
+        data.lenses != null ? '${data.lenses}' : 'unknown lenses';
+    String photographer = await _getPhotographer(data.personnelId);
+    String additionalExif = _cleanAdditionalExif(data.additionalExif);
     String fileName = data.fileName != null ? '${data.fileName}' : '';
     String caption = data.caption != null ? '${data.caption}' : '';
 
-    return '$category$tag'
-        '$camera$taken$lenses$additionalExif'
-        '$fileName$caption';
+    return [
+      category,
+      caption,
+      photographer,
+      tag,
+      dateTaken,
+      camera,
+      lenseModel,
+      additionalExif,
+      fileName,
+    ];
+  }
+
+  Future<String> _getPhotographer(String? photographerUuid) async {
+    if (photographerUuid == null || photographerUuid.isEmpty) {
+      return '';
+    }
+    PersonnelData photographer =
+        await PersonnelServices(ref: ref).getPersonnelByUuid(photographerUuid);
+    return '${photographer.name}';
+  }
+
+  String _cleanAdditionalExif(String? addExif) {
+    if (addExif == null) {
+      return '';
+    }
+    String addExifClean = addExif.replaceAll(listTileSeparator, ' ');
+    return addExifClean;
   }
 }

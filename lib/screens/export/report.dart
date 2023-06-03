@@ -62,6 +62,7 @@ class ReportFormState extends ConsumerState<ReportForm> {
               if (value != null) {
                 setState(() {
                   _reportType = value;
+                  _hasSaved = false;
                 });
               }
             },
@@ -81,6 +82,7 @@ class ReportFormState extends ConsumerState<ReportForm> {
               if (value != null) {
                 setState(() {
                   reportFmt = value;
+                  _hasSaved = false;
                 });
               }
             },

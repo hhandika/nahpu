@@ -152,3 +152,15 @@ const collEventExportList = [
   'methods',
   'personnel',
 ];
+
+const allMediaExportList = [
+  'category',
+  'caption',
+  'photographer',
+  'tag',
+  'dateTaken',
+  'camera',
+  'lenseModel',
+  'additionalExifData',
+  'fileName',
+];
