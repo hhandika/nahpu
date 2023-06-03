@@ -1036,7 +1036,7 @@ class MediaFormCtr {
     required this.secondaryIdCtr,
     required this.categoryCtr,
     required this.tagCtr,
-    required this.dataTakenCtr,
+    required this.dateTakenCtr,
     required this.cameraModelCtr,
     required this.lenseModelCtr,
     required this.additionalExifCtr,
@@ -1049,7 +1049,7 @@ class MediaFormCtr {
   TextEditingController secondaryIdCtr;
   TextEditingController categoryCtr;
   TextEditingController tagCtr;
-  TextEditingController dataTakenCtr;
+  TextEditingController dateTakenCtr;
   TextEditingController cameraModelCtr;
   TextEditingController lenseModelCtr;
   TextEditingController additionalExifCtr;
@@ -1062,7 +1062,7 @@ class MediaFormCtr {
         secondaryIdCtr: TextEditingController(),
         categoryCtr: TextEditingController(),
         tagCtr: TextEditingController(),
-        dataTakenCtr: TextEditingController(),
+        dateTakenCtr: TextEditingController(),
         cameraModelCtr: TextEditingController(),
         lenseModelCtr: TextEditingController(),
         additionalExifCtr: TextEditingController(),
@@ -1076,7 +1076,7 @@ class MediaFormCtr {
         secondaryIdCtr: TextEditingController(text: data.secondaryId ?? ''),
         categoryCtr: TextEditingController(text: data.category ?? ''),
         tagCtr: TextEditingController(text: data.tag ?? ''),
-        dataTakenCtr: TextEditingController(text: data.taken ?? ''),
+        dateTakenCtr: TextEditingController(text: data.taken ?? ''),
         cameraModelCtr: TextEditingController(text: data.camera ?? ''),
         lenseModelCtr: TextEditingController(text: data.lenses ?? ''),
         additionalExifCtr:
@@ -1090,7 +1090,7 @@ class MediaFormCtr {
     secondaryIdCtr.dispose();
     categoryCtr.dispose();
     tagCtr.dispose();
-    dataTakenCtr.dispose();
+    dateTakenCtr.dispose();
     cameraModelCtr.dispose();
     lenseModelCtr.dispose();
     additionalExifCtr.dispose();

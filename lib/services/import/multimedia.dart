@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:exif/exif.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/utility_services.dart';
@@ -208,4 +209,15 @@ class ExifData {
     final IfdTag? isoTag = exif['EXIF ISOSpeedRatings'];
     return 'ISO${isoTag?.toString() ?? '?'}';
   }
+}
+
+List<String> parseMediaDateTime(String value) {
+  if (value.isEmpty || !value.contains(' ')) {
+    return ['', ''];
+  }
+  List<String> dateTime = value.split(' ');
+  DateTime date = DateTime.parse(dateTime[0].replaceAll(':', '-'));
+  String time = dateTime[1];
+  String parsedDate = DateFormat.yMMMMd().format(date);
+  return [parsedDate, time];
 }

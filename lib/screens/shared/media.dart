@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
@@ -486,18 +485,17 @@ class ExifViewer extends StatelessWidget {
         Text(ctr.lenseModelCtr.text),
         Text(ctr.additionalExifCtr.text),
         const SizedBox(height: 8),
-        Text(_parseDateTime()),
+        Text(
+          _parseDateTime(),
+          textAlign: TextAlign.center,
+        ),
       ],
     );
   }
 
   String _parseDateTime() {
-    List<String> dateTime = ctr.dataTakenCtr.text.split(' ');
-    String date = dateTime[0].replaceAll(':', '-');
-
-    DateTime parsedDate = DateTime.parse(date);
-    String formattedDate = DateFormat.yMMMMd().format(parsedDate);
-    return formattedDate;
+    List<String> dateTime = parseMediaDateTime(ctr.dateTakenCtr.text);
+    return '${dateTime[0]}\n${dateTime[1]}';
   }
 
   String _getExtension() {
