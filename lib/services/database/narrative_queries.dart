@@ -29,14 +29,24 @@ class NarrativeQuery extends DatabaseAccessor<Database>
         .get();
   }
 
+  Future<NarrativeData> getNarrativeById(int id) async {
+    return await (select(narrative)..where((t) => t.id.equals(id))).getSingle();
+  }
+
   Future<void> createNarrativeMedia(NarrativeMediaCompanion form) {
     return into(narrativeMedia).insert(form);
   }
 
-  Future<List<NarrativeMediaData>> getNarrativeMedia(int narrativeId) {
-    return (select(narrativeMedia)
+  Future<List<NarrativeMediaData>> getNarrativeMedia(int narrativeId) async {
+    return await (select(narrativeMedia)
           ..where((t) => t.narrativeId.equals(narrativeId)))
         .get();
+  }
+
+  Future<NarrativeMediaData> getNarrativeMediaById(int mediaId) async {
+    return await (select(narrativeMedia)
+          ..where((t) => t.mediaId.equals(mediaId)))
+        .getSingle();
   }
 
   Future<void> updateNarrativeMedia(

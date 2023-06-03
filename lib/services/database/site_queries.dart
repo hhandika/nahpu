@@ -24,8 +24,14 @@ class SiteQuery extends DatabaseAccessor<Database> with _$SiteQueryMixin {
     return into(siteMedia).insert(form);
   }
 
-  Future<List<SiteMediaData>> getSiteMedia(int siteId) {
-    return (select(siteMedia)..where((t) => t.siteId.equals(siteId))).get();
+  Future<List<SiteMediaData>> getSiteMedia(int siteId) async {
+    return await (select(siteMedia)..where((t) => t.siteId.equals(siteId)))
+        .get();
+  }
+
+  Future<SiteMediaData> getSiteMediaById(int mediaId) async {
+    return await (select(siteMedia)..where((t) => t.mediaId.equals(mediaId)))
+        .getSingle();
   }
 
   Future<void> updateSiteMedia(int siteId, SiteMediaCompanion form) {

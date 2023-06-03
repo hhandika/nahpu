@@ -87,11 +87,8 @@ class ReportFormState extends ConsumerState<ReportForm> {
               }
             },
           ),
-          CommonTextField(
-            controller: exportCtr.fileNameCtr,
-            labelText: 'File name',
-            hintText: 'Enter file name',
-            isLastField: false,
+          FileNameField(
+            controller: exportCtr,
             onChanged: (String? value) {
               if (value != null) {
                 setState(() {

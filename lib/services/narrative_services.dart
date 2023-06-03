@@ -23,7 +23,11 @@ class NarrativeServices extends DbAccess {
   }
 
   Future<List<NarrativeData>> getAllNarrative() async {
-    return NarrativeQuery(dbAccess).getAllNarrative(projectUuid);
+    return await NarrativeQuery(dbAccess).getAllNarrative(projectUuid);
+  }
+
+  Future<NarrativeData> getNarrative(int narrativeId) async {
+    return await NarrativeQuery(dbAccess).getNarrativeById(narrativeId);
   }
 
   void updateNarrative(int id, NarrativeCompanion entries) {
@@ -52,6 +56,10 @@ class NarrativeServices extends DbAccess {
 
   Future<List<NarrativeMediaData>> getNarrativeMedia(int narrativeId) async {
     return NarrativeQuery(dbAccess).getNarrativeMedia(narrativeId);
+  }
+
+  Future<NarrativeMediaData> getNarrativeMediaByMediaId(int id) async {
+    return await NarrativeQuery(dbAccess).getNarrativeMediaById(id);
   }
 
   void deleteNarrative(int id) {

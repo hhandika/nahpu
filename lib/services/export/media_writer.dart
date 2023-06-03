@@ -3,11 +3,13 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/export/common.dart';
+import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/media_services.dart';
 import 'package:nahpu/services/narrative_services.dart';
 import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/site_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
+import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/types/export.dart';
 import 'package:nahpu/services/utility_services.dart';
 
@@ -34,6 +36,9 @@ class MediaWriterServices {
 
     for (var media in mediaList) {
       List<String> mediaDetails = await _getMedia(media);
+      String linkedData = await MediaCategoryServices(ref: ref)
+          .getLinkedData(media.primaryId!, media.category);
+      mediaDetails.insert(1, linkedData);
       writer.writeln(mediaDetails.map((e) => '"$e"').join(delimiter));
     }
 
@@ -139,5 +144,76 @@ class MediaWriterServices {
     }
     String addExifClean = addExif.replaceAll(listTileSeparator, ' ');
     return addExifClean;
+  }
+}
+
+class MediaCategoryServices extends DbAccess {
+  const MediaCategoryServices({required super.ref});
+
+  Future<String> getLinkedData(int? mediaId, String? category) async {
+    if (mediaId == null || category == null) {
+      return '';
+    }
+    String linkedData = '';
+    switch (category) {
+      case 'specimen':
+        linkedData = await _getSpecimenLinkedData(mediaId);
+        break;
+      case 'site':
+        linkedData = await _getSiteLinkedData(mediaId);
+        break;
+      case 'narrative':
+        linkedData = await _getNarrativeLinkedData(mediaId);
+        break;
+      default:
+        break;
+    }
+    return linkedData;
+  }
+
+  Future<String> _getNarrativeLinkedData(int mediaId) async {
+    NarrativeMediaData narrativeMediaData =
+        await NarrativeServices(ref: ref).getNarrativeMediaByMediaId(mediaId);
+    NarrativeData narrative = await NarrativeServices(ref: ref)
+        .getNarrative(narrativeMediaData.narrativeId);
+    return narrative.date != null ? 'Date: ${narrative.date}' : '';
+  }
+
+  Future<String> _getSiteLinkedData(int mediaId) async {
+    SiteMediaData siteMediaData =
+        await SiteServices(ref: ref).getSiteMediaByMediaId(mediaId);
+    SiteData? site = await SiteServices(ref: ref).getSite(siteMediaData.siteId);
+    if (site == null) {
+      return '';
+    }
+    String siteId = site.siteID ?? '';
+    String locality = site.locality ?? '';
+    return '$siteId: $locality';
+  }
+
+  Future<String> _getSpecimenLinkedData(int mediaId) async {
+    SpecimenMediaData specimenMediaData =
+        await SpecimenServices(ref: ref).getSpecimenMediaByMediaId(mediaId);
+    SpecimenData specimen = await SpecimenServices(ref: ref)
+        .getSpecimen(specimenMediaData.specimenUuid);
+    TaxonomyData? taxonomy = specimen.speciesID == null
+        ? null
+        : await TaxonomyService(ref: ref).getTaxonById(specimen.speciesID!);
+    String specimenFieldId = await _getSpecimenFieldId(specimen);
+    String species = taxonomy == null
+        ? ''
+        : '${taxonomy.genus ?? ''} ${taxonomy.specificEpithet ?? ''}';
+    return '$specimenFieldId $species';
+  }
+
+  Future<String> _getSpecimenFieldId(SpecimenData specimen) async {
+    PersonnelData? catalogerName = specimen.catalogerID == null
+        ? null
+        : await PersonnelServices(ref: ref)
+            .getPersonnelByUuid(specimen.catalogerID!);
+    if (catalogerName == null) {
+      return '';
+    }
+    return '${catalogerName.name ?? ''} ${specimen.fieldNumber ?? ''}:';
   }
 }

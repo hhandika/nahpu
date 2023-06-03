@@ -155,6 +155,7 @@ const collEventExportList = [
 
 const allMediaExportList = [
   'category',
+  'linkedData',
   'caption',
   'photographer',
   'tag',

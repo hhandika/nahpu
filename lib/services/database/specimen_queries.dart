@@ -21,6 +21,11 @@ class SpecimenQuery extends DatabaseAccessor<Database>
         .get();
   }
 
+  Future<SpecimenData> getSpecimenByUuid(String uuid) async {
+    return await (select(specimen)..where((t) => t.uuid.equals(uuid)))
+        .getSingle();
+  }
+
   Future<List<String>> getUniqueTaxonGroup(String projectUuid) async {
     final specimenData = await (select(specimen, distinct: true)
           ..where((t) => t.projectUuid.equals(projectUuid))
@@ -90,6 +95,13 @@ class SpecimenQuery extends DatabaseAccessor<Database>
     return await (select(specimenMedia)
           ..where((t) => t.specimenUuid.equals(specimenUuid)))
         .get();
+  }
+
+  Future<SpecimenMediaData> getSpecimenMediaByMediaId(int mediaId) async {
+    return await (select(specimenMedia)
+          ..where((t) => t.mediaId.equals(mediaId))
+          ..limit(1))
+        .getSingle();
   }
 
   Future<void> deleteSpecimenMedia(int mediaId) {

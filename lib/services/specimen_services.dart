@@ -51,6 +51,10 @@ class SpecimenServices extends DbAccess {
     invalidateSpecimenList();
   }
 
+  Future<SpecimenData> getSpecimen(String specimenUuid) async {
+    return SpecimenQuery(dbAccess).getSpecimenByUuid(specimenUuid);
+  }
+
   Future<List<String>> getRecordedGroupList() async {
     return SpecimenQuery(dbAccess).getUniqueTaxonGroup(projectUuid);
   }
@@ -76,6 +80,10 @@ class SpecimenServices extends DbAccess {
     );
     await SpecimenQuery(dbAccess).createSpecimenMedia(entries);
     ref.invalidate(specimenMediaProvider);
+  }
+
+  Future<SpecimenMediaData> getSpecimenMediaByMediaId(int mediaId) async {
+    return await SpecimenQuery(dbAccess).getSpecimenMediaByMediaId(mediaId);
   }
 
   Future<List<SpecimenData>> getMammalSpecimens() async {
