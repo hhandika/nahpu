@@ -57,6 +57,17 @@ class ProjectMenuDrawerState extends ConsumerState<ProjectMenuDrawer> {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.archive_rounded),
+            title: const Text('Bundle project'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const BundleProjectForm()),
+              );
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.picture_as_pdf_rounded),
             title: const Text('Export to pdf'),
             onTap: () {
@@ -73,17 +84,6 @@ class ProjectMenuDrawerState extends ConsumerState<ProjectMenuDrawer> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const ExportForm()),
-              );
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.archive_rounded),
-            title: const Text('Bundle project'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const BundleProjectForm()),
               );
             },
           ),
