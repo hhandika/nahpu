@@ -41,7 +41,7 @@ class ProjectInfo extends StatelessWidget {
           isSmall: true,
         ),
         ProjectInfoText(
-          title: 'Accessed: ',
+          title: 'Last accessed: ',
           text: projectData?.lastAccessed,
           isSmall: true,
         ),
