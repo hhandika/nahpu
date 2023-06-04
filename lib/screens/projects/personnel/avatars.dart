@@ -157,18 +157,17 @@ class ImageButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceVariant,
-        shape: BoxShape.circle,
-      ),
-      child: IconButton(
-        icon: Icon(
-          Icons.add_a_photo_outlined,
-          color: Theme.of(context).colorScheme.primary,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceVariant,
+          shape: BoxShape.circle,
         ),
-        onPressed: () {},
-      ),
-    );
+        child: IconButton(
+          icon: Icon(
+            Icons.add_a_photo_outlined,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          onPressed: onPressed,
+        ));
   }
 }
 

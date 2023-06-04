@@ -34,6 +34,9 @@ class MediaServices extends DbAccess {
 
   Future<void> renameMedia(int mediaID, String oldName, String newName,
       MediaCategory category) async {
+    if (oldName == newName || newName.isEmpty) {
+      return;
+    }
     File oldPath =
         await ImageServices(ref: ref, category: category).getMediaPath(oldName);
     if (!oldPath.existsSync()) {
