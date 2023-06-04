@@ -148,7 +148,7 @@ class CollPersonnelFieldState extends ConsumerState<CollPersonnelField> {
           ),
         ),
         IconButton(
-          icon: const Icon(Icons.delete),
+          icon: const Icon(Icons.delete_outline),
           onPressed: () {
             _deletePersonnel();
           },

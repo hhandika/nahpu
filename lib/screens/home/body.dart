@@ -89,9 +89,11 @@ class _ToggleViewState extends State<ToggleView> {
                     }
                   });
                 },
-                children: const [
-                  Icon(Icons.list),
-                  Icon(Icons.grid_view_rounded),
+                children: [
+                  Icon(isSelected[0] ? Icons.list : Icons.list_alt),
+                  Icon(isSelected[1]
+                      ? Icons.grid_view_rounded
+                      : Icons.grid_view_outlined),
                 ]),
           ],
         ),
@@ -357,7 +359,7 @@ class ProjectPopUpMenuState extends ConsumerState<ProjectPopUpMenu> {
                 content: SingleChildScrollView(
                     child: ProjectInfo(projectData: value)),
                 actions: <Widget>[
-                  ElevatedButton(
+                  TextButton(
                     child: const Text('Close'),
                     onPressed: () {
                       Navigator.of(context).pop();

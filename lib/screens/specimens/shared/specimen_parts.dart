@@ -146,7 +146,7 @@ class PartListState extends ConsumerState<PartList> {
                 ),
                 subtitle: PartSubTitle(part: part),
                 trailing: IconButton(
-                  icon: const Icon(Icons.edit),
+                  icon: const Icon(Icons.edit_outlined),
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
