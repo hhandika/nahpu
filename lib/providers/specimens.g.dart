@@ -110,6 +110,23 @@ class SpecimenMediaProvider extends AutoDisposeFutureProvider<List<dynamic>> {
   }
 }
 
+String _$catalogFmtNotifierHash() =>
+    r'627c91874dc3312a25ceaaffe80987f042ee3c27';
+
+/// See also [CatalogFmtNotifier].
+@ProviderFor(CatalogFmtNotifier)
+final catalogFmtNotifierProvider =
+    AutoDisposeAsyncNotifierProvider<CatalogFmtNotifier, CatalogFmt>.internal(
+  CatalogFmtNotifier.new,
+  name: r'catalogFmtNotifierProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$catalogFmtNotifierHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$CatalogFmtNotifier = AutoDisposeAsyncNotifier<CatalogFmt>;
 String _$specimenTypesHash() => r'8c713b8bea707b9e74b5d7bea4df0ef5e8529abd';
 
 /// See also [SpecimenTypes].

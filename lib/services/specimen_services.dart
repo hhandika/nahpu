@@ -26,7 +26,7 @@ class SpecimenServices extends DbAccess {
   const SpecimenServices({required super.ref});
 
   Future<void> createSpecimen() async {
-    CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
+    CatalogFmt catalogFmt = await ref.watch(catalogFmtNotifierProvider.future);
     final String specimenUuid = uuid;
     await SpecimenQuery(dbAccess).createSpecimen(SpecimenCompanion(
       uuid: db.Value(specimenUuid),

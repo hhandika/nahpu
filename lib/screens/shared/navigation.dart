@@ -5,7 +5,6 @@ import 'package:nahpu/providers/narrative.dart';
 import 'package:nahpu/providers/sites.dart';
 import 'package:nahpu/services/navigation_services.dart';
 import 'package:nahpu/services/types/types.dart';
-import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/narrative/narrative_view.dart';
 import 'package:nahpu/screens/collecting/coll_event_view.dart';
@@ -400,7 +399,13 @@ class SpecimenIcons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
-    return Icon(matchCatFmtToIcon(catalogFmt, isSelected));
+    return Icon(
+      ref.watch(catalogFmtNotifierProvider).when(
+          data: (catalogFmt) {
+            return matchCatFmtToIcon(catalogFmt, isSelected);
+          },
+          loading: () => Icons.circle_outlined,
+          error: (e, s) => Icons.error_outline),
+    );
   }
 }

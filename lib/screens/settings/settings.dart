@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/screens/settings/collevent_settings.dart';
 import 'package:nahpu/screens/settings/common.dart';
 import 'package:nahpu/services/types/types.dart';
-import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/screens/settings/shared.dart';
 import 'package:nahpu/screens/settings/specimen_settings.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -26,7 +26,18 @@ class ProjectSettingState extends ConsumerState<AppSettings> {
       body: SafeArea(
         child: SettingsList(
           sections: [
-            GeneralSettings(ref: ref).getSetting(),
+            ref.watch(catalogFmtNotifierProvider).when(
+                  data: (data) =>
+                      GeneralSettings(ref: ref, catalogFmt: data).getSetting(),
+                  loading: () => const SettingsSection(
+                    title: SettingTitle(title: 'Loading...'),
+                    tiles: [],
+                  ),
+                  error: (e, s) => const SettingsSection(
+                    title: SettingTitle(title: 'Error'),
+                    tiles: [],
+                  ),
+                ),
             AppearanceSettings(ref: ref).getSetting(),
           ],
         ),
@@ -36,9 +47,13 @@ class ProjectSettingState extends ConsumerState<AppSettings> {
 }
 
 class GeneralSettings {
-  GeneralSettings({required this.ref});
+  GeneralSettings({
+    required this.ref,
+    required this.catalogFmt,
+  });
 
   final WidgetRef ref;
+  final CatalogFmt catalogFmt;
 
   SettingsSection getSetting() {
     return SettingsSection(
@@ -52,7 +67,6 @@ class GeneralSettings {
   }
 
   SettingsTile _getCatalogFmtSetting() {
-    final catalogFmt = ref.watch(catalogFmtNotifier);
     final selectedFmt = matchCatFmtToTaxonGroup(catalogFmt);
     return SettingsTile.navigation(
       leading: const Icon(MdiIcons.fileCabinet),
@@ -70,7 +84,6 @@ class GeneralSettings {
   }
 
   SettingsTile _getSpecimenPartSettings() {
-    CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
     return SettingsTile.navigation(
       leading: Icon(matchCatFmtToIcon(catalogFmt, false)),
       title: const SettingTitle(title: 'Specimen Parts'),
@@ -98,8 +111,7 @@ class GeneralSettings {
 }
 
 class CatalogFmtSelection extends ConsumerStatefulWidget {
-  const CatalogFmtSelection({Key? key, required this.selectedFmt})
-      : super(key: key);
+  const CatalogFmtSelection({super.key, required this.selectedFmt});
   final String selectedFmt;
   @override
   CatalogFmtSelectionState createState() => CatalogFmtSelectionState();
@@ -124,8 +136,8 @@ class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
                     : null,
                 onPressed: (context) {
                   ref
-                      .read(catalogFmtNotifier.notifier)
-                      .setCatalogFmt(CatalogFmt.generalMammals);
+                      .read(catalogFmtNotifierProvider.notifier)
+                      .set(CatalogFmt.generalMammals);
                   Navigator.pop(context);
                 },
               ),
@@ -137,8 +149,8 @@ class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
                     : null,
                 onPressed: (context) {
                   ref
-                      .read(catalogFmtNotifier.notifier)
-                      .setCatalogFmt(CatalogFmt.birds);
+                      .read(catalogFmtNotifierProvider.notifier)
+                      .set(CatalogFmt.birds);
                   Navigator.pop(context);
                 },
               ),
@@ -150,8 +162,8 @@ class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
                     : null,
                 onPressed: (context) {
                   ref
-                      .read(catalogFmtNotifier.notifier)
-                      .setCatalogFmt(CatalogFmt.bats);
+                      .read(catalogFmtNotifierProvider.notifier)
+                      .set(CatalogFmt.bats);
                   Navigator.pop(context);
                 },
               ),

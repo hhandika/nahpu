@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:nahpu/providers/settings.dart';
+import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/screens/collecting/components/menu_bar.dart';
 import 'package:nahpu/screens/sites/components/menu_bar.dart';
 import 'package:nahpu/screens/narrative/components/menu_bar.dart';
@@ -13,7 +13,7 @@ class ActionButtons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    CatalogFmt catalogFmt = ref.read(catalogFmtNotifier);
+    // CatalogFmt catalogFmt = ref.read(catalogFmtNotifier);
     return SpeedDial(
       icon: Icons.add,
       activeIcon: Icons.close,
@@ -40,8 +40,15 @@ class ActionButtons extends ConsumerWidget {
           },
         ),
         SpeedDialChild(
-          child: Icon(matchCatFmtToIcon(catalogFmt, false),
-              color: Theme.of(context).colorScheme.onSecondary),
+          child: ref.watch(catalogFmtNotifierProvider).when(
+                data: (catalogFmt) => Icon(matchCatFmtToIcon(catalogFmt, false),
+                    color: Theme.of(context).colorScheme.onSecondary),
+                loading: () => const CircularProgressIndicator(),
+                error: (e, s) => Icon(
+                  Icons.error_outline,
+                  color: Theme.of(context).colorScheme.onSecondary,
+                ),
+              ),
           backgroundColor: Theme.of(context).colorScheme.secondary,
           label: 'Create specimen',
           onTap: () async {

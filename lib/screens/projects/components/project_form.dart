@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/project_services.dart';
 import 'package:nahpu/services/utility_services.dart';
@@ -12,7 +13,6 @@ import 'package:nahpu/screens/projects/dashboard.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/providers/validation.dart';
 import 'package:nahpu/services/types/types.dart';
-import 'package:nahpu/providers/settings.dart';
 
 class ProjectForm extends ConsumerStatefulWidget {
   const ProjectForm({
@@ -312,7 +312,14 @@ class TaxonGroupFields extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    CatalogFmt catalogFmt = ref.watch(catalogFmtNotifier);
+    return ref.watch(catalogFmtNotifierProvider).when(
+          data: (fmt) => _buildDropdownMenu(fmt, ref),
+          loading: () => const CircularProgressIndicator(),
+          error: (err, stack) => Text('Error: $err'),
+        );
+  }
+
+  Widget _buildDropdownMenu(CatalogFmt catalogFmt, WidgetRef ref) {
     return DropdownButtonFormField(
       decoration: const InputDecoration(
         labelText: 'Main Taxon Group',
@@ -327,7 +334,7 @@ class TaxonGroupFields extends ConsumerWidget {
       value: matchCatFmtToTaxonGroup(catalogFmt),
       onChanged: (String? newValue) {
         catalogFmt = matchTaxonGroupToCatFmt(newValue!);
-        ref.read(catalogFmtNotifier.notifier).setCatalogFmt(catalogFmt);
+        ref.read(catalogFmtNotifierProvider.notifier).set(catalogFmt);
       },
     );
   }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/services/types/types.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -63,14 +62,14 @@ class ThemeSettingNotifier extends StateNotifier<ThemeMode> {
   }
 }
 
-final catalogFmtNotifier =
-    StateNotifierProvider<CatalogFmtNotifier, CatalogFmt>(
-        (ref) => CatalogFmtNotifier());
+// final catalogFmtNotifier =
+//     StateNotifierProvider<CatalogFmtNotifier, CatalogFmt>(
+//         (ref) => CatalogFmtNotifier());
 
-class CatalogFmtNotifier extends StateNotifier<CatalogFmt> {
-  CatalogFmtNotifier() : super(CatalogFmt.generalMammals);
+// class CatalogFmtNotifier extends StateNotifier<CatalogFmt> {
+//   CatalogFmtNotifier() : super(CatalogFmt.generalMammals);
 
-  void setCatalogFmt(CatalogFmt catalogFmt) {
-    state = catalogFmt;
-  }
-}
+//   void setCatalogFmt(CatalogFmt catalogFmt) {
+//     state = catalogFmt;
+//   }
+// }

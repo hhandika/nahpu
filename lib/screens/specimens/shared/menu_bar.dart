@@ -58,7 +58,7 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
         itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuSelection>>[
               PopupMenuItem<MenuSelection>(
                 value: MenuSelection.newSpecimen,
-                child: const CreateMenuButton(text: 'Create record'),
+                child: CreateMenuButton(text: _getNewSpecimenLabel()),
                 onTap: () => createNewSpecimens(context, ref),
               ),
               // const PopupMenuItem<MenuSelection>(
@@ -85,6 +85,10 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
                 onTap: () => _deleteAllSpecimens(),
               ),
             ]);
+  }
+
+  String _getNewSpecimenLabel() {
+    return 'Create specimen';
   }
 
   void _deleteSpecimen() {

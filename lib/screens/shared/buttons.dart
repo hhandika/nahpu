@@ -265,7 +265,10 @@ class CreateMenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: const Icon(Icons.create_outlined),
-      title: Text(text),
+      title: Text(
+        text,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
   }
 }

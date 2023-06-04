@@ -5,6 +5,7 @@ import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/media_queries.dart';
 import 'package:nahpu/services/database/specimen_queries.dart';
 import 'package:nahpu/services/types/specimens.dart';
+import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/services/utility_services.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -12,6 +13,41 @@ part 'specimens.g.dart';
 
 const String specimenTypePrefKey = 'specimenTypes';
 const String treatmentPrefKey = 'specimenTreatment';
+const String catalogFmtPrefKey = 'catalogFmt';
+
+@riverpod
+class CatalogFmtNotifier extends _$CatalogFmtNotifier {
+  Future<CatalogFmt> _fetchSetting() async {
+    final prefs = ref.watch(settingProvider);
+    final savedFmt = prefs.getString(catalogFmtPrefKey);
+
+    // Set to default general mammals if no setting is found
+    final CatalogFmt currentFmt = matchTaxonGroupToCatFmt(savedFmt);
+    if (savedFmt == null) {
+      await prefs.setString(
+          catalogFmtPrefKey, matchCatFmtToTaxonGroup(currentFmt));
+    }
+
+    return currentFmt;
+  }
+
+  @override
+  FutureOr<CatalogFmt> build() async {
+    return await _fetchSetting();
+  }
+
+  Future<void> set(CatalogFmt fmt) async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      final prefs = ref.watch(settingProvider);
+      final value = prefs.getString(catalogFmtPrefKey);
+      final setFmt = matchTaxonGroupToCatFmt(value);
+      if (setFmt == fmt) return fmt;
+      await prefs.setString(catalogFmtPrefKey, matchCatFmtToTaxonGroup(fmt));
+      return fmt;
+    });
+  }
+}
 
 final specimenEntryProvider =
     FutureProvider.autoDispose<List<SpecimenData>>((ref) {

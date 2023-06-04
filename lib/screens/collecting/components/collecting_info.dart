@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/providers/sites.dart';
-import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
@@ -123,17 +123,26 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
   }
 
   DateTime _getInitialStartDate() {
-    CatalogFmt catalogFmt = ref.read(catalogFmtNotifier);
-    switch (catalogFmt) {
-      case CatalogFmt.birds:
+    return ref.read(catalogFmtNotifierProvider).when(
+      data: (catalogFmt) {
+        switch (catalogFmt) {
+          case CatalogFmt.birds:
+            return DateTime.now();
+          case CatalogFmt.generalMammals:
+            return DateTime.now().subtract(const Duration(days: 1));
+          case CatalogFmt.bats:
+            return DateTime.now().subtract(const Duration(days: 1));
+          default:
+            return DateTime.now();
+        }
+      },
+      loading: () {
         return DateTime.now();
-      case CatalogFmt.generalMammals:
-        return DateTime.now().subtract(const Duration(days: 1));
-      case CatalogFmt.bats:
-        return DateTime.now().subtract(const Duration(days: 1));
-      default:
+      },
+      error: (e, s) {
         return DateTime.now();
-    }
+      },
+    );
   }
 }
 
@@ -347,16 +356,21 @@ class EventTimeField extends ConsumerWidget {
   }
 
   TimeOfDay _getInitialTime(WidgetRef ref) {
-    CatalogFmt catalogFmt = ref.read(catalogFmtNotifier);
-    switch (catalogFmt) {
-      case CatalogFmt.birds:
-        return TimeOfDay.now();
-      case CatalogFmt.generalMammals:
-        return const TimeOfDay(hour: 7, minute: 0);
-      case CatalogFmt.bats:
-        return TimeOfDay.now();
-      default:
-        return TimeOfDay.now();
-    }
+    return ref.read(catalogFmtNotifierProvider).when(
+          data: (catalogFmt) {
+            switch (catalogFmt) {
+              case CatalogFmt.birds:
+                return TimeOfDay.now();
+              case CatalogFmt.generalMammals:
+                return const TimeOfDay(hour: 7, minute: 0);
+              case CatalogFmt.bats:
+                return TimeOfDay.now();
+              default:
+                return TimeOfDay.now();
+            }
+          },
+          loading: () => TimeOfDay.now(),
+          error: (err, stack) => TimeOfDay.now(),
+        );
   }
 }
