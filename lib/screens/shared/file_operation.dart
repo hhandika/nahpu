@@ -46,15 +46,16 @@ class FileNameField extends StatelessWidget {
       decoration: InputDecoration(
           labelText: 'File name',
           hintText: 'Enter file name',
-          suffix: IconButton(
-            icon: Icon(
-              Icons.clear,
-              color: Theme.of(context).disabledColor,
-            ),
-            onPressed: () {
-              controller.fileNameCtr.clear();
-            },
-          )),
+          suffix: controller.fileNameCtr.text.isEmpty
+              ? null
+              : IconButton(
+                  icon: const Icon(
+                    Icons.clear,
+                  ),
+                  onPressed: () {
+                    controller.fileNameCtr.clear();
+                  },
+                )),
       keyboardType: TextInputType.text,
       onChanged: onChanged,
     );
