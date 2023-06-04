@@ -32,15 +32,15 @@ class HomeState extends ConsumerState<Home> {
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ]),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search_rounded),
-            onPressed: () {
-              // Navigator.of(context)
-              //     .push(MaterialPageRoute(builder: (_) => const Search()));
-            },
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: const Icon(Icons.search_rounded),
+        //     onPressed: () {
+        //       // Navigator.of(context)
+        //       //     .push(MaterialPageRoute(builder: (_) => const Search()));
+        //     },
+        //   ),
+        // ],
       ),
       resizeToAvoidBottomInset: false,
       drawer: const HomeMenuDrawer(),
@@ -55,6 +55,7 @@ class HomeState extends ConsumerState<Home> {
           future: _checkNewDb()),
       floatingActionButton: SpeedDial(
         icon: Icons.add_rounded,
+        activeIcon: Icons.close_rounded,
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
         children: [

@@ -16,6 +16,7 @@ class ActionButtons extends ConsumerWidget {
     CatalogFmt catalogFmt = ref.read(catalogFmtNotifier);
     return SpeedDial(
       icon: Icons.add,
+      activeIcon: Icons.close,
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
       direction: SpeedDialDirection.down,
