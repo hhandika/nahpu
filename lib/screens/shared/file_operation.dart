@@ -21,13 +21,14 @@ class FileOperationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: ScrollableLayout(
+      child: Center(
+          child: ScrollableLayout(
         child: Column(
           mainAxisAlignment: mainAxisAlignment,
           crossAxisAlignment: crossAxisAlignment,
           children: children,
         ),
-      ),
+      )),
     );
   }
 }

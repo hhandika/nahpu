@@ -103,7 +103,7 @@ class ReportFormState extends ConsumerState<ReportForm> {
               await _getDir();
             },
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 16),
           Wrap(
             spacing: 10,
             children: [

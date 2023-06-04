@@ -306,15 +306,16 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
                       content: TextField(
                         controller: fileNameCtr,
                         decoration: InputDecoration(
-                          labelText: 'File name',
-                          hintText: 'Enter file name without extension',
-                          suffix: IconButton(
-                            icon: const Icon(Icons.clear),
-                            onPressed: () {
-                              fileNameCtr.clear();
-                            },
-                          ),
-                        ),
+                            labelText: 'File name',
+                            hintText: 'Enter file name without extension',
+                            suffix: fileNameCtr.text.isNotEmpty
+                                ? IconButton(
+                                    onPressed: () {
+                                      fileNameCtr.clear();
+                                    },
+                                    icon: const Icon(Icons.clear),
+                                  )
+                                : null),
                       ),
                       actions: [
                         SecondaryButton(

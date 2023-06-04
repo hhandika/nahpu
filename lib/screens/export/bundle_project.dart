@@ -53,7 +53,7 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
               _hasSaved = false;
             },
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 16),
           Wrap(
             spacing: 20,
             children: [

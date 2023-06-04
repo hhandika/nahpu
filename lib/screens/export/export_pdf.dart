@@ -64,7 +64,7 @@ class ExportPdfFormState extends ConsumerState<ExportPdfForm> {
               _getDir();
             },
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 16),
           Wrap(
             spacing: 20,
             children: [
