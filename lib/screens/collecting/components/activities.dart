@@ -24,7 +24,7 @@ class CollActivityFields extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return FormCard(
-      title: 'Collecting Activity',
+      title: 'Activity',
       mainAxisSize: MainAxisSize.min,
       child: Column(
         children: [

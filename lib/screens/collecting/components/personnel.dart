@@ -46,7 +46,7 @@ class CollPersonnelFormState extends ConsumerState<CollPersonnelForm> {
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        const TitleForm(text: 'Collecting Personnel'),
+        const TitleForm(text: 'Personnel'),
         Expanded(
           child: _personnel.isNotEmpty
               ? ListView.builder(

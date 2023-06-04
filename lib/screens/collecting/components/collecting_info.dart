@@ -50,7 +50,7 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
       },
     );
     return FormCard(
-      title: 'Collecting Info',
+      title: 'Info',
       isPrimary: true,
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,

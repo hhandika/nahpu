@@ -26,7 +26,7 @@ class CollEffort extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FormCard(
-      title: 'Collecting Effort',
+      title: 'Effort',
       child: SizedBox(
         height: bottomCollEventHeight,
         child: Column(
