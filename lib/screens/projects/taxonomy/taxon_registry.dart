@@ -232,7 +232,7 @@ class RecordedCounts extends ConsumerWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: [
                 CountText(
