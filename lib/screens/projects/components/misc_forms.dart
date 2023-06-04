@@ -41,10 +41,8 @@ class MiscFormState extends ConsumerState<MiscForm>
           tabController: _tabController,
           length: _length,
           height: 320,
-          tabs: [
-            Tab(
-                icon: Icon(Icons.analytics_outlined,
-                    color: Theme.of(context).colorScheme.tertiary)),
+          tabs: const [
+            Tab(icon: Icon(Icons.analytics_outlined)),
           ],
           children: const [
             StatisticViewer(),
