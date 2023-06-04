@@ -170,6 +170,7 @@ class TaxonomicForm extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return FormCard(
       title: 'Taxonomy',
+      mainAxisAlignment: MainAxisAlignment.center,
       child: ref.watch(taxonDataProvider(specimenUuid)).when(
             data: (taxonData) {
               if (taxonData == null) {
@@ -178,9 +179,18 @@ class TaxonomicForm extends ConsumerWidget {
                 return AdaptiveLayout(
                   useHorizontalLayout: useHorizontalLayout,
                   children: [
-                    Text('Class: ${taxonData.taxonClass}'),
-                    Text('Order: ${taxonData.taxonOrder}'),
-                    Text('Family: ${taxonData.taxonFamily}'),
+                    Text(
+                      'Class: ${taxonData.taxonClass}',
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      'Order: ${taxonData.taxonOrder}',
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      'Family: ${taxonData.taxonFamily}',
+                      textAlign: TextAlign.center,
+                    ),
                   ],
                 );
               }
