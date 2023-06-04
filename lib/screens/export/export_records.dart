@@ -154,7 +154,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
             dirPath: _selectedDir,
             onPressed: () async => await _getDir(),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 24),
           Wrap(
             spacing: 20,
             children: [
