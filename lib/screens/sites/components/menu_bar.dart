@@ -55,16 +55,12 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
                 ),
                 onTap: () => createNewSite(context, ref),
               ),
-              const PopupMenuItem<SiteMenuSelection>(
-                value: SiteMenuSelection.duplicate,
-                child: DuplicateMenuButton(
-                  text: 'Duplicate site',
-                ),
-              ),
-              const PopupMenuItem<SiteMenuSelection>(
-                value: SiteMenuSelection.pdfExport,
-                child: PdfExportMenuButton(),
-              ),
+              // const PopupMenuItem<SiteMenuSelection>(
+              //   value: SiteMenuSelection.duplicate,
+              //   child: DuplicateMenuButton(
+              //     text: 'Duplicate site',
+              //   ),
+              // ),
               const PopupMenuDivider(height: 10),
               PopupMenuItem<SiteMenuSelection>(
                 value: SiteMenuSelection.deleteRecords,

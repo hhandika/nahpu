@@ -54,16 +54,6 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
                 child: const CreateMenuButton(text: 'Create narrative'),
                 onTap: () => createNewNarrative(context, ref),
               ),
-              const PopupMenuItem<MenuSelection>(
-                value: MenuSelection.duplicate,
-                child: DuplicateMenuButton(
-                  text: 'Duplicate site',
-                ),
-              ),
-              const PopupMenuItem<MenuSelection>(
-                value: MenuSelection.pdfExport,
-                child: PdfExportMenuButton(),
-              ),
               const PopupMenuDivider(height: 10),
               PopupMenuItem<MenuSelection>(
                 value: MenuSelection.deleteRecords,

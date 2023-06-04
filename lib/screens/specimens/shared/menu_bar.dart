@@ -61,14 +61,14 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
                 child: const CreateMenuButton(text: 'Create record'),
                 onTap: () => createNewSpecimens(context, ref),
               ),
-              const PopupMenuItem<MenuSelection>(
-                value: MenuSelection.duplicate,
-                child: DuplicateMenuButton(text: 'Duplicate record'),
-              ),
-              const PopupMenuItem<MenuSelection>(
-                value: MenuSelection.pdfExport,
-                child: PdfExportMenuButton(),
-              ),
+              // const PopupMenuItem<MenuSelection>(
+              //   value: MenuSelection.duplicate,
+              //   child: DuplicateMenuButton(text: 'Duplicate record'),
+              // ),
+              // const PopupMenuItem<MenuSelection>(
+              //   value: MenuSelection.pdfExport,
+              //   child: PdfExportMenuButton(),
+              // ),
               const PopupMenuDivider(height: 10),
               PopupMenuItem<MenuSelection>(
                 value: MenuSelection.deleteRecords,

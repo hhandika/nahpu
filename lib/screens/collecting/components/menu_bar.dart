@@ -65,14 +65,10 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
           child: const CreateMenuButton(text: 'Create event'),
           onTap: () => createNewCollEvents(context, ref),
         ),
-        const PopupMenuItem<MenuSelection>(
-          value: MenuSelection.duplicate,
-          child: DuplicateMenuButton(text: 'Duplicate event'),
-        ),
-        const PopupMenuItem<MenuSelection>(
-          value: MenuSelection.pdfExport,
-          child: PdfExportMenuButton(),
-        ),
+        // const PopupMenuItem<MenuSelection>(
+        //   value: MenuSelection.duplicate,
+        //   child: DuplicateMenuButton(text: 'Duplicate event'),
+        // ),
         const PopupMenuDivider(height: 10),
         PopupMenuItem<MenuSelection>(
           value: MenuSelection.deleteRecords,
