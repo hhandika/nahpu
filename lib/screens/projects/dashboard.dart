@@ -13,9 +13,7 @@ import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/styles/catalog_pages.dart';
 
 class Dashboard extends ConsumerStatefulWidget {
-  const Dashboard({
-    Key? key,
-  }) : super(key: key);
+  const Dashboard({super.key});
 
   @override
   DashboardState createState() => DashboardState();
