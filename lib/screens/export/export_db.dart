@@ -86,12 +86,11 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
             spacing: 20,
             children: [
               SaveSecondaryButton(hasSaved: _hasSaved),
-              _hasSaved
+              !_hasSaved
                   ? PrimaryButton(
                       text: 'Save',
-                      onPressed: _selectedDir == null
-                          ? null
-                          : () async {
+                      onPressed: exportCtr.isValid
+                          ? () async {
                               await _writeDb();
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -100,7 +99,8 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
                                   ),
                                 );
                               }
-                            },
+                            }
+                          : null,
                     )
                   : Builder(
                       builder: (context) {
