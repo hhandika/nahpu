@@ -47,7 +47,7 @@ class StatisticViewerState extends ConsumerState<StatisticViewer> {
               ),
               IconButton(
                 icon: const Icon(
-                  Icons.fullscreen_outlined,
+                  Icons.fullscreen,
                 ),
                 onPressed: () {
                   Navigator.pushReplacement(
@@ -68,7 +68,7 @@ class StatisticViewerState extends ConsumerState<StatisticViewer> {
     );
   }
 
-  /// We use costum transitions to make the fullscreen graph slide up from the
+  /// We use custom transitions to make the fullscreen graph slide up from the
   /// bottom of the screen.
   Route _openFullscreen() {
     return PageRouteBuilder(

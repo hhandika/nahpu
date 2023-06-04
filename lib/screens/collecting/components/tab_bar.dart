@@ -45,14 +45,11 @@ class _CollEventTabBarState extends State<CollEventTabBar>
         length: _length,
         tabController: _tabController,
         height: bottomCollEventHeight,
-        tabs: [
+        tabs: const [
           Tab(
-            icon: Icon(Icons.group_outlined,
-                color: Theme.of(context).colorScheme.tertiary),
+            icon: Icon(Icons.groups_2_outlined),
           ),
-          Tab(
-              icon: Icon(MdiIcons.weatherPartlyCloudy,
-                  color: Theme.of(context).colorScheme.tertiary)),
+          Tab(icon: Icon(MdiIcons.weatherPartlyCloudy)),
         ],
         children: [
           CollPersonnelForm(eventID: widget.eventID),

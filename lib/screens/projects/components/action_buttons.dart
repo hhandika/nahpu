@@ -25,7 +25,7 @@ class ActionButtons extends ConsumerWidget {
           child: Icon(Icons.place_outlined,
               color: Theme.of(context).colorScheme.onSecondary),
           backgroundColor: Theme.of(context).colorScheme.secondary,
-          label: 'Create Site',
+          label: 'Create site',
           onTap: () async {
             await createNewSite(context, ref);
           },
@@ -34,7 +34,7 @@ class ActionButtons extends ConsumerWidget {
           child: Icon(Icons.timeline,
               color: Theme.of(context).colorScheme.onSecondary),
           backgroundColor: Theme.of(context).colorScheme.secondary,
-          label: 'Create CollEvent',
+          label: 'Create event',
           onTap: () async {
             await createNewCollEvents(context, ref);
           },
@@ -43,7 +43,7 @@ class ActionButtons extends ConsumerWidget {
           child: Icon(matchCatFmtToIcon(catalogFmt, false),
               color: Theme.of(context).colorScheme.onSecondary),
           backgroundColor: Theme.of(context).colorScheme.secondary,
-          label: 'Create Specimen',
+          label: 'Create specimen',
           onTap: () async {
             await createNewSpecimens(context, ref);
           },
@@ -52,7 +52,7 @@ class ActionButtons extends ConsumerWidget {
             child: Icon(Icons.book_outlined,
                 color: Theme.of(context).colorScheme.onSecondary),
             backgroundColor: Theme.of(context).colorScheme.secondary,
-            label: 'Create Narrative',
+            label: 'Create narrative',
             onTap: () async {
               await createNewNarrative(context, ref);
             }),

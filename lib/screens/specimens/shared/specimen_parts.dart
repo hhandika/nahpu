@@ -61,9 +61,8 @@ class PartDataFormState extends ConsumerState<PartDataForm>
           Tab(
             icon: Icon(matchCatFmtToPartIcon(widget.catalogFmt)),
           ),
-          Tab(
-            icon: Icon(MdiIcons.databaseOutline,
-                color: Theme.of(context).colorScheme.tertiary),
+          const Tab(
+            icon: Icon(MdiIcons.databaseOutline),
           )
         ],
         children: [

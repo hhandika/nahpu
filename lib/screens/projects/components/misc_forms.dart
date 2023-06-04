@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/screens/projects/components/statistics.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 
@@ -44,7 +43,7 @@ class MiscFormState extends ConsumerState<MiscForm>
           height: 320,
           tabs: [
             Tab(
-                icon: Icon(MdiIcons.chartLine,
+                icon: Icon(Icons.analytics_outlined,
                     color: Theme.of(context).colorScheme.tertiary)),
           ],
           children: const [

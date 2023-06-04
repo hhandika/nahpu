@@ -63,7 +63,7 @@ class HomeState extends ConsumerState<Home> {
             child: Icon(Icons.create_rounded,
                 color: Theme.of(context).colorScheme.onSecondary),
             backgroundColor: Theme.of(context).colorScheme.secondary,
-            label: 'New Project',
+            label: 'New project',
             onTap: () {
               Navigator.push(
                 context,
