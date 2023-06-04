@@ -104,6 +104,7 @@ class PersonnelForm extends ConsumerStatefulWidget {
 
 class PersonnelFormState extends ConsumerState<PersonnelForm> {
   final _formKey = GlobalKey<FormState>();
+  bool _isShowMore = false;
 
   @override
   void initState() {
@@ -151,46 +152,52 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
               }
             },
           ),
-          TextFormField(
-            controller: widget.ctr.emailCtr,
-            decoration: InputDecoration(
-                labelText: 'Email',
-                hintText: 'Enter email',
-                errorText: ref.watch(personnelFormValidatorProvider).when(
-                      data: (data) => data.email.errMsg,
-                      loading: () => null,
-                      error: (e, s) => null,
-                    )),
-            onChanged: (value) {
-              if (widget.isEditing) {
-                _validateEditing();
-              } else {
-                widget.ctr.emailCtr.value = TextEditingValue(
-                    text: value.toLowerCase(),
-                    selection: widget.ctr.emailCtr.selection);
-                ref
-                    .watch(personnelFormValidatorProvider.notifier)
-                    .validateEmail(
-                      value,
-                    );
-              }
-            },
-          ),
-          TextFormField(
-            controller: widget.ctr.phoneCtr,
-            decoration: const InputDecoration(
-              labelText: 'Phone',
-              hintText: 'Enter phone',
+          Visibility(
+            visible: _isShowMore || widget.ctr.emailCtr.text.isNotEmpty,
+            child: TextFormField(
+              controller: widget.ctr.emailCtr,
+              decoration: InputDecoration(
+                  labelText: 'Email',
+                  hintText: 'Enter email',
+                  errorText: ref.watch(personnelFormValidatorProvider).when(
+                        data: (data) => data.email.errMsg,
+                        loading: () => null,
+                        error: (e, s) => null,
+                      )),
+              onChanged: (value) {
+                if (widget.isEditing) {
+                  _validateEditing();
+                } else {
+                  widget.ctr.emailCtr.value = TextEditingValue(
+                      text: value.toLowerCase(),
+                      selection: widget.ctr.emailCtr.selection);
+                  ref
+                      .watch(personnelFormValidatorProvider.notifier)
+                      .validateEmail(
+                        value,
+                      );
+                }
+              },
             ),
-            keyboardType: TextInputType.phone,
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-            ],
-            onChanged: (value) {
-              if (widget.isEditing) {
-                _validateEditing();
-              }
-            },
+          ),
+          Visibility(
+            visible: _isShowMore || widget.ctr.phoneCtr.text.isNotEmpty,
+            child: TextFormField(
+              controller: widget.ctr.phoneCtr,
+              decoration: const InputDecoration(
+                labelText: 'Phone',
+                hintText: 'Enter phone',
+              ),
+              keyboardType: TextInputType.phone,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+              onChanged: (value) {
+                if (widget.isEditing) {
+                  _validateEditing();
+                }
+              },
+            ),
           ),
           DropdownButtonFormField(
             value: widget.ctr.roleCtr,
@@ -249,21 +256,31 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
               ],
             ),
           ),
-          TextField(
-            controller: widget.ctr.noteCtr,
-            decoration: const InputDecoration(
-              labelText: 'Notes',
-              hintText: 'Write notes',
+          Visibility(
+            visible: _isShowMore || widget.ctr.noteCtr.text.isNotEmpty,
+            child: TextField(
+              controller: widget.ctr.noteCtr,
+              decoration: const InputDecoration(
+                labelText: 'Notes',
+                hintText: 'Write notes',
+              ),
+              maxLines: 3,
+              onChanged: (value) {
+                if (widget.isEditing) {
+                  _validateEditing();
+                }
+              },
             ),
-            maxLines: 3,
-            onChanged: (value) {
-              if (widget.isEditing) {
-                _validateEditing();
-              }
-            },
           ),
+          TextButton(
+              onPressed: () {
+                setState(() {
+                  _isShowMore = !_isShowMore;
+                });
+              },
+              child: Text(_isShowMore ? 'Show less' : 'Show more')),
           const SizedBox(
-            height: 20,
+            height: 16,
           ),
           Wrap(
             spacing: 10,

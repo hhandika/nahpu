@@ -402,7 +402,7 @@ class PartFormState extends ConsumerState<PartForm> {
             },
             child: Text(_showMore ? 'Show less' : 'Show more'),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 16),
           FormButtonWithDelete(
             isEditing: widget.isEditing,
             onDeleted: () {
