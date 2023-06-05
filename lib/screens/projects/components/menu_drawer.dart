@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/export/bundle_project.dart';
 import 'package:nahpu/screens/export/export_db.dart';
+import 'package:nahpu/screens/export/export_pdf.dart';
 import 'package:nahpu/screens/export/export_records.dart';
 import 'package:nahpu/screens/export/report.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
@@ -66,16 +67,16 @@ class ProjectMenuDrawerState extends ConsumerState<ProjectMenuDrawer> {
               );
             },
           ),
-          // ListTile(
-          //   leading: const Icon(Icons.picture_as_pdf_rounded),
-          //   title: const Text('Export to pdf'),
-          //   onTap: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(builder: (context) => const ExportPdfForm()),
-          //     );
-          //   },
-          // ),
+          ListTile(
+            leading: const Icon(Icons.picture_as_pdf_rounded),
+            title: const Text('Export to pdf'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ExportPdfForm()),
+              );
+            },
+          ),
           ListTile(
             leading: Icon(Icons.adaptive.share_rounded),
             title: const Text('Export records'),
