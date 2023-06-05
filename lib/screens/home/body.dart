@@ -65,7 +65,7 @@ class ToggleView extends StatefulWidget {
 }
 
 class _ToggleViewState extends State<ToggleView> {
-  List<bool> isSelected = [true, false];
+  bool isListSelected = true;
 
   @override
   Widget build(BuildContext context) {
@@ -77,31 +77,22 @@ class _ToggleViewState extends State<ToggleView> {
           children: [
             Text('Existing projects:',
                 style: Theme.of(context).textTheme.titleLarge),
-            ToggleButtons(
-                isSelected: isSelected,
-                borderRadius: BorderRadius.circular(10),
-                onPressed: (int index) {
+            IconButton(
+                onPressed: () {
                   setState(() {
-                    for (int buttonIndex = 0;
-                        buttonIndex < isSelected.length;
-                        buttonIndex++) {
-                      isSelected[buttonIndex] = buttonIndex == index;
-                    }
+                    isListSelected = !isListSelected;
                   });
                 },
-                children: [
-                  Icon(isSelected[0] ? Icons.list : Icons.list_alt),
-                  Icon(isSelected[1]
-                      ? Icons.grid_view_rounded
-                      : Icons.grid_view_outlined),
-                ]),
+                icon: isListSelected
+                    ? const Icon(Icons.grid_view)
+                    : const Icon(Icons.list_alt)),
           ],
         ),
         Divider(
           color: Theme.of(context).colorScheme.onSurface,
           thickness: 1.5,
         ),
-        isSelected[0]
+        isListSelected
             ? ProjectListView(projectList: widget.projectList)
             : ProjectGridView(
                 projectList: widget.projectList,
