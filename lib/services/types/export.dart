@@ -39,6 +39,7 @@ const List<String> recordTypeList = [
 ];
 
 const collRecordExportList = [
+  'specimenUUID',
   'cataloger',
   'fieldID',
   'preparator',
@@ -62,6 +63,7 @@ const siteExportList = [
   'county',
   'municipality',
   'specificLocality',
+  'siteNotes',
   'verbatimLocality',
   'coordinates',
 ];

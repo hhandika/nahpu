@@ -1,40 +1,31 @@
 import 'dart:io';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/export/common.dart';
 import 'package:nahpu/services/export/media_writer.dart';
+import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/site_services.dart';
 import 'package:nahpu/services/types/export.dart';
 
-class SiteWriterServices {
-  SiteWriterServices({
-    required this.ref,
-    this.delimiter = csvDelimiter,
+class SiteWriterServices extends DbAccess {
+  const SiteWriterServices({
+    required super.ref,
   });
 
-  final WidgetRef ref;
-
-  String delimiter;
-
   Future<void> writeSiteDelimited(File filePath, bool isCsv) async {
-    delimiter = isCsv ? csvDelimiter : tsvDelimiter;
+    String delimiter = isCsv ? csvDelimiter : tsvDelimiter;
     final file = await filePath.create(recursive: true);
     final writer = file.openWrite();
-    _writeHeader(writer, siteExportList);
-    writer.writeln('media');
+    List<String> header = [...siteExportList, 'media'];
+    writer.writeln(header.join(delimiter));
 
     List<SiteData> siteList = await SiteServices(ref: ref).getAllSites();
     for (var site in siteList) {
-      String siteDetails = await getSiteDetails(site.id, true);
+      List<String> siteDetails = await getSiteDetails(site.id);
       String mediaDetails = await _getSiteMedia(site.id);
-      writer.writeln('$siteDetails$delimiter$mediaDetails');
-    }
-  }
+      List<String> content = [...siteDetails, mediaDetails];
 
-  void _writeHeader(IOSink writer, List<String> headerList) {
-    for (var val in headerList) {
-      writer.write('$val$delimiter');
+      writer.writeln(content.toDelimitedText(delimiter));
     }
   }
 
@@ -45,28 +36,46 @@ class SiteWriterServices {
     return mediaDetails;
   }
 
-  Future<String> getSiteDetails(int? siteID, bool withHabitat) async {
+  Future<List<String>> getSiteDetails(int? siteID) async {
+    if (siteID == null) {
+      return [''];
+    } else {
+      SiteData? data = await _getSiteData(siteID);
+      if (data == null) {
+        return [''];
+      } else {
+        String verbatimLocality = _createVerbatimLocality(data);
+
+        List<String> siteDelimited = _getSiteDelimited(data);
+        String coordinates = await getCoordinates(siteID);
+        List<String> siteDetails = [
+          data.siteID.toString(),
+          data.habitatType ?? '',
+          ...siteDelimited,
+          verbatimLocality,
+          coordinates
+        ];
+        return siteDetails;
+      }
+    }
+  }
+
+  Future<String> getVerbatimLocality(int? siteID) async {
     if (siteID == null) {
       return '';
     } else {
-      SiteData? data = await SiteServices(ref: ref).getSite(siteID);
-
+      SiteData? data = await _getSiteData(siteID);
       if (data == null) {
-        return delimiter * 5;
+        return '';
       } else {
-        String verbatimLocality = _getVerbatimLocality(data);
-        if (withHabitat) {
-          String siteDelimited = _getSiteDelimited(data);
-          String coordinates = await getCoordinates(siteID);
-          String siteLocality = '$siteDelimited$delimiter'
-              '$verbatimLocality$delimiter$coordinates';
-          return '${data.siteID}$delimiter'
-              '${data.habitatType}$delimiter'
-              '$siteLocality';
-        }
+        String verbatimLocality = _createVerbatimLocality(data);
         return verbatimLocality;
       }
     }
+  }
+
+  Future<SiteData?> _getSiteData(int? siteID) async {
+    return await SiteServices(ref: ref).getSite(siteID);
   }
 
   Future<String> getCoordinates(int? siteID) async {
@@ -75,27 +84,28 @@ class SiteWriterServices {
     }
     List<CoordinateData> coordinateList =
         await CoordinateServices(ref: ref).getCoordinatesBySiteID(siteID);
-    String coordinateDetails =
-        coordinateList.map((e) => _getCoordinateData(e)).join(writerSeparator);
+    String coordinateDetails = coordinateList
+        .map((e) => _getCoordinateData(e).join())
+        .join(writerSeparator);
 
-    return '"$coordinateDetails"';
+    return coordinateDetails;
   }
 
-  Future<String> getCoordinateById(int? coordinateId) async {
+  Future<List<String>> getCoordinateById(int? coordinateId) async {
     if (coordinateId == null) {
-      return '';
+      return [''];
     }
     CoordinateData? data =
         await CoordinateServices(ref: ref).getCoordinateById(coordinateId);
     if (data == null) {
-      return '';
+      return [''];
     } else {
-      String coordinates = _getCoordinateData(data);
-      return '"$coordinates"';
+      List<String> coordinates = _getCoordinateData(data);
+      return coordinates;
     }
   }
 
-  String _getCoordinateData(CoordinateData data) {
+  List<String> _getCoordinateData(CoordinateData data) {
     String nameId = data.nameId != null ? '${data.nameId};' : 'No name';
     String latLong =
         data.decimalLatitude != null && data.decimalLongitude != null
@@ -114,31 +124,36 @@ class SiteWriterServices {
         data.gpsUnit != null ? '${data.gpsUnit}' : 'Unknown GPS unit';
     String notes =
         data.notes != null || data.notes!.isNotEmpty ? '${data.notes}' : '';
-    return '$nameId$latLong$elevation$uncertainty$datum$gpsUnit$notes';
+    return [nameId, latLong, elevation, uncertainty, datum, gpsUnit, notes];
   }
 
-  String _getSiteDelimited(SiteData data) {
-    String country =
-        data.country != null ? '${data.country}$delimiter' : delimiter;
-    String stateProvince = data.stateProvince != null
-        ? '${data.stateProvince}$delimiter'
-        : delimiter;
-    String county =
-        data.county != null ? '${data.county}$delimiter' : delimiter;
+  List<String> _getSiteDelimited(SiteData data) {
+    String country = data.country != null ? '${data.country}' : '';
+    String stateProvince =
+        data.stateProvince != null ? '${data.stateProvince}' : '';
+    String county = data.county != null ? '${data.county}' : '';
     String municipality =
-        data.municipality != null ? '${data.municipality}$delimiter' : '';
-    String specificLocality = data.locality != null ? '"${data.locality}"' : '';
-    return '$country$stateProvince$county$municipality$specificLocality';
+        data.municipality != null ? '${data.municipality}' : '';
+    String specificLocality = data.locality != null ? '${data.locality}' : '';
+    String siteRemark = data.remark != null ? '${data.remark}' : '';
+    return [
+      country,
+      stateProvince,
+      county,
+      municipality,
+      specificLocality,
+      siteRemark
+    ];
   }
 
-  String _getVerbatimLocality(SiteData data) {
+  String _createVerbatimLocality(SiteData data) {
     String country = data.country != null ? '${data.country}: ' : '';
     String stateProvince =
         data.stateProvince != null ? '${data.stateProvince}; ' : '';
     String county = data.county != null ? '${data.county}; ' : '';
     String municipality =
         data.municipality != null ? '${data.municipality}; ' : '';
-    String locality = data.locality != null ? '${data.locality}' : '';
-    return '"$country$stateProvince$county$municipality$locality"';
+    String specificLocality = data.locality != null ? '${data.locality}' : '';
+    return '$country$stateProvince$county$municipality$specificLocality';
   }
 }

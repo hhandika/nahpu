@@ -11,83 +11,68 @@ import 'package:nahpu/services/export/site_writer.dart';
 class CollEventRecordWriter extends DbAccess {
   CollEventRecordWriter({
     required super.ref,
-    required this.isCsv,
   });
 
-  final bool isCsv;
-
-  String get delimiter => isCsv ? csvDelimiter : tsvDelimiter;
-
-  Future<void> writeCollEventDelimited(File filePath) async {
+  Future<void> writeCollEventDelimited(File filePath, bool isCsv) async {
+    String delimiter = isCsv ? csvDelimiter : tsvDelimiter;
     final file = await filePath.create(recursive: true);
     final writer = file.openWrite();
-    _writeSiteHeader(writer);
-    _writeCollEventHeader(writer);
+    List<String> header = [...siteExportList, ...collEventExportList];
+    writer.writeln(header.join(delimiter));
     List<CollEventData> collEventList =
         await CollEventServices(ref: ref).getAllCollEvents();
 
     for (var collEvent in collEventList) {
-      String details = await getCOllEventSiteDetails(collEvent.id);
-      writer.writeln(details);
+      List<String> eventDetails = await getCOllEventSiteDetails(collEvent.id);
+      String content = eventDetails.toDelimitedText(delimiter);
+      writer.writeln(content);
     }
 
     await writer.close();
   }
 
-  void _writeSiteHeader(IOSink writer) {
-    for (var val in siteExportList) {
-      writer.write('"$val"$delimiter');
-    }
-  }
-
-  void _writeCollEventHeader(IOSink writer) {
-    for (var val in collEventExportList) {
-      if (val == collEventExportList.last) {
-        writer.writeln('"$val"');
-      } else {
-        writer.write('"$val"$delimiter');
-      }
-    }
-  }
-
-  Future<String> getCOllEventSiteDetails(int? collEventId) async {
-    int columnSize = siteExportList.length + collEventExportList.length;
-    String emptyDelimiters = delimiter * columnSize;
+  Future<List<String>> getCOllEventSiteDetails(int? collEventId) async {
+    // String emptyDelimiters = delimiter * columnSize;
     if (collEventId == null) {
-      return emptyDelimiters;
+      return List.empty();
     } else {
       CollEventData? collEvent =
           await CollEventServices(ref: ref).getCollEvent(collEventId);
       if (collEvent == null) {
-        return emptyDelimiters;
+        return List.empty();
       }
 
-      String siteDetails = await _getSite(collEvent.siteID, delimiter);
-      String collEventDetails = await _getEventDetails(collEvent);
-      return '$siteDetails$delimiter$collEventDetails';
+      List<String> siteDetails = await _getSite(collEvent.siteID);
+      List<String> collEventDetails = await _getEventDetails(collEvent);
+      return [...siteDetails, ...collEventDetails];
     }
   }
 
-  Future<String> _getEventDetails(CollEventData data) async {
+  Future<List<String>> _getEventDetails(CollEventData data) async {
     String eventID = await CollEventServices(ref: ref).getCollEventID(data);
-    String methods = '"${data.primaryCollMethod}"';
-    String startDate = '"${data.startDate ?? ''}"';
-    String endDate = '"${data.endDate ?? ''}"';
-    String startTime = '"${data.startTime ?? ''}"';
-    String endTime = '"${data.endTime ?? ''}"';
+    String methods = data.primaryCollMethod ?? '';
+    String startDate = data.startDate ?? '';
+    String endDate = data.endDate ?? '';
+    String startTime = data.startTime ?? '';
+    String endTime = data.endTime ?? '';
     String effort = await _getEffort(data.id);
     String person = await _getAllPersonnel(data.id);
 
-    return '"$eventID"$delimiter$methods$delimiter'
-        '$startDate$delimiter$endDate$delimiter'
-        '$startTime$delimiter$endTime$delimiter'
-        '$effort$delimiter$person';
+    return [
+      eventID,
+      methods,
+      startDate,
+      endDate,
+      startTime,
+      endTime,
+      effort,
+      person,
+    ];
   }
 
-  Future<String> _getSite(int? siteID, String delimiter) async {
-    String siteDetails =
-        await SiteWriterServices(ref: ref, delimiter: delimiter)
-            .getSiteDetails(siteID, true);
+  Future<List<String>> _getSite(int? siteID) async {
+    List<String> siteDetails =
+        await SiteWriterServices(ref: ref).getSiteDetails(siteID);
     return siteDetails;
   }
 

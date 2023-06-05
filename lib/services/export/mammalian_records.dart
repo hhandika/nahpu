@@ -7,37 +7,39 @@ import 'package:nahpu/services/specimen_services.dart';
 class MammalianMeasurements {
   MammalianMeasurements({
     required this.ref,
-    required this.delimiter,
     required this.specimenUuid,
     required this.isBatRecord,
   });
 
   final WidgetRef ref;
-  final String delimiter;
   final String specimenUuid;
   final bool isBatRecord;
   late MammalMeasurementData data;
 
-  Future<String> getMeasurements() async {
+  Future<List<String>> getMeasurements() async {
     data =
         await SpecimenServices(ref: ref).getMammalMeasurementData(specimenUuid);
-    String standardMeasurement = _getStdMeasurement();
-    String measurement = isBatRecord
-        ? '$standardMeasurement$delimiter${data.forearm ?? ''}'
+    List<String> standardMeasurement = _getStdMeasurement();
+    List<String> measurement = isBatRecord
+        ? [...standardMeasurement, _getForearm()]
         : standardMeasurement;
     String age = data.age != null ? specimenAgeList[data.age!] : '';
-    String sexData = _getSexData();
-    return '$measurement$delimiter$age$delimiter$sexData';
+    List<String> sexData = _getSexData();
+    return [...measurement, age, ...sexData];
   }
 
-  String _getStdMeasurement() {
+  String _getForearm() {
+    return data.forearm != null ? data.forearm.toString() : '';
+  }
+
+  List<String> _getStdMeasurement() {
     String totalLength = '${data.totalLength ?? ''}';
     String tailLength = '${data.tailLength ?? ''}';
     String hindFootLength = '${data.hindFootLength ?? ''}';
     String earLength = '${data.earLength ?? ''}';
     String weight = '${data.weight ?? ''}';
     String accuracy = data.accuracy ?? '';
-    List<String> measurementList = [
+    return [
       totalLength,
       tailLength,
       hindFootLength,
@@ -45,39 +47,42 @@ class MammalianMeasurements {
       weight,
       accuracy,
     ];
-    return measurementList.join(delimiter);
   }
 
-  String _getSexData() {
+  /// Sex data contains:
+  /// 1. Sex
+  /// 2. Male gonads
+  /// 3. Female gonads
+  List<String> _getSexData() {
     SpecimenSex? sexEnum = getSpecimenSex(data.sex);
     String sex = data.sex != null ? specimenSexList[data.sex!] : '';
-    String emptyMale = delimiter * 2;
-    String emptyFemale = delimiter * 3;
+    List<String> emptyMale = List.filled(2, '');
+    List<String> emptyFemale = List.filled(3, '');
     switch (sexEnum) {
       case SpecimenSex.male:
-        String maleGonad = _getMaleGonad();
-        return '$sex$delimiter$maleGonad$emptyFemale';
+        List<String> maleGonad = _getMaleGonad();
+        return [sex, ...maleGonad, ...emptyFemale];
       case SpecimenSex.female:
-        String femaleGonad = _getFemaleGonad();
-        return '$sex$delimiter$emptyMale$femaleGonad';
+        List<String> femaleGonad = _getFemaleGonad();
+        return [sex, ...emptyMale, ...femaleGonad];
       case SpecimenSex.unknown:
-        return '$sex$delimiter$emptyMale$emptyFemale';
+        return [sex, ...emptyMale, ...emptyFemale];
       default:
-        return '$sex$delimiter$emptyMale$emptyFemale';
+        return [sex, ...emptyMale, ...emptyFemale];
     }
   }
 
-  String _getFemaleGonad() {
+  List<String> _getFemaleGonad() {
     String vaginaOpening = data.vaginaOpening != null
         ? vaginaOpeningList[data.vaginaOpening!]
         : '';
     if (data.mammaeCondition != null) {
       String mammaeCondition = mammaeConditionList[data.mammaeCondition!];
       String mammaeFormula = _getMammaeFormula();
-      return '$vaginaOpening$delimiter$mammaeCondition$delimiter$mammaeFormula';
+      return [vaginaOpening, mammaeCondition, mammaeFormula];
     } else {
-      String empty = delimiter * 2;
-      return '$vaginaOpening$empty';
+      List<String> empty = List.filled(2, '');
+      return [vaginaOpening, ...empty];
     }
   }
 
@@ -95,15 +100,7 @@ class MammalianMeasurements {
     return '$ingCount$abdCount$axCount';
   }
 
-  String _matchTestisPos(int? testisPos) {
-    if (testisPos == null) {
-      return '';
-    } else {
-      return testisPositionList[testisPos];
-    }
-  }
-
-  String _getMaleGonad() {
+  List<String> _getMaleGonad() {
     TestisPosition? posEnum = getTestisPosition(data.testisPosition);
 
     if (posEnum == TestisPosition.scrotal) {
@@ -112,9 +109,18 @@ class MammalianMeasurements {
           data.testisLength != null ? '${data.testisLength}' : '';
       String testisWidth =
           data.testisWidth != null ? 'x${data.testisWidth}mm' : '';
-      return '$testisPos$delimiter$testisLength$testisWidth';
+      String testisSize = '$testisLength$testisWidth';
+      return [testisPos, testisSize];
     } else {
-      return delimiter;
+      return ['', ''];
+    }
+  }
+
+  String _matchTestisPos(int? testisPos) {
+    if (testisPos == null) {
+      return '';
+    } else {
+      return testisPositionList[testisPos];
     }
   }
 }

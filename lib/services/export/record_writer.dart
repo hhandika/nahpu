@@ -18,41 +18,53 @@ class SpecimenRecordWriter {
 
   final WidgetRef ref;
   final SpecimenRecordType recordType;
-  late String delimiter;
 
   Future<void> writeRecordDelimited(File filePath, bool isCsv) async {
-    delimiter = isCsv ? csvDelimiter : tsvDelimiter;
+    String delimiter = isCsv ? csvDelimiter : tsvDelimiter;
 
     List<SpecimenData> specimenList = await _getSpecimenListByTaxonGroup();
     final file = await filePath.create(recursive: true);
     final writer = file.openWrite();
-    _writeHeader(writer, collRecordExportList);
-    _writeHeader(writer, specimenExportList); // Include specimenCoordinates
-    _writeHeader(writer, siteExportList);
-    _writeHeader(writer, collEventExportList);
-    _writeHeader(writer, _getMeasurementHeader());
-    writer.writeln('media');
+    List<String> header = [
+      ...collRecordExportList,
+      ...specimenExportList,
+      ...siteExportList,
+      ...collEventExportList,
+      ..._getMeasurementHeader(),
+      'media'
+    ];
+    writer.writeln(header.toDelimitedText(delimiter));
 
     for (var element in specimenList) {
-      String cataloger = await _getCatalogerName(element.catalogerID);
-      String fieldId = '${element.fieldNumber ?? ''}';
+      ({String name, String initial}) cataloger =
+          await _getCatalogerIdentity(element.catalogerID);
+      String fieldId = '${cataloger.initial}${element.fieldNumber ?? ' '}';
       String preparator = await _getPreparatorName(element.preparatorID);
-      String species = await _getSpeciesName(element.speciesID);
+      List<String> taxonomy = await _getSpeciesName(element.speciesID);
       String parts = await _getPartList(element.uuid);
       String condition = element.condition ?? '';
       String specimenCoordinate =
           await _getSpecimenCoordinate(element.coordinateID);
-      String measurement = await _getMeasurement(element.uuid);
-      String collSiteDetails =
-          await _getCollEventSiteDetails(element.collEventID, isCsv);
+      List<String> collSiteDetails = await _getCollEventSiteDetails(
+        element.collEventID,
+      );
+      List<String> measurement = await _getMeasurement(element.uuid);
 
       String media = await _getSpecimenMedia(element.uuid);
-      String mainLine =
-          '$cataloger$fieldId$delimiter$preparator$delimiter$species$delimiter'
-          '$parts$delimiter$condition$delimiter'
-          '$specimenCoordinate$delimiter'
-          '$collSiteDetails';
-      writer.writeln('$mainLine$delimiter$measurement$delimiter$media');
+      List<String> content = [
+        element.uuid.toString(),
+        cataloger.name,
+        fieldId,
+        preparator,
+        ...taxonomy,
+        parts,
+        condition,
+        specimenCoordinate,
+        ...collSiteDetails,
+        ...measurement,
+        media
+      ];
+      writer.writeln(content.toDelimitedText(delimiter));
     }
 
     writer.close();
@@ -84,31 +96,30 @@ class SpecimenRecordWriter {
     return await service.getSpecimenListByTaxonGroup(taxonGroup);
   }
 
-  void _writeHeader(IOSink writer, List<String> headerList) {
-    for (var val in headerList) {
-      writer.write('$val$delimiter');
-    }
-  }
-
-  Future<String> _getSpeciesName(int? speciesId) async {
+  Future<List<String>> _getSpeciesName(int? speciesId) async {
     if (speciesId == null) {
-      return '';
+      return [''];
     } else {
       TaxonomyData taxon =
           await TaxonomyService(ref: ref).getTaxonById(speciesId);
 
-      return '${taxon.taxonOrder}$delimiter${taxon.taxonFamily}$delimiter'
-          '${taxon.genus}$delimiter${taxon.specificEpithet}';
+      return [
+        taxon.taxonOrder ?? '',
+        taxon.taxonFamily ?? '',
+        taxon.genus ?? '',
+        taxon.specificEpithet ?? '',
+      ];
     }
   }
 
-  Future<String> _getCatalogerName(String? catalogerUuid) async {
+  Future<({String name, String initial})> _getCatalogerIdentity(
+      String? catalogerUuid) async {
     if (catalogerUuid == null) {
-      return '';
+      return (name: '', initial: '');
     } else {
       PersonnelData person =
           await PersonnelServices(ref: ref).getPersonnelByUuid(catalogerUuid);
-      return '${person.name}$delimiter${person.initial}';
+      return (name: person.name ?? '', initial: person.initial ?? '');
     }
   }
 
@@ -118,25 +129,24 @@ class SpecimenRecordWriter {
     } else {
       PersonnelData person =
           await PersonnelServices(ref: ref).getPersonnelByUuid(preparatorUuid);
-      return '${person.name}';
+      return person.name ?? '';
     }
   }
 
-  Future<String> _getCollEventSiteDetails(int? collEventId, bool isCsv) async {
-    return await CollEventRecordWriter(ref: ref, isCsv: isCsv)
-        .getCOllEventSiteDetails(
-      collEventId,
-    );
+  Future<List<String>> _getCollEventSiteDetails(int? collEventId) async {
+    return await CollEventRecordWriter(ref: ref)
+        .getCOllEventSiteDetails(collEventId);
   }
 
   Future<String> _getSpecimenCoordinate(int? coordinateId) async {
     if (coordinateId == null) {
       return '';
     } else {
-      String coordinate = await SiteWriterServices(ref: ref).getCoordinateById(
+      List<String> coordinate =
+          await SiteWriterServices(ref: ref).getCoordinateById(
         coordinateId,
       );
-      return coordinate;
+      return coordinate.join();
     }
   }
 
@@ -148,37 +158,36 @@ class SpecimenRecordWriter {
         .join(writerSeparator);
   }
 
-  Future<String> _getMeasurement(String specimenUuid) async {
-    // bool isBat = recordType == SpecimenRecordType.bats ||
-    //     recordType == SpecimenRecordType.allMammals;
+  Future<List<String>> _getMeasurement(String specimenUuid) async {
+    bool isBat = recordType == SpecimenRecordType.bats ||
+        recordType == SpecimenRecordType.allMammals;
     switch (recordType) {
       case SpecimenRecordType.generalMammals:
-        return await _getMeasurementGeneralMammals(specimenUuid, false);
+        return await _getMeasurementGeneralMammals(specimenUuid, isBat);
       case SpecimenRecordType.birds:
         return await _getMeasurementBirds(specimenUuid);
       case SpecimenRecordType.bats:
-        return await _getMeasurementGeneralMammals(specimenUuid, true);
+        return await _getMeasurementGeneralMammals(specimenUuid, isBat);
       case SpecimenRecordType.allMammals:
-        return await _getMeasurementGeneralMammals(specimenUuid, true);
+        return await _getMeasurementGeneralMammals(specimenUuid, isBat);
       default:
         throw Exception('Invalid record type');
     }
   }
 
-  Future<String> _getMeasurementGeneralMammals(
+  Future<List<String>> _getMeasurementGeneralMammals(
       String specimenUuid, bool isBatRecord) async {
     MammalianMeasurements mammals = MammalianMeasurements(
       specimenUuid: specimenUuid,
       ref: ref,
-      delimiter: delimiter,
       isBatRecord: isBatRecord,
     );
     return await mammals.getMeasurements();
   }
 
-  Future<String> _getMeasurementBirds(String specimenUuid) async {
-    AvianMeasurements birds = AvianMeasurements(
-        specimenUuid: specimenUuid, ref: ref, delimiter: delimiter);
+  Future<List<String>> _getMeasurementBirds(String specimenUuid) async {
+    AvianMeasurements birds =
+        AvianMeasurements(specimenUuid: specimenUuid, ref: ref);
     return await birds.getMeasurements();
   }
 

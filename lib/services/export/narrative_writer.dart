@@ -11,37 +11,33 @@ import 'package:nahpu/services/export/site_writer.dart';
 class NarrativeRecordWriter extends DbAccess {
   NarrativeRecordWriter({required super.ref});
 
-  late String delimiter;
-
   Future<void> writeNarrativeDelimited(File filePath, bool isCsv) async {
-    delimiter = isCsv ? csvDelimiter : tsvDelimiter;
+    String delimiter = isCsv ? csvDelimiter : tsvDelimiter;
     final file = await filePath.create(recursive: true);
     final writer = file.openWrite();
-    String narrativeHeader =
-        narrativeExportList.map((e) => '"$e"').join(delimiter);
+    String narrativeHeader = narrativeExportList.join(delimiter);
     writer.writeln(narrativeHeader);
     List<NarrativeData> narrativeList =
         await NarrativeServices(ref: ref).getAllNarrative();
     for (var narrative in narrativeList) {
-      List<String> narrativeList = await getNarrativeExportList(narrative);
-      String narrativeDelimited = narrativeList.join(delimiter);
+      List<String> narrativeList = await getNarrative(narrative);
+      String narrativeDelimited = narrativeList.toDelimitedText(delimiter);
       writer.writeln(narrativeDelimited);
     }
 
     await writer.close();
   }
 
-  Future<List<String>> getNarrativeExportList(NarrativeData narrative) async {
-    String verbatimLocality =
-        await SiteWriterServices(ref: ref, delimiter: delimiter)
-            .getSiteDetails(narrative.siteID, false);
+  Future<List<String>> getNarrative(NarrativeData narrative) async {
+    String verbatimLocality = await SiteWriterServices(ref: ref)
+        .getVerbatimLocality(narrative.siteID);
     String mediaDetails = await getNarrativeMedia(narrative.id);
     String narrativeDate = narrative.date ?? '';
     String fieldNote = narrative.narrative ?? '';
     List<String> narrativeList = [
-      '"$narrativeDate"',
+      narrativeDate,
       verbatimLocality,
-      '"$fieldNote"',
+      fieldNote,
       mediaDetails
     ];
     return narrativeList;

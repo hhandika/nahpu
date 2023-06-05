@@ -299,8 +299,9 @@ class ExportFormState extends ConsumerState<ExportForm> {
         await SiteWriterServices(ref: ref).writeSiteDelimited(file, isCsv);
         break;
       case ExportRecordType.collEvent:
-        await CollEventRecordWriter(ref: ref, isCsv: isCsv)
-            .writeCollEventDelimited(file);
+        await CollEventRecordWriter(
+          ref: ref,
+        ).writeCollEventDelimited(file, isCsv);
         break;
       case ExportRecordType.specimenRecord:
         await SpecimenRecordWriter(ref: ref, recordType: _specimenRecordType)

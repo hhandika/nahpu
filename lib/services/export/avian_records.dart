@@ -5,43 +5,50 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/specimen_services.dart';
 
 class AvianMeasurements {
-  AvianMeasurements({
-    required this.ref,
-    required this.delimiter,
-    required this.specimenUuid,
-  });
+  AvianMeasurements({required this.ref, required this.specimenUuid});
 
   final WidgetRef ref;
-  final String delimiter;
   final String specimenUuid;
   late AvianMeasurementData data;
 
-  Future<String> getMeasurements() async {
+  Future<List<String>> getMeasurements() async {
     data =
         await SpecimenServices(ref: ref).getAvianMeasurementData(specimenUuid);
-    String mainMeasurement = _getMainMeasurement();
-    String gonadData = _getGonadData();
+    List<String> mainMeasurement = _getMainMeasurement();
+    List<String> gonadData = _getGonadData();
     String broodPatch = _getBroodPatch();
     String skullOss = _getSkullOss();
     String bursa = _getBursaLength();
     String fat = _getFat();
     String stomachContent = _getStomachContent();
-    String moltData = _getAllMolt();
-    return '$mainMeasurement$delimiter$gonadData$delimiter'
-        '$broodPatch$delimiter$skullOss$delimiter$bursa$delimiter'
-        '$fat$delimiter$stomachContent$delimiter'
-        '$moltData';
+    List<String> moltData = _getAllMolt();
+    return [
+      ...mainMeasurement,
+      ...gonadData,
+      broodPatch,
+      skullOss,
+      bursa,
+      fat,
+      stomachContent,
+      ...moltData,
+    ];
   }
 
-  String _getMainMeasurement() {
+  List<String> _getMainMeasurement() {
     String weight = _getWeight();
     String wingSpan = _getWingSpan();
     String irisColor = _getIrisColor();
     String billColor = _getBillColor();
     String footColor = _getFootColor();
     String tarsusColor = _getTarsusColor();
-    return '$weight$delimiter$wingSpan$delimiter$irisColor$delimiter'
-        '$billColor$delimiter$footColor$delimiter$tarsusColor';
+    return [
+      weight,
+      wingSpan,
+      irisColor,
+      billColor,
+      footColor,
+      tarsusColor,
+    ];
   }
 
   String _getBroodPatch() {
@@ -98,37 +105,40 @@ class AvianMeasurements {
     return data.tarsusColor ?? '';
   }
 
-  String _getGonadData() {
+  List<String> _getGonadData() {
     SpecimenSex? sexEnum = getSpecimenSex(data.sex);
     String sex = data.sex != null ? specimenSexList[data.sex!] : '';
-    String emptyMale = delimiter * 2;
-    String emptyFemale = delimiter * 6;
+    List<String> emptyMale = List.filled(2, '');
+    List<String> emptyFemale = List.filled(6, '');
     switch (sexEnum) {
       case SpecimenSex.male:
-        String maleGonad = _getMaleGonad();
-        return '$sex$delimiter$maleGonad$emptyFemale';
+        List<String> maleGonad = _getMaleGonad();
+        return [sex, ...maleGonad, ...emptyFemale];
       case SpecimenSex.female:
-        String femaleGonad = _getFemaleGonad();
-        return '$sex$delimiter$emptyMale$femaleGonad';
+        List<String> femaleGonad = _getFemaleGonad();
+        return [sex, ...emptyMale, ...femaleGonad];
       case SpecimenSex.unknown:
-        return '$sex$delimiter$emptyMale$emptyFemale';
+        return [sex, ...emptyMale, ...emptyFemale];
       default:
-        return '$sex$delimiter$emptyMale$emptyFemale';
+        return [sex, ...emptyMale, ...emptyFemale];
     }
   }
 
-  String _getMaleGonad() {
+  List<String> _getMaleGonad() {
     String testisLength =
         data.testisLength != null ? '${data.testisLength}' : '';
-    String testisWidth = data.testisWidth != null ? '${data.testisWidth}' : '';
+    String testisWidth =
+        data.testisWidth != null ? ' x ${data.testisWidth} mm' : '';
     String testisRemark = data.testisRemark ?? '';
-    return '$testisLength x $testisWidth mm$delimiter$testisRemark';
+    String testisSize = '$testisLength$testisWidth';
+    return [testisSize, testisRemark];
   }
 
-  String _getFemaleGonad() {
+  List<String> _getFemaleGonad() {
     String ovaryLength = data.ovaryLength != null ? '${data.ovaryLength}' : '';
-    String ovaryWidth = data.ovaryWidth != null ? '${data.ovaryWidth}' : '';
-    String ovarySize = '$ovaryLength x $ovaryWidth mm';
+    String ovaryWidth =
+        data.ovaryWidth != null ? ' x ${data.ovaryWidth} mm' : '';
+    String ovarySize = '$ovaryLength$ovaryWidth';
     String ovaryAppearance = _getOvaryAppearance();
     String oviductWidth =
         data.oviductWidth != null ? '${data.oviductWidth}' : '';
@@ -142,8 +152,14 @@ class AvianMeasurements {
     String oviductAppearance = _getOviductAppearance();
     String ovaryRemark = data.ovaryRemark ?? '';
 
-    return '$ovarySize$delimiter$ovaryAppearance$delimiter$oviductWidth$delimiter'
-        '$ovaSize$delimiter$oviductAppearance$delimiter$ovaryRemark';
+    return [
+      ovarySize,
+      ovaryAppearance,
+      oviductWidth,
+      ovaSize,
+      oviductAppearance,
+      ovaryRemark
+    ];
   }
 
   String _getOvaryAppearance() {
@@ -162,15 +178,12 @@ class AvianMeasurements {
     }
   }
 
-  String _getAllMolt() {
-    String wingMolt = _getWingMolt();
-    String tailMolt = _getTailMolt();
+  List<String> _getAllMolt() {
+    List<String> wingMolt = _getWingMolt();
+    List<String> tailMolt = _getTailMolt();
     String bodyMolt = _getBodyMolt();
     String moltRemark = data.moltRemark ?? '';
-    return '$wingMolt$delimiter'
-        '$tailMolt$delimiter'
-        '$bodyMolt$delimiter'
-        '$moltRemark';
+    return [...wingMolt, ...tailMolt, bodyMolt, moltRemark];
   }
 
   String _getBodyMolt() {
@@ -181,23 +194,23 @@ class AvianMeasurements {
     }
   }
 
-  String _getWingMolt() {
+  List<String> _getWingMolt() {
     if (data.wingIsMolt == null) {
-      return '';
+      return ['', ''];
     } else {
       String wingIsMolt = data.wingIsMolt! == 1 ? 'Yes' : 'No';
       String wingMolt = data.wingMolt ?? '';
-      return '$wingIsMolt$delimiter$wingMolt';
+      return [wingIsMolt, wingMolt];
     }
   }
 
-  String _getTailMolt() {
+  List<String> _getTailMolt() {
     if (data.tailIsMolt == null) {
-      return '';
+      return ['', ''];
     } else {
       String tailIsMolt = data.tailIsMolt! == 1 ? 'Yes' : 'No';
       String tailMolt = data.tailMolt ?? '';
-      return '$tailIsMolt$delimiter$tailMolt';
+      return [tailIsMolt, tailMolt];
     }
   }
 }

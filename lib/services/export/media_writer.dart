@@ -16,19 +16,17 @@ import 'package:nahpu/services/utility_services.dart';
 class MediaWriterServices {
   MediaWriterServices({
     required this.ref,
-    this.delimiter = csvDelimiter,
   });
 
   final WidgetRef ref;
-  String delimiter;
 
   Future<void> writeAllMediaDelimited(File filePath, bool isCsv) async {
-    delimiter = isCsv ? csvDelimiter : tsvDelimiter;
+    String delimiter = isCsv ? csvDelimiter : tsvDelimiter;
 
     final file = await filePath.create(recursive: true);
     final writer = file.openWrite();
 
-    String header = allMediaExportList.join(delimiter);
+    String header = allMediaExportList.toDelimitedText(delimiter);
     writer.writeln(header);
 
     List<MediaData> mediaList =
@@ -39,7 +37,7 @@ class MediaWriterServices {
       String linkedData = await MediaCategoryServices(ref: ref)
           .getLinkedData(media.primaryId!, media.category);
       mediaDetails.insert(1, linkedData);
-      writer.writeln(mediaDetails.map((e) => '"$e"').join(delimiter));
+      writer.writeln(mediaDetails.toDelimitedText(delimiter));
     }
 
     writer.close();
@@ -101,7 +99,7 @@ class MediaWriterServices {
       return mediaList.join(';');
     }));
     String mediaDetailsString = mediaDetails.join(writerSeparator);
-    return '"$mediaDetailsString"';
+    return mediaDetailsString;
   }
 
   Future<List<String>> _getMedia(MediaData data) async {
