@@ -1,4 +1,15 @@
+import 'package:pdf/pdf.dart';
+
 enum ArchiveFmt { zip }
+
+Map<PdfPageFormat, String> pdfExportPageFormat = {
+  PdfPageFormat.a3: 'A3 (29.7 x 42.0 cm)',
+  PdfPageFormat.a4: 'A4 (21.0 x 29.7 cm)',
+  PdfPageFormat.a5: 'A5 (14.8 x 21.0 cm)',
+  PdfPageFormat.a6: 'A6 (10.5 x 14.8 cm)',
+  PdfPageFormat.letter: 'Letter (8.5 x 11.0 in)',
+  PdfPageFormat.legal: 'Legal (8.5 x 14.0 in)',
+};
 
 enum SpecimenRecordType {
   birds,

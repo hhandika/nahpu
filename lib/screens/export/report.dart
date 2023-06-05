@@ -173,6 +173,7 @@ class ReportFormState extends ConsumerState<ReportForm> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          duration: const Duration(seconds: 5),
           content: ErrorText(error: e.toString()),
         ),
       );
