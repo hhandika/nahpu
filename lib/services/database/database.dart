@@ -66,8 +66,11 @@ class Database extends _$Database {
   }
 
   Future<void> _migrateV3only(Migrator m) async {
-    await m.renameColumn(specimen, 'trapID', specimen.methodID);
-    await m.renameColumn(media, 'thumbnailPath', media.fileName);
+    try {
+      await m.renameColumn(media, 'thumbnailPath', media.fileName);
+    } catch (e) {
+      await m.addColumn(media, media.fileName);
+    }
   }
 
   Future<void> _migrateFromVersion2(Migrator m) async {
