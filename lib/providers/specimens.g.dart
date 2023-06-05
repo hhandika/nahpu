@@ -111,7 +111,7 @@ class SpecimenMediaProvider extends AutoDisposeFutureProvider<List<dynamic>> {
 }
 
 String _$catalogFmtNotifierHash() =>
-    r'627c91874dc3312a25ceaaffe80987f042ee3c27';
+    r'9b1919ba48769138f474858cb3c9a9bcd91ad365';
 
 /// See also [CatalogFmtNotifier].
 @ProviderFor(CatalogFmtNotifier)
