@@ -351,10 +351,12 @@ class NavSheetState extends ConsumerState<NavSheet> {
                 child: TextField(
                   textAlign: TextAlign.center,
                   decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Jump to page',
-                    hintText: 'Enter page number',
-                    alignLabelWithHint: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(16),
+                      ),
+                    ),
+                    labelText: 'Page Number',
                     isDense: true,
                     floatingLabelAlignment: FloatingLabelAlignment.center,
                   ),

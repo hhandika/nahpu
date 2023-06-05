@@ -178,7 +178,7 @@ class MediaTabBars extends ConsumerWidget {
         DefaultTabController(
           length: length,
           child: TabBar(
-            indicatorColor: Theme.of(context).colorScheme.tertiary,
+            indicatorColor: Theme.of(context).colorScheme.primary,
             controller: tabController,
             tabs: tabs,
           ),
