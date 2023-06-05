@@ -133,8 +133,7 @@ class ProjectListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ListView.separated(
-        separatorBuilder: (BuildContext context, int index) => const Divider(),
+      child: ListView.builder(
         itemCount: projectList.length,
         itemBuilder: (context, index) {
           return ProjectView(
