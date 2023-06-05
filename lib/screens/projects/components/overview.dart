@@ -21,7 +21,7 @@ class ProjectOverview extends ConsumerWidget {
         children: [
           ref.watch(projectInfoProvider(projectUuid)).when(
                 data: (data) {
-                  return Container(
+                  return Padding(
                     padding: const EdgeInsets.all(10),
                     child: ProjectInfo(
                       projectData: data,

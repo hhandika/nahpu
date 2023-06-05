@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:nahpu/services/database/database.dart';
 
@@ -37,16 +38,24 @@ class ProjectInfo extends StatelessWidget {
         const SizedBox(height: 24),
         ProjectInfoText(
           title: 'Created: ',
-          text: projectData?.created,
+          text: _parsedDate(projectData?.created),
           isSmall: true,
         ),
         ProjectInfoText(
           title: 'Last accessed: ',
-          text: projectData?.lastAccessed,
+          text: _parsedDate(projectData?.lastAccessed),
           isSmall: true,
         ),
       ],
     );
+  }
+
+  String _parsedDate(String? date) {
+    if (date == null) return '';
+    DateTime parsedDate = DateTime.parse(date);
+    String formattedDate = DateFormat.yMMMMd().format(parsedDate);
+    String formattedTime = DateFormat.jm().format(parsedDate);
+    return '$formattedDate $formattedTime';
   }
 }
 
