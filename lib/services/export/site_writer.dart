@@ -37,12 +37,13 @@ class SiteWriterServices extends DbAccess {
   }
 
   Future<List<String>> getSiteDetails(int? siteID) async {
+    int emptySite = siteExportList.length;
     if (siteID == null) {
-      return [''];
+      return List.filled(emptySite, '');
     } else {
       SiteData? data = await _getSiteData(siteID);
       if (data == null) {
-        return [''];
+        return List.filled(emptySite, '');
       } else {
         String verbatimLocality = _createVerbatimLocality(data);
 

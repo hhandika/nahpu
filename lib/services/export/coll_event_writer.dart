@@ -32,14 +32,16 @@ class CollEventRecordWriter extends DbAccess {
   }
 
   Future<List<String>> getCOllEventSiteDetails(int? collEventId) async {
-    // String emptyDelimiters = delimiter * columnSize;
+    int emptySite = siteExportList.length;
+    int emptyEvent = collEventExportList.length;
+    int emptyAll = emptySite + emptyEvent;
     if (collEventId == null) {
-      return List.empty();
+      return List.filled(emptyAll, '');
     } else {
       CollEventData? collEvent =
           await CollEventServices(ref: ref).getCollEvent(collEventId);
       if (collEvent == null) {
-        return List.empty();
+        return List.filled(emptyAll, '');
       }
 
       List<String> siteDetails = await _getSite(collEvent.siteID);

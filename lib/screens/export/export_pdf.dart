@@ -3,11 +3,13 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/fields.dart';
+import 'package:nahpu/services/export/pdf_writer.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/screens/shared/file_operation.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/services/io_services.dart';
+import 'package:pdf/pdf.dart';
 
 class ExportPdfForm extends ConsumerStatefulWidget {
   const ExportPdfForm({super.key});
@@ -110,6 +112,8 @@ class ExportPdfFormState extends ConsumerState<ExportPdfForm> {
   Future<void> _matchExportTypeToWriter(File file) async {
     switch (_pdfExportType) {
       case PdfExportType.narrative:
+        await NarrativePdfWriter(ref: ref, pageFormat: PdfPageFormat.a4)
+            .generatePdf();
         break;
       default:
         break;
