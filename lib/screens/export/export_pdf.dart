@@ -42,7 +42,7 @@ class ExportPdfFormState extends ConsumerState<ExportPdfForm> {
           DropdownButtonFormField(
               value: PdfExportType.narrative,
               decoration: const InputDecoration(
-                labelText: 'Type',
+                labelText: 'Record type',
               ),
               items: pdfExportList
                   .map((e) => DropdownMenuItem(
