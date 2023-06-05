@@ -55,14 +55,14 @@ class PersonnelServices extends DbAccess {
 
 const String avatarPath = 'assets/avatars/';
 
+const List<String> availableBirdPhoto = [
+  'canton_lep_esquisita.png',
+  'canton_lep_hybrid2.png',
+  'canton_lep_velutina.png',
+];
+
 class PersonnelImageService {
   PersonnelImageService();
-
-  final List<String> availableBirdPhoto = [
-    'canton_lep_esquisita.png',
-    'canton_lep_hybrid2.png',
-    'canton_lep_velutina.png',
-  ];
 
   String get imageAssets {
     final random = Random();
