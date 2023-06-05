@@ -44,6 +44,21 @@ class ProjectFormValidator extends _$ProjectFormValidator {
     return _fetch();
   }
 
+  Future<void> validateOnEditing(
+      String? initialProjectName, String? value) async {
+    await validateProjectName(value);
+    if (initialProjectName != value) {
+      await checkProjectNameExists(value);
+    } else {
+      state = const AsyncValue.loading();
+      state = await AsyncValue.guard(() async {
+        if (state.value == null) return ProjectForm.empty();
+        return state.value!.copyWith(
+            existingProject: ProjectFormField(errMsg: null, isValid: true));
+      });
+    }
+  }
+
   Future<void> validateProjectName(String? value) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -89,7 +104,7 @@ class ProjectFormValidator extends _$ProjectFormValidator {
             existingProject: ProjectFormField(errMsg: null, isValid: true));
       }
 
-      bool isMatch = _findMatching(data, value);
+      bool isMatch = _findMatchingName(data, value);
       if (isMatch) {
         return state.value!.copyWith(
             existingProject: ProjectFormField(
@@ -100,7 +115,7 @@ class ProjectFormValidator extends _$ProjectFormValidator {
     });
   }
 
-  bool _findMatching(List<String> projectNames, String value) {
+  bool _findMatchingName(List<String> projectNames, String value) {
     return isListContains(projectNames, value);
   }
 }

@@ -65,16 +65,15 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                       LengthLimitingTextInputFormatter(25),
                     ],
                     onChanged: (value) async {
-                      await ref
-                          .watch(projectFormValidatorProvider.notifier)
-                          .validateProjectName(value);
                       if (widget.isEditing) {
-                        if (value != initialProjectName) {
-                          await ref
-                              .watch(projectFormValidatorProvider.notifier)
-                              .checkProjectNameExists(value);
-                        }
+                        ref
+                            .watch(projectFormValidatorProvider.notifier)
+                            .validateOnEditing(initialProjectName,
+                                widget.projectCtr.projectNameCtr.text);
                       } else {
+                        await ref
+                            .watch(projectFormValidatorProvider.notifier)
+                            .validateProjectName(value);
                         await ref
                             .watch(projectFormValidatorProvider.notifier)
                             .checkProjectNameExists(value);
@@ -210,9 +209,8 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
 
   Future<void> _validateEditing() async {
     if (widget.isEditing) {
-      ref
-          .watch(projectFormValidatorProvider.notifier)
-          .validateProjectName(widget.projectCtr.projectNameCtr.text);
+      ref.watch(projectFormValidatorProvider.notifier).validateOnEditing(
+          initialProjectName, widget.projectCtr.projectNameCtr.text);
     }
   }
 
