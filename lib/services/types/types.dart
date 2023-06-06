@@ -27,11 +27,12 @@ const List<String> personnelRoleList = [
   'None',
 ];
 
-enum PdfExportType { narrative }
+enum PdfExportType { narrative, specimen }
 
-const List<String> pdfExportList = [
-  'Narrative',
-];
+const Map<PdfExportType, String> pdfExport = {
+  PdfExportType.narrative: 'Narrative',
+  PdfExportType.specimen: 'Specimen records',
+};
 
 const List<String> exportFormats = [
   // 'Excel (.xlsx)',

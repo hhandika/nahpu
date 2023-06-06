@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/services/export/pdf/narrative_pdf.dart';
+import 'package:nahpu/services/export/pdf/specimen_pdf.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/export.dart';
 import 'package:nahpu/services/types/types.dart';
@@ -45,10 +46,12 @@ class ExportPdfFormState extends ConsumerState<ExportPdfForm> {
               decoration: const InputDecoration(
                 labelText: 'Record type',
               ),
-              items: pdfExportList
+              items: pdfExport.keys
                   .map((e) => DropdownMenuItem(
-                        value: PdfExportType.values[pdfExportList.indexOf(e)],
-                        child: CommonDropdownText(text: e),
+                        value: e,
+                        child: CommonDropdownText(
+                          text: pdfExport[e] ?? '',
+                        ),
                       ))
                   .toList(),
               onChanged: (PdfExportType? value) {
@@ -178,6 +181,14 @@ class ExportPdfFormState extends ConsumerState<ExportPdfForm> {
     switch (_pdfExportType) {
       case PdfExportType.narrative:
         await NarrativePdfWriter(
+          ref: ref,
+          pageFormat: _pdfPageFormat,
+          filePath: file,
+          pageOrientation: _pdfPageOrientation,
+        ).generatePdf();
+        break;
+      case PdfExportType.specimen:
+        await SpecimenPdfWriter(
           ref: ref,
           pageFormat: _pdfPageFormat,
           filePath: file,
