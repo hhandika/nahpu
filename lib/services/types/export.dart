@@ -1,4 +1,5 @@
 import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart';
 
 enum ArchiveFmt { zip }
 
@@ -9,6 +10,11 @@ Map<PdfPageFormat, String> pdfExportPageFormat = {
   PdfPageFormat.a6: 'A6 (10.5 x 14.8 cm)',
   PdfPageFormat.letter: 'Letter (8.5 x 11.0 in)',
   PdfPageFormat.legal: 'Legal (8.5 x 14.0 in)',
+};
+
+Map<PageOrientation, String> pdfExportOrientation = {
+  PageOrientation.landscape: 'Landscape',
+  PageOrientation.portrait: 'Portrait',
 };
 
 enum SpecimenRecordType {

@@ -12,9 +12,11 @@ class NarrativePdfWriter extends DbAccess {
     required super.ref,
     required this.pageFormat,
     required this.filePath,
+    required this.pageOrientation,
   });
 
   final PdfPageFormat pageFormat;
+  final pw.PageOrientation pageOrientation;
   final File filePath;
 
   Future<void> generatePdf() async {
@@ -37,6 +39,7 @@ class NarrativePdfWriter extends DbAccess {
     pdf.addPage(
       pw.Page(
         pageFormat: pageFormat,
+        orientation: pageOrientation,
         build: (pw.Context context) {
           return pw.Column(children: [
             pw.Text(

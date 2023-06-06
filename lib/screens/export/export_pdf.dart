@@ -11,6 +11,7 @@ import 'package:nahpu/screens/shared/file_operation.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 class ExportPdfForm extends ConsumerStatefulWidget {
   const ExportPdfForm({super.key});
@@ -24,6 +25,7 @@ class ExportPdfFormState extends ConsumerState<ExportPdfForm> {
   Directory? _selectedDir;
   PdfExportType _pdfExportType = PdfExportType.narrative;
   PdfPageFormat _pdfPageFormat = PdfPageFormat.letter;
+  pw.PageOrientation _pdfPageOrientation = pw.PageOrientation.portrait;
   String _fileStem = 'export';
   bool _hasSaved = false;
   late File _savePath;
@@ -74,6 +76,27 @@ class ExportPdfFormState extends ConsumerState<ExportPdfForm> {
                 if (value != null) {
                   setState(() {
                     _pdfPageFormat = value;
+                    _hasSaved = false;
+                  });
+                }
+              }),
+          DropdownButtonFormField(
+              value: _pdfPageOrientation,
+              decoration: const InputDecoration(
+                labelText: 'Page orientation',
+              ),
+              items: pdfExportOrientation.keys
+                  .map((e) => DropdownMenuItem(
+                        value: e,
+                        child: CommonDropdownText(
+                          text: pdfExportOrientation[e] ?? '',
+                        ),
+                      ))
+                  .toList(),
+              onChanged: (pw.PageOrientation? value) {
+                if (value != null) {
+                  setState(() {
+                    _pdfPageOrientation = value;
                     _hasSaved = false;
                   });
                 }
@@ -158,6 +181,7 @@ class ExportPdfFormState extends ConsumerState<ExportPdfForm> {
           ref: ref,
           pageFormat: _pdfPageFormat,
           filePath: file,
+          pageOrientation: _pdfPageOrientation,
         ).generatePdf();
         break;
       default:
