@@ -47,7 +47,7 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
               spacing: 10,
               children: [
                 SecondaryButton(
-                    text: 'Import',
+                    text: 'Import from file',
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
@@ -63,7 +63,7 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
                       ),
                     );
                   },
-                  text: 'Add taxon',
+                  text: 'Add',
                 ),
               ],
             ),
