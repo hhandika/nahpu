@@ -217,7 +217,7 @@ List<String> parseMediaDateTime(String value) {
   }
   List<String> dateTime = value.split(' ');
   DateTime date = DateTime.parse(dateTime[0].replaceAll(':', '-'));
-  String time = dateTime[1];
+  String time = DateFormat.jm().format(date);
   String parsedDate = DateFormat.yMMMMd().format(date);
   return [parsedDate, time];
 }
