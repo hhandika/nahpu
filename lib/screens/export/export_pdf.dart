@@ -36,7 +36,6 @@ class ExportPdfFormState extends ConsumerState<ExportPdfForm> {
         title: const Text("Export to PDF"),
         automaticallyImplyLeading: false,
       ),
-      resizeToAvoidBottomInset: false,
       body: FileOperationPage(
         children: [
           DropdownButtonFormField(
