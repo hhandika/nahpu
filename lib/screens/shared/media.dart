@@ -178,6 +178,7 @@ class MediaCardState extends ConsumerState<MediaCard> {
                       return Image.file(
                         width: imageSize.toDouble(),
                         height: imageSize.toDouble(),
+                        cacheWidth: imageSize + 100,
                         snapshot.data as File,
                         fit: BoxFit.cover,
                       );

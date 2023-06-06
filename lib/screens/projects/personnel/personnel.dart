@@ -13,6 +13,8 @@ import 'package:nahpu/services/personnel_services.dart';
 
 enum PersonnelMenuAction { edit, delete }
 
+const int avatarSize = 48;
+
 class PersonnelViewer extends ConsumerStatefulWidget {
   const PersonnelViewer({Key? key}) : super(key: key);
 
@@ -113,8 +115,8 @@ class PersonalListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: SizedBox(
-          height: 48,
-          width: 48,
+          height: avatarSize.toDouble(),
+          width: avatarSize.toDouble(),
           child: AvatarViewer(
             filePath:
                 TextEditingController(text: personnelData.photoPath ?? ''),

@@ -11,6 +11,8 @@ import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/utility_services.dart';
 import 'package:path/path.dart';
 
+const int avatarSize = 180;
+
 class PersonnelAvatar extends ConsumerStatefulWidget {
   const PersonnelAvatar({
     super.key,
@@ -27,8 +29,8 @@ class PersonnelAvatarState extends ConsumerState<PersonnelAvatar> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 180,
-      height: 180,
+      width: avatarSize.toDouble(),
+      height: avatarSize.toDouble(),
       child: Stack(
         children: [
           Positioned.fill(
@@ -91,6 +93,7 @@ class AvatarViewer extends ConsumerStatefulWidget {
   });
 
   final TextEditingController filePath;
+  // final int imageSize;
 
   @override
   AvatarViewerState createState() => AvatarViewerState();
@@ -109,6 +112,10 @@ class AvatarViewerState extends ConsumerState<AvatarViewer> {
         ? CircleAvatar(
             backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
             child: Image.asset(
+              width: avatarSize.toDouble(),
+              height: avatarSize.toDouble(),
+              cacheHeight: avatarSize,
+              cacheWidth: avatarSize,
               widget.filePath.text,
               fit: BoxFit.cover,
             ))
