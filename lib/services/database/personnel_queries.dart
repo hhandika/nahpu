@@ -42,12 +42,24 @@ class PersonnelQuery extends DatabaseAccessor<Database>
         .getSingle();
   }
 
-  Future<void> deleteProjectPersonnel(
-      String personnelUuid, String projectUuid) {
+  Future<bool> isPersonnelBeingUsedInOtherRecords(String uuid) async {
+    SpecimenData? specimenRecords = await (select(specimen)
+          ..where((t) => t.catalogerID.equals(uuid))
+          ..limit(1))
+        .getSingleOrNull();
+    CollPersonnelData? eventRecords = await (select(collPersonnel)
+          ..where((t) => t.personnelId.equals(uuid))
+          ..limit(1))
+        .getSingleOrNull();
+    if (specimenRecords != null || eventRecords != null) {
+      return true;
+    }
+    return false;
+  }
+
+  Future<void> deleteProjectPersonnel(String personnelUuid) {
     return (delete(personnelList)
-          ..where((t) =>
-              t.personnelUuid.equals(personnelUuid) &
-              t.projectUuid.equals(projectUuid)))
+          ..where((t) => t.personnelUuid.equals(personnelUuid)))
         .go();
   }
 

@@ -256,7 +256,8 @@ class PersonnelMenuState extends ConsumerState<PersonnelMenu> {
     showDeleteAlertOnMenu(
       () async {
         try {
-          await PersonnelServices(ref: ref).deletePersonnel(widget.data.uuid);
+          await PersonnelServices(ref: ref)
+              .deleteProjectPersonnel(widget.data.uuid);
           if (mounted) {
             Navigator.of(context).pop();
           }

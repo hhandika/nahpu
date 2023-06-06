@@ -198,6 +198,9 @@ CREATE TABLE personnel (
     photoPath TEXT
 );
 
+/*
+Remove for the next schema update
+*/
 CREATE TABLE projectPersonnel (
     projectUuid TEXT,
     personnelId TEXT,

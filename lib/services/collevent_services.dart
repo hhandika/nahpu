@@ -88,9 +88,16 @@ class CollEventServices extends DbAccess {
   }
 
   Future<void> deleteCollEvent(int collEvenId) async {
-    await WeatherDataQuery(dbAccess).deleteWeatherData(collEvenId);
-    await CollEventQuery(dbAccess).deleteCollEvent(collEvenId);
-    invalidateCollEvent();
+    try {
+      await CollEventQuery(dbAccess).deleteCollEvent(collEvenId);
+      await WeatherDataQuery(dbAccess).deleteWeatherData(collEvenId);
+      await CollPersonnelQuery(dbAccess)
+          .deleteCollPersonnelByEventId(collEvenId);
+      await CollEffortQuery(dbAccess).deleteCollEffortByEventId(collEvenId);
+      invalidateCollEvent();
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<void> deleteCollEffort(int id) async {
