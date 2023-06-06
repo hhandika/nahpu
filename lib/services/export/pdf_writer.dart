@@ -21,6 +21,7 @@ class NarrativePdfWriter extends DbAccess {
     final pdf = pw.Document();
     List<NarrativeData> narrativeList =
         await NarrativeServices(ref: ref).getAllNarrative();
+
     for (var narrative in narrativeList) {
       await generateNarrativePage(pdf, narrative);
     }
