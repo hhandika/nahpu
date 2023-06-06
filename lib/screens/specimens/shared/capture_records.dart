@@ -433,38 +433,60 @@ class CollPersonnelField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return CommonPadding(
-      child: DropdownButtonFormField<int>(
-        value: specimenCtr.collPersonnelCtr,
-        decoration: const InputDecoration(
-          labelText: 'Collector',
-          hintText: 'Choose a person',
-        ),
-        items: specimenCtr.collEventIDCtr != null
-            ? ref
-                .watch(collPersonnelProvider(specimenCtr.collEventIDCtr!))
-                .when(
-                  data: (data) {
-                    return data.map((person) {
-                      return DropdownMenuItem(
-                          value: person.id,
-                          child: PersonnelName(
-                            personnelUuid: person.personnelId,
-                          ));
-                    }).toList();
-                  },
-                  loading: () => const [],
-                  error: (e, s) => const [],
-                )
-            : [],
-        onChanged: (int? newValue) {
-          specimenCtr.collPersonnelCtr = newValue;
-          SpecimenServices(ref: ref).updateSpecimen(
-            specimenUuid,
-            SpecimenCompanion(
-              collPersonnelID: db.Value(newValue),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            child: DropdownButtonFormField<int>(
+              value: specimenCtr.collPersonnelCtr,
+              decoration: const InputDecoration(
+                labelText: 'Collector',
+                hintText: 'Choose a person',
+              ),
+              items: specimenCtr.collEventIDCtr != null
+                  ? ref
+                      .watch(collPersonnelProvider(specimenCtr.collEventIDCtr!))
+                      .when(
+                        data: (data) {
+                          return data.map((person) {
+                            return DropdownMenuItem(
+                                value: person.id,
+                                child: PersonnelName(
+                                  personnelUuid: person.personnelId,
+                                ));
+                          }).toList();
+                        },
+                        loading: () => const [],
+                        error: (e, s) => const [],
+                      )
+                  : [],
+              onChanged: (int? newValue) {
+                specimenCtr.collPersonnelCtr = newValue;
+                SpecimenServices(ref: ref).updateSpecimen(
+                  specimenUuid,
+                  SpecimenCompanion(
+                    collPersonnelID: db.Value(newValue),
+                  ),
+                );
+              },
             ),
-          );
-        },
+          ),
+          specimenCtr.collPersonnelCtr != null
+              ? IconButton(
+                  onPressed: () {
+                    specimenCtr.collPersonnelCtr = null;
+                    SpecimenServices(ref: ref).updateSpecimen(
+                      specimenUuid,
+                      const SpecimenCompanion(
+                        collPersonnelID: db.Value(null),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.clear),
+                )
+              : const SizedBox.shrink(),
+        ],
       ),
     );
   }

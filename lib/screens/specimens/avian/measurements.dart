@@ -911,7 +911,7 @@ class MoltingFormState extends ConsumerState<MoltingForm> {
             onChanged: (int? newValue) {
               if (newValue != null) {
                 setState(() {
-                  _wingMolting = newValue == 0 ? true : false;
+                  _wingMolting = newValue == 1 ? true : false;
                   SpecimenServices(ref: ref).updateAvianMeasurement(
                       widget.specimenUuid,
                       AvianMeasurementCompanion(
@@ -948,7 +948,7 @@ class MoltingFormState extends ConsumerState<MoltingForm> {
             onChanged: (int? newValue) {
               if (newValue != null) {
                 setState(() {
-                  _tailMolting = newValue == 0 ? true : false;
+                  _tailMolting = newValue == 1 ? true : false;
                   SpecimenServices(ref: ref).updateAvianMeasurement(
                       widget.specimenUuid,
                       AvianMeasurementCompanion(
