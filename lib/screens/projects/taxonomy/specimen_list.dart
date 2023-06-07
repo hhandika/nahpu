@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/specimens/specimen_form.dart';
+import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/fields.dart';
@@ -83,7 +85,14 @@ class SpecimenList extends StatelessWidget {
                 data: data[index],
               ),
               trailing: const Icon(Icons.chevron_right),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          SpecimenPageView(data: data[index])),
+                );
+              },
             );
           },
         ));
@@ -92,6 +101,37 @@ class SpecimenList extends StatelessWidget {
   IconData _getLeadingIcon(String? taxonGroup) {
     CatalogFmt fmt = matchTaxonGroupToCatFmt(taxonGroup);
     return matchCatFmtToIcon(fmt, false);
+  }
+}
+
+class SpecimenPageView extends StatefulWidget {
+  const SpecimenPageView({super.key, required this.data});
+
+  final SpecimenData data;
+
+  @override
+  State<SpecimenPageView> createState() => _SpecimenPageViewState();
+}
+
+class _SpecimenPageViewState extends State<SpecimenPageView> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Specimen Record'),
+      ),
+      body: SafeArea(
+          child: Center(
+              child: SpecimenForm(
+        specimenUuid: widget.data.uuid,
+        catalogFmt: matchTaxonGroupToCatFmt(widget.data.taxonGroup),
+        specimenCtr: _updateController(widget.data),
+      ))),
+    );
+  }
+
+  SpecimenFormCtrModel _updateController(SpecimenData specimenData) {
+    return SpecimenFormCtrModel.fromData(specimenData);
   }
 }
 
