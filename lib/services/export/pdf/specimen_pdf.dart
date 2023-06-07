@@ -6,6 +6,8 @@ import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/site_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/taxonomy_services.dart';
+import 'package:nahpu/services/types/mammals.dart';
+import 'package:nahpu/services/types/types.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 class SpecimenPdfWriter extends PdfServices {
@@ -29,9 +31,19 @@ class SpecimenPdfWriter extends PdfServices {
   Future<void> _generateSpecimenPage(SpecimenData data) async {
     pw.Widget collectingRecord = await _generateCollectingRecord(data);
     pw.Widget taxonomy = await _generateTaxonomyData(data);
+    CollEventServices eventServices = CollEventServices(ref: ref);
     CollEventData? captureRecord =
-        await CollEventServices(ref: ref).getCollEvent(data.collEventID);
+        await eventServices.getCollEvent(data.collEventID);
+    CollPersonnelData? collector = (data.collPersonnelID != null)
+        ? await eventServices.getCollPersonnel(data.collPersonnelID!)
+        : null;
     pw.Widget siteRecord = await _generateSiteRecord(captureRecord);
+    pw.Widget measurements =
+        await _generateMeasurements(data.uuid, data.taxonGroup ?? '');
+
+    pw.Widget captureRecords =
+        await _generateCaptureRecords(data, captureRecord, collector?.name);
+    pw.Widget specimenParts = await _generateSpecimenParts(data.uuid);
     pdf.addPage(
       pw.Page(
         pageFormat: pageFormat,
@@ -49,16 +61,24 @@ class SpecimenPdfWriter extends PdfServices {
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
                   pw.SizedBox(
-                    width: (pageFormat.availableWidth / 2),
-                    child: collectingRecord,
-                  ),
-                  pw.SizedBox(width: 10),
+                      width: pageFormat.availableWidth / 2,
+                      child: pw.Column(children: [
+                        collectingRecord,
+                        container(measurements)
+                      ])),
+                  pw.SizedBox(width: 8),
                   pw.SizedBox(
-                    width: (pageFormat.availableWidth / 2) - 10,
-                    child: taxonomy,
-                  )
+                    width: (pageFormat.availableWidth / 2) - 8,
+                    child: pw.Column(
+                      children: [
+                        taxonomy,
+                        captureRecords,
+                        specimenParts,
+                      ],
+                    ),
+                  ),
                 ],
-              )
+              ),
             ],
           );
         },
@@ -103,6 +123,33 @@ class SpecimenPdfWriter extends PdfServices {
     }).toList();
   }
 
+  Future<pw.Widget> _generateSpecimenParts(String specimenUuid) async {
+    List<SpecimenPartData> specimenParts =
+        await SpecimenPartServices(ref: ref).getSpecimenParts(specimenUuid);
+
+    List<pw.Widget> parts = specimenParts.map((e) {
+      return pw.Column(children: [
+        pw.Row(
+          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+          children: [
+            textContent(e.type ?? ''),
+            textContent('Count: ${e.count ?? ''}'),
+            textContent('Treatment: ${e.treatment ?? ''}'),
+          ],
+        ),
+      ]);
+    }).toList();
+    return container(pw.Column(
+      mainAxisAlignment: pw.MainAxisAlignment.start,
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        titleText('Specimen parts'),
+        pw.SizedBox(height: 10),
+        pw.Column(children: parts),
+      ],
+    ));
+  }
+
   Future<pw.Widget> _generateCollectingRecord(SpecimenData data) async {
     PersonnelData? cataloger = data.catalogerID != null
         ? await PersonnelServices(ref: ref)
@@ -117,7 +164,7 @@ class SpecimenPdfWriter extends PdfServices {
         mainAxisAlignment: pw.MainAxisAlignment.start,
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
-          titleText('Collecting record'),
+          titleText('Collecting records'),
           pw.SizedBox(height: 10),
           textContent('Cataloger: ${cataloger?.name ?? ''}'),
           textContent('Field number: ${data.fieldNumber ?? ''}'),
@@ -166,5 +213,180 @@ class SpecimenPdfWriter extends PdfServices {
         ],
       ),
     );
+  }
+
+  Future<pw.Widget> _generateCaptureRecords(SpecimenData specimen,
+      CollEventData? captureRecords, String? collector) async {
+    CollEffortData? captureMethod = specimen.collMethodID != null
+        ? await CollEventServices(ref: ref)
+            .getCollEffort(specimen.collMethodID!)
+        : null;
+    return container(pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        titleText('Capture records'),
+        pw.SizedBox(height: 10),
+        captureMethod != null
+            ? textContent('Capture method: ${captureMethod.method ?? ''}')
+            : pw.SizedBox.shrink(),
+        textContent('Capture date: ${specimen.captureDate ?? ''}'),
+        textContent('Capture time: ${specimen.captureTime ?? ''}'),
+        collector != null
+            ? textContent('Collector: $collector')
+            : pw.SizedBox(),
+      ],
+    ));
+  }
+
+  Future<pw.Widget> _generateMeasurements(
+      String specimenUuid, String taxonGroup) async {
+    CatalogFmt group = matchTaxonGroupToCatFmt(taxonGroup);
+    switch (group) {
+      case CatalogFmt.generalMammals:
+        return _getMammalMeasurements(specimenUuid, false);
+      case CatalogFmt.bats:
+        return _getMammalMeasurements(specimenUuid, true);
+      case CatalogFmt.birds:
+        return _getAvianMeasurements(specimenUuid);
+      default:
+        return pw.SizedBox.shrink();
+    }
+  }
+
+  Future<pw.Widget> _getMammalMeasurements(
+      String specimenUuid, bool isBat) async {
+    MammalMeasurementData measurements =
+        await SpecimenServices(ref: ref).getMammalMeasurementData(specimenUuid);
+    String specimenAge =
+        measurements.age != null ? specimenAgeList[measurements.age!] : '';
+    SpecimenSex? sexEnum = getSpecimenSex(measurements.sex);
+    String specimenSex =
+        measurements.sex != null ? specimenSexList[measurements.sex!] : '';
+    pw.Widget sexData = await _generateMammalSexData(measurements, sexEnum);
+    return pw.Column(children: [
+      pw.Row(
+        mainAxisAlignment: pw.MainAxisAlignment.start,
+        children: [
+          pw.Column(
+            mainAxisAlignment: pw.MainAxisAlignment.start,
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              titleText('Measurements'),
+              pw.SizedBox(height: 10),
+              textContent(
+                  'Total length: ${measurements.totalLength?.truncateZero() ?? '?'} mm'),
+              textContent(
+                  'Tail length: ${measurements.tailLength?.truncateZero() ?? '?'} mm'),
+              textContent(
+                  'Hind foot length: ${measurements.hindFootLength?.truncateZero() ?? '?'} mm'),
+              textContent(
+                  'Ear length: ${measurements.earLength?.truncateZero() ?? '?'} mm'),
+              isBat
+                  ? textContent(
+                      'Forearm length: ${measurements.forearm?.truncateZero() ?? '?'} mm')
+                  : pw.SizedBox.shrink(),
+              textContent(
+                  'Weight: ${measurements.weight?.truncateZero() ?? '?'} grams'),
+              textContent('Accuracy: ${measurements.accuracy ?? '?'}'),
+              textContent('Age: $specimenAge'),
+              pw.SizedBox(height: 6),
+              textContent('Sex: $specimenSex'),
+              sexData,
+              textContent('Remark:'),
+              textContent(measurements.remark ?? ''),
+            ],
+          )
+        ],
+      ),
+    ]);
+  }
+
+  Future<pw.Widget> _generateMammalSexData(
+      MammalMeasurementData records, SpecimenSex? sexEnum) async {
+    if (records.sex == null) return pw.SizedBox.shrink();
+
+    switch (sexEnum) {
+      case SpecimenSex.male:
+        return _generateMaleMammalData(records);
+      case SpecimenSex.female:
+        return _generateFemaleMammalData(records);
+      case SpecimenSex.unknown:
+        return _generateUnknownMammalData(records);
+      default:
+        return pw.SizedBox.shrink();
+    }
+  }
+
+  pw.Widget _generateMaleMammalData(MammalMeasurementData records) {
+    String testisPos = records.testisPosition != null
+        ? testisPositionList[records.testisPosition!]
+        : '';
+    String testisLength = records.testisLength != null
+        ? '${records.testisLength?.truncateZero()} mm'
+        : '';
+    String testisWidth = records.testisWidth != null
+        ? '${records.testisWidth?.truncateZero()} mm'
+        : '';
+    return pw.Column(
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        children: [
+          textContent('Testes:'),
+          pw.SizedBox(height: 6),
+          textContent('Position: $testisPos'),
+          textContent('Length: $testisLength'),
+          textContent('Width: $testisWidth'),
+        ]);
+  }
+
+  pw.Widget _generateFemaleMammalData(MammalMeasurementData records) {
+    String vaginaOpening = records.vaginaOpening != null
+        ? vaginaOpeningList[records.vaginaOpening!]
+        : '';
+    String mammaeCondition = records.mammaeCondition != null
+        ? mammaeConditionList[records.mammaeCondition!]
+        : '';
+    return pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        textContent('Vagina opening: $vaginaOpening'),
+        textContent('Mammae condition: $mammaeCondition'),
+        pw.SizedBox(height: 6),
+        textContent('Mammae formula:'),
+        textContent('Inguinal: ${records.mammaeInguinalCount ?? ''}'),
+        textContent('Abdominal: ${records.mammaeAbdominalCount ?? ''}'),
+        textContent('Axillary: ${records.mammaeAxillaryCount ?? ''}'),
+        pw.SizedBox(height: 6),
+        textContent('Embryo:'),
+        textContent('Left count: ${records.embryoLeftCount ?? ''}'),
+        textContent('Right count: ${records.embryoRightCount ?? ''}'),
+        textContent('CR length: ${records.embryoCR ?? ''}')
+      ],
+    );
+  }
+
+  pw.Widget _generateUnknownMammalData(MammalMeasurementData records) {
+    return pw.Column(children: []);
+  }
+
+  Future<pw.Widget> _getAvianMeasurements(String specimenUuid) async {
+    AvianMeasurementData measurements =
+        await SpecimenServices(ref: ref).getAvianMeasurementData(specimenUuid);
+    return pw.Column(children: [
+      pw.Row(
+        mainAxisAlignment: pw.MainAxisAlignment.start,
+        children: [
+          pw.Column(
+            mainAxisAlignment: pw.MainAxisAlignment.start,
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              titleText('Measurements'),
+              pw.SizedBox(height: 10),
+              textContent('Weight: ${measurements.weight ?? '?'} grams'),
+              textContent('Wingspan: ${measurements.wingspan ?? '?'} mm'),
+            ],
+          )
+        ],
+      ),
+    ]);
   }
 }

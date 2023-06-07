@@ -44,8 +44,16 @@ class CollEventServices extends DbAccess {
     return CollPersonnelQuery(dbAccess).getCollPersonnelByEventId(collEventId);
   }
 
+  Future<CollPersonnelData> getCollPersonnel(int id) async {
+    return CollPersonnelQuery(dbAccess).getCollPersonnelById(id);
+  }
+
   Future<List<CollEffortData>> getAllCollEffort(int collEventId) async {
     return CollEffortQuery(dbAccess).getCollEffortByEventId(collEventId);
+  }
+
+  Future<CollEffortData> getCollEffort(int id) async {
+    return CollEffortQuery(dbAccess).getCollEffortById(id);
   }
 
   Future<WeatherData> getAllWeatherData(int collEventId) async {

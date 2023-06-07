@@ -197,6 +197,7 @@ class PersonnelRoleState extends ConsumerState<PersonnelRole> {
     return ref.watch(collPersonnelRoleProvider).when(
           data: (data) {
             return DropdownButtonFormField<String>(
+              isExpanded: true,
               value: widget.controller.roleCtr,
               decoration: const InputDecoration(
                 labelText: 'Role',

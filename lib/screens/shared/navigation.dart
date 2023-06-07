@@ -356,7 +356,7 @@ class NavSheetState extends ConsumerState<NavSheet> {
                         Radius.circular(16),
                       ),
                     ),
-                    labelText: 'Page Number',
+                    labelText: 'Go to page',
                     isDense: true,
                     floatingLabelAlignment: FloatingLabelAlignment.center,
                   ),

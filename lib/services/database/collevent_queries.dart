@@ -59,6 +59,13 @@ class CollEffortQuery extends DatabaseAccessor<Database>
         .get();
   }
 
+  Future<CollEffortData> getCollEffortById(int effortId) async {
+    return await (select(collEffort)
+          ..where((t) => t.id.equals(effortId))
+          ..limit(1))
+        .getSingle();
+  }
+
   Future<List<String>> getDistinctMethods() async {
     List<CollEffortData> data =
         await (select(collEffort, distinct: true)).get();
@@ -98,6 +105,13 @@ class CollPersonnelQuery extends DatabaseAccessor<Database>
     return await (select(collPersonnel)
           ..where((t) => t.eventID.equals(collEventId)))
         .get();
+  }
+
+  Future<CollPersonnelData> getCollPersonnelById(int personnelId) async {
+    return await (select(collPersonnel)
+          ..where((t) => t.id.equals(personnelId))
+          ..limit(1))
+        .getSingle();
   }
 
   Future<List<String>> getDistinctRoles() async {
