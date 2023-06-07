@@ -63,7 +63,8 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
                       ),
                     );
                   },
-                  text: 'Add',
+                  label: 'Add taxon',
+                  icon: Icons.add,
                 ),
               ],
             ),

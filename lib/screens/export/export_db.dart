@@ -24,7 +24,7 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
   String _fileStem = 'backup';
   Directory? _selectedDir;
   bool _hasSaved = false;
-
+  bool _isRunning = false;
   late File _savePath;
 
   @override
@@ -87,11 +87,19 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
             children: [
               SaveSecondaryButton(hasSaved: _hasSaved),
               !_hasSaved
-                  ? PrimaryButton(
-                      text: 'Save',
+                  ? ProgressButton(
+                      label: 'Save',
+                      icon: Icons.save_alt_outlined,
+                      isRunning: _isRunning,
                       onPressed: exportCtr.isValid
                           ? () async {
+                              setState(() {
+                                _isRunning = true;
+                              });
                               await _writeDb();
+                              setState(() {
+                                _isRunning = false;
+                              });
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(

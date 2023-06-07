@@ -26,6 +26,7 @@ class ReportFormState extends ConsumerState<ReportForm> {
   Directory? _selectedDir;
   late File _savePath;
   bool _hasSaved = false;
+  bool _isRunning = false;
 
   @override
   void initState() {
@@ -109,12 +110,20 @@ class ReportFormState extends ConsumerState<ReportForm> {
             children: [
               SaveSecondaryButton(hasSaved: _hasSaved),
               !_hasSaved
-                  ? PrimaryButton(
-                      text: 'Save',
+                  ? ProgressButton(
+                      label: 'Save',
+                      isRunning: _isRunning,
+                      icon: Icons.save_alt_outlined,
                       onPressed: !exportCtr.isValid
                           ? null
                           : () async {
+                              setState(() {
+                                _isRunning = true;
+                              });
                               await _createReport();
+                              setState(() {
+                                _isRunning = false;
+                              });
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(

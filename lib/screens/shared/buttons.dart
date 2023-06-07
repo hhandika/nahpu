@@ -93,7 +93,8 @@ class FormElevButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return PrimaryButton(
       onPressed: enabled ? onPressed : null,
-      text: text,
+      label: text,
+      icon: Icons.add,
     );
   }
 }
@@ -161,21 +162,28 @@ class PrimaryIconButton extends StatelessWidget {
 }
 
 class PrimaryButton extends StatelessWidget {
-  const PrimaryButton({super.key, required this.text, required this.onPressed});
+  const PrimaryButton({
+    super.key,
+    required this.label,
+    required this.icon,
+    required this.onPressed,
+  });
 
-  final String text;
+  final String label;
+  final IconData icon;
   final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
         foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         elevation: 0,
       ),
       onPressed: onPressed,
-      child: Text(text),
+      icon: Icon(icon),
+      label: Text(label),
     );
   }
 }
@@ -202,7 +210,8 @@ class FormButton extends StatelessWidget {
         ),
         const SizedBox(width: 10),
         PrimaryButton(
-          text: isEditing ? 'Update' : 'Add',
+          label: isEditing ? 'Update' : 'Add',
+          icon: isEditing ? Icons.check : Icons.add,
           onPressed: onSubmitted,
         ),
       ],

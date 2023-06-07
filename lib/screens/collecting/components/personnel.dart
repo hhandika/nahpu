@@ -70,7 +70,8 @@ class CollPersonnelFormState extends ConsumerState<CollPersonnelForm> {
                 ),
         ),
         PrimaryButton(
-          text: 'Add Personnel',
+          label: 'Add personnel',
+          icon: Icons.add,
           onPressed: () {
             CollEventServices(ref: ref)
                 .createCollPersonnel(CollPersonnelCompanion(

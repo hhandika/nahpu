@@ -152,7 +152,8 @@ class DbReplaceButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PrimaryButton(
-      text: 'Replace',
+      label: 'Replace',
+      icon: Icons.refresh,
       onPressed: !hasSelected
           ? null
           : () async {
@@ -164,7 +165,8 @@ class DbReplaceButtons extends StatelessWidget {
                   content: const DbWarningText(),
                   actions: [
                     PrimaryButton(
-                      text: 'Cancel',
+                      label: 'Cancel',
+                      icon: Icons.cancel,
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                     TextButton(

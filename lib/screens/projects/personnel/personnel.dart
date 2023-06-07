@@ -47,7 +47,8 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
                 ),
               );
             },
-            text: 'Add personnel',
+            label: 'Add personnel',
+            icon: Icons.add,
           ),
         ],
       ),

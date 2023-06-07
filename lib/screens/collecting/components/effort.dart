@@ -45,7 +45,8 @@ class CollEffort extends StatelessWidget {
                     ),
                   );
                 },
-                text: 'Add Method'),
+                label: 'Add Method',
+                icon: Icons.add),
             const CommonTextField(
               labelText: 'Notes',
               hintText: 'Notes',
@@ -351,25 +352,13 @@ class CollEffortFormState extends ConsumerState<CollEffortForm> {
             ),
           ),
           const SizedBox(height: 20),
-          Wrap(
-            alignment: WrapAlignment.center,
-            children: [
-              SecondaryButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                text: 'Cancel',
-              ),
-              const SizedBox(width: 20),
-              PrimaryButton(
-                onPressed: () {
-                  widget.isEditing ? _updateCollEffort() : _addCollEffort();
-                  ref.invalidate(collEffortByEventProvider);
-                  Navigator.pop(context);
-                },
-                text: widget.isEditing ? 'Update' : 'Add',
-              ),
-            ],
+          FormButton(
+            isEditing: widget.isEditing,
+            onSubmitted: () {
+              widget.isEditing ? _updateCollEffort() : _addCollEffort();
+              ref.invalidate(collEffortByEventProvider);
+              Navigator.pop(context);
+            },
           ),
         ],
       ),

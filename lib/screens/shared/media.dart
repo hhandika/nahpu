@@ -327,7 +327,8 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
                               Navigator.of(context).pop();
                             }
                           },
-                          text: 'Rename',
+                          label: 'Rename',
+                          icon: Icons.check,
                         ),
                       ],
                     );

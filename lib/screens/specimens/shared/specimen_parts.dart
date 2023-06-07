@@ -101,7 +101,8 @@ class SpecimenPartFields extends ConsumerWidget {
               ),
             );
           },
-          text: 'Add Part',
+          label: 'Add Part',
+          icon: Icons.add,
         ),
       ],
     );
@@ -919,7 +920,8 @@ class TissueIDMenuState extends ConsumerState<TissueIDMenu> {
                   Navigator.of(context).pop();
                 }
               },
-              text: 'Save',
+              label: 'Save',
+              icon: Icons.save_alt_outlined,
             ),
           ],
         );
