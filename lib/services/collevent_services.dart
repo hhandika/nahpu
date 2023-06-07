@@ -143,6 +143,12 @@ class CollEvenPersonnelServices extends DbAccess {
     _invalidateCollPersonnel();
   }
 
+  Future<List<int>> searchPersonnel(String query) async {
+    List<CollPersonnelData> data =
+        await CollPersonnelQuery(dbAccess).searchCollectingPersonnel(query);
+    return data.map((e) => e.id).toList();
+  }
+
   Future<void> addRole(String role) async {
     await ref.read(collPersonnelRoleProvider.notifier).add(role);
     _invalidateCollPersonnel();

@@ -20,6 +20,17 @@ class TaxonomyQuery extends DatabaseAccessor<Database>
         .getSingle();
   }
 
+  Future<List<TaxonomyData>> searchTaxon(String query) {
+    return (select(taxonomy)
+          ..where((t) =>
+              t.taxonOrder.contains(query) |
+              t.taxonFamily.contains(query) |
+              t.genus.contains(query) |
+              t.specificEpithet.contains(query) |
+              t.commonName.contains(query)))
+        .get();
+  }
+
   Future<TaxonomyData?> getTaxonIdByGenusEpithet(String genus, String epithet) {
     return (select(taxonomy)
           ..where((t) => t.genus.equals(genus))

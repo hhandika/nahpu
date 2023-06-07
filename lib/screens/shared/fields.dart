@@ -95,26 +95,16 @@ class SearchButtonField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      style: const TextStyle(
-        fontSize: 14,
-      ),
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         labelText: 'Search',
+        labelStyle: TextStyle(fontSize: 16),
         hintText: 'Enter a query',
-        prefixIcon: const Icon(Icons.search),
-        border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        prefixIcon: Icon(Icons.search),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(16)),
         ),
-        suffix: controller.text.isNotEmpty
-            ? IconButton(
-                icon: const Icon(Icons.clear),
-                onPressed: () {
-                  controller.clear();
-                  onChanged('');
-                },
-              )
-            : null,
       ),
+      keyboardType: TextInputType.text,
       onChanged: onChanged,
     );
   }

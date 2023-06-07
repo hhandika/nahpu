@@ -641,7 +641,10 @@ class _TaxonListState extends State<TaxonList> {
                 });
               },
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 8),
+            _filteredTaxonList.isEmpty
+                ? const SizedBox.shrink()
+                : Text('Results: ${_filteredTaxonList.length}'),
             SizedBox(
                 height: MediaQuery.of(context).size.height * 0.7,
                 child: TaxonListView(
@@ -666,35 +669,39 @@ class TaxonListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: taxonList.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(
-              '${taxonList[index].genus} ${taxonList[index].specificEpithet}'),
-          subtitle: Text(
-            '${taxonList[index].taxonClass}'
-            '$listTileSeparator'
-            '${taxonList[index].taxonOrder}'
-            '$listTileSeparator'
-            '${taxonList[index].taxonFamily}',
-          ),
-          trailing: IconButton(
-            icon: const Icon(Icons.edit_outlined),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => EditTaxon(
-                    taxonId: taxonList[index].id,
-                    ctr: TaxonRegistryCtrModel.fromData(taxonList[index]),
-                  ),
-                ),
-              );
-            },
-          ),
-          onTap: () {},
-        );
-      },
-    );
+    ScrollController scrollController = ScrollController();
+    return CommonScrollbar(
+        scrollController: scrollController,
+        child: ListView.builder(
+          controller: scrollController,
+          itemCount: taxonList.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text(
+                  '${taxonList[index].genus} ${taxonList[index].specificEpithet}'),
+              subtitle: Text(
+                '${taxonList[index].taxonClass}'
+                '$listTileSeparator'
+                '${taxonList[index].taxonOrder}'
+                '$listTileSeparator'
+                '${taxonList[index].taxonFamily}',
+              ),
+              trailing: IconButton(
+                icon: const Icon(Icons.edit_outlined),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => EditTaxon(
+                        taxonId: taxonList[index].id,
+                        ctr: TaxonRegistryCtrModel.fromData(taxonList[index]),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              onTap: () {},
+            );
+          },
+        ));
   }
 }

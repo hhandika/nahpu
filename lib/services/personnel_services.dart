@@ -13,6 +13,13 @@ class PersonnelServices extends DbAccess {
     return id;
   }
 
+  Future<List<String>> searchPersonnel(String search) async {
+    List<PersonnelData> data =
+        await PersonnelQuery(dbAccess).searchPersonnel(search);
+
+    return data.map((e) => e.uuid).toList();
+  }
+
   Future<void> createProjectPersonnel(PersonnelListCompanion form) async {
     await PersonnelQuery(dbAccess).createProjectPersonnelEntry(form);
     invalidatePersonnel();

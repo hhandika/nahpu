@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/specimens/specimen_form.dart';
+import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/screens/shared/common.dart';
@@ -11,7 +12,16 @@ import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/utility_services.dart';
 
-class SpecimenListPage extends StatefulWidget {
+const List<String> specimenSearchOptions = [
+  'Field number',
+  'Cataloger',
+  'Preparator',
+  'Collector',
+  'Condition',
+  'Taxon',
+];
+
+class SpecimenListPage extends ConsumerStatefulWidget {
   const SpecimenListPage({
     super.key,
     required this.data,
@@ -20,12 +30,13 @@ class SpecimenListPage extends StatefulWidget {
   final List<SpecimenData> data;
 
   @override
-  State<SpecimenListPage> createState() => _SpecimenListPageState();
+  SpecimenListPageState createState() => SpecimenListPageState();
 }
 
-class _SpecimenListPageState extends State<SpecimenListPage> {
+class SpecimenListPageState extends ConsumerState<SpecimenListPage> {
   List<SpecimenData> _filteredData = [];
   final TextEditingController _searchController = TextEditingController();
+  int _selectedValue = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -40,17 +51,33 @@ class _SpecimenListPageState extends State<SpecimenListPage> {
           children: [
             SearchButtonField(
               controller: _searchController,
-              onChanged: (String value) {
-                setState(() {
-                  _filteredData = widget.data
-                      .where((element) => element.fieldNumber
-                          .toString()
-                          .toLowerCase()
-                          .contains(value.toLowerCase()))
-                      .toList();
-                });
+              onChanged: (String value) async {
+                await _filterResults(value);
+                setState(() {});
               },
             ),
+            const SizedBox(height: 4),
+            Wrap(
+              spacing: 4,
+              alignment: WrapAlignment.center,
+              children: List.generate(specimenSearchOptions.length, (index) {
+                return ChoiceChip(
+                    shape: const StadiumBorder(
+                      side: BorderSide(color: Colors.transparent),
+                    ),
+                    label: Text(specimenSearchOptions[index]),
+                    selected: _selectedValue == index,
+                    onSelected: (bool selected) {
+                      setState(() {
+                        _selectedValue = selected ? index : 0;
+                      });
+                    });
+              }),
+            ),
+            const SizedBox(height: 8),
+            _filteredData.isEmpty || widget.data.length == _filteredData.length
+                ? const SizedBox.shrink()
+                : Text('Results: ${_filteredData.length}'),
             SpecimenList(
               data: _filteredData.isEmpty ? widget.data : _filteredData,
             ),
@@ -58,6 +85,97 @@ class _SpecimenListPageState extends State<SpecimenListPage> {
         )),
       )),
     );
+  }
+
+  Future<void> _filterResults(String query) async {
+    switch (_selectedValue) {
+      case 0:
+        _filterByFieldNumber(query);
+        break;
+      case 1:
+        await _filterByCataloger(query);
+        break;
+      case 2:
+        await _filterByPreparator(query);
+        break;
+      case 3:
+        await _filterByCollector(query);
+        break;
+      case 4:
+        _filterByCondition(query);
+        break;
+      case 5:
+        await _filterByTaxon(query);
+        break;
+    }
+  }
+
+  void _filterByFieldNumber(String query) {
+    _filteredData = widget.data
+        .where((element) => element.fieldNumber
+            .toString()
+            .toLowerCase()
+            .contains(query.toLowerCase()))
+        .toList();
+  }
+
+  Future<void> _filterByTaxon(String query) async {
+    List<SpecimenData> filteredData = [];
+    List<int> taxonIDs = await TaxonomyService(ref: ref).searchTaxa(query);
+    for (int taxonID in taxonIDs) {
+      filteredData.addAll(widget.data
+          .where((element) => element.speciesID == taxonID)
+          .toList());
+    }
+    _filteredData = filteredData;
+  }
+
+  Future<void> _filterByCataloger(String query) async {
+    List<SpecimenData> filteredData = [];
+    List<String> catalogerIDs = await _searchPersonnel(query);
+    for (String catalogerID in catalogerIDs) {
+      filteredData.addAll(widget.data
+          .where(
+              (element) => element.catalogerID.toString().contains(catalogerID))
+          .toList());
+    }
+    _filteredData = filteredData;
+  }
+
+  Future<void> _filterByPreparator(String query) async {
+    List<SpecimenData> filteredData = [];
+    List<String> preparatorIDs = await _searchPersonnel(query);
+    for (String preparatorID in preparatorIDs) {
+      filteredData.addAll(widget.data
+          .where((element) =>
+              element.preparatorID.toString().contains(preparatorID))
+          .toList());
+    }
+    _filteredData = filteredData;
+  }
+
+  Future<void> _filterByCollector(String query) async {
+    List<SpecimenData> filteredData = [];
+    List<int> collectorIDs =
+        await CollEvenPersonnelServices(ref: ref).searchPersonnel(query);
+    for (int collectorID in collectorIDs) {
+      filteredData.addAll(widget.data
+          .where((element) => element.collPersonnelID == collectorID)
+          .toList());
+    }
+    _filteredData = filteredData;
+  }
+
+  Future<void> _filterByCondition(String query) async {
+    _filteredData = widget.data
+        .where((element) => element.condition != null)
+        .where((element) =>
+            element.condition!.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+  }
+
+  Future<List<String>> _searchPersonnel(String search) async {
+    return await PersonnelServices(ref: ref).searchPersonnel(search);
   }
 }
 
@@ -71,30 +189,36 @@ class SpecimenList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        height: MediaQuery.of(context).size.height * 0.7,
-        child: ListView.builder(
-          itemCount: data.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              leading: Icon(_getLeadingIcon(data[index].taxonGroup)),
-              title: SpecimenListTitle(
-                  catalogerID: data[index].catalogerID,
-                  fieldNumber: data[index].fieldNumber),
-              subtitle: SpecimenListSubtitle(
-                data: data[index],
-              ),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          SpecimenPageView(data: data[index])),
-                );
-              },
-            );
-          },
+    ScrollController scrollController = ScrollController();
+    return ConstrainedBox(
+        constraints:
+            BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.5),
+        child: CommonScrollbar(
+          scrollController: scrollController,
+          child: ListView.builder(
+            controller: scrollController,
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                leading: Icon(_getLeadingIcon(data[index].taxonGroup)),
+                title: SpecimenListTitle(
+                    catalogerID: data[index].catalogerID,
+                    fieldNumber: data[index].fieldNumber),
+                subtitle: SpecimenListSubtitle(
+                  data: data[index],
+                ),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            SpecimenPageView(data: data[index])),
+                  );
+                },
+              );
+            },
+          ),
         ));
   }
 

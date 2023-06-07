@@ -18,6 +18,10 @@ class PersonnelQuery extends DatabaseAccessor<Database>
     return (update(personnel)..where((t) => t.uuid.equals(id))).write(entry);
   }
 
+  Future<List<PersonnelData>> searchPersonnel(String search) {
+    return (select(personnel)..where((t) => t.name.like('%$search%'))).get();
+  }
+
   Future<void> createProjectPersonnelEntry(PersonnelListCompanion form) =>
       into(personnelList).insert(form);
 

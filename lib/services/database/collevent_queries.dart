@@ -100,6 +100,12 @@ class CollPersonnelQuery extends DatabaseAccessor<Database>
     return (update(collPersonnel)..where((t) => t.id.equals(id))).write(entry);
   }
 
+  Future<List<CollPersonnelData>> searchCollectingPersonnel(
+      String query) async {
+    return await (select(collPersonnel)..where((t) => t.name.like('%query%')))
+        .get();
+  }
+
   Future<List<CollPersonnelData>> getCollPersonnelByEventId(
       int collEventId) async {
     return await (select(collPersonnel)
