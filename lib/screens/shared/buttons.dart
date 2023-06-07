@@ -137,6 +137,29 @@ class FormButtonWithDelete extends StatelessWidget {
   }
 }
 
+class PrimaryIconButton extends StatelessWidget {
+  const PrimaryIconButton({
+    super.key,
+    required this.onPressed,
+    required this.icon,
+  });
+
+  final VoidCallback? onPressed;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+          elevation: 0,
+        ),
+        onPressed: onPressed,
+        child: Icon(icon));
+  }
+}
+
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({super.key, required this.text, required this.onPressed});
 

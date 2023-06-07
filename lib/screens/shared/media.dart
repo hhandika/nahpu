@@ -95,18 +95,13 @@ class MediaButton extends StatelessWidget {
                 icon: const Icon(Icons.add),
               )
             : const SizedBox.shrink(),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-            elevation: 0,
-          ),
+        PrimaryIconButton(
           onPressed: systemPlatform == PlatformType.mobile
               ? onAccessingCamera
               : onAddImage,
-          child: systemPlatform == PlatformType.mobile
-              ? const Icon(Icons.camera_alt_outlined)
-              : const Icon(Icons.add_photo_alternate_outlined),
+          icon: systemPlatform == PlatformType.mobile
+              ? Icons.camera_alt_outlined
+              : Icons.add_photo_alternate_outlined,
         ),
       ],
     );
