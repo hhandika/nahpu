@@ -680,7 +680,7 @@ class TaxonListView extends StatelessWidget {
             '${taxonList[index].taxonFamily}',
           ),
           trailing: IconButton(
-            icon: const Icon(Icons.edit),
+            icon: const Icon(Icons.edit_outlined),
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(

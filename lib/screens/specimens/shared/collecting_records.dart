@@ -440,7 +440,7 @@ class SpecimenIdTile extends ConsumerWidget {
         visible: specimenCtr.fieldNumberCtr.text.isNotEmpty,
         child: IconButton(
           icon: Icon(
-            Icons.edit_rounded,
+            Icons.edit_outlined,
             color: Theme.of(context).disabledColor,
           ),
           onPressed: () {

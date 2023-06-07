@@ -3,6 +3,7 @@ import 'package:nahpu/screens/export/export_db.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/settings/settings.dart';
 import 'package:nahpu/screens/shared/common.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeMenuDrawer extends StatelessWidget {
@@ -58,24 +59,12 @@ class HomeMenuDrawer extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.info_rounded),
           title: const Text('About'),
-          onTap: () {
-            return showAboutDialog(
+          onTap: () async {
+            return showDialog(
               context: context,
-              applicationName: 'Nahpu',
-              applicationVersion: '0.0.1',
-              applicationIcon: const Icon(Icons.info_rounded),
-              children: [
-                Text(
-                  'Rethinking species inventory in the digital age',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  'Nahpu is a field cataloging app for natural history projects.'
-                  ' Developed by museum scientists '
-                  'for museum scientists.',
-                ),
-              ],
+              builder: (context) {
+                return const AppAbout();
+              },
             );
           },
         ),
@@ -98,5 +87,35 @@ class HomeMenuDrawer extends StatelessWidget {
     )) {
       throw 'Could not launch $url';
     }
+  }
+}
+
+class AppAbout extends StatelessWidget {
+  const AppAbout({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      builder: (context, snapshot) {
+        return AboutDialog(
+          applicationName: snapshot.data?.appName ?? '',
+          applicationVersion: snapshot.data?.version ?? '',
+          applicationIcon: const Icon(Icons.info_rounded),
+          children: [
+            Text(
+              'Rethinking species inventory in the digital age',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'Nahpu is a field cataloging app for natural history projects.'
+              ' Developed by museum scientists '
+              'for museum scientists.',
+            ),
+          ],
+        );
+      },
+      future: PackageInfo.fromPlatform(),
+    );
   }
 }

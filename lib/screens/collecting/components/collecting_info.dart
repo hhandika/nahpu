@@ -203,7 +203,7 @@ class CollEventIdTile extends ConsumerWidget {
             ),
             trailing: IconButton(
               icon: Icon(
-                Icons.edit_rounded,
+                Icons.edit_outlined,
                 color: Theme.of(context).disabledColor,
               ),
               onPressed: () {
