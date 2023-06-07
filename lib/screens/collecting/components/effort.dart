@@ -323,33 +323,30 @@ class CollEffortFormState extends ConsumerState<CollEffortForm> {
       child: Column(
         children: [
           CollectionMethods(ctr: widget.collToolCtr),
-          TextFormField(
+          CommonTextField(
             controller: widget.collToolCtr.brandCtr,
-            decoration: const InputDecoration(
-              labelText: 'Brand and Model',
-              hintText: 'Enter brand and Model of the tool',
-            ),
+            labelText: 'Brand and Model',
+            hintText: 'Enter brand and Model of the tool',
+            isLastField: false,
           ),
-          TextFormField(
+          CommonNumField(
             controller: widget.collToolCtr.countCtr,
-            decoration: const InputDecoration(
-              labelText: 'Count',
-              hintText: 'How many of this tool were used?',
-            ),
+            labelText: 'Count',
+            hintText: 'How many of this tool were used?',
+            isLastField: false,
           ),
-          TextFormField(
+          CommonTextField(
             controller: widget.collToolCtr.sizeCtr,
-            decoration: const InputDecoration(
-              labelText: 'Size',
-              hintText: 'Enter size of the tool (if applicable)',
-            ),
+            labelText: 'Size',
+            hintText: 'Enter size of the tool (if applicable)',
+            isLastField: false,
           ),
-          TextFormField(
+          CommonTextField(
             controller: widget.collToolCtr.noteCtr,
-            decoration: const InputDecoration(
-              labelText: 'Notes',
-              hintText: 'Enter any notes about the tool (if applicable)',
-            ),
+            maxLines: 3,
+            labelText: 'Notes',
+            hintText: 'Enter any notes about the tool (if applicable)',
+            isLastField: true,
           ),
           const SizedBox(height: 20),
           FormButton(
