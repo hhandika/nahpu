@@ -301,3 +301,15 @@ class PdfExportMenuButton extends StatelessWidget {
     );
   }
 }
+
+class SearchMenuButton extends StatelessWidget {
+  const SearchMenuButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const ListTile(
+      leading: Icon(Icons.search_outlined),
+      title: Text('Search'),
+    );
+  }
+}

@@ -192,7 +192,7 @@ class SpecimenList extends StatelessWidget {
     ScrollController scrollController = ScrollController();
     return ConstrainedBox(
         constraints:
-            BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.5),
+            BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 370),
         child: CommonScrollbar(
           scrollController: scrollController,
           child: ListView.builder(

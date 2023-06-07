@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:nahpu/screens/projects/taxonomy/specimen_list.dart';
+import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/specimens/specimen_view.dart';
 import 'package:nahpu/services/specimen_services.dart';
-
-enum MenuSelection {
-  newSpecimen,
-  duplicate,
-  pdfExport,
-  deleteRecords,
-  deleteAllRecords
-}
 
 Future<void> createNewSpecimens(BuildContext context, WidgetRef ref) async {
   await SpecimenServices(ref: ref).createSpecimen();
@@ -54,31 +48,36 @@ class SpecimenMenu extends ConsumerStatefulWidget {
 class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<MenuSelection>(
-        itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuSelection>>[
-              PopupMenuItem<MenuSelection>(
-                value: MenuSelection.newSpecimen,
+    return PopupMenuButton(
+        itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+              PopupMenuItem(
                 child: CreateMenuButton(text: _getNewSpecimenLabel()),
                 onTap: () => createNewSpecimens(context, ref),
               ),
+              PopupMenuItem(
+                  child: const SearchMenuButton(),
+                  onTap: () async {
+                    List<SpecimenData> specimens =
+                        await SpecimenServices(ref: ref).getAllSpecimens();
+                    if (mounted) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (_) => SpecimenListPage(data: specimens)),
+                      );
+                    }
+                  }),
               // const PopupMenuItem<MenuSelection>(
               //   value: MenuSelection.duplicate,
               //   child: DuplicateMenuButton(text: 'Duplicate record'),
               // ),
-              // const PopupMenuItem<MenuSelection>(
-              //   value: MenuSelection.pdfExport,
-              //   child: PdfExportMenuButton(),
-              // ),
               const PopupMenuDivider(height: 10),
-              PopupMenuItem<MenuSelection>(
-                value: MenuSelection.deleteRecords,
+              PopupMenuItem(
                 child: const DeleteMenuButton(
                   deleteAll: false,
                 ),
                 onTap: () => _deleteSpecimen(),
               ),
-              PopupMenuItem<MenuSelection>(
-                value: MenuSelection.deleteAllRecords,
+              PopupMenuItem(
                 child: const DeleteMenuButton(
                   deleteAll: true,
                 ),
