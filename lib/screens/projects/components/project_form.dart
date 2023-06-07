@@ -103,6 +103,7 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                   controller: widget.projectCtr.descriptionCtr,
                   labelText: 'Project description',
                   hintText: 'Enter a description of the project (optional)',
+                  maxLines: 2,
                   onChanged: (_) {
                     _validateEditing();
                   },
@@ -186,7 +187,8 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                       widget.isEditing ? _updateProject() : _createProject();
                       _goToDashboard();
                     },
-                    text: widget.isEditing ? 'Update' : 'Create',
+                    label: widget.isEditing ? 'Update' : 'Create',
+                    icon: widget.isEditing ? Icons.check : Icons.add,
                     enabled: _isValid(),
                   )
                 ])
@@ -272,6 +274,7 @@ class ProjectFormField extends StatelessWidget {
     required this.hintText,
     required this.controller,
     this.maxLength,
+    this.maxLines,
     this.keyboardType,
     this.inputFormatters,
     this.errorText,
@@ -283,6 +286,7 @@ class ProjectFormField extends StatelessWidget {
   final String hintText;
   final TextEditingController controller;
   final int? maxLength;
+  final int? maxLines;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
 
@@ -295,6 +299,7 @@ class ProjectFormField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       maxLength: maxLength,
+      maxLines: maxLines,
       decoration: InputDecoration(
           labelText: labelText, hintText: hintText, errorText: errorText),
       keyboardType: keyboardType,

@@ -75,6 +75,7 @@ class ProjectInfoText extends StatelessWidget {
   Widget build(BuildContext context) {
     return RichText(
       overflow: TextOverflow.ellipsis,
+      textAlign: TextAlign.center,
       text: TextSpan(
         text: title,
         style: isSmall

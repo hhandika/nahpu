@@ -292,7 +292,8 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
                 },
               ),
               FormElevButton(
-                text: widget.isEditing ? 'Update' : 'Add',
+                label: widget.isEditing ? 'Update' : 'Add',
+                icon: widget.isEditing ? Icons.check : Icons.add,
                 enabled: _validateForm(),
                 onPressed: () async {
                   widget.isEditing ? _updatePersonnel() : _addPersonnel();

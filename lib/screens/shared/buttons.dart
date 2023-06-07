@@ -81,20 +81,22 @@ class FormElevButton extends StatelessWidget {
   const FormElevButton({
     Key? key,
     required this.onPressed,
-    required this.text,
+    required this.label,
+    required this.icon,
     required this.enabled,
   }) : super(key: key);
 
   final VoidCallback onPressed;
-  final String text;
+  final String label;
+  final IconData icon;
   final bool enabled;
 
   @override
   Widget build(BuildContext context) {
     return PrimaryButton(
       onPressed: enabled ? onPressed : null,
-      label: text,
-      icon: Icons.add,
+      label: label,
+      icon: icon,
     );
   }
 }
