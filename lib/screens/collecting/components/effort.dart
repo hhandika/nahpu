@@ -70,14 +70,19 @@ class CollEffortList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final collEffort = ref.watch(collEffortByEventProvider(collEventId));
+    ScrollController scrollController = ScrollController();
     return collEffort.when(
       data: (data) {
-        return ListView.builder(
-          shrinkWrap: true,
-          itemCount: data.length,
-          itemBuilder: (context, index) {
-            return CollEffortTile(collEffort: data[index]);
-          },
+        return CommonScrollbar(
+          scrollController: scrollController,
+          child: ListView.builder(
+            shrinkWrap: true,
+            controller: scrollController,
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              return CollEffortTile(collEffort: data[index]);
+            },
+          ),
         );
       },
       loading: () => const CircularProgressIndicator(),

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/collevents.dart';
 import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/screens/shared/common.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
@@ -32,6 +33,7 @@ class CollPersonnelFormState extends ConsumerState<CollPersonnelForm> {
 
   @override
   Widget build(BuildContext context) {
+    ScrollController scrollController = ScrollController();
     ref.watch(collPersonnelProvider(widget.eventID)).whenData((data) {
       _personnel.clear();
       if (data.isNotEmpty) {
@@ -49,15 +51,19 @@ class CollPersonnelFormState extends ConsumerState<CollPersonnelForm> {
         const TitleForm(text: 'Personnel'),
         Expanded(
           child: _personnel.isNotEmpty
-              ? ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: _personnel.length,
-                  itemBuilder: (context, index) {
-                    return CollPersonnelField(
-                      eventID: widget.eventID,
-                      controller: _personnel[index],
-                    );
-                  },
+              ? CommonScrollbar(
+                  scrollController: scrollController,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    controller: scrollController,
+                    itemCount: _personnel.length,
+                    itemBuilder: (context, index) {
+                      return CollPersonnelField(
+                        eventID: widget.eventID,
+                        controller: _personnel[index],
+                      );
+                    },
+                  ),
                 )
               : const Center(
                   child: Text('No personnel added'),

@@ -61,23 +61,27 @@ class CoordinateList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final coordinates = ref.watch(coordinateBySiteProvider(sideId));
+    ScrollController scrollController = ScrollController();
     return coordinates.when(
       data: (data) {
-        return ListView.builder(
-          shrinkWrap: true,
-          itemCount: data.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: CoordinateTitle(coordinateId: data[index].nameId),
-              subtitle: CoordinateSubtitle(coordinate: data[index]),
-              trailing: CoordinateMenu(
-                coordinateId: data[index].id!,
-                siteId: data[index].siteID!,
-                coordCtr: CoordinateCtrModel.fromData(data[index]),
-              ),
-            );
-          },
-        );
+        return CommonScrollbar(
+            scrollController: scrollController,
+            child: ListView.builder(
+              shrinkWrap: true,
+              controller: scrollController,
+              itemCount: data.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: CoordinateTitle(coordinateId: data[index].nameId),
+                  subtitle: CoordinateSubtitle(coordinate: data[index]),
+                  trailing: CoordinateMenu(
+                    coordinateId: data[index].id!,
+                    siteId: data[index].siteID!,
+                    coordCtr: CoordinateCtrModel.fromData(data[index]),
+                  ),
+                );
+              },
+            ));
       },
       loading: () => const CommonProgressIndicator(),
       error: (error, stack) => Text(error.toString()),
