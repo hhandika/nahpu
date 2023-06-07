@@ -59,12 +59,15 @@ class SpecimenListPageState extends ConsumerState<SpecimenListPage> {
             const SizedBox(height: 4),
             Wrap(
               spacing: 4,
+              runSpacing: 2,
               alignment: WrapAlignment.center,
               children: List.generate(specimenSearchOptions.length, (index) {
                 return ChoiceChip(
                     shape: const StadiumBorder(
                       side: BorderSide(color: Colors.transparent),
                     ),
+                    selectedColor:
+                        Theme.of(context).colorScheme.primaryContainer,
                     label: Text(specimenSearchOptions[index]),
                     selected: _selectedValue == index,
                     onSelected: (bool selected) {
