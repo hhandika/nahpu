@@ -58,6 +58,7 @@ class SpecimenListPageState extends ConsumerState<SpecimenListPage> {
             ),
             const SizedBox(height: 4),
             Wrap(
+              spacing: 6,
               alignment: WrapAlignment.center,
               children: List.generate(specimenSearchOptions.length, (index) {
                 return SearchType(
@@ -180,7 +181,7 @@ class SpecimenListPageState extends ConsumerState<SpecimenListPage> {
   }
 }
 
-class SearchType extends StatelessWidget {
+class SearchType extends StatefulWidget {
   const SearchType({
     super.key,
     required this.index,
@@ -193,18 +194,23 @@ class SearchType extends StatelessWidget {
   final void Function(bool) onSelected;
 
   @override
+  State<SearchType> createState() => _SearchTypeState();
+}
+
+class _SearchTypeState extends State<SearchType> {
+  @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.fromLTRB(4, 2, 4, 0),
+        padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
         child: ChoiceChip(
           shape: const StadiumBorder(
             side: BorderSide(color: Colors.transparent),
           ),
-          tooltip: 'Search by ${specimenSearchOptions[index]}',
+          tooltip: 'Search by ${specimenSearchOptions[widget.index]}',
           selectedColor: Theme.of(context).colorScheme.primaryContainer,
-          label: Text(specimenSearchOptions[index]),
-          selected: selectedValue == index,
-          onSelected: onSelected,
+          label: Text(specimenSearchOptions[widget.index]),
+          selected: widget.selectedValue == widget.index,
+          onSelected: widget.onSelected,
         ));
   }
 }
