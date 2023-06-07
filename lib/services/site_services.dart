@@ -15,7 +15,7 @@ import 'package:path/path.dart';
 class SiteServices extends DbAccess {
   const SiteServices({required super.ref});
 
-  Future<int> createNewSite(String projectUuid) async {
+  Future<int> createNewSite() async {
     int siteID = await SiteQuery(dbAccess).createSite(SiteCompanion(
       projectUuid: db.Value(projectUuid),
     ));
@@ -23,11 +23,33 @@ class SiteServices extends DbAccess {
     return siteID;
   }
 
+  Future<void> duplicateSite(int originID) async {
+    SiteData? siteData = await getSite(originID);
+    if (siteData == null) {
+      return;
+    }
+    int _ = await SiteQuery(dbAccess).createSite(SiteCompanion(
+      projectUuid: db.Value(projectUuid),
+      leadStaffId: db.Value(siteData.leadStaffId),
+      siteType: db.Value(siteData.siteType),
+      country: db.Value(siteData.country),
+      stateProvince: db.Value(siteData.stateProvince),
+      county: db.Value(siteData.county),
+      municipality: db.Value(siteData.municipality),
+      locality: db.Value(siteData.locality),
+      remark: db.Value(siteData.remark),
+      habitatType: db.Value(siteData.habitatType),
+      habitatCondition: db.Value(siteData.habitatCondition),
+      habitatDescription: db.Value(siteData.habitatDescription),
+    ));
+    invalidateSite();
+  }
+
   Future<SiteData?> getSite(int? id) async {
     if (id == null) {
       return null;
     } else {
-      return SiteQuery(dbAccess).getSiteById(id);
+      return await SiteQuery(dbAccess).getSiteById(id);
     }
   }
 

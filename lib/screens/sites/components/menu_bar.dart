@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/types/types.dart';
-import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/sites/site_view.dart';
 import 'package:nahpu/services/site_services.dart';
 
 Future<void> createNewSite(BuildContext context, WidgetRef ref) {
-  String projectUuid = ref.watch(projectUuidProvider);
-
-  return SiteServices(ref: ref).createNewSite(projectUuid).then((_) {
+  return SiteServices(ref: ref).createNewSite().then((_) {
     Navigator.of(context)
         .pushReplacement(MaterialPageRoute(builder: (_) => const SiteViewer()));
   });
@@ -55,12 +52,13 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
                 ),
                 onTap: () => createNewSite(context, ref),
               ),
-              // const PopupMenuItem<SiteMenuSelection>(
-              //   value: SiteMenuSelection.duplicate,
-              //   child: DuplicateMenuButton(
-              //     text: 'Duplicate site',
-              //   ),
-              // ),
+              PopupMenuItem<SiteMenuSelection>(
+                value: SiteMenuSelection.duplicate,
+                child: const DuplicateMenuButton(
+                  text: 'Duplicate site',
+                ),
+                onTap: () async => await _duplicateSite(),
+              ),
               const PopupMenuDivider(height: 10),
               PopupMenuItem<SiteMenuSelection>(
                 value: SiteMenuSelection.deleteRecords,
@@ -77,6 +75,18 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
                 onTap: () => _deleteAllSites(),
               ),
             ]);
+  }
+
+  Future<void> _duplicateSite() async {
+    try {
+      await SiteServices(ref: ref).duplicateSite(widget.siteId!);
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => const SiteViewer()));
+      }
+    } catch (e) {
+      _showError(e.toString());
+    }
   }
 
   Future<void> _deleteSite() async {
