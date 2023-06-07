@@ -25,7 +25,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
   Widget build(BuildContext context) {
     int selectedIndex = ref.watch(projectNavbarIndexProvider);
     return NavigationBar(
-      labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+      labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
       backgroundColor: Color.lerp(Theme.of(context).colorScheme.surface,
           Theme.of(context).colorScheme.secondary, 0.1),
       elevation: 10,
@@ -51,7 +51,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
           icon: Icon(
             Icons.timeline_outlined,
           ),
-          label: 'CollEvents',
+          label: 'Events',
           tooltip: 'Collection Events',
         ),
         NavigationDestination(
