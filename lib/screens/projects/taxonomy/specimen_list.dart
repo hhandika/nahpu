@@ -58,23 +58,21 @@ class SpecimenListPageState extends ConsumerState<SpecimenListPage> {
             ),
             const SizedBox(height: 4),
             Wrap(
-              spacing: 4,
-              runSpacing: 2,
               alignment: WrapAlignment.center,
               children: List.generate(specimenSearchOptions.length, (index) {
-                return ChoiceChip(
-                    shape: const StadiumBorder(
-                      side: BorderSide(color: Colors.transparent),
-                    ),
-                    selectedColor:
-                        Theme.of(context).colorScheme.primaryContainer,
-                    label: Text(specimenSearchOptions[index]),
-                    selected: _selectedValue == index,
-                    onSelected: (bool selected) {
+                return SearchType(
+                  index: index,
+                  selectedValue: _selectedValue,
+                  onSelected: (bool selected) {
+                    if (selected) {
                       setState(() {
-                        _selectedValue = selected ? index : 0;
+                        _selectedValue = index;
+                        _searchController.clear();
+                        _filteredData = [];
                       });
-                    });
+                    }
+                  },
+                );
               }),
             ),
             const SizedBox(height: 8),
@@ -182,6 +180,35 @@ class SpecimenListPageState extends ConsumerState<SpecimenListPage> {
   }
 }
 
+class SearchType extends StatelessWidget {
+  const SearchType({
+    super.key,
+    required this.index,
+    required this.selectedValue,
+    required this.onSelected,
+  });
+
+  final int index;
+  final int selectedValue;
+  final void Function(bool) onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(4, 2, 4, 0),
+        child: ChoiceChip(
+          shape: const StadiumBorder(
+            side: BorderSide(color: Colors.transparent),
+          ),
+          tooltip: 'Search by ${specimenSearchOptions[index]}',
+          selectedColor: Theme.of(context).colorScheme.primaryContainer,
+          label: Text(specimenSearchOptions[index]),
+          selected: selectedValue == index,
+          onSelected: onSelected,
+        ));
+  }
+}
+
 class SpecimenList extends StatelessWidget {
   const SpecimenList({
     super.key,
@@ -199,6 +226,7 @@ class SpecimenList extends StatelessWidget {
         child: CommonScrollbar(
           scrollController: scrollController,
           child: ListView.builder(
+            shrinkWrap: true,
             controller: scrollController,
             itemCount: data.length,
             itemBuilder: (context, index) {
