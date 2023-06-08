@@ -705,15 +705,7 @@ class PartIdForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Theme.of(context).dividerColor,
-          width: 2,
-        ),
-        borderRadius: BorderRadius.circular(10),
-      ),
+    return IDFormContainer(
       child: Column(children: [
         Text(
           'Additional Part ID',

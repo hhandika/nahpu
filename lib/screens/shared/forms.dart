@@ -15,7 +15,7 @@ class IDFormContainer extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border.all(
           color: Theme.of(context).dividerColor,
-          width: 2,
+          width: 1,
         ),
         borderRadius: BorderRadius.circular(10),
       ),

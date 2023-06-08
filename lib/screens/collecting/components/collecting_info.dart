@@ -191,10 +191,10 @@ class CollEventIdTile extends ConsumerWidget {
     return collEventCtr.siteIDCtr != null
         ? ListTile(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(10),
               side: BorderSide(
                 color: Theme.of(context).dividerColor,
-                width: 2,
+                width: 1,
               ),
             ),
             title: EventIDText(
