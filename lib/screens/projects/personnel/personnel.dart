@@ -38,18 +38,27 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
           const SizedBox(
             height: 10,
           ),
-          PrimaryButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const NewPersonnel(),
-                ),
-              );
-            },
-            label: 'Add personnel',
-            icon: Icons.add,
-          ),
+          Wrap(
+            spacing: 8,
+            children: [
+              SecondaryButton(
+                text: 'Select from list',
+                onPressed: () {},
+              ),
+              PrimaryButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const NewPersonnel(),
+                    ),
+                  );
+                },
+                label: 'Add personnel',
+                icon: Icons.add,
+              ),
+            ],
+          )
         ],
       ),
     );

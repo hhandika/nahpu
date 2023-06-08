@@ -44,7 +44,7 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
             ),
             const SizedBox(height: 25),
             Wrap(
-              spacing: 10,
+              spacing: 8,
               children: [
                 SecondaryButton(
                     text: 'Import from file',

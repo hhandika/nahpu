@@ -206,7 +206,6 @@ class _SearchTypeState extends State<SearchType> {
           shape: const StadiumBorder(
             side: BorderSide(color: Colors.transparent),
           ),
-          tooltip: 'Search by ${specimenSearchOptions[widget.index]}',
           selectedColor: Theme.of(context).colorScheme.primaryContainer,
           label: Text(specimenSearchOptions[widget.index]),
           selected: widget.selectedValue == widget.index,
