@@ -25,15 +25,16 @@ class IDFormContainer extends StatelessWidget {
 }
 
 class FormCard extends StatelessWidget {
-  const FormCard(
-      {Key? key,
-      required this.child,
-      this.title = '',
-      this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
-      this.mainAxisSize = MainAxisSize.max,
-      this.isPrimary = false,
-      this.withTitle = true})
-      : super(key: key);
+  const FormCard({
+    super.key,
+    required this.child,
+    this.title = '',
+    this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
+    this.mainAxisSize = MainAxisSize.max,
+    this.isPrimary = false,
+    this.withTitle = true,
+    this.withDivider = true,
+  });
 
   final Widget child;
   final String title;
@@ -41,26 +42,53 @@ class FormCard extends StatelessWidget {
   final MainAxisSize mainAxisSize;
   final bool isPrimary;
   final bool withTitle;
+  final bool withDivider;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: isPrimary
-          ? Color.lerp(Theme.of(context).colorScheme.secondary,
-              Theme.of(context).colorScheme.surface, 0.6)
-          : Theme.of(context).cardColor,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: mainAxisAlignment,
-        mainAxisSize: mainAxisSize,
-        children: [
-          withTitle ? TitleForm(text: title) : const SizedBox.shrink(),
-          Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-              child: child)
-        ],
-      ),
-    );
+    return Padding(
+        padding: const EdgeInsets.all(4),
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: isPrimary
+                  ? [
+                      Theme.of(context).colorScheme.primaryContainer,
+                      Theme.of(context).colorScheme.secondaryContainer,
+                    ]
+                  : [
+                      Theme.of(context).cardColor,
+                      Theme.of(context).colorScheme.surface,
+                    ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(8),
+            color: isPrimary
+                ? Color.lerp(Theme.of(context).colorScheme.secondary,
+                    Theme.of(context).colorScheme.surface, 0.6)
+                : Theme.of(context).cardColor,
+            border: Border.all(
+              color: Theme.of(context).dividerColor.withOpacity(0.4),
+              width: 0.65,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: mainAxisAlignment,
+            mainAxisSize: mainAxisSize,
+            children: [
+              withTitle ? TitleForm(text: title) : const SizedBox.shrink(),
+              withTitle && !isPrimary
+                  ? Divider(
+                      thickness: 0.3,
+                      color: Theme.of(context).tabBarTheme.dividerColor)
+                  : const SizedBox.shrink(),
+              child
+            ],
+          ),
+        ));
   }
 }
 
@@ -78,7 +106,7 @@ class TitleForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: isCentered
-          ? const EdgeInsets.fromLTRB(48, 5, 0, 16)
+          ? const EdgeInsets.fromLTRB(46, 0, 0, 4)
           : const EdgeInsets.only(right: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -94,7 +122,7 @@ class TitleForm extends StatelessWidget {
             icon: Icon(
               Icons.info_outline_rounded,
               size: 20,
-              color: Theme.of(context).disabledColor,
+              color: Theme.of(context).dividerColor,
             ),
           ),
         ],

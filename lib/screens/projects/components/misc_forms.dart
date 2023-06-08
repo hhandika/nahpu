@@ -30,24 +30,18 @@ class MiscFormState extends ConsumerState<MiscForm>
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.only(
-          left: 10,
-          right: 10,
-          bottom: 10,
-        ),
-        child: MediaTabBars(
-          tabController: _tabController,
-          length: _length,
-          height: 320,
-          tabs: const [
-            Tab(icon: Icon(Icons.analytics_outlined)),
-          ],
-          children: const [
-            StatisticViewer(),
-          ],
-        ),
+    return FormCard(
+      withTitle: false,
+      child: MediaTabBars(
+        tabController: _tabController,
+        length: _length,
+        height: 392,
+        tabs: const [
+          Tab(icon: Icon(Icons.analytics_outlined)),
+        ],
+        children: const [
+          StatisticViewer(),
+        ],
       ),
     );
   }

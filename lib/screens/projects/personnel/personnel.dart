@@ -28,11 +28,11 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
     return FormCard(
       title: 'Personnel',
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.max,
         children: [
           const SizedBox(
-            height: 300,
+            height: 318,
             child: PersonnelList(),
           ),
           const SizedBox(

@@ -97,6 +97,7 @@ class AdaptiveMainLayout extends StatelessWidget {
               maxHeight: height,
             ),
             child: LayoutRow(
+              withPadding: false,
               children: children,
             ))
         : LayoutContainer(children: children);
@@ -145,9 +146,11 @@ class LayoutRow extends StatelessWidget {
   const LayoutRow({
     super.key,
     required this.children,
+    this.withPadding = true,
   });
 
   final List<Widget> children;
+  final bool withPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -158,10 +161,7 @@ class LayoutRow extends StatelessWidget {
       children: [
         for (var textField in children)
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-              child: textField,
-            ),
+            child: withPadding ? CommonPadding(child: textField) : textField,
           ),
       ],
     );

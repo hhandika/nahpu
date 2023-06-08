@@ -174,22 +174,25 @@ class TaxonomicForm extends ConsumerWidget {
       child: ref.watch(taxonDataProvider(specimenUuid)).when(
             data: (taxonData) {
               if (taxonData == null) {
-                return const Text('No species added!');
+                return const Text('No species selected');
               } else {
                 return AdaptiveLayout(
                   useHorizontalLayout: useHorizontalLayout,
                   children: [
                     Text(
-                      'Class: ${taxonData.taxonClass}',
+                      taxonData.taxonClass ?? '',
                       textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     Text(
-                      'Order: ${taxonData.taxonOrder}',
+                      taxonData.taxonOrder ?? '',
                       textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     Text(
-                      'Family: ${taxonData.taxonFamily}',
+                      taxonData.taxonFamily ?? '',
                       textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ],
                 );
