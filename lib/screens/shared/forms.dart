@@ -71,8 +71,8 @@ class FormCard extends StatelessWidget {
                     Theme.of(context).colorScheme.surface, 0.6)
                 : Theme.of(context).cardColor,
             border: Border.all(
-              color: Theme.of(context).dividerColor.withOpacity(0.4),
-              width: 0.65,
+              color: Theme.of(context).dividerColor.withOpacity(0.6),
+              width: 1.2,
             ),
           ),
           child: Column(
