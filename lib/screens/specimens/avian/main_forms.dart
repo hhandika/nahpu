@@ -71,8 +71,9 @@ class BirdFormsState extends ConsumerState<BirdForms> {
                   ),
                 ],
               ),
-              AdaptiveLayout(
+              AdaptiveMainLayout(
                 useHorizontalLayout: useHorizontalLayout,
+                height: bottomSpecimenRecordHeight,
                 children: [
                   BirdMeasurementForms(
                       useHorizontalLayout: useHorizontalLayout,

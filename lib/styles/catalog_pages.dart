@@ -1,6 +1,6 @@
 double get topSpecimenRecordHeight => double.infinity;
 
-double get bottomSpecimenRecordHeight => double.infinity;
+double get bottomSpecimenRecordHeight => 580;
 
 double get topCollEventHeight => 368;
 

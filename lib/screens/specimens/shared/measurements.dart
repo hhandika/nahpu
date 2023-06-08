@@ -22,9 +22,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
     return FormCard(
       title: 'Measurements',
       mainAxisAlignment: MainAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.5,
+        height: 490,
         child: CommonScrollbar(
           scrollController: _scrollController,
           child: SingleChildScrollView(
