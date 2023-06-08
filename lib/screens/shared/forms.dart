@@ -46,9 +46,9 @@ class FormCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: isPrimary
-          ? Color.lerp(Theme.of(context).colorScheme.secondaryContainer,
-              Theme.of(context).colorScheme.surface, 0.5)
-          : Theme.of(context).colorScheme.surface,
+          ? Color.lerp(Theme.of(context).colorScheme.secondary,
+              Theme.of(context).colorScheme.surface, 0.6)
+          : Theme.of(context).cardColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: mainAxisAlignment,

@@ -34,7 +34,7 @@ class CoordinateFields extends StatelessWidget {
               )),
           const SizedBox(height: 15),
           PrimaryButton(
-            label: 'Add Coordinate',
+            label: 'Add coordinate',
             icon: Icons.add,
             onPressed: () {
               Navigator.push(
