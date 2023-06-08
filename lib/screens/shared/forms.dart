@@ -61,6 +61,7 @@ class FormCard extends StatelessWidget {
                       Theme.of(context).cardColor,
                       Theme.of(context).colorScheme.surface,
                     ],
+              stops: const [0.0, 0.4],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
