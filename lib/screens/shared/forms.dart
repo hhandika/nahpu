@@ -83,7 +83,7 @@ class FormCard extends StatelessWidget {
               withTitle ? TitleForm(text: title) : const SizedBox.shrink(),
               withTitle && !isPrimary
                   ? Divider(
-                      thickness: 0.3,
+                      thickness: 0.6,
                       color: Theme.of(context).tabBarTheme.dividerColor)
                   : const SizedBox.shrink(),
               child
