@@ -135,25 +135,19 @@ class ProjectMenuDrawerState extends ConsumerState<ProjectMenuDrawer> {
               style: TextStyle(color: Colors.red),
             ),
             onTap: () async {
-              return showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return DeleteAlerts(
-                      deletePrompt: 'THIS ACTION IS IRREVERSIBLE.\n'
-                          'Are you sure you want to delete this project?',
-                      onDelete: () async {
-                        await ProjectServices(ref: ref)
-                            .deleteProject(projectUuid);
-                        if (mounted) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Home()),
-                          );
-                        }
-                      });
-                },
-              );
+              return showDeleteAlertOnMenu(
+                  context: context,
+                  title: 'Delete project?',
+                  deletePrompt: 'You will delete the project and all its data',
+                  onDelete: () async {
+                    await ProjectServices(ref: ref).deleteProject(projectUuid);
+                    if (mounted) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Home()),
+                      );
+                    }
+                  });
             },
           ),
         ],

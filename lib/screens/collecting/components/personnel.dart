@@ -166,7 +166,10 @@ class CollPersonnelFieldState extends ConsumerState<CollPersonnelField> {
 
   void _deletePersonnel() {
     showDeleteAlertOnMenu(
-      () async {
+      context: context,
+      title: 'Delete collecting personnel?',
+      deletePrompt: 'You will delete this personnel from the event',
+      onDelete: () async {
         try {
           await CollEventServices(ref: ref)
               .deleteCollPersonnel(widget.controller.id!);
@@ -178,8 +181,6 @@ class CollPersonnelFieldState extends ConsumerState<CollPersonnelField> {
           );
         }
       },
-      'Delete this person?',
-      context,
     );
   }
 }

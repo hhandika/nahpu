@@ -74,26 +74,28 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
 
   void _deleteNarrative() {
     showDeleteAlertOnMenu(
-      () {
+      context: context,
+      title: 'Delete narrative?',
+      deletePrompt: 'You will delete this narrative',
+      onDelete: () {
         if (widget.narrativeId != null) {
           NarrativeServices(ref: ref).deleteNarrative(widget.narrativeId!);
           Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (_) => const NarrativeViewer()));
         }
       },
-      'Delete this narrative?',
-      context,
     );
   }
 
   void _deleteAllNarrative() {
     showDeleteAlertOnMenu(
-      () {
+      context: context,
+      title: 'Delete all narrative?',
+      deletePrompt: 'You will delete all narrative in this project',
+      onDelete: () {
         final projectUuid = ref.read(projectUuidProvider.notifier).state;
         NarrativeServices(ref: ref).deleteAllNarrative(projectUuid);
       },
-      'Delete all narrative\nTHIS ACTION CANNOT BE UNDONE!',
-      context,
     );
   }
 }

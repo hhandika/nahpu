@@ -92,7 +92,12 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
 
   void _deleteSpecimen() {
     showDeleteAlertOnMenu(
-      () async {
+      context: context,
+      title: 'Delete specimen?',
+      deletePrompt:
+          'You will delete this specimen record, all measurements, and specimen parts.\n'
+          'You will need to manually update the field number.',
+      onDelete: () async {
         if (widget.specimenUuid != null && widget.catalogFmt != null) {
           await SpecimenServices(ref: ref).deleteSpecimen(
             widget.specimenUuid!,
@@ -105,17 +110,17 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
           }
         }
       },
-      'Deleting a specimen WILL NOT '
-      'update the cataloger field number.\n'
-      'Make sure to correct the field number after deleting.\n\n'
-      'Delete this specimen?',
-      context,
     );
   }
 
   void _deleteAllSpecimens() {
-    showDeleteAlertOnMenu(() async {
-      await SpecimenServices(ref: ref).deleteAllSpecimens();
-    }, 'Delete all specimens?\nTHIS ACTION CANNOT BE UNDONE!', context);
+    showDeleteAlertOnMenu(
+        context: context,
+        title: 'Delete all specimens?',
+        deletePrompt: 'It will remove all specimens records'
+            ', measurements, and specimen parts',
+        onDelete: () async {
+          await SpecimenServices(ref: ref).deleteAllSpecimens();
+        });
   }
 }

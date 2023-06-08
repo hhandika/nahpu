@@ -87,7 +87,11 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
   void _deleteEvent() {
     if (widget.collEventId != null) {
       showDeleteAlertOnMenu(
-        () async {
+        context: context,
+        title: 'Delete collecting event?',
+        deletePrompt: 'You will also delete collecting effort'
+            ', collecting personnel, and weather data in this event.',
+        onDelete: () async {
           try {
             await CollEventServices(ref: ref)
                 .deleteCollEvent(widget.collEventId!);
@@ -102,8 +106,6 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
             _showError(e.toString());
           }
         },
-        'Delete this collecting event?',
-        context,
       );
     }
   }
@@ -111,7 +113,13 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
   void _deleteAllEvents() {
     final projectUuid = ref.read(projectUuidProvider.notifier).state;
     showDeleteAlertOnMenu(
-      () async {
+      context: context,
+      title: 'Delete all collecting events?',
+      deletePrompt:
+          'Deleting all collecting events will also delete all associated'
+          ' collecting effort, collecting personnel, '
+          'and weather data from the database.',
+      onDelete: () async {
         try {
           await CollEventServices(ref: ref).deleteAllCollEvents(projectUuid);
           ref.invalidate(collEventEntryProvider);
@@ -119,8 +127,6 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
           _showError(e.toString());
         }
       },
-      'Delete all collecting events?\nTHIS ACTION CANNOT BE UNDONE!.',
-      context,
     );
   }
 
@@ -130,7 +136,8 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
       SnackBar(
         content: Text(
           errors.contains('SqliteException(787)')
-              ? 'Cannot delete the events. Being used by other records.'
+              ? 'Failed to delete the events.'
+                  ' The events are currently in use by other records.'
               : errors.toString(),
         ),
       ),

@@ -318,18 +318,16 @@ class ProjectPopUpMenuState extends ConsumerState<ProjectPopUpMenu> {
   Future<void> _deleteProject(String projectUuid) async {
     return Future.delayed(
       const Duration(seconds: 0),
-      () => showDialog<String>(
+      () => showDeleteAlertOnMenu(
         context: context,
-        builder: (BuildContext context) => DeleteAlerts(
-          deletePrompt: 'THIS ACTION IS IRREVERSIBLE!\n'
-              'Are you sure you want to delete this project?',
-          onDelete: () async {
-            await ProjectServices(ref: ref).deleteProject(projectUuid);
-            if (mounted) {
-              Navigator.of(context).pop();
-            }
-          },
-        ),
+        title: 'Delete project?',
+        deletePrompt: 'You will delete this project permanently',
+        onDelete: () async {
+          await ProjectServices(ref: ref).deleteProject(projectUuid);
+          if (mounted) {
+            Navigator.of(context).pop();
+          }
+        },
       ),
     );
   }

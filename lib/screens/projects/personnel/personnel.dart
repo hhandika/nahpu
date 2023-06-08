@@ -264,7 +264,10 @@ class PersonnelMenuState extends ConsumerState<PersonnelMenu> {
 
   void _deletePersonnel() {
     showDeleteAlertOnMenu(
-      () async {
+      context: context,
+      title: 'Delete personnel?',
+      deletePrompt: '',
+      onDelete: () async {
         try {
           await PersonnelServices(ref: ref)
               .deleteProjectPersonnel(widget.data.uuid);
@@ -275,8 +278,6 @@ class PersonnelMenuState extends ConsumerState<PersonnelMenu> {
           _showError(e.toString());
         }
       },
-      'Delete this person?',
-      context,
     );
   }
 

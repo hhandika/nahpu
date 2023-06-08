@@ -90,31 +90,39 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
   }
 
   Future<void> _deleteSite() async {
-    showDeleteAlertOnMenu(() async {
-      if (widget.siteId != null) {
-        try {
-          await SiteServices(ref: ref).deleteSite(widget.siteId!);
+    showDeleteAlertOnMenu(
+        context: context,
+        title: 'Delete site?',
+        deletePrompt: 'You will delete all records in this site form',
+        onDelete: () async {
+          if (widget.siteId != null) {
+            try {
+              await SiteServices(ref: ref).deleteSite(widget.siteId!);
 
-          // Trigger page changes to update the view.
-          if (mounted) {
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (_) => const SiteViewer()));
+              // Trigger page changes to update the view.
+              if (mounted) {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (_) => const SiteViewer()));
+              }
+            } catch (e) {
+              _showError(e.toString());
+            }
           }
-        } catch (e) {
-          _showError(e.toString());
-        }
-      }
-    }, 'Delete this site?', context);
+        });
   }
 
   void _deleteAllSites() {
-    showDeleteAlertOnMenu(() async {
-      try {
-        await SiteServices(ref: ref).deleteAllSites();
-      } catch (e) {
-        _showError(e.toString());
-      }
-    }, 'Delete all sites?\nTHIS ACTION CANNOT BE UNDONE!', context);
+    showDeleteAlertOnMenu(
+        context: context,
+        title: 'Delete all sites?',
+        deletePrompt: 'You will delete all site records',
+        onDelete: () async {
+          try {
+            await SiteServices(ref: ref).deleteAllSites();
+          } catch (e) {
+            _showError(e.toString());
+          }
+        });
   }
 
   void _showError(String errors) {

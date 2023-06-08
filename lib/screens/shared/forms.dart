@@ -132,8 +132,12 @@ class TitleForm extends StatelessWidget {
   }
 }
 
-void showDeleteAlertOnMenu(
-    VoidCallback onDelete, String deletePrompt, BuildContext context) {
+void showDeleteAlertOnMenu({
+  required BuildContext context,
+  required String deletePrompt,
+  required String title,
+  required VoidCallback onDelete,
+}) {
   Future.delayed(
     const Duration(milliseconds: 0),
     () => showDialog(
@@ -141,6 +145,7 @@ void showDeleteAlertOnMenu(
       builder: (BuildContext context) {
         return DeleteAlerts(
           deletePrompt: deletePrompt,
+          title: title,
           onDelete: onDelete,
         );
       },
@@ -151,17 +156,19 @@ void showDeleteAlertOnMenu(
 class DeleteAlerts extends ConsumerWidget {
   const DeleteAlerts({
     Key? key,
+    required this.title,
     required this.deletePrompt,
     required this.onDelete,
   }) : super(key: key);
 
+  final String title;
   final String deletePrompt;
   final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AlertDialog(
-      title: const Text('Delete'),
+      title: Text(title),
       content: Text(
         deletePrompt,
         textAlign: TextAlign.center,
