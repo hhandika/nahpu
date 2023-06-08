@@ -270,11 +270,13 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
       child: Column(
         children: [
           widget.specimenCtr.catalogerCtr != null
-              ? IdTile(
-                  specimenUuid: widget.specimenUuid,
-                  specimenCtr: widget.specimenCtr,
-                  catalogerUuid: widget.specimenCtr.catalogerCtr!,
-                )
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: IdTile(
+                    specimenUuid: widget.specimenUuid,
+                    specimenCtr: widget.specimenCtr,
+                    catalogerUuid: widget.specimenCtr.catalogerCtr!,
+                  ))
               : const SizedBox.shrink(),
           DropdownButtonFormField<String>(
             value: widget.specimenCtr.catalogerCtr,

@@ -189,67 +189,62 @@ class CollEventIdTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return collEventCtr.siteIDCtr != null
-        ? ListTile(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-              side: BorderSide(
-                color: Theme.of(context).dividerColor,
-                width: 1,
+        ? IDFormContainer(
+            child: ListTile(
+              title: EventIDText(
+                collEventId: collEventId,
+                collEventCtr: collEventCtr,
               ),
-            ),
-            title: EventIDText(
-              collEventId: collEventId,
-              collEventCtr: collEventCtr,
-            ),
-            trailing: IconButton(
-              icon: Icon(
-                Icons.edit_outlined,
-                color: Theme.of(context).disabledColor,
+              trailing: IconButton(
+                icon: Icon(
+                  Icons.edit_outlined,
+                  color: Theme.of(context).disabledColor,
+                ),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Edit Collecting Event ID'),
+                        content: TextFormField(
+                          controller: collEventCtr.idSuffixCtr,
+                          decoration: InputDecoration(
+                              labelText: 'ID suffix',
+                              hintText: 'Enter ID suffix',
+                              suffix: IconButton(
+                                icon: const Icon(Icons.clear),
+                                onPressed: () {
+                                  collEventCtr.idSuffixCtr.clear();
+                                },
+                              )),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              CollEventServices(ref: ref).updateCollEvent(
+                                collEventId,
+                                CollEventCompanion(
+                                  idSuffix:
+                                      db.Value(collEventCtr.idSuffixCtr.text),
+                                ),
+                              );
+                              ref.invalidate(siteEntryProvider);
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('Save'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
               ),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: const Text('Edit Collecting Event ID'),
-                      content: TextFormField(
-                        controller: collEventCtr.idSuffixCtr,
-                        decoration: InputDecoration(
-                            labelText: 'ID suffix',
-                            hintText: 'Enter ID suffix',
-                            suffix: IconButton(
-                              icon: const Icon(Icons.clear),
-                              onPressed: () {
-                                collEventCtr.idSuffixCtr.clear();
-                              },
-                            )),
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text('Cancel'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            CollEventServices(ref: ref).updateCollEvent(
-                              collEventId,
-                              CollEventCompanion(
-                                idSuffix:
-                                    db.Value(collEventCtr.idSuffixCtr.text),
-                              ),
-                            );
-                            ref.invalidate(siteEntryProvider);
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text('Save'),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
             ),
           )
         : const SizedBox.shrink();
