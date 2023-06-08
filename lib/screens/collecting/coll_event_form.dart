@@ -48,8 +48,9 @@ class CollEventFormState extends ConsumerState<CollEventForm> {
                 ),
               ],
             ),
-            AdaptiveLayout(
+            AdaptiveMainLayout(
               useHorizontalLayout: useHorizontalLayout,
+              height: bottomCollEventHeight,
               children: [
                 CollEffort(
                   collEventId: widget.id,

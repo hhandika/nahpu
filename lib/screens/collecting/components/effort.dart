@@ -13,7 +13,6 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/utility_services.dart';
-import 'package:nahpu/styles/catalog_pages.dart';
 
 class CollEffort extends StatelessWidget {
   const CollEffort({
@@ -28,7 +27,7 @@ class CollEffort extends StatelessWidget {
     return FormCard(
       title: 'Effort',
       child: SizedBox(
-        height: bottomCollEventHeight,
+        height: 414,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
