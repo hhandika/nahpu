@@ -88,7 +88,10 @@ class PdfServices extends DbAccess {
       padding: const pw.EdgeInsets.only(top: 8),
       child: pw.Container(
         width: pageFormat.availableWidth,
-        decoration: pw.BoxDecoration(border: pw.Border.all()),
+        decoration: pw.BoxDecoration(
+          border: pw.Border.all(),
+          borderRadius: pw.BorderRadius.circular(8),
+        ),
         padding: const pw.EdgeInsets.all(8),
         constraints: const pw.BoxConstraints(maxWidth: 500),
         child: widget,
