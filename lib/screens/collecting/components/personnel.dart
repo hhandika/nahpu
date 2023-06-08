@@ -81,7 +81,7 @@ class CollPersonnelFormState extends ConsumerState<CollPersonnelForm> {
           },
         ),
         const CommonTextField(
-            maxLines: 5,
+            maxLines: 3,
             labelText: 'Notes',
             hintText: 'Enter notes',
             isLastField: true),

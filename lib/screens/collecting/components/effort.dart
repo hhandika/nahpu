@@ -27,11 +27,12 @@ class CollEffort extends StatelessWidget {
     return FormCard(
       title: 'Effort',
       child: SizedBox(
-        height: 414,
+        height: 402,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Flexible(
+            Expanded(
               child: CollEffortList(collEventId: collEventId),
             ),
             PrimaryButton(
@@ -49,7 +50,7 @@ class CollEffort extends StatelessWidget {
             const CommonTextField(
               labelText: 'Notes',
               hintText: 'Notes',
-              maxLines: 5,
+              maxLines: 3,
               isLastField: true,
             ),
           ],

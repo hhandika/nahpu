@@ -23,7 +23,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
       title: 'Measurements',
       mainAxisAlignment: MainAxisAlignment.start,
       child: SizedBox(
-        height: 490,
+        height: 484,
         child: CommonScrollbar(
           scrollController: _scrollController,
           child: SingleChildScrollView(

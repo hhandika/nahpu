@@ -147,15 +147,17 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                   specimenCtr: widget.specimenCtr,
                 )
               : const SizedBox.shrink(),
-          TextButton(
-              onPressed: () {
-                setState(
-                  () {
-                    _showMore = !_showMore;
+          Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: TextButton(
+                  onPressed: () {
+                    setState(
+                      () {
+                        _showMore = !_showMore;
+                      },
+                    );
                   },
-                );
-              },
-              child: Text(_showMore ? 'Show less' : 'Show more')),
+                  child: Text(_showMore ? 'Show less' : 'Show more'))),
         ],
       ),
     );

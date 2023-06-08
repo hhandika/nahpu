@@ -32,7 +32,7 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
         mainAxisSize: MainAxisSize.max,
         children: [
           const SizedBox(
-            height: 318,
+            height: 314,
             child: PersonnelList(),
           ),
           const SizedBox(

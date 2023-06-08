@@ -49,7 +49,7 @@ class FormCard extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.all(4),
         child: Container(
-          padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+          padding: const EdgeInsets.fromLTRB(8, 0, 8, 16),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: isPrimary
@@ -65,7 +65,7 @@ class FormCard extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(16),
             color: isPrimary
                 ? Color.lerp(Theme.of(context).colorScheme.secondary,
                     Theme.of(context).colorScheme.surface, 0.6)
