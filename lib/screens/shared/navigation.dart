@@ -28,6 +28,7 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
       labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
       backgroundColor: Color.lerp(Theme.of(context).colorScheme.surface,
           Theme.of(context).colorScheme.secondary, 0.1),
+      indicatorColor: Theme.of(context).colorScheme.secondaryContainer,
       elevation: 10,
       animationDuration: const Duration(seconds: 3),
       selectedIndex: selectedIndex,
