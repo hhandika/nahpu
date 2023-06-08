@@ -51,24 +51,10 @@ class FormCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.fromLTRB(8, 0, 8, 16),
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: isPrimary
-                  ? [
-                      Theme.of(context).colorScheme.primaryContainer,
-                      Theme.of(context).colorScheme.secondaryContainer,
-                    ]
-                  : [
-                      Theme.of(context).cardColor,
-                      Theme.of(context).colorScheme.surface,
-                    ],
-              stops: const [0.0, 0.4],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
             borderRadius: BorderRadius.circular(16),
             color: isPrimary
-                ? Color.lerp(Theme.of(context).colorScheme.secondary,
-                    Theme.of(context).colorScheme.surface, 0.6)
+                ? Color.lerp(Theme.of(context).colorScheme.secondaryContainer,
+                    Theme.of(context).colorScheme.surface, 0.25)
                 : Theme.of(context).cardColor,
             border: Border.all(
               color: Theme.of(context).dividerColor.withOpacity(0.6),
