@@ -48,7 +48,7 @@ class CollPersonnelFormState extends ConsumerState<CollPersonnelForm> {
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        const TitleForm(text: 'Personnel'),
+        const TitleForm(text: 'Collecting Personnel'),
         Expanded(
           child: _personnel.isNotEmpty
               ? CommonScrollbar(

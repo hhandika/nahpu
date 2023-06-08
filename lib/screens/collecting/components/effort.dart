@@ -45,7 +45,7 @@ class CollEffort extends StatelessWidget {
                     ),
                   );
                 },
-                label: 'Add method',
+                label: 'Add effort',
                 icon: Icons.add),
             const CommonTextField(
               labelText: 'Notes',

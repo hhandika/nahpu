@@ -91,6 +91,7 @@ class SpecimenPartFields extends ConsumerWidget {
             specimenUuid: specimenUuid,
           ),
         ),
+        const SizedBox(height: 8),
         PrimaryButton(
           onPressed: () {
             Navigator.of(context).push(
@@ -99,7 +100,7 @@ class SpecimenPartFields extends ConsumerWidget {
               ),
             );
           },
-          label: 'Add Part',
+          label: 'Add specimen part',
           icon: Icons.add,
         ),
       ],

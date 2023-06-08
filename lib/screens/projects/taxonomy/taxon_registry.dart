@@ -38,7 +38,7 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
           children: [
             const SizedBox(height: 20),
             Container(
-              constraints: const BoxConstraints(maxWidth: 450, maxHeight: 250),
+              constraints: const BoxConstraints(maxWidth: 460, maxHeight: 250),
               padding: const EdgeInsets.all(10),
               child: const RegistryInfo(),
             ),
@@ -123,18 +123,30 @@ class RegisteredTaxa extends StatelessWidget {
             "Registered",
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CountText(
-                text: '${taxonData.length} species',
-              ),
-              CountText(
-                text: '${_countFamily(taxonData)} families',
-              ),
-            ],
-          ),
+          FittedBox(
+              fit: BoxFit.fill,
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: '${taxonData.length}',
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    TextSpan(
+                      text: ' species\n',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    TextSpan(
+                      text: '${_countFamily(taxonData)}',
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                    TextSpan(
+                      text: ' families',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ],
+                ),
+              )),
           taxonData.isEmpty
               ? const SizedBox.shrink()
               : TextButton(
@@ -199,9 +211,6 @@ class RecordedTaxaView extends ConsumerWidget {
                   fit: BoxFit.fill,
                   child: RecordedCounts(),
                 ),
-          const SizedBox(
-            height: 10,
-          ),
           data.isEmpty
               ? const SizedBox.shrink()
               : TextButton(
@@ -232,20 +241,37 @@ class RecordedCounts extends ConsumerWidget {
     return FutureBuilder(
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                CountText(
-                  text: '${snapshot.data!.specimenCount} specimens',
-                ),
-                CountText(
-                  text: '${snapshot.data!.speciesCount.length} species',
-                ),
-                CountText(
-                  text: '${snapshot.data!.familyCount.length} families',
-                ),
-              ],
+            return Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: RichText(
+                  text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: '${snapshot.data!.specimenCount}',
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                  TextSpan(
+                    text: ' specimens\n',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  TextSpan(
+                    text: '${snapshot.data!.speciesCount.length}',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  TextSpan(
+                    text: ' species\n',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  TextSpan(
+                    text: '${snapshot.data!.familyCount.length}',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  TextSpan(
+                    text: ' families',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ],
+              )),
             );
           } else {
             return const CommonProgressIndicator();
@@ -291,13 +317,17 @@ class TaxonDataContainer extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.all(10),
         child: Container(
-          height: 200,
-          width: 180,
+          height: 220,
+          width: 200,
           padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
           decoration: BoxDecoration(
+            color: Theme.of(context)
+                .colorScheme
+                .secondaryContainer
+                .withOpacity(0.1),
             border: Border.all(
-              color: Theme.of(context).dividerColor,
-              width: 1.5,
+              color: Theme.of(context).dividerColor.withOpacity(0.6),
+              width: 1.2,
             ),
             borderRadius: BorderRadius.circular(
               20,

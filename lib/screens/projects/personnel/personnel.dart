@@ -266,7 +266,8 @@ class PersonnelMenuState extends ConsumerState<PersonnelMenu> {
     showDeleteAlertOnMenu(
       context: context,
       title: 'Delete personnel?',
-      deletePrompt: '',
+      deletePrompt: 'You will delete the personnel for this project.'
+          ' The record will still be available in the database.',
       onDelete: () async {
         try {
           await PersonnelServices(ref: ref)
