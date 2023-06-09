@@ -55,7 +55,8 @@ class FormCard extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             color: isPrimary
-                ? Theme.of(context).colorScheme.secondary.withAlpha(100)
+                ? Color.lerp(Theme.of(context).colorScheme.secondaryContainer,
+                    Theme.of(context).colorScheme.surface, 0.2)
                 : Theme.of(context).colorScheme.surfaceVariant.withAlpha(80),
             border: Border.all(
               color: isPrimary
