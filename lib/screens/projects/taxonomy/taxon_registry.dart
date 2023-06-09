@@ -130,11 +130,11 @@ class RegisteredTaxa extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: '${taxonData.length}',
-                      style: Theme.of(context).textTheme.headlineMedium,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     TextSpan(
                       text: ' species\n',
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     TextSpan(
                       text: '${_countFamily(taxonData)}',
@@ -142,7 +142,7 @@ class RegisteredTaxa extends StatelessWidget {
                     ),
                     TextSpan(
                       text: ' families',
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ],
                 ),
@@ -248,11 +248,11 @@ class RecordedCounts extends ConsumerWidget {
                 children: [
                   TextSpan(
                     text: '${snapshot.data!.specimenCount}',
-                    style: Theme.of(context).textTheme.headlineMedium,
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   TextSpan(
                     text: ' specimens\n',
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   TextSpan(
                     text: '${snapshot.data!.speciesCount.length}',
@@ -260,7 +260,7 @@ class RecordedCounts extends ConsumerWidget {
                   ),
                   TextSpan(
                     text: ' species\n',
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   TextSpan(
                     text: '${snapshot.data!.familyCount.length}',
@@ -268,7 +268,7 @@ class RecordedCounts extends ConsumerWidget {
                   ),
                   TextSpan(
                     text: ' families',
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ],
               )),
