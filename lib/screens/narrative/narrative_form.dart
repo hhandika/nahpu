@@ -65,23 +65,22 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
                   ],
                 ),
               ),
-              Card(
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  child: TextFormField(
-                    controller: widget.narrativeCtr.narrativeCtr,
-                    maxLines: 20,
-                    decoration: const InputDecoration(
-                      labelText: 'Narrative',
-                      hintText: 'Enter narrative',
-                    ),
-                    onChanged: (value) {
-                      NarrativeServices(ref: ref).updateNarrative(
-                        widget.narrativeId,
-                        NarrativeCompanion(narrative: db.Value(value)),
-                      );
-                    },
+              FormCard(
+                isPrimary: false,
+                isWithTitle: false,
+                child: TextFormField(
+                  controller: widget.narrativeCtr.narrativeCtr,
+                  maxLines: 20,
+                  decoration: const InputDecoration(
+                    labelText: 'Narrative',
+                    hintText: 'Enter narrative',
                   ),
+                  onChanged: (value) {
+                    NarrativeServices(ref: ref).updateNarrative(
+                      widget.narrativeId,
+                      NarrativeCompanion(narrative: db.Value(value)),
+                    );
+                  },
                 ),
               ),
               NarrativeMediaForm(

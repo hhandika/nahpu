@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 
-class IDFormContainer extends StatelessWidget {
-  const IDFormContainer({
+class CommonIDForm extends StatelessWidget {
+  const CommonIDForm({
     super.key,
     required this.child,
   });
@@ -12,13 +12,13 @@ class IDFormContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         border: Border.all(
           color: Theme.of(context).dividerColor,
           width: 1,
         ),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: child,
     );
@@ -55,12 +55,13 @@ class FormCard extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             color: isPrimary
-                ? Color.lerp(Theme.of(context).colorScheme.secondaryContainer,
-                    Theme.of(context).colorScheme.surface, 0.25)
-                : Theme.of(context).cardColor,
+                ? Theme.of(context).colorScheme.secondary.withAlpha(100)
+                : Theme.of(context).colorScheme.surfaceVariant.withAlpha(80),
             border: Border.all(
-              color: Theme.of(context).dividerColor.withOpacity(0.6),
-              width: 1.2,
+              color: isPrimary
+                  ? Theme.of(context).colorScheme.secondary.withAlpha(50)
+                  : Theme.of(context).dividerColor.withAlpha(50),
+              width: 1.5,
             ),
           ),
           child: Column(

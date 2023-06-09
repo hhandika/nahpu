@@ -189,7 +189,7 @@ class CollEventIdTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return collEventCtr.siteIDCtr != null
-        ? IDFormContainer(
+        ? CommonIDForm(
             child: ListTile(
               title: EventIDText(
                 collEventId: collEventId,
