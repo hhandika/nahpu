@@ -87,8 +87,8 @@ class RegistryInfo extends ConsumerWidget {
             return data.isEmpty
                 ? const Center(
                     child: Text(
-                      'No taxon found!\n'
-                      'Add a new taxon to get started.',
+                      'No taxon found.\n'
+                      'You can add a taxon manually or import from a file.',
                       textAlign: TextAlign.center,
                     ),
                   )
@@ -206,7 +206,7 @@ class RecordedTaxaView extends ConsumerWidget {
             style: Theme.of(context).textTheme.titleLarge,
           ),
           data.isEmpty
-              ? const Text('No specimens found!')
+              ? const Text('No specimens found\n')
               : const FittedBox(
                   fit: BoxFit.fill,
                   child: RecordedCounts(),
@@ -324,7 +324,7 @@ class TaxonDataContainer extends StatelessWidget {
             color: Theme.of(context)
                 .colorScheme
                 .secondaryContainer
-                .withOpacity(0.1),
+                .withOpacity(0.2),
             border: Border.all(
               color: Theme.of(context).dividerColor.withOpacity(0.6),
               width: 1.2,

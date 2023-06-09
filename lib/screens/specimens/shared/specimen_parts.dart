@@ -50,8 +50,9 @@ class PartDataFormState extends ConsumerState<PartDataForm>
   @override
   Widget build(BuildContext context) {
     return FormCard(
-      withTitle: false,
-      child: MediaTabBars(
+      isWithTitle: false,
+      isWithSidePadding: false,
+      child: CommonTabBars(
         tabController: _tabController,
         length: _length,
         height: 502,
@@ -129,39 +130,41 @@ class PartListState extends ConsumerState<PartList> {
         ref.watch(partBySpecimenProvider(widget.specimenUuid));
     return specimenPartList.when(
       data: (data) {
-        return CommonScrollbar(
-          scrollController: _scrollController,
-          child: ListView.builder(
-            shrinkWrap: true,
-            controller: _scrollController,
-            itemCount: data.length,
-            itemBuilder: (context, index) {
-              final part = data[index];
-              return ListTile(
-                title: PartTitle(
-                  partType: part.type,
-                  partCount: part.count.toString(),
-                  barcodeID: part.barcodeID ?? '',
-                ),
-                subtitle: PartSubTitle(part: part),
-                trailing: IconButton(
-                  icon: const Icon(Icons.edit_outlined),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => EditPart(
-                          specimenUuid: widget.specimenUuid,
-                          specimenPartId: part.id,
-                          partCtr: PartFormCtrModel.fromData(part),
-                        ),
+        return data.isEmpty
+            ? const Center(child: Text('No parts added'))
+            : CommonScrollbar(
+                scrollController: _scrollController,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  controller: _scrollController,
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    final part = data[index];
+                    return ListTile(
+                      title: PartTitle(
+                        partType: part.type,
+                        partCount: part.count.toString(),
+                        barcodeID: part.barcodeID ?? '',
+                      ),
+                      subtitle: PartSubTitle(part: part),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.edit_outlined),
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => EditPart(
+                                specimenUuid: widget.specimenUuid,
+                                specimenPartId: part.id,
+                                partCtr: PartFormCtrModel.fromData(part),
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     );
                   },
                 ),
               );
-            },
-          ),
-        );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (err, stack) => Text('Error: $err'),

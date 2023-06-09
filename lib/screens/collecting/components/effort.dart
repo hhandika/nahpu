@@ -32,7 +32,7 @@ class CollEffort extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(
+            Flexible(
               child: CollEffortList(collEventId: collEventId),
             ),
             PrimaryButton(
@@ -47,12 +47,6 @@ class CollEffort extends StatelessWidget {
                 },
                 label: 'Add effort',
                 icon: Icons.add),
-            const CommonTextField(
-              labelText: 'Notes',
-              hintText: 'Notes',
-              maxLines: 3,
-              isLastField: true,
-            ),
           ],
         ),
       ),
@@ -74,17 +68,19 @@ class CollEffortList extends ConsumerWidget {
     ScrollController scrollController = ScrollController();
     return collEffort.when(
       data: (data) {
-        return CommonScrollbar(
-          scrollController: scrollController,
-          child: ListView.builder(
-            shrinkWrap: true,
-            controller: scrollController,
-            itemCount: data.length,
-            itemBuilder: (context, index) {
-              return CollEffortTile(collEffort: data[index]);
-            },
-          ),
-        );
+        return data.isEmpty
+            ? const Center(child: Text('No effort added'))
+            : CommonScrollbar(
+                scrollController: scrollController,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  controller: scrollController,
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    return CollEffortTile(collEffort: data[index]);
+                  },
+                ),
+              );
       },
       loading: () => const CircularProgressIndicator(),
       error: (error, stack) => Text(error.toString()),

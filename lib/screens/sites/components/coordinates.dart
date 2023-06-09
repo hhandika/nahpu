@@ -25,28 +25,28 @@ class CoordinateFields extends StatelessWidget {
     return FormCard(
       title: 'Coordinates',
       mainAxisAlignment: MainAxisAlignment.start,
-      child: Column(
-        children: [
-          ConstrainedBox(
-              constraints: const BoxConstraints(maxHeight: 255),
-              child: CoordinateList(
+      child: SizedBox(
+          height: 324,
+          child: Column(
+            children: [
+              CoordinateList(
                 sideId: siteId,
-              )),
-          const SizedBox(height: 15),
-          PrimaryButton(
-            label: 'Add coordinate',
-            icon: Icons.add,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => NewCoordinate(siteId: siteId),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
+              ),
+              const SizedBox(height: 8),
+              PrimaryButton(
+                label: 'Add coordinate',
+                icon: Icons.add,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NewCoordinate(siteId: siteId),
+                    ),
+                  );
+                },
+              ),
+            ],
+          )),
     );
   }
 }
@@ -65,24 +65,26 @@ class CoordinateList extends ConsumerWidget {
     ScrollController scrollController = ScrollController();
     return coordinates.when(
       data: (data) {
-        return CommonScrollbar(
-            scrollController: scrollController,
-            child: ListView.builder(
-              shrinkWrap: true,
-              controller: scrollController,
-              itemCount: data.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: CoordinateTitle(coordinateId: data[index].nameId),
-                  subtitle: CoordinateSubtitle(coordinate: data[index]),
-                  trailing: CoordinateMenu(
-                    coordinateId: data[index].id!,
-                    siteId: data[index].siteID!,
-                    coordCtr: CoordinateCtrModel.fromData(data[index]),
-                  ),
-                );
-              },
-            ));
+        return data.isEmpty
+            ? const Flexible(child: Center(child: Text('No coordinates added')))
+            : CommonScrollbar(
+                scrollController: scrollController,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  controller: scrollController,
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: CoordinateTitle(coordinateId: data[index].nameId),
+                      subtitle: CoordinateSubtitle(coordinate: data[index]),
+                      trailing: CoordinateMenu(
+                        coordinateId: data[index].id!,
+                        siteId: data[index].siteID!,
+                        coordCtr: CoordinateCtrModel.fromData(data[index]),
+                      ),
+                    );
+                  },
+                ));
       },
       loading: () => const CommonProgressIndicator(),
       error: (error, stack) => Text(error.toString()),
@@ -433,6 +435,7 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
                 CoordinateServices(ref: ref)
                     .deleteCoordinate(widget.coordinateId!);
                 ref.invalidate(coordinateBySiteProvider);
+                Navigator.pop(context);
               },
               onSubmitted: () {
                 widget.isEditing ? _updateCoordinate() : _createCoordinate();

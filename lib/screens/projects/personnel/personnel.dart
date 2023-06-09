@@ -36,7 +36,7 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
             child: PersonnelList(),
           ),
           const SizedBox(
-            height: 10,
+            height: 8,
           ),
           Wrap(
             spacing: 8,
@@ -83,8 +83,8 @@ class PersonnelListState extends ConsumerState<PersonnelList> {
         return data.isEmpty
             ? const Center(
                 child: Text(
-                  'No personnel found!\n'
-                  'Add at least a cataloger to use the app.',
+                  'No personnel found.\n'
+                  'You can add personnel or select from the list.',
                   textAlign: TextAlign.center,
                 ),
               )

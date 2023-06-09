@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 
 class IDFormContainer extends StatelessWidget {
   const IDFormContainer({
@@ -32,8 +33,9 @@ class FormCard extends StatelessWidget {
     this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
     this.mainAxisSize = MainAxisSize.max,
     this.isPrimary = false,
-    this.withTitle = true,
-    this.withDivider = true,
+    this.isWithTitle = true,
+    this.isWithDivider = true,
+    this.isWithSidePadding = true,
   });
 
   final Widget child;
@@ -41,15 +43,15 @@ class FormCard extends StatelessWidget {
   final MainAxisAlignment mainAxisAlignment;
   final MainAxisSize mainAxisSize;
   final bool isPrimary;
-  final bool withTitle;
-  final bool withDivider;
+  final bool isWithTitle;
+  final bool isWithDivider;
+  final bool isWithSidePadding;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.all(4),
         child: Container(
-          padding: const EdgeInsets.fromLTRB(8, 0, 8, 16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             color: isPrimary
@@ -62,19 +64,25 @@ class FormCard extends StatelessWidget {
             ),
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: mainAxisAlignment,
-            mainAxisSize: mainAxisSize,
-            children: [
-              withTitle ? TitleForm(text: title) : const SizedBox.shrink(),
-              withTitle && !isPrimary
-                  ? Divider(
-                      thickness: 0.6,
-                      color: Theme.of(context).tabBarTheme.dividerColor)
-                  : const SizedBox.shrink(),
-              child
-            ],
-          ),
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: mainAxisAlignment,
+              mainAxisSize: mainAxisSize,
+              children: [
+                isWithTitle ? TitleForm(text: title) : const SizedBox.shrink(),
+                isWithTitle && !isPrimary
+                    ? Divider(
+                        thickness: 0.6,
+                        color: Theme.of(context).tabBarTheme.dividerColor)
+                    : const SizedBox.shrink(),
+                isWithSidePadding
+                    ? Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 0, 8, 16),
+                        child: child)
+                    : Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: child,
+                      )
+              ]),
         ));
   }
 }
@@ -177,8 +185,8 @@ class DeleteAlerts extends ConsumerWidget {
   }
 }
 
-class MediaTabBars extends ConsumerWidget {
-  const MediaTabBars({
+class CommonTabBars extends ConsumerWidget {
+  const CommonTabBars({
     super.key,
     required this.tabController,
     required this.length,
@@ -207,10 +215,11 @@ class MediaTabBars extends ConsumerWidget {
         ),
         SizedBox(
           height: height,
-          child: TabBarView(
+          child: CommonPadding(
+              child: TabBarView(
             controller: tabController,
             children: children,
-          ),
+          )),
         ),
       ],
     );

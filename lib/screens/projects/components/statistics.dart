@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/statistics/captures.dart';
 import 'package:nahpu/services/statistics/common.dart';
 import 'package:nahpu/services/taxonomy_services.dart';
@@ -25,7 +26,8 @@ class StatisticViewerState extends ConsumerState<StatisticViewer> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return CommonPadding(
+        child: Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -65,7 +67,7 @@ class StatisticViewerState extends ConsumerState<StatisticViewer> {
           maxCount: false,
         )),
       ],
-    );
+    ));
   }
 
   /// We use custom transitions to make the fullscreen graph slide up from the

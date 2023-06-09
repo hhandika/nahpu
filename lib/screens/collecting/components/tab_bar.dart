@@ -39,8 +39,9 @@ class _CollEventTabBarState extends State<CollEventTabBar>
   @override
   Widget build(BuildContext context) {
     return FormCard(
-      withTitle: false,
-      child: MediaTabBars(
+      isWithTitle: false,
+      isWithSidePadding: false,
+      child: CommonTabBars(
         length: _length,
         tabController: _tabController,
         height: 421,

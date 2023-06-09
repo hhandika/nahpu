@@ -31,8 +31,9 @@ class MiscFormState extends ConsumerState<MiscForm>
   @override
   Widget build(BuildContext context) {
     return FormCard(
-      withTitle: false,
-      child: MediaTabBars(
+      isWithTitle: false,
+      isWithSidePadding: false,
+      child: CommonTabBars(
         tabController: _tabController,
         length: _length,
         height: 392,

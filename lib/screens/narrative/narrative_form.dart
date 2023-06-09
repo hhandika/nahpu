@@ -50,7 +50,7 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
             children: [
               FormCard(
                 isPrimary: true,
-                withTitle: false,
+                isWithTitle: false,
                 child: AdaptiveLayout(
                   useHorizontalLayout: useHorizontalLayout,
                   children: [

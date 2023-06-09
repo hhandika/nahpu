@@ -49,26 +49,23 @@ class CollPersonnelFormState extends ConsumerState<CollPersonnelForm> {
       mainAxisSize: MainAxisSize.min,
       children: [
         const TitleForm(text: 'Collecting Personnel'),
-        Expanded(
-          child: _personnel.isNotEmpty
-              ? CommonScrollbar(
-                  scrollController: scrollController,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    controller: scrollController,
-                    itemCount: _personnel.length,
-                    itemBuilder: (context, index) {
-                      return CollPersonnelField(
-                        eventID: widget.eventID,
-                        controller: _personnel[index],
-                      );
-                    },
-                  ),
-                )
-              : const Center(
-                  child: Text('No personnel added'),
+        _personnel.isEmpty
+            ? const Flexible(child: Center(child: Text('No personnel added')))
+            : CommonScrollbar(
+                scrollController: scrollController,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  controller: scrollController,
+                  itemCount: _personnel.length,
+                  itemBuilder: (context, index) {
+                    return CollPersonnelField(
+                      eventID: widget.eventID,
+                      controller: _personnel[index],
+                    );
+                  },
                 ),
-        ),
+              ),
+        const SizedBox(height: 8),
         PrimaryButton(
           label: 'Add personnel',
           icon: Icons.add,
@@ -80,11 +77,6 @@ class CollPersonnelFormState extends ConsumerState<CollPersonnelForm> {
             setState(() {});
           },
         ),
-        const CommonTextField(
-            maxLines: 3,
-            labelText: 'Notes',
-            hintText: 'Enter notes',
-            isLastField: true),
       ],
     );
   }
@@ -113,7 +105,8 @@ class CollPersonnelField extends ConsumerStatefulWidget {
 class CollPersonnelFieldState extends ConsumerState<CollPersonnelField> {
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return CommonPadding(
+        child: Row(
       children: [
         Expanded(
           child: DropdownButtonFormField<String>(
@@ -161,7 +154,7 @@ class CollPersonnelFieldState extends ConsumerState<CollPersonnelField> {
           },
         ),
       ],
-    );
+    ));
   }
 
   void _deletePersonnel() {
@@ -173,6 +166,9 @@ class CollPersonnelFieldState extends ConsumerState<CollPersonnelField> {
         try {
           await CollEventServices(ref: ref)
               .deleteCollPersonnel(widget.controller.id!);
+          if (mounted) {
+            Navigator.of(context).pop();
+          }
         } catch (e) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

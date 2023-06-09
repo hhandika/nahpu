@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/fields.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/services/collevent_services.dart';
@@ -26,42 +27,44 @@ class CollActivityFields extends ConsumerWidget {
     return FormCard(
       title: 'Activity',
       mainAxisSize: MainAxisSize.min,
-      child: Column(
-        children: [
-          DropdownButtonFormField(
-            value: collEventCtr.primaryCollMethodCtr,
-            decoration: const InputDecoration(
-              labelText: 'Primary activity',
-              hintText: 'Add activity',
+      child: CommonPadding(
+        child: Column(
+          children: [
+            DropdownButtonFormField(
+              value: collEventCtr.primaryCollMethodCtr,
+              decoration: const InputDecoration(
+                labelText: 'Primary activity',
+                hintText: 'Add activity',
+              ),
+              items: collActivityList.map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: CommonDropdownText(text: value),
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                CollEventServices(ref: ref).updateCollEvent(
+                  collEventId,
+                  CollEventCompanion(primaryCollMethod: db.Value(newValue)),
+                );
+              },
             ),
-            items: collActivityList.map((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: CommonDropdownText(text: value),
-              );
-            }).toList(),
-            onChanged: (String? newValue) {
-              CollEventServices(ref: ref).updateCollEvent(
-                collEventId,
-                CollEventCompanion(primaryCollMethod: db.Value(newValue)),
-              );
-            },
-          ),
-          TextField(
-            maxLines: 5,
-            controller: collEventCtr.noteCtr,
-            decoration: const InputDecoration(
-              labelText: 'Notes',
-              hintText: 'Enter notes about the activity',
+            TextField(
+              maxLines: 5,
+              controller: collEventCtr.noteCtr,
+              decoration: const InputDecoration(
+                labelText: 'Notes',
+                hintText: 'Enter notes about the activity',
+              ),
+              onChanged: (String? newValue) {
+                CollEventServices(ref: ref).updateCollEvent(
+                  collEventId,
+                  CollEventCompanion(collMethodNotes: db.Value(newValue)),
+                );
+              },
             ),
-            onChanged: (String? newValue) {
-              CollEventServices(ref: ref).updateCollEvent(
-                collEventId,
-                CollEventCompanion(collMethodNotes: db.Value(newValue)),
-              );
-            },
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
