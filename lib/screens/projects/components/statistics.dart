@@ -337,14 +337,14 @@ class BarChartViewer extends StatelessWidget {
               ),
             ),
           ),
-          gridData: FlGridData(show: true),
+          gridData: const FlGridData(show: true),
           titlesData: FlTitlesData(
             bottomTitles: AxisTitles(
               sideTitles: _getTitleData(),
             ),
-            leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
           ),
           barTouchData: BarTouchData(
             enabled: true,
@@ -428,7 +428,7 @@ class LineChartViewer extends StatelessWidget {
             color: Theme.of(context).colorScheme.tertiary,
             barWidth: 2.5,
             isStrokeCapRound: false,
-            dotData: FlDotData(
+            dotData: const FlDotData(
               show: false,
             ),
             // belowBarData: BarAreaData(
@@ -449,8 +449,8 @@ class LineChartViewer extends StatelessWidget {
             ),
           ),
         ),
-        gridData: FlGridData(show: true),
-        titlesData: FlTitlesData(
+        gridData: const FlGridData(show: true),
+        titlesData: const FlTitlesData(
           show: false,
         ),
       ),

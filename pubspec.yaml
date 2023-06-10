@@ -47,8 +47,8 @@ dependencies:
   adaptive_breakpoints: ^0.1.4
   shared_preferences: ^2.1.1
   settings_ui: ^2.0.2
-  material_design_icons_flutter: ^6.0.7096
-  fl_chart: ^0.62.0
+  material_design_icons_flutter: ^7.0.7096
+  fl_chart: ^0.63.0
   flex_color_scheme: ^7.1.0
   file_picker: ^5.3.1
   sqlite3: ^1.10.1

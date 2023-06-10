@@ -69,7 +69,7 @@ class GeneralSettings {
   SettingsTile _getCatalogFmtSetting() {
     final selectedFmt = matchCatFmtToTaxonGroup(catalogFmt);
     return SettingsTile.navigation(
-      leading: const Icon(MdiIcons.fileCabinet),
+      leading: Icon(MdiIcons.fileCabinet),
       title: const SettingTitle(title: 'Catalog Format'),
       value: Text(selectedFmt),
       onPressed: (context) => Navigator.push(
@@ -130,7 +130,7 @@ class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
             tiles: [
               SettingsTile(
                 title: const Text('General Mammals'),
-                leading: const Icon(MdiIcons.paw),
+                leading: Icon(MdiIcons.paw),
                 trailing: widget.selectedFmt == 'General Mammals'
                     ? const Icon(Icons.check)
                     : null,
@@ -143,7 +143,7 @@ class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
               ),
               SettingsTile(
                 title: const Text('Birds'),
-                leading: const Icon(MdiIcons.owl),
+                leading: Icon(MdiIcons.owl),
                 trailing: widget.selectedFmt == 'Birds'
                     ? const Icon(Icons.check)
                     : null,
@@ -156,7 +156,7 @@ class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
               ),
               SettingsTile(
                 title: const Text('Bats'),
-                leading: const Icon(MdiIcons.bat),
+                leading: Icon(MdiIcons.bat),
                 trailing: widget.selectedFmt == 'Bats'
                     ? const Icon(Icons.check)
                     : null,

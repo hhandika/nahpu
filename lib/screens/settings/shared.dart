@@ -30,7 +30,7 @@ class AppearanceSettings {
           ),
         ),
         SettingsTile.navigation(
-          leading: const Icon(MdiIcons.databaseOutline),
+          leading: Icon(MdiIcons.databaseOutline),
           title: const Text('Database'),
           onPressed: (context) => Navigator.push(
             context,

@@ -284,7 +284,7 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
           ),
           PopupMenuItem(
             child: ListTile(
-              leading: const Icon(
+              leading: Icon(
                 MdiIcons.imageEditOutline,
               ),
               title: const Text(

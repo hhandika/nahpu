@@ -201,7 +201,7 @@ class PersonnelSubtitle extends StatelessWidget {
           ? const TextSpan()
           : TextSpan(
               children: [
-                const WidgetSpan(
+                WidgetSpan(
                     child: TileIcon(icon: MdiIcons.counter),
                     alignment: PlaceholderAlignment.middle),
                 TextSpan(

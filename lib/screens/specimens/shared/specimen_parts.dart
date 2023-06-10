@@ -60,7 +60,7 @@ class PartDataFormState extends ConsumerState<PartDataForm>
           Tab(
             icon: Icon(matchCatFmtToPartIcon(widget.catalogFmt)),
           ),
-          const Tab(
+          Tab(
             icon: Icon(MdiIcons.databaseOutline),
           )
         ],
@@ -216,7 +216,7 @@ class BarcodeText extends StatelessWidget {
     return RichText(
       overflow: TextOverflow.ellipsis,
       text: TextSpan(children: [
-        const WidgetSpan(
+        WidgetSpan(
             child: TileIcon(icon: MdiIcons.barcode),
             alignment: PlaceholderAlignment.middle),
         const TextSpan(text: ' '),
