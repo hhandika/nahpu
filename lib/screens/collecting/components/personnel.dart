@@ -74,7 +74,6 @@ class CollectingPersonnelList extends ConsumerWidget {
     ScrollController scrollController = ScrollController();
     return ref.watch(collPersonnelProvider(eventID)).when(
           data: (data) {
-            // Create controller for each data.
             return data.isNotEmpty
                 ? CommonScrollbar(
                     scrollController: scrollController,
