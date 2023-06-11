@@ -51,18 +51,21 @@ class CollPersonnelFormState extends ConsumerState<CollPersonnelForm> {
         const TitleForm(text: 'Collecting Personnel'),
         _personnel.isEmpty
             ? const Flexible(child: Center(child: Text('No personnel added')))
-            : CommonScrollbar(
-                scrollController: scrollController,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  controller: scrollController,
-                  itemCount: _personnel.length,
-                  itemBuilder: (context, index) {
-                    return CollPersonnelField(
-                      eventID: widget.eventID,
-                      controller: _personnel[index],
-                    );
-                  },
+            : SizedBox(
+                height: 312,
+                child: CommonScrollbar(
+                  scrollController: scrollController,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    controller: scrollController,
+                    itemCount: _personnel.length,
+                    itemBuilder: (context, index) {
+                      return CollPersonnelField(
+                        eventID: widget.eventID,
+                        controller: _personnel[index],
+                      );
+                    },
+                  ),
                 ),
               ),
         const SizedBox(height: 8),
