@@ -52,7 +52,7 @@ class _CollEventTabBarState extends State<CollEventTabBar>
           Tab(icon: Icon(MdiIcons.weatherPartlyCloudy)),
         ],
         children: [
-          CollPersonnelForm(eventID: widget.eventID),
+          CollectingPersonnelForm(eventID: widget.eventID),
           WeatherDataView(
             useHorizontalLayout: widget.useHorizontalLayout,
             eventID: widget.eventID,
