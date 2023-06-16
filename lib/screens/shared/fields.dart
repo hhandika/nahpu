@@ -95,7 +95,7 @@ class SearchButtonField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SearchBar(
-      hintText: 'Enter a query',
+      hintText: 'Enter query',
       leading: const Icon(Icons.search),
       side: MaterialStateProperty.all(
         BorderSide(color: Theme.of(context).colorScheme.onSurface),

@@ -55,7 +55,7 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
                 onTap: () => createNewSpecimens(context, ref),
               ),
               PopupMenuItem(
-                  child: const SearchMenuButton(),
+                  child: const FindMenuButton(),
                   onTap: () async {
                     List<SpecimenData> specimens =
                         await SpecimenServices(ref: ref).getAllSpecimens();

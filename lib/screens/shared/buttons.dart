@@ -336,14 +336,14 @@ class PdfExportMenuButton extends StatelessWidget {
   }
 }
 
-class SearchMenuButton extends StatelessWidget {
-  const SearchMenuButton({super.key});
+class FindMenuButton extends StatelessWidget {
+  const FindMenuButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const ListTile(
       leading: Icon(Icons.search_outlined),
-      title: Text('Search'),
+      title: Text('Find'),
     );
   }
 }

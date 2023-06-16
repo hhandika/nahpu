@@ -36,7 +36,7 @@ class ProjectMenuDrawerState extends ConsumerState<ProjectMenuDrawer> {
           ),
           ListTile(
             leading: const Icon(Icons.create_rounded),
-            title: const Text('Create a new project'),
+            title: const Text('Create project'),
             onTap: () {
               Navigator.push(
                 context,

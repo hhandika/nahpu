@@ -42,7 +42,7 @@ class SpecimenListPageState extends ConsumerState<SpecimenListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Specimen List'),
+        title: const Text('Specimen Records'),
       ),
       body: SafeArea(
           child: Center(
