@@ -94,49 +94,26 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                   specimenCtr: widget.specimenCtr,
                 )
               : const SizedBox.shrink(),
-          AdaptiveLayout(
-            useHorizontalLayout: widget.useHorizontalLayout,
-            children: [
-              DropdownButtonFormField<int?>(
-                  value: widget.specimenCtr.collMethodCtr,
-                  decoration: const InputDecoration(
-                    labelText: 'Collecting Method',
-                    hintText: 'Choose a method type',
+          _showMore || widget.specimenCtr.methodIDCtr.text.isNotEmpty
+              ? AdaptiveLayout(
+                  useHorizontalLayout: widget.useHorizontalLayout,
+                  children: [
+                    CollectingMethodField(
+                      specimenUuid: widget.specimenUuid,
+                      specimenCtr: widget.specimenCtr,
+                    ),
+                    MethodIdField(
+                      specimenUuid: widget.specimenUuid,
+                      specimenCtr: widget.specimenCtr,
+                    ),
+                  ],
+                )
+              : CommonPadding(
+                  child: CollectingMethodField(
+                    specimenUuid: widget.specimenUuid,
+                    specimenCtr: widget.specimenCtr,
                   ),
-                  items: widget.specimenCtr.collEventIDCtr != null
-                      ? ref
-                          .watch(collEffortByEventProvider(
-                              widget.specimenCtr.collEventIDCtr!))
-                          .when(
-                              data: (data) {
-                                return data.map((effort) {
-                                  return DropdownMenuItem(
-                                    value: effort.id,
-                                    child: CommonDropdownText(
-                                        text: effort.method ?? ''),
-                                  );
-                                }).toList();
-                              },
-                              loading: () => const [],
-                              error: (error, stack) => const [])
-                      : const [],
-                  onChanged: (int? newValue) {
-                    setState(() {
-                      widget.specimenCtr.collMethodCtr = newValue;
-                      _updateSpecimen(
-                        SpecimenCompanion(
-                          collMethodID:
-                              db.Value(widget.specimenCtr.collMethodCtr),
-                        ),
-                      );
-                    });
-                  }),
-              MethodIdField(
-                specimenUuid: widget.specimenUuid,
-                specimenCtr: widget.specimenCtr,
-              ),
-            ],
-          ),
+                ),
           CoordinateField(
             specimenUuid: widget.specimenUuid,
             specimenCtr: widget.specimenCtr,
@@ -165,6 +142,51 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
 
   void _updateSpecimen(SpecimenCompanion form) {
     SpecimenServices(ref: ref).updateSpecimen(widget.specimenUuid, form);
+  }
+}
+
+class CollectingMethodField extends ConsumerWidget {
+  const CollectingMethodField({
+    super.key,
+    required this.specimenUuid,
+    required this.specimenCtr,
+  });
+
+  final String specimenUuid;
+  final SpecimenFormCtrModel specimenCtr;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return DropdownButtonFormField<int?>(
+        value: specimenCtr.collMethodCtr,
+        decoration: const InputDecoration(
+          labelText: 'Collecting Method',
+          hintText: 'Choose a method type',
+        ),
+        items: specimenCtr.collEventIDCtr != null
+            ? ref
+                .watch(collEffortByEventProvider(specimenCtr.collEventIDCtr!))
+                .when(
+                    data: (data) {
+                      return data.map((effort) {
+                        return DropdownMenuItem(
+                          value: effort.id,
+                          child: CommonDropdownText(text: effort.method ?? ''),
+                        );
+                      }).toList();
+                    },
+                    loading: () => const [],
+                    error: (error, stack) => const [])
+            : const [],
+        onChanged: (int? newValue) {
+          specimenCtr.collMethodCtr = newValue;
+          SpecimenServices(ref: ref).updateSpecimen(
+            specimenUuid,
+            SpecimenCompanion(
+              collMethodID: db.Value(specimenCtr.collMethodCtr),
+            ),
+          );
+        });
   }
 }
 
