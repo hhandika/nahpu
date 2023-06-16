@@ -31,7 +31,6 @@ class CaptureRecordFields extends ConsumerStatefulWidget {
 
 class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
   bool _showMore = false;
-
   @override
   void initState() {
     super.initState();
@@ -39,41 +38,15 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
 
   @override
   Widget build(BuildContext context) {
-    List<CollEventData> eventEntry = [];
-    ref.watch(collEventEntryProvider).whenData(
-          (value) => eventEntry = value,
-        );
     return FormCard(
       title: 'Capture Records',
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          CommonPadding(
-            child: DropdownButtonFormField(
-              isExpanded: true,
-              value: widget.specimenCtr.collEventIDCtr,
-              decoration: const InputDecoration(
-                labelText: 'Collecting Event ID',
-                hintText: 'Choose a collecting event ID',
-              ),
-              items: eventEntry.reversed
-                  .map((event) => DropdownMenuItem(
-                        value: event.id,
-                        child: CollEventIDText(collEventData: event),
-                      ))
-                  .toList(),
-              onChanged: (int? newValue) {
-                setState(() {
-                  widget.specimenCtr.collEventIDCtr = newValue;
-                  widget.specimenCtr.collMethodCtr = null;
-                  widget.specimenCtr.coordinateCtr = null;
-                  _updateSpecimen(
-                    SpecimenCompanion(collEventID: db.Value(newValue)),
-                  );
-                });
-              },
-            ),
+          CollectingEventIdField(
+            specimenUuid: widget.specimenUuid,
+            specimenCtr: widget.specimenCtr,
           ),
           AdaptiveLayout(
             useHorizontalLayout: widget.useHorizontalLayout,
@@ -139,9 +112,53 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
       ),
     );
   }
+}
 
-  void _updateSpecimen(SpecimenCompanion form) {
-    SpecimenServices(ref: ref).updateSpecimen(widget.specimenUuid, form);
+class CollectingEventIdField extends ConsumerWidget {
+  const CollectingEventIdField({
+    super.key,
+    required this.specimenUuid,
+    required this.specimenCtr,
+  });
+
+  final String specimenUuid;
+  final SpecimenFormCtrModel specimenCtr;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return CommonPadding(
+      child: DropdownButtonFormField<int?>(
+          isExpanded: true,
+          value: specimenCtr.collEventIDCtr,
+          decoration: const InputDecoration(
+            labelText: 'Collecting Event ID',
+            hintText: 'Choose a collecting event ID',
+          ),
+          items: ref.watch(collEventEntryProvider).when(
+              data: (data) {
+                return data.isEmpty
+                    ? const []
+                    : data.reversed
+                        .map((event) => DropdownMenuItem(
+                              value: event.id,
+                              child: CollEventIDText(collEventData: event),
+                            ))
+                        .toList();
+              },
+              loading: () => const [],
+              error: (error, stack) => const []),
+          onChanged: (int? newValue) {
+            SpecimenServices(ref: ref).updateSpecimen(
+              specimenUuid,
+              SpecimenCompanion(
+                collEventID: db.Value(newValue),
+                collMethodID: const db.Value(null),
+                collPersonnelID: const db.Value(null),
+                coordinateID: const db.Value(null),
+              ),
+            );
+          }),
+    );
   }
 }
 
