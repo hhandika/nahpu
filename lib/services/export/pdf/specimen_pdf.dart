@@ -174,8 +174,8 @@ class SpecimenPdfWriter extends PdfServices {
               ? textContent(
                   'Specimen collection time: ${data.collectionTime ?? ''}')
               : pw.SizedBox.shrink(),
-          textContent('Preparation date: ${data.prepDate}'),
-          textContent('Preparation time: ${data.prepTime}'),
+          textContent('Preparation date: ${data.prepDate ?? ''}'),
+          textContent('Preparation time: ${data.prepTime ?? ''}'),
         ],
       ),
     );

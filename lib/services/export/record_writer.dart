@@ -36,38 +36,48 @@ class SpecimenRecordWriter {
     writer.writeln(header.toDelimitedText(delimiter));
 
     for (var element in specimenList) {
-      ({String name, String initial}) cataloger =
-          await _getCatalogerIdentity(element.catalogerID);
-      String fieldId = '${cataloger.initial}${element.fieldNumber ?? ' '}';
-      String preparator = await _getPreparatorName(element.preparatorID);
-      List<String> taxonomy = await _getSpeciesName(element.speciesID);
-      String parts = await _getPartList(element.uuid);
-      String condition = element.condition ?? '';
-      String specimenCoordinate =
-          await _getSpecimenCoordinate(element.coordinateID);
-      List<String> collSiteDetails = await _getCollEventSiteDetails(
-        element.collEventID,
-      );
-      List<String> measurement = await _getMeasurement(element.uuid);
-
-      String media = await _getSpecimenMedia(element.uuid);
-      List<String> content = [
-        element.uuid.toString(),
-        cataloger.name,
-        fieldId,
-        preparator,
-        ...taxonomy,
-        parts,
-        condition,
-        specimenCoordinate,
-        ...collSiteDetails,
-        ...measurement,
-        media
-      ];
+      List<String> content = await getSpecimenDetails(element);
       writer.writeln(content.toDelimitedText(delimiter));
     }
 
     writer.close();
+  }
+
+  Future<List<String>> getSpecimenDetails(SpecimenData data) async {
+    String specimenUuid = data.uuid;
+    ({String name, String initial}) cataloger =
+        await _getCatalogerIdentity(data.catalogerID);
+    String fieldId = '${cataloger.initial}${data.fieldNumber ?? ' '}';
+    String preparator = await _getPreparatorName(data.preparatorID);
+    List<String> taxonomy = await _getSpeciesName(data.speciesID);
+    String parts = await _getPartList(data.uuid);
+    String condition = data.condition ?? '';
+    String prepDate = data.prepDate ?? '';
+    String prepTime = data.prepTime ?? '';
+    String specimenCoordinate = await _getSpecimenCoordinate(data.coordinateID);
+    List<String> collSiteDetails = await _getCollEventSiteDetails(
+      data.collEventID,
+    );
+    List<String> measurement = await _getMeasurement(data.uuid);
+
+    String media = await _getSpecimenMedia(specimenUuid);
+    List<String> content = [
+      specimenUuid,
+      cataloger.name,
+      fieldId,
+      preparator,
+      ...taxonomy,
+      parts,
+      condition,
+      prepDate,
+      prepTime,
+      specimenCoordinate,
+      ...collSiteDetails,
+      ...measurement,
+      media
+    ];
+
+    return content;
   }
 
   List<String> _getMeasurementHeader() {

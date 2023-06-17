@@ -69,6 +69,8 @@ const specimenExportList = [
   'specificEpithet',
   'preparation',
   'condition',
+  'preparationDate',
+  'preparationTime',
   'specimenCoordinates',
 ];
 
