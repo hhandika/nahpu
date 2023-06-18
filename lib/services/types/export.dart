@@ -55,10 +55,10 @@ const List<String> recordTypeList = [
   'Specimen records',
 ];
 
-const collRecordExportList = [
+const collectingRecordExportList = [
   'specimenUUID',
   'cataloger',
-  'fieldID',
+  'fieldNumber',
   'preparator',
 ];
 
@@ -67,11 +67,27 @@ const specimenExportList = [
   'family',
   'genus',
   'specificEpithet',
-  'preparation',
   'condition',
+  'collectionTime',
   'preparationDate',
   'preparationTime',
   'specimenCoordinates',
+];
+
+const String partExportSimple = 'preparation';
+
+const List<String> partExportListDelimited = [
+  'tissueID',
+  'barcodeID',
+  'type',
+  'count',
+  'treatment',
+  'additionalTreatment',
+  'dateTaken',
+  'timeTaken',
+  'museumPermanent',
+  'museumLoan',
+  'remark',
 ];
 
 const siteExportList = [

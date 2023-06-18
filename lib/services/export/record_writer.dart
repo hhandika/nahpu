@@ -1,14 +1,13 @@
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/export/coll_event_writer.dart';
+import 'package:nahpu/services/export/collecting_records.dart';
 import 'package:nahpu/services/export/media_writer.dart';
-import 'package:nahpu/services/export/site_writer.dart';
+import 'package:nahpu/services/export/specimen_part_records.dart';
 import 'package:nahpu/services/types/export.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/services/database/database.dart';
-import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
-import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/export/avian_records.dart';
 import 'package:nahpu/services/export/common.dart';
 import 'package:nahpu/services/export/mammalian_records.dart';
@@ -26,11 +25,12 @@ class SpecimenRecordWriter {
     final file = await filePath.create(recursive: true);
     final writer = file.openWrite();
     List<String> header = [
-      ...collRecordExportList,
+      ...collectingRecordExportList,
       ...specimenExportList,
       ...siteExportList,
       ...collEventExportList,
       ..._getMeasurementHeader(),
+      partExportSimple,
       'media'
     ];
     writer.writeln(header.toDelimitedText(delimiter));
@@ -44,40 +44,28 @@ class SpecimenRecordWriter {
   }
 
   Future<List<String>> getSpecimenDetails(SpecimenData data) async {
-    String specimenUuid = data.uuid;
-    ({String name, String initial}) cataloger =
-        await _getCatalogerIdentity(data.catalogerID);
-    String fieldId = '${cataloger.initial}${data.fieldNumber ?? ' '}';
-    String preparator = await _getPreparatorName(data.preparatorID);
-    List<String> taxonomy = await _getSpeciesName(data.speciesID);
+    List<String> collectingRecord = await _getCollectingRecord(data);
     String parts = await _getPartList(data.uuid);
-    String condition = data.condition ?? '';
-    String prepDate = data.prepDate ?? '';
-    String prepTime = data.prepTime ?? '';
-    String specimenCoordinate = await _getSpecimenCoordinate(data.coordinateID);
     List<String> collSiteDetails = await _getCollEventSiteDetails(
       data.collEventID,
     );
     List<String> measurement = await _getMeasurement(data.uuid);
+    String media = await _getSpecimenMedia(data.uuid);
 
-    String media = await _getSpecimenMedia(specimenUuid);
     List<String> content = [
-      specimenUuid,
-      cataloger.name,
-      fieldId,
-      preparator,
-      ...taxonomy,
-      parts,
-      condition,
-      prepDate,
-      prepTime,
-      specimenCoordinate,
+      ...collectingRecord,
       ...collSiteDetails,
       ...measurement,
+      parts,
       media
     ];
 
     return content;
+  }
+
+  Future<List<String>> _getCollectingRecord(SpecimenData data) async {
+    final service = CollectingRecordWriterServices(ref: ref);
+    return await service.getRecord(data);
   }
 
   List<String> _getMeasurementHeader() {
@@ -106,66 +94,15 @@ class SpecimenRecordWriter {
     return await service.getSpecimenListByTaxonGroup(taxonGroup);
   }
 
-  Future<List<String>> _getSpeciesName(int? speciesId) async {
-    if (speciesId == null) {
-      return [''];
-    } else {
-      TaxonomyData taxon =
-          await TaxonomyService(ref: ref).getTaxonById(speciesId);
-
-      return [
-        taxon.taxonOrder ?? '',
-        taxon.taxonFamily ?? '',
-        taxon.genus ?? '',
-        taxon.specificEpithet ?? '',
-      ];
-    }
-  }
-
-  Future<({String name, String initial})> _getCatalogerIdentity(
-      String? catalogerUuid) async {
-    if (catalogerUuid == null) {
-      return (name: '', initial: '');
-    } else {
-      PersonnelData person =
-          await PersonnelServices(ref: ref).getPersonnelByUuid(catalogerUuid);
-      return (name: person.name ?? '', initial: person.initial ?? '');
-    }
-  }
-
-  Future<String> _getPreparatorName(String? preparatorUuid) async {
-    if (preparatorUuid == null) {
-      return '';
-    } else {
-      PersonnelData person =
-          await PersonnelServices(ref: ref).getPersonnelByUuid(preparatorUuid);
-      return person.name ?? '';
-    }
-  }
-
   Future<List<String>> _getCollEventSiteDetails(int? collEventId) async {
     return await CollEventRecordWriter(ref: ref)
         .getCOllEventSiteDetails(collEventId);
   }
 
-  Future<String> _getSpecimenCoordinate(int? coordinateId) async {
-    if (coordinateId == null) {
-      return '';
-    } else {
-      List<String> coordinate =
-          await SiteWriterServices(ref: ref).getCoordinateById(
-        coordinateId,
-      );
-      return coordinate.join();
-    }
-  }
-
   Future<String> _getPartList(String specimenUuid) async {
-    List<SpecimenPartData> partList =
-        await SpecimenPartServices(ref: ref).getSpecimenParts(specimenUuid);
-    return partList
-        .map((e) => '${e.type ?? ''};${e.count ?? ''};${e.treatment ?? ''}')
-        .join(writerSeparator);
+    SpecimenPartWriterServices service =
+        SpecimenPartWriterServices(ref: ref, isWithLabel: true);
+    return await service.getPartListStr(specimenUuid);
   }
 
   Future<List<String>> _getMeasurement(String specimenUuid) async {

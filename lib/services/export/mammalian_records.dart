@@ -1,17 +1,16 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/types/mammals.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/specimen_services.dart';
 
-class MammalianMeasurements {
+class MammalianMeasurements extends DbAccess {
   MammalianMeasurements({
-    required this.ref,
+    required super.ref,
     required this.specimenUuid,
     required this.isBatRecord,
   });
 
-  final WidgetRef ref;
   final String specimenUuid;
   final bool isBatRecord;
   late MammalMeasurementData data;
