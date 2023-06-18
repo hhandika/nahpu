@@ -164,7 +164,7 @@ class SpecimenRecordWriter {
     List<SpecimenPartData> partList =
         await SpecimenPartServices(ref: ref).getSpecimenParts(specimenUuid);
     return partList
-        .map((e) => '${e.type};${e.treatment}')
+        .map((e) => '${e.type ?? ''};${e.count ?? ''};${e.treatment ?? ''}')
         .join(writerSeparator);
   }
 
