@@ -55,6 +55,10 @@ class SpecimenServices extends DbAccess {
     return SpecimenQuery(dbAccess).getAllSpecimens(projectUuid);
   }
 
+  Future<List<String>> getAllSpecimenUuids() async {
+    return SpecimenQuery(dbAccess).getAllSpecimenUuids(projectUuid);
+  }
+
   Future<SpecimenData> getSpecimen(String specimenUuid) async {
     return SpecimenQuery(dbAccess).getSpecimenByUuid(specimenUuid);
   }

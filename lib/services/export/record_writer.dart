@@ -26,7 +26,6 @@ class SpecimenRecordWriter {
     final writer = file.openWrite();
     List<String> header = [
       ...collectingRecordExportList,
-      ...specimenExportList,
       ...siteExportList,
       ...collEventExportList,
       ..._getMeasurementHeader(),

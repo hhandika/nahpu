@@ -1,7 +1,55 @@
+import 'dart:io';
+
 import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/export/collecting_records.dart';
 import 'package:nahpu/services/export/common.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
+import 'package:nahpu/services/types/export.dart';
+
+class SpecimenPartWriter extends DbAccess {
+  const SpecimenPartWriter({
+    required super.ref,
+  });
+
+  Future<void> writeDelimited(File filePath, bool isCsv) async {
+    String delimiter = isCsv ? csvDelimiter : tsvDelimiter;
+    final file = await filePath.create(recursive: true);
+    final writer = file.openWrite();
+    List<String> header = [
+      ...partExportListDelimited,
+      ...collectingRecordExportList,
+    ];
+    writer.writeln(header.toDelimitedText(delimiter));
+
+    List<String> specimenList = await _getSpecimenList();
+
+    for (var uuid in specimenList) {
+      List<List<String>> parts = await SpecimenPartWriterServices(
+        ref: ref,
+        isWithLabel: false,
+      ).getPartList(uuid, isWithEmpty: true);
+      SpecimenData specimenData =
+          await SpecimenServices(ref: ref).getSpecimen(uuid);
+      for (var part in parts) {
+        List<String> collectingRecords = await CollectingRecordWriterServices(
+          ref: ref,
+        ).getRecord(specimenData);
+        List<String> content = [
+          ...part,
+          ...collectingRecords,
+        ];
+        writer.writeln(content.toDelimitedText(delimiter));
+      }
+    }
+
+    writer.close();
+  }
+
+  Future<List<String>> _getSpecimenList() async {
+    return await SpecimenServices(ref: ref).getAllSpecimenUuids();
+  }
+}
 
 class SpecimenPartWriterServices extends DbAccess {
   const SpecimenPartWriterServices({
@@ -12,19 +60,29 @@ class SpecimenPartWriterServices extends DbAccess {
   final bool isWithLabel;
 
   Future<String> getPartListStr(String specimenUuid) async {
+    List<List<String>> partList =
+        await getPartList(specimenUuid, isWithEmpty: false);
+
+    String partListStr = partList.map((e) => e.join(';')).join(writerSeparator);
+
+    return partListStr;
+  }
+
+  Future<List<List<String>>> getPartList(String specimenUuid,
+      {required bool isWithEmpty}) async {
     List<SpecimenPartData> data =
         await SpecimenPartServices(ref: ref).getSpecimenParts(specimenUuid);
 
-    List<String> partList = [];
+    List<List<String>> partList = [];
     for (SpecimenPartData part in data) {
-      List<String> partList = await getPartList(part);
-      partList.add(partList.join(';'));
+      List<String> parts = await getPart(part, isWithEmpty);
+      partList.add(parts);
     }
 
-    return partList.join(writerSeparator);
+    return partList;
   }
 
-  Future<List<String>> getPartList(SpecimenPartData data) async {
+  Future<List<String>> getPart(SpecimenPartData data, bool isWithEmpty) async {
     String tissueID = _getTissueID(data.tissueID);
     String barcode = _getBarcode(data.barcodeID);
     String type = _getType(data.type);
@@ -50,6 +108,10 @@ class SpecimenPartWriterServices extends DbAccess {
       museumLoan,
       remarks
     ];
+
+    if (isWithEmpty) {
+      return content;
+    }
 
     return content.where((element) => element.isNotEmpty).toList();
   }

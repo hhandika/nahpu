@@ -21,6 +21,13 @@ class SpecimenQuery extends DatabaseAccessor<Database>
         .get();
   }
 
+  Future<List<String>> getAllSpecimenUuids(String projectUuid) {
+    return (select(specimen, distinct: true)
+          ..where((t) => t.projectUuid.equals(projectUuid)))
+        .map((e) => e.uuid)
+        .get();
+  }
+
   Future<SpecimenData> getSpecimenByUuid(String uuid) async {
     return await (select(specimen)..where((t) => t.uuid.equals(uuid)))
         .getSingle();

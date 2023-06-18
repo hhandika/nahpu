@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/services/export/site_writer.dart';
+import 'package:nahpu/services/export/specimen_part_records.dart';
 import 'package:nahpu/services/types/export.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/export/coll_event_writer.dart';
@@ -307,10 +308,18 @@ class ExportFormState extends ConsumerState<ExportForm> {
         await SpecimenRecordWriter(ref: ref, recordType: _specimenRecordType)
             .writeRecordDelimited(file, isCsv);
         break;
-      default:
-        await NarrativeRecordWriter(ref: ref)
-            .writeNarrativeDelimited(file, isCsv);
+      case ExportRecordType.specimenParts:
+        await SpecimenPartWriter(ref: ref).writeDelimited(
+          file,
+          isCsv,
+        );
         break;
+      default:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: ErrorText(error: 'Error: record type not found'),
+          ),
+        );
     }
   }
 
