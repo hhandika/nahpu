@@ -137,7 +137,7 @@ class SpecimenPartWriterServices extends DbAccess {
 
   String _getType(String? type) {
     if (type == null || type.isEmpty) {
-      return '';
+      return 'Unknown';
     }
 
     if (isWithLabel) {
@@ -148,7 +148,7 @@ class SpecimenPartWriterServices extends DbAccess {
 
   String _getCount(String? count) {
     if (count == null || count.isEmpty) {
-      return '';
+      return 'Unknown';
     }
 
     if (isWithLabel) {
@@ -160,7 +160,7 @@ class SpecimenPartWriterServices extends DbAccess {
 
   String _getTreatment(String? treatment) {
     if (treatment == null || treatment.isEmpty) {
-      return '';
+      return 'Unknown';
     }
 
     if (isWithLabel) {
