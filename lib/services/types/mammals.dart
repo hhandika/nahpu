@@ -83,5 +83,44 @@ const List<String> accuracyList = [
   'Accurate',
   'Tail cropped',
   'Partially eaten',
-  'Other reason'
+  'Other reason',
 ];
+
+const List<String> accuracyOtherReason = [
+  'Ear length inaccurate',
+  'Hind length inaccurate',
+  'All measurements inaccurate',
+];
+
+enum MeasurementAccuracy {
+  accurate,
+  tailCropped,
+  partiallyEaten,
+  earLengthInaccurate,
+  hindLengthInaccurate,
+  allMeasurementsInaccurate,
+  other,
+}
+
+MeasurementAccuracy matchAccuracy(String? accuracy) {
+  if (accuracy == null || accuracy.isEmpty) {
+    return MeasurementAccuracy.accurate;
+  }
+
+  switch (accuracy) {
+    case 'Tail cropped':
+      return MeasurementAccuracy.tailCropped;
+    case 'Partially eaten':
+      return MeasurementAccuracy.partiallyEaten;
+    case 'Ear length inaccurate':
+      return MeasurementAccuracy.earLengthInaccurate;
+    case 'Hind length inaccurate':
+      return MeasurementAccuracy.hindLengthInaccurate;
+    case 'All measurements inaccurate':
+      return MeasurementAccuracy.allMeasurementsInaccurate;
+    case 'Other reason':
+      return MeasurementAccuracy.other;
+    default:
+      return MeasurementAccuracy.accurate;
+  }
+}

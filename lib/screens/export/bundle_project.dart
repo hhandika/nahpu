@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/file_operation.dart';
 import 'package:nahpu/services/export/archive_writer.dart';
 import 'package:nahpu/services/io_services.dart';
@@ -24,6 +25,7 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
   bool _hasSaved = false;
   bool _isRunning = false;
   late File _savePath;
+  bool _isInaccurateInBrackets = true;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +48,15 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
               }
             },
           ),
+          SwitchField(
+              value: _isInaccurateInBrackets,
+              label: 'Inaccurate in brackets',
+              onPressed: (bool value) {
+                setState(() {
+                  _isInaccurateInBrackets = value;
+                  _hasSaved = false;
+                });
+              }),
           SelectDirField(
             dirPath: _selectedDir,
             onPressed: () {
@@ -108,6 +119,7 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
     final archiveServices = ArchiveServices(
       ref: ref,
       outputFile: _savePath,
+      isInaccurateInBrackets: _isInaccurateInBrackets,
     );
     await archiveServices.createArchive();
   }

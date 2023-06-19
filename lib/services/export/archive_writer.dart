@@ -17,10 +17,12 @@ class ArchiveServices extends DbAccess {
   const ArchiveServices({
     required super.ref,
     required this.outputFile,
+    required this.isInaccurateInBrackets,
   });
 
   final File outputFile;
   final isCsv = true;
+  final bool isInaccurateInBrackets;
 
   /// Compressed every file in the project directory
   /// into a single archive
@@ -93,8 +95,11 @@ class ArchiveServices extends DbAccess {
     final recordType = await _getSpecimenRecordType();
     if (recordType.contains(SpecimenRecordType.birds)) {
       final File birdDir = await _getBirdSpecimenSavePath();
-      await SpecimenRecordWriter(ref: ref, recordType: SpecimenRecordType.birds)
-          .writeRecordDelimited(birdDir, isCsv);
+      await SpecimenRecordWriter(
+        ref: ref,
+        recordType: SpecimenRecordType.birds,
+        isInaccurateInBrackets: isInaccurateInBrackets,
+      ).writeRecordDelimited(birdDir, isCsv);
     }
     SpecimenRecordType? mammalRecord = _getMammalRecordType(recordType);
     if (mammalRecord != null) {
@@ -107,8 +112,11 @@ class ArchiveServices extends DbAccess {
       SpecimenRecordType mammalRecordType) async {
     final File mammalDir = await _getMammalSpecimenSavePath();
 
-    await SpecimenRecordWriter(ref: ref, recordType: mammalRecordType)
-        .writeRecordDelimited(mammalDir, isCsv);
+    await SpecimenRecordWriter(
+      ref: ref,
+      recordType: mammalRecordType,
+      isInaccurateInBrackets: isInaccurateInBrackets,
+    ).writeRecordDelimited(mammalDir, isCsv);
   }
 
   SpecimenRecordType? _getMammalRecordType(

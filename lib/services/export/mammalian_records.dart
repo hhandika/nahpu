@@ -9,11 +9,13 @@ class MammalianMeasurements extends DbAccess {
     required super.ref,
     required this.specimenUuid,
     required this.isBatRecord,
+    required this.isInaccurateInBrackets,
   });
 
   final String specimenUuid;
   final bool isBatRecord;
   late MammalMeasurementData data;
+  final bool isInaccurateInBrackets;
 
   Future<List<String>> getMeasurements() async {
     data =
@@ -32,13 +34,16 @@ class MammalianMeasurements extends DbAccess {
   }
 
   List<String> _getStdMeasurement() {
-    String totalLength = '${data.totalLength ?? ''}';
-    String tailLength = '${data.tailLength ?? ''}';
-    String hindFootLength = '${data.hindFootLength ?? ''}';
-    String earLength = '${data.earLength ?? ''}';
-    String weight = '${data.weight ?? ''}';
     String accuracy = data.accuracy ?? '';
-    return [
+    MeasurementAccuracy accuracyEnum = matchAccuracy(accuracy);
+    String totalLength = _getTotalLength(data.totalLength, accuracyEnum);
+    String tailLength = _getTailLength(data.tailLength, accuracyEnum);
+    String hindFootLength =
+        _getHindFootLength(data.hindFootLength, accuracyEnum);
+    String earLength = _getEarLength(data.earLength, accuracyEnum);
+    String weight = _getWeight(data.weight, accuracyEnum);
+
+    List<String> measurements = [
       totalLength,
       tailLength,
       hindFootLength,
@@ -46,6 +51,111 @@ class MammalianMeasurements extends DbAccess {
       weight,
       accuracy,
     ];
+
+    return measurements;
+  }
+
+  String _getTotalLength(double? length, MeasurementAccuracy accuracy) {
+    if (length == null) return '';
+
+    String lengthStr = length.truncateZero();
+
+    if (!isInaccurateInBrackets) {
+      return lengthStr;
+    }
+
+    switch (accuracy) {
+      case MeasurementAccuracy.partiallyEaten:
+        return '[$lengthStr]';
+      case MeasurementAccuracy.tailCropped:
+        return '[$lengthStr]';
+      case MeasurementAccuracy.allMeasurementsInaccurate:
+        return '[$lengthStr]';
+      default:
+        return lengthStr;
+    }
+  }
+
+  String _getTailLength(double? length, MeasurementAccuracy accuracy) {
+    if (length == null) return '';
+
+    String lengthStr = length.truncateZero();
+
+    if (!isInaccurateInBrackets) {
+      return lengthStr;
+    }
+
+    switch (accuracy) {
+      case MeasurementAccuracy.partiallyEaten:
+        return '[$lengthStr]';
+      case MeasurementAccuracy.tailCropped:
+        return '[$lengthStr]';
+      case MeasurementAccuracy.allMeasurementsInaccurate:
+        return '[$lengthStr]';
+      default:
+        return lengthStr;
+    }
+  }
+
+  String _getHindFootLength(double? length, MeasurementAccuracy accuracy) {
+    if (length == null) return '';
+
+    String lengthStr = length.truncateZero();
+
+    if (!isInaccurateInBrackets) {
+      return lengthStr;
+    }
+
+    switch (accuracy) {
+      case MeasurementAccuracy.partiallyEaten:
+        return '[$lengthStr]';
+      case MeasurementAccuracy.hindLengthInaccurate:
+        return '[$lengthStr]';
+      case MeasurementAccuracy.allMeasurementsInaccurate:
+        return '[$lengthStr]';
+      default:
+        return lengthStr;
+    }
+  }
+
+  String _getEarLength(double? length, MeasurementAccuracy accuracy) {
+    if (length == null) return '';
+
+    String lengthStr = length.truncateZero();
+
+    if (!isInaccurateInBrackets) {
+      return lengthStr;
+    }
+
+    switch (accuracy) {
+      case MeasurementAccuracy.partiallyEaten:
+        return '[$lengthStr]';
+      case MeasurementAccuracy.earLengthInaccurate:
+        return '[$lengthStr]';
+      case MeasurementAccuracy.allMeasurementsInaccurate:
+        return '[$lengthStr]';
+      default:
+        return lengthStr;
+    }
+  }
+
+  String _getWeight(double? weight, MeasurementAccuracy accuracy) {
+    if (weight == null) return '';
+
+    String weightStr = weight.truncateZero();
+
+    if (!isInaccurateInBrackets) {
+      return weightStr;
+    }
+
+    switch (accuracy) {
+      case MeasurementAccuracy.partiallyEaten:
+        return '[$weightStr]';
+      case MeasurementAccuracy.allMeasurementsInaccurate:
+        return '[$weightStr]';
+      default:
+        return weightStr;
+    }
   }
 
   /// Sex data contains:

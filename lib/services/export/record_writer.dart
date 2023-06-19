@@ -13,10 +13,15 @@ import 'package:nahpu/services/export/common.dart';
 import 'package:nahpu/services/export/mammalian_records.dart';
 
 class SpecimenRecordWriter {
-  SpecimenRecordWriter({required this.ref, required this.recordType});
+  SpecimenRecordWriter({
+    required this.ref,
+    required this.recordType,
+    required this.isInaccurateInBrackets,
+  });
 
   final WidgetRef ref;
   final SpecimenRecordType recordType;
+  final bool isInaccurateInBrackets;
 
   Future<void> writeRecordDelimited(File filePath, bool isCsv) async {
     String delimiter = isCsv ? csvDelimiter : tsvDelimiter;
@@ -127,6 +132,7 @@ class SpecimenRecordWriter {
       specimenUuid: specimenUuid,
       ref: ref,
       isBatRecord: isBatRecord,
+      isInaccurateInBrackets: isInaccurateInBrackets,
     );
     return await mammals.getMeasurements();
   }

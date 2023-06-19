@@ -34,6 +34,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
   bool _hasSaved = false;
   late File _savePath;
   bool _isRunning = false;
+  bool _isInaccurateInBrackets = true;
 
   @override
   void initState() {
@@ -119,6 +120,18 @@ class ExportFormState extends ConsumerState<ExportForm> {
                 }
               },
             ),
+          ),
+          Visibility(
+            visible: _isMammalSpecimenRecord(),
+            child: SwitchField(
+                value: _isInaccurateInBrackets,
+                label: 'Inaccurate in brackets',
+                onPressed: (bool value) {
+                  setState(() {
+                    _isInaccurateInBrackets = value;
+                    _hasSaved = false;
+                  });
+                }),
           ),
           DropdownButtonFormField<ExportFmt>(
             value: exportCtr.exportFmtCtr,
@@ -305,8 +318,11 @@ class ExportFormState extends ConsumerState<ExportForm> {
         ).writeCollEventDelimited(file, isCsv);
         break;
       case ExportRecordType.specimenRecord:
-        await SpecimenRecordWriter(ref: ref, recordType: _specimenRecordType)
-            .writeRecordDelimited(file, isCsv);
+        await SpecimenRecordWriter(
+          ref: ref,
+          recordType: _specimenRecordType,
+          isInaccurateInBrackets: _isInaccurateInBrackets,
+        ).writeRecordDelimited(file, isCsv);
         break;
       case ExportRecordType.specimenParts:
         await SpecimenPartWriter(ref: ref).writeDelimited(
