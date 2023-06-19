@@ -119,7 +119,7 @@ class SelectDirField extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  'Choose a directory: ${dirPath == null ? '' : dirPath!.path}',
+                  dirPath == null ? 'Please select a directory' : dirPath!.path,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
