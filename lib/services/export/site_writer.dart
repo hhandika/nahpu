@@ -135,7 +135,8 @@ class SiteWriterServices extends DbAccess {
     String county = data.county != null ? '${data.county}' : '';
     String municipality =
         data.municipality != null ? '${data.municipality}' : '';
-    String specificLocality = data.locality != null ? '${data.locality}' : '';
+    String specificLocality =
+        data.locality != null ? data.locality!.trim() : '';
     String siteRemark = data.remark != null ? '${data.remark}' : '';
     return [
       country,
@@ -154,7 +155,8 @@ class SiteWriterServices extends DbAccess {
     String county = data.county != null ? '${data.county}; ' : '';
     String municipality =
         data.municipality != null ? '${data.municipality}; ' : '';
-    String specificLocality = data.locality != null ? '${data.locality}' : '';
+    String specificLocality =
+        data.locality != null ? data.locality!.trim() : '';
     return '$country$stateProvince$county$municipality$specificLocality';
   }
 }
