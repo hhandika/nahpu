@@ -8,5 +8,5 @@
 
 Documentation:
 
-[EN](https://docs.page/hhandika/nahpu-docs/en)
-[ID](https://docs.page/hhandika/nahpu-docs/id)
+[:us: EN](https://docs.page/hhandika/nahpu-docs/en)
+[:id: ID](https://docs.page/hhandika/nahpu-docs/id)
