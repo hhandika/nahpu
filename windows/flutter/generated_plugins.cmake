@@ -4,7 +4,6 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   dynamic_color
-  file_selector_windows
   printing
   share_plus
   sqlite3_flutter_libs
