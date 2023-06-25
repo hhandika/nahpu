@@ -1,6 +1,9 @@
 # nahpu <img src="assets/launcher/icon_desktop.png" alt="nahpu logo" align="right" width="150"/>
 
 ![Nahpu-Tests](https://github.com/hhandika/nahpu/workflows/Nahpu-Tests/badge.svg)
+[![LoC](https://tokei.rs/b1/github/hhandika/nahpu?category=code)](https://github.com/XAMPPRocky/tokei)
+![last-commit](https://img.shields.io/github/last-commit/hhandika/nahpu)
+![License](https://img.shields.io/github/license/hhandika/nahpu)
 
 ## Overview
 
@@ -8,5 +11,5 @@
 
 Documentation:
 
-[:us: EN](https://docs.page/hhandika/nahpu-docs/en)
-[:id: ID](https://docs.page/hhandika/nahpu-docs/id)
+[EN](https://docs.page/hhandika/nahpu-docs/en)
+[ID](https://docs.page/hhandika/nahpu-docs/id)
