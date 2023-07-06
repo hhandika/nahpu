@@ -38,7 +38,7 @@ class SiteFormState extends ConsumerState<SiteForm> {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints c) {
         bool useHorizontalLayout = c.maxWidth > 600.0;
-        return ListView(
+        return FocusDetectedLayout(
           children: [
             SiteInfo(
               id: widget.id,

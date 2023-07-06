@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 /// A layout that centers its child and constrains its width to 500.
 /// Add padding to the child.
+/// Mostly used for forms with one column fields.
 class ScrollableConstrainedLayout extends StatelessWidget {
   const ScrollableConstrainedLayout({
     super.key,
@@ -42,6 +43,7 @@ class ConstrainedLayout extends StatelessWidget {
   }
 }
 
+/// A layout that disables the back gesture on Android and iOS.
 class FalseWillPop extends StatelessWidget {
   const FalseWillPop({
     super.key,
@@ -52,7 +54,10 @@ class FalseWillPop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(onWillPop: () async => false, child: child);
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: child,
+    );
   }
 }
 
@@ -115,6 +120,26 @@ class AdaptiveMainLayout extends StatelessWidget {
               children: children,
             ))
         : LayoutContainer(children: children);
+  }
+}
+
+class FocusDetectedLayout extends StatelessWidget {
+  const FocusDetectedLayout({
+    super.key,
+    required this.children,
+  });
+
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+        onTap: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
+        child: ListView(
+          children: children,
+        ));
   }
 }
 

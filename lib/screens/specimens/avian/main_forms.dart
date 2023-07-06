@@ -42,7 +42,7 @@ class BirdFormsState extends ConsumerState<BirdForms> {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints c) {
         bool useHorizontalLayout = c.maxWidth > 600;
-        return ListView(
+        return FocusDetectedLayout(
           children: [
             AdaptiveMainLayout(
               useHorizontalLayout: useHorizontalLayout,

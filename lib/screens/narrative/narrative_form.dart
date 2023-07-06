@@ -41,55 +41,49 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         bool useHorizontalLayout = constraints.maxWidth > 400.0;
-        return SingleChildScrollView(
-            child: GestureDetector(
-          onTap: () {
-            FocusManager.instance.primaryFocus?.unfocus();
-          },
-          child: Column(
-            children: [
-              FormCard(
-                isPrimary: true,
-                isWithTitle: false,
-                child: AdaptiveLayout(
-                  useHorizontalLayout: useHorizontalLayout,
-                  children: [
-                    DateForm(
-                      narrativeId: widget.narrativeId,
-                      narrativeCtr: widget.narrativeCtr,
-                    ),
-                    SiteForm(
-                      narrativeId: widget.narrativeId,
-                      narrativeCtr: widget.narrativeCtr,
-                    ),
-                  ],
-                ),
-              ),
-              FormCard(
-                isPrimary: false,
-                isWithTitle: false,
-                child: TextFormField(
-                  controller: widget.narrativeCtr.narrativeCtr,
-                  maxLines: 20,
-                  decoration: const InputDecoration(
-                    labelText: 'Narrative',
-                    hintText: 'Enter narrative',
+        return FocusDetectedLayout(
+          children: [
+            FormCard(
+              isPrimary: true,
+              isWithTitle: false,
+              child: AdaptiveLayout(
+                useHorizontalLayout: useHorizontalLayout,
+                children: [
+                  DateForm(
+                    narrativeId: widget.narrativeId,
+                    narrativeCtr: widget.narrativeCtr,
                   ),
-                  onChanged: (value) {
-                    NarrativeServices(ref: ref).updateNarrative(
-                      widget.narrativeId,
-                      NarrativeCompanion(narrative: db.Value(value)),
-                    );
-                  },
+                  SiteForm(
+                    narrativeId: widget.narrativeId,
+                    narrativeCtr: widget.narrativeCtr,
+                  ),
+                ],
+              ),
+            ),
+            FormCard(
+              isPrimary: false,
+              isWithTitle: false,
+              child: TextFormField(
+                controller: widget.narrativeCtr.narrativeCtr,
+                maxLines: 20,
+                decoration: const InputDecoration(
+                  labelText: 'Narrative',
+                  hintText: 'Enter narrative',
                 ),
+                onChanged: (value) {
+                  NarrativeServices(ref: ref).updateNarrative(
+                    widget.narrativeId,
+                    NarrativeCompanion(narrative: db.Value(value)),
+                  );
+                },
               ),
-              NarrativeMediaForm(
-                narrativeId: widget.narrativeId,
-              ),
-              const BottomPadding()
-            ],
-          ),
-        ));
+            ),
+            NarrativeMediaForm(
+              narrativeId: widget.narrativeId,
+            ),
+            const BottomPadding()
+          ],
+        );
       },
     );
   }
