@@ -121,7 +121,8 @@ class RegisteredTaxa extends StatelessWidget {
         children: [
           Text(
             "Registered",
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context).textTheme.titleMedium,
+            textAlign: TextAlign.left,
           ),
           FittedBox(
               fit: BoxFit.fill,
@@ -200,10 +201,11 @@ class RecordedTaxaView extends ConsumerWidget {
     return TaxonDataContainer(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             'Recorded',
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
           data.isEmpty
               ? const Text('No specimens found\n')
@@ -317,8 +319,8 @@ class TaxonDataContainer extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.all(10),
         child: Container(
-          height: 220,
-          width: 200,
+          height: 200,
+          width: 180,
           padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
           decoration: BoxDecoration(
             color: Theme.of(context)
