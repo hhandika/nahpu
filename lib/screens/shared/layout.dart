@@ -34,7 +34,7 @@ class ScreenLayout extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 500),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(10, 5, 10, 20),
+          padding: const EdgeInsets.fromLTRB(8, 4, 8, 16),
           child: child,
         ),
       ),
@@ -73,7 +73,7 @@ class CommonPadding extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.fromLTRB(5, 0, 5, 0), child: child);
+        padding: const EdgeInsets.fromLTRB(4, 0, 4, 0), child: child);
   }
 }
 
@@ -133,8 +133,7 @@ class LayoutContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+    return CommonPadding(
       child: Column(
         children: children,
       ),
