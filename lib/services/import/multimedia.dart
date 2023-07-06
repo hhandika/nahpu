@@ -4,6 +4,7 @@ import 'package:exif/exif.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:nahpu/services/io_services.dart';
+import 'package:nahpu/services/platform_services.dart';
 import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/utility_services.dart';
 import 'package:path/path.dart' as path;

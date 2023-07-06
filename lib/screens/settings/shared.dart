@@ -1,7 +1,7 @@
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/screens/settings/common.dart';
 import 'package:nahpu/screens/settings/db_settings.dart';
-import 'package:nahpu/services/utility_services.dart';
+import 'package:nahpu/services/platform_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter/material.dart';

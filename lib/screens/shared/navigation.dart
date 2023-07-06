@@ -14,7 +14,7 @@ import 'package:nahpu/screens/specimens/specimen_view.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
 
 class ProjectBottomNavbar extends ConsumerStatefulWidget {
-  const ProjectBottomNavbar({Key? key}) : super(key: key);
+  const ProjectBottomNavbar({super.key});
 
   @override
   ProjectBottomNavbarState createState() => ProjectBottomNavbarState();

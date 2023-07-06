@@ -8,7 +8,7 @@ import 'package:nahpu/services/import/multimedia.dart';
 import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/import.dart';
-import 'package:nahpu/services/utility_services.dart';
+import 'package:nahpu/services/platform_services.dart';
 import 'package:path/path.dart';
 
 const int avatarSize = 180;

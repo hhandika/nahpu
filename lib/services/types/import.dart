@@ -1,5 +1,3 @@
-enum PlatformType { mobile, desktop, unknown }
-
 const List<String> taxonImportFmtList = [
   'CSV UTF-8 (Comma-delimited) (.csv)',
 ];
