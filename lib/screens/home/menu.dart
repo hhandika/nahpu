@@ -4,6 +4,7 @@ import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/settings/settings.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeMenuDrawer extends StatelessWidget {
@@ -75,6 +76,8 @@ class HomeMenuDrawer extends StatelessWidget {
             _launchHelpUrl();
           },
         ),
+        const SizedBox(height: 32),
+        const DocQrCode(),
       ],
     );
   }
@@ -116,6 +119,22 @@ class AppAbout extends StatelessWidget {
         );
       },
       future: PackageInfo.fromPlatform(),
+    );
+  }
+}
+
+class DocQrCode extends StatelessWidget {
+  const DocQrCode({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      child: QrImageView(
+        data: 'https://docs.nahpu.app/en',
+        version: QrVersions.auto,
+        size: 120,
+      ),
     );
   }
 }
