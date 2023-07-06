@@ -4,6 +4,7 @@ import 'package:nahpu/providers/collevents.dart';
 import 'package:nahpu/providers/narrative.dart';
 import 'package:nahpu/providers/sites.dart';
 import 'package:nahpu/services/navigation_services.dart';
+import 'package:nahpu/services/platform_services.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/narrative/narrative_view.dart';
@@ -23,9 +24,12 @@ class ProjectBottomNavbar extends ConsumerStatefulWidget {
 class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
   @override
   Widget build(BuildContext context) {
+    final isPhone = getSystemDevice(context) == DeviceType.phone;
     int selectedIndex = ref.watch(projectNavbarIndexProvider);
     return NavigationBar(
-      labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+      labelBehavior: isPhone
+          ? NavigationDestinationLabelBehavior.onlyShowSelected
+          : NavigationDestinationLabelBehavior.alwaysShow,
       backgroundColor: Color.lerp(Theme.of(context).colorScheme.surface,
           Theme.of(context).colorScheme.secondary, 0.1),
       indicatorColor: Theme.of(context).colorScheme.secondaryContainer,
