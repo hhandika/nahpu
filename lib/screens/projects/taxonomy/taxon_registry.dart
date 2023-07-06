@@ -117,10 +117,8 @@ class RegisteredTaxa extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            "Registered",
-            style: Theme.of(context).textTheme.titleMedium,
-            textAlign: TextAlign.left,
+          const TaxonStatText(
+            text: 'Registered',
           ),
           FittedBox(
               fit: BoxFit.fill,
@@ -201,9 +199,8 @@ class RecordedTaxaView extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            'Recorded',
-            style: Theme.of(context).textTheme.titleMedium,
+          const TaxonStatText(
+            text: 'Recorded',
           ),
           data.isEmpty
               ? const Text('No specimens found\n')
@@ -317,16 +314,14 @@ class TaxonDataContainer extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.all(10),
         child: Container(
-          height: 200,
-          width: 180,
+          height: 220,
+          width: 200,
           padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
           decoration: BoxDecoration(
-            color: Theme.of(context)
-                .colorScheme
-                .secondaryContainer
-                .withOpacity(0.2),
+            // color:
+            //     Theme.of(context).colorScheme.secondaryContainer.withAlpha(50),
             border: Border.all(
-              color: Theme.of(context).dividerColor.withOpacity(0.6),
+              color: Theme.of(context).dividerColor.withAlpha(50),
               width: 1.2,
             ),
             borderRadius: BorderRadius.circular(
@@ -335,6 +330,22 @@ class TaxonDataContainer extends StatelessWidget {
           ),
           child: child,
         ));
+  }
+}
+
+class TaxonStatText extends StatelessWidget {
+  const TaxonStatText({super.key, required this.text});
+  final String text;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.topLeft,
+      padding: const EdgeInsets.fromLTRB(16, 0, 0, 8),
+      child: Text(
+        text,
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
+    );
   }
 }
 

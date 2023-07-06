@@ -16,6 +16,7 @@ class NahpuTheme {
       visualDensity: VisualDensity.adaptivePlatformDensity,
       appBarTheme: appBarLightTheme,
       cardTheme: cardTheme,
+      inputDecorationTheme: inputDecorationTheme,
     );
   }
 

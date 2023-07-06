@@ -2,29 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 
-class CommonIDForm extends StatelessWidget {
-  const CommonIDForm({
-    super.key,
-    required this.child,
-  });
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Theme.of(context).dividerColor,
-          width: 1,
-        ),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: child,
-    );
-  }
-}
-
 class FormCard extends StatelessWidget {
   const FormCard({
     super.key,
@@ -86,6 +63,29 @@ class FormCard extends StatelessWidget {
                       )
               ]),
         ));
+  }
+}
+
+class CommonIDForm extends StatelessWidget {
+  const CommonIDForm({
+    super.key,
+    required this.child,
+  });
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Theme.of(context).dividerColor,
+          width: 1,
+        ),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: child,
+    );
   }
 }
 

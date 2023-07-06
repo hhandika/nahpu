@@ -134,6 +134,15 @@ class DocQrCode extends StatelessWidget {
         data: 'https://docs.nahpu.app/en',
         version: QrVersions.auto,
         size: 120,
+        backgroundColor: Colors.transparent,
+        eyeStyle: QrEyeStyle(
+          eyeShape: QrEyeShape.square,
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
+        dataModuleStyle: QrDataModuleStyle(
+          dataModuleShape: QrDataModuleShape.square,
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
       ),
     );
   }
