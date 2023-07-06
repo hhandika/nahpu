@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/navigation_services.dart';
@@ -30,7 +31,8 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return FalseWillPop(
+        child: Scaffold(
       appBar: AppBar(
         title: const Text("Collecting Events"),
         actions: [
@@ -85,7 +87,7 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
         ),
       ),
       bottomNavigationBar: const ProjectBottomNavbar(),
-    );
+    ));
   }
 
   void _updatePageNav(int value) {

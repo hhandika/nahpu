@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/navigation_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/providers/sites.dart';
@@ -31,7 +32,8 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
   @override
   Widget build(BuildContext context) {
     final siteEntries = ref.watch(siteEntryProvider);
-    return Scaffold(
+    return FalseWillPop(
+        child: Scaffold(
       appBar: AppBar(
         title: const Text("Sites"),
         automaticallyImplyLeading: false,
@@ -86,7 +88,7 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
             pageNav: _pageNav,
           )),
       bottomNavigationBar: const ProjectBottomNavbar(),
-    );
+    ));
   }
 
   void _updatePageNav(int value) {

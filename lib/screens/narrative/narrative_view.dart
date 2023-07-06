@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/narrative_services.dart';
 import 'package:nahpu/services/navigation_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
@@ -30,7 +31,8 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return FalseWillPop(
+        child: Scaffold(
       appBar: AppBar(
         title: const Text("Narrative"),
         actions: [
@@ -85,7 +87,7 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
         ),
       ),
       bottomNavigationBar: const ProjectBottomNavbar(),
-    );
+    ));
   }
 
   void _updatePageNav(int value) {

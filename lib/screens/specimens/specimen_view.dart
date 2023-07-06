@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/providers/specimens.dart';
@@ -32,7 +33,8 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return FalseWillPop(
+        child: Scaffold(
       appBar: AppBar(
         title: const Text(
           "Specimen Records",
@@ -95,7 +97,7 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
         ),
       ),
       bottomNavigationBar: const ProjectBottomNavbar(),
-    );
+    ));
   }
 
   void _updatePageNav(int value) {

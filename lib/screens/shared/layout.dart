@@ -42,6 +42,20 @@ class ScreenLayout extends StatelessWidget {
   }
 }
 
+class FalseWillPop extends StatelessWidget {
+  const FalseWillPop({
+    super.key,
+    required this.child,
+  });
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(onWillPop: () async => false, child: child);
+  }
+}
+
 class CommonScrollbar extends StatelessWidget {
   const CommonScrollbar({
     super.key,
