@@ -133,10 +133,8 @@ class LayoutContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CommonPadding(
-      child: Column(
-        children: children,
-      ),
+    return Column(
+      children: children,
     );
   }
 }
@@ -158,9 +156,9 @@ class LayoutRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
-        for (var textField in children)
+        for (var child in children)
           Expanded(
-            child: withPadding ? CommonPadding(child: textField) : textField,
+            child: withPadding ? CommonPadding(child: child) : child,
           ),
       ],
     );
