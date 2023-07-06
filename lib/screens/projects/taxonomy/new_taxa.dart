@@ -108,7 +108,7 @@ class TaxonRegistryForm extends ConsumerStatefulWidget {
 class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
   @override
   Widget build(BuildContext context) {
-    return ScrollableLayout(
+    return ScrollableConstrainedLayout(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

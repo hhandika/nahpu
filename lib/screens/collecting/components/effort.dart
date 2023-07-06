@@ -315,7 +315,7 @@ class CollEffortForm extends ConsumerStatefulWidget {
 class CollEffortFormState extends ConsumerState<CollEffortForm> {
   @override
   Widget build(BuildContext context) {
-    return ScrollableLayout(
+    return ScrollableConstrainedLayout(
       child: Column(
         children: [
           CollectionMethods(ctr: widget.collToolCtr),

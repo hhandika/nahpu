@@ -38,7 +38,7 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
       ),
       body: SafeArea(
         child: Center(
-          child: ScrollableLayout(
+          child: ScrollableConstrainedLayout(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -322,8 +322,7 @@ class ImportRecords extends StatelessWidget {
             }),
       ),
       body: SafeArea(
-        child: ScreenLayout(
-            child: SingleChildScrollView(
+        child: ScrollableConstrainedLayout(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -332,7 +331,7 @@ class ImportRecords extends StatelessWidget {
               RecordStatistics(importData: importData),
             ],
           ),
-        )),
+        ),
       ),
     );
   }

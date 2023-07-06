@@ -29,9 +29,10 @@ class CoordinateFields extends StatelessWidget {
           height: 324,
           child: Column(
             children: [
-              CoordinateList(
+              Flexible(
+                  child: CoordinateList(
                 sideId: siteId,
-              ),
+              )),
               const SizedBox(height: 8),
               PrimaryButton(
                 label: 'Add coordinate',
@@ -66,7 +67,7 @@ class CoordinateList extends ConsumerWidget {
     return coordinates.when(
       data: (data) {
         return data.isEmpty
-            ? const Flexible(child: Center(child: Text('No coordinates added')))
+            ? const Center(child: Text('No coordinates added'))
             : CommonScrollbar(
                 scrollController: scrollController,
                 child: ListView.builder(
@@ -354,7 +355,7 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
 
   @override
   Widget build(BuildContext context) {
-    return ScrollableLayout(
+    return ScrollableConstrainedLayout(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

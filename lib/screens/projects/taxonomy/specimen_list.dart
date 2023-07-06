@@ -46,7 +46,7 @@ class SpecimenListPageState extends ConsumerState<SpecimenListPage> {
       ),
       body: SafeArea(
           child: Center(
-        child: ScreenLayout(
+        child: ScrollableConstrainedLayout(
             child: Column(
           children: [
             SearchButtonField(

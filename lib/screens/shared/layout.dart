@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 /// A layout that centers its child and constrains its width to 500.
 /// Add padding to the child.
-class ScrollableLayout extends StatelessWidget {
-  const ScrollableLayout({
+class ScrollableConstrainedLayout extends StatelessWidget {
+  const ScrollableConstrainedLayout({
     super.key,
     required this.child,
   });
@@ -13,15 +13,15 @@ class ScrollableLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: ScreenLayout(
+      child: ConstrainedLayout(
         child: child,
       ),
     );
   }
 }
 
-class ScreenLayout extends StatelessWidget {
-  const ScreenLayout({
+class ConstrainedLayout extends StatelessWidget {
+  const ConstrainedLayout({
     super.key,
     required this.child,
   });

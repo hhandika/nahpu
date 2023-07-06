@@ -380,7 +380,7 @@ class PartFormState extends ConsumerState<PartForm> {
 
   @override
   Widget build(BuildContext context) {
-    return ScrollableLayout(
+    return ScrollableConstrainedLayout(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

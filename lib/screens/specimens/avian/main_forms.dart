@@ -42,54 +42,52 @@ class BirdFormsState extends ConsumerState<BirdForms> {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints c) {
         bool useHorizontalLayout = c.maxWidth > 600;
-        return SingleChildScrollView(
-          child: Column(
-            children: [
-              AdaptiveMainLayout(
-                useHorizontalLayout: useHorizontalLayout,
-                height: topSpecimenRecordHeight,
-                children: [
-                  CollectingRecordField(
-                    specimenUuid: widget.specimenUuid,
-                    specimenCtr: widget.specimenCtr,
-                    useHorizontalLayout: useHorizontalLayout,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TaxonomicForm(
-                        useHorizontalLayout: useHorizontalLayout,
-                        specimenUuid: widget.specimenUuid,
-                      ),
-                      CaptureRecordFields(
-                        specimenUuid: widget.specimenUuid,
-                        useHorizontalLayout: useHorizontalLayout,
-                        specimenCtr: widget.specimenCtr,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              AdaptiveMainLayout(
-                useHorizontalLayout: useHorizontalLayout,
-                height: bottomSpecimenRecordHeight,
-                children: [
-                  BirdMeasurementForms(
+        return ListView(
+          children: [
+            AdaptiveMainLayout(
+              useHorizontalLayout: useHorizontalLayout,
+              height: topSpecimenRecordHeight,
+              children: [
+                CollectingRecordField(
+                  specimenUuid: widget.specimenUuid,
+                  specimenCtr: widget.specimenCtr,
+                  useHorizontalLayout: useHorizontalLayout,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TaxonomicForm(
                       useHorizontalLayout: useHorizontalLayout,
-                      specimenUuid: widget.specimenUuid),
-                  PartDataForm(
-                    specimenUuid: widget.specimenUuid,
-                    catalogFmt: CatalogFmt.birds,
-                  ),
-                ],
-              ),
-              SpecimenMediaForm(
-                specimenUuid: widget.specimenUuid,
-              ),
-              const BottomPadding(),
-            ],
-          ),
+                      specimenUuid: widget.specimenUuid,
+                    ),
+                    CaptureRecordFields(
+                      specimenUuid: widget.specimenUuid,
+                      useHorizontalLayout: useHorizontalLayout,
+                      specimenCtr: widget.specimenCtr,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            AdaptiveMainLayout(
+              useHorizontalLayout: useHorizontalLayout,
+              height: bottomSpecimenRecordHeight,
+              children: [
+                BirdMeasurementForms(
+                    useHorizontalLayout: useHorizontalLayout,
+                    specimenUuid: widget.specimenUuid),
+                PartDataForm(
+                  specimenUuid: widget.specimenUuid,
+                  catalogFmt: CatalogFmt.birds,
+                ),
+              ],
+            ),
+            SpecimenMediaForm(
+              specimenUuid: widget.specimenUuid,
+            ),
+            const BottomPadding(),
+          ],
         );
       },
     );

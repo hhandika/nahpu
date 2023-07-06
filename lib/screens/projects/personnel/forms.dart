@@ -28,7 +28,7 @@ class NewPersonnel extends ConsumerWidget {
         automaticallyImplyLeading: false,
       ),
       body: Center(
-        child: ScrollableLayout(
+        child: ScrollableConstrainedLayout(
           child: PersonnelForm(
             ctr: ctr,
             personnelUuid: uuid,
@@ -54,7 +54,7 @@ class EditPersonnelForm extends ConsumerWidget {
         automaticallyImplyLeading: false,
       ),
       body: Center(
-        child: ScrollableLayout(
+        child: ScrollableConstrainedLayout(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

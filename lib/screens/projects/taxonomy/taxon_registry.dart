@@ -390,7 +390,7 @@ class _TaxonListState extends State<TaxonList> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: ScrollableLayout(
+      child: ScrollableConstrainedLayout(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
