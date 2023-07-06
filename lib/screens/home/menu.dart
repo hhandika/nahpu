@@ -57,6 +57,8 @@ class HomeMenuDrawer extends StatelessWidget {
           },
         ),
         const CommonLineDivider(),
+        const LearnerResourceTile(),
+        const CommonLineDivider(),
         ListTile(
           leading: const Icon(Icons.info_rounded),
           title: const Text('About'),
@@ -119,6 +121,29 @@ class AppAbout extends StatelessWidget {
         );
       },
       future: PackageInfo.fromPlatform(),
+    );
+  }
+}
+
+class LearnerResourceTile extends StatelessWidget {
+  const LearnerResourceTile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: const Icon(Icons.school_rounded),
+      title: const Text('Learner resources'),
+      onTap: () async {
+        final Uri url = Uri.parse('https://docs.nahpu.app/en');
+        try {
+          await launchUrl(
+            url,
+            mode: LaunchMode.externalApplication,
+          );
+        } catch (e) {
+          throw 'Could not launch $url';
+        }
+      },
     );
   }
 }
