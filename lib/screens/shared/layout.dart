@@ -158,7 +158,9 @@ class AdaptiveLayout extends StatelessWidget {
         ? LayoutRow(
             children: children,
           )
-        : LayoutContainer(children: children);
+        : CommonPadding(
+            child: LayoutContainer(children: children),
+          );
   }
 }
 
