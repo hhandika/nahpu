@@ -63,6 +63,7 @@ dependencies:
   printing: ^5.11.0
   package_info_plus: ^4.0.2
   qr_flutter: ^4.1.0
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:

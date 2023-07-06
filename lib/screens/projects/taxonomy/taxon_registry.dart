@@ -301,54 +301,6 @@ class CountText extends StatelessWidget {
   }
 }
 
-class TaxonDataContainer extends StatelessWidget {
-  const TaxonDataContainer({
-    super.key,
-    required this.child,
-  });
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(10),
-        child: Container(
-          height: 220,
-          width: 200,
-          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-          decoration: BoxDecoration(
-            // color:
-            //     Theme.of(context).colorScheme.secondaryContainer.withAlpha(50),
-            border: Border.all(
-              color: Theme.of(context).dividerColor.withAlpha(50),
-              width: 1.2,
-            ),
-            borderRadius: BorderRadius.circular(
-              20,
-            ),
-          ),
-          child: child,
-        ));
-  }
-}
-
-class TaxonStatText extends StatelessWidget {
-  const TaxonStatText({super.key, required this.text});
-  final String text;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.topLeft,
-      padding: const EdgeInsets.fromLTRB(16, 0, 0, 8),
-      child: Text(
-        text,
-        style: Theme.of(context).textTheme.titleMedium,
-      ),
-    );
-  }
-}
-
 class TaxonRegistryPage extends ConsumerStatefulWidget {
   const TaxonRegistryPage({super.key});
 
@@ -477,5 +429,53 @@ class TaxonListView extends StatelessWidget {
             );
           },
         ));
+  }
+}
+
+class TaxonDataContainer extends StatelessWidget {
+  const TaxonDataContainer({
+    super.key,
+    required this.child,
+  });
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.all(10),
+        child: Container(
+          height: 220,
+          width: 200,
+          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+          decoration: BoxDecoration(
+            // color:
+            //     Theme.of(context).colorScheme.secondaryContainer.withAlpha(50),
+            border: Border.all(
+              color: Theme.of(context).dividerColor.withAlpha(50),
+              width: 1.2,
+            ),
+            borderRadius: BorderRadius.circular(
+              20,
+            ),
+          ),
+          child: child,
+        ));
+  }
+}
+
+class TaxonStatText extends StatelessWidget {
+  const TaxonStatText({super.key, required this.text});
+  final String text;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.topLeft,
+      padding: const EdgeInsets.only(left: 16),
+      child: Text(
+        text,
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
+    );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/taxa.dart';
@@ -26,13 +27,29 @@ class TaxonRegistryLayout extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: children,
             )
-          : SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: children,
-              ),
-            );
+          : SliderView(items: children);
     });
+  }
+}
+
+class SliderView extends StatelessWidget {
+  const SliderView({super.key, required this.items});
+
+  final List<Widget> items;
+
+  @override
+  Widget build(BuildContext context) {
+    return CarouselSlider(
+        items: items,
+        options: CarouselOptions(
+          height: 400,
+          viewportFraction: 0.7,
+          initialPage: 0,
+          enableInfiniteScroll: false,
+          reverse: false,
+          autoPlay: false,
+          scrollDirection: Axis.horizontal,
+        ));
   }
 }
 
