@@ -3,6 +3,7 @@ import 'package:nahpu/screens/export/export_db.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/settings/settings.dart';
 import 'package:nahpu/screens/shared/common.dart';
+import 'package:nahpu/services/platform_services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -134,7 +135,7 @@ class LearnerResourceTile extends StatelessWidget {
       leading: const Icon(Icons.school_rounded),
       title: const Text('Learner resources'),
       onTap: () async {
-        final Uri url = Uri.parse('https://docs.nahpu.app/en');
+        final Uri url = Uri.parse('https://docs.nahpu.app/en/usages');
         try {
           await launchUrl(
             url,
@@ -153,19 +154,20 @@ class DocQrCode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isPhone = getSystemDevice(context) == DeviceType.phone;
     return Container(
       alignment: Alignment.center,
       child: QrImageView(
         data: 'https://docs.nahpu.app/en',
         version: QrVersions.auto,
-        size: 120,
+        size: isPhone ? 80 : 120,
         backgroundColor: Colors.transparent,
         eyeStyle: QrEyeStyle(
-          eyeShape: QrEyeShape.square,
+          eyeShape: QrEyeShape.circle,
           color: Theme.of(context).colorScheme.onSurface,
         ),
         dataModuleStyle: QrDataModuleStyle(
-          dataModuleShape: QrDataModuleShape.square,
+          dataModuleShape: QrDataModuleShape.circle,
           color: Theme.of(context).colorScheme.onSurface,
         ),
       ),
