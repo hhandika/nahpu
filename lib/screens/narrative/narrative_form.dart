@@ -12,10 +12,10 @@ import 'package:nahpu/services/narrative_services.dart';
 
 class NarrativeForm extends ConsumerStatefulWidget {
   const NarrativeForm({
-    Key? key,
+    super.key,
     required this.narrativeId,
     required this.narrativeCtr,
-  }) : super(key: key);
+  });
 
   final int narrativeId;
   final NarrativeFormCtrModel narrativeCtr;
@@ -63,19 +63,21 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
             FormCard(
               isPrimary: false,
               isWithTitle: false,
-              child: TextFormField(
-                controller: widget.narrativeCtr.narrativeCtr,
-                maxLines: 20,
-                decoration: const InputDecoration(
-                  labelText: 'Narrative',
-                  hintText: 'Enter narrative',
+              child: CommonPadding(
+                child: TextField(
+                  controller: widget.narrativeCtr.narrativeCtr,
+                  maxLines: 20,
+                  decoration: const InputDecoration(
+                    labelText: 'Narrative',
+                    hintText: 'Enter narrative',
+                  ),
+                  onChanged: (value) {
+                    NarrativeServices(ref: ref).updateNarrative(
+                      widget.narrativeId,
+                      NarrativeCompanion(narrative: db.Value(value)),
+                    );
+                  },
                 ),
-                onChanged: (value) {
-                  NarrativeServices(ref: ref).updateNarrative(
-                    widget.narrativeId,
-                    NarrativeCompanion(narrative: db.Value(value)),
-                  );
-                },
               ),
             ),
             NarrativeMediaForm(

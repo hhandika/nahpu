@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:nahpu/providers/sites.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/services/database/database.dart';
@@ -50,25 +49,17 @@ class DateForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return TextFormField(
-      decoration: const InputDecoration(
-        labelText: 'Date',
-        hintText: 'Enter date',
-      ),
+    return CommonDateField(
+      labelText: 'Date',
+      hintText: 'Enter date',
+      initialDate: DateTime.now(),
+      lastDate: DateTime.now(),
       controller: narrativeCtr.dateCtr,
-      onTap: () async {
-        final selectedDate = await showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2000),
-            lastDate: DateTime.now());
-        if (selectedDate != null) {
-          narrativeCtr.dateCtr.text = DateFormat.yMMMd().format(selectedDate);
-          NarrativeServices(ref: ref).updateNarrative(
-            narrativeId,
-            NarrativeCompanion(date: db.Value(narrativeCtr.dateCtr.text)),
-          );
-        }
+      onTap: () {
+        NarrativeServices(ref: ref).updateNarrative(
+          narrativeId,
+          NarrativeCompanion(date: db.Value(narrativeCtr.dateCtr.text)),
+        );
       },
     );
   }
