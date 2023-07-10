@@ -326,7 +326,7 @@ class ProjectPopUpMenuState extends ConsumerState<ProjectPopUpMenu> {
         onDelete: () async {
           try {
             await ProjectServices(ref: ref).deleteProject(projectUuid);
-          } on Exception catch (e) {
+          } catch (e) {
             String error = e.toString();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
