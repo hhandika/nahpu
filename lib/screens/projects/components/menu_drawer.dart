@@ -140,12 +140,31 @@ class ProjectMenuDrawerState extends ConsumerState<ProjectMenuDrawer> {
                   title: 'Delete project?',
                   deletePrompt: 'You will delete the project and all its data',
                   onDelete: () async {
-                    await ProjectServices(ref: ref).deleteProject(projectUuid);
-                    if (mounted) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => const Home()),
-                      );
+                    try {
+                      await ProjectServices(ref: ref)
+                          .deleteProject(projectUuid);
+                      if (mounted) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Home()),
+                        );
+                      }
+                    } catch (e) {
+                      Navigator.pop(context);
+                      showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                title: const Text(
+                                  'Error',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                                content: Text(
+                                  e.toString().contains('FOREIGN KEY')
+                                      ? 'Cannot delete project with records.\n'
+                                          'Delete all records first'
+                                      : e.toString(),
+                                ),
+                              ));
                     }
                   });
             },

@@ -83,10 +83,6 @@ class CollEffortQuery extends DatabaseAccessor<Database>
   Future<void> deleteCollEffortByEventId(int eventId) {
     return (delete(collEffort)..where((t) => t.eventID.equals(eventId))).go();
   }
-
-  Future<void> deleteAllCollEfforts(String projectUuid) {
-    return delete(collEffort).go();
-  }
 }
 
 class CollPersonnelQuery extends DatabaseAccessor<Database>
@@ -143,10 +139,6 @@ class CollPersonnelQuery extends DatabaseAccessor<Database>
     return (delete(collPersonnel)..where((t) => t.eventID.equals(eventId)))
         .go();
   }
-
-  Future<void> deleteAllCollPersonnel(String projectUuid) {
-    return delete(collPersonnel).go();
-  }
 }
 
 class WeatherDataQuery extends DatabaseAccessor<Database>
@@ -167,9 +159,5 @@ class WeatherDataQuery extends DatabaseAccessor<Database>
 
   Future<void> deleteWeatherData(int eventId) {
     return (delete(weather)..where((t) => t.eventID.equals(eventId))).go();
-  }
-
-  Future<void> deleteAllWeatherData(String projectUuid) {
-    return delete(weather).go();
   }
 }

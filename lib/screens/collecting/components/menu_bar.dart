@@ -127,7 +127,6 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
           await service.deleteAllCollEvents(projectUuid);
 
           if (mounted) {
-            service.invalidateCollEvent();
             Navigator.of(context).pop();
           }
         } catch (e) {
