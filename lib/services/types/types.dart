@@ -94,6 +94,7 @@ const List<String> siteTypeList = [
   'Trail',
   'Trapline',
   'Netline',
+  'Cave',
   'Other',
 ];
 
