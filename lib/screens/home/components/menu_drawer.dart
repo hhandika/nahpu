@@ -158,7 +158,7 @@ class DocQrCode extends StatelessWidget {
       child: QrImageView(
         data: 'https://docs.nahpu.app/en',
         version: QrVersions.auto,
-        size: isPhone ? 80 : 150,
+        size: isPhone ? 80 : 120,
         backgroundColor: Colors.transparent,
         eyeStyle: QrEyeStyle(
           eyeShape: QrEyeShape.circle,
