@@ -2,6 +2,7 @@
 
 ![Nahpu-Tests](https://github.com/hhandika/nahpu/workflows/Nahpu-Tests/badge.svg)
 [![LoC](https://tokei.rs/b1/github/hhandika/nahpu?category=code)](https://github.com/XAMPPRocky/tokei)
+<!-- ![GH-Downloads](https://img.shields.io/github/downloads/hhandika/nahpu/total?color=blue&label=gh-release-downloads) -->
 ![last-commit](https://img.shields.io/github/last-commit/hhandika/nahpu)
 ![License](https://img.shields.io/github/license/hhandika/nahpu)
 
