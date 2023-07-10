@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/export/export_db.dart';
+import 'package:nahpu/screens/home/components/learning_resources.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/settings/settings.dart';
 import 'package:nahpu/screens/shared/common.dart';
@@ -58,7 +59,7 @@ class HomeMenuDrawer extends StatelessWidget {
           },
         ),
         const CommonLineDivider(),
-        const LearnerResourceTile(),
+        const LearningResourceTile(),
         const CommonLineDivider(),
         ListTile(
           leading: const Icon(Icons.info_rounded),
@@ -126,24 +127,21 @@ class AppAbout extends StatelessWidget {
   }
 }
 
-class LearnerResourceTile extends StatelessWidget {
-  const LearnerResourceTile({super.key});
+class LearningResourceTile extends StatelessWidget {
+  const LearningResourceTile({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: const Icon(Icons.school_rounded),
-      title: const Text('Learner resources'),
+      title: const Text('Learning resources'),
       onTap: () async {
-        final Uri url = Uri.parse('https://docs.nahpu.app/en/usages');
-        try {
-          await launchUrl(
-            url,
-            mode: LaunchMode.externalApplication,
-          );
-        } catch (e) {
-          throw 'Could not launch $url';
-        }
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const LearningResourcePage(),
+          ),
+        );
       },
     );
   }

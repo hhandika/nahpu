@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/screens/home/menu.dart';
-import 'package:nahpu/screens/home/body.dart';
+import 'package:nahpu/screens/home/components/menu_drawer.dart';
+import 'package:nahpu/screens/home/components/body.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/db_services.dart';
