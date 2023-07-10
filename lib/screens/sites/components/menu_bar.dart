@@ -101,6 +101,7 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
 
               // Trigger page changes to update the view.
               if (mounted) {
+                Navigator.of(context).pop();
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (_) => const SiteViewer()));
               }
@@ -119,6 +120,9 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
         onDelete: () async {
           try {
             await SiteServices(ref: ref).deleteAllSites();
+            if (mounted) {
+              Navigator.of(context).pop();
+            }
           } catch (e) {
             _showError(e.toString());
           }

@@ -77,11 +77,27 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
       context: context,
       title: 'Delete narrative?',
       deletePrompt: 'You will delete this narrative',
-      onDelete: () {
+      onDelete: () async {
         if (widget.narrativeId != null) {
-          NarrativeServices(ref: ref).deleteNarrative(widget.narrativeId!);
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => const NarrativeViewer()));
+          try {
+            await NarrativeServices(ref: ref)
+                .deleteNarrative(widget.narrativeId!);
+            if (mounted) {
+              Navigator.of(context).pop();
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (_) => const NarrativeViewer()));
+            }
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'Error deleting narrative: $e',
+                  style: const TextStyle(color: Colors.white),
+                ),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
         }
       },
     );
@@ -92,9 +108,24 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
       context: context,
       title: 'Delete all narrative?',
       deletePrompt: 'You will delete all narrative in this project',
-      onDelete: () {
+      onDelete: () async {
         final projectUuid = ref.read(projectUuidProvider.notifier).state;
-        NarrativeServices(ref: ref).deleteAllNarrative(projectUuid);
+        try {
+          await NarrativeServices(ref: ref).deleteAllNarrative(projectUuid);
+          if (mounted) {
+            Navigator.of(context).pop();
+          }
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Error deleting all narrative: $e',
+                style: const TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
       },
     );
   }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nahpu/providers/collevents.dart';
 import 'package:nahpu/screens/collecting/coll_event_view.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/forms.dart';
@@ -96,6 +95,9 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
             await CollEventServices(ref: ref)
                 .deleteCollEvent(widget.collEventId!);
             if (mounted) {
+              Navigator.of(context).pop();
+              // We need to trigger a rebuild of the CollEventViewer
+              // to update page numbers and the CollEventViewer
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (_) => const CollEventViewer(),
@@ -121,8 +123,13 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
           'and weather data from the database.',
       onDelete: () async {
         try {
-          await CollEventServices(ref: ref).deleteAllCollEvents(projectUuid);
-          ref.invalidate(collEventEntryProvider);
+          final service = CollEventServices(ref: ref);
+          await service.deleteAllCollEvents(projectUuid);
+
+          if (mounted) {
+            service.invalidateCollEvent();
+            Navigator.of(context).pop();
+          }
         } catch (e) {
           _showError(e.toString());
         }

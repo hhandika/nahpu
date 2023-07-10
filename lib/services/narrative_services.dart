@@ -62,9 +62,9 @@ class NarrativeServices extends DbAccess {
     return await NarrativeQuery(dbAccess).getNarrativeMediaById(id);
   }
 
-  void deleteNarrative(int id) {
+  Future<void> deleteNarrative(int id) async {
     deleteAllNarrativeMedia(id);
-    NarrativeQuery(dbAccess).deleteNarrative(id);
+    await NarrativeQuery(dbAccess).deleteNarrative(id);
     invalidateNarrative();
   }
 

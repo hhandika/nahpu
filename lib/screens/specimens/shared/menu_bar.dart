@@ -99,13 +99,26 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
           'You will need to manually update the field number.',
       onDelete: () async {
         if (widget.specimenUuid != null && widget.catalogFmt != null) {
-          await SpecimenServices(ref: ref).deleteSpecimen(
-            widget.specimenUuid!,
-            widget.catalogFmt!,
-          );
-          if (context.mounted) {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => const SpecimenViewer()),
+          try {
+            await SpecimenServices(ref: ref).deleteSpecimen(
+              widget.specimenUuid!,
+              widget.catalogFmt!,
+            );
+            if (context.mounted) {
+              Navigator.of(context).pop();
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (_) => const SpecimenViewer()),
+              );
+            }
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'Error deleting specimen: $e',
+                  textAlign: TextAlign.center,
+                ),
+                backgroundColor: Colors.red,
+              ),
             );
           }
         }
@@ -120,7 +133,22 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
         deletePrompt: 'It will remove all specimens records'
             ', measurements, and specimen parts',
         onDelete: () async {
-          await SpecimenServices(ref: ref).deleteAllSpecimens();
+          try {
+            await SpecimenServices(ref: ref).deleteAllSpecimens();
+            if (context.mounted) {
+              Navigator.of(context).pop();
+            }
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'Error deleting all specimens: $e',
+                  textAlign: TextAlign.center,
+                ),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
         });
   }
 }
