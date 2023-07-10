@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/screens/home/home.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
 import 'package:nahpu/screens/projects/project_info.dart';
 import 'package:nahpu/screens/shared/forms.dart';
@@ -323,9 +324,23 @@ class ProjectPopUpMenuState extends ConsumerState<ProjectPopUpMenu> {
         title: 'Delete project?',
         deletePrompt: 'You will delete this project permanently',
         onDelete: () async {
-          await ProjectServices(ref: ref).deleteProject(projectUuid);
+          try {
+            await ProjectServices(ref: ref).deleteProject(projectUuid);
+          } on Exception catch (e) {
+            String error = e.toString();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: error.contains('787')
+                    ? const Text(
+                        'Delete all project data first before deleting project')
+                    : Text('Something went wrong: $error'),
+                backgroundColor: Theme.of(context).colorScheme.error,
+              ),
+            );
+          }
           if (mounted) {
-            Navigator.of(context).pop();
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => const Home()));
           }
         },
       ),
