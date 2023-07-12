@@ -1,8 +1,17 @@
 import 'package:nahpu/providers/database.dart';
 import 'package:nahpu/services/database/database.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/personnel_queries.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'personnel.g.dart';
+
+@riverpod
+Future<List<PersonnelData>> allPersonnel(AllPersonnelRef ref) async {
+  List<PersonnelData> personnelData =
+      await PersonnelQuery(ref.read(databaseProvider)).getAllPersonnel();
+  return personnelData;
+}
 
 final personnelListProvider =
     FutureProvider.autoDispose<List<PersonnelData>>((ref) {

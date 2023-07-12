@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/layout.dart';
+import 'package:nahpu/services/platform_services.dart';
 
 class FormCard extends StatelessWidget {
   const FormCard({
@@ -101,6 +102,7 @@ class TitleForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DeviceType deviceType = getSystemDevice(context);
     return Padding(
       padding: isCentered
           ? const EdgeInsets.fromLTRB(46, 0, 0, 4)
@@ -114,7 +116,11 @@ class TitleForm extends StatelessWidget {
             style: Theme.of(context).textTheme.titleLarge,
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              deviceType == DeviceType.phone
+                  ? showModalSheet(context)
+                  : showInfoDialog(context);
+            },
             padding: EdgeInsets.zero,
             icon: Icon(
               Icons.info_outline_rounded,
@@ -124,6 +130,56 @@ class TitleForm extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void showInfoDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(text),
+          content: const Text(
+            'Info coming soon!',
+            textAlign: TextAlign.center,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void showModalSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height * 0.4,
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                text,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Info coming soon!',
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
