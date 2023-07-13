@@ -3,11 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/screens/projects/personnel/new_personnel.dart';
 import 'package:nahpu/screens/projects/personnel/select_personnel.dart';
+import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/database/database.dart';
 
-enum PersonnelSelection { newPersonnel, selectPersonnel }
+enum PersonnelSelection { selectPersonnel, newPersonnel }
 
 const Map<PersonnelSelection, String> addPersonnelOptions = {
   PersonnelSelection.selectPersonnel: 'Select from database',
@@ -62,29 +63,71 @@ class AddWithOptionsState extends ConsumerState<AddWithOptions> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        DropdownButton(
-          value: _personnelSelection,
-          isExpanded: true,
-          items: addPersonnelOptions.entries
-              .map((e) => DropdownMenuItem<PersonnelSelection>(
-                    value: e.key,
-                    child: Text(e.value),
-                  ))
+        Wrap(
+          spacing: 8,
+          alignment: WrapAlignment.start,
+          children: addPersonnelOptions.entries
+              .map(
+                (e) => ChoiceChip(
+                    index: e.key.index,
+                    selectedValue: _personnelSelection.index,
+                    onSelected: (value) {
+                      if (value) {
+                        setState(() {
+                          _personnelSelection = e.key;
+                          ref.invalidate(personnelListProvider);
+                        });
+                      }
+                    }),
+              )
               .toList(),
-          onChanged: (value) {
-            if (value != null) {
-              setState(() {
-                _personnelSelection = value;
-                ref.invalidate(personnelListProvider);
-              });
-            }
-          },
         ),
+        // DropdownButton(
+        //   value: _personnelSelection,
+        //   isExpanded: true,
+        //   items: addPersonnelOptions.entries
+        //       .map((e) => DropdownMenuItem<PersonnelSelection>(
+        //             value: e.key,
+        //             child: Text(e.value),
+        //           ))
+        //       .toList(),
+        //   onChanged: (value) {
+        //     if (value != null) {
+        //       setState(() {
+        //         _personnelSelection = value;
+        //         ref.invalidate(personnelListProvider);
+        //       });
+        //     }
+        //   },
+        // ),
         const SizedBox(height: 24),
         _personnelSelection == PersonnelSelection.newPersonnel
             ? const NewPersonnel()
             : SelectPersonnel(selectedPersonnel: widget.data)
       ],
+    );
+  }
+}
+
+class ChoiceChip extends StatelessWidget {
+  const ChoiceChip({
+    super.key,
+    required this.index,
+    required this.selectedValue,
+    required this.onSelected,
+  });
+
+  final int index;
+  final int selectedValue;
+  final void Function(bool) onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return CommonChip(
+      index: index,
+      label: Text(addPersonnelOptions.values.elementAt(index)),
+      selectedValue: selectedValue,
+      onSelected: onSelected,
     );
   }
 }

@@ -163,6 +163,36 @@ class PrimaryIconButton extends StatelessWidget {
   }
 }
 
+class CommonChip extends StatelessWidget {
+  const CommonChip({
+    super.key,
+    required this.index,
+    required this.label,
+    required this.selectedValue,
+    required this.onSelected,
+  });
+
+  final int index;
+  final int selectedValue;
+  final Widget label;
+  final void Function(bool) onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
+        child: ChoiceChip(
+          shape: const StadiumBorder(
+            side: BorderSide(color: Colors.transparent),
+          ),
+          selectedColor: Theme.of(context).colorScheme.primaryContainer,
+          label: label,
+          selected: selectedValue == index,
+          onSelected: onSelected,
+        ));
+  }
+}
+
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
     super.key,

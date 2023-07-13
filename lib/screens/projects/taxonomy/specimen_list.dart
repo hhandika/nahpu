@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/specimens/specimen_form.dart';
 import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
@@ -202,13 +203,10 @@ class _SearchTypeState extends State<SearchType> {
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
-        child: ChoiceChip(
-          shape: const StadiumBorder(
-            side: BorderSide(color: Colors.transparent),
-          ),
-          selectedColor: Theme.of(context).colorScheme.primaryContainer,
+        child: CommonChip(
+          index: widget.index,
           label: Text(specimenSearchOptions[widget.index]),
-          selected: widget.selectedValue == widget.index,
+          selectedValue: widget.selectedValue,
           onSelected: widget.onSelected,
         ));
   }
