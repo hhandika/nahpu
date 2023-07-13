@@ -1,8 +1,8 @@
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/providers/personnel.dart';
-import 'package:nahpu/screens/projects/personnel/avatars.dart';
 import 'package:nahpu/screens/projects/personnel/add_personnel.dart';
-import 'package:nahpu/screens/projects/personnel/select_personnel.dart';
+import 'package:nahpu/screens/projects/personnel/avatars.dart';
+import 'package:nahpu/screens/projects/personnel/new_personnel.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
@@ -27,49 +27,32 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
   @override
   Widget build(BuildContext context) {
     return FormCard(
-      title: 'Personnel',
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          const SizedBox(
-            height: 314,
-            child: PersonnelList(),
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Wrap(
-            spacing: 8,
-            children: [
-              SecondaryButton(
-                text: 'Select from list',
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SelectPersonnel(),
-                    ),
-                  );
-                },
-              ),
-              PrimaryButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const NewPersonnel(),
-                    ),
-                  );
-                },
-                label: 'Add personnel',
-                icon: Icons.add,
-              ),
-            ],
-          )
-        ],
-      ),
-    );
+        title: 'Personnel',
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            const SizedBox(
+              height: 314,
+              child: PersonnelList(),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            PrimaryButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddPersonnel(),
+                  ),
+                );
+              },
+              label: 'Add personnel',
+              icon: Icons.add,
+            ),
+          ],
+        ));
   }
 }
 

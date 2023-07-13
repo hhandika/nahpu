@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/providers/validation.dart';
+import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/import/multimedia.dart';
 import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
@@ -11,7 +13,7 @@ import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/platform_services.dart';
 import 'package:path/path.dart';
 
-const int avatarSize = 180;
+const int avatarSize = 160;
 
 class PersonnelAvatar extends ConsumerStatefulWidget {
   const PersonnelAvatar({
@@ -33,11 +35,28 @@ class PersonnelAvatarState extends ConsumerState<PersonnelAvatar> {
       height: avatarSize.toDouble(),
       child: Stack(
         children: [
-          Positioned.fill(
-            child: AvatarViewer(
-              filePath: widget.ctr.photoPathCtr,
-            ),
-          ),
+          widget.ctr.photoPathCtr.text.isEmpty
+              ? ref.watch(catalogFmtNotifierProvider).when(
+                    data: (data) {
+                      final defaultAvatar =
+                          PersonnelImageService().getDefaultAvatar(data);
+                      return Positioned.fill(
+                          child: DefaultAvatar(
+                        filePath: defaultAvatar,
+                      ));
+                    },
+                    loading: () => const Center(
+                      child: CommonProgressIndicator(),
+                    ),
+                    error: (error, stack) => const Center(
+                      child: Text('Error'),
+                    ),
+                  )
+              : Positioned.fill(
+                  child: AvatarViewer(
+                    filePath: widget.ctr.photoPathCtr,
+                  ),
+                ),
           Positioned(
             bottom: 0,
             right: 8,
@@ -102,23 +121,13 @@ class AvatarViewer extends ConsumerStatefulWidget {
 class AvatarViewerState extends ConsumerState<AvatarViewer> {
   @override
   void initState() {
-    _getImagePath();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return widget.filePath.text.startsWith(avatarPath)
-        ? CircleAvatar(
-            backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
-            child: Image.asset(
-              width: avatarSize.toDouble(),
-              height: avatarSize.toDouble(),
-              cacheHeight: avatarSize,
-              cacheWidth: avatarSize,
-              widget.filePath.text,
-              fit: BoxFit.cover,
-            ))
+        ? DefaultAvatar(filePath: widget.filePath.text)
         : FutureBuilder(
             builder: (context, snapshot) {
               if (snapshot.hasData) {
@@ -137,19 +146,25 @@ class AvatarViewerState extends ConsumerState<AvatarViewer> {
             future: _getMediaPath());
   }
 
-  void _getImagePath() {
-    if (widget.filePath.text.isEmpty) {
-      String asset = PersonnelImageService().imageAssets;
-      widget.filePath.text = asset;
-    }
-  }
-
   Future<File> _getMediaPath() async {
     File path = await ImageServices(
       ref: ref,
       category: MediaCategory.personnel,
     ).getMediaPath(widget.filePath.text);
     return path;
+  }
+}
+
+class DefaultAvatar extends StatelessWidget {
+  const DefaultAvatar({super.key, required this.filePath});
+
+  final String filePath;
+
+  @override
+  Widget build(BuildContext context) {
+    return CircleAvatar(
+        backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+        foregroundImage: AssetImage(filePath));
   }
 }
 

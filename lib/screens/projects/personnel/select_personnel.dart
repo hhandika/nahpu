@@ -8,7 +8,12 @@ import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/database/database.dart';
 
 class SelectPersonnel extends ConsumerStatefulWidget {
-  const SelectPersonnel({super.key});
+  const SelectPersonnel({
+    super.key,
+    required this.selectedPersonnel,
+  });
+
+  final List<PersonnelData> selectedPersonnel;
 
   @override
   SelectPersonnelState createState() => SelectPersonnelState();
@@ -17,36 +22,34 @@ class SelectPersonnel extends ConsumerStatefulWidget {
 class SelectPersonnelState extends ConsumerState<SelectPersonnel> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Select Personnel'),
-      ),
-      body: ScrollableConstrainedLayout(
-        child: ref.watch(personnelListProvider).when(
-              data: (data) {
-                if (data.isEmpty) {
-                  return const Flexible(
-                      child: Center(child: Text('No personnel')));
-                } else {
-                  return PersonnelSelection(
-                    data: data,
-                  );
-                }
-              },
-              loading: () => const CommonProgressIndicator(),
-              error: (error, stack) => const Center(
-                child: Text('Error'),
-              ),
-            ),
-      ),
-    );
+    return ref.watch(allPersonnelProvider).when(
+          data: (data) {
+            if (data.isEmpty) {
+              return const Flexible(child: Center(child: Text('No personnel')));
+            } else {
+              return PersonnelSelection(
+                data: data,
+                selectedPersonnel: widget.selectedPersonnel,
+              );
+            }
+          },
+          loading: () => const CommonProgressIndicator(),
+          error: (error, stack) => const Center(
+            child: Text('Error'),
+          ),
+        );
   }
 }
 
 class PersonnelSelection extends ConsumerStatefulWidget {
-  const PersonnelSelection({super.key, required this.data});
+  const PersonnelSelection({
+    super.key,
+    required this.data,
+    required this.selectedPersonnel,
+  });
 
   final List<PersonnelData> data;
+  final List<PersonnelData> selectedPersonnel;
 
   @override
   PersonnelSelectionState createState() => PersonnelSelectionState();
@@ -55,7 +58,7 @@ class PersonnelSelection extends ConsumerStatefulWidget {
 class PersonnelSelectionState extends ConsumerState<PersonnelSelection> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
-  final List<PersonnelData> _personnelData = [];
+  bool _isSelected = false;
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +73,18 @@ class PersonnelSelectionState extends ConsumerState<PersonnelSelection> {
             Text(
               'Selected: ${widget.data.length}',
             ),
+            Row(
+              children: [
+                TextButton(
+                    onPressed: () {
+                      setState(() {
+                        _isSelected = !_isSelected;
+                      });
+                    },
+                    child: Text(_isSelected ? 'Select' : 'Deselect all')),
+                TextButton(onPressed: () {}, child: const Text('Select all'))
+              ],
+            ),
             CommonScrollbar(
               scrollController: _scrollController,
               child: ListView.builder(
@@ -80,22 +95,14 @@ class PersonnelSelectionState extends ConsumerState<PersonnelSelection> {
                   return ListTile(
                     title: Text(widget.data[index].name ?? ''),
                     subtitle: Text(widget.data[index].role ?? ''),
-                    trailing: _personnelData.contains(widget.data[index])
-                        ? IconButton(
-                            icon: const Icon(Icons.close),
-                            onPressed: () {
-                              setState(() {
-                                _personnelData.remove(widget.data[index]);
-                              });
-                            },
-                          )
+                    leading: _isSelected
+                        ? null
                         : IconButton(
-                            icon: const Icon(Icons.add),
-                            onPressed: () {
-                              setState(() {
-                                _personnelData.add(widget.data[index]);
-                              });
-                            },
+                            icon: const Icon(Icons.circle_outlined),
+                            onPressed: widget.selectedPersonnel
+                                    .contains(widget.data[index])
+                                ? null
+                                : () {},
                           ),
                   );
                 },

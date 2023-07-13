@@ -4,6 +4,7 @@ import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/personnel_queries.dart';
 import 'package:nahpu/services/io_services.dart';
+import 'package:nahpu/services/types/types.dart';
 
 class PersonnelServices extends DbAccess {
   const PersonnelServices({required super.ref});
@@ -73,18 +74,53 @@ class PersonnelServices extends DbAccess {
 
 const String avatarPath = 'assets/avatars/';
 
-const List<String> availableBirdPhoto = [
+const List<String> availableBirdAvatar = [
   'canton_lep_esquisita.png',
   'canton_lep_hybrid2.png',
   'canton_lep_velutina.png',
 ];
 
+const List<String> availableMammalAvatar = [
+  'handika_crocidura.png',
+  'handika_dasypus.png',
+  'handika_haeromys.png',
+];
+
+const List<String> availableBatAvatar = [
+  'handika_rhinolophus.png',
+  'hnadika_rousettus.png',
+];
+
 class PersonnelImageService {
   PersonnelImageService();
 
-  String get imageAssets {
-    final random = Random();
-    final index = random.nextInt(availableBirdPhoto.length);
-    return '$avatarPath${availableBirdPhoto[index]}';
+  final random = Random();
+
+  String getDefaultAvatar(CatalogFmt catalogFmt) {
+    switch (catalogFmt) {
+      case CatalogFmt.birds:
+        return _getBirdAvatar();
+      case CatalogFmt.generalMammals:
+        return _getMammalAvatar();
+      case CatalogFmt.bats:
+        return _getBatAvatar();
+      default:
+        return _getMammalAvatar();
+    }
+  }
+
+  String _getBirdAvatar() {
+    final index = random.nextInt(availableBirdAvatar.length);
+    return '$avatarPath${availableBirdAvatar[index]}';
+  }
+
+  String _getMammalAvatar() {
+    final index = random.nextInt(availableMammalAvatar.length);
+    return '$avatarPath${availableMammalAvatar[index]}';
+  }
+
+  String _getBatAvatar() {
+    final index = random.nextInt(availableBatAvatar.length);
+    return '$avatarPath${availableBatAvatar[index]}';
   }
 }
