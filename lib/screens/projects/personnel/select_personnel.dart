@@ -8,6 +8,7 @@ import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/personnel_services.dart';
 
 class SelectPersonnel extends ConsumerStatefulWidget {
   const SelectPersonnel({
@@ -150,12 +151,20 @@ class PersonnelSelectionState extends ConsumerState<PersonnelSelection> {
                   onPressed: _selectedPersonnel.isEmpty
                       ? null
                       : () async {
-                          _addSelectedPersonnel();
-                          ref.invalidate(personnelListProvider);
-                          if (context.mounted) {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) => const Dashboard(),
+                          try {
+                            await _addSelectedPersonnelToProject();
+                            ref.invalidate(personnelListProvider);
+                            if (context.mounted) {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => const Dashboard(),
+                                ),
+                              );
+                            }
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(e.toString()),
                               ),
                             );
                           }
@@ -169,7 +178,10 @@ class PersonnelSelectionState extends ConsumerState<PersonnelSelection> {
     );
   }
 
-  void _addSelectedPersonnel() {}
+  Future<void> _addSelectedPersonnelToProject() async {
+    await PersonnelServices(ref: ref)
+        .addMultiplePersonnelToProject(_selectedPersonnel);
+  }
 }
 
 class PersonnelSelected extends StatefulWidget {

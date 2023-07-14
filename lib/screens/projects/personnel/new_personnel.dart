@@ -374,7 +374,7 @@ class PersonnelFormState extends ConsumerState<PersonnelForm> {
         notes: db.Value(widget.ctr.noteCtr.text),
       ),
     );
-    await personnelServices.createProjectPersonnel(PersonnelListCompanion(
+    await personnelServices.addPersonnelToProject(PersonnelListCompanion(
       personnelUuid: db.Value(widget.personnelUuid),
       projectUuid: db.Value(projectUuid),
     ));

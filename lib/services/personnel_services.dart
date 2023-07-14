@@ -5,6 +5,7 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/personnel_queries.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/types/types.dart';
+import 'package:drift/drift.dart' as db;
 
 class PersonnelServices extends DbAccess {
   const PersonnelServices({required super.ref});
@@ -21,7 +22,17 @@ class PersonnelServices extends DbAccess {
     return data.map((e) => e.uuid).toList();
   }
 
-  Future<void> createProjectPersonnel(PersonnelListCompanion form) async {
+  Future<void> addMultiplePersonnelToProject(
+      List<PersonnelData> personnel) async {
+    for (final person in personnel) {
+      await addPersonnelToProject(PersonnelListCompanion(
+          personnelUuid: db.Value(person.uuid),
+          projectUuid: db.Value(projectUuid)));
+    }
+    invalidatePersonnel();
+  }
+
+  Future<void> addPersonnelToProject(PersonnelListCompanion form) async {
     await PersonnelQuery(dbAccess).createProjectPersonnelEntry(form);
     invalidatePersonnel();
   }
