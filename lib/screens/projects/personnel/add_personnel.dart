@@ -66,6 +66,7 @@ class AddWithOptionsState extends ConsumerState<AddWithOptions> {
               label: Text('Add new personnel'),
             ),
           ],
+          showSelectedIcon: false,
           onSelectionChanged: (Set<PersonnelSelection> selection) {
             setState(() {
               _selection = selection;
