@@ -130,9 +130,11 @@ class AvatarViewerState extends ConsumerState<AvatarViewer> {
         ? DefaultAvatar(filePath: widget.filePath.text)
         : FutureBuilder(
             builder: (context, snapshot) {
-              File path = snapshot.data as File;
-              if (snapshot.hasData) {
-                return DefaultAvatar(filePath: path.path);
+              if (snapshot.hasData && snapshot.data != null) {
+                return CircleAvatar(
+                  backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+                  foregroundImage: FileImage(snapshot.data as File),
+                );
               } else {
                 return const Center(
                   child: Text('Image not found'),
