@@ -104,11 +104,14 @@ class PersonnelSelectionState extends ConsumerState<PersonnelSelection> {
                 child: const Text('Deselect all')),
             TextButton(
                 onPressed: () {
-                  // TODO: Only add personnel that have not yet added.
-                  setState(() {
-                    _selectedPersonnel.clear();
-                    _selectedPersonnel.addAll(widget.data);
-                  });
+                  List<PersonnelData> allowedPersonnel =
+                      _filteredNotInProjectPersonnel();
+                  if (allowedPersonnel.isNotEmpty) {
+                    setState(() {
+                      _selectedPersonnel.clear();
+                      _selectedPersonnel.addAll(allowedPersonnel);
+                    });
+                  }
                 },
                 child: const Text('Select all'))
           ],
@@ -194,6 +197,17 @@ class PersonnelSelectionState extends ConsumerState<PersonnelSelection> {
   Future<void> _addSelectedPersonnelToProject() async {
     await PersonnelServices(ref: ref)
         .addMultiplePersonnelToProject(_selectedPersonnel);
+  }
+
+  List<PersonnelData> _filteredNotInProjectPersonnel() {
+    List<PersonnelData> personnel = [];
+
+    for (final person in widget.data) {
+      if (!widget.selectedPersonnel.contains(person)) {
+        personnel.add(person);
+      }
+    }
+    return personnel;
   }
 }
 
