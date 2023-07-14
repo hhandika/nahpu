@@ -51,7 +51,8 @@ class PersonnelQuery extends DatabaseAccessor<Database>
     SpecimenData? specimenRecords = await (select(specimen)
           ..where((t) =>
               t.projectUuid.equals(projectUuid) &
-              t.catalogerID.equals(personnelUuid))
+                  t.catalogerID.equals(personnelUuid) |
+              t.preparatorID.equals(personnelUuid))
           ..limit(1))
         .getSingleOrNull();
 

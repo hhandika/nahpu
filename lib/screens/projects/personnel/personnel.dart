@@ -226,6 +226,7 @@ class PersonnelMenuState extends ConsumerState<PersonnelMenu> {
             leading: const Icon(Icons.edit_outlined),
             title: const Text('Edit'),
             onTap: () {
+              Navigator.of(context).pop();
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => EditPersonnelForm(
@@ -247,6 +248,7 @@ class PersonnelMenuState extends ConsumerState<PersonnelMenu> {
               ),
               onTap: () {
                 _deletePersonnel();
+                Navigator.of(context).pop();
               },
             )),
       ],
