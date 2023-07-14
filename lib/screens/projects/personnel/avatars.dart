@@ -210,21 +210,31 @@ class ImageSpeedDials extends StatelessWidget {
       foregroundColor: Theme.of(context).colorScheme.primary,
       direction: SpeedDialDirection.down,
       children: [
-        SpeedDialChild(
-          child: Icon(Icons.camera_alt_outlined,
-              color: Theme.of(context).colorScheme.onSecondary),
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          label: 'Take Photo',
-          onTap: onTakePhoto,
-        ),
-        SpeedDialChild(
-          child: Icon(Icons.photo_library_outlined,
-              color: Theme.of(context).colorScheme.onSecondary),
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          label: 'Select Photo',
-          onTap: onSelectPhoto,
-        ),
+        getSystemDevice(context) == DeviceType.desktop
+            ? _selectPhotoDial(context)
+            : _takePhotoDial(context),
+        _selectPhotoDial(context)
       ],
+    );
+  }
+
+  SpeedDialChild _takePhotoDial(BuildContext context) {
+    return SpeedDialChild(
+      child: Icon(Icons.camera_alt_outlined,
+          color: Theme.of(context).colorScheme.onSecondary),
+      backgroundColor: Theme.of(context).colorScheme.secondary,
+      label: 'Take Photo',
+      onTap: onTakePhoto,
+    );
+  }
+
+  SpeedDialChild _selectPhotoDial(BuildContext context) {
+    return SpeedDialChild(
+      child: Icon(Icons.photo_library_outlined,
+          color: Theme.of(context).colorScheme.onSecondary),
+      backgroundColor: Theme.of(context).colorScheme.secondary,
+      label: 'Select Photo',
+      onTap: onSelectPhoto,
     );
   }
 }
