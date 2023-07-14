@@ -6,7 +6,6 @@ import 'package:nahpu/screens/projects/personnel/select_personnel.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/layout.dart';
-import 'package:nahpu/services/database/database.dart';
 
 enum PersonnelSelection { selectPersonnel, newPersonnel }
 
@@ -34,7 +33,7 @@ class AddPersonnelState extends ConsumerState<AddPersonnel> {
           child: ref.watch(allPersonnelProvider).when(
                 data: (data) {
                   if (data.isNotEmpty) {
-                    return AddWithOptions(data: data);
+                    return const AddWithOptions();
                   } else {
                     return const NewPersonnel();
                   }
@@ -49,9 +48,7 @@ class AddPersonnelState extends ConsumerState<AddPersonnel> {
 }
 
 class AddWithOptions extends ConsumerStatefulWidget {
-  const AddWithOptions({super.key, required this.data});
-
-  final List<PersonnelData> data;
+  const AddWithOptions({super.key});
 
   @override
   AddWithOptionsState createState() => AddWithOptionsState();
@@ -103,7 +100,13 @@ class AddWithOptionsState extends ConsumerState<AddWithOptions> {
         const SizedBox(height: 24),
         _personnelSelection == PersonnelSelection.newPersonnel
             ? const NewPersonnel()
-            : SelectPersonnel(selectedPersonnel: widget.data)
+            : ref.watch(personnelListProvider).when(
+                  data: (data) {
+                    return SelectPersonnel(selectedPersonnel: data);
+                  },
+                  loading: () => const CommonProgressIndicator(),
+                  error: (error, stack) => Text(error.toString()),
+                ),
       ],
     );
   }
