@@ -46,16 +46,41 @@ class PersonnelQuery extends DatabaseAccessor<Database>
         .getSingle();
   }
 
-  Future<bool> isPersonnelBeingUsedInOtherRecords(String uuid) async {
+  Future<bool> isPersonnelUsedBySpecimenRecords(
+      {required String projectUuid, required String personnelUuid}) async {
     SpecimenData? specimenRecords = await (select(specimen)
-          ..where((t) => t.catalogerID.equals(uuid))
+          ..where((t) =>
+              t.projectUuid.equals(projectUuid) &
+              t.catalogerID.equals(personnelUuid))
           ..limit(1))
         .getSingleOrNull();
-    CollPersonnelData? eventRecords = await (select(collPersonnel)
-          ..where((t) => t.personnelId.equals(uuid))
-          ..limit(1))
-        .getSingleOrNull();
-    if (specimenRecords != null || eventRecords != null) {
+
+    if (specimenRecords != null) {
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> isPersonnelUsedByCollEvents(
+      {required String projectUuid, required String personnelUuid}) async {
+    List<CollEventData> eventRecords = await (select(collEvent)
+          ..where((t) => t.projectUuid.equals(personnelUuid)))
+        .get();
+    List<CollPersonnelData> personnel = [];
+
+    for (final record in eventRecords) {
+      CollPersonnelData? person = await (select(collPersonnel)
+            ..where((tbl) =>
+                tbl.eventID.equals(record.id) &
+                tbl.personnelId.equals(personnelUuid)))
+          .getSingleOrNull();
+      if (person != null) {
+        personnel.add(person);
+      }
+    }
+    eventRecords.clear();
+
+    if (personnel.isNotEmpty) {
       return true;
     }
     return false;

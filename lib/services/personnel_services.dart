@@ -57,9 +57,13 @@ class PersonnelServices extends DbAccess {
   }
 
   Future<void> deleteProjectPersonnel(String personnelUuid) async {
-    bool isUsed = await PersonnelQuery(dbAccess)
-        .isPersonnelBeingUsedInOtherRecords(personnelUuid);
-    if (isUsed) {
+    bool isUsedInPersonnel = await PersonnelQuery(dbAccess)
+        .isPersonnelUsedBySpecimenRecords(
+            projectUuid: projectUuid, personnelUuid: personnelUuid);
+    bool isUsedInCollEvent = await PersonnelQuery(dbAccess)
+        .isPersonnelUsedByCollEvents(
+            projectUuid: projectUuid, personnelUuid: personnelUuid);
+    if (isUsedInPersonnel || isUsedInCollEvent) {
       throw Exception(
           'Failed to delete! Personnel is being used in other records');
     } else {
