@@ -40,6 +40,7 @@ class PersonnelAvatarState extends ConsumerState<PersonnelAvatar> {
                     data: (data) {
                       final defaultAvatar =
                           PersonnelImageService().getDefaultAvatar(data);
+                      widget.ctr.photoPathCtr.text = defaultAvatar;
                       return Positioned.fill(
                           child: DefaultAvatar(
                         filePath: defaultAvatar,

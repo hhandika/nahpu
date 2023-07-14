@@ -104,6 +104,7 @@ class PersonnelSelectionState extends ConsumerState<PersonnelSelection> {
                 child: const Text('Deselect all')),
             TextButton(
                 onPressed: () {
+                  // TODO: Only add personnel that have not yet added.
                   setState(() {
                     _selectedPersonnel.clear();
                     _selectedPersonnel.addAll(widget.data);
