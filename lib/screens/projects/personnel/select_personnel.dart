@@ -103,16 +103,21 @@ class PersonnelSelectionState extends ConsumerState<PersonnelSelection> {
                       },
                 child: const Text('Deselect all')),
             TextButton(
-                onPressed: () {
-                  List<PersonnelData> allowedPersonnel =
-                      _filteredNotInProjectPersonnel();
-                  if (allowedPersonnel.isNotEmpty) {
-                    setState(() {
-                      _selectedPersonnel.clear();
-                      _selectedPersonnel.addAll(allowedPersonnel);
-                    });
-                  }
-                },
+                // if list is empty or all personnel are already selected, disable button
+                onPressed: _filteredNotInProjectPersonnel().isEmpty ||
+                        _selectedPersonnel.length ==
+                            _filteredNotInProjectPersonnel().length
+                    ? null
+                    : () {
+                        List<PersonnelData> allowedPersonnel =
+                            _filteredNotInProjectPersonnel();
+                        if (allowedPersonnel.isNotEmpty) {
+                          setState(() {
+                            _selectedPersonnel.clear();
+                            _selectedPersonnel.addAll(allowedPersonnel);
+                          });
+                        }
+                      },
                 child: const Text('Select all'))
           ],
         ),
