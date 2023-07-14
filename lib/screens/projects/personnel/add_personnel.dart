@@ -3,16 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/screens/projects/personnel/new_personnel.dart';
 import 'package:nahpu/screens/projects/personnel/select_personnel.dart';
-import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 
 enum PersonnelSelection { selectPersonnel, newPersonnel }
-
-const Map<PersonnelSelection, String> addPersonnelOptions = {
-  PersonnelSelection.selectPersonnel: 'Select from database',
-  PersonnelSelection.newPersonnel: 'Create new personnel',
-};
 
 class AddPersonnel extends ConsumerStatefulWidget {
   const AddPersonnel({super.key});
@@ -55,50 +49,32 @@ class AddWithOptions extends ConsumerStatefulWidget {
 }
 
 class AddWithOptionsState extends ConsumerState<AddWithOptions> {
-  PersonnelSelection _personnelSelection = PersonnelSelection.selectPersonnel;
+  Set<PersonnelSelection> _selection = {PersonnelSelection.selectPersonnel};
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Wrap(
-          spacing: 8,
-          alignment: WrapAlignment.start,
-          children: addPersonnelOptions.entries
-              .map(
-                (e) => ChoiceChip(
-                    index: e.key.index,
-                    selectedValue: _personnelSelection.index,
-                    onSelected: (value) {
-                      if (value) {
-                        setState(() {
-                          _personnelSelection = e.key;
-                          ref.invalidate(personnelListProvider);
-                        });
-                      }
-                    }),
-              )
-              .toList(),
+        SegmentedButton(
+          selected: _selection,
+          segments: const [
+            ButtonSegment(
+              value: PersonnelSelection.selectPersonnel,
+              label: Text('Select from database'),
+            ),
+            ButtonSegment(
+              value: PersonnelSelection.newPersonnel,
+              label: Text('Add new personnel'),
+            ),
+          ],
+          onSelectionChanged: (Set<PersonnelSelection> selection) {
+            setState(() {
+              _selection = selection;
+              ref.invalidate(personnelListProvider);
+            });
+          },
         ),
-        // DropdownButton(
-        //   value: _personnelSelection,
-        //   isExpanded: true,
-        //   items: addPersonnelOptions.entries
-        //       .map((e) => DropdownMenuItem<PersonnelSelection>(
-        //             value: e.key,
-        //             child: Text(e.value),
-        //           ))
-        //       .toList(),
-        //   onChanged: (value) {
-        //     if (value != null) {
-        //       setState(() {
-        //         _personnelSelection = value;
-        //         ref.invalidate(personnelListProvider);
-        //       });
-        //     }
-        //   },
-        // ),
-        const SizedBox(height: 24),
-        _personnelSelection == PersonnelSelection.newPersonnel
+        const SizedBox(height: 32),
+        _selection.first == PersonnelSelection.newPersonnel
             ? const NewPersonnel()
             : ref.watch(personnelListProvider).when(
                   data: (data) {
@@ -108,29 +84,6 @@ class AddWithOptionsState extends ConsumerState<AddWithOptions> {
                   error: (error, stack) => Text(error.toString()),
                 ),
       ],
-    );
-  }
-}
-
-class ChoiceChip extends StatelessWidget {
-  const ChoiceChip({
-    super.key,
-    required this.index,
-    required this.selectedValue,
-    required this.onSelected,
-  });
-
-  final int index;
-  final int selectedValue;
-  final void Function(bool) onSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    return CommonChip(
-      index: index,
-      label: Text(addPersonnelOptions.values.elementAt(index)),
-      selectedValue: selectedValue,
-      onSelected: onSelected,
     );
   }
 }
