@@ -23,6 +23,9 @@ class SelectPersonnel extends ConsumerStatefulWidget {
 }
 
 class SelectPersonnelState extends ConsumerState<SelectPersonnel> {
+  final TextEditingController _searchController = TextEditingController();
+  List<PersonnelData> _filteredData = [];
+
   @override
   Widget build(BuildContext context) {
     return ref.watch(allPersonnelProvider).when(
@@ -30,9 +33,25 @@ class SelectPersonnelState extends ConsumerState<SelectPersonnel> {
             if (data.isEmpty) {
               return const Flexible(child: Center(child: Text('No personnel')));
             } else {
-              return PersonnelSelection(
-                data: data,
-                selectedPersonnel: widget.selectedPersonnel,
+              return Column(
+                children: [
+                  CommonPadding(
+                    child: SearchButtonField(
+                        controller: _searchController,
+                        onChanged: (query) {
+                          setState(() {
+                            _filteredData = _filterPersonnelList(
+                              data,
+                              query.toLowerCase(),
+                            );
+                          });
+                        }),
+                  ),
+                  PersonnelSelection(
+                    data: _filteredData.isEmpty ? data : _filteredData,
+                    selectedPersonnel: widget.selectedPersonnel,
+                  )
+                ],
               );
             }
           },
@@ -41,6 +60,11 @@ class SelectPersonnelState extends ConsumerState<SelectPersonnel> {
             child: Text('Error'),
           ),
         );
+  }
+
+  List<PersonnelData> _filterPersonnelList(
+      List<PersonnelData> data, String query) {
+    return PersonnelFilterService(data: data).filterPersonnelList(query);
   }
 }
 
@@ -60,122 +84,110 @@ class PersonnelSelection extends ConsumerStatefulWidget {
 
 class PersonnelSelectionState extends ConsumerState<PersonnelSelection> {
   final ScrollController _scrollController = ScrollController();
-  final TextEditingController _searchController = TextEditingController();
   final List<PersonnelData> _selectedPersonnel = [];
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return CommonPadding(
+        child: Column(
       children: [
-        CommonPadding(
-            child: Column(
+        Row(
           children: [
-            CommonPadding(
-                child: SearchButtonField(
-                    controller: _searchController, onChanged: (value) {})),
-            Text(
-              'Selected: ${widget.data.length}',
-            ),
-            Row(
-              children: [
-                TextButton(
-                    onPressed: _selectedPersonnel.isEmpty
-                        ? null
-                        : () {
+            TextButton(
+                onPressed: _selectedPersonnel.isEmpty
+                    ? null
+                    : () {
+                        setState(() {
+                          _selectedPersonnel.clear();
+                        });
+                      },
+                child: const Text('Deselect all')),
+            TextButton(
+                onPressed: () {
+                  setState(() {
+                    _selectedPersonnel.clear();
+                    _selectedPersonnel.addAll(widget.data);
+                  });
+                },
+                child: const Text('Select all'))
+          ],
+        ),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.5,
+          child: CommonScrollbar(
+            scrollController: _scrollController,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: widget.data.length,
+              controller: _scrollController,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(widget.data[index].name ?? ''),
+                  subtitle: Text(widget.data[index].role ?? ''),
+                  leading: _selectedPersonnel.contains(widget.data[index])
+                      ? IconButton(
+                          icon: const Icon(Icons.check_circle),
+                          onPressed: () {
                             setState(() {
-                              _selectedPersonnel.clear();
+                              _selectedPersonnel.remove(widget.data[index]);
                             });
                           },
-                    child: const Text('Deselect all')),
-                TextButton(
-                    onPressed: () {
-                      setState(() {
-                        _selectedPersonnel.clear();
-                        _selectedPersonnel.addAll(widget.data);
-                      });
-                    },
-                    child: const Text('Select all'))
-              ],
+                        )
+                      : IconButton(
+                          icon: const Icon(Icons.circle_outlined),
+                          onPressed: widget.selectedPersonnel
+                                  .contains(widget.data[index])
+                              ? null
+                              : () {
+                                  setState(() {
+                                    _selectedPersonnel.add(widget.data[index]);
+                                  });
+                                },
+                        ),
+                );
+              },
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.5,
-              child: CommonScrollbar(
-                scrollController: _scrollController,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: widget.data.length,
-                  controller: _scrollController,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(widget.data[index].name ?? ''),
-                      subtitle: Text(widget.data[index].role ?? ''),
-                      leading: _selectedPersonnel.contains(widget.data[index])
-                          ? IconButton(
-                              icon: const Icon(Icons.check_circle),
-                              onPressed: () {
-                                setState(() {
-                                  _selectedPersonnel.remove(widget.data[index]);
-                                });
-                              },
-                            )
-                          : IconButton(
-                              icon: const Icon(Icons.circle_outlined),
-                              onPressed: widget.selectedPersonnel
-                                      .contains(widget.data[index])
-                                  ? null
-                                  : () {
-                                      setState(() {
-                                        _selectedPersonnel
-                                            .add(widget.data[index]);
-                                      });
-                                    },
+          ),
+        ),
+        const SizedBox(height: 16),
+        Wrap(
+          spacing: 16,
+          children: [
+            SecondaryButton(
+              text: 'Cancel',
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            PrimaryButton(
+              label: 'Add ${_selectedPersonnel.length} personnel',
+              icon: Icons.add,
+              onPressed: _selectedPersonnel.isEmpty
+                  ? null
+                  : () async {
+                      try {
+                        await _addSelectedPersonnelToProject();
+                        ref.invalidate(personnelListProvider);
+                        if (context.mounted) {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const Dashboard(),
                             ),
-                    );
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Wrap(
-              spacing: 16,
-              children: [
-                SecondaryButton(
-                  text: 'Cancel',
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                PrimaryButton(
-                  label: 'Add ${_selectedPersonnel.length} personnel',
-                  icon: Icons.add,
-                  onPressed: _selectedPersonnel.isEmpty
-                      ? null
-                      : () async {
-                          try {
-                            await _addSelectedPersonnelToProject();
-                            ref.invalidate(personnelListProvider);
-                            if (context.mounted) {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (context) => const Dashboard(),
-                                ),
-                              );
-                            }
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(e.toString()),
-                              ),
-                            );
-                          }
-                        },
-                ),
-              ],
+                          );
+                        }
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(e.toString()),
+                          ),
+                        );
+                      }
+                    },
             ),
           ],
-        ))
+        ),
       ],
-    );
+    ));
   }
 
   Future<void> _addSelectedPersonnelToProject() async {

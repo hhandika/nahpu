@@ -135,3 +135,31 @@ class PersonnelImageService {
     return '$avatarPath${availableBatAvatar[index]}';
   }
 }
+
+class PersonnelFilterService {
+  PersonnelFilterService({required this.data});
+  final List<PersonnelData> data;
+
+  List<PersonnelData> filterPersonnelList(String query) {
+    return data.where((element) => _isPersonnelMatch(element, query)).toList();
+  }
+
+  bool _isPersonnelMatch(PersonnelData data, String query) {
+    return _isNameMatch(data.name, query) ||
+        _isAffiliationMatch(data.affiliation, query);
+  }
+
+  bool _isNameMatch(String? name, String query) {
+    if (name != null) {
+      return name.toLowerCase().contains(query);
+    }
+    return false;
+  }
+
+  bool _isAffiliationMatch(String? affiliation, String query) {
+    if (affiliation != null) {
+      return affiliation.toLowerCase().contains(query);
+    }
+    return false;
+  }
+}
