@@ -152,7 +152,7 @@ class DocQrCode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isPhone = getSystemDevice(context) == DeviceType.phone;
+    bool isPhone = getScreenType(context) == ScreenType.phone;
     return Container(
       alignment: Alignment.center,
       child: QrImageView(

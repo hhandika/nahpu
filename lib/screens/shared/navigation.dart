@@ -24,7 +24,7 @@ class ProjectBottomNavbar extends ConsumerStatefulWidget {
 class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
   @override
   Widget build(BuildContext context) {
-    final isPhone = getSystemDevice(context) == DeviceType.phone;
+    final isPhone = getScreenType(context) == ScreenType.phone;
     int selectedIndex = ref.watch(projectNavbarIndexProvider);
     return NavigationBar(
       labelBehavior: isPhone

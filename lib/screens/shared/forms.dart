@@ -102,7 +102,7 @@ class TitleForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DeviceType deviceType = getSystemDevice(context);
+    ScreenType deviceType = getScreenType(context);
     return Padding(
       padding: isCentered
           ? const EdgeInsets.fromLTRB(46, 0, 0, 4)
@@ -117,7 +117,7 @@ class TitleForm extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
-              deviceType == DeviceType.phone
+              deviceType == ScreenType.phone
                   ? showModalSheet(context)
                   : showInfoDialog(context);
             },

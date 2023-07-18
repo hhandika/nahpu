@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 enum PlatformType { mobile, desktop, unknown }
 
-enum DeviceType { phone, tablet, desktop }
+enum ScreenType { phone, tablet, desktop }
 
 get systemIcon {
   if (Platform.isAndroid) {
@@ -31,13 +31,13 @@ PlatformType get systemPlatform {
   }
 }
 
-DeviceType getSystemDevice(BuildContext context) {
+ScreenType getScreenType(BuildContext context) {
   final double deviceWidth = MediaQuery.of(context).size.width;
   if (deviceWidth < 600) {
-    return DeviceType.phone;
+    return ScreenType.phone;
   } else if (deviceWidth < 900) {
-    return DeviceType.tablet;
+    return ScreenType.tablet;
   } else {
-    return DeviceType.desktop;
+    return ScreenType.desktop;
   }
 }
