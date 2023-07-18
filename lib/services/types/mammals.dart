@@ -82,6 +82,7 @@ const List<String> mammaeConditionList = [
 const List<String> accuracyList = [
   'Accurate',
   'Tail cropped',
+  'Ear damaged',
   'Partially eaten',
   'Other reason',
 ];
