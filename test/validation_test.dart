@@ -4,17 +4,20 @@
 // utility in the flutter_test package. For example, you can send tap and scroll
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter_test/flutter_test.dart';
+import 'package:nahpu/services/project_services.dart';
 import 'package:nahpu/services/types/types.dart';
-import 'package:nahpu/services/utility_services.dart';
 
 void main() {
   test('Test project name is valid', () {
     String validProjectName = 'Project Name';
     String invalidProjectName = 'Project Name!?*';
+    String validProjectName2 = 'Project Name2';
+    String validProjectName3 = 'Project-Name_3';
     expect(validProjectName.isValidProjectName, isTrue);
     expect(invalidProjectName.isValidProjectName, isFalse);
+    expect(validProjectName2.isValidProjectName, isTrue);
+    expect(validProjectName3.isValidProjectName, isTrue);
   });
   test('Test email is valid', () {
     String validEmail = 'test@gmail.com';
@@ -25,6 +28,18 @@ void main() {
     expect(invalidEmail.isValidEmail, isFalse);
     expect(validEmailSubdomain.isValidEmail, isTrue);
     expect(validEmailSubdomain2.isValidEmail, isTrue);
+  });
+
+  test('Test valid initial', () {
+    String initial = 'HH';
+    String initialWithNumber = 'H22';
+    String initialWithOtherChar = 'H-_2';
+    String invalidInitial = 'H@#';
+
+    expect(initial.isValidInitial, isTrue);
+    expect(initialWithNumber.isValidInitial, isTrue);
+    expect(invalidInitial.isValidInitial, isFalse);
+    expect(initialWithOtherChar.isValidInitial, isTrue);
   });
 
   test('Test validation for name', () {

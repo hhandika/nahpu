@@ -56,3 +56,33 @@ class ProjectServices extends DbAccess {
     ref.read(projectUuidProvider.notifier).state = projectUuid;
   }
 }
+
+extension StringValidator on String {
+  bool get isValidCollNum {
+    final catNumRegex = RegExp(r'^[0-9]+$');
+    return catNumRegex.hasMatch(this);
+  }
+
+  bool get isValidProjectName {
+    final projectNameRegex =
+        RegExp(r'^[\d\p{L}\p{Mn}\s\-\\_]+$', unicode: true);
+    return projectNameRegex.hasMatch(this);
+  }
+
+  bool get isValidName {
+    // Match name with unicode characters
+    final nameRegex = RegExp(r'^[\p{L}\p{Mn}\p{Pd}\s\.\-]+$', unicode: true);
+    return nameRegex.hasMatch(this);
+  }
+
+  bool get isValidInitial {
+    final initialRegex = RegExp(r'^[a-zA-Z0-9\-\_]+$');
+    return initialRegex.hasMatch(this);
+  }
+
+  bool get isValidEmail {
+    final emailRegex =
+        RegExp(r'(^[a-zA-Z0-9_.]+[@]{1}[a-z0-9]+[\.][a-z](.)+$)');
+    return emailRegex.hasMatch(this);
+  }
+}
