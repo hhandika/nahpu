@@ -182,6 +182,9 @@ class PersonnelFormPageState extends ConsumerState<PersonnelFormPage> {
                     }
                   },
                 ),
+                Text(
+                    'Initial and cataloger number will be used to generate Field ID.',
+                    style: Theme.of(context).textTheme.labelSmall),
               ],
             ),
           ),
@@ -376,7 +379,7 @@ class PersonnelInitialField extends ConsumerWidget {
       maxLength: 8,
       decoration: InputDecoration(
           labelText: 'Initials*',
-          hintText: 'Enter initials (required for catalogers)',
+          hintText: 'e.g., HH or H-H',
           errorText: ref.watch(personnelFormValidatorProvider).when(
                 data: (data) => data.initial.errMsg,
                 loading: () => null,
@@ -406,8 +409,8 @@ class CatalogerNumberField extends ConsumerWidget {
       enabled: ctr.roleCtr == 'Cataloger',
       controller: ctr.collectorNumCtr,
       decoration: InputDecoration(
-          labelText: 'Collector Number*',
-          hintText: 'Enter current number',
+          labelText: 'Cataloger Number*',
+          hintText: '1234',
           errorText: ref.watch(personnelFormValidatorProvider).when(
                 data: (data) => data.collNum.errMsg,
                 loading: () => null,
