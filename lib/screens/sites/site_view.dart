@@ -22,7 +22,9 @@ class SiteViewer extends ConsumerStatefulWidget {
 class SiteViewerState extends ConsumerState<SiteViewer> {
   bool _isVisible = false;
   final PageNavigation _pageNav = PageNavigation.init();
+  final TextEditingController _searchController = TextEditingController();
   int? _siteId;
+  bool _isSearching = false;
   @override
   void dispose() {
     _pageNav.dispose();
@@ -38,19 +40,48 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
         title: const Text("Sites"),
         automaticallyImplyLeading: false,
         actions: [
+          _isSearching
+              ? SearchBar(
+                  controller: _searchController,
+                  constraints:
+                      const BoxConstraints(maxHeight: 44, maxWidth: 600),
+                  elevation: MaterialStateProperty.all(0),
+                  hintText: 'Search sites',
+                  backgroundColor:
+                      MaterialStateProperty.all(Colors.grey.withOpacity(0.2)),
+                  trailing: [
+                    IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: () {
+                        setState(() {
+                          _searchController.clear();
+                        });
+                      },
+                    )
+                  ],
+                  onChanged: (value) {},
+                )
+              : const SizedBox(),
+          IconButton(
+              onPressed: () {
+                setState(() {
+                  _isSearching = !_isSearching;
+                });
+              },
+              icon: const Icon(Icons.search)),
           const NewSite(),
           SiteMenu(
             siteId: _siteId,
           ),
         ],
       ),
-      // resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Center(
           child: siteEntries.when(data: (siteEntries) {
             if (siteEntries.isEmpty) {
               setState(() {
                 _isVisible = false;
+                _siteId = null;
               });
               return const Text("No site entries");
             } else {

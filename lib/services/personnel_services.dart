@@ -27,7 +27,7 @@ class PersonnelServices extends DbAccess {
     for (final person in personnel) {
       await addPersonnelToProject(PersonnelListCompanion(
           personnelUuid: db.Value(person.uuid),
-          projectUuid: db.Value(projectUuid)));
+          projectUuid: db.Value(currentProjectUuid)));
     }
     invalidatePersonnel();
   }
@@ -59,10 +59,10 @@ class PersonnelServices extends DbAccess {
   Future<void> deleteProjectPersonnel(String personnelUuid) async {
     bool isUsedInPersonnel = await PersonnelQuery(dbAccess)
         .isPersonnelUsedBySpecimenRecords(
-            projectUuid: projectUuid, personnelUuid: personnelUuid);
+            projectUuid: currentProjectUuid, personnelUuid: personnelUuid);
     bool isUsedInCollEvent = await PersonnelQuery(dbAccess)
         .isPersonnelUsedByCollEvents(
-            projectUuid: projectUuid, personnelUuid: personnelUuid);
+            projectUuid: currentProjectUuid, personnelUuid: personnelUuid);
     if (isUsedInPersonnel || isUsedInCollEvent) {
       throw Exception(
           'Failed to delete! Personnel is being used in other records');

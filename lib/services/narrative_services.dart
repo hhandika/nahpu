@@ -16,14 +16,14 @@ class NarrativeServices extends DbAccess {
   Future<int> createNewNarrative() async {
     int narrativeID =
         await NarrativeQuery(dbAccess).createNarrative(NarrativeCompanion(
-      projectUuid: db.Value(projectUuid),
+      projectUuid: db.Value(currentProjectUuid),
     ));
     invalidateNarrative();
     return narrativeID;
   }
 
   Future<List<NarrativeData>> getAllNarrative() async {
-    return await NarrativeQuery(dbAccess).getAllNarrative(projectUuid);
+    return await NarrativeQuery(dbAccess).getAllNarrative(currentProjectUuid);
   }
 
   Future<NarrativeData> getNarrative(int narrativeId) async {
@@ -38,7 +38,7 @@ class NarrativeServices extends DbAccess {
     ExifData exifData = ExifData.empty();
     await exifData.readExif(File(filePath));
     int mediaId = await MediaDbQuery(dbAccess).createMedia(MediaCompanion(
-      projectUuid: db.Value(projectUuid),
+      projectUuid: db.Value(currentProjectUuid),
       fileName: db.Value(basename(filePath)),
       category: db.Value(matchMediaCategory(MediaCategory.narrative)),
       taken: db.Value(exifData.dateTaken),

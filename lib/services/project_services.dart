@@ -1,9 +1,9 @@
+import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/providers/validation.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/project_queries.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:uuid/uuid.dart';
-import 'package:nahpu/providers/projects.dart';
 
 get uuid => const Uuid().v4();
 
@@ -53,7 +53,7 @@ class ProjectServices extends DbAccess {
   }
 
   void _updateProjectUuid(String projectUuid) {
-    ref.read(projectUuidProvider.notifier).state = projectUuid;
+    ref.read(projectUuidProvider.notifier).updateProjectUuid(projectUuid);
   }
 }
 

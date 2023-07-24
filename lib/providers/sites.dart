@@ -9,12 +9,29 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'sites.g.dart';
 
-final siteEntryProvider = FutureProvider.autoDispose<List<SiteData>>((ref) {
-  final projectUuid = ref.read(projectUuidProvider.notifier).state;
-  final siteEntries =
-      SiteQuery(ref.read(databaseProvider)).getAllSites(projectUuid);
-  return siteEntries;
-});
+// final siteEntryProvider = FutureProvider.autoDispose<List<SiteData>>((ref) {
+//   final projectUuid = ref.read(projectUuidProvider.notifier).state;
+//   final siteEntries =
+//       SiteQuery(ref.read(databaseProvider)).getAllSites(projectUuid);
+//   return siteEntries;
+// });
+
+@riverpod
+class SiteEntry extends _$SiteEntry {
+  Future<List<SiteData>> _fetchSiteEntry() async {
+    final projectUuid = ref.watch(projectUuidProvider);
+
+    final siteEntries =
+        SiteQuery(ref.read(databaseProvider)).getAllSites(projectUuid);
+
+    return siteEntries;
+  }
+
+  @override
+  FutureOr<List<SiteData>> build() async {
+    return await _fetchSiteEntry();
+  }
+}
 
 final coordinateBySiteProvider = FutureProvider.family
     .autoDispose<List<CoordinateData>, int>((ref, siteId) =>

@@ -109,7 +109,7 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
       title: 'Delete all narrative?',
       deletePrompt: 'You will delete all narrative in this project',
       onDelete: () async {
-        final projectUuid = ref.read(projectUuidProvider.notifier).state;
+        final projectUuid = ref.read(projectUuidProvider);
         try {
           await NarrativeServices(ref: ref).deleteAllNarrative(projectUuid);
           if (mounted) {

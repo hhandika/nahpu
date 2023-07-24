@@ -66,7 +66,7 @@ class MediaServices extends DbAccess {
   }
 
   Future<List<MediaData>> getAllMediaByProject() {
-    return MediaDbQuery(dbAccess).getMediaByProject(projectUuid);
+    return MediaDbQuery(dbAccess).getMediaByProject(currentProjectUuid);
   }
 
   Future<void> deleteMedia(int id, String category) async {

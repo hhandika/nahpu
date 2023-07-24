@@ -54,25 +54,27 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
               ),
               PopupMenuItem<SiteMenuSelection>(
                 value: SiteMenuSelection.duplicate,
+                onTap: () async => await _duplicateSite(),
                 child: const DuplicateMenuButton(
                   text: 'Duplicate site',
                 ),
-                onTap: () async => await _duplicateSite(),
               ),
               const PopupMenuDivider(height: 10),
               PopupMenuItem<SiteMenuSelection>(
                 value: SiteMenuSelection.deleteRecords,
+                enabled: widget.siteId != null,
+                onTap: () => _deleteSite(),
                 child: const DeleteMenuButton(
                   deleteAll: false,
                 ),
-                onTap: () => _deleteSite(),
               ),
               PopupMenuItem<SiteMenuSelection>(
                 value: SiteMenuSelection.deleteAllRecords,
+                enabled: widget.siteId != null,
+                onTap: () => _deleteAllSites(),
                 child: const DeleteMenuButton(
                   deleteAll: true,
                 ),
-                onTap: () => _deleteAllSites(),
               ),
             ]);
   }
@@ -81,8 +83,10 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
     try {
       await SiteServices(ref: ref).duplicateSite(widget.siteId!);
       if (mounted) {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => const SiteViewer()));
+        setState(() {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => const SiteViewer()));
+        });
       }
     } catch (e) {
       _showError(e.toString());

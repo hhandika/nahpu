@@ -130,7 +130,7 @@ class DbAccess {
   final WidgetRef ref;
 
   Database get dbAccess => ref.read(databaseProvider);
-  String get projectUuid => ref.read(projectUuidProvider);
+  String get currentProjectUuid => ref.read(projectUuidProvider);
 }
 
 Future<File> getDbBackUpPath() async {
@@ -156,7 +156,8 @@ class FileServices extends DbAccess {
 
   Future<Directory> get currentProjectDir async {
     final documentDir = await nahpuDocumentDir;
-    final projectDir = Directory(path.join(documentDir.path, projectUuid));
+    final projectDir =
+        Directory(path.join(documentDir.path, currentProjectUuid));
     return projectDir;
   }
 

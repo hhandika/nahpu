@@ -25,7 +25,7 @@ class PdfServices extends DbAccess {
 
   Future<void> generateProjectPage() async {
     ProjectData projectData =
-        await ProjectServices(ref: ref).getProjectByUuid(projectUuid);
+        await ProjectServices(ref: ref).getProjectByUuid(currentProjectUuid);
     return pdf.addPage(
       pw.Page(
         pageFormat: pageFormat,

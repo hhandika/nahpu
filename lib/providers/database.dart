@@ -11,9 +11,3 @@ Database database(DatabaseRef ref) {
   });
   return db;
 }
-
-// final databaseProvider = Provider<Database>((ref) {
-//   final db = Database();
-//   ref.onDispose(db.close);
-//   return db;
-// });

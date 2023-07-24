@@ -12,7 +12,7 @@ class CollEventServices extends DbAccess {
   Future<int> createNewCollEvents() async {
     int eventID =
         await CollEventQuery(dbAccess).createCollEvent(CollEventCompanion(
-      projectUuid: db.Value(projectUuid),
+      projectUuid: db.Value(currentProjectUuid),
     ));
     // Weather data used collecting event id as a foreign key
     // so we need to create a new weather data entry
@@ -37,7 +37,7 @@ class CollEventServices extends DbAccess {
   }
 
   Future<List<CollEventData>> getAllCollEvents() async {
-    return CollEventQuery(dbAccess).getAllCollEvents(projectUuid);
+    return CollEventQuery(dbAccess).getAllCollEvents(currentProjectUuid);
   }
 
   Future<List<CollPersonnelData>> getAllCollPersonnel(int collEventId) async {

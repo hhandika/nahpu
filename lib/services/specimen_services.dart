@@ -30,7 +30,7 @@ class SpecimenServices extends DbAccess {
     final String specimenUuid = uuid;
     await SpecimenQuery(dbAccess).createSpecimen(SpecimenCompanion(
       uuid: db.Value(specimenUuid),
-      projectUuid: db.Value(projectUuid),
+      projectUuid: db.Value(currentProjectUuid),
       taxonGroup: db.Value(matchCatFmtToTaxonGroup(catalogFmt)),
     ));
 
@@ -52,11 +52,11 @@ class SpecimenServices extends DbAccess {
   }
 
   Future<List<SpecimenData>> getAllSpecimens() async {
-    return SpecimenQuery(dbAccess).getAllSpecimens(projectUuid);
+    return SpecimenQuery(dbAccess).getAllSpecimens(currentProjectUuid);
   }
 
   Future<List<String>> getAllSpecimenUuids() async {
-    return SpecimenQuery(dbAccess).getAllSpecimenUuids(projectUuid);
+    return SpecimenQuery(dbAccess).getAllSpecimenUuids(currentProjectUuid);
   }
 
   Future<SpecimenData> getSpecimen(String specimenUuid) async {
@@ -64,7 +64,7 @@ class SpecimenServices extends DbAccess {
   }
 
   Future<List<String>> getRecordedGroupList() async {
-    return SpecimenQuery(dbAccess).getUniqueTaxonGroup(projectUuid);
+    return SpecimenQuery(dbAccess).getUniqueTaxonGroup(currentProjectUuid);
   }
 
   Future<void> createSpecimenMedia(
@@ -74,7 +74,7 @@ class SpecimenServices extends DbAccess {
     ExifData exifData = ExifData.empty();
     await exifData.readExif(File(filePath));
     int mediaId = await MediaDbQuery(dbAccess).createMedia(MediaCompanion(
-      projectUuid: db.Value(projectUuid),
+      projectUuid: db.Value(currentProjectUuid),
       fileName: db.Value(basename(filePath)),
       category: db.Value(matchMediaCategory(MediaCategory.specimen)),
       taken: db.Value(exifData.dateTaken),
@@ -95,19 +95,19 @@ class SpecimenServices extends DbAccess {
   }
 
   Future<List<SpecimenData>> getMammalSpecimens() async {
-    return SpecimenQuery(dbAccess).getAllMammalSpecimens(projectUuid);
+    return SpecimenQuery(dbAccess).getAllMammalSpecimens(currentProjectUuid);
   }
 
   Future<List<SpecimenData>> getBirdSpecimens() async {
-    return SpecimenQuery(dbAccess).getAllAvianSpecimens(projectUuid);
+    return SpecimenQuery(dbAccess).getAllAvianSpecimens(currentProjectUuid);
   }
 
   Future<List<SpecimenData>> getBatSpecimens() async {
-    return SpecimenQuery(dbAccess).getAllBatSpecimens(projectUuid);
+    return SpecimenQuery(dbAccess).getAllBatSpecimens(currentProjectUuid);
   }
 
   Future<List<SpecimenData>> getSpecimenList() async {
-    return SpecimenQuery(dbAccess).getAllSpecimens(projectUuid);
+    return SpecimenQuery(dbAccess).getAllSpecimens(currentProjectUuid);
   }
 
   Future<List<SpecimenData>> getSpecimenListByTaxonGroup(
@@ -251,7 +251,7 @@ class SpecimenServices extends DbAccess {
           break;
       }
     }
-    await SpecimenQuery(dbAccess).deleteAllSpecimens(projectUuid);
+    await SpecimenQuery(dbAccess).deleteAllSpecimens(currentProjectUuid);
     invalidateSpecimenList();
   }
 

@@ -113,7 +113,7 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
   }
 
   void _deleteAllEvents() {
-    final projectUuid = ref.read(projectUuidProvider.notifier).state;
+    final projectUuid = ref.read(projectUuidProvider);
     showDeleteAlertOnMenu(
       context: context,
       title: 'Delete all collecting events?',

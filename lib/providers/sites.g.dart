@@ -29,14 +29,14 @@ class _SystemHash {
   }
 }
 
-typedef SiteMediaRef = AutoDisposeFutureProviderRef<List<dynamic>>;
+typedef SiteMediaRef = AutoDisposeFutureProviderRef<List<MediaData>>;
 
 /// See also [siteMedia].
 @ProviderFor(siteMedia)
 const siteMediaProvider = SiteMediaFamily();
 
 /// See also [siteMedia].
-class SiteMediaFamily extends Family<AsyncValue<List<dynamic>>> {
+class SiteMediaFamily extends Family<AsyncValue<List<MediaData>>> {
   /// See also [siteMedia].
   const SiteMediaFamily();
 
@@ -74,7 +74,7 @@ class SiteMediaFamily extends Family<AsyncValue<List<dynamic>>> {
 }
 
 /// See also [siteMedia].
-class SiteMediaProvider extends AutoDisposeFutureProvider<List<dynamic>> {
+class SiteMediaProvider extends AutoDisposeFutureProvider<List<MediaData>> {
   /// See also [siteMedia].
   SiteMediaProvider({
     required this.siteId,
@@ -108,4 +108,20 @@ class SiteMediaProvider extends AutoDisposeFutureProvider<List<dynamic>> {
     return _SystemHash.finish(hash);
   }
 }
+
+String _$siteEntryHash() => r'9fc0a87004da066e96e434884c30ee148f8bd67b';
+
+/// See also [SiteEntry].
+@ProviderFor(SiteEntry)
+final siteEntryProvider =
+    AutoDisposeAsyncNotifierProvider<SiteEntry, List<SiteData>>.internal(
+  SiteEntry.new,
+  name: r'siteEntryProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$siteEntryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$SiteEntry = AutoDisposeAsyncNotifier<List<SiteData>>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

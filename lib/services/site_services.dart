@@ -17,7 +17,7 @@ class SiteServices extends DbAccess {
 
   Future<int> createNewSite() async {
     int siteID = await SiteQuery(dbAccess).createSite(SiteCompanion(
-      projectUuid: db.Value(projectUuid),
+      projectUuid: db.Value(currentProjectUuid),
     ));
     invalidateSite();
     return siteID;
@@ -29,7 +29,7 @@ class SiteServices extends DbAccess {
       return;
     }
     int _ = await SiteQuery(dbAccess).createSite(SiteCompanion(
-      projectUuid: db.Value(projectUuid),
+      projectUuid: db.Value(currentProjectUuid),
       leadStaffId: db.Value(siteData.leadStaffId),
       siteType: db.Value(siteData.siteType),
       country: db.Value(siteData.country),
@@ -54,7 +54,7 @@ class SiteServices extends DbAccess {
   }
 
   Future<List<SiteData>> getAllSites() async {
-    return SiteQuery(dbAccess).getAllSites(projectUuid);
+    return SiteQuery(dbAccess).getAllSites(currentProjectUuid);
   }
 
   Future<void> updateSite(int id, SiteCompanion entries) async {
@@ -66,7 +66,7 @@ class SiteServices extends DbAccess {
     await exifData.readExif(File(filePath));
 
     int mediaId = await MediaDbQuery(dbAccess).createMedia(MediaCompanion(
-      projectUuid: db.Value(projectUuid),
+      projectUuid: db.Value(currentProjectUuid),
       fileName: db.Value(basename(filePath)),
       category: db.Value(matchMediaCategory(MediaCategory.site)),
       taken: db.Value(exifData.dateTaken),
@@ -92,9 +92,9 @@ class SiteServices extends DbAccess {
 
   Future<void> deleteSite(int id) async {
     try {
-      await SiteQuery(dbAccess).deleteSite(id);
       await CoordinateServices(ref: ref).deleteCoordinateBySiteID(id);
       await SiteQuery(dbAccess).deleteAllSiteMedias(id);
+      await SiteQuery(dbAccess).deleteSite(id);
     } catch (e) {
       rethrow;
     }
