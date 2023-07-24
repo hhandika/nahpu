@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/types.dart';
@@ -21,9 +22,11 @@ class SpecimenViewer extends ConsumerStatefulWidget {
 class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
   bool isVisible = false;
   final PageNavigation _pageNav = PageNavigation.init();
+  final TextEditingController _searchController = TextEditingController();
   String? _specimenUuid;
   CatalogFmt? _catalogFmt;
   TaxonData taxonomy = TaxonData();
+  bool _isSearching = false;
 
   @override
   void dispose() {
@@ -40,6 +43,52 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
           "Specimen Records",
         ),
         actions: [
+          _isSearching
+              ? CommonSearchBar(
+                  controller: _searchController,
+                  trailing: [
+                    _searchController.text.isNotEmpty
+                        ? IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _searchController.clear();
+                                ref.invalidate(specimenEntryProvider);
+                              });
+                            },
+                            icon: const Icon(Icons.clear))
+                        : const SizedBox.shrink(),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      _isSearching = true;
+                    });
+                    ref.read(specimenEntryProvider.notifier).search(value);
+                  },
+                )
+              : const SizedBox.shrink(),
+          !_isSearching
+              ? IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _isSearching = true;
+                      ref.invalidate(specimenEntryProvider);
+                    });
+                  },
+                  icon: const Icon(Icons.search),
+                )
+              : TextButton(
+                  onPressed: () {
+                    setState(() {
+                      _isSearching = false;
+                      _searchController.clear();
+                      ref.invalidate(specimenEntryProvider);
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => super.widget));
+                    });
+                  },
+                  child: const Text('Done  ')),
           const NewSpecimens(),
           SpecimenMenu(
             specimenUuid: _specimenUuid,
@@ -104,7 +153,9 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
     setState(() {
       _pageNav.currentPage = value + 1;
       _pageNav.updatePageNavigation();
-      ref.invalidate(specimenEntryProvider);
+      if (!_isSearching) {
+        ref.invalidate(specimenEntryProvider);
+      }
     });
   }
 }

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nahpu/screens/projects/taxonomy/specimen_list.dart';
-import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
@@ -54,18 +52,6 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
                 child: CreateMenuButton(text: _getNewSpecimenLabel()),
                 onTap: () => createNewSpecimens(context, ref),
               ),
-              PopupMenuItem(
-                  child: const FindMenuButton(),
-                  onTap: () async {
-                    List<SpecimenData> specimens =
-                        await SpecimenServices(ref: ref).getAllSpecimens();
-                    if (mounted) {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (_) => SpecimenListPage(data: specimens)),
-                      );
-                    }
-                  }),
               // const PopupMenuItem<MenuSelection>(
               //   value: MenuSelection.duplicate,
               //   child: DuplicateMenuButton(text: 'Duplicate record'),

@@ -82,6 +82,33 @@ class CommonTimeField extends StatelessWidget {
   }
 }
 
+class CommonSearchBar extends StatelessWidget {
+  const CommonSearchBar({
+    super.key,
+    required this.controller,
+    required this.onChanged,
+    required this.trailing,
+  });
+
+  final TextEditingController controller;
+  final void Function(String) onChanged;
+  final Iterable<Widget> trailing;
+
+  @override
+  Widget build(BuildContext context) {
+    return SearchBar(
+      controller: controller,
+      constraints: BoxConstraints(
+          maxHeight: 44, maxWidth: MediaQuery.of(context).size.width * 0.60),
+      elevation: MaterialStateProperty.all(0),
+      hintText: 'Search sites',
+      backgroundColor: MaterialStateProperty.all(Colors.grey.withOpacity(0.2)),
+      trailing: trailing,
+      onChanged: onChanged,
+    );
+  }
+}
+
 class SearchButtonField extends StatelessWidget {
   const SearchButtonField({
     super.key,

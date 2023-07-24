@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/navigation_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
@@ -25,6 +26,7 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
   final TextEditingController _searchController = TextEditingController();
   int? _siteId;
   bool _isSearching = false;
+
   @override
   void dispose() {
     _pageNav.dispose();
@@ -41,14 +43,8 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
         automaticallyImplyLeading: false,
         actions: [
           _isSearching
-              ? SearchBar(
+              ? CommonSearchBar(
                   controller: _searchController,
-                  constraints:
-                      const BoxConstraints(maxHeight: 44, maxWidth: 600),
-                  elevation: MaterialStateProperty.all(0),
-                  hintText: 'Search sites',
-                  backgroundColor:
-                      MaterialStateProperty.all(Colors.grey.withOpacity(0.2)),
                   trailing: [
                     _searchController.text.isNotEmpty
                         ? IconButton(
@@ -59,13 +55,13 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
                               });
                             },
                             icon: const Icon(Icons.clear))
-                        : const SizedBox(),
+                        : const SizedBox.shrink(),
                   ],
                   onChanged: (value) {
                     ref.read(siteEntryProvider.notifier).search(value);
                   },
                 )
-              : const SizedBox(),
+              : const SizedBox.shrink(),
           !_isSearching
               ? IconButton(
                   onPressed: () {
