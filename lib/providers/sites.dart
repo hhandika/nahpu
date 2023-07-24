@@ -31,7 +31,10 @@ class SiteEntry extends _$SiteEntry {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       if (state.value == null) return [];
-      final sites = await _fetchSiteEntry();
+      final projectUuid = ref.watch(projectUuidProvider);
+      final sites =
+          await SiteQuery(ref.read(databaseProvider)).getAllSites(projectUuid);
+
       final filteredSites =
           SiteSearchServices(siteEntries: sites).search(query.toLowerCase());
       return filteredSites;

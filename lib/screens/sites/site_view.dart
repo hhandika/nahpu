@@ -50,27 +50,44 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
                   backgroundColor:
                       MaterialStateProperty.all(Colors.grey.withOpacity(0.2)),
                   trailing: [
-                    IconButton(
-                      icon: const Icon(Icons.clear),
-                      onPressed: () {
-                        setState(() {
-                          _searchController.clear();
-                        });
-                      },
-                    )
+                    _searchController.text.isNotEmpty
+                        ? IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _searchController.clear();
+                                ref.invalidate(siteEntryProvider);
+                              });
+                            },
+                            icon: const Icon(Icons.clear))
+                        : const SizedBox(),
                   ],
                   onChanged: (value) {
                     ref.read(siteEntryProvider.notifier).search(value);
                   },
                 )
               : const SizedBox(),
-          IconButton(
-              onPressed: () {
-                setState(() {
-                  _isSearching = !_isSearching;
-                });
-              },
-              icon: const Icon(Icons.search)),
+          !_isSearching
+              ? IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _isSearching = true;
+                      ref.invalidate(siteEntryProvider);
+                    });
+                  },
+                  icon: const Icon(Icons.search))
+              : TextButton(
+                  onPressed: () {
+                    setState(() {
+                      _isSearching = false;
+                      _searchController.clear();
+                      ref.invalidate(siteEntryProvider);
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => super.widget));
+                    });
+                  },
+                  child: const Text('Done')),
           const NewSite(),
           SiteMenu(
             siteId: _siteId,
@@ -127,7 +144,9 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
   void _updatePageNav(int value) {
     _pageNav.currentPage = value + 1;
     _pageNav.updatePageNavigation();
-    ref.invalidate(siteEntryProvider);
+    if (!_isSearching) {
+      ref.invalidate(siteEntryProvider);
+    }
   }
 }
 
