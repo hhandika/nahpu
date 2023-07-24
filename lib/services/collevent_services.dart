@@ -149,6 +149,26 @@ class CollEventServices extends DbAccess {
   }
 }
 
+class CollEventSearchServices {
+  final List<CollEventData> collEvents;
+
+  CollEventSearchServices({required this.collEvents});
+
+  List<CollEventData> search(String query) {
+    List<CollEventData> filteredCollEvents = collEvents
+        .where((collEvent) =>
+            _isMatch(collEvent.startDate, query) ||
+            _isMatch(collEvent.endDate, query))
+        .toList();
+    return filteredCollEvents;
+  }
+
+  bool _isMatch(String? value, String query) {
+    if (value == null) return false;
+    return value.toLowerCase().contains(query);
+  }
+}
+
 class CollEvenPersonnelServices extends DbAccess {
   const CollEvenPersonnelServices({required super.ref});
 

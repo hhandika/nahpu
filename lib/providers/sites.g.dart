@@ -109,7 +109,7 @@ class SiteMediaProvider extends AutoDisposeFutureProvider<List<MediaData>> {
   }
 }
 
-String _$siteEntryHash() => r'9fc0a87004da066e96e434884c30ee148f8bd67b';
+String _$siteEntryHash() => r'de7c968d0f594ec4fbaf6661642d45cf60ba40e3';
 
 /// See also [SiteEntry].
 @ProviderFor(SiteEntry)

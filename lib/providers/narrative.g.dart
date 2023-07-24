@@ -29,14 +29,14 @@ class _SystemHash {
   }
 }
 
-typedef NarrativeMediaRef = AutoDisposeFutureProviderRef<List<dynamic>>;
+typedef NarrativeMediaRef = AutoDisposeFutureProviderRef<List<MediaData>>;
 
 /// See also [narrativeMedia].
 @ProviderFor(narrativeMedia)
 const narrativeMediaProvider = NarrativeMediaFamily();
 
 /// See also [narrativeMedia].
-class NarrativeMediaFamily extends Family<AsyncValue<List<dynamic>>> {
+class NarrativeMediaFamily extends Family<AsyncValue<List<MediaData>>> {
   /// See also [narrativeMedia].
   const NarrativeMediaFamily();
 
@@ -74,7 +74,8 @@ class NarrativeMediaFamily extends Family<AsyncValue<List<dynamic>>> {
 }
 
 /// See also [narrativeMedia].
-class NarrativeMediaProvider extends AutoDisposeFutureProvider<List<dynamic>> {
+class NarrativeMediaProvider
+    extends AutoDisposeFutureProvider<List<MediaData>> {
   /// See also [narrativeMedia].
   NarrativeMediaProvider({
     required this.narrativeId,
@@ -109,4 +110,21 @@ class NarrativeMediaProvider extends AutoDisposeFutureProvider<List<dynamic>> {
     return _SystemHash.finish(hash);
   }
 }
+
+String _$narrativeEntryHash() => r'42820d2e5f2c0f1d10e306b74ced76e1ed236df2';
+
+/// See also [NarrativeEntry].
+@ProviderFor(NarrativeEntry)
+final narrativeEntryProvider = AutoDisposeAsyncNotifierProvider<NarrativeEntry,
+    List<NarrativeData>>.internal(
+  NarrativeEntry.new,
+  name: r'narrativeEntryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$narrativeEntryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$NarrativeEntry = AutoDisposeAsyncNotifier<List<NarrativeData>>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

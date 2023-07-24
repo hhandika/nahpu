@@ -6,6 +6,22 @@ part of 'collevents.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$collEventEntryHash() => r'26caf02232f464a273fb6fe20b79037ebeb4999f';
+
+/// See also [CollEventEntry].
+@ProviderFor(CollEventEntry)
+final collEventEntryProvider = AutoDisposeAsyncNotifierProvider<CollEventEntry,
+    List<CollEventData>>.internal(
+  CollEventEntry.new,
+  name: r'collEventEntryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$collEventEntryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$CollEventEntry = AutoDisposeAsyncNotifier<List<CollEventData>>;
 String _$collEventMethodHash() => r'1eac66d117257c626fcf8539e420cb28a467b6f3';
 
 /// See also [CollEventMethod].

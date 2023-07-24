@@ -271,6 +271,20 @@ class SpecimenServices extends DbAccess {
   }
 }
 
+class SpecimenSearchService {
+  SpecimenSearchService({required this.specimenEntries});
+
+  final List<SpecimenData> specimenEntries;
+
+  List<SpecimenData> search(String query) {
+    List<SpecimenData> filteredList = specimenEntries
+        .where((element) =>
+            element.fieldNumber.toString().toLowerCase().contains(query))
+        .toList();
+    return filteredList;
+  }
+}
+
 class TissueIdServices extends DbAccess {
   const TissueIdServices({required super.ref});
 

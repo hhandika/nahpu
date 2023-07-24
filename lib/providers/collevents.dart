@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:nahpu/providers/database.dart';
 import 'package:nahpu/providers/settings.dart';
+import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database/collevent_queries.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/providers/projects.dart';
@@ -14,13 +15,42 @@ part 'collevents.g.dart';
 const String collEventMethodPrefKey = 'collEventMethods';
 const String collPersonnelRolePrefKey = 'collPersonnelRoles';
 
-final collEventEntryProvider =
-    FutureProvider.autoDispose<List<CollEventData>>((ref) {
-  final projectUuid = ref.watch(projectUuidProvider);
-  final collEvents =
-      CollEventQuery(ref.read(databaseProvider)).getAllCollEvents(projectUuid);
-  return collEvents;
-});
+// final collEventEntryProvider =
+//     FutureProvider.autoDispose<List<CollEventData>>((ref) {
+//   final projectUuid = ref.watch(projectUuidProvider);
+//   final collEvents =
+//       CollEventQuery(ref.read(databaseProvider)).getAllCollEvents(projectUuid);
+//   return collEvents;
+// });
+
+@riverpod
+class CollEventEntry extends _$CollEventEntry {
+  Future<List<CollEventData>> _fetchCollEventEntry() async {
+    final projectUuid = ref.watch(projectUuidProvider);
+
+    final collEvents = CollEventQuery(ref.read(databaseProvider))
+        .getAllCollEvents(projectUuid);
+
+    return collEvents;
+  }
+
+  @override
+  FutureOr<List<CollEventData>> build() async {
+    return await _fetchCollEventEntry();
+  }
+
+  Future<void> search(String? query) async {
+    if (query == null || query.isEmpty) return;
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      if (state.value == null) return [];
+      final collEvents = await _fetchCollEventEntry();
+      final filteredCollEvents = CollEventSearchServices(collEvents: collEvents)
+          .search(query.toLowerCase());
+      return filteredCollEvents;
+    });
+  }
+}
 
 final collEventIDprovider =
     FutureProvider.family.autoDispose<CollEventData, int>((ref, id) async {

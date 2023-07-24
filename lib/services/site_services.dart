@@ -120,106 +120,26 @@ class SiteSearchServices {
   List<SiteData> search(String query) {
     final filteredSites = siteEntries
         .where((site) =>
-            _isMatchSiteID(site.siteID, query) ||
-            _isMatchSiteType(site.siteType, query) ||
-            _isMatchCountry(site.country, query) ||
-            _isMatchStateProvince(site.stateProvince, query) ||
-            _isMatchCounty(site.county, query) ||
-            _isMatchMunicipality(site.municipality, query) ||
-            _isMatchLocality(site.locality, query) ||
-            _isMatchRemark(site.remark, query) ||
-            _isMatchHabitatType(site.habitatType, query) ||
-            _isMatchHabitatCondition(site.habitatCondition, query) ||
-            _isMatchHabitatDescription(site.habitatDescription, query))
+            _isMatch(site.siteID, query) ||
+            _isMatch(site.siteType, query) ||
+            _isMatch(site.country, query) ||
+            _isMatch(site.stateProvince, query) ||
+            _isMatch(site.county, query) ||
+            _isMatch(site.municipality, query) ||
+            _isMatch(site.locality, query) ||
+            _isMatch(site.remark, query) ||
+            _isMatch(site.habitatType, query) ||
+            _isMatch(site.habitatCondition, query) ||
+            _isMatch(site.habitatDescription, query))
         .toList();
     return filteredSites;
   }
 
-  bool _isMatchSiteID(String? siteID, String query) {
-    if (siteID == null) {
+  bool _isMatch(String? value, String query) {
+    if (value == null) {
       return false;
     } else {
-      return siteID.toLowerCase().contains(query);
-    }
-  }
-
-  bool _isMatchSiteType(String? siteType, String query) {
-    if (siteType == null) {
-      return false;
-    } else {
-      return siteType.toLowerCase().contains(query);
-    }
-  }
-
-  bool _isMatchCountry(String? country, String query) {
-    if (country == null) {
-      return false;
-    } else {
-      return country.toLowerCase().contains(query);
-    }
-  }
-
-  bool _isMatchStateProvince(String? stateProvince, String query) {
-    if (stateProvince == null) {
-      return false;
-    } else {
-      return stateProvince.toLowerCase().contains(query);
-    }
-  }
-
-  bool _isMatchCounty(String? county, String query) {
-    if (county == null) {
-      return false;
-    } else {
-      return county.toLowerCase().contains(query);
-    }
-  }
-
-  bool _isMatchMunicipality(String? municipality, String query) {
-    if (municipality == null) {
-      return false;
-    } else {
-      return municipality.toLowerCase().contains(query);
-    }
-  }
-
-  bool _isMatchLocality(String? locality, String query) {
-    if (locality == null) {
-      return false;
-    } else {
-      return locality.toLowerCase().contains(query);
-    }
-  }
-
-  bool _isMatchRemark(String? remark, String query) {
-    if (remark == null) {
-      return false;
-    } else {
-      return remark.toLowerCase().contains(query);
-    }
-  }
-
-  bool _isMatchHabitatType(String? habitatType, String query) {
-    if (habitatType == null) {
-      return false;
-    } else {
-      return habitatType.toLowerCase().contains(query);
-    }
-  }
-
-  bool _isMatchHabitatCondition(String? habitatCondition, String query) {
-    if (habitatCondition == null) {
-      return false;
-    } else {
-      return habitatCondition.toLowerCase().contains(query);
-    }
-  }
-
-  bool _isMatchHabitatDescription(String? habitatDescription, String query) {
-    if (habitatDescription == null) {
-      return false;
-    } else {
-      return habitatDescription.toLowerCase().contains(query);
+      return value.toLowerCase().contains(query);
     }
   }
 }

@@ -4,6 +4,7 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/media_queries.dart';
 import 'package:nahpu/services/database/specimen_queries.dart';
+import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/types/specimens.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/services/utility_services.dart';
@@ -49,13 +50,43 @@ class CatalogFmtNotifier extends _$CatalogFmtNotifier {
   }
 }
 
-final specimenEntryProvider =
-    FutureProvider.autoDispose<List<SpecimenData>>((ref) {
-  final projectUuid = ref.watch(projectUuidProvider);
-  final specimenEntries =
-      SpecimenQuery(ref.read(databaseProvider)).getAllSpecimens(projectUuid);
-  return specimenEntries;
-});
+// final specimenEntryProvider =
+//     FutureProvider.autoDispose<List<SpecimenData>>((ref) {
+//   final projectUuid = ref.watch(projectUuidProvider);
+//   final specimenEntries =
+//       SpecimenQuery(ref.read(databaseProvider)).getAllSpecimens(projectUuid);
+//   return specimenEntries;
+// });
+
+@riverpod
+class SpecimenEntry extends _$SpecimenEntry {
+  Future<List<SpecimenData>> _fetchSpecimenEntry() async {
+    final projectUuid = ref.watch(projectUuidProvider);
+
+    final specimenEntries =
+        SpecimenQuery(ref.read(databaseProvider)).getAllSpecimens(projectUuid);
+
+    return specimenEntries;
+  }
+
+  @override
+  FutureOr<List<SpecimenData>> build() async {
+    return await _fetchSpecimenEntry();
+  }
+
+  Future<void> search(String? query) async {
+    if (query == null || query.isEmpty) return;
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      if (state.value == null) return [];
+      final specimens = await _fetchSpecimenEntry();
+      final filteredSpecimens =
+          SpecimenSearchService(specimenEntries: specimens)
+              .search(query.toLowerCase());
+      return filteredSpecimens;
+    });
+  }
+}
 
 final partBySpecimenProvider = FutureProvider.family
     .autoDispose<List<SpecimenPartData>, String>((ref, specimenUuid) =>

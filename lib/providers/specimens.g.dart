@@ -127,6 +127,22 @@ final catalogFmtNotifierProvider =
 );
 
 typedef _$CatalogFmtNotifier = AutoDisposeAsyncNotifier<CatalogFmt>;
+String _$specimenEntryHash() => r'a3d08dbcd53883de47779a1f49c1cafc1d8a1b81';
+
+/// See also [SpecimenEntry].
+@ProviderFor(SpecimenEntry)
+final specimenEntryProvider = AutoDisposeAsyncNotifierProvider<SpecimenEntry,
+    List<SpecimenData>>.internal(
+  SpecimenEntry.new,
+  name: r'specimenEntryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$specimenEntryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$SpecimenEntry = AutoDisposeAsyncNotifier<List<SpecimenData>>;
 String _$specimenTypesHash() => r'8c713b8bea707b9e74b5d7bea4df0ef5e8529abd';
 
 /// See also [SpecimenTypes].

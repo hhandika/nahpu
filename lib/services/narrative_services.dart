@@ -86,3 +86,21 @@ class NarrativeServices extends DbAccess {
     ref.invalidate(narrativeEntryProvider);
   }
 }
+
+class NarrativeSearchServices {
+  NarrativeSearchServices({required this.narrativeEntries});
+
+  final List<NarrativeData> narrativeEntries;
+
+  List<NarrativeData> search(String query) {
+    List<NarrativeData> filteredNarratives = narrativeEntries
+        .where((element) => _isMatch(element.narrative, query))
+        .toList();
+    return filteredNarratives;
+  }
+
+  bool _isMatch(String? value, String query) {
+    if (value == null) return false;
+    return value.toLowerCase().contains(query);
+  }
+}
