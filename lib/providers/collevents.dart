@@ -15,14 +15,6 @@ part 'collevents.g.dart';
 const String collEventMethodPrefKey = 'collEventMethods';
 const String collPersonnelRolePrefKey = 'collPersonnelRoles';
 
-// final collEventEntryProvider =
-//     FutureProvider.autoDispose<List<CollEventData>>((ref) {
-//   final projectUuid = ref.watch(projectUuidProvider);
-//   final collEvents =
-//       CollEventQuery(ref.read(databaseProvider)).getAllCollEvents(projectUuid);
-//   return collEvents;
-// });
-
 @riverpod
 class CollEventEntry extends _$CollEventEntry {
   Future<List<CollEventData>> _fetchCollEventEntry() async {

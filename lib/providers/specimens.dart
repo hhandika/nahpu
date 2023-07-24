@@ -50,14 +50,6 @@ class CatalogFmtNotifier extends _$CatalogFmtNotifier {
   }
 }
 
-// final specimenEntryProvider =
-//     FutureProvider.autoDispose<List<SpecimenData>>((ref) {
-//   final projectUuid = ref.watch(projectUuidProvider);
-//   final specimenEntries =
-//       SpecimenQuery(ref.read(databaseProvider)).getAllSpecimens(projectUuid);
-//   return specimenEntries;
-// });
-
 @riverpod
 class SpecimenEntry extends _$SpecimenEntry {
   Future<List<SpecimenData>> _fetchSpecimenEntry() async {
