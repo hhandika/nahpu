@@ -86,11 +86,11 @@ class GeneralSettings {
   SettingsTile _getSpecimenPartSettings() {
     return SettingsTile.navigation(
       leading: Icon(matchCatFmtToIcon(catalogFmt, false)),
-      title: const SettingTitle(title: 'Specimen Parts'),
+      title: const SettingTitle(title: 'Specimens'),
       onPressed: (context) => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const SpecimenPartSelection(),
+          builder: (context) => const SpecimenSelection(),
         ),
       ),
     );
@@ -98,7 +98,7 @@ class GeneralSettings {
 
   SettingsTile _getCollEventSettings() {
     return SettingsTile.navigation(
-      leading: const Icon(Icons.timeline_outlined),
+      leading: const Icon(Icons.calendar_month_outlined),
       title: const SettingTitle(title: 'Collecting Events'),
       onPressed: (context) => Navigator.push(
         context,

@@ -7,24 +7,34 @@ import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-class SpecimenPartSelection extends StatefulWidget {
-  const SpecimenPartSelection({super.key});
+class SpecimenSelection extends StatefulWidget {
+  const SpecimenSelection({super.key});
 
   @override
-  State<SpecimenPartSelection> createState() => _SpecimenPartSelectionState();
+  State<SpecimenSelection> createState() => _SpecimenPartSelectionState();
 }
 
-class _SpecimenPartSelectionState extends State<SpecimenPartSelection> {
+class _SpecimenPartSelectionState extends State<SpecimenSelection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Specimen Part Settings'),
+        title: const Text('Specimen Settings'),
       ),
       body: SafeArea(child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           bool isMobile = constraints.maxWidth < 600;
           return SettingsList(sections: [
+            SettingsSection(
+              title: const SettingTitle(title: 'Capture Records'),
+              tiles: [
+                SettingsTile.switchTile(
+                  initialValue: false,
+                  onToggle: (bool value) {},
+                  title: const Text('Always show collector field'),
+                )
+              ],
+            ),
             SettingsSection(
               title: const SettingTitle(title: 'Tissue ID'),
               tiles: [
