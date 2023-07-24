@@ -59,7 +59,9 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
                       },
                     )
                   ],
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    ref.read(siteEntryProvider.notifier).search(value);
+                  },
                 )
               : const SizedBox(),
           IconButton(

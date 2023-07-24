@@ -21,9 +21,7 @@ final projectInfoProvider =
   return await projectInfo;
 });
 
-// final projectUuidProvider = StateProvider<String>((ref) => '');
-
-@riverpod
+@Riverpod(keepAlive: true)
 class ProjectUuid extends _$ProjectUuid {
   @override
   String build() {

@@ -200,9 +200,8 @@ class ProjectViewState extends ConsumerState<ProjectView> {
 
   VoidCallback _openProject() {
     return () {
-      ref
-          .read(projectUuidProvider.notifier)
-          .updateProjectUuid(widget.project.uuid);
+      ProjectServices(ref: ref).updateProjectUuid(widget.project.uuid);
+
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const Dashboard()),

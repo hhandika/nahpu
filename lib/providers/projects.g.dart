@@ -6,12 +6,11 @@ part of 'projects.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$projectUuidHash() => r'f368db8863f54e65543582ee98cabd6f3e19ef41';
+String _$projectUuidHash() => r'133c9e595d0dc1ff202cec749e5e3711a35241e9';
 
 /// See also [ProjectUuid].
 @ProviderFor(ProjectUuid)
-final projectUuidProvider =
-    AutoDisposeNotifierProvider<ProjectUuid, String>.internal(
+final projectUuidProvider = NotifierProvider<ProjectUuid, String>.internal(
   ProjectUuid.new,
   name: r'projectUuidProvider',
   debugGetCreateSourceHash:
@@ -20,5 +19,5 @@ final projectUuidProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$ProjectUuid = AutoDisposeNotifier<String>;
+typedef _$ProjectUuid = Notifier<String>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

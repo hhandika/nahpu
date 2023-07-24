@@ -32,15 +32,6 @@ class HomeState extends ConsumerState<Home> {
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ]),
-        // actions: [
-        //   IconButton(
-        //     icon: const Icon(Icons.search_rounded),
-        //     onPressed: () {
-        //       // Navigator.of(context)
-        //       //     .push(MaterialPageRoute(builder: (_) => const Search()));
-        //     },
-        //   ),
-        // ],
       ),
       resizeToAvoidBottomInset: false,
       drawer: const HomeMenuDrawer(),

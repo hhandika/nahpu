@@ -5,16 +5,10 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/media_queries.dart';
 import 'package:nahpu/services/database/site_queries.dart';
 import 'package:nahpu/services/database/coordinate_queries.dart';
+import 'package:nahpu/services/site_services.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'sites.g.dart';
-
-// final siteEntryProvider = FutureProvider.autoDispose<List<SiteData>>((ref) {
-//   final projectUuid = ref.read(projectUuidProvider.notifier).state;
-//   final siteEntries =
-//       SiteQuery(ref.read(databaseProvider)).getAllSites(projectUuid);
-//   return siteEntries;
-// });
 
 @riverpod
 class SiteEntry extends _$SiteEntry {
@@ -30,6 +24,18 @@ class SiteEntry extends _$SiteEntry {
   @override
   FutureOr<List<SiteData>> build() async {
     return await _fetchSiteEntry();
+  }
+
+  Future<void> search(String? query) async {
+    if (query == null || query.isEmpty) return;
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      if (state.value == null) return [];
+      final sites = await _fetchSiteEntry();
+      final filteredSites =
+          SiteSearchServices(siteEntries: sites).search(query.toLowerCase());
+      return filteredSites;
+    });
   }
 }
 
