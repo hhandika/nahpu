@@ -59,7 +59,12 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
                         : const SizedBox.shrink(),
                   ],
                   onChanged: (value) {
-                    ref.read(siteEntryProvider.notifier).search(value);
+                    ref
+                        .read(siteEntryProvider.notifier)
+                        .search(value)
+                        .whenComplete(() => setState(() {
+                              _updatePageNav(0);
+                            }));
                   },
                 )
               : const SizedBox.shrink(),
@@ -85,7 +90,7 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
                     });
                   },
                   child: const Text('Cancel')),
-          const NewSite(),
+          !_isSearching ? const NewSite() : const SizedBox.shrink(),
           SiteMenu(
             siteId: _siteId,
           ),

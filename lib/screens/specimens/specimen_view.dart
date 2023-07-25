@@ -63,7 +63,14 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
                     setState(() {
                       _isSearching = true;
                     });
-                    ref.read(specimenEntryProvider.notifier).search(value);
+                    ref
+                        .read(specimenEntryProvider.notifier)
+                        .search(value)
+                        .whenComplete(() {
+                      setState(() {
+                        _updatePageNav(0);
+                      });
+                    });
                   },
                 )
               : const SizedBox.shrink(),
@@ -90,7 +97,7 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
                     });
                   },
                   child: const Text('Cancel')),
-          const NewSpecimens(),
+          !_isSearching ? const NewSpecimens() : const SizedBox.shrink(),
           SpecimenMenu(
             specimenUuid: _specimenUuid,
             catalogFmt: _catalogFmt,
@@ -104,6 +111,7 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
                 if (specimenEntry.isEmpty) {
                   setState(() {
                     isVisible = false;
+                    _specimenUuid = null;
                   });
 
                   return const Center(

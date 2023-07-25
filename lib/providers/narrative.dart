@@ -8,14 +8,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'narrative.g.dart';
 
-// final narrativeEntryProvider =
-//     FutureProvider.autoDispose<List<NarrativeData>>((ref) {
-//   final projectUuid = ref.watch(projectUuidProvider);
-//   final narrativeEntries =
-//       NarrativeQuery(ref.read(databaseProvider)).getAllNarrative(projectUuid);
-//   return narrativeEntries;
-// });
-
 @riverpod
 class NarrativeEntry extends _$NarrativeEntry {
   Future<List<NarrativeData>> _fetchNarrativeEntry() async {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database/database.dart';
@@ -21,7 +22,9 @@ class CollEventViewer extends ConsumerStatefulWidget {
 class CollEventViewerState extends ConsumerState<CollEventViewer> {
   bool _isVisible = false;
   final PageNavigation _pageNav = PageNavigation.init();
+  final TextEditingController _searchController = TextEditingController();
   int? _collEvenId;
+  bool _isSearching = false;
 
   @override
   void dispose() {
@@ -31,11 +34,62 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
 
   @override
   Widget build(BuildContext context) {
+    final services = CollEventServices(ref: ref);
     return FalseWillPop(
         child: Scaffold(
       appBar: AppBar(
         title: const Text("Collecting Events"),
         actions: [
+          _isSearching
+              ? CommonSearchBar(
+                  controller: _searchController,
+                  hintText: 'Search collecting events',
+                  trailing: [
+                    _searchController.text.isNotEmpty
+                        ? IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _searchController.clear();
+                                services.invalidateCollEvent();
+                              });
+                            },
+                            icon: const Icon(Icons.clear))
+                        : const SizedBox.shrink(),
+                  ],
+                  onChanged: (value) {
+                    ref
+                        .read(collEventEntryProvider.notifier)
+                        .search(value)
+                        .whenComplete(() {
+                      setState(() {
+                        _updatePageNav(0);
+                      });
+                    });
+                  },
+                )
+              : const SizedBox.shrink(),
+          !_isSearching
+              ? IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _isSearching = true;
+                      services.invalidateCollEvent();
+                    });
+                  },
+                  icon: const Icon(Icons.search))
+              : TextButton(
+                  onPressed: () {
+                    setState(() {
+                      _isSearching = false;
+                      _searchController.clear();
+                      services.invalidateCollEvent();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => super.widget),
+                      );
+                    });
+                  },
+                  child: const Text("Cancel")),
           const NewCollEvents(),
           CollEventMenu(
             collEventId: _collEvenId,
@@ -43,7 +97,6 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
         ],
         automaticallyImplyLeading: false,
       ),
-      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Center(
           child: ref.watch(collEventEntryProvider).when(
@@ -51,6 +104,7 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
                   if (collEventEntries.isEmpty) {
                     setState(() {
                       _isVisible = false;
+                      _collEvenId = null;
                     });
 
                     return const Text("No collecting event entries");
@@ -94,7 +148,9 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
     setState(() {
       _pageNav.currentPage = value + 1;
       _pageNav.updatePageNavigation();
-      CollEventServices(ref: ref).invalidateCollEvent();
+      if (!_isSearching) {
+        CollEventServices(ref: ref).invalidateCollEvent();
+      }
     });
   }
 }

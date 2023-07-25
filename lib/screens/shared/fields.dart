@@ -98,16 +98,20 @@ class CommonSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SearchBar(
-      controller: controller,
-      leading: const Icon(Icons.search),
-      constraints: BoxConstraints(
-          maxHeight: 44, maxWidth: MediaQuery.of(context).size.width * 0.60),
-      elevation: MaterialStateProperty.all(0),
-      hintText: hintText,
-      backgroundColor: MaterialStateProperty.all(Colors.grey.withAlpha(48)),
-      trailing: trailing,
-      onChanged: onChanged,
+    return Expanded(
+      child: Padding(
+          padding: const EdgeInsets.all(4),
+          child: SearchBar(
+            controller: controller,
+            leading: const Icon(Icons.search),
+            constraints: const BoxConstraints(maxHeight: 44),
+            elevation: MaterialStateProperty.all(0),
+            hintText: hintText,
+            backgroundColor:
+                MaterialStateProperty.all(Colors.grey.withAlpha(48)),
+            trailing: trailing,
+            onChanged: onChanged,
+          )),
     );
   }
 }

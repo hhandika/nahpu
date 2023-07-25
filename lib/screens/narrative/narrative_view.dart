@@ -23,7 +23,7 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
   bool isVisible = false;
   final PageNavigation _pageNav = PageNavigation.init();
   final TextEditingController _searchController = TextEditingController();
-  int? narrativeId;
+  int? _narrativeId;
   bool _isSearching = false;
 
   @override
@@ -57,7 +57,14 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
                         : const SizedBox.shrink(),
                   ],
                   onChanged: (value) {
-                    ref.read(narrativeEntryProvider.notifier).search(value);
+                    ref
+                        .read(narrativeEntryProvider.notifier)
+                        .search(value)
+                        .whenComplete(() {
+                      setState(() {
+                        _updatePageNav(0);
+                      });
+                    });
                   },
                 )
               : const SizedBox.shrink(),
@@ -84,14 +91,13 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
                     });
                   },
                   child: const Text('Cancel')),
-          const NewNarrative(),
+          !_isSearching ? const NewNarrative() : const SizedBox.shrink(),
           NarrativeMenu(
-            narrativeId: narrativeId,
+            narrativeId: _narrativeId,
           ),
         ],
         automaticallyImplyLeading: false,
       ),
-      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Center(
           child: ref.watch(narrativeEntryProvider).when(
@@ -99,6 +105,7 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
                   if (narrativeEntries.isEmpty) {
                     setState(() {
                       isVisible = false;
+                      _narrativeId = null;
                     });
 
                     return const Text("No narrative entries");
@@ -116,7 +123,7 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
                       pageNav: _pageNav,
                       onPageChanged: (index) {
                         setState(() {
-                          narrativeId = narrativeEntries[index].id;
+                          _narrativeId = narrativeEntries[index].id;
                           _updatePageNav(index);
                         });
                       },
