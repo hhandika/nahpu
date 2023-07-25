@@ -7,6 +7,7 @@ import 'package:nahpu/screens/settings/common.dart';
 import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/screens/settings/shared.dart';
 import 'package:nahpu/screens/settings/specimen_settings.dart';
+import 'package:nahpu/styles/settings.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class AppSettings extends ConsumerStatefulWidget {
@@ -25,6 +26,8 @@ class ProjectSettingState extends ConsumerState<AppSettings> {
       ),
       body: SafeArea(
         child: SettingsList(
+          lightTheme: getSettingData(context),
+          darkTheme: getSettingData(context),
           sections: [
             ref.watch(catalogFmtNotifierProvider).when(
                   data: (data) =>
@@ -124,51 +127,54 @@ class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
       appBar: AppBar(
         title: const Text('Catalog Format'),
       ),
-      body: SettingsList(sections: [
-        SettingsSection(
-            title: const SettingTitle(title: 'Catalog Format'),
-            tiles: [
-              SettingsTile(
-                title: const Text('General Mammals'),
-                leading: Icon(MdiIcons.paw),
-                trailing: widget.selectedFmt == 'General Mammals'
-                    ? const Icon(Icons.check)
-                    : null,
-                onPressed: (context) {
-                  ref
-                      .read(catalogFmtNotifierProvider.notifier)
-                      .set(CatalogFmt.generalMammals);
-                  Navigator.pop(context);
-                },
-              ),
-              SettingsTile(
-                title: const Text('Birds'),
-                leading: Icon(MdiIcons.owl),
-                trailing: widget.selectedFmt == 'Birds'
-                    ? const Icon(Icons.check)
-                    : null,
-                onPressed: (context) {
-                  ref
-                      .read(catalogFmtNotifierProvider.notifier)
-                      .set(CatalogFmt.birds);
-                  Navigator.pop(context);
-                },
-              ),
-              SettingsTile(
-                title: const Text('Bats'),
-                leading: Icon(MdiIcons.bat),
-                trailing: widget.selectedFmt == 'Bats'
-                    ? const Icon(Icons.check)
-                    : null,
-                onPressed: (context) {
-                  ref
-                      .read(catalogFmtNotifierProvider.notifier)
-                      .set(CatalogFmt.bats);
-                  Navigator.pop(context);
-                },
-              ),
-            ])
-      ]),
+      body: SettingsList(
+          lightTheme: getSettingData(context),
+          darkTheme: getSettingData(context),
+          sections: [
+            SettingsSection(
+                title: const SettingTitle(title: 'Catalog Format'),
+                tiles: [
+                  SettingsTile(
+                    title: const Text('General Mammals'),
+                    leading: Icon(MdiIcons.paw),
+                    trailing: widget.selectedFmt == 'General Mammals'
+                        ? const Icon(Icons.check)
+                        : null,
+                    onPressed: (context) {
+                      ref
+                          .read(catalogFmtNotifierProvider.notifier)
+                          .set(CatalogFmt.generalMammals);
+                      Navigator.pop(context);
+                    },
+                  ),
+                  SettingsTile(
+                    title: const Text('Birds'),
+                    leading: Icon(MdiIcons.owl),
+                    trailing: widget.selectedFmt == 'Birds'
+                        ? const Icon(Icons.check)
+                        : null,
+                    onPressed: (context) {
+                      ref
+                          .read(catalogFmtNotifierProvider.notifier)
+                          .set(CatalogFmt.birds);
+                      Navigator.pop(context);
+                    },
+                  ),
+                  SettingsTile(
+                    title: const Text('Bats'),
+                    leading: Icon(MdiIcons.bat),
+                    trailing: widget.selectedFmt == 'Bats'
+                        ? const Icon(Icons.check)
+                        : null,
+                    onPressed: (context) {
+                      ref
+                          .read(catalogFmtNotifierProvider.notifier)
+                          .set(CatalogFmt.bats);
+                      Navigator.pop(context);
+                    },
+                  ),
+                ])
+          ]),
     );
   }
 }

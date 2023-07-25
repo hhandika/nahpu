@@ -3,6 +3,7 @@ import 'package:nahpu/screens/settings/common.dart';
 import 'package:nahpu/screens/settings/db_settings.dart';
 import 'package:nahpu/services/platform_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/styles/settings.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/providers/settings.dart';
@@ -75,25 +76,29 @@ class ThemeSettingState extends ConsumerState<ThemeSettings> {
       appBar: AppBar(
         title: const Text('Theme'),
       ),
-      body: SettingsList(sections: [
-        SettingsSection(
-          title: const SettingTitle(title: 'Theme'),
-          tiles: themes.map(
-            (e) {
-              return SettingsTile(
-                  leading: Icon(icons[themes.indexOf(e)]),
-                  title: Text(e),
-                  trailing:
-                      widget.isSelected == e ? const Icon(Icons.check) : null,
-                  onPressed: (_) {
-                    _setTheme(e);
-                    ref.read(themeSettingProvider.notifier).saveThemeMode();
-                    Navigator.of(context).pop();
-                  });
-            },
-          ).toList(),
-        )
-      ]),
+      body: SettingsList(
+        lightTheme: getSettingData(context),
+        darkTheme: getSettingData(context),
+        sections: [
+          SettingsSection(
+            title: const SettingTitle(title: 'Theme'),
+            tiles: themes.map(
+              (e) {
+                return SettingsTile(
+                    leading: Icon(icons[themes.indexOf(e)]),
+                    title: Text(e),
+                    trailing:
+                        widget.isSelected == e ? const Icon(Icons.check) : null,
+                    onPressed: (_) {
+                      _setTheme(e);
+                      ref.read(themeSettingProvider.notifier).saveThemeMode();
+                      Navigator.of(context).pop();
+                    });
+              },
+            ).toList(),
+          )
+        ],
+      ),
     );
   }
 

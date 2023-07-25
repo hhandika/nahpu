@@ -5,6 +5,7 @@ import 'package:nahpu/screens/settings/common.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/specimen_services.dart';
+import 'package:nahpu/styles/settings.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class SpecimenSelection extends StatefulWidget {
@@ -24,46 +25,50 @@ class _SpecimenPartSelectionState extends State<SpecimenSelection> {
       body: SafeArea(child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           bool isMobile = constraints.maxWidth < 600;
-          return SettingsList(sections: [
-            SettingsSection(
-              title: const SettingTitle(title: 'Capture Records'),
-              tiles: [
-                SettingsTile.switchTile(
-                  initialValue: false,
-                  onToggle: (bool value) {},
-                  title: const Text('Always show collector field'),
-                )
-              ],
-            ),
-            SettingsSection(
-              title: const SettingTitle(title: 'Tissue ID'),
-              tiles: [
-                androidPadding,
-                CustomSettingsTile(
-                  child: TissueIDFields(
-                    isMobile: isMobile,
+          return SettingsList(
+            lightTheme: getSettingData(context),
+            darkTheme: getSettingData(context),
+            sections: [
+              SettingsSection(
+                title: const SettingTitle(title: 'Capture Records'),
+                tiles: [
+                  SettingsTile.switchTile(
+                    initialValue: false,
+                    onToggle: (bool value) {},
+                    title: const Text('Always show collector field'),
+                  )
+                ],
+              ),
+              SettingsSection(
+                title: const SettingTitle(title: 'Tissue ID'),
+                tiles: [
+                  androidPadding,
+                  CustomSettingsTile(
+                    child: TissueIDFields(
+                      isMobile: isMobile,
+                    ),
                   ),
-                ),
-                androidPadding,
-              ],
-            ),
-            const SettingsSection(
-              title: SettingTitle(title: 'Specimen Types'),
-              tiles: [
-                CustomSettingsTile(
-                  child: SpecimenTypeSettings(),
-                ),
-              ],
-            ),
-            const SettingsSection(
-              title: SettingTitle(title: 'Treatments'),
-              tiles: [
-                CustomSettingsTile(
-                  child: TreatmentOptionSettings(),
-                ),
-              ],
-            )
-          ]);
+                  androidPadding,
+                ],
+              ),
+              const SettingsSection(
+                title: SettingTitle(title: 'Specimen Types'),
+                tiles: [
+                  CustomSettingsTile(
+                    child: SpecimenTypeSettings(),
+                  ),
+                ],
+              ),
+              const SettingsSection(
+                title: SettingTitle(title: 'Treatments'),
+                tiles: [
+                  CustomSettingsTile(
+                    child: TreatmentOptionSettings(),
+                  ),
+                ],
+              )
+            ],
+          );
         },
       )),
     );

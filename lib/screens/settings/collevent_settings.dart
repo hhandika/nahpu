@@ -4,6 +4,7 @@ import 'package:nahpu/providers/collevents.dart';
 import 'package:nahpu/screens/settings/common.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/collevent_services.dart';
+import 'package:nahpu/styles/settings.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class CollEventSelection extends StatefulWidget {
@@ -18,13 +19,13 @@ class _CollEventSelectionState extends State<CollEventSelection> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const SettingTitle(
-          title: 'Collection Event Settings',
-        ),
+        title: const Text('Collection Event Settings'),
       ),
-      body: const SafeArea(
+      body: SafeArea(
         child: SettingsList(
-          sections: [
+          lightTheme: getSettingData(context),
+          darkTheme: getSettingData(context),
+          sections: const [
             SettingsSection(
               title: SettingTitle(
                 title: 'Collection Methods',
