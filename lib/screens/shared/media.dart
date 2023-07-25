@@ -61,10 +61,29 @@ class _MediaViewerState extends State<MediaViewer> {
           height: MediaQuery.of(context).size.height * 0.5,
           child: Center(
             child: widget.images.isEmpty
-                ? const Text('No media added')
+                ? const EmptyMedia()
                 : MediaViewerBuilder(images: widget.images),
           ),
         ),
+      ],
+    );
+  }
+}
+
+class EmptyMedia extends StatelessWidget {
+  const EmptyMedia({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset(
+          'assets/icons/image-gallery.png',
+          height: 32,
+        ),
+        const SizedBox(height: 8),
+        const Text('No media added'),
       ],
     );
   }
