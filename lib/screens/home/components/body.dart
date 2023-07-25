@@ -116,6 +116,7 @@ class ProjectNotFound extends StatelessWidget {
             'assets/icons/box.png',
             height: 64,
           ),
+          const SizedBox(height: 16),
           Text(
             'No projects found!',
             style: Theme.of(context).textTheme.titleLarge,
