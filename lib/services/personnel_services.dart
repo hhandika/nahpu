@@ -64,10 +64,15 @@ class PersonnelServices extends DbAccess {
         .isPersonnelUsedByCollEvents(
             projectUuid: currentProjectUuid, personnelUuid: personnelUuid);
     if (isUsedInPersonnel || isUsedInCollEvent) {
+      String recordType = isUsedInPersonnel ? 'specimen' : 'collection event';
+      recordType = isUsedInPersonnel && isUsedInCollEvent
+          ? 'specimen and collection event'
+          : recordType;
       throw Exception(
-          'Failed to delete! Personnel is being used in other records');
+          'Failed to delete! Personnel is being used in the $recordType records.');
     } else {
-      await PersonnelQuery(dbAccess).deleteProjectPersonnel(personnelUuid);
+      await PersonnelQuery(dbAccess).deleteProjectPersonnel(
+          projectUuid: currentProjectUuid, personnelUuid: personnelUuid);
       invalidatePersonnel();
     }
   }

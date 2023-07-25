@@ -49,9 +49,9 @@ class PersonnelQuery extends DatabaseAccessor<Database>
   Future<bool> isPersonnelUsedBySpecimenRecords(
       {required String projectUuid, required String personnelUuid}) async {
     SpecimenData? specimenRecords = await (select(specimen)
+          ..where((t) => t.projectUuid.equals(projectUuid))
           ..where((t) =>
-              t.projectUuid.equals(projectUuid) &
-                  t.catalogerID.equals(personnelUuid) |
+              t.catalogerID.equals(personnelUuid) |
               t.preparatorID.equals(personnelUuid))
           ..limit(1))
         .getSingleOrNull();
@@ -65,9 +65,9 @@ class PersonnelQuery extends DatabaseAccessor<Database>
   Future<bool> isPersonnelUsedByCollEvents(
       {required String projectUuid, required String personnelUuid}) async {
     List<CollEventData> eventRecords = await (select(collEvent)
-          ..where((t) => t.projectUuid.equals(personnelUuid)))
+          ..where((t) => t.projectUuid.equals(projectUuid)))
         .get();
-    List<CollPersonnelData> personnel = [];
+    List<String> personnel = [];
 
     for (final record in eventRecords) {
       CollPersonnelData? person = await (select(collPersonnel)
@@ -76,7 +76,7 @@ class PersonnelQuery extends DatabaseAccessor<Database>
                 tbl.personnelId.equals(personnelUuid)))
           .getSingleOrNull();
       if (person != null) {
-        personnel.add(person);
+        personnel.add(person.personnelId ?? '');
       }
     }
     eventRecords.clear();
@@ -87,9 +87,12 @@ class PersonnelQuery extends DatabaseAccessor<Database>
     return false;
   }
 
-  Future<void> deleteProjectPersonnel(String personnelUuid) {
+  Future<void> deleteProjectPersonnel(
+      {required projectUuid, required personnelUuid}) {
     return (delete(personnelList)
-          ..where((t) => t.personnelUuid.equals(personnelUuid)))
+          ..where((t) =>
+              t.projectUuid.equals(projectUuid) &
+              t.personnelUuid.equals(personnelUuid)))
         .go();
   }
 
