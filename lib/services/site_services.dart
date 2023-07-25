@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:nahpu/providers/sites.dart';
-import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/coordinate_queries.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/media_queries.dart';
@@ -103,9 +102,18 @@ class SiteServices extends DbAccess {
   }
 
   Future<void> deleteAllSites() async {
-    final projectUuid = ref.read(projectUuidProvider);
-    await SiteQuery(dbAccess).deleteAllSites(projectUuid);
-    invalidateSite();
+    try {
+      List<SiteData> sites = await getAllSites();
+
+      for (SiteData site in sites) {
+        await CoordinateServices(ref: ref).deleteCoordinateBySiteID(site.id);
+        await SiteQuery(dbAccess).deleteAllSiteMedias(site.id);
+      }
+      await SiteQuery(dbAccess).deleteAllSites(currentProjectUuid);
+      invalidateSite();
+    } catch (e) {
+      rethrow;
+    }
   }
 
   void invalidateSite() {

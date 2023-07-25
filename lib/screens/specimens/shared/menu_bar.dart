@@ -97,6 +97,7 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
               );
             }
           } catch (e) {
+            Navigator.of(context).pop();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
@@ -125,6 +126,7 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
               Navigator.of(context).pop();
             }
           } catch (e) {
+            Navigator.of(context).pop();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(

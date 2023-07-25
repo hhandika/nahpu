@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/home/home.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
@@ -113,6 +112,10 @@ class ProjectNotFound extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          Image.asset(
+            'assets/icons/box.png',
+            height: 64,
+          ),
           Text(
             'No projects found!',
             style: Theme.of(context).textTheme.titleLarge,
