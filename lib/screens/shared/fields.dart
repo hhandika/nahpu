@@ -88,21 +88,24 @@ class CommonSearchBar extends StatelessWidget {
     required this.controller,
     required this.onChanged,
     required this.trailing,
+    required this.hintText,
   });
 
   final TextEditingController controller;
   final void Function(String) onChanged;
   final Iterable<Widget> trailing;
+  final String hintText;
 
   @override
   Widget build(BuildContext context) {
     return SearchBar(
       controller: controller,
+      leading: const Icon(Icons.search),
       constraints: BoxConstraints(
           maxHeight: 44, maxWidth: MediaQuery.of(context).size.width * 0.60),
       elevation: MaterialStateProperty.all(0),
-      hintText: 'Search sites',
-      backgroundColor: MaterialStateProperty.all(Colors.grey.withOpacity(0.2)),
+      hintText: hintText,
+      backgroundColor: MaterialStateProperty.all(Colors.grey.withAlpha(48)),
       trailing: trailing,
       onChanged: onChanged,
     );
@@ -124,9 +127,8 @@ class SearchButtonField extends StatelessWidget {
     return SearchBar(
       hintText: 'Enter query',
       leading: const Icon(Icons.search),
-      side: MaterialStateProperty.all(
-        BorderSide(color: Theme.of(context).colorScheme.onSurface),
-      ),
+      backgroundColor: MaterialStateProperty.all(Colors.grey.withAlpha(48)),
+      constraints: const BoxConstraints(maxHeight: 44),
       trailing: [
         controller.text.isNotEmpty
             ? IconButton(

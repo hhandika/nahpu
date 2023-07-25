@@ -43,6 +43,7 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
           _isSearching
               ? CommonSearchBar(
                   controller: _searchController,
+                  hintText: 'Search narrative',
                   trailing: [
                     _searchController.text.isNotEmpty
                         ? IconButton(
@@ -82,9 +83,7 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
                               builder: (context) => super.widget));
                     });
                   },
-                  child: const Text(
-                    "Done",
-                  )),
+                  child: const Text('Cancel')),
           const NewNarrative(),
           NarrativeMenu(
             narrativeId: narrativeId,

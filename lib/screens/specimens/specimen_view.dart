@@ -46,6 +46,7 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
           _isSearching
               ? CommonSearchBar(
                   controller: _searchController,
+                  hintText: 'Search specimens',
                   trailing: [
                     _searchController.text.isNotEmpty
                         ? IconButton(
@@ -88,7 +89,7 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
                               builder: (context) => super.widget));
                     });
                   },
-                  child: const Text('Done  ')),
+                  child: const Text('Cancel')),
           const NewSpecimens(),
           SpecimenMenu(
             specimenUuid: _specimenUuid,

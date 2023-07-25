@@ -45,6 +45,7 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
           _isSearching
               ? CommonSearchBar(
                   controller: _searchController,
+                  hintText: 'Search sites',
                   trailing: [
                     _searchController.text.isNotEmpty
                         ? IconButton(
@@ -83,7 +84,7 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
                               builder: (context) => super.widget));
                     });
                   },
-                  child: const Text('Done')),
+                  child: const Text('Cancel')),
           const NewSite(),
           SiteMenu(
             siteId: _siteId,
