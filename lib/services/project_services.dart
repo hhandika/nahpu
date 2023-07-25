@@ -14,8 +14,8 @@ class ProjectServices extends DbAccess {
 
   void createProject(ProjectCompanion form) {
     ProjectQuery(dbAccess).createProject(form);
-    updateProjectUuid(form.uuid.value);
     invalidateProject();
+    updateProjectUuid(form.uuid.value);
   }
 
   void updateProjectUuid(String projectUuid) {
