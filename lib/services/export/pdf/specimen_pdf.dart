@@ -8,6 +8,7 @@ import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/types/mammals.dart';
 import 'package:nahpu/services/types/types.dart';
+import 'package:nahpu/services/utility_services.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 class SpecimenPdfWriter extends PdfServices {

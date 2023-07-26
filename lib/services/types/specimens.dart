@@ -32,3 +32,11 @@ const List<String> priorityTreatment = [
   'LN2',
   'DMSO',
 ];
+
+const List<String> relativeTimeList = [
+  'Dawn',
+  'Morning',
+  'Afternoon',
+  'Dusk',
+  'Night',
+];

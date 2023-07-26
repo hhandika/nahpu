@@ -7,7 +7,7 @@ import 'package:nahpu/services/statistics/captures.dart';
 import 'package:nahpu/services/statistics/common.dart';
 import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/types/statistics.dart';
-import 'package:nahpu/services/types/types.dart';
+import 'package:nahpu/services/utility_services.dart';
 
 const double chartWidth = 32;
 

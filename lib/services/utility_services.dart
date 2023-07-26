@@ -39,3 +39,24 @@ extension StringMatching on String {
     return toLowerCase() == value.toLowerCase();
   }
 }
+
+extension StringExtension on String {
+  String toSentenceCase() {
+    try {
+      return '${this[0].toUpperCase()}${substring(1)}';
+    } catch (e) {
+      return '';
+    }
+  }
+}
+
+extension DoubleExtension on double {
+  String truncateZero() {
+    if (toString().endsWith('.0')) {
+      // Remove trailing .0
+      return toString().substring(0, toString().length - 2);
+    } else {
+      return toString();
+    }
+  }
+}

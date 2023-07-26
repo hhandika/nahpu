@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:nahpu/services/types/types.dart';
+import 'package:nahpu/services/utility_services.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class SettingTitle extends StatelessWidget {

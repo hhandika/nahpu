@@ -10,7 +10,7 @@ import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/import/taxon_entry.dart';
 import 'package:drift/drift.dart' as db;
-import 'package:nahpu/services/types/types.dart';
+import 'package:nahpu/services/utility_services.dart';
 
 class TaxonEntryReader extends DbAccess {
   const TaxonEntryReader({required super.ref});

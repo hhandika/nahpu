@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/services/types/export.dart';
-import 'package:nahpu/services/database/database.dart';
 
 enum CatalogFmt { generalMammals, birds, bats }
 
@@ -38,7 +37,6 @@ const List<String> exportFormats = [
   // 'Excel (.xlsx)',
   'Comma-separated (.csv)',
   'Tab-separated (.tsv)',
-  // 'JSON (.json)',
 ];
 
 enum DbExportFmt { sqlite3 }
@@ -96,14 +94,6 @@ const List<String> siteTypeList = [
   'Netline',
   'Cave',
   'Other',
-];
-
-const List<String> relativeTimeList = [
-  'Dawn',
-  'Morning',
-  'Afternoon',
-  'Dusk',
-  'Night',
 ];
 
 const List<String> taxonGroupList = [
@@ -200,40 +190,6 @@ IconData matchCatFmtToIcon(CatalogFmt catalogFmt, bool isSelected) {
       return MdiIcons.bat;
     default:
       return MdiIcons.paw;
-  }
-}
-
-class TaxonData {
-  TaxonData({
-    this.taxonClass,
-    this.taxonOrder,
-    this.taxonFamily,
-    this.genus,
-    this.specificEpithet,
-  });
-
-  String? taxonClass;
-  String? taxonOrder;
-  String? taxonFamily;
-  String? genus;
-  String? specificEpithet;
-
-  factory TaxonData.fromTaxonomyData(TaxonomyData taxonomyData) {
-    return TaxonData(
-      taxonClass: taxonomyData.taxonClass,
-      taxonOrder: taxonomyData.taxonOrder,
-      taxonFamily: taxonomyData.taxonFamily,
-      genus: taxonomyData.genus,
-      specificEpithet: taxonomyData.specificEpithet,
-    );
-  }
-
-  String get speciesName {
-    if (genus != null && specificEpithet != null) {
-      return '$genus $specificEpithet';
-    } else {
-      return '';
-    }
   }
 }
 

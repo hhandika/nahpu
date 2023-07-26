@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:nahpu/services/types/import.dart';
-import 'package:nahpu/services/types/types.dart';
+import 'package:nahpu/services/utility_services.dart';
 
 class CsvData {
   CsvData({

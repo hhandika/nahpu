@@ -108,3 +108,37 @@ String getTaxonFirstThreeLetters(String value) {
     return value.substring(0, 5);
   }
 }
+
+class TaxonData {
+  TaxonData({
+    this.taxonClass,
+    this.taxonOrder,
+    this.taxonFamily,
+    this.genus,
+    this.specificEpithet,
+  });
+
+  String? taxonClass;
+  String? taxonOrder;
+  String? taxonFamily;
+  String? genus;
+  String? specificEpithet;
+
+  factory TaxonData.fromTaxonomyData(TaxonomyData taxonomyData) {
+    return TaxonData(
+      taxonClass: taxonomyData.taxonClass,
+      taxonOrder: taxonomyData.taxonOrder,
+      taxonFamily: taxonomyData.taxonFamily,
+      genus: taxonomyData.genus,
+      specificEpithet: taxonomyData.specificEpithet,
+    );
+  }
+
+  String get speciesName {
+    if (genus != null && specificEpithet != null) {
+      return '$genus $specificEpithet';
+    } else {
+      return '';
+    }
+  }
+}
