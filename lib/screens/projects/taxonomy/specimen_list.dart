@@ -50,9 +50,21 @@ class SpecimenListPageState extends ConsumerState<SpecimenListPage> {
         child: ScrollableConstrainedLayout(
             child: Column(
           children: [
-            SearchButtonField(
+            CommonSearchBar(
               controller: _searchController,
               hintText: 'Search specimens',
+              trailing: [
+                _searchController.text.isNotEmpty
+                    ? IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _searchController.clear();
+                            _filteredData.clear();
+                          });
+                        },
+                        icon: const Icon(Icons.clear))
+                    : const SizedBox.shrink()
+              ],
               onChanged: (String value) async {
                 await _filterResults(value);
                 setState(() {});

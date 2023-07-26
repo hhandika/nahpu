@@ -68,9 +68,21 @@ class _TaxonListState extends State<TaxonList> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SearchButtonField(
+            CommonSearchBar(
               controller: _searchController,
               hintText: 'Search taxa',
+              trailing: [
+                _searchController.text.isNotEmpty
+                    ? IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _searchController.clear();
+                            _filteredTaxonList.clear();
+                          });
+                        },
+                        icon: const Icon(Icons.clear))
+                    : const SizedBox.shrink()
+              ],
               onChanged: (String value) {
                 String searchValue = value.toLowerCase();
                 setState(() {

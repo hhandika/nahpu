@@ -41,7 +41,7 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
         title: const Text("Narrative"),
         actions: [
           _isSearching
-              ? CommonSearchBar(
+              ? ExpandedSearchBar(
                   controller: _searchController,
                   hintText: 'Search narrative',
                   trailing: [
@@ -70,12 +70,14 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
               : const SizedBox.shrink(),
           !_isSearching
               ? IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _isSearching = true;
-                      narrativeServices.invalidateNarrative();
-                    });
-                  },
+                  onPressed: _narrativeId == null
+                      ? null
+                      : () {
+                          setState(() {
+                            _isSearching = true;
+                            narrativeServices.invalidateNarrative();
+                          });
+                        },
                   icon: const Icon(Icons.search),
                 )
               : TextButton(

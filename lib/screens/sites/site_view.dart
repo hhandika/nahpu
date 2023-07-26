@@ -43,7 +43,7 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
         automaticallyImplyLeading: false,
         actions: [
           _isSearching
-              ? CommonSearchBar(
+              ? ExpandedSearchBar(
                   controller: _searchController,
                   hintText: 'Search sites',
                   trailing: [
@@ -70,12 +70,14 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
               : const SizedBox.shrink(),
           !_isSearching
               ? IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _isSearching = true;
-                      ref.invalidate(siteEntryProvider);
-                    });
-                  },
+                  onPressed: _siteId == null
+                      ? null
+                      : () {
+                          setState(() {
+                            _isSearching = true;
+                            ref.invalidate(siteEntryProvider);
+                          });
+                        },
                   icon: const Icon(Icons.search))
               : TextButton(
                   onPressed: () {

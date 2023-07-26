@@ -44,7 +44,7 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
         ),
         actions: [
           _isSearching
-              ? CommonSearchBar(
+              ? ExpandedSearchBar(
                   controller: _searchController,
                   hintText: 'Search specimens',
                   trailing: [
@@ -76,12 +76,14 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
               : const SizedBox.shrink(),
           !_isSearching
               ? IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _isSearching = true;
-                      ref.invalidate(specimenEntryProvider);
-                    });
-                  },
+                  onPressed: _specimenUuid == null
+                      ? null
+                      : () {
+                          setState(() {
+                            _isSearching = true;
+                            ref.invalidate(specimenEntryProvider);
+                          });
+                        },
                   icon: const Icon(Icons.search),
                 )
               : TextButton(

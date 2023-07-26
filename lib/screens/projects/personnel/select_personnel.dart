@@ -36,9 +36,21 @@ class SelectPersonnelState extends ConsumerState<SelectPersonnel> {
               return Column(
                 children: [
                   CommonPadding(
-                    child: SearchButtonField(
+                    child: CommonSearchBar(
                         controller: _searchController,
                         hintText: 'Search personnel',
+                        trailing: [
+                          _searchController.text.isNotEmpty
+                              ? IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _searchController.clear();
+                                      _filteredData.clear();
+                                    });
+                                  },
+                                  icon: const Icon(Icons.clear))
+                              : const SizedBox.shrink()
+                        ],
                         onChanged: (query) {
                           setState(() {
                             _filteredData = _filterPersonnelList(

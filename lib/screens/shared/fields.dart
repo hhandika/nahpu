@@ -82,8 +82,8 @@ class CommonTimeField extends StatelessWidget {
   }
 }
 
-class CommonSearchBar extends StatelessWidget {
-  const CommonSearchBar({
+class ExpandedSearchBar extends StatelessWidget {
+  const ExpandedSearchBar({
     super.key,
     required this.controller,
     required this.onChanged,
@@ -101,14 +101,9 @@ class CommonSearchBar extends StatelessWidget {
     return Expanded(
       child: Padding(
           padding: const EdgeInsets.all(4),
-          child: SearchBar(
+          child: CommonSearchBar(
             controller: controller,
-            leading: const Icon(Icons.search),
-            constraints: const BoxConstraints(maxHeight: 44),
-            elevation: MaterialStateProperty.all(0),
             hintText: hintText,
-            backgroundColor:
-                MaterialStateProperty.all(Colors.grey.withAlpha(48)),
             trailing: trailing,
             onChanged: onChanged,
           )),
@@ -116,39 +111,31 @@ class CommonSearchBar extends StatelessWidget {
   }
 }
 
-class SearchButtonField extends StatelessWidget {
-  const SearchButtonField({
+class CommonSearchBar extends StatelessWidget {
+  const CommonSearchBar({
     super.key,
     required this.controller,
     required this.onChanged,
+    required this.trailing,
     required this.hintText,
   });
 
   final TextEditingController controller;
   final void Function(String) onChanged;
+  final Iterable<Widget> trailing;
   final String hintText;
 
   @override
   Widget build(BuildContext context) {
     return SearchBar(
-      hintText: hintText,
-      leading: const Icon(Icons.search),
-      backgroundColor: MaterialStateProperty.all(Colors.grey.withAlpha(48)),
-      constraints: const BoxConstraints(maxHeight: 44),
-      trailing: [
-        controller.text.isNotEmpty
-            ? IconButton(
-                icon: const Icon(Icons.clear),
-                onPressed: () {
-                  controller.clear();
-                  onChanged('');
-                },
-              )
-            : const SizedBox.shrink(),
-      ],
-      onChanged: onChanged,
-      elevation: MaterialStateProperty.all(0),
       controller: controller,
+      leading: const Icon(Icons.search),
+      constraints: const BoxConstraints(maxHeight: 44),
+      elevation: MaterialStateProperty.all(0),
+      hintText: hintText,
+      backgroundColor: MaterialStateProperty.all(Colors.grey.withAlpha(48)),
+      trailing: trailing,
+      onChanged: onChanged,
     );
   }
 }

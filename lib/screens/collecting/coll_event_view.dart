@@ -41,7 +41,7 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
         title: const Text("Collecting Events"),
         actions: [
           _isSearching
-              ? CommonSearchBar(
+              ? ExpandedSearchBar(
                   controller: _searchController,
                   hintText: 'Search collecting events',
                   trailing: [
@@ -70,12 +70,14 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
               : const SizedBox.shrink(),
           !_isSearching
               ? IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _isSearching = true;
-                      services.invalidateCollEvent();
-                    });
-                  },
+                  onPressed: _collEvenId == null
+                      ? null
+                      : () {
+                          setState(() {
+                            _isSearching = true;
+                            services.invalidateCollEvent();
+                          });
+                        },
                   icon: const Icon(Icons.search))
               : TextButton(
                   onPressed: () {
