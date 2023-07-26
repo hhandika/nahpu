@@ -406,22 +406,23 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
               widget.coordCtr.datumCtr.text = value.toString();
             },
           ),
-          TextFormField(
+          TextField(
             controller: widget.coordCtr.uncertaintyCtr,
             decoration: const InputDecoration(
               labelText: 'Uncertainty (m)',
               hintText: 'Add an uncertainty',
             ),
           ),
-          TextFormField(
+          TextField(
             controller: widget.coordCtr.gpsUnitCtr,
             decoration: const InputDecoration(
               labelText: 'GPS Unit',
               hintText: 'Specify the GPS unit',
             ),
           ),
-          TextFormField(
+          TextField(
             maxLines: 3,
+            controller: widget.coordCtr.noteCtr,
             decoration: const InputDecoration(
               labelText: 'Notes',
               hintText: 'Add notes (optional)',
