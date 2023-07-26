@@ -254,10 +254,19 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
           FormButtonWithDelete(
             isEditing: widget.isEditing,
             onDeleted: () async {
-              await TaxonomyServices(ref: ref).deleteTaxon(widget.taxonId!);
-              ref.invalidate(taxonRegistryProvider);
-              if (context.mounted) {
-                Navigator.of(context).pop();
+              try {
+                await _deleteTaxon();
+                ref.invalidate(taxonRegistryProvider);
+                if (mounted) {
+                  Navigator.of(context).pop();
+                }
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Cannot delete taxon.'
+                        ' It is in use in the specimen records.'),
+                  ),
+                );
               }
             },
             onSubmitted: () async {
@@ -293,5 +302,9 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
       commonName: db.Value(widget.ctr.commonNameCtr.text),
       notes: db.Value(widget.ctr.noteCtr.text),
     );
+  }
+
+  Future<void> _deleteTaxon() async {
+    await TaxonomyServices(ref: ref).deleteTaxon(widget.taxonId!);
   }
 }

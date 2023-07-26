@@ -213,7 +213,7 @@ class TaxonListViewState extends ConsumerState<TaxonListView> {
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 8),
         _isSelecting
             ? DeleteTaxonButton(
                 selectedTaxon: _selectedTaxon,
@@ -286,7 +286,10 @@ class DeleteTaxonButton extends StatelessWidget {
                             ),
                             TextButton(
                               onPressed: onPressed,
-                              child: const Text('Delete'),
+                              child: Text('Delete',
+                                  style: TextStyle(
+                                    color: Theme.of(context).colorScheme.error,
+                                  )),
                             ),
                           ],
                         );
