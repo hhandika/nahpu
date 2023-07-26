@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/home/home.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
@@ -112,10 +113,12 @@ class ProjectNotFound extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset(
-            'assets/icons/box.png',
-            height: 64,
-          ),
+          SvgPicture.asset('assets/icons/box.svg',
+              height: 64,
+              colorFilter: ColorFilter.mode(
+                Theme.of(context).colorScheme.tertiary,
+                BlendMode.srcIn,
+              )),
           const SizedBox(height: 16),
           Text(
             'No projects found!',
