@@ -3,18 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/taxa.dart';
 import 'package:nahpu/screens/projects/taxonomy/import_taxa.dart';
 import 'package:nahpu/screens/projects/taxonomy/new_taxa.dart';
-import 'package:nahpu/services/types/controllers.dart';
+import 'package:nahpu/screens/projects/taxonomy/taxon_list.dart';
 import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
-import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/common.dart';
-import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/screens/projects/taxonomy/specimen_list.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/statistics/captures.dart';
-import 'package:nahpu/services/taxonomy_services.dart';
-import 'package:nahpu/services/utility_services.dart';
 
 class TaxonRegistryViewer extends ConsumerStatefulWidget {
   const TaxonRegistryViewer({
@@ -83,13 +79,7 @@ class RegistryInfo extends ConsumerWidget {
     return ref.watch(taxonRegistryProvider).when(
           data: (data) {
             return data.isEmpty
-                ? const Center(
-                    child: Text(
-                      'No taxon found.\n'
-                      'You can add a taxon manually or import from a file.',
-                      textAlign: TextAlign.center,
-                    ),
-                  )
+                ? const EmptyTaxa()
                 : TaxonRegistryLayout(
                     children: [
                       RegisteredTaxa(taxonData: data),
@@ -100,6 +90,22 @@ class RegistryInfo extends ConsumerWidget {
           loading: () => const CommonProgressIndicator(),
           error: (error, stack) => Text('Error: $error'),
         );
+  }
+}
+
+class EmptyTaxa extends StatelessWidget {
+  const EmptyTaxa({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        'No taxon found.\n'
+        'Add/import taxa to start recording captures.',
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.labelLarge,
+      ),
+    );
   }
 }
 
@@ -301,137 +307,6 @@ class CountText extends StatelessWidget {
   }
 }
 
-class TaxonRegistryPage extends ConsumerStatefulWidget {
-  const TaxonRegistryPage({super.key});
-
-  @override
-  TaxonRegistryPageState createState() => TaxonRegistryPageState();
-}
-
-class TaxonRegistryPageState extends ConsumerState<TaxonRegistryPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Taxon registry'),
-      ),
-      body: ref.watch(taxonRegistryProvider).when(
-            data: (data) {
-              if (data.isEmpty) {
-                return const Center(
-                  child: Text(
-                    'No taxon found',
-                    textAlign: TextAlign.center,
-                  ),
-                );
-              }
-              return TaxonList(taxonList: data);
-            },
-            loading: () => const CommonProgressIndicator(),
-            error: (error, stack) => Text('Error: $error'),
-          ),
-    );
-  }
-}
-
-class TaxonList extends StatefulWidget {
-  const TaxonList({
-    super.key,
-    required this.taxonList,
-  });
-
-  final List<TaxonomyData> taxonList;
-
-  @override
-  State<TaxonList> createState() => _TaxonListState();
-}
-
-class _TaxonListState extends State<TaxonList> {
-  List<TaxonomyData> _filteredTaxonList = [];
-  final TextEditingController _searchController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: ScrollableConstrainedLayout(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SearchButtonField(
-              controller: _searchController,
-              onChanged: (String value) {
-                String searchValue = value.toLowerCase();
-                setState(() {
-                  _filteredTaxonList = TaxonFilterServices()
-                      .filterTaxonList(widget.taxonList, searchValue);
-                });
-              },
-            ),
-            const SizedBox(height: 8),
-            _filteredTaxonList.isEmpty
-                ? const SizedBox.shrink()
-                : Text('Results: ${_filteredTaxonList.length}'),
-            SizedBox(
-                height: MediaQuery.of(context).size.height * 0.7,
-                child: TaxonListView(
-                  taxonList: _filteredTaxonList.isNotEmpty
-                      ? _filteredTaxonList
-                      : widget.taxonList,
-                ))
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class TaxonListView extends StatelessWidget {
-  const TaxonListView({
-    super.key,
-    required this.taxonList,
-  });
-
-  final List<TaxonomyData> taxonList;
-
-  @override
-  Widget build(BuildContext context) {
-    ScrollController scrollController = ScrollController();
-    return CommonScrollbar(
-        scrollController: scrollController,
-        child: ListView.builder(
-          controller: scrollController,
-          itemCount: taxonList.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(
-                  '${taxonList[index].genus} ${taxonList[index].specificEpithet}'),
-              subtitle: Text(
-                '${taxonList[index].taxonClass}'
-                '$listTileSeparator'
-                '${taxonList[index].taxonOrder}'
-                '$listTileSeparator'
-                '${taxonList[index].taxonFamily}',
-              ),
-              trailing: IconButton(
-                icon: const Icon(Icons.edit_outlined),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => EditTaxon(
-                        taxonId: taxonList[index].id,
-                        ctr: TaxonRegistryCtrModel.fromData(taxonList[index]),
-                      ),
-                    ),
-                  );
-                },
-              ),
-              onTap: () {},
-            );
-          },
-        ));
-  }
-}
-
 class TaxonDataContainer extends StatelessWidget {
   const TaxonDataContainer({
     super.key,
@@ -449,8 +324,6 @@ class TaxonDataContainer extends StatelessWidget {
           width: 200,
           padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
           decoration: BoxDecoration(
-            // color:
-            //     Theme.of(context).colorScheme.secondaryContainer.withAlpha(50),
             border: Border.all(
               color: Theme.of(context).dividerColor.withAlpha(50),
               width: 1.2,

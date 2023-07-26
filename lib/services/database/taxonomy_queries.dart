@@ -42,6 +42,17 @@ class TaxonomyQuery extends DatabaseAccessor<Database>
     return select(taxonomy).get();
   }
 
+  Future<List<int>> getAllUniqueTaxonFromSpecimen() async {
+    List<int?> specimenTaxonIds =
+        await select(specimen).map((s) => s.speciesID).get();
+    return specimenTaxonIds
+        .toSet()
+        .toList()
+        .where((element) => element != null)
+        .map((e) => e!)
+        .toList();
+  }
+
   Future<void> createTaxon(TaxonomyCompanion form) {
     return into(taxonomy).insert(form);
   }

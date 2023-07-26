@@ -79,7 +79,7 @@ class AddWithOptionsState extends ConsumerState<AddWithOptions> {
             ? const NewPersonnel()
             : ref.watch(personnelListProvider).when(
                   data: (data) {
-                    return SelectPersonnel(selectedPersonnel: data);
+                    return SelectPersonnel(addedPersonnel: data);
                   },
                   loading: () => const CommonProgressIndicator(),
                   error: (error, stack) => Text(error.toString()),

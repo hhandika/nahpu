@@ -377,3 +377,30 @@ class FindMenuButton extends StatelessWidget {
     );
   }
 }
+
+class ListCheckBox extends StatelessWidget {
+  const ListCheckBox({
+    super.key,
+    required this.isDisabled,
+    required this.value,
+    required this.onChanged,
+  });
+
+  final bool isDisabled;
+  final bool value;
+  final void Function(bool?) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Checkbox.adaptive(
+        activeColor: Theme.of(context).colorScheme.onSurface,
+        side: BorderSide(
+          width: 1.5,
+          color: isDisabled
+              ? Theme.of(context).colorScheme.surfaceVariant
+              : Theme.of(context).colorScheme.onSurface,
+        ),
+        value: value,
+        onChanged: isDisabled ? null : onChanged);
+  }
+}

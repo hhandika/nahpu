@@ -13,10 +13,10 @@ import 'package:nahpu/services/personnel_services.dart';
 class SelectPersonnel extends ConsumerStatefulWidget {
   const SelectPersonnel({
     super.key,
-    required this.selectedPersonnel,
+    required this.addedPersonnel,
   });
 
-  final List<PersonnelData> selectedPersonnel;
+  final List<PersonnelData> addedPersonnel;
 
   @override
   SelectPersonnelState createState() => SelectPersonnelState();
@@ -49,7 +49,7 @@ class SelectPersonnelState extends ConsumerState<SelectPersonnel> {
                   ),
                   PersonnelSelection(
                     data: _filteredData.isEmpty ? data : _filteredData,
-                    selectedPersonnel: widget.selectedPersonnel,
+                    addedPersonnel: widget.addedPersonnel,
                   )
                 ],
               );
@@ -72,11 +72,11 @@ class PersonnelSelection extends ConsumerStatefulWidget {
   const PersonnelSelection({
     super.key,
     required this.data,
-    required this.selectedPersonnel,
+    required this.addedPersonnel,
   });
 
   final List<PersonnelData> data;
-  final List<PersonnelData> selectedPersonnel;
+  final List<PersonnelData> addedPersonnel;
 
   @override
   PersonnelSelectionState createState() => PersonnelSelectionState();
@@ -101,7 +101,7 @@ class PersonnelSelectionState extends ConsumerState<PersonnelSelection> {
                           _selectedPersonnel.clear();
                         });
                       },
-                child: const Text('Deselect all')),
+                child: const Text('Clear')),
             TextButton(
                 // if list is empty or all personnel are already selected, disable button
                 onPressed: _filteredNotInProjectPersonnel().isEmpty ||
@@ -131,29 +131,21 @@ class PersonnelSelectionState extends ConsumerState<PersonnelSelection> {
               controller: _scrollController,
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text(widget.data[index].name ?? ''),
-                  subtitle: Text(widget.data[index].role ?? ''),
-                  leading: _selectedPersonnel.contains(widget.data[index])
-                      ? IconButton(
-                          icon: const Icon(Icons.check_circle),
-                          onPressed: () {
-                            setState(() {
+                    title: Text(widget.data[index].name ?? ''),
+                    subtitle: Text(widget.data[index].role ?? ''),
+                    leading: ListCheckBox(
+                        isDisabled:
+                            widget.addedPersonnel.contains(widget.data[index]),
+                        value: _selectedPersonnel.contains(widget.data[index]),
+                        onChanged: (value) {
+                          setState(() {
+                            if (value == true) {
+                              _selectedPersonnel.add(widget.data[index]);
+                            } else {
                               _selectedPersonnel.remove(widget.data[index]);
-                            });
-                          },
-                        )
-                      : IconButton(
-                          icon: const Icon(Icons.circle_outlined),
-                          onPressed: widget.selectedPersonnel
-                                  .contains(widget.data[index])
-                              ? null
-                              : () {
-                                  setState(() {
-                                    _selectedPersonnel.add(widget.data[index]);
-                                  });
-                                },
-                        ),
-                );
+                            }
+                          });
+                        }));
               },
             ),
           ),
@@ -208,7 +200,7 @@ class PersonnelSelectionState extends ConsumerState<PersonnelSelection> {
     List<PersonnelData> personnel = [];
 
     for (final person in widget.data) {
-      if (!widget.selectedPersonnel.contains(person)) {
+      if (!widget.addedPersonnel.contains(person)) {
         personnel.add(person);
       }
     }

@@ -72,13 +72,7 @@ class PersonnelListState extends ConsumerState<PersonnelList> {
     return personnel.when(
       data: (data) {
         return data.isEmpty
-            ? const Center(
-                child: Text(
-                  'No personnel found.\n'
-                  'You can add personnel or select from the list.',
-                  textAlign: TextAlign.center,
-                ),
-              )
+            ? const EmptyPersonnel()
             : CommonScrollbar(
                 scrollController: _scrollController,
                 child: ListView.builder(
@@ -98,6 +92,22 @@ class PersonnelListState extends ConsumerState<PersonnelList> {
       },
       loading: () => const CommonProgressIndicator(),
       error: (error, stack) => Text(error.toString()),
+    );
+  }
+}
+
+class EmptyPersonnel extends StatelessWidget {
+  const EmptyPersonnel({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        'No personnel found.\n'
+        'Add personnel using the add personnel button below.',
+        style: Theme.of(context).textTheme.labelLarge,
+        textAlign: TextAlign.center,
+      ),
     );
   }
 }

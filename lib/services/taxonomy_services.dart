@@ -2,29 +2,6 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
 import 'package:nahpu/services/io_services.dart';
 
-String getSpeciesName(TaxonomyData data) {
-  if (data.genus != null && data.specificEpithet != null) {
-    return '${data.genus} ${data.specificEpithet}';
-  } else {
-    return '';
-  }
-}
-
-String getTaxonFirstThreeLetters(String value) {
-  try {
-    List<String> splitAtSpace = value.split(' ');
-    if (splitAtSpace.length > 1) {
-      String genus = splitAtSpace[0].substring(0, 1);
-      String species = splitAtSpace[1].substring(0, 3);
-      return '$genus. $species';
-    } else {
-      return value.substring(0, 5);
-    }
-  } catch (e) {
-    return value.substring(0, 5);
-  }
-}
-
 class TaxonomyService extends DbAccess {
   const TaxonomyService({required super.ref});
 
@@ -41,6 +18,10 @@ class TaxonomyService extends DbAccess {
   Future<TaxonomyData?> getTaxonBySpecies(String genus, String epithet) async {
     return await TaxonomyQuery(dbAccess)
         .getTaxonIdByGenusEpithet(genus, epithet);
+  }
+
+  Future<List<int>> getUsedTaxa() async {
+    return await TaxonomyQuery(dbAccess).getAllUniqueTaxonFromSpecimen();
   }
 
   Future<List<TaxonomyData>> getTaxonList() {
@@ -90,5 +71,28 @@ class TaxonFilterServices {
 
   String _getOrder(TaxonomyData taxon) {
     return (taxon.taxonOrder ?? '').toLowerCase();
+  }
+}
+
+String getSpeciesName(TaxonomyData data) {
+  if (data.genus != null && data.specificEpithet != null) {
+    return '${data.genus} ${data.specificEpithet}';
+  } else {
+    return '';
+  }
+}
+
+String getTaxonFirstThreeLetters(String value) {
+  try {
+    List<String> splitAtSpace = value.split(' ');
+    if (splitAtSpace.length > 1) {
+      String genus = splitAtSpace[0].substring(0, 1);
+      String species = splitAtSpace[1].substring(0, 3);
+      return '$genus. $species';
+    } else {
+      return value.substring(0, 5);
+    }
+  } catch (e) {
+    return value.substring(0, 5);
   }
 }
