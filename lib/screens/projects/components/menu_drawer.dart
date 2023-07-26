@@ -129,10 +129,11 @@ class ProjectMenuDrawerState extends ConsumerState<ProjectMenuDrawer> {
             color: Colors.grey,
           ),
           ListTile(
-            leading: const Icon(Icons.delete_rounded, color: Colors.red),
-            title: const Text(
+            leading: Icon(Icons.delete_rounded,
+                color: Theme.of(context).colorScheme.error),
+            title: Text(
               'Delete project',
-              style: TextStyle(color: Colors.red),
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
             ),
             onTap: () async {
               return showDeleteAlertOnMenu(
@@ -156,7 +157,6 @@ class ProjectMenuDrawerState extends ConsumerState<ProjectMenuDrawer> {
                           builder: (context) => AlertDialog(
                                 title: const Text(
                                   'Error',
-                                  style: TextStyle(color: Colors.red),
                                 ),
                                 content: Text(
                                   e.toString().contains('FOREIGN KEY')

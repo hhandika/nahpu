@@ -28,6 +28,28 @@ Future<void> createNewCollEvents(BuildContext context, WidgetRef ref) {
   );
 }
 
+class NewCollEventTextButton extends ConsumerWidget {
+  const NewCollEventTextButton({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return TextButton(
+      onPressed: () async {
+        try {
+          await createNewCollEvents(context, ref);
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(e.toString()),
+            ),
+          );
+        }
+      },
+      child: const Text('Create event'),
+    );
+  }
+}
+
 class NewCollEvents extends ConsumerWidget {
   const NewCollEvents({Key? key}) : super(key: key);
 

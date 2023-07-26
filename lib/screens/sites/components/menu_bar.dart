@@ -13,6 +13,28 @@ Future<void> createNewSite(BuildContext context, WidgetRef ref) {
   });
 }
 
+class NewSiteTextButton extends ConsumerWidget {
+  const NewSiteTextButton({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return TextButton(
+      onPressed: () async {
+        try {
+          await createNewSite(context, ref);
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(e.toString()),
+            ),
+          );
+        }
+      },
+      child: const Text('Create site'),
+    );
+  }
+}
+
 class NewSite extends ConsumerWidget {
   const NewSite({super.key});
 
@@ -21,7 +43,15 @@ class NewSite extends ConsumerWidget {
     return IconButton(
       icon: const Icon(Icons.add_circle_outline_rounded),
       onPressed: () async {
-        createNewSite(context, ref);
+        try {
+          await createNewSite(context, ref);
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(e.toString()),
+            ),
+          );
+        }
       },
     );
   }

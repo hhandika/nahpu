@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/fields.dart';
+import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/navigation_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
@@ -106,7 +107,7 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
                 _isVisible = false;
                 _siteId = null;
               });
-              return const Text("No site entries");
+              return const EmptySite();
             } else {
               int siteSize = siteEntries.length;
               setState(() {
@@ -187,5 +188,18 @@ class SitePages extends StatelessWidget {
 
   SiteFormCtrModel _updateController(SiteData siteEntries) {
     return SiteFormCtrModel.fromData(siteEntries);
+  }
+}
+
+class EmptySite extends StatelessWidget {
+  const EmptySite({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const CommonEmptyForm(
+      iconPath: 'assets/icons/forest.svg',
+      text: 'No site found',
+      child: NewSiteTextButton(),
+    );
   }
 }

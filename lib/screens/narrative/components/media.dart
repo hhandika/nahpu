@@ -45,7 +45,6 @@ class NarrativeMediaFormState extends ConsumerState<NarrativeMediaForm> {
           error: (error, stackTrace) => Center(
             child: Text(
               error.toString(),
-              style: const TextStyle(color: Colors.red),
             ),
           ),
         );

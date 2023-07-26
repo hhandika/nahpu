@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
@@ -76,20 +75,9 @@ class EmptyMedia extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SvgPicture.asset(
-          'assets/icons/image-gallery.svg',
-          height: 64,
-          colorFilter: ColorFilter.mode(
-            Theme.of(context).colorScheme.secondary.withAlpha(80),
-            BlendMode.srcIn,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text('No media added', style: Theme.of(context).textTheme.labelLarge),
-      ],
+    return const CommonEmptyForm(
+      iconPath: 'assets/icons/image-gallery.svg',
+      text: 'No media added',
     );
   }
 }
@@ -370,9 +358,11 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
                 widget.ctr.categoryCtr.text,
               );
             },
-            child: const ListTile(
-              leading: Icon(Icons.delete_outline, color: Colors.red),
-              title: Text('Delete', style: TextStyle(color: Colors.red)),
+            child: ListTile(
+              leading: Icon(Icons.delete_outline,
+                  color: Theme.of(context).colorScheme.error),
+              title: Text('Delete',
+                  style: TextStyle(color: Theme.of(context).colorScheme.error)),
             ),
           ),
         ];

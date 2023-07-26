@@ -251,10 +251,11 @@ class PersonnelMenuState extends ConsumerState<PersonnelMenu> {
         PopupMenuItem(
             value: PersonnelMenuAction.delete,
             child: ListTile(
-              leading: const Icon(Icons.delete_outline, color: Colors.red),
-              title: const Text(
+              leading: Icon(Icons.delete_outline,
+                  color: Theme.of(context).colorScheme.error),
+              title: Text(
                 'Delete',
-                style: TextStyle(color: Colors.red),
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
               ),
               onTap: () {
                 _deletePersonnel();

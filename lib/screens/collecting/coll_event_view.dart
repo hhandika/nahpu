@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/fields.dart';
+import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database/database.dart';
@@ -109,7 +110,7 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
                       _collEvenId = null;
                     });
 
-                    return const Text("No collecting event entries");
+                    return const EmptyCollEvent();
                   } else {
                     int collEventSize = collEventEntries.length;
                     setState(() {
@@ -191,5 +192,18 @@ class CollEventPages extends StatelessWidget {
 
   CollEventFormCtrModel _updateController(CollEventData collEventData) {
     return CollEventFormCtrModel.fromData(collEventData);
+  }
+}
+
+class EmptyCollEvent extends StatelessWidget {
+  const EmptyCollEvent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const CommonEmptyForm(
+      iconPath: 'assets/icons/planner.svg',
+      text: "No collecting event found",
+      child: NewCollEventTextButton(),
+    );
   }
 }

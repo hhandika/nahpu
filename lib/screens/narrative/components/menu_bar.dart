@@ -21,6 +21,28 @@ Future<void> createNewNarrative(BuildContext context, WidgetRef ref) {
   });
 }
 
+class NewNarrativeTextButton extends ConsumerWidget {
+  const NewNarrativeTextButton({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return TextButton(
+      onPressed: () async {
+        try {
+          await createNewNarrative(context, ref);
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(e.toString()),
+            ),
+          );
+        }
+      },
+      child: const Text('Create narrative'),
+    );
+  }
+}
+
 class NewNarrative extends ConsumerWidget {
   const NewNarrative({super.key});
 
@@ -94,7 +116,6 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
                   'Error deleting narrative: $e',
                   style: const TextStyle(color: Colors.white),
                 ),
-                backgroundColor: Colors.red,
               ),
             );
           }
@@ -118,12 +139,10 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
         } catch (e) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(
-                'Error deleting all narrative: $e',
-                style: const TextStyle(color: Colors.white),
-              ),
-              backgroundColor: Colors.red,
-            ),
+                content: Text(
+              'Error deleting all narrative: $e',
+              style: const TextStyle(color: Colors.white),
+            )),
           );
         }
       },

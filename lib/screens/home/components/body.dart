@@ -306,52 +306,7 @@ class ProjectPopUpMenuState extends ConsumerState<ProjectPopUpMenu> {
             _getProjectInfo(widget.project.uuid);
           },
         ),
-        const PopupMenuDivider(),
-        PopupMenuItem<MenuSelection>(
-          value: MenuSelection.deleteProject,
-          onTap: () => _deleteProject(widget.project.uuid),
-          child: const ListTile(
-              leading: Icon(
-                Icons.delete_outline,
-                color: Colors.red,
-              ),
-              title: Text(
-                'Delete Project',
-                style: TextStyle(color: Colors.red),
-              )),
-        ),
       ],
-    );
-  }
-
-  Future<void> _deleteProject(String projectUuid) async {
-    return Future.delayed(
-      const Duration(seconds: 0),
-      () => showDeleteAlertOnMenu(
-        context: context,
-        title: 'Delete project?',
-        deletePrompt: 'You will delete this project permanently',
-        onDelete: () async {
-          try {
-            await ProjectServices(ref: ref).deleteProject(projectUuid);
-          } catch (e) {
-            String error = e.toString();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: error.contains('787')
-                    ? const Text(
-                        'Delete all project data first before deleting project')
-                    : Text('Something went wrong: $error'),
-                backgroundColor: Theme.of(context).colorScheme.error,
-              ),
-            );
-          }
-          if (mounted) {
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => const Home()));
-          }
-        },
-      ),
     );
   }
 

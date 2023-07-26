@@ -240,8 +240,9 @@ class CountBarChart extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 data.isEmpty
-                    ? const Text(
+                    ? Text(
                         'No data to display',
+                        style: Theme.of(context).textTheme.labelLarge,
                       )
                     : Expanded(
                         child: Padding(
@@ -342,9 +343,12 @@ class BarChartViewer extends StatelessWidget {
             bottomTitles: AxisTitles(
               sideTitles: _getTitleData(),
             ),
-            leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            leftTitles:
+                const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            topTitles:
+                const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            rightTitles:
+                const AxisTitles(sideTitles: SideTitles(showTitles: false)),
           ),
           barTouchData: BarTouchData(
             enabled: true,

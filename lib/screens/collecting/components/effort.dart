@@ -259,11 +259,13 @@ class CollEffortMenuState extends ConsumerState<CollEffortMenu> {
         const PopupMenuDivider(
           height: 10,
         ),
-        const PopupMenuItem(
+        PopupMenuItem(
           value: CommonPopUpMenuItems.delete,
           child: ListTile(
-            leading: Icon(Icons.delete_outline, color: Colors.red),
-            title: Text('Delete', style: TextStyle(color: Colors.red)),
+            leading: Icon(Icons.delete_outline,
+                color: Theme.of(context).colorScheme.error),
+            title: Text('Delete',
+                style: TextStyle(color: Theme.of(context).colorScheme.error)),
           ),
         ),
       ],

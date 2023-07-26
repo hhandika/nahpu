@@ -209,7 +209,10 @@ class RecordedTaxaView extends ConsumerWidget {
             text: 'Recorded',
           ),
           data.isEmpty
-              ? const Text('No specimens found\n')
+              ? Text(
+                  'No record found',
+                  style: Theme.of(context).textTheme.labelLarge,
+                )
               : const FittedBox(
                   fit: BoxFit.fill,
                   child: RecordedCounts(),

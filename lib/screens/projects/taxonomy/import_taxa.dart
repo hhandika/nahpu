@@ -74,11 +74,11 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
                 _problems.isNotEmpty
                     ? Column(
                         children: [
-                          const Text(
+                          Text(
                             'Parsing Issues:',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Colors.red,
+                              color: Theme.of(context).colorScheme.error,
                             ),
                           ),
                           const SizedBox(height: 10),

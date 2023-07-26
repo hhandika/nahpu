@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/fields.dart';
+import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/narrative_services.dart';
 import 'package:nahpu/services/navigation_services.dart';
@@ -110,7 +111,7 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
                       _narrativeId = null;
                     });
 
-                    return const Text("No narrative entries");
+                    return const EmptyNarrative();
                   } else {
                     int narrativeSize = narrativeEntries.length;
                     setState(() {
@@ -194,6 +195,19 @@ class NarrativePages extends StatelessWidget {
       siteCtr: narrativeEntries[index].siteID,
       narrativeCtr:
           TextEditingController(text: narrativeEntries[index].narrative),
+    );
+  }
+}
+
+class EmptyNarrative extends StatelessWidget {
+  const EmptyNarrative({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const CommonEmptyForm(
+      iconPath: 'assets/icons/agendas.svg',
+      text: 'No narrative found',
+      child: NewNarrativeTextButton(),
     );
   }
 }

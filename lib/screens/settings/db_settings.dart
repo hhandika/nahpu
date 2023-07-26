@@ -174,9 +174,10 @@ class DbReplaceButtons extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: onPressed,
-                      child: const Text(
+                      child: Text(
                         'Replace',
-                        style: TextStyle(color: Colors.red),
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.error),
                       ),
                     ),
                   ],

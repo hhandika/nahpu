@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/platform_services.dart';
 
@@ -236,7 +237,8 @@ class DeleteAlerts extends ConsumerWidget {
           onPressed: () {
             onDelete();
           },
-          child: const Text('Delete', style: TextStyle(color: Colors.red)),
+          child: Text('Delete',
+              style: TextStyle(color: Theme.of(context).colorScheme.error)),
         ),
       ],
     );
@@ -279,6 +281,42 @@ class CommonTabBars extends ConsumerWidget {
             children: children,
           )),
         ),
+      ],
+    );
+  }
+}
+
+class CommonEmptyForm extends StatelessWidget {
+  const CommonEmptyForm({
+    super.key,
+    required this.iconPath,
+    required this.text,
+    this.child,
+  });
+
+  final String iconPath;
+  final String text;
+  final Widget? child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SvgPicture.asset(
+          iconPath,
+          height: 64,
+          colorFilter: ColorFilter.mode(
+            Theme.of(context).colorScheme.secondary.withAlpha(80),
+            BlendMode.srcIn,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          text,
+          style: Theme.of(context).textTheme.labelLarge,
+        ),
+        child ?? const SizedBox.shrink(),
       ],
     );
   }

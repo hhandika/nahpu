@@ -15,6 +15,28 @@ Future<void> createNewSpecimens(BuildContext context, WidgetRef ref) async {
   }
 }
 
+class NewSpecimensTextButton extends ConsumerWidget {
+  const NewSpecimensTextButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return TextButton(
+      onPressed: () async {
+        try {
+          await createNewSpecimens(context, ref);
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(e.toString()),
+            ),
+          );
+        }
+      },
+      child: const Text('Create specimen'),
+    );
+  }
+}
+
 class NewSpecimens extends ConsumerWidget {
   const NewSpecimens({Key? key}) : super(key: key);
 
@@ -23,7 +45,15 @@ class NewSpecimens extends ConsumerWidget {
     return IconButton(
       icon: const Icon(Icons.add_circle_outline_rounded),
       onPressed: () async {
-        createNewSpecimens(context, ref);
+        try {
+          await createNewSpecimens(context, ref);
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(e.toString()),
+            ),
+          );
+        }
       },
     );
   }
@@ -100,12 +130,10 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
             Navigator.of(context).pop();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(
-                  'Error deleting specimen: $e',
-                  textAlign: TextAlign.center,
-                ),
-                backgroundColor: Colors.red,
-              ),
+                  content: Text(
+                'Error deleting specimen: $e',
+                textAlign: TextAlign.center,
+              )),
             );
           }
         }
@@ -129,12 +157,10 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
             Navigator.of(context).pop();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(
-                  'Error deleting all specimens: $e',
-                  textAlign: TextAlign.center,
-                ),
-                backgroundColor: Colors.red,
-              ),
+                  content: Text(
+                'Error deleting all specimens: $e',
+                textAlign: TextAlign.center,
+              )),
             );
           }
         });

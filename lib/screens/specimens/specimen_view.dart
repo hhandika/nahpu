@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/fields.dart';
+import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/types.dart';
@@ -116,11 +117,7 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
                     _specimenUuid = null;
                   });
 
-                  return const Center(
-                    child: Text(
-                      'No Specimen Records',
-                    ),
-                  );
+                  return const EmptySpecimen();
                 } else {
                   int specimenSize = specimenEntry.length;
                   setState(() {
@@ -207,5 +204,39 @@ class SpecimenPages extends StatelessWidget {
 
   SpecimenFormCtrModel _updateController(SpecimenData specimenEntry) {
     return SpecimenFormCtrModel.fromData(specimenEntry);
+  }
+}
+
+class EmptySpecimen extends ConsumerWidget {
+  const EmptySpecimen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ref.read(catalogFmtNotifierProvider).when(
+          data: (catalogFmt) {
+            return Center(
+              child: CommonEmptyForm(
+                iconPath: _getIconPath(catalogFmt),
+                text: 'No specimen found',
+                child: const NewSpecimensTextButton(),
+              ),
+            );
+          },
+          loading: () => const CommonProgressIndicator(),
+          error: (error, stack) => Text(error.toString()),
+        );
+  }
+
+  String _getIconPath(CatalogFmt fmt) {
+    switch (fmt) {
+      case CatalogFmt.generalMammals:
+        return 'assets/icons/mouse.svg';
+      case CatalogFmt.bats:
+        return 'assets/icons/bat.svg';
+      case CatalogFmt.birds:
+        return 'assets/icons/bird.svg';
+      default:
+        return 'assets/icons/mouse.svg';
+    }
   }
 }
