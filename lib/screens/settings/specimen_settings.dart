@@ -8,16 +8,26 @@ import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/styles/settings.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-class SpecimenSelection extends StatefulWidget {
+class SpecimenSelection extends ConsumerStatefulWidget {
   const SpecimenSelection({super.key});
 
   @override
-  State<SpecimenSelection> createState() => _SpecimenPartSelectionState();
+  SpecimenSelectionState createState() => SpecimenSelectionState();
 }
 
-class _SpecimenPartSelectionState extends State<SpecimenSelection> {
+class SpecimenSelectionState extends ConsumerState<SpecimenSelection> {
+  bool _isAlwaysShownCollectorField = false;
+
+  @override
+  void initState() {
+    _isAlwaysShownCollectorField =
+        SpecimenSettingServices(ref: ref).isCollectorFieldAlwaysShown();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final services = SpecimenSettingServices(ref: ref);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Specimen Settings'),
@@ -33,8 +43,21 @@ class _SpecimenPartSelectionState extends State<SpecimenSelection> {
                 title: const SettingTitle(title: 'Capture Records'),
                 tiles: [
                   SettingsTile.switchTile(
-                    initialValue: false,
-                    onToggle: (bool value) {},
+                    initialValue: _isAlwaysShownCollectorField,
+                    onToggle: (bool value) async {
+                      try {
+                        await services.setCollectorFieldAlwaysShown(value);
+                        setState(() {
+                          _isAlwaysShownCollectorField = value;
+                        });
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(e.toString()),
+                          ),
+                        );
+                      }
+                    },
                     title: const Text('Always show collector field'),
                   )
                 ],
@@ -90,7 +113,7 @@ class SpecimenTypeSettings extends ConsumerWidget {
               return data
                   .map((e) => CommonChip(
                         text: e,
-                        primaryColor: Theme.of(context).colorScheme.secondary,
+                        primaryColor: Theme.of(context).colorScheme.tertiary,
                         onDeleted: () {
                           SpecimenPartServices(ref: ref).removeType(e);
                         },

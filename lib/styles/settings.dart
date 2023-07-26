@@ -8,6 +8,5 @@ SettingsThemeData getSettingData(BuildContext context) {
     settingsSectionBackground:
         Theme.of(context).colorScheme.surfaceVariant.withAlpha(100),
     settingsTileTextColor: Theme.of(context).colorScheme.onBackground,
-    tileHighlightColor: Theme.of(context).colorScheme.primary,
   );
 }

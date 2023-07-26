@@ -31,15 +31,13 @@ class SettingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(16),
         color: Theme.of(context).colorScheme.surfaceVariant.withAlpha(100),
       ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
-        child: Column(
-          children: children,
-        ),
+      child: Column(
+        children: children,
       ),
     );
   }

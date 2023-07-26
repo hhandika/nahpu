@@ -91,12 +91,12 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
             specimenUuid: widget.specimenUuid,
             specimenCtr: widget.specimenCtr,
           ),
-          _showMore || widget.specimenCtr.collPersonnelCtr != null
-              ? CollPersonnelField(
-                  specimenUuid: widget.specimenUuid,
-                  specimenCtr: widget.specimenCtr,
-                )
-              : const SizedBox.shrink(),
+          Visibility(
+              visible: _isCollectorFieldVisible,
+              child: CollPersonnelField(
+                specimenUuid: widget.specimenUuid,
+                specimenCtr: widget.specimenCtr,
+              )),
           Padding(
               padding: const EdgeInsets.only(top: 4),
               child: TextButton(
@@ -111,6 +111,14 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
         ],
       ),
     );
+  }
+
+  bool get _isCollectorFieldVisible {
+    bool isCollectorFieldAlwaysShown =
+        SpecimenSettingServices(ref: ref).isCollectorFieldAlwaysShown();
+    return widget.specimenCtr.collPersonnelCtr != null ||
+        _showMore ||
+        isCollectorFieldAlwaysShown;
   }
 }
 

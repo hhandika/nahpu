@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/providers/taxa.dart';
 import 'package:nahpu/services/database/media_queries.dart';
@@ -409,5 +410,23 @@ class SpecimenPartServices extends DbAccess {
 
   void _invalidateTypes() {
     ref.invalidate(specimenTypesProvider);
+  }
+}
+
+const String collectorFieldKey = 'isCollectorFieldAlwaysShown';
+
+class SpecimenSettingServices {
+  SpecimenSettingServices({required this.ref});
+
+  final WidgetRef ref;
+
+  SharedPreferences get _prefs => ref.read(settingProvider);
+
+  Future<void> setCollectorFieldAlwaysShown(bool value) async {
+    await _prefs.setBool(collectorFieldKey, value);
+  }
+
+  bool isCollectorFieldAlwaysShown() {
+    return _prefs.getBool(collectorFieldKey) ?? false;
   }
 }
