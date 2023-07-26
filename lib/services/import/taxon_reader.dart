@@ -89,12 +89,13 @@ class TaxonEntryReader extends DbAccess {
 
   TaxonomyCompanion _getDbForm(TaxonEntryData data) {
     return TaxonomyCompanion(
-      taxonClass: db.Value(data.taxonClass.toSentenceCase()),
-      taxonOrder: db.Value(data.taxonOrder.toSentenceCase()),
-      taxonFamily: db.Value(data.taxonFamily.toSentenceCase()),
-      genus: db.Value(data.genus.toSentenceCase()),
-      specificEpithet: db.Value(data.specificEpithet.toLowerCase()),
-      commonName: db.Value(data.commonName ?? ''),
+      taxonClass: db.Value(data.taxonClass.trim().toSentenceCase()),
+      taxonOrder: db.Value(data.taxonOrder.trim().toSentenceCase()),
+      taxonFamily: db.Value(data.taxonFamily.trim().toSentenceCase()),
+      genus: db.Value(data.genus.trim().toSentenceCase()),
+      specificEpithet: db.Value(data.specificEpithet.trim().toLowerCase()),
+      commonName:
+          db.Value(data.commonName == null ? '' : data.commonName!.trim()),
       notes: db.Value(data.notes ?? ''),
     );
   }
