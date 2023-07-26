@@ -54,7 +54,7 @@ class SiteInfo extends ConsumerWidget {
           TextField(
             controller: siteFormCtr.siteIDCtr,
             inputFormatters: [
-              LengthLimitingTextInputFormatter(15),
+              LengthLimitingTextInputFormatter(20),
               FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9-_]+'))
             ],
             decoration: const InputDecoration(
