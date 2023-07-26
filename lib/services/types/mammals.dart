@@ -17,15 +17,6 @@ SpecimenAge? getSpecimenAge(int? age) {
   return null;
 }
 
-const List<String> conditionList = [
-  'Freshly Euthanized',
-  'Good',
-  'Fair',
-  'Poor',
-  'Rotten',
-  'Released',
-];
-
 enum TestisPosition { scrotal, abdominal }
 
 const List<String> testisPositionList = [

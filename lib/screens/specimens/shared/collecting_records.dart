@@ -3,7 +3,7 @@ import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/providers/taxa.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:flutter/material.dart';
-import 'package:nahpu/services/types/mammals.dart';
+import 'package:nahpu/services/types/specimens.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:drift/drift.dart' as db;

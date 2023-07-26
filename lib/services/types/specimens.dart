@@ -15,6 +15,16 @@ const List<String> specimenSexList = [
   'Unknown',
 ];
 
+const List<String> conditionList = [
+  'Freshly Euthanized',
+  'Good',
+  'Fair',
+  'Poor',
+  'Rotten',
+  'Released',
+  'Unknown',
+];
+
 SpecimenSex? getSpecimenSex(int? sex) {
   if (sex != null) {
     return SpecimenSex.values[sex];
