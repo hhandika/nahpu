@@ -4,6 +4,8 @@ echo "Build options:"
 PS3='Please select the platform: '
 OPT=("Android" "iOS" "MacOS" "All" "Quit")
 OUTPUT_DIR="../nahpu-releases"
+APK_PATH="$OUTPUT_DIR/nahpu_beta_android.apk"
+DMG_PATH="$OUTPUT_DIR/nahpu_beta_macos.dmg"
 
 create_output_dir() {
     if [ ! -d $OUTPUT_DIR ]; then
@@ -13,17 +15,29 @@ create_output_dir() {
 
 copy_apk() {
     create_output_dir
+    # Remove any previous APK
+    if [ -f $APK_PATH ]; then
+        echo "Removing previous APK"
+        rm $APK_PATH
+    fi
+    # Copy APK to output directory
     if [ -f "build/app/outputs/apk/release/app-release.apk" ]; then
         echo "Copying APK to $OUTPUT_DIR"
-        cp build/app/outputs/apk/release/app-release.apk $OUTPUT_DIR/nahpu_beta_android.apk
+        cp build/app/outputs/apk/release/app-release.apk $APK_PATH
     fi
 }
 
 mv_dmg() {
     create_output_dir
+    # Remove any previous DMG
+    if [ -f $DMG_PATH ]; then
+        echo "Removing previous DMG"
+        rm $DMG_PATH
+    fi
+    # Move DMG to output directory
     if [ -f "installer/nahpu.dmg" ]; then
         echo "Moving DMG to $OUTPUT_DIR"
-        mv installer/nahpu.dmg $OUTPUT_DIR/nahpu_beta_macos.dmg
+        mv installer/nahpu.dmg $DMG_PATH
     fi
 }
 
