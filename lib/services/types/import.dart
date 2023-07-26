@@ -1,7 +1,10 @@
+import 'package:file_selector/file_selector.dart';
+import 'package:nahpu/services/types/file_format.dart';
+
 enum TaxonImportFmt { csv }
 
-const List<String> taxonImportFmtList = [
-  'CSV UTF-8 (Comma-delimited) (.csv)',
+const List<XTypeGroup> taxonImportFmt = [
+  csvFmt,
 ];
 
 enum TaxonEntryHeader {

@@ -32,5 +32,7 @@
 	<string>public.app-category.education</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>com.apple.security.files.user-selected.read-write</key>
+  	<true/>
 </dict>
 </plist>

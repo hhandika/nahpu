@@ -5,6 +5,7 @@ import 'package:nahpu/services/types/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:path/path.dart' as p;
+import 'package:share_plus/share_plus.dart';
 
 class FileOperationPage extends StatelessWidget {
   const FileOperationPage({
@@ -142,7 +143,7 @@ class SelectFileField extends StatelessWidget {
     required this.maxWidth,
   });
 
-  final File? filePath;
+  final XFile? filePath;
   final VoidCallback onPressed;
   final double width;
   final double maxWidth;

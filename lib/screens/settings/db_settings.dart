@@ -8,9 +8,11 @@ import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/file_operation.dart';
 import 'package:nahpu/services/export/db_writer.dart';
 import 'package:nahpu/services/io_services.dart';
+import 'package:nahpu/services/types/file_format.dart';
 import 'package:nahpu/styles/settings.dart';
 import 'package:path/path.dart' as p;
 import 'package:settings_ui/settings_ui.dart';
+import 'package:share_plus/share_plus.dart';
 
 class DatabaseSettings extends ConsumerStatefulWidget {
   const DatabaseSettings({super.key});
@@ -20,7 +22,7 @@ class DatabaseSettings extends ConsumerStatefulWidget {
 }
 
 class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
-  File? _dbPath;
+  XFile? _dbPath;
   bool _isBackup = true;
   bool _hasSelected = false;
 
@@ -44,13 +46,16 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
                         DbFileInputField(
                             dbPath: _dbPath,
                             onPressed: () async {
-                              final dbPath =
-                                  await FilePickerServices().selectFile(null);
-                              if (dbPath != null) {
-                                setState(() {
-                                  _dbPath = dbPath;
-                                  _hasSelected = true;
-                                });
+                              try {
+                                await _getDbPath();
+                              } catch (e) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Failed to select file!',
+                                    ),
+                                  ),
+                                );
                               }
                             },
                             isBackup: _isBackup,
@@ -74,11 +79,21 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
         ));
   }
 
+  Future<void> _getDbPath() async {
+    final dbPath = await FilePickerServices().selectFile([dbFmt]);
+    if (dbPath != null) {
+      setState(() {
+        _dbPath = dbPath;
+        _hasSelected = true;
+      });
+    }
+  }
+
   Future<void> _replaceDb() async {
     Navigator.of(context).pop();
     try {
       File? backupPath = _isBackup ? await getDbBackUpPath() : null;
-      await DbWriter(ref: ref).replaceDb(_dbPath!, backupPath);
+      await DbWriter(ref: ref).replaceDb(File(_dbPath!.path), backupPath);
       if (context.mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
@@ -109,7 +124,7 @@ class DbFileInputField extends StatelessWidget {
     required this.onBackupChosen,
   });
 
-  final File? dbPath;
+  final XFile? dbPath;
   final bool isBackup;
   final VoidCallback onPressed;
   final void Function(bool) onBackupChosen;

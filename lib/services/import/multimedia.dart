@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:exif/exif.dart';
+import 'package:file_selector/file_selector.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/platform_services.dart';
 import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/utility_services.dart';
+import 'package:nahpu/services/types/file_format.dart';
 import 'package:path/path.dart' as path;
 
 const String mediaDir = 'media';
@@ -71,15 +73,13 @@ class ImageServices extends DbAccess {
   }
 
   Future<List<String>> pickFromFiles() async {
-    List<File> result = await FilePickerServices()
-        .pickMultiFiles(['jpg', 'png', 'jpeg', 'heic']);
+    List<XFile> result = await openFiles(acceptedTypeGroups: imageFmt);
     List<File> files = await _copyFiles(result.map((e) => e.path).toList());
     return files.map((e) => e.path).toList();
   }
 
   Future<String> pickFromFileSingle() async {
-    File? result =
-        await FilePickerServices().selectFile(['jpg', 'png', 'jpeg']);
+    XFile? result = await openFile(acceptedTypeGroups: imageFmt);
     File? file = result == null ? null : await _copySingleFile(result.path);
     return file?.path ?? '';
   }

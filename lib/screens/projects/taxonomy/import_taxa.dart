@@ -13,6 +13,7 @@ import 'package:nahpu/screens/shared/file_operation.dart';
 import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/import/taxon_entry.dart';
 import 'package:nahpu/services/utility_services.dart';
+import 'package:share_plus/share_plus.dart';
 
 class TaxonImportForm extends ConsumerStatefulWidget {
   const TaxonImportForm({super.key});
@@ -23,7 +24,7 @@ class TaxonImportForm extends ConsumerStatefulWidget {
 
 class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
   TaxonImportFmt _fmt = TaxonImportFmt.csv;
-  File? _filePath;
+  XFile? _filePath;
   List<String> _problems = [];
   late CsvData _csvData;
   bool _hasData = false;
@@ -148,9 +149,7 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
   }
 
   Future<void> _getFile() async {
-    File? file = await FilePickerServices().selectFile([
-      'csv',
-    ]);
+    XFile? file = await FilePickerServices().selectFile(taxonImportFmt);
     if (file != null) {
       setState(() {
         _filePath = file;
@@ -163,7 +162,7 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
     if (_filePath != null) {
       TaxonEntryReader reader = TaxonEntryReader(ref: ref);
       try {
-        _csvData = await reader.parseCsv(_filePath!);
+        _csvData = await reader.parseCsv(File(_filePath!.path));
         _problems = reader.findProblems(_csvData.headerMap);
         setState(() {
           _hasData = true;
@@ -220,10 +219,10 @@ class InputFormatField extends StatelessWidget {
         labelText: 'Input Format',
       ),
       value: inputFmt,
-      items: taxonImportFmtList
+      items: taxonImportFmt
           .map((e) => DropdownMenuItem(
-                value: TaxonImportFmt.values[taxonImportFmtList.indexOf(e)],
-                child: CommonDropdownText(text: e),
+                value: TaxonImportFmt.values[taxonImportFmt.indexOf(e)],
+                child: CommonDropdownText(text: e.label ?? ''),
               ))
           .toList(),
       onChanged: onChanged,

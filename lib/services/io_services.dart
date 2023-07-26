@@ -1,11 +1,11 @@
 import 'dart:io';
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/providers/database.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -29,7 +29,7 @@ class FilePickerServices {
   }
 
   Future<Directory?> selectDir() async {
-    final result = await FilePicker.platform.getDirectoryPath();
+    final result = await getDirectoryPath();
     if (result != null) {
       if (kDebugMode) {
         print('Selected directory: $result');
@@ -39,41 +39,12 @@ class FilePickerServices {
     return null;
   }
 
-  Future<File?> selectFile(List<String>? allowedExtension) async {
-    final result = await _matchPicker(allowedExtension);
-
-    if (result != null) {
-      if (kDebugMode) {
-        print('Selected file: ${result.files.single.path}');
-      }
-      return File(result.files.single.path!);
-    }
-    return null;
+  Future<XFile?> selectFile(List<XTypeGroup> allowedExtension) async {
+    return await openFile(acceptedTypeGroups: allowedExtension);
   }
 
-  Future<List<File>> pickMultiFiles(List<String> allowedExtension) async {
-    FilePickerResult? files = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowMultiple: true,
-      allowedExtensions: allowedExtension,
-    );
-
-    if (files != null) {
-      return files.paths.map((e) => File(e!)).toList();
-    } else {
-      return [];
-    }
-  }
-
-  Future<FilePickerResult?> _matchPicker(List<String>? allowedExt) async {
-    if (allowedExt == null) {
-      return await FilePicker.platform.pickFiles();
-    }
-
-    return await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: allowedExt,
-    );
+  Future<List<XFile>> pickMultiFiles(List<XTypeGroup> allowedExtension) async {
+    return await openFiles(acceptedTypeGroups: allowedExtension);
   }
 }
 
