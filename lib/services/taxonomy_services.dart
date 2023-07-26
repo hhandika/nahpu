@@ -1,9 +1,10 @@
+import 'package:nahpu/providers/taxa.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
 import 'package:nahpu/services/io_services.dart';
 
-class TaxonomyService extends DbAccess {
-  const TaxonomyService({required super.ref});
+class TaxonomyServices extends DbAccess {
+  const TaxonomyServices({required super.ref});
 
   Future<TaxonomyData> getTaxonById(int id) async {
     return await TaxonomyQuery(dbAccess).getTaxonById(id);
@@ -36,12 +37,23 @@ class TaxonomyService extends DbAccess {
     return TaxonomyQuery(dbAccess).updateTaxonEntry(id, entry);
   }
 
+  Future<void> deleteTaxonFromList(List<int> idList) async {
+    for (var id in idList) {
+      await deleteTaxon(id);
+    }
+    invalidateTaxonList();
+  }
+
   Future<void> deleteTaxon(int id) {
     return TaxonomyQuery(dbAccess).deleteTaxon(id);
   }
 
   Future<void> deleteAllTaxon() {
     return TaxonomyQuery(dbAccess).deleteAllTaxon();
+  }
+
+  void invalidateTaxonList() {
+    ref.invalidate(taxonRegistryProvider);
   }
 }
 

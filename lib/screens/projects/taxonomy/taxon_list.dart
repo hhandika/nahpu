@@ -139,11 +139,9 @@ class TaxonListViewState extends ConsumerState<TaxonListView> {
                 onPressed: _selectedTaxon.length == widget.taxonList.length
                     ? null
                     : () {
+                        List<int> allowedTaxa = _getAllowedTaxa();
                         setState(() {
-                          _selectedTaxon = widget.taxonList
-                              .map((e) => e.id)
-                              .toList()
-                              .cast<int>();
+                          _selectedTaxon.addAll(allowedTaxa);
                         });
                       },
                 child: const Text('Select all'),
@@ -154,6 +152,7 @@ class TaxonListViewState extends ConsumerState<TaxonListView> {
               _usedTaxon = await _getUsedTaxa();
               setState(() {
                 _isSelecting = !_isSelecting;
+                _selectedTaxon.clear();
               });
             },
             child: Text(_isSelecting ? 'Cancel' : 'Select'),
@@ -216,55 +215,88 @@ class TaxonListViewState extends ConsumerState<TaxonListView> {
         ),
         const SizedBox(height: 16),
         _isSelecting
-            ? DeleteTaxonButton(selectedTaxon: _selectedTaxon)
+            ? DeleteTaxonButton(
+                selectedTaxon: _selectedTaxon,
+                onPressed: () async {
+                  await _deleteTaxon();
+                  setState(() {
+                    _selectedTaxon.clear();
+                  });
+                  if (mounted) {
+                    Navigator.of(context).pop();
+                  }
+                },
+              )
             : const SizedBox.shrink(),
       ],
     );
   }
 
   Future<List<int>> _getUsedTaxa() async {
-    return await TaxonomyService(ref: ref).getUsedTaxa();
+    return await TaxonomyServices(ref: ref).getUsedTaxa();
+  }
+
+  List<int> _getAllowedTaxa() {
+    List<int> allowedTaxa = [];
+    for (var taxon in widget.taxonList) {
+      if (!_usedTaxon.contains(taxon.id)) {
+        allowedTaxa.add(taxon.id);
+      }
+    }
+    return allowedTaxa;
+  }
+
+  Future<void> _deleteTaxon() async {
+    await TaxonomyServices(ref: ref).deleteTaxonFromList(_selectedTaxon);
   }
 }
 
 class DeleteTaxonButton extends StatelessWidget {
-  const DeleteTaxonButton({super.key, required this.selectedTaxon});
+  const DeleteTaxonButton({
+    super.key,
+    required this.selectedTaxon,
+    required this.onPressed,
+  });
 
   final List<int> selectedTaxon;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: selectedTaxon.isEmpty
-          ? null
-          : () {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: const Text('Delete taxon'),
-                      content: const Text(
-                          'Are you sure you want to delete the selected taxon?'),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text('Cancel'),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            // await TaxonomyService().deleteTaxon(selectedTaxon);
-                            // Navigator.of(context).pop();
-                          },
-                          child: const Text('Delete'),
-                        ),
-                      ],
-                    );
-                  });
-            },
-      child: Text('Delete ${_taxonCount()}',
-          style: TextStyle(color: Theme.of(context).colorScheme.error)),
+    return Column(
+      children: [
+        IconButton(
+          color: Theme.of(context).colorScheme.error,
+          onPressed: selectedTaxon.isEmpty
+              ? null
+              : () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text('Delete taxon'),
+                          content: const Text(
+                              'Are you sure you want to delete the selected taxon?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: onPressed,
+                              child: const Text('Delete'),
+                            ),
+                          ],
+                        );
+                      });
+                },
+          icon: const Icon(Icons.delete_outline),
+        ),
+        Text('Delete ${_taxonCount()}',
+            style: Theme.of(context).textTheme.labelLarge),
+      ],
     );
   }
 

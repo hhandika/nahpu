@@ -68,7 +68,7 @@ class TaxonEntryReader extends DbAccess {
           continue;
         }
         TaxonomyCompanion dbForm = _getDbForm(data);
-        TaxonomyService(ref: ref).createTaxon(dbForm);
+        TaxonomyServices(ref: ref).createTaxon(dbForm);
         importData.recordCount++;
 
         if (!importedFamilies.contains(data.taxonFamily)) {
@@ -101,7 +101,7 @@ class TaxonEntryReader extends DbAccess {
 
   Future<bool> _checkSpeciesExist(TaxonEntryData data) async {
     try {
-      TaxonomyData? species = await TaxonomyService(ref: ref)
+      TaxonomyData? species = await TaxonomyServices(ref: ref)
           .getTaxonBySpecies(data.genus, data.specificEpithet);
       return species != null;
     } catch (e) {

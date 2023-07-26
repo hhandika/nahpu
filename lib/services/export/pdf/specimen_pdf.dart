@@ -183,7 +183,7 @@ class SpecimenPdfWriter extends PdfServices {
 
   Future<pw.Widget> _generateTaxonomyData(SpecimenData data) async {
     TaxonomyData? taxonomy = data.speciesID != null
-        ? await TaxonomyService(ref: ref).getTaxonById(data.speciesID!)
+        ? await TaxonomyServices(ref: ref).getTaxonById(data.speciesID!)
         : null;
     if (taxonomy == null) {
       return container(pw.Text('No taxonomy data'));

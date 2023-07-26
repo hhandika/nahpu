@@ -46,7 +46,7 @@ class CaptureRecordStats {
   Future<void> _countTaxa(int? speciesID, WidgetRef ref) async {
     if (speciesID != null) {
       TaxonomyData data =
-          await TaxonomyService(ref: ref).getTaxonById(speciesID);
+          await TaxonomyServices(ref: ref).getTaxonById(speciesID);
       _countSpecies(getSpeciesName(data));
       if (data.taxonFamily != null) {
         _countFamily(data.taxonFamily!.trim());

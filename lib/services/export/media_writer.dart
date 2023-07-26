@@ -196,7 +196,7 @@ class MediaCategoryServices extends DbAccess {
         .getSpecimen(specimenMediaData.specimenUuid);
     TaxonomyData? taxonomy = specimen.speciesID == null
         ? null
-        : await TaxonomyService(ref: ref).getTaxonById(specimen.speciesID!);
+        : await TaxonomyServices(ref: ref).getTaxonById(specimen.speciesID!);
     String specimenFieldId = await _getSpecimenFieldId(specimen);
     String species = taxonomy == null
         ? ''

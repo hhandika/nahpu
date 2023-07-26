@@ -124,7 +124,7 @@ class SpecimenListPageState extends ConsumerState<SpecimenListPage> {
 
   Future<void> _filterByTaxon(String query) async {
     List<SpecimenData> filteredData = [];
-    List<int> taxonIDs = await TaxonomyService(ref: ref).searchTaxa(query);
+    List<int> taxonIDs = await TaxonomyServices(ref: ref).searchTaxa(query);
     for (int taxonID in taxonIDs) {
       filteredData.addAll(widget.data
           .where((element) => element.speciesID == taxonID)
@@ -358,7 +358,8 @@ class SpecimenListSubtitle extends ConsumerWidget {
 
   Future<String> _getTaxonData(int? taxonId, WidgetRef ref) async {
     if (taxonId != null) {
-      TaxonomyData data = await TaxonomyService(ref: ref).getTaxonById(taxonId);
+      TaxonomyData data =
+          await TaxonomyServices(ref: ref).getTaxonById(taxonId);
       return _createTaxonInfo(data);
     } else {
       return '';

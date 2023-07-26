@@ -48,7 +48,7 @@ class SpeciesAutoCompleteState extends ConsumerState<SpeciesAutoComplete> {
   void _inputTaxon(String selection) {
     _copyTaxon(selection);
     var taxon = widget.speciesCtr.text.split(' ');
-    TaxonomyService(ref: ref)
+    TaxonomyServices(ref: ref)
         .getTaxonBySpecies(taxon[0], taxon[1])
         .then((data) {
       SpecimenServices(ref: ref).updateSpecimen(

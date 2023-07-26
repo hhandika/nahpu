@@ -40,7 +40,7 @@ class CollectingRecordWriterServices extends DbAccess {
       return [''];
     } else {
       TaxonomyData taxon =
-          await TaxonomyService(ref: ref).getTaxonById(speciesId);
+          await TaxonomyServices(ref: ref).getTaxonById(speciesId);
 
       return [
         taxon.taxonOrder ?? '',
