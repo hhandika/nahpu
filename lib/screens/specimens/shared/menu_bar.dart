@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nahpu/services/types/types.dart';
+import 'package:nahpu/services/types/specimens.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/forms.dart';

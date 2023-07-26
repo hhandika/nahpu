@@ -1,6 +1,47 @@
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
+enum PdfExportType { narrative, specimen }
+
+enum ExportFmt { csv, tsv }
+
+const List<String> supportedTaxonClass = [
+  'Aves',
+  'Mammalia',
+];
+
+const Map<PdfExportType, String> pdfExport = {
+  PdfExportType.narrative: 'Narrative',
+  PdfExportType.specimen: 'Specimen records',
+};
+
+const List<String> exportFormats = [
+  // 'Excel (.xlsx)',
+  'Comma-separated (.csv)',
+  'Tab-separated (.tsv)',
+];
+
+enum DbExportFmt { sqlite3 }
+
+const List<String> dbExportFmtList = [
+  'Database (.sqlite3)',
+];
+
+enum ReportFmt { excel, csv }
+
+const List<String> reportFmtList = [
+  'Excel (.xlsx)',
+  'Comma-separated (.csv)',
+];
+
+enum ReportType { speciesCount, mediaData, all }
+
+const List<String> reportTypeList = [
+  'Species count ',
+  'Media data',
+  'All',
+];
+
 enum ArchiveFmt { zip }
 
 Map<PdfPageFormat, String> pdfExportPageFormat = {

@@ -7,7 +7,6 @@ import 'package:nahpu/services/export/pdf/narrative_pdf.dart';
 import 'package:nahpu/services/export/pdf/specimen_pdf.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/export.dart';
-import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/screens/shared/file_operation.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/services/io_services.dart';

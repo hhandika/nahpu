@@ -4,7 +4,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/screens/settings/collevent_settings.dart';
 import 'package:nahpu/screens/settings/common.dart';
-import 'package:nahpu/services/types/types.dart';
+import 'package:nahpu/services/types/specimens.dart';
 import 'package:nahpu/screens/settings/shared.dart';
 import 'package:nahpu/screens/settings/specimen_settings.dart';
 import 'package:nahpu/styles/settings.dart';

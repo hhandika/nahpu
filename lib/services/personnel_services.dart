@@ -4,7 +4,7 @@ import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/personnel_queries.dart';
 import 'package:nahpu/services/io_services.dart';
-import 'package:nahpu/services/types/types.dart';
+import 'package:nahpu/services/types/specimens.dart';
 import 'package:drift/drift.dart' as db;
 
 class PersonnelServices extends DbAccess {

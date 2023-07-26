@@ -7,12 +7,17 @@ import 'package:nahpu/screens/projects/personnel/avatars.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/services/database/database.dart';
-import 'package:nahpu/services/types/types.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/providers/validation.dart';
 import 'package:flutter/services.dart';
+
+const List<String> personnelRoleList = [
+  'Cataloger',
+  'Preparator only',
+  'None',
+];
 
 class PersonnelFormPage extends ConsumerStatefulWidget {
   const PersonnelFormPage({

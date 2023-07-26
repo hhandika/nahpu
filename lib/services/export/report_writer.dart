@@ -6,7 +6,7 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/export/media_writer.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
-import 'package:nahpu/services/types/types.dart';
+import 'package:nahpu/services/types/export.dart';
 
 class ReportServices extends DbAccess {
   const ReportServices({required super.ref});

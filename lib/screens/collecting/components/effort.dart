@@ -5,7 +5,6 @@ import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
-import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/providers/collevents.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
@@ -13,6 +12,8 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/utility_services.dart';
+
+enum EffortPopUpMenuItems { edit, delete }
 
 class CollEffort extends StatelessWidget {
   const CollEffort({
@@ -245,12 +246,12 @@ class CollEffortMenu extends ConsumerStatefulWidget {
 class CollEffortMenuState extends ConsumerState<CollEffortMenu> {
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<CommonPopUpMenuItems>(
+    return PopupMenuButton<EffortPopUpMenuItems>(
       icon: const Icon(Icons.more_vert),
       onSelected: _onSelected,
-      itemBuilder: (context) => <PopupMenuEntry<CommonPopUpMenuItems>>[
+      itemBuilder: (context) => <PopupMenuEntry<EffortPopUpMenuItems>>[
         const PopupMenuItem(
-          value: CommonPopUpMenuItems.edit,
+          value: EffortPopUpMenuItems.edit,
           child: ListTile(
             leading: Icon(Icons.edit_outlined),
             title: Text('Edit'),
@@ -260,7 +261,7 @@ class CollEffortMenuState extends ConsumerState<CollEffortMenu> {
           height: 10,
         ),
         PopupMenuItem(
-          value: CommonPopUpMenuItems.delete,
+          value: EffortPopUpMenuItems.delete,
           child: ListTile(
             leading: Icon(Icons.delete_outline,
                 color: Theme.of(context).colorScheme.error),
@@ -272,9 +273,9 @@ class CollEffortMenuState extends ConsumerState<CollEffortMenu> {
     );
   }
 
-  void _onSelected(CommonPopUpMenuItems item) {
+  void _onSelected(EffortPopUpMenuItems item) {
     switch (item) {
-      case CommonPopUpMenuItems.edit:
+      case EffortPopUpMenuItems.edit:
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -286,7 +287,7 @@ class CollEffortMenuState extends ConsumerState<CollEffortMenu> {
           ),
         );
         break;
-      case CommonPopUpMenuItems.delete:
+      case EffortPopUpMenuItems.delete:
         CollEventServices(ref: ref).deleteCollEffort(
           widget.collEffortId,
         );

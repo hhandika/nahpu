@@ -6,7 +6,7 @@ import 'package:nahpu/screens/sites/components/menu_bar.dart';
 import 'package:nahpu/screens/narrative/components/menu_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
-import 'package:nahpu/services/types/types.dart';
+import 'package:nahpu/services/types/specimens.dart';
 
 class ActionButtons extends ConsumerWidget {
   const ActionButtons({super.key});

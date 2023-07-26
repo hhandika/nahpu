@@ -7,7 +7,6 @@ import 'package:nahpu/services/database/taxonomy_queries.dart';
 import 'package:nahpu/services/import/multimedia.dart';
 import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/types/specimens.dart';
-import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/providers/settings.dart';
 import 'package:nahpu/services/database/database.dart';

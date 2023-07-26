@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/sites/site_view.dart';
 import 'package:nahpu/services/site_services.dart';
+
+enum SiteMenuSelection {
+  newSite,
+  duplicate,
+  pdfExport,
+  deleteRecords,
+  deleteAllRecords
+}
 
 Future<void> createNewSite(BuildContext context, WidgetRef ref) {
   return SiteServices(ref: ref).createNewSite().then((_) {

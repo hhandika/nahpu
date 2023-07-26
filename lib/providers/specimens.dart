@@ -6,7 +6,6 @@ import 'package:nahpu/services/database/media_queries.dart';
 import 'package:nahpu/services/database/specimen_queries.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/types/specimens.dart';
-import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/services/utility_services.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

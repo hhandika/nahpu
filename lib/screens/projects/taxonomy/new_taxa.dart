@@ -9,7 +9,7 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:flutter/services.dart';
-import 'package:nahpu/services/types/types.dart';
+import 'package:nahpu/services/types/export.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/utility_services.dart';
 

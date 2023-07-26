@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/types/controllers.dart';
-import 'package:nahpu/services/types/types.dart';
 import 'package:nahpu/providers/sites.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,6 +13,8 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/site_services.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+enum CoordinatePopUpMenuItems { edit, copy, open }
 
 class CoordinateFields extends StatelessWidget {
   const CoordinateFields({super.key, required this.siteId});

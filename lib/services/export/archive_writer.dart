@@ -10,7 +10,7 @@ import 'package:nahpu/services/io_services.dart';
 import 'package:archive/archive_io.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/types/export.dart';
-import 'package:nahpu/services/types/types.dart';
+import 'package:nahpu/services/types/specimens.dart';
 import 'package:path/path.dart' as path;
 
 class ArchiveServices extends DbAccess {
