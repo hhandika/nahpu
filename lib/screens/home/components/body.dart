@@ -119,11 +119,11 @@ class ProjectNotFound extends StatelessWidget {
               )),
           const SizedBox(height: 16),
           Text(
-            'No projects found!',
+            'No projects found.',
             style: Theme.of(context).textTheme.titleLarge,
           ),
           Text(
-            'Create a new project to get started',
+            'Create a new project to get started.',
             style: Theme.of(context).textTheme.bodyLarge,
           ),
         ],
