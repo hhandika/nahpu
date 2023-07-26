@@ -294,8 +294,12 @@ class DeleteTaxonButton extends StatelessWidget {
                 },
           icon: const Icon(Icons.delete_outline),
         ),
-        Text('Delete ${_taxonCount()}',
-            style: Theme.of(context).textTheme.labelLarge),
+        Visibility(
+            visible: selectedTaxon.isNotEmpty,
+            child: Text('Delete ${_taxonCount()}',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.error,
+                )))
       ],
     );
   }

@@ -305,12 +305,12 @@ class DeleteMenuButton extends StatelessWidget {
     return ListTile(
       leading: Icon(
         deleteAll ? Icons.delete_forever_outlined : Icons.delete_outline,
-        color: Colors.red,
+        color: Theme.of(context).colorScheme.error,
       ),
       title: Text(
         deleteAll ? 'Delete all records' : 'Delete record',
-        style: const TextStyle(
-          color: Colors.red,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.error,
         ),
       ),
     );
