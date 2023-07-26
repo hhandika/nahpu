@@ -38,8 +38,14 @@ class TaxonomyQuery extends DatabaseAccessor<Database>
         .getSingleOrNull();
   }
 
-  Future<List<TaxonomyData>> getTaxonList() {
-    return select(taxonomy).get();
+  Future<List<TaxonomyData>> getTaxonList() async {
+    // Get all taxon order by genus and species
+    return (select(taxonomy)
+          ..orderBy([
+            (t) => OrderingTerm(expression: t.genus),
+            (t) => OrderingTerm(expression: t.specificEpithet),
+          ]))
+        .get();
   }
 
   Future<List<int>> getAllUniqueTaxonFromSpecimen() async {
