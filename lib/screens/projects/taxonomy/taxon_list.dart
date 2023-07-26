@@ -70,6 +70,7 @@ class _TaxonListState extends State<TaxonList> {
           children: [
             SearchButtonField(
               controller: _searchController,
+              hintText: 'Search taxa',
               onChanged: (String value) {
                 String searchValue = value.toLowerCase();
                 setState(() {

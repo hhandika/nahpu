@@ -38,6 +38,7 @@ class SelectPersonnelState extends ConsumerState<SelectPersonnel> {
                   CommonPadding(
                     child: SearchButtonField(
                         controller: _searchController,
+                        hintText: 'Search personnel',
                         onChanged: (query) {
                           setState(() {
                             _filteredData = _filterPersonnelList(

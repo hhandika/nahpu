@@ -52,6 +52,7 @@ class SpecimenListPageState extends ConsumerState<SpecimenListPage> {
           children: [
             SearchButtonField(
               controller: _searchController,
+              hintText: 'Search specimens',
               onChanged: (String value) async {
                 await _filterResults(value);
                 setState(() {});

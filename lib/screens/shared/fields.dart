@@ -121,15 +121,17 @@ class SearchButtonField extends StatelessWidget {
     super.key,
     required this.controller,
     required this.onChanged,
+    required this.hintText,
   });
 
   final TextEditingController controller;
   final void Function(String) onChanged;
+  final String hintText;
 
   @override
   Widget build(BuildContext context) {
     return SearchBar(
-      hintText: 'Enter query',
+      hintText: hintText,
       leading: const Icon(Icons.search),
       backgroundColor: MaterialStateProperty.all(Colors.grey.withAlpha(48)),
       constraints: const BoxConstraints(maxHeight: 44),
