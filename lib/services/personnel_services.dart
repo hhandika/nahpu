@@ -94,7 +94,7 @@ class PersonnelServices extends DbAccess {
   }
 
   void invalidatePersonnel() {
-    ref.invalidate(personnelListProvider);
+    ref.invalidate(projectPersonnelProvider);
   }
 }
 

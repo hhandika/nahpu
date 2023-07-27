@@ -42,7 +42,7 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
 
   @override
   Widget build(BuildContext context) {
-    final personnelEntry = ref.watch(personnelListProvider);
+    final personnelEntry = ref.watch(projectPersonnelProvider);
     personnelEntry.whenData(
       (personnelEntry) => personnelList = personnelEntry,
     );
@@ -284,7 +284,7 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
               labelText: 'Cataloger',
               hintText: 'Choose a person with field number',
             ),
-            items: ref.watch(personnelListProvider).when(
+            items: ref.watch(projectPersonnelProvider).when(
                   data: (data) => data
                       .where((element) => element.role == 'Cataloger')
                       .map((e) => DropdownMenuItem(
@@ -334,7 +334,7 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
               labelText: 'Preparator',
               hintText: 'Choose a preparator (default is cataloger)',
             ),
-            items: ref.watch(personnelListProvider).when(
+            items: ref.watch(projectPersonnelProvider).when(
                   data: (data) => data
                       .where((element) =>
                           element.role == 'Cataloger' ||

@@ -13,7 +13,7 @@ Future<List<PersonnelData>> allPersonnel(AllPersonnelRef ref) async {
   return personnelData;
 }
 
-final personnelListProvider =
+final projectPersonnelProvider =
     FutureProvider.autoDispose<List<PersonnelData>>((ref) {
   final projectUuid = ref.watch(projectUuidProvider);
   return PersonnelQuery(ref.read(databaseProvider))

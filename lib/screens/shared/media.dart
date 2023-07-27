@@ -437,7 +437,7 @@ class PhotoDetailForm extends ConsumerWidget {
             labelText: 'Photographer',
             hintText: 'Select Personnel',
           ),
-          items: ref.watch(personnelListProvider).when(
+          items: ref.watch(projectPersonnelProvider).when(
                 data: (value) => value
                     .map((person) => DropdownMenuItem(
                           value: person.uuid,

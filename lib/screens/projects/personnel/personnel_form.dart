@@ -234,7 +234,7 @@ class PersonnelFormPageState extends ConsumerState<PersonnelFormPage> {
                 enabled: _validateForm(),
                 onPressed: () async {
                   widget.isEditing ? _updatePersonnel() : _addPersonnel();
-                  ref.invalidate(personnelListProvider);
+                  ref.invalidate(projectPersonnelProvider);
                   ref.invalidate(personnelFormValidatorProvider);
                   if (context.mounted) {
                     Navigator.of(context).pushReplacement(

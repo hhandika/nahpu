@@ -70,14 +70,14 @@ class AddWithOptionsState extends ConsumerState<AddWithOptions> {
           onSelectionChanged: (Set<PersonnelSelection> selection) {
             setState(() {
               _selection = selection;
-              ref.invalidate(personnelListProvider);
+              ref.invalidate(projectPersonnelProvider);
             });
           },
         ),
         const SizedBox(height: 32),
         _selection.first == PersonnelSelection.newPersonnel
             ? const NewPersonnel()
-            : ref.watch(personnelListProvider).when(
+            : ref.watch(projectPersonnelProvider).when(
                   data: (data) {
                     return SelectPersonnel(addedPersonnel: data);
                   },

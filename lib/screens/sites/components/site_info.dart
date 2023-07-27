@@ -38,7 +38,7 @@ class SiteInfo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     List<PersonnelData> personnelList = [];
-    final personnelEntry = ref.watch(personnelListProvider);
+    final personnelEntry = ref.watch(projectPersonnelProvider);
     personnelEntry.whenData(
       (personnelEntry) => personnelList = personnelEntry,
     );

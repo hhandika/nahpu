@@ -132,7 +132,7 @@ class CollectingPersonnelFieldState
               labelText: 'Personnel',
               hintText: 'Enter a name',
             ),
-            items: ref.watch(personnelListProvider).when(
+            items: ref.watch(projectPersonnelProvider).when(
                   data: (value) => value
                       .map((person) => DropdownMenuItem(
                             value: person.uuid,

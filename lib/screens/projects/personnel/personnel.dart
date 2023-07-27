@@ -68,7 +68,7 @@ class PersonnelListState extends ConsumerState<PersonnelList> {
 
   @override
   Widget build(BuildContext context) {
-    final personnel = ref.watch(personnelListProvider);
+    final personnel = ref.watch(projectPersonnelProvider);
     return personnel.when(
       data: (data) {
         return data.isEmpty

@@ -301,7 +301,7 @@ class SpecimenServices extends DbAccess {
   void invalidateSpecimenList() {
     ref.invalidate(specimenEntryProvider);
     ref.invalidate(taxonDataProvider);
-    ref.invalidate(personnelListProvider);
+    ref.invalidate(projectPersonnelProvider);
   }
 }
 

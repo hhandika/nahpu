@@ -181,7 +181,7 @@ class PersonnelSelectionState extends ConsumerState<PersonnelSelection> {
                   : () async {
                       try {
                         await _addSelectedPersonnelToProject();
-                        ref.invalidate(personnelListProvider);
+                        ref.invalidate(projectPersonnelProvider);
                         if (context.mounted) {
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
