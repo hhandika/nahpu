@@ -114,24 +114,6 @@ class DbAccess {
   String get currentProjectUuid => ref.read(projectUuidProvider);
 }
 
-Future<File> getDbBackUpPath() async {
-  final documentDir = await nahpuDocumentDir;
-  final backupDir = Directory(path.join(documentDir.path, 'nahpu/backup'));
-  await backupDir.create(recursive: true);
-  final backupFile =
-      File(path.join(backupDir.path, 'nahpu_backup$dateTimeStamp.sqlite3'));
-  return backupFile;
-}
-
-String get nahpuBackupDir => 'nahpu/backup';
-
-Future<Directory> get nahpuDocumentDir async {
-  final dbDir = await getApplicationDocumentsDirectory();
-  final nahpuDir = Directory(path.join(dbDir.path, 'nahpu'));
-  await nahpuDir.create(recursive: true);
-  return nahpuDir;
-}
-
 class FileServices extends DbAccess {
   FileServices({required super.ref});
 
@@ -151,4 +133,22 @@ class FileServices extends DbAccess {
     await from.copy(toPath);
     return File(toPath);
   }
+}
+
+Future<File> getDbBackUpPath() async {
+  final documentDir = await nahpuDocumentDir;
+  final backupDir = Directory(path.join(documentDir.path, 'nahpu/backup'));
+  await backupDir.create(recursive: true);
+  final backupFile =
+      File(path.join(backupDir.path, 'nahpu_backup$dateTimeStamp.sqlite3'));
+  return backupFile;
+}
+
+String get nahpuBackupDir => 'nahpu/backup';
+
+Future<Directory> get nahpuDocumentDir async {
+  final dbDir = await getApplicationDocumentsDirectory();
+  final nahpuDir = Directory(path.join(dbDir.path, 'nahpu'));
+  await nahpuDir.create(recursive: true);
+  return nahpuDir;
 }

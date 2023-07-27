@@ -23,14 +23,13 @@ const List<String> exportFormats = [
 
 enum DbExportFmt { sqlite3 }
 
-const List<String> dbExportFmtList = [
-  'Database (.sqlite3)',
-];
+const Map<DbExportFmt, String> dbExportFmt = {
+  DbExportFmt.sqlite3: 'Database (.sqlite3)',
+};
 
-enum ReportFmt { excel, csv }
+enum ReportFmt { csv }
 
 const List<String> reportFmtList = [
-  'Excel (.xlsx)',
   'Comma-separated (.csv)',
 ];
 

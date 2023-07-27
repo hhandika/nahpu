@@ -25,6 +25,7 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
   Directory? _selectedDir;
   bool _hasSaved = false;
   bool _isRunning = false;
+  bool _isWithProjectData = false;
   late File _savePath;
 
   @override
@@ -52,16 +53,19 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
             decoration: const InputDecoration(
               labelText: 'Format',
             ),
-            items: dbExportFmtList
-                .map((e) => DropdownMenuItem(
-                      value: DbExportFmt.values[dbExportFmtList.indexOf(e)],
-                      child: CommonDropdownText(text: e),
-                    ))
+            items: dbExportFmt.entries
+                .map(
+                  (e) => DropdownMenuItem(
+                    value: e.key,
+                    child: Text(e.value),
+                  ),
+                )
                 .toList(),
             onChanged: (DbExportFmt? value) {
               if (value != null) {
                 setState(() {
                   exportFmt = value;
+                  _hasSaved = false;
                 });
               }
             },
@@ -72,10 +76,19 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
               if (value != null) {
                 setState(() {
                   _fileStem = value;
+                  _hasSaved = false;
                 });
               }
             },
           ),
+          SwitchField(
+              label: 'Include project data',
+              value: _isWithProjectData,
+              onPressed: (value) {
+                setState(() {
+                  _isWithProjectData = !_isWithProjectData;
+                });
+              }),
           SelectDirField(
               dirPath: _selectedDir,
               onPressed: () async {
@@ -97,16 +110,7 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
                                 _isRunning = true;
                               });
                               await _writeDb();
-                              setState(() {
-                                _isRunning = false;
-                              });
-                              if (context.mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('File saved as $_savePath'),
-                                  ),
-                                );
-                              }
+                              _setSuccess();
                             }
                           : null,
                     )
@@ -126,6 +130,18 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
     );
   }
 
+  void _setSuccess() {
+    setState(() {
+      _isRunning = false;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('File saved as $_savePath'),
+      ),
+    );
+  }
+
   Future<void> _writeDb() async {
     try {
       _savePath = await AppIOServices(
@@ -133,9 +149,13 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
         fileStem: _fileStem,
         ext: _dbExtension,
       ).getSavePath();
-      await DbWriter(ref: ref).writeDb(_savePath);
+      final currentSavePath = await DbWriter(ref: ref).writeDb(
+        _savePath,
+        _isWithProjectData,
+      );
       setState(() {
         _hasSaved = true;
+        _savePath = currentSavePath;
       });
     } on PathNotFoundException {
       ScaffoldMessenger.of(context).showSnackBar(
