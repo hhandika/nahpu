@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/providers/taxa.dart';
+import 'package:nahpu/services/database/collevent_queries.dart';
 import 'package:nahpu/services/database/media_queries.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
 import 'package:nahpu/services/import/multimedia.dart';
@@ -304,17 +305,57 @@ class SpecimenServices extends DbAccess {
   }
 }
 
-class SpecimenSearchService {
-  SpecimenSearchService({required this.specimenEntries});
+class SpecimenSearchServices {
+  SpecimenSearchServices({
+    required this.db,
+    required this.specimenEntries,
+  });
 
   final List<SpecimenData> specimenEntries;
+  final Database db;
 
-  List<SpecimenData> search(String query) {
+  Future<List<SpecimenData>> search(String query) async {
+    List<String> matchedPersons = await _searchPersonnel(query);
+    List<int> matchedColPersons = await _searchColPersonnel(query);
     List<SpecimenData> filteredList = specimenEntries
-        .where((element) =>
-            element.fieldNumber.toString().toLowerCase().contains(query))
+        .where(
+          (e) =>
+              _isMatchFieldNum(e.fieldNumber, query) ||
+              _isMatchedPerson(matchedPersons, e.catalogerID) ||
+              _isMatchedPerson(matchedPersons, e.preparatorID) ||
+              _isMatchedColPerson(matchedColPersons, e.collPersonnelID),
+        )
         .toList();
     return filteredList;
+  }
+
+  bool _isMatchFieldNum(int? fieldNum, String query) {
+    return fieldNum.toString().toLowerCase().contains(query);
+  }
+
+  bool _isMatchedPerson(List<String> matchedPersons, String? personnelUuid) {
+    if (matchedPersons.isEmpty || personnelUuid == null) {
+      return false;
+    }
+    return matchedPersons.contains(personnelUuid);
+  }
+
+  bool _isMatchedColPerson(List<int> matchedColPersons, int? colPersonId) {
+    if (matchedColPersons.isEmpty || colPersonId == null) {
+      return false;
+    }
+    return matchedColPersons.contains(colPersonId);
+  }
+
+  Future<List<String>> _searchPersonnel(String query) async {
+    final person = await PersonnelQuery(db).searchPersonnel(query);
+    return person.map((e) => e.uuid).toList();
+  }
+
+  Future<List<int>> _searchColPersonnel(String query) async {
+    final person =
+        await CollPersonnelQuery(db).searchCollectingPersonnel(query);
+    return person.map((e) => e.id).toList();
   }
 }
 

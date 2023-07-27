@@ -65,14 +65,7 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
                     setState(() {
                       _isSearching = true;
                     });
-                    ref
-                        .read(specimenEntryProvider.notifier)
-                        .search(value)
-                        .whenComplete(() {
-                      setState(() {
-                        _updatePageNav(0);
-                      });
-                    });
+                    ref.read(specimenEntryProvider.notifier).search(value);
                   },
                 )
               : const SizedBox.shrink(),

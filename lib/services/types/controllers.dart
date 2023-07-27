@@ -925,19 +925,16 @@ class CollPersonnelCtrModel {
     required this.id,
     required this.nameIDCtr,
     required this.roleCtr,
-    required this.nameCtr,
   });
 
   int? id;
   String? nameIDCtr;
   String? roleCtr;
-  TextEditingController nameCtr;
 
   factory CollPersonnelCtrModel.empty() => CollPersonnelCtrModel(
         id: null,
         nameIDCtr: null,
         roleCtr: null,
-        nameCtr: TextEditingController(),
       );
 
   factory CollPersonnelCtrModel.fromData(CollPersonnelData data) =>
@@ -945,12 +942,7 @@ class CollPersonnelCtrModel {
         id: data.id,
         nameIDCtr: data.personnelId,
         roleCtr: data.role,
-        nameCtr: TextEditingController(text: data.name ?? ''),
       );
-
-  void dispose() {
-    nameCtr.dispose();
-  }
 }
 
 class CollWeatherCtrModel {

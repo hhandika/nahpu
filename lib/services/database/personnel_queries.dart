@@ -18,6 +18,11 @@ class PersonnelQuery extends DatabaseAccessor<Database>
     return (update(personnel)..where((t) => t.uuid.equals(id))).write(entry);
   }
 
+  Future<String?> getPersonnelName(String personnelUuid) async {
+    PersonnelData? personnel = await getPersonnelByUuid(personnelUuid);
+    return personnel.name;
+  }
+
   Future<List<PersonnelData>> searchPersonnel(String search) {
     return (select(personnel)..where((t) => t.name.like('%$search%'))).get();
   }

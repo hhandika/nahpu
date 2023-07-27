@@ -71,9 +71,9 @@ class SpecimenEntry extends _$SpecimenEntry {
     state = await AsyncValue.guard(() async {
       if (state.value == null) return [];
       final specimens = await _fetchSpecimenEntry();
-      final filteredSpecimens =
-          SpecimenSearchService(specimenEntries: specimens)
-              .search(query.toLowerCase());
+      final filteredSpecimens = SpecimenSearchServices(
+              db: ref.read(databaseProvider), specimenEntries: specimens)
+          .search(query.toLowerCase());
       return filteredSpecimens;
     });
   }
