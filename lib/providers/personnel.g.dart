@@ -21,4 +21,21 @@ final allPersonnelProvider =
 );
 
 typedef AllPersonnelRef = AutoDisposeFutureProviderRef<List<PersonnelData>>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+String _$projectPersonnelHash() => r'1addf1bc5c176866f051ac91b413d89bdbc6d7fc';
+
+/// See also [projectPersonnel].
+@ProviderFor(projectPersonnel)
+final projectPersonnelProvider =
+    AutoDisposeFutureProvider<List<PersonnelData>>.internal(
+  projectPersonnel,
+  name: r'projectPersonnelProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$projectPersonnelHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef ProjectPersonnelRef = AutoDisposeFutureProviderRef<List<PersonnelData>>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member

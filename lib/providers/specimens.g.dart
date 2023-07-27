@@ -29,14 +29,14 @@ class _SystemHash {
   }
 }
 
-typedef SpecimenMediaRef = AutoDisposeFutureProviderRef<List<dynamic>>;
+typedef SpecimenMediaRef = AutoDisposeFutureProviderRef<List<MediaData>>;
 
 /// See also [specimenMedia].
 @ProviderFor(specimenMedia)
 const specimenMediaProvider = SpecimenMediaFamily();
 
 /// See also [specimenMedia].
-class SpecimenMediaFamily extends Family<AsyncValue<List<dynamic>>> {
+class SpecimenMediaFamily extends Family<AsyncValue<List<MediaData>>> {
   /// See also [specimenMedia].
   const SpecimenMediaFamily();
 
@@ -74,7 +74,7 @@ class SpecimenMediaFamily extends Family<AsyncValue<List<dynamic>>> {
 }
 
 /// See also [specimenMedia].
-class SpecimenMediaProvider extends AutoDisposeFutureProvider<List<dynamic>> {
+class SpecimenMediaProvider extends AutoDisposeFutureProvider<List<MediaData>> {
   /// See also [specimenMedia].
   SpecimenMediaProvider({
     required this.specimenUuid,
@@ -127,7 +127,7 @@ final catalogFmtNotifierProvider =
 );
 
 typedef _$CatalogFmtNotifier = AutoDisposeAsyncNotifier<CatalogFmt>;
-String _$specimenEntryHash() => r'a3d08dbcd53883de47779a1f49c1cafc1d8a1b81';
+String _$specimenEntryHash() => r'882b2dbaf69f7f477f9a0d3b6d319c4274fa7c08';
 
 /// See also [SpecimenEntry].
 @ProviderFor(SpecimenEntry)
@@ -175,4 +175,5 @@ final treatmentOptionsProvider =
 );
 
 typedef _$TreatmentOptions = AutoDisposeAsyncNotifier<List<String>>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member

@@ -13,12 +13,14 @@ Future<List<PersonnelData>> allPersonnel(AllPersonnelRef ref) async {
   return personnelData;
 }
 
-final projectPersonnelProvider =
-    FutureProvider.autoDispose<List<PersonnelData>>((ref) {
+@riverpod
+Future<List<PersonnelData>> projectPersonnel(ProjectPersonnelRef ref) async {
   final projectUuid = ref.watch(projectUuidProvider);
-  return PersonnelQuery(ref.read(databaseProvider))
-      .getPersonnelByProjectUuid(projectUuid);
-});
+  List<PersonnelData> personnelData =
+      await PersonnelQuery(ref.read(databaseProvider))
+          .getPersonnelByProjectUuid(projectUuid);
+  return personnelData;
+}
 
 final personnelNameProvider =
     FutureProvider.family.autoDispose<PersonnelData, String>((ref, uuid) {
