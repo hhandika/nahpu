@@ -65,6 +65,7 @@ class NarrativeFormState extends ConsumerState<NarrativeForm> {
               isWithTitle: false,
               child: CommonPadding(
                 child: TextField(
+                  scrollPhysics: const ScrollPhysics(),
                   controller: widget.narrativeCtr.narrativeCtr,
                   maxLines: 20,
                   decoration: const InputDecoration(

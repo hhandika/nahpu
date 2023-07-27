@@ -28,6 +28,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
           scrollController: _scrollController,
           child: SingleChildScrollView(
             controller: _scrollController,
+            physics: const ScrollPhysics(),
             child: Column(
               children: widget.children,
             ),
