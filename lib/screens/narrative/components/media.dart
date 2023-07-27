@@ -67,7 +67,6 @@ class NarrativeMediaViewer extends ConsumerWidget {
     return MediaViewer(
       images: data,
       onAddFromGallery: () async {
-        Navigator.pop(context);
         try {
           List<String> images =
               await ImageServices(ref: ref, category: mediaCategory)

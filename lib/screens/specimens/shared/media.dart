@@ -36,7 +36,6 @@ class SpecimenMediaFormState extends ConsumerState<SpecimenMediaForm> {
             return MediaViewer(
               images: List.from(data),
               onAddFromGallery: () async {
-                Navigator.pop(context);
                 try {
                   List<String> images = await ImageServices(
                     ref: ref,
