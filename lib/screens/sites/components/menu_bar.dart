@@ -5,14 +5,6 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/sites/site_view.dart';
 import 'package:nahpu/services/site_services.dart';
 
-enum SiteMenuSelection {
-  newSite,
-  duplicate,
-  pdfExport,
-  deleteRecords,
-  deleteAllRecords
-}
-
 Future<void> createNewSite(BuildContext context, WidgetRef ref) {
   return SiteServices(ref: ref).createNewSite().then((_) {
     Navigator.of(context)
@@ -79,18 +71,15 @@ class SiteMenu extends ConsumerStatefulWidget {
 class SiteMenuState extends ConsumerState<SiteMenu> {
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<SiteMenuSelection>(
-        itemBuilder: (BuildContext context) =>
-            <PopupMenuEntry<SiteMenuSelection>>[
-              PopupMenuItem<SiteMenuSelection>(
-                value: SiteMenuSelection.newSite,
+    return PopupMenuButton(
+        itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+              PopupMenuItem(
                 child: const CreateMenuButton(
                   text: 'Create site',
                 ),
                 onTap: () => createNewSite(context, ref),
               ),
-              PopupMenuItem<SiteMenuSelection>(
-                value: SiteMenuSelection.duplicate,
+              PopupMenuItem(
                 onTap: widget.siteId == null
                     ? null
                     : () async => await _duplicateSite(),
@@ -99,16 +88,14 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
                 ),
               ),
               const PopupMenuDivider(height: 10),
-              PopupMenuItem<SiteMenuSelection>(
-                value: SiteMenuSelection.deleteRecords,
+              PopupMenuItem(
                 enabled: widget.siteId != null,
                 onTap: () => _deleteSite(),
                 child: const DeleteMenuButton(
                   deleteAll: false,
                 ),
               ),
-              PopupMenuItem<SiteMenuSelection>(
-                value: SiteMenuSelection.deleteAllRecords,
+              PopupMenuItem(
                 enabled: widget.siteId != null,
                 onTap: () => _deleteAllSites(),
                 child: const DeleteMenuButton(

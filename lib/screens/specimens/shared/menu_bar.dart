@@ -82,10 +82,14 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
                 child: CreateMenuButton(text: _getNewSpecimenLabel()),
                 onTap: () => createNewSpecimens(context, ref),
               ),
-              // const PopupMenuItem<MenuSelection>(
-              //   value: MenuSelection.duplicate,
-              //   child: DuplicateMenuButton(text: 'Duplicate record'),
-              // ),
+              PopupMenuItem(
+                onTap: widget.specimenUuid == null
+                    ? null
+                    : () async {
+                        await _duplicatePart();
+                      },
+                child: const DuplicateMenuButton(text: 'Duplicate part'),
+              ),
               const PopupMenuDivider(height: 10),
               PopupMenuItem(
                 child: const DeleteMenuButton(
@@ -104,6 +108,24 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
 
   String _getNewSpecimenLabel() {
     return 'Create specimen';
+  }
+
+  Future<void> _duplicatePart() async {
+    try {
+      await SpecimenServices(ref: ref)
+          .createSpecimenDuplicatePart(widget.specimenUuid!);
+      if (context.mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const SpecimenViewer()),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+        ),
+      );
+    }
   }
 
   void _deleteSpecimen() {

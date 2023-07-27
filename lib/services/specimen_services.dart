@@ -25,7 +25,7 @@ const String tissueIDNumberKey = 'tissueIDNumber';
 class SpecimenServices extends DbAccess {
   const SpecimenServices({required super.ref});
 
-  Future<void> createSpecimen() async {
+  Future<String> createSpecimen() async {
     CatalogFmt catalogFmt = await ref.watch(catalogFmtNotifierProvider.future);
     final String specimenUuid = uuid;
     await SpecimenQuery(dbAccess).createSpecimen(SpecimenCompanion(
@@ -49,6 +49,30 @@ class SpecimenServices extends DbAccess {
         break;
     }
     invalidateSpecimenList();
+    return specimenUuid;
+  }
+
+  Future<void> createSpecimenDuplicatePart(String specimenUuid) async {
+    List<SpecimenPartData> partData =
+        await SpecimenPartQuery(dbAccess).getSpecimenParts(specimenUuid);
+    if (partData.isEmpty) {
+      return;
+    }
+    String newSpecimenUuid = await createSpecimen();
+
+    for (var part in partData) {
+      SpecimenPartServices(ref: ref).createSpecimenPart(SpecimenPartCompanion(
+        specimenUuid: db.Value(newSpecimenUuid),
+        type: db.Value(part.type),
+        count: db.Value(part.count),
+        treatment: db.Value(part.treatment),
+        additionalTreatment: db.Value(part.additionalTreatment),
+        museumPermanent: db.Value(part.museumPermanent),
+        museumLoan: db.Value(part.museumLoan),
+      ));
+    }
+
+    ref.invalidate(partBySpecimenProvider);
   }
 
   Future<List<SpecimenData>> getAllSpecimens() async {

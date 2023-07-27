@@ -6,14 +6,6 @@ import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-enum MenuSelection {
-  newEvent,
-  duplicate,
-  pdfExport,
-  deleteRecords,
-  deleteAllRecords
-}
-
 Future<void> createNewCollEvents(BuildContext context, WidgetRef ref) {
   CollEventServices services = CollEventServices(ref: ref);
 
@@ -79,28 +71,24 @@ class CollEventMenu extends ConsumerStatefulWidget {
 class NarrativeMenuState extends ConsumerState<CollEventMenu> {
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<MenuSelection>(
-      itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuSelection>>[
-        PopupMenuItem<MenuSelection>(
-          value: MenuSelection.newEvent,
+    return PopupMenuButton(
+      itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+        PopupMenuItem(
           child: const CreateMenuButton(text: 'Create event'),
           onTap: () => createNewCollEvents(context, ref),
         ),
-        PopupMenuItem<MenuSelection>(
-          value: MenuSelection.duplicate,
+        PopupMenuItem(
           onTap: widget.collEventId == null
               ? null
               : () async => await _duplicateEvent(),
           child: const DuplicateMenuButton(text: 'Duplicate event'),
         ),
         const PopupMenuDivider(height: 10),
-        PopupMenuItem<MenuSelection>(
-          value: MenuSelection.deleteRecords,
+        PopupMenuItem(
           child: const DeleteMenuButton(deleteAll: false),
           onTap: () => _deleteEvent(),
         ),
-        PopupMenuItem<MenuSelection>(
-          value: MenuSelection.deleteAllRecords,
+        PopupMenuItem(
           child: const DeleteMenuButton(deleteAll: true),
           onTap: () => _deleteAllEvents(),
         ),
