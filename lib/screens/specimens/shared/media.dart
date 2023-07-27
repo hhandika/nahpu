@@ -62,32 +62,6 @@ class SpecimenMediaFormState extends ConsumerState<SpecimenMediaForm> {
                   );
                 }
               },
-              onAddFromFiles: () async {
-                Navigator.pop(context);
-                try {
-                  List<String> images = await ImageServices(
-                    ref: ref,
-                    category: mediaCategory,
-                  ).pickFromFiles();
-                  if (images.isNotEmpty) {
-                    await SpecimenServices(ref: ref)
-                        .createSpecimenMediaFromList(
-                      widget.specimenUuid,
-                      images,
-                    );
-
-                    setState(() {});
-                  }
-                } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        e.toString(),
-                      ),
-                    ),
-                  );
-                }
-              },
               onAccessingCamera: () async {
                 try {
                   String? image = await ImageServices(

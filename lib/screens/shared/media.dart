@@ -25,13 +25,11 @@ class MediaViewer extends StatefulWidget {
     super.key,
     required this.images,
     required this.onAddFromGallery,
-    required this.onAddFromFiles,
     required this.onAccessingCamera,
   });
 
   final List<MediaData> images;
   final VoidCallback onAddFromGallery;
-  final VoidCallback onAddFromFiles;
   final VoidCallback onAccessingCamera;
 
   @override
@@ -53,7 +51,6 @@ class _MediaViewerState extends State<MediaViewer> {
             children: [
               const TitleForm(text: 'Media', isCentered: false),
               MediaButton(
-                onAddFromFiles: widget.onAddFromFiles,
                 onAddFromGallery: widget.onAddFromGallery,
                 onAccessingCamera: widget.onAccessingCamera,
               ),
@@ -92,11 +89,9 @@ class MediaButton extends StatelessWidget {
   const MediaButton({
     super.key,
     required this.onAddFromGallery,
-    required this.onAddFromFiles,
     required this.onAccessingCamera,
   });
 
-  final VoidCallback onAddFromFiles;
   final VoidCallback onAddFromGallery;
   final VoidCallback onAccessingCamera;
 
@@ -109,70 +104,15 @@ class MediaButton extends StatelessWidget {
       children: [
         systemPlatform == PlatformType.mobile
             ? IconButton(
-                onPressed: () {
-                  _showImageDialog(context);
-                },
-                icon: const Icon(Icons.add))
+                onPressed: onAddFromGallery, icon: const Icon(Icons.add))
             : const SizedBox.shrink(),
         PrimaryIconButton(
           onPressed: systemPlatform == PlatformType.mobile
               ? onAccessingCamera
-              : () {
-                  _showImageDialog(context);
-                },
+              : onAddFromGallery,
           icon: systemPlatform == PlatformType.mobile
               ? Icons.camera_alt_outlined
               : Icons.add_photo_alternate_outlined,
-        ),
-      ],
-    );
-  }
-
-  Future<void> _showImageDialog(BuildContext context) async {
-    return await showDialog(
-      context: context,
-      builder: (context) => ImageDialog(
-          onAddFromGallery: onAddFromGallery, onAddFromFiles: onAddFromFiles),
-    );
-  }
-}
-
-/// Image picker options. On mobile, display both options
-class ImageDialog extends StatelessWidget {
-  const ImageDialog({
-    super.key,
-    required this.onAddFromGallery,
-    required this.onAddFromFiles,
-  });
-
-  final VoidCallback onAddFromGallery;
-  final VoidCallback onAddFromFiles;
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Add image'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            leading: const Icon(Icons.photo_library_outlined),
-            title: const Text('From gallery'),
-            onTap: onAddFromGallery,
-          ),
-          ListTile(
-            leading: const Icon(Icons.folder_open_outlined),
-            title: const Text('From files'),
-            onTap: onAddFromFiles,
-          ),
-        ],
-      ),
-      actions: [
-        TextButton(
-          onPressed: () async {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Cancel'),
         ),
       ],
     );

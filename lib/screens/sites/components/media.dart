@@ -58,29 +58,6 @@ class SiteMediaFormState extends ConsumerState<SiteMediaForm> {
                   );
                 }
               },
-              onAddFromFiles: () async {
-                Navigator.pop(context);
-                try {
-                  List<String> images =
-                      await ImageServices(ref: ref, category: mediaCategory)
-                          .pickFromFiles();
-                  if (images.isNotEmpty) {
-                    await SiteServices(ref: ref).createSiteMediaFromList(
-                      widget.siteId,
-                      images,
-                    );
-                    _doneSelecting();
-                  }
-                } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        e.toString(),
-                      ),
-                    ),
-                  );
-                }
-              },
               onAccessingCamera: () async {
                 try {
                   String? image = await ImageServices(

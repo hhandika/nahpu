@@ -88,28 +88,6 @@ class NarrativeMediaViewer extends ConsumerWidget {
           );
         }
       },
-      onAddFromFiles: () async {
-        Navigator.pop(context);
-        try {
-          List<String> images =
-              await ImageServices(ref: ref, category: mediaCategory)
-                  .pickFromFiles();
-          if (images.isNotEmpty) {
-            await NarrativeServices(ref: ref).createNarrativeMediaFromList(
-              narrativeId,
-              images,
-            );
-          }
-        } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                e.toString(),
-              ),
-            ),
-          );
-        }
-      },
       onAccessingCamera: () async {
         try {
           String? image = await ImageServices(ref: ref, category: mediaCategory)
