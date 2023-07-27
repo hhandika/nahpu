@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:nahpu/providers/collevents.dart';
 import 'package:nahpu/services/database/collevent_queries.dart';
 import 'package:nahpu/services/database/database.dart';
@@ -17,10 +18,14 @@ class CollEventServices extends DbAccess {
     // Weather data used collecting event id as a foreign key
     // so we need to create a new weather data entry
     // for the new collecting event
-    WeatherDataQuery(dbAccess)
-        .createWeatherData(WeatherCompanion(eventID: db.Value(eventID)));
+    createWeatherData(eventID);
     invalidateCollEvent();
     return eventID;
+  }
+
+  Future<void> createWeatherData(int eventID) async {
+    await WeatherDataQuery(dbAccess)
+        .createWeatherData(WeatherCompanion(eventID: db.Value(eventID)));
   }
 
   Future<String> getCollEventID(CollEventData collEventData) async {
@@ -145,6 +150,82 @@ class CollEventServices extends DbAccess {
 
   void invalidateCollPersonnel() {
     ref.invalidate(collPersonnelProvider);
+  }
+}
+
+class EventDuplicateService extends DbAccess {
+  const EventDuplicateService({required super.ref});
+
+  CollEventServices get collEventServices => CollEventServices(ref: ref);
+
+  /// We duplicate most of the data from the origin event
+  Future<void> duplicate(int originEventID) async {
+    CollEventData? collEventData =
+        await collEventServices.getCollEvent(originEventID);
+
+    if (collEventData == null) {
+      return;
+    }
+    String newStartDate = _incrementDate(collEventData.startDate ?? '') ?? '';
+    String newEndDate = _incrementDate(collEventData.endDate ?? '') ?? '';
+    int destinationEventId =
+        await CollEventQuery(dbAccess).createCollEvent(CollEventCompanion(
+      projectUuid: db.Value(currentProjectUuid),
+      siteID: db.Value(collEventData.siteID),
+      startDate: db.Value(newStartDate),
+      endDate: db.Value(newEndDate),
+      startTime: db.Value(collEventData.startTime),
+      endTime: db.Value(collEventData.endTime),
+      idSuffix: db.Value(collEventData.idSuffix),
+      primaryCollMethod: db.Value(collEventData.primaryCollMethod),
+      collMethodNotes: db.Value(collEventData.collMethodNotes),
+    ));
+    await _duplicateCollEffort(originEventID, destinationEventId);
+    await _duplicateCollPersonnel(originEventID, destinationEventId);
+    collEventServices.createWeatherData(destinationEventId);
+    collEventServices.invalidateCollEvent();
+  }
+
+  Future<void> _duplicateCollEffort(
+      int originEventID, int destinationEventId) async {
+    List<CollEffortData> collEfforts =
+        await collEventServices.getAllCollEffort(originEventID);
+    for (CollEffortData collEffort in collEfforts) {
+      await collEventServices.createCollEffort(CollEffortCompanion(
+        eventID: db.Value(destinationEventId),
+        method: db.Value(collEffort.method),
+        brand: db.Value(collEffort.brand),
+        count: db.Value(collEffort.count),
+        size: db.Value(collEffort.size),
+        notes: db.Value(collEffort.notes),
+      ));
+    }
+  }
+
+  Future<void> _duplicateCollPersonnel(
+      int originEventID, int destinationEventId) async {
+    List<CollPersonnelData> collPersonnel =
+        await collEventServices.getAllCollPersonnel(originEventID);
+    for (CollPersonnelData personnel in collPersonnel) {
+      await collEventServices.createCollPersonnel(CollPersonnelCompanion(
+        eventID: db.Value(destinationEventId),
+        personnelId: db.Value(personnel.personnelId),
+        name: db.Value(personnel.name),
+        role: db.Value(personnel.role),
+      ));
+    }
+  }
+
+  // Increment date by one day
+  String? _incrementDate(String date) {
+    DateFormat dateFormat = DateFormat.yMMMd();
+    try {
+      DateTime? parsedDate = dateFormat.parse(date);
+      DateTime newDate = parsedDate.add(const Duration(days: 1));
+      return dateFormat.format(newDate);
+    } catch (e) {
+      return null;
+    }
   }
 }
 

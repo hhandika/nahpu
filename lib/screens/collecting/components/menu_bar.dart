@@ -86,10 +86,13 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
           child: const CreateMenuButton(text: 'Create event'),
           onTap: () => createNewCollEvents(context, ref),
         ),
-        // const PopupMenuItem<MenuSelection>(
-        //   value: MenuSelection.duplicate,
-        //   child: DuplicateMenuButton(text: 'Duplicate event'),
-        // ),
+        PopupMenuItem<MenuSelection>(
+          value: MenuSelection.duplicate,
+          onTap: widget.collEventId == null
+              ? null
+              : () async => await _duplicateEvent(),
+          child: const DuplicateMenuButton(text: 'Duplicate event'),
+        ),
         const PopupMenuDivider(height: 10),
         PopupMenuItem<MenuSelection>(
           value: MenuSelection.deleteRecords,
@@ -131,6 +134,21 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
           }
         },
       );
+    }
+  }
+
+  Future<void> _duplicateEvent() async {
+    try {
+      await EventDuplicateService(ref: ref).duplicate(widget.collEventId!);
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (_) => const CollEventViewer(),
+          ),
+        );
+      }
+    } catch (e) {
+      _showError(e.toString());
     }
   }
 

@@ -91,7 +91,9 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
               ),
               PopupMenuItem<SiteMenuSelection>(
                 value: SiteMenuSelection.duplicate,
-                onTap: () async => await _duplicateSite(),
+                onTap: widget.siteId == null
+                    ? null
+                    : () async => await _duplicateSite(),
                 child: const DuplicateMenuButton(
                   text: 'Duplicate site',
                 ),
@@ -120,10 +122,8 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
     try {
       await SiteServices(ref: ref).duplicateSite(widget.siteId!);
       if (mounted) {
-        setState(() {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => const SiteViewer()));
-        });
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => const SiteViewer()));
       }
     } catch (e) {
       _showError(e.toString());
