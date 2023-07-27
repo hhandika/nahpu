@@ -172,8 +172,10 @@ class SpecimenListPageState extends ConsumerState<SpecimenListPage> {
 
   Future<void> _filterByCollector(String query) async {
     List<SpecimenData> filteredData = [];
-    List<int> collectorIDs =
-        await CollEvenPersonnelServices(ref: ref).searchPersonnel(query);
+
+    List<String> personnelUuids = await _searchPersonnel(query);
+    List<int> collectorIDs = await CollEvenPersonnelServices(ref: ref)
+        .searchPersonnel(personnelUuids, query);
     for (int collectorID in collectorIDs) {
       filteredData.addAll(widget.data
           .where((element) => element.collPersonnelID == collectorID)

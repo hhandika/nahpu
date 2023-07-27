@@ -1,7 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
 import 'package:nahpu/services/database/database.dart';
-import 'package:nahpu/services/database/personnel_queries.dart';
 import 'package:nahpu/services/utility_services.dart';
 
 part 'collevent_queries.g.dart';
@@ -98,14 +97,7 @@ class CollPersonnelQuery extends DatabaseAccessor<Database>
   }
 
   Future<List<CollPersonnelData>> searchCollectingPersonnel(
-      String query) async {
-    // Name is only available in personnel table
-    // So, we need to search personnel table first
-    List<PersonnelData> personnel =
-        await PersonnelQuery(db).searchPersonnel(query);
-    // Then, we search personnel in collecting personnel table
-    // using the uuids from personnel table
-    List<String> uuids = personnel.map((e) => e.uuid).toList();
+      List<String> uuids, String query) async {
     List<CollPersonnelData> personnelList = [];
     for (final personId in uuids) {
       final data = await (select(collPersonnel)

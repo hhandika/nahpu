@@ -316,7 +316,8 @@ class SpecimenSearchServices {
 
   Future<List<SpecimenData>> search(String query) async {
     List<String> matchedPersons = await _searchPersonnel(query);
-    List<int> matchedColPersons = await _searchColPersonnel(query);
+    List<int> matchedColPersons =
+        await _searchColPersonnel(matchedPersons, query);
     List<SpecimenData> filteredList = specimenEntries
         .where(
           (e) =>
@@ -352,9 +353,13 @@ class SpecimenSearchServices {
     return person.map((e) => e.uuid).toList();
   }
 
-  Future<List<int>> _searchColPersonnel(String query) async {
-    final person =
-        await CollPersonnelQuery(db).searchCollectingPersonnel(query);
+  Future<List<int>> _searchColPersonnel(
+      List<String> matchedPersons, String query) async {
+    if (matchedPersons.isEmpty) {
+      return [];
+    }
+    final person = await CollPersonnelQuery(db)
+        .searchCollectingPersonnel(matchedPersons, query);
     return person.map((e) => e.id).toList();
   }
 }
