@@ -9,6 +9,7 @@ import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/import/multimedia.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/types/import.dart';
+import 'package:nahpu/services/utility_services.dart';
 import 'package:path/path.dart';
 
 class SiteServices extends DbAccess {
@@ -151,11 +152,7 @@ class SiteSearchServices {
   }
 
   bool _isMatch(String? value, String query) {
-    if (value == null) {
-      return false;
-    } else {
-      return value.toLowerCase().contains(query);
-    }
+    return value.isContain(query);
   }
 }
 

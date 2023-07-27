@@ -17,4 +17,18 @@ void main() {
     expect(isListContains(list, 'A'), isTrue);
     expect(isListContains(list, 'e'), isFalse);
   });
+
+  test('String contains', () {
+    String string = 'abc';
+    expect(string.isContain('a'), isTrue);
+    expect(string.isContain('A'), isTrue);
+    expect(string.isContain('e'), isFalse);
+  });
+
+  test('String match', () {
+    String string = 'abc';
+    String exactString = 'abc';
+    expect(string.isMatch('ABC'), isTrue);
+    expect(string.isMatchExact(exactString), isTrue);
+  });
 }

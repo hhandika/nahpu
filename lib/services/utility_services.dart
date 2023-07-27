@@ -34,12 +34,6 @@ bool isListContains(List<String> list, String value) {
   return list.any((e) => e.toLowerCase() == value.toLowerCase());
 }
 
-extension StringMatching on String {
-  bool isMatch(String value) {
-    return toLowerCase() == value.toLowerCase();
-  }
-}
-
 extension StringExtension on String {
   String toSentenceCase() {
     try {
@@ -47,6 +41,31 @@ extension StringExtension on String {
     } catch (e) {
       return '';
     }
+  }
+}
+
+extension NullableStringExtension on String? {
+  bool isContain(String value) {
+    if (this == null || this!.isEmpty) {
+      return false;
+    }
+
+    return this!.toLowerCase().contains(value.toLowerCase());
+  }
+
+  bool isMatch(String value) {
+    if (this == null || this!.isEmpty) {
+      return false;
+    }
+    return this!.toLowerCase() == value.toLowerCase();
+  }
+
+  bool isMatchExact(String value) {
+    if (this == null || this!.isEmpty) {
+      return false;
+    }
+
+    return this! == value;
   }
 }
 
