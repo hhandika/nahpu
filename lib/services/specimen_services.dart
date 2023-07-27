@@ -67,6 +67,15 @@ class SpecimenServices extends DbAccess {
     return SpecimenQuery(dbAccess).getUniqueTaxonGroup(currentProjectUuid);
   }
 
+  Future<void> createSpecimenMediaFromList(
+    String specimenUuid,
+    List<String> filePaths,
+  ) async {
+    for (String filePath in filePaths) {
+      await createSpecimenMedia(specimenUuid, filePath);
+    }
+  }
+
   Future<void> createSpecimenMedia(
     String specimenUuid,
     String filePath,

@@ -25,19 +25,6 @@ class ImageServices extends DbAccess {
     return File(fullPath);
   }
 
-  Future<List<String>> pickImages() async {
-    switch (systemPlatform) {
-      case PlatformType.mobile:
-        return await pickFromGallery();
-      case PlatformType.desktop:
-        return await pickFromFiles();
-      case PlatformType.unknown:
-        throw Exception('Unsupported platform');
-      default:
-        return [];
-    }
-  }
-
   Future<String> pickImageSingle() async {
     switch (systemPlatform) {
       case PlatformType.mobile:
@@ -73,7 +60,8 @@ class ImageServices extends DbAccess {
   }
 
   Future<List<String>> pickFromFiles() async {
-    List<XFile> result = await openFiles(acceptedTypeGroups: imageFmt);
+    List<XFile> result = await openFiles(
+        acceptedTypeGroups: imageFmt, confirmButtonText: 'Import');
     List<File> files = await _copyFiles(result.map((e) => e.path).toList());
     return files.map((e) => e.path).toList();
   }

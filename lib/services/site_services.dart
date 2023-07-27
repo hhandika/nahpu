@@ -60,6 +60,13 @@ class SiteServices extends DbAccess {
     await SiteQuery(dbAccess).updateSiteEntry(id, entries);
   }
 
+  Future<void> createSiteMediaFromList(
+      int siteId, List<String> filePaths) async {
+    for (String filePath in filePaths) {
+      await createSiteMedia(siteId, filePath);
+    }
+  }
+
   Future<void> createSiteMedia(int siteId, String filePath) async {
     ExifData exifData = ExifData.empty();
     await exifData.readExif(File(filePath));

@@ -66,18 +66,39 @@ class NarrativeMediaViewer extends ConsumerWidget {
     MediaCategory mediaCategory = MediaCategory.narrative;
     return MediaViewer(
       images: data,
-      onAddImage: () async {
+      onAddFromGallery: () async {
+        Navigator.pop(context);
         try {
           List<String> images =
               await ImageServices(ref: ref, category: mediaCategory)
-                  .pickImages();
+                  .pickFromGallery();
           if (images.isNotEmpty) {
-            for (String path in images) {
-              await NarrativeServices(ref: ref).createNarrativeMedia(
-                narrativeId,
-                path,
-              );
-            }
+            await NarrativeServices(ref: ref).createNarrativeMediaFromList(
+              narrativeId,
+              images,
+            );
+          }
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                e.toString(),
+              ),
+            ),
+          );
+        }
+      },
+      onAddFromFiles: () async {
+        Navigator.pop(context);
+        try {
+          List<String> images =
+              await ImageServices(ref: ref, category: mediaCategory)
+                  .pickFromFiles();
+          if (images.isNotEmpty) {
+            await NarrativeServices(ref: ref).createNarrativeMediaFromList(
+              narrativeId,
+              images,
+            );
           }
         } catch (e) {
           ScaffoldMessenger.of(context).showSnackBar(

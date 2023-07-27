@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/providers/database.dart';
@@ -35,6 +36,15 @@ class FilePickerServices {
         print('Selected directory: $result');
       }
       return Directory(result);
+    }
+    return null;
+  }
+
+  Future<XFile?> selectAnyFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      return XFile(result.files.single.path!);
     }
     return null;
   }

@@ -2,10 +2,26 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
 	<string>Nahpu</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>NAHPU Database</string>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.hhandik.nahpuDb</string>
+			</array>
+		</dict>
+		<dict/>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -24,6 +40,8 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>GCSupportsControllerUserInteraction</key>
 	<true/>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
@@ -36,6 +54,8 @@
 	<string>$(PRODUCT_NAME) would like to use your microphone</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(PRODUCT_NAME) needs access to photos</string>
+	<key>UIActivityViewController</key>
+	<true/>
 	<key>UIActivityViewControllerCanUseAirDrop</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
@@ -60,12 +80,6 @@
 	<key>UISupportsDocumentBrowser</key>
 	<true/>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
-	<key>UIActivityViewController</key>
-	<true/>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 </dict>
 </plist>

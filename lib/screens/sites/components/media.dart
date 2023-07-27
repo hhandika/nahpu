@@ -34,20 +34,42 @@ class SiteMediaFormState extends ConsumerState<SiteMediaForm> {
           data: (data) {
             return MediaViewer(
               images: List.from(data),
-              onAddImage: () async {
+              onAddFromGallery: () async {
+                Navigator.pop(context);
                 try {
                   List<String> images = await ImageServices(
                     ref: ref,
                     category: mediaCategory,
-                  ).pickImages();
+                  ).pickFromGallery();
                   if (images.isNotEmpty) {
-                    for (String path in images) {
-                      await SiteServices(ref: ref).createSiteMedia(
-                        widget.siteId,
-                        path,
-                      );
-                    }
-                    setState(() {});
+                    await SiteServices(ref: ref).createSiteMediaFromList(
+                      widget.siteId,
+                      images,
+                    );
+                    _doneSelecting();
+                  }
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        e.toString(),
+                      ),
+                    ),
+                  );
+                }
+              },
+              onAddFromFiles: () async {
+                Navigator.pop(context);
+                try {
+                  List<String> images =
+                      await ImageServices(ref: ref, category: mediaCategory)
+                          .pickFromFiles();
+                  if (images.isNotEmpty) {
+                    await SiteServices(ref: ref).createSiteMediaFromList(
+                      widget.siteId,
+                      images,
+                    );
+                    _doneSelecting();
                   }
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -89,5 +111,9 @@ class SiteMediaFormState extends ConsumerState<SiteMediaForm> {
             e.toString(),
           ),
         );
+  }
+
+  void _doneSelecting() {
+    setState(() {});
   }
 }

@@ -8,7 +8,6 @@ import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/file_operation.dart';
 import 'package:nahpu/services/export/db_writer.dart';
 import 'package:nahpu/services/io_services.dart';
-import 'package:nahpu/services/types/file_format.dart';
 import 'package:nahpu/styles/settings.dart';
 import 'package:path/path.dart' as p;
 import 'package:settings_ui/settings_ui.dart';
@@ -80,7 +79,7 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
   }
 
   Future<void> _getDbPath() async {
-    final dbPath = await FilePickerServices().selectFile([dbFmt]);
+    final dbPath = await FilePickerServices().selectAnyFile();
     if (dbPath != null) {
       setState(() {
         _dbPath = dbPath;

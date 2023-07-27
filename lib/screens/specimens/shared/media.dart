@@ -35,12 +35,13 @@ class SpecimenMediaFormState extends ConsumerState<SpecimenMediaForm> {
           data: (data) {
             return MediaViewer(
               images: List.from(data),
-              onAddImage: () async {
+              onAddFromGallery: () async {
+                Navigator.pop(context);
                 try {
                   List<String> images = await ImageServices(
                     ref: ref,
                     category: mediaCategory,
-                  ).pickImages();
+                  ).pickFromGallery();
                   if (images.isNotEmpty) {
                     for (String path in images) {
                       await SpecimenServices(ref: ref).createSpecimenMedia(
@@ -48,6 +49,33 @@ class SpecimenMediaFormState extends ConsumerState<SpecimenMediaForm> {
                         path,
                       );
                     }
+                    setState(() {});
+                  }
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        e.toString(),
+                      ),
+                      duration: const Duration(seconds: 5),
+                    ),
+                  );
+                }
+              },
+              onAddFromFiles: () async {
+                Navigator.pop(context);
+                try {
+                  List<String> images = await ImageServices(
+                    ref: ref,
+                    category: mediaCategory,
+                  ).pickFromFiles();
+                  if (images.isNotEmpty) {
+                    await SpecimenServices(ref: ref)
+                        .createSpecimenMediaFromList(
+                      widget.specimenUuid,
+                      images,
+                    );
+
                     setState(() {});
                   }
                 } catch (e) {

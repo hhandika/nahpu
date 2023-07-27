@@ -34,6 +34,13 @@ class NarrativeServices extends DbAccess {
     NarrativeQuery(dbAccess).updateNarrativeEntry(id, entries);
   }
 
+  Future<void> createNarrativeMediaFromList(
+      int narrativeId, List<String> filePaths) async {
+    for (String filePath in filePaths) {
+      await createNarrativeMedia(narrativeId, filePath);
+    }
+  }
+
   Future<void> createNarrativeMedia(int narrativeId, String filePath) async {
     ExifData exifData = ExifData.empty();
     await exifData.readExif(File(filePath));
