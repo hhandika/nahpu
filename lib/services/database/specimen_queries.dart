@@ -206,6 +206,19 @@ class SpecimenPartQuery extends DatabaseAccessor<Database>
   Future<int> createSpecimenPart(SpecimenPartCompanion form) =>
       into(specimenPart).insert(form);
 
+  Future<List<String>> searchPrepType(String query) async {
+    List<SpecimenPartData> data = await (select(specimenPart)
+          ..where((t) => t.type.like('%$query%')))
+        .get();
+
+    // Get specimen uuid only
+    List<String> prepType = data
+        .where((element) => element.specimenUuid != null)
+        .map((e) => e.specimenUuid!)
+        .toList();
+    return prepType;
+  }
+
   Future<List<SpecimenPartData>> getSpecimenParts(String specimenUuid) {
     return (select(specimenPart)
           ..where((t) => t.specimenUuid.equals(specimenUuid)))

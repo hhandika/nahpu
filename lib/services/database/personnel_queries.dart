@@ -27,6 +27,17 @@ class PersonnelQuery extends DatabaseAccessor<Database>
     return (select(personnel)..where((t) => t.name.like('%$search%'))).get();
   }
 
+  Future<List<String>> rawSearchPersonnel(String query) async {
+    List<String> personnelUuid = [];
+    List<QueryRow> result = await customSelect(
+            'SELECT * FROM personnel WHERE name LIKE \'%$query%\'')
+        .get();
+    for (final row in result) {
+      personnelUuid.add(row.read<String>('uuid'));
+    }
+    return personnelUuid;
+  }
+
   Future<void> createProjectPersonnelEntry(PersonnelListCompanion form) =>
       into(personnelList).insert(form);
 

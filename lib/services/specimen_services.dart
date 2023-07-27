@@ -318,13 +318,15 @@ class SpecimenSearchServices {
     List<String> matchedPersons = await _searchPersonnel(query);
     List<int> matchedColPersons =
         await _searchColPersonnel(matchedPersons, query);
+    List<String> matchedPrepType = await _searchPrepType(query);
     List<SpecimenData> filteredList = specimenEntries
         .where(
           (e) =>
               _isMatchFieldNum(e.fieldNumber, query) ||
               _isMatchedPerson(matchedPersons, e.catalogerID) ||
               _isMatchedPerson(matchedPersons, e.preparatorID) ||
-              _isMatchedColPerson(matchedColPersons, e.collPersonnelID),
+              _isMatchedColPerson(matchedColPersons, e.collPersonnelID) ||
+              _isMatchPrepType(matchedPrepType, e.uuid),
         )
         .toList();
     return filteredList;
@@ -348,9 +350,21 @@ class SpecimenSearchServices {
     return matchedColPersons.contains(colPersonId);
   }
 
+  bool _isMatchPrepType(List<String> matchedPrepType, String specimenUuid) {
+    if (matchedPrepType.isEmpty) {
+      return false;
+    }
+    return matchedPrepType.contains(specimenUuid);
+  }
+
   Future<List<String>> _searchPersonnel(String query) async {
     final person = await PersonnelQuery(db).searchPersonnel(query);
     return person.map((e) => e.uuid).toList();
+  }
+
+  Future<List<String>> _searchPrepType(String query) async {
+    final prepType = await SpecimenPartQuery(db).searchPrepType(query);
+    return prepType;
   }
 
   Future<List<int>> _searchColPersonnel(
