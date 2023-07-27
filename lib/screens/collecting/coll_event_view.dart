@@ -58,14 +58,7 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
                         : const SizedBox.shrink(),
                   ],
                   onChanged: (value) {
-                    ref
-                        .read(collEventEntryProvider.notifier)
-                        .search(value)
-                        .whenComplete(() {
-                      setState(() {
-                        _updatePageNav(0);
-                      });
-                    });
+                    ref.read(collEventEntryProvider.notifier).search(value);
                   },
                 )
               : const SizedBox.shrink(),

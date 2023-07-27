@@ -58,14 +58,7 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
                         : const SizedBox.shrink(),
                   ],
                   onChanged: (value) {
-                    ref
-                        .read(narrativeEntryProvider.notifier)
-                        .search(value)
-                        .whenComplete(() {
-                      setState(() {
-                        _updatePageNav(0);
-                      });
-                    });
+                    ref.read(narrativeEntryProvider.notifier).search(value);
                   },
                 )
               : const SizedBox.shrink(),

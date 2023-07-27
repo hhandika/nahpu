@@ -60,12 +60,7 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
                         : const SizedBox.shrink(),
                   ],
                   onChanged: (value) {
-                    ref
-                        .read(siteEntryProvider.notifier)
-                        .search(value)
-                        .whenComplete(() => setState(() {
-                              _updatePageNav(0);
-                            }));
+                    ref.read(siteEntryProvider.notifier).search(value);
                   },
                 )
               : const SizedBox.shrink(),
