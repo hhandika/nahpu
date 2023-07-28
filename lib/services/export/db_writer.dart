@@ -44,15 +44,17 @@ class DbWriter extends DbAccess {
   Future<void> replaceDb(File file, File? backupPath, bool isArchived) async {
     String dbImportPath = file.path;
     if (isArchived) {
-      await _copyProjectData(file);
-      dbImportPath = await _findSqlite3InTempDir();
+      dbImportPath = await _copyProjectData(file);
     }
     if (backupPath != null) {
       await _backUpBeforeDelete(backupPath);
     }
-    if (kDebugMode) {
-      print('Original database has been closed!');
-    }
+    await _writeDb(dbImportPath);
+    final tempDir = await tempDirectory;
+    tempDir.deleteSync(recursive: true);
+  }
+
+  Future<void> _writeDb(String dbImportPath) async {
     final newDb = sqlite3.sqlite3.open(dbImportPath);
     dbAccess.close();
     final appDb = await dBPath;
@@ -69,10 +71,11 @@ class DbWriter extends DbAccess {
     newDb.dispose();
   }
 
-  Future<void> _copyProjectData(File file) async {
+  Future<String> _copyProjectData(File file) async {
     final tempDir = await tempDirectory;
     await extractFileToDisk(file.path, tempDir.path);
     final files = tempDir.listSync(recursive: true);
+    final dbPath = await _findSqlite3InTempDir(files);
     final nahpuDir = await nahpuDocumentDir;
     files.removeWhere((file) => file.path.endsWith('.db'));
     for (var file in files) {
@@ -89,12 +92,10 @@ class DbWriter extends DbAccess {
         }
       }
     }
-    tempDir.deleteSync(recursive: true);
+    return dbPath;
   }
 
-  Future<String> _findSqlite3InTempDir() async {
-    final tempDir = await tempDirectory;
-    final files = tempDir.listSync(recursive: true);
+  Future<String> _findSqlite3InTempDir(List<FileSystemEntity> files) async {
     for (var file in files) {
       if (file is File) {
         if (file.path.endsWith('.sqlite3')) {
