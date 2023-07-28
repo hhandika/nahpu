@@ -41,14 +41,19 @@ class DbWriter extends DbAccess {
     dbPath.deleteSync();
   }
 
-  Future<void> replaceDb(File file, File? backupPath) async {
+  Future<void> replaceDb(File file, File? backupPath, bool isArchived) async {
+    String dbImportPath = file.path;
+    if (isArchived) {
+      await _copyProjectData(file);
+      dbImportPath = await _findSqlite3InTempDir();
+    }
     if (backupPath != null) {
       await _backUpBeforeDelete(backupPath);
     }
     if (kDebugMode) {
       print('Original database has been closed!');
     }
-    final newDb = sqlite3.sqlite3.open(file.path);
+    final newDb = sqlite3.sqlite3.open(dbImportPath);
     dbAccess.close();
     final appDb = await dBPath;
     if (appDb.existsSync()) {
@@ -62,6 +67,43 @@ class DbWriter extends DbAccess {
     }
 
     newDb.dispose();
+  }
+
+  Future<void> _copyProjectData(File file) async {
+    final tempDir = await tempDirectory;
+    await extractFileToDisk(file.path, tempDir.path);
+    final files = tempDir.listSync(recursive: true);
+    final nahpuDir = await nahpuDocumentDir;
+    files.removeWhere((file) => file.path.endsWith('.db'));
+    for (var file in files) {
+      if (file is File) {
+        final filename = p.relative(file.path, from: tempDir.path);
+        final newPath = p.join(nahpuDir.path, filename);
+        // Create directory if not exist
+        final newDir = Directory(p.dirname(newPath));
+        if (!newDir.existsSync()) {
+          newDir.createSync(recursive: true);
+        }
+        if (!File(newPath).existsSync()) {
+          file.copySync(newPath);
+        }
+      }
+    }
+    tempDir.deleteSync(recursive: true);
+  }
+
+  Future<String> _findSqlite3InTempDir() async {
+    final tempDir = await tempDirectory;
+    final files = tempDir.listSync(recursive: true);
+    for (var file in files) {
+      if (file is File) {
+        if (file.path.endsWith('.sqlite3')) {
+          return file.path;
+        }
+      }
+    }
+
+    throw Exception('No sqlite3 file found in the archive!');
   }
 
   Future<void> _backUpBeforeDelete(File backupPath) async {

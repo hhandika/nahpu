@@ -152,3 +152,10 @@ Future<Directory> get nahpuDocumentDir async {
   await nahpuDir.create(recursive: true);
   return nahpuDir;
 }
+
+Future<Directory> get tempDirectory async {
+  final dbDir = await getApplicationDocumentsDirectory();
+  final tempDir = Directory(path.join(dbDir.path, 'temp'));
+  await tempDir.create(recursive: true);
+  return tempDir;
+}

@@ -24,6 +24,7 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
   XFile? _dbPath;
   bool _isBackup = true;
   bool _hasSelected = false;
+  bool _isArchived = false;
 
   @override
   Widget build(BuildContext context) {
@@ -81,9 +82,13 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
   Future<void> _getDbPath() async {
     final dbPath = await FilePickerServices().selectAnyFile();
     if (dbPath != null) {
+      final ext = p.extension(dbPath.path);
       setState(() {
         _dbPath = dbPath;
         _hasSelected = true;
+        if (ext == '.zip') {
+          _isArchived = true;
+        }
       });
     }
   }
@@ -92,7 +97,8 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
     Navigator.of(context).pop();
     try {
       File? backupPath = _isBackup ? await getDbBackUpPath() : null;
-      await DbWriter(ref: ref).replaceDb(File(_dbPath!.path), backupPath);
+      await DbWriter(ref: ref)
+          .replaceDb(File(_dbPath!.path), backupPath, _isArchived);
       if (context.mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
@@ -104,10 +110,11 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text(
-            'Failed to replace database!',
+            'Failed to replace database!: $e',
           ),
+          duration: const Duration(seconds: 10),
         ),
       );
     }
