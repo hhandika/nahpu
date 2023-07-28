@@ -1,63 +1,67 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'settings.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 SharedPreferences setting(SettingRef ref) {
   return throw UnimplementedError();
 }
 
-final themeSettingProvider =
-    StateNotifierProvider<ThemeSettingNotifier, ThemeMode>((ref) {
-  return ThemeSettingNotifier(ref.read(settingProvider));
-});
+@Riverpod(keepAlive: true)
+class ThemeSetting extends _$ThemeSetting {
+  Future<ThemeMode> _fetchSetting() async {
+    final prefs = ref.watch(settingProvider);
+    final savedTheme = prefs.getString('themeMode');
 
-class ThemeSettingNotifier extends StateNotifier<ThemeMode> {
-  ThemeSettingNotifier(this.prefs) : super(ThemeMode.system) {
-    _initTheme();
+    // Set to default system theme if no setting is found
+    final ThemeMode currentTheme = _matchThemeMode(savedTheme);
+    if (savedTheme == null) {
+      await prefs.setString('themeMode', _matchThemeModeToString(currentTheme));
+    }
+
+    return currentTheme;
   }
 
-  final SharedPreferences prefs;
+  @override
+  FutureOr<ThemeMode> build() async {
+    return await _fetchSetting();
+  }
 
-  void _initTheme() {
-    final theme = prefs.getString('themeMode');
-    if (theme != null) {
-      switch (theme) {
+  Future<void> setTheme(String mode) async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      String value = mode.toLowerCase();
+      final prefs = ref.watch(settingProvider);
+      final themeMode = _matchThemeMode(value);
+      await prefs.setString('themeMode', value);
+      return themeMode;
+    });
+  }
+
+  ThemeMode _matchThemeMode(String? savedTheme) {
+    if (savedTheme != null) {
+      switch (savedTheme) {
         case 'dark':
-          state = ThemeMode.dark;
-          break;
+          return ThemeMode.dark;
         case 'light':
-          state = ThemeMode.light;
-          break;
+          return ThemeMode.light;
         case 'system':
-          state = ThemeMode.system;
-          break;
+          return ThemeMode.system;
       }
     }
+    return ThemeMode.system;
   }
 
-  void setDarkMode() {
-    state = ThemeMode.dark;
-  }
-
-  void setLightMode() {
-    state = ThemeMode.light;
-  }
-
-  void setSystemMode() {
-    state = ThemeMode.system;
-  }
-
-  void saveThemeMode() {
-    if (state == ThemeMode.light) {
-      prefs.setString('themeMode', 'light');
-    } else if (state == ThemeMode.dark) {
-      prefs.setString('themeMode', 'dark');
-    } else {
-      prefs.setString('themeMode', 'system');
+  String _matchThemeModeToString(ThemeMode theme) {
+    switch (theme) {
+      case ThemeMode.dark:
+        return 'dark';
+      case ThemeMode.light:
+        return 'light';
+      case ThemeMode.system:
+        return 'system';
     }
   }
 }

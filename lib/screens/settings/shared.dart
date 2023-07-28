@@ -3,6 +3,7 @@ import 'package:nahpu/screens/settings/common.dart';
 import 'package:nahpu/screens/settings/db_settings.dart';
 import 'package:nahpu/services/platform_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/services/utility_services.dart';
 import 'package:nahpu/styles/settings.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter/material.dart';
@@ -15,20 +16,24 @@ class AppearanceSettings {
 
   SettingsSection getSetting() {
     final theme = ref.watch(themeSettingProvider);
-    String themeValue = _getThemeValue(theme);
     return SettingsSection(
       title: const SettingTitle(title: 'App Settings'),
       tiles: [
-        SettingsTile.navigation(
-          leading: const Icon(Icons.color_lens_outlined),
-          title: const Text('Theme'),
-          value: Text(themeValue),
-          onPressed: (context) => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ThemeSettings(isSelected: themeValue),
+        theme.when(
+          data: (themeValue) => SettingsTile.navigation(
+            leading: const Icon(Icons.color_lens_outlined),
+            title: const Text('Theme'),
+            value: Text(themeValue.name.toSentenceCase()),
+            onPressed: (context) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    ThemeSettings(isSelected: themeValue.name.toSentenceCase()),
+              ),
             ),
           ),
+          loading: () => _getThemeSettingTile(ThemeMode.system),
+          error: (error, stackTrace) => _getThemeSettingTile(ThemeMode.system),
         ),
         SettingsTile.navigation(
           leading: Icon(MdiIcons.databaseOutline),
@@ -44,15 +49,19 @@ class AppearanceSettings {
     );
   }
 
-  String _getThemeValue(ThemeMode theme) {
-    switch (theme) {
-      case ThemeMode.dark:
-        return 'Dark';
-      case ThemeMode.light:
-        return 'Light';
-      case ThemeMode.system:
-        return 'System';
-    }
+  SettingsTile _getThemeSettingTile(ThemeMode themeValue) {
+    return SettingsTile.navigation(
+      leading: const Icon(Icons.color_lens_outlined),
+      title: const Text('Theme'),
+      value: Text(themeValue.name.toSentenceCase()),
+      onPressed: (context) => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              ThemeSettings(isSelected: themeValue.name.toSentenceCase()),
+        ),
+      ),
+    );
   }
 }
 
@@ -90,8 +99,7 @@ class ThemeSettingState extends ConsumerState<ThemeSettings> {
                     trailing:
                         widget.isSelected == e ? const Icon(Icons.check) : null,
                     onPressed: (_) {
-                      _setTheme(e);
-                      ref.read(themeSettingProvider.notifier).saveThemeMode();
+                      ref.read(themeSettingProvider.notifier).setTheme(e);
                       Navigator.of(context).pop();
                     });
               },
@@ -100,20 +108,5 @@ class ThemeSettingState extends ConsumerState<ThemeSettings> {
         ],
       ),
     );
-  }
-
-  void _setTheme(String theme) {
-    final setTheme = ref.read(themeSettingProvider.notifier);
-    switch (theme) {
-      case 'Dark':
-        setTheme.setDarkMode();
-        break;
-      case 'Light':
-        setTheme.setLightMode();
-        break;
-      case 'System':
-        setTheme.setSystemMode();
-        break;
-    }
   }
 }

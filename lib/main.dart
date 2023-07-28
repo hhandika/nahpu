@@ -26,7 +26,11 @@ class NahpuApp extends ConsumerWidget {
         home: const Home(),
         theme: NahpuTheme.lightTheme(lightColorScheme),
         darkTheme: NahpuTheme.darkTheme(darkColorScheme),
-        themeMode: ref.watch(themeSettingProvider),
+        themeMode: ref.watch(themeSettingProvider).when(
+              data: (theme) => theme,
+              loading: () => ThemeMode.system,
+              error: (error, stackTrace) => ThemeMode.system,
+            ),
       );
     });
   }
