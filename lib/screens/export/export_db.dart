@@ -70,6 +70,14 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
               }
             },
           ),
+          SwitchField(
+              label: 'Include project data',
+              value: _isWithProjectData,
+              onPressed: (value) {
+                setState(() {
+                  _isWithProjectData = !_isWithProjectData;
+                });
+              }),
           FileNameField(
             controller: exportCtr,
             onChanged: (String? value) {
@@ -81,14 +89,6 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
               }
             },
           ),
-          SwitchField(
-              label: 'Include project data',
-              value: _isWithProjectData,
-              onPressed: (value) {
-                setState(() {
-                  _isWithProjectData = !_isWithProjectData;
-                });
-              }),
           SelectDirField(
               dirPath: _selectedDir,
               onPressed: () async {
