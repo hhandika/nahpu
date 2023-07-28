@@ -18,7 +18,11 @@ class HomeMenuDrawer extends StatelessWidget {
       children: [
         DrawerHeader(
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.secondary,
+            color: Color.lerp(
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.surface,
+              0.2,
+            ),
           ),
           child: Image.asset(
             'assets/images/logo_nobg.png',
@@ -47,7 +51,6 @@ class HomeMenuDrawer extends StatelessWidget {
             );
           },
         ),
-        // const Divider(color: Colors.grey),
         ListTile(
           leading: const Icon(Icons.settings_rounded),
           title: const Text('Settings'),

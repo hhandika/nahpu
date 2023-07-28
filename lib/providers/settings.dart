@@ -61,15 +61,3 @@ class ThemeSettingNotifier extends StateNotifier<ThemeMode> {
     }
   }
 }
-
-// final catalogFmtNotifier =
-//     StateNotifierProvider<CatalogFmtNotifier, CatalogFmt>(
-//         (ref) => CatalogFmtNotifier());
-
-// class CatalogFmtNotifier extends StateNotifier<CatalogFmt> {
-//   CatalogFmtNotifier() : super(CatalogFmt.generalMammals);
-
-//   void setCatalogFmt(CatalogFmt catalogFmt) {
-//     state = catalogFmt;
-//   }
-// }
