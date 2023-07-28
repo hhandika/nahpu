@@ -26,10 +26,18 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
   final TextEditingController _searchController = TextEditingController();
   int? _narrativeId;
   bool _isSearching = false;
+  late FocusNode _focus;
+
+  @override
+  void initState() {
+    super.initState();
+    _focus = FocusNode();
+  }
 
   @override
   void dispose() {
     _pageNav.dispose();
+    _focus.dispose();
     super.dispose();
   }
 
@@ -44,6 +52,7 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
           _isSearching
               ? ExpandedSearchBar(
                   controller: _searchController,
+                  focusNode: _focus,
                   hintText: 'Search narrative',
                   trailing: [
                     _searchController.text.isNotEmpty
@@ -71,6 +80,7 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
                             _isSearching = true;
                             narrativeServices.invalidateNarrative();
                           });
+                          _focus.requestFocus();
                         },
                   icon: const Icon(Icons.search),
                 )

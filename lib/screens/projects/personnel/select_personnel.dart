@@ -38,6 +38,7 @@ class SelectPersonnelState extends ConsumerState<SelectPersonnel> {
                   CommonPadding(
                     child: CommonSearchBar(
                         controller: _searchController,
+                        focusNode: FocusNode(),
                         hintText: 'Search personnel',
                         trailing: [
                           _searchController.text.isNotEmpty

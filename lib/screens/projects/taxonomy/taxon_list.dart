@@ -70,6 +70,7 @@ class _TaxonListState extends State<TaxonList> {
           children: [
             CommonSearchBar(
               controller: _searchController,
+              focusNode: FocusNode(),
               hintText: 'Search taxa',
               trailing: [
                 _searchController.text.isNotEmpty

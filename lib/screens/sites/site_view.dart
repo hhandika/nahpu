@@ -27,6 +27,13 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
   final TextEditingController _searchController = TextEditingController();
   int? _siteId;
   bool _isSearching = false;
+  late FocusNode _focus;
+
+  @override
+  void initState() {
+    super.initState();
+    _focus = FocusNode();
+  }
 
   @override
   void dispose() {
@@ -46,6 +53,7 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
           _isSearching
               ? ExpandedSearchBar(
                   controller: _searchController,
+                  focusNode: _focus,
                   hintText: 'Search sites',
                   trailing: [
                     _searchController.text.isNotEmpty
@@ -71,6 +79,7 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
                       : () {
                           setState(() {
                             _isSearching = true;
+                            _focus.requestFocus();
                             ref.invalidate(siteEntryProvider);
                           });
                         },

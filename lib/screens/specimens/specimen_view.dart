@@ -30,10 +30,18 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
   CatalogFmt? _catalogFmt;
   TaxonData taxonomy = TaxonData();
   bool _isSearching = false;
+  late FocusNode _focus;
+
+  @override
+  void initState() {
+    super.initState();
+    _focus = FocusNode();
+  }
 
   @override
   void dispose() {
     _pageNav.dispose();
+    _focus.dispose();
     super.dispose();
   }
 
@@ -49,6 +57,7 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
           _isSearching
               ? ExpandedSearchBar(
                   controller: _searchController,
+                  focusNode: _focus,
                   hintText: 'Search specimens',
                   trailing: [
                     _searchController.text.isNotEmpty
@@ -77,6 +86,7 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
                       : () {
                           setState(() {
                             _isSearching = true;
+                            _focus.requestFocus();
                             ref.invalidate(specimenEntryProvider);
                           });
                         },

@@ -26,10 +26,17 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
   final TextEditingController _searchController = TextEditingController();
   int? _collEvenId;
   bool _isSearching = false;
+  final FocusNode _focus = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   void dispose() {
     _pageNav.dispose();
+    _focus.dispose();
     super.dispose();
   }
 
@@ -44,6 +51,7 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
           _isSearching
               ? ExpandedSearchBar(
                   controller: _searchController,
+                  focusNode: _focus,
                   hintText: 'Search collecting events',
                   trailing: [
                     _searchController.text.isNotEmpty
@@ -69,6 +77,7 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
                       : () {
                           setState(() {
                             _isSearching = true;
+                            _focus.requestFocus();
                             services.invalidateCollEvent();
                           });
                         },

@@ -52,6 +52,7 @@ class SpecimenListPageState extends ConsumerState<SpecimenListPage> {
           children: [
             CommonSearchBar(
               controller: _searchController,
+              focusNode: FocusNode(),
               hintText: 'Search specimens',
               trailing: [
                 _searchController.text.isNotEmpty

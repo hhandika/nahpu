@@ -89,12 +89,14 @@ class ExpandedSearchBar extends StatelessWidget {
     required this.onChanged,
     required this.trailing,
     required this.hintText,
+    required this.focusNode,
   });
 
   final TextEditingController controller;
   final void Function(String) onChanged;
   final Iterable<Widget> trailing;
   final String hintText;
+  final FocusNode focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +105,7 @@ class ExpandedSearchBar extends StatelessWidget {
           padding: const EdgeInsets.all(4),
           child: CommonSearchBar(
             controller: controller,
+            focusNode: FocusNode(),
             hintText: hintText,
             trailing: trailing,
             onChanged: onChanged,
@@ -118,17 +121,20 @@ class CommonSearchBar extends StatelessWidget {
     required this.onChanged,
     required this.trailing,
     required this.hintText,
+    required this.focusNode,
   });
 
   final TextEditingController controller;
   final void Function(String) onChanged;
   final Iterable<Widget> trailing;
   final String hintText;
+  final FocusNode focusNode;
 
   @override
   Widget build(BuildContext context) {
     return SearchBar(
       controller: controller,
+      focusNode: focusNode,
       leading: const Icon(Icons.search),
       constraints: const BoxConstraints(maxHeight: 44),
       elevation: MaterialStateProperty.all(0),
