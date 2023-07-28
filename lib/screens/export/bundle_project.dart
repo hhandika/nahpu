@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/export/common.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/file_operation.dart';
@@ -36,6 +37,7 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
       resizeToAvoidBottomInset: false,
       body: FileOperationPage(
         children: [
+          const FileFormatIcon(path: 'assets/icons/zip.svg'),
           FileNameField(
             controller: exportCtr,
             onChanged: (String? value) {

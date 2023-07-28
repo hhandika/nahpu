@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/export/common.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/export.dart';
@@ -48,10 +49,11 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
       ),
       body: FileOperationPage(
         children: [
+          FileFormatIcon(path: _getDbIconPath()),
           DropdownButtonFormField(
             value: exportFmt,
             decoration: const InputDecoration(
-              labelText: 'Format',
+              labelText: 'Database format',
             ),
             items: dbExportFmt.entries
                 .map(
@@ -128,6 +130,14 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
         ],
       ),
     );
+  }
+
+  String _getDbIconPath() {
+    if (_isWithProjectData) {
+      return 'assets/icons/zip.svg';
+    } else {
+      return 'assets/icons/sqlite.svg';
+    }
   }
 
   void _setSuccess() {

@@ -368,16 +368,13 @@ class ProjectIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FittedBox(
-        alignment: Alignment.center,
-        fit: BoxFit.fitHeight,
-        child: SvgPicture.asset(
-          'assets/icons/journal.svg',
-          height: 48,
-          colorFilter: ColorFilter.mode(
-            Theme.of(context).colorScheme.primary,
-            BlendMode.srcIn,
-          ),
-        ));
+    return SvgPicture.asset(
+      'assets/icons/project.svg',
+      height: 64,
+      colorFilter: ColorFilter.mode(
+        Theme.of(context).colorScheme.primary,
+        BlendMode.srcIn,
+      ),
+    );
   }
 }

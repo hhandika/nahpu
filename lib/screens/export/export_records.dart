@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:nahpu/screens/export/common.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/services/export/site_writer.dart';
 import 'package:nahpu/services/export/specimen_part_records.dart';
@@ -54,6 +55,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
       ),
       body: FileOperationPage(
         children: [
+          FileFormatIcon(path: _matchFileIconPath()),
           DropdownButtonFormField<ExportRecordType>(
             value: _recordType,
             decoration: const InputDecoration(
@@ -176,7 +178,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
                       label: 'Save',
                       isRunning: _isRunning,
                       icon: Icons.save_alt_outlined,
-                      onPressed: !exportCtr.isValid
+                      onPressed: !_isValid()
                           ? null
                           : () async {
                               setState(() {
@@ -200,6 +202,25 @@ class ExportFormState extends ConsumerState<ExportForm> {
         ],
       ),
     );
+  }
+
+  String _matchFileIconPath() {
+    switch (exportCtr.exportFmtCtr) {
+      case ExportFmt.csv:
+        return 'assets/icons/csv.svg';
+      case ExportFmt.tsv:
+        return 'assets/icons/tsv.svg';
+      default:
+        return 'assets/icons/csv.svg';
+    }
+  }
+
+  bool _isValid() {
+    bool isFieldValid = exportCtr.isValid;
+    if (_recordType == ExportRecordType.specimenRecord) {
+      return isFieldValid && _taxonRecordType != null;
+    }
+    return isFieldValid;
   }
 
   bool _isMammalSpecimenRecord() {
