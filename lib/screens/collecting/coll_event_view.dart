@@ -77,9 +77,9 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
                       : () {
                           setState(() {
                             _isSearching = true;
-                            _focus.requestFocus();
                             services.invalidateCollEvent();
                           });
+                          _focus.requestFocus();
                         },
                   icon: const Icon(Icons.search))
               : TextButton(

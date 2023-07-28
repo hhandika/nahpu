@@ -105,7 +105,7 @@ class ExpandedSearchBar extends StatelessWidget {
           padding: const EdgeInsets.all(4),
           child: CommonSearchBar(
             controller: controller,
-            focusNode: FocusNode(),
+            focusNode: focusNode,
             hintText: hintText,
             trailing: trailing,
             onChanged: onChanged,

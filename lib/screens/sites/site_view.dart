@@ -38,6 +38,7 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
   @override
   void dispose() {
     _pageNav.dispose();
+    _focus.dispose();
     super.dispose();
   }
 
@@ -79,9 +80,9 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
                       : () {
                           setState(() {
                             _isSearching = true;
-                            _focus.requestFocus();
                             ref.invalidate(siteEntryProvider);
                           });
+                          _focus.requestFocus();
                         },
                   icon: const Icon(Icons.search))
               : TextButton(

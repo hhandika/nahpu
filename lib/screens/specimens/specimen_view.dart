@@ -86,9 +86,9 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
                       : () {
                           setState(() {
                             _isSearching = true;
-                            _focus.requestFocus();
                             ref.invalidate(specimenEntryProvider);
                           });
+                          _focus.requestFocus();
                         },
                   icon: const Icon(Icons.search),
                 )

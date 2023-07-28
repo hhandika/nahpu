@@ -25,6 +25,20 @@ class SelectPersonnel extends ConsumerStatefulWidget {
 class SelectPersonnelState extends ConsumerState<SelectPersonnel> {
   final TextEditingController _searchController = TextEditingController();
   List<PersonnelData> _filteredData = [];
+  late FocusNode _focus;
+
+  @override
+  void initState() {
+    super.initState();
+    _focus = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _focus.dispose();
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +52,7 @@ class SelectPersonnelState extends ConsumerState<SelectPersonnel> {
                   CommonPadding(
                     child: CommonSearchBar(
                         controller: _searchController,
-                        focusNode: FocusNode(),
+                        focusNode: _focus,
                         hintText: 'Search personnel',
                         trailing: [
                           _searchController.text.isNotEmpty
