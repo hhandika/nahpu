@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
+import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/specimens.dart';
@@ -206,31 +207,12 @@ class EmptySpecimen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref.read(catalogFmtNotifierProvider).when(
-          data: (catalogFmt) {
-            return Center(
-              child: CommonEmptyForm(
-                iconPath: _getIconPath(catalogFmt),
-                text: 'No specimen found',
-                child: const NewSpecimensTextButton(),
-              ),
-            );
-          },
-          loading: () => const CommonProgressIndicator(),
-          error: (error, stack) => Text(error.toString()),
-        );
-  }
-
-  String _getIconPath(CatalogFmt fmt) {
-    switch (fmt) {
-      case CatalogFmt.generalMammals:
-        return 'assets/icons/mouse.svg';
-      case CatalogFmt.bats:
-        return 'assets/icons/bat.svg';
-      case CatalogFmt.birds:
-        return 'assets/icons/bird.svg';
-      default:
-        return 'assets/icons/mouse.svg';
-    }
+    return Center(
+      child: CommonEmptyForm(
+        iconPath: SpecimenServices(ref: ref).getIconPath(),
+        text: 'No specimen found',
+        child: const NewSpecimensTextButton(),
+      ),
+    );
   }
 }

@@ -17,22 +17,18 @@ class ProjectOverview extends ConsumerWidget {
       title: 'Project Overview',
       isPrimary: true,
       mainAxisAlignment: MainAxisAlignment.start,
-      child: Column(
-        children: [
-          ref.watch(projectInfoProvider(projectUuid)).when(
-                data: (data) {
-                  return Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ProjectInfo(
-                      projectData: data,
-                    ),
-                  );
-                },
-                loading: () => const CommonProgressIndicator(),
-                error: (error, stack) => Text(error.toString()),
-              ),
-        ],
-      ),
+      child: ref.watch(projectInfoProvider(projectUuid)).when(
+            data: (data) {
+              return Padding(
+                padding: const EdgeInsets.all(10),
+                child: ProjectInfo(
+                  projectData: data,
+                ),
+              );
+            },
+            loading: () => const CommonProgressIndicator(),
+            error: (error, stack) => Text(error.toString()),
+          ),
     );
   }
 

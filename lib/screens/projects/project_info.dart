@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-
 import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/specimen_services.dart';
 
-class ProjectInfo extends StatelessWidget {
+class ProjectInfo extends ConsumerWidget {
   const ProjectInfo({super.key, required this.projectData});
 
   final ProjectData? projectData;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
+        ProjectIcon(
+          path: SpecimenServices(ref: ref).getIconPath(),
+        ),
         ProjectInfoText(
           title: 'Project name: ',
           text: projectData?.name,
@@ -90,6 +95,23 @@ class ProjectInfoText extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class ProjectIcon extends StatelessWidget {
+  const ProjectIcon({super.key, required this.path});
+  final String path;
+  @override
+  Widget build(BuildContext context) {
+    return SvgPicture.asset(
+      path,
+      colorFilter: ColorFilter.mode(
+        Theme.of(context).colorScheme.primary,
+        BlendMode.srcIn,
+      ),
+      width: 96,
+      height: 96,
     );
   }
 }
