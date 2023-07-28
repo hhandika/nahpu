@@ -224,13 +224,9 @@ class ListProjectCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return ItemContainer(
       child: ListTile(
-        leading: Icon(
-          Icons.insert_drive_file_outlined,
-          size: 40,
-          color: Theme.of(context).colorScheme.onSurface,
-        ),
+        leading: const ProjectIcon(),
         title: Text(
           project.name,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -258,24 +254,35 @@ class GridProjectCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: GridTile(
-        footer: GridTileBar(
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          title: Text(project.name),
-          subtitle: Text('Created: ${project.created}'),
-          trailing: ProjectPopUpMenu(project: project),
-        ),
-        child: FittedBox(
-          alignment: Alignment.center,
-          fit: BoxFit.cover,
-          child: IconButton(
-            icon: const Icon(Icons.insert_drive_file_outlined),
-            onPressed: onPressed,
-          ),
-        ),
+    return ItemContainer(
+        child: GridTile(
+      footer: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
+          child: Container(
+            color:
+                Theme.of(context).colorScheme.secondaryContainer.withAlpha(500),
+            child: ListTile(
+              title: Text(
+                project.name,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+              subtitle: Text(
+                'Created: ${project.created}',
+                style: const TextStyle(
+                  fontSize: 12,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              trailing: ProjectPopUpMenu(project: project),
+              onTap: onPressed,
+            ),
+          )),
+      child: const Padding(
+        padding: EdgeInsets.all(16),
+        child: ProjectIcon(),
       ),
-    );
+    ));
   }
 }
 
@@ -334,5 +341,43 @@ class ProjectPopUpMenuState extends ConsumerState<ProjectPopUpMenu> {
             },
           ),
         );
+  }
+}
+
+class ItemContainer extends StatelessWidget {
+  const ItemContainer({super.key, required this.child});
+  final Widget child;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(24),
+          color: Theme.of(context).colorScheme.surfaceVariant.withAlpha(80),
+          border: Border.all(
+            color: Theme.of(context).dividerColor.withAlpha(50),
+            width: 1.5,
+          ),
+        ),
+        child: child);
+  }
+}
+
+class ProjectIcon extends StatelessWidget {
+  const ProjectIcon({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return FittedBox(
+        alignment: Alignment.center,
+        fit: BoxFit.fitHeight,
+        child: SvgPicture.asset(
+          'assets/icons/journal.svg',
+          height: 48,
+          colorFilter: ColorFilter.mode(
+            Theme.of(context).colorScheme.primary,
+            BlendMode.srcIn,
+          ),
+        ));
   }
 }
