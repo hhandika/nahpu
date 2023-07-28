@@ -25,7 +25,7 @@ class ProjectServices extends DbAccess {
   void updateProject(String projectUuid, ProjectCompanion form) {
     ProjectQuery(dbAccess).updateProjectEntry(projectUuid, form);
     ref.invalidate(projectFormValidatorProvider);
-    invalidateProject();
+    ref.invalidate(projectInfoProvider);
   }
 
   Future<ProjectData> getProjectByUuid(String uuid) async {
