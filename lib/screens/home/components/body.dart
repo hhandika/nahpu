@@ -169,7 +169,7 @@ class ProjectGridView extends StatelessWidget {
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: getCrossAxisCount(width, gridSize),
-          childAspectRatio: 1.5,
+          childAspectRatio: 1.2,
           crossAxisSpacing: 8,
           mainAxisSpacing: 8,
         ),

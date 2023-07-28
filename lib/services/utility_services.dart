@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 
 int getCrossAxisCount(double screenWidth, int elementSize) {
   int crossAxisCount = 1;
-  double safeWidth = screenWidth - 24;
+  double safeWidth = screenWidth - 48;
   while (safeWidth > elementSize) {
     crossAxisCount++;
     safeWidth -= elementSize;
