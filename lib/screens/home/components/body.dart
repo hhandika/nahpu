@@ -141,6 +141,7 @@ class ProjectListView extends StatelessWidget {
     return Expanded(
       child: ListView.builder(
         itemCount: projectList.length,
+        shrinkWrap: true,
         itemBuilder: (context, index) {
           return ProjectView(
             isList: true,
@@ -224,24 +225,26 @@ class ListProjectCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ItemContainer(
-      child: ListTile(
-        leading: const ProjectIcon(),
-        title: Text(
-          project.name,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-        ),
-        subtitle: Text(
-          'Created: ${project.created}',
-          style: const TextStyle(
-            fontSize: 12,
-            overflow: TextOverflow.ellipsis,
+    return Padding(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: ItemContainer(
+          child: ListTile(
+            leading: const ProjectIcon(),
+            title: Text(
+              project.name,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            subtitle: Text(
+              'Created: ${project.created}',
+              style: const TextStyle(
+                fontSize: 12,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            trailing: ProjectPopUpMenu(project: project),
+            onTap: onTap,
           ),
-        ),
-        trailing: ProjectPopUpMenu(project: project),
-        onTap: onTap,
-      ),
-    );
+        ));
   }
 }
 
