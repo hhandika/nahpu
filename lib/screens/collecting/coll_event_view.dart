@@ -109,6 +109,8 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
                     setState(() {
                       if (collEventSize >= 2) {
                         _isVisible = true;
+                      } else {
+                        _isVisible = false;
                       }
                       _pageNav.pageCounts = collEventSize;
                       _pageNav.updatePageController();

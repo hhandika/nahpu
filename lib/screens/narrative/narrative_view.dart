@@ -110,6 +110,8 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
                     setState(() {
                       if (narrativeSize >= 2) {
                         isVisible = true;
+                      } else {
+                        isVisible = false;
                       }
                       _pageNav.pageCounts = narrativeSize;
                       _pageNav.updatePageController();
