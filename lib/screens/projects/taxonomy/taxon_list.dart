@@ -60,6 +60,20 @@ class TaxonList extends StatefulWidget {
 class _TaxonListState extends State<TaxonList> {
   List<TaxonomyData> _filteredTaxonList = [];
   final TextEditingController _searchController = TextEditingController();
+  late FocusNode _focus;
+
+  @override
+  void initState() {
+    super.initState();
+    _focus = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _focus.dispose();
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +84,7 @@ class _TaxonListState extends State<TaxonList> {
           children: [
             CommonSearchBar(
               controller: _searchController,
-              focusNode: FocusNode(),
+              focusNode: _focus,
               hintText: 'Search taxa',
               trailing: [
                 _searchController.text.isNotEmpty

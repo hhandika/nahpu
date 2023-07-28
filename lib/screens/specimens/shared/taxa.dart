@@ -28,6 +28,13 @@ class SpeciesAutoComplete extends ConsumerStatefulWidget {
 
 class SpeciesAutoCompleteState extends ConsumerState<SpeciesAutoComplete> {
   final FocusNode _focusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AutoCompleteField(

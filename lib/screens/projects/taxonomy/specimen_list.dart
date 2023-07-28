@@ -38,6 +38,20 @@ class SpecimenListPageState extends ConsumerState<SpecimenListPage> {
   List<SpecimenData> _filteredData = [];
   final TextEditingController _searchController = TextEditingController();
   int _selectedValue = 0;
+  late FocusNode _focus;
+
+  @override
+  void initState() {
+    super.initState();
+    _focus = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _focus.dispose();
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
