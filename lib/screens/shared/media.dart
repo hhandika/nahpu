@@ -273,6 +273,7 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
               leading: const Icon(Icons.edit_outlined),
               title: const Text('Edit details'),
               onTap: () {
+                Navigator.pop(context);
                 showDialog(
                   context: context,
                   builder: (context) {
@@ -302,6 +303,7 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
                 'Rename',
               ),
               onTap: () {
+                Navigator.pop(context);
                 showDialog(
                   context: context,
                   builder: (context) {
