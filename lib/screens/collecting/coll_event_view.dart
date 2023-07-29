@@ -112,7 +112,7 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
                       _collEvenId = null;
                     });
 
-                    return const EmptyCollEvent();
+                    return EmptyCollEvent(isButtonVisible: !_isSearching);
                   } else {
                     int collEventSize = collEventEntries.length;
                     setState(() {
@@ -200,14 +200,19 @@ class CollEventPages extends StatelessWidget {
 }
 
 class EmptyCollEvent extends StatelessWidget {
-  const EmptyCollEvent({super.key});
+  const EmptyCollEvent({super.key, required this.isButtonVisible});
+
+  final bool isButtonVisible;
 
   @override
   Widget build(BuildContext context) {
-    return const CommonEmptyForm(
+    return CommonEmptyForm(
       iconPath: 'assets/icons/planner.svg',
       text: "No collecting event found",
-      child: NewCollEventTextButton(),
+      child: Visibility(
+        visible: isButtonVisible,
+        child: const NewCollEventTextButton(),
+      ),
     );
   }
 }

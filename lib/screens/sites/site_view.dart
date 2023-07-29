@@ -112,7 +112,7 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
                 _isVisible = false;
                 _siteId = null;
               });
-              return const EmptySite();
+              return EmptySite(isButtonVisible: !_isSearching);
             } else {
               int siteSize = siteEntries.length;
               setState(() {
@@ -197,14 +197,19 @@ class SitePages extends StatelessWidget {
 }
 
 class EmptySite extends StatelessWidget {
-  const EmptySite({super.key});
+  const EmptySite({super.key, required this.isButtonVisible});
+
+  final bool isButtonVisible;
 
   @override
   Widget build(BuildContext context) {
-    return const CommonEmptyForm(
+    return CommonEmptyForm(
       iconPath: 'assets/icons/forest.svg',
       text: 'No site found',
-      child: NewSiteTextButton(),
+      child: Visibility(
+        visible: isButtonVisible,
+        child: const NewSiteTextButton(),
+      ),
     );
   }
 }

@@ -122,7 +122,7 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
                     _specimenUuid = null;
                   });
 
-                  return const EmptySpecimen();
+                  return EmptySpecimen(isButtonVisible: !_isSearching);
                 } else {
                   int specimenSize = specimenEntry.length;
                   setState(() {
@@ -213,7 +213,12 @@ class SpecimenPages extends StatelessWidget {
 }
 
 class EmptySpecimen extends ConsumerWidget {
-  const EmptySpecimen({super.key});
+  const EmptySpecimen({
+    super.key,
+    required this.isButtonVisible,
+  });
+
+  final bool isButtonVisible;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -221,7 +226,10 @@ class EmptySpecimen extends ConsumerWidget {
       child: CommonEmptyForm(
         iconPath: SpecimenServices(ref: ref).getIconPath(),
         text: 'No specimen found',
-        child: const NewSpecimensTextButton(),
+        child: Visibility(
+          visible: isButtonVisible,
+          child: const NewSpecimensTextButton(),
+        ),
       ),
     );
   }

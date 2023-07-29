@@ -114,7 +114,7 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
                       _narrativeId = null;
                     });
 
-                    return const EmptyNarrative();
+                    return EmptyNarrative(isButtonVisible: !_isSearching);
                   } else {
                     int narrativeSize = narrativeEntries.length;
                     setState(() {
@@ -205,14 +205,22 @@ class NarrativePages extends StatelessWidget {
 }
 
 class EmptyNarrative extends StatelessWidget {
-  const EmptyNarrative({super.key});
+  const EmptyNarrative({
+    super.key,
+    required this.isButtonVisible,
+  });
+
+  final bool isButtonVisible;
 
   @override
   Widget build(BuildContext context) {
-    return const CommonEmptyForm(
+    return CommonEmptyForm(
       iconPath: 'assets/icons/agendas.svg',
       text: 'No narrative found',
-      child: NewNarrativeTextButton(),
+      child: Visibility(
+        visible: isButtonVisible,
+        child: const NewNarrativeTextButton(),
+      ),
     );
   }
 }
