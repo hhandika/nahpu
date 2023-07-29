@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/specimen_services.dart';
+import 'package:nahpu/services/utility_services.dart';
 
 class ProjectInfo extends ConsumerWidget {
   const ProjectInfo({super.key, required this.projectData});
@@ -43,24 +43,16 @@ class ProjectInfo extends ConsumerWidget {
         const SizedBox(height: 24),
         ProjectInfoText(
           title: 'Created: ',
-          text: _parsedDate(projectData?.created),
+          text: parseDate(projectData?.created),
           isSmall: true,
         ),
         ProjectInfoText(
           title: 'Last accessed: ',
-          text: _parsedDate(projectData?.lastAccessed),
+          text: parseDate(projectData?.lastAccessed),
           isSmall: true,
         ),
       ],
     );
-  }
-
-  String _parsedDate(String? date) {
-    if (date == null) return '';
-    DateTime parsedDate = DateTime.parse(date);
-    String formattedDate = DateFormat.yMMMMd().format(parsedDate);
-    String formattedTime = DateFormat.jm().format(parsedDate);
-    return '$formattedDate $formattedTime';
   }
 }
 

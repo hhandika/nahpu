@@ -1,5 +1,7 @@
 import 'package:intl/intl.dart';
 
+String get listTileSeparator => " · ";
+
 int getCrossAxisCount(double screenWidth, int elementSize) {
   int crossAxisCount = 1;
   double safeWidth = screenWidth - 48;
@@ -15,7 +17,13 @@ String getSystemDateTime() {
   return DateFormat('yyyy-MM-dd HH:mm:ss').format(currentDate);
 }
 
-String get listTileSeparator => " · ";
+String parseDate(String? date) {
+  if (date == null) return '';
+  DateTime parsedDate = DateTime.parse(date);
+  String formattedDate = DateFormat.yMMMMd().format(parsedDate);
+  String formattedTime = DateFormat.jm().format(parsedDate);
+  return '$formattedDate $formattedTime';
+}
 
 // Insert only unique values
 List<String> getDistinctList(List<String?> list) {
