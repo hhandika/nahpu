@@ -17,6 +17,7 @@ import 'package:nahpu/services/database/specimen_queries.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/project_services.dart';
+import 'package:nahpu/services/utility_services.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -338,6 +339,7 @@ class SpecimenSearchServices {
     List<int> matchedColPersons =
         await _searchColPersonnel(matchedPersons, query);
     List<String> matchedPrepType = await _searchPrepType(query);
+    List<int> matchedSpecies = await _searchSpecies(query);
     List<SpecimenData> filteredList = specimenEntries
         .where(
           (e) =>
@@ -345,6 +347,10 @@ class SpecimenSearchServices {
               _isMatchedPerson(matchedPersons, e.catalogerID) ||
               _isMatchedPerson(matchedPersons, e.preparatorID) ||
               _isMatchedColPerson(matchedColPersons, e.collPersonnelID) ||
+              e.condition.isContain(query) ||
+              e.prepDate.isContain(query) ||
+              e.prepTime.isContain(query) ||
+              _isMatchSpecies(matchedSpecies, e.speciesID) ||
               _isMatchPrepType(matchedPrepType, e.uuid),
         )
         .toList();
@@ -352,7 +358,7 @@ class SpecimenSearchServices {
   }
 
   bool _isMatchFieldNum(int? fieldNum, String query) {
-    return fieldNum.toString().toLowerCase().contains(query);
+    return fieldNum.toString().isContain(query);
   }
 
   bool _isMatchedPerson(List<String> matchedPersons, String? personnelUuid) {
@@ -376,9 +382,21 @@ class SpecimenSearchServices {
     return matchedPrepType.contains(specimenUuid);
   }
 
+  bool _isMatchSpecies(List<int> matchedSpecies, int? speciesId) {
+    if (matchedSpecies.isEmpty || speciesId == null) {
+      return false;
+    }
+    return matchedSpecies.contains(speciesId);
+  }
+
   Future<List<String>> _searchPersonnel(String query) async {
     final person = await PersonnelQuery(db).searchPersonnel(query);
     return person.map((e) => e.uuid).toList();
+  }
+
+  Future<List<int>> _searchSpecies(String query) async {
+    final listSpecies = await TaxonomyQuery(db).searchTaxon(query);
+    return listSpecies.map((e) => e.id).toList();
   }
 
   Future<List<String>> _searchPrepType(String query) async {

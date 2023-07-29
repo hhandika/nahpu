@@ -15,19 +15,32 @@ class TaxonomyQuery extends DatabaseAccessor<Database>
   }
 
   Future<String> getSpeciesById(int id) {
-    return (select(taxonomy)..where((t) => t.id.equals(id)))
+    return (select(taxonomy)
+          ..where((t) => t.id.equals(id))
+          ..limit(1))
         .map((t) => '${t.genus} ${t.specificEpithet}')
         .getSingle();
   }
 
-  Future<List<TaxonomyData>> searchTaxon(String query) {
-    return (select(taxonomy)
+  Future<List<TaxonomyData>> searchTaxon(String query) async {
+    if (query.isEmpty) {
+      return [];
+    }
+    if (query.split(' ').length == 2) {
+      // Search by genus and species
+      List<String> taxon = query.split(' ');
+      return await (select(taxonomy)
+            ..where((t) => t.genus.like('%${taxon[0]}%'))
+            ..where((t) => t.specificEpithet.like('%${taxon[1]}%')))
+          .get();
+    }
+    return await (select(taxonomy)
           ..where((t) =>
-              t.taxonOrder.contains(query) |
-              t.taxonFamily.contains(query) |
-              t.genus.contains(query) |
-              t.specificEpithet.contains(query) |
-              t.commonName.contains(query)))
+              t.taxonOrder.like('%$query%') |
+              t.taxonFamily.like('%$query%') |
+              t.genus.like('%$query%') |
+              t.specificEpithet.like('%$query%') |
+              t.commonName.like('%$query%')))
         .get();
   }
 
