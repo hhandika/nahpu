@@ -532,7 +532,7 @@ class CollPersonnelField extends ConsumerWidget {
                       ),
                     );
                   },
-                  icon: const Icon(Icons.clear),
+                  icon: const Icon(Icons.cancel_outlined),
                 )
               : const SizedBox.shrink(),
         ],
