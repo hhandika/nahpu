@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:exif/exif.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/platform_services.dart';
 import 'package:nahpu/services/types/import.dart';
@@ -200,13 +199,15 @@ class ExifData {
   }
 }
 
-List<String> parseMediaDateTime(String value) {
+({String date, String time}) parseMediaDateTime(String value) {
   if (value.isEmpty || !value.contains(' ')) {
-    return ['', ''];
+    return (date: '', time: '');
   }
   List<String> dateTime = value.split(' ');
-  DateTime date = DateTime.parse(dateTime[0].replaceAll(':', '-'));
-  String time = DateFormat.jm().format(date);
-  String parsedDate = DateFormat.yMMMMd().format(date);
-  return [parsedDate, time];
+  if (dateTime.length != 2) {
+    return (date: '', time: '');
+  }
+  String cleanedDate = dateTime[0].replaceAll(':', '-');
+  String cleanDateTime = '$cleanedDate ${dateTime[1]}';
+  return parseDate(cleanDateTime);
 }

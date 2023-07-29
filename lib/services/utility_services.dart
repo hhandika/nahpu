@@ -17,12 +17,16 @@ String getSystemDateTime() {
   return DateFormat('yyyy-MM-dd HH:mm:ss').format(currentDate);
 }
 
-String parseDate(String? date) {
-  if (date == null) return '';
-  DateTime parsedDate = DateTime.parse(date);
+({String date, String time}) parseDate(String? date) {
+  if (date == null) return (date: '', time: '');
+
+  DateTime? parsedDate = DateTime.tryParse(date);
+
+  if (parsedDate == null) return (date: '', time: '');
+
   String formattedDate = DateFormat.yMMMMd().format(parsedDate);
   String formattedTime = DateFormat.jm().format(parsedDate);
-  return '$formattedDate $formattedTime';
+  return (date: formattedDate, time: formattedTime);
 }
 
 // Insert only unique values

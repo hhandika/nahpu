@@ -248,11 +248,13 @@ class ListProjectCard extends StatelessWidget {
   }
 
   String get _creationDate {
-    return parseDate(project.created);
+    final value = parseDate(project.created);
+    return '${value.date} ${value.time}';
   }
 
   String get _lastAccessedDate {
-    return parseDate(project.lastAccessed);
+    final value = parseDate(project.lastAccessed);
+    return '${value.date} ${value.time}';
   }
 }
 

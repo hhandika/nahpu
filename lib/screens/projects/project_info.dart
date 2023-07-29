@@ -43,16 +43,21 @@ class ProjectInfo extends ConsumerWidget {
         const SizedBox(height: 24),
         ProjectInfoText(
           title: 'Created: ',
-          text: parseDate(projectData?.created),
+          text: _parseDate(projectData?.created),
           isSmall: true,
         ),
         ProjectInfoText(
           title: 'Last accessed: ',
-          text: parseDate(projectData?.lastAccessed),
+          text: _parseDate(projectData?.lastAccessed),
           isSmall: true,
         ),
       ],
     );
+  }
+
+  String _parseDate(String? date) {
+    final value = parseDate(date);
+    return '${value.date} ${value.time}';
   }
 }
 

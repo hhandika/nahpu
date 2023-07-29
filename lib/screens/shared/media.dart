@@ -508,8 +508,8 @@ class ExifViewer extends StatelessWidget {
   }
 
   String _parseDateTime() {
-    List<String> dateTime = parseMediaDateTime(ctr.dateTakenCtr.text);
-    return '${dateTime[0]}\n${dateTime[1]}';
+    final value = parseMediaDateTime(ctr.dateTakenCtr.text);
+    return '${value.date}\n${value.time}';
   }
 
   String _getExtension() {
