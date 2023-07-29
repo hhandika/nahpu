@@ -17,7 +17,7 @@ class AppearanceSettings {
   SettingsSection getSetting() {
     final theme = ref.watch(themeSettingProvider);
     return SettingsSection(
-      title: const SettingTitle(title: 'App Settings'),
+      title: const SettingTitle(title: 'Applications'),
       tiles: [
         theme.when(
           data: (themeValue) => SettingsTile.navigation(

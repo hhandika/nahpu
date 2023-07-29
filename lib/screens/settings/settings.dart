@@ -22,7 +22,7 @@ class ProjectSettingState extends ConsumerState<AppSettings> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Project Settings'),
+        title: const Text('Settings'),
       ),
       body: SafeArea(
         child: SettingsList(
@@ -60,7 +60,7 @@ class GeneralSettings {
 
   SettingsSection getSetting() {
     return SettingsSection(
-      title: const SettingTitle(title: 'Catalog Settings'),
+      title: const SettingTitle(title: 'Catalogs'),
       tiles: [
         _getCatalogFmtSetting(),
         _getCollEventSettings(),
