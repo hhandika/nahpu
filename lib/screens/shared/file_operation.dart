@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:path/path.dart' as p;
 import 'package:share_plus/share_plus.dart';
+import 'package:flutter_svg/svg.dart';
 
 class FileOperationPage extends StatelessWidget {
   const FileOperationPage({
@@ -193,5 +194,26 @@ class SelectFileField extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class FileFormatIcon extends StatelessWidget {
+  const FileFormatIcon({super.key, required this.path});
+
+  final String path;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.only(bottom: 16),
+        child: SvgPicture.asset(
+          path,
+          height: 116,
+          width: 116,
+          colorFilter: ColorFilter.mode(
+            Theme.of(context).colorScheme.primary,
+            BlendMode.srcIn,
+          ),
+        ));
   }
 }
