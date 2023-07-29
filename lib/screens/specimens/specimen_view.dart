@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
@@ -14,6 +15,7 @@ import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
 import 'package:nahpu/screens/specimens/specimen_form.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/navigation_services.dart';
+import 'package:nahpu/services/utility_services.dart';
 
 class SpecimenViewer extends ConsumerStatefulWidget {
   const SpecimenViewer({super.key});
@@ -30,6 +32,7 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
   CatalogFmt? _catalogFmt;
   TaxonData taxonomy = TaxonData();
   bool _isSearching = false;
+  int _selectedSearchValue = 0;
   late FocusNode _focus;
 
   @override
@@ -70,12 +73,28 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
                             },
                             icon: const Icon(Icons.clear))
                         : const SizedBox.shrink(),
+                    IconButton(
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) => SearchOptionScreen(
+                                  selectedSearchValue: _selectedSearchValue,
+                                  onSelected: (index) {
+                                    setState(() {
+                                      _selectedSearchValue = index;
+                                      _searchController.clear();
+                                      Navigator.pop(context);
+                                    });
+                                  }));
+                        },
+                        icon: const Icon(Icons.tune_outlined))
                   ],
                   onChanged: (value) {
                     setState(() {
                       _isSearching = true;
                     });
-                    ref.read(specimenEntryProvider.notifier).search(value);
+                    ref.read(specimenEntryProvider.notifier).search(value,
+                        SpecimenSearchOption.values[_selectedSearchValue]);
                   },
                 )
               : const SizedBox.shrink(),
@@ -170,6 +189,60 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
         ref.invalidate(specimenEntryProvider);
       }
     });
+  }
+}
+
+class SearchOptionScreen extends StatelessWidget {
+  const SearchOptionScreen({
+    super.key,
+    required this.selectedSearchValue,
+    required this.onSelected,
+  });
+
+  final int selectedSearchValue;
+  final void Function(int) onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+        title: const Text(
+          'Search Options',
+          textAlign: TextAlign.center,
+        ),
+        content: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 500),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 4,
+                runSpacing: 4,
+                children:
+                    List.generate(SpecimenSearchOption.values.length, (index) {
+                  return CommonChip(
+                    index: index,
+                    label: Text(SpecimenSearchOption.values[index].name
+                        .toSentenceCase()),
+                    selectedValue: selectedSearchValue,
+                    onSelected: (selected) {
+                      if (selected) {
+                        onSelected(index);
+                      }
+                    },
+                  );
+                }),
+              ),
+              const SizedBox(height: 8),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Cancel'),
+              )
+            ],
+          ),
+        ));
   }
 }
 

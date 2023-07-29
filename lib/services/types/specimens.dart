@@ -9,6 +9,19 @@ enum CatalogFmt { generalMammals, birds, bats }
 // DON'T CHANGE ORDER!
 enum SpecimenSex { male, female, unknown }
 
+enum SpecimenSearchOption {
+  all,
+  fieldNumber,
+  cataloger,
+  preparator,
+  collector,
+  condition,
+  prepDate,
+  prepTime,
+  taxa,
+  prepType
+}
+
 const List<String> specimenSexList = [
   'Male',
   'Female',

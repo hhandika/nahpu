@@ -65,15 +65,17 @@ class SpecimenEntry extends _$SpecimenEntry {
     return await _fetchSpecimenEntry();
   }
 
-  Future<void> search(String? query) async {
+  Future<void> search(String? query, SpecimenSearchOption searchOption) async {
     if (query == null || query.isEmpty) return;
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       if (state.value == null) return [];
       final specimens = await _fetchSpecimenEntry();
       final filteredSpecimens = SpecimenSearchServices(
-              db: ref.read(databaseProvider), specimenEntries: specimens)
-          .search(query.toLowerCase());
+        db: ref.read(databaseProvider),
+        specimenEntries: specimens,
+        searchOption: searchOption,
+      ).search(query.toLowerCase());
       return filteredSpecimens;
     });
   }

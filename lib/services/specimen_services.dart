@@ -329,17 +329,87 @@ class SpecimenSearchServices {
   SpecimenSearchServices({
     required this.db,
     required this.specimenEntries,
+    required this.searchOption,
   });
 
   final List<SpecimenData> specimenEntries;
   final Database db;
+  final SpecimenSearchOption searchOption;
 
   Future<List<SpecimenData>> search(String query) async {
+    switch (searchOption) {
+      case SpecimenSearchOption.all:
+        return await searchAll(query);
+      case SpecimenSearchOption.fieldNumber:
+        return specimenEntries
+            .where((element) => _isMatchFieldNum(
+                  element.fieldNumber,
+                  query,
+                ))
+            .toList();
+      case SpecimenSearchOption.cataloger:
+        List<String> matchedPersons = await _searchPersonnel(query);
+        return specimenEntries
+            .where((element) => _isMatchedPerson(
+                  matchedPersons,
+                  element.catalogerID,
+                ))
+            .toList();
+      case SpecimenSearchOption.preparator:
+        List<String> matchedPersons = await _searchPersonnel(query);
+        return specimenEntries
+            .where((element) => _isMatchedPerson(
+                  matchedPersons,
+                  element.preparatorID,
+                ))
+            .toList();
+      case SpecimenSearchOption.collector:
+        List<String> matchedPersons = await _searchPersonnel(query);
+        List<int> matchedColPersons =
+            await _searchColPersonnel(matchedPersons, query);
+        return specimenEntries
+            .where((element) => _isMatchedColPerson(
+                  matchedColPersons,
+                  element.collPersonnelID,
+                ))
+            .toList();
+      case SpecimenSearchOption.condition:
+        return specimenEntries
+            .where((element) => element.condition.isContain(query))
+            .toList();
+      case SpecimenSearchOption.prepDate:
+        return specimenEntries
+            .where((element) => element.prepDate.isContain(query))
+            .toList();
+      case SpecimenSearchOption.prepTime:
+        return specimenEntries
+            .where((element) => element.prepTime.isContain(query))
+            .toList();
+      case SpecimenSearchOption.taxa:
+        List<int> matchedTaxa = await _searchTaxa(query);
+        return specimenEntries
+            .where((element) => _isMatchTaxa(
+                  matchedTaxa,
+                  element.speciesID,
+                ))
+            .toList();
+      case SpecimenSearchOption.prepType:
+        List<String> matchedPrepType = await _searchPrepType(query);
+        return specimenEntries
+            .where((element) => _isMatchPrepType(
+                  matchedPrepType,
+                  element.uuid,
+                ))
+            .toList();
+    }
+  }
+
+  Future<List<SpecimenData>> searchAll(String query) async {
     List<String> matchedPersons = await _searchPersonnel(query);
     List<int> matchedColPersons =
         await _searchColPersonnel(matchedPersons, query);
     List<String> matchedPrepType = await _searchPrepType(query);
-    List<int> matchedSpecies = await _searchSpecies(query);
+    List<int> matchedTaxa = await _searchTaxa(query);
     List<SpecimenData> filteredList = specimenEntries
         .where(
           (e) =>
@@ -350,7 +420,7 @@ class SpecimenSearchServices {
               e.condition.isContain(query) ||
               e.prepDate.isContain(query) ||
               e.prepTime.isContain(query) ||
-              _isMatchSpecies(matchedSpecies, e.speciesID) ||
+              _isMatchTaxa(matchedTaxa, e.speciesID) ||
               _isMatchPrepType(matchedPrepType, e.uuid),
         )
         .toList();
@@ -382,7 +452,7 @@ class SpecimenSearchServices {
     return matchedPrepType.contains(specimenUuid);
   }
 
-  bool _isMatchSpecies(List<int> matchedSpecies, int? speciesId) {
+  bool _isMatchTaxa(List<int> matchedSpecies, int? speciesId) {
     if (matchedSpecies.isEmpty || speciesId == null) {
       return false;
     }
@@ -394,7 +464,7 @@ class SpecimenSearchServices {
     return person.map((e) => e.uuid).toList();
   }
 
-  Future<List<int>> _searchSpecies(String query) async {
+  Future<List<int>> _searchTaxa(String query) async {
     final listSpecies = await TaxonomyQuery(db).searchTaxon(query);
     return listSpecies.map((e) => e.id).toList();
   }
