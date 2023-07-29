@@ -235,7 +235,8 @@ class ListProjectCard extends StatelessWidget {
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
             subtitle: Text(
-              'Created: $_creationDate${listTileSeparator}Last updated: $_lastAccessedDate',
+              'Last accessed: $_lastAccessedDate'
+              '${listTileSeparator}Created: $_creationDate',
               style: const TextStyle(
                 fontSize: 12,
                 overflow: TextOverflow.ellipsis,
@@ -281,7 +282,7 @@ class GridProjectCard extends StatelessWidget {
                     const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               subtitle: Text(
-                'Created: ${parseDate(project.created)}',
+                _lastAccessedDate,
                 style: const TextStyle(
                   fontSize: 12,
                   overflow: TextOverflow.ellipsis,
@@ -296,6 +297,11 @@ class GridProjectCard extends StatelessWidget {
         child: ProjectIcon(),
       ),
     ));
+  }
+
+  String get _lastAccessedDate {
+    final value = parseDate(project.lastAccessed);
+    return 'Last accessed: ${value.date} ${value.time}';
   }
 }
 
