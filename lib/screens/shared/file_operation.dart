@@ -126,7 +126,7 @@ class SelectDirField extends StatelessWidget {
                   : const SizedBox.shrink(),
               Expanded(
                 child: Text(
-                  dirPath == null ? 'Select directory' : dirPath!.path,
+                  _getDirPath(),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -138,9 +138,18 @@ class SelectDirField extends StatelessWidget {
                     )
                   : IconButton(
                       onPressed: onCanceled,
-                      icon: const Icon(Icons.cancel_outlined)),
+                      icon: const Icon(Icons.clear_rounded)),
             ],
           );
+  }
+
+  String _getDirPath() {
+    if (dirPath == null) {
+      return 'Select directory';
+    } else {
+      String lastPath = p.basename(dirPath!.path);
+      return '.../$lastPath';
+    }
   }
 }
 
