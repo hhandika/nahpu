@@ -103,6 +103,12 @@ class ReportFormState extends ConsumerState<ReportForm> {
             onPressed: () async {
               await _getDir();
             },
+            onCanceled: () {
+              setState(() {
+                _selectedDir = null;
+                _hasSaved = false;
+              });
+            },
           ),
           const SizedBox(height: 24),
           Wrap(

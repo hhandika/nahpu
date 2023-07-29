@@ -48,7 +48,7 @@ class FileNameField extends StatelessWidget {
       controller: controller.fileNameCtr,
       decoration: InputDecoration(
           labelText: 'File name',
-          hintText: 'Enter file name',
+          hintText: 'my_file',
           suffix: controller.fileNameCtr.text.isEmpty
               ? null
               : IconButton(
@@ -99,7 +99,7 @@ class PathNotFoundText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Please select a directory');
+    return const Text('Select a directory');
   }
 }
 
@@ -108,10 +108,12 @@ class SelectDirField extends StatelessWidget {
     super.key,
     required this.dirPath,
     required this.onPressed,
+    required this.onCanceled,
   });
 
   final Directory? dirPath;
   final VoidCallback onPressed;
+  final VoidCallback onCanceled;
 
   @override
   Widget build(BuildContext context) {
@@ -119,17 +121,24 @@ class SelectDirField extends StatelessWidget {
         ? const SizedBox.shrink()
         : Row(
             children: [
+              dirPath != null
+                  ? const Icon(Icons.folder_open_outlined)
+                  : const SizedBox.shrink(),
               Expanded(
                 child: Text(
-                  dirPath == null ? 'Please select a directory' : dirPath!.path,
+                  dirPath == null ? 'Select directory' : dirPath!.path,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const SizedBox(width: 10),
-              IconButton(
-                icon: const Icon(Icons.folder),
-                onPressed: onPressed,
-              ),
+              const SizedBox(width: 8),
+              dirPath == null
+                  ? IconButton(
+                      icon: const Icon(Icons.folder_outlined),
+                      onPressed: onPressed,
+                    )
+                  : IconButton(
+                      onPressed: onCanceled,
+                      icon: const Icon(Icons.cancel_outlined)),
             ],
           );
   }

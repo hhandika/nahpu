@@ -61,7 +61,12 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
             dirPath: _selectedDir,
             onPressed: () {
               _getDir();
-              _hasSaved = false;
+            },
+            onCanceled: () {
+              setState(() {
+                _selectedDir = null;
+                _hasSaved = false;
+              });
             },
           ),
           const SizedBox(height: 24),

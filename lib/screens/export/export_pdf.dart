@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:nahpu/screens/export/common.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/services/export/pdf/narrative_pdf.dart';
 import 'package:nahpu/services/export/pdf/specimen_pdf.dart';
@@ -120,7 +119,12 @@ class ExportPdfFormState extends ConsumerState<ExportPdfForm> {
             dirPath: _selectedDir,
             onPressed: () {
               _getDir();
-              _hasSaved = false;
+            },
+            onCanceled: () {
+              setState(() {
+                _selectedDir = null;
+                _hasSaved = false;
+              });
             },
           ),
           const SizedBox(height: 24),

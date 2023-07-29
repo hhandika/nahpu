@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:nahpu/screens/export/common.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/services/export/site_writer.dart';
 import 'package:nahpu/services/export/specimen_part_records.dart';
@@ -167,6 +166,12 @@ class ExportFormState extends ConsumerState<ExportForm> {
           SelectDirField(
             dirPath: _selectedDir,
             onPressed: () async => await _getDir(),
+            onCanceled: () {
+              setState(() {
+                _selectedDir = null;
+                _hasSaved = false;
+              });
+            },
           ),
           const SizedBox(height: 24),
           Wrap(

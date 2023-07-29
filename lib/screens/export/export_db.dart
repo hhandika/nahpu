@@ -91,10 +91,17 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
             },
           ),
           SelectDirField(
-              dirPath: _selectedDir,
-              onPressed: () async {
-                await _getDir();
-              }),
+            dirPath: _selectedDir,
+            onPressed: () async {
+              await _getDir();
+            },
+            onCanceled: () {
+              setState(() {
+                _selectedDir = null;
+                _hasSaved = false;
+              });
+            },
+          ),
           const SizedBox(height: 10),
           Wrap(
             spacing: 20,
