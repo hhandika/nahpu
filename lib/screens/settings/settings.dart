@@ -5,6 +5,7 @@ import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/screens/settings/catalog_format.dart';
 import 'package:nahpu/screens/settings/collevent_settings.dart';
 import 'package:nahpu/screens/settings/common.dart';
+import 'package:nahpu/screens/settings/db_settings.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/types/specimens.dart';
 import 'package:nahpu/screens/settings/application_settings.dart';
@@ -32,7 +33,8 @@ class ProjectSettingState extends ConsumerState<AppSettings> {
                   loading: () => const CommonProgressIndicator(),
                   error: (e, s) => const Text('Error'),
                 ),
-            const AppearanceSetting(),
+            const DatabaseSettingSections(),
+            const ApplicationSettings(),
           ],
         ),
       ),
@@ -56,10 +58,31 @@ class CatalogSettings extends StatelessWidget {
       title: 'Catalogs',
       children: [
         CatalogFmtSection(selectedFmt: matchCatFmtToTaxonGroup(catalogFmt)),
-        SpecimenSection(catalogFmt: catalogFmt),
         const CollEventSection(),
+        SpecimenSection(catalogFmt: catalogFmt),
       ],
     );
+  }
+}
+
+class DatabaseSettingSections extends StatelessWidget {
+  const DatabaseSettingSections({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return CommonSettingSection(title: 'Database', children: [
+      CommonSettingTile(
+        isNavigation: true,
+        icon: MdiIcons.databaseOutline,
+        title: 'Replace database',
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const DatabaseSettings(),
+          ),
+        ),
+      )
+    ]);
   }
 }
 

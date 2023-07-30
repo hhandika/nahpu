@@ -124,6 +124,22 @@ class FileServices extends DbAccess {
     return projectDir;
   }
 
+  Future<String> get appDataUsage async {
+    try {
+      final nahpuDir = await nahpuDocumentDir;
+      final dirSize = nahpuDir.listSync(recursive: true);
+      int size = 0;
+      for (final file in dirSize) {
+        if (file is File) {
+          size += file.lengthSync();
+        }
+      }
+      return '${(size / 1024 / 1024).toStringAsFixed(2)} MB';
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<File> copyFileToProjectDir(File from, Directory to) async {
     final projectDir = await currentProjectDir;
     final fileName = path.basename(from.path);

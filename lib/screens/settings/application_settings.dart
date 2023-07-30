@@ -1,15 +1,14 @@
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/screens/settings/common.dart';
-import 'package:nahpu/screens/settings/db_settings.dart';
 import 'package:nahpu/screens/shared/common.dart';
+import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/platform_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/utility_services.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/providers/settings.dart';
 
-class AppearanceSetting extends ConsumerWidget {
-  const AppearanceSetting({super.key});
+class ApplicationSettings extends ConsumerWidget {
+  const ApplicationSettings({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -34,18 +33,7 @@ class AppearanceSetting extends ConsumerWidget {
           loading: () => const CommonProgressIndicator(),
           error: (error, stackTrace) => const Text('Error'),
         ),
-        CommonSettingTile(
-          isNavigation: true,
-          icon: MdiIcons.databaseOutline,
-          title: 'Database',
-          label: 'Replace database',
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const DatabaseSettings(),
-            ),
-          ),
-        ),
+        const DataUsage()
       ],
     );
   }
@@ -92,5 +80,34 @@ class ThemeSettingState extends ConsumerState<ThemeSettings> {
         ],
       ),
     );
+  }
+}
+
+class DataUsage extends ConsumerWidget {
+  const DataUsage({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return FutureBuilder(
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return CommonSettingTile(
+              icon: Icons.data_usage_outlined,
+              title: 'Data usage',
+              label: 'Total data usage of the application',
+              value: snapshot.data,
+              onTap: null,
+            );
+          } else if (snapshot.hasError) {
+            return const Text('Error');
+          } else {
+            return const CommonProgressIndicator();
+          }
+        },
+        future: _calculateDataUsage(ref));
+  }
+
+  Future<String> _calculateDataUsage(WidgetRef ref) async {
+    return await FileServices(ref: ref).appDataUsage;
   }
 }

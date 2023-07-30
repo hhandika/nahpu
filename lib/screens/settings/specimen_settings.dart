@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/screens/settings/common.dart';
 import 'package:nahpu/screens/shared/common.dart';
-import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/specimen_services.dart';
 
@@ -39,9 +38,9 @@ class SpecimenSelectionState extends ConsumerState<SpecimenSelection> {
               CommonSettingSection(
                 title: 'Capture Records',
                 children: [
-                  SwitchField(
+                  SwitchSettings(
                     value: _isAlwaysShownCollectorField,
-                    onPressed: (bool value) async {
+                    onChanged: (bool value) async {
                       try {
                         await services.setCollectorFieldAlwaysShown(value);
                         setState(() {

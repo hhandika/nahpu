@@ -88,6 +88,33 @@ class CommonSettingTile extends StatelessWidget {
   }
 }
 
+class SwitchSettings extends StatelessWidget {
+  const SwitchSettings({
+    super.key,
+    required this.label,
+    required this.value,
+    required this.onChanged,
+  });
+
+  final String label;
+  final bool value;
+  final void Function(bool) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label, style: const TextStyle(fontSize: 16)),
+        Switch(
+          value: value,
+          onChanged: onChanged,
+        )
+      ],
+    );
+  }
+}
+
 class SettingTitle extends StatelessWidget {
   const SettingTitle({
     super.key,
