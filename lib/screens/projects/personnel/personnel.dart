@@ -2,6 +2,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/screens/projects/personnel/add_personnel.dart';
 import 'package:nahpu/screens/projects/personnel/avatars.dart';
+import 'package:nahpu/screens/projects/personnel/manage_personnel.dart';
 import 'package:nahpu/screens/projects/personnel/new_personnel.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/database/database.dart';
@@ -26,33 +27,11 @@ class PersonnelViewer extends ConsumerStatefulWidget {
 class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
   @override
   Widget build(BuildContext context) {
-    return FormCard(
-        title: 'Personnel',
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            const SizedBox(
-              height: 314,
-              child: PersonnelList(),
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            PrimaryButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AddPersonnel(),
-                  ),
-                );
-              },
-              label: 'Add personnel',
-              icon: Icons.add,
-            ),
-          ],
-        ));
+    return const FormCard(
+      title: 'Personnel',
+      mainAxisAlignment: MainAxisAlignment.start,
+      child: PersonnelList(),
+    );
   }
 }
 
@@ -73,26 +52,61 @@ class PersonnelListState extends ConsumerState<PersonnelList> {
       data: (data) {
         return data.isEmpty
             ? const EmptyPersonnel()
-            : CommonScrollbar(
-                scrollController: _scrollController,
-                child: ListView.builder(
-                  itemCount: data.length,
-                  controller: _scrollController,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return PersonalListTile(
-                      personnelData: data[index],
-                      trailing: PersonnelMenu(
-                        data: data[index],
+            : Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  SizedBox(
+                    height: 310,
+                    child: CommonScrollbar(
+                      scrollController: _scrollController,
+                      child: ListView.builder(
+                        itemCount: data.length,
+                        controller: _scrollController,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return PersonalListTile(
+                            personnelData: data[index],
+                            trailing: PersonnelMenu(
+                              data: data[index],
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Wrap(spacing: 8, children: [
+                    SecondaryButton(
+                      text: 'Manage',
+                      onPressed: () async {
+                        List<String> projectPersonnel =
+                            await PersonnelServices(ref: ref)
+                                .getAllPersonnelListedInProjects();
+                        _navigate(projectPersonnel);
+                      },
+                    ),
+                    const AddPersonnelButton(),
+                  ]),
+                  const SizedBox(height: 8),
+                ],
               );
       },
       loading: () => const CommonProgressIndicator(),
       error: (error, stack) => Text(error.toString()),
     );
+  }
+
+  void _navigate(List<String> personnelData) {
+    if (mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ManagePersonnel(
+            listedInProjectPersonnel: personnelData,
+          ),
+        ),
+      );
+    }
   }
 }
 
@@ -101,13 +115,40 @@ class EmptyPersonnel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'No personnel found.\n'
-        'Add personnel using the add personnel button below.',
-        style: Theme.of(context).textTheme.labelLarge,
-        textAlign: TextAlign.center,
-      ),
+    return ConstrainedBox(
+        constraints: const BoxConstraints(maxHeight: 375),
+        child: Center(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'No personnel found.',
+              style: Theme.of(context).textTheme.labelLarge,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 8),
+            const AddPersonnelButton(),
+          ],
+        )));
+  }
+}
+
+class AddPersonnelButton extends StatelessWidget {
+  const AddPersonnelButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return PrimaryButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const AddPersonnel(),
+          ),
+        );
+      },
+      label: 'Add personnel',
+      icon: Icons.add,
     );
   }
 }

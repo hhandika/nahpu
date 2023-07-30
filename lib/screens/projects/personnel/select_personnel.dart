@@ -75,7 +75,7 @@ class SelectPersonnelState extends ConsumerState<SelectPersonnel> {
                           });
                         }),
                   ),
-                  PersonnelSelection(
+                  AddPersonnelSelection(
                     data: _filteredData.isEmpty ? data : _filteredData,
                     addedPersonnel: widget.addedPersonnel,
                   )
@@ -96,8 +96,8 @@ class SelectPersonnelState extends ConsumerState<SelectPersonnel> {
   }
 }
 
-class PersonnelSelection extends ConsumerStatefulWidget {
-  const PersonnelSelection({
+class AddPersonnelSelection extends ConsumerStatefulWidget {
+  const AddPersonnelSelection({
     super.key,
     required this.data,
     required this.addedPersonnel,
@@ -107,10 +107,10 @@ class PersonnelSelection extends ConsumerStatefulWidget {
   final List<PersonnelData> addedPersonnel;
 
   @override
-  PersonnelSelectionState createState() => PersonnelSelectionState();
+  AddPersonnelSelectionState createState() => AddPersonnelSelectionState();
 }
 
-class PersonnelSelectionState extends ConsumerState<PersonnelSelection> {
+class AddPersonnelSelectionState extends ConsumerState<AddPersonnelSelection> {
   final ScrollController _scrollController = ScrollController();
   final List<PersonnelData> _selectedPersonnel = [];
 

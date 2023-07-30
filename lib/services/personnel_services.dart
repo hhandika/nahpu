@@ -6,6 +6,7 @@ import 'package:nahpu/services/database/personnel_queries.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/types/specimens.dart';
 import 'package:drift/drift.dart' as db;
+import 'package:nahpu/services/utility_services.dart';
 
 class PersonnelServices extends DbAccess {
   const PersonnelServices({required super.ref});
@@ -13,6 +14,12 @@ class PersonnelServices extends DbAccess {
   Future<int> createPersonnel(PersonnelCompanion personnel) async {
     int id = await PersonnelQuery(dbAccess).createPersonnel(personnel);
     return id;
+  }
+
+  Future<List<String>> getAllPersonnelListedInProjects() async {
+    List<String?> personnel =
+        await PersonnelQuery(dbAccess).getAllPersonnelListedInProjects();
+    return getDistinctList(personnel);
   }
 
   Future<String?> getPersonnelName(String uuid) async {

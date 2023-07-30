@@ -33,7 +33,7 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
             const SizedBox(height: 20),
             Container(
               constraints: const BoxConstraints(maxWidth: 460, maxHeight: 250),
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(8),
               child: const RegistryInfo(),
             ),
             const SizedBox(height: 25),

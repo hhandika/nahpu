@@ -14,6 +14,10 @@ class PersonnelQuery extends DatabaseAccessor<Database>
   Future<int> createPersonnel(PersonnelCompanion form) =>
       into(personnel).insert(form);
 
+  Future<List<String?>> getAllPersonnelListedInProjects() async {
+    return await select(projectPersonnel).map((t) => t.personnelId).get();
+  }
+
   Future updatePersonnelEntry(String id, PersonnelCompanion entry) {
     return (update(personnel)..where((t) => t.uuid.equals(id))).write(entry);
   }
