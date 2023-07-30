@@ -37,6 +37,7 @@ class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
                   Navigator.pop(context);
                 },
               ),
+              const SettingDivider(),
               CommonSettingTile(
                 title: 'Birds',
                 icon: MdiIcons.owl,
@@ -50,6 +51,7 @@ class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
                   Navigator.pop(context);
                 },
               ),
+              const SettingDivider(),
               CommonSettingTile(
                 title: 'Bats',
                 icon: MdiIcons.bat,

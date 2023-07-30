@@ -13,9 +13,61 @@ class CommonSettingList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 800),
-        child: ListView(children: sections),
-      ),
+          constraints: const BoxConstraints(maxWidth: 800),
+          child: Padding(
+            padding: const EdgeInsets.all(4),
+            child: ListView(
+              children: sections,
+            ),
+          )),
+    );
+  }
+}
+
+class CommonSettingSection extends StatelessWidget {
+  const CommonSettingSection({
+    super.key,
+    required this.title,
+    required this.children,
+    this.isDivided = false,
+  });
+
+  final String title;
+  final List<Widget> children;
+  final bool isDivided;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            fontSize: 16,
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(160),
+          ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: Theme.of(context).colorScheme.surfaceVariant.withAlpha(100),
+          ),
+          child: Column(
+            children: isDivided
+                // If [isDivided] is true, then add a divider after each child
+                ? [
+                    for (final (index, e) in children.indexed) ...[
+                      e,
+                      if (index != children.length - 1) const SettingDivider(),
+                    ]
+                  ]
+                : children,
+          ),
+        ),
+        const SizedBox(height: 16),
+      ],
     );
   }
 }
@@ -42,49 +94,54 @@ class CommonSettingTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(title,
-          style: TextStyle(
-              fontSize: 16, color: Theme.of(context).colorScheme.onSurface)),
-      subtitle: label != null
-          ? Text(
-              label!,
+    return Padding(
+        padding: const EdgeInsets.all(8),
+        child: ListTile(
+          minVerticalPadding: 0,
+          title: Text(title,
               style: TextStyle(
-                fontSize: 14,
-                color: Theme.of(context).colorScheme.onSurface.withAlpha(160),
-                overflow: TextOverflow.ellipsis,
-              ),
-            )
-          : null,
-      leading: Icon(
-        icon,
-        color: Theme.of(context).colorScheme.primary,
-      ),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          value != null
+                  fontSize: 16,
+                  color: Theme.of(context).colorScheme.onSurface)),
+          subtitle: label != null
               ? Text(
-                  value!,
+                  label!,
                   style: TextStyle(
-                      fontSize: 16,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withAlpha(120)),
+                    fontSize: 14,
+                    color:
+                        Theme.of(context).colorScheme.onSurface.withAlpha(160),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 )
-              : const SizedBox.shrink(),
-          const SizedBox(width: 4),
-          trailing ?? const SizedBox.shrink(),
-          isNavigation
-              ? const Icon(Icons.arrow_forward_ios)
-              : const SizedBox.shrink(),
-        ],
-      ),
-      onTap: onTap,
-    );
+              : null,
+          leading: Icon(
+            icon,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              value != null
+                  ? Text(
+                      value!,
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withAlpha(120)),
+                    )
+                  : const SizedBox.shrink(),
+              const SizedBox(width: 4),
+              trailing ?? const SizedBox.shrink(),
+              isNavigation
+                  ? const Icon(Icons.arrow_forward_ios)
+                  : const SizedBox.shrink(),
+            ],
+          ),
+          onTap: onTap,
+        ));
   }
 }
 
@@ -102,73 +159,33 @@ class SwitchSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(label, style: const TextStyle(fontSize: 16)),
-        Switch(
-          value: value,
-          onChanged: onChanged,
-        )
-      ],
-    );
+    return Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(label, style: const TextStyle(fontSize: 16)),
+            Switch(
+              value: value,
+              onChanged: onChanged,
+            )
+          ],
+        ));
   }
 }
 
-class SettingTitle extends StatelessWidget {
-  const SettingTitle({
-    super.key,
-    required this.title,
-  });
-
-  final String title;
+class SettingDivider extends StatelessWidget {
+  const SettingDivider({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      title,
-      style: const TextStyle(
-        fontSize: 14,
+    return Padding(
+      padding: const EdgeInsets.only(left: 24),
+      child: Divider(
+        height: 0,
+        thickness: 1.2,
+        color: Theme.of(context).colorScheme.onSurface.withAlpha(24),
       ),
-    );
-  }
-}
-
-class CommonSettingSection extends StatelessWidget {
-  const CommonSettingSection({
-    super.key,
-    required this.title,
-    required this.children,
-  });
-
-  final String title;
-  final List<Widget> children;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          textAlign: TextAlign.left,
-          style: TextStyle(
-            fontSize: 14,
-            color: Theme.of(context).colorScheme.onSurface.withAlpha(160),
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            color: Theme.of(context).colorScheme.surfaceVariant.withAlpha(100),
-          ),
-          child: Column(
-            children: children,
-          ),
-        ),
-        const SizedBox(height: 8),
-      ],
     );
   }
 }
@@ -200,13 +217,15 @@ class SettingChip extends StatelessWidget {
     return CommonSettingSection(
       title: title,
       children: [
-        Wrap(
-          spacing: 10,
-          runSpacing: 10,
-          alignment: WrapAlignment.center,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: chipList,
-        ),
+        Padding(
+            padding: const EdgeInsets.all(16),
+            child: Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              alignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: chipList,
+            )),
         const SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -56,6 +56,7 @@ class CatalogSettings extends StatelessWidget {
   Widget build(BuildContext context) {
     return CommonSettingSection(
       title: 'Catalogs',
+      isDivided: true,
       children: [
         CatalogFmtSection(selectedFmt: matchCatFmtToTaxonGroup(catalogFmt)),
         const CollEventSection(),

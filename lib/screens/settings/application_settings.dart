@@ -15,6 +15,7 @@ class ApplicationSettings extends ConsumerWidget {
     final theme = ref.watch(themeSettingProvider);
     return CommonSettingSection(
       title: 'Applications',
+      isDivided: true,
       children: [
         theme.when(
           data: (themeValue) => CommonSettingTile(
@@ -63,19 +64,20 @@ class ThemeSettingState extends ConsumerState<ThemeSettings> {
         sections: [
           CommonSettingSection(
             title: 'Theme',
-            children: themes.map(
-              (e) {
-                return CommonSettingTile(
-                    icon: icons[themes.indexOf(e)],
-                    title: e,
-                    trailing:
-                        widget.isSelected == e ? const Icon(Icons.check) : null,
-                    onTap: () {
-                      ref.read(themeSettingProvider.notifier).setTheme(e);
-                      Navigator.of(context).pop();
-                    });
-              },
-            ).toList(),
+            isDivided: true,
+            children: themes.map((e) {
+              final index = themes.indexOf(e);
+              return CommonSettingTile(
+                title: e,
+                icon: icons[index],
+                trailing:
+                    widget.isSelected == e ? const Icon(Icons.check) : null,
+                onTap: () {
+                  ref.read(themeSettingProvider.notifier).setTheme(e);
+                  Navigator.pop(context);
+                },
+              );
+            }).toList(),
           )
         ],
       ),

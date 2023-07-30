@@ -169,13 +169,15 @@ class TissueIDFields extends ConsumerWidget {
     return CommonSettingSection(
       title: 'Tissue ID',
       children: [
-        AdaptiveLayout(
-          useHorizontalLayout: !isMobile,
-          children: const [
-            TissuePrefixField(),
-            TissueNumField(),
-          ],
-        ),
+        Padding(
+            padding: const EdgeInsets.all(16),
+            child: AdaptiveLayout(
+              useHorizontalLayout: !isMobile,
+              children: const [
+                TissuePrefixField(),
+                TissueNumField(),
+              ],
+            )),
       ],
     );
   }
