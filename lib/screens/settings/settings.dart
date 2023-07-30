@@ -97,7 +97,7 @@ class CatalogFmtSection extends StatelessWidget {
     return CommonSettingTile(
         isNavigation: true,
         icon: MdiIcons.fileCabinet,
-        title: 'Catalog Format',
+        title: 'Catalog format',
         value: selectedFmt,
         onTap: () {
           Navigator.push(
@@ -123,7 +123,7 @@ class SpecimenSection extends StatelessWidget {
         isNavigation: true,
         icon: matchCatFmtToIcon(catalogFmt, false),
         title: 'Specimens',
-        label: 'Set tissue ID, specimen type, treatments and more',
+        label: 'Tissue ID, specimen type, treatments, and more',
         onTap: () {
           Navigator.push(
             context,
@@ -143,8 +143,8 @@ class CollEventSection extends StatelessWidget {
     return CommonSettingTile(
       isNavigation: true,
       icon: Icons.calendar_month_outlined,
-      title: 'Collecting Events',
-      label: 'Set collecting methods and coll. personnel roles',
+      title: 'Collecting events',
+      label: 'Methods and collecting personnel roles',
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
