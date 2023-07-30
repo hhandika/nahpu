@@ -36,7 +36,7 @@ class SpecimenSelectionState extends ConsumerState<SpecimenSelection> {
           return CommonSettingList(
             sections: [
               CommonSettingSection(
-                title: 'Capture Records',
+                title: 'Capture records',
                 children: [
                   SwitchSettings(
                     value: _isAlwaysShownCollectorField,
@@ -80,7 +80,7 @@ class SpecimenTypeSettings extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     TextEditingController partController = TextEditingController();
     return SettingChip(
-      title: 'Specimen Types',
+      title: 'Specimen part types',
       controller: partController,
       chipList: ref.watch(specimenTypesProvider).when(
             data: (data) {
