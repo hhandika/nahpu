@@ -128,6 +128,7 @@ class NarrativeViewerState extends ConsumerState<NarrativeViewer> {
                     });
                     return NarrativePages(
                       narrativeEntries: narrativeEntries,
+                      isNavButtonVisible: isVisible,
                       pageNav: _pageNav,
                       onPageChanged: (index) {
                         setState(() {
@@ -167,11 +168,13 @@ class NarrativePages extends StatelessWidget {
     super.key,
     required this.narrativeEntries,
     required this.pageNav,
+    required this.isNavButtonVisible,
     required this.onPageChanged,
   });
 
   final List<NarrativeData> narrativeEntries;
   final PageNavigation pageNav;
+  final bool isNavButtonVisible;
   final void Function(int) onPageChanged;
 
   @override
@@ -183,6 +186,7 @@ class NarrativePages extends StatelessWidget {
         final narrativeCtr = _updateController(narrativeEntries, index);
         return PageViewer(
           pageNav: pageNav,
+          isNavButtonVisible: isNavButtonVisible,
           child: NarrativeForm(
             narrativeId: narrativeEntries[index].id,
             narrativeCtr: narrativeCtr,

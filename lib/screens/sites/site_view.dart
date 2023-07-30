@@ -127,6 +127,7 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
               return SitePages(
                 siteEntries: siteEntries,
                 pageNav: _pageNav,
+                isNavButtonVisible: _isVisible,
                 onPageChanged: (index) {
                   setState(() {
                     _siteId = siteEntries[index].id;
@@ -165,11 +166,13 @@ class SitePages extends StatelessWidget {
     super.key,
     required this.siteEntries,
     required this.pageNav,
+    required this.isNavButtonVisible,
     required this.onPageChanged,
   });
 
   final List<SiteData> siteEntries;
   final PageNavigation pageNav;
+  final bool isNavButtonVisible;
   final void Function(int) onPageChanged;
 
   @override
@@ -181,6 +184,7 @@ class SitePages extends StatelessWidget {
         final siteForm = _updateController(siteEntries[index]);
         return PageViewer(
           pageNav: pageNav,
+          isNavButtonVisible: isNavButtonVisible,
           child: SiteForm(
             id: siteEntries[index].id,
             siteFormCtr: siteForm,

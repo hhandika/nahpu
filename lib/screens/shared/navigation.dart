@@ -228,10 +228,13 @@ class PageViewer extends StatefulWidget {
     super.key,
     required this.pageNav,
     required this.child,
+    required this.isNavButtonVisible,
   });
 
   final PageNavigation pageNav;
   final Widget child;
+  final bool isNavButtonVisible;
+
   @override
   State<PageViewer> createState() => _PageViewerState();
 }
@@ -242,7 +245,7 @@ class _PageViewerState extends State<PageViewer> {
   @override
   void initState() {
     super.initState();
-    Future<void>.delayed(const Duration(seconds: 3), () {
+    Future<void>.delayed(const Duration(seconds: 4), () {
       if (mounted) {
         setState(() {
           _visible = false;
@@ -260,6 +263,7 @@ class _PageViewerState extends State<PageViewer> {
           visible: _visible,
           child: PageNumberViewer(
             pageNav: widget.pageNav,
+            isNavButtonVisible: widget.isNavButtonVisible,
           ),
         )
       ],
@@ -271,14 +275,16 @@ class PageNumberViewer extends StatelessWidget {
   const PageNumberViewer({
     super.key,
     required this.pageNav,
+    required this.isNavButtonVisible,
   });
 
   final PageNavigation pageNav;
+  final bool isNavButtonVisible;
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: 50,
+      bottom: isNavButtonVisible ? 56 : 4,
       right: 0,
       left: 0,
       child: Center(

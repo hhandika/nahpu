@@ -155,6 +155,7 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
                   });
                   return SpecimenPages(
                     pageNav: _pageNav,
+                    isNavButtonVisible: isVisible,
                     specimenEntry: specimenEntry,
                     onPageChanged: (index) {
                       setState(() {
@@ -251,11 +252,13 @@ class SpecimenPages extends StatelessWidget {
     super.key,
     required this.onPageChanged,
     required this.specimenEntry,
+    required this.isNavButtonVisible,
     required this.pageNav,
   });
 
   final void Function(int) onPageChanged;
   final List<SpecimenData> specimenEntry;
+  final bool isNavButtonVisible;
   final PageNavigation pageNav;
 
   @override
@@ -269,6 +272,7 @@ class SpecimenPages extends StatelessWidget {
         final specimenFormCtr = _updateController(specimenEntry[index]);
         return PageViewer(
           pageNav: pageNav,
+          isNavButtonVisible: isNavButtonVisible,
           child: SpecimenForm(
             specimenUuid: specimenEntry[index].uuid,
             specimenCtr: specimenFormCtr,

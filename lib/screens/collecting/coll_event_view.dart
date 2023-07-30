@@ -127,6 +127,7 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
                     return CollEventPages(
                       collEventEntries: collEventEntries,
                       pageNav: _pageNav,
+                      isNavButtonVisible: _isVisible,
                       onPageChanged: (index) {
                         setState(() {
                           _collEvenId = collEventEntries[index].id;
@@ -168,10 +169,12 @@ class CollEventPages extends StatelessWidget {
     required this.collEventEntries,
     required this.pageNav,
     required this.onPageChanged,
+    required this.isNavButtonVisible,
   });
 
   final List<CollEventData> collEventEntries;
   final PageNavigation pageNav;
+  final bool isNavButtonVisible;
   final void Function(int) onPageChanged;
 
   @override
@@ -184,6 +187,7 @@ class CollEventPages extends StatelessWidget {
 
         return PageViewer(
           pageNav: pageNav,
+          isNavButtonVisible: isNavButtonVisible,
           child: CollEventForm(
             id: collEventEntries[index].id,
             collEventCtr: collEventForm,
