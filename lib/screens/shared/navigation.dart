@@ -358,22 +358,8 @@ class NavSheetState extends ConsumerState<NavSheet> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ConstrainedBox(
-                constraints: const BoxConstraints(maxHeight: 80, maxWidth: 150),
-                child: TextField(
-                  textAlign: TextAlign.center,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(16),
-                      ),
-                    ),
-                    labelText: 'Go to page',
-                    isDense: true,
-                    floatingLabelAlignment: FloatingLabelAlignment.center,
-                  ),
-                  keyboardType: const TextInputType.numberWithOptions(
-                    signed: true,
-                  ),
+                constraints: const BoxConstraints(maxHeight: 80, maxWidth: 160),
+                child: GoToPageField(
                   onSubmitted: (String value) {
                     if (widget.pageController.hasClients) {
                       int pageNum = int.parse(value);
@@ -398,6 +384,38 @@ class NavSheetState extends ConsumerState<NavSheet> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class GoToPageField extends StatelessWidget {
+  const GoToPageField({super.key, required this.onSubmitted});
+
+  final void Function(String) onSubmitted;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      textAlign: TextAlign.center,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(16),
+          ),
+        ),
+        label: Center(
+            child: Text(
+          'Go to page',
+          textAlign: TextAlign.center,
+        )),
+        hintText: 'Page number',
+        isDense: true,
+        floatingLabelAlignment: FloatingLabelAlignment.center,
+      ),
+      keyboardType: const TextInputType.numberWithOptions(
+        signed: true,
+      ),
+      onSubmitted: onSubmitted,
     );
   }
 }
