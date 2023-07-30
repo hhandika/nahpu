@@ -131,7 +131,7 @@ class TreatmentOptionSettings extends ConsumerWidget {
               return data
                   .map((e) => CommonChip(
                         text: e,
-                        primaryColor: Theme.of(context).colorScheme.primary,
+                        primaryColor: Theme.of(context).colorScheme.secondary,
                         onDeleted: () {
                           SpecimenPartServices(ref: ref).removeTreatment(e);
                         },
