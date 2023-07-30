@@ -4,8 +4,6 @@ import 'package:nahpu/providers/collevents.dart';
 import 'package:nahpu/screens/settings/common.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/collevent_services.dart';
-import 'package:nahpu/styles/settings.dart';
-import 'package:settings_ui/settings_ui.dart';
 
 class CollEventSelection extends StatefulWidget {
   const CollEventSelection({super.key});
@@ -21,27 +19,11 @@ class _CollEventSelectionState extends State<CollEventSelection> {
       appBar: AppBar(
         title: const Text('Collection Event Settings'),
       ),
-      body: SafeArea(
-        child: SettingsList(
-          lightTheme: getSettingData(context),
-          darkTheme: getSettingData(context),
-          sections: const [
-            SettingsSection(
-              title: SettingTitle(
-                title: 'Collection Methods',
-              ),
-              tiles: [
-                CustomSettingsTile(child: CollMethodSettings()),
-              ],
-            ),
-            SettingsSection(
-              title: SettingTitle(
-                title: 'Personnel Roles',
-              ),
-              tiles: [
-                CustomSettingsTile(child: PersonnelRoleSetting()),
-              ],
-            ),
+      body: const SafeArea(
+        child: CommonSettingList(
+          sections: [
+            CollMethodSettings(),
+            PersonnelRoleSetting(),
           ],
         ),
       ),
@@ -56,6 +38,7 @@ class CollMethodSettings extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     TextEditingController controller = TextEditingController();
     return SettingChip(
+      title: 'Collection methods',
       controller: controller,
       chipList: ref.watch(collEventMethodProvider).when(
             data: (data) {
@@ -95,6 +78,7 @@ class PersonnelRoleSetting extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     TextEditingController controller = TextEditingController();
     return SettingChip(
+      title: 'Personnel roles',
       controller: controller,
       chipList: ref.watch(collPersonnelRoleProvider).when(
             data: (data) {

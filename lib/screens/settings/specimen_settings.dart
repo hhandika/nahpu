@@ -3,10 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/screens/settings/common.dart';
 import 'package:nahpu/screens/shared/common.dart';
+import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/specimen_services.dart';
-import 'package:nahpu/styles/settings.dart';
-import 'package:settings_ui/settings_ui.dart';
 
 class SpecimenSelection extends ConsumerStatefulWidget {
   const SpecimenSelection({super.key});
@@ -35,16 +34,14 @@ class SpecimenSelectionState extends ConsumerState<SpecimenSelection> {
       body: SafeArea(child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           bool isMobile = constraints.maxWidth < 600;
-          return SettingsList(
-            lightTheme: getSettingData(context),
-            darkTheme: getSettingData(context),
+          return CommonSettingList(
             sections: [
-              SettingsSection(
-                title: const SettingTitle(title: 'Capture Records'),
-                tiles: [
-                  SettingsTile.switchTile(
-                    initialValue: _isAlwaysShownCollectorField,
-                    onToggle: (bool value) async {
+              CommonSettingSection(
+                title: 'Capture Records',
+                children: [
+                  SwitchField(
+                    value: _isAlwaysShownCollectorField,
+                    onPressed: (bool value) async {
                       try {
                         await services.setCollectorFieldAlwaysShown(value);
                         setState(() {
@@ -58,38 +55,15 @@ class SpecimenSelectionState extends ConsumerState<SpecimenSelection> {
                         );
                       }
                     },
-                    title: const Text('Always show collector field'),
+                    label: 'Always show collector field',
                   )
                 ],
               ),
-              SettingsSection(
-                title: const SettingTitle(title: 'Tissue ID'),
-                tiles: [
-                  androidPadding,
-                  CustomSettingsTile(
-                    child: TissueIDFields(
-                      isMobile: isMobile,
-                    ),
-                  ),
-                  androidPadding,
-                ],
+              TissueIDFields(
+                isMobile: isMobile,
               ),
-              const SettingsSection(
-                title: SettingTitle(title: 'Specimen Types'),
-                tiles: [
-                  CustomSettingsTile(
-                    child: SpecimenTypeSettings(),
-                  ),
-                ],
-              ),
-              const SettingsSection(
-                title: SettingTitle(title: 'Treatments'),
-                tiles: [
-                  CustomSettingsTile(
-                    child: TreatmentOptionSettings(),
-                  ),
-                ],
-              )
+              const SpecimenTypeSettings(),
+              const TreatmentOptionSettings(),
             ],
           );
         },
@@ -107,6 +81,7 @@ class SpecimenTypeSettings extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     TextEditingController partController = TextEditingController();
     return SettingChip(
+      title: 'Specimen Types',
       controller: partController,
       chipList: ref.watch(specimenTypesProvider).when(
             data: (data) {
@@ -150,6 +125,7 @@ class TreatmentOptionSettings extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     TextEditingController treatmentController = TextEditingController();
     return SettingChip(
+      title: 'Treatments',
       controller: treatmentController,
       chipList: ref.watch(treatmentOptionsProvider).when(
             data: (data) {
@@ -191,15 +167,18 @@ class TissueIDFields extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SettingCard(children: [
-      AdaptiveLayout(
-        useHorizontalLayout: !isMobile,
-        children: const [
-          TissuePrefixField(),
-          TissueNumField(),
-        ],
-      ),
-    ]);
+    return CommonSettingSection(
+      title: 'Tissue ID',
+      children: [
+        AdaptiveLayout(
+          useHorizontalLayout: !isMobile,
+          children: const [
+            TissuePrefixField(),
+            TissueNumField(),
+          ],
+        ),
+      ],
+    );
   }
 }
 

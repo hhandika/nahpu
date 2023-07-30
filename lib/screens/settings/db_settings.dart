@@ -8,9 +8,7 @@ import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/file_operation.dart';
 import 'package:nahpu/services/export/db_writer.dart';
 import 'package:nahpu/services/io_services.dart';
-import 'package:nahpu/styles/settings.dart';
 import 'package:path/path.dart' as p;
-import 'package:settings_ui/settings_ui.dart';
 import 'package:share_plus/share_plus.dart';
 
 class DatabaseSettings extends ConsumerStatefulWidget {
@@ -33,46 +31,31 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
           title: const Text('Database Settings'),
         ),
         body: SafeArea(
-          child: SettingsList(
-            lightTheme: getSettingData(context),
-            darkTheme: getSettingData(context),
+          child: CommonSettingList(
             sections: [
-              SettingsSection(
-                title: const SettingTitle(title: 'Database'),
-                tiles: [
-                  CustomSettingsTile(
-                    child: SettingCard(
-                      children: [
-                        DbFileInputField(
-                            dbPath: _dbPath,
-                            onPressed: () async {
-                              try {
-                                await _getDbPath();
-                              } catch (e) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      'Failed to select file!',
-                                    ),
-                                  ),
-                                );
-                              }
-                            },
-                            isBackup: _isBackup,
-                            onBackupChosen: (bool value) async {
-                              _isBackup = value;
+              DbFileInputField(
+                dbPath: _dbPath,
+                onPressed: () async {
+                  try {
+                    await _getDbPath();
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Failed to select file!',
+                        ),
+                      ),
+                    );
+                  }
+                },
+                isBackup: _isBackup,
+                onBackupChosen: (bool value) async {
+                  _isBackup = value;
 
-                              setState(() {});
-                            }),
-                        const SizedBox(height: 20),
-                        DbReplaceButtons(
-                          hasSelected: _hasSelected,
-                          onPressed: _replaceDb,
-                        )
-                      ],
-                    ),
-                  ),
-                ],
+                  setState(() {});
+                },
+                hasSelected: _hasSelected,
+                onReplaceDb: () => _replaceDb(),
               ),
             ],
           ),
@@ -128,35 +111,44 @@ class DbFileInputField extends StatelessWidget {
     required this.isBackup,
     required this.onPressed,
     required this.onBackupChosen,
+    required this.hasSelected,
+    required this.onReplaceDb,
   });
 
   final XFile? dbPath;
   final bool isBackup;
   final VoidCallback onPressed;
   final void Function(bool) onBackupChosen;
+  final bool hasSelected;
+  final VoidCallback onReplaceDb;
 
   @override
   Widget build(BuildContext context) {
-    const double width = 400;
-    final maxWith = MediaQuery.of(context).size.width * 0.8;
-    return Column(
+    return CommonSettingSection(
+      title: 'Replace database',
       children: [
         const SizedBox(height: 10),
-        SelectFileField(
-          filePath: dbPath,
-          width: width,
-          onPressed: onPressed,
-          maxWidth: maxWith,
+        Center(
+          child: SelectFileField(
+            filePath: dbPath,
+            width: 460,
+            onPressed: onPressed,
+            maxWidth: 460,
+          ),
         ),
         const SizedBox(height: 10),
-        Container(
-          width: width,
-          constraints: BoxConstraints(maxWidth: maxWith),
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 460),
           child: SwitchField(
             label: 'Backup current database',
             value: isBackup,
             onPressed: onBackupChosen,
           ),
+        ),
+        const SizedBox(height: 16),
+        DbReplaceButtons(
+          hasSelected: hasSelected,
+          onPressed: onReplaceDb,
         )
       ],
     );

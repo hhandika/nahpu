@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/providers/specimens.dart';
+import 'package:nahpu/screens/settings/catalog_format.dart';
 import 'package:nahpu/screens/settings/collevent_settings.dart';
 import 'package:nahpu/screens/settings/common.dart';
+import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/types/specimens.dart';
-import 'package:nahpu/screens/settings/shared.dart';
+import 'package:nahpu/screens/settings/application_settings.dart';
 import 'package:nahpu/screens/settings/specimen_settings.dart';
-import 'package:nahpu/styles/settings.dart';
-import 'package:settings_ui/settings_ui.dart';
 
 class AppSettings extends ConsumerStatefulWidget {
   const AppSettings({Key? key}) : super(key: key);
@@ -25,23 +25,14 @@ class ProjectSettingState extends ConsumerState<AppSettings> {
         title: const Text('Settings'),
       ),
       body: SafeArea(
-        child: SettingsList(
-          lightTheme: getSettingData(context),
-          darkTheme: getSettingData(context),
+        child: CommonSettingList(
           sections: [
             ref.watch(catalogFmtNotifierProvider).when(
-                  data: (data) =>
-                      GeneralSettings(ref: ref, catalogFmt: data).getSetting(),
-                  loading: () => const SettingsSection(
-                    title: SettingTitle(title: 'Loading...'),
-                    tiles: [],
-                  ),
-                  error: (e, s) => const SettingsSection(
-                    title: SettingTitle(title: 'Error'),
-                    tiles: [],
-                  ),
+                  data: (data) => CatalogSettings(ref: ref, catalogFmt: data),
+                  loading: () => const CommonProgressIndicator(),
+                  error: (e, s) => const Text('Error'),
                 ),
-            AppearanceSettings(ref: ref).getSetting(),
+            const AppearanceSetting(),
           ],
         ),
       ),
@@ -49,8 +40,9 @@ class ProjectSettingState extends ConsumerState<AppSettings> {
   }
 }
 
-class GeneralSettings {
-  GeneralSettings({
+class CatalogSettings extends StatelessWidget {
+  const CatalogSettings({
+    super.key,
     required this.ref,
     required this.catalogFmt,
   });
@@ -58,123 +50,83 @@ class GeneralSettings {
   final WidgetRef ref;
   final CatalogFmt catalogFmt;
 
-  SettingsSection getSetting() {
-    return SettingsSection(
-      title: const SettingTitle(title: 'Catalogs'),
-      tiles: [
-        _getCatalogFmtSetting(),
-        _getCollEventSettings(),
-        _getSpecimenPartSettings(),
+  @override
+  Widget build(BuildContext context) {
+    return CommonSettingSection(
+      title: 'Catalogs',
+      children: [
+        CatalogFmtSection(selectedFmt: matchCatFmtToTaxonGroup(catalogFmt)),
+        SpecimenSection(catalogFmt: catalogFmt),
+        const CollEventSection(),
       ],
     );
   }
+}
 
-  SettingsTile _getCatalogFmtSetting() {
-    final selectedFmt = matchCatFmtToTaxonGroup(catalogFmt);
-    return SettingsTile.navigation(
-      leading: Icon(MdiIcons.fileCabinet),
-      title: const SettingTitle(title: 'Catalog Format'),
-      value: Text(selectedFmt),
-      onPressed: (context) => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CatalogFmtSelection(
-            selectedFmt: selectedFmt,
-          ),
-        ),
-      ),
-    );
+class CatalogFmtSection extends StatelessWidget {
+  const CatalogFmtSection({super.key, required this.selectedFmt});
+
+  final String selectedFmt;
+
+  @override
+  Widget build(BuildContext context) {
+    return CommonSettingTile(
+        isNavigation: true,
+        icon: MdiIcons.fileCabinet,
+        title: 'Catalog Format',
+        value: selectedFmt,
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CatalogFmtSelection(
+                selectedFmt: selectedFmt,
+              ),
+            ),
+          );
+        });
   }
+}
 
-  SettingsTile _getSpecimenPartSettings() {
-    return SettingsTile.navigation(
-      leading: Icon(matchCatFmtToIcon(catalogFmt, false)),
-      title: const SettingTitle(title: 'Specimens'),
-      onPressed: (context) => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const SpecimenSelection(),
-        ),
-      ),
-    );
+class SpecimenSection extends StatelessWidget {
+  const SpecimenSection({super.key, required this.catalogFmt});
+
+  final CatalogFmt catalogFmt;
+
+  @override
+  Widget build(BuildContext context) {
+    return CommonSettingTile(
+        isNavigation: true,
+        icon: matchCatFmtToIcon(catalogFmt, false),
+        title: 'Specimens',
+        label: 'Set tissue ID, specimen type, treatments and more',
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SpecimenSelection(),
+            ),
+          );
+        });
   }
+}
 
-  SettingsTile _getCollEventSettings() {
-    return SettingsTile.navigation(
-      leading: const Icon(Icons.calendar_month_outlined),
-      title: const SettingTitle(title: 'Collecting Events'),
-      onPressed: (context) => Navigator.push(
+class CollEventSection extends StatelessWidget {
+  const CollEventSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return CommonSettingTile(
+      isNavigation: true,
+      icon: Icons.calendar_month_outlined,
+      title: 'Collecting Events',
+      label: 'Set collecting methods and coll. personnel roles',
+      onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => const CollEventSelection(),
         ),
       ),
-    );
-  }
-}
-
-class CatalogFmtSelection extends ConsumerStatefulWidget {
-  const CatalogFmtSelection({super.key, required this.selectedFmt});
-  final String selectedFmt;
-  @override
-  CatalogFmtSelectionState createState() => CatalogFmtSelectionState();
-}
-
-class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Catalog Format'),
-      ),
-      body: SettingsList(
-          lightTheme: getSettingData(context),
-          darkTheme: getSettingData(context),
-          sections: [
-            SettingsSection(
-                title: const SettingTitle(title: 'Catalog Format'),
-                tiles: [
-                  SettingsTile(
-                    title: const Text('General Mammals'),
-                    leading: Icon(MdiIcons.paw),
-                    trailing: widget.selectedFmt == 'General Mammals'
-                        ? const Icon(Icons.check)
-                        : null,
-                    onPressed: (context) {
-                      ref
-                          .read(catalogFmtNotifierProvider.notifier)
-                          .set(CatalogFmt.generalMammals);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  SettingsTile(
-                    title: const Text('Birds'),
-                    leading: Icon(MdiIcons.owl),
-                    trailing: widget.selectedFmt == 'Birds'
-                        ? const Icon(Icons.check)
-                        : null,
-                    onPressed: (context) {
-                      ref
-                          .read(catalogFmtNotifierProvider.notifier)
-                          .set(CatalogFmt.birds);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  SettingsTile(
-                    title: const Text('Bats'),
-                    leading: Icon(MdiIcons.bat),
-                    trailing: widget.selectedFmt == 'Bats'
-                        ? const Icon(Icons.check)
-                        : null,
-                    onPressed: (context) {
-                      ref
-                          .read(catalogFmtNotifierProvider.notifier)
-                          .set(CatalogFmt.bats);
-                      Navigator.pop(context);
-                    },
-                  ),
-                ])
-          ]),
     );
   }
 }

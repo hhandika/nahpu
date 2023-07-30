@@ -1,30 +1,29 @@
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/screens/settings/common.dart';
 import 'package:nahpu/screens/settings/db_settings.dart';
+import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/platform_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/utility_services.dart';
-import 'package:nahpu/styles/settings.dart';
-import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/providers/settings.dart';
 
-class AppearanceSettings {
-  AppearanceSettings({required this.ref});
+class AppearanceSetting extends ConsumerWidget {
+  const AppearanceSetting({super.key});
 
-  final WidgetRef ref;
-
-  SettingsSection getSetting() {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeSettingProvider);
-    return SettingsSection(
-      title: const SettingTitle(title: 'Applications'),
-      tiles: [
+    return CommonSettingSection(
+      title: 'Applications',
+      children: [
         theme.when(
-          data: (themeValue) => SettingsTile.navigation(
-            leading: const Icon(Icons.color_lens_outlined),
-            title: const Text('Theme'),
-            value: Text(themeValue.name.toSentenceCase()),
-            onPressed: (context) => Navigator.push(
+          data: (themeValue) => CommonSettingTile(
+            isNavigation: true,
+            icon: Icons.color_lens_outlined,
+            title: 'Theme',
+            value: themeValue.name.toSentenceCase(),
+            onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) =>
@@ -32,13 +31,15 @@ class AppearanceSettings {
               ),
             ),
           ),
-          loading: () => _getThemeSettingTile(ThemeMode.system),
-          error: (error, stackTrace) => _getThemeSettingTile(ThemeMode.system),
+          loading: () => const CommonProgressIndicator(),
+          error: (error, stackTrace) => const Text('Error'),
         ),
-        SettingsTile.navigation(
-          leading: Icon(MdiIcons.databaseOutline),
-          title: const Text('Database'),
-          onPressed: (context) => Navigator.push(
+        CommonSettingTile(
+          isNavigation: true,
+          icon: MdiIcons.databaseOutline,
+          title: 'Database',
+          label: 'Replace database',
+          onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => const DatabaseSettings(),
@@ -46,21 +47,6 @@ class AppearanceSettings {
           ),
         ),
       ],
-    );
-  }
-
-  SettingsTile _getThemeSettingTile(ThemeMode themeValue) {
-    return SettingsTile.navigation(
-      leading: const Icon(Icons.color_lens_outlined),
-      title: const Text('Theme'),
-      value: Text(themeValue.name.toSentenceCase()),
-      onPressed: (context) => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>
-              ThemeSettings(isSelected: themeValue.name.toSentenceCase()),
-        ),
-      ),
     );
   }
 }
@@ -85,20 +71,18 @@ class ThemeSettingState extends ConsumerState<ThemeSettings> {
       appBar: AppBar(
         title: const Text('Theme'),
       ),
-      body: SettingsList(
-        lightTheme: getSettingData(context),
-        darkTheme: getSettingData(context),
+      body: CommonSettingList(
         sections: [
-          SettingsSection(
-            title: const SettingTitle(title: 'Theme'),
-            tiles: themes.map(
+          CommonSettingSection(
+            title: 'Theme',
+            children: themes.map(
               (e) {
-                return SettingsTile(
-                    leading: Icon(icons[themes.indexOf(e)]),
-                    title: Text(e),
+                return CommonSettingTile(
+                    icon: icons[themes.indexOf(e)],
+                    title: e,
                     trailing:
                         widget.isSelected == e ? const Icon(Icons.check) : null,
-                    onPressed: (_) {
+                    onTap: () {
                       ref.read(themeSettingProvider.notifier).setTheme(e);
                       Navigator.of(context).pop();
                     });
