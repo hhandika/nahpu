@@ -45,7 +45,7 @@ class CollMethodSettings extends ConsumerWidget {
               return data.map((e) {
                 return CommonChip(
                   text: e,
-                  primaryColor: Theme.of(context).colorScheme.secondary,
+                  primaryColor: Theme.of(context).colorScheme.primary,
                   onDeleted: () {
                     CollMethodServices(ref: ref).removeMethod(e);
                   },
@@ -85,7 +85,7 @@ class PersonnelRoleSetting extends ConsumerWidget {
               return data.map((e) {
                 return CommonChip(
                   text: e,
-                  primaryColor: Theme.of(context).colorScheme.secondary,
+                  primaryColor: Theme.of(context).colorScheme.primary,
                   onDeleted: () {
                     CollEvenPersonnelServices(ref: ref).removeRole(e);
                   },

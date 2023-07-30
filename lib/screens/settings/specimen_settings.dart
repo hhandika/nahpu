@@ -87,7 +87,7 @@ class SpecimenTypeSettings extends ConsumerWidget {
               return data
                   .map((e) => CommonChip(
                         text: e,
-                        primaryColor: Theme.of(context).colorScheme.tertiary,
+                        primaryColor: Theme.of(context).colorScheme.primary,
                         onDeleted: () {
                           SpecimenPartServices(ref: ref).removeType(e);
                         },
@@ -131,7 +131,7 @@ class TreatmentOptionSettings extends ConsumerWidget {
               return data
                   .map((e) => CommonChip(
                         text: e,
-                        primaryColor: Theme.of(context).colorScheme.tertiary,
+                        primaryColor: Theme.of(context).colorScheme.primary,
                         onDeleted: () {
                           SpecimenPartServices(ref: ref).removeTreatment(e);
                         },

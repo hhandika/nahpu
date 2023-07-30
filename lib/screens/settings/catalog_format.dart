@@ -23,6 +23,7 @@ class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
         sections: [
           CommonSettingSection(
             title: 'Catalog Format',
+            isDivided: true,
             children: [
               CommonSettingTile(
                 title: 'General Mammals',
@@ -37,7 +38,6 @@ class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
                   Navigator.pop(context);
                 },
               ),
-              const SettingDivider(),
               CommonSettingTile(
                 title: 'Birds',
                 icon: MdiIcons.owl,
@@ -51,7 +51,6 @@ class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
                   Navigator.pop(context);
                 },
               ),
-              const SettingDivider(),
               CommonSettingTile(
                 title: 'Bats',
                 icon: MdiIcons.bat,

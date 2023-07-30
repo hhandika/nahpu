@@ -299,7 +299,7 @@ class CommonChip extends StatelessWidget {
       backgroundColor: Color.lerp(
         primaryColor,
         Theme.of(context).colorScheme.surface,
-        0.85,
+        0.75,
       ),
       onDeleted: onDeleted,
     );
