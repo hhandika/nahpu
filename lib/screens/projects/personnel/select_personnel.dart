@@ -63,7 +63,7 @@ class SelectPersonnelState extends ConsumerState<SelectPersonnel> {
                                       _filteredData.clear();
                                     });
                                   },
-                                  icon: const Icon(Icons.clear))
+                                  icon: const Icon(Icons.clear_rounded))
                               : const SizedBox.shrink()
                         ],
                         onChanged: (query) {

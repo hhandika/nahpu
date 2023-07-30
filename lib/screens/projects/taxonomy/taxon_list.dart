@@ -95,7 +95,7 @@ class _TaxonListState extends State<TaxonList> {
                             _filteredTaxonList.clear();
                           });
                         },
-                        icon: const Icon(Icons.clear))
+                        icon: const Icon(Icons.clear_rounded))
                     : const SizedBox.shrink()
               ],
               onChanged: (String value) {

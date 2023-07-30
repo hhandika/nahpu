@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:nahpu/providers/specimens.dart';
+import 'package:nahpu/screens/shared/features.dart';
 import 'package:nahpu/screens/specimens/specimen_form.dart';
-import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/specimens.dart';
 import 'package:nahpu/screens/shared/common.dart';
@@ -13,37 +13,26 @@ import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/utility_services.dart';
 
-const List<String> specimenSearchOptions = [
-  'Field number',
-  'Cataloger',
-  'Preparator',
-  'Collector',
-  'Condition',
-  'Taxon',
-];
-
 class SpecimenListPage extends ConsumerStatefulWidget {
   const SpecimenListPage({
     super.key,
-    required this.data,
   });
-
-  final List<SpecimenData> data;
 
   @override
   SpecimenListPageState createState() => SpecimenListPageState();
 }
 
 class SpecimenListPageState extends ConsumerState<SpecimenListPage> {
-  List<SpecimenData> _filteredData = [];
   final TextEditingController _searchController = TextEditingController();
   int _selectedValue = 0;
-  late FocusNode _focus;
+  bool _isSearching = false;
+  bool _isSearchOptionVisible = false;
+  final FocusNode _focus = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    _focus = FocusNode();
+    _focus.requestFocus();
   }
 
   @override
@@ -55,18 +44,19 @@ class SpecimenListPageState extends ConsumerState<SpecimenListPage> {
 
   @override
   Widget build(BuildContext context) {
+    final specimenEntry = ref.watch(specimenEntryProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Specimen Records'),
       ),
       body: SafeArea(
-          child: Center(
-        child: ScrollableConstrainedLayout(
-            child: Column(
+          child: ScrollableConstrainedLayout(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             CommonSearchBar(
               controller: _searchController,
-              focusNode: FocusNode(),
+              focusNode: _focus,
               hintText: 'Search specimens',
               trailing: [
                 _searchController.text.isNotEmpty
@@ -74,171 +64,71 @@ class SpecimenListPageState extends ConsumerState<SpecimenListPage> {
                         onPressed: () {
                           setState(() {
                             _searchController.clear();
-                            _filteredData.clear();
+                            ref.invalidate(specimenEntryProvider);
                           });
                         },
-                        icon: const Icon(Icons.clear))
-                    : const SizedBox.shrink()
+                        icon: const Icon(Icons.clear_rounded))
+                    : const SizedBox.shrink(),
+                IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _isSearchOptionVisible = !_isSearchOptionVisible;
+                      });
+                    },
+                    icon: const Icon(Icons.tune_rounded)),
               ],
               onChanged: (String value) async {
-                await _filterResults(value);
-                setState(() {});
+                setState(() {
+                  _isSearching = true;
+                });
+                ref
+                    .read(specimenEntryProvider.notifier)
+                    .search(value, SpecimenSearchOption.values[_selectedValue]);
               },
             ),
             const SizedBox(height: 4),
-            Wrap(
-              spacing: 6,
-              alignment: WrapAlignment.center,
-              children: List.generate(specimenSearchOptions.length, (index) {
-                return SearchType(
-                  index: index,
+            Visibility(
+                visible: _isSearchOptionVisible,
+                child: SpecimenSearchChips(
                   selectedValue: _selectedValue,
-                  onSelected: (bool selected) {
-                    if (selected) {
-                      setState(() {
-                        _selectedValue = index;
-                        _searchController.clear();
-                        _filteredData = [];
-                      });
-                    }
+                  onSelected: (int index) {
+                    setState(() {
+                      _selectedValue = index;
+                    });
                   },
-                );
-              }),
-            ),
+                )),
             const SizedBox(height: 8),
-            _filteredData.isEmpty || widget.data.length == _filteredData.length
-                ? const SizedBox.shrink()
-                : Text('Results: ${_filteredData.length}'),
-            SpecimenList(
-              data: _filteredData.isEmpty ? widget.data : _filteredData,
-            ),
+            specimenEntry.when(
+                data: (data) {
+                  if (data.isEmpty) {
+                    return const Text('No specimens found');
+                  } else {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        !_isSearching
+                            ? const SizedBox.shrink()
+                            : Text(
+                                'Specimen found: ${data.length}',
+                                style: Theme.of(context).textTheme.labelLarge,
+                              ),
+                        SpecimenList(
+                          data: data,
+                          additionalHeight: _isSearchOptionVisible ? 0 : 86,
+                        ),
+                      ],
+                    );
+                  }
+                },
+                error: (error, stackTrace) {
+                  return Text('Error: $error');
+                },
+                loading: () => const CommonProgressIndicator()),
           ],
-        )),
+        ),
       )),
     );
-  }
-
-  Future<void> _filterResults(String query) async {
-    switch (_selectedValue) {
-      case 0:
-        _filterByFieldNumber(query);
-        break;
-      case 1:
-        await _filterByCataloger(query);
-        break;
-      case 2:
-        await _filterByPreparator(query);
-        break;
-      case 3:
-        await _filterByCollector(query);
-        break;
-      case 4:
-        _filterByCondition(query);
-        break;
-      case 5:
-        await _filterByTaxon(query);
-        break;
-    }
-  }
-
-  void _filterByFieldNumber(String query) {
-    _filteredData = widget.data
-        .where((element) => element.fieldNumber
-            .toString()
-            .toLowerCase()
-            .contains(query.toLowerCase()))
-        .toList();
-  }
-
-  Future<void> _filterByTaxon(String query) async {
-    List<SpecimenData> filteredData = [];
-    List<int> taxonIDs = await TaxonomyServices(ref: ref).searchTaxa(query);
-    for (int taxonID in taxonIDs) {
-      filteredData.addAll(widget.data
-          .where((element) => element.speciesID == taxonID)
-          .toList());
-    }
-    _filteredData = filteredData;
-  }
-
-  Future<void> _filterByCataloger(String query) async {
-    List<SpecimenData> filteredData = [];
-    List<String> catalogerIDs = await _searchPersonnel(query);
-    for (String catalogerID in catalogerIDs) {
-      filteredData.addAll(widget.data
-          .where(
-              (element) => element.catalogerID.toString().contains(catalogerID))
-          .toList());
-    }
-    _filteredData = filteredData;
-  }
-
-  Future<void> _filterByPreparator(String query) async {
-    List<SpecimenData> filteredData = [];
-    List<String> preparatorIDs = await _searchPersonnel(query);
-    for (String preparatorID in preparatorIDs) {
-      filteredData.addAll(widget.data
-          .where((element) =>
-              element.preparatorID.toString().contains(preparatorID))
-          .toList());
-    }
-    _filteredData = filteredData;
-  }
-
-  Future<void> _filterByCollector(String query) async {
-    List<SpecimenData> filteredData = [];
-
-    List<String> personnelUuids = await _searchPersonnel(query);
-    List<int> collectorIDs = await CollEvenPersonnelServices(ref: ref)
-        .searchPersonnel(personnelUuids, query);
-    for (int collectorID in collectorIDs) {
-      filteredData.addAll(widget.data
-          .where((element) => element.collPersonnelID == collectorID)
-          .toList());
-    }
-    _filteredData = filteredData;
-  }
-
-  Future<void> _filterByCondition(String query) async {
-    _filteredData = widget.data
-        .where((element) => element.condition != null)
-        .where((element) =>
-            element.condition!.toLowerCase().contains(query.toLowerCase()))
-        .toList();
-  }
-
-  Future<List<String>> _searchPersonnel(String search) async {
-    return await PersonnelServices(ref: ref).searchPersonnel(search);
-  }
-}
-
-class SearchType extends StatefulWidget {
-  const SearchType({
-    super.key,
-    required this.index,
-    required this.selectedValue,
-    required this.onSelected,
-  });
-
-  final int index;
-  final int selectedValue;
-  final void Function(bool) onSelected;
-
-  @override
-  State<SearchType> createState() => _SearchTypeState();
-}
-
-class _SearchTypeState extends State<SearchType> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
-        child: CommonChip(
-          index: widget.index,
-          label: Text(specimenSearchOptions[widget.index]),
-          selectedValue: widget.selectedValue,
-          onSelected: widget.onSelected,
-        ));
   }
 }
 
@@ -246,16 +136,19 @@ class SpecimenList extends StatelessWidget {
   const SpecimenList({
     super.key,
     required this.data,
+    required this.additionalHeight,
   });
 
   final List<SpecimenData> data;
+  final int additionalHeight;
 
   @override
   Widget build(BuildContext context) {
     ScrollController scrollController = ScrollController();
     return ConstrainedBox(
-        constraints:
-            BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 370),
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.sizeOf(context).height * 0.7 + additionalHeight,
+        ),
         child: CommonScrollbar(
           scrollController: scrollController,
           child: ListView.builder(

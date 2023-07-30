@@ -79,13 +79,13 @@ class SpecimenTypeSettings extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     TextEditingController partController = TextEditingController();
-    return SettingChip(
+    return SettingChips(
       title: 'Specimen part types',
       controller: partController,
       chipList: ref.watch(specimenTypesProvider).when(
             data: (data) {
               return data
-                  .map((e) => CommonChip(
+                  .map((e) => CommonSettingChip(
                         text: e,
                         primaryColor: Theme.of(context).colorScheme.primary,
                         onDeleted: () {
@@ -123,13 +123,13 @@ class TreatmentOptionSettings extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     TextEditingController treatmentController = TextEditingController();
-    return SettingChip(
+    return SettingChips(
       title: 'Treatments',
       controller: treatmentController,
       chipList: ref.watch(treatmentOptionsProvider).when(
             data: (data) {
               return data
-                  .map((e) => CommonChip(
+                  .map((e) => CommonSettingChip(
                         text: e,
                         primaryColor: Theme.of(context).colorScheme.secondary,
                         onDeleted: () {

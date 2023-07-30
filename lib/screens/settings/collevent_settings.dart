@@ -37,13 +37,13 @@ class CollMethodSettings extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     TextEditingController controller = TextEditingController();
-    return SettingChip(
+    return SettingChips(
       title: 'Collection methods',
       controller: controller,
       chipList: ref.watch(collEventMethodProvider).when(
             data: (data) {
               return data.map((e) {
-                return CommonChip(
+                return CommonSettingChip(
                   text: e,
                   primaryColor: Theme.of(context).colorScheme.primary,
                   onDeleted: () {
@@ -77,13 +77,13 @@ class PersonnelRoleSetting extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     TextEditingController controller = TextEditingController();
-    return SettingChip(
+    return SettingChips(
       title: 'Personnel roles',
       controller: controller,
       chipList: ref.watch(collPersonnelRoleProvider).when(
             data: (data) {
               return data.map((e) {
-                return CommonChip(
+                return CommonSettingChip(
                   text: e,
                   primaryColor: Theme.of(context).colorScheme.secondary,
                   onDeleted: () {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/specimens.dart';
+import 'package:nahpu/screens/shared/features.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/specimens.dart';
 import 'package:nahpu/providers/sites.dart';
@@ -212,7 +213,7 @@ class CollEventIdTile extends ConsumerWidget {
                               labelText: 'ID suffix',
                               hintText: 'Enter ID suffix',
                               suffix: IconButton(
-                                icon: const Icon(Icons.clear),
+                                icon: const Icon(Icons.clear_rounded),
                                 onPressed: () {
                                   collEventCtr.idSuffixCtr.clear();
                                 },

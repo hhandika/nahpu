@@ -322,7 +322,7 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
                                     onPressed: () {
                                       fileNameCtr.clear();
                                     },
-                                    icon: const Icon(Icons.clear),
+                                    icon: const Icon(Icons.clear_rounded),
                                   )
                                 : null),
                       ),
@@ -412,7 +412,7 @@ class PhotoDetailForm extends ConsumerWidget {
             hintText: 'Enter caption',
             suffix: IconButton(
               icon: Icon(
-                Icons.clear,
+                Icons.clear_rounded,
                 color: Theme.of(context).disabledColor,
               ),
               onPressed: () {

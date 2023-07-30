@@ -53,7 +53,7 @@ class FileNameField extends StatelessWidget {
               ? null
               : IconButton(
                   icon: const Icon(
-                    Icons.clear,
+                    Icons.clear_rounded,
                   ),
                   onPressed: () {
                     controller.fileNameCtr.clear();

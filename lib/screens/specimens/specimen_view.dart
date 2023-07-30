@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/screens/shared/buttons.dart';
+import 'package:nahpu/screens/shared/features.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
@@ -15,7 +15,6 @@ import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
 import 'package:nahpu/screens/specimens/specimen_form.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/navigation_services.dart';
-import 'package:nahpu/services/utility_services.dart';
 
 class SpecimenViewer extends ConsumerStatefulWidget {
   const SpecimenViewer({super.key});
@@ -71,7 +70,7 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
                                 ref.invalidate(specimenEntryProvider);
                               });
                             },
-                            icon: const Icon(Icons.clear))
+                            icon: const Icon(Icons.clear_rounded))
                         : const SizedBox.shrink(),
                     IconButton(
                         onPressed: () {
@@ -87,7 +86,7 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
                                     });
                                   }));
                         },
-                        icon: const Icon(Icons.tune_outlined))
+                        icon: const Icon(Icons.tune_rounded))
                   ],
                   onChanged: (value) {
                     setState(() {
@@ -215,24 +214,9 @@ class SearchOptionScreen extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Wrap(
-                alignment: WrapAlignment.center,
-                spacing: 4,
-                runSpacing: 4,
-                children:
-                    List.generate(SpecimenSearchOption.values.length, (index) {
-                  return CommonChip(
-                    index: index,
-                    label: Text(SpecimenSearchOption.values[index].name
-                        .toSentenceCase()),
-                    selectedValue: selectedSearchValue,
-                    onSelected: (selected) {
-                      if (selected) {
-                        onSelected(index);
-                      }
-                    },
-                  );
-                }),
+              SpecimenSearchChips(
+                selectedValue: selectedSearchValue,
+                onSelected: onSelected,
               ),
               const SizedBox(height: 8),
               TextButton(

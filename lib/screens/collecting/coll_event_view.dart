@@ -62,7 +62,7 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
                                 services.invalidateCollEvent();
                               });
                             },
-                            icon: const Icon(Icons.clear))
+                            icon: const Icon(Icons.clear_rounded))
                         : const SizedBox.shrink(),
                   ],
                   onChanged: (value) {

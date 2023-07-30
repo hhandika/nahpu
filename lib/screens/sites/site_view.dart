@@ -65,7 +65,7 @@ class SiteViewerState extends ConsumerState<SiteViewer> {
                                 ref.invalidate(siteEntryProvider);
                               });
                             },
-                            icon: const Icon(Icons.clear))
+                            icon: const Icon(Icons.clear_rounded))
                         : const SizedBox.shrink(),
                   ],
                   onChanged: (value) {

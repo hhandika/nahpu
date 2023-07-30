@@ -223,9 +223,7 @@ class RecordedTaxaView extends ConsumerWidget {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => SpecimenListPage(
-                          data: data,
-                        ),
+                        builder: (context) => const SpecimenListPage(),
                       ),
                     );
                   },

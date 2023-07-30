@@ -190,8 +190,8 @@ class SettingDivider extends StatelessWidget {
   }
 }
 
-class SettingChip extends StatelessWidget {
-  const SettingChip({
+class SettingChips extends StatelessWidget {
+  const SettingChips({
     super.key,
     required this.title,
     required this.controller,
@@ -279,8 +279,8 @@ class SettingChip extends StatelessWidget {
   }
 }
 
-class CommonChip extends StatelessWidget {
-  const CommonChip({
+class CommonSettingChip extends StatelessWidget {
+  const CommonSettingChip({
     super.key,
     required this.text,
     required this.primaryColor,

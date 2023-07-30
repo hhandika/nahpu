@@ -2,7 +2,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:nahpu/services/database/database.dart';
 
 class CommonDateField extends StatelessWidget {
   const CommonDateField({
@@ -142,37 +141,6 @@ class CommonSearchBar extends StatelessWidget {
       backgroundColor: MaterialStateProperty.all(Colors.grey.withAlpha(48)),
       trailing: trailing,
       onChanged: onChanged,
-    );
-  }
-}
-
-class SiteIdField extends ConsumerWidget {
-  const SiteIdField({
-    Key? key,
-    required this.onChanges,
-    required this.siteData,
-    required this.value,
-  }) : super(key: key);
-
-  final void Function(int?) onChanges;
-  final List<SiteData> siteData;
-  final int? value;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return DropdownButtonFormField(
-      value: value,
-      decoration: const InputDecoration(
-        labelText: 'Site ID',
-        hintText: 'Enter a site',
-      ),
-      items: siteData
-          .map((site) => DropdownMenuItem(
-                value: site.id,
-                child: CommonDropdownText(text: site.siteID ?? ''),
-              ))
-          .toList(),
-      onChanged: onChanges,
     );
   }
 }
