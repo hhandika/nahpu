@@ -95,7 +95,7 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
                     });
                   },
                   child: const Text("Cancel")),
-          const NewCollEvents(),
+          !_isSearching ? const NewCollEvents() : const SizedBox.shrink(),
           CollEventMenu(
             collEventId: _collEvenId,
           ),
