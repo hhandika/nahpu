@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nahpu/providers/specimens.dart';
+import 'package:nahpu/screens/projects/personnel/manage_personnel.dart';
+import 'package:nahpu/screens/projects/taxonomy/taxon_list.dart';
 import 'package:nahpu/screens/settings/catalog_format.dart';
 import 'package:nahpu/screens/settings/collevent_settings.dart';
 import 'package:nahpu/screens/settings/common.dart';
@@ -71,19 +73,49 @@ class DatabaseSettingSections extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CommonSettingSection(title: 'Database', children: [
-      CommonSettingTile(
-        isNavigation: true,
-        icon: MdiIcons.databaseOutline,
-        title: 'Replace database',
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const DatabaseSettings(),
+    return CommonSettingSection(
+      title: 'Database',
+      isDivided: true,
+      children: [
+        CommonSettingTile(
+            title: 'Taxa',
+            label: 'Edit and remove taxa',
+            isNavigation: true,
+            icon: Icons.emoji_nature_outlined,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const TaxonRegistryPage(),
+                ),
+              );
+            }),
+        CommonSettingTile(
+            title: 'Personnel',
+            icon: Icons.group_outlined,
+            label: 'Edit and remove personnel',
+            isNavigation: true,
+            onTap: (() {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ManagePersonnel(),
+                ),
+              );
+            })),
+        CommonSettingTile(
+          isNavigation: true,
+          icon: MdiIcons.databaseOutline,
+          title: 'Replace database',
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const DatabaseSettings(),
+            ),
           ),
         ),
-      )
-    ]);
+      ],
+    );
   }
 }
 
