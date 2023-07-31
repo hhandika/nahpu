@@ -96,6 +96,13 @@ class PersonnelServices extends DbAccess {
     invalidatePersonnel();
   }
 
+  Future<void> deletePersonnelFromList(List<String> personnelList) async {
+    for (final personnel in personnelList) {
+      await deletePersonnel(personnel);
+    }
+    invalidatePersonnel();
+  }
+
   void deleteAllPersonnelDb() {
     PersonnelQuery(dbAccess).deleteAllPersonnel();
     invalidatePersonnel();

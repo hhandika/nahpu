@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/personnel.dart';
+import 'package:nahpu/screens/projects/personnel/new_personnel.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/fields.dart';
@@ -148,7 +149,7 @@ class PersonnelListViewState extends ConsumerState<PersonnelListView> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: MainAxisSize.max,
       children: [
         Row(
           children: [
@@ -196,33 +197,53 @@ class PersonnelListViewState extends ConsumerState<PersonnelListView> {
             ),
           ],
         ),
-        Expanded(
-          child: CommonScrollbar(
-              scrollController: _scrollController,
-              child: ListView.builder(
-                  controller: _scrollController,
-                  shrinkWrap: true,
-                  itemCount: widget.personnelList.length,
-                  itemBuilder: (context, index) {
-                    return SelectPersonnelTile(
-                      data: widget.personnelList[index],
-                      listedPersonnel: _listedInProjectPersonnel,
-                      selectedPersonnel: _selectedPersonnel,
-                      isSelecting: _isSelecting,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          if (value == true) {
-                            _selectedPersonnel
-                                .add(widget.personnelList[index].uuid);
-                          } else {
-                            _selectedPersonnel
-                                .remove(widget.personnelList[index].uuid);
-                          }
-                        });
-                      },
-                    );
-                  })),
-        )
+        Flexible(
+            child: CommonScrollbar(
+                scrollController: _scrollController,
+                child: ListView.builder(
+                    controller: _scrollController,
+                    shrinkWrap: true,
+                    itemCount: widget.personnelList.length,
+                    itemBuilder: (context, index) {
+                      return SelectPersonnelTile(
+                        data: widget.personnelList[index],
+                        listedPersonnel: _listedInProjectPersonnel,
+                        selectedPersonnel: _selectedPersonnel,
+                        isSelecting: _isSelecting,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            if (value == true) {
+                              _selectedPersonnel
+                                  .add(widget.personnelList[index].uuid);
+                            } else {
+                              _selectedPersonnel
+                                  .remove(widget.personnelList[index].uuid);
+                            }
+                          });
+                        },
+                      );
+                    }))),
+        const SizedBox(height: 8),
+        _isSelecting
+            ? DelectePersonnelButton(
+                selectedPersonnel: _selectedPersonnel,
+                onPressed: () async {
+                  try {
+                    await PersonnelServices(ref: ref)
+                        .deletePersonnelFromList(_selectedPersonnel);
+                    setState(() {
+                      _isSelecting = false;
+                    });
+                    if (mounted) {
+                      Navigator.pop(context);
+                    }
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Error deleting personnel')));
+                  }
+                },
+              )
+            : const SizedBox.shrink(),
       ],
     );
   }
@@ -239,6 +260,63 @@ class PersonnelListViewState extends ConsumerState<PersonnelListView> {
 
   Future<List<String>> _getListedInProject() async {
     return await PersonnelServices(ref: ref).getAllPersonnelListedInProjects();
+  }
+}
+
+class DelectePersonnelButton extends StatelessWidget {
+  const DelectePersonnelButton({
+    super.key,
+    required this.selectedPersonnel,
+    required this.onPressed,
+  });
+
+  final List<String> selectedPersonnel;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        IconButton(
+          color: Theme.of(context).colorScheme.error,
+          onPressed: selectedPersonnel.isEmpty
+              ? null
+              : () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text('Delete personnel'),
+                          content: const Text(
+                              'Are you sure you want to delete the selected personnel?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: onPressed,
+                              child: Text('Delete',
+                                  style: TextStyle(
+                                    color: Theme.of(context).colorScheme.error,
+                                  )),
+                            ),
+                          ],
+                        );
+                      });
+                },
+          icon: const Icon(Icons.delete_outlined),
+        ),
+        Visibility(
+            visible: selectedPersonnel.isNotEmpty,
+            child: Text('Delete ${selectedPersonnel.length} personnel',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.error,
+                ))),
+      ],
+    );
   }
 }
 
@@ -261,15 +339,25 @@ class SelectPersonnelTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(data.name ?? ''),
-      subtitle: Text(data.role ?? ''),
-      leading: isSelecting
-          ? ListCheckBox(
-              isDisabled: listedPersonnel.contains(data.uuid),
-              value: selectedPersonnel.contains(data.uuid),
-              onChanged: onChanged,
-            )
-          : const SizedBox.shrink(),
-    );
+        title: Text(data.name ?? ''),
+        subtitle: Text(data.role ?? ''),
+        leading: isSelecting
+            ? ListCheckBox(
+                isDisabled: listedPersonnel.contains(data.uuid),
+                value: selectedPersonnel.contains(data.uuid),
+                onChanged: onChanged,
+              )
+            : const SizedBox.shrink(),
+        trailing: IconButton(
+          icon: const Icon(Icons.edit_outlined),
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => EditPersonnelForm(
+                          personnelData: data,
+                        )));
+          },
+        ));
   }
 }
