@@ -122,7 +122,7 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
   }
 }
 
-class CollectingEventIdField extends ConsumerWidget {
+class CollectingEventIdField extends ConsumerStatefulWidget {
   const CollectingEventIdField({
     super.key,
     required this.specimenUuid,
@@ -133,11 +133,17 @@ class CollectingEventIdField extends ConsumerWidget {
   final SpecimenFormCtrModel specimenCtr;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  CollectingEventIdFieldState createState() => CollectingEventIdFieldState();
+}
+
+class CollectingEventIdFieldState
+    extends ConsumerState<CollectingEventIdField> {
+  @override
+  Widget build(BuildContext context) {
     return CommonPadding(
       child: DropdownButtonFormField<int?>(
           isExpanded: true,
-          value: specimenCtr.collEventIDCtr,
+          value: widget.specimenCtr.collEventIDCtr,
           decoration: const InputDecoration(
             labelText: 'Collecting Event ID',
             hintText: 'Choose a collecting event ID',
@@ -156,25 +162,60 @@ class CollectingEventIdField extends ConsumerWidget {
               loading: () => const [],
               error: (error, stack) => const []),
           onChanged: (int? newValue) async {
-            try {
-              await SpecimenServices(ref: ref).updateSpecimen(
-                specimenUuid,
-                SpecimenCompanion(
-                  collEventID: db.Value(newValue),
-                  collMethodID: const db.Value(null),
-                  collPersonnelID: const db.Value(null),
-                  coordinateID: const db.Value(null),
-                ),
-              );
-            } catch (e) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(e.toString()),
-                ),
-              );
+            if (widget.specimenCtr.collEventIDCtr != null) {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text('Change collecting event ID?'),
+                      content: ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 350),
+                          child: const Text(
+                              'Changing the collecting event ID will reset all'
+                              ' fields in the collecting records section,'
+                              ' except capture date and time.')),
+                      actions: [
+                        TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Cancel')),
+                        TextButton(
+                            onPressed: () async {
+                              await _updateSpecimen(newValue);
+                              if (mounted) {
+                                Navigator.pop(context);
+                              }
+                            },
+                            child: const Text('OK')),
+                      ],
+                    );
+                  });
+            } else {
+              await _updateSpecimen(newValue);
             }
           }),
     );
+  }
+
+  Future<void> _updateSpecimen(int? newValue) async {
+    try {
+      await SpecimenServices(ref: ref).updateSpecimen(
+        widget.specimenUuid,
+        SpecimenCompanion(
+          collEventID: db.Value(newValue),
+          collMethodID: const db.Value(null),
+          collPersonnelID: const db.Value(null),
+          coordinateID: const db.Value(null),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+        ),
+      );
+    }
   }
 }
 
