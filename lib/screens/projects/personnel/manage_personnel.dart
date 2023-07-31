@@ -225,7 +225,7 @@ class PersonnelListViewState extends ConsumerState<PersonnelListView> {
                     }))),
         const SizedBox(height: 8),
         _isSelecting
-            ? DelectePersonnelButton(
+            ? DeletePersonnelButton(
                 selectedPersonnel: _selectedPersonnel,
                 onPressed: () async {
                   try {
@@ -263,8 +263,8 @@ class PersonnelListViewState extends ConsumerState<PersonnelListView> {
   }
 }
 
-class DelectePersonnelButton extends StatelessWidget {
-  const DelectePersonnelButton({
+class DeletePersonnelButton extends StatelessWidget {
+  const DeletePersonnelButton({
     super.key,
     required this.selectedPersonnel,
     required this.onPressed,
