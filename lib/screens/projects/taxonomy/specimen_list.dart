@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/screens/shared/features.dart';
-import 'package:nahpu/screens/specimens/specimen_form.dart';
-import 'package:nahpu/services/types/controllers.dart';
+import 'package:nahpu/screens/specimens/specimen_view.dart';
 import 'package:nahpu/services/types/specimens.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/fields.dart';
@@ -44,7 +43,6 @@ class SpecimenListPageState extends ConsumerState<SpecimenListPage> {
 
   @override
   Widget build(BuildContext context) {
-    final specimenEntry = ref.watch(specimenEntryProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Specimen Records'),
@@ -98,7 +96,7 @@ class SpecimenListPageState extends ConsumerState<SpecimenListPage> {
                   },
                 )),
             const SizedBox(height: 8),
-            specimenEntry.when(
+            ref.watch(specimenEntryProvider).when(
                 data: (data) {
                   if (data.isEmpty) {
                     return const Text('No specimens found');
@@ -169,8 +167,10 @@ class SpecimenList extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            SpecimenPageView(data: data[index])),
+                        builder: (context) => SpecimenFormView(
+                              specimenUuid: data[index].uuid,
+                              index: index,
+                            )),
                   );
                 },
               );
@@ -182,37 +182,6 @@ class SpecimenList extends StatelessWidget {
   IconData _getLeadingIcon(String? taxonGroup) {
     CatalogFmt fmt = matchTaxonGroupToCatFmt(taxonGroup);
     return matchCatFmtToIcon(fmt, false);
-  }
-}
-
-class SpecimenPageView extends StatefulWidget {
-  const SpecimenPageView({super.key, required this.data});
-
-  final SpecimenData data;
-
-  @override
-  State<SpecimenPageView> createState() => _SpecimenPageViewState();
-}
-
-class _SpecimenPageViewState extends State<SpecimenPageView> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Specimen Record'),
-      ),
-      body: SafeArea(
-          child: Center(
-              child: SpecimenForm(
-        specimenUuid: widget.data.uuid,
-        catalogFmt: matchTaxonGroupToCatFmt(widget.data.taxonGroup),
-        specimenCtr: _updateController(widget.data),
-      ))),
-    );
-  }
-
-  SpecimenFormCtrModel _updateController(SpecimenData specimenData) {
-    return SpecimenFormCtrModel.fromData(specimenData);
   }
 }
 

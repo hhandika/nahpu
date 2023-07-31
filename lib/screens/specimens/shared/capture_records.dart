@@ -155,16 +155,24 @@ class CollectingEventIdField extends ConsumerWidget {
               },
               loading: () => const [],
               error: (error, stack) => const []),
-          onChanged: (int? newValue) {
-            SpecimenServices(ref: ref).updateSpecimen(
-              specimenUuid,
-              SpecimenCompanion(
-                collEventID: db.Value(newValue),
-                collMethodID: const db.Value(null),
-                collPersonnelID: const db.Value(null),
-                coordinateID: const db.Value(null),
-              ),
-            );
+          onChanged: (int? newValue) async {
+            try {
+              await SpecimenServices(ref: ref).updateSpecimen(
+                specimenUuid,
+                SpecimenCompanion(
+                  collEventID: db.Value(newValue),
+                  collMethodID: const db.Value(null),
+                  collPersonnelID: const db.Value(null),
+                  coordinateID: const db.Value(null),
+                ),
+              );
+            } catch (e) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(e.toString()),
+                ),
+              );
+            }
           }),
     );
   }

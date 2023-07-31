@@ -273,6 +273,62 @@ class SpecimenPages extends StatelessWidget {
   }
 }
 
+class SpecimenFormView extends ConsumerStatefulWidget {
+  const SpecimenFormView(
+      {super.key, required this.specimenUuid, required this.index});
+
+  final String specimenUuid;
+  final int index;
+
+  @override
+  SpecimenFormViewState createState() => SpecimenFormViewState();
+}
+
+class SpecimenFormViewState extends ConsumerState<SpecimenFormView> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Specimen Record'),
+      ),
+      body: SafeArea(
+          child: ref.watch(specimenEntryProvider).when(
+                data: (specimenEntry) {
+                  if (specimenEntry.isEmpty) {
+                    return const EmptySpecimen(isButtonVisible: false);
+                  } else {
+                    CatalogFmt catalogFmt = matchTaxonGroupToCatFmt(
+                        specimenEntry[widget.index].taxonGroup);
+                    final specimenFormCtr =
+                        _updateController(specimenEntry[widget.index]);
+                    return SpecimenForm(
+                      specimenUuid: specimenEntry[widget.index].uuid,
+                      specimenCtr: specimenFormCtr,
+                      catalogFmt: catalogFmt,
+                    );
+                  }
+                },
+                loading: () => const CommonProgressIndicator(),
+                error: (error, stack) => Text(error.toString()),
+              )),
+    );
+  }
+
+  SpecimenFormCtrModel _updateController(SpecimenData specimenEntry) {
+    return SpecimenFormCtrModel.fromData(specimenEntry);
+  }
+}
+
 class EmptySpecimen extends ConsumerWidget {
   const EmptySpecimen({
     super.key,

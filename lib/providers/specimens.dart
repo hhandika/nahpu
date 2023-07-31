@@ -54,8 +54,8 @@ class SpecimenEntry extends _$SpecimenEntry {
   Future<List<SpecimenData>> _fetchSpecimenEntry() async {
     final projectUuid = ref.watch(projectUuidProvider);
 
-    final specimenEntries =
-        SpecimenQuery(ref.read(databaseProvider)).getAllSpecimens(projectUuid);
+    final specimenEntries = await SpecimenQuery(ref.read(databaseProvider))
+        .getAllSpecimens(projectUuid);
 
     return specimenEntries;
   }
