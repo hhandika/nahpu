@@ -394,6 +394,7 @@ class ListCheckBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Checkbox.adaptive(
         activeColor: Theme.of(context).colorScheme.onSurface,
+        checkColor: Theme.of(context).colorScheme.surface,
         side: BorderSide(
           width: 1.5,
           color: isDisabled
