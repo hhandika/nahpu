@@ -126,6 +126,12 @@ class AvatarViewerState extends ConsumerState<AvatarViewer> {
   }
 
   @override
+  void dispose() {
+    widget.filePath.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return widget.filePath.text.startsWith(avatarPath)
         ? DefaultAvatar(filePath: widget.filePath.text)

@@ -138,9 +138,16 @@ class TaxonListView extends ConsumerStatefulWidget {
 
 class TaxonListViewState extends ConsumerState<TaxonListView> {
   final ScrollController _scrollController = ScrollController();
-  List<int> _selectedTaxon = [];
+  final List<int> _selectedTaxon = [];
+  List<int> _allowedTaxa = [];
   List<int> _usedTaxon = [];
   bool _isSelecting = false;
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +162,7 @@ class TaxonListViewState extends ConsumerState<TaxonListView> {
                   ? null
                   : () {
                       setState(() {
-                        _selectedTaxon = [];
+                        _selectedTaxon.clear();
                       });
                     },
               child: const Text('Clear'),
@@ -164,12 +171,13 @@ class TaxonListViewState extends ConsumerState<TaxonListView> {
           Visibility(
               visible: _isSelecting,
               child: TextButton(
-                onPressed: _selectedTaxon.length == widget.taxonList.length
+                onPressed: _selectedTaxon.length == widget.taxonList.length ||
+                        _selectedTaxon.length == _allowedTaxa.length
                     ? null
                     : () {
-                        List<int> allowedTaxa = _getAllowedTaxa();
                         setState(() {
-                          _selectedTaxon.addAll(allowedTaxa);
+                          _selectedTaxon.clear();
+                          _selectedTaxon.addAll(_allowedTaxa);
                         });
                       },
                 child: const Text('Select all'),
@@ -178,6 +186,7 @@ class TaxonListViewState extends ConsumerState<TaxonListView> {
           TextButton(
             onPressed: () async {
               _usedTaxon = await _getUsedTaxa();
+              _allowedTaxa = _getAllowedTaxa();
               setState(() {
                 _isSelecting = !_isSelecting;
                 _selectedTaxon.clear();

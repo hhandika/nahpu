@@ -6,11 +6,10 @@ import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/personnel_services.dart';
 
 class ManagePersonnel extends ConsumerStatefulWidget {
-  const ManagePersonnel({super.key, required this.listedInProjectPersonnel});
-
-  final List<String> listedInProjectPersonnel;
+  const ManagePersonnel({super.key});
 
   @override
   ManagePersonnelState createState() => ManagePersonnelState();
@@ -23,9 +22,7 @@ class ManagePersonnelState extends ConsumerState<ManagePersonnel> {
       appBar: AppBar(
         title: const Text('Manage personnel'),
       ),
-      body: ScrollableConstrainedLayout(
-          child: ManagePersonnelList(
-              listedInProjectPersonnel: widget.listedInProjectPersonnel)),
+      body: const ScrollableConstrainedLayout(child: ManagePersonnelList()),
     );
   }
 }
@@ -42,10 +39,7 @@ class PersonnelEmpty extends StatelessWidget {
 class ManagePersonnelList extends ConsumerStatefulWidget {
   const ManagePersonnelList({
     super.key,
-    required this.listedInProjectPersonnel,
   });
-
-  final List<String> listedInProjectPersonnel;
 
   @override
   ManagePersonnelListState createState() => ManagePersonnelListState();
@@ -54,12 +48,12 @@ class ManagePersonnelList extends ConsumerStatefulWidget {
 class ManagePersonnelListState extends ConsumerState<ManagePersonnelList> {
   final TextEditingController _searchController = TextEditingController();
   List<PersonnelData> _filteredData = [];
-  late FocusNode _focus;
+  final FocusNode _focus = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    _focus = FocusNode();
+    _focus.requestFocus();
   }
 
   @override
@@ -88,7 +82,6 @@ class ManagePersonnelListState extends ConsumerState<ManagePersonnelList> {
                               ? IconButton(
                                   onPressed: () {
                                     _searchController.clear();
-                                    _focus.requestFocus();
                                   },
                                   icon: const Icon(Icons.clear),
                                 )
@@ -96,37 +89,20 @@ class ManagePersonnelListState extends ConsumerState<ManagePersonnelList> {
                         ],
                         onChanged: (value) {
                           setState(() {
-                            _filteredData = data
-                                .where((element) => element.name!
-                                    .toLowerCase()
-                                    .contains(value.toLowerCase()))
-                                .toList();
+                            _filteredData = PersonnelSearchService(data: data)
+                                .search(value.toLowerCase());
                           });
                         }),
                   ),
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                        maxHeight: MediaQuery.of(context).size.height * 0.7),
-                    child: ListView.builder(
-                      itemCount: _searchController.text.isNotEmpty
-                          ? _filteredData.length
-                          : data.length,
-                      itemBuilder: (context, index) {
-                        final personnel = _searchController.text.isNotEmpty
-                            ? _filteredData[index]
-                            : data[index];
-                        return ListTile(
-                            title: Text(personnel.name ?? ''),
-                            subtitle: Text(personnel.role ?? ''),
-                            leading: ListCheckBox(
-                                isDisabled: widget.listedInProjectPersonnel
-                                    .contains(personnel.uuid),
-                                value: widget.listedInProjectPersonnel
-                                    .contains(personnel.uuid),
-                                onChanged: (value) {}));
-                      },
-                    ),
-                  ),
+                  const SizedBox(height: 8),
+                  SizedBox(
+                      height: MediaQuery.sizeOf(context).height * 0.7,
+                      child: data.isEmpty
+                          ? const PersonnelEmpty()
+                          : PersonnelListView(
+                              personnelList:
+                                  _filteredData.isEmpty ? data : _filteredData,
+                            ))
                 ],
               );
             }
@@ -136,5 +112,164 @@ class ManagePersonnelListState extends ConsumerState<ManagePersonnelList> {
             error.toString(),
           ),
         );
+  }
+}
+
+class PersonnelListView extends ConsumerStatefulWidget {
+  const PersonnelListView({
+    super.key,
+    required this.personnelList,
+  });
+
+  final List<PersonnelData> personnelList;
+
+  @override
+  PersonnelListViewState createState() => PersonnelListViewState();
+}
+
+class PersonnelListViewState extends ConsumerState<PersonnelListView> {
+  final ScrollController _scrollController = ScrollController();
+  final List<String> _selectedPersonnel = [];
+  List<String> _allowedPersonnel = [];
+  List<String> _listedInProjectPersonnel = [];
+  bool _isSelecting = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          children: [
+            Visibility(
+              visible: _isSelecting,
+              child: TextButton(
+                onPressed: _selectedPersonnel.isEmpty
+                    ? null
+                    : () {
+                        setState(() {
+                          _selectedPersonnel.clear();
+                        });
+                      },
+                child: const Text('Clear'),
+              ),
+            ),
+            Visibility(
+              visible: _isSelecting,
+              child: TextButton(
+                onPressed: widget.personnelList.length ==
+                            _listedInProjectPersonnel.length ||
+                        _selectedPersonnel.length == _allowedPersonnel.length
+                    ? null
+                    : () {
+                        setState(() {
+                          _selectedPersonnel.clear();
+                          _selectedPersonnel.addAll(_allowedPersonnel);
+                        });
+                      },
+                child: const Text('Select all'),
+              ),
+            ),
+            const Spacer(),
+            TextButton(
+              onPressed: () async {
+                _listedInProjectPersonnel = await _getListedInProject();
+                _allowedPersonnel = _getAllowedPersonnel();
+
+                setState(() {
+                  _isSelecting = !_isSelecting;
+                  _selectedPersonnel.clear();
+                });
+              },
+              child: Text(_isSelecting ? 'Cancel' : 'Select'),
+            ),
+          ],
+        ),
+        Expanded(
+          child: CommonScrollbar(
+              scrollController: _scrollController,
+              child: ListView.builder(
+                  controller: _scrollController,
+                  shrinkWrap: true,
+                  itemCount: widget.personnelList.length,
+                  itemBuilder: (context, index) {
+                    return SelectPersonnelTile(
+                      data: widget.personnelList[index],
+                      listedPersonnel: _listedInProjectPersonnel,
+                      selectedPersonnel: _selectedPersonnel,
+                      isSelecting: _isSelecting,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          if (value == true) {
+                            _selectedPersonnel
+                                .add(widget.personnelList[index].uuid);
+                          } else {
+                            _selectedPersonnel
+                                .remove(widget.personnelList[index].uuid);
+                          }
+                        });
+                      },
+                    );
+                  })),
+        )
+      ],
+    );
+  }
+
+  List<String> _getAllowedPersonnel() {
+    final List<String> allowedPersonnel = [];
+    for (final personnel in widget.personnelList) {
+      if (!_listedInProjectPersonnel.contains(personnel.uuid)) {
+        allowedPersonnel.add(personnel.uuid);
+      }
+    }
+    return allowedPersonnel;
+  }
+
+  Future<List<String>> _getListedInProject() async {
+    return await PersonnelServices(ref: ref).getAllPersonnelListedInProjects();
+  }
+}
+
+class SelectPersonnelTile extends StatelessWidget {
+  const SelectPersonnelTile({
+    super.key,
+    required this.data,
+    required this.listedPersonnel,
+    required this.selectedPersonnel,
+    required this.onChanged,
+    required this.isSelecting,
+  });
+
+  final PersonnelData data;
+  final List<String> listedPersonnel;
+  final List<String> selectedPersonnel;
+  final bool isSelecting;
+  final void Function(bool?) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(data.name ?? ''),
+      subtitle: Text(data.role ?? ''),
+      leading: isSelecting
+          ? ListCheckBox(
+              isDisabled: listedPersonnel.contains(data.uuid),
+              value: selectedPersonnel.contains(data.uuid),
+              onChanged: onChanged,
+            )
+          : const SizedBox.shrink(),
+    );
   }
 }

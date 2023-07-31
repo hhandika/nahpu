@@ -78,11 +78,8 @@ class PersonnelListState extends ConsumerState<PersonnelList> {
                   Wrap(spacing: 8, children: [
                     SecondaryButton(
                       text: 'Manage',
-                      onPressed: () async {
-                        List<String> projectPersonnel =
-                            await PersonnelServices(ref: ref)
-                                .getAllPersonnelListedInProjects();
-                        _navigate(projectPersonnel);
+                      onPressed: () {
+                        _navigate();
                       },
                     ),
                     const AddPersonnelButton(),
@@ -96,14 +93,12 @@ class PersonnelListState extends ConsumerState<PersonnelList> {
     );
   }
 
-  void _navigate(List<String> personnelData) {
+  void _navigate() {
     if (mounted) {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ManagePersonnel(
-            listedInProjectPersonnel: personnelData,
-          ),
+          builder: (context) => const ManagePersonnel(),
         ),
       );
     }

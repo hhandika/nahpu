@@ -17,9 +17,10 @@ class PersonnelServices extends DbAccess {
   }
 
   Future<List<String>> getAllPersonnelListedInProjects() async {
-    List<String?> personnel =
+    List<PersonnelListData> personnel =
         await PersonnelQuery(dbAccess).getAllPersonnelListedInProjects();
-    return getDistinctList(personnel);
+
+    return getDistinctList(personnel.map((e) => e.personnelUuid).toList());
   }
 
   Future<String?> getPersonnelName(String uuid) async {
@@ -102,6 +103,7 @@ class PersonnelServices extends DbAccess {
 
   void invalidatePersonnel() {
     ref.invalidate(projectPersonnelProvider);
+    ref.invalidate(allPersonnelProvider);
   }
 }
 
@@ -158,11 +160,11 @@ class PersonnelImageService {
   }
 }
 
-class PersonnelFilterService {
-  PersonnelFilterService({required this.data});
+class PersonnelSearchService {
+  PersonnelSearchService({required this.data});
   final List<PersonnelData> data;
 
-  List<PersonnelData> filterPersonnelList(String query) {
+  List<PersonnelData> search(String query) {
     return data.where((element) => _isPersonnelMatch(element, query)).toList();
   }
 

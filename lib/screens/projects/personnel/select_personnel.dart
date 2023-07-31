@@ -92,7 +92,7 @@ class SelectPersonnelState extends ConsumerState<SelectPersonnel> {
 
   List<PersonnelData> _filterPersonnelList(
       List<PersonnelData> data, String query) {
-    return PersonnelFilterService(data: data).filterPersonnelList(query);
+    return PersonnelSearchService(data: data).search(query);
   }
 }
 
