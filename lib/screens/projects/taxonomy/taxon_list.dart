@@ -60,12 +60,12 @@ class TaxonList extends StatefulWidget {
 class _TaxonListState extends State<TaxonList> {
   List<TaxonomyData> _filteredTaxonList = [];
   final TextEditingController _searchController = TextEditingController();
-  late FocusNode _focus;
+  final FocusNode _focus = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    _focus = FocusNode();
+    _focus.requestFocus();
   }
 
   @override
