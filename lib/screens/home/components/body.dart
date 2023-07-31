@@ -74,7 +74,7 @@ class _ToggleViewState extends State<ToggleView> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Existing projects:',
+            Text('Existing projects',
                 style: Theme.of(context).textTheme.titleLarge),
             IconButton(
                 onPressed: () {
