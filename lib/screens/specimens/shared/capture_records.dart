@@ -170,10 +170,9 @@ class CollectingEventIdFieldState
                       title: const Text('Change collecting event ID?'),
                       content: ConstrainedBox(
                           constraints: const BoxConstraints(maxWidth: 350),
-                          child: const Text(
-                              'Changing the collecting event ID will reset all'
-                              ' fields in the collecting records section,'
-                              ' except capture date and time.')),
+                          child: const Text('Except for capture date and time,'
+                              ' all fields in the collecting record section'
+                              ' will be empty again.')),
                       actions: [
                         TextButton(
                             onPressed: () {
