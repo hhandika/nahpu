@@ -185,7 +185,6 @@ class _InfoButtonState extends State<InfoButton> {
       builder: (BuildContext context) {
         return Container(
           width: double.infinity,
-          height: MediaQuery.sizeOf(context).height,
           padding: const EdgeInsets.all(16),
           child: widget.content,
         );
@@ -224,6 +223,7 @@ class _InfoContainerState extends State<InfoContainer> {
         child: SingleChildScrollView(
           controller: _scrollController,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 'Info',
@@ -258,7 +258,7 @@ class InfoContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.max,
+      mainAxisSize: MainAxisSize.min,
       children: [
         header != null
             ? Text(
