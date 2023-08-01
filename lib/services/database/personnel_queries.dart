@@ -85,7 +85,8 @@ class PersonnelQuery extends DatabaseAccessor<Database>
   Future<bool> isPersonnelUsedByCollEvents(
       {required String projectUuid, required String personnelUuid}) async {
     List<CollEventData> eventRecords = await (select(collEvent)
-          ..where((t) => t.projectUuid.equals(projectUuid)))
+          ..where((t) => t.projectUuid.equals(projectUuid))
+          ..limit(1))
         .get();
     List<String> personnel = [];
 
