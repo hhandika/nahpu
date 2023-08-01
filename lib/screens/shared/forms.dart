@@ -263,10 +263,7 @@ class InfoContent extends StatelessWidget {
         header != null
             ? Text(
                 header!,
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSecondary,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.titleSmall,
               )
             : const SizedBox.shrink(),
         const SizedBox(height: 4),
@@ -275,8 +272,7 @@ class InfoContent extends StatelessWidget {
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color:
-                Theme.of(context).colorScheme.secondaryContainer.withAlpha(40),
+            color: Theme.of(context).colorScheme.primaryContainer.withAlpha(60),
           ),
           child: richContent ??
               Text(
