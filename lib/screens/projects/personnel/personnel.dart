@@ -2,7 +2,6 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/screens/projects/personnel/add_personnel.dart';
 import 'package:nahpu/screens/projects/personnel/avatars.dart';
-import 'package:nahpu/screens/projects/personnel/manage_personnel.dart';
 import 'package:nahpu/screens/projects/personnel/new_personnel.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/database/database.dart';
@@ -75,15 +74,7 @@ class PersonnelListState extends ConsumerState<PersonnelList> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Wrap(spacing: 8, children: [
-                    SecondaryButton(
-                      text: 'Manage',
-                      onPressed: () {
-                        _navigate();
-                      },
-                    ),
-                    const AddPersonnelButton(),
-                  ]),
+                  const AddPersonnelButton(),
                   const SizedBox(height: 8),
                 ],
               );
@@ -91,17 +82,6 @@ class PersonnelListState extends ConsumerState<PersonnelList> {
       loading: () => const CommonProgressIndicator(),
       error: (error, stack) => Text(error.toString()),
     );
-  }
-
-  void _navigate() {
-    if (mounted) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const ManagePersonnel(),
-        ),
-      );
-    }
   }
 }
 
