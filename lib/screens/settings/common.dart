@@ -15,7 +15,7 @@ class CommonSettingList extends StatelessWidget {
       child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 800),
           child: Padding(
-            padding: const EdgeInsets.all(4),
+            padding: const EdgeInsets.all(8),
             child: ListView(
               children: sections,
             ),
