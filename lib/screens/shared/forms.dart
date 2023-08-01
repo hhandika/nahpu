@@ -145,11 +145,9 @@ class _InfoButtonState extends State<InfoButton> {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {
-        if (systemPlatform == PlatformType.mobile) {
-          showModalSheet();
-        } else {
-          showInfoDialog();
-        }
+        systemPlatform == PlatformType.mobile
+            ? showModalSheet()
+            : showInfoDialog();
       },
       padding: EdgeInsets.zero,
       icon: Icon(
@@ -165,7 +163,16 @@ class _InfoButtonState extends State<InfoButton> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: widget.content,
+          title: const Text('Info'),
+          content: Container(
+            width: 400,
+            constraints: const BoxConstraints(maxHeight: 400),
+            child: InfoContainer(
+              content: [
+                widget.content,
+              ],
+            ),
+          ),
           actions: [
             TextButton(
               onPressed: () {
@@ -182,6 +189,8 @@ class _InfoButtonState extends State<InfoButton> {
   void showModalSheet() {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
       builder: (BuildContext context) {
         return Container(
           width: double.infinity,
@@ -207,6 +216,7 @@ class InfoContainer extends StatefulWidget {
 
 class _InfoContainerState extends State<InfoContainer> {
   final ScrollController _scrollController = ScrollController();
+  final ScrollPhysics _scrollPhysics = const ClampingScrollPhysics();
 
   @override
   void dispose() {
@@ -216,27 +226,19 @@ class _InfoContainerState extends State<InfoContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: const BoxConstraints(maxWidth: 400, maxHeight: 400),
-      child: CommonScrollbar(
-        scrollController: _scrollController,
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Info',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: 8),
-              for (var item in widget.content) ...[
-                item,
-                const SizedBox(height: 16),
-              ],
-            ],
-          ),
-        ),
+    return CommonScrollbar(
+      scrollController: _scrollController,
+      child: ListView.builder(
+        controller: _scrollController,
+        physics: _scrollPhysics,
+        shrinkWrap: true,
+        itemCount: widget.content.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: widget.content[index],
+          );
+        },
       ),
     );
   }
@@ -263,16 +265,19 @@ class InfoContent extends StatelessWidget {
         header != null
             ? Text(
                 header!,
-                style: Theme.of(context).textTheme.titleSmall,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Theme.of(context).colorScheme.onSurface.withAlpha(160),
+                ),
               )
             : const SizedBox.shrink(),
         const SizedBox(height: 4),
         Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: Theme.of(context).colorScheme.primaryContainer.withAlpha(60),
+            color: Theme.of(context).colorScheme.surfaceVariant.withAlpha(100),
           ),
           child: richContent ??
               Text(
