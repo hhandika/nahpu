@@ -25,6 +25,12 @@ class WeatherDataView extends ConsumerWidget {
       children: [
         const TitleForm(
           text: 'Weather Data',
+          infoContent: [
+            InfoContent(
+              text: 'Weather data is the data that'
+                  ' is related to the weather during the event.',
+            ),
+          ],
         ),
         ref.watch(weatherDataProvider(eventID)).when(
               data: (weatherData) => WeatherDataForm(

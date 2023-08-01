@@ -8,6 +8,7 @@ class FormCard extends StatelessWidget {
   const FormCard({
     super.key,
     required this.child,
+    this.infoContent = const [],
     this.title = '',
     this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
     this.mainAxisSize = MainAxisSize.max,
@@ -19,6 +20,7 @@ class FormCard extends StatelessWidget {
 
   final Widget child;
   final String title;
+  final List<InfoContent> infoContent;
   final MainAxisAlignment mainAxisAlignment;
   final MainAxisSize mainAxisSize;
   final bool isPrimary;
@@ -49,7 +51,12 @@ class FormCard extends StatelessWidget {
               mainAxisAlignment: mainAxisAlignment,
               mainAxisSize: mainAxisSize,
               children: [
-                isWithTitle ? TitleForm(text: title) : const SizedBox.shrink(),
+                isWithTitle
+                    ? TitleForm(
+                        text: title,
+                        infoContent: infoContent,
+                      )
+                    : const SizedBox.shrink(),
                 isWithTitle && !isPrimary
                     ? Divider(
                         thickness: 0.6,
@@ -96,14 +103,15 @@ class TitleForm extends StatelessWidget {
     super.key,
     required this.text,
     this.isCentered = true,
+    required this.infoContent,
   });
 
   final String text;
   final bool isCentered;
+  final List<InfoContent> infoContent;
 
   @override
   Widget build(BuildContext context) {
-    ScreenType deviceType = getScreenType(context);
     return Padding(
       padding: isCentered
           ? const EdgeInsets.fromLTRB(46, 0, 0, 4)
@@ -116,33 +124,46 @@ class TitleForm extends StatelessWidget {
             text,
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          IconButton(
-            onPressed: () {
-              deviceType == ScreenType.phone
-                  ? showModalSheet(context)
-                  : showInfoDialog(context);
-            },
-            padding: EdgeInsets.zero,
-            icon: Icon(
-              Icons.info_outline_rounded,
-              size: 20,
-              color: Theme.of(context).dividerColor,
-            ),
-          ),
+          InfoButton(content: infoContent)
         ],
       ),
     );
   }
+}
 
-  void showInfoDialog(BuildContext context) {
-    showDialog(
+class InfoButton extends StatefulWidget {
+  const InfoButton({super.key, required this.content});
+
+  final List<InfoContent> content;
+
+  @override
+  State<InfoButton> createState() => _InfoButtonState();
+}
+
+class _InfoButtonState extends State<InfoButton> {
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        ScreenType deviceType = getScreenType(context);
+        deviceType == ScreenType.phone ? showModalSheet() : showInfoDialog();
+      },
+      padding: EdgeInsets.zero,
+      icon: Icon(
+        Icons.info_outline_rounded,
+        size: 20,
+        color: Theme.of(context).dividerColor,
+      ),
+    );
+  }
+
+  void showInfoDialog() async {
+    await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(text),
-          content: const Text(
-            'Info coming soon!',
-            textAlign: TextAlign.center,
+          title: InfoContainer(
+            content: widget.content,
           ),
           actions: [
             TextButton(
@@ -157,7 +178,7 @@ class TitleForm extends StatelessWidget {
     );
   }
 
-  void showModalSheet(BuildContext context) {
+  void showModalSheet() {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -165,22 +186,73 @@ class TitleForm extends StatelessWidget {
           width: double.infinity,
           height: MediaQuery.of(context).size.height * 0.4,
           padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                text,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'Info coming soon!',
-                textAlign: TextAlign.center,
-              ),
-            ],
+          child: InfoContainer(
+            content: widget.content,
           ),
         );
       },
+    );
+  }
+}
+
+class InfoContainer extends StatelessWidget {
+  const InfoContainer({
+    super.key,
+    required this.content,
+  });
+
+  final List<InfoContent> content;
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 300),
+        child: Column(
+          children: [
+            Text(
+              'Info',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 8),
+            ...content,
+          ],
+        ));
+  }
+}
+
+class InfoContent extends StatelessWidget {
+  const InfoContent({
+    super.key,
+    this.subtitle,
+    required this.text,
+  });
+
+  final String? subtitle;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        subtitle != null
+            ? Text(
+                subtitle!,
+                style: Theme.of(context).textTheme.labelMedium,
+              )
+            : const SizedBox.shrink(),
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color:
+                Theme.of(context).colorScheme.secondaryContainer.withAlpha(40),
+          ),
+          child: Text(
+            text,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        )
+      ],
     );
   }
 }

@@ -39,7 +39,15 @@ class CollectingPersonnelFormState
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const TitleForm(text: 'Collecting Personnel'),
+          const TitleForm(
+            text: 'Collecting Personnel',
+            infoContent: [
+              InfoContent(
+                text: 'Collecting personnel are the people who'
+                    ' will be collecting data for the project.',
+              ),
+            ],
+          ),
           ConstrainedBox(
               constraints: const BoxConstraints(maxHeight: 312),
               child: CollectingPersonnelList(eventID: widget.eventID)),

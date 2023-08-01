@@ -86,7 +86,12 @@ class SpecimenPartFields extends ConsumerWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        const TitleForm(text: 'Specimen Parts'),
+        const TitleForm(
+          text: 'Specimen Parts',
+          infoContent: [
+            InfoContent(text: 'Specimen parts are the parts of the specimen.'),
+          ],
+        ),
         Flexible(
           child: PartList(
             specimenUuid: specimenUuid,

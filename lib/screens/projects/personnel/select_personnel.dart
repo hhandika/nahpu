@@ -5,7 +5,6 @@ import 'package:nahpu/screens/projects/dashboard.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/fields.dart';
-import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/personnel_services.dart';
@@ -233,33 +232,5 @@ class AddPersonnelSelectionState extends ConsumerState<AddPersonnelSelection> {
       }
     }
     return personnel;
-  }
-}
-
-class PersonnelSelected extends StatefulWidget {
-  const PersonnelSelected({super.key});
-
-  @override
-  State<PersonnelSelected> createState() => _PersonnelSelectedState();
-}
-
-class _PersonnelSelectedState extends State<PersonnelSelected> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        TitleForm(text: 'Selected Personnel'),
-      ],
-    );
   }
 }

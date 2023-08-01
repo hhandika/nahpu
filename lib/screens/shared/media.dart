@@ -49,7 +49,11 @@ class _MediaViewerState extends State<MediaViewer> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const TitleForm(text: 'Media', isCentered: false),
+              const TitleForm(
+                text: 'Media',
+                isCentered: false,
+                infoContent: [InfoContent(text: 'Add media to project')],
+              ),
               MediaButton(
                 onAddFromGallery: widget.onAddFromGallery,
                 onAccessingCamera: widget.onAccessingCamera,
