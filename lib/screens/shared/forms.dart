@@ -31,47 +31,48 @@ class FormCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(4),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
+      padding: const EdgeInsets.all(4),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          color: isPrimary
+              ? Color.lerp(Theme.of(context).colorScheme.secondaryContainer,
+                  Theme.of(context).colorScheme.surface, 0.2)
+              : Theme.of(context).colorScheme.surfaceVariant.withAlpha(80),
+          border: Border.all(
             color: isPrimary
-                ? Color.lerp(Theme.of(context).colorScheme.secondaryContainer,
-                    Theme.of(context).colorScheme.surface, 0.2)
-                : Theme.of(context).colorScheme.surfaceVariant.withAlpha(80),
-            border: Border.all(
-              color: isPrimary
-                  ? Theme.of(context).colorScheme.secondary.withAlpha(50)
-                  : Theme.of(context).dividerColor.withAlpha(50),
-              width: 1.5,
-            ),
+                ? Theme.of(context).colorScheme.secondary.withAlpha(50)
+                : Theme.of(context).dividerColor.withAlpha(50),
+            width: 1.5,
           ),
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: mainAxisAlignment,
-              mainAxisSize: mainAxisSize,
-              children: [
-                isWithTitle
-                    ? TitleForm(
-                        text: title,
-                        infoContent: infoContent ?? const SizedBox.shrink(),
-                      )
-                    : const SizedBox.shrink(),
-                isWithTitle && !isPrimary
-                    ? Divider(
-                        thickness: 0.6,
-                        color: Theme.of(context).tabBarTheme.dividerColor)
-                    : const SizedBox.shrink(),
-                isWithSidePadding
-                    ? Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 0, 8, 16),
-                        child: child)
-                    : Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        child: child,
-                      )
-              ]),
-        ));
+        ),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: mainAxisAlignment,
+            mainAxisSize: mainAxisSize,
+            children: [
+              isWithTitle
+                  ? TitleForm(
+                      text: title,
+                      infoContent: infoContent ?? const SizedBox.shrink(),
+                    )
+                  : const SizedBox.shrink(),
+              isWithTitle && !isPrimary
+                  ? Divider(
+                      thickness: 0.6,
+                      color: Theme.of(context).tabBarTheme.dividerColor)
+                  : const SizedBox.shrink(),
+              isWithSidePadding
+                  ? Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 16),
+                      child: child)
+                  : Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: child,
+                    )
+            ]),
+      ),
+    );
   }
 }
 
@@ -235,7 +236,7 @@ class _InfoContainerState extends State<InfoContainer> {
         itemCount: widget.content.length,
         itemBuilder: (context, index) {
           return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+            padding: EdgeInsets.only(top: index == 0 ? 0 : 4),
             child: widget.content[index],
           );
         },
@@ -262,6 +263,7 @@ class InfoContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
+        const SizedBox(height: 4),
         header != null
             ? Text(
                 header!,
@@ -274,10 +276,10 @@ class InfoContent extends StatelessWidget {
         const SizedBox(height: 4),
         Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: Theme.of(context).colorScheme.surfaceVariant.withAlpha(100),
+            color: Theme.of(context).colorScheme.primary.withAlpha(16),
           ),
           child: richContent ??
               Text(

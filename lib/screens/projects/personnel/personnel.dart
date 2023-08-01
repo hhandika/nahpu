@@ -43,11 +43,18 @@ class PersonnelInfoContent extends StatelessWidget {
     return const InfoContainer(
       content: [
         InfoContent(
-          header: 'General information',
+          header: 'Overview',
           content: 'List of personnel for this project.'
               ' Use the add button to add personnel.'
               ' To edit or delete the personnel, use the menu button.'
               ' You need at least a cataloger to start adding specimens.',
+        ),
+        InfoContent(
+          content: 'When you create a personnel,'
+              ' their data will be saved in the database'
+              ' for reuse in other projects. Deleting a personnel will'
+              ' only remove them from this project. '
+              'You can permanently delete a personnel in the settings.',
         ),
         InfoContent(
           header: 'Role definitions',
@@ -64,13 +71,6 @@ class PersonnelInfoContent extends StatelessWidget {
               '\n\n'
               'None - does not have any role in taking care of the specimens.',
         ),
-        InfoContent(
-            header: 'Important',
-            content: 'When you create a personnel,'
-                ' their data will be saved in the database'
-                ' for reuse in other projects. Deleting a personnel will'
-                ' only remove it from this project. '
-                'You can permanently delete a personnel in the settings.'),
         InfoContent(
           header: 'Tips',
           content: 'Some institutions use project ID'
