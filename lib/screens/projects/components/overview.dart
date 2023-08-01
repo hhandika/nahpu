@@ -15,6 +15,7 @@ class ProjectOverview extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return FormCard(
       title: 'Project Overview',
+      infoContent: const ProjectInfoContent(),
       isPrimary: true,
       mainAxisAlignment: MainAxisAlignment.start,
       child: ref.watch(projectInfoProvider(projectUuid)).when(
@@ -41,6 +42,30 @@ class ProjectOverview extends ConsumerWidget {
               'Failed fetching data from the database. Check if the project name exists. $error')
         ],
       ),
+    );
+  }
+}
+
+class ProjectInfoContent extends StatelessWidget {
+  const ProjectInfoContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const InfoContainer(
+      content: [
+        InfoContent(
+          header: 'Overview',
+          content:
+              'This section contains the basic information about the project.'
+              ' You can edit the project information'
+              ' by clicking the edit button in the bottom right corner.',
+        ),
+        InfoContent(
+          header: 'Tips',
+          content: 'Keep the description short and concise'
+              ' and only add general info about the location.',
+        )
+      ],
     );
   }
 }

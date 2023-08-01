@@ -16,14 +16,7 @@ class AssociatedDataViewerState extends ConsumerState<AssociatedDataViewer> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         SizedBox(height: 16),
-        TitleForm(text: 'Associated Data', infoContent: [
-          InfoContent(
-            text: 'Associated data is data that'
-                ' is not directly related to the project,'
-                ' but is still relevant to the project.'
-                ' This data is not required to be filled out.',
-          ),
-        ]),
+        TitleForm(text: 'Associated Data', infoContent: AssociateDataInfo()),
         SizedBox(height: 16),
         Flexible(
           child: Text(
@@ -31,6 +24,26 @@ class AssociatedDataViewerState extends ConsumerState<AssociatedDataViewer> {
           ),
         ),
         SizedBox(height: 16),
+      ],
+    );
+  }
+}
+
+class AssociateDataInfo extends StatelessWidget {
+  const AssociateDataInfo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const InfoContainer(
+      content: [
+        InfoContent(
+          header: 'Overview',
+          content: 'This section contains the associated data of the project.',
+        ),
+        InfoContent(
+          header: 'Associated Data',
+          content: 'This section contains the associated data of the project.',
+        ),
       ],
     );
   }

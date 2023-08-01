@@ -8,7 +8,7 @@ class FormCard extends StatelessWidget {
   const FormCard({
     super.key,
     required this.child,
-    this.infoContent = const [],
+    this.infoContent,
     this.title = '',
     this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
     this.mainAxisSize = MainAxisSize.max,
@@ -20,7 +20,7 @@ class FormCard extends StatelessWidget {
 
   final Widget child;
   final String title;
-  final List<InfoContent> infoContent;
+  final Widget? infoContent;
   final MainAxisAlignment mainAxisAlignment;
   final MainAxisSize mainAxisSize;
   final bool isPrimary;
@@ -54,7 +54,7 @@ class FormCard extends StatelessWidget {
                 isWithTitle
                     ? TitleForm(
                         text: title,
-                        infoContent: infoContent,
+                        infoContent: infoContent ?? const SizedBox.shrink(),
                       )
                     : const SizedBox.shrink(),
                 isWithTitle && !isPrimary
@@ -108,7 +108,7 @@ class TitleForm extends StatelessWidget {
 
   final String text;
   final bool isCentered;
-  final List<InfoContent> infoContent;
+  final Widget infoContent;
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +134,7 @@ class TitleForm extends StatelessWidget {
 class InfoButton extends StatefulWidget {
   const InfoButton({super.key, required this.content});
 
-  final List<InfoContent> content;
+  final Widget content;
 
   @override
   State<InfoButton> createState() => _InfoButtonState();
@@ -145,8 +145,11 @@ class _InfoButtonState extends State<InfoButton> {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {
-        ScreenType deviceType = getScreenType(context);
-        deviceType == ScreenType.phone ? showModalSheet() : showInfoDialog();
+        if (systemPlatform == PlatformType.mobile) {
+          showModalSheet();
+        } else {
+          showInfoDialog();
+        }
       },
       padding: EdgeInsets.zero,
       icon: Icon(
@@ -162,9 +165,7 @@ class _InfoButtonState extends State<InfoButton> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: InfoContainer(
-            content: widget.content,
-          ),
+          title: widget.content,
           actions: [
             TextButton(
               onPressed: () {
@@ -184,73 +185,104 @@ class _InfoButtonState extends State<InfoButton> {
       builder: (BuildContext context) {
         return Container(
           width: double.infinity,
-          height: MediaQuery.of(context).size.height * 0.4,
+          height: MediaQuery.sizeOf(context).height,
           padding: const EdgeInsets.all(16),
-          child: InfoContainer(
-            content: widget.content,
-          ),
+          child: widget.content,
         );
       },
     );
   }
 }
 
-class InfoContainer extends StatelessWidget {
+class InfoContainer extends StatefulWidget {
   const InfoContainer({
     super.key,
     required this.content,
   });
 
-  final List<InfoContent> content;
+  final List<Widget> content;
+
+  @override
+  State<InfoContainer> createState() => _InfoContainerState();
+}
+
+class _InfoContainerState extends State<InfoContainer> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 300),
-        child: Column(
-          children: [
-            Text(
-              'Info',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            const SizedBox(height: 8),
-            ...content,
-          ],
-        ));
+    return Container(
+      constraints: const BoxConstraints(maxWidth: 400, maxHeight: 400),
+      child: CommonScrollbar(
+        scrollController: _scrollController,
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: Column(
+            children: [
+              Text(
+                'Info',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: 8),
+              for (var item in widget.content) ...[
+                item,
+                const SizedBox(height: 16),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 
 class InfoContent extends StatelessWidget {
   const InfoContent({
     super.key,
-    this.subtitle,
-    required this.text,
+    this.header,
+    this.richContent,
+    required this.content,
   });
 
-  final String? subtitle;
-  final String text;
+  final String? header;
+  final Widget? richContent;
+  final String? content;
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.max,
       children: [
-        subtitle != null
+        header != null
             ? Text(
-                subtitle!,
-                style: Theme.of(context).textTheme.labelMedium,
+                header!,
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSecondary,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold),
               )
             : const SizedBox.shrink(),
+        const SizedBox(height: 4),
         Container(
+          width: double.infinity,
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             color:
                 Theme.of(context).colorScheme.secondaryContainer.withAlpha(40),
           ),
-          child: Text(
-            text,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
+          child: richContent ??
+              Text(
+                content ?? '',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
         )
       ],
     );

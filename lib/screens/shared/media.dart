@@ -52,7 +52,7 @@ class _MediaViewerState extends State<MediaViewer> {
               const TitleForm(
                 text: 'Media',
                 isCentered: false,
-                infoContent: [InfoContent(text: 'Add media to project')],
+                infoContent: MediaInfoContent(),
               ),
               MediaButton(
                 onAddFromGallery: widget.onAddFromGallery,
@@ -519,5 +519,23 @@ class ExifViewer extends StatelessWidget {
   String _getExtension() {
     String ext = path.extension(ctr.fileNameCtr!.toUpperCase());
     return ext.replaceFirst('.', '');
+  }
+}
+
+class MediaInfoContent extends StatelessWidget {
+  const MediaInfoContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const InfoContainer(
+      content: [
+        InfoContent(
+          header: 'Overview',
+          content: 'This section contains the media files of the project.'
+              ' You can add media files from the gallery or'
+              ' take a photo using the camera (mobile devices only).',
+        ),
+      ],
+    );
   }
 }

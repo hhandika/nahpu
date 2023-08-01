@@ -88,9 +88,7 @@ class SpecimenPartFields extends ConsumerWidget {
       children: [
         const TitleForm(
           text: 'Specimen Parts',
-          infoContent: [
-            InfoContent(text: 'Specimen parts are the parts of the specimen.'),
-          ],
+          infoContent: SpecimenPartInfoContent(),
         ),
         Flexible(
           child: PartList(
@@ -936,5 +934,21 @@ class TissueIDMenuState extends ConsumerState<TissueIDMenu> {
 
   bool _hasNoId() {
     return widget.tissueIDct.text.isEmpty;
+  }
+}
+
+class SpecimenPartInfoContent extends StatelessWidget {
+  const SpecimenPartInfoContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const InfoContainer(content: [
+      InfoContent(
+        header: 'Overview',
+        content: 'List of specimen parts collected from the specimen, '
+            'such as skin, skull, liver, etc.'
+            'You can edit the type and treatments list in the settings,',
+      ),
+    ]);
   }
 }

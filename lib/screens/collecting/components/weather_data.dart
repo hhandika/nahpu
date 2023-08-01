@@ -25,12 +25,7 @@ class WeatherDataView extends ConsumerWidget {
       children: [
         const TitleForm(
           text: 'Weather Data',
-          infoContent: [
-            InfoContent(
-              text: 'Weather data is the data that'
-                  ' is related to the weather during the event.',
-            ),
-          ],
+          infoContent: WeatherInfoContent(),
         ),
         ref.watch(weatherDataProvider(eventID)).when(
               data: (weatherData) => WeatherDataForm(
@@ -299,6 +294,22 @@ class WeatherDataFormState extends ConsumerState<WeatherDataForm> {
           ),
         ),
         const SizedBox(height: 30),
+      ],
+    );
+  }
+}
+
+class WeatherInfoContent extends StatelessWidget {
+  const WeatherInfoContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const InfoContainer(
+      content: [
+        InfoContent(
+          header: 'Overview',
+          content: 'Weather data records the weather during the event.',
+        ),
       ],
     );
   }

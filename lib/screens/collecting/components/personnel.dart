@@ -41,12 +41,7 @@ class CollectingPersonnelFormState
         children: [
           const TitleForm(
             text: 'Collecting Personnel',
-            infoContent: [
-              InfoContent(
-                text: 'Collecting personnel are the people who'
-                    ' will be collecting data for the project.',
-              ),
-            ],
+            infoContent: CollPersonnelInfoContent(),
           ),
           ConstrainedBox(
               constraints: const BoxConstraints(maxHeight: 312),
@@ -65,6 +60,22 @@ class CollectingPersonnelFormState
           ),
         ],
       ),
+    );
+  }
+}
+
+class CollPersonnelInfoContent extends StatelessWidget {
+  const CollPersonnelInfoContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const InfoContainer(
+      content: [
+        InfoContent(
+            header: 'Overview',
+            content:
+                'This section contains the collecting personnel of the project.'),
+      ],
     );
   }
 }

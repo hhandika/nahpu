@@ -26,6 +26,7 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
   Widget build(BuildContext context) {
     return FormCard(
       title: 'Taxon Registry',
+      infoContent: const TaxonRegistryInfoContent(),
       mainAxisAlignment: MainAxisAlignment.start,
       child: Center(
         child: Column(
@@ -65,6 +66,31 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class TaxonRegistryInfoContent extends StatelessWidget {
+  const TaxonRegistryInfoContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const InfoContainer(
+      content: [
+        InfoContent(
+          header: 'Overview',
+          content: 'This section contains the list of taxa '
+              'that are registered in the project.'
+              ' You can add new taxa or import taxa from a file.',
+        ),
+        InfoContent(
+          header: 'Term definitions',
+          content: 'Registered taxa - The number of taxa that are registered '
+              'in the project. '
+              '\nRecorded taxa - Information about recorded specimens/captures.'
+              ' Use the "View all" button to see the list of recorded specimens.',
+        ),
+      ],
     );
   }
 }
