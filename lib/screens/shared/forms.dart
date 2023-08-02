@@ -189,17 +189,33 @@ class _InfoButtonState extends State<InfoButton> {
 
   void showModalSheet() {
     showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      showDragHandle: true,
-      builder: (BuildContext context) {
-        return Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(16),
-          child: widget.content,
-        );
-      },
-    );
+        context: context,
+        isScrollControlled: true,
+        showDragHandle: true,
+        builder: (BuildContext context) {
+          return Container(
+            width: double.infinity,
+            constraints: BoxConstraints(
+                maxHeight: MediaQuery.sizeOf(context).height * 0.9),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Info',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                Divider(
+                  thickness: 1.2,
+                  color: Theme.of(context).colorScheme.onSurface.withAlpha(24),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                  child: widget.content,
+                )
+              ],
+            ),
+          );
+        });
   }
 }
 
@@ -227,21 +243,24 @@ class _InfoContainerState extends State<InfoContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return CommonScrollbar(
-      scrollController: _scrollController,
-      child: ListView.builder(
-        controller: _scrollController,
-        physics: _scrollPhysics,
-        shrinkWrap: true,
-        itemCount: widget.content.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: EdgeInsets.only(top: index == 0 ? 0 : 4),
-            child: widget.content[index],
-          );
-        },
-      ),
-    );
+    return ConstrainedBox(
+        constraints:
+            BoxConstraints(maxHeight: MediaQuery.sizeOf(context).height * 0.75),
+        child: CommonScrollbar(
+          scrollController: _scrollController,
+          child: ListView.builder(
+            controller: _scrollController,
+            physics: _scrollPhysics,
+            shrinkWrap: true,
+            itemCount: widget.content.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: EdgeInsets.only(top: index == 0 ? 0 : 4),
+                child: widget.content[index],
+              );
+            },
+          ),
+        ));
   }
 }
 
