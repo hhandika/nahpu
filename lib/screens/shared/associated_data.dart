@@ -38,12 +38,15 @@ class AssociateDataInfo extends StatelessWidget {
       content: [
         InfoContent(
           header: 'Overview',
-          content: 'This section contains the associated data of the project.',
+          content: 'Associated data of the project. It includes data, such as '
+              'the GenBank accession number and other digital data associated with the specimen.',
         ),
         InfoContent(
-          header: 'Associated Data',
-          content: 'This section contains the associated data of the project.',
-        ),
+          content:
+              'Some of digital data can also be added in the specimen part or media sections.'
+              ' Use the associated data section to add data '
+              'that is not covered in other sections.',
+        )
       ],
     );
   }
