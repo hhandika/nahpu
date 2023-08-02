@@ -84,11 +84,14 @@ class TaxonRegistryInfoContent extends StatelessWidget {
               ' You can add new taxa or import taxa from a file.',
         ),
         InfoContent(
+          content: 'For file input, input only UTF-8 encoded CSV files.',
+        ),
+        InfoContent(
           header: 'Term definitions',
           content: 'Registered taxa - The number of taxa that are registered '
               'in the project. '
               '\nRecorded taxa - Information about recorded specimens/captures.'
-              ' Use the "View all" button to see the list of recorded specimens.',
+              ' It will update when you add a new specimen/capture.',
         ),
       ],
     );

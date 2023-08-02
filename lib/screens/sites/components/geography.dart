@@ -23,6 +23,7 @@ class Geography extends StatelessWidget {
   Widget build(BuildContext context) {
     return FormCard(
       title: 'Geography',
+      infoContent: const GeographyInfoContent(),
       child: Column(
         children: [
           MainSiteLocality(
@@ -178,6 +179,24 @@ class LocalityNote extends ConsumerWidget {
           SiteCompanion(remark: db.Value(value)),
         );
       },
+    );
+  }
+}
+
+class GeographyInfoContent extends StatelessWidget {
+  const GeographyInfoContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const InfoContainer(
+      content: [
+        InfoContent(
+          header: 'Geography',
+          content: 'Information about the site\'s location. '
+              'The list follow the hierarchy of location '
+              'based on the Darwin Core standard. ',
+        ),
+      ],
     );
   }
 }

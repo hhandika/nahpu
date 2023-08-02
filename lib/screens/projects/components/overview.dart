@@ -55,16 +55,20 @@ class ProjectInfoContent extends StatelessWidget {
       content: [
         InfoContent(
           header: 'Overview',
-          content:
-              'This section contains the basic information about the project.'
+          content: 'Basic information about the project.'
               ' You can edit the project information'
               ' by clicking the edit button in the bottom right corner.',
         ),
         InfoContent(
-          header: 'Tips',
-          content: 'Keep the description short and concise'
-              ' and only add general info about the location.',
-        )
+          content: 'Keep the description short and concise.'
+              ' Provide only general info about the location,'
+              ' e.g. Mt. Gede, Java, Indonesia.',
+        ),
+        InfoContent(
+          header: 'UUID',
+          content: 'Unique identifier for the project.'
+              ' This is used to identify the project in the database.',
+        ),
       ],
     );
   }

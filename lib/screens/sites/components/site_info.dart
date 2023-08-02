@@ -46,6 +46,7 @@ class SiteInfo extends ConsumerWidget {
     return FormCard(
       isPrimary: true,
       title: 'Site Info',
+      infoContent: const SiteInfoContent(),
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
       child: AdaptiveLayout(
@@ -119,6 +120,32 @@ class SiteInfo extends ConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class SiteInfoContent extends StatelessWidget {
+  const SiteInfoContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const InfoContainer(
+      content: [
+        InfoContent(
+          header: 'Site Info',
+          content: 'Basic information about the site.'
+              ' We recommend developing a naming convention for your sites.'
+              ' For example, "CAMP-01" for the first campsite, '
+              '"L1" for the first line. You could prefix the site ID with the'
+              ' project ID or location ID to make it unique.',
+        ),
+        InfoContent(
+            content:
+                'To avoid inputting the same information when creating a new site,'
+                ' you can duplicate a site using the menu button in the top right corner.'
+                ' It will create a new site with the same information as the current site,'
+                ' except that the site ID and coordinates will be empty.'),
+      ],
     );
   }
 }

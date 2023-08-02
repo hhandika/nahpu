@@ -53,6 +53,7 @@ class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
     return FormCard(
       title: 'General Information',
       isPrimary: true,
+      infoContent: const CollInfoHelpContent(),
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
       child: Column(
@@ -368,5 +369,35 @@ class EventTimeField extends ConsumerWidget {
           loading: () => TimeOfDay.now(),
           error: (err, stack) => TimeOfDay.now(),
         );
+  }
+}
+
+class CollInfoHelpContent extends StatelessWidget {
+  const CollInfoHelpContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const InfoContainer(
+      content: [
+        InfoContent(
+            content: 'General information about the collecting event.'
+                ' Collecting event helps you keep track of collecting efforts.'),
+        InfoContent(
+          content: 'The collecting event ID is automatically generated'
+              ' based on the site ID and the start date of the collecting event.'
+              ' You can add suffix for the collecting event ID'
+              ' by using the edit icon.',
+        ),
+        InfoContent(
+          content: 'We recommend creating a new collecting event'
+              ' for each day for each site, even if the effort is the same.'
+              ' You can use duplicate button in the menu to duplicated a collecting event.'
+              ' The new events will have the same information as the original event,'
+              ' except the weather data, and the dates'
+              ' Weather data will be empty. '
+              'The date will be auto-incremented by one day',
+        )
+      ],
+    );
   }
 }

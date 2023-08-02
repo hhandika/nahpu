@@ -57,10 +57,14 @@ class PersonnelInfoContent extends StatelessWidget {
               'You can permanently delete a personnel in the settings.',
         ),
         InfoContent(
+          content: 'Some institutions use project ID'
+              ' instead of initial for the specimen field ID.'
+              ' Replace the initial with the project ID.',
+        ),
+        InfoContent(
           header: 'Role definitions',
           content: 'Cataloger - responsible for cataloging the specimens.'
-              ' They are the ones who will fill up the specimen form.'
-              ' They can also edit and delete the specimens.'
+              ' They are the ones who responsible for recording the specimen data.'
               ' You cannot change the cataloger role once the personnel is created.'
               ' Their names will be listed in'
               ' any field that ask for personnel name input.'
@@ -70,12 +74,6 @@ class PersonnelInfoContent extends StatelessWidget {
               ' Their name will only be listed in the preparator and collector field.'
               '\n\n'
               'None - does not have any role in taking care of the specimens.',
-        ),
-        InfoContent(
-          header: 'Tips',
-          content: 'Some institutions use project ID'
-              ' instead of initial for the specimen field ID.'
-              ' Replace the initial with the project ID.',
         ),
       ],
     );

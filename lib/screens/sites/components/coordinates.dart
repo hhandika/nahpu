@@ -25,6 +25,7 @@ class CoordinateFields extends StatelessWidget {
   Widget build(BuildContext context) {
     return FormCard(
       title: 'Coordinates',
+      infoContent: const CoordinateInfoContent(),
       mainAxisAlignment: MainAxisAlignment.start,
       child: SizedBox(
           height: 324,
@@ -511,6 +512,34 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
       gpsUnit: db.Value(widget.coordCtr.gpsUnitCtr.text),
       siteID: db.Value(widget.siteId),
       notes: db.Value(widget.coordCtr.noteCtr.text),
+    );
+  }
+}
+
+class CoordinateInfoContent extends StatelessWidget {
+  const CoordinateInfoContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const InfoContainer(
+      content: [
+        InfoContent(
+          header: 'Coordinates',
+          content: 'Coordinates of the site.'
+              'You can add multiple coordinates. Currently, only in decimal',
+        ),
+        InfoContent(
+          header: 'List information',
+          content: 'Top: Coordinate name\n'
+              'Bottom (left to right): Latitude and Longitude,'
+              ' Elevation, Uncertainty, and Datum',
+        ),
+        InfoContent(
+          header: 'Datum',
+          content: 'The datum is the reference frame for the coordinates.'
+              ' The default is WGS84, which is the standard datum for GPS.',
+        )
+      ],
     );
   }
 }

@@ -21,6 +21,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
   Widget build(BuildContext context) {
     return FormCard(
       title: 'Measurements',
+      infoContent: const MeasurementInfoContent(),
       mainAxisAlignment: MainAxisAlignment.start,
       child: SizedBox(
         height: 484,
@@ -36,5 +37,20 @@ class _MeasurementFormState extends State<MeasurementForm> {
         ),
       ),
     );
+  }
+}
+
+class MeasurementInfoContent extends StatelessWidget {
+  const MeasurementInfoContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const InfoContainer(content: [
+      InfoContent(
+        content: 'Standard measurements of the specimen. If you are unsure of '
+            'how to take a measurement, please refer to the '
+            'measurement guide for respective taxa.',
+      )
+    ]);
   }
 }

@@ -72,9 +72,10 @@ class CollPersonnelInfoContent extends StatelessWidget {
     return const InfoContainer(
       content: [
         InfoContent(
-            header: 'Overview',
-            content:
-                'This section contains the collecting personnel of the project.'),
+          content: 'Personnel who will be involved in the event.'
+              ' We recommend adding anyone involved in the event.'
+              ' For instance, if someone drive you to the site, add them.',
+        ),
       ],
     );
   }

@@ -51,6 +51,7 @@ class PartDataFormState extends ConsumerState<PartDataForm>
   Widget build(BuildContext context) {
     return FormCard(
       isWithTitle: false,
+      infoContent: const SpecimenPartInfoContent(),
       isWithSidePadding: false,
       child: CommonTabBars(
         tabController: _tabController,
@@ -947,7 +948,7 @@ class SpecimenPartInfoContent extends StatelessWidget {
         header: 'Overview',
         content: 'List of specimen parts collected from the specimen, '
             'such as skin, skull, liver, etc.'
-            'You can edit the type and treatments list in the settings,',
+            ' You can edit the type and treatments list in the settings,',
       ),
     ]);
   }

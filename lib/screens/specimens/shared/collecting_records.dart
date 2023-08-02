@@ -49,6 +49,7 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
     return FormCard(
       title: 'Collecting Records',
       isPrimary: true,
+      infoContent: const CollRecordInfoContent(),
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       child: Column(
@@ -498,5 +499,44 @@ class SpecimenIdTile extends ConsumerWidget {
         ),
       ),
     );
+  }
+}
+
+class CollRecordInfoContent extends StatelessWidget {
+  const CollRecordInfoContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const InfoContainer(content: [
+      InfoContent(
+        content: 'General record of the specimen. '
+            'Field ID is auto-generated based on the'
+            ' cataloger\'s current field number.'
+            ' Use the edit button to override the field number.',
+      ),
+      InfoContent(
+        header: 'Cataloger and preparator fields',
+        content: 'By default, the cataloger is the preparator.'
+            ' If the preparator is different, '
+            'select the preparator from the dropdown.',
+      ),
+      InfoContent(
+        header: 'Species field',
+        content: 'Type the species name to search for it in the taxon registry.'
+            ' You can start by typing the epithet to simplify the search.'
+            'The species field will be disabled if no'
+            ' taxa are registered in the project.'
+            ' You can add a taxon in the taxon registry section in the project dashboard.',
+      ),
+      InfoContent(
+        header: 'Condition field',
+        content: 'Freshly euthanized specimens are those that'
+            ' have known time of euthanasia.'
+            ' If the specimen is freshly euthanized,'
+            ' the collection time field will be enabled to help keep track'
+            ' post-mortem interval.'
+            ' Select other condition if you are unsure of the time of euthanasia.',
+      ),
+    ]);
   }
 }

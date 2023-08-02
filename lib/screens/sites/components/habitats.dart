@@ -21,6 +21,7 @@ class Habitat extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return FormCard(
       title: 'Habitat',
+      infoContent: const HabitatInfoContent(),
       mainAxisAlignment: MainAxisAlignment.start,
       child: Padding(
         padding: const EdgeInsets.all(5),
@@ -31,7 +32,7 @@ class Habitat extends ConsumerWidget {
               decoration: const InputDecoration(
                 labelText: 'Type',
                 hintText:
-                    'Enter a habitat type, e.g. "Urban", "Montane Forest", "Desert", "etc."',
+                    'E.g. "Urban", "Upper Montane Forest", "Desert", "etc."',
               ),
               onChanged: (value) => SiteServices(ref: ref).updateSite(
                 id,
@@ -42,8 +43,7 @@ class Habitat extends ConsumerWidget {
               controller: siteFormCtr.habitatConditionCtr,
               decoration: const InputDecoration(
                 labelText: 'Condition',
-                hintText:
-                    'Enter habitat condition, e.g. "Pristine", "Disturbed", "etc."',
+                hintText: 'E.g. "Pristine", "Disturbed", "etc."',
               ),
               onChanged: (value) => SiteServices(ref: ref).updateSite(
                 id,
@@ -66,6 +66,23 @@ class Habitat extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class HabitatInfoContent extends StatelessWidget {
+  const HabitatInfoContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const InfoContainer(
+      content: [
+        InfoContent(
+            header: 'Habitat',
+            content: 'Information about the habitat of the site.'
+                ' Note important information about the habitat in the description.'
+                ' For example, the dominant tree species, ground cover, etc.'),
+      ],
     );
   }
 }

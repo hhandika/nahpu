@@ -27,6 +27,7 @@ class CollEffort extends StatelessWidget {
   Widget build(BuildContext context) {
     return FormCard(
       title: 'Effort',
+      infoContent: const EffortInfoContent(),
       child: SizedBox(
         height: 402,
         child: Column(
@@ -445,5 +446,23 @@ class CollectionMethods extends ConsumerWidget {
           loading: () => const CommonProgressIndicator(),
           error: (e, __) => Text(e.toString()),
         );
+  }
+}
+
+class EffortInfoContent extends StatelessWidget {
+  const EffortInfoContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const InfoContainer(
+      content: [
+        InfoContent(
+          content: 'Effort information for the event. '
+              'This includes the method used, the brand and model of the tool, '
+              'the count of the tool, the size of the tool, and any notes about the '
+              'tool.',
+        )
+      ],
+    );
   }
 }

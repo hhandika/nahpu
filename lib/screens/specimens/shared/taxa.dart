@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/platform_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/providers/taxa.dart';
 import 'package:nahpu/screens/shared/forms.dart';
@@ -9,6 +10,56 @@ import 'package:nahpu/screens/shared/layout.dart';
 
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/taxonomy_services.dart';
+
+class TaxonomicForm extends ConsumerWidget {
+  const TaxonomicForm({
+    super.key,
+    required this.useHorizontalLayout,
+    required this.specimenUuid,
+  });
+
+  final bool useHorizontalLayout;
+  final String specimenUuid;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return FormCard(
+      title: 'Taxonomy',
+      infoContent: const TaxonomyInfoContent(),
+      mainAxisAlignment: MainAxisAlignment.center,
+      child: ref.watch(taxonDataProvider(specimenUuid)).when(
+            data: (taxonData) {
+              if (taxonData == null) {
+                return const Text('No species selected');
+              } else {
+                return AdaptiveLayout(
+                  useHorizontalLayout: useHorizontalLayout,
+                  children: [
+                    Text(
+                      taxonData.taxonClass ?? '',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    Text(
+                      taxonData.taxonOrder ?? '',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    Text(
+                      taxonData.taxonFamily ?? '',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ],
+                );
+              }
+            },
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (error, stack) => Text('Error: $error'),
+          ),
+    );
+  }
+}
 
 class SpeciesAutoComplete extends ConsumerStatefulWidget {
   const SpeciesAutoComplete({
@@ -163,51 +214,24 @@ class SpeciesField extends StatelessWidget {
   }
 }
 
-class TaxonomicForm extends ConsumerWidget {
-  const TaxonomicForm({
-    super.key,
-    required this.useHorizontalLayout,
-    required this.specimenUuid,
-  });
-
-  final bool useHorizontalLayout;
-  final String specimenUuid;
+class TaxonomyInfoContent extends StatelessWidget {
+  const TaxonomyInfoContent({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return FormCard(
-      title: 'Taxonomy',
-      mainAxisAlignment: MainAxisAlignment.center,
-      child: ref.watch(taxonDataProvider(specimenUuid)).when(
-            data: (taxonData) {
-              if (taxonData == null) {
-                return const Text('No species selected');
-              } else {
-                return AdaptiveLayout(
-                  useHorizontalLayout: useHorizontalLayout,
-                  children: [
-                    Text(
-                      taxonData.taxonClass ?? '',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    Text(
-                      taxonData.taxonOrder ?? '',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    Text(
-                      taxonData.taxonFamily ?? '',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  ],
-                );
-              }
-            },
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, stack) => Text('Error: $error'),
-          ),
-    );
+  Widget build(BuildContext context) {
+    ScreenType screenType = getScreenType(context);
+    return InfoContainer(content: [
+      const InfoContent(
+        content: 'Taxonomic information is automatically added based on the '
+            'species you enter. ',
+      ),
+      screenType == ScreenType.phone
+          ? const InfoContent(
+              content: 'From top to bottom: Class, Order, Family',
+            )
+          : const InfoContent(
+              content: 'From left to right: Class, Order, Family',
+            )
+    ]);
   }
 }
