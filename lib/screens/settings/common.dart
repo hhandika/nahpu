@@ -179,13 +179,11 @@ class SettingDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 24),
-      child: Divider(
-        height: 0,
-        thickness: 1.2,
-        color: Theme.of(context).colorScheme.onSurface.withAlpha(24),
-      ),
+    return Divider(
+      height: 0,
+      thickness: 1.2,
+      indent: 64,
+      color: Theme.of(context).colorScheme.onSurface.withAlpha(24),
     );
   }
 }
