@@ -361,36 +361,32 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          TextFormField(
+          CommonTextField(
             controller: widget.coordCtr.nameIdCtr,
-            decoration: const InputDecoration(
-              labelText: 'Name',
-              hintText: 'Add a name',
-            ),
+            labelText: 'Name',
+            hintText: 'Add a name',
+            isLastField: false,
           ),
-          TextFormField(
+          CommonNumField(
             controller: widget.coordCtr.latitudeCtr,
-            decoration: const InputDecoration(
-              labelText: 'Decimal Latitude',
-              hintText: 'Add a latitude',
-            ),
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            labelText: 'Decimal Latitude',
+            hintText: 'Add a latitude',
+            isDouble: true,
+            isLastField: false,
           ),
-          TextFormField(
+          CommonNumField(
             controller: widget.coordCtr.longitudeCtr,
-            decoration: const InputDecoration(
-              labelText: 'Decimal Longitude',
-              hintText: 'Add a longitude',
-            ),
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            labelText: 'Decimal Longitude',
+            hintText: 'Add a longitude',
+            isDouble: true,
+            isLastField: false,
           ),
-          TextFormField(
+          CommonNumField(
             controller: widget.coordCtr.elevationCtr,
-            decoration: const InputDecoration(
-              labelText: 'Elevation (m)',
-              hintText: 'Add an elevation',
-            ),
-            keyboardType: TextInputType.number,
+            labelText: 'Elevation (m)',
+            hintText: 'Add an elevation',
+            isDouble: false,
+            isLastField: false,
           ),
           DropdownButtonFormField(
             value: _getDatum(),
@@ -408,27 +404,25 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
               widget.coordCtr.datumCtr.text = value.toString();
             },
           ),
-          TextField(
+          CommonNumField(
             controller: widget.coordCtr.uncertaintyCtr,
-            decoration: const InputDecoration(
-              labelText: 'Uncertainty (m)',
-              hintText: 'Add an uncertainty',
-            ),
+            labelText: 'Uncertainty (m)',
+            hintText: 'Add an uncertainty',
+            isDouble: false,
+            isLastField: false,
           ),
-          TextField(
+          CommonTextField(
             controller: widget.coordCtr.gpsUnitCtr,
-            decoration: const InputDecoration(
-              labelText: 'GPS Unit',
-              hintText: 'Specify the GPS unit',
-            ),
+            labelText: 'GPS Unit',
+            hintText: 'Specify the GPS unit',
+            isLastField: false,
           ),
-          TextField(
+          CommonTextField(
             maxLines: 3,
             controller: widget.coordCtr.noteCtr,
-            decoration: const InputDecoration(
-              labelText: 'Notes',
-              hintText: 'Add notes (optional)',
-            ),
+            labelText: 'Notes',
+            hintText: 'Add notes (optional)',
+            isLastField: true,
           ),
           const SizedBox(
             height: 10,
