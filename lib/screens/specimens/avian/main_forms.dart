@@ -48,7 +48,7 @@ class BirdFormsState extends ConsumerState<BirdForms> {
               useHorizontalLayout: useHorizontalLayout,
               height: topSpecimenRecordHeight,
               children: [
-                CollectingRecordField(
+                GeneralRecordField(
                   specimenUuid: widget.specimenUuid,
                   specimenCtr: widget.specimenCtr,
                   useHorizontalLayout: useHorizontalLayout,
