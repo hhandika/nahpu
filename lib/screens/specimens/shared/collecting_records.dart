@@ -13,8 +13,8 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
 
-class CollectingRecordField extends ConsumerStatefulWidget {
-  const CollectingRecordField({
+class GeneralRecordField extends ConsumerStatefulWidget {
+  const GeneralRecordField({
     super.key,
     required this.specimenUuid,
     required this.specimenCtr,
@@ -26,10 +26,10 @@ class CollectingRecordField extends ConsumerStatefulWidget {
   final bool useHorizontalLayout;
 
   @override
-  CollectingRecordFieldState createState() => CollectingRecordFieldState();
+  GeneralRecordFieldState createState() => GeneralRecordFieldState();
 }
 
-class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
+class GeneralRecordFieldState extends ConsumerState<GeneralRecordField> {
   List<PersonnelData> personnelList = [];
 
   TextEditingController speciesCtr =
@@ -47,7 +47,7 @@ class CollectingRecordFieldState extends ConsumerState<CollectingRecordField> {
       (personnelEntry) => personnelList = personnelEntry,
     );
     return FormCard(
-      title: 'Collecting Records',
+      title: 'General Records',
       isPrimary: true,
       infoContent: const CollRecordInfoContent(),
       mainAxisSize: MainAxisSize.min,
