@@ -287,18 +287,19 @@ class NewCoordinate extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final coordCtr = CoordinateCtrModel.empty();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add coordinates'),
-        automaticallyImplyLeading: false,
-      ),
-      body: Center(
-        child: CoordinateForms(
-          coordinateId: null,
-          siteId: siteId,
-          coordCtr: coordCtr,
+        appBar: AppBar(
+          title: const Text('Add coordinates'),
+          automaticallyImplyLeading: false,
         ),
-      ),
-    );
+        body: FalseWillPop(
+          child: Center(
+            child: CoordinateForms(
+              coordinateId: null,
+              siteId: siteId,
+              coordCtr: coordCtr,
+            ),
+          ),
+        ));
   }
 }
 
@@ -322,12 +323,14 @@ class EditCoordinate extends ConsumerWidget {
         title: const Text('Edit Coordinates'),
         automaticallyImplyLeading: false,
       ),
-      body: Center(
-        child: CoordinateForms(
-          coordinateId: coordinateId,
-          siteId: siteId,
-          coordCtr: coordCtr,
-          isEditing: isEditing,
+      body: FalseWillPop(
+        child: Center(
+          child: CoordinateForms(
+            coordinateId: coordinateId,
+            siteId: siteId,
+            coordCtr: coordCtr,
+            isEditing: isEditing,
+          ),
         ),
       ),
     );
@@ -372,6 +375,7 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
             labelText: 'Decimal Latitude',
             hintText: 'Add a latitude',
             isDouble: true,
+            isSigned: true,
             isLastField: false,
           ),
           CommonNumField(
@@ -379,6 +383,7 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
             labelText: 'Decimal Longitude',
             hintText: 'Add a longitude',
             isDouble: true,
+            isSigned: true,
             isLastField: false,
           ),
           CommonNumField(

@@ -169,6 +169,7 @@ class CommonNumField extends ConsumerWidget {
     this.onChanged,
     required this.isLastField,
     this.isDouble = false,
+    this.isSigned = false,
   }) : super(key: key);
 
   final String labelText;
@@ -177,6 +178,7 @@ class CommonNumField extends ConsumerWidget {
   final void Function(String?)? onChanged;
   final bool isLastField;
   final bool isDouble;
+  final bool isSigned;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -187,11 +189,10 @@ class CommonNumField extends ConsumerWidget {
         hintText: hintText,
       ),
       inputFormatters: isDouble
-          ? [FilteringTextInputFormatter.allow(RegExp(r"[0-9.]"))]
+          ? [FilteringTextInputFormatter.allow(RegExp(r"[0-9.-]"))]
           : [FilteringTextInputFormatter.digitsOnly],
-      keyboardType: isDouble
-          ? const TextInputType.numberWithOptions(decimal: true, signed: true)
-          : const TextInputType.numberWithOptions(signed: true),
+      keyboardType:
+          TextInputType.numberWithOptions(decimal: isDouble, signed: isSigned),
       onChanged: onChanged,
       textInputAction:
           isLastField ? TextInputAction.done : TextInputAction.next,
