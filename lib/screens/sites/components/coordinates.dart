@@ -286,20 +286,20 @@ class NewCoordinate extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final coordCtr = CoordinateCtrModel.empty();
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Add coordinates'),
-          automaticallyImplyLeading: false,
+    return FalseWillPop(
+        child: Scaffold(
+      appBar: AppBar(
+        title: const Text('Add coordinates'),
+        automaticallyImplyLeading: false,
+      ),
+      body: Center(
+        child: CoordinateForms(
+          coordinateId: null,
+          siteId: siteId,
+          coordCtr: coordCtr,
         ),
-        body: FalseWillPop(
-          child: Center(
-            child: CoordinateForms(
-              coordinateId: null,
-              siteId: siteId,
-              coordCtr: coordCtr,
-            ),
-          ),
-        ));
+      ),
+    ));
   }
 }
 
@@ -318,13 +318,13 @@ class EditCoordinate extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Edit Coordinates'),
-        automaticallyImplyLeading: false,
-      ),
-      body: FalseWillPop(
-        child: Center(
+    return FalseWillPop(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Edit Coordinates'),
+          automaticallyImplyLeading: false,
+        ),
+        body: Center(
           child: CoordinateForms(
             coordinateId: coordinateId,
             siteId: siteId,
@@ -361,93 +361,91 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
   @override
   Widget build(BuildContext context) {
     return ScrollableConstrainedLayout(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CommonTextField(
-            controller: widget.coordCtr.nameIdCtr,
-            labelText: 'Name',
-            hintText: 'Add a name',
-            isLastField: false,
+        child: Column(
+      children: [
+        CommonTextField(
+          controller: widget.coordCtr.nameIdCtr,
+          labelText: 'Name',
+          hintText: 'Add a name',
+          isLastField: false,
+        ),
+        CommonNumField(
+          controller: widget.coordCtr.latitudeCtr,
+          labelText: 'Decimal Latitude',
+          hintText: 'Add a latitude',
+          isDouble: true,
+          isSigned: true,
+          isLastField: false,
+        ),
+        CommonNumField(
+          controller: widget.coordCtr.longitudeCtr,
+          labelText: 'Decimal Longitude',
+          hintText: 'Add a longitude',
+          isDouble: true,
+          isSigned: true,
+          isLastField: false,
+        ),
+        CommonNumField(
+          controller: widget.coordCtr.elevationCtr,
+          labelText: 'Elevation (m)',
+          hintText: 'Add an elevation',
+          isDouble: false,
+          isLastField: false,
+        ),
+        DropdownButtonFormField(
+          value: _getDatum(),
+          decoration: const InputDecoration(
+            labelText: 'Datum',
+            hintText: 'Specify the datum',
           ),
-          CommonNumField(
-            controller: widget.coordCtr.latitudeCtr,
-            labelText: 'Decimal Latitude',
-            hintText: 'Add a latitude',
-            isDouble: true,
-            isSigned: true,
-            isLastField: false,
-          ),
-          CommonNumField(
-            controller: widget.coordCtr.longitudeCtr,
-            labelText: 'Decimal Longitude',
-            hintText: 'Add a longitude',
-            isDouble: true,
-            isSigned: true,
-            isLastField: false,
-          ),
-          CommonNumField(
-            controller: widget.coordCtr.elevationCtr,
-            labelText: 'Elevation (m)',
-            hintText: 'Add an elevation',
-            isDouble: false,
-            isLastField: false,
-          ),
-          DropdownButtonFormField(
-            value: _getDatum(),
-            decoration: const InputDecoration(
-              labelText: 'Datum',
-              hintText: 'Specify the datum',
-            ),
-            items: _datum
-                .map((e) => DropdownMenuItem(
-                      value: e,
-                      child: CommonDropdownText(text: e),
-                    ))
-                .toList(),
-            onChanged: (value) {
-              widget.coordCtr.datumCtr.text = value.toString();
+          items: _datum
+              .map((e) => DropdownMenuItem(
+                    value: e,
+                    child: CommonDropdownText(text: e),
+                  ))
+              .toList(),
+          onChanged: (value) {
+            widget.coordCtr.datumCtr.text = value.toString();
+          },
+        ),
+        CommonNumField(
+          controller: widget.coordCtr.uncertaintyCtr,
+          labelText: 'Uncertainty (m)',
+          hintText: 'Add an uncertainty',
+          isDouble: false,
+          isLastField: false,
+        ),
+        CommonTextField(
+          controller: widget.coordCtr.gpsUnitCtr,
+          labelText: 'GPS Unit',
+          hintText: 'Specify the GPS unit',
+          isLastField: false,
+        ),
+        CommonTextField(
+          maxLines: 3,
+          controller: widget.coordCtr.noteCtr,
+          labelText: 'Notes',
+          hintText: 'Add notes (optional)',
+          isLastField: true,
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        FormButtonWithDelete(
+            isEditing: widget.isEditing,
+            onDeleted: () {
+              CoordinateServices(ref: ref)
+                  .deleteCoordinate(widget.coordinateId!);
+              ref.invalidate(coordinateBySiteProvider);
+              Navigator.pop(context);
             },
-          ),
-          CommonNumField(
-            controller: widget.coordCtr.uncertaintyCtr,
-            labelText: 'Uncertainty (m)',
-            hintText: 'Add an uncertainty',
-            isDouble: false,
-            isLastField: false,
-          ),
-          CommonTextField(
-            controller: widget.coordCtr.gpsUnitCtr,
-            labelText: 'GPS Unit',
-            hintText: 'Specify the GPS unit',
-            isLastField: false,
-          ),
-          CommonTextField(
-            maxLines: 3,
-            controller: widget.coordCtr.noteCtr,
-            labelText: 'Notes',
-            hintText: 'Add notes (optional)',
-            isLastField: true,
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          FormButtonWithDelete(
-              isEditing: widget.isEditing,
-              onDeleted: () {
-                CoordinateServices(ref: ref)
-                    .deleteCoordinate(widget.coordinateId!);
-                ref.invalidate(coordinateBySiteProvider);
-                Navigator.pop(context);
-              },
-              onSubmitted: () {
-                widget.isEditing ? _updateCoordinate() : _createCoordinate();
-                ref.invalidate(coordinateBySiteProvider);
-                Navigator.pop(context);
-              }),
-        ],
-      ),
-    );
+            onSubmitted: () {
+              widget.isEditing ? _updateCoordinate() : _createCoordinate();
+              ref.invalidate(coordinateBySiteProvider);
+              Navigator.pop(context);
+            }),
+      ],
+    ));
   }
 
   String _getDatum() {
