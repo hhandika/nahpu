@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nahpu/screens/collecting/components/personnel.dart';
-import 'package:nahpu/screens/collecting/components/weather_data.dart';
+import 'package:nahpu/screens/events/components/personnel.dart';
+import 'package:nahpu/screens/events/components/weather_data.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 

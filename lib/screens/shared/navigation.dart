@@ -8,7 +8,7 @@ import 'package:nahpu/services/platform_services.dart';
 import 'package:nahpu/services/types/specimens.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/narrative/narrative_view.dart';
-import 'package:nahpu/screens/collecting/coll_event_view.dart';
+import 'package:nahpu/screens/events/event_view.dart';
 import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/screens/sites/site_view.dart';
 import 'package:nahpu/screens/specimens/specimen_view.dart';

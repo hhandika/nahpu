@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:nahpu/providers/specimens.dart';
-import 'package:nahpu/screens/collecting/components/menu_bar.dart';
+import 'package:nahpu/screens/events/components/menu_bar.dart';
 import 'package:nahpu/screens/sites/components/menu_bar.dart';
 import 'package:nahpu/screens/narrative/components/menu_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

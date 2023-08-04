@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/types/controllers.dart';
-import 'package:nahpu/screens/collecting/components/activities.dart';
-import 'package:nahpu/screens/collecting/components/effort.dart';
-import 'package:nahpu/screens/collecting/components/collecting_info.dart';
-import 'package:nahpu/screens/collecting/components/tab_bar.dart';
+import 'package:nahpu/screens/events/components/activities.dart';
+import 'package:nahpu/screens/events/components/effort.dart';
+import 'package:nahpu/screens/events/components/collecting_info.dart';
+import 'package:nahpu/screens/events/components/tab_bar.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/styles/catalog_pages.dart';

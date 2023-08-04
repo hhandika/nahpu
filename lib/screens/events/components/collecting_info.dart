@@ -207,7 +207,7 @@ class CollEventIdTile extends ConsumerWidget {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: const Text('Edit Collecting Event ID'),
+                        title: const Text('Edit Event ID'),
                         content: TextFormField(
                           controller: collEventCtr.idSuffixCtr,
                           decoration: InputDecoration(
@@ -276,7 +276,7 @@ class EventIDTextState extends ConsumerState<EventIDText> {
               return snapshot.hasData
                   ? RichText(
                       text: TextSpan(
-                        text: 'Coll. Event ID: ',
+                        text: 'Event ID: ',
                         style: Theme.of(context).textTheme.bodyLarge,
                         children: [
                           TextSpan(
