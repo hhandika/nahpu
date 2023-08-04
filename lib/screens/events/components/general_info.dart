@@ -12,8 +12,8 @@ import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 
-class CollectingInfoFields extends ConsumerStatefulWidget {
-  const CollectingInfoFields({
+class EventInfoField extends ConsumerStatefulWidget {
+  const EventInfoField({
     super.key,
     required this.collEventId,
     required this.useHorizontalLayout,
@@ -25,10 +25,10 @@ class CollectingInfoFields extends ConsumerStatefulWidget {
   final CollEventFormCtrModel collEventCtr;
 
   @override
-  CollectingInfoFieldsState createState() => CollectingInfoFieldsState();
+  EventInfoFieldState createState() => EventInfoFieldState();
 }
 
-class CollectingInfoFieldsState extends ConsumerState<CollectingInfoFields> {
+class EventInfoFieldState extends ConsumerState<EventInfoField> {
   List<SiteData> data = [];
   String? siteID;
 
@@ -380,18 +380,18 @@ class CollInfoHelpContent extends StatelessWidget {
     return const InfoContainer(
       content: [
         InfoContent(
-            content: 'General information about the collecting event.'
-                ' Collecting event helps you keep track of collecting efforts.'),
+            content: 'General information about the event.'
+                ' Event helps you keep track of collecting efforts.'),
         InfoContent(
-          content: 'The collecting event ID is automatically generated'
-              ' based on the site ID and the start date of the collecting event.'
-              ' You can add suffix for the collecting event ID'
+          content: 'The event ID is automatically generated'
+              ' based on the site ID and the start date of the event.'
+              ' You can add suffix for the event ID'
               ' by using the edit icon.',
         ),
         InfoContent(
-          content: 'We recommend creating a new collecting event'
+          content: 'We recommend creating a new event'
               ' for each day for each site, even if the effort is the same.'
-              ' You can use duplicate button in the menu to duplicated a collecting event.'
+              ' You can use duplicate button in the menu to duplicated a event.'
               ' The new events will have the same information as the original event,'
               ' except the weather data, and the dates'
               ' Weather data will be empty. '

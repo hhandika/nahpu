@@ -56,8 +56,8 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
           icon: Icon(
             Icons.calendar_month_outlined,
           ),
-          label: 'Col. Events',
-          tooltip: 'Collection Events',
+          label: 'Events',
+          tooltip: 'Events',
         ),
         NavigationDestination(
           selectedIcon: SpecimenIcons(isSelected: true),

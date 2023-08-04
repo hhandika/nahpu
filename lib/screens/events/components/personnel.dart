@@ -40,7 +40,7 @@ class CollectingPersonnelFormState
         mainAxisSize: MainAxisSize.min,
         children: [
           const TitleForm(
-            text: 'Collecting Personnel',
+            text: 'Event Personnel',
             infoContent: CollPersonnelInfoContent(),
           ),
           ConstrainedBox(

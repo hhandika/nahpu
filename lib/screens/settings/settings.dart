@@ -175,8 +175,8 @@ class CollEventSection extends StatelessWidget {
     return CommonSettingTile(
       isNavigation: true,
       icon: Icons.calendar_month_outlined,
-      title: 'Collecting events',
-      label: 'Methods and collecting personnel roles',
+      title: 'Events',
+      label: 'Methods and event personnel roles',
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(

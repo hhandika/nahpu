@@ -96,8 +96,8 @@ enum ExportRecordType {
 
 const List<String> recordTypeList = [
   'Narrative',
-  'Site',
-  'Collecting event',
+  'Sites',
+  'Events',
   'Specimen records',
   'Specimen parts',
 ];

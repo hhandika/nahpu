@@ -46,13 +46,13 @@ class CollEventViewerState extends ConsumerState<CollEventViewer> {
     return FalseWillPop(
         child: Scaffold(
       appBar: AppBar(
-        title: const Text("Collecting Events"),
+        title: const Text("Events"),
         actions: [
           _isSearching
               ? ExpandedSearchBar(
                   controller: _searchController,
                   focusNode: _focus,
-                  hintText: 'Search collecting events',
+                  hintText: 'Search events',
                   trailing: [
                     _searchController.text.isNotEmpty
                         ? IconButton(

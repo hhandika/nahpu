@@ -45,7 +45,7 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          CollectingEventIdField(
+          EventIdField(
             specimenUuid: widget.specimenUuid,
             specimenCtr: widget.specimenCtr,
           ),
@@ -72,7 +72,7 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
               ? AdaptiveLayout(
                   useHorizontalLayout: widget.useHorizontalLayout,
                   children: [
-                    CollectingMethodField(
+                    MethodField(
                       specimenUuid: widget.specimenUuid,
                       specimenCtr: widget.specimenCtr,
                     ),
@@ -83,7 +83,7 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
                   ],
                 )
               : CommonPadding(
-                  child: CollectingMethodField(
+                  child: MethodField(
                     specimenUuid: widget.specimenUuid,
                     specimenCtr: widget.specimenCtr,
                   ),
@@ -123,8 +123,8 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
   }
 }
 
-class CollectingEventIdField extends ConsumerStatefulWidget {
-  const CollectingEventIdField({
+class EventIdField extends ConsumerStatefulWidget {
+  const EventIdField({
     super.key,
     required this.specimenUuid,
     required this.specimenCtr,
@@ -134,11 +134,10 @@ class CollectingEventIdField extends ConsumerStatefulWidget {
   final SpecimenFormCtrModel specimenCtr;
 
   @override
-  CollectingEventIdFieldState createState() => CollectingEventIdFieldState();
+  EventIdFieldState createState() => EventIdFieldState();
 }
 
-class CollectingEventIdFieldState
-    extends ConsumerState<CollectingEventIdField> {
+class EventIdFieldState extends ConsumerState<EventIdField> {
   @override
   Widget build(BuildContext context) {
     return CommonPadding(
@@ -146,7 +145,7 @@ class CollectingEventIdFieldState
           isExpanded: true,
           value: widget.specimenCtr.collEventIDCtr,
           decoration: const InputDecoration(
-            labelText: 'Collecting Event ID',
+            labelText: 'Event ID',
             hintText: 'Choose a collecting event ID',
           ),
           items: ref.watch(collEventEntryProvider).when(
@@ -219,8 +218,8 @@ class CollectingEventIdFieldState
   }
 }
 
-class CollectingMethodField extends ConsumerWidget {
-  const CollectingMethodField({
+class MethodField extends ConsumerWidget {
+  const MethodField({
     super.key,
     required this.specimenUuid,
     required this.specimenCtr,
@@ -234,7 +233,7 @@ class CollectingMethodField extends ConsumerWidget {
     return DropdownButtonFormField<int?>(
         value: specimenCtr.collMethodCtr,
         decoration: const InputDecoration(
-          labelText: 'Collecting Method',
+          labelText: 'Method',
           hintText: 'Choose a method type',
         ),
         items: specimenCtr.collEventIDCtr != null

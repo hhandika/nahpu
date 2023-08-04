@@ -103,7 +103,7 @@ class NewCollEffort extends ConsumerWidget {
     final collToolCtr = CollEffortCtrModel.empty();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('New Collecting Method'),
+        title: const Text('New Method'),
         automaticallyImplyLeading: false,
       ),
       body: Center(
