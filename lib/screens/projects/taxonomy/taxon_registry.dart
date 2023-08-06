@@ -70,34 +70,6 @@ class TaxonRegistryViewerState extends ConsumerState<TaxonRegistryViewer> {
   }
 }
 
-class TaxonRegistryInfoContent extends StatelessWidget {
-  const TaxonRegistryInfoContent({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const InfoContainer(
-      content: [
-        InfoContent(
-          header: 'Overview',
-          content: 'This section contains the list of taxa '
-              'that are registered in the project.'
-              ' You can add new taxa or import taxa from a file.',
-        ),
-        InfoContent(
-          content: 'For file input, input only UTF-8 encoded CSV files.',
-        ),
-        InfoContent(
-          header: 'Term definitions',
-          content: 'Registered taxa - The number of taxa that are registered '
-              'in the project. '
-              '\nRecorded taxa - Information about recorded specimens/captures.'
-              ' It will update when you add a new specimen/capture.',
-        ),
-      ],
-    );
-  }
-}
-
 class RegistryInfo extends ConsumerWidget {
   const RegistryInfo({
     super.key,
@@ -379,6 +351,33 @@ class TaxonStatText extends StatelessWidget {
         text,
         style: Theme.of(context).textTheme.titleMedium,
       ),
+    );
+  }
+}
+
+class TaxonRegistryInfoContent extends StatelessWidget {
+  const TaxonRegistryInfoContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const InfoContainer(
+      content: [
+        InfoContent(
+          header: 'Overview',
+          content: 'List of taxa registered in the project.'
+              ' You can add new taxa or import taxa from a file.',
+        ),
+        InfoContent(
+          content: 'For file input, input only UTF-8 encoded CSV files.',
+        ),
+        InfoContent(
+          header: 'Term definitions',
+          content: 'Registered taxa - The number of taxa that are registered '
+              'in the project. '
+              '\nRecorded taxa - Information about recorded specimens/captures.'
+              ' It will update when you add a new specimen/capture.',
+        ),
+      ],
     );
   }
 }

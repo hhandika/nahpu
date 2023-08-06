@@ -79,7 +79,8 @@ class ActivityInfoContent extends StatelessWidget {
     return const InfoContainer(content: [
       InfoContent(
         content: 'Primary activity for the event.'
-            'We recommend to add notes if you select "Other".',
+            'We recommend to add notes if you have a secondary activity'
+            ' or select "Other".',
       ),
     ]);
   }

@@ -35,51 +35,6 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
   }
 }
 
-class PersonnelInfoContent extends StatelessWidget {
-  const PersonnelInfoContent({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const InfoContainer(
-      content: [
-        InfoContent(
-          header: 'Overview',
-          content: 'List of personnel for this project.'
-              ' Use the add button to add personnel.'
-              ' To edit or delete the personnel, use the menu button.'
-              ' You need at least a cataloger to start adding specimens.',
-        ),
-        InfoContent(
-          content: 'When you create a personnel,'
-              ' their data will be saved in the database'
-              ' for reuse in other projects. Deleting a personnel will'
-              ' only remove them from this project. '
-              'You can permanently delete a personnel in the settings.',
-        ),
-        InfoContent(
-          content: 'Some institutions use project ID'
-              ' instead of initial for the specimen field ID.'
-              ' Replace the initial with the project ID.',
-        ),
-        InfoContent(
-          header: 'Role definitions',
-          content: 'Cataloger - responsible for cataloging the specimens.'
-              ' They are the ones who responsible for recording the specimen data.'
-              ' You cannot change the cataloger role once the personnel is created.'
-              ' Their names will be listed in'
-              ' any field that ask for personnel name input.'
-              '\n\n'
-              'Preparator only - help prepare the specimens, '
-              ' but does not record the specimen data.'
-              ' Their name will only be listed in the preparator and collector field.'
-              '\n\n'
-              'None - does not have any role in taking care of the specimens.',
-        ),
-      ],
-    );
-  }
-}
-
 class PersonnelList extends ConsumerStatefulWidget {
   const PersonnelList({super.key});
 
@@ -358,6 +313,51 @@ class PersonnelMenuState extends ConsumerState<PersonnelMenu> {
               : errors.toString(),
         ),
       ),
+    );
+  }
+}
+
+class PersonnelInfoContent extends StatelessWidget {
+  const PersonnelInfoContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const InfoContainer(
+      content: [
+        InfoContent(
+          header: 'Overview',
+          content: 'List of personnel for this project.'
+              ' Use the add button to add personnel.'
+              ' To edit or delete the personnel, use the menu button.'
+              ' You need at least a cataloger to start adding specimens.',
+        ),
+        InfoContent(
+          content: 'When you create a personnel,'
+              ' their data will be saved in the database'
+              ' for reuse in other projects. Deleting a personnel will'
+              ' only remove them from this project. '
+              'You can permanently delete a personnel in the settings.',
+        ),
+        InfoContent(
+          content: 'Some institutions use project ID'
+              ' instead of initial for the specimen field ID.'
+              ' Replace the initial with the project ID.',
+        ),
+        InfoContent(
+          header: 'Role definitions',
+          content: 'Cataloger - responsible for cataloging the specimens.'
+              ' They are the ones who responsible for recording the specimen data.'
+              ' You cannot change the cataloger role once the personnel is created.'
+              ' Their names will be listed in'
+              ' any field that ask for personnel name input.'
+              '\n\n'
+              'Preparator only - help prepare the specimens, '
+              ' but does not record the specimen data.'
+              ' Their name will only be listed in the preparator and collector field.'
+              '\n\n'
+              'None - does not have any role in taking care of the specimens.',
+        ),
+      ],
     );
   }
 }

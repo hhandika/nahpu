@@ -132,7 +132,7 @@ class SiteInfoContent extends StatelessWidget {
     return const InfoContainer(
       content: [
         InfoContent(
-          header: 'Site Info',
+          header: 'Overview',
           content: 'Basic information about the site.'
               ' We recommend developing a naming convention for your sites.'
               ' For example, "CAMP-01" for the first campsite, '

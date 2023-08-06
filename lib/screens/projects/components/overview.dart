@@ -67,7 +67,10 @@ class ProjectInfoContent extends StatelessWidget {
         InfoContent(
           header: 'UUID',
           content: 'Unique identifier for the project.'
-              ' This is used to identify the project in the database.',
+              ' UUID is generated automatically when you create a new project.'
+              ' It ensure that each project is unique'
+              ' to avoid data collision in the future.'
+              ' UUID is used to identify the project in the database.',
         ),
       ],
     );

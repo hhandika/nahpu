@@ -307,7 +307,6 @@ class WeatherInfoContent extends StatelessWidget {
     return const InfoContainer(
       content: [
         InfoContent(
-          header: 'Overview',
           content: 'Weather data records the weather during the event.',
         ),
       ],

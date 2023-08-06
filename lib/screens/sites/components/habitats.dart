@@ -78,7 +78,6 @@ class HabitatInfoContent extends StatelessWidget {
     return const InfoContainer(
       content: [
         InfoContent(
-            header: 'Habitat',
             content: 'Information about the habitat of the site.'
                 ' Note important information about the habitat in the description.'
                 ' For example, the dominant tree species, ground cover, etc.'),

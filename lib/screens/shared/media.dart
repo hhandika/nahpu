@@ -530,10 +530,9 @@ class MediaInfoContent extends StatelessWidget {
     return const InfoContainer(
       content: [
         InfoContent(
-          header: 'Overview',
-          content: 'This section contains the media files of the project.'
+          content: 'Media files of the project.'
               ' You can add media files from the gallery or'
-              ' take a photo using the camera (mobile devices only).',
+              ' take a photo using your device camera (mobile devices only).',
         ),
       ],
     );

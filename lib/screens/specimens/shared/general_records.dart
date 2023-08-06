@@ -509,6 +509,7 @@ class CollRecordInfoContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return const InfoContainer(content: [
       InfoContent(
+        header: 'Overview',
         content: 'General record of the specimen. '
             'Field ID is auto-generated based on the'
             ' cataloger\'s current field number.'

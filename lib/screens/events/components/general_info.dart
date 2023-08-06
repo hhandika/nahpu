@@ -380,6 +380,7 @@ class CollInfoHelpContent extends StatelessWidget {
     return const InfoContainer(
       content: [
         InfoContent(
+            header: 'Overview',
             content: 'General information about the event.'
                 ' Event helps you keep track of collecting efforts.'),
         InfoContent(

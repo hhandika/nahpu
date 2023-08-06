@@ -41,7 +41,7 @@ class CollectingPersonnelFormState
         children: [
           const TitleForm(
             text: 'Event Personnel',
-            infoContent: CollPersonnelInfoContent(),
+            infoContent: EventPersonnelInfoContent(),
           ),
           ConstrainedBox(
               constraints: const BoxConstraints(maxHeight: 312),
@@ -60,23 +60,6 @@ class CollectingPersonnelFormState
           ),
         ],
       ),
-    );
-  }
-}
-
-class CollPersonnelInfoContent extends StatelessWidget {
-  const CollPersonnelInfoContent({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const InfoContainer(
-      content: [
-        InfoContent(
-          content: 'Personnel who will be involved in the event.'
-              ' We recommend adding anyone involved in the event.'
-              ' For instance, if someone drive you to the site, add them.',
-        ),
-      ],
     );
   }
 }
@@ -102,7 +85,7 @@ class CollectingPersonnelList extends ConsumerWidget {
                       controller: scrollController,
                       children: data
                           .map(
-                            (person) => CollectingPersonnelField(
+                            (person) => EventPersonnelField(
                               eventID: eventID,
                               controller: _addPersonnel(person),
                             ),
@@ -116,30 +99,28 @@ class CollectingPersonnelList extends ConsumerWidget {
         );
   }
 
-  CollPersonnelCtrModel _addPersonnel(CollPersonnelData form) {
-    final CollPersonnelCtrModel newPersonnel =
-        CollPersonnelCtrModel.fromData(form);
+  EventPersonnelCtrModel _addPersonnel(CollPersonnelData form) {
+    final EventPersonnelCtrModel newPersonnel =
+        EventPersonnelCtrModel.fromData(form);
     return newPersonnel;
   }
 }
 
-class CollectingPersonnelField extends ConsumerStatefulWidget {
-  const CollectingPersonnelField({
+class EventPersonnelField extends ConsumerStatefulWidget {
+  const EventPersonnelField({
     super.key,
     required this.eventID,
     required this.controller,
   });
 
   final int eventID;
-  final CollPersonnelCtrModel controller;
+  final EventPersonnelCtrModel controller;
 
   @override
-  CollectingPersonnelFieldState createState() =>
-      CollectingPersonnelFieldState();
+  EventPersonnelFieldState createState() => EventPersonnelFieldState();
 }
 
-class CollectingPersonnelFieldState
-    extends ConsumerState<CollectingPersonnelField> {
+class EventPersonnelFieldState extends ConsumerState<EventPersonnelField> {
   @override
   Widget build(BuildContext context) {
     return CommonPadding(
@@ -226,7 +207,7 @@ class PersonnelRole extends ConsumerStatefulWidget {
   });
 
   final int eventID;
-  final CollPersonnelCtrModel controller;
+  final EventPersonnelCtrModel controller;
 
   @override
   PersonnelRoleState createState() => PersonnelRoleState();
@@ -269,5 +250,22 @@ class PersonnelRoleState extends ConsumerState<PersonnelRole> {
             return const Text('Error');
           },
         );
+  }
+}
+
+class EventPersonnelInfoContent extends StatelessWidget {
+  const EventPersonnelInfoContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const InfoContainer(
+      content: [
+        InfoContent(
+          content: 'Personnel involves in the event.'
+              ' We recommend adding anyone involved in the event.'
+              ' For instance, if someone drive you to the site, add them.',
+        ),
+      ],
+    );
   }
 }

@@ -521,7 +521,7 @@ class CoordinateInfoContent extends StatelessWidget {
     return const InfoContainer(
       content: [
         InfoContent(
-          header: 'Coordinates',
+          header: 'Overview',
           content: 'Coordinates of the site.'
               'You can add multiple coordinates. Currently, only in decimal',
         ),

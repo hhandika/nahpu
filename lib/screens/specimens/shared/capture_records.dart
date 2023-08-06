@@ -628,9 +628,7 @@ class CaptureRecordInfoContent extends StatelessWidget {
       InfoContent(
         content:
             'If you choose to change a collecting event ID, all fields in this section '
-            'will be empty again, except for the capture date and time. '
-            'This is to prevent you from accidentally entering data for the '
-            'wrong collecting event.',
+            'will be empty again, except for the capture date and time. ',
       )
     ]);
   }

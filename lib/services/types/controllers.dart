@@ -920,8 +920,8 @@ class CollEffortCtrModel {
   }
 }
 
-class CollPersonnelCtrModel {
-  CollPersonnelCtrModel({
+class EventPersonnelCtrModel {
+  EventPersonnelCtrModel({
     required this.id,
     required this.nameIDCtr,
     required this.roleCtr,
@@ -931,14 +931,14 @@ class CollPersonnelCtrModel {
   String? nameIDCtr;
   String? roleCtr;
 
-  factory CollPersonnelCtrModel.empty() => CollPersonnelCtrModel(
+  factory EventPersonnelCtrModel.empty() => EventPersonnelCtrModel(
         id: null,
         nameIDCtr: null,
         roleCtr: null,
       );
 
-  factory CollPersonnelCtrModel.fromData(CollPersonnelData data) =>
-      CollPersonnelCtrModel(
+  factory EventPersonnelCtrModel.fromData(CollPersonnelData data) =>
+      EventPersonnelCtrModel(
         id: data.id,
         nameIDCtr: data.personnelId,
         roleCtr: data.role,
