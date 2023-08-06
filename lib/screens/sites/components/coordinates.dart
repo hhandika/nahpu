@@ -523,7 +523,13 @@ class CoordinateInfoContent extends StatelessWidget {
         InfoContent(
           header: 'Overview',
           content: 'Coordinates of the site.'
-              'You can add multiple coordinates. Currently, only in decimal',
+              ' Use the add coordinate button to add a coordinate.'
+              ' There is no limit to the number of coordinates that can be added.',
+        ),
+        InfoContent(
+          content: 'Current version only supports decimal format.'
+              ' The West and South directions are negative'
+              ' and the East and North directions are positive.',
         ),
         InfoContent(
           header: 'List information',
