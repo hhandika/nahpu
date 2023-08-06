@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/personnel_services.dart';
+import 'package:nahpu/styles/catalog_pages.dart';
 
 enum PersonnelMenuAction { edit, delete }
 
@@ -26,11 +27,14 @@ class PersonnelViewer extends ConsumerStatefulWidget {
 class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
   @override
   Widget build(BuildContext context) {
-    return const FormCard(
+    return FormCard(
       title: 'Personnel',
-      infoContent: PersonnelInfoContent(),
+      infoContent: const PersonnelInfoContent(),
       mainAxisAlignment: MainAxisAlignment.start,
-      child: PersonnelList(),
+      child: SizedBox(
+        height: topDashboardHeight - 88,
+        child: const PersonnelList(),
+      ),
     );
   }
 }
@@ -55,8 +59,7 @@ class PersonnelListState extends ConsumerState<PersonnelList> {
             : Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  SizedBox(
-                    height: 310,
+                  Flexible(
                     child: CommonScrollbar(
                       scrollController: _scrollController,
                       child: ListView.builder(
@@ -91,21 +94,19 @@ class EmptyPersonnel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-        constraints: const BoxConstraints(maxHeight: 375),
-        child: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'No personnel found.',
-              style: Theme.of(context).textTheme.labelLarge,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 8),
-            const AddPersonnelButton(),
-          ],
-        )));
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'No personnel found.',
+          style: Theme.of(context).textTheme.labelLarge,
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 8),
+        const AddPersonnelButton(),
+      ],
+    ));
   }
 }
 

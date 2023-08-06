@@ -29,27 +29,31 @@ class CoordinateFields extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       child: SizedBox(
           height: 324,
-          child: Column(
-            children: [
-              Flexible(
-                  child: CoordinateList(
-                sideId: siteId,
-              )),
-              const SizedBox(height: 8),
-              PrimaryButton(
-                label: 'Add coordinate',
-                icon: Icons.add,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => NewCoordinate(siteId: siteId),
-                    ),
-                  );
-                },
-              ),
-            ],
+          child: CoordinateList(
+            sideId: siteId,
           )),
+    );
+  }
+}
+
+class AddCoordinateButton extends StatelessWidget {
+  const AddCoordinateButton({super.key, required this.siteId});
+
+  final int siteId;
+
+  @override
+  Widget build(BuildContext context) {
+    return PrimaryButton(
+      label: 'Add coordinate',
+      icon: Icons.add,
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NewCoordinate(siteId: siteId),
+          ),
+        );
+      },
     );
   }
 }
@@ -69,29 +73,59 @@ class CoordinateList extends ConsumerWidget {
     return coordinates.when(
       data: (data) {
         return data.isEmpty
-            ? const Center(child: Text('No coordinates added'))
-            : CommonScrollbar(
-                scrollController: scrollController,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  controller: scrollController,
-                  itemCount: data.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: CoordinateTitle(coordinateId: data[index].nameId),
-                      subtitle: CoordinateSubtitle(coordinate: data[index]),
-                      trailing: CoordinateMenu(
-                        coordinateId: data[index].id!,
-                        siteId: data[index].siteID!,
-                        coordCtr: CoordinateCtrModel.fromData(data[index]),
-                      ),
-                    );
-                  },
-                ));
+            ? EmptyCoordinateList(siteId: sideId)
+            : Column(
+                children: [
+                  Flexible(
+                    child: CommonScrollbar(
+                        scrollController: scrollController,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          controller: scrollController,
+                          itemCount: data.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: CoordinateTitle(
+                                  coordinateId: data[index].nameId),
+                              subtitle:
+                                  CoordinateSubtitle(coordinate: data[index]),
+                              trailing: CoordinateMenu(
+                                coordinateId: data[index].id!,
+                                siteId: data[index].siteID!,
+                                coordCtr:
+                                    CoordinateCtrModel.fromData(data[index]),
+                              ),
+                            );
+                          },
+                        )),
+                  ),
+                  const SizedBox(height: 8),
+                  AddCoordinateButton(siteId: sideId),
+                ],
+              );
       },
       loading: () => const CommonProgressIndicator(),
       error: (error, stack) => Text(error.toString()),
     );
+  }
+}
+
+class EmptyCoordinateList extends StatelessWidget {
+  const EmptyCoordinateList({super.key, required this.siteId});
+
+  final int siteId;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text('No coordinates added'),
+        const SizedBox(height: 8),
+        AddCoordinateButton(siteId: siteId),
+      ],
+    ));
   }
 }
 
