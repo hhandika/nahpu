@@ -129,7 +129,7 @@ class CatalogFmtSection extends StatelessWidget {
     return CommonSettingTile(
         isNavigation: true,
         icon: MdiIcons.fileCabinet,
-        title: 'Catalog format',
+        title: 'Format',
         value: selectedFmt,
         onTap: () {
           Navigator.push(
