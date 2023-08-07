@@ -117,15 +117,14 @@ class EmptyCoordinateList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Column(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Text('No coordinates added'),
         const SizedBox(height: 8),
         AddCoordinateButton(siteId: siteId),
       ],
-    ));
+    );
   }
 }
 

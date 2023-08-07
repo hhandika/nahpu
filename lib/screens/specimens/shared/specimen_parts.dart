@@ -86,29 +86,40 @@ class SpecimenPartFields extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         const TitleForm(
           text: 'Specimen Parts',
           infoContent: SpecimenPartInfoContent(),
         ),
-        Flexible(
+        SizedBox(
+          height: 456,
           child: PartList(
             specimenUuid: specimenUuid,
           ),
-        ),
-        const SizedBox(height: 8),
-        PrimaryButton(
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => NewPart(specimenUuid: specimenUuid),
-              ),
-            );
-          },
-          label: 'Add specimen part',
-          icon: Icons.add,
-        ),
+        )
       ],
+    );
+  }
+}
+
+class AddPartButton extends StatelessWidget {
+  const AddPartButton({super.key, required this.specimenUuid});
+
+  final String specimenUuid;
+
+  @override
+  Widget build(BuildContext context) {
+    return PrimaryButton(
+      onPressed: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => NewPart(specimenUuid: specimenUuid),
+          ),
+        );
+      },
+      label: 'Add specimen part',
+      icon: Icons.add,
     );
   }
 }
@@ -135,43 +146,69 @@ class PartListState extends ConsumerState<PartList> {
     return specimenPartList.when(
       data: (data) {
         return data.isEmpty
-            ? const Center(child: Text('No parts added'))
-            : CommonScrollbar(
-                scrollController: _scrollController,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  controller: _scrollController,
-                  itemCount: data.length,
-                  itemBuilder: (context, index) {
-                    final part = data[index];
-                    return ListTile(
-                      title: PartTitle(
-                        partType: part.type,
-                        partCount: part.count.toString(),
-                        barcodeID: part.barcodeID ?? '',
-                      ),
-                      subtitle: PartSubTitle(part: part),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.edit_outlined),
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => EditPart(
-                                specimenUuid: widget.specimenUuid,
-                                specimenPartId: part.id,
-                                partCtr: PartFormCtrModel.fromData(part),
-                              ),
+            ? EmptyPart(specimenUuid: widget.specimenUuid)
+            : Column(
+                children: [
+                  Flexible(
+                    child: CommonScrollbar(
+                      scrollController: _scrollController,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        controller: _scrollController,
+                        itemCount: data.length,
+                        itemBuilder: (context, index) {
+                          final part = data[index];
+                          return ListTile(
+                            title: PartTitle(
+                              partType: part.type,
+                              partCount: part.count.toString(),
+                              barcodeID: part.barcodeID ?? '',
+                            ),
+                            subtitle: PartSubTitle(part: part),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.edit_outlined),
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => EditPart(
+                                      specimenUuid: widget.specimenUuid,
+                                      specimenPartId: part.id,
+                                      partCtr: PartFormCtrModel.fromData(part),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                           );
                         },
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  AddPartButton(specimenUuid: widget.specimenUuid),
+                ],
               );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (err, stack) => Text('Error: $err'),
+    );
+  }
+}
+
+class EmptyPart extends StatelessWidget {
+  const EmptyPart({super.key, required this.specimenUuid});
+
+  final String specimenUuid;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text('No parts added'),
+        const SizedBox(height: 8),
+        AddPartButton(specimenUuid: specimenUuid),
+      ],
     );
   }
 }
