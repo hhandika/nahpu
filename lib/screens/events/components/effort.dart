@@ -30,28 +30,33 @@ class CollEffort extends StatelessWidget {
       infoContent: const EffortInfoContent(),
       child: SizedBox(
         height: 402,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(
-              child: CollEffortList(collEventId: collEventId),
-            ),
-            PrimaryButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          NewCollEffort(collEventId: collEventId),
-                    ),
-                  );
-                },
-                label: 'Add effort',
-                icon: Icons.add),
-          ],
-        ),
+        child: CollEffortList(collEventId: collEventId),
       ),
+    );
+  }
+}
+
+class AddEffortButton extends StatelessWidget {
+  const AddEffortButton({
+    super.key,
+    required this.collEventId,
+  });
+
+  final int collEventId;
+
+  @override
+  Widget build(BuildContext context) {
+    return PrimaryButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NewCollEffort(collEventId: collEventId),
+          ),
+        );
+      },
+      label: 'Add effort',
+      icon: Icons.add,
     );
   }
 }
@@ -71,21 +76,52 @@ class CollEffortList extends ConsumerWidget {
     return collEffort.when(
       data: (data) {
         return data.isEmpty
-            ? const Center(child: Text('No effort added'))
-            : CommonScrollbar(
-                scrollController: scrollController,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  controller: scrollController,
-                  itemCount: data.length,
-                  itemBuilder: (context, index) {
-                    return CollEffortTile(collEffort: data[index]);
-                  },
-                ),
+            ? EmptyEffort(collEventId: collEventId)
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Flexible(
+                    child: CommonScrollbar(
+                      scrollController: scrollController,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        controller: scrollController,
+                        itemCount: data.length,
+                        itemBuilder: (context, index) {
+                          return CollEffortTile(collEffort: data[index]);
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  AddEffortButton(collEventId: collEventId),
+                ],
               );
       },
       loading: () => const CircularProgressIndicator(),
       error: (error, stack) => Text(error.toString()),
+    );
+  }
+}
+
+class EmptyEffort extends StatelessWidget {
+  const EmptyEffort({
+    super.key,
+    required this.collEventId,
+  });
+
+  final int collEventId;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text('No effort added'),
+        const SizedBox(height: 8),
+        AddEffortButton(collEventId: collEventId),
+      ],
     );
   }
 }

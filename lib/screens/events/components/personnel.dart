@@ -12,8 +12,8 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database/database.dart';
 
-class CollectingPersonnelForm extends ConsumerStatefulWidget {
-  const CollectingPersonnelForm({
+class EventPersonnel extends ConsumerStatefulWidget {
+  const EventPersonnel({
     super.key,
     required this.eventID,
   });
@@ -24,8 +24,8 @@ class CollectingPersonnelForm extends ConsumerStatefulWidget {
   CollectingPersonnelFormState createState() => CollectingPersonnelFormState();
 }
 
-class CollectingPersonnelFormState
-    extends ConsumerState<CollectingPersonnelForm> {
+class CollectingPersonnelFormState extends ConsumerState<EventPersonnel> {
+  final ScrollController scrollController = ScrollController();
   @override
   void initState() {
     super.initState();
@@ -43,66 +43,95 @@ class CollectingPersonnelFormState
             text: 'Event Personnel',
             infoContent: EventPersonnelInfoContent(),
           ),
-          ConstrainedBox(
-              constraints: const BoxConstraints(maxHeight: 312),
-              child: CollectingPersonnelList(eventID: widget.eventID)),
-          const SizedBox(height: 8),
-          PrimaryButton(
-            label: 'Add personnel',
-            icon: Icons.add,
-            onPressed: () {
-              CollEventServices(ref: ref)
-                  .createCollPersonnel(CollPersonnelCompanion(
-                eventID: db.Value(widget.eventID),
-              ));
-              setState(() {});
-            },
-          ),
+          SizedBox(
+              height: 368,
+              child: ref.watch(collPersonnelProvider(widget.eventID)).when(
+                    data: (data) {
+                      return data.isEmpty
+                          ? EmptyPersonnel(onPressed: _addPersonnel)
+                          : Column(
+                              children: [
+                                Flexible(
+                                  child: CommonScrollbar(
+                                    scrollController: scrollController,
+                                    child: ListView(
+                                      shrinkWrap: true,
+                                      controller: scrollController,
+                                      children: data
+                                          .map(
+                                            (person) => EventPersonnelField(
+                                              eventID: widget.eventID,
+                                              controller:
+                                                  _addPersonnelCtr(person),
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                AddPersonnelButton(
+                                  onPressed: _addPersonnel,
+                                ),
+                              ],
+                            );
+                    },
+                    loading: () =>
+                        const Center(child: CircularProgressIndicator()),
+                    error: (error, stack) => const Center(child: Text('Error')),
+                  )),
         ],
       ),
     );
   }
-}
 
-class CollectingPersonnelList extends ConsumerWidget {
-  const CollectingPersonnelList({
-    super.key,
-    required this.eventID,
-  });
-
-  final int eventID;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    ScrollController scrollController = ScrollController();
-    return ref.watch(collPersonnelProvider(eventID)).when(
-          data: (data) {
-            return data.isNotEmpty
-                ? CommonScrollbar(
-                    scrollController: scrollController,
-                    child: ListView(
-                      shrinkWrap: true,
-                      controller: scrollController,
-                      children: data
-                          .map(
-                            (person) => EventPersonnelField(
-                              eventID: eventID,
-                              controller: _addPersonnel(person),
-                            ),
-                          )
-                          .toList(),
-                    ))
-                : const Center(child: Text('No personnel added'));
-          },
-          loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, stack) => const Center(child: Text('Error')),
-        );
+  Future<void> _addPersonnel() async {
+    await CollEventServices(ref: ref)
+        .createCollPersonnel(CollPersonnelCompanion(
+      eventID: db.Value(widget.eventID),
+    ));
+    if (mounted) {
+      setState(() {});
+    }
   }
 
-  EventPersonnelCtrModel _addPersonnel(CollPersonnelData form) {
+  EventPersonnelCtrModel _addPersonnelCtr(CollPersonnelData form) {
     final EventPersonnelCtrModel newPersonnel =
         EventPersonnelCtrModel.fromData(form);
     return newPersonnel;
+  }
+}
+
+class AddPersonnelButton extends StatelessWidget {
+  const AddPersonnelButton({super.key, required this.onPressed});
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return PrimaryButton(
+      label: 'Add personnel',
+      icon: Icons.add,
+      onPressed: onPressed,
+    );
+  }
+}
+
+class EmptyPersonnel extends StatelessWidget {
+  const EmptyPersonnel({super.key, required this.onPressed});
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text('No personnel added'),
+        const SizedBox(height: 8),
+        AddPersonnelButton(onPressed: onPressed),
+      ],
+    );
   }
 }
 
