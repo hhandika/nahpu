@@ -93,7 +93,7 @@ class SpecimenPartFields extends ConsumerWidget {
           infoContent: SpecimenPartInfoContent(),
         ),
         SizedBox(
-          height: 456,
+          height: 450,
           child: PartList(
             specimenUuid: specimenUuid,
           ),
