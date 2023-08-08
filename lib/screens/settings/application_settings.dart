@@ -94,12 +94,17 @@ class DataUsage extends ConsumerWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return CommonSettingTile(
-              icon: Icons.data_usage_outlined,
-              title: 'Data usage',
-              label: 'Total data usage of the application',
-              value: snapshot.data,
-              onTap: null,
-            );
+                icon: Icons.data_usage_outlined,
+                isNavigation: true,
+                title: 'Data usage',
+                label: 'Total data usage of the application',
+                value: snapshot.data,
+                onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const DataUsageSettings(),
+                      ),
+                    ));
           } else if (snapshot.hasError) {
             return const Text('Error');
           } else {
@@ -110,6 +115,104 @@ class DataUsage extends ConsumerWidget {
   }
 
   Future<String> _calculateDataUsage(WidgetRef ref) async {
-    return await FileServices(ref: ref).appDataUsage;
+    return await DataUsageServices(ref: ref).appDataUsage;
+  }
+}
+
+class DataUsageSettings extends ConsumerStatefulWidget {
+  const DataUsageSettings({Key? key}) : super(key: key);
+
+  @override
+  DataUsageSettingsState createState() => DataUsageSettingsState();
+}
+
+class DataUsageSettingsState extends ConsumerState<DataUsageSettings> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Data usage'),
+      ),
+      body: CommonSettingList(
+        sections: [
+          CommonSettingSection(
+            title: 'Data usage',
+            isDivided: true,
+            children: [
+              FutureBuilder(
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return CommonSettingTile(
+                        icon: Icons.data_usage_outlined,
+                        title: 'Total usage',
+                        value: snapshot.data,
+                        onTap: null,
+                      );
+                    } else if (snapshot.hasError) {
+                      return const Text('Error');
+                    } else {
+                      return const CommonProgressIndicator();
+                    }
+                  },
+                  future: _calculateDataUsage(ref)),
+              FutureBuilder(
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return CommonSettingTile(
+                        icon: Icons.file_copy_outlined,
+                        title: 'File counts',
+                        value: snapshot.data,
+                        onTap: null,
+                      );
+                    } else if (snapshot.hasError) {
+                      return const Text('Error');
+                    } else {
+                      return const CommonProgressIndicator();
+                    }
+                  },
+                  future: _calculateFileCount(ref)),
+              FutureBuilder(
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return CommonSettingTile(
+                        icon: Icons.photo_library_outlined,
+                        title: 'Image counts',
+                        value: snapshot.data,
+                        onTap: null,
+                      );
+                    } else if (snapshot.hasError) {
+                      return const Text('Error');
+                    } else {
+                      return const CommonProgressIndicator();
+                    }
+                  },
+                  future: _calculateImageCount(ref)),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<String> _calculateDataUsage(WidgetRef ref) async {
+    return await DataUsageServices(ref: ref).appDataUsage;
+  }
+
+  Future<String> _calculateFileCount(WidgetRef ref) async {
+    int fileCount = await DataUsageServices(ref: ref).fileCount;
+    if (fileCount <= 1) {
+      return '$fileCount file';
+    } else {
+      return '$fileCount files';
+    }
+  }
+
+  Future<String> _calculateImageCount(WidgetRef ref) async {
+    int imageCount = await DataUsageServices(ref: ref).imageCount;
+    if (imageCount <= 1) {
+      return '$imageCount image';
+    } else {
+      return '$imageCount images';
+    }
   }
 }

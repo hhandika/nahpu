@@ -124,22 +124,6 @@ class FileServices extends DbAccess {
     return projectDir;
   }
 
-  Future<String> get appDataUsage async {
-    try {
-      final nahpuDir = await nahpuDocumentDir;
-      final dirSize = nahpuDir.listSync(recursive: true);
-      int size = 0;
-      for (final file in dirSize) {
-        if (file is File) {
-          size += file.lengthSync();
-        }
-      }
-      return '${(size / 1024 / 1024).toStringAsFixed(2)} MB';
-    } catch (e) {
-      rethrow;
-    }
-  }
-
   Future<File> copyFileToProjectDir(File from, Directory to) async {
     final projectDir = await currentProjectDir;
     final fileName = path.basename(from.path);
@@ -174,4 +158,64 @@ Future<Directory> get tempDirectory async {
   final tempDir = Directory(path.join(dbDir.path, 'temp'));
   await tempDir.create(recursive: true);
   return tempDir;
+}
+
+class DataUsageServices {
+  const DataUsageServices({required this.ref});
+
+  final WidgetRef ref;
+
+  Future<String> get appDataUsage async {
+    try {
+      final nahpuDir = await nahpuDocumentDir;
+      final dirSize = nahpuDir.listSync(recursive: true);
+      int size = 0;
+      for (final file in dirSize) {
+        if (file is File) {
+          size += file.lengthSync();
+        }
+      }
+      return '${(size / 1024 / 1024).toStringAsFixed(2)} MB';
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<int> get fileCount async {
+    try {
+      final nahpuDir = await nahpuDocumentDir;
+      final dirSize = nahpuDir.listSync(recursive: true);
+      int count = 0;
+      for (final file in dirSize) {
+        if (file is File) {
+          count++;
+        }
+      }
+      return count;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<int> get imageCount async {
+    try {
+      final nahpuDir = await nahpuDocumentDir;
+      final dirSize = nahpuDir.listSync(recursive: true);
+      int count = 0;
+      for (final file in dirSize) {
+        if (file is File) {
+          if (file.path.endsWith('.jpg') ||
+              file.path.endsWith('.jpeg') ||
+              file.path.endsWith('.png') ||
+              file.path.endsWith('.gif') ||
+              file.path.endsWith('.heic')) {
+            count++;
+          }
+        }
+      }
+      return count;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
