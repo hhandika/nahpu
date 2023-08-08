@@ -182,7 +182,7 @@ class SettingDivider extends StatelessWidget {
     return Divider(
       height: 0,
       thickness: 1.2,
-      indent: 64,
+      indent: 60,
       color: Theme.of(context).colorScheme.onSurface.withAlpha(24),
     );
   }
