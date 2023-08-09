@@ -284,7 +284,7 @@ class PageNumberViewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: isNavButtonVisible ? 56 : 4,
+      bottom: isNavButtonVisible ? 40 : 4,
       right: 0,
       left: 0,
       child: Center(
