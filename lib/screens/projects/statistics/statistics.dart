@@ -125,7 +125,8 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
       appBar: AppBar(
         title: const Text('Record Statistics'),
         leading: IconButton(
-          icon: const Icon(Icons.close),
+          tooltip: 'Close',
+          icon: const Icon(Icons.close_rounded),
           onPressed: () {
             Navigator.pushReplacement(
               context,
