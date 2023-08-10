@@ -15,13 +15,21 @@ class CollEventQuery extends DatabaseAccessor<Database>
   Future<int> createCollEvent(CollEventCompanion form) =>
       into(collEvent).insert(form);
 
-  Future updateCollEventEntry(int id, CollEventCompanion entry) {
-    return (update(collEvent)..where((t) => t.id.equals(id))).write(entry);
+  Future updateCollEventEntry(int id, CollEventCompanion entry) async {
+    return await (update(collEvent)..where((t) => t.id.equals(id)))
+        .write(entry);
   }
 
-  Future<List<CollEventData>> getAllCollEvents(String projectUuid) {
-    return (select(collEvent)..where((t) => t.projectUuid.equals(projectUuid)))
+  Future<List<CollEventData>> getAllCollEvents(String projectUuid) async {
+    return await (select(collEvent)
+          ..where((t) => t.projectUuid.equals(projectUuid)))
         .get();
+  }
+
+  Future<List<int>> getEventPerSite(int siteID) async {
+    List<CollEventData> data =
+        await (select(collEvent)..where((t) => t.siteID.equals(siteID))).get();
+    return data.map((e) => e.id).toList();
   }
 
   Future<CollEventData> getCollEventById(int id) async {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
 import 'package:nahpu/screens/projects/statistics/charts.dart';
 import 'package:nahpu/screens/shared/layout.dart';
+import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/statistics/captures.dart';
 import 'package:nahpu/services/statistics/common.dart';
 import 'package:nahpu/services/types/statistics.dart';
@@ -61,7 +62,8 @@ class StatisticViewerState extends ConsumerState<StatisticViewer> {
         ),
         Expanded(
             child: CountBarChart(
-          isFamily: _selectedGraph == GraphType.familyCount,
+          graphType: _selectedGraph,
+          siteID: null,
           maxCount: false,
         )),
       ],
@@ -89,20 +91,21 @@ class StatisticViewerState extends ConsumerState<StatisticViewer> {
   }
 }
 
-class StatisticFullScreen extends StatefulWidget {
+class StatisticFullScreen extends ConsumerStatefulWidget {
   const StatisticFullScreen({
     super.key,
     required this.startingGraph,
   });
   final GraphType startingGraph;
   @override
-  State<StatisticFullScreen> createState() => _StatisticFullScreenState();
+  StatisticFullScreenState createState() => StatisticFullScreenState();
 }
 
-class _StatisticFullScreenState extends State<StatisticFullScreen> {
+class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
   GraphType? _graphType;
   final bool _isMaxCount = true;
   final bool _isLarge = true;
+  int? _siteID;
 
   @override
   Widget build(BuildContext context) {
@@ -143,10 +146,42 @@ class _StatisticFullScreenState extends State<StatisticFullScreen> {
                     },
                   ),
                 ),
+                Visibility(
+                  visible: _graphType == GraphType.speciesPerSiteCount,
+                  child: FutureBuilder(
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return DropdownButton(
+                            value: _siteID,
+                            items: snapshot.data!.entries
+                                .map((e) => DropdownMenuItem(
+                                      value: e.key,
+                                      child: Text(
+                                        e.value,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge,
+                                        overflow: TextOverflow.fade,
+                                      ),
+                                    ))
+                                .toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                _siteID = value;
+                              });
+                            },
+                          );
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      },
+                      future: _getSiteForFromAllEvents()),
+                ),
                 Expanded(
                   child: CountBarChart(
-                    isFamily: getGraphType() == GraphType.familyCount,
+                    graphType: getGraphType(),
                     maxCount: _isMaxCount,
+                    siteID: _siteID,
                   ),
                 )
               ],
@@ -163,6 +198,10 @@ class _StatisticFullScreenState extends State<StatisticFullScreen> {
     } else {
       return _graphType!;
     }
+  }
+
+  Future<Map<int, String>> _getSiteForFromAllEvents() async {
+    return await CollEventServices(ref: ref).getSitesForAllEvents();
   }
 
   Route _closeFullscreen() {
@@ -219,11 +258,13 @@ class StatisticDropdown extends StatelessWidget {
 class CountBarChart extends ConsumerWidget {
   const CountBarChart({
     super.key,
-    required this.isFamily,
+    required this.graphType,
+    required this.siteID,
     required this.maxCount,
   });
 
-  final bool isFamily;
+  final GraphType graphType;
+  final int? siteID;
   final bool maxCount;
 
   @override
@@ -232,12 +273,12 @@ class CountBarChart extends ConsumerWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             int screenSize = MediaQuery.of(context).size.width.toInt();
-            Map<String, int> data = _getCountData(snapshot.data!);
-            int dataCount = _getLength(screenSize, data.length);
+            int dataCount = _getLength(screenSize, snapshot.data!.length);
+            List<DataPoint> data = getMaxCount(snapshot.data!, dataCount);
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                data.isEmpty
+                snapshot.data!.isEmpty
                     ? Text(
                         'No data to display',
                         style: Theme.of(context).textTheme.labelLarge,
@@ -247,19 +288,11 @@ class CountBarChart extends ConsumerWidget {
                           padding: const EdgeInsets.only(
                               top: 42, left: 16, right: 16),
                           child: BarChartViewer(
-                            title: 'Species Count',
-                            data: data,
-                            dataPoints: createDataPoints(
-                              data,
-                              _getLength(
-                                screenSize,
-                                data.length,
-                              ),
-                            ),
+                            dataPoints: data,
                           ),
                         ),
                       ),
-                maxCount
+                maxCount && data.isNotEmpty
                     ? Padding(
                         padding: const EdgeInsets.only(top: 20),
                         child: Text(
@@ -285,35 +318,37 @@ class CountBarChart extends ConsumerWidget {
     return dataLength > fit ? fit : dataLength;
   }
 
-  Future<CaptureRecordStats> _getStats(WidgetRef ref) async {
-    CaptureRecordStats stats = CaptureRecordStats.empty();
-    await stats.count(ref);
-    return stats;
-  }
-
-  Map<String, int> _getCountData(CaptureRecordStats data) {
-    return isFamily ? data.familyCount : data.speciesCount;
-  }
-}
-
-class SpeciesAccumulation extends ConsumerWidget {
-  const SpeciesAccumulation({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 40, left: 20, right: 20),
-      child: LineChartViewer(
-        title: 'Species Curve',
-        dataPoints: [
-          DataPoint(0, 3),
-          DataPoint(1, 4),
-          DataPoint(2, 5),
-          DataPoint(3, 7),
-          DataPoint(4, 4),
-          DataPoint(5, 5),
-        ],
-      ),
-    );
+  Future<List<DataPoint>> _getStats(WidgetRef ref) async {
+    CaptureRecordStats data = CaptureRecordStats(ref: ref);
+    switch (graphType) {
+      case GraphType.speciesCount:
+        return data.getSpeciesDataPoint();
+      case GraphType.familyCount:
+        return data.getFamilyDataPoint();
+      case GraphType.speciesPerSiteCount:
+        return data.getSpeciesPerSiteDataPoint(siteID);
+    }
   }
 }
+
+// class SpeciesAccumulation extends ConsumerWidget {
+//   const SpeciesAccumulation({super.key});
+
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     return Padding(
+//       padding: const EdgeInsets.only(top: 40, left: 20, right: 20),
+//       child: LineChartViewer(
+//         title: 'Species Curve',
+//         dataPoints: [
+//           DataPoint(0, 3),
+//           DataPoint(1, 4),
+//           DataPoint(2, 5),
+//           DataPoint(3, 7),
+//           DataPoint(4, 4),
+//           DataPoint(5, 5),
+//         ],
+//       ),
+//     );
+//   }
+// }

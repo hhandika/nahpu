@@ -8,14 +8,10 @@ import 'package:nahpu/services/utility_services.dart';
 class BarChartViewer extends StatelessWidget {
   const BarChartViewer({
     super.key,
-    required this.data,
     required this.dataPoints,
-    required this.title,
   });
 
-  final Map<String, int> data;
   final List<DataPoint> dataPoints;
-  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +65,7 @@ class BarChartViewer extends StatelessWidget {
                     ),
                     children: [
                       TextSpan(
-                        text: '\n${data.keys.elementAt(group.x.toInt())}',
+                        text: '\n${dataPoints[group.x.toInt()].text}',
                         style: TextStyle(
                           color: Theme.of(context)
                               .colorScheme
@@ -90,7 +86,7 @@ class BarChartViewer extends StatelessWidget {
       interval: 5,
       getTitlesWidget: (value, meta) {
         return Text(
-          getTaxonFirstThreeLetters(data.keys.elementAt(value.toInt())),
+          getTaxonFirstThreeLetters(dataPoints[value.toInt()].text),
           overflow: TextOverflow.ellipsis,
         );
       },

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/providers/taxa.dart';
+import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database/collevent_queries.dart';
 import 'package:nahpu/services/database/media_queries.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
@@ -162,6 +163,18 @@ class SpecimenServices extends DbAccess {
 
   Future<List<SpecimenData>> getSpecimenList() async {
     return SpecimenQuery(dbAccess).getAllSpecimens(currentProjectUuid);
+  }
+
+  Future<List<SpecimenData>> getSpecimenPerSite(int siteID) async {
+    List<int> eventID =
+        await CollEventServices(ref: ref).getEventPerSite(siteID);
+    List<SpecimenData> allSpecimens = [];
+    for (var id in eventID) {
+      List<SpecimenData> specimenList =
+          await SpecimenQuery(dbAccess).getSpecimenPerEvent(id);
+      allSpecimens.addAll(specimenList);
+    }
+    return allSpecimens;
   }
 
   Future<List<SpecimenData>> getSpecimenListByTaxonGroup(

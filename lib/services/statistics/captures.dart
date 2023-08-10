@@ -1,62 +1,109 @@
-import 'dart:collection';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/specimen_services.dart';
+import 'package:nahpu/services/statistics/common.dart';
 import 'package:nahpu/services/taxonomy_services.dart';
 
 class CaptureRecordStats {
-  CaptureRecordStats(
-    this.familyCount,
-    this.speciesCount,
-    this.specimenCount,
-  );
+  CaptureRecordStats({
+    required this.ref,
+  });
 
-  Map<String, int> familyCount;
-  Map<String, int> speciesCount;
-  int specimenCount;
+  final WidgetRef ref;
 
-  Future<void> count(WidgetRef ref) async {
-    List<SpecimenData> specimenList =
-        await SpecimenServices(ref: ref).getSpecimenList();
-    specimenCount = specimenList.length;
-    for (var specimen in specimenList) {
-      await _countTaxa(specimen.speciesID, ref);
-    }
-  }
-
-  factory CaptureRecordStats.empty() {
-    return CaptureRecordStats(
-      SplayTreeMap(),
-      SplayTreeMap(),
-      0,
+  Future<({int specimenCount, int speciesCount, int familyCount})>
+      countAll() async {
+    List<SpecimenData> specimenList = await _getSpecimenData();
+    int specimenCount = specimenList.length;
+    Map<String, int> speciesCount = await _countSpecies(specimenList);
+    Map<String, int> familyCount = await _countFamily(specimenList);
+    specimenList.clear();
+    return (
+      specimenCount: specimenCount,
+      speciesCount: speciesCount.length,
+      familyCount: familyCount.length
     );
   }
 
-  Future<void> _countTaxa(int? speciesID, WidgetRef ref) async {
-    if (speciesID != null) {
-      TaxonomyData data =
-          await TaxonomyServices(ref: ref).getTaxonById(speciesID);
-      _countSpecies(getSpeciesName(data));
-      if (data.taxonFamily != null) {
-        _countFamily(data.taxonFamily!.trim());
+  Future<List<DataPoint>> getSpeciesDataPoint() async {
+    List<SpecimenData> specimenList = await _getSpecimenData();
+    Map<String, int> speciesCount = await _countSpecies(specimenList);
+    specimenList.clear();
+    // sort speciesCount by value
+    speciesCount = _sortMap(speciesCount);
+
+    return createDataPoints(speciesCount);
+  }
+
+  Map<String, int> _sortMap(Map<String, int> map) {
+    return Map.fromEntries(
+        map.entries.toList()..sort((e1, e2) => e2.value.compareTo(e1.value)));
+  }
+
+  Future<List<DataPoint>> getFamilyDataPoint() async {
+    List<SpecimenData> specimenList = await _getSpecimenData();
+    Map<String, int> familyCount = await _countFamily(specimenList);
+    specimenList.clear();
+    // sort familyCount by value
+    familyCount = _sortMap(familyCount);
+    return createDataPoints(familyCount);
+  }
+
+  Future<List<DataPoint>> getSpeciesPerSiteDataPoint(int? siteID) async {
+    if (siteID == null) {
+      return [];
+    }
+    List<SpecimenData> specimenPerSite =
+        await SpecimenServices(ref: ref).getSpecimenPerSite(siteID);
+    Map<String, int> speciesCount = await _countSpecies(specimenPerSite);
+    specimenPerSite.clear();
+    // sort speciesCount by value
+    speciesCount = _sortMap(speciesCount);
+    return createDataPoints(speciesCount);
+  }
+
+  Future<Map<String, int>> _countSpecies(
+      List<SpecimenData> specimenList) async {
+    Map<String, int> speciesCount = {};
+
+    for (var specimen in specimenList) {
+      if (specimen.speciesID != null) {
+        TaxonomyData data = await _getTaxonData(specimen.speciesID!);
+        String speciesName = getSpeciesName(data);
+        _count(speciesCount, speciesName);
       }
     }
+
+    return speciesCount;
   }
 
-  void _countSpecies(String species) {
-    if (!speciesCount.containsKey(species)) {
-      speciesCount[species] = 1;
-    } else {
-      speciesCount[species] = speciesCount[species]! + 1;
+  Future<Map<String, int>> _countFamily(List<SpecimenData> specimenList) async {
+    Map<String, int> familyCount = {};
+
+    for (var specimen in specimenList) {
+      if (specimen.speciesID != null) {
+        TaxonomyData data = await _getTaxonData(specimen.speciesID!);
+        if (data.taxonFamily != null) {
+          _count(familyCount, data.taxonFamily!);
+        }
+      }
     }
+    return familyCount;
   }
 
-  void _countFamily(String family) {
-    if (!familyCount.containsKey(family)) {
-      familyCount[family] = 1;
+  Future<List<SpecimenData>> _getSpecimenData() async {
+    return await SpecimenServices(ref: ref).getSpecimenList();
+  }
+
+  Future<TaxonomyData> _getTaxonData(int speciesID) async {
+    return await TaxonomyServices(ref: ref).getTaxonById(speciesID);
+  }
+
+  void _count(Map<String, int> data, String record) {
+    if (!data.containsKey(record)) {
+      data[record] = 1;
     } else {
-      familyCount[family] = familyCount[family]! + 1;
+      data[record] = data[record]! + 1;
     }
   }
 }

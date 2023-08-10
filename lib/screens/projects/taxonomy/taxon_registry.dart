@@ -260,7 +260,7 @@ class RecordedCounts extends ConsumerWidget {
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   TextSpan(
-                    text: '${snapshot.data!.speciesCount.length}',
+                    text: '${snapshot.data!.speciesCount}',
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   TextSpan(
@@ -268,7 +268,7 @@ class RecordedCounts extends ConsumerWidget {
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   TextSpan(
-                    text: '${snapshot.data!.familyCount.length}',
+                    text: '${snapshot.data!.familyCount}',
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   TextSpan(
@@ -285,10 +285,10 @@ class RecordedCounts extends ConsumerWidget {
         future: _getStats(ref));
   }
 
-  Future<CaptureRecordStats> _getStats(WidgetRef ref) async {
-    CaptureRecordStats stats = CaptureRecordStats.empty();
-    await stats.count(ref);
-    return stats;
+  Future<({int specimenCount, int speciesCount, int familyCount})> _getStats(
+      WidgetRef ref) async {
+    final data = await CaptureRecordStats(ref: ref).countAll();
+    return data;
   }
 }
 

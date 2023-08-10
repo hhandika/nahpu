@@ -1,24 +1,28 @@
 class DataPoint {
+  DataPoint(this.text, this.x, this.y);
+  final String text;
   final double x;
   final double y;
-
-  DataPoint(this.x, this.y);
 }
 
-List<DataPoint> createDataPoints(Map<String, int> countData, int maxCount) {
+List<DataPoint> createDataPoints(Map<String, int> countData) {
+  if (countData.isEmpty) {
+    return [];
+  }
+
   List<DataPoint> dataPoints = [];
   int index = 0;
   countData.forEach((key, value) {
-    dataPoints.add(DataPoint(index.toDouble(), value.toDouble()));
+    dataPoints.add(DataPoint(key, index.toDouble(), value.toDouble()));
     index++;
   });
-  // Sort the data points by y value
-  dataPoints.sort((b, a) => a.y.compareTo(b.y));
+  return dataPoints;
+}
 
-  // If list >5 return top 5
-  if (dataPoints.length > maxCount) {
-    return dataPoints.sublist(0, maxCount);
+List<DataPoint> getMaxCount(List<DataPoint> dataPoint, int maxCount) {
+  if (dataPoint.length > maxCount) {
+    return dataPoint.sublist(0, maxCount);
   } else {
-    return dataPoints;
+    return dataPoint;
   }
 }

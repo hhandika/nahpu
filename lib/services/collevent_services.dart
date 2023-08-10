@@ -45,6 +45,30 @@ class CollEventServices extends DbAccess {
     return CollEventQuery(dbAccess).getAllCollEvents(currentProjectUuid);
   }
 
+  Future<List<int>> getEventPerSite(int siteID) async {
+    return CollEventQuery(dbAccess).getEventPerSite(siteID);
+  }
+
+  Future<Map<int, String>> getSitesForAllEvents() async {
+    List<CollEventData> collEvents = await getAllCollEvents();
+    List<int> siteIDs = [];
+    for (CollEventData collEvent in collEvents) {
+      final site = await SiteServices(ref: ref).getSite(collEvent.siteID);
+      if (site != null) {
+        siteIDs.add(site.id);
+      }
+    }
+    final sites = siteIDs.toSet().toList();
+    Map<int, String> siteMap = {};
+    for (int id in sites) {
+      final site = await SiteServices(ref: ref).getSite(id);
+      if (site != null) {
+        siteMap[id] = site.siteID ?? '';
+      }
+    }
+    return siteMap;
+  }
+
   Future<List<CollPersonnelData>> getAllCollPersonnel(int collEventId) async {
     return CollPersonnelQuery(dbAccess).getCollPersonnelByEventId(collEventId);
   }
