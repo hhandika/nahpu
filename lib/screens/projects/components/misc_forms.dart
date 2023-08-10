@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/screens/projects/components/statistics.dart';
+import 'package:nahpu/screens/projects/statistics/statistics.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 
 class MiscForm extends ConsumerStatefulWidget {

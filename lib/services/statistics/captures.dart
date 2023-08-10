@@ -33,16 +33,6 @@ class CaptureRecordStats {
     );
   }
 
-  factory CaptureRecordStats.fromData(
-      List<SpecimenData> specimenList, WidgetRef ref) {
-    CaptureRecordStats stats = CaptureRecordStats.empty();
-    stats.specimenCount = specimenList.length;
-    for (var specimen in specimenList) {
-      stats._countTaxa(specimen.speciesID, ref);
-    }
-    return stats;
-  }
-
   Future<void> _countTaxa(int? speciesID, WidgetRef ref) async {
     if (speciesID != null) {
       TaxonomyData data =
