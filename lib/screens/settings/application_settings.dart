@@ -136,7 +136,7 @@ class DataUsageSettingsState extends ConsumerState<DataUsageSettings> {
       body: CommonSettingList(
         sections: [
           CommonSettingSection(
-            title: 'Data usage',
+            title: 'App data',
             isDivided: true,
             children: [
               FutureBuilder(
@@ -160,7 +160,7 @@ class DataUsageSettingsState extends ConsumerState<DataUsageSettings> {
                     if (snapshot.hasData) {
                       return CommonSettingTile(
                         icon: Icons.file_copy_outlined,
-                        title: 'File counts',
+                        title: 'Files',
                         value: snapshot.data,
                         onTap: null,
                       );
@@ -176,7 +176,7 @@ class DataUsageSettingsState extends ConsumerState<DataUsageSettings> {
                     if (snapshot.hasData) {
                       return CommonSettingTile(
                         icon: Icons.photo_library_outlined,
-                        title: 'Image counts',
+                        title: 'Images',
                         value: snapshot.data,
                         onTap: null,
                       );
