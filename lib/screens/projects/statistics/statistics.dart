@@ -280,7 +280,7 @@ class CountBarChart extends ConsumerWidget {
               children: [
                 snapshot.data!.isEmpty
                     ? Text(
-                        'No data to display',
+                        _emptyText,
                         style: Theme.of(context).textTheme.labelLarge,
                       )
                     : Expanded(
@@ -327,6 +327,16 @@ class CountBarChart extends ConsumerWidget {
         return data.getFamilyDataPoint();
       case GraphType.speciesPerSiteCount:
         return data.getSpeciesPerSiteDataPoint(siteID);
+    }
+  }
+
+  String get _emptyText {
+    if (graphType == GraphType.speciesPerSiteCount) {
+      return siteID == null
+          ? 'Select a site to view data'
+          : 'No data to display for this site';
+    } else {
+      return 'No data to display';
     }
   }
 }
