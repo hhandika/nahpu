@@ -46,16 +46,19 @@ class StatisticViewerState extends ConsumerState<StatisticViewer> {
                 },
                 graphOptions: dashboardGraphOptions,
               ),
-              IconButton(
-                icon: const Icon(
-                  Icons.fullscreen,
+              Tooltip(
+                message: 'Open fullscreen',
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.fullscreen,
+                  ),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      _openFullscreen(),
+                    );
+                  },
                 ),
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    _openFullscreen(),
-                  );
-                },
               )
             ],
           ),
