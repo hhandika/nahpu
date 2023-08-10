@@ -296,7 +296,7 @@ class CountBarChart extends ConsumerWidget {
                     ? Padding(
                         padding: const EdgeInsets.only(top: 20),
                         child: Text(
-                          'Showing top $dataCount of ${data.length} results',
+                          'Showing top $dataCount of ${snapshot.data!.length} results',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       )
