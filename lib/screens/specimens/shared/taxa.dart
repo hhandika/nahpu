@@ -88,18 +88,21 @@ class SpeciesAutoCompleteState extends ConsumerState<SpeciesAutoComplete> {
 
   @override
   Widget build(BuildContext context) {
-    return AutoCompleteField(
-      focusNode: _focusNode,
-      controller: widget.speciesCtr,
-      options: widget.options,
-      labelText: 'Species',
-      hintText: 'Enter species name',
-      onSelected: (String selection) {
-        setState(() {
-          _inputTaxon(selection);
-        });
-        _focusNode.unfocus();
-      },
+    return Tooltip(
+      message: 'Type species name and select from list',
+      child: AutoCompleteField(
+        focusNode: _focusNode,
+        controller: widget.speciesCtr,
+        options: widget.options,
+        labelText: 'Species',
+        hintText: 'Type species name',
+        onSelected: (String selection) {
+          setState(() {
+            _inputTaxon(selection);
+          });
+          _focusNode.unfocus();
+        },
+      ),
     );
   }
 

@@ -60,15 +60,19 @@ class DashboardState extends ConsumerState<Dashboard> {
                             ),
                             Padding(
                               padding: const EdgeInsets.all(10.0),
-                              child: IconButton(
-                                onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => EditProject(
-                                          projectUuid: projectUuid)));
-                                },
-                                icon: Icon(
-                                  Icons.edit_outlined,
-                                  color: Theme.of(context).disabledColor,
+                              child: Tooltip(
+                                message: 'Edit project',
+                                child: IconButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) => EditProject(
+                                                projectUuid: projectUuid)));
+                                  },
+                                  icon: Icon(
+                                    Icons.edit_outlined,
+                                    color: Theme.of(context).disabledColor,
+                                  ),
                                 ),
                               ),
                             ),
