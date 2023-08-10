@@ -159,7 +159,7 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 8),
+                  padding: const EdgeInsets.fromLTRB(12, 4, 0, 0),
                   child: Visibility(
                     visible: _graphType == GraphType.speciesPerSiteCount,
                     child: FutureBuilder(
@@ -169,6 +169,7 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
                               initialSelection: _siteID,
                               controller: _controller,
                               enableFilter: true,
+                              enabled: snapshot.data!.entries.isNotEmpty,
                               hintText: 'Select site',
                               textStyle:
                                   Theme.of(context).textTheme.titleMedium,
@@ -180,14 +181,15 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
                               trailingIcon: _controller.text.isEmpty
                                   ? null
                                   : IconButton(
-                                      icon: const Icon(Icons.clear),
+                                      icon: const Icon(Icons.clear_rounded),
                                       onPressed: () {
                                         setState(() {
                                           _siteID = null;
                                           _controller.clear();
                                         });
                                       }),
-                              leadingIcon: const Icon(Icons.location_on),
+                              leadingIcon:
+                                  const Icon(Icons.location_on_outlined),
                               dropdownMenuEntries: snapshot.data!.entries
                                   .map((e) => DropdownMenuEntry(
                                         value: e.key,
@@ -326,7 +328,7 @@ class CountBarChart extends ConsumerWidget {
                     ? Padding(
                         padding: const EdgeInsets.only(top: 20),
                         child: Text(
-                          'Showing top $dataCount of ${snapshot.data!.length} results',
+                          'Showing $dataCount of ${snapshot.data!.length} results',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       )
