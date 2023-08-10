@@ -102,10 +102,22 @@ class StatisticFullScreen extends ConsumerStatefulWidget {
 }
 
 class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
+  final TextEditingController _controller = TextEditingController();
   GraphType? _graphType;
   final bool _isMaxCount = true;
   final bool _isLarge = true;
   int? _siteID;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,36 +158,54 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
                     },
                   ),
                 ),
-                Visibility(
-                  visible: _graphType == GraphType.speciesPerSiteCount,
-                  child: FutureBuilder(
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return DropdownButton(
-                            value: _siteID,
-                            items: snapshot.data!.entries
-                                .map((e) => DropdownMenuItem(
-                                      value: e.key,
-                                      child: Text(
-                                        e.value,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleLarge,
-                                        overflow: TextOverflow.fade,
-                                      ),
-                                    ))
-                                .toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                _siteID = value;
-                              });
-                            },
-                          );
-                        } else {
-                          return const SizedBox.shrink();
-                        }
-                      },
-                      future: _getSiteForFromAllEvents()),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Visibility(
+                    visible: _graphType == GraphType.speciesPerSiteCount,
+                    child: FutureBuilder(
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return DropdownMenu(
+                              initialSelection: _siteID,
+                              controller: _controller,
+                              enableFilter: true,
+                              hintText: 'Select site',
+                              textStyle:
+                                  Theme.of(context).textTheme.titleMedium,
+                              inputDecorationTheme: const InputDecorationTheme(
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
+                              trailingIcon: _controller.text.isEmpty
+                                  ? null
+                                  : IconButton(
+                                      icon: const Icon(Icons.clear),
+                                      onPressed: () {
+                                        setState(() {
+                                          _siteID = null;
+                                          _controller.clear();
+                                        });
+                                      }),
+                              leadingIcon: const Icon(Icons.location_on),
+                              dropdownMenuEntries: snapshot.data!.entries
+                                  .map((e) => DropdownMenuEntry(
+                                        value: e.key,
+                                        label: e.value,
+                                      ))
+                                  .toList(),
+                              onSelected: (value) {
+                                setState(() {
+                                  _siteID = value;
+                                });
+                              },
+                            );
+                          } else {
+                            return const SizedBox.shrink();
+                          }
+                        },
+                        future: _getSiteForFromAllEvents()),
+                  ),
                 ),
                 Expanded(
                   child: CountBarChart(
