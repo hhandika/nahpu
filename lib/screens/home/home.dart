@@ -5,6 +5,7 @@ import 'package:nahpu/screens/home/components/menu_drawer.dart';
 import 'package:nahpu/screens/home/components/body.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/shared/common.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/db_services.dart';
 
 class Home extends ConsumerStatefulWidget {
@@ -17,7 +18,8 @@ class Home extends ConsumerStatefulWidget {
 class HomeState extends ConsumerState<Home> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return FalseWillPop(
+        child: Scaffold(
       appBar: AppBar(
         title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Image.asset(
@@ -65,7 +67,7 @@ class HomeState extends ConsumerState<Home> {
           ),
         ],
       ),
-    );
+    ));
   }
 
   Future<void> _checkNewDb() async {
