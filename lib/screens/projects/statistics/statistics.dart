@@ -67,7 +67,7 @@ class StatisticViewerState extends ConsumerState<StatisticViewer> {
             child: CountBarChart(
           graphType: _selectedGraph,
           siteID: null,
-          maxCount: false,
+          isFullScreen: false,
         )),
       ],
     ));
@@ -107,7 +107,7 @@ class StatisticFullScreen extends ConsumerStatefulWidget {
 class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
   final TextEditingController _controller = TextEditingController();
   GraphType? _graphType;
-  final bool _isMaxCount = true;
+  final bool _isisFullScreen = true;
   final bool _isLarge = true;
   int? _siteID;
 
@@ -216,7 +216,7 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
                 Expanded(
                   child: CountBarChart(
                     graphType: _getGraphType,
-                    maxCount: _isMaxCount,
+                    isFullScreen: _isisFullScreen,
                     siteID: _siteID,
                   ),
                 )
@@ -296,25 +296,25 @@ class CountBarChart extends ConsumerWidget {
     super.key,
     required this.graphType,
     required this.siteID,
-    required this.maxCount,
+    required this.isFullScreen,
   });
 
   final GraphType graphType;
   final int? siteID;
-  final bool maxCount;
+  final bool isFullScreen;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return FutureBuilder(
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            int screenSize = MediaQuery.of(context).size.width.toInt();
-            int dataCount = _getLength(screenSize, snapshot.data!.length);
-            List<DataPoint> data = getMaxCount(snapshot.data!, dataCount);
+            double screenSize = MediaQuery.of(context).size.width;
+            int fit = _getFit(screenSize.toInt(), snapshot.data!.data.length);
+            int dataLength = snapshot.data!.data.length;
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                snapshot.data!.isEmpty
+                snapshot.data!.data.isEmpty
                     ? Text(
                         _emptyText,
                         style: Theme.of(context).textTheme.labelLarge,
@@ -323,20 +323,35 @@ class CountBarChart extends ConsumerWidget {
                         child: Padding(
                           padding: const EdgeInsets.only(
                               top: 42, left: 16, right: 16),
-                          child: BarChartViewer(
-                            dataPoints: data,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: SizedBox(
+                              width: dataLength > fit
+                                  ? dataLength * (chartWidth + 16)
+                                  : screenSize - 8,
+                              child: BarChartViewer(
+                                labels: snapshot.data!.labels,
+                                maxY: snapshot.data!.maxY,
+                                data: isFullScreen
+                                    ? snapshot.data!.data
+                                    : DataPoints(
+                                            data: snapshot.data!.data,
+                                            maxY: snapshot.data!.maxY,
+                                            labels: snapshot.data!.labels)
+                                        .getMaxCount(fit),
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                maxCount && data.isNotEmpty
-                    ? Padding(
-                        padding: const EdgeInsets.only(top: 20),
+                !isFullScreen || snapshot.data!.data.isEmpty
+                    ? const SizedBox.shrink()
+                    : Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 16, 0, 4),
                         child: Text(
-                          'Showing $dataCount of ${snapshot.data!.length} results',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      )
-                    : const SizedBox.shrink(),
+                            'Taxon counts: ${snapshot.data!.data.length}',
+                            style: Theme.of(context).textTheme.labelMedium),
+                      ),
               ],
             );
           } else {
@@ -346,15 +361,15 @@ class CountBarChart extends ConsumerWidget {
         future: _getStats(ref));
   }
 
-  int _getLength(int screenSize, int dataLength) {
-    if (!maxCount) {
+  int _getFit(int screenSize, int dataLength) {
+    if (!isFullScreen) {
       return 5;
     }
-    int fit = screenSize ~/ (chartWidth + 22);
-    return dataLength > fit ? fit : dataLength;
+    int fit = screenSize ~/ (chartWidth + 16);
+    return fit;
   }
 
-  Future<List<DataPoint>> _getStats(WidgetRef ref) async {
+  Future<DataPoints> _getStats(WidgetRef ref) async {
     CaptureRecordStats data = CaptureRecordStats(ref: ref);
     switch (graphType) {
       case GraphType.speciesCount:

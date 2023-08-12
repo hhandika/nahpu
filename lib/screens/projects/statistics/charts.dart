@@ -8,18 +8,22 @@ import 'package:nahpu/services/utility_services.dart';
 class BarChartViewer extends StatelessWidget {
   const BarChartViewer({
     super.key,
-    required this.dataPoints,
+    required this.labels,
+    required this.data,
+    this.maxY,
   });
 
-  final List<DataPoint> dataPoints;
+  final List<String> labels;
+  final List<({int x, double y})> data;
+  final double? maxY;
 
   @override
   Widget build(BuildContext context) {
     return BarChart(
       BarChartData(
           alignment: BarChartAlignment.spaceAround,
-          barGroups: dataPoints
-              .map((e) => BarChartGroupData(x: e.x.toInt(), barRods: [
+          barGroups: data
+              .map((e) => BarChartGroupData(x: e.x, barRods: [
                     BarChartRodData(
                         toY: e.y,
                         color: Theme.of(context).colorScheme.secondaryContainer,
@@ -42,6 +46,7 @@ class BarChartViewer extends StatelessWidget {
             ),
           ),
           gridData: const FlGridData(show: true),
+          maxY: maxY,
           titlesData: FlTitlesData(
             bottomTitles: AxisTitles(
               sideTitles: _getTitleData(),
@@ -56,7 +61,14 @@ class BarChartViewer extends StatelessWidget {
           barTouchData: BarTouchData(
             enabled: true,
             touchTooltipData: BarTouchTooltipData(
-              tooltipBgColor: Theme.of(context).colorScheme.secondaryContainer,
+              tooltipRoundedRadius: 16,
+              direction: TooltipDirection.top,
+              fitInsideHorizontally: true,
+              fitInsideVertically: true,
+              tooltipBgColor: Theme.of(context)
+                  .colorScheme
+                  .secondaryContainer
+                  .withOpacity(0.9),
               getTooltipItem: (group, groupIndex, rod, rodIndex) {
                 return BarTooltipItem(
                     rod.toY.truncateZero(),
@@ -65,7 +77,7 @@ class BarChartViewer extends StatelessWidget {
                     ),
                     children: [
                       TextSpan(
-                        text: '\n${dataPoints[group.x.toInt()].text}',
+                        text: '\n${labels[group.x.toInt()]}',
                         style: TextStyle(
                           color: Theme.of(context)
                               .colorScheme
@@ -86,7 +98,7 @@ class BarChartViewer extends StatelessWidget {
       interval: 5,
       getTitlesWidget: (value, meta) {
         return Text(
-          getTaxonFirstThreeLetters(dataPoints[value.toInt()].text),
+          getTaxonFirstThreeLetters(labels[value.toInt()]),
           overflow: TextOverflow.ellipsis,
         );
       },
@@ -98,7 +110,7 @@ class LineChartViewer extends StatelessWidget {
   const LineChartViewer(
       {super.key, required this.dataPoints, required this.title});
 
-  final List<DataPoint> dataPoints;
+  final DataPoints dataPoints;
   final String title;
 
   @override
@@ -107,8 +119,9 @@ class LineChartViewer extends StatelessWidget {
       LineChartData(
         lineBarsData: [
           LineChartBarData(
-            spots:
-                dataPoints.map((e) => FlSpot(e.x, e.y)).toList(growable: true),
+            spots: dataPoints.data
+                .map((e) => FlSpot(e.x.toDouble(), e.y))
+                .toList(growable: true),
             isCurved: true,
             color: Theme.of(context).colorScheme.tertiary,
             barWidth: 2.5,

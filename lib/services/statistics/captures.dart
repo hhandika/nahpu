@@ -25,14 +25,14 @@ class CaptureRecordStats {
     );
   }
 
-  Future<List<DataPoint>> getSpeciesDataPoint() async {
+  Future<DataPoints> getSpeciesDataPoint() async {
     List<SpecimenData> specimenList = await _getSpecimenData();
     Map<String, int> speciesCount = await _countSpecies(specimenList);
     specimenList.clear();
     // sort speciesCount by value
     speciesCount = _sortMap(speciesCount);
 
-    return createDataPoints(speciesCount);
+    return DataPoints.fromData(speciesCount);
   }
 
   Map<String, int> _sortMap(Map<String, int> map) {
@@ -40,18 +40,18 @@ class CaptureRecordStats {
         map.entries.toList()..sort((e1, e2) => e2.value.compareTo(e1.value)));
   }
 
-  Future<List<DataPoint>> getFamilyDataPoint() async {
+  Future<DataPoints> getFamilyDataPoint() async {
     List<SpecimenData> specimenList = await _getSpecimenData();
     Map<String, int> familyCount = await _countFamily(specimenList);
     specimenList.clear();
     // sort familyCount by value
     familyCount = _sortMap(familyCount);
-    return createDataPoints(familyCount);
+    return DataPoints.fromData(familyCount);
   }
 
-  Future<List<DataPoint>> getSpeciesPerSiteDataPoint(int? siteID) async {
+  Future<DataPoints> getSpeciesPerSiteDataPoint(int? siteID) async {
     if (siteID == null) {
-      return [];
+      return DataPoints.empty();
     }
     List<SpecimenData> specimenPerSite =
         await SpecimenServices(ref: ref).getSpecimenPerSite(siteID);
@@ -59,7 +59,7 @@ class CaptureRecordStats {
     specimenPerSite.clear();
     // sort speciesCount by value
     speciesCount = _sortMap(speciesCount);
-    return createDataPoints(speciesCount);
+    return DataPoints.fromData(speciesCount);
   }
 
   Future<Map<String, int>> _countSpecies(
