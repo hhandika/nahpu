@@ -9,6 +9,7 @@ import 'package:nahpu/services/statistics/common.dart';
 import 'package:nahpu/services/types/statistics.dart';
 
 const double chartWidth = 32;
+const int maxCount = 5;
 
 class StatisticViewer extends ConsumerStatefulWidget {
   const StatisticViewer({
@@ -308,8 +309,6 @@ class CountBarChart extends ConsumerWidget {
     return FutureBuilder(
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            double screenSize = MediaQuery.of(context).size.width;
-            int fit = _getFit(screenSize.toInt(), snapshot.data!.data.length);
             int dataLength = snapshot.data!.data.length;
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -326,9 +325,7 @@ class CountBarChart extends ConsumerWidget {
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: SizedBox(
-                              width: dataLength > fit
-                                  ? dataLength * (chartWidth + 16)
-                                  : screenSize - 8,
+                              width: getChartWidth(dataLength),
                               child: BarChartViewer(
                                 labels: snapshot.data!.labels,
                                 maxY: snapshot.data!.maxY,
@@ -338,7 +335,7 @@ class CountBarChart extends ConsumerWidget {
                                             data: snapshot.data!.data,
                                             maxY: snapshot.data!.maxY,
                                             labels: snapshot.data!.labels)
-                                        .getMaxCount(fit),
+                                        .getMaxCount(maxCount),
                               ),
                             ),
                           ),
@@ -361,14 +358,6 @@ class CountBarChart extends ConsumerWidget {
         future: _getStats(ref));
   }
 
-  int _getFit(int screenSize, int dataLength) {
-    if (!isFullScreen) {
-      return 5;
-    }
-    int fit = screenSize ~/ (chartWidth + 16);
-    return fit;
-  }
-
   Future<DataPoints> _getStats(WidgetRef ref) async {
     CaptureRecordStats data = CaptureRecordStats(ref: ref);
     switch (graphType) {
@@ -378,6 +367,14 @@ class CountBarChart extends ConsumerWidget {
         return data.getFamilyDataPoint();
       case GraphType.speciesPerSiteCount:
         return data.getSpeciesPerSiteDataPoint(siteID);
+    }
+  }
+
+  double getChartWidth(int dataLength) {
+    if (isFullScreen) {
+      return dataLength * (chartWidth + 16);
+    } else {
+      return maxCount * (chartWidth + 24);
     }
   }
 
