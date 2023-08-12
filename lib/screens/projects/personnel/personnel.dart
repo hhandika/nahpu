@@ -32,7 +32,7 @@ class PersonnelViewerState extends ConsumerState<PersonnelViewer> {
       infoContent: const PersonnelInfoContent(),
       mainAxisAlignment: MainAxisAlignment.start,
       child: SizedBox(
-        height: topDashboardHeight - 88,
+        height: topDashboardHeight - 96,
         child: const PersonnelList(),
       ),
     );
@@ -57,7 +57,7 @@ class PersonnelListState extends ConsumerState<PersonnelList> {
         return data.isEmpty
             ? const EmptyPersonnel()
             : Column(
-                mainAxisSize: MainAxisSize.max,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Flexible(
                     child: CommonScrollbar(
@@ -79,7 +79,6 @@ class PersonnelListState extends ConsumerState<PersonnelList> {
                   ),
                   const SizedBox(height: 8),
                   const AddPersonnelButton(),
-                  const SizedBox(height: 8),
                 ],
               );
       },
