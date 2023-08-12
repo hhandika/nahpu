@@ -10,12 +10,10 @@ class BarChartViewer extends StatelessWidget {
     super.key,
     required this.labels,
     required this.data,
-    this.maxY,
   });
 
   final List<String> labels;
   final List<({int x, double y})> data;
-  final double? maxY;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +44,6 @@ class BarChartViewer extends StatelessWidget {
             ),
           ),
           gridData: const FlGridData(show: true),
-          maxY: maxY,
           titlesData: FlTitlesData(
             bottomTitles: AxisTitles(
               sideTitles: _getTitleData(),

@@ -328,12 +328,10 @@ class CountBarChart extends ConsumerWidget {
                               width: getChartWidth(dataLength),
                               child: BarChartViewer(
                                 labels: snapshot.data!.labels,
-                                maxY: snapshot.data!.maxY,
                                 data: isFullScreen
                                     ? snapshot.data!.data
                                     : DataPoints(
                                             data: snapshot.data!.data,
-                                            maxY: snapshot.data!.maxY,
                                             labels: snapshot.data!.labels)
                                         .getMaxCount(maxCount),
                               ),
