@@ -150,7 +150,7 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
                 Padding(
                   padding: const EdgeInsets.only(left: 12),
                   child: StatisticDropdown(
-                    selectedGraph: getGraphType(),
+                    selectedGraph: _getGraphType,
                     graphOptions: fullScreenGraphOptions,
                     isLarge: _isLarge,
                     onChanged: (value) {
@@ -215,7 +215,7 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
                 ),
                 Expanded(
                   child: CountBarChart(
-                    graphType: getGraphType(),
+                    graphType: _getGraphType,
                     maxCount: _isMaxCount,
                     siteID: _siteID,
                   ),
@@ -228,7 +228,7 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
     );
   }
 
-  GraphType getGraphType() {
+  GraphType get _getGraphType {
     if (_graphType == null) {
       return widget.startingGraph;
     } else {
