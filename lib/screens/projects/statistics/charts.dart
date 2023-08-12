@@ -95,7 +95,6 @@ class BarChartViewer extends StatelessWidget {
   SideTitles _getTitleData() {
     return SideTitles(
       showTitles: true,
-      interval: 5,
       getTitlesWidget: (value, meta) {
         return Text(
           getTaxonFirstThreeLetters(labels[value.toInt()]),

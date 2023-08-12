@@ -372,9 +372,9 @@ class CountBarChart extends ConsumerWidget {
 
   double getChartWidth(int dataLength) {
     if (isFullScreen) {
-      return dataLength * (chartWidth + 16);
+      return dataLength * (chartWidth + 24);
     } else {
-      return maxCount * (chartWidth + 24);
+      return maxCount * (chartWidth + 28);
     }
   }
 
