@@ -100,14 +100,17 @@ class MammalMeasurementFormsState
         AdaptiveLayout(
           useHorizontalLayout: widget.useHorizontalLayout,
           children: [
-            CommonNumField(
-              controller: headBodyLengthCtr,
-              labelText: 'Head and body length (mm)',
-              hintText: 'Enter HBL',
-              enabled: false,
-              isDouble: true,
-              isLastField: false,
-              onChanged: null,
+            Tooltip(
+              message: 'Automatically calculated',
+              child: CommonNumField(
+                controller: headBodyLengthCtr,
+                labelText: 'Head and body length (mm)',
+                hintText: 'Enter HBL',
+                enabled: false,
+                isDouble: true,
+                isLastField: false,
+                onChanged: null,
+              ),
             ),
             CommonNumField(
               controller: ctr.hindFootCtr,
