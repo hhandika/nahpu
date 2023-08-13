@@ -10,6 +10,7 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/types/mammals.dart';
 import 'package:drift/drift.dart' as db;
+import 'package:nahpu/services/utility_services.dart';
 
 class MammalMeasurementForms extends ConsumerStatefulWidget {
   const MammalMeasurementForms({
@@ -30,6 +31,7 @@ class MammalMeasurementForms extends ConsumerStatefulWidget {
 class MammalMeasurementFormsState
     extends ConsumerState<MammalMeasurementForms> {
   MammalMeasurementCtrModel ctr = MammalMeasurementCtrModel.empty();
+  TextEditingController headBodyLengthCtr = TextEditingController();
 
   @override
   void initState() {
@@ -42,6 +44,7 @@ class MammalMeasurementFormsState
   @override
   void dispose() {
     ctr.dispose();
+    headBodyLengthCtr.dispose();
     super.dispose();
   }
 
@@ -61,6 +64,7 @@ class MammalMeasurementFormsState
               onChanged: (String? value) {
                 if (value != null && value.isNotEmpty) {
                   setState(() {
+                    _getHeadBodyLength();
                     SpecimenServices(ref: ref).updateMammalMeasurement(
                       widget.specimenUuid,
                       MammalMeasurementCompanion(
@@ -80,6 +84,7 @@ class MammalMeasurementFormsState
               onChanged: (String? value) {
                 if (value != null && value.isNotEmpty) {
                   setState(() {
+                    _getHeadBodyLength();
                     SpecimenServices(ref: ref).updateMammalMeasurement(
                       widget.specimenUuid,
                       MammalMeasurementCompanion(
@@ -95,6 +100,15 @@ class MammalMeasurementFormsState
         AdaptiveLayout(
           useHorizontalLayout: widget.useHorizontalLayout,
           children: [
+            CommonNumField(
+              controller: headBodyLengthCtr,
+              labelText: 'Head and body length (mm)',
+              hintText: 'Enter HBL',
+              enabled: false,
+              isDouble: true,
+              isLastField: false,
+              onChanged: null,
+            ),
             CommonNumField(
               controller: ctr.hindFootCtr,
               labelText: 'Hind foot length (mm)',
@@ -114,6 +128,11 @@ class MammalMeasurementFormsState
                 }
               },
             ),
+          ],
+        ),
+        AdaptiveLayout(
+          useHorizontalLayout: widget.useHorizontalLayout,
+          children: [
             CommonNumField(
               controller: ctr.earCtr,
               labelText: 'Ear length (mm)',
@@ -133,11 +152,6 @@ class MammalMeasurementFormsState
                 }
               },
             ),
-          ],
-        ),
-        AdaptiveLayout(
-          useHorizontalLayout: widget.useHorizontalLayout,
-          children: [
             CommonNumField(
               controller: ctr.weightCtr,
               labelText: 'Weight (grams)',
@@ -157,29 +171,29 @@ class MammalMeasurementFormsState
                 }
               },
             ),
-            Visibility(
-              visible: widget.isBats,
-              child: CommonNumField(
-                controller: ctr.forearmCtr,
-                labelText: 'Forearm Length (mm)',
-                hintText: 'Enter FL length',
-                isLastField: true,
-                isDouble: true,
-                onChanged: (value) {
-                  if (value != null && value.isNotEmpty) {
-                    setState(() {
-                      SpecimenServices(ref: ref).updateMammalMeasurement(
-                        widget.specimenUuid,
-                        MammalMeasurementCompanion(
-                          forearm: db.Value(double.tryParse(value)),
-                        ),
-                      );
-                    });
-                  }
-                },
-              ),
-            ),
           ],
+        ),
+        Visibility(
+          visible: widget.isBats,
+          child: CommonNumField(
+            controller: ctr.forearmCtr,
+            labelText: 'Forearm Length (mm)',
+            hintText: 'Enter FL length',
+            isLastField: true,
+            isDouble: true,
+            onChanged: (value) {
+              if (value != null && value.isNotEmpty) {
+                setState(() {
+                  SpecimenServices(ref: ref).updateMammalMeasurement(
+                    widget.specimenUuid,
+                    MammalMeasurementCompanion(
+                      forearm: db.Value(double.tryParse(value)),
+                    ),
+                  );
+                });
+              }
+            },
+          ),
         ),
         Padding(
           padding: const EdgeInsets.all(5),
@@ -304,9 +318,27 @@ class MammalMeasurementFormsState
   Future<void> _updateCtr(String specimenUuid) async {
     MammalMeasurementData data =
         await SpecimenServices(ref: ref).getMammalMeasurementData(specimenUuid);
+
     setState(() {
       ctr = MammalMeasurementCtrModel.fromData(data);
+      _getHeadBodyLength();
     });
+  }
+
+  void _getHeadBodyLength() {
+    double? totalLength = ctr.totalLengthCtr.text.isNotEmpty
+        ? double.tryParse(ctr.totalLengthCtr.text)
+        : null;
+    double? tailLength = ctr.tailLengthCtr.text.isNotEmpty
+        ? double.tryParse(ctr.tailLengthCtr.text)
+        : null;
+    if (totalLength == null || tailLength == null) {
+      return;
+    } else if (totalLength > 0) {
+      headBodyLengthCtr.text = (totalLength - tailLength).truncateZero();
+    } else {
+      return;
+    }
   }
 }
 

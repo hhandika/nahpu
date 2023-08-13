@@ -167,6 +167,7 @@ class CommonNumField extends ConsumerWidget {
     required this.hintText,
     this.controller,
     this.onChanged,
+    this.enabled = true,
     required this.isLastField,
     this.isDouble = false,
     this.isSigned = false,
@@ -178,12 +179,14 @@ class CommonNumField extends ConsumerWidget {
   final void Function(String?)? onChanged;
   final bool isLastField;
   final bool isDouble;
+  final bool enabled;
   final bool isSigned;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TextField(
       controller: controller,
+      enabled: enabled,
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
