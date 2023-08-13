@@ -386,25 +386,3 @@ class CountBarChart extends ConsumerWidget {
     }
   }
 }
-
-// class SpeciesAccumulation extends ConsumerWidget {
-//   const SpeciesAccumulation({super.key});
-
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     return Padding(
-//       padding: const EdgeInsets.only(top: 40, left: 20, right: 20),
-//       child: LineChartViewer(
-//         title: 'Species Curve',
-//         dataPoints: [
-//           DataPoint(0, 3),
-//           DataPoint(1, 4),
-//           DataPoint(2, 5),
-//           DataPoint(3, 7),
-//           DataPoint(4, 4),
-//           DataPoint(5, 5),
-//         ],
-//       ),
-//     );
-//   }
-// }
