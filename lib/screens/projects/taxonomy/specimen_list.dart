@@ -31,7 +31,6 @@ class SpecimenListPageState extends ConsumerState<SpecimenListPage> {
   @override
   void initState() {
     super.initState();
-    _focus.requestFocus();
   }
 
   @override

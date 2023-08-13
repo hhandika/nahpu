@@ -65,7 +65,6 @@ class _TaxonListState extends State<TaxonList> {
   @override
   void initState() {
     super.initState();
-    _focus.requestFocus();
   }
 
   @override
