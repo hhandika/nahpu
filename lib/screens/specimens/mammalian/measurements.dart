@@ -342,7 +342,7 @@ class MammalMeasurementFormsState
     if (totalLength == null || tailLength == null) {
       return;
     } else if (totalLength > 0) {
-      headBodyLengthCtr.text = (totalLength - tailLength).truncateZero();
+      headBodyLengthCtr.text = (totalLength - tailLength).truncateZeroFixed(1);
     } else {
       return;
     }

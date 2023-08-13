@@ -90,4 +90,17 @@ extension DoubleExtension on double {
       return toString();
     }
   }
+
+  /// Truncate trailing zeros and decimal point if the number is an integer.
+  /// Otherwise, return the number as is.
+  /// [fractionDigits] is the number of digits after the decimal point.
+  String truncateZeroFixed(int fractionDigits) {
+    if (toString().endsWith('.0')) {
+      // Remove trailing .0
+      return toStringAsFixed(fractionDigits)
+          .substring(0, toString().length - 2);
+    } else {
+      return toStringAsFixed(fractionDigits);
+    }
+  }
 }
