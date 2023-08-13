@@ -178,25 +178,29 @@ class MammalMeasurementFormsState
         ),
         Visibility(
           visible: widget.isBats,
-          child: CommonNumField(
-            controller: ctr.forearmCtr,
-            labelText: 'Forearm Length (mm)',
-            hintText: 'Enter FL length',
-            isLastField: true,
-            isDouble: true,
-            onChanged: (value) {
-              if (value != null && value.isNotEmpty) {
-                setState(() {
-                  SpecimenServices(ref: ref).updateMammalMeasurement(
-                    widget.specimenUuid,
-                    MammalMeasurementCompanion(
-                      forearm: db.Value(double.tryParse(value)),
-                    ),
-                  );
-                });
-              }
-            },
-          ),
+          child: AdaptiveLayout(
+              useHorizontalLayout: widget.useHorizontalLayout,
+              children: [
+                CommonNumField(
+                  controller: ctr.forearmCtr,
+                  labelText: 'Forearm Length (mm)',
+                  hintText: 'Enter FL length',
+                  isLastField: true,
+                  isDouble: true,
+                  onChanged: (value) {
+                    if (value != null && value.isNotEmpty) {
+                      setState(() {
+                        SpecimenServices(ref: ref).updateMammalMeasurement(
+                          widget.specimenUuid,
+                          MammalMeasurementCompanion(
+                            forearm: db.Value(double.tryParse(value)),
+                          ),
+                        );
+                      });
+                    }
+                  },
+                ),
+              ]),
         ),
         Padding(
           padding: const EdgeInsets.all(5),
