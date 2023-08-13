@@ -8,6 +8,23 @@ void main() {
     expect(distinctList.length, 3);
   });
 
+  test('Continuous numbers', () {
+    List<int> list = [1, 2, 3, 4, 5];
+    List<int> invalid = [1, 2, 3, 5, 6];
+    List<bool> result = checkListNumberContinuous(list);
+    List<bool> invalidResult = checkListNumberContinuous(invalid);
+    expect(result.length, 4);
+    expect(result[0], isTrue);
+    expect(result[1], isTrue);
+    expect(result[2], isTrue);
+    expect(result[3], isTrue);
+    expect(invalidResult.length, 4);
+    expect(invalidResult[0], isTrue);
+    expect(invalidResult[1], isTrue);
+    expect(invalidResult[2], isFalse);
+    expect(invalidResult[3], isTrue);
+  });
+
   test('Test list contains', () {
     List<String> list = [
       'a',

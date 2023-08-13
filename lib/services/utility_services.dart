@@ -81,6 +81,18 @@ extension NullableStringExtension on String? {
   }
 }
 
+List<bool> checkListNumberContinuous(List<int> listNum) {
+  List<bool> result = [];
+  for (int i = 0; i < listNum.length - 1; i++) {
+    if (listNum[i] + 1 == listNum[i + 1]) {
+      result.add(true);
+    } else {
+      result.add(false);
+    }
+  }
+  return result;
+}
+
 extension DoubleExtension on double {
   String truncateZero() {
     if (toString().endsWith('.0')) {
@@ -91,7 +103,7 @@ extension DoubleExtension on double {
     }
   }
 
-  /// Truncate trailing zeros and decimal point if the number is an integer.
+  /// Truncate trailing zeros if exist in a decimal number.
   /// Otherwise, return the number as is.
   /// [fractionDigits] is the number of digits after the decimal point.
   String truncateZeroFixed(int fractionDigits) {
