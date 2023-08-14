@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/types/controllers.dart';
@@ -36,24 +37,86 @@ class CoordinateFields extends StatelessWidget {
   }
 }
 
-class AddCoordinateButton extends StatelessWidget {
+class AddCoordinateButton extends ConsumerStatefulWidget {
   const AddCoordinateButton({super.key, required this.siteId});
 
   final int siteId;
 
   @override
+  AddCoordinateButtonState createState() => AddCoordinateButtonState();
+}
+
+class AddCoordinateButtonState extends ConsumerState<AddCoordinateButton> {
+  @override
   Widget build(BuildContext context) {
-    return PrimaryButton(
-      label: 'Add coordinate',
-      icon: Icons.add,
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => NewCoordinate(siteId: siteId),
+    return Wrap(
+      spacing: 8,
+      children: [
+        SecondaryButton(
+          text: 'Add coordinate',
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => NewCoordinate(siteId: widget.siteId),
+              ),
+            );
+          },
+        ),
+        PrimaryIconButton(
+            onPressed: () async {
+              Position? position = await _getLocation();
+              if (position != null) {
+                _addCoordinate(position);
+              }
+            },
+            icon: Icons.my_location_outlined),
+      ],
+    );
+  }
+
+  Future<Position?> _getLocation() async {
+    try {
+      return GeoLocationServices().getCurrentCoordinates();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+          action: SnackBarAction(
+            label: 'Settings',
+            onPressed: () async {
+              await Geolocator.openLocationSettings();
+              // openAppSettings();
+            },
           ),
-        );
-      },
+        ),
+      );
+    }
+    return null;
+  }
+
+  Future<void> _addCoordinate(Position position) async {
+    final service = CoordinateServices(ref: ref);
+    final locator = GeoLocationServices();
+    final coordinateCtr = locator.getControllerModel(position);
+    final data = locator.getCoordinateCompanion(widget.siteId, coordinateCtr);
+    int coordinateId = await service.createCoordinate(data);
+    if (mounted) {
+      _navigateToEditCoordinate(coordinateId, coordinateCtr);
+    }
+  }
+
+  void _navigateToEditCoordinate(
+      int coordinateId, CoordinateCtrModel coordinateCtr) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditCoordinate(
+          siteId: widget.siteId,
+          coordinateId: coordinateId,
+          coordCtr: coordinateCtr,
+        ),
+      ),
     );
   }
 }
@@ -204,8 +267,7 @@ class CoordinateSubtitle extends StatelessWidget {
   }
 
   String _getCoordinateElevation() {
-    if (coordinate.elevationInMeter == null ||
-        coordinate.elevationInMeter == 0) {
+    if (coordinate.elevationInMeter == null) {
       return '? m';
     } else {
       return '${coordinate.elevationInMeter} m';

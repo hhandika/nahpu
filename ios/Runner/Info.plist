@@ -36,6 +36,10 @@
 	<string>$(PRODUCT_NAME) would like to use your camera</string>
 	<key>NSDocumentsFolderUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like access to document folder to read and write results</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>$(PRODUCT_NAME) needs access to location when open.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This app needs access to location when in the background.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to use your microphone</string>
 	<key>NSPhotoLibraryUsageDescription</key>

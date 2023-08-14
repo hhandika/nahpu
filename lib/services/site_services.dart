@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:geolocator/geolocator.dart';
 import 'package:nahpu/providers/sites.dart';
 import 'package:nahpu/services/database/coordinate_queries.dart';
 import 'package:nahpu/services/database/database.dart';
@@ -8,6 +9,7 @@ import 'package:nahpu/services/database/site_queries.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/import/multimedia.dart';
 import 'package:nahpu/services/io_services.dart';
+import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/utility_services.dart';
 import 'package:path/path.dart';
@@ -167,8 +169,8 @@ class CoordinateServices extends DbAccess {
     return CoordinateQuery(dbAccess).getCoordinateById(coordinateId);
   }
 
-  Future<void> createCoordinate(CoordinateCompanion form) async {
-    await CoordinateQuery(dbAccess).createCoordinate(form);
+  Future<int> createCoordinate(CoordinateCompanion form) async {
+    return await CoordinateQuery(dbAccess).createCoordinate(form);
   }
 
   Future<void> updateCoordinate(
@@ -182,5 +184,54 @@ class CoordinateServices extends DbAccess {
 
   Future<void> deleteCoordinate(int coordinateId) async {
     await CoordinateQuery(dbAccess).deleteCoordinate(coordinateId);
+  }
+}
+
+class GeoLocationServices {
+  Future<Position> getCurrentCoordinates() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.deniedForever) {
+      throw Exception('Location permissions are permanently denied,'
+          ' we cannot request permissions.');
+    }
+
+    if (!await Geolocator.isLocationServiceEnabled() ||
+        permission == LocationPermission.denied) {
+      LocationPermission permission = await Geolocator.requestPermission();
+      return await _getCoordinates(permission);
+    }
+
+    return await _getCoordinates(permission);
+  }
+
+  Future<Position> _getCoordinates(LocationPermission permission) async {
+    if (permission == LocationPermission.always ||
+        permission == LocationPermission.whileInUse) {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      return position;
+    }
+    throw Exception('Location permissions are denied');
+  }
+
+  CoordinateCtrModel getControllerModel(Position position) {
+    CoordinateCtrModel ctr = CoordinateCtrModel.empty();
+    ctr.latitudeCtr.text = position.latitude.toStringAsFixed(6);
+    ctr.longitudeCtr.text = position.longitude.toStringAsFixed(6);
+    ctr.elevationCtr.text = position.altitude.toInt().toString();
+    ctr.uncertaintyCtr.text = position.accuracy.toInt().toString();
+    return ctr;
+  }
+
+  CoordinateCompanion getCoordinateCompanion(
+      int siteID, CoordinateCtrModel ctr) {
+    return CoordinateCompanion(
+      siteID: db.Value(siteID),
+      decimalLatitude: db.Value(double.parse(ctr.latitudeCtr.text)),
+      decimalLongitude: db.Value(double.parse(ctr.longitudeCtr.text)),
+      elevationInMeter: db.Value(int.parse(ctr.elevationCtr.text)),
+      uncertaintyInMeters: db.Value(int.parse(ctr.uncertaintyCtr.text)),
+    );
   }
 }
