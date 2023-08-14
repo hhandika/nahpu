@@ -223,15 +223,4 @@ class GeoLocationServices {
     ctr.uncertaintyCtr.text = position.accuracy.toInt().toString();
     return ctr;
   }
-
-  CoordinateCompanion getCoordinateCompanion(
-      int siteID, CoordinateCtrModel ctr) {
-    return CoordinateCompanion(
-      siteID: db.Value(siteID),
-      decimalLatitude: db.Value(double.parse(ctr.latitudeCtr.text)),
-      decimalLongitude: db.Value(double.parse(ctr.longitudeCtr.text)),
-      elevationInMeter: db.Value(int.parse(ctr.elevationCtr.text)),
-      uncertaintyInMeters: db.Value(int.parse(ctr.uncertaintyCtr.text)),
-    );
-  }
 }

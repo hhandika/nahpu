@@ -58,7 +58,10 @@ class AddCoordinateButtonState extends ConsumerState<AddCoordinateButton> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => NewCoordinate(siteId: widget.siteId),
+                builder: (context) => NewCoordinate(
+                  siteId: widget.siteId,
+                  coordCtr: CoordinateCtrModel.empty(),
+                ),
               ),
             );
           },
@@ -96,24 +99,19 @@ class AddCoordinateButtonState extends ConsumerState<AddCoordinateButton> {
   }
 
   Future<void> _addCoordinate(Position position) async {
-    final service = CoordinateServices(ref: ref);
     final locator = GeoLocationServices();
     final coordinateCtr = locator.getControllerModel(position);
-    final data = locator.getCoordinateCompanion(widget.siteId, coordinateCtr);
-    int coordinateId = await service.createCoordinate(data);
     if (mounted) {
-      _navigateToEditCoordinate(coordinateId, coordinateCtr);
+      _navigateToEditCoordinate(coordinateCtr);
     }
   }
 
-  void _navigateToEditCoordinate(
-      int coordinateId, CoordinateCtrModel coordinateCtr) {
+  void _navigateToEditCoordinate(CoordinateCtrModel coordinateCtr) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EditCoordinate(
+        builder: (context) => NewCoordinate(
           siteId: widget.siteId,
-          coordinateId: coordinateId,
           coordCtr: coordinateCtr,
         ),
       ),
@@ -374,13 +372,17 @@ class CoordinateMenuState extends ConsumerState<CoordinateMenu> {
 }
 
 class NewCoordinate extends ConsumerWidget {
-  const NewCoordinate({Key? key, required this.siteId}) : super(key: key);
+  const NewCoordinate({
+    super.key,
+    required this.siteId,
+    required this.coordCtr,
+  });
 
   final int siteId;
+  final CoordinateCtrModel coordCtr;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final coordCtr = CoordinateCtrModel.empty();
     return FalseWillPop(
         child: Scaffold(
       appBar: AppBar(
@@ -452,6 +454,12 @@ class CoordinateForms extends ConsumerStatefulWidget {
 
 class CoordinateFormsState extends ConsumerState<CoordinateForms> {
   final List<String> _datum = ['WGS84', 'NAD83', 'NAD27', 'Other'];
+
+  @override
+  void dispose() {
+    widget.coordCtr.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
