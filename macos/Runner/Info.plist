@@ -75,7 +75,7 @@
 			</dict>
 		</dict>
 	</array>
-	<key>com.apple.security.files.user-selected.read-write</key>
-	<true/>
+	<key>NSLocationUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to access you location to get site coordinates</string>
 </dict>
 </plist>
