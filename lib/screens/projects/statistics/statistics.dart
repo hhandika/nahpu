@@ -170,10 +170,12 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
                     child: FutureBuilder(
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
+                            bool enabledFeature =
+                                snapshot.data!.length > 5 ? true : false;
                             return DropdownMenu(
                               initialSelection: _siteID,
                               controller: _controller,
-                              enableFilter: true,
+                              enableSearch: enabledFeature,
                               enabled: snapshot.data!.entries.isNotEmpty,
                               hintText: 'Select site',
                               textStyle:
@@ -183,16 +185,17 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
                                   borderSide: BorderSide.none,
                                 ),
                               ),
-                              trailingIcon: _controller.text.isEmpty
-                                  ? null
-                                  : IconButton(
-                                      icon: const Icon(Icons.clear_rounded),
-                                      onPressed: () {
-                                        setState(() {
-                                          _siteID = null;
-                                          _controller.clear();
-                                        });
-                                      }),
+                              trailingIcon:
+                                  _controller.text.isEmpty || !enabledFeature
+                                      ? null
+                                      : IconButton(
+                                          icon: const Icon(Icons.clear_rounded),
+                                          onPressed: () {
+                                            setState(() {
+                                              _siteID = null;
+                                              _controller.clear();
+                                            });
+                                          }),
                               leadingIcon:
                                   const Icon(Icons.location_on_outlined),
                               dropdownMenuEntries: snapshot.data!.entries
