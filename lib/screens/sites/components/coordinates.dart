@@ -67,13 +67,14 @@ class AddCoordinateButtonState extends ConsumerState<AddCoordinateButton> {
           },
         ),
         PrimaryIconButton(
-            onPressed: () async {
-              Position? position = await _getLocation();
-              if (position != null) {
-                _addCoordinate(position);
-              }
-            },
-            icon: Icons.my_location_outlined),
+          onPressed: () async {
+            Position? position = await _getLocation();
+            if (position != null) {
+              _addCoordinate(position);
+            }
+          },
+          icon: Icons.my_location_outlined,
+        ),
       ],
     );
   }
@@ -102,11 +103,11 @@ class AddCoordinateButtonState extends ConsumerState<AddCoordinateButton> {
     final locator = GeoLocationServices();
     final coordinateCtr = locator.getControllerModel(position);
     if (mounted) {
-      _navigateToEditCoordinate(coordinateCtr);
+      _navigateToAddCoordinate(coordinateCtr);
     }
   }
 
-  void _navigateToEditCoordinate(CoordinateCtrModel coordinateCtr) {
+  void _navigateToAddCoordinate(CoordinateCtrModel coordinateCtr) {
     Navigator.push(
       context,
       MaterialPageRoute(
