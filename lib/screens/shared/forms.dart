@@ -167,7 +167,8 @@ class _InfoButtonState extends State<InfoButton> {
           title: const Text('Info'),
           content: Container(
             width: 400,
-            constraints: const BoxConstraints(maxHeight: 400),
+            constraints: BoxConstraints(
+                maxHeight: MediaQuery.sizeOf(context).height * 0.75),
             child: InfoContainer(
               content: [
                 widget.content,
@@ -210,8 +211,12 @@ class _InfoButtonState extends State<InfoButton> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                  child: widget.content,
-                )
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                        maxHeight: MediaQuery.sizeOf(context).height * 0.75),
+                    child: widget.content,
+                  ),
+                ),
               ],
             ),
           );
@@ -243,24 +248,21 @@ class _InfoContainerState extends State<InfoContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-        constraints:
-            BoxConstraints(maxHeight: MediaQuery.sizeOf(context).height * 0.75),
-        child: CommonScrollbar(
-          scrollController: _scrollController,
-          child: ListView.builder(
-            controller: _scrollController,
-            physics: _scrollPhysics,
-            shrinkWrap: true,
-            itemCount: widget.content.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.only(top: index == 0 ? 0 : 4),
-                child: widget.content[index],
-              );
-            },
-          ),
-        ));
+    return CommonScrollbar(
+      scrollController: _scrollController,
+      child: ListView.builder(
+        controller: _scrollController,
+        physics: _scrollPhysics,
+        shrinkWrap: true,
+        itemCount: widget.content.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: EdgeInsets.only(top: index == 0 ? 0 : 4),
+            child: widget.content[index],
+          );
+        },
+      ),
+    );
   }
 }
 
