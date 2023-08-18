@@ -7349,17 +7349,16 @@ class AssociatedData extends Table
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  static const VerificationMeta _secondaryIdMeta =
-      const VerificationMeta('secondaryId');
-  late final GeneratedColumn<String> secondaryId = GeneratedColumn<String>(
-      'secondaryId', aliasedName, true,
+  static const VerificationMeta _specimenUuidMeta =
+      const VerificationMeta('specimenUuid');
+  late final GeneratedColumn<String> specimenUuid = GeneratedColumn<String>(
+      'specimenUuid', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _secondaryIdRefMeta =
-      const VerificationMeta('secondaryIdRef');
-  late final GeneratedColumn<String> secondaryIdRef = GeneratedColumn<String>(
-      'secondaryIdRef', aliasedName, true,
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -7376,15 +7375,15 @@ class AssociatedData extends Table
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _fileIdMeta = const VerificationMeta('fileId');
-  late final GeneratedColumn<String> fileId = GeneratedColumn<String>(
-      'fileId', aliasedName, true,
+  static const VerificationMeta _urlMeta = const VerificationMeta('url');
+  late final GeneratedColumn<String> url = GeneratedColumn<String>(
+      'url', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns =>
-      [primaryId, secondaryId, secondaryIdRef, type, description, fileId];
+      [primaryId, specimenUuid, name, type, description, url];
   @override
   String get aliasedName => _alias ?? 'associatedData';
   @override
@@ -7398,17 +7397,15 @@ class AssociatedData extends Table
       context.handle(_primaryIdMeta,
           primaryId.isAcceptableOrUnknown(data['primaryId']!, _primaryIdMeta));
     }
-    if (data.containsKey('secondaryId')) {
+    if (data.containsKey('specimenUuid')) {
       context.handle(
-          _secondaryIdMeta,
-          secondaryId.isAcceptableOrUnknown(
-              data['secondaryId']!, _secondaryIdMeta));
+          _specimenUuidMeta,
+          specimenUuid.isAcceptableOrUnknown(
+              data['specimenUuid']!, _specimenUuidMeta));
     }
-    if (data.containsKey('secondaryIdRef')) {
+    if (data.containsKey('name')) {
       context.handle(
-          _secondaryIdRefMeta,
-          secondaryIdRef.isAcceptableOrUnknown(
-              data['secondaryIdRef']!, _secondaryIdRefMeta));
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
     }
     if (data.containsKey('type')) {
       context.handle(
@@ -7420,9 +7417,9 @@ class AssociatedData extends Table
           description.isAcceptableOrUnknown(
               data['description']!, _descriptionMeta));
     }
-    if (data.containsKey('fileId')) {
-      context.handle(_fileIdMeta,
-          fileId.isAcceptableOrUnknown(data['fileId']!, _fileIdMeta));
+    if (data.containsKey('url')) {
+      context.handle(
+          _urlMeta, url.isAcceptableOrUnknown(data['url']!, _urlMeta));
     }
     return context;
   }
@@ -7435,16 +7432,16 @@ class AssociatedData extends Table
     return AssociatedDataData(
       primaryId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}primaryId']),
-      secondaryId: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}secondaryId']),
-      secondaryIdRef: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}secondaryIdRef']),
+      specimenUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}specimenUuid']),
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name']),
       type: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}type']),
       description: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}description']),
-      fileId: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}fileId']),
+      url: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}url']),
     );
   }
 
@@ -7454,35 +7451,38 @@ class AssociatedData extends Table
   }
 
   @override
+  List<String> get customConstraints =>
+      const ['FOREIGN KEY(specimenUuid)REFERENCES specimen(uuid)'];
+  @override
   bool get dontWriteConstraints => true;
 }
 
 class AssociatedDataData extends DataClass
     implements Insertable<AssociatedDataData> {
   final int? primaryId;
-  final String? secondaryId;
-  final String? secondaryIdRef;
+  final String? specimenUuid;
+  final String? name;
   final String? type;
   final String? description;
-  final String? fileId;
+  final String? url;
   const AssociatedDataData(
       {this.primaryId,
-      this.secondaryId,
-      this.secondaryIdRef,
+      this.specimenUuid,
+      this.name,
       this.type,
       this.description,
-      this.fileId});
+      this.url});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (!nullToAbsent || primaryId != null) {
       map['primaryId'] = Variable<int>(primaryId);
     }
-    if (!nullToAbsent || secondaryId != null) {
-      map['secondaryId'] = Variable<String>(secondaryId);
+    if (!nullToAbsent || specimenUuid != null) {
+      map['specimenUuid'] = Variable<String>(specimenUuid);
     }
-    if (!nullToAbsent || secondaryIdRef != null) {
-      map['secondaryIdRef'] = Variable<String>(secondaryIdRef);
+    if (!nullToAbsent || name != null) {
+      map['name'] = Variable<String>(name);
     }
     if (!nullToAbsent || type != null) {
       map['type'] = Variable<String>(type);
@@ -7490,8 +7490,8 @@ class AssociatedDataData extends DataClass
     if (!nullToAbsent || description != null) {
       map['description'] = Variable<String>(description);
     }
-    if (!nullToAbsent || fileId != null) {
-      map['fileId'] = Variable<String>(fileId);
+    if (!nullToAbsent || url != null) {
+      map['url'] = Variable<String>(url);
     }
     return map;
   }
@@ -7501,18 +7501,15 @@ class AssociatedDataData extends DataClass
       primaryId: primaryId == null && nullToAbsent
           ? const Value.absent()
           : Value(primaryId),
-      secondaryId: secondaryId == null && nullToAbsent
+      specimenUuid: specimenUuid == null && nullToAbsent
           ? const Value.absent()
-          : Value(secondaryId),
-      secondaryIdRef: secondaryIdRef == null && nullToAbsent
-          ? const Value.absent()
-          : Value(secondaryIdRef),
+          : Value(specimenUuid),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
       type: type == null && nullToAbsent ? const Value.absent() : Value(type),
       description: description == null && nullToAbsent
           ? const Value.absent()
           : Value(description),
-      fileId:
-          fileId == null && nullToAbsent ? const Value.absent() : Value(fileId),
+      url: url == null && nullToAbsent ? const Value.absent() : Value(url),
     );
   }
 
@@ -7521,11 +7518,11 @@ class AssociatedDataData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return AssociatedDataData(
       primaryId: serializer.fromJson<int?>(json['primaryId']),
-      secondaryId: serializer.fromJson<String?>(json['secondaryId']),
-      secondaryIdRef: serializer.fromJson<String?>(json['secondaryIdRef']),
+      specimenUuid: serializer.fromJson<String?>(json['specimenUuid']),
+      name: serializer.fromJson<String?>(json['name']),
       type: serializer.fromJson<String?>(json['type']),
       description: serializer.fromJson<String?>(json['description']),
-      fileId: serializer.fromJson<String?>(json['fileId']),
+      url: serializer.fromJson<String?>(json['url']),
     );
   }
   @override
@@ -7533,113 +7530,113 @@ class AssociatedDataData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'primaryId': serializer.toJson<int?>(primaryId),
-      'secondaryId': serializer.toJson<String?>(secondaryId),
-      'secondaryIdRef': serializer.toJson<String?>(secondaryIdRef),
+      'specimenUuid': serializer.toJson<String?>(specimenUuid),
+      'name': serializer.toJson<String?>(name),
       'type': serializer.toJson<String?>(type),
       'description': serializer.toJson<String?>(description),
-      'fileId': serializer.toJson<String?>(fileId),
+      'url': serializer.toJson<String?>(url),
     };
   }
 
   AssociatedDataData copyWith(
           {Value<int?> primaryId = const Value.absent(),
-          Value<String?> secondaryId = const Value.absent(),
-          Value<String?> secondaryIdRef = const Value.absent(),
+          Value<String?> specimenUuid = const Value.absent(),
+          Value<String?> name = const Value.absent(),
           Value<String?> type = const Value.absent(),
           Value<String?> description = const Value.absent(),
-          Value<String?> fileId = const Value.absent()}) =>
+          Value<String?> url = const Value.absent()}) =>
       AssociatedDataData(
         primaryId: primaryId.present ? primaryId.value : this.primaryId,
-        secondaryId: secondaryId.present ? secondaryId.value : this.secondaryId,
-        secondaryIdRef:
-            secondaryIdRef.present ? secondaryIdRef.value : this.secondaryIdRef,
+        specimenUuid:
+            specimenUuid.present ? specimenUuid.value : this.specimenUuid,
+        name: name.present ? name.value : this.name,
         type: type.present ? type.value : this.type,
         description: description.present ? description.value : this.description,
-        fileId: fileId.present ? fileId.value : this.fileId,
+        url: url.present ? url.value : this.url,
       );
   @override
   String toString() {
     return (StringBuffer('AssociatedDataData(')
           ..write('primaryId: $primaryId, ')
-          ..write('secondaryId: $secondaryId, ')
-          ..write('secondaryIdRef: $secondaryIdRef, ')
+          ..write('specimenUuid: $specimenUuid, ')
+          ..write('name: $name, ')
           ..write('type: $type, ')
           ..write('description: $description, ')
-          ..write('fileId: $fileId')
+          ..write('url: $url')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      primaryId, secondaryId, secondaryIdRef, type, description, fileId);
+  int get hashCode =>
+      Object.hash(primaryId, specimenUuid, name, type, description, url);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is AssociatedDataData &&
           other.primaryId == this.primaryId &&
-          other.secondaryId == this.secondaryId &&
-          other.secondaryIdRef == this.secondaryIdRef &&
+          other.specimenUuid == this.specimenUuid &&
+          other.name == this.name &&
           other.type == this.type &&
           other.description == this.description &&
-          other.fileId == this.fileId);
+          other.url == this.url);
 }
 
 class AssociatedDataCompanion extends UpdateCompanion<AssociatedDataData> {
   final Value<int?> primaryId;
-  final Value<String?> secondaryId;
-  final Value<String?> secondaryIdRef;
+  final Value<String?> specimenUuid;
+  final Value<String?> name;
   final Value<String?> type;
   final Value<String?> description;
-  final Value<String?> fileId;
+  final Value<String?> url;
   const AssociatedDataCompanion({
     this.primaryId = const Value.absent(),
-    this.secondaryId = const Value.absent(),
-    this.secondaryIdRef = const Value.absent(),
+    this.specimenUuid = const Value.absent(),
+    this.name = const Value.absent(),
     this.type = const Value.absent(),
     this.description = const Value.absent(),
-    this.fileId = const Value.absent(),
+    this.url = const Value.absent(),
   });
   AssociatedDataCompanion.insert({
     this.primaryId = const Value.absent(),
-    this.secondaryId = const Value.absent(),
-    this.secondaryIdRef = const Value.absent(),
+    this.specimenUuid = const Value.absent(),
+    this.name = const Value.absent(),
     this.type = const Value.absent(),
     this.description = const Value.absent(),
-    this.fileId = const Value.absent(),
+    this.url = const Value.absent(),
   });
   static Insertable<AssociatedDataData> custom({
     Expression<int>? primaryId,
-    Expression<String>? secondaryId,
-    Expression<String>? secondaryIdRef,
+    Expression<String>? specimenUuid,
+    Expression<String>? name,
     Expression<String>? type,
     Expression<String>? description,
-    Expression<String>? fileId,
+    Expression<String>? url,
   }) {
     return RawValuesInsertable({
       if (primaryId != null) 'primaryId': primaryId,
-      if (secondaryId != null) 'secondaryId': secondaryId,
-      if (secondaryIdRef != null) 'secondaryIdRef': secondaryIdRef,
+      if (specimenUuid != null) 'specimenUuid': specimenUuid,
+      if (name != null) 'name': name,
       if (type != null) 'type': type,
       if (description != null) 'description': description,
-      if (fileId != null) 'fileId': fileId,
+      if (url != null) 'url': url,
     });
   }
 
   AssociatedDataCompanion copyWith(
       {Value<int?>? primaryId,
-      Value<String?>? secondaryId,
-      Value<String?>? secondaryIdRef,
+      Value<String?>? specimenUuid,
+      Value<String?>? name,
       Value<String?>? type,
       Value<String?>? description,
-      Value<String?>? fileId}) {
+      Value<String?>? url}) {
     return AssociatedDataCompanion(
       primaryId: primaryId ?? this.primaryId,
-      secondaryId: secondaryId ?? this.secondaryId,
-      secondaryIdRef: secondaryIdRef ?? this.secondaryIdRef,
+      specimenUuid: specimenUuid ?? this.specimenUuid,
+      name: name ?? this.name,
       type: type ?? this.type,
       description: description ?? this.description,
-      fileId: fileId ?? this.fileId,
+      url: url ?? this.url,
     );
   }
 
@@ -7649,11 +7646,11 @@ class AssociatedDataCompanion extends UpdateCompanion<AssociatedDataData> {
     if (primaryId.present) {
       map['primaryId'] = Variable<int>(primaryId.value);
     }
-    if (secondaryId.present) {
-      map['secondaryId'] = Variable<String>(secondaryId.value);
+    if (specimenUuid.present) {
+      map['specimenUuid'] = Variable<String>(specimenUuid.value);
     }
-    if (secondaryIdRef.present) {
-      map['secondaryIdRef'] = Variable<String>(secondaryIdRef.value);
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
     }
     if (type.present) {
       map['type'] = Variable<String>(type.value);
@@ -7661,8 +7658,8 @@ class AssociatedDataCompanion extends UpdateCompanion<AssociatedDataData> {
     if (description.present) {
       map['description'] = Variable<String>(description.value);
     }
-    if (fileId.present) {
-      map['fileId'] = Variable<String>(fileId.value);
+    if (url.present) {
+      map['url'] = Variable<String>(url.value);
     }
     return map;
   }
@@ -7671,11 +7668,11 @@ class AssociatedDataCompanion extends UpdateCompanion<AssociatedDataData> {
   String toString() {
     return (StringBuffer('AssociatedDataCompanion(')
           ..write('primaryId: $primaryId, ')
-          ..write('secondaryId: $secondaryId, ')
-          ..write('secondaryIdRef: $secondaryIdRef, ')
+          ..write('specimenUuid: $specimenUuid, ')
+          ..write('name: $name, ')
           ..write('type: $type, ')
           ..write('description: $description, ')
-          ..write('fileId: $fileId')
+          ..write('url: $url')
           ..write(')'))
         .toString();
   }

@@ -12,6 +12,8 @@ New to v5:
 4. Add citesStatus, redListCriteria, countryStatus, and sortingOrder to the taxonomy table.
 4. Remove minimumElevationInMeters and maximumElevationInMeters in the coordinate table.
 5. Cast elevationInMeter to REAL in the coordinate table.
+6. Rename secondaryId to name and fileId to url in the associatedData table.
+7. Add specimenUuid and delete secondaryIdRef in the associatedData table.
 
 */
 
@@ -162,11 +164,12 @@ CREATE TABLE specimenMedia (
 
 CREATE TABLE associatedData (
     primaryId INT PRIMARY KEY AUTOINCREMENT,
-    secondaryId TEXT,
-    secondaryIdRef TEXT,
+    specimenUuid TEXT,
+    name TEXT,
     type TEXT,
     description TEXT,
-    fileId TEXT
+    url TEXT,
+    FOREIGN KEY(specimenUuid) REFERENCES specimen(uuid)
 );
 
 CREATE TABLE personnelList (

@@ -61,7 +61,14 @@ class Database extends _$Database {
     await m.addColumn(taxonomy, taxonomy.countryStatus);
     await m.addColumn(taxonomy, taxonomy.sortingOrder);
 
-    // Site Casting
+    // Associated data
+    await m.addColumn(associatedData, associatedData.specimenUuid);
+    await m.renameColumn(associatedData, 'secondaryId', associatedData.name);
+    await m.renameColumn(associatedData, 'fileId', associatedData.url);
+    // Remove secondaryIdRef
+    await m.alterTable(TableMigration(associatedData));
+
+    // Sites
     await m.alterTable(TableMigration(coordinate));
     await m.alterTable(TableMigration(coordinate, columnTransformer: {
       coordinate.elevationInMeter: coordinate.elevationInMeter.cast<double>(),
