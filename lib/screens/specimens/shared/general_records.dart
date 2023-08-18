@@ -32,8 +32,7 @@ class GeneralRecordField extends ConsumerStatefulWidget {
 class GeneralRecordFieldState extends ConsumerState<GeneralRecordField> {
   List<PersonnelData> personnelList = [];
 
-  TextEditingController speciesCtr =
-      TextEditingController(text: 'Species found');
+  bool _showMore = false;
 
   @override
   void initState() {
@@ -55,8 +54,10 @@ class GeneralRecordFieldState extends ConsumerState<GeneralRecordField> {
       child: Column(
         children: [
           PersonnelRecords(
-              specimenUuid: widget.specimenUuid,
-              specimenCtr: widget.specimenCtr),
+            specimenUuid: widget.specimenUuid,
+            specimenCtr: widget.specimenCtr,
+            showMore: _showMore,
+          ),
           SpeciesFieldCtr(
             specimenUuid: widget.specimenUuid,
             speciesCtr: widget.specimenCtr.speciesCtr,
@@ -64,6 +65,13 @@ class GeneralRecordFieldState extends ConsumerState<GeneralRecordField> {
           IDConfidence(
             specimenUuid: widget.specimenUuid,
             specimenCtr: widget.specimenCtr,
+          ),
+          Visibility(
+            visible:
+                _showMore || widget.specimenCtr.idMethodCtr.text.isNotEmpty,
+            child: IDMethod(
+                specimenUuid: widget.specimenUuid,
+                specimenCtr: widget.specimenCtr),
           ),
           widget.specimenCtr.conditionCtr == 'Freshly Euthanized'
               ? AdaptiveLayout(
@@ -95,7 +103,24 @@ class GeneralRecordFieldState extends ConsumerState<GeneralRecordField> {
                 specimenUuid: widget.specimenUuid,
               ),
             ],
-          )
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor:
+                    Theme.of(context).colorScheme.onPrimary.withAlpha(180),
+              ),
+              onPressed: () {
+                setState(
+                  () {
+                    _showMore = !_showMore;
+                  },
+                );
+              },
+              child: Text(_showMore ? 'Show less' : 'Show more'),
+            ),
+          ),
         ],
       ),
     );
@@ -147,10 +172,10 @@ class IDConfidence extends ConsumerWidget {
         child: DropdownButtonFormField<int?>(
       value: specimenCtr.idConfidenceCtr,
       onChanged: (int? value) {
-        // SpecimenServices(ref: ref).updateSpecimen(
-        //   specimenUuid,
-        //   SpecimenCompanion(idConfidence: db.Value(value)),
-        // );
+        SpecimenServices(ref: ref).updateSpecimen(
+          specimenUuid,
+          SpecimenCompanion(iDConfidence: db.Value(value)),
+        );
       },
       decoration: const InputDecoration(
         labelText: 'ID Confidence',
@@ -161,6 +186,39 @@ class IDConfidence extends ConsumerWidget {
               value: idConfidenceList.indexOf(e),
               child: CommonDropdownText(text: e)))
           .toList(),
+    ));
+  }
+}
+
+class IDMethod extends ConsumerWidget {
+  const IDMethod({
+    super.key,
+    required this.specimenUuid,
+    required this.specimenCtr,
+  });
+
+  final String specimenUuid;
+  final SpecimenFormCtrModel specimenCtr;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final service = SpecimenServices(ref: ref);
+    return CommonPadding(
+        child: TextField(
+      controller: specimenCtr.idMethodCtr,
+      decoration: const InputDecoration(
+        labelText: 'ID Method',
+        hintText: 'Enter ID method',
+      ),
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          service.updateSpecimenSkipInvalidation(
+            specimenUuid,
+            SpecimenCompanion(iDMethod: db.Value(value)),
+          );
+        }
+      },
+      onSubmitted: (_) => service.invalidateSpecimenList(),
     ));
   }
 }
@@ -288,13 +346,15 @@ class PrepTimeField extends ConsumerWidget {
 
 class PersonnelRecords extends ConsumerStatefulWidget {
   const PersonnelRecords({
-    Key? key,
+    super.key,
     required this.specimenUuid,
     required this.specimenCtr,
-  }) : super(key: key);
+    required this.showMore,
+  });
 
   final SpecimenFormCtrModel specimenCtr;
   final String specimenUuid;
+  final bool showMore;
 
   @override
   PersonnelRecordsState createState() => PersonnelRecordsState();
@@ -315,6 +375,7 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
                     specimenUuid: widget.specimenUuid,
                     specimenCtr: widget.specimenCtr,
                     catalogerUuid: widget.specimenCtr.catalogerCtr!,
+                    showMore: widget.showMore,
                   ))
               : const SizedBox.shrink(),
           DropdownButtonFormField<String>(
@@ -409,13 +470,15 @@ class PersonnelRecordsState extends ConsumerState<PersonnelRecords> {
 
 class IdTile extends ConsumerWidget {
   const IdTile({
-    Key? key,
+    super.key,
     required this.specimenUuid,
     required this.specimenCtr,
     required this.catalogerUuid,
-  }) : super(key: key);
+    required this.showMore,
+  });
 
   final SpecimenFormCtrModel specimenCtr;
+  final bool showMore;
   final String specimenUuid;
   final String catalogerUuid;
 
@@ -426,21 +489,24 @@ class IdTile extends ConsumerWidget {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-            child: CommonTextField(
-              controller: specimenCtr.museumIDCtr,
-              labelText: 'Museum ID',
-              hintText: 'Enter museum ID (if applicable)',
-              isLastField: true,
-              onChanged: (String? value) {
-                if (value != null) {
-                  SpecimenServices(ref: ref).updateSpecimen(
-                    specimenUuid,
-                    SpecimenCompanion(
-                      museumID: db.Value(value),
-                    ),
-                  );
-                }
-              },
+            child: Visibility(
+              visible: showMore || specimenCtr.museumIDCtr.text.isNotEmpty,
+              child: CommonTextField(
+                controller: specimenCtr.museumIDCtr,
+                labelText: 'Museum ID',
+                hintText: 'Enter museum ID (if applicable)',
+                isLastField: true,
+                onChanged: (String? value) {
+                  if (value != null) {
+                    SpecimenServices(ref: ref).updateSpecimen(
+                      specimenUuid,
+                      SpecimenCompanion(
+                        museumID: db.Value(value),
+                      ),
+                    );
+                  }
+                },
+              ),
             ),
           ),
           SpecimenIdTile(
