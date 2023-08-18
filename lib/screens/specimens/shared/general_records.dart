@@ -61,6 +61,10 @@ class GeneralRecordFieldState extends ConsumerState<GeneralRecordField> {
             specimenUuid: widget.specimenUuid,
             speciesCtr: widget.specimenCtr.speciesCtr,
           ),
+          IDConfidence(
+            specimenUuid: widget.specimenUuid,
+            specimenCtr: widget.specimenCtr,
+          ),
           widget.specimenCtr.conditionCtr == 'Freshly Euthanized'
               ? AdaptiveLayout(
                   useHorizontalLayout: widget.useHorizontalLayout,
@@ -124,6 +128,40 @@ class SpeciesFieldCtr extends ConsumerWidget {
           loading: () => const CircularProgressIndicator(),
           error: (error, stack) => const Text('Error loading taxa'),
         );
+  }
+}
+
+class IDConfidence extends ConsumerWidget {
+  const IDConfidence({
+    super.key,
+    required this.specimenUuid,
+    required this.specimenCtr,
+  });
+
+  final String specimenUuid;
+  final SpecimenFormCtrModel specimenCtr;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return CommonPadding(
+        child: DropdownButtonFormField<int?>(
+      value: specimenCtr.idConfidenceCtr,
+      onChanged: (int? value) {
+        // SpecimenServices(ref: ref).updateSpecimen(
+        //   specimenUuid,
+        //   SpecimenCompanion(idConfidence: db.Value(value)),
+        // );
+      },
+      decoration: const InputDecoration(
+        labelText: 'ID Confidence',
+        hintText: 'Choose a confidence level',
+      ),
+      items: idConfidenceList.reversed
+          .map((e) => DropdownMenuItem<int?>(
+              value: idConfidenceList.indexOf(e),
+              child: CommonDropdownText(text: e)))
+          .toList(),
+    ));
   }
 }
 
