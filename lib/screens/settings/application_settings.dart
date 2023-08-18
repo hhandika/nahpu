@@ -161,6 +161,7 @@ class DataUsageSettingsState extends ConsumerState<DataUsageSettings> {
                       return CommonSettingTile(
                         icon: Icons.file_copy_outlined,
                         title: 'Files',
+                        label: 'Include images and other files',
                         value: snapshot.data,
                         onTap: null,
                       );
@@ -177,6 +178,7 @@ class DataUsageSettingsState extends ConsumerState<DataUsageSettings> {
                       return CommonSettingTile(
                         icon: Icons.photo_library_outlined,
                         title: 'Images',
+                        label: 'Only images',
                         value: snapshot.data,
                         onTap: null,
                       );
