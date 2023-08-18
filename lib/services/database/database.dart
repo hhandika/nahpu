@@ -14,7 +14,7 @@ class Database extends _$Database {
   Database() : super(_openConnection());
 
   @override
-  int get schemaVersion => 4; // bump this when you change the schema
+  int get schemaVersion => 5; // bump this when you change the schema
 
   @override
   MigrationStrategy get migration {

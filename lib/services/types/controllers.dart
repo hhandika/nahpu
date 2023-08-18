@@ -201,6 +201,7 @@ class SpecimenFormCtrModel {
   SpecimenFormCtrModel({
     required this.speciesCtr,
     required this.idConfidenceCtr,
+    required this.idMethodCtr,
     required this.catalogerCtr,
     required this.museumIDCtr,
     required this.fieldNumberCtr,
@@ -232,6 +233,7 @@ class SpecimenFormCtrModel {
   int? collMethodCtr;
   int? relativeTimeCtr;
   int? coordinateCtr;
+  TextEditingController idMethodCtr;
   TextEditingController museumIDCtr;
   TextEditingController fieldNumberCtr;
   TextEditingController prepDateCtr;
@@ -255,6 +257,7 @@ class SpecimenFormCtrModel {
         fieldNumberCtr: TextEditingController(),
         speciesCtr: null,
         idConfidenceCtr: null,
+        idMethodCtr: TextEditingController(),
         museumIDCtr: TextEditingController(),
         prepDateCtr: TextEditingController(),
         prepTimeCtr: TextEditingController(),
@@ -276,7 +279,8 @@ class SpecimenFormCtrModel {
         collMethodCtr: specimen.collMethodID,
         relativeTimeCtr: specimen.isRelativeTime,
         coordinateCtr: specimen.coordinateID,
-        idConfidenceCtr: null,
+        idConfidenceCtr: specimen.iDConfidence,
+        idMethodCtr: TextEditingController(text: specimen.iDMethod ?? ''),
         museumIDCtr: TextEditingController(text: specimen.museumID ?? ''),
         fieldNumberCtr:
             TextEditingController(text: specimen.fieldNumber?.toString() ?? ''),
@@ -294,6 +298,7 @@ class SpecimenFormCtrModel {
 
   void dispose() {
     museumIDCtr.dispose();
+    idMethodCtr.dispose();
     fieldNumberCtr.dispose();
     prepDateCtr.dispose();
     prepTimeCtr.dispose();
