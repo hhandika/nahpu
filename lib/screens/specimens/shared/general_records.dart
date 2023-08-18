@@ -107,10 +107,6 @@ class GeneralRecordFieldState extends ConsumerState<GeneralRecordField> {
           Padding(
             padding: const EdgeInsets.only(top: 4),
             child: TextButton(
-              style: TextButton.styleFrom(
-                foregroundColor:
-                    Theme.of(context).colorScheme.onPrimary.withAlpha(180),
-              ),
               onPressed: () {
                 setState(
                   () {
