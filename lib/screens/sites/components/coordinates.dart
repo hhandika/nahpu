@@ -606,7 +606,7 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
       decimalLongitude:
           db.Value(double.tryParse(widget.coordCtr.longitudeCtr.text) ?? 0.0),
       elevationInMeter:
-          db.Value(int.tryParse(widget.coordCtr.elevationCtr.text) ?? 0),
+          db.Value(double.tryParse(widget.coordCtr.elevationCtr.text) ?? 0),
       datum: db.Value(widget.coordCtr.datumCtr.text),
       uncertaintyInMeters:
           db.Value(int.tryParse(widget.coordCtr.uncertaintyCtr.text) ?? 0),

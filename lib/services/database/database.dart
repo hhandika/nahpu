@@ -37,9 +37,35 @@ class Database extends _$Database {
       if (from < 4) {
         await _migrateFromVersion3(m);
       }
+
+      if (from < 5) {
+        await _migrateFromVersion4(m);
+      }
     }, beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');
     });
+  }
+
+  Future<void> _migrateFromVersion4(Migrator m) async {
+    await m.deleteTable('projectPersonnel');
+
+    // Specimen record tables
+    await m.addColumn(specimen, specimen.iDConfidence);
+    await m.addColumn(specimen, specimen.iDMethod);
+    await m.addColumn(specimenPart, specimenPart.personnelId);
+    await m.addColumn(specimenPart, specimenPart.pmi);
+
+    // Taxon registry table
+    await m.addColumn(taxonomy, taxonomy.citesStatus);
+    await m.addColumn(taxonomy, taxonomy.redListCriteria);
+    await m.addColumn(taxonomy, taxonomy.countryStatus);
+    await m.addColumn(taxonomy, taxonomy.sortingOrder);
+
+    // Site Casting
+    await m.alterTable(TableMigration(coordinate));
+    await m.alterTable(TableMigration(coordinate, columnTransformer: {
+      coordinate.elevationInMeter: coordinate.elevationInMeter.cast<double>(),
+    }));
   }
 
   Future<void> _migrateFromVersion3(Migrator m) async {
