@@ -589,12 +589,14 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
           ),
         ],
       );
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert;
-        },
-      );
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return alert;
+          },
+        );
+      }
     }
   }
 

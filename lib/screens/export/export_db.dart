@@ -173,18 +173,14 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
         _hasSaved = true;
         _savePath = currentSavePath;
       });
-    } on PathNotFoundException {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: PathNotFoundText(),
-        ),
-      );
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: ErrorText(error: e.toString()),
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: ErrorText(error: e.toString()),
+          ),
+        );
+      }
     }
   }
 
@@ -192,11 +188,13 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
     try {
       await FilePickerServices().shareFile(context, _savePath);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: ErrorText(error: e.toString()),
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: ErrorText(error: e.toString()),
+          ),
+        );
+      }
     }
   }
 

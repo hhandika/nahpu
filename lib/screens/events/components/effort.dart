@@ -416,13 +416,14 @@ class CollEffortFormState extends ConsumerState<CollEffortForm> {
           ),
         ],
       );
-
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert;
-        },
-      );
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return alert;
+          },
+        );
+      }
     }
   }
 

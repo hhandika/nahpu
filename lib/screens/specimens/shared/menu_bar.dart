@@ -15,21 +15,29 @@ Future<void> createNewSpecimens(BuildContext context, WidgetRef ref) async {
   }
 }
 
-class NewSpecimensTextButton extends ConsumerWidget {
-  const NewSpecimensTextButton({Key? key}) : super(key: key);
+class NewSpecimensTextButton extends ConsumerStatefulWidget {
+  const NewSpecimensTextButton({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  NewSpecimensTextButtonState createState() => NewSpecimensTextButtonState();
+}
+
+class NewSpecimensTextButtonState
+    extends ConsumerState<NewSpecimensTextButton> {
+  @override
+  Widget build(BuildContext context) {
     return TextButton(
       onPressed: () async {
         try {
           await createNewSpecimens(context, ref);
         } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(e.toString()),
-            ),
-          );
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(e.toString()),
+              ),
+            );
+          }
         }
       },
       child: const Text('Create specimen'),
@@ -37,22 +45,29 @@ class NewSpecimensTextButton extends ConsumerWidget {
   }
 }
 
-class NewSpecimens extends ConsumerWidget {
-  const NewSpecimens({Key? key}) : super(key: key);
+class NewSpecimens extends ConsumerStatefulWidget {
+  const NewSpecimens({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  NewSpecimensState createState() => NewSpecimensState();
+}
+
+class NewSpecimensState extends ConsumerState<NewSpecimens> {
+  @override
+  Widget build(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.add_circle_outline_rounded),
       onPressed: () async {
         try {
           await createNewSpecimens(context, ref);
         } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(e.toString()),
-            ),
-          );
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(e.toString()),
+              ),
+            );
+          }
         }
       },
     );
@@ -120,11 +135,13 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.toString()),
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.toString()),
+          ),
+        );
+      }
     }
   }
 
@@ -149,14 +166,16 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
               );
             }
           } catch (e) {
-            Navigator.of(context).pop();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                  content: Text(
-                'Error deleting specimen: $e',
-                textAlign: TextAlign.center,
-              )),
-            );
+            if (mounted) {
+              Navigator.of(context).pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                    content: Text(
+                  'Error deleting specimen: $e',
+                  textAlign: TextAlign.center,
+                )),
+              );
+            }
           }
         }
       },
@@ -176,14 +195,16 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
               Navigator.of(context).pop();
             }
           } catch (e) {
-            Navigator.of(context).pop();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                  content: Text(
-                'Error deleting all specimens: $e',
-                textAlign: TextAlign.center,
-              )),
-            );
+            if (mounted) {
+              Navigator.of(context).pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                    content: Text(
+                  'Error deleting all specimens: $e',
+                  textAlign: TextAlign.center,
+                )),
+              );
+            }
           }
         });
   }

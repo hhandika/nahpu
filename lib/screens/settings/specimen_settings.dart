@@ -47,11 +47,13 @@ class SpecimenSelectionState extends ConsumerState<SpecimenSelection> {
                           _isAlwaysShownCollectorField = value;
                         });
                       } catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(e.toString()),
-                          ),
-                        );
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(e.toString()),
+                            ),
+                          );
+                        }
                       }
                     },
                     label: 'Always show collector field',

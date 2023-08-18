@@ -20,21 +20,29 @@ Future<void> createNewCollEvents(BuildContext context, WidgetRef ref) {
   );
 }
 
-class NewCollEventTextButton extends ConsumerWidget {
+class NewCollEventTextButton extends ConsumerStatefulWidget {
   const NewCollEventTextButton({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  NewCollEventTextButtonState createState() => NewCollEventTextButtonState();
+}
+
+class NewCollEventTextButtonState
+    extends ConsumerState<NewCollEventTextButton> {
+  @override
+  Widget build(BuildContext context) {
     return TextButton(
       onPressed: () async {
         try {
           await createNewCollEvents(context, ref);
         } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(e.toString()),
-            ),
-          );
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(e.toString()),
+              ),
+            );
+          }
         }
       },
       child: const Text('Create event'),

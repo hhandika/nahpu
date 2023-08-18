@@ -169,16 +169,14 @@ class ReportFormState extends ConsumerState<ReportForm> {
       setState(() {
         _hasSaved = true;
       });
-    } on PathNotFoundException {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: PathNotFoundText(),
-      ));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: ErrorText(error: e.toString()),
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: ErrorText(error: e.toString()),
+          ),
+        );
+      }
     }
   }
 
@@ -186,12 +184,14 @@ class ReportFormState extends ConsumerState<ReportForm> {
     try {
       await FilePickerServices().shareFile(context, _savePath);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          duration: const Duration(seconds: 5),
-          content: ErrorText(error: e.toString()),
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 5),
+            content: ErrorText(error: e.toString()),
+          ),
+        );
+      }
     }
   }
 

@@ -21,21 +21,29 @@ Future<void> createNewNarrative(BuildContext context, WidgetRef ref) {
   });
 }
 
-class NewNarrativeTextButton extends ConsumerWidget {
+class NewNarrativeTextButton extends ConsumerStatefulWidget {
   const NewNarrativeTextButton({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  NewNarrativeTextButtonState createState() => NewNarrativeTextButtonState();
+}
+
+class NewNarrativeTextButtonState
+    extends ConsumerState<NewNarrativeTextButton> {
+  @override
+  Widget build(BuildContext context) {
     return TextButton(
       onPressed: () async {
         try {
           await createNewNarrative(context, ref);
         } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(e.toString()),
-            ),
-          );
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(e.toString()),
+              ),
+            );
+          }
         }
       },
       child: const Text('Create narrative'),
@@ -110,14 +118,16 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
                   MaterialPageRoute(builder: (_) => const NarrativeViewer()));
             }
           } catch (e) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  'Error deleting narrative: $e',
-                  style: const TextStyle(color: Colors.white),
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'Error deleting narrative: $e',
+                    style: const TextStyle(color: Colors.white),
+                  ),
                 ),
-              ),
-            );
+              );
+            }
           }
         }
       },
@@ -137,13 +147,15 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
             Navigator.of(context).pop();
           }
         } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                content: Text(
-              'Error deleting all narrative: $e',
-              style: const TextStyle(color: Colors.white),
-            )),
-          );
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                  content: Text(
+                'Error deleting all narrative: $e',
+                style: const TextStyle(color: Colors.white),
+              )),
+            );
+          }
         }
       },
     );

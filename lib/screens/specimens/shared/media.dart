@@ -51,14 +51,16 @@ class SpecimenMediaFormState extends ConsumerState<SpecimenMediaForm> {
                     setState(() {});
                   }
                 } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        e.toString(),
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          e.toString(),
+                        ),
+                        duration: const Duration(seconds: 5),
                       ),
-                      duration: const Duration(seconds: 5),
-                    ),
-                  );
+                    );
+                  }
                 }
               },
               onAccessingCamera: () async {
@@ -75,13 +77,15 @@ class SpecimenMediaFormState extends ConsumerState<SpecimenMediaForm> {
                     setState(() {});
                   }
                 } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        e.toString(),
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          e.toString(),
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  }
                 }
               },
             );

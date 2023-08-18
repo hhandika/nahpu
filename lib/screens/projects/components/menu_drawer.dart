@@ -148,20 +148,22 @@ class ProjectMenuDrawerState extends ConsumerState<ProjectMenuDrawer> {
                       );
                     }
                   } catch (e) {
-                    Navigator.pop(context);
-                    showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                              title: const Text(
-                                'Error',
-                              ),
-                              content: Text(
-                                e.toString().contains('FOREIGN KEY')
-                                    ? 'Cannot delete project with records.\n'
-                                        'Delete all records first'
-                                    : e.toString(),
-                              ),
-                            ));
+                    if (mounted) {
+                      Navigator.pop(context);
+                      showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                title: const Text(
+                                  'Error',
+                                ),
+                                content: Text(
+                                  e.toString().contains('FOREIGN KEY')
+                                      ? 'Cannot delete project with records.\n'
+                                          'Delete all records first'
+                                      : e.toString(),
+                                ),
+                              ));
+                    }
                   }
                 });
           },

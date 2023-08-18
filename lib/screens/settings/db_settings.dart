@@ -39,13 +39,15 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
                   try {
                     await _getDbPath();
                   } catch (e) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Failed to select file!',
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Failed to select file!',
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    }
                   }
                 },
                 isBackup: _isBackup,
@@ -92,14 +94,16 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Failed to replace database!: $e',
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Failed to replace database!: $e',
+            ),
+            duration: const Duration(seconds: 10),
           ),
-          duration: const Duration(seconds: 10),
-        ),
-      );
+        );
+      }
     }
   }
 }

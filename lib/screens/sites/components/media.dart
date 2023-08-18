@@ -48,13 +48,15 @@ class SiteMediaFormState extends ConsumerState<SiteMediaForm> {
                     _doneSelecting();
                   }
                 } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        e.toString(),
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          e.toString(),
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  }
                 }
               },
               onAccessingCamera: () async {
@@ -71,13 +73,15 @@ class SiteMediaFormState extends ConsumerState<SiteMediaForm> {
                     setState(() {});
                   }
                 } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        e.toString(),
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          e.toString(),
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  }
                 }
               },
             );

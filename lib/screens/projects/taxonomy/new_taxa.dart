@@ -262,12 +262,14 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
                   Navigator.of(context).pop();
                 }
               } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Cannot delete taxon.'
-                        ' It is in use in the specimen records.'),
-                  ),
-                );
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Cannot delete taxon.'
+                          ' It is in use in the specimen records.'),
+                    ),
+                  );
+                }
               }
             },
             onSubmitted: () async {
