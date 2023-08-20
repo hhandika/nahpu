@@ -713,6 +713,12 @@ class AdditionalPartFields extends StatelessWidget {
           onTap: () {},
         ),
         CommonTextField(
+          controller: partCtr.pmiCtr,
+          labelText: 'PMI',
+          hintText: 'e.g., 1:30, 1:40',
+          isLastField: false,
+        ),
+        CommonTextField(
           controller: partCtr.museumPermanentCtr,
           labelText: 'Museum permanent',
           hintText: 'Enter a museum name or abbreviation',
