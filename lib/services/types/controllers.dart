@@ -653,6 +653,7 @@ class PartFormCtrModel {
   PartFormCtrModel({
     required this.tissueIdCtr,
     required this.barcodeIdCtr,
+    required this.preparatorCtr,
     required this.typeCtr,
     required this.countCtr,
     required this.treatmentCtr,
@@ -667,6 +668,7 @@ class PartFormCtrModel {
 
   TextEditingController tissueIdCtr;
   TextEditingController barcodeIdCtr;
+  String? preparatorCtr;
   TextEditingController typeCtr;
   TextEditingController countCtr;
   TextEditingController treatmentCtr;
@@ -681,6 +683,7 @@ class PartFormCtrModel {
   factory PartFormCtrModel.empty() => PartFormCtrModel(
         tissueIdCtr: TextEditingController(),
         barcodeIdCtr: TextEditingController(),
+        preparatorCtr: null,
         typeCtr: TextEditingController(),
         countCtr: TextEditingController(),
         treatmentCtr: TextEditingController(),
@@ -696,6 +699,7 @@ class PartFormCtrModel {
   factory PartFormCtrModel.fromData(SpecimenPartData data) => PartFormCtrModel(
         tissueIdCtr: TextEditingController(text: data.tissueID ?? ''),
         barcodeIdCtr: TextEditingController(text: data.barcodeID ?? ''),
+        preparatorCtr: data.personnelId,
         typeCtr: TextEditingController(text: data.type ?? ''),
         countCtr: TextEditingController(text: data.count?.toString() ?? ''),
         treatmentCtr: TextEditingController(text: data.treatment ?? ''),
