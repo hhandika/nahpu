@@ -659,6 +659,7 @@ class PartFormCtrModel {
     required this.additionalTreatmentCtr,
     required this.dateTakenCtr,
     required this.timeTakenCtr,
+    required this.pmiCtr,
     required this.museumPermanentCtr,
     required this.museumLoanCtr,
     required this.remarkCtr,
@@ -672,6 +673,7 @@ class PartFormCtrModel {
   TextEditingController additionalTreatmentCtr;
   TextEditingController dateTakenCtr;
   TextEditingController timeTakenCtr;
+  TextEditingController pmiCtr;
   TextEditingController museumPermanentCtr;
   TextEditingController museumLoanCtr;
   TextEditingController remarkCtr = TextEditingController();
@@ -685,6 +687,7 @@ class PartFormCtrModel {
         additionalTreatmentCtr: TextEditingController(),
         dateTakenCtr: TextEditingController(),
         timeTakenCtr: TextEditingController(),
+        pmiCtr: TextEditingController(),
         museumPermanentCtr: TextEditingController(),
         museumLoanCtr: TextEditingController(),
         remarkCtr: TextEditingController(),
@@ -700,6 +703,7 @@ class PartFormCtrModel {
             TextEditingController(text: data.additionalTreatment ?? ''),
         dateTakenCtr: TextEditingController(text: data.dateTaken ?? ''),
         timeTakenCtr: TextEditingController(text: data.timeTaken ?? ''),
+        pmiCtr: TextEditingController(text: data.pmi ?? ''),
         museumPermanentCtr:
             TextEditingController(text: data.museumPermanent ?? ''),
         museumLoanCtr: TextEditingController(text: data.museumLoan ?? ''),
@@ -715,6 +719,7 @@ class PartFormCtrModel {
     additionalTreatmentCtr.dispose();
     dateTakenCtr.dispose();
     timeTakenCtr.dispose();
+    pmiCtr.dispose();
     museumPermanentCtr.dispose();
     museumLoanCtr.dispose();
     remarkCtr.dispose();

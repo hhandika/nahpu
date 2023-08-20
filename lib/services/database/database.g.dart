@@ -10977,11 +10977,11 @@ class SpecimenPart extends Table
       $customConstraints: '');
   static const VerificationMeta _personnelIdMeta =
       const VerificationMeta('personnelId');
-  late final GeneratedColumn<Uint8List> personnelId =
-      GeneratedColumn<Uint8List>('personnelId', aliasedName, true,
-          type: DriftSqlType.blob,
-          requiredDuringInsert: false,
-          $customConstraints: '');
+  late final GeneratedColumn<String> personnelId = GeneratedColumn<String>(
+      'personnelId', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _tissueIDMeta =
       const VerificationMeta('tissueID');
   late final GeneratedColumn<String> tissueID = GeneratedColumn<String>(
@@ -11172,7 +11172,7 @@ class SpecimenPart extends Table
       specimenUuid: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}specimenUuid']),
       personnelId: attachedDatabase.typeMapping
-          .read(DriftSqlType.blob, data['${effectivePrefix}personnelId']),
+          .read(DriftSqlType.string, data['${effectivePrefix}personnelId']),
       tissueID: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}tissueID']),
       barcodeID: attachedDatabase.typeMapping
@@ -11220,7 +11220,7 @@ class SpecimenPartData extends DataClass
 
   /// internal id
   final String? specimenUuid;
-  final Uint8List? personnelId;
+  final String? personnelId;
   final String? tissueID;
   final String? barcodeID;
   final String? type;
@@ -11259,7 +11259,7 @@ class SpecimenPartData extends DataClass
       map['specimenUuid'] = Variable<String>(specimenUuid);
     }
     if (!nullToAbsent || personnelId != null) {
-      map['personnelId'] = Variable<Uint8List>(personnelId);
+      map['personnelId'] = Variable<String>(personnelId);
     }
     if (!nullToAbsent || tissueID != null) {
       map['tissueID'] = Variable<String>(tissueID);
@@ -11348,7 +11348,7 @@ class SpecimenPartData extends DataClass
     return SpecimenPartData(
       id: serializer.fromJson<int?>(json['id']),
       specimenUuid: serializer.fromJson<String?>(json['specimenUuid']),
-      personnelId: serializer.fromJson<Uint8List?>(json['personnelId']),
+      personnelId: serializer.fromJson<String?>(json['personnelId']),
       tissueID: serializer.fromJson<String?>(json['tissueID']),
       barcodeID: serializer.fromJson<String?>(json['barcodeID']),
       type: serializer.fromJson<String?>(json['type']),
@@ -11370,7 +11370,7 @@ class SpecimenPartData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int?>(id),
       'specimenUuid': serializer.toJson<String?>(specimenUuid),
-      'personnelId': serializer.toJson<Uint8List?>(personnelId),
+      'personnelId': serializer.toJson<String?>(personnelId),
       'tissueID': serializer.toJson<String?>(tissueID),
       'barcodeID': serializer.toJson<String?>(barcodeID),
       'type': serializer.toJson<String?>(type),
@@ -11389,7 +11389,7 @@ class SpecimenPartData extends DataClass
   SpecimenPartData copyWith(
           {Value<int?> id = const Value.absent(),
           Value<String?> specimenUuid = const Value.absent(),
-          Value<Uint8List?> personnelId = const Value.absent(),
+          Value<String?> personnelId = const Value.absent(),
           Value<String?> tissueID = const Value.absent(),
           Value<String?> barcodeID = const Value.absent(),
           Value<String?> type = const Value.absent(),
@@ -11450,7 +11450,7 @@ class SpecimenPartData extends DataClass
   int get hashCode => Object.hash(
       id,
       specimenUuid,
-      $driftBlobEquality.hash(personnelId),
+      personnelId,
       tissueID,
       barcodeID,
       type,
@@ -11469,7 +11469,7 @@ class SpecimenPartData extends DataClass
       (other is SpecimenPartData &&
           other.id == this.id &&
           other.specimenUuid == this.specimenUuid &&
-          $driftBlobEquality.equals(other.personnelId, this.personnelId) &&
+          other.personnelId == this.personnelId &&
           other.tissueID == this.tissueID &&
           other.barcodeID == this.barcodeID &&
           other.type == this.type &&
@@ -11487,7 +11487,7 @@ class SpecimenPartData extends DataClass
 class SpecimenPartCompanion extends UpdateCompanion<SpecimenPartData> {
   final Value<int?> id;
   final Value<String?> specimenUuid;
-  final Value<Uint8List?> personnelId;
+  final Value<String?> personnelId;
   final Value<String?> tissueID;
   final Value<String?> barcodeID;
   final Value<String?> type;
@@ -11537,7 +11537,7 @@ class SpecimenPartCompanion extends UpdateCompanion<SpecimenPartData> {
   static Insertable<SpecimenPartData> custom({
     Expression<int>? id,
     Expression<String>? specimenUuid,
-    Expression<Uint8List>? personnelId,
+    Expression<String>? personnelId,
     Expression<String>? tissueID,
     Expression<String>? barcodeID,
     Expression<String>? type,
@@ -11574,7 +11574,7 @@ class SpecimenPartCompanion extends UpdateCompanion<SpecimenPartData> {
   SpecimenPartCompanion copyWith(
       {Value<int?>? id,
       Value<String?>? specimenUuid,
-      Value<Uint8List?>? personnelId,
+      Value<String?>? personnelId,
       Value<String?>? tissueID,
       Value<String?>? barcodeID,
       Value<String?>? type,
@@ -11616,7 +11616,7 @@ class SpecimenPartCompanion extends UpdateCompanion<SpecimenPartData> {
       map['specimenUuid'] = Variable<String>(specimenUuid.value);
     }
     if (personnelId.present) {
-      map['personnelId'] = Variable<Uint8List>(personnelId.value);
+      map['personnelId'] = Variable<String>(personnelId.value);
     }
     if (tissueID.present) {
       map['tissueID'] = Variable<String>(tissueID.value);

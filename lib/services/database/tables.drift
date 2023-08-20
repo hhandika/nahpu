@@ -321,7 +321,7 @@ CREATE TABLE avianMeasurement (
 CREATE TABLE specimenPart (
     id INT UNIQUE PRIMARY KEY AUTOINCREMENT, -- internal id
     specimenUuid TEXT,
-    personnelId,
+    personnelId TEXT,
     tissueID TEXT,
     barcodeID TEXT,
     type TEXT,
