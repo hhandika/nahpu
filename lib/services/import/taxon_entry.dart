@@ -108,6 +108,18 @@ class TaxonParser {
         case TaxonEntryHeader.commonName:
           taxonEntryCsv.commonName = value.toSentenceCase();
           break;
+        case TaxonEntryHeader.redListCategory:
+          taxonEntryCsv.redListCategory = value.toSentenceCase();
+          break;
+        case TaxonEntryHeader.citesStatus:
+          taxonEntryCsv.citesStatus = value.toSentenceCase();
+          break;
+        case TaxonEntryHeader.countryStatus:
+          taxonEntryCsv.countryStatus = value.toSentenceCase();
+          break;
+        case TaxonEntryHeader.sortingOrder:
+          taxonEntryCsv.sortingOrder = int.tryParse(value);
+          break;
         case TaxonEntryHeader.notes:
           taxonEntryCsv.notes = value;
           break;
@@ -128,6 +140,10 @@ class TaxonEntryData {
     required this.genus,
     required this.specificEpithet,
     this.commonName,
+    this.redListCategory,
+    this.citesStatus,
+    this.countryStatus,
+    this.sortingOrder,
     this.notes,
   });
 
@@ -137,6 +153,10 @@ class TaxonEntryData {
   String genus;
   String specificEpithet;
   String? commonName;
+  String? redListCategory;
+  String? citesStatus;
+  String? countryStatus;
+  int? sortingOrder;
   String? notes;
 
   factory TaxonEntryData.empty() {
@@ -147,6 +167,10 @@ class TaxonEntryData {
       genus: '',
       specificEpithet: '',
       commonName: null,
+      redListCategory: null,
+      citesStatus: null,
+      countryStatus: null,
+      sortingOrder: null,
       notes: null,
     );
   }

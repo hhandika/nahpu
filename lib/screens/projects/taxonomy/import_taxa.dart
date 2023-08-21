@@ -67,9 +67,10 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
                 const SizedBox(height: 18),
                 _hasData ? const ColumnRowTitle() : const SizedBox.shrink(),
                 _hasData
-                    ? Column(
-                        children: _buildCsvHeaderField(),
-                      )
+                    ? ConstrainedBox(
+                        constraints: BoxConstraints(
+                            maxHeight: MediaQuery.sizeOf(context).height * 0.3),
+                        child: ListView(children: _buildCsvHeaderField()))
                     : const SizedBox.shrink(),
                 const SizedBox(height: 8),
                 _problems.isNotEmpty
@@ -289,10 +290,10 @@ class HeaderInputField extends StatelessWidget {
           ),
           child: DropdownButton<TaxonEntryHeader>(
             value: value,
-            items: headerList
+            items: TaxonEntryHeader.values
                 .map((e) => DropdownMenuItem(
-                      value: TaxonEntryHeader.values[headerList.indexOf(e)],
-                      child: CommonDropdownText(text: e),
+                      value: e,
+                      child: CommonDropdownText(text: matchTaxonEntryHeader(e)),
                     ))
                 .toList(),
             onChanged: onChanged,
