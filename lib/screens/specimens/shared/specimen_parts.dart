@@ -142,6 +142,12 @@ class PartListState extends ConsumerState<PartList> {
   final ScrollController _scrollController = ScrollController();
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final specimenPartList =
         ref.watch(partBySpecimenProvider(widget.specimenUuid));
@@ -472,6 +478,12 @@ class PartForm extends ConsumerStatefulWidget {
 
 class PartFormState extends ConsumerState<PartForm> {
   bool _showMore = false;
+
+  @override
+  void dispose() {
+    widget.partCtr.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

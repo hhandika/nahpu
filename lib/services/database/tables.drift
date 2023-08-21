@@ -9,7 +9,7 @@ New to v5:
 2. Add iDConfidence to the specimen table
 2. Add iDMethod to the specimen table
 3. Add pmi and personnelId to the specimenPart table
-4. Add citesStatus, redListCriteria, countryStatus, and sortingOrder to the taxonomy table.
+4. Add citesStatus, redListCategory, countryStatus, and sortingOrder to the taxonomy table.
 4. Remove minimumElevationInMeters and maximumElevationInMeters in the coordinate table.
 5. Cast elevationInMeter to REAL in the coordinate table.
 6. Rename secondaryId to name and fileId to url in the associatedData table.
@@ -202,7 +202,7 @@ CREATE TABLE taxonomy (
     commonName TEXT,
     notes TEXT,
     citesStatus TEXT,
-    redListCriteria TEXT,
+    redListCategory TEXT,
     countryStatus TEXT,
     sortingOrder INT,
     mediaId INT,

@@ -5413,10 +5413,10 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _redListCriteriaMeta =
-      const VerificationMeta('redListCriteria');
-  late final GeneratedColumn<String> redListCriteria = GeneratedColumn<String>(
-      'redListCriteria', aliasedName, true,
+  static const VerificationMeta _redListCategoryMeta =
+      const VerificationMeta('redListCategory');
+  late final GeneratedColumn<String> redListCategory = GeneratedColumn<String>(
+      'redListCategory', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
@@ -5452,7 +5452,7 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
         commonName,
         notes,
         citesStatus,
-        redListCriteria,
+        redListCategory,
         countryStatus,
         sortingOrder,
         mediaId
@@ -5513,11 +5513,11 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
           citesStatus.isAcceptableOrUnknown(
               data['citesStatus']!, _citesStatusMeta));
     }
-    if (data.containsKey('redListCriteria')) {
+    if (data.containsKey('redListCategory')) {
       context.handle(
-          _redListCriteriaMeta,
-          redListCriteria.isAcceptableOrUnknown(
-              data['redListCriteria']!, _redListCriteriaMeta));
+          _redListCategoryMeta,
+          redListCategory.isAcceptableOrUnknown(
+              data['redListCategory']!, _redListCategoryMeta));
     }
     if (data.containsKey('countryStatus')) {
       context.handle(
@@ -5562,8 +5562,8 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
           .read(DriftSqlType.string, data['${effectivePrefix}notes']),
       citesStatus: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}citesStatus']),
-      redListCriteria: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}redListCriteria']),
+      redListCategory: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}redListCategory']),
       countryStatus: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}countryStatus']),
       sortingOrder: attachedDatabase.typeMapping
@@ -5595,7 +5595,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
   final String? commonName;
   final String? notes;
   final String? citesStatus;
-  final String? redListCriteria;
+  final String? redListCategory;
   final String? countryStatus;
   final int? sortingOrder;
   final int? mediaId;
@@ -5609,7 +5609,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
       this.commonName,
       this.notes,
       this.citesStatus,
-      this.redListCriteria,
+      this.redListCategory,
       this.countryStatus,
       this.sortingOrder,
       this.mediaId});
@@ -5641,8 +5641,8 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
     if (!nullToAbsent || citesStatus != null) {
       map['citesStatus'] = Variable<String>(citesStatus);
     }
-    if (!nullToAbsent || redListCriteria != null) {
-      map['redListCriteria'] = Variable<String>(redListCriteria);
+    if (!nullToAbsent || redListCategory != null) {
+      map['redListCategory'] = Variable<String>(redListCategory);
     }
     if (!nullToAbsent || countryStatus != null) {
       map['countryStatus'] = Variable<String>(countryStatus);
@@ -5681,9 +5681,9 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
       citesStatus: citesStatus == null && nullToAbsent
           ? const Value.absent()
           : Value(citesStatus),
-      redListCriteria: redListCriteria == null && nullToAbsent
+      redListCategory: redListCategory == null && nullToAbsent
           ? const Value.absent()
-          : Value(redListCriteria),
+          : Value(redListCategory),
       countryStatus: countryStatus == null && nullToAbsent
           ? const Value.absent()
           : Value(countryStatus),
@@ -5709,7 +5709,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
       commonName: serializer.fromJson<String?>(json['commonName']),
       notes: serializer.fromJson<String?>(json['notes']),
       citesStatus: serializer.fromJson<String?>(json['citesStatus']),
-      redListCriteria: serializer.fromJson<String?>(json['redListCriteria']),
+      redListCategory: serializer.fromJson<String?>(json['redListCategory']),
       countryStatus: serializer.fromJson<String?>(json['countryStatus']),
       sortingOrder: serializer.fromJson<int?>(json['sortingOrder']),
       mediaId: serializer.fromJson<int?>(json['mediaId']),
@@ -5728,7 +5728,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
       'commonName': serializer.toJson<String?>(commonName),
       'notes': serializer.toJson<String?>(notes),
       'citesStatus': serializer.toJson<String?>(citesStatus),
-      'redListCriteria': serializer.toJson<String?>(redListCriteria),
+      'redListCategory': serializer.toJson<String?>(redListCategory),
       'countryStatus': serializer.toJson<String?>(countryStatus),
       'sortingOrder': serializer.toJson<int?>(sortingOrder),
       'mediaId': serializer.toJson<int?>(mediaId),
@@ -5745,7 +5745,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
           Value<String?> commonName = const Value.absent(),
           Value<String?> notes = const Value.absent(),
           Value<String?> citesStatus = const Value.absent(),
-          Value<String?> redListCriteria = const Value.absent(),
+          Value<String?> redListCategory = const Value.absent(),
           Value<String?> countryStatus = const Value.absent(),
           Value<int?> sortingOrder = const Value.absent(),
           Value<int?> mediaId = const Value.absent()}) =>
@@ -5761,9 +5761,9 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
         commonName: commonName.present ? commonName.value : this.commonName,
         notes: notes.present ? notes.value : this.notes,
         citesStatus: citesStatus.present ? citesStatus.value : this.citesStatus,
-        redListCriteria: redListCriteria.present
-            ? redListCriteria.value
-            : this.redListCriteria,
+        redListCategory: redListCategory.present
+            ? redListCategory.value
+            : this.redListCategory,
         countryStatus:
             countryStatus.present ? countryStatus.value : this.countryStatus,
         sortingOrder:
@@ -5782,7 +5782,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
           ..write('commonName: $commonName, ')
           ..write('notes: $notes, ')
           ..write('citesStatus: $citesStatus, ')
-          ..write('redListCriteria: $redListCriteria, ')
+          ..write('redListCategory: $redListCategory, ')
           ..write('countryStatus: $countryStatus, ')
           ..write('sortingOrder: $sortingOrder, ')
           ..write('mediaId: $mediaId')
@@ -5801,7 +5801,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
       commonName,
       notes,
       citesStatus,
-      redListCriteria,
+      redListCategory,
       countryStatus,
       sortingOrder,
       mediaId);
@@ -5818,7 +5818,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
           other.commonName == this.commonName &&
           other.notes == this.notes &&
           other.citesStatus == this.citesStatus &&
-          other.redListCriteria == this.redListCriteria &&
+          other.redListCategory == this.redListCategory &&
           other.countryStatus == this.countryStatus &&
           other.sortingOrder == this.sortingOrder &&
           other.mediaId == this.mediaId);
@@ -5834,7 +5834,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
   final Value<String?> commonName;
   final Value<String?> notes;
   final Value<String?> citesStatus;
-  final Value<String?> redListCriteria;
+  final Value<String?> redListCategory;
   final Value<String?> countryStatus;
   final Value<int?> sortingOrder;
   final Value<int?> mediaId;
@@ -5848,7 +5848,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
     this.commonName = const Value.absent(),
     this.notes = const Value.absent(),
     this.citesStatus = const Value.absent(),
-    this.redListCriteria = const Value.absent(),
+    this.redListCategory = const Value.absent(),
     this.countryStatus = const Value.absent(),
     this.sortingOrder = const Value.absent(),
     this.mediaId = const Value.absent(),
@@ -5863,7 +5863,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
     this.commonName = const Value.absent(),
     this.notes = const Value.absent(),
     this.citesStatus = const Value.absent(),
-    this.redListCriteria = const Value.absent(),
+    this.redListCategory = const Value.absent(),
     this.countryStatus = const Value.absent(),
     this.sortingOrder = const Value.absent(),
     this.mediaId = const Value.absent(),
@@ -5878,7 +5878,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
     Expression<String>? commonName,
     Expression<String>? notes,
     Expression<String>? citesStatus,
-    Expression<String>? redListCriteria,
+    Expression<String>? redListCategory,
     Expression<String>? countryStatus,
     Expression<int>? sortingOrder,
     Expression<int>? mediaId,
@@ -5893,7 +5893,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
       if (commonName != null) 'commonName': commonName,
       if (notes != null) 'notes': notes,
       if (citesStatus != null) 'citesStatus': citesStatus,
-      if (redListCriteria != null) 'redListCriteria': redListCriteria,
+      if (redListCategory != null) 'redListCategory': redListCategory,
       if (countryStatus != null) 'countryStatus': countryStatus,
       if (sortingOrder != null) 'sortingOrder': sortingOrder,
       if (mediaId != null) 'mediaId': mediaId,
@@ -5910,7 +5910,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
       Value<String?>? commonName,
       Value<String?>? notes,
       Value<String?>? citesStatus,
-      Value<String?>? redListCriteria,
+      Value<String?>? redListCategory,
       Value<String?>? countryStatus,
       Value<int?>? sortingOrder,
       Value<int?>? mediaId}) {
@@ -5924,7 +5924,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
       commonName: commonName ?? this.commonName,
       notes: notes ?? this.notes,
       citesStatus: citesStatus ?? this.citesStatus,
-      redListCriteria: redListCriteria ?? this.redListCriteria,
+      redListCategory: redListCategory ?? this.redListCategory,
       countryStatus: countryStatus ?? this.countryStatus,
       sortingOrder: sortingOrder ?? this.sortingOrder,
       mediaId: mediaId ?? this.mediaId,
@@ -5961,8 +5961,8 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
     if (citesStatus.present) {
       map['citesStatus'] = Variable<String>(citesStatus.value);
     }
-    if (redListCriteria.present) {
-      map['redListCriteria'] = Variable<String>(redListCriteria.value);
+    if (redListCategory.present) {
+      map['redListCategory'] = Variable<String>(redListCategory.value);
     }
     if (countryStatus.present) {
       map['countryStatus'] = Variable<String>(countryStatus.value);
@@ -5988,7 +5988,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
           ..write('commonName: $commonName, ')
           ..write('notes: $notes, ')
           ..write('citesStatus: $citesStatus, ')
-          ..write('redListCriteria: $redListCriteria, ')
+          ..write('redListCategory: $redListCategory, ')
           ..write('countryStatus: $countryStatus, ')
           ..write('sortingOrder: $sortingOrder, ')
           ..write('mediaId: $mediaId')

@@ -57,7 +57,7 @@ class Database extends _$Database {
 
     // Taxon registry table
     await m.addColumn(taxonomy, taxonomy.citesStatus);
-    await m.addColumn(taxonomy, taxonomy.redListCriteria);
+    await m.addColumn(taxonomy, taxonomy.redListCategory);
     await m.addColumn(taxonomy, taxonomy.countryStatus);
     await m.addColumn(taxonomy, taxonomy.sortingOrder);
 

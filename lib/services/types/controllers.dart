@@ -798,6 +798,10 @@ class TaxonRegistryCtrModel {
     required this.genusCtr,
     required this.specificEpithetCtr,
     required this.commonNameCtr,
+    required this.redListCategoryCtr,
+    required this.citesCtr,
+    required this.countryStatusCtr,
+    required this.sortingOrderCtr,
     required this.noteCtr,
   });
 
@@ -807,6 +811,10 @@ class TaxonRegistryCtrModel {
   TextEditingController genusCtr;
   TextEditingController specificEpithetCtr;
   TextEditingController commonNameCtr;
+  TextEditingController redListCategoryCtr;
+  TextEditingController citesCtr;
+  TextEditingController countryStatusCtr;
+  TextEditingController sortingOrderCtr;
   TextEditingController noteCtr;
 
   factory TaxonRegistryCtrModel.empty() => TaxonRegistryCtrModel(
@@ -816,6 +824,10 @@ class TaxonRegistryCtrModel {
       genusCtr: TextEditingController(),
       specificEpithetCtr: TextEditingController(),
       commonNameCtr: TextEditingController(),
+      redListCategoryCtr: TextEditingController(),
+      citesCtr: TextEditingController(),
+      countryStatusCtr: TextEditingController(),
+      sortingOrderCtr: TextEditingController(),
       noteCtr: TextEditingController());
 
   factory TaxonRegistryCtrModel.fromData(TaxonomyData data) =>
@@ -827,6 +839,12 @@ class TaxonRegistryCtrModel {
         specificEpithetCtr:
             TextEditingController(text: data.specificEpithet ?? ''),
         commonNameCtr: TextEditingController(text: data.commonName ?? ''),
+        redListCategoryCtr:
+            TextEditingController(text: data.redListCategory ?? ''),
+        citesCtr: TextEditingController(text: data.citesStatus ?? ''),
+        countryStatusCtr: TextEditingController(text: data.countryStatus ?? ''),
+        sortingOrderCtr:
+            TextEditingController(text: data.sortingOrder?.toString() ?? ''),
         noteCtr: TextEditingController(text: data.notes ?? ''),
       );
 
@@ -836,6 +854,10 @@ class TaxonRegistryCtrModel {
     genusCtr.dispose();
     specificEpithetCtr.dispose();
     commonNameCtr.dispose();
+    redListCategoryCtr.dispose();
+    citesCtr.dispose();
+    countryStatusCtr.dispose();
+    sortingOrderCtr.dispose();
     noteCtr.dispose();
   }
 }
