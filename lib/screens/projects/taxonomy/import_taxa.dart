@@ -24,11 +24,18 @@ class TaxonImportForm extends ConsumerStatefulWidget {
 
 class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
   TaxonImportFmt _fmt = TaxonImportFmt.csv;
+  final ScrollController _scrollController = ScrollController();
   XFile? _filePath;
   List<String> _problems = [];
   late CsvData _csvData;
   bool _hasData = false;
   bool _isRunning = false;
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,8 +76,15 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
                 _hasData
                     ? ConstrainedBox(
                         constraints: BoxConstraints(
-                            maxHeight: MediaQuery.sizeOf(context).height * 0.3),
-                        child: ListView(children: _buildCsvHeaderField()))
+                            maxHeight: MediaQuery.sizeOf(context).height * 0.5),
+                        child: CommonScrollbar(
+                          scrollController: _scrollController,
+                          child: ListView(
+                            controller: _scrollController,
+                            shrinkWrap: true,
+                            children: _buildCsvHeaderField(),
+                          ),
+                        ))
                     : const SizedBox.shrink(),
                 const SizedBox(height: 8),
                 _problems.isNotEmpty
@@ -315,25 +329,22 @@ class ImportRecords extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Import Records'),
         automaticallyImplyLeading: false,
-        leading: IconButton(
-            icon: const Icon(Icons.close),
-            onPressed: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => const Dashboard(),
-                ),
-              );
-            }),
+        leading: Tooltip(
+            message: 'Close',
+            child: IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const Dashboard(),
+                    ),
+                  );
+                })),
       ),
       body: SafeArea(
-        child: ScrollableConstrainedLayout(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 18),
-              RecordStatistics(importData: importData),
-            ],
+        child: ConstrainedLayout(
+          child: Center(
+            child: RecordStatistics(importData: importData),
           ),
         ),
       ),
@@ -348,37 +359,40 @@ class RecordStatistics extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        importData.skippedSpecies.isEmpty
-            ? const SuccessImport()
-            : const WarningImport(),
-        const SizedBox(height: 18),
-        Text(
-          'Imported Records',
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        const SizedBox(height: 8),
-        Text(
-          'Total: ${importData.recordCount}',
-        ),
-        Text(
-          'Species: ${importData.importedSpeciesCount}',
-        ),
-        Text(
-          'Family: ${importData.importedFamilyCount}',
-        ),
-        const SizedBox(height: 18),
-        Text(
-          'Skipped Records',
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        const SizedBox(height: 8),
-        Text(
-          'Total: ${importData.skippedSpecies.length}',
-        ),
-        SkippedImport(skippedRecords: importData.skippedSpecies),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          importData.skippedSpecies.isEmpty
+              ? const SuccessImport()
+              : const WarningImport(),
+          const SizedBox(height: 18),
+          Text(
+            'Imported',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Species: ${importData.importedSpeciesCount}',
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          Text(
+            'Family: ${importData.importedFamilyCount}',
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 18),
+          Text(
+            'Skipped',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Total: ${importData.skippedSpecies.length}',
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          SkippedImport(skippedRecords: importData.skippedSpecies),
+        ],
+      ),
     );
   }
 }
@@ -426,7 +440,7 @@ class SuccessImport extends StatelessWidget {
           size: 50,
         ),
         Text(
-          'Success 🎉',
+          'Success 🎉🎉🎉',
           style: Theme.of(context).textTheme.titleLarge,
         ),
       ],
