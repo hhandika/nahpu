@@ -6,7 +6,7 @@ part of 'specimens.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$specimenMediaHash() => r'7134f2bc7aa8ba9911a75aa6724e353f35e050f1';
+String _$associatedDataHash() => r'a03704740f855637bcf807ad6fc16e2a1c1582b0';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,6 +29,92 @@ class _SystemHash {
   }
 }
 
+typedef AssociatedDataRef
+    = AutoDisposeFutureProviderRef<List<AssociatedDataData>>;
+
+/// See also [associatedData].
+@ProviderFor(associatedData)
+const associatedDataProvider = AssociatedDataFamily();
+
+/// See also [associatedData].
+class AssociatedDataFamily
+    extends Family<AsyncValue<List<AssociatedDataData>>> {
+  /// See also [associatedData].
+  const AssociatedDataFamily();
+
+  /// See also [associatedData].
+  AssociatedDataProvider call({
+    required String specimenUuid,
+  }) {
+    return AssociatedDataProvider(
+      specimenUuid: specimenUuid,
+    );
+  }
+
+  @override
+  AssociatedDataProvider getProviderOverride(
+    covariant AssociatedDataProvider provider,
+  ) {
+    return call(
+      specimenUuid: provider.specimenUuid,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'associatedDataProvider';
+}
+
+/// See also [associatedData].
+class AssociatedDataProvider
+    extends AutoDisposeFutureProvider<List<AssociatedDataData>> {
+  /// See also [associatedData].
+  AssociatedDataProvider({
+    required this.specimenUuid,
+  }) : super.internal(
+          (ref) => associatedData(
+            ref,
+            specimenUuid: specimenUuid,
+          ),
+          from: associatedDataProvider,
+          name: r'associatedDataProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$associatedDataHash,
+          dependencies: AssociatedDataFamily._dependencies,
+          allTransitiveDependencies:
+              AssociatedDataFamily._allTransitiveDependencies,
+        );
+
+  final String specimenUuid;
+
+  @override
+  bool operator ==(Object other) {
+    return other is AssociatedDataProvider &&
+        other.specimenUuid == specimenUuid;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, specimenUuid.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+String _$specimenMediaHash() => r'7134f2bc7aa8ba9911a75aa6724e353f35e050f1';
 typedef SpecimenMediaRef = AutoDisposeFutureProviderRef<List<MediaData>>;
 
 /// See also [specimenMedia].
@@ -127,7 +213,7 @@ final catalogFmtNotifierProvider =
 );
 
 typedef _$CatalogFmtNotifier = AutoDisposeAsyncNotifier<CatalogFmt>;
-String _$specimenEntryHash() => r'882b2dbaf69f7f477f9a0d3b6d319c4274fa7c08';
+String _$specimenEntryHash() => r'e4fbdeca4381822307a16d5dd04e588f3ef68030';
 
 /// See also [SpecimenEntry].
 @ProviderFor(SpecimenEntry)

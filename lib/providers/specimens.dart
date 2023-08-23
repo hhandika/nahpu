@@ -87,6 +87,16 @@ final partBySpecimenProvider = FutureProvider.family
             .getSpecimenParts(specimenUuid));
 
 @riverpod
+Future<List<AssociatedDataData>> associatedData(AssociatedDataRef ref,
+    {required String specimenUuid}) async {
+  final associatedDataEntries =
+      await AssociatedDataQuery(ref.read(databaseProvider))
+          .getAllAssociatedData(specimenUuid);
+
+  return associatedDataEntries;
+}
+
+@riverpod
 Future<List<MediaData>> specimenMedia(SpecimenMediaRef ref,
     {required String specimenUuid}) async {
   List<SpecimenMediaData> mediaList =

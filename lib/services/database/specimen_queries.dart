@@ -322,7 +322,7 @@ class AssociatedDataQuery extends DatabaseAccessor<Database>
           AssociatedDataCompanion form) async =>
       await into(associatedData).insert(form);
 
-  Future<List<AssociatedDataData>> getAssociatedData(
+  Future<List<AssociatedDataData>> getAllAssociatedData(
       String specimenUuid) async {
     return await (select(associatedData)
           ..where((t) => t.specimenUuid.equals(specimenUuid)))

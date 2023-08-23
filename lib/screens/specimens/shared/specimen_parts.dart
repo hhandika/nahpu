@@ -69,14 +69,14 @@ class PartDataFormState extends ConsumerState<PartDataForm>
         ],
         children: [
           SpecimenPartFields(specimenUuid: widget.specimenUuid),
-          const AssociatedDataViewer(),
+          AssociatedDataViewer(specimenUuid: widget.specimenUuid),
         ],
       ),
     );
   }
 }
 
-class SpecimenPartFields extends ConsumerWidget {
+class SpecimenPartFields extends StatelessWidget {
   const SpecimenPartFields({
     super.key,
     required this.specimenUuid,
@@ -85,7 +85,7 @@ class SpecimenPartFields extends ConsumerWidget {
   final String specimenUuid;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -101,27 +101,6 @@ class SpecimenPartFields extends ConsumerWidget {
           ),
         )
       ],
-    );
-  }
-}
-
-class AddPartButton extends StatelessWidget {
-  const AddPartButton({super.key, required this.specimenUuid});
-
-  final String specimenUuid;
-
-  @override
-  Widget build(BuildContext context) {
-    return PrimaryButton(
-      onPressed: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => NewPart(specimenUuid: specimenUuid),
-          ),
-        );
-      },
-      label: 'Add specimen part',
-      icon: Icons.add,
     );
   }
 }
@@ -200,6 +179,27 @@ class PartListState extends ConsumerState<PartList> {
       },
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (err, stack) => Text('Error: $err'),
+    );
+  }
+}
+
+class AddPartButton extends StatelessWidget {
+  const AddPartButton({super.key, required this.specimenUuid});
+
+  final String specimenUuid;
+
+  @override
+  Widget build(BuildContext context) {
+    return PrimaryButton(
+      onPressed: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => NewPart(specimenUuid: specimenUuid),
+          ),
+        );
+      },
+      label: 'Add specimen part',
+      icon: Icons.add,
     );
   }
 }

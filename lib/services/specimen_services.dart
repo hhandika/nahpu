@@ -648,7 +648,8 @@ class AssociatedDataServices extends DbAccess {
 
   Future<List<AssociatedDataData>> getAssociatedData(
       String specimenUuid) async {
-    return await AssociatedDataQuery(dbAccess).getAssociatedData(specimenUuid);
+    return await AssociatedDataQuery(dbAccess)
+        .getAllAssociatedData(specimenUuid);
   }
 
   Future<void> createAssociatedData(String specimenUuid) async {
