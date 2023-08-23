@@ -11,7 +11,7 @@ import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
-import 'package:nahpu/screens/shared/associated_data.dart';
+import 'package:nahpu/screens/specimens/shared/associated_data.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/specimen_services.dart';
