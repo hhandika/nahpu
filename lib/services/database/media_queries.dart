@@ -17,6 +17,14 @@ class MediaDbQuery extends DatabaseAccessor<Database> with _$MediaDbQueryMixin {
     return select(media).get();
   }
 
+  Future<bool> isImageUsed(String baseName) async {
+    final MediaData? mediaList = await (select(media)
+          ..where((tbl) => tbl.fileName.equals(baseName))
+          ..limit(1))
+        .getSingleOrNull();
+    return mediaList != null;
+  }
+
   Future<List<MediaData>> getMediaByProject(String projectUuid) async {
     return (select(media)..where((t) => t.projectUuid.equals(projectUuid)))
         .get();

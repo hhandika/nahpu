@@ -1,5 +1,20 @@
 import 'package:file_selector/file_selector.dart';
 
+enum NahpuFileFormat { tabulated, image, pdf, database, other }
+
+const Map<String, NahpuFileFormat> formatByExtension = {
+  'csv': NahpuFileFormat.tabulated,
+  'tsv': NahpuFileFormat.tabulated,
+  'jpg': NahpuFileFormat.image,
+  'jpeg': NahpuFileFormat.image,
+  'png': NahpuFileFormat.image,
+  'gif': NahpuFileFormat.image,
+  'heic': NahpuFileFormat.image,
+  'pdf': NahpuFileFormat.pdf,
+  'sqlite3': NahpuFileFormat.database,
+  'db': NahpuFileFormat.database,
+};
+
 const XTypeGroup csvFmt = XTypeGroup(
   label: 'CSV UTF-8 (Comma-delimited) (.csv)',
   extensions: ['csv'],

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:nahpu/providers/personnel.dart';
@@ -7,6 +8,7 @@ import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/types/specimens.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/utility_services.dart';
+import 'package:path/path.dart' as path;
 
 class PersonnelServices extends DbAccess {
   const PersonnelServices({required super.ref});
@@ -21,6 +23,11 @@ class PersonnelServices extends DbAccess {
         await PersonnelQuery(dbAccess).getAllPersonnelListedInProjects();
 
     return getDistinctList(personnel.map((e) => e.personnelUuid).toList());
+  }
+
+  Future<bool> isImageUsedInPersonnelPhoto(File file) async {
+    String baseName = path.basename(file.path);
+    return await PersonnelQuery(dbAccess).isImageUsed(baseName);
   }
 
   Future<String?> getPersonnelName(String uuid) async {

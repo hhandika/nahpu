@@ -642,3 +642,23 @@ class SpecimenSettingServices {
     return _prefs.getBool(collectorFieldKey) ?? false;
   }
 }
+
+class AssociatedDataServices extends DbAccess {
+  const AssociatedDataServices({required super.ref});
+
+  Future<List<AssociatedDataData>> getAssociatedData(
+      String specimenUuid) async {
+    return await AssociatedDataQuery(dbAccess).getAssociatedData(specimenUuid);
+  }
+
+  Future<void> createAssociatedData(String specimenUuid) async {
+    await AssociatedDataQuery(dbAccess).createSpecimenDataAssociation(
+        AssociatedDataCompanion(specimenUuid: db.Value(specimenUuid)));
+  }
+
+  Future<bool> isFileUse(File file) async {
+    return await AssociatedDataQuery(dbAccess).isFileUsed(
+      basename(file.path),
+    );
+  }
+}
