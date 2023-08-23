@@ -94,6 +94,7 @@ class TaxonEntryReader extends DbAccess {
       taxonFamily: db.Value(data.taxonFamily.trim().toSentenceCase()),
       genus: db.Value(data.genus.trim().toSentenceCase()),
       specificEpithet: db.Value(data.specificEpithet.trim().toLowerCase()),
+      authors: db.Value(data.authors != null ? data.authors!.trim() : null),
       commonName:
           db.Value(data.commonName == null ? null : data.commonName!.trim()),
       citesStatus: db.Value(data.citesStatus == null
@@ -106,7 +107,7 @@ class TaxonEntryReader extends DbAccess {
           ? null
           : data.countryStatus!.trim().toSentenceCase()),
       sortingOrder: db.Value(data.sortingOrder),
-      notes: db.Value(data.notes ?? ''),
+      notes: db.Value(data.notes),
     );
   }
 

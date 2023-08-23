@@ -13,6 +13,7 @@ enum TaxonEntryHeader {
   taxonFamily,
   genus,
   specificEpithet,
+  authors,
   commonName,
   redListCategory,
   citesStatus,

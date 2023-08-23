@@ -105,6 +105,9 @@ class TaxonParser {
         case TaxonEntryHeader.specificEpithet:
           taxonEntryCsv.specificEpithet = value.toLowerCase();
           break;
+        case TaxonEntryHeader.authors:
+          taxonEntryCsv.authors = value.toLowerCase();
+          break;
         case TaxonEntryHeader.commonName:
           taxonEntryCsv.commonName = value.toSentenceCase();
           break;
@@ -139,6 +142,7 @@ class TaxonEntryData {
     required this.taxonFamily,
     required this.genus,
     required this.specificEpithet,
+    this.authors,
     this.commonName,
     this.redListCategory,
     this.citesStatus,
@@ -152,6 +156,7 @@ class TaxonEntryData {
   String taxonFamily;
   String genus;
   String specificEpithet;
+  String? authors;
   String? commonName;
   String? redListCategory;
   String? citesStatus;
@@ -166,6 +171,7 @@ class TaxonEntryData {
       taxonFamily: '',
       genus: '',
       specificEpithet: '',
+      authors: null,
       commonName: null,
       redListCategory: null,
       citesStatus: null,

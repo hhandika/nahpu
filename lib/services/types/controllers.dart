@@ -797,6 +797,7 @@ class TaxonRegistryCtrModel {
     required this.taxonFamilyCtr,
     required this.genusCtr,
     required this.specificEpithetCtr,
+    required this.authorCtr,
     required this.commonNameCtr,
     required this.redListCategoryCtr,
     required this.citesCtr,
@@ -810,6 +811,7 @@ class TaxonRegistryCtrModel {
   TextEditingController taxonFamilyCtr;
   TextEditingController genusCtr;
   TextEditingController specificEpithetCtr;
+  TextEditingController authorCtr;
   TextEditingController commonNameCtr;
   TextEditingController redListCategoryCtr;
   TextEditingController citesCtr;
@@ -823,6 +825,7 @@ class TaxonRegistryCtrModel {
       taxonFamilyCtr: TextEditingController(),
       genusCtr: TextEditingController(),
       specificEpithetCtr: TextEditingController(),
+      authorCtr: TextEditingController(),
       commonNameCtr: TextEditingController(),
       redListCategoryCtr: TextEditingController(),
       citesCtr: TextEditingController(),
@@ -838,6 +841,7 @@ class TaxonRegistryCtrModel {
         genusCtr: TextEditingController(text: data.genus ?? ''),
         specificEpithetCtr:
             TextEditingController(text: data.specificEpithet ?? ''),
+        authorCtr: TextEditingController(text: data.authors ?? ''),
         commonNameCtr: TextEditingController(text: data.commonName ?? ''),
         redListCategoryCtr:
             TextEditingController(text: data.redListCategory ?? ''),
@@ -853,6 +857,7 @@ class TaxonRegistryCtrModel {
     taxonFamilyCtr.dispose();
     genusCtr.dispose();
     specificEpithetCtr.dispose();
+    authorCtr.dispose();
     commonNameCtr.dispose();
     redListCategoryCtr.dispose();
     citesCtr.dispose();

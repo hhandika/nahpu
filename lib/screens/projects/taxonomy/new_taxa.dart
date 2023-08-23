@@ -237,6 +237,15 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
             },
           ),
           Visibility(
+            visible: _isShowMore || widget.ctr.authorCtr.text.isNotEmpty,
+            child: CommonTextField(
+              controller: widget.ctr.authorCtr,
+              labelText: 'Authors',
+              hintText: 'Enter authors',
+              isLastField: false,
+            ),
+          ),
+          Visibility(
             visible: _isShowMore || widget.ctr.commonNameCtr.text.isNotEmpty,
             child: CommonTextField(
               controller: widget.ctr.commonNameCtr,
@@ -375,6 +384,7 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
       taxonFamily: db.Value(widget.ctr.taxonFamilyCtr.text),
       genus: db.Value(widget.ctr.genusCtr.text),
       specificEpithet: db.Value(widget.ctr.specificEpithetCtr.text),
+      authors: db.Value(widget.ctr.authorCtr.text),
       commonName: db.Value(widget.ctr.commonNameCtr.text),
       redListCategory: db.Value(widget.ctr.redListCategoryCtr.text),
       citesStatus: db.Value(widget.ctr.citesCtr.text),
