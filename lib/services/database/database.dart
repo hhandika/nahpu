@@ -56,6 +56,7 @@ class Database extends _$Database {
     await m.addColumn(specimenPart, specimenPart.pmi);
 
     // Taxon registry table
+    await m.addColumn(taxonomy, taxonomy.authors);
     await m.addColumn(taxonomy, taxonomy.citesStatus);
     await m.addColumn(taxonomy, taxonomy.redListCategory);
     await m.addColumn(taxonomy, taxonomy.countryStatus);

@@ -5393,6 +5393,13 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _authorsMeta =
+      const VerificationMeta('authors');
+  late final GeneratedColumn<String> authors = GeneratedColumn<String>(
+      'authors', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _commonNameMeta =
       const VerificationMeta('commonName');
   late final GeneratedColumn<String> commonName = GeneratedColumn<String>(
@@ -5449,6 +5456,7 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
         taxonFamily,
         genus,
         specificEpithet,
+        authors,
         commonName,
         notes,
         citesStatus,
@@ -5496,6 +5504,10 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
           _specificEpithetMeta,
           specificEpithet.isAcceptableOrUnknown(
               data['specificEpithet']!, _specificEpithetMeta));
+    }
+    if (data.containsKey('authors')) {
+      context.handle(_authorsMeta,
+          authors.isAcceptableOrUnknown(data['authors']!, _authorsMeta));
     }
     if (data.containsKey('commonName')) {
       context.handle(
@@ -5556,6 +5568,8 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
           .read(DriftSqlType.string, data['${effectivePrefix}genus']),
       specificEpithet: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}specificEpithet']),
+      authors: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}authors']),
       commonName: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}commonName']),
       notes: attachedDatabase.typeMapping
@@ -5592,6 +5606,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
   final String? taxonFamily;
   final String? genus;
   final String? specificEpithet;
+  final String? authors;
   final String? commonName;
   final String? notes;
   final String? citesStatus;
@@ -5606,6 +5621,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
       this.taxonFamily,
       this.genus,
       this.specificEpithet,
+      this.authors,
       this.commonName,
       this.notes,
       this.citesStatus,
@@ -5631,6 +5647,9 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
     }
     if (!nullToAbsent || specificEpithet != null) {
       map['specificEpithet'] = Variable<String>(specificEpithet);
+    }
+    if (!nullToAbsent || authors != null) {
+      map['authors'] = Variable<String>(authors);
     }
     if (!nullToAbsent || commonName != null) {
       map['commonName'] = Variable<String>(commonName);
@@ -5673,6 +5692,9 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
       specificEpithet: specificEpithet == null && nullToAbsent
           ? const Value.absent()
           : Value(specificEpithet),
+      authors: authors == null && nullToAbsent
+          ? const Value.absent()
+          : Value(authors),
       commonName: commonName == null && nullToAbsent
           ? const Value.absent()
           : Value(commonName),
@@ -5706,6 +5728,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
       taxonFamily: serializer.fromJson<String?>(json['taxonFamily']),
       genus: serializer.fromJson<String?>(json['genus']),
       specificEpithet: serializer.fromJson<String?>(json['specificEpithet']),
+      authors: serializer.fromJson<String?>(json['authors']),
       commonName: serializer.fromJson<String?>(json['commonName']),
       notes: serializer.fromJson<String?>(json['notes']),
       citesStatus: serializer.fromJson<String?>(json['citesStatus']),
@@ -5725,6 +5748,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
       'taxonFamily': serializer.toJson<String?>(taxonFamily),
       'genus': serializer.toJson<String?>(genus),
       'specificEpithet': serializer.toJson<String?>(specificEpithet),
+      'authors': serializer.toJson<String?>(authors),
       'commonName': serializer.toJson<String?>(commonName),
       'notes': serializer.toJson<String?>(notes),
       'citesStatus': serializer.toJson<String?>(citesStatus),
@@ -5742,6 +5766,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
           Value<String?> taxonFamily = const Value.absent(),
           Value<String?> genus = const Value.absent(),
           Value<String?> specificEpithet = const Value.absent(),
+          Value<String?> authors = const Value.absent(),
           Value<String?> commonName = const Value.absent(),
           Value<String?> notes = const Value.absent(),
           Value<String?> citesStatus = const Value.absent(),
@@ -5758,6 +5783,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
         specificEpithet: specificEpithet.present
             ? specificEpithet.value
             : this.specificEpithet,
+        authors: authors.present ? authors.value : this.authors,
         commonName: commonName.present ? commonName.value : this.commonName,
         notes: notes.present ? notes.value : this.notes,
         citesStatus: citesStatus.present ? citesStatus.value : this.citesStatus,
@@ -5779,6 +5805,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
           ..write('taxonFamily: $taxonFamily, ')
           ..write('genus: $genus, ')
           ..write('specificEpithet: $specificEpithet, ')
+          ..write('authors: $authors, ')
           ..write('commonName: $commonName, ')
           ..write('notes: $notes, ')
           ..write('citesStatus: $citesStatus, ')
@@ -5798,6 +5825,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
       taxonFamily,
       genus,
       specificEpithet,
+      authors,
       commonName,
       notes,
       citesStatus,
@@ -5815,6 +5843,7 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
           other.taxonFamily == this.taxonFamily &&
           other.genus == this.genus &&
           other.specificEpithet == this.specificEpithet &&
+          other.authors == this.authors &&
           other.commonName == this.commonName &&
           other.notes == this.notes &&
           other.citesStatus == this.citesStatus &&
@@ -5831,6 +5860,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
   final Value<String?> taxonFamily;
   final Value<String?> genus;
   final Value<String?> specificEpithet;
+  final Value<String?> authors;
   final Value<String?> commonName;
   final Value<String?> notes;
   final Value<String?> citesStatus;
@@ -5845,6 +5875,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
     this.taxonFamily = const Value.absent(),
     this.genus = const Value.absent(),
     this.specificEpithet = const Value.absent(),
+    this.authors = const Value.absent(),
     this.commonName = const Value.absent(),
     this.notes = const Value.absent(),
     this.citesStatus = const Value.absent(),
@@ -5860,6 +5891,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
     this.taxonFamily = const Value.absent(),
     this.genus = const Value.absent(),
     this.specificEpithet = const Value.absent(),
+    this.authors = const Value.absent(),
     this.commonName = const Value.absent(),
     this.notes = const Value.absent(),
     this.citesStatus = const Value.absent(),
@@ -5875,6 +5907,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
     Expression<String>? taxonFamily,
     Expression<String>? genus,
     Expression<String>? specificEpithet,
+    Expression<String>? authors,
     Expression<String>? commonName,
     Expression<String>? notes,
     Expression<String>? citesStatus,
@@ -5890,6 +5923,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
       if (taxonFamily != null) 'taxonFamily': taxonFamily,
       if (genus != null) 'genus': genus,
       if (specificEpithet != null) 'specificEpithet': specificEpithet,
+      if (authors != null) 'authors': authors,
       if (commonName != null) 'commonName': commonName,
       if (notes != null) 'notes': notes,
       if (citesStatus != null) 'citesStatus': citesStatus,
@@ -5907,6 +5941,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
       Value<String?>? taxonFamily,
       Value<String?>? genus,
       Value<String?>? specificEpithet,
+      Value<String?>? authors,
       Value<String?>? commonName,
       Value<String?>? notes,
       Value<String?>? citesStatus,
@@ -5921,6 +5956,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
       taxonFamily: taxonFamily ?? this.taxonFamily,
       genus: genus ?? this.genus,
       specificEpithet: specificEpithet ?? this.specificEpithet,
+      authors: authors ?? this.authors,
       commonName: commonName ?? this.commonName,
       notes: notes ?? this.notes,
       citesStatus: citesStatus ?? this.citesStatus,
@@ -5951,6 +5987,9 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
     }
     if (specificEpithet.present) {
       map['specificEpithet'] = Variable<String>(specificEpithet.value);
+    }
+    if (authors.present) {
+      map['authors'] = Variable<String>(authors.value);
     }
     if (commonName.present) {
       map['commonName'] = Variable<String>(commonName.value);
@@ -5985,6 +6024,7 @@ class TaxonomyCompanion extends UpdateCompanion<TaxonomyData> {
           ..write('taxonFamily: $taxonFamily, ')
           ..write('genus: $genus, ')
           ..write('specificEpithet: $specificEpithet, ')
+          ..write('authors: $authors, ')
           ..write('commonName: $commonName, ')
           ..write('notes: $notes, ')
           ..write('citesStatus: $citesStatus, ')
