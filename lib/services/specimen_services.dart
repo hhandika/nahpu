@@ -652,14 +652,30 @@ class AssociatedDataServices extends DbAccess {
         .getAllAssociatedData(specimenUuid);
   }
 
-  Future<void> createAssociatedData(String specimenUuid) async {
-    await AssociatedDataQuery(dbAccess).createSpecimenDataAssociation(
-        AssociatedDataCompanion(specimenUuid: db.Value(specimenUuid)));
+  Future<void> createAssociatedData(AssociatedDataCompanion form) async {
+    await AssociatedDataQuery(dbAccess).createSpecimenDataAssociation(form);
+    _invalidateData();
+  }
+
+  Future<void> updateAssociatedData(
+      int associatedDataId, AssociatedDataCompanion form) async {
+    await AssociatedDataQuery(dbAccess)
+        .updateAssociatedData(associatedDataId, form);
+    _invalidateData();
   }
 
   Future<bool> isFileUsed(File file) async {
     return await AssociatedDataQuery(dbAccess).isFileUsed(
       basename(file.path),
     );
+  }
+
+  Future<void> deleteAssociatedData(int associatedDataId) async {
+    await AssociatedDataQuery(dbAccess).deleteAssociatedData(associatedDataId);
+    _invalidateData();
+  }
+
+  void _invalidateData() {
+    ref.invalidate(associatedDataProvider);
   }
 }

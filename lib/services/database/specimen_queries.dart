@@ -322,6 +322,11 @@ class AssociatedDataQuery extends DatabaseAccessor<Database>
           AssociatedDataCompanion form) async =>
       await into(associatedData).insert(form);
 
+  Future<int> updateAssociatedData(int id, AssociatedDataCompanion form) async {
+    return (update(associatedData)..where((t) => t.primaryId.equals(id)))
+        .write(form);
+  }
+
   Future<List<AssociatedDataData>> getAllAssociatedData(
       String specimenUuid) async {
     return await (select(associatedData)
