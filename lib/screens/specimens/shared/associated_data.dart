@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -326,16 +328,39 @@ class AssociatedDataFormState extends ConsumerState<AssociatedDataForm> {
           ),
           const SizedBox(height: 12),
           Visibility(
-            visible: widget.ctr.typeCtr == 'File',
-            child: SelectFileField(
-              filePath: XFile(widget.ctr.urlCtr.text),
-              width: double.infinity,
-              maxWidth: double.infinity,
-              onPressed: () {
-                _getFile();
-              },
-            ),
-          ),
+              visible: widget.ctr.typeCtr == 'File',
+              child: widget.ctr.urlCtr.text.isNotEmpty
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(
+                          Icons.file_present,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          path.basename(widget.ctr.urlCtr.text),
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          icon: const Icon(Icons.clear_rounded),
+                          onPressed: () {
+                            setState(() {
+                              widget.ctr.urlCtr.text = '';
+                            });
+                          },
+                        )
+                      ],
+                    )
+                  : SelectFileField(
+                      filePath: _filePath,
+                      width: double.infinity,
+                      maxWidth: double.infinity,
+                      onPressed: () {
+                        _getFile();
+                      },
+                    )),
           const SizedBox(height: 16),
           FormButtonWithDelete(
             isEditing: widget.isEditing,
@@ -388,14 +413,28 @@ class AssociatedDataFormState extends ConsumerState<AssociatedDataForm> {
 
   Future<void> _updateData() async {
     final data = _getForm();
-    await AssociatedDataServices(ref: ref)
-        .updateAssociatedData(widget.associatedDataId!, data);
+    final service = AssociatedDataServices(ref: ref);
+    try {
+      await service.updateAssociatedData(widget.associatedDataId!, data);
+      if (_filePath != null) {
+        service.copyAssociatedDataFile(File(_filePath!.path));
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e'),
+          ),
+        );
+      }
+    }
   }
 
   AssociatedDataCompanion _getForm() {
     widget.ctr.urlCtr.text = _filePath != null
         ? path.basename(_filePath!.path)
         : widget.ctr.urlCtr.text;
+
     return AssociatedDataCompanion(
       specimenUuid: db.Value(widget.specimenUuid),
       name: db.Value(widget.ctr.nameCtr.text),
