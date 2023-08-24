@@ -140,9 +140,19 @@ class AssociateDataItem extends StatelessWidget {
   }
 
   String get _subtitle {
-    final date = data.date ?? 'No date';
-    final type = data.type ?? 'No type';
-    return '$type$listTileSeparator$date';
+    final type = data.type ?? '';
+    final date = _getText(data.date);
+    return '$type$date';
+  }
+
+  String _getText(String? text) {
+    if (text == null) {
+      return '';
+    } else if (text.isEmpty) {
+      return '';
+    } else {
+      return '$listTileSeparator$text';
+    }
   }
 }
 
