@@ -1135,3 +1135,44 @@ class MediaFormCtr {
     captionCtr.dispose();
   }
 }
+
+class AssociatedDataCtr {
+  AssociatedDataCtr({
+    required this.nameCtr,
+    required this.typeCtr,
+    required this.descriptionCtr,
+    required this.dateCtr,
+    required this.urlCtr,
+  });
+
+  final TextEditingController nameCtr;
+  final TextEditingController typeCtr;
+  final TextEditingController descriptionCtr;
+  final TextEditingController dateCtr;
+  final TextEditingController urlCtr;
+
+  factory AssociatedDataCtr.empty() => AssociatedDataCtr(
+        nameCtr: TextEditingController(),
+        typeCtr: TextEditingController(),
+        descriptionCtr: TextEditingController(),
+        dateCtr: TextEditingController(),
+        urlCtr: TextEditingController(),
+      );
+
+  factory AssociatedDataCtr.fromData(AssociatedDataData data) =>
+      AssociatedDataCtr(
+        nameCtr: TextEditingController(text: data.name ?? ''),
+        typeCtr: TextEditingController(text: data.type ?? ''),
+        descriptionCtr: TextEditingController(text: data.description ?? ''),
+        dateCtr: TextEditingController(text: data.date ?? ''),
+        urlCtr: TextEditingController(text: data.url ?? ''),
+      );
+
+  void dispose() {
+    nameCtr.dispose();
+    typeCtr.dispose();
+    descriptionCtr.dispose();
+    dateCtr.dispose();
+    urlCtr.dispose();
+  }
+}

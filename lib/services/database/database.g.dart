@@ -7408,6 +7408,12 @@ class AssociatedData extends Table
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
+  static const VerificationMeta _dateMeta = const VerificationMeta('date');
+  late final GeneratedColumn<String> date = GeneratedColumn<String>(
+      'date', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
   late final GeneratedColumn<String> description = GeneratedColumn<String>(
@@ -7423,7 +7429,7 @@ class AssociatedData extends Table
       $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns =>
-      [primaryId, specimenUuid, name, type, description, url];
+      [primaryId, specimenUuid, name, type, date, description, url];
   @override
   String get aliasedName => _alias ?? 'associatedData';
   @override
@@ -7450,6 +7456,10 @@ class AssociatedData extends Table
     if (data.containsKey('type')) {
       context.handle(
           _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
+    }
+    if (data.containsKey('date')) {
+      context.handle(
+          _dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
     }
     if (data.containsKey('description')) {
       context.handle(
@@ -7478,6 +7488,8 @@ class AssociatedData extends Table
           .read(DriftSqlType.string, data['${effectivePrefix}name']),
       type: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}type']),
+      date: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}date']),
       description: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}description']),
       url: attachedDatabase.typeMapping
@@ -7503,6 +7515,7 @@ class AssociatedDataData extends DataClass
   final String? specimenUuid;
   final String? name;
   final String? type;
+  final String? date;
   final String? description;
   final String? url;
   const AssociatedDataData(
@@ -7510,6 +7523,7 @@ class AssociatedDataData extends DataClass
       this.specimenUuid,
       this.name,
       this.type,
+      this.date,
       this.description,
       this.url});
   @override
@@ -7526,6 +7540,9 @@ class AssociatedDataData extends DataClass
     }
     if (!nullToAbsent || type != null) {
       map['type'] = Variable<String>(type);
+    }
+    if (!nullToAbsent || date != null) {
+      map['date'] = Variable<String>(date);
     }
     if (!nullToAbsent || description != null) {
       map['description'] = Variable<String>(description);
@@ -7546,6 +7563,7 @@ class AssociatedDataData extends DataClass
           : Value(specimenUuid),
       name: name == null && nullToAbsent ? const Value.absent() : Value(name),
       type: type == null && nullToAbsent ? const Value.absent() : Value(type),
+      date: date == null && nullToAbsent ? const Value.absent() : Value(date),
       description: description == null && nullToAbsent
           ? const Value.absent()
           : Value(description),
@@ -7561,6 +7579,7 @@ class AssociatedDataData extends DataClass
       specimenUuid: serializer.fromJson<String?>(json['specimenUuid']),
       name: serializer.fromJson<String?>(json['name']),
       type: serializer.fromJson<String?>(json['type']),
+      date: serializer.fromJson<String?>(json['date']),
       description: serializer.fromJson<String?>(json['description']),
       url: serializer.fromJson<String?>(json['url']),
     );
@@ -7573,6 +7592,7 @@ class AssociatedDataData extends DataClass
       'specimenUuid': serializer.toJson<String?>(specimenUuid),
       'name': serializer.toJson<String?>(name),
       'type': serializer.toJson<String?>(type),
+      'date': serializer.toJson<String?>(date),
       'description': serializer.toJson<String?>(description),
       'url': serializer.toJson<String?>(url),
     };
@@ -7583,6 +7603,7 @@ class AssociatedDataData extends DataClass
           Value<String?> specimenUuid = const Value.absent(),
           Value<String?> name = const Value.absent(),
           Value<String?> type = const Value.absent(),
+          Value<String?> date = const Value.absent(),
           Value<String?> description = const Value.absent(),
           Value<String?> url = const Value.absent()}) =>
       AssociatedDataData(
@@ -7591,6 +7612,7 @@ class AssociatedDataData extends DataClass
             specimenUuid.present ? specimenUuid.value : this.specimenUuid,
         name: name.present ? name.value : this.name,
         type: type.present ? type.value : this.type,
+        date: date.present ? date.value : this.date,
         description: description.present ? description.value : this.description,
         url: url.present ? url.value : this.url,
       );
@@ -7601,6 +7623,7 @@ class AssociatedDataData extends DataClass
           ..write('specimenUuid: $specimenUuid, ')
           ..write('name: $name, ')
           ..write('type: $type, ')
+          ..write('date: $date, ')
           ..write('description: $description, ')
           ..write('url: $url')
           ..write(')'))
@@ -7609,7 +7632,7 @@ class AssociatedDataData extends DataClass
 
   @override
   int get hashCode =>
-      Object.hash(primaryId, specimenUuid, name, type, description, url);
+      Object.hash(primaryId, specimenUuid, name, type, date, description, url);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -7618,6 +7641,7 @@ class AssociatedDataData extends DataClass
           other.specimenUuid == this.specimenUuid &&
           other.name == this.name &&
           other.type == this.type &&
+          other.date == this.date &&
           other.description == this.description &&
           other.url == this.url);
 }
@@ -7627,6 +7651,7 @@ class AssociatedDataCompanion extends UpdateCompanion<AssociatedDataData> {
   final Value<String?> specimenUuid;
   final Value<String?> name;
   final Value<String?> type;
+  final Value<String?> date;
   final Value<String?> description;
   final Value<String?> url;
   const AssociatedDataCompanion({
@@ -7634,6 +7659,7 @@ class AssociatedDataCompanion extends UpdateCompanion<AssociatedDataData> {
     this.specimenUuid = const Value.absent(),
     this.name = const Value.absent(),
     this.type = const Value.absent(),
+    this.date = const Value.absent(),
     this.description = const Value.absent(),
     this.url = const Value.absent(),
   });
@@ -7642,6 +7668,7 @@ class AssociatedDataCompanion extends UpdateCompanion<AssociatedDataData> {
     this.specimenUuid = const Value.absent(),
     this.name = const Value.absent(),
     this.type = const Value.absent(),
+    this.date = const Value.absent(),
     this.description = const Value.absent(),
     this.url = const Value.absent(),
   });
@@ -7650,6 +7677,7 @@ class AssociatedDataCompanion extends UpdateCompanion<AssociatedDataData> {
     Expression<String>? specimenUuid,
     Expression<String>? name,
     Expression<String>? type,
+    Expression<String>? date,
     Expression<String>? description,
     Expression<String>? url,
   }) {
@@ -7658,6 +7686,7 @@ class AssociatedDataCompanion extends UpdateCompanion<AssociatedDataData> {
       if (specimenUuid != null) 'specimenUuid': specimenUuid,
       if (name != null) 'name': name,
       if (type != null) 'type': type,
+      if (date != null) 'date': date,
       if (description != null) 'description': description,
       if (url != null) 'url': url,
     });
@@ -7668,6 +7697,7 @@ class AssociatedDataCompanion extends UpdateCompanion<AssociatedDataData> {
       Value<String?>? specimenUuid,
       Value<String?>? name,
       Value<String?>? type,
+      Value<String?>? date,
       Value<String?>? description,
       Value<String?>? url}) {
     return AssociatedDataCompanion(
@@ -7675,6 +7705,7 @@ class AssociatedDataCompanion extends UpdateCompanion<AssociatedDataData> {
       specimenUuid: specimenUuid ?? this.specimenUuid,
       name: name ?? this.name,
       type: type ?? this.type,
+      date: date ?? this.date,
       description: description ?? this.description,
       url: url ?? this.url,
     );
@@ -7695,6 +7726,9 @@ class AssociatedDataCompanion extends UpdateCompanion<AssociatedDataData> {
     if (type.present) {
       map['type'] = Variable<String>(type.value);
     }
+    if (date.present) {
+      map['date'] = Variable<String>(date.value);
+    }
     if (description.present) {
       map['description'] = Variable<String>(description.value);
     }
@@ -7711,6 +7745,7 @@ class AssociatedDataCompanion extends UpdateCompanion<AssociatedDataData> {
           ..write('specimenUuid: $specimenUuid, ')
           ..write('name: $name, ')
           ..write('type: $type, ')
+          ..write('date: $date, ')
           ..write('description: $description, ')
           ..write('url: $url')
           ..write(')'))

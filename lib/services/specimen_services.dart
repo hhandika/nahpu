@@ -657,7 +657,7 @@ class AssociatedDataServices extends DbAccess {
         AssociatedDataCompanion(specimenUuid: db.Value(specimenUuid)));
   }
 
-  Future<bool> isFileUse(File file) async {
+  Future<bool> isFileUsed(File file) async {
     return await AssociatedDataQuery(dbAccess).isFileUsed(
       basename(file.path),
     );

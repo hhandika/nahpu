@@ -244,7 +244,7 @@ class DataUsageServices {
 
     if (format == NahpuFileFormat.other) {
       bool isUsedInAssociatedData =
-          await AssociatedDataServices(ref: ref).isFileUse(file);
+          await AssociatedDataServices(ref: ref).isFileUsed(file);
       return !isUsedInAssociatedData;
     }
 

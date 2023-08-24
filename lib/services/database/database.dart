@@ -63,6 +63,7 @@ class Database extends _$Database {
     await m.addColumn(taxonomy, taxonomy.sortingOrder);
 
     // Associated data
+    await m.addColumn(associatedData, associatedData.date);
     await m.addColumn(associatedData, associatedData.specimenUuid);
     await m.renameColumn(associatedData, 'secondaryId', associatedData.name);
     await m.renameColumn(associatedData, 'fileId', associatedData.url);

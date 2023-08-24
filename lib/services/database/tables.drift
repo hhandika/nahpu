@@ -14,6 +14,7 @@ New to v5:
 5. Cast elevationInMeter to REAL in the coordinate table.
 6. Rename secondaryId to name and fileId to url in the associatedData table.
 7. Add specimenUuid and delete secondaryIdRef in the associatedData table.
+8. Add date to the associated data table.
 
 */
 
@@ -167,6 +168,7 @@ CREATE TABLE associatedData (
     specimenUuid TEXT,
     name TEXT,
     type TEXT,
+    date TEXT,
     description TEXT,
     url TEXT,
     FOREIGN KEY(specimenUuid) REFERENCES specimen(uuid)
