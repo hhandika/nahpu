@@ -121,7 +121,10 @@ class AssociateDataItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(data.name ?? 'No name'),
-      subtitle: Text(_subtitle),
+      subtitle: Text(
+        _subtitle,
+        overflow: TextOverflow.ellipsis,
+      ),
       trailing: IconButton(
         icon: const Icon(Icons.edit),
         onPressed: () {
