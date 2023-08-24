@@ -677,6 +677,7 @@ class AssociatedDataServices extends DbAccess {
 
   Future<File> copyAssociatedDataFile(File path) async {
     final dataDir = Directory('associatedData');
+
     File dataPath =
         await FileServices(ref: ref).copyFileToProjectDir(path, dataDir);
     return dataPath;

@@ -341,6 +341,7 @@ class AssociatedDataFormState extends ConsumerState<AssociatedDataForm> {
                         Text(
                           path.basename(widget.ctr.urlCtr.text),
                           style: Theme.of(context).textTheme.bodyMedium,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         const Spacer(),
                         IconButton(
@@ -417,7 +418,15 @@ class AssociatedDataFormState extends ConsumerState<AssociatedDataForm> {
     try {
       await service.updateAssociatedData(widget.associatedDataId!, data);
       if (_filePath != null) {
-        service.copyAssociatedDataFile(File(_filePath!.path));
+        final path =
+            await service.copyAssociatedDataFile(File(_filePath!.path));
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('File copied to $path'),
+            ),
+          );
+        }
       }
     } catch (e) {
       if (mounted) {
