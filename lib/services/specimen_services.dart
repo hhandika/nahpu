@@ -675,6 +675,13 @@ class AssociatedDataServices extends DbAccess {
     _invalidateData();
   }
 
+  Future<File> copyAssociatedDataFile(File path) async {
+    final dataDir = Directory('associatedData');
+    File dataPath =
+        await FileServices(ref: ref).copyFileToProjectDir(path, dataDir);
+    return dataPath;
+  }
+
   void _invalidateData() {
     ref.invalidate(associatedDataProvider);
   }

@@ -13,6 +13,7 @@ import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/utility_services.dart';
+import 'package:path/path.dart' as path;
 
 class AssociatedDataViewer extends ConsumerStatefulWidget {
   const AssociatedDataViewer({
@@ -263,7 +264,7 @@ class AssociatedDataForm extends ConsumerStatefulWidget {
 
 class AssociatedDataFormState extends ConsumerState<AssociatedDataForm> {
   final List<String> dataOptions = ['Link', 'File'];
-  String? selectedDataOption;
+  XFile? _filePath;
 
   @override
   void dispose() {
@@ -281,18 +282,18 @@ class AssociatedDataFormState extends ConsumerState<AssociatedDataForm> {
               labelText: 'Data Type',
               hintText: 'Select data type',
             ),
-            value: selectedDataOption,
-            onChanged: (String? newValue) {
-              setState(() {
-                selectedDataOption = newValue;
-              });
-            },
+            value: widget.ctr.typeCtr,
             items: dataOptions.map((String value) {
               return DropdownMenuItem<String>(
                 value: value,
                 child: Text(value),
               );
             }).toList(),
+            onChanged: (String? newValue) {
+              setState(() {
+                widget.ctr.typeCtr = newValue;
+              });
+            },
           ),
           CommonTextField(
             labelText: 'Name',
@@ -314,20 +315,26 @@ class AssociatedDataFormState extends ConsumerState<AssociatedDataForm> {
             lastDate: DateTime.now(),
             onTap: () {},
           ),
-          CommonTextField(
-            labelText: 'URL',
-            hintText: 'e.g., https://www.ncbi.nlm.nih.gov/genbank/',
-            controller: widget.ctr.urlCtr,
-            isLastField: false,
+          Visibility(
+            visible: widget.ctr.typeCtr == 'Link',
+            child: CommonTextField(
+              labelText: 'URL',
+              hintText: 'e.g., https://www.ncbi.nlm.nih.gov/genbank/',
+              controller: widget.ctr.urlCtr,
+              isLastField: false,
+            ),
           ),
-          const SizedBox(height: 8),
-          SelectFileField(
-            filePath: XFile(widget.ctr.urlCtr.text),
-            width: double.infinity,
-            maxWidth: double.infinity,
-            onPressed: () {
-              _getFile();
-            },
+          const SizedBox(height: 12),
+          Visibility(
+            visible: widget.ctr.typeCtr == 'File',
+            child: SelectFileField(
+              filePath: XFile(widget.ctr.urlCtr.text),
+              width: double.infinity,
+              maxWidth: double.infinity,
+              onPressed: () {
+                _getFile();
+              },
+            ),
           ),
           const SizedBox(height: 16),
           FormButtonWithDelete(
@@ -386,10 +393,13 @@ class AssociatedDataFormState extends ConsumerState<AssociatedDataForm> {
   }
 
   AssociatedDataCompanion _getForm() {
+    widget.ctr.urlCtr.text = _filePath != null
+        ? path.basename(_filePath!.path)
+        : widget.ctr.urlCtr.text;
     return AssociatedDataCompanion(
       specimenUuid: db.Value(widget.specimenUuid),
       name: db.Value(widget.ctr.nameCtr.text),
-      type: db.Value(widget.ctr.typeCtr.text),
+      type: db.Value(widget.ctr.typeCtr),
       date: db.Value(widget.ctr.dateCtr.text),
       description: db.Value(widget.ctr.descriptionCtr.text),
       url: db.Value(widget.ctr.urlCtr.text),
@@ -400,7 +410,7 @@ class AssociatedDataFormState extends ConsumerState<AssociatedDataForm> {
     XFile? file = await FilePickerServices().selectAnyFile();
     if (file != null) {
       setState(() {
-        widget.ctr.urlCtr.text = file.path;
+        _filePath = file;
       });
     }
   }

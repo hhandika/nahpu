@@ -1146,14 +1146,14 @@ class AssociatedDataCtr {
   });
 
   final TextEditingController nameCtr;
-  final TextEditingController typeCtr;
+  String? typeCtr;
   final TextEditingController descriptionCtr;
   final TextEditingController dateCtr;
   final TextEditingController urlCtr;
 
   factory AssociatedDataCtr.empty() => AssociatedDataCtr(
         nameCtr: TextEditingController(),
-        typeCtr: TextEditingController(),
+        typeCtr: null,
         descriptionCtr: TextEditingController(),
         dateCtr: TextEditingController(),
         urlCtr: TextEditingController(),
@@ -1162,7 +1162,7 @@ class AssociatedDataCtr {
   factory AssociatedDataCtr.fromData(AssociatedDataData data) =>
       AssociatedDataCtr(
         nameCtr: TextEditingController(text: data.name ?? ''),
-        typeCtr: TextEditingController(text: data.type ?? ''),
+        typeCtr: data.type,
         descriptionCtr: TextEditingController(text: data.description ?? ''),
         dateCtr: TextEditingController(text: data.date ?? ''),
         urlCtr: TextEditingController(text: data.url ?? ''),
@@ -1170,7 +1170,6 @@ class AssociatedDataCtr {
 
   void dispose() {
     nameCtr.dispose();
-    typeCtr.dispose();
     descriptionCtr.dispose();
     dateCtr.dispose();
     urlCtr.dispose();
