@@ -70,6 +70,7 @@ const Map<String, TaxonEntryHeader> knownTaxonHeader = {
   'commonname': TaxonEntryHeader.commonName,
   'englishname': TaxonEntryHeader.commonName,
   'citesstatus': TaxonEntryHeader.citesStatus,
+  'appendixstatus': TaxonEntryHeader.citesStatus,
   'redlistcategory': TaxonEntryHeader.redListCategory,
   'iucncategory': TaxonEntryHeader.redListCategory,
   'iucnstatus': TaxonEntryHeader.redListCategory,
