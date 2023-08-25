@@ -35,6 +35,8 @@ String matchTaxonEntryHeader(TaxonEntryHeader headerEnum) {
       return 'Genus';
     case TaxonEntryHeader.specificEpithet:
       return 'Specific epithet';
+    case TaxonEntryHeader.authors:
+      return 'Authors';
     case TaxonEntryHeader.commonName:
       return 'Common name';
     case TaxonEntryHeader.redListCategory:
