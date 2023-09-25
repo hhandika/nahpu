@@ -906,7 +906,7 @@ class CoordinateCtrModel {
         longitudeCtr:
             TextEditingController(text: data.decimalLongitude.toString()),
         elevationCtr:
-            TextEditingController(text: data.elevationInMeter.toString()),
+            TextEditingController(text: data.elevationInMeter?.truncateZero()),
         datumCtr: TextEditingController(text: data.datum ?? ''),
         uncertaintyCtr:
             TextEditingController(text: data.uncertaintyInMeters.toString()),
