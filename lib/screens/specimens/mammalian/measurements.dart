@@ -32,6 +32,7 @@ class MammalMeasurementFormsState
     extends ConsumerState<MammalMeasurementForms> {
   MammalMeasurementCtrModel ctr = MammalMeasurementCtrModel.empty();
   TextEditingController headBodyLengthCtr = TextEditingController();
+  TextEditingController tailHeadBodyPercentCtr = TextEditingController();
 
   @override
   void initState() {
@@ -45,6 +46,7 @@ class MammalMeasurementFormsState
   void dispose() {
     ctr.dispose();
     headBodyLengthCtr.dispose();
+    tailHeadBodyPercentCtr.dispose();
     super.dispose();
   }
 
@@ -112,6 +114,23 @@ class MammalMeasurementFormsState
                 onChanged: null,
               ),
             ),
+            Tooltip(
+              message: 'Automatically calculated',
+              child: CommonNumField(
+                controller: tailHeadBodyPercentCtr,
+                labelText: 'Tail/HB length',
+                hintText: 'Enter TL/HBL',
+                enabled: false,
+                isDouble: true,
+                isLastField: false,
+                onChanged: null,
+              ),
+            ),
+          ],
+        ),
+        AdaptiveLayout(
+          useHorizontalLayout: widget.useHorizontalLayout,
+          children: [
             CommonNumField(
               controller: ctr.hindFootCtr,
               labelText: 'Hind foot length (mm)',
@@ -131,11 +150,6 @@ class MammalMeasurementFormsState
                 }
               },
             ),
-          ],
-        ),
-        AdaptiveLayout(
-          useHorizontalLayout: widget.useHorizontalLayout,
-          children: [
             CommonNumField(
               controller: ctr.earCtr,
               labelText: 'Ear length (mm)',
@@ -155,33 +169,33 @@ class MammalMeasurementFormsState
                 }
               },
             ),
-            CommonNumField(
-              controller: ctr.weightCtr,
-              labelText: 'Weight (grams)',
-              hintText: 'Enter specimen weight',
-              isDouble: true,
-              isLastField: false,
-              onChanged: (value) {
-                if (value != null && value.isNotEmpty) {
-                  setState(() {
-                    SpecimenServices(ref: ref).updateMammalMeasurement(
-                      widget.specimenUuid,
-                      MammalMeasurementCompanion(
-                        weight: db.Value(double.tryParse(value)),
-                      ),
-                    );
-                  });
-                }
-              },
-            ),
           ],
         ),
-        Visibility(
-          visible: widget.isBats,
-          child: AdaptiveLayout(
-              useHorizontalLayout: widget.useHorizontalLayout,
-              children: [
-                CommonNumField(
+        AdaptiveLayout(
+            useHorizontalLayout: widget.useHorizontalLayout,
+            children: [
+              CommonNumField(
+                controller: ctr.weightCtr,
+                labelText: 'Weight (grams)',
+                hintText: 'Enter specimen weight',
+                isDouble: true,
+                isLastField: false,
+                onChanged: (value) {
+                  if (value != null && value.isNotEmpty) {
+                    setState(() {
+                      SpecimenServices(ref: ref).updateMammalMeasurement(
+                        widget.specimenUuid,
+                        MammalMeasurementCompanion(
+                          weight: db.Value(double.tryParse(value)),
+                        ),
+                      );
+                    });
+                  }
+                },
+              ),
+              Visibility(
+                visible: widget.isBats,
+                child: CommonNumField(
                   controller: ctr.forearmCtr,
                   labelText: 'Forearm Length (mm)',
                   hintText: 'Enter FL length',
@@ -200,8 +214,8 @@ class MammalMeasurementFormsState
                     }
                   },
                 ),
-              ]),
-        ),
+              ),
+            ]),
         Padding(
           padding: const EdgeInsets.all(5),
           child: DropdownButtonFormField(
@@ -329,6 +343,7 @@ class MammalMeasurementFormsState
     setState(() {
       ctr = MammalMeasurementCtrModel.fromData(data);
       _getHeadBodyLength();
+      _getTailHeadBodyPercent();
     });
   }
 
@@ -343,6 +358,24 @@ class MammalMeasurementFormsState
       return;
     } else if (totalLength > 0) {
       headBodyLengthCtr.text = (totalLength - tailLength).truncateZeroFixed(1);
+    } else {
+      return;
+    }
+  }
+
+  void _getTailHeadBodyPercent() {
+    double? headBodyLength = headBodyLengthCtr.text.isNotEmpty
+        ? double.tryParse(ctr.totalLengthCtr.text)
+        : null;
+    double? tailLength = ctr.tailLengthCtr.text.isNotEmpty
+        ? double.tryParse(ctr.tailLengthCtr.text)
+        : null;
+    if (headBodyLength == null || tailLength == null) {
+      return;
+    } else if (headBodyLength > 0) {
+      String tailHeadBodyPercent =
+          (tailLength / headBodyLength * 100).truncateZeroFixed(1);
+      tailHeadBodyPercentCtr.text = '$tailHeadBodyPercent%';
     } else {
       return;
     }
