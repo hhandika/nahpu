@@ -365,7 +365,7 @@ class MammalMeasurementFormsState
 
   void _getTailHeadBodyPercent() {
     double? headBodyLength = headBodyLengthCtr.text.isNotEmpty
-        ? double.tryParse(ctr.totalLengthCtr.text)
+        ? double.tryParse(headBodyLengthCtr.text)
         : null;
     double? tailLength = ctr.tailLengthCtr.text.isNotEmpty
         ? double.tryParse(ctr.tailLengthCtr.text)
