@@ -10,7 +10,6 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/types/mammals.dart';
 import 'package:drift/drift.dart' as db;
-import 'package:nahpu/services/utility_services.dart';
 
 class MammalMeasurementForms extends ConsumerStatefulWidget {
   const MammalMeasurementForms({
@@ -66,7 +65,7 @@ class MammalMeasurementFormsState
               onChanged: (String? value) {
                 if (value != null && value.isNotEmpty) {
                   setState(() {
-                    _getHeadBodyLength();
+                    _getHBTailPercent();
                     SpecimenServices(ref: ref).updateMammalMeasurement(
                       widget.specimenUuid,
                       MammalMeasurementCompanion(
@@ -86,7 +85,7 @@ class MammalMeasurementFormsState
               onChanged: (String? value) {
                 if (value != null && value.isNotEmpty) {
                   setState(() {
-                    _getHeadBodyLength();
+                    _getHBTailPercent();
                     SpecimenServices(ref: ref).updateMammalMeasurement(
                       widget.specimenUuid,
                       MammalMeasurementCompanion(
@@ -342,42 +341,25 @@ class MammalMeasurementFormsState
 
     setState(() {
       ctr = MammalMeasurementCtrModel.fromData(data);
-      _getHeadBodyLength();
-      _getTailHeadBodyPercent();
+      _getHBTailPercent();
     });
   }
 
-  void _getHeadBodyLength() {
-    double? totalLength = ctr.totalLengthCtr.text.isNotEmpty
-        ? double.tryParse(ctr.totalLengthCtr.text)
-        : null;
-    double? tailLength = ctr.tailLengthCtr.text.isNotEmpty
-        ? double.tryParse(ctr.tailLengthCtr.text)
-        : null;
-    if (totalLength == null || tailLength == null) {
-      return;
-    } else if (totalLength > 0) {
-      headBodyLengthCtr.text = (totalLength - tailLength).truncateZeroFixed(1);
-    } else {
-      return;
-    }
-  }
+  void _getHBTailPercent() {
+    MammalMeasurementServices service = MammalMeasurementServices(
+      totalLengthText: ctr.totalLengthCtr.text,
+      tailLengthText: ctr.tailLengthCtr.text,
+    );
 
-  void _getTailHeadBodyPercent() {
-    double? headBodyLength = headBodyLengthCtr.text.isNotEmpty
-        ? double.tryParse(headBodyLengthCtr.text)
-        : null;
-    double? tailLength = ctr.tailLengthCtr.text.isNotEmpty
-        ? double.tryParse(ctr.tailLengthCtr.text)
-        : null;
-    if (headBodyLength == null || tailLength == null) {
-      return;
-    } else if (headBodyLength > 0) {
-      String tailHeadBodyPercent =
-          (tailLength / headBodyLength * 100).truncateZeroFixed(1);
-      tailHeadBodyPercentCtr.text = '$tailHeadBodyPercent%';
+    ({String headAndBodyText, String percentTailText})? results =
+        service.getHBandTailPercentage();
+
+    if (results != null) {
+      headBodyLengthCtr.text = results.headAndBodyText;
+      tailHeadBodyPercentCtr.text = results.percentTailText;
     } else {
-      return;
+      headBodyLengthCtr.text = '';
+      tailHeadBodyPercentCtr.text = '';
     }
   }
 }
