@@ -138,63 +138,146 @@ class EventIdField extends ConsumerStatefulWidget {
 }
 
 class EventIdFieldState extends ConsumerState<EventIdField> {
+  int? siteIDctr;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _getSiteFromEventID();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return CommonPadding(
-      child: DropdownButtonFormField<int?>(
-          isExpanded: true,
-          value: widget.specimenCtr.collEventIDCtr,
-          decoration: const InputDecoration(
-            labelText: 'Event ID',
-            hintText: 'Choose a collecting event ID',
-          ),
-          items: ref.watch(collEventEntryProvider).when(
-              data: (data) {
-                return data.isEmpty
-                    ? const []
-                    : data.reversed
-                        .map((event) => DropdownMenuItem(
-                              value: event.id,
-                              child: CollEventIDText(collEventData: event),
-                            ))
-                        .toList();
-              },
-              loading: () => const [],
-              error: (error, stack) => const []),
-          onChanged: (int? newValue) async {
-            if (widget.specimenCtr.collEventIDCtr != null) {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: const Text('Change collecting event ID?'),
-                      content: ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 350),
-                          child: const Text('Except for capture date and time,'
-                              ' all fields in the collecting record section'
-                              ' will be empty again.')),
-                      actions: [
-                        TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text('Cancel')),
-                        TextButton(
-                            onPressed: () async {
-                              await _updateSpecimen(newValue);
-                              if (mounted) {
+    return AdaptiveLayout(
+      useHorizontalLayout: true,
+      children: [
+        DropdownButtonFormField<int?>(
+            isExpanded: true,
+            value: siteIDctr,
+            decoration: const InputDecoration(
+              labelText: 'Site',
+              hintText: 'Choose a site',
+            ),
+            items: ref.watch(siteInEventProvider).when(
+                data: (data) {
+                  return data.isEmpty
+                      ? const []
+                      : data
+                          .map((site) => DropdownMenuItem(
+                                value: site.id,
+                                child:
+                                    CommonDropdownText(text: site.siteID ?? ''),
+                              ))
+                          .toList();
+                },
+                loading: () => const [],
+                error: (error, stack) => const []),
+            onChanged: (int? newValue) async {
+              if (newValue != null) {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text('Change site?'),
+                        content: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 350),
+                            child:
+                                const Text('Except for capture date and time, '
+                                    'all fields in the collecting record'
+                                    'section will be empty again.')),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
                                 Navigator.pop(context);
-                              }
-                            },
-                            child: const Text('OK')),
-                      ],
-                    );
-                  });
-            } else {
-              await _updateSpecimen(newValue);
-            }
-          }),
+                              },
+                              child: const Text('Cancel')),
+                          TextButton(
+                              onPressed: () async {
+                                setState(() {
+                                  int? eventID;
+                                  _updateSpecimen(eventID);
+                                  ref.invalidate(collEventEntryProvider);
+                                  siteIDctr = newValue;
+                                });
+                                if (mounted) {
+                                  Navigator.pop(context);
+                                }
+                              },
+                              child: const Text('OK')),
+                        ],
+                      );
+                    });
+              }
+            }),
+        DropdownButtonFormField<int?>(
+            isExpanded: true,
+            value: widget.specimenCtr.collEventIDCtr,
+            decoration: const InputDecoration(
+              labelText: 'Event ID',
+              hintText: 'Choose a collecting event ID',
+            ),
+            items: ref.watch(collEventEntryProvider).when(
+                data: (data) {
+                  return data.isEmpty
+                      ? const []
+                      : data.reversed
+                          .where((collEvent) => collEvent.siteID == siteIDctr)
+                          .map((event) => DropdownMenuItem(
+                                value: event.id,
+                                child: CollEventIDText(collEventData: event),
+                              ))
+                          .toList();
+                },
+                loading: () => const [],
+                error: (error, stack) => const []),
+            onChanged: (int? newValue) async {
+              if (widget.specimenCtr.collEventIDCtr != null) {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text('Change collecting event ID?'),
+                        content: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 350),
+                            child: const Text(
+                                'Except for capture date and time,'
+                                ' all fields in the collecting record section'
+                                ' will be empty again.')),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Cancel')),
+                          TextButton(
+                              onPressed: () async {
+                                await _updateSpecimen(newValue);
+                                if (mounted) {
+                                  Navigator.pop(context);
+                                }
+                              },
+                              child: const Text('OK')),
+                        ],
+                      );
+                    });
+              } else {
+                await _updateSpecimen(newValue);
+              }
+            }),
+      ],
     );
+  }
+
+  Future<void> _getSiteFromEventID() async {
+    if (widget.specimenCtr.collEventIDCtr != null) {
+      CollEventData? data = await CollEventServices(ref: ref)
+          .getCollEvent(widget.specimenCtr.collEventIDCtr);
+      if (data != null) {
+        siteIDctr = data.siteID;
+      }
+    }
   }
 
   Future<void> _updateSpecimen(int? newValue) async {

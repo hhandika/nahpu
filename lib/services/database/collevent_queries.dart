@@ -20,6 +20,15 @@ class CollEventQuery extends DatabaseAccessor<Database>
         .write(entry);
   }
 
+  Future<List<int?>> getAllDistinctSites(String projectUuid) async {
+    List<CollEventData> data = await (select(collEvent)
+          ..where((t) => t.projectUuid.equals(projectUuid)))
+        .get();
+    List<int?> sites = data.map((e) => e.siteID).toSet().toList();
+
+    return sites;
+  }
+
   Future<List<CollEventData>> getAllCollEvents(String projectUuid) async {
     return await (select(collEvent)
           ..where((t) => t.projectUuid.equals(projectUuid)))

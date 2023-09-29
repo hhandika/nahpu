@@ -73,3 +73,18 @@ Future<List<MediaData>> siteMedia(SiteMediaRef ref,
   }
   return mediaDataList;
 }
+
+@riverpod
+Future<List<SiteData>> siteInEvent(SiteInEventRef ref) async {
+  List<int?> siteList = await CollEventQuery(ref.read(databaseProvider))
+      .getAllDistinctSites(ref.read(projectUuidProvider));
+  List<SiteData> siteDataList = [];
+  for (int? siteId in siteList) {
+    if (siteId != null) {
+      siteDataList.add(
+        await SiteQuery(ref.read(databaseProvider)).getSiteById(siteId),
+      );
+    }
+  }
+  return siteDataList;
+}
