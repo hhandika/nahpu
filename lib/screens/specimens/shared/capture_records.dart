@@ -175,7 +175,7 @@ class EventIdFieldState extends ConsumerState<EventIdField> {
                 loading: () => const [],
                 error: (error, stack) => const []),
             onChanged: (int? newValue) async {
-              if (newValue != null) {
+              if (siteIDctr != null) {
                 showDialog(
                     context: context,
                     builder: (context) {
@@ -184,9 +184,9 @@ class EventIdFieldState extends ConsumerState<EventIdField> {
                         content: ConstrainedBox(
                             constraints: const BoxConstraints(maxWidth: 350),
                             child:
-                                const Text('Except for capture date and time, '
-                                    'all fields in the collecting record'
-                                    'section will be empty again.')),
+                                const Text('Except for capture date and time,'
+                                    ' all fields in the collecting record'
+                                    ' section will be empty again.')),
                         actions: [
                           TextButton(
                               onPressed: () {
@@ -195,12 +195,7 @@ class EventIdFieldState extends ConsumerState<EventIdField> {
                               child: const Text('Cancel')),
                           TextButton(
                               onPressed: () async {
-                                setState(() {
-                                  int? eventID;
-                                  _updateSpecimen(eventID);
-                                  ref.invalidate(collEventEntryProvider);
-                                  siteIDctr = newValue;
-                                });
+                                await _updateSite(newValue);
                                 if (mounted) {
                                   Navigator.pop(context);
                                 }
@@ -209,6 +204,8 @@ class EventIdFieldState extends ConsumerState<EventIdField> {
                         ],
                       );
                     });
+              } else {
+                await _updateSite(newValue);
               }
             }),
         DropdownButtonFormField<int?>(
@@ -268,6 +265,15 @@ class EventIdFieldState extends ConsumerState<EventIdField> {
             }),
       ],
     );
+  }
+
+  Future<void> _updateSite(int? newValue) async {
+    int? eventID;
+    await _updateSpecimen(eventID);
+    setState(() {
+      ref.invalidate(collEventEntryProvider);
+      siteIDctr = newValue;
+    });
   }
 
   Future<void> _getSiteFromEventID() async {
