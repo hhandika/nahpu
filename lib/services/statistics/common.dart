@@ -28,3 +28,59 @@ class DataPoints {
     }
   }
 }
+
+class StatLabelServices {
+  StatLabelServices({required this.value});
+
+  final String value;
+
+  String getLabel() {
+    if (value.contains('-')) {
+      return _getStandardLabel();
+    } else {
+      return _getTaxonFirstThreeLetters();
+    }
+  }
+
+  String _getStandardLabel() {
+    List<String> splitAtDash = value.split('-');
+    if (splitAtDash.length > 1 &&
+        !splitAtDash[1].toLowerCase().contains('none')) {
+      return _cleanSplitString(splitAtDash);
+    } else {
+      String sub = value.length > 5 ? value.substring(0, 5) : value;
+      return sub.replaceAll('-', '');
+    }
+  }
+
+  String _cleanSplitString(List<String> splitString) {
+    String first = splitString[0];
+    String second = splitString[1];
+    if (second.isEmpty) {
+      return first.length > 5 ? first.substring(0, 5) : first;
+    }
+    if (first.length > 2) {
+      first = first.substring(0, 2);
+    }
+    if (second.length > 2) {
+      String sub = second.substring(0, 2);
+      second = '-$sub';
+    }
+    return '$first$second';
+  }
+
+  String _getTaxonFirstThreeLetters() {
+    try {
+      List<String> splitAtSpace = value.split(' ');
+      if (splitAtSpace.length > 1) {
+        String genus = splitAtSpace[0].substring(0, 1);
+        String species = splitAtSpace[1].substring(0, 3);
+        return '$genus. $species';
+      } else {
+        return value.substring(0, 5);
+      }
+    } catch (e) {
+      return value.substring(0, 5);
+    }
+  }
+}

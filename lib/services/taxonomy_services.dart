@@ -94,20 +94,17 @@ String getSpeciesName(TaxonomyData data) {
   }
 }
 
-String getTaxonFirstThreeLetters(String value) {
-  try {
-    List<String> splitAtSpace = value.split(' ');
-    if (splitAtSpace.length > 1) {
-      String genus = splitAtSpace[0].substring(0, 1);
-      String species = splitAtSpace[1].substring(0, 3);
-      return '$genus. $species';
-    } else {
-      return value.substring(0, 5);
-    }
-  } catch (e) {
-    return value.substring(0, 5);
-  }
-}
+// String _getAxisLabel(String value) {
+//   if (value.contains(' ')) {
+//     return _getTaxonFirstThreeLetters(value);
+//   } else {
+//     if (value.length > 5) {
+//       return value.substring(0, 5);
+//     } else {
+//       return value;
+//     }
+//   }
+// }
 
 class TaxonData {
   TaxonData({

@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/specimen_services.dart';
@@ -35,11 +37,6 @@ class CaptureRecordStats {
     return DataPoints.fromData(speciesCount);
   }
 
-  Map<String, int> _sortMap(Map<String, int> map) {
-    return Map.fromEntries(
-        map.entries.toList()..sort((e1, e2) => e2.value.compareTo(e1.value)));
-  }
-
   Future<DataPoints> getFamilyDataPoint() async {
     List<SpecimenData> specimenList = await _getSpecimenData();
     Map<String, int> familyCount = await _countFamily(specimenList);
@@ -60,6 +57,17 @@ class CaptureRecordStats {
     // sort speciesCount by value
     speciesCount = _sortMap(speciesCount);
     return DataPoints.fromData(speciesCount);
+  }
+
+  Future<DataPoints> getSpecimenPartDataPoint() async {
+    SplayTreeMap<String, int> partCount = await _countSpecimenPart();
+    // sort partCount by value
+    return DataPoints.fromData(partCount);
+  }
+
+  Map<String, int> _sortMap(Map<String, int> map) {
+    return Map.fromEntries(
+        map.entries.toList()..sort((e1, e2) => e2.value.compareTo(e1.value)));
   }
 
   Future<Map<String, int>> _countSpecies(
@@ -97,6 +105,27 @@ class CaptureRecordStats {
 
   Future<TaxonomyData> _getTaxonData(int speciesID) async {
     return await TaxonomyServices(ref: ref).getTaxonById(speciesID);
+  }
+
+  Future<SplayTreeMap<String, int>> _countSpecimenPart() async {
+    final specimenList = await _getSpecimenData();
+    SplayTreeMap<String, int> partCount = SplayTreeMap();
+
+    for (var specimen in specimenList) {
+      final partList =
+          await SpecimenPartServices(ref: ref).getSpecimenParts(specimen.uuid);
+      for (var part in partList) {
+        String treatment = part.treatment == null ||
+                part.treatment!.toLowerCase() == 'none' ||
+                part.treatment!.isEmpty
+            ? '-None'
+            : '-${part.treatment}';
+        String partAndTreatment = "${part.type ?? ''}$treatment";
+        _count(partCount, partAndTreatment);
+      }
+    }
+
+    return partCount;
   }
 
   void _count(Map<String, int> data, String record) {

@@ -65,13 +65,37 @@ class StatisticViewerState extends ConsumerState<StatisticViewer> {
           ),
         ),
         Expanded(
-            child: CountBarChart(
-          graphType: _selectedGraph,
-          siteID: null,
-          isFullScreen: false,
+            child: FutureBuilder(
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return CountBarChart(
+                graphType: _selectedGraph,
+                dataPoints: snapshot.data!,
+                isFullScreen: false,
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+          future: _getData(ref),
         )),
       ],
     ));
+  }
+
+  Future<DataPoints> _getData(WidgetRef ref) async {
+    CaptureRecordStats data = CaptureRecordStats(ref: ref);
+    GraphType graph = _selectedGraph;
+    switch (graph) {
+      case GraphType.speciesCount:
+        return data.getSpeciesDataPoint();
+      case GraphType.familyCount:
+        return data.getFamilyDataPoint();
+      default:
+        return data.getSpeciesDataPoint();
+    }
   }
 
   /// We use custom transitions to make the fullscreen graph slide up from the
@@ -110,7 +134,7 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
   GraphType? _graphType;
   final bool _isisFullScreen = true;
   final bool _isLarge = true;
-  int? _siteID;
+  int? _selectedID;
 
   @override
   void initState() {
@@ -173,7 +197,7 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
                             bool enabledFeature =
                                 snapshot.data!.length > 5 ? true : false;
                             return DropdownMenu(
-                              initialSelection: _siteID,
+                              initialSelection: _selectedID,
                               controller: _controller,
                               enableSearch: enabledFeature,
                               enabled: snapshot.data!.entries.isNotEmpty,
@@ -192,7 +216,7 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
                                           icon: const Icon(Icons.clear_rounded),
                                           onPressed: () {
                                             setState(() {
-                                              _siteID = null;
+                                              _selectedID = null;
                                               _controller.clear();
                                             });
                                           }),
@@ -206,7 +230,7 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
                                   .toList(),
                               onSelected: (value) {
                                 setState(() {
-                                  _siteID = value;
+                                  _selectedID = value;
                                 });
                               },
                             );
@@ -218,12 +242,22 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
                   ),
                 ),
                 Expanded(
-                  child: CountBarChart(
-                    graphType: _getGraphType,
-                    isFullScreen: _isisFullScreen,
-                    siteID: _siteID,
-                  ),
-                )
+                    child: FutureBuilder(
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return CountBarChart(
+                        graphType: _getGraphType,
+                        dataPoints: snapshot.data!,
+                        isFullScreen: _isisFullScreen,
+                      );
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  },
+                  future: _getData(ref),
+                ))
               ],
             ),
           ),
@@ -237,6 +271,21 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
       return widget.startingGraph;
     } else {
       return _graphType!;
+    }
+  }
+
+  Future<DataPoints> _getData(WidgetRef ref) async {
+    CaptureRecordStats data = CaptureRecordStats(ref: ref);
+    GraphType graph = _getGraphType;
+    switch (graph) {
+      case GraphType.speciesCount:
+        return data.getSpeciesDataPoint();
+      case GraphType.familyCount:
+        return data.getFamilyDataPoint();
+      case GraphType.speciesPerSiteCount:
+        return data.getSpeciesPerSiteDataPoint(_selectedID);
+      case GraphType.specimenPartCount:
+        return data.getSpecimenPartDataPoint();
     }
   }
 
@@ -299,76 +348,53 @@ class CountBarChart extends ConsumerWidget {
   const CountBarChart({
     super.key,
     required this.graphType,
-    required this.siteID,
+    required this.dataPoints,
     required this.isFullScreen,
   });
 
   final GraphType graphType;
-  final int? siteID;
+  final DataPoints dataPoints;
   final bool isFullScreen;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return FutureBuilder(
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            int dataLength = snapshot.data!.data.length;
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                snapshot.data!.data.isEmpty
-                    ? Text(
-                        _emptyText,
-                        style: Theme.of(context).textTheme.labelLarge,
-                      )
-                    : Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 42, left: 16, right: 16),
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: SizedBox(
-                              width: getChartWidth(dataLength),
-                              child: BarChartViewer(
-                                labels: snapshot.data!.labels,
-                                data: isFullScreen
-                                    ? snapshot.data!.data
-                                    : DataPoints(
-                                            data: snapshot.data!.data,
-                                            labels: snapshot.data!.labels)
-                                        .getMaxCount(maxCount),
-                              ),
-                            ),
-                          ),
-                        ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        dataPoints.data.isEmpty
+            ? Text(
+                _emptyText,
+                style: Theme.of(context).textTheme.labelLarge,
+              )
+            : Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 42, left: 16, right: 16),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: SizedBox(
+                      width: getChartWidth(dataPoints.data.length),
+                      child: BarChartViewer(
+                        labels: dataPoints.labels,
+                        data: isFullScreen
+                            ? dataPoints.data
+                            : DataPoints(
+                                    data: dataPoints.data,
+                                    labels: dataPoints.labels)
+                                .getMaxCount(maxCount),
                       ),
-                !isFullScreen || snapshot.data!.data.isEmpty
-                    ? const SizedBox.shrink()
-                    : Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 16, 0, 4),
-                        child: Text(
-                            'Taxon counts: ${snapshot.data!.data.length}',
-                            style: Theme.of(context).textTheme.labelMedium),
-                      ),
-              ],
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
-        future: _getStats(ref));
-  }
-
-  Future<DataPoints> _getStats(WidgetRef ref) async {
-    CaptureRecordStats data = CaptureRecordStats(ref: ref);
-    switch (graphType) {
-      case GraphType.speciesCount:
-        return data.getSpeciesDataPoint();
-      case GraphType.familyCount:
-        return data.getFamilyDataPoint();
-      case GraphType.speciesPerSiteCount:
-        return data.getSpeciesPerSiteDataPoint(siteID);
-    }
+                    ),
+                  ),
+                ),
+              ),
+        !isFullScreen || dataPoints.data.isEmpty
+            ? const SizedBox.shrink()
+            : Padding(
+                padding: const EdgeInsets.fromLTRB(0, 16, 0, 4),
+                child: Text('Taxon counts: ${dataPoints.data.length}',
+                    style: Theme.of(context).textTheme.labelMedium),
+              ),
+      ],
+    );
   }
 
   double getChartWidth(int dataLength) {
@@ -380,12 +406,6 @@ class CountBarChart extends ConsumerWidget {
   }
 
   String get _emptyText {
-    if (graphType == GraphType.speciesPerSiteCount) {
-      return siteID == null
-          ? 'Select a site to view data'
-          : 'No data to display for this site';
-    } else {
-      return 'No data to display';
-    }
+    return 'No data to display';
   }
 }
