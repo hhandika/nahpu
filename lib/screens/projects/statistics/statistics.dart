@@ -4,8 +4,11 @@ import 'package:nahpu/screens/projects/dashboard.dart';
 import 'package:nahpu/screens/projects/statistics/charts.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/collevent_services.dart';
+import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/statistics/captures.dart';
 import 'package:nahpu/services/statistics/common.dart';
+import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/types/statistics.dart';
 
 const double chartWidth = 32;
@@ -190,7 +193,8 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(12, 4, 0, 0),
                   child: Visibility(
-                    visible: _graphType == GraphType.speciesPerSiteCount,
+                    visible: _graphType == GraphType.speciesPerSiteCount ||
+                        _graphType == GraphType.partPerSpeciesCount,
                     child: FutureBuilder(
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
@@ -201,7 +205,7 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
                               controller: _controller,
                               enableSearch: enabledFeature,
                               enabled: snapshot.data!.entries.isNotEmpty,
-                              hintText: 'Select site',
+                              hintText: 'Select',
                               textStyle:
                                   Theme.of(context).textTheme.titleMedium,
                               inputDecorationTheme: const InputDecorationTheme(
@@ -238,7 +242,7 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
                             return const SizedBox.shrink();
                           }
                         },
-                        future: _getSiteForFromAllEvents()),
+                        future: _getDropdownEntry()),
                   ),
                 ),
                 Expanded(
@@ -286,11 +290,31 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
         return data.getSpeciesPerSiteDataPoint(_selectedID);
       case GraphType.specimenPartCount:
         return data.getSpecimenPartDataPoint();
+      case GraphType.partPerSpeciesCount:
+        return data.getPartPerSpeciesDataPoint(_selectedID);
     }
   }
 
-  Future<Map<int, String>> _getSiteForFromAllEvents() async {
-    return await CollEventServices(ref: ref).getSitesForAllEvents();
+  Future<Map<int, String>> _getDropdownEntry() async {
+    switch (_getGraphType) {
+      case GraphType.speciesPerSiteCount:
+        return await CollEventServices(ref: ref).getSitesForAllEvents();
+      case GraphType.partPerSpeciesCount:
+        List<int> speciesList =
+            await SpecimenServices(ref: ref).getAllDistinctSpecies();
+
+        Map<int, String> speciesMap = {};
+        for (int speciesID in speciesList) {
+          TaxonomyData data =
+              await TaxonomyServices(ref: ref).getTaxonById(speciesID);
+          speciesMap[speciesID] =
+              '${data.genus ?? ''} ${data.specificEpithet ?? ''}';
+        }
+        return Map.fromEntries(speciesMap.entries.toList()
+          ..sort((e1, e2) => e1.value.compareTo(e2.value)));
+      default:
+        return {};
+    }
   }
 
   Route _closeFullscreen() {

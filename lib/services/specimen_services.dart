@@ -196,8 +196,13 @@ class SpecimenServices extends DbAccess {
     return filteredList;
   }
 
-  Future<List<int?>> getAllSpecies(String uuid) {
-    return SpecimenQuery(dbAccess).getAllSpecies(uuid);
+  Future<List<int?>> getAllSpecies() {
+    return SpecimenQuery(dbAccess).getAllSpecies(currentProjectUuid);
+  }
+
+  Future<List<int>> getAllDistinctSpecies() async {
+    final List<int?> speciesList = await getAllSpecies();
+    return speciesList.toSet().whereType<int>().toList();
   }
 
   Future<TaxonomyData> getTaxonById(int id) {

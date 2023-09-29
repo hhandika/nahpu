@@ -60,7 +60,24 @@ class CaptureRecordStats {
   }
 
   Future<DataPoints> getSpecimenPartDataPoint() async {
-    SplayTreeMap<String, int> partCount = await _countSpecimenPart();
+    final specimenList = await _getSpecimenData();
+    SplayTreeMap<String, int> partCount =
+        await _countSpecimenPart(specimenList);
+    // sort partCount by value
+    return DataPoints.fromData(partCount);
+  }
+
+  Future<DataPoints> getPartPerSpeciesDataPoint(int? taxonID) async {
+    if (taxonID == null) {
+      return DataPoints.empty();
+    }
+    TaxonomyData data = await _getTaxonData(taxonID);
+    final specimenList = await _getSpecimenData();
+    List<SpecimenData> specimenPerTaxon = specimenList
+        .where((element) => element.speciesID == data.id)
+        .toList(growable: false);
+    SplayTreeMap<String, int> partCount =
+        await _countSpecimenPart(specimenPerTaxon);
     // sort partCount by value
     return DataPoints.fromData(partCount);
   }
@@ -107,8 +124,8 @@ class CaptureRecordStats {
     return await TaxonomyServices(ref: ref).getTaxonById(speciesID);
   }
 
-  Future<SplayTreeMap<String, int>> _countSpecimenPart() async {
-    final specimenList = await _getSpecimenData();
+  Future<SplayTreeMap<String, int>> _countSpecimenPart(
+      List<SpecimenData> specimenList) async {
     SplayTreeMap<String, int> partCount = SplayTreeMap();
 
     for (var specimen in specimenList) {

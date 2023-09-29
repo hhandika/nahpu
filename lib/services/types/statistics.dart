@@ -3,6 +3,7 @@ enum GraphType {
   familyCount,
   speciesPerSiteCount,
   specimenPartCount,
+  partPerSpeciesCount,
 }
 
 const List<String> dashboardGraphOptions = [
@@ -15,4 +16,5 @@ const List<String> fullScreenGraphOptions = [
   'Family Counts',
   'Species Per Site Counts',
   'Specimen Part Counts',
+  'Part Per Species Counts',
 ];
