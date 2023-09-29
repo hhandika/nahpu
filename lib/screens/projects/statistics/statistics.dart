@@ -225,7 +225,11 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
                                             });
                                           }),
                               leadingIcon:
-                                  const Icon(Icons.location_on_outlined),
+                                  _graphType == GraphType.speciesPerSiteCount ||
+                                          _graphType ==
+                                              GraphType.partPerSpeciesCount
+                                      ? const Icon(Icons.search_rounded)
+                                      : null,
                               dropdownMenuEntries: snapshot.data!.entries
                                   .map((e) => DropdownMenuEntry(
                                         value: e.key,
