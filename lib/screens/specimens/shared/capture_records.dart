@@ -47,6 +47,7 @@ class CaptureRecordFieldsState extends ConsumerState<CaptureRecordFields> {
         children: [
           EventIdField(
             specimenUuid: widget.specimenUuid,
+            useHorizontalLayout: widget.useHorizontalLayout,
             specimenCtr: widget.specimenCtr,
           ),
           AdaptiveLayout(
@@ -127,10 +128,12 @@ class EventIdField extends ConsumerStatefulWidget {
   const EventIdField({
     super.key,
     required this.specimenUuid,
+    required this.useHorizontalLayout,
     required this.specimenCtr,
   });
 
   final String specimenUuid;
+  final bool useHorizontalLayout;
   final SpecimenFormCtrModel specimenCtr;
 
   @override
@@ -151,13 +154,13 @@ class EventIdFieldState extends ConsumerState<EventIdField> {
   @override
   Widget build(BuildContext context) {
     return AdaptiveLayout(
-      useHorizontalLayout: true,
+      useHorizontalLayout: widget.useHorizontalLayout,
       children: [
         DropdownButtonFormField<int?>(
             isExpanded: true,
             value: siteIDctr,
             decoration: const InputDecoration(
-              labelText: 'Site',
+              labelText: 'Site ID',
               hintText: 'Choose a site',
             ),
             items: ref.watch(siteInEventProvider).when(
