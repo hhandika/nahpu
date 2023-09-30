@@ -37,8 +37,10 @@ class StatLabelServices {
   String getLabel() {
     if (value.contains('-')) {
       return _getStandardLabel();
-    } else {
+    } else if (value.contains(' ')) {
       return _getTaxonFirstThreeLetters();
+    } else {
+      return value.length > 5 ? value.substring(0, 5) : value;
     }
   }
 

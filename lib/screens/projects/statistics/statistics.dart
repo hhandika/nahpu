@@ -296,6 +296,8 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
         return data.getSpecimenPartDataPoint();
       case GraphType.partPerSpeciesCount:
         return data.getPartPerSpeciesDataPoint(_selectedID);
+      case GraphType.partTreatmentCount:
+        return data.getPartTreatmentDataPoint();
     }
   }
 

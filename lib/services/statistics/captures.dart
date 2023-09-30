@@ -67,6 +67,13 @@ class CaptureRecordStats {
     return DataPoints.fromData(partCount);
   }
 
+  Future<DataPoints> getPartTreatmentDataPoint() async {
+    Map<String, int> partTreatmentCount = await _countTreatment();
+
+    partTreatmentCount = _sortMap(partTreatmentCount);
+    return DataPoints.fromData(partTreatmentCount);
+  }
+
   Future<DataPoints> getPartPerSpeciesDataPoint(int? taxonID) async {
     if (taxonID == null) {
       return DataPoints.empty();
@@ -143,6 +150,24 @@ class CaptureRecordStats {
     }
 
     return partCount;
+  }
+
+  Future<Map<String, int>> _countTreatment() async {
+    List<SpecimenData> specimenList = await _getSpecimenData();
+    Map<String, int> treatmentCount = {};
+
+    for (var specimen in specimenList) {
+      final partList =
+          await SpecimenPartServices(ref: ref).getSpecimenParts(specimen.uuid);
+      for (var part in partList) {
+        String treatment = part.treatment == null || part.treatment!.isEmpty
+            ? 'Empty'
+            : part.treatment!;
+        _count(treatmentCount, treatment);
+      }
+    }
+
+    return treatmentCount;
   }
 
   void _count(Map<String, int> data, String record) {
