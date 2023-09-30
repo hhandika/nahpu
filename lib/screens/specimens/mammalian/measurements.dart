@@ -56,6 +56,35 @@ class MammalMeasurementFormsState
         AdaptiveLayout(
           useHorizontalLayout: widget.useHorizontalLayout,
           children: [
+            Tooltip(
+              message: 'Automatically calculated',
+              child: CommonNumField(
+                controller: headBodyLengthCtr,
+                labelText: 'Head and body length (mm)',
+                hintText: 'Enter HBL',
+                enabled: false,
+                isDouble: true,
+                isLastField: false,
+                onChanged: null,
+              ),
+            ),
+            Tooltip(
+              message: 'Automatically calculated',
+              child: CommonNumField(
+                controller: tailHeadBodyPercentCtr,
+                labelText: 'Tail/HB length',
+                hintText: 'Enter TL/HBL',
+                enabled: false,
+                isDouble: true,
+                isLastField: false,
+                onChanged: null,
+              ),
+            ),
+          ],
+        ),
+        AdaptiveLayout(
+          useHorizontalLayout: widget.useHorizontalLayout,
+          children: [
             CommonNumField(
               controller: ctr.totalLengthCtr,
               labelText: 'Total length (mm)',
@@ -95,35 +124,6 @@ class MammalMeasurementFormsState
                   });
                 }
               },
-            ),
-          ],
-        ),
-        AdaptiveLayout(
-          useHorizontalLayout: widget.useHorizontalLayout,
-          children: [
-            Tooltip(
-              message: 'Automatically calculated',
-              child: CommonNumField(
-                controller: headBodyLengthCtr,
-                labelText: 'Head and body length (mm)',
-                hintText: 'Enter HBL',
-                enabled: false,
-                isDouble: true,
-                isLastField: false,
-                onChanged: null,
-              ),
-            ),
-            Tooltip(
-              message: 'Automatically calculated',
-              child: CommonNumField(
-                controller: tailHeadBodyPercentCtr,
-                labelText: 'Tail/HB length',
-                hintText: 'Enter TL/HBL',
-                enabled: false,
-                isDouble: true,
-                isLastField: false,
-                onChanged: null,
-              ),
             ),
           ],
         ),
