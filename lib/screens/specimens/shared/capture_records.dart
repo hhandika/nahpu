@@ -284,7 +284,9 @@ class EventIdFieldState extends ConsumerState<EventIdField> {
       CollEventData? data = await CollEventServices(ref: ref)
           .getCollEvent(widget.specimenCtr.collEventIDCtr);
       if (data != null) {
-        siteIDctr = data.siteID;
+        setState(() {
+          siteIDctr = data.siteID;
+        });
       }
     }
   }
