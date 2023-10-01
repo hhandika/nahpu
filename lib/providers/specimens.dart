@@ -4,7 +4,6 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/media_queries.dart';
 import 'package:nahpu/services/database/specimen_queries.dart';
-import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/types/specimens.dart';
 import 'package:nahpu/services/utility_services.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -63,21 +62,6 @@ class SpecimenEntry extends _$SpecimenEntry {
   @override
   FutureOr<List<SpecimenData>> build() async {
     return await _fetchSpecimenEntry();
-  }
-
-  Future<void> search(String? query, SpecimenSearchOption searchOption) async {
-    if (query == null || query.isEmpty) return;
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
-      if (state.value == null) return [];
-      final specimens = await _fetchSpecimenEntry();
-      final filteredSpecimens = SpecimenSearchServices(
-        db: ref.read(databaseProvider),
-        specimenEntries: specimens,
-        searchOption: searchOption,
-      ).search(query.toLowerCase());
-      return filteredSpecimens;
-    });
   }
 }
 

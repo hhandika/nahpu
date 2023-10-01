@@ -85,22 +85,21 @@ class SpecimenSearchViewState extends ConsumerState<SpecimenSearchView> {
                         icon: const Icon(Icons.tune_rounded))
               ],
               onChanged: (query) async {
-                final filteredSpecimens = await SpecimenSearchServices(
+                _filteredSpecimenData = await SpecimenSearchServices(
                   db: ref.read(databaseProvider),
                   specimenEntries: widget.specimenData,
                   searchOption:
                       SpecimenSearchOption.values[_selectedSearchValue],
                 ).search(query.toLowerCase());
                 setState(() {
-                  if (filteredSpecimens.length > 2) {
+                  if (_filteredSpecimenData.length > 2) {
                     _isVisible = true;
                   }
                   if (_searchController.text.isEmpty) {
-                    filteredSpecimens.clear();
+                    _filteredSpecimenData.clear();
                   }
-                  _pageNav.pageCounts = filteredSpecimens.length;
+                  _pageNav.pageCounts = _filteredSpecimenData.length;
                   _pageNav.updatePageController();
-                  _filteredSpecimenData = filteredSpecimens;
                   _isVisible = query.isNotEmpty;
                 });
               },
@@ -145,6 +144,7 @@ class SpecimenSearchViewState extends ConsumerState<SpecimenSearchView> {
             pageNav: _pageNav,
           ),
         ),
+        bottomNavigationBar: const ProjectBottomNavbar(),
       ),
     );
   }

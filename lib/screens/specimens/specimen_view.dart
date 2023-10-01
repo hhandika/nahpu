@@ -217,11 +217,9 @@ class SpecimenPages extends StatelessWidget {
 }
 
 class SpecimenFormView extends ConsumerStatefulWidget {
-  const SpecimenFormView(
-      {super.key, required this.specimenUuid, required this.index});
+  const SpecimenFormView({super.key, required this.specimenData});
 
-  final String specimenUuid;
-  final int index;
+  final SpecimenData specimenData;
 
   @override
   SpecimenFormViewState createState() => SpecimenFormViewState();
@@ -250,12 +248,12 @@ class SpecimenFormViewState extends ConsumerState<SpecimenFormView> {
                   if (specimenEntry.isEmpty) {
                     return const EmptySpecimen(isButtonVisible: false);
                   } else {
-                    CatalogFmt catalogFmt = matchTaxonGroupToCatFmt(
-                        specimenEntry[widget.index].taxonGroup);
+                    CatalogFmt catalogFmt =
+                        matchTaxonGroupToCatFmt(widget.specimenData.taxonGroup);
                     final specimenFormCtr =
-                        _updateController(specimenEntry[widget.index]);
+                        _updateController(widget.specimenData);
                     return SpecimenForm(
-                      specimenUuid: specimenEntry[widget.index].uuid,
+                      specimenUuid: widget.specimenData.uuid,
                       specimenCtr: specimenFormCtr,
                       catalogFmt: catalogFmt,
                     );
