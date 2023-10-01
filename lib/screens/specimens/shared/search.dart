@@ -33,7 +33,6 @@ class SpecimenSearchViewState extends ConsumerState<SpecimenSearchView> {
 
   @override
   void initState() {
-    _filteredSpecimenData = widget.specimenData;
     super.initState();
     _focus.requestFocus();
   }
@@ -42,6 +41,8 @@ class SpecimenSearchViewState extends ConsumerState<SpecimenSearchView> {
   void dispose() {
     _pageNav.dispose();
     _focus.dispose();
+    _searchController.dispose();
+    _filteredSpecimenData.clear();
     super.dispose();
   }
 
@@ -91,6 +92,14 @@ class SpecimenSearchViewState extends ConsumerState<SpecimenSearchView> {
                       SpecimenSearchOption.values[_selectedSearchValue],
                 ).search(query.toLowerCase());
                 setState(() {
+                  if (filteredSpecimens.length > 2) {
+                    _isVisible = true;
+                  }
+                  if (_searchController.text.isEmpty) {
+                    filteredSpecimens.clear();
+                  }
+                  _pageNav.pageCounts = filteredSpecimens.length;
+                  _pageNav.updatePageController();
                   _filteredSpecimenData = filteredSpecimens;
                   _isVisible = query.isNotEmpty;
                 });
@@ -136,7 +145,6 @@ class SpecimenSearchViewState extends ConsumerState<SpecimenSearchView> {
             pageNav: _pageNav,
           ),
         ),
-        bottomNavigationBar: const ProjectBottomNavbar(),
       ),
     );
   }
