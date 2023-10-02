@@ -66,6 +66,7 @@ dependencies:
   file_selector: ^1.0.0
   file_picker: ^5.3.3
   geolocator: ^9.0.2
+  xml: ^6.3.0
 
 dev_dependencies:
   flutter_test:

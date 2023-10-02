@@ -158,10 +158,11 @@ class ReportFormState extends ConsumerState<ReportForm> {
 
   Future<void> _createReport() async {
     try {
+      String ext = _reportType == ReportType.coordinate ? 'kml' : 'csv';
       _savePath = await AppIOServices(
         dir: _selectedDir,
         fileStem: _fileStem,
-        ext: 'csv',
+        ext: ext,
       ).getSavePath();
 
       await ReportServices(ref: ref).writeReport(_savePath, _reportType);
