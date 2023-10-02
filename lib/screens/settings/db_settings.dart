@@ -102,6 +102,9 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
         );
       }
     } catch (e) {
+      setState(() {
+        _isReplacing = false;
+      });
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
