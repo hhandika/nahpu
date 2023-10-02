@@ -38,7 +38,9 @@ class ProgressButton extends StatelessWidget {
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
         foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        backgroundColor: isRunning
+            ? Theme.of(context).disabledColor
+            : Theme.of(context).colorScheme.primaryContainer,
         elevation: 0,
       ),
       icon: isRunning
@@ -48,7 +50,7 @@ class ProgressButton extends StatelessWidget {
               child: CircularProgressIndicator(),
             )
           : Icon(icon),
-      onPressed: onPressed,
+      onPressed: isRunning ? null : onPressed,
       label: Text(label),
     );
   }

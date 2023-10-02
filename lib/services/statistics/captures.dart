@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/specimen_services.dart';
@@ -35,11 +37,6 @@ class CaptureRecordStats {
     return DataPoints.fromData(speciesCount);
   }
 
-  Map<String, int> _sortMap(Map<String, int> map) {
-    return Map.fromEntries(
-        map.entries.toList()..sort((e1, e2) => e2.value.compareTo(e1.value)));
-  }
-
   Future<DataPoints> getFamilyDataPoint() async {
     List<SpecimenData> specimenList = await _getSpecimenData();
     Map<String, int> familyCount = await _countFamily(specimenList);
@@ -60,6 +57,41 @@ class CaptureRecordStats {
     // sort speciesCount by value
     speciesCount = _sortMap(speciesCount);
     return DataPoints.fromData(speciesCount);
+  }
+
+  Future<DataPoints> getSpecimenPartDataPoint() async {
+    final specimenList = await _getSpecimenData();
+    SplayTreeMap<String, int> partCount =
+        await _countSpecimenPart(specimenList);
+    // sort partCount by value
+    return DataPoints.fromData(partCount);
+  }
+
+  Future<DataPoints> getPartTreatmentDataPoint() async {
+    Map<String, int> partTreatmentCount = await _countTreatment();
+
+    partTreatmentCount = _sortMap(partTreatmentCount);
+    return DataPoints.fromData(partTreatmentCount);
+  }
+
+  Future<DataPoints> getPartPerSpeciesDataPoint(int? taxonID) async {
+    if (taxonID == null) {
+      return DataPoints.empty();
+    }
+    TaxonomyData data = await _getTaxonData(taxonID);
+    final specimenList = await _getSpecimenData();
+    List<SpecimenData> specimenPerTaxon = specimenList
+        .where((element) => element.speciesID == data.id)
+        .toList(growable: false);
+    SplayTreeMap<String, int> partCount =
+        await _countSpecimenPart(specimenPerTaxon);
+    // sort partCount by value
+    return DataPoints.fromData(partCount);
+  }
+
+  Map<String, int> _sortMap(Map<String, int> map) {
+    return Map.fromEntries(
+        map.entries.toList()..sort((e1, e2) => e2.value.compareTo(e1.value)));
   }
 
   Future<Map<String, int>> _countSpecies(
@@ -97,6 +129,45 @@ class CaptureRecordStats {
 
   Future<TaxonomyData> _getTaxonData(int speciesID) async {
     return await TaxonomyServices(ref: ref).getTaxonById(speciesID);
+  }
+
+  Future<SplayTreeMap<String, int>> _countSpecimenPart(
+      List<SpecimenData> specimenList) async {
+    SplayTreeMap<String, int> partCount = SplayTreeMap();
+
+    for (var specimen in specimenList) {
+      final partList =
+          await SpecimenPartServices(ref: ref).getSpecimenParts(specimen.uuid);
+      for (var part in partList) {
+        String treatment = part.treatment == null ||
+                part.treatment!.toLowerCase() == 'none' ||
+                part.treatment!.isEmpty
+            ? '-None'
+            : '-${part.treatment}';
+        String partAndTreatment = "${part.type ?? ''}$treatment";
+        _count(partCount, partAndTreatment);
+      }
+    }
+
+    return partCount;
+  }
+
+  Future<Map<String, int>> _countTreatment() async {
+    List<SpecimenData> specimenList = await _getSpecimenData();
+    Map<String, int> treatmentCount = {};
+
+    for (var specimen in specimenList) {
+      final partList =
+          await SpecimenPartServices(ref: ref).getSpecimenParts(specimen.uuid);
+      for (var part in partList) {
+        String treatment = part.treatment == null || part.treatment!.isEmpty
+            ? 'Empty'
+            : part.treatment!;
+        _count(treatmentCount, treatment);
+      }
+    }
+
+    return treatmentCount;
   }
 
   void _count(Map<String, int> data, String record) {

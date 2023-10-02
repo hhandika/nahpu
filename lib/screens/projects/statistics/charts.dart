@@ -2,7 +2,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/projects/statistics/statistics.dart';
 import 'package:nahpu/services/statistics/common.dart';
-import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/utility_services.dart';
 
 class BarChartViewer extends StatelessWidget {
@@ -94,7 +93,7 @@ class BarChartViewer extends StatelessWidget {
       showTitles: true,
       getTitlesWidget: (value, meta) {
         return Text(
-          getTaxonFirstThreeLetters(labels[value.toInt()]),
+          StatLabelServices(value: labels[value.toInt()]).getLabel(),
           overflow: TextOverflow.ellipsis,
         );
       },

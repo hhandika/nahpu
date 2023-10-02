@@ -118,7 +118,6 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
                                 _isRunning = true;
                               });
                               await _writeDb();
-                              _setSuccess();
                             }
                           : null,
                     )
@@ -146,18 +145,6 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
     }
   }
 
-  void _setSuccess() {
-    setState(() {
-      _isRunning = false;
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('File saved as $_savePath'),
-      ),
-    );
-  }
-
   Future<void> _writeDb() async {
     try {
       _savePath = await AppIOServices(
@@ -172,7 +159,15 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
       setState(() {
         _hasSaved = true;
         _savePath = currentSavePath;
+        _isRunning = false;
       });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('File saved as $_savePath'),
+          ),
+        );
+      }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

@@ -10,6 +10,7 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/projects/taxonomy/specimen_list.dart';
 import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/statistics/captures.dart';
 
 class TaxonRegistryViewer extends ConsumerStatefulWidget {
@@ -191,7 +192,7 @@ class RecordedTaxa extends ConsumerWidget {
   }
 }
 
-class RecordedTaxaView extends ConsumerWidget {
+class RecordedTaxaView extends ConsumerStatefulWidget {
   const RecordedTaxaView({
     super.key,
     required this.data,
@@ -200,7 +201,12 @@ class RecordedTaxaView extends ConsumerWidget {
   final List<SpecimenData> data;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  RecordedTaxaViewState createState() => RecordedTaxaViewState();
+}
+
+class RecordedTaxaViewState extends ConsumerState<RecordedTaxaView> {
+  @override
+  Widget build(BuildContext context) {
     return TaxonDataContainer(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -209,7 +215,7 @@ class RecordedTaxaView extends ConsumerWidget {
           const TaxonStatText(
             text: 'Recorded',
           ),
-          data.isEmpty
+          widget.data.isEmpty
               ? Text(
                   'No record found',
                   style: Theme.of(context).textTheme.labelLarge,
@@ -218,15 +224,21 @@ class RecordedTaxaView extends ConsumerWidget {
                   fit: BoxFit.fill,
                   child: RecordedCounts(),
                 ),
-          data.isEmpty
+          widget.data.isEmpty
               ? const SizedBox.shrink()
               : TextButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const SpecimenListPage(),
-                      ),
-                    );
+                  onPressed: () async {
+                    final data =
+                        await SpecimenServices(ref: ref).getAllSpecimens();
+                    if (mounted) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => SpecimenListPage(
+                            specimenData: data,
+                          ),
+                        ),
+                      );
+                    }
                   },
                   child: const Text('View all'),
                 )

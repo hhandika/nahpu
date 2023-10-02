@@ -196,8 +196,13 @@ class SpecimenServices extends DbAccess {
     return filteredList;
   }
 
-  Future<List<int?>> getAllSpecies(String uuid) {
-    return SpecimenQuery(dbAccess).getAllSpecies(uuid);
+  Future<List<int?>> getAllSpecies() {
+    return SpecimenQuery(dbAccess).getAllSpecies(currentProjectUuid);
+  }
+
+  Future<List<int>> getAllDistinctSpecies() async {
+    final List<int?> speciesList = await getAllSpecies();
+    return speciesList.toSet().whereType<int>().toList();
   }
 
   Future<TaxonomyData> getTaxonById(int id) {
@@ -685,5 +690,36 @@ class AssociatedDataServices extends DbAccess {
 
   void _invalidateData() {
     ref.invalidate(associatedDataProvider);
+  }
+}
+
+class MammalMeasurementServices {
+  const MammalMeasurementServices({
+    required this.totalLengthText,
+    required this.tailLengthText,
+  });
+
+  final String totalLengthText;
+  final String tailLengthText;
+
+  ({String headAndBodyText, String percentTailText})? getHBandTailPercentage() {
+    double? totalLength =
+        totalLengthText.isNotEmpty ? double.tryParse(totalLengthText) : null;
+    double? tailLength =
+        tailLengthText.isNotEmpty ? double.tryParse(tailLengthText) : null;
+    if (totalLength == null || tailLength == null || totalLength < 1) {
+      return null;
+    } else {
+      double headBodyLength = (totalLength - tailLength);
+      String headAndBodyText = headBodyLength.truncateZeroFixed(1);
+      String tailHeadBodyPercent =
+          (tailLength / headBodyLength * 100).truncateZeroFixed(1);
+      String percentTailText = '$tailHeadBodyPercent%';
+
+      return (
+        headAndBodyText: headAndBodyText,
+        percentTailText: percentTailText
+      );
+    }
   }
 }

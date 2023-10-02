@@ -82,9 +82,10 @@ class Project extends Table with TableInfo<Project, ProjectData> {
         lastAccessed
       ];
   @override
-  String get aliasedName => _alias ?? 'project';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'project';
+  String get actualTableName => $name;
+  static const String $name = 'project';
   @override
   VerificationContext validateIntegrity(Insertable<ProjectData> instance,
       {bool isInserting = false}) {
@@ -578,9 +579,10 @@ class Personnel extends Table with TableInfo<Personnel, PersonnelData> {
         photoPath
       ];
   @override
-  String get aliasedName => _alias ?? 'personnel';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'personnel';
+  String get actualTableName => $name;
+  static const String $name = 'personnel';
   @override
   VerificationContext validateIntegrity(Insertable<PersonnelData> instance,
       {bool isInserting = false}) {
@@ -1104,9 +1106,10 @@ class Media extends Table with TableInfo<Media, MediaData> {
         caption
       ];
   @override
-  String get aliasedName => _alias ?? 'media';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'media';
+  String get actualTableName => $name;
+  static const String $name = 'media';
   @override
   VerificationContext validateIntegrity(Insertable<MediaData> instance,
       {bool isInserting = false}) {
@@ -1726,9 +1729,10 @@ class Site extends Table with TableInfo<Site, SiteData> {
         habitatDescription
       ];
   @override
-  String get aliasedName => _alias ?? 'site';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'site';
+  String get actualTableName => $name;
+  static const String $name = 'site';
   @override
   VerificationContext validateIntegrity(Insertable<SiteData> instance,
       {bool isInserting = false}) {
@@ -2414,9 +2418,10 @@ class Coordinate extends Table with TableInfo<Coordinate, CoordinateData> {
         siteID
       ];
   @override
-  String get aliasedName => _alias ?? 'coordinate';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'coordinate';
+  String get actualTableName => $name;
+  static const String $name = 'coordinate';
   @override
   VerificationContext validateIntegrity(Insertable<CoordinateData> instance,
       {bool isInserting = false}) {
@@ -2934,9 +2939,10 @@ class CollEvent extends Table with TableInfo<CollEvent, CollEventData> {
         siteID
       ];
   @override
-  String get aliasedName => _alias ?? 'collEvent';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'collEvent';
+  String get actualTableName => $name;
+  static const String $name = 'collEvent';
   @override
   VerificationContext validateIntegrity(Insertable<CollEventData> instance,
       {bool isInserting = false}) {
@@ -3454,9 +3460,10 @@ class Weather extends Table with TableInfo<Weather, WeatherData> {
         notes
       ];
   @override
-  String get aliasedName => _alias ?? 'weather';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'weather';
+  String get actualTableName => $name;
+  static const String $name = 'weather';
   @override
   VerificationContext validateIntegrity(Insertable<WeatherData> instance,
       {bool isInserting = false}) {
@@ -3991,9 +3998,10 @@ class CollPersonnel extends Table
   @override
   List<GeneratedColumn> get $columns => [id, eventID, personnelId, name, role];
   @override
-  String get aliasedName => _alias ?? 'collPersonnel';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'collPersonnel';
+  String get actualTableName => $name;
+  static const String $name = 'collPersonnel';
   @override
   VerificationContext validateIntegrity(Insertable<CollPersonnelData> instance,
       {bool isInserting = false}) {
@@ -4299,9 +4307,10 @@ class CollEffort extends Table with TableInfo<CollEffort, CollEffortData> {
   List<GeneratedColumn> get $columns =>
       [id, eventID, method, brand, count, size, notes];
   @override
-  String get aliasedName => _alias ?? 'collEffort';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'collEffort';
+  String get actualTableName => $name;
+  static const String $name = 'collEffort';
   @override
   VerificationContext validateIntegrity(Insertable<CollEffortData> instance,
       {bool isInserting = false}) {
@@ -4663,9 +4672,10 @@ class Narrative extends Table with TableInfo<Narrative, NarrativeData> {
   List<GeneratedColumn> get $columns =>
       [id, projectUuid, date, siteID, narrative, mediaID];
   @override
-  String get aliasedName => _alias ?? 'narrative';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'narrative';
+  String get actualTableName => $name;
+  static const String $name = 'narrative';
   @override
   VerificationContext validateIntegrity(Insertable<NarrativeData> instance,
       {bool isInserting = false}) {
@@ -4975,9 +4985,10 @@ class NarrativeMedia extends Table
   @override
   List<GeneratedColumn> get $columns => [narrativeId, mediaId];
   @override
-  String get aliasedName => _alias ?? 'narrativeMedia';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'narrativeMedia';
+  String get actualTableName => $name;
+  static const String $name = 'narrativeMedia';
   @override
   VerificationContext validateIntegrity(Insertable<NarrativeMediaData> instance,
       {bool isInserting = false}) {
@@ -5173,9 +5184,10 @@ class SiteMedia extends Table with TableInfo<SiteMedia, SiteMediaData> {
   @override
   List<GeneratedColumn> get $columns => [siteId, mediaId];
   @override
-  String get aliasedName => _alias ?? 'siteMedia';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'siteMedia';
+  String get actualTableName => $name;
+  static const String $name = 'siteMedia';
   @override
   VerificationContext validateIntegrity(Insertable<SiteMediaData> instance,
       {bool isInserting = false}) {
@@ -5466,9 +5478,10 @@ class Taxonomy extends Table with TableInfo<Taxonomy, TaxonomyData> {
         mediaId
       ];
   @override
-  String get aliasedName => _alias ?? 'taxonomy';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'taxonomy';
+  String get actualTableName => $name;
+  static const String $name = 'taxonomy';
   @override
   VerificationContext validateIntegrity(Insertable<TaxonomyData> instance,
       {bool isInserting = false}) {
@@ -6237,9 +6250,10 @@ class Specimen extends Table with TableInfo<Specimen, SpecimenData> {
         preparatorID
       ];
   @override
-  String get aliasedName => _alias ?? 'specimen';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'specimen';
+  String get actualTableName => $name;
+  static const String $name = 'specimen';
   @override
   VerificationContext validateIntegrity(Insertable<SpecimenData> instance,
       {bool isInserting = false}) {
@@ -7198,9 +7212,10 @@ class SpecimenMedia extends Table
   @override
   List<GeneratedColumn> get $columns => [specimenUuid, mediaId];
   @override
-  String get aliasedName => _alias ?? 'specimenMedia';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'specimenMedia';
+  String get actualTableName => $name;
+  static const String $name = 'specimenMedia';
   @override
   VerificationContext validateIntegrity(Insertable<SpecimenMediaData> instance,
       {bool isInserting = false}) {
@@ -7431,9 +7446,10 @@ class AssociatedData extends Table
   List<GeneratedColumn> get $columns =>
       [primaryId, specimenUuid, name, type, date, description, url];
   @override
-  String get aliasedName => _alias ?? 'associatedData';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'associatedData';
+  String get actualTableName => $name;
+  static const String $name = 'associatedData';
   @override
   VerificationContext validateIntegrity(Insertable<AssociatedDataData> instance,
       {bool isInserting = false}) {
@@ -7776,9 +7792,10 @@ class PersonnelList extends Table
   @override
   List<GeneratedColumn> get $columns => [projectUuid, personnelUuid];
   @override
-  String get aliasedName => _alias ?? 'personnelList';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'personnelList';
+  String get actualTableName => $name;
+  static const String $name = 'personnelList';
   @override
   VerificationContext validateIntegrity(Insertable<PersonnelListData> instance,
       {bool isInserting = false}) {
@@ -8191,9 +8208,10 @@ class MammalMeasurement extends Table
         remark
       ];
   @override
-  String get aliasedName => _alias ?? 'mammalMeasurement';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'mammalMeasurement';
+  String get actualTableName => $name;
+  static const String $name = 'mammalMeasurement';
   @override
   VerificationContext validateIntegrity(
       Insertable<MammalMeasurementData> instance,
@@ -9598,9 +9616,10 @@ class AvianMeasurement extends Table
         habitatRemark
       ];
   @override
-  String get aliasedName => _alias ?? 'avianMeasurement';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'avianMeasurement';
+  String get actualTableName => $name;
+  static const String $name = 'avianMeasurement';
   @override
   VerificationContext validateIntegrity(
       Insertable<AvianMeasurementData> instance,
@@ -11156,9 +11175,10 @@ class SpecimenPart extends Table
         remark
       ];
   @override
-  String get aliasedName => _alias ?? 'specimenPart';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'specimenPart';
+  String get actualTableName => $name;
+  static const String $name = 'specimenPart';
   @override
   VerificationContext validateIntegrity(Insertable<SpecimenPartData> instance,
       {bool isInserting = false}) {

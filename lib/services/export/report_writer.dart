@@ -1,7 +1,6 @@
 import 'dart:collection';
 import 'dart:io';
 
-import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/export/media_writer.dart';
 import 'package:nahpu/services/io_services.dart';
@@ -60,9 +59,7 @@ class SpeciesListWriter extends DbAccess {
   }
 
   Future<List<int?>> getSpeciesList() async {
-    final projectUuid = ref.read(projectUuidProvider);
-    final speciesList =
-        await SpecimenServices(ref: ref).getAllSpecies(projectUuid);
+    final speciesList = await SpecimenServices(ref: ref).getAllSpecies();
     return speciesList;
   }
 

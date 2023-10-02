@@ -29,14 +29,14 @@ class _SystemHash {
   }
 }
 
-typedef SiteMediaRef = AutoDisposeFutureProviderRef<List<MediaData>>;
+typedef SiteMediaRef = AutoDisposeFutureProviderRef<List<dynamic>>;
 
 /// See also [siteMedia].
 @ProviderFor(siteMedia)
 const siteMediaProvider = SiteMediaFamily();
 
 /// See also [siteMedia].
-class SiteMediaFamily extends Family<AsyncValue<List<MediaData>>> {
+class SiteMediaFamily extends Family<AsyncValue<List<dynamic>>> {
   /// See also [siteMedia].
   const SiteMediaFamily();
 
@@ -74,7 +74,7 @@ class SiteMediaFamily extends Family<AsyncValue<List<MediaData>>> {
 }
 
 /// See also [siteMedia].
-class SiteMediaProvider extends AutoDisposeFutureProvider<List<MediaData>> {
+class SiteMediaProvider extends AutoDisposeFutureProvider<List<dynamic>> {
   /// See also [siteMedia].
   SiteMediaProvider({
     required this.siteId,
@@ -109,6 +109,20 @@ class SiteMediaProvider extends AutoDisposeFutureProvider<List<MediaData>> {
   }
 }
 
+String _$siteInEventHash() => r'e5a9719e1879bfeb98ed5ae4064fd3c55312ae69';
+
+/// See also [siteInEvent].
+@ProviderFor(siteInEvent)
+final siteInEventProvider = AutoDisposeFutureProvider<List<SiteData>>.internal(
+  siteInEvent,
+  name: r'siteInEventProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$siteInEventHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef SiteInEventRef = AutoDisposeFutureProviderRef<List<SiteData>>;
 String _$siteEntryHash() => r'de7c968d0f594ec4fbaf6661642d45cf60ba40e3';
 
 /// See also [SiteEntry].

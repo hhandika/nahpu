@@ -5,7 +5,6 @@ import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/screens/shared/navigation.dart';
-import 'package:nahpu/screens/specimens/shared/menu_bar.dart';
 import 'package:nahpu/screens/specimens/specimen_view.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/navigation_services.dart';
@@ -26,14 +25,11 @@ class SpecimenSearchViewState extends ConsumerState<SpecimenSearchView> {
   final PageNavigation _pageNav = PageNavigation.init();
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _focus = FocusNode();
-  String? _specimenUuid;
-  CatalogFmt? _catalogFmt;
   int _selectedSearchValue = 0;
   List<SpecimenData> _filteredSpecimenData = [];
 
   @override
   void initState() {
-    _filteredSpecimenData = widget.specimenData;
     super.initState();
     _focus.requestFocus();
   }
@@ -42,6 +38,8 @@ class SpecimenSearchViewState extends ConsumerState<SpecimenSearchView> {
   void dispose() {
     _pageNav.dispose();
     _focus.dispose();
+    _searchController.dispose();
+    _filteredSpecimenData.clear();
     super.dispose();
   }
 
@@ -84,14 +82,21 @@ class SpecimenSearchViewState extends ConsumerState<SpecimenSearchView> {
                         icon: const Icon(Icons.tune_rounded))
               ],
               onChanged: (query) async {
-                final filteredSpecimens = await SpecimenSearchServices(
+                _filteredSpecimenData = await SpecimenSearchServices(
                   db: ref.read(databaseProvider),
                   specimenEntries: widget.specimenData,
                   searchOption:
                       SpecimenSearchOption.values[_selectedSearchValue],
                 ).search(query.toLowerCase());
                 setState(() {
-                  _filteredSpecimenData = filteredSpecimens;
+                  if (_filteredSpecimenData.length > 2) {
+                    _isVisible = true;
+                  }
+                  if (_searchController.text.isEmpty) {
+                    _filteredSpecimenData.clear();
+                  }
+                  _pageNav.pageCounts = _filteredSpecimenData.length;
+                  _pageNav.updatePageController();
                   _isVisible = query.isNotEmpty;
                 });
               },
@@ -108,10 +113,6 @@ class SpecimenSearchViewState extends ConsumerState<SpecimenSearchView> {
                   });
                 },
                 child: const Text('Cancel')),
-            SpecimenMenu(
-              specimenUuid: _specimenUuid,
-              catalogFmt: _catalogFmt,
-            ),
           ],
         ),
         body: SafeArea(
@@ -122,9 +123,6 @@ class SpecimenSearchViewState extends ConsumerState<SpecimenSearchView> {
                   pageNav: _pageNav,
                   onPageChanged: (index) {
                     setState(() {
-                      _specimenUuid = _filteredSpecimenData[index].uuid;
-                      _catalogFmt = matchTaxonGroupToCatFmt(
-                          _filteredSpecimenData[index].taxonGroup);
                       _updatePageNav(index);
                     });
                   })
