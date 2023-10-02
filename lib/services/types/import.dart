@@ -35,6 +35,8 @@ String matchTaxonEntryHeader(TaxonEntryHeader headerEnum) {
       return 'Genus';
     case TaxonEntryHeader.specificEpithet:
       return 'Specific epithet';
+    case TaxonEntryHeader.authors:
+      return 'Authors';
     case TaxonEntryHeader.commonName:
       return 'Common name';
     case TaxonEntryHeader.redListCategory:
@@ -68,7 +70,10 @@ const Map<String, TaxonEntryHeader> knownTaxonHeader = {
   'commonname': TaxonEntryHeader.commonName,
   'englishname': TaxonEntryHeader.commonName,
   'citesstatus': TaxonEntryHeader.citesStatus,
-  'redListCategory': TaxonEntryHeader.redListCategory,
+  'appendixstatus': TaxonEntryHeader.citesStatus,
+  'redlistcategory': TaxonEntryHeader.redListCategory,
+  'iucncategory': TaxonEntryHeader.redListCategory,
+  'iucnstatus': TaxonEntryHeader.redListCategory,
   'countrystatus': TaxonEntryHeader.countryStatus,
   'sortingorder': TaxonEntryHeader.sortingOrder,
   'notes': TaxonEntryHeader.notes,
