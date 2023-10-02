@@ -135,7 +135,8 @@ class CommonSearchBar extends StatelessWidget {
       controller: controller,
       focusNode: focusNode,
       leading: const Icon(Icons.search),
-      constraints: const BoxConstraints(maxHeight: 44),
+      padding: const MaterialStatePropertyAll<EdgeInsets>(
+          EdgeInsets.symmetric(horizontal: 8.0)),
       elevation: MaterialStateProperty.all(0),
       hintText: hintText,
       backgroundColor: MaterialStateProperty.all(Colors.grey.withAlpha(48)),
