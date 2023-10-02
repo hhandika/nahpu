@@ -5,7 +5,7 @@ import 'package:nahpu/screens/export/bundle_project.dart';
 import 'package:nahpu/screens/export/export_db.dart';
 import 'package:nahpu/screens/export/export_pdf.dart';
 import 'package:nahpu/screens/export/export_records.dart';
-import 'package:nahpu/screens/export/report.dart';
+import 'package:nahpu/screens/export/export_report.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/screens/home/home.dart';
