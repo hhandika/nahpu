@@ -19,11 +19,6 @@ class ReportServices extends DbAccess {
         await MediaWriterServices(ref: ref)
             .writeAllMediaDelimited(savePath, true);
         break;
-      case ReportType.all:
-        await SpeciesListWriter(ref: ref).writeSpeciesListCompact(savePath);
-        await MediaWriterServices(ref: ref)
-            .writeAllMediaDelimited(savePath, true);
-        break;
       default:
         await SpeciesListWriter(ref: ref).writeSpeciesListCompact(savePath);
         break;
