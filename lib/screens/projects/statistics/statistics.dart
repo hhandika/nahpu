@@ -418,10 +418,9 @@ class CountBarChart extends ConsumerWidget {
               ),
         !isFullScreen || dataPoints.data.isEmpty
             ? const SizedBox.shrink()
-            : Padding(
-                padding: const EdgeInsets.fromLTRB(0, 16, 0, 4),
-                child: Text('Taxon counts: ${dataPoints.data.length}',
-                    style: Theme.of(context).textTheme.labelMedium),
+            : StatBottomText(
+                dataLength: dataPoints.data.length,
+                graphType: graphType,
               ),
       ],
     );
@@ -437,5 +436,44 @@ class CountBarChart extends ConsumerWidget {
 
   String get _emptyText {
     return 'No data to display';
+  }
+}
+
+class StatBottomText extends StatelessWidget {
+  const StatBottomText({
+    super.key,
+    required this.dataLength,
+    required this.graphType,
+  });
+
+  final int dataLength;
+  final GraphType graphType;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 16, 0, 4),
+      child: Text(
+        _bottomText,
+        style: Theme.of(context).textTheme.labelMedium,
+      ),
+    );
+  }
+
+  String get _bottomText {
+    switch (graphType) {
+      case GraphType.speciesCount:
+        return 'Species counts: $dataLength';
+      case GraphType.familyCount:
+        return 'Family counts: $dataLength';
+      case GraphType.speciesPerSiteCount:
+        return 'Species counts: $dataLength';
+      case GraphType.specimenPartCount:
+        return 'Part-treatment type counts: $dataLength';
+      case GraphType.partPerSpeciesCount:
+        return 'Part-treatment type counts: $dataLength';
+      case GraphType.partTreatmentCount:
+        return 'Treatment type counts: $dataLength';
+    }
   }
 }
