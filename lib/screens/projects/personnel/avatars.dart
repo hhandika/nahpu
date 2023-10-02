@@ -55,7 +55,7 @@ class PersonnelAvatarState extends ConsumerState<PersonnelAvatar> {
                   )
               : Positioned.fill(
                   child: AvatarViewer(
-                    filePath: widget.ctr.photoPathCtr,
+                    avatarCtr: widget.ctr.photoPathCtr,
                   ),
                 ),
           Positioned(
@@ -109,10 +109,10 @@ class PersonnelAvatarState extends ConsumerState<PersonnelAvatar> {
 class AvatarViewer extends ConsumerStatefulWidget {
   const AvatarViewer({
     super.key,
-    required this.filePath,
+    required this.avatarCtr,
   });
 
-  final TextEditingController filePath;
+  final TextEditingController avatarCtr;
   // final int imageSize;
 
   @override
@@ -127,14 +127,13 @@ class AvatarViewerState extends ConsumerState<AvatarViewer> {
 
   @override
   void dispose() {
-    widget.filePath.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.filePath.text.startsWith(avatarPath)
-        ? DefaultAvatar(filePath: widget.filePath.text)
+    return widget.avatarCtr.text.startsWith(avatarPath)
+        ? DefaultAvatar(filePath: widget.avatarCtr.text)
         : FutureBuilder(
             builder: (context, snapshot) {
               if (snapshot.hasData && snapshot.data != null) {
@@ -148,14 +147,14 @@ class AvatarViewerState extends ConsumerState<AvatarViewer> {
                 );
               }
             },
-            future: _getMediaPath());
+            future: _getPersonnelMediaPath());
   }
 
-  Future<File> _getMediaPath() async {
+  Future<File> _getPersonnelMediaPath() async {
     File path = await ImageServices(
       ref: ref,
       category: MediaCategory.personnel,
-    ).getMediaPath(widget.filePath.text);
+    ).getPersonnelMediaPath(widget.avatarCtr.text);
     return path;
   }
 }

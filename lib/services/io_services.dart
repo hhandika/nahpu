@@ -137,6 +137,16 @@ class FileServices extends DbAccess {
     await from.copy(toPath);
     return File(toPath);
   }
+
+  Future<File> copyFileToAppDir(File from, Directory to) async {
+    final appDir = await nahpuDocumentDir;
+    final fileName = path.basename(from.path);
+    final targetDir = path.join(appDir.path, to.path);
+    await Directory(targetDir).create(recursive: true);
+    final toPath = path.join(targetDir, fileName);
+    await from.copy(toPath);
+    return File(toPath);
+  }
 }
 
 Future<File> getDbBackUpPath() async {
