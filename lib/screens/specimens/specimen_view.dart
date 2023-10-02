@@ -84,7 +84,7 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
                     _specimenUuid = null;
                   });
 
-                  return const EmptySpecimen(isButtonVisible: false);
+                  return const EmptySpecimen(isButtonVisible: true);
                 } else {
                   int specimenSize = specimenEntry.length;
                   setState(() {
