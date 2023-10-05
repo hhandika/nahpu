@@ -37,10 +37,10 @@ packages:
     dependency: "direct main"
     description:
       name: archive
-      sha256: "20071638cbe4e5964a427cfa0e86dce55d060bc7d82d56f3554095d7239a8765"
+      sha256: "06a96f1249f38a00435b3b0c9a3246d934d7dbc8183fc7c9e56989860edb99d4"
       url: "https://pub.dev"
     source: hosted
-    version: "3.4.2"
+    version: "3.4.4"
   args:
     dependency: transitive
     description:
@@ -109,10 +109,10 @@ packages:
     dependency: transitive
     description:
       name: build_resolvers
-      sha256: "0713a05b0386bd97f9e63e78108805a4feca5898a4b821d6610857f10c91e975"
+      sha256: "64e12b0521812d1684b1917bc80945625391cb9bdd4312536b1d69dcb6133ed8"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.0"
+    version: "2.4.1"
   build_runner:
     dependency: "direct dev"
     description:
@@ -301,18 +301,18 @@ packages:
     dependency: "direct main"
     description:
       name: drift
-      sha256: "5722f6db3b24018627ecf88cfc9879a57ee29a2c76286f309132336ef949e931"
+      sha256: c66df5f88616f5b1fb8d83266738d4f3671c692b2aa680fd8fe53e57a4e149be
       url: "https://pub.dev"
     source: hosted
-    version: "2.12.0"
+    version: "2.12.1"
   drift_dev:
     dependency: "direct dev"
     description:
       name: drift_dev
-      sha256: "2b6491530c113450e6a674aef88fee700eeb15c4dde1935692c7ec1c36d64df1"
+      sha256: "8c9bb294a2f1a053f6d09890798ad5ac1fe436d527a4aa3254499105b7b93f96"
       url: "https://pub.dev"
     source: hosted
-    version: "2.12.0"
+    version: "2.12.1"
   dynamic_color:
     dependency: "direct main"
     description:
@@ -333,10 +333,10 @@ packages:
     dependency: "direct main"
     description:
       name: exif
-      sha256: c154e074234eb6ac4a09831072b4783b55f5f9e84c4b344a472a6d6aa83a9982
+      sha256: f65714272f9dbe66487a1594f0e82fb07d419fdbaef0f0cc57a457d2781ed1a4
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.4"
+    version: "3.2.1"
   fake_async:
     dependency: transitive
     description:
@@ -498,10 +498,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_riverpod
-      sha256: "1bd39b04f1bcd217a969589777ca6bd642d116e3e5de65c3e6a8e8bdd8b178ec"
+      sha256: "890a872705cdbda11efd2bff2f672f1c8180b86b9509490822ee96a3e20cd4aa"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.0"
+    version: "2.4.2"
   flutter_speed_dial:
     dependency: "direct main"
     description:
@@ -580,10 +580,10 @@ packages:
     dependency: transitive
     description:
       name: geolocator_platform_interface
-      sha256: b8cc1d3be0ca039a3f2174b0b026feab8af3610e220b8532e42cff8ec6658535
+      sha256: b7aca62aa05d7e610c396a53a1936ff87fce2f735d76e93fde9269c341c46a25
       url: "https://pub.dev"
     source: hosted
-    version: "4.1.0"
+    version: "4.1.1"
   geolocator_web:
     dependency: transitive
     description:
@@ -1004,10 +1004,10 @@ packages:
     dependency: transitive
     description:
       name: riverpod
-      sha256: a600120d6f213a9922860eea1abc32597436edd5b2c4e73b91410f8c2af67d22
+      sha256: ff676bd8a715c7085692fe4919564f78fb90d33b10a1c5c14e740581857cc914
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.0"
+    version: "2.4.1"
   riverpod_analyzer_utils:
     dependency: transitive
     description:
@@ -1020,10 +1020,10 @@ packages:
     dependency: "direct main"
     description:
       name: riverpod_annotation
-      sha256: "6294fe7e7d1875f32bdf04c8fce7620e718070273703097847df8f3bf16995ea"
+      sha256: aeeb1eb6ccf2d779f2ef730e6d96d560316b677662222316779a8cf0a94ee317
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.5"
+    version: "2.1.6"
   riverpod_generator:
     dependency: "direct dev"
     description:
@@ -1185,10 +1185,10 @@ packages:
     dependency: transitive
     description:
       name: sqlparser
-      sha256: "46b36e901766bc7d37a0adb79bbe5fb63de6a83b0d888114d912d0729b86cf2a"
+      sha256: d0a6c3ad33d530da1b1306edb33d9948a0d4bf1ce0681a3587bbe47e86d1c82b
       url: "https://pub.dev"
     source: hosted
-    version: "0.31.2"
+    version: "0.31.3"
   stack_trace:
     dependency: transitive
     description:
@@ -1430,10 +1430,5 @@ packages:
     source: hosted
     version: "3.1.2"
 sdks:
-<<<<<<< HEAD
-  dart: ">=3.1.0-185.0.dev <4.0.0"
-  flutter: ">=3.10.0"
-=======
   dart: ">=3.1.0 <4.0.0"
   flutter: ">=3.13.0"
->>>>>>> dev
