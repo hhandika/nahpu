@@ -24,6 +24,7 @@ class NahpuApp extends ConsumerWidget {
       return MaterialApp(
         title: 'Nahpu',
         home: const Home(),
+        debugShowCheckedModeBanner: false,
         theme: NahpuTheme.lightTheme(lightColorScheme),
         darkTheme: NahpuTheme.darkTheme(darkColorScheme),
         themeMode: ref.watch(themeSettingProvider).when(

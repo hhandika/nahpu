@@ -18,7 +18,15 @@ class PersonnelQuery extends DatabaseAccessor<Database>
     return await select(personnelList).get();
   }
 
-  Future updatePersonnelEntry(String id, PersonnelCompanion entry) {
+  Future<bool> isImageUsed(String baseName) async {
+    final PersonnelData? personnelList = await (select(personnel)
+          ..where((tbl) => tbl.photoPath.equals(baseName))
+          ..limit(1))
+        .getSingleOrNull();
+    return personnelList != null;
+  }
+
+  Future<int> updatePersonnelEntry(String id, PersonnelCompanion entry) {
     return (update(personnel)..where((t) => t.uuid.equals(id))).write(entry);
   }
 

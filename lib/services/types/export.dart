@@ -16,7 +16,6 @@ const Map<PdfExportType, String> pdfExport = {
 };
 
 const List<String> exportFormats = [
-  // 'Excel (.xlsx)',
   'Comma-separated (.csv)',
   'Tab-separated (.tsv)',
 ];
@@ -27,18 +26,19 @@ const Map<DbExportFmt, String> dbExportFmt = {
   DbExportFmt.sqlite3: 'Database (.sqlite3)',
 };
 
-enum ReportFmt { csv }
+enum ReportFmt { csv, kml }
 
 const List<String> reportFmtList = [
   'Comma-separated (.csv)',
+  'Keyhole Markup Language (.kml)',
 ];
 
-enum ReportType { speciesCount, mediaData, all }
+enum ReportType { speciesCount, mediaData, coordinate }
 
 const List<String> reportTypeList = [
   'Species count ',
   'Media data',
-  'All',
+  'Coordinates',
 ];
 
 enum ArchiveFmt { zip }

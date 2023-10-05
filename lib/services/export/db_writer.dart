@@ -33,10 +33,10 @@ class DbWriter extends DbAccess {
     for (var file in files) {
       if (file is File) {
         String filename = p.relative(file.path, from: nahpuDir.path);
-        encoder.addFile(file, filename);
+        await encoder.addFile(file, filename);
       }
     }
-    encoder.addFile(dbPath);
+    await encoder.addFile(dbPath);
     encoder.close();
     dbPath.deleteSync();
   }

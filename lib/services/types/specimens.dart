@@ -88,6 +88,12 @@ const List<String> relativeTimeList = [
   'Night',
 ];
 
+const List<String> idConfidenceList = [
+  'Low',
+  'Medium',
+  'High',
+];
+
 const List<String> taxonGroupList = [
   'Birds',
   'General Mammals',

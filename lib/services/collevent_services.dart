@@ -267,6 +267,12 @@ class CollEventSearchServices {
     return filteredCollEvents;
   }
 
+  List<CollEventData> searchBySiteID(int siteID) {
+    List<CollEventData> filteredCollEvents =
+        collEvents.where((collEvent) => collEvent.siteID == siteID).toList();
+    return filteredCollEvents;
+  }
+
   bool _isMatch(String? value, String query) {
     if (value == null) return false;
     return value.toLowerCase().contains(query);

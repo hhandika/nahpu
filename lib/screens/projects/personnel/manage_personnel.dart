@@ -238,8 +238,10 @@ class PersonnelListViewState extends ConsumerState<PersonnelListView> {
                       Navigator.pop(context);
                     }
                   } catch (e) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text('Error deleting personnel')));
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Error deleting personnel')));
+                    }
                   }
                 },
               )

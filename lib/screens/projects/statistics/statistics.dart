@@ -4,8 +4,11 @@ import 'package:nahpu/screens/projects/dashboard.dart';
 import 'package:nahpu/screens/projects/statistics/charts.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/collevent_services.dart';
+import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/statistics/captures.dart';
 import 'package:nahpu/services/statistics/common.dart';
+import 'package:nahpu/services/taxonomy_services.dart';
 import 'package:nahpu/services/types/statistics.dart';
 
 const double chartWidth = 32;
@@ -65,13 +68,37 @@ class StatisticViewerState extends ConsumerState<StatisticViewer> {
           ),
         ),
         Expanded(
-            child: CountBarChart(
-          graphType: _selectedGraph,
-          siteID: null,
-          isFullScreen: false,
+            child: FutureBuilder(
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return CountBarChart(
+                graphType: _selectedGraph,
+                dataPoints: snapshot.data!,
+                isFullScreen: false,
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+          future: _getData(ref),
         )),
       ],
     ));
+  }
+
+  Future<DataPoints> _getData(WidgetRef ref) async {
+    CaptureRecordStats data = CaptureRecordStats(ref: ref);
+    GraphType graph = _selectedGraph;
+    switch (graph) {
+      case GraphType.speciesCount:
+        return data.getSpeciesDataPoint();
+      case GraphType.familyCount:
+        return data.getFamilyDataPoint();
+      default:
+        return data.getSpeciesDataPoint();
+    }
   }
 
   /// We use custom transitions to make the fullscreen graph slide up from the
@@ -110,7 +137,7 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
   GraphType? _graphType;
   final bool _isisFullScreen = true;
   final bool _isLarge = true;
-  int? _siteID;
+  int? _selectedID;
 
   @override
   void initState() {
@@ -166,18 +193,19 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(12, 4, 0, 0),
                   child: Visibility(
-                    visible: _graphType == GraphType.speciesPerSiteCount,
+                    visible: _graphType == GraphType.speciesPerSiteCount ||
+                        _graphType == GraphType.partPerSpeciesCount,
                     child: FutureBuilder(
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             bool enabledFeature =
                                 snapshot.data!.length > 5 ? true : false;
                             return DropdownMenu(
-                              initialSelection: _siteID,
+                              initialSelection: _selectedID,
                               controller: _controller,
                               enableSearch: enabledFeature,
                               enabled: snapshot.data!.entries.isNotEmpty,
-                              hintText: 'Select site',
+                              hintText: 'Select',
                               textStyle:
                                   Theme.of(context).textTheme.titleMedium,
                               inputDecorationTheme: const InputDecorationTheme(
@@ -192,12 +220,16 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
                                           icon: const Icon(Icons.clear_rounded),
                                           onPressed: () {
                                             setState(() {
-                                              _siteID = null;
+                                              _selectedID = null;
                                               _controller.clear();
                                             });
                                           }),
                               leadingIcon:
-                                  const Icon(Icons.location_on_outlined),
+                                  _graphType == GraphType.speciesPerSiteCount ||
+                                          _graphType ==
+                                              GraphType.partPerSpeciesCount
+                                      ? const Icon(Icons.search_rounded)
+                                      : null,
                               dropdownMenuEntries: snapshot.data!.entries
                                   .map((e) => DropdownMenuEntry(
                                         value: e.key,
@@ -206,7 +238,7 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
                                   .toList(),
                               onSelected: (value) {
                                 setState(() {
-                                  _siteID = value;
+                                  _selectedID = value;
                                 });
                               },
                             );
@@ -214,16 +246,26 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
                             return const SizedBox.shrink();
                           }
                         },
-                        future: _getSiteForFromAllEvents()),
+                        future: _getDropdownEntry()),
                   ),
                 ),
                 Expanded(
-                  child: CountBarChart(
-                    graphType: _getGraphType,
-                    isFullScreen: _isisFullScreen,
-                    siteID: _siteID,
-                  ),
-                )
+                    child: FutureBuilder(
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return CountBarChart(
+                        graphType: _getGraphType,
+                        dataPoints: snapshot.data!,
+                        isFullScreen: _isisFullScreen,
+                      );
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  },
+                  future: _getData(ref),
+                ))
               ],
             ),
           ),
@@ -240,8 +282,45 @@ class StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
     }
   }
 
-  Future<Map<int, String>> _getSiteForFromAllEvents() async {
-    return await CollEventServices(ref: ref).getSitesForAllEvents();
+  Future<DataPoints> _getData(WidgetRef ref) async {
+    CaptureRecordStats data = CaptureRecordStats(ref: ref);
+    GraphType graph = _getGraphType;
+    switch (graph) {
+      case GraphType.speciesCount:
+        return data.getSpeciesDataPoint();
+      case GraphType.familyCount:
+        return data.getFamilyDataPoint();
+      case GraphType.speciesPerSiteCount:
+        return data.getSpeciesPerSiteDataPoint(_selectedID);
+      case GraphType.specimenPartCount:
+        return data.getSpecimenPartDataPoint();
+      case GraphType.partPerSpeciesCount:
+        return data.getPartPerSpeciesDataPoint(_selectedID);
+      case GraphType.partTreatmentCount:
+        return data.getPartTreatmentDataPoint();
+    }
+  }
+
+  Future<Map<int, String>> _getDropdownEntry() async {
+    switch (_getGraphType) {
+      case GraphType.speciesPerSiteCount:
+        return await CollEventServices(ref: ref).getSitesForAllEvents();
+      case GraphType.partPerSpeciesCount:
+        List<int> speciesList =
+            await SpecimenServices(ref: ref).getAllDistinctSpecies();
+
+        Map<int, String> speciesMap = {};
+        for (int speciesID in speciesList) {
+          TaxonomyData data =
+              await TaxonomyServices(ref: ref).getTaxonById(speciesID);
+          speciesMap[speciesID] =
+              '${data.genus ?? ''} ${data.specificEpithet ?? ''}';
+        }
+        return Map.fromEntries(speciesMap.entries.toList()
+          ..sort((e1, e2) => e1.value.compareTo(e2.value)));
+      default:
+        return {};
+    }
   }
 
   Route _closeFullscreen() {
@@ -299,76 +378,52 @@ class CountBarChart extends ConsumerWidget {
   const CountBarChart({
     super.key,
     required this.graphType,
-    required this.siteID,
+    required this.dataPoints,
     required this.isFullScreen,
   });
 
   final GraphType graphType;
-  final int? siteID;
+  final DataPoints dataPoints;
   final bool isFullScreen;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return FutureBuilder(
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            int dataLength = snapshot.data!.data.length;
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                snapshot.data!.data.isEmpty
-                    ? Text(
-                        _emptyText,
-                        style: Theme.of(context).textTheme.labelLarge,
-                      )
-                    : Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 42, left: 16, right: 16),
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: SizedBox(
-                              width: getChartWidth(dataLength),
-                              child: BarChartViewer(
-                                labels: snapshot.data!.labels,
-                                data: isFullScreen
-                                    ? snapshot.data!.data
-                                    : DataPoints(
-                                            data: snapshot.data!.data,
-                                            labels: snapshot.data!.labels)
-                                        .getMaxCount(maxCount),
-                              ),
-                            ),
-                          ),
-                        ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        dataPoints.data.isEmpty
+            ? Text(
+                _emptyText,
+                style: Theme.of(context).textTheme.labelLarge,
+              )
+            : Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 42, left: 16, right: 16),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: SizedBox(
+                      width: getChartWidth(dataPoints.data.length),
+                      child: BarChartViewer(
+                        labels: dataPoints.labels,
+                        data: isFullScreen
+                            ? dataPoints.data
+                            : DataPoints(
+                                    data: dataPoints.data,
+                                    labels: dataPoints.labels)
+                                .getMaxCount(maxCount),
                       ),
-                !isFullScreen || snapshot.data!.data.isEmpty
-                    ? const SizedBox.shrink()
-                    : Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 16, 0, 4),
-                        child: Text(
-                            'Taxon counts: ${snapshot.data!.data.length}',
-                            style: Theme.of(context).textTheme.labelMedium),
-                      ),
-              ],
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
-        future: _getStats(ref));
-  }
-
-  Future<DataPoints> _getStats(WidgetRef ref) async {
-    CaptureRecordStats data = CaptureRecordStats(ref: ref);
-    switch (graphType) {
-      case GraphType.speciesCount:
-        return data.getSpeciesDataPoint();
-      case GraphType.familyCount:
-        return data.getFamilyDataPoint();
-      case GraphType.speciesPerSiteCount:
-        return data.getSpeciesPerSiteDataPoint(siteID);
-    }
+                    ),
+                  ),
+                ),
+              ),
+        !isFullScreen || dataPoints.data.isEmpty
+            ? const SizedBox.shrink()
+            : StatBottomText(
+                dataLength: dataPoints.data.length,
+                graphType: graphType,
+              ),
+      ],
+    );
   }
 
   double getChartWidth(int dataLength) {
@@ -380,12 +435,45 @@ class CountBarChart extends ConsumerWidget {
   }
 
   String get _emptyText {
-    if (graphType == GraphType.speciesPerSiteCount) {
-      return siteID == null
-          ? 'Select a site to view data'
-          : 'No data to display for this site';
-    } else {
-      return 'No data to display';
+    return 'No data to display';
+  }
+}
+
+class StatBottomText extends StatelessWidget {
+  const StatBottomText({
+    super.key,
+    required this.dataLength,
+    required this.graphType,
+  });
+
+  final int dataLength;
+  final GraphType graphType;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 16, 0, 4),
+      child: Text(
+        _bottomText,
+        style: Theme.of(context).textTheme.labelMedium,
+      ),
+    );
+  }
+
+  String get _bottomText {
+    switch (graphType) {
+      case GraphType.speciesCount:
+        return 'Species counts: $dataLength';
+      case GraphType.familyCount:
+        return 'Family counts: $dataLength';
+      case GraphType.speciesPerSiteCount:
+        return 'Species counts: $dataLength';
+      case GraphType.specimenPartCount:
+        return 'Part-treatment type counts: $dataLength';
+      case GraphType.partPerSpeciesCount:
+        return 'Part-treatment type counts: $dataLength';
+      case GraphType.partTreatmentCount:
+        return 'Treatment type counts: $dataLength';
     }
   }
 }

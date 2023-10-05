@@ -24,6 +24,13 @@ class ImageServices extends DbAccess {
     return File(fullPath);
   }
 
+  Future<File> getPersonnelMediaPath(String filePath) async {
+    Directory mediaDir = _getMediaDir();
+    Directory appDir = await nahpuDocumentDir;
+    String fullPath = path.join(appDir.path, mediaDir.path, filePath);
+    return File(fullPath);
+  }
+
   Future<String> pickImageSingle() async {
     switch (systemPlatform) {
       case PlatformType.mobile:
@@ -82,8 +89,10 @@ class ImageServices extends DbAccess {
 
   Future<File> _copySingleFile(String path) async {
     File file = File(path);
-    File newPath =
-        await FileServices(ref: ref).copyFileToProjectDir(file, _getMediaDir());
+    File newPath = category == MediaCategory.personnel
+        ? await FileServices(ref: ref).copyFileToAppDir(file, _getMediaDir())
+        : await FileServices(ref: ref)
+            .copyFileToProjectDir(file, _getMediaDir());
     return newPath;
   }
 
@@ -96,7 +105,9 @@ class ImageServices extends DbAccess {
       case MediaCategory.narrative:
         return Directory('$mediaDir/narrative');
       case MediaCategory.personnel:
-        return Directory('$mediaDir/personnel');
+        // Personnel media is stored in the app directory
+        // in lieu of the project directory
+        return Directory('appMedia/personnel');
       default:
         throw Exception('Unsupported media category');
     }

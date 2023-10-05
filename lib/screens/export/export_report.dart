@@ -18,7 +18,7 @@ class ReportForm extends ConsumerStatefulWidget {
 }
 
 class ReportFormState extends ConsumerState<ReportForm> {
-  ReportFmt reportFmt = ReportFmt.csv;
+  // ReportFmt reportFmt = ReportFmt.csv;
   ReportType _reportType = ReportType.speciesCount;
   FileOpCtrModel exportCtr = FileOpCtrModel.empty();
   String _fileStem = 'export';
@@ -47,7 +47,11 @@ class ReportFormState extends ConsumerState<ReportForm> {
       ),
       body: FileOperationPage(
         children: [
-          const FileFormatIcon(path: 'assets/icons/csv.svg'),
+          FileFormatIcon(
+            path: _reportType == ReportType.coordinate
+                ? 'assets/icons/kml.svg'
+                : 'assets/icons/csv.svg',
+          ),
           DropdownButtonFormField<ReportType>(
             value: _reportType,
             decoration: const InputDecoration(
@@ -69,7 +73,9 @@ class ReportFormState extends ConsumerState<ReportForm> {
             },
           ),
           DropdownButtonFormField<ReportFmt>(
-            value: reportFmt,
+            value: _reportType == ReportType.coordinate
+                ? ReportFmt.kml
+                : ReportFmt.csv,
             decoration: const InputDecoration(
               labelText: 'Format',
             ),
@@ -79,14 +85,7 @@ class ReportFormState extends ConsumerState<ReportForm> {
                       child: CommonDropdownText(text: e),
                     ))
                 .toList(),
-            onChanged: (ReportFmt? value) {
-              if (value != null) {
-                setState(() {
-                  reportFmt = value;
-                  _hasSaved = false;
-                });
-              }
-            },
+            onChanged: null,
           ),
           FileNameField(
             controller: exportCtr,
@@ -159,26 +158,25 @@ class ReportFormState extends ConsumerState<ReportForm> {
 
   Future<void> _createReport() async {
     try {
+      String ext = _reportType == ReportType.coordinate ? 'kml' : 'csv';
       _savePath = await AppIOServices(
         dir: _selectedDir,
         fileStem: _fileStem,
-        ext: 'csv',
+        ext: ext,
       ).getSavePath();
 
       await ReportServices(ref: ref).writeReport(_savePath, _reportType);
       setState(() {
         _hasSaved = true;
       });
-    } on PathNotFoundException {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: PathNotFoundText(),
-      ));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: ErrorText(error: e.toString()),
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: ErrorText(error: e.toString()),
+          ),
+        );
+      }
     }
   }
 
@@ -186,12 +184,14 @@ class ReportFormState extends ConsumerState<ReportForm> {
     try {
       await FilePickerServices().shareFile(context, _savePath);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          duration: const Duration(seconds: 5),
-          content: ErrorText(error: e.toString()),
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 5),
+            content: ErrorText(error: e.toString()),
+          ),
+        );
+      }
     }
   }
 

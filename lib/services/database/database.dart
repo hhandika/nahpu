@@ -14,7 +14,7 @@ class Database extends _$Database {
   Database() : super(_openConnection());
 
   @override
-  int get schemaVersion => 4; // bump this when you change the schema
+  int get schemaVersion => 5; // bump this when you change the schema
 
   @override
   MigrationStrategy get migration {
@@ -37,9 +37,44 @@ class Database extends _$Database {
       if (from < 4) {
         await _migrateFromVersion3(m);
       }
+
+      if (from < 5) {
+        await _migrateFromVersion4(m);
+      }
     }, beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');
     });
+  }
+
+  Future<void> _migrateFromVersion4(Migrator m) async {
+    await m.deleteTable('projectPersonnel');
+
+    // Specimen record tables
+    await m.addColumn(specimen, specimen.iDConfidence);
+    await m.addColumn(specimen, specimen.iDMethod);
+    await m.addColumn(specimenPart, specimenPart.personnelId);
+    await m.addColumn(specimenPart, specimenPart.pmi);
+
+    // Taxon registry table
+    await m.addColumn(taxonomy, taxonomy.authors);
+    await m.addColumn(taxonomy, taxonomy.citesStatus);
+    await m.addColumn(taxonomy, taxonomy.redListCategory);
+    await m.addColumn(taxonomy, taxonomy.countryStatus);
+    await m.addColumn(taxonomy, taxonomy.sortingOrder);
+
+    // Associated data
+    await m.addColumn(associatedData, associatedData.date);
+    await m.addColumn(associatedData, associatedData.specimenUuid);
+    await m.renameColumn(associatedData, 'secondaryId', associatedData.name);
+    await m.renameColumn(associatedData, 'fileId', associatedData.url);
+    // Remove secondaryIdRef
+    await m.alterTable(TableMigration(associatedData));
+
+    // Sites
+    await m.alterTable(TableMigration(coordinate));
+    await m.alterTable(TableMigration(coordinate, columnTransformer: {
+      coordinate.elevationInMeter: coordinate.elevationInMeter.cast<double>(),
+    }));
   }
 
   Future<void> _migrateFromVersion3(Migrator m) async {

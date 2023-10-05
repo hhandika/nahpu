@@ -50,6 +50,12 @@ class PersonnelListState extends ConsumerState<PersonnelList> {
   final ScrollController _scrollController = ScrollController();
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final personnel = ref.watch(projectPersonnelProvider);
     return personnel.when(
@@ -67,7 +73,7 @@ class PersonnelListState extends ConsumerState<PersonnelList> {
                         controller: _scrollController,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
-                          return PersonalListTile(
+                          return PersonnelListTile(
                             personnelData: data[index],
                             trailing: PersonnelMenu(
                               data: data[index],
@@ -129,8 +135,8 @@ class AddPersonnelButton extends StatelessWidget {
   }
 }
 
-class PersonalListTile extends StatelessWidget {
-  const PersonalListTile({
+class PersonnelListTile extends StatefulWidget {
+  const PersonnelListTile({
     super.key,
     required this.personnelData,
     required this.trailing,
@@ -140,25 +146,43 @@ class PersonalListTile extends StatelessWidget {
   final Widget trailing;
 
   @override
+  State<PersonnelListTile> createState() => _PersonnelListTileState();
+}
+
+class _PersonnelListTileState extends State<PersonnelListTile> {
+  final TextEditingController _personnelPhotoCtr = TextEditingController();
+
+  @override
+  void initState() {
+    _personnelPhotoCtr.text = widget.personnelData.photoPath ?? '';
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _personnelPhotoCtr.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: SizedBox(
           height: avatarSize.toDouble(),
           width: avatarSize.toDouble(),
           child: AvatarViewer(
-            filePath:
-                TextEditingController(text: personnelData.photoPath ?? ''),
+            avatarCtr: _personnelPhotoCtr,
           )),
       title: Text(
-        _getTitle(personnelData.name, personnelData.initial),
+        _getTitle(widget.personnelData.name, widget.personnelData.initial),
         style: Theme.of(context).textTheme.titleMedium,
       ),
       subtitle: PersonnelSubtitle(
-        role: personnelData.role,
-        affiliation: personnelData.affiliation,
-        currentFieldNumber: personnelData.currentFieldNumber,
+        role: widget.personnelData.role,
+        affiliation: widget.personnelData.affiliation,
+        currentFieldNumber: widget.personnelData.currentFieldNumber,
       ),
-      trailing: trailing,
+      trailing: widget.trailing,
     );
   }
 

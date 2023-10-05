@@ -88,13 +88,15 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
                               try {
                                 await _bundleProject();
                               } catch (e) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      e.toString(),
+                                if (mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        e.toString(),
+                                      ),
                                     ),
-                                  ),
-                                );
+                                  );
+                                }
                               }
                               _finishProcessing();
                             },
@@ -133,12 +135,14 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
     try {
       await FilePickerServices().shareFile(context, _savePath);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error: $e'),
-          duration: const Duration(seconds: 8),
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e'),
+            duration: const Duration(seconds: 8),
+          ),
+        );
+      }
     }
   }
 

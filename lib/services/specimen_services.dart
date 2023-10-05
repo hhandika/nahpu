@@ -196,8 +196,13 @@ class SpecimenServices extends DbAccess {
     return filteredList;
   }
 
-  Future<List<int?>> getAllSpecies(String uuid) {
-    return SpecimenQuery(dbAccess).getAllSpecies(uuid);
+  Future<List<int?>> getAllSpecies() {
+    return SpecimenQuery(dbAccess).getAllSpecies(currentProjectUuid);
+  }
+
+  Future<List<int>> getAllDistinctSpecies() async {
+    final List<int?> speciesList = await getAllSpecies();
+    return speciesList.toSet().whereType<int>().toList();
   }
 
   Future<TaxonomyData> getTaxonById(int id) {
@@ -640,5 +645,81 @@ class SpecimenSettingServices {
 
   bool isCollectorFieldAlwaysShown() {
     return _prefs.getBool(collectorFieldKey) ?? false;
+  }
+}
+
+class AssociatedDataServices extends DbAccess {
+  const AssociatedDataServices({required super.ref});
+
+  Future<List<AssociatedDataData>> getAssociatedData(
+      String specimenUuid) async {
+    return await AssociatedDataQuery(dbAccess)
+        .getAllAssociatedData(specimenUuid);
+  }
+
+  Future<void> createAssociatedData(AssociatedDataCompanion form) async {
+    await AssociatedDataQuery(dbAccess).createSpecimenDataAssociation(form);
+    _invalidateData();
+  }
+
+  Future<void> updateAssociatedData(
+      int associatedDataId, AssociatedDataCompanion form) async {
+    await AssociatedDataQuery(dbAccess)
+        .updateAssociatedData(associatedDataId, form);
+    _invalidateData();
+  }
+
+  Future<bool> isFileUsed(File file) async {
+    return await AssociatedDataQuery(dbAccess).isFileUsed(
+      basename(file.path),
+    );
+  }
+
+  Future<void> deleteAssociatedData(int associatedDataId) async {
+    await AssociatedDataQuery(dbAccess).deleteAssociatedData(associatedDataId);
+    _invalidateData();
+  }
+
+  Future<File> copyAssociatedDataFile(File path) async {
+    final dataDir = Directory('associatedData');
+
+    File dataPath =
+        await FileServices(ref: ref).copyFileToProjectDir(path, dataDir);
+    return dataPath;
+  }
+
+  void _invalidateData() {
+    ref.invalidate(associatedDataProvider);
+  }
+}
+
+class MammalMeasurementServices {
+  const MammalMeasurementServices({
+    required this.totalLengthText,
+    required this.tailLengthText,
+  });
+
+  final String totalLengthText;
+  final String tailLengthText;
+
+  ({String headAndBodyText, String percentTailText})? getHBandTailPercentage() {
+    double? totalLength =
+        totalLengthText.isNotEmpty ? double.tryParse(totalLengthText) : null;
+    double? tailLength =
+        tailLengthText.isNotEmpty ? double.tryParse(tailLengthText) : null;
+    if (totalLength == null || tailLength == null || totalLength < 1) {
+      return null;
+    } else {
+      double headBodyLength = (totalLength - tailLength);
+      String headAndBodyText = headBodyLength.truncateZeroFixed(1);
+      String tailHeadBodyPercent =
+          (tailLength / headBodyLength * 100).truncateZeroFixed(1);
+      String percentTailText = '$tailHeadBodyPercent%';
+
+      return (
+        headAndBodyText: headAndBodyText,
+        percentTailText: percentTailText
+      );
+    }
   }
 }

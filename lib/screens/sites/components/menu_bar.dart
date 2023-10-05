@@ -12,21 +12,28 @@ Future<void> createNewSite(BuildContext context, WidgetRef ref) {
   });
 }
 
-class NewSiteTextButton extends ConsumerWidget {
+class NewSiteTextButton extends ConsumerStatefulWidget {
   const NewSiteTextButton({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  NewSiteTextButtonState createState() => NewSiteTextButtonState();
+}
+
+class NewSiteTextButtonState extends ConsumerState<NewSiteTextButton> {
+  @override
+  Widget build(BuildContext context) {
     return TextButton(
       onPressed: () async {
         try {
           await createNewSite(context, ref);
         } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(e.toString()),
-            ),
-          );
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(e.toString()),
+              ),
+            );
+          }
         }
       },
       child: const Text('Create site'),
@@ -34,22 +41,29 @@ class NewSiteTextButton extends ConsumerWidget {
   }
 }
 
-class NewSite extends ConsumerWidget {
+class NewSite extends ConsumerStatefulWidget {
   const NewSite({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  NewSiteState createState() => NewSiteState();
+}
+
+class NewSiteState extends ConsumerState<NewSite> {
+  @override
+  Widget build(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.add_circle_outline_rounded),
       onPressed: () async {
         try {
           await createNewSite(context, ref);
         } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(e.toString()),
-            ),
-          );
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(e.toString()),
+              ),
+            );
+          }
         }
       },
     );

@@ -23,6 +23,7 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
   bool _isBackup = true;
   bool _hasSelected = false;
   bool _isArchived = false;
+  bool _isReplacing = false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +40,15 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
                   try {
                     await _getDbPath();
                   } catch (e) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Failed to select file!',
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Failed to select file!',
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    }
                   }
                 },
                 isBackup: _isBackup,
@@ -55,6 +58,7 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
                   setState(() {});
                 },
                 hasSelected: _hasSelected,
+                isReplacing: _isReplacing,
                 onReplaceDb: () => _replaceDb(),
               ),
             ],
@@ -79,10 +83,16 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
   Future<void> _replaceDb() async {
     Navigator.of(context).pop();
     try {
+      setState(() {
+        _isReplacing = true;
+      });
       File? backupPath = _isBackup ? await getDbBackUpPath() : null;
       await DbWriter(ref: ref)
           .replaceDb(File(_dbPath!.path), backupPath, _isArchived);
-      if (context.mounted) {
+      setState(() {
+        _isReplacing = false;
+      });
+      if (mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => DBReplacedPage(
@@ -92,14 +102,19 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Failed to replace database!: $e',
+      setState(() {
+        _isReplacing = false;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Failed to replace database!: $e',
+            ),
+            duration: const Duration(seconds: 10),
           ),
-          duration: const Duration(seconds: 10),
-        ),
-      );
+        );
+      }
     }
   }
 }
@@ -112,6 +127,7 @@ class DbFileInputField extends StatelessWidget {
     required this.onPressed,
     required this.onBackupChosen,
     required this.hasSelected,
+    required this.isReplacing,
     required this.onReplaceDb,
   });
 
@@ -120,6 +136,7 @@ class DbFileInputField extends StatelessWidget {
   final VoidCallback onPressed;
   final void Function(bool) onBackupChosen;
   final bool hasSelected;
+  final bool isReplacing;
   final VoidCallback onReplaceDb;
 
   @override
@@ -148,6 +165,7 @@ class DbFileInputField extends StatelessWidget {
         const SizedBox(height: 16),
         DbReplaceButtons(
           hasSelected: hasSelected,
+          isRunning: isReplacing,
           onPressed: onReplaceDb,
         )
       ],
@@ -159,17 +177,20 @@ class DbReplaceButtons extends StatelessWidget {
   const DbReplaceButtons({
     super.key,
     required this.hasSelected,
+    required this.isRunning,
     required this.onPressed,
   });
 
   final bool hasSelected;
+  final bool isRunning;
   final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return PrimaryButton(
+    return ProgressButton(
       label: 'Replace',
       icon: Icons.refresh,
+      isRunning: isRunning,
       onPressed: !hasSelected
           ? null
           : () async {

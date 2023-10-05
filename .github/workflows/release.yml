@@ -1,0 +1,53 @@
+name: NAHPU-Releases
+
+on:
+  push:
+    branches:
+      - release
+
+jobs:
+  windows:
+    name: Windows x86_64
+    runs-on: windows-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: "zulu"
+          java-version: "17.x"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+      - run: |
+          flutter pub get
+          flutter analyze
+
+      - name: Build release
+        uses: subosito/flutter-action@v2
+      - run: |
+          flutter build windows --release
+          flutter build apk --release
+
+      - name: Compress Windows release
+        run: powershell Compress-Archive -Path build\windows\runner\Release -DestinationPath nahpu.zip
+
+      - name: Upload Windows release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: nahpu.zip
+          asset_name: nahpu-windows-x86_64.zip
+          tag: ${{ github.ref }}
+
+      - name: Upload Android release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build\app\outputs\flutter-apk\app-release.apk
+          asset_name: nahpu-android.apk
+          tag: ${{ github.ref }}

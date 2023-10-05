@@ -1,12 +1,13 @@
 import 'dart:collection';
 import 'dart:io';
 
-import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/export/media_writer.dart';
 import 'package:nahpu/services/io_services.dart';
+import 'package:nahpu/services/site_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/types/export.dart';
+import 'package:xml/xml.dart';
 
 class ReportServices extends DbAccess {
   const ReportServices({required super.ref});
@@ -20,15 +21,69 @@ class ReportServices extends DbAccess {
         await MediaWriterServices(ref: ref)
             .writeAllMediaDelimited(savePath, true);
         break;
-      case ReportType.all:
-        await SpeciesListWriter(ref: ref).writeSpeciesListCompact(savePath);
-        await MediaWriterServices(ref: ref)
-            .writeAllMediaDelimited(savePath, true);
+      case ReportType.coordinate:
+        await CoordinateWriter(ref: ref).writeCoordinate(savePath);
         break;
       default:
         await SpeciesListWriter(ref: ref).writeSpeciesListCompact(savePath);
         break;
     }
+  }
+}
+
+class CoordinateWriter extends DbAccess {
+  const CoordinateWriter({required super.ref});
+
+  Future<void> writeCoordinate(File savePath) async {
+    final coordinateList = await _getAllCoordinate();
+    final kml = _buildKml(coordinateList);
+    await savePath.writeAsString(kml.toXmlString(pretty: true));
+  }
+
+  Future<List<CoordinateData>> _getAllCoordinate() async {
+    final allSites = await SiteServices(ref: ref).getAllSites();
+    List<CoordinateData> coordinateList = [];
+    for (var site in allSites) {
+      List<CoordinateData> data =
+          await CoordinateServices(ref: ref).getCoordinatesBySiteID(site.id);
+      coordinateList.addAll(data);
+    }
+    return coordinateList;
+  }
+
+  XmlDocument _buildKml(List<CoordinateData> coordinateList) {
+    final builder = XmlBuilder();
+    builder.processing('xml', 'version="1.0" encoding="UTF-8"');
+    builder.element('kml', nest: () {
+      builder.element('Document', nest: () {
+        builder.element('name', nest: 'NAHPU');
+        builder.element('description', nest: 'NAHPU');
+        builder.element('Style', nest: () {
+          builder.element('LineStyle', nest: () {
+            builder.element('color', nest: 'ff0000ff');
+            builder.element('width', nest: '2');
+          });
+          builder.element('PolyStyle', nest: () {
+            builder.element('color', nest: '7f00ff00');
+          });
+        });
+        for (var coordinate in coordinateList) {
+          builder.element('Placemark', nest: () {
+            builder.element('name', nest: coordinate.nameId);
+            builder.element('description', nest: coordinate.notes);
+            builder.element('styleUrl', nest: '#msn_ylw-pushpin');
+            builder.element('Point', nest: () {
+              builder.element('coordinates',
+                  nest: '${coordinate.decimalLongitude ?? ''}'
+                      ',${coordinate.decimalLatitude ?? ''}'
+                      '${coordinate.elevationInMeter ?? ''}');
+            });
+          });
+        }
+      });
+    });
+
+    return builder.buildDocument();
   }
 }
 
@@ -60,9 +115,7 @@ class SpeciesListWriter extends DbAccess {
   }
 
   Future<List<int?>> getSpeciesList() async {
-    final projectUuid = ref.read(projectUuidProvider);
-    final speciesList =
-        await SpecimenServices(ref: ref).getAllSpecies(projectUuid);
+    final speciesList = await SpecimenServices(ref: ref).getAllSpecies();
     return speciesList;
   }
 

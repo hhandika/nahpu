@@ -4,6 +4,10 @@ import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/providers/database.dart';
 import 'package:nahpu/services/database/database.dart';
+import 'package:nahpu/services/media_services.dart';
+import 'package:nahpu/services/personnel_services.dart';
+import 'package:nahpu/services/specimen_services.dart';
+import 'package:nahpu/services/types/file_format.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
@@ -133,6 +137,16 @@ class FileServices extends DbAccess {
     await from.copy(toPath);
     return File(toPath);
   }
+
+  Future<File> copyFileToAppDir(File from, Directory to) async {
+    final appDir = await nahpuDocumentDir;
+    final fileName = path.basename(from.path);
+    final targetDir = path.join(appDir.path, to.path);
+    await Directory(targetDir).create(recursive: true);
+    final toPath = path.join(targetDir, fileName);
+    await from.copy(toPath);
+    return File(toPath);
+  }
 }
 
 Future<File> getDbBackUpPath() async {
@@ -166,56 +180,106 @@ class DataUsageServices {
   final WidgetRef ref;
 
   Future<String> get appDataUsage async {
-    try {
-      final nahpuDir = await nahpuDocumentDir;
-      final dirSize = nahpuDir.listSync(recursive: true);
-      int size = 0;
-      for (final file in dirSize) {
-        if (file is File) {
-          size += file.lengthSync();
-        }
+    final nahpuDir = await nahpuDocumentDir;
+    final dirSize = nahpuDir.listSync(recursive: true);
+    int size = 0;
+    for (final file in dirSize) {
+      if (file is File) {
+        size += file.lengthSync();
       }
-      return '${(size / 1024 / 1024).toStringAsFixed(2)} MB';
-    } catch (e) {
-      rethrow;
     }
+    return '${(size / 1024 / 1024).toStringAsFixed(2)} MB';
   }
 
   Future<int> get fileCount async {
-    try {
-      final nahpuDir = await nahpuDocumentDir;
-      final dirSize = nahpuDir.listSync(recursive: true);
-      int count = 0;
-      for (final file in dirSize) {
-        if (file is File) {
-          count++;
-        }
+    final nahpuDir = await nahpuDocumentDir;
+    final dirSize = nahpuDir.listSync(recursive: true);
+    int count = 0;
+    for (final file in dirSize) {
+      if (file is File) {
+        count++;
       }
-      return count;
-    } catch (e) {
-      rethrow;
     }
+    return count;
   }
 
   Future<int> get imageCount async {
-    try {
-      final nahpuDir = await nahpuDocumentDir;
-      final dirSize = nahpuDir.listSync(recursive: true);
-      int count = 0;
-      for (final file in dirSize) {
-        if (file is File) {
-          if (file.path.endsWith('.jpg') ||
-              file.path.endsWith('.jpeg') ||
-              file.path.endsWith('.png') ||
-              file.path.endsWith('.gif') ||
-              file.path.endsWith('.heic')) {
-            count++;
-          }
-        }
+    final nahpuDir = await nahpuDocumentDir;
+    final dirSize = nahpuDir.listSync(recursive: true).whereType<File>();
+    int count = 0;
+    for (final file in dirSize) {
+      if (_isImage(file)) {
+        count++;
       }
-      return count;
-    } catch (e) {
-      rethrow;
     }
+    return count;
   }
+
+  Future<List<NahpuFile>> get fileList async {
+    final nahpuDir = await nahpuDocumentDir;
+    final fileList = nahpuDir.listSync(recursive: true).whereType<File>();
+
+    List<NahpuFile> nahpuFileList = [];
+    for (final file in fileList) {
+      final format = _matchFormat(file);
+      final isDeletable = await _isDeletable(file, format);
+      nahpuFileList.add(
+        NahpuFile(
+          path: file,
+          isDeletable: isDeletable,
+          format: format,
+        ),
+      );
+    }
+
+    return nahpuFileList;
+  }
+
+  NahpuFileFormat _matchFormat(File file) {
+    return formatByExtension[path.extension(file.path)] ??
+        NahpuFileFormat.other;
+  }
+
+  Future<bool> _isDeletable(File file, NahpuFileFormat format) async {
+    if (path.extension(file.path) == 'db') {
+      return false;
+    }
+
+    if (format == NahpuFileFormat.image) {
+      bool isUsedByMedia = await MediaServices(ref: ref).isImageUsed(file);
+      bool isUsedByPersonnel =
+          await PersonnelServices(ref: ref).isImageUsedInPersonnelPhoto(file);
+      return !isUsedByMedia || !isUsedByPersonnel;
+    }
+
+    if (format == NahpuFileFormat.other) {
+      bool isUsedInAssociatedData =
+          await AssociatedDataServices(ref: ref).isFileUsed(file);
+      return !isUsedInAssociatedData;
+    }
+
+    return true;
+  }
+
+  bool _isImage(File file) {
+    if (file.path.endsWith('.jpg') ||
+        file.path.endsWith('.jpeg') ||
+        file.path.endsWith('.png') ||
+        file.path.endsWith('.gif') ||
+        file.path.endsWith('.heic')) {
+      return true;
+    }
+    return false;
+  }
+}
+
+class NahpuFile {
+  const NahpuFile({
+    required this.path,
+    required this.isDeletable,
+    required this.format,
+  });
+  final File path;
+  final bool isDeletable;
+  final NahpuFileFormat format;
 }

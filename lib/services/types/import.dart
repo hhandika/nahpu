@@ -13,21 +13,15 @@ enum TaxonEntryHeader {
   taxonFamily,
   genus,
   specificEpithet,
+  authors,
   commonName,
+  redListCategory,
+  citesStatus,
+  countryStatus,
+  sortingOrder,
   notes,
   ignore,
 }
-
-const List<String> headerList = [
-  'Class',
-  'Order',
-  'Family',
-  'Genus',
-  'Specific epithet',
-  'Common name',
-  'Notes',
-  'Ignore',
-];
 
 String matchTaxonEntryHeader(TaxonEntryHeader headerEnum) {
   switch (headerEnum) {
@@ -41,8 +35,18 @@ String matchTaxonEntryHeader(TaxonEntryHeader headerEnum) {
       return 'Genus';
     case TaxonEntryHeader.specificEpithet:
       return 'Specific epithet';
+    case TaxonEntryHeader.authors:
+      return 'Authors';
     case TaxonEntryHeader.commonName:
       return 'Common name';
+    case TaxonEntryHeader.redListCategory:
+      return 'IUCN Category';
+    case TaxonEntryHeader.citesStatus:
+      return 'CITES status';
+    case TaxonEntryHeader.countryStatus:
+      return 'Country status';
+    case TaxonEntryHeader.sortingOrder:
+      return 'Sorting order';
     case TaxonEntryHeader.notes:
       return 'Notes';
     case TaxonEntryHeader.ignore:
@@ -65,6 +69,13 @@ const Map<String, TaxonEntryHeader> knownTaxonHeader = {
   'species': TaxonEntryHeader.specificEpithet,
   'commonname': TaxonEntryHeader.commonName,
   'englishname': TaxonEntryHeader.commonName,
+  'citesstatus': TaxonEntryHeader.citesStatus,
+  'appendixstatus': TaxonEntryHeader.citesStatus,
+  'redlistcategory': TaxonEntryHeader.redListCategory,
+  'iucncategory': TaxonEntryHeader.redListCategory,
+  'iucnstatus': TaxonEntryHeader.redListCategory,
+  'countrystatus': TaxonEntryHeader.countryStatus,
+  'sortingorder': TaxonEntryHeader.sortingOrder,
   'notes': TaxonEntryHeader.notes,
   'note': TaxonEntryHeader.notes,
 };

@@ -217,11 +217,13 @@ class EventPersonnelFieldState extends ConsumerState<EventPersonnelField> {
             Navigator.of(context).pop();
           }
         } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(e.toString()),
-            ),
-          );
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(e.toString()),
+              ),
+            );
+          }
         }
       },
     );

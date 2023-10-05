@@ -32,6 +32,11 @@ class MediaServices extends DbAccess {
     return await MediaDbQuery(dbAccess).getMedia(primaryId);
   }
 
+  Future<bool> isImageUsed(File file) async {
+    final String fileName = path.basename(file.path);
+    return await MediaDbQuery(dbAccess).isImageUsed(fileName);
+  }
+
   Future<void> renameMedia(int mediaID, String oldName, String newName,
       MediaCategory category) async {
     if (oldName == newName || newName.isEmpty) {

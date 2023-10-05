@@ -51,7 +51,7 @@ class NarrativeMediaFormState extends ConsumerState<NarrativeMediaForm> {
   }
 }
 
-class NarrativeMediaViewer extends ConsumerWidget {
+class NarrativeMediaViewer extends ConsumerStatefulWidget {
   const NarrativeMediaViewer({
     super.key,
     required this.narrativeId,
@@ -62,10 +62,15 @@ class NarrativeMediaViewer extends ConsumerWidget {
   final List<MediaData> data;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  NarrativeMediaViewerState createState() => NarrativeMediaViewerState();
+}
+
+class NarrativeMediaViewerState extends ConsumerState<NarrativeMediaViewer> {
+  @override
+  Widget build(BuildContext context) {
     MediaCategory mediaCategory = MediaCategory.narrative;
     return MediaViewer(
-      images: data,
+      images: widget.data,
       onAddFromGallery: () async {
         try {
           List<String> images =
@@ -73,18 +78,20 @@ class NarrativeMediaViewer extends ConsumerWidget {
                   .pickFromGallery();
           if (images.isNotEmpty) {
             await NarrativeServices(ref: ref).createNarrativeMediaFromList(
-              narrativeId,
+              widget.narrativeId,
               images,
             );
           }
         } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                e.toString(),
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  e.toString(),
+                ),
               ),
-            ),
-          );
+            );
+          }
         }
       },
       onAccessingCamera: () async {
@@ -93,18 +100,20 @@ class NarrativeMediaViewer extends ConsumerWidget {
               .accessCamera();
           if (image != null) {
             await NarrativeServices(ref: ref).createNarrativeMedia(
-              narrativeId,
+              widget.narrativeId,
               image,
             );
           }
         } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                e.toString(),
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  e.toString(),
+                ),
               ),
-            ),
-          );
+            );
+          }
         }
       },
     );

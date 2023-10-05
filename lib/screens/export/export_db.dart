@@ -118,7 +118,6 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
                                 _isRunning = true;
                               });
                               await _writeDb();
-                              _setSuccess();
                             }
                           : null,
                     )
@@ -146,18 +145,6 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
     }
   }
 
-  void _setSuccess() {
-    setState(() {
-      _isRunning = false;
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('File saved as $_savePath'),
-      ),
-    );
-  }
-
   Future<void> _writeDb() async {
     try {
       _savePath = await AppIOServices(
@@ -172,19 +159,23 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
       setState(() {
         _hasSaved = true;
         _savePath = currentSavePath;
+        _isRunning = false;
       });
-    } on PathNotFoundException {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: PathNotFoundText(),
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('File saved as $_savePath'),
+          ),
+        );
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: ErrorText(error: e.toString()),
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: ErrorText(error: e.toString()),
+          ),
+        );
+      }
     }
   }
 
@@ -192,11 +183,13 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
     try {
       await FilePickerServices().shareFile(context, _savePath);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: ErrorText(error: e.toString()),
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: ErrorText(error: e.toString()),
+          ),
+        );
+      }
     }
   }
 

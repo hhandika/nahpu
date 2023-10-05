@@ -21,7 +21,6 @@ mixin _$PersonnelQueryMixin on DatabaseAccessor<Database> {
   SpecimenMedia get specimenMedia => attachedDatabase.specimenMedia;
   AssociatedData get associatedData => attachedDatabase.associatedData;
   PersonnelList get personnelList => attachedDatabase.personnelList;
-  ProjectPersonnel get projectPersonnel => attachedDatabase.projectPersonnel;
   MammalMeasurement get mammalMeasurement => attachedDatabase.mammalMeasurement;
   AvianMeasurement get avianMeasurement => attachedDatabase.avianMeasurement;
   SpecimenPart get specimenPart => attachedDatabase.specimenPart;
@@ -30,14 +29,12 @@ mixin _$PersonnelQueryMixin on DatabaseAccessor<Database> {
         variables: [],
         readsFrom: {
           project,
-        }).map((QueryRow row) {
-      return ListProjectResult(
-        uuid: row.read<String>('uuid'),
-        name: row.read<String>('name'),
-        created: row.readNullable<String>('created'),
-        lastAccessed: row.readNullable<String>('lastAccessed'),
-      );
-    });
+        }).map((QueryRow row) => ListProjectResult(
+          uuid: row.read<String>('uuid'),
+          name: row.read<String>('name'),
+          created: row.readNullable<String>('created'),
+          lastAccessed: row.readNullable<String>('lastAccessed'),
+        ));
   }
 }
 

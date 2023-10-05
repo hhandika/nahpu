@@ -143,8 +143,9 @@ class SpecimenQuery extends DatabaseAccessor<Database>
         .go();
   }
 
-  Future updateSpecimenEntry(String uuid, SpecimenCompanion entry) {
-    return (update(specimen)..where((t) => t.uuid.equals(uuid))).write(entry);
+  Future<int> updateSpecimenEntry(String uuid, SpecimenCompanion entry) async {
+    return await (update(specimen)..where((t) => t.uuid.equals(uuid)))
+        .write(entry);
   }
 }
 
@@ -311,4 +312,43 @@ class SpecimenPartDistinctTypes {
 
   final List<String> type;
   final List<String> treatment;
+}
+
+class AssociatedDataQuery extends DatabaseAccessor<Database>
+    with _$SpecimenQueryMixin {
+  AssociatedDataQuery(Database db) : super(db);
+
+  Future<int> createSpecimenDataAssociation(
+          AssociatedDataCompanion form) async =>
+      await into(associatedData).insert(form);
+
+  Future<int> updateAssociatedData(int id, AssociatedDataCompanion form) async {
+    return (update(associatedData)..where((t) => t.primaryId.equals(id)))
+        .write(form);
+  }
+
+  Future<List<AssociatedDataData>> getAllAssociatedData(
+      String specimenUuid) async {
+    return await (select(associatedData)
+          ..where((t) => t.specimenUuid.equals(specimenUuid)))
+        .get();
+  }
+
+  Future<bool> isFileUsed(String baseName) async {
+    AssociatedDataData? data = await (select(associatedData)
+          ..where((t) => t.url.equals(baseName))
+          ..limit(1))
+        .getSingleOrNull();
+    return data != null;
+  }
+
+  Future<void> deleteAssociatedData(int id) {
+    return (delete(associatedData)..where((t) => t.primaryId.equals(id))).go();
+  }
+
+  Future<void> deleteAllAssociatedData(String specimenUuid) {
+    return (delete(associatedData)
+          ..where((t) => t.specimenUuid.equals(specimenUuid)))
+        .go();
+  }
 }

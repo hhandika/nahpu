@@ -124,6 +124,14 @@ class TaxonRegistryForm extends ConsumerStatefulWidget {
 }
 
 class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
+  bool _isShowMore = false;
+
+  @override
+  void dispose() {
+    widget.ctr.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScrollableConstrainedLayout(
@@ -228,30 +236,104 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
               }
             },
           ),
-          TextField(
-            controller: widget.ctr.commonNameCtr,
-            decoration: const InputDecoration(
+          Visibility(
+            visible: _isShowMore || widget.ctr.authorCtr.text.isNotEmpty,
+            child: CommonTextField(
+              controller: widget.ctr.authorCtr,
+              labelText: 'Authors',
+              hintText: 'Enter authors',
+              isLastField: false,
+            ),
+          ),
+          Visibility(
+            visible: _isShowMore || widget.ctr.commonNameCtr.text.isNotEmpty,
+            child: CommonTextField(
+              controller: widget.ctr.commonNameCtr,
               labelText: 'Common name',
               hintText: 'Enter a common name',
+              isLastField: false,
+              onChanged: (String? value) {
+                if (value != null) {
+                  widget.ctr.commonNameCtr.value = TextEditingValue(
+                    text: value.toSentenceCase(),
+                    selection: widget.ctr.commonNameCtr.selection,
+                  );
+                }
+              },
             ),
-            onChanged: (String? value) {
-              if (value != null) {
-                widget.ctr.commonNameCtr.value = TextEditingValue(
-                  text: value.toSentenceCase(),
-                  selection: widget.ctr.commonNameCtr.selection,
-                );
-              }
-            },
           ),
-          TextField(
-            controller: widget.ctr.noteCtr,
-            decoration: const InputDecoration(
+          Visibility(
+            visible:
+                _isShowMore || widget.ctr.redListCategoryCtr.text.isNotEmpty,
+            child: CommonTextField(
+              controller: widget.ctr.redListCategoryCtr,
+              labelText: 'IUCN RedList Category',
+              hintText: 'e.g. Endangered, Vulnerable, etc.',
+              isLastField: false,
+              onChanged: (String? value) {
+                if (value != null) {
+                  widget.ctr.redListCategoryCtr.value = TextEditingValue(
+                    text: value.toSentenceCase(),
+                    selection: widget.ctr.redListCategoryCtr.selection,
+                  );
+                }
+              },
+            ),
+          ),
+          Visibility(
+            visible: _isShowMore || widget.ctr.citesCtr.text.isNotEmpty,
+            child: CommonTextField(
+              controller: widget.ctr.citesCtr,
+              labelText: 'CITES Status',
+              hintText: 'e.g. Appendix I, Appendix II, Non-CITES, etc.',
+              isLastField: false,
+              onChanged: (String? value) {
+                if (value != null) {
+                  widget.ctr.citesCtr.value = TextEditingValue(
+                    text: value.toSentenceCase(),
+                    selection: widget.ctr.citesCtr.selection,
+                  );
+                }
+              },
+            ),
+          ),
+          Visibility(
+            visible: _isShowMore || widget.ctr.countryStatusCtr.text.isNotEmpty,
+            child: CommonTextField(
+              controller: widget.ctr.countryStatusCtr,
+              labelText: 'Country conservation status',
+              hintText: 'e.g. Protected, common, etc.',
+              isLastField: false,
+            ),
+          ),
+          Visibility(
+            visible: _isShowMore || widget.ctr.sortingOrderCtr.text.isNotEmpty,
+            child: CommonNumField(
+              controller: widget.ctr.sortingOrderCtr,
+              labelText: 'Sorting order',
+              hintText: 'E.g., 1, 2, 3, etc.',
+              isLastField: false,
+            ),
+          ),
+          Visibility(
+            visible: _isShowMore || widget.ctr.noteCtr.text.isNotEmpty,
+            child: CommonTextField(
+              controller: widget.ctr.noteCtr,
               labelText: 'Notes',
               hintText: 'Enter notes',
+              maxLines: 3,
+              isLastField: false,
             ),
-            maxLines: 3,
           ),
-          const SizedBox(height: 20),
+          TextButton(
+            onPressed: () {
+              setState(() {
+                _isShowMore = !_isShowMore;
+              });
+            },
+            child: Text(_isShowMore ? 'Show less' : 'Show more'),
+          ),
+          const SizedBox(height: 16),
           FormButtonWithDelete(
             isEditing: widget.isEditing,
             onDeleted: () async {
@@ -262,12 +344,14 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
                   Navigator.of(context).pop();
                 }
               } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Cannot delete taxon.'
-                        ' It is in use in the specimen records.'),
-                  ),
-                );
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Cannot delete taxon.'
+                          ' It is in use in the specimen records.'),
+                    ),
+                  );
+                }
               }
             },
             onSubmitted: () async {
@@ -300,7 +384,12 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
       taxonFamily: db.Value(widget.ctr.taxonFamilyCtr.text),
       genus: db.Value(widget.ctr.genusCtr.text),
       specificEpithet: db.Value(widget.ctr.specificEpithetCtr.text),
+      authors: db.Value(widget.ctr.authorCtr.text),
       commonName: db.Value(widget.ctr.commonNameCtr.text),
+      redListCategory: db.Value(widget.ctr.redListCategoryCtr.text),
+      citesStatus: db.Value(widget.ctr.citesCtr.text),
+      countryStatus: db.Value(widget.ctr.countryStatusCtr.text),
+      sortingOrder: db.Value(int.tryParse(widget.ctr.sortingOrderCtr.text)),
       notes: db.Value(widget.ctr.noteCtr.text),
     );
   }

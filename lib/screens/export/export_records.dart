@@ -287,16 +287,14 @@ class ExportFormState extends ConsumerState<ExportForm> {
         _hasSaved = true;
       });
       _showSavedPath();
-    } on PathNotFoundException {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: PathNotFoundText(),
-      ));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: ErrorText(error: e.toString()),
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: ErrorText(error: e.toString()),
+          ),
+        );
+      }
     }
   }
 
@@ -318,12 +316,14 @@ class ExportFormState extends ConsumerState<ExportForm> {
     try {
       await FilePickerServices().shareFile(context, _savePath);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error: $e'),
-          duration: const Duration(seconds: 8),
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e'),
+            duration: const Duration(seconds: 8),
+          ),
+        );
+      }
     }
   }
 
@@ -355,11 +355,13 @@ class ExportFormState extends ConsumerState<ExportForm> {
         );
         break;
       default:
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: ErrorText(error: 'Error: record type not found'),
-          ),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: ErrorText(error: 'Error: record type not found'),
+            ),
+          );
+        }
     }
   }
 

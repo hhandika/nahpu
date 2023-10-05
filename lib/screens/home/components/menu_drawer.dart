@@ -62,8 +62,8 @@ class HomeMenuDrawer extends StatelessWidget {
           },
         ),
         const CommonLineDivider(),
-        const LearningResourceTile(),
-        const CommonLineDivider(),
+        // const LearningResourceTile(),
+        // const CommonLineDivider(),
         ListTile(
           leading: const Icon(Icons.info_rounded),
           title: const Text('About'),

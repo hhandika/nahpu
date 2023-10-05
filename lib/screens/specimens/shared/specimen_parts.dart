@@ -1,7 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:nahpu/providers/personnel.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/layout.dart';
+import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/services/types/specimens.dart';
@@ -9,7 +11,7 @@ import 'package:nahpu/providers/specimens.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';
-import 'package:nahpu/screens/shared/associated_data.dart';
+import 'package:nahpu/screens/specimens/shared/associated_data.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/specimen_services.dart';
@@ -67,14 +69,14 @@ class PartDataFormState extends ConsumerState<PartDataForm>
         ],
         children: [
           SpecimenPartFields(specimenUuid: widget.specimenUuid),
-          const AssociatedDataViewer(),
+          AssociatedDataViewer(specimenUuid: widget.specimenUuid),
         ],
       ),
     );
   }
 }
 
-class SpecimenPartFields extends ConsumerWidget {
+class SpecimenPartFields extends StatelessWidget {
   const SpecimenPartFields({
     super.key,
     required this.specimenUuid,
@@ -83,7 +85,7 @@ class SpecimenPartFields extends ConsumerWidget {
   final String specimenUuid;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -103,27 +105,6 @@ class SpecimenPartFields extends ConsumerWidget {
   }
 }
 
-class AddPartButton extends StatelessWidget {
-  const AddPartButton({super.key, required this.specimenUuid});
-
-  final String specimenUuid;
-
-  @override
-  Widget build(BuildContext context) {
-    return PrimaryButton(
-      onPressed: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => NewPart(specimenUuid: specimenUuid),
-          ),
-        );
-      },
-      label: 'Add specimen part',
-      icon: Icons.add,
-    );
-  }
-}
-
 class PartList extends ConsumerStatefulWidget {
   const PartList({
     super.key,
@@ -138,6 +119,12 @@ class PartList extends ConsumerStatefulWidget {
 
 class PartListState extends ConsumerState<PartList> {
   final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -163,6 +150,7 @@ class PartListState extends ConsumerState<PartList> {
                               partType: part.type,
                               partCount: part.count.toString(),
                               barcodeID: part.barcodeID ?? '',
+                              preparator: part.personnelId,
                             ),
                             subtitle: PartSubTitle(part: part),
                             trailing: IconButton(
@@ -195,6 +183,27 @@ class PartListState extends ConsumerState<PartList> {
   }
 }
 
+class AddPartButton extends StatelessWidget {
+  const AddPartButton({super.key, required this.specimenUuid});
+
+  final String specimenUuid;
+
+  @override
+  Widget build(BuildContext context) {
+    return PrimaryButton(
+      onPressed: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => NewPart(specimenUuid: specimenUuid),
+          ),
+        );
+      },
+      label: 'Add specimen part',
+      icon: Icons.add,
+    );
+  }
+}
+
 class EmptyPart extends StatelessWidget {
   const EmptyPart({super.key, required this.specimenUuid});
 
@@ -213,33 +222,73 @@ class EmptyPart extends StatelessWidget {
   }
 }
 
-class PartTitle extends StatelessWidget {
+class PartTitle extends ConsumerWidget {
   const PartTitle({
     super.key,
     required this.partType,
     required this.partCount,
     required this.barcodeID,
+    required this.preparator,
   });
 
   final String? partType;
   final String? partCount;
   final String barcodeID;
+  final String? preparator;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          '${partType ?? 'Unknown part'}'
-          '$listTileSeparator'
-          '${partCount ?? 'No count'}',
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
+        preparator != null
+            ? FutureBuilder(
+                future: _getPreparatorName(ref),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return TitlePartText(
+                      text: '$_partText'
+                          '$listTileSeparator'
+                          '${snapshot.data}',
+                    );
+                  } else {
+                    return TitlePartText(
+                      text: _partText,
+                    );
+                  }
+                })
+            : TitlePartText(text: _partText),
         barcodeID.isNotEmpty
             ? BarcodeText(barcodeID: barcodeID)
             : const SizedBox.shrink(),
       ],
+    );
+  }
+
+  String get _partText {
+    return '${partType ?? 'Unknown part'}'
+        '$listTileSeparator'
+        '${partCount ?? 'No count'}';
+  }
+
+  Future<String> _getPreparatorName(WidgetRef ref) async {
+    PersonnelData person =
+        await PersonnelServices(ref: ref).getPersonnelByUuid(preparator!);
+    return person.name ?? '';
+  }
+}
+
+class TitlePartText extends StatelessWidget {
+  const TitlePartText({super.key, required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: Theme.of(context).textTheme.titleMedium,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }
@@ -293,6 +342,7 @@ class PartSubTitle extends StatelessWidget {
       '${_getText(part.additionalTreatment)}'
       '${_getText(part.dateTaken)}'
       '${_getText(part.timeTaken)}'
+      '${_getPMI()}'
       '$remark',
       style: Theme.of(context).textTheme.bodyMedium,
       overflow: TextOverflow.ellipsis,
@@ -316,6 +366,16 @@ class PartSubTitle extends StatelessWidget {
       return 'None';
     } else {
       return '${part.treatment}';
+    }
+  }
+
+  String _getPMI() {
+    if (part.pmi == null) {
+      return '';
+    } else if (part.pmi!.isEmpty) {
+      return '';
+    } else {
+      return '${listTileSeparator}PMI ${part.pmi}';
     }
   }
 
@@ -420,6 +480,12 @@ class PartFormState extends ConsumerState<PartForm> {
   bool _showMore = false;
 
   @override
+  void dispose() {
+    widget.partCtr.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ScrollableConstrainedLayout(
       child: Column(
@@ -484,12 +550,14 @@ class PartFormState extends ConsumerState<PartForm> {
       specimenUuid: db.Value(widget.specimenUuid),
       tissueID: db.Value(widget.partCtr.tissueIdCtr.text),
       barcodeID: db.Value(widget.partCtr.barcodeIdCtr.text),
+      personnelId: db.Value(widget.partCtr.preparatorCtr),
       type: db.Value(widget.partCtr.typeCtr.text),
       count: db.Value(widget.partCtr.countCtr.text),
       treatment: db.Value(widget.partCtr.treatmentCtr.text),
       additionalTreatment: db.Value(widget.partCtr.additionalTreatmentCtr.text),
       dateTaken: db.Value(widget.partCtr.dateTakenCtr.text),
       timeTaken: db.Value(widget.partCtr.timeTakenCtr.text),
+      pmi: db.Value(widget.partCtr.pmiCtr.text),
       museumPermanent: db.Value(widget.partCtr.museumPermanentCtr.text),
       museumLoan: db.Value(widget.partCtr.museumLoanCtr.text),
       remark: db.Value(widget.partCtr.remarkCtr.text),
@@ -682,7 +750,7 @@ class AdditionalTreatmentField extends StatelessWidget {
   }
 }
 
-class AdditionalPartFields extends StatelessWidget {
+class AdditionalPartFields extends ConsumerWidget {
   const AdditionalPartFields({
     super.key,
     required this.visible,
@@ -693,45 +761,96 @@ class AdditionalPartFields extends StatelessWidget {
   final PartFormCtrModel partCtr;
 
   @override
-  Widget build(BuildContext context) {
-    return Visibility(
-      visible: visible,
-      child: Column(children: [
-        CommonDateField(
-          labelText: 'Date taken',
-          hintText: 'Enter date',
-          controller: partCtr.dateTakenCtr,
-          initialDate: DateTime.now(),
-          lastDate: DateTime.now(),
-          onTap: () {},
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Column(
+      children: [
+        Visibility(
+          visible: visible || partCtr.preparatorCtr != null,
+          child: DropdownButtonFormField<String>(
+            value: partCtr.preparatorCtr,
+            decoration: const InputDecoration(
+              labelText: 'Preparator',
+              hintText: 'If different from voucher preparator',
+            ),
+            items: ref.watch(projectPersonnelProvider).when(
+                  data: (data) => data
+                      .where((element) =>
+                          element.role == 'Cataloger' ||
+                          element.role == 'Preparator only')
+                      .map((e) => DropdownMenuItem(
+                            value: e.uuid,
+                            child: CommonDropdownText(text: e.name ?? ''),
+                          ))
+                      .toList(),
+                  loading: () => const [],
+                  error: (e, s) => const [],
+                ),
+            onChanged: (value) {
+              if (value != null) {
+                partCtr.preparatorCtr = value;
+              }
+            },
+          ),
         ),
-        CommonTimeField(
-          labelText: 'Time taken',
-          hintText: 'Enter time',
-          controller: partCtr.timeTakenCtr,
-          initialTime: TimeOfDay.now(),
-          onTap: () {},
+        Visibility(
+          visible: visible || partCtr.dateTakenCtr.text.isNotEmpty,
+          child: CommonDateField(
+            labelText: 'Date taken',
+            hintText: 'Enter date',
+            controller: partCtr.dateTakenCtr,
+            initialDate: DateTime.now(),
+            lastDate: DateTime.now(),
+            onTap: () {},
+          ),
         ),
-        CommonTextField(
-          controller: partCtr.museumPermanentCtr,
-          labelText: 'Museum permanent',
-          hintText: 'Enter a museum name or abbreviation',
-          isLastField: false,
+        Visibility(
+          visible: visible || partCtr.timeTakenCtr.text.isNotEmpty,
+          child: CommonTimeField(
+            labelText: 'Time taken',
+            hintText: 'Enter time',
+            controller: partCtr.timeTakenCtr,
+            initialTime: TimeOfDay.now(),
+            onTap: () {},
+          ),
         ),
-        CommonTextField(
-          controller: partCtr.museumLoanCtr,
-          labelText: 'Museum loan',
-          hintText: 'Enter a museum name or abbreviation',
-          isLastField: false,
+        Visibility(
+          visible: visible || partCtr.pmiCtr.text.isNotEmpty,
+          child: CommonTextField(
+            controller: partCtr.pmiCtr,
+            labelText: 'PMI',
+            hintText: 'e.g., 1:30, 1:40',
+            isLastField: false,
+          ),
         ),
-        CommonTextField(
-          controller: partCtr.remarkCtr,
-          maxLines: 3,
-          labelText: 'Remarks',
-          hintText: 'Enter a remark specific to this part',
-          isLastField: false,
-        )
-      ]),
+        Visibility(
+          visible: visible || partCtr.museumPermanentCtr.text.isNotEmpty,
+          child: CommonTextField(
+            controller: partCtr.museumPermanentCtr,
+            labelText: 'Museum permanent',
+            hintText: 'Enter a museum name or abbreviation',
+            isLastField: false,
+          ),
+        ),
+        Visibility(
+          visible: visible || partCtr.museumLoanCtr.text.isNotEmpty,
+          child: CommonTextField(
+            controller: partCtr.museumLoanCtr,
+            labelText: 'Museum loan',
+            hintText: 'Enter a museum name or abbreviation',
+            isLastField: false,
+          ),
+        ),
+        Visibility(
+          visible: visible || partCtr.remarkCtr.text.isNotEmpty,
+          child: CommonTextField(
+            controller: partCtr.remarkCtr,
+            maxLines: 3,
+            labelText: 'Remarks',
+            hintText: 'Enter a remark specific to this part',
+            isLastField: false,
+          ),
+        ),
+      ],
     );
   }
 }

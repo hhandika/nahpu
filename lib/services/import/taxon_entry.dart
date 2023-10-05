@@ -105,8 +105,23 @@ class TaxonParser {
         case TaxonEntryHeader.specificEpithet:
           taxonEntryCsv.specificEpithet = value.toLowerCase();
           break;
+        case TaxonEntryHeader.authors:
+          taxonEntryCsv.authors = value.toLowerCase();
+          break;
         case TaxonEntryHeader.commonName:
           taxonEntryCsv.commonName = value.toSentenceCase();
+          break;
+        case TaxonEntryHeader.redListCategory:
+          taxonEntryCsv.redListCategory = value.toSentenceCase();
+          break;
+        case TaxonEntryHeader.citesStatus:
+          taxonEntryCsv.citesStatus = value.toSentenceCase();
+          break;
+        case TaxonEntryHeader.countryStatus:
+          taxonEntryCsv.countryStatus = value.toSentenceCase();
+          break;
+        case TaxonEntryHeader.sortingOrder:
+          taxonEntryCsv.sortingOrder = int.tryParse(value);
           break;
         case TaxonEntryHeader.notes:
           taxonEntryCsv.notes = value;
@@ -127,7 +142,12 @@ class TaxonEntryData {
     required this.taxonFamily,
     required this.genus,
     required this.specificEpithet,
+    this.authors,
     this.commonName,
+    this.redListCategory,
+    this.citesStatus,
+    this.countryStatus,
+    this.sortingOrder,
     this.notes,
   });
 
@@ -136,7 +156,12 @@ class TaxonEntryData {
   String taxonFamily;
   String genus;
   String specificEpithet;
+  String? authors;
   String? commonName;
+  String? redListCategory;
+  String? citesStatus;
+  String? countryStatus;
+  int? sortingOrder;
   String? notes;
 
   factory TaxonEntryData.empty() {
@@ -146,7 +171,12 @@ class TaxonEntryData {
       taxonFamily: '',
       genus: '',
       specificEpithet: '',
+      authors: null,
       commonName: null,
+      redListCategory: null,
+      citesStatus: null,
+      countryStatus: null,
+      sortingOrder: null,
       notes: null,
     );
   }

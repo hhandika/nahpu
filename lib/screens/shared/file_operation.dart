@@ -203,7 +203,7 @@ class SelectFileField extends StatelessWidget {
                       text:
                           ' ${p.basename(filePath == null ? '' : filePath!.path)}',
                       style: Theme.of(context).textTheme.bodyMedium,
-                    )
+                    ),
                   ],
                 ),
               ),
