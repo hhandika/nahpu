@@ -68,6 +68,7 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
                   },
             icon: const Icon(Icons.search),
           ),
+          const NewSpecimens(),
           SpecimenMenu(
             specimenUuid: _specimenUuid,
             catalogFmt: _catalogFmt,
