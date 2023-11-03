@@ -2,8 +2,8 @@ name: NAHPU-Releases
 
 on:
   push:
-    branches:
-      - release
+    tags:
+      - v*
 
 jobs:
   windows:
