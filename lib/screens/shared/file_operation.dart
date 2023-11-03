@@ -5,8 +5,8 @@ import 'package:nahpu/services/types/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:path/path.dart' as p;
-import 'package:share_plus/share_plus.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:share_plus/share_plus.dart';
 
 class FileOperationPage extends StatelessWidget {
   const FileOperationPage({
@@ -117,7 +117,7 @@ class SelectDirField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Platform.isIOS
+    return Platform.isIOS || Platform.isAndroid
         ? const SizedBox.shrink()
         : Row(
             children: [
