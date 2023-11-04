@@ -13,6 +13,7 @@ import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/site_services.dart';
+import 'package:nahpu/services/utility_services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 enum CoordinatePopUpMenuItems { edit, copy, open }
@@ -269,7 +270,7 @@ class CoordinateSubtitle extends StatelessWidget {
     if (coordinate.elevationInMeter == null) {
       return '? m';
     } else {
-      return '${coordinate.elevationInMeter} m';
+      return '${coordinate.elevationInMeter?.truncateZero()} m';
     }
   }
 }
@@ -604,14 +605,14 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
     return CoordinateCompanion(
       nameId: db.Value(widget.coordCtr.nameIdCtr.text),
       decimalLatitude:
-          db.Value(double.tryParse(widget.coordCtr.latitudeCtr.text) ?? 0.0),
+          db.Value(double.tryParse(widget.coordCtr.latitudeCtr.text)),
       decimalLongitude:
-          db.Value(double.tryParse(widget.coordCtr.longitudeCtr.text) ?? 0.0),
+          db.Value(double.tryParse(widget.coordCtr.longitudeCtr.text)),
       elevationInMeter:
-          db.Value(double.tryParse(widget.coordCtr.elevationCtr.text) ?? 0),
+          db.Value(double.tryParse(widget.coordCtr.elevationCtr.text)),
       datum: db.Value(widget.coordCtr.datumCtr.text),
       uncertaintyInMeters:
-          db.Value(int.tryParse(widget.coordCtr.uncertaintyCtr.text) ?? 0),
+          db.Value(int.tryParse(widget.coordCtr.uncertaintyCtr.text)),
       gpsUnit: db.Value(widget.coordCtr.gpsUnitCtr.text),
       siteID: db.Value(widget.siteId),
       notes: db.Value(widget.coordCtr.noteCtr.text),
