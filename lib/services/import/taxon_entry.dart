@@ -126,7 +126,7 @@ class TaxonParser {
           taxonEntryCsv.countryStatus = value.toSentenceCase();
           break;
         case TaxonEntryHeader.sortingOrder:
-          taxonEntryCsv.sortingOrder = value.toString();
+          taxonEntryCsv.sortingOrder = value;
           break;
         case TaxonEntryHeader.notes:
           taxonEntryCsv.notes = value;
