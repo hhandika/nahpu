@@ -26,11 +26,12 @@ class CsvData {
     header = parsedCsv[0].cast<String>();
     _mapHeader();
     for (var row in parsedCsv.sublist(1)) {
-      List<String> rowList = [];
+      List<String> rowData = [];
       for (var value in row) {
-        rowList.add(value.toString());
+        // Cast all the values to string
+        rowData.add(value.toString());
       }
-      data.add(rowList);
+      data.add(rowData);
     }
   }
 
