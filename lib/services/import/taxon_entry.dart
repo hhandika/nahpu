@@ -25,7 +25,13 @@ class CsvData {
   void parseTaxonEntryFromList(List<List<dynamic>> parsedCsv) {
     header = parsedCsv[0].cast<String>();
     _mapHeader();
-    data = parsedCsv.sublist(1).map((e) => e.cast<String>()).toList();
+    for (var row in parsedCsv.sublist(1)) {
+      List<String> rowList = [];
+      for (var value in row) {
+        rowList.add(value.toString());
+      }
+      data.add(rowList);
+    }
   }
 
   void _mapHeader() {
@@ -85,7 +91,6 @@ class TaxonParser {
 
   TaxonEntryData _parseData(List<String> values) {
     TaxonEntryData taxonEntryCsv = TaxonEntryData.empty();
-
     for (String value in values) {
       int index = values.indexOf(value);
       TaxonEntryHeader header = headerMap[index] ?? TaxonEntryHeader.ignore;
@@ -121,10 +126,12 @@ class TaxonParser {
           taxonEntryCsv.countryStatus = value.toSentenceCase();
           break;
         case TaxonEntryHeader.sortingOrder:
-          taxonEntryCsv.sortingOrder = int.tryParse(value);
+          taxonEntryCsv.sortingOrder = value.toString();
           break;
         case TaxonEntryHeader.notes:
           taxonEntryCsv.notes = value;
+          break;
+        case TaxonEntryHeader.ignore:
           break;
         default:
           break;
@@ -161,7 +168,7 @@ class TaxonEntryData {
   String? redListCategory;
   String? citesStatus;
   String? countryStatus;
-  int? sortingOrder;
+  String? sortingOrder;
   String? notes;
 
   factory TaxonEntryData.empty() {

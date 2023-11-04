@@ -184,7 +184,6 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
           _hasData = false;
           _isRunning = false;
         });
-
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

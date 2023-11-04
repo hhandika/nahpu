@@ -51,39 +51,45 @@ class TaxonEntryReader extends DbAccess {
   }
 
   Future<ParsedCSVdata> parseData(CsvData data) async {
+    ParsedCSVdata importData = ParsedCSVdata.empty();
+    HashSet<String> importedFamilies = HashSet();
+    HashSet<String> importedSpecies = HashSet();
+
+    List<TaxonEntryData> parsedData = _parseData(data);
+
+    for (var data in parsedData) {
+      bool hasSpecies = await _checkSpeciesExist(data);
+      String species = '${data.genus} ${data.specificEpithet}';
+      if (hasSpecies) {
+        importData.skippedSpecies.add(species);
+        continue;
+      }
+      TaxonomyCompanion dbForm = _getDbForm(data);
+      TaxonomyServices(ref: ref).createTaxon(dbForm);
+      importData.recordCount++;
+
+      if (!importedFamilies.contains(data.taxonFamily)) {
+        importedFamilies.add(data.taxonFamily);
+      }
+
+      if (!importedSpecies.contains(species)) {
+        importedSpecies.add(species);
+      }
+    }
+    importData.countAll(importedSpecies, importedFamilies);
+    ref.invalidate(taxonRegistryProvider);
+    return importData;
+  }
+
+  List<TaxonEntryData> _parseData(CsvData data) {
     try {
       TaxonParser parser = TaxonParser(
         headerMap: data.headerMap,
         data: data.data,
       );
-      ParsedCSVdata importData = ParsedCSVdata.empty();
-      HashSet<String> importedFamilies = HashSet();
-      HashSet<String> importedSpecies = HashSet();
-      List<TaxonEntryData> parsedData = parser.parseData();
-      for (var data in parsedData) {
-        bool hasSpecies = await _checkSpeciesExist(data);
-        String species = '${data.genus} ${data.specificEpithet}';
-        if (hasSpecies) {
-          importData.skippedSpecies.add(species);
-          continue;
-        }
-        TaxonomyCompanion dbForm = _getDbForm(data);
-        TaxonomyServices(ref: ref).createTaxon(dbForm);
-        importData.recordCount++;
-
-        if (!importedFamilies.contains(data.taxonFamily)) {
-          importedFamilies.add(data.taxonFamily);
-        }
-
-        if (!importedSpecies.contains(species)) {
-          importedSpecies.add(species);
-        }
-      }
-      importData.countAll(importedSpecies, importedFamilies);
-      ref.invalidate(taxonRegistryProvider);
-      return importData;
+      return parser.parseData();
     } catch (e) {
-      throw Exception('Error parsing data: $e');
+      throw Exception("Error parsing data: $e");
     }
   }
 
@@ -106,7 +112,8 @@ class TaxonEntryReader extends DbAccess {
       countryStatus: db.Value(data.countryStatus == null
           ? null
           : data.countryStatus!.trim().toSentenceCase()),
-      sortingOrder: db.Value(data.sortingOrder),
+      sortingOrder: db.Value(
+          data.sortingOrder == null ? null : int.tryParse(data.sortingOrder!)),
       notes: db.Value(data.notes),
     );
   }
