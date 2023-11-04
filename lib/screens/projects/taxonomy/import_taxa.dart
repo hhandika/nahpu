@@ -124,9 +124,6 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
                       onPressed: _isInvalidInput()
                           ? null
                           : () async {
-                              setState(() {
-                                _isRunning = true;
-                              });
                               await _parseData();
                             },
                     ),
@@ -201,7 +198,13 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
 
   Future<void> _parseData() async {
     try {
+      setState(() {
+        _isRunning = true;
+      });
       ParsedCSVdata data = await TaxonEntryReader(ref: ref).parseData(_csvData);
+      setState(() {
+        _isRunning = false;
+      });
       if (mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
@@ -210,6 +213,9 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
         );
       }
     } catch (e) {
+      setState(() {
+        _isRunning = false;
+      });
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
