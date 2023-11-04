@@ -1,7 +1,6 @@
 import 'dart:collection';
 
 import 'package:nahpu/services/types/import.dart';
-import 'package:nahpu/services/utility_services.dart';
 
 class CsvData {
   CsvData({
@@ -97,37 +96,37 @@ class TaxonParser {
       TaxonEntryHeader header = headerMap[index] ?? TaxonEntryHeader.ignore;
       switch (header) {
         case TaxonEntryHeader.taxonClass:
-          taxonEntryCsv.taxonClass = value.toSentenceCase();
+          taxonEntryCsv.taxonClass = value;
           break;
         case TaxonEntryHeader.taxonOrder:
-          taxonEntryCsv.taxonOrder = value.toSentenceCase();
+          taxonEntryCsv.taxonOrder = value;
           break;
         case TaxonEntryHeader.taxonFamily:
-          taxonEntryCsv.taxonFamily = value.toSentenceCase();
+          taxonEntryCsv.taxonFamily = value;
           break;
         case TaxonEntryHeader.genus:
-          taxonEntryCsv.genus = value.toSentenceCase();
+          taxonEntryCsv.genus = value;
           break;
         case TaxonEntryHeader.specificEpithet:
-          taxonEntryCsv.specificEpithet = value.toLowerCase();
+          taxonEntryCsv.specificEpithet = value;
           break;
         case TaxonEntryHeader.authors:
-          taxonEntryCsv.authors = value.toLowerCase();
+          taxonEntryCsv.authors = value;
           break;
         case TaxonEntryHeader.commonName:
-          taxonEntryCsv.commonName = value.toSentenceCase();
+          taxonEntryCsv.commonName = value;
           break;
         case TaxonEntryHeader.redListCategory:
-          taxonEntryCsv.redListCategory = value.toSentenceCase();
+          taxonEntryCsv.redListCategory = value;
           break;
         case TaxonEntryHeader.citesStatus:
-          taxonEntryCsv.citesStatus = value.toSentenceCase();
+          taxonEntryCsv.citesStatus = value;
           break;
         case TaxonEntryHeader.countryStatus:
-          taxonEntryCsv.countryStatus = value.toSentenceCase();
+          taxonEntryCsv.countryStatus = value;
           break;
         case TaxonEntryHeader.sortingOrder:
-          taxonEntryCsv.sortingOrder = value;
+          taxonEntryCsv.sortingOrder = int.tryParse(value);
           break;
         case TaxonEntryHeader.notes:
           taxonEntryCsv.notes = value;
@@ -169,7 +168,7 @@ class TaxonEntryData {
   String? redListCategory;
   String? citesStatus;
   String? countryStatus;
-  String? sortingOrder;
+  int? sortingOrder;
   String? notes;
 
   factory TaxonEntryData.empty() {

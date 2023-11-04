@@ -49,7 +49,7 @@ bool isListContains(List<String> list, String value) {
 extension StringExtension on String {
   String toSentenceCase() {
     try {
-      return '${this[0].toUpperCase()}${substring(1)}';
+      return '${this[0].toUpperCase()}${substring(1).toLowerCase()}';
     } catch (e) {
       return '';
     }
