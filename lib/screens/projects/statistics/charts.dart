@@ -34,11 +34,11 @@ class BarChartViewer extends StatelessWidget {
             border: Border(
               bottom: BorderSide(
                 color: Theme.of(context).colorScheme.tertiary,
-                width: 3,
+                width: 2,
               ),
               left: BorderSide(
                 color: Theme.of(context).colorScheme.tertiary,
-                width: 3,
+                width: 2,
               ),
             ),
           ),
@@ -47,8 +47,12 @@ class BarChartViewer extends StatelessWidget {
             bottomTitles: AxisTitles(
               sideTitles: _getTitleData(),
             ),
-            leftTitles:
-                const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            leftTitles: const AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: true,
+                  reservedSize: 40,
+                ),
+                axisNameSize: 10),
             topTitles:
                 const AxisTitles(sideTitles: SideTitles(showTitles: false)),
             rightTitles:
