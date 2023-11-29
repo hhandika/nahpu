@@ -100,19 +100,11 @@ class TaxonEntryReader extends DbAccess {
       taxonFamily: db.Value(data.taxonFamily.trim().toSentenceCase()),
       genus: db.Value(data.genus.trim().toSentenceCase()),
       specificEpithet: db.Value(data.specificEpithet.trim().toLowerCase()),
-      authors: db.Value(data.authors != null ? data.authors!.trim() : null),
-      commonName: db.Value(data.commonName == null
-          ? null
-          : data.commonName!.trim().toLowerCase()),
-      citesStatus: db.Value(data.citesStatus == null
-          ? null
-          : data.citesStatus!.trim().toUpperCase()),
-      redListCategory: db.Value(data.redListCategory == null
-          ? null
-          : data.redListCategory!.trim().toUpperCase()),
-      countryStatus: db.Value(data.countryStatus == null
-          ? null
-          : data.countryStatus!.trim().toUpperCase()),
+      authors: db.Value(data.authors?.trim()),
+      commonName: db.Value(data.commonName?.trim().toLowerCase()),
+      citesStatus: db.Value(data.citesStatus?.trim().toUpperCase()),
+      redListCategory: db.Value(data.redListCategory?.trim().toUpperCase()),
+      countryStatus: db.Value(data.countryStatus?.trim().toUpperCase()),
       sortingOrder: db.Value(data.sortingOrder),
       notes: db.Value(data.notes),
     );
