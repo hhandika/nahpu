@@ -12,7 +12,6 @@ class NahpuTheme {
     return ThemeData(
       colorScheme: lightColorScheme ?? _defaultLightColorScheme,
       useMaterial3: true,
-      // useMaterial3: Platform.isIOS ? false : true,
       visualDensity: VisualDensity.adaptivePlatformDensity,
       appBarTheme: appBarLightTheme,
       cardTheme: cardTheme,
@@ -24,7 +23,6 @@ class NahpuTheme {
     return ThemeData(
       colorScheme: darkColorScheme ?? _defaultDarkColorScheme,
       useMaterial3: true,
-      // useMaterial3: Platform.isIOS ? false : true,
       visualDensity: VisualDensity.adaptivePlatformDensity,
       appBarTheme: appBarDarkTheme,
       cardTheme: cardTheme,
