@@ -158,6 +158,7 @@ class EventPersonnelFieldState extends ConsumerState<EventPersonnelField> {
         Expanded(
           child: DropdownButtonFormField<String>(
             value: widget.controller.nameIDCtr,
+            isExpanded: true,
             decoration: const InputDecoration(
               labelText: 'Personnel',
               hintText: 'Enter a name',
