@@ -94,11 +94,17 @@ class BarChartViewer extends StatelessWidget {
       showTitles: true,
       reservedSize: 36,
       getTitlesWidget: (value, meta) {
-        return Text(
-          value.toInt() % 5 == 0 ? value.toInt().toString() : '',
-        );
+        return Text(_getYAxisLabel(value));
       },
     );
+  }
+
+  String _getYAxisLabel(double value) {
+    if (value == 1 || value % 5 != 0) {
+      return '';
+    } else {
+      return value.truncateZero();
+    }
   }
 
   SideTitles _getXTitleData() {
