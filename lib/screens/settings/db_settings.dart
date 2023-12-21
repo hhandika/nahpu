@@ -88,6 +88,10 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
         }
         _isLoading = false;
       });
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 

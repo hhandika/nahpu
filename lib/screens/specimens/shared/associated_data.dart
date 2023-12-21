@@ -484,6 +484,10 @@ class AssociatedDataFormState extends ConsumerState<AssociatedDataForm> {
         _filePath = file;
         _isLoading = false;
       });
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 }

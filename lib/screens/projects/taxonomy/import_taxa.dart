@@ -180,6 +180,10 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
         _isLoading = false;
         _parseFile();
       });
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
