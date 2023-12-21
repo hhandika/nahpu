@@ -402,17 +402,19 @@ class CountBarChart extends ConsumerWidget {
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: SizedBox(
-                      width: getChartWidth(dataPoints.data.length),
-                      child: BarChartViewer(
-                        labels: dataPoints.labels,
-                        data: isFullScreen
-                            ? dataPoints.data
-                            : DataPoints(
-                                    data: dataPoints.data,
-                                    labels: dataPoints.labels)
-                                .getMaxCount(maxCount),
-                      ),
-                    ),
+                        width: getChartWidth(dataPoints.data.length),
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 16),
+                          child: BarChartViewer(
+                            labels: dataPoints.labels,
+                            data: isFullScreen
+                                ? dataPoints.data
+                                : DataPoints(
+                                        data: dataPoints.data,
+                                        labels: dataPoints.labels)
+                                    .getMaxCount(maxCount),
+                          ),
+                        )),
                   ),
                 ),
               ),

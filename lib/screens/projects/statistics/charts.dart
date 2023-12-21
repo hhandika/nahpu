@@ -45,14 +45,13 @@ class BarChartViewer extends StatelessWidget {
           gridData: const FlGridData(show: true),
           titlesData: FlTitlesData(
             bottomTitles: AxisTitles(
-              sideTitles: _getTitleData(),
+              sideTitles: _getXTitleData(),
+              axisNameSize: 12,
             ),
-            leftTitles: const AxisTitles(
-                sideTitles: SideTitles(
-                  showTitles: true,
-                  reservedSize: 40,
-                ),
-                axisNameSize: 10),
+            leftTitles: AxisTitles(
+              sideTitles: _getYTitleData(context),
+              axisNameSize: 10,
+            ),
             topTitles:
                 const AxisTitles(sideTitles: SideTitles(showTitles: false)),
             rightTitles:
@@ -92,7 +91,22 @@ class BarChartViewer extends StatelessWidget {
     );
   }
 
-  SideTitles _getTitleData() {
+  SideTitles _getYTitleData(BuildContext context) {
+    return SideTitles(
+      showTitles: true,
+      reservedSize: 40,
+      getTitlesWidget: (value, meta) {
+        return Text(
+          value.toInt() % 5 == 0 ? value.toInt().toString() : '',
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        );
+      },
+    );
+  }
+
+  SideTitles _getXTitleData() {
     return SideTitles(
       showTitles: true,
       getTitlesWidget: (value, meta) {
