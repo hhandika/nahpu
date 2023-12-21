@@ -158,12 +158,18 @@ class SelectFileField extends StatelessWidget {
     super.key,
     required this.filePath,
     required this.onPressed,
+    required this.onCleared,
+    required this.isLoading,
     required this.width,
     required this.maxWidth,
+    this.supportedFormat,
   });
 
   final XFile? filePath;
   final VoidCallback onPressed;
+  final VoidCallback onCleared;
+  final bool isLoading;
+  final String? supportedFormat;
   final double width;
   final double maxWidth;
 
@@ -171,45 +177,82 @@ class SelectFileField extends StatelessWidget {
   Widget build(BuildContext context) {
     return DottedBorder(
       borderType: BorderType.RRect,
-      radius: const Radius.circular(20),
+      radius: const Radius.circular(16),
       color: Theme.of(context).dividerColor,
       strokeWidth: 2,
       child: Container(
         width: width,
+        height: 160,
         constraints: BoxConstraints(
           maxWidth: maxWidth,
         ),
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            TertiaryButton(
-              onPressed: onPressed,
-              text: 'Select file',
-            ),
-            const Text(' ··· '),
-            const SizedBox(height: 10),
-            Visibility(
-              visible: filePath != null,
-              child: RichText(
-                text: TextSpan(
-                  children: [
-                    const WidgetSpan(
-                      child: Icon(Icons.file_present),
-                      alignment: PlaceholderAlignment.middle,
-                    ),
-                    TextSpan(
-                      text:
-                          ' ${p.basename(filePath == null ? '' : filePath!.path)}',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ],
-                ),
+        padding: const EdgeInsets.all(16),
+        child: filePath == null
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ProgressButton(
+                    icon: Icons.folder_open_outlined,
+                    label: 'Select file',
+                    isRunning: isLoading,
+                    onPressed: onPressed,
+                  ),
+                  supportedFormat != null
+                      ? const SizedBox(height: 8)
+                      : const SizedBox.shrink(),
+                  supportedFormat != null
+                      ? Text(
+                          'Supported formats: $supportedFormat',
+                          style: Theme.of(context).textTheme.bodySmall,
+                          overflow: TextOverflow.ellipsis,
+                        )
+                      : const SizedBox.shrink(),
+                ],
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.file_present,
+                    size: 56,
+                    color: Theme.of(context).colorScheme.tertiary,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withAlpha(120),
+                          ),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(16),
+                          ),
+                          color: Theme.of(context).colorScheme.surfaceVariant,
+                        ),
+                        child: Text(
+                          p.basename(filePath!.path),
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: onCleared,
+                        icon: const Icon(Icons.clear_rounded),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }

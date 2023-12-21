@@ -30,6 +30,7 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
   late CsvData _csvData;
   bool _hasData = false;
   bool _isRunning = false;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -65,6 +66,14 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
                 const SizedBox(height: 18),
                 SelectFileField(
                   filePath: _filePath,
+                  isLoading: _isLoading,
+                  onCleared: () {
+                    setState(() {
+                      _filePath = null;
+                      _hasData = false;
+                      _problems = [];
+                    });
+                  },
                   width: 500,
                   maxWidth: MediaQuery.of(context).size.width * 0.8,
                   onPressed: () {
@@ -161,10 +170,14 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
   }
 
   Future<void> _getFile() async {
+    setState(() {
+      _isLoading = true;
+    });
     XFile? file = await FilePickerServices().selectFile(taxonImportFmt);
     if (file != null) {
       setState(() {
         _filePath = file;
+        _isLoading = false;
         _parseFile();
       });
     }

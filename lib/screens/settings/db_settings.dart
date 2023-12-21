@@ -23,7 +23,7 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
   bool _isBackup = true;
   bool _hasSelected = false;
   bool _isArchived = false;
-  bool _isReplacing = false;
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +51,13 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
                     }
                   }
                 },
+                onCleared: () {
+                  setState(() {
+                    _dbPath = null;
+                    _hasSelected = false;
+                    _isArchived = false;
+                  });
+                },
                 isBackup: _isBackup,
                 onBackupChosen: (bool value) async {
                   _isBackup = value;
@@ -58,7 +65,7 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
                   setState(() {});
                 },
                 hasSelected: _hasSelected,
-                isReplacing: _isReplacing,
+                isLoading: _isLoading,
                 onReplaceDb: () => _replaceDb(),
               ),
             ],
@@ -67,6 +74,9 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
   }
 
   Future<void> _getDbPath() async {
+    setState(() {
+      _isLoading = true;
+    });
     final dbPath = await FilePickerServices().selectAnyFile();
     if (dbPath != null) {
       final ext = p.extension(dbPath.path);
@@ -76,6 +86,7 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
         if (ext == '.zip') {
           _isArchived = true;
         }
+        _isLoading = false;
       });
     }
   }
@@ -84,13 +95,13 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
     Navigator.of(context).pop();
     try {
       setState(() {
-        _isReplacing = true;
+        _isLoading = true;
       });
       File? backupPath = _isBackup ? await getDbBackUpPath() : null;
       await DbWriter(ref: ref)
           .replaceDb(File(_dbPath!.path), backupPath, _isArchived);
       setState(() {
-        _isReplacing = false;
+        _isLoading = false;
       });
       if (mounted) {
         Navigator.of(context).pushReplacement(
@@ -103,7 +114,7 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
       }
     } catch (e) {
       setState(() {
-        _isReplacing = false;
+        _isLoading = false;
       });
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -125,18 +136,20 @@ class DbFileInputField extends StatelessWidget {
     required this.dbPath,
     required this.isBackup,
     required this.onPressed,
+    required this.onCleared,
     required this.onBackupChosen,
     required this.hasSelected,
-    required this.isReplacing,
+    required this.isLoading,
     required this.onReplaceDb,
   });
 
   final XFile? dbPath;
   final bool isBackup;
   final VoidCallback onPressed;
+  final VoidCallback onCleared;
   final void Function(bool) onBackupChosen;
   final bool hasSelected;
-  final bool isReplacing;
+  final bool isLoading;
   final VoidCallback onReplaceDb;
 
   @override
@@ -144,16 +157,19 @@ class DbFileInputField extends StatelessWidget {
     return CommonSettingSection(
       title: 'Replace database',
       children: [
-        const SizedBox(height: 10),
+        const SizedBox(height: 16),
         Center(
           child: SelectFileField(
             filePath: dbPath,
             width: 460,
             onPressed: onPressed,
+            isLoading: isLoading,
+            onCleared: onCleared,
+            supportedFormat: '.sqlite3, .zip (nahpu archive)',
             maxWidth: 460,
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 4),
         ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 460),
           child: SwitchField(
@@ -165,9 +181,10 @@ class DbFileInputField extends StatelessWidget {
         const SizedBox(height: 16),
         DbReplaceButtons(
           hasSelected: hasSelected,
-          isRunning: isReplacing,
+          isRunning: isLoading,
           onPressed: onReplaceDb,
-        )
+        ),
+        const SizedBox(height: 16),
       ],
     );
   }

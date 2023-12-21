@@ -280,6 +280,7 @@ class AssociatedDataForm extends ConsumerStatefulWidget {
 class AssociatedDataFormState extends ConsumerState<AssociatedDataForm> {
   final List<String> dataOptions = ['Link', 'File'];
   XFile? _filePath;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -369,8 +370,14 @@ class AssociatedDataFormState extends ConsumerState<AssociatedDataForm> {
                     )
                   : SelectFileField(
                       filePath: _filePath,
+                      isLoading: _isLoading,
                       width: double.infinity,
                       maxWidth: double.infinity,
+                      onCleared: () {
+                        setState(() {
+                          _filePath = null;
+                        });
+                      },
                       onPressed: () {
                         _getFile();
                       },
@@ -468,10 +475,14 @@ class AssociatedDataFormState extends ConsumerState<AssociatedDataForm> {
   }
 
   Future<void> _getFile() async {
+    setState(() {
+      _isLoading = true;
+    });
     XFile? file = await FilePickerServices().selectAnyFile();
     if (file != null) {
       setState(() {
         _filePath = file;
+        _isLoading = false;
       });
     }
   }
