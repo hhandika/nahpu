@@ -169,7 +169,7 @@ class DbFileInputField extends StatelessWidget {
             onPressed: onPressed,
             isLoading: isLoading,
             onCleared: onCleared,
-            supportedFormat: '.sqlite3, .zip (nahpu archive)',
+            supportedFormat: '.sqlite3, nahpu archive (.zip)',
             maxWidth: 460,
           ),
         ),
