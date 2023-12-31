@@ -203,8 +203,9 @@ class SelectFileField extends StatelessWidget {
                       : const SizedBox.shrink(),
                   supportedFormat != null
                       ? Text(
-                          'Supported formats: $supportedFormat',
+                          'Supported formats:\n$supportedFormat',
                           style: Theme.of(context).textTheme.bodySmall,
+                          textAlign: TextAlign.center,
                           overflow: TextOverflow.ellipsis,
                         )
                       : const SizedBox.shrink(),
