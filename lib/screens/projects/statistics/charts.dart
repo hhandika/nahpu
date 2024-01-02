@@ -94,7 +94,13 @@ class BarChartViewer extends StatelessWidget {
       showTitles: true,
       reservedSize: 36,
       getTitlesWidget: (value, meta) {
-        return Text(_getYAxisLabel(value));
+        return Padding(
+          padding: const EdgeInsets.only(right: 4),
+          child: Text(
+            _getYAxisLabel(value),
+            textAlign: TextAlign.right,
+          ),
+        );
       },
     );
   }
