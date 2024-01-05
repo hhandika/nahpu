@@ -8,7 +8,7 @@ NAHPU is a project based cataloging app. The data is manage and organize based o
 
 ## Typical Workflow
 
-### 1. [Create a new project](/projects)
+### 1. Create a new project
 
 Use the `+` button in the bottom right corner of the home screen. Project name must be in the range of 3 to 25 characters.
 
@@ -18,15 +18,15 @@ Then, select the main catalog format. The app currently support mammal and bird 
 
 After you create a project, the app will automatically generate a project UUID. This is a unique identifier used throughout the database to distinguish records from different projects. We used [UUID version 4](https://en.wikipedia.org/wiki/Universally_unique_identifier). It almost impossible to collide while still protecting your privacy.
 
-### 2. In the project Dashboard, [add a new personnel](/personnel)
+### 2. In the project Dashboard, add a new personnel
 
 You need at least a person with specimen care role as a cataloger. You can add more people with different roles.
 
-[Cataloger](/personnel#cataloger) is the person that will be responsible for cataloging the specimen. In some institutions, this could be called a collector. In the app, we call collector as someone who collects the specimen, whether they are involved in cataloging the app or not. Their initial and field number will be used to generate the Field ID on the specimen catalog page. Their name will also appear whenever the field asks for a personnel name, such as collecting personnel and preparator. The app does not allow changing the cataloger role after it is created.
+[Cataloger](./usages/personnel#cataloger) is the person that will be responsible for cataloging the specimen. In some institutions, this could be called a collector. In the app, we call collector as someone who collects the specimen, whether they are involved in cataloging the app or not. Their initial and field number will be used to generate the Field ID on the specimen catalog page. Their name will also appear whenever the field asks for a personnel name, such as collecting personnel and preparator. The app does not allow changing the cataloger role after it is created.
 
-[Preparator only](/personnel#preparator-only) is a person that helps prepare the specimen, but does not involve in managing the data. Their names will not appear in the cataloger field in the specimen page, but will appear somewhere else, such as in the `Preparator` and `Collecting personnel` field in the specimen page.
+[Preparator only](./usages/personnel#preparator-only) is a person that helps prepare the specimen, but does not involve in managing the data. Their names will not appear in the cataloger field in the specimen page, but will appear somewhere else, such as in the `Preparator` and `Collecting personnel` field in the specimen page.
 
-For the other personnel that does not directly involve in the specimen care, select [None](/personnel#none) as their role. Their names will only appear in the `Collecting personnel` field.
+For the other personnel that does not directly involve in the specimen care, select [None](./usages/personnel#none) as their role. Their names will only appear in the `Collecting personnel` field.
 
 ### 3. Add a new taxon
 
@@ -47,7 +47,7 @@ Example taxon import table:
 
 To create a new site, use the `+` button in the top right corner of the site. Fill at least the `Site ID`. The app limit the site ID to 20 characters. You will refer to this ID throughout the record field whenever it asks for a site. Try to make it short but descriptive. We often label ID city, town, or village as it is. For example, the city of Bogor will be BOGOR. The trap line, on the other hand, often the ID will be with locality abbreviation and `L` to indicate a line. For example, line 1 in Mt. Gede-Pangrango will be `GP-L1`.
 
-#### 5. Add narrative
+### 5. Add narrative
 
 To create a narrative, use the `+` button in the top right corner of the narrative. Select the date and site ID. Then, write the narrative.
 
