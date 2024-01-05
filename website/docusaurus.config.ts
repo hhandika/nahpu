@@ -38,13 +38,13 @@ const config: Config = {
           sidebarPath: "./sidebars.ts",
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl: "https://github.com/hhandika/nahpu/website/",
+          editUrl: "https://github.com/hhandika/nahpu/tree/main/website",
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl: "https://github.com/hhandika/nahpu/website/",
+          editUrl: "https://github.com/hhandika/nahpu/tree/main/website",
         },
         theme: {
           customCss: "./src/css/custom.css",
