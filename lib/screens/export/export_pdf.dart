@@ -173,7 +173,7 @@ class ExportPdfFormState extends ConsumerState<ExportPdfForm> {
         _hasSaved = true;
       });
     } catch (e) {
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(e.toString()),
@@ -211,7 +211,7 @@ class ExportPdfFormState extends ConsumerState<ExportPdfForm> {
     try {
       await FilePickerServices().shareFile(context, _savePath);
     } catch (e) {
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(e.toString()),

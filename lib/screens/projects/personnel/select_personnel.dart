@@ -204,7 +204,7 @@ class AddPersonnelSelectionState extends ConsumerState<AddPersonnelSelection> {
                           );
                         }
                       } catch (e) {
-                        if (mounted) {
+                        if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(e.toString()),

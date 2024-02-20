@@ -51,7 +51,7 @@ class SpecimenMediaFormState extends ConsumerState<SpecimenMediaForm> {
                     setState(() {});
                   }
                 } catch (e) {
-                  if (mounted) {
+                  if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
@@ -77,7 +77,7 @@ class SpecimenMediaFormState extends ConsumerState<SpecimenMediaForm> {
                     setState(() {});
                   }
                 } catch (e) {
-                  if (mounted) {
+                  if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(

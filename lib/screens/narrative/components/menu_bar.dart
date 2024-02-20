@@ -37,7 +37,7 @@ class NewNarrativeTextButtonState
         try {
           await createNewNarrative(context, ref);
         } catch (e) {
-          if (mounted) {
+          if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(e.toString()),
@@ -112,13 +112,13 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
           try {
             await NarrativeServices(ref: ref)
                 .deleteNarrative(widget.narrativeId!);
-            if (mounted) {
+            if (context.mounted) {
               Navigator.of(context).pop();
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (_) => const NarrativeViewer()));
             }
           } catch (e) {
-            if (mounted) {
+            if (context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
@@ -143,11 +143,11 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
         final projectUuid = ref.read(projectUuidProvider);
         try {
           await NarrativeServices(ref: ref).deleteAllNarrative(projectUuid);
-          if (mounted) {
+          if (context.mounted) {
             Navigator.of(context).pop();
           }
         } catch (e) {
-          if (mounted) {
+          if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                   content: Text(

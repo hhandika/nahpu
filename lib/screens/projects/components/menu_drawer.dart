@@ -141,14 +141,14 @@ class ProjectMenuDrawerState extends ConsumerState<ProjectMenuDrawer> {
                 onDelete: () async {
                   try {
                     await ProjectServices(ref: ref).deleteProject(projectUuid);
-                    if (mounted) {
+                    if (context.mounted) {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => const Home()),
                       );
                     }
                   } catch (e) {
-                    if (mounted) {
+                    if (context.mounted) {
                       Navigator.pop(context);
                       showDialog(
                           context: context,

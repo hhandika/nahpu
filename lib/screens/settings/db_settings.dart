@@ -40,7 +40,7 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
                   try {
                     await _getDbPath();
                   } catch (e) {
-                    if (mounted) {
+                    if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
@@ -107,7 +107,7 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
       setState(() {
         _isLoading = false;
       });
-      if (mounted) {
+      if (context.mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => DBReplacedPage(
@@ -120,7 +120,7 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
       setState(() {
         _isLoading = false;
       });
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(

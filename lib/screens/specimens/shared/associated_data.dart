@@ -389,16 +389,16 @@ class AssociatedDataFormState extends ConsumerState<AssociatedDataForm> {
               if (widget.associatedDataId != null) {
                 await AssociatedDataServices(ref: ref)
                     .deleteAssociatedData(widget.associatedDataId!);
-                if (mounted) Navigator.pop(context);
+                if (context.mounted) Navigator.pop(context);
               }
             },
             onSubmitted: () async {
               if (widget.isEditing) {
                 try {
                   await _updateData();
-                  if (mounted) Navigator.pop(context);
+                  if (context.mounted) Navigator.pop(context);
                 } catch (e) {
-                  if (mounted) {
+                  if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('Error: $e'),
@@ -409,9 +409,9 @@ class AssociatedDataFormState extends ConsumerState<AssociatedDataForm> {
               } else {
                 try {
                   await _createData();
-                  if (mounted) Navigator.pop(context);
+                  if (context.mounted) Navigator.pop(context);
                 } catch (e) {
-                  if (mounted) {
+                  if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('Error: $e'),
@@ -440,7 +440,7 @@ class AssociatedDataFormState extends ConsumerState<AssociatedDataForm> {
       if (_filePath != null) {
         final path =
             await service.copyAssociatedDataFile(File(_filePath!.path));
-        if (mounted) {
+        if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('File copied to $path'),
@@ -449,7 +449,7 @@ class AssociatedDataFormState extends ConsumerState<AssociatedDataForm> {
         }
       }
     } catch (e) {
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error: $e'),

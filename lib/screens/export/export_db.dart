@@ -161,7 +161,7 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
         _savePath = currentSavePath;
         _isRunning = false;
       });
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('File saved as $_savePath'),
@@ -169,7 +169,7 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
         );
       }
     } catch (e) {
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: ErrorText(error: e.toString()),
@@ -183,7 +183,7 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
     try {
       await FilePickerServices().shareFile(context, _savePath);
     } catch (e) {
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: ErrorText(error: e.toString()),

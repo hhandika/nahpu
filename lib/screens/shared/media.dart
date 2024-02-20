@@ -340,7 +340,7 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
                         PrimaryButton(
                           onPressed: () async {
                             await _renameMedia(fileNameCtr);
-                            if (mounted) {
+                            if (context.mounted) {
                               Navigator.of(context).pop();
                             }
                           },
@@ -383,7 +383,7 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
         matchMediaCategoryString(widget.ctr.categoryCtr.text),
       );
     } catch (e) {
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: e.toString().contains('File exists')

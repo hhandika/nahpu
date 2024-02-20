@@ -103,7 +103,7 @@ class AddCoordinateButtonState extends ConsumerState<AddCoordinateButton> {
   Future<void> _addCoordinate(Position position) async {
     final locator = GeoLocationServices();
     final coordinateCtr = locator.getControllerModel(position);
-    if (mounted) {
+    if (context.mounted) {
       _navigateToAddCoordinate(coordinateCtr);
     }
   }
@@ -590,7 +590,7 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
           ),
         ],
       );
-      if (mounted) {
+      if (context.mounted) {
         showDialog(
           context: context,
           builder: (BuildContext context) {

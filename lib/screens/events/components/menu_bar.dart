@@ -36,7 +36,7 @@ class NewCollEventTextButtonState
         try {
           await createNewCollEvents(context, ref);
         } catch (e) {
-          if (mounted) {
+          if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(e.toString()),
@@ -115,7 +115,7 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
           try {
             await CollEventServices(ref: ref)
                 .deleteCollEvent(widget.collEventId!);
-            if (mounted) {
+            if (context.mounted) {
               Navigator.of(context).pop();
               // We need to trigger a rebuild of the CollEventViewer
               // to update page numbers and the CollEventViewer
@@ -136,7 +136,7 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
   Future<void> _duplicateEvent() async {
     try {
       await EventDuplicateService(ref: ref).duplicate(widget.collEventId!);
-      if (mounted) {
+      if (context.mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (_) => const CollEventViewer(),
@@ -162,7 +162,7 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
           final service = CollEventServices(ref: ref);
           await service.deleteAllCollEvents(projectUuid);
 
-          if (mounted) {
+          if (context.mounted) {
             Navigator.of(context).pop();
           }
         } catch (e) {

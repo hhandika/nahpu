@@ -27,7 +27,7 @@ class NewSiteTextButtonState extends ConsumerState<NewSiteTextButton> {
         try {
           await createNewSite(context, ref);
         } catch (e) {
-          if (mounted) {
+          if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(e.toString()),
@@ -57,7 +57,7 @@ class NewSiteState extends ConsumerState<NewSite> {
         try {
           await createNewSite(context, ref);
         } catch (e) {
-          if (mounted) {
+          if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(e.toString()),
@@ -122,7 +122,7 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
   Future<void> _duplicateSite() async {
     try {
       await SiteServices(ref: ref).duplicateSite(widget.siteId!);
-      if (mounted) {
+      if (context.mounted) {
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (_) => const SiteViewer()));
       }
@@ -142,7 +142,7 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
               await SiteServices(ref: ref).deleteSite(widget.siteId!);
 
               // Trigger page changes to update the view.
-              if (mounted) {
+              if (context.mounted) {
                 Navigator.of(context).pop();
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (_) => const SiteViewer()));
@@ -162,7 +162,7 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
         onDelete: () async {
           try {
             await SiteServices(ref: ref).deleteAllSites();
-            if (mounted) {
+            if (context.mounted) {
               Navigator.of(context).pop();
             }
           } catch (e) {

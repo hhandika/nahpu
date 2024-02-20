@@ -170,7 +170,7 @@ class ReportFormState extends ConsumerState<ReportForm> {
         _hasSaved = true;
       });
     } catch (e) {
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: ErrorText(error: e.toString()),
@@ -184,7 +184,7 @@ class ReportFormState extends ConsumerState<ReportForm> {
     try {
       await FilePickerServices().shareFile(context, _savePath);
     } catch (e) {
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             duration: const Duration(seconds: 5),

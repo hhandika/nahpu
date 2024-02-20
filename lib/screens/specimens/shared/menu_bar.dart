@@ -31,7 +31,7 @@ class NewSpecimensTextButtonState
         try {
           await createNewSpecimens(context, ref);
         } catch (e) {
-          if (mounted) {
+          if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(e.toString()),
@@ -61,7 +61,7 @@ class NewSpecimensState extends ConsumerState<NewSpecimens> {
         try {
           await createNewSpecimens(context, ref);
         } catch (e) {
-          if (mounted) {
+          if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(e.toString()),
@@ -135,7 +135,7 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
         );
       }
     } catch (e) {
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(e.toString()),
@@ -166,7 +166,7 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
               );
             }
           } catch (e) {
-            if (mounted) {
+            if (context.mounted) {
               Navigator.of(context).pop();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -195,7 +195,7 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
               Navigator.of(context).pop();
             }
           } catch (e) {
-            if (mounted) {
+            if (context.mounted) {
               Navigator.of(context).pop();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(

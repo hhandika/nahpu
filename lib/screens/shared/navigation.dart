@@ -246,7 +246,7 @@ class _PageViewerState extends State<PageViewer> {
   void initState() {
     super.initState();
     Future<void>.delayed(const Duration(seconds: 4), () {
-      if (mounted) {
+      if (context.mounted) {
         setState(() {
           _visible = false;
         });

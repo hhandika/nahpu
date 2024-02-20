@@ -288,7 +288,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
       });
       _showSavedPath();
     } catch (e) {
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: ErrorText(error: e.toString()),
@@ -316,7 +316,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
     try {
       await FilePickerServices().shareFile(context, _savePath);
     } catch (e) {
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error: $e'),
@@ -355,7 +355,7 @@ class ExportFormState extends ConsumerState<ExportForm> {
         );
         break;
       default:
-        if (mounted) {
+        if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: ErrorText(error: 'Error: record type not found'),

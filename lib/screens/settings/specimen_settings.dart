@@ -47,7 +47,7 @@ class SpecimenSelectionState extends ConsumerState<SpecimenSelection> {
                           _isAlwaysShownCollectorField = value;
                         });
                       } catch (e) {
-                        if (mounted) {
+                        if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(e.toString()),

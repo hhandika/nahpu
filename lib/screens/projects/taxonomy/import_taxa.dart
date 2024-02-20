@@ -201,7 +201,7 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
           _hasData = false;
           _isRunning = false;
         });
-        if (mounted) {
+        if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(e.toString()),
@@ -221,7 +221,7 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
       setState(() {
         _isRunning = false;
       });
-      if (mounted) {
+      if (context.mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => ImportRecords(importData: data),
@@ -232,7 +232,7 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
       setState(() {
         _isRunning = false;
       });
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(e.toString()),

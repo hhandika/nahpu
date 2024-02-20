@@ -230,7 +230,7 @@ class RecordedTaxaViewState extends ConsumerState<RecordedTaxaView> {
                   onPressed: () async {
                     final data =
                         await SpecimenServices(ref: ref).getAllSpecimens();
-                    if (mounted) {
+                    if (context.mounted) {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => SpecimenListPage(

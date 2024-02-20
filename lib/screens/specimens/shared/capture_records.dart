@@ -199,7 +199,7 @@ class EventIdFieldState extends ConsumerState<EventIdField> {
                           TextButton(
                               onPressed: () async {
                                 await _updateSite(newValue);
-                                if (mounted) {
+                                if (context.mounted) {
                                   Navigator.pop(context);
                                 }
                               },
@@ -254,7 +254,7 @@ class EventIdFieldState extends ConsumerState<EventIdField> {
                           TextButton(
                               onPressed: () async {
                                 await _updateSpecimen(newValue);
-                                if (mounted) {
+                                if (context.mounted) {
                                   Navigator.pop(context);
                                 }
                               },
@@ -303,7 +303,7 @@ class EventIdFieldState extends ConsumerState<EventIdField> {
         ),
       );
     } catch (e) {
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(e.toString()),
