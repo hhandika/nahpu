@@ -130,19 +130,27 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
       await SpecimenServices(ref: ref)
           .createSpecimenDuplicatePart(widget.specimenUuid!);
       if (context.mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const SpecimenViewer()),
-        );
+        _navigateToSpecimenViewer();
       }
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(e.toString()),
-          ),
-        );
+        _showError('Error duplicating part: $e');
       }
     }
+  }
+
+  void _navigateToSpecimenViewer() {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (_) => const SpecimenViewer()),
+    );
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
   }
 
   void _deleteSpecimen() {
@@ -160,26 +168,21 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
               widget.catalogFmt!,
             );
             if (context.mounted) {
-              Navigator.of(context).pop();
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (_) => const SpecimenViewer()),
-              );
+              _pop();
+              _navigateToSpecimenViewer();
             }
           } catch (e) {
             if (context.mounted) {
-              Navigator.of(context).pop();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                    content: Text(
-                  'Error deleting specimen: $e',
-                  textAlign: TextAlign.center,
-                )),
-              );
+              _showError('Error deleting specimen: $e');
             }
           }
         }
       },
     );
+  }
+
+  void _pop() {
+    Navigator.pop(context);
   }
 
   void _deleteAllSpecimens() {
@@ -192,18 +195,12 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
           try {
             await SpecimenServices(ref: ref).deleteAllSpecimens();
             if (context.mounted) {
-              Navigator.of(context).pop();
+              _pop();
             }
           } catch (e) {
             if (context.mounted) {
-              Navigator.of(context).pop();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                    content: Text(
-                  'Error deleting all specimens: $e',
-                  textAlign: TextAlign.center,
-                )),
-              );
+              _pop();
+              _showError('Error deleting all specimens: $e');
             }
           }
         });

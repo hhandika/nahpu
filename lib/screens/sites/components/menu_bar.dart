@@ -123,12 +123,16 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
     try {
       await SiteServices(ref: ref).duplicateSite(widget.siteId!);
       if (context.mounted) {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => const SiteViewer()));
+        _navigateToSiteViewer();
       }
     } catch (e) {
       _showError(e.toString());
     }
+  }
+
+  void _navigateToSiteViewer() {
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (_) => const SiteViewer()));
   }
 
   Future<void> _deleteSite() async {
@@ -143,15 +147,19 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
 
               // Trigger page changes to update the view.
               if (context.mounted) {
-                Navigator.of(context).pop();
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (_) => const SiteViewer()));
+                _navigateToSiteForm();
               }
             } catch (e) {
               _showError(e.toString());
             }
           }
         });
+  }
+
+  void _navigateToSiteForm() {
+    Navigator.pop(context);
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (_) => const SiteViewer()));
   }
 
   void _deleteAllSites() {
@@ -163,12 +171,16 @@ class SiteMenuState extends ConsumerState<SiteMenu> {
           try {
             await SiteServices(ref: ref).deleteAllSites();
             if (context.mounted) {
-              Navigator.of(context).pop();
+              _popMenu();
             }
           } catch (e) {
             _showError(e.toString());
           }
         });
+  }
+
+  void _popMenu() {
+    Navigator.pop(context);
   }
 
   void _showError(String errors) {

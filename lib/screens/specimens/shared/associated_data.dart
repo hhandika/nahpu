@@ -441,22 +441,30 @@ class AssociatedDataFormState extends ConsumerState<AssociatedDataForm> {
         final path =
             await service.copyAssociatedDataFile(File(_filePath!.path));
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('File copied to $path'),
-            ),
-          );
+          _showPath(path);
         }
       }
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: $e'),
-          ),
-        );
+        _showError(e.toString());
       }
     }
+  }
+
+  void _showPath(File path) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('File copied to $path'),
+      ),
+    );
+  }
+
+  void _showError(String error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Error: $error'),
+      ),
+    );
   }
 
   AssociatedDataCompanion _getForm() {
