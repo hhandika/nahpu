@@ -11,7 +11,7 @@ import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/platform_services.dart';
 
 class BundleProjectForm extends ConsumerStatefulWidget {
-  const BundleProjectForm({Key? key}) : super(key: key);
+  const BundleProjectForm({super.key});
 
   @override
   BundleProjectFormState createState() => BundleProjectFormState();
@@ -88,15 +88,7 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
                               try {
                                 await _bundleProject();
                               } catch (e) {
-                                if (mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        e.toString(),
-                                      ),
-                                    ),
-                                  );
-                                }
+                                _showError(e.toString());
                               }
                               _finishProcessing();
                             },
@@ -106,7 +98,7 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
                   : Builder(builder: (context) {
                       return ShareButton(
                         onPressed: () async {
-                          await _shareFile(context);
+                          await _shareFile();
                         },
                       );
                     })
@@ -131,7 +123,8 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
     await archiveServices.createArchive();
   }
 
-  Future<void> _shareFile(BuildContext context) async {
+  // TODO: Fix builder errors.
+  Future<void> _shareFile() async {
     try {
       await FilePickerServices().shareFile(context, _savePath);
     } catch (e) {
@@ -171,5 +164,18 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
         _isRunning = false;
       });
     }
+  }
+
+  void _showError(String errors) {
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          errors.contains('SqliteException(787)')
+              ? 'Failed to delete the events.'
+              : errors,
+        ),
+      ),
+    );
   }
 }

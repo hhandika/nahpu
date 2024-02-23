@@ -29,14 +29,12 @@ class _SystemHash {
   }
 }
 
-typedef SiteMediaRef = AutoDisposeFutureProviderRef<List<dynamic>>;
-
 /// See also [siteMedia].
 @ProviderFor(siteMedia)
 const siteMediaProvider = SiteMediaFamily();
 
 /// See also [siteMedia].
-class SiteMediaFamily extends Family<AsyncValue<List<dynamic>>> {
+class SiteMediaFamily extends Family<AsyncValue<List<MediaData>>> {
   /// See also [siteMedia].
   const SiteMediaFamily();
 
@@ -74,13 +72,13 @@ class SiteMediaFamily extends Family<AsyncValue<List<dynamic>>> {
 }
 
 /// See also [siteMedia].
-class SiteMediaProvider extends AutoDisposeFutureProvider<List<dynamic>> {
+class SiteMediaProvider extends AutoDisposeFutureProvider<List<MediaData>> {
   /// See also [siteMedia].
   SiteMediaProvider({
-    required this.siteId,
-  }) : super.internal(
+    required int siteId,
+  }) : this._internal(
           (ref) => siteMedia(
-            ref,
+            ref as SiteMediaRef,
             siteId: siteId,
           ),
           from: siteMediaProvider,
@@ -91,9 +89,43 @@ class SiteMediaProvider extends AutoDisposeFutureProvider<List<dynamic>> {
                   : _$siteMediaHash,
           dependencies: SiteMediaFamily._dependencies,
           allTransitiveDependencies: SiteMediaFamily._allTransitiveDependencies,
+          siteId: siteId,
         );
 
+  SiteMediaProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.siteId,
+  }) : super.internal();
+
   final int siteId;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<MediaData>> Function(SiteMediaRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: SiteMediaProvider._internal(
+        (ref) => create(ref as SiteMediaRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        siteId: siteId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<MediaData>> createElement() {
+    return _SiteMediaProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -107,6 +139,20 @@ class SiteMediaProvider extends AutoDisposeFutureProvider<List<dynamic>> {
 
     return _SystemHash.finish(hash);
   }
+}
+
+mixin SiteMediaRef on AutoDisposeFutureProviderRef<List<MediaData>> {
+  /// The parameter `siteId` of this provider.
+  int get siteId;
+}
+
+class _SiteMediaProviderElement
+    extends AutoDisposeFutureProviderElement<List<MediaData>>
+    with SiteMediaRef {
+  _SiteMediaProviderElement(super.provider);
+
+  @override
+  int get siteId => (origin as SiteMediaProvider).siteId;
 }
 
 String _$siteInEventHash() => r'e5a9719e1879bfeb98ed5ae4064fd3c55312ae69';
@@ -139,4 +185,4 @@ final siteEntryProvider =
 
 typedef _$SiteEntry = AutoDisposeAsyncNotifier<List<SiteData>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -7,7 +7,7 @@ part 'project_queries.g.dart';
   include: {'tables.drift'},
 )
 class ProjectQuery extends DatabaseAccessor<Database> with _$ProjectQueryMixin {
-  ProjectQuery(Database db) : super(db);
+  ProjectQuery(super.db);
 
   Future<void> createProject(ProjectCompanion form) =>
       into(project).insert(form);

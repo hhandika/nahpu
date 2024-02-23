@@ -29,9 +29,6 @@ class _SystemHash {
   }
 }
 
-typedef AssociatedDataRef
-    = AutoDisposeFutureProviderRef<List<AssociatedDataData>>;
-
 /// See also [associatedData].
 @ProviderFor(associatedData)
 const associatedDataProvider = AssociatedDataFamily();
@@ -80,10 +77,10 @@ class AssociatedDataProvider
     extends AutoDisposeFutureProvider<List<AssociatedDataData>> {
   /// See also [associatedData].
   AssociatedDataProvider({
-    required this.specimenUuid,
-  }) : super.internal(
+    required String specimenUuid,
+  }) : this._internal(
           (ref) => associatedData(
-            ref,
+            ref as AssociatedDataRef,
             specimenUuid: specimenUuid,
           ),
           from: associatedDataProvider,
@@ -95,9 +92,44 @@ class AssociatedDataProvider
           dependencies: AssociatedDataFamily._dependencies,
           allTransitiveDependencies:
               AssociatedDataFamily._allTransitiveDependencies,
+          specimenUuid: specimenUuid,
         );
 
+  AssociatedDataProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.specimenUuid,
+  }) : super.internal();
+
   final String specimenUuid;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<AssociatedDataData>> Function(AssociatedDataRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: AssociatedDataProvider._internal(
+        (ref) => create(ref as AssociatedDataRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        specimenUuid: specimenUuid,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<AssociatedDataData>> createElement() {
+    return _AssociatedDataProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -114,8 +146,22 @@ class AssociatedDataProvider
   }
 }
 
+mixin AssociatedDataRef
+    on AutoDisposeFutureProviderRef<List<AssociatedDataData>> {
+  /// The parameter `specimenUuid` of this provider.
+  String get specimenUuid;
+}
+
+class _AssociatedDataProviderElement
+    extends AutoDisposeFutureProviderElement<List<AssociatedDataData>>
+    with AssociatedDataRef {
+  _AssociatedDataProviderElement(super.provider);
+
+  @override
+  String get specimenUuid => (origin as AssociatedDataProvider).specimenUuid;
+}
+
 String _$specimenMediaHash() => r'7134f2bc7aa8ba9911a75aa6724e353f35e050f1';
-typedef SpecimenMediaRef = AutoDisposeFutureProviderRef<List<MediaData>>;
 
 /// See also [specimenMedia].
 @ProviderFor(specimenMedia)
@@ -163,10 +209,10 @@ class SpecimenMediaFamily extends Family<AsyncValue<List<MediaData>>> {
 class SpecimenMediaProvider extends AutoDisposeFutureProvider<List<MediaData>> {
   /// See also [specimenMedia].
   SpecimenMediaProvider({
-    required this.specimenUuid,
-  }) : super.internal(
+    required String specimenUuid,
+  }) : this._internal(
           (ref) => specimenMedia(
-            ref,
+            ref as SpecimenMediaRef,
             specimenUuid: specimenUuid,
           ),
           from: specimenMediaProvider,
@@ -178,9 +224,43 @@ class SpecimenMediaProvider extends AutoDisposeFutureProvider<List<MediaData>> {
           dependencies: SpecimenMediaFamily._dependencies,
           allTransitiveDependencies:
               SpecimenMediaFamily._allTransitiveDependencies,
+          specimenUuid: specimenUuid,
         );
 
+  SpecimenMediaProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.specimenUuid,
+  }) : super.internal();
+
   final String specimenUuid;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<MediaData>> Function(SpecimenMediaRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: SpecimenMediaProvider._internal(
+        (ref) => create(ref as SpecimenMediaRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        specimenUuid: specimenUuid,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<MediaData>> createElement() {
+    return _SpecimenMediaProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -194,6 +274,20 @@ class SpecimenMediaProvider extends AutoDisposeFutureProvider<List<MediaData>> {
 
     return _SystemHash.finish(hash);
   }
+}
+
+mixin SpecimenMediaRef on AutoDisposeFutureProviderRef<List<MediaData>> {
+  /// The parameter `specimenUuid` of this provider.
+  String get specimenUuid;
+}
+
+class _SpecimenMediaProviderElement
+    extends AutoDisposeFutureProviderElement<List<MediaData>>
+    with SpecimenMediaRef {
+  _SpecimenMediaProviderElement(super.provider);
+
+  @override
+  String get specimenUuid => (origin as SpecimenMediaProvider).specimenUuid;
 }
 
 String _$catalogFmtNotifierHash() =>
@@ -213,7 +307,7 @@ final catalogFmtNotifierProvider =
 );
 
 typedef _$CatalogFmtNotifier = AutoDisposeAsyncNotifier<CatalogFmt>;
-String _$specimenEntryHash() => r'e4fbdeca4381822307a16d5dd04e588f3ef68030';
+String _$specimenEntryHash() => r'7f7a555ee8fb8b97c63d795b4a316a87db1899a5';
 
 /// See also [SpecimenEntry].
 @ProviderFor(SpecimenEntry)
@@ -262,4 +356,4 @@ final treatmentOptionsProvider =
 
 typedef _$TreatmentOptions = AutoDisposeAsyncNotifier<List<String>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

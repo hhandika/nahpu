@@ -8,7 +8,7 @@ part 'coordinate_queries.g.dart';
 )
 class CoordinateQuery extends DatabaseAccessor<Database>
     with _$CoordinateQueryMixin {
-  CoordinateQuery(Database db) : super(db);
+  CoordinateQuery(super.db);
 
   Future<int> createCoordinate(CoordinateCompanion form) =>
       into(coordinate).insert(form);

@@ -8,7 +8,7 @@ part 'narrative_queries.g.dart';
 )
 class NarrativeQuery extends DatabaseAccessor<Database>
     with _$NarrativeQueryMixin {
-  NarrativeQuery(Database db) : super(db);
+  NarrativeQuery(super.db);
 
   Future<int> createNarrative(NarrativeCompanion form) =>
       into(narrative).insert(form);

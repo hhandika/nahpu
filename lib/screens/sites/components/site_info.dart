@@ -25,11 +25,11 @@ const List<String> siteTypeList = [
 
 class SiteInfo extends ConsumerWidget {
   const SiteInfo({
-    Key? key,
+    super.key,
     required this.id,
     required this.useHorizontalLayout,
     required this.siteFormCtr,
-  }) : super(key: key);
+  });
 
   final int id;
   final bool useHorizontalLayout;

@@ -174,7 +174,7 @@ class ProjectMenuDrawerState extends ConsumerState<ProjectMenuDrawer> {
 }
 
 class MenuAvatar extends ConsumerWidget {
-  const MenuAvatar({Key? key, required this.projectUuid}) : super(key: key);
+  const MenuAvatar({super.key, required this.projectUuid});
 
   final String projectUuid;
 

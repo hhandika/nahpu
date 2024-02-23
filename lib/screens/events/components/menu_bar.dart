@@ -36,22 +36,29 @@ class NewCollEventTextButtonState
         try {
           await createNewCollEvents(context, ref);
         } catch (e) {
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(e.toString()),
-              ),
-            );
-          }
+          _showError(e.toString());
         }
       },
       child: const Text('Create event'),
     );
   }
+
+  void _showError(String errors) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          errors.contains('SqliteException(787)')
+              ? 'Failed to delete the events.'
+                  ' The events are currently in use by other records.'
+              : errors.toString(),
+        ),
+      ),
+    );
+  }
 }
 
 class NewCollEvents extends ConsumerWidget {
-  const NewCollEvents({Key? key}) : super(key: key);
+  const NewCollEvents({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

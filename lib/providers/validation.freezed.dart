@@ -12,7 +12,7 @@ part of 'validation.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ProjectForm {
@@ -82,11 +82,11 @@ class _$ProjectFormCopyWithImpl<$Res, $Val extends ProjectForm>
 }
 
 /// @nodoc
-abstract class _$$_ProjectFormCopyWith<$Res>
+abstract class _$$ProjectFormImplCopyWith<$Res>
     implements $ProjectFormCopyWith<$Res> {
-  factory _$$_ProjectFormCopyWith(
-          _$_ProjectForm value, $Res Function(_$_ProjectForm) then) =
-      __$$_ProjectFormCopyWithImpl<$Res>;
+  factory _$$ProjectFormImplCopyWith(
+          _$ProjectFormImpl value, $Res Function(_$ProjectFormImpl) then) =
+      __$$ProjectFormImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({ProjectFormField projectName, ProjectFormField existingProject});
@@ -98,11 +98,11 @@ abstract class _$$_ProjectFormCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ProjectFormCopyWithImpl<$Res>
-    extends _$ProjectFormCopyWithImpl<$Res, _$_ProjectForm>
-    implements _$$_ProjectFormCopyWith<$Res> {
-  __$$_ProjectFormCopyWithImpl(
-      _$_ProjectForm _value, $Res Function(_$_ProjectForm) _then)
+class __$$ProjectFormImplCopyWithImpl<$Res>
+    extends _$ProjectFormCopyWithImpl<$Res, _$ProjectFormImpl>
+    implements _$$ProjectFormImplCopyWith<$Res> {
+  __$$ProjectFormImplCopyWithImpl(
+      _$ProjectFormImpl _value, $Res Function(_$ProjectFormImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -111,7 +111,7 @@ class __$$_ProjectFormCopyWithImpl<$Res>
     Object? projectName = null,
     Object? existingProject = null,
   }) {
-    return _then(_$_ProjectForm(
+    return _then(_$ProjectFormImpl(
       projectName: null == projectName
           ? _value.projectName
           : projectName // ignore: cast_nullable_to_non_nullable
@@ -126,8 +126,8 @@ class __$$_ProjectFormCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ProjectForm extends _ProjectForm {
-  const _$_ProjectForm(
+class _$ProjectFormImpl extends _ProjectForm {
+  const _$ProjectFormImpl(
       {required this.projectName, required this.existingProject})
       : super._();
 
@@ -142,10 +142,10 @@ class _$_ProjectForm extends _ProjectForm {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ProjectForm &&
+            other is _$ProjectFormImpl &&
             (identical(other.projectName, projectName) ||
                 other.projectName == projectName) &&
             (identical(other.existingProject, existingProject) ||
@@ -158,14 +158,14 @@ class _$_ProjectForm extends _ProjectForm {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ProjectFormCopyWith<_$_ProjectForm> get copyWith =>
-      __$$_ProjectFormCopyWithImpl<_$_ProjectForm>(this, _$identity);
+  _$$ProjectFormImplCopyWith<_$ProjectFormImpl> get copyWith =>
+      __$$ProjectFormImplCopyWithImpl<_$ProjectFormImpl>(this, _$identity);
 }
 
 abstract class _ProjectForm extends ProjectForm {
   const factory _ProjectForm(
       {required final ProjectFormField projectName,
-      required final ProjectFormField existingProject}) = _$_ProjectForm;
+      required final ProjectFormField existingProject}) = _$ProjectFormImpl;
   const _ProjectForm._() : super._();
 
   @override
@@ -174,7 +174,7 @@ abstract class _ProjectForm extends ProjectForm {
   ProjectFormField get existingProject;
   @override
   @JsonKey(ignore: true)
-  _$$_ProjectFormCopyWith<_$_ProjectForm> get copyWith =>
+  _$$ProjectFormImplCopyWith<_$ProjectFormImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -227,22 +227,22 @@ class _$ProjectFormFieldCopyWithImpl<$Res, $Val extends ProjectFormField>
 }
 
 /// @nodoc
-abstract class _$$_ProjectNameCopyWith<$Res>
+abstract class _$$ProjectNameImplCopyWith<$Res>
     implements $ProjectFormFieldCopyWith<$Res> {
-  factory _$$_ProjectNameCopyWith(
-          _$_ProjectName value, $Res Function(_$_ProjectName) then) =
-      __$$_ProjectNameCopyWithImpl<$Res>;
+  factory _$$ProjectNameImplCopyWith(
+          _$ProjectNameImpl value, $Res Function(_$ProjectNameImpl) then) =
+      __$$ProjectNameImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String? errMsg, bool isValid});
 }
 
 /// @nodoc
-class __$$_ProjectNameCopyWithImpl<$Res>
-    extends _$ProjectFormFieldCopyWithImpl<$Res, _$_ProjectName>
-    implements _$$_ProjectNameCopyWith<$Res> {
-  __$$_ProjectNameCopyWithImpl(
-      _$_ProjectName _value, $Res Function(_$_ProjectName) _then)
+class __$$ProjectNameImplCopyWithImpl<$Res>
+    extends _$ProjectFormFieldCopyWithImpl<$Res, _$ProjectNameImpl>
+    implements _$$ProjectNameImplCopyWith<$Res> {
+  __$$ProjectNameImplCopyWithImpl(
+      _$ProjectNameImpl _value, $Res Function(_$ProjectNameImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -251,7 +251,7 @@ class __$$_ProjectNameCopyWithImpl<$Res>
     Object? errMsg = freezed,
     Object? isValid = null,
   }) {
-    return _then(_$_ProjectName(
+    return _then(_$ProjectNameImpl(
       errMsg: freezed == errMsg
           ? _value.errMsg
           : errMsg // ignore: cast_nullable_to_non_nullable
@@ -266,8 +266,8 @@ class __$$_ProjectNameCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ProjectName implements _ProjectName {
-  _$_ProjectName({required this.errMsg, this.isValid = false});
+class _$ProjectNameImpl implements _ProjectName {
+  _$ProjectNameImpl({required this.errMsg, this.isValid = false});
 
   @override
   final String? errMsg;
@@ -281,10 +281,10 @@ class _$_ProjectName implements _ProjectName {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ProjectName &&
+            other is _$ProjectNameImpl &&
             (identical(other.errMsg, errMsg) || other.errMsg == errMsg) &&
             (identical(other.isValid, isValid) || other.isValid == isValid));
   }
@@ -295,13 +295,13 @@ class _$_ProjectName implements _ProjectName {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ProjectNameCopyWith<_$_ProjectName> get copyWith =>
-      __$$_ProjectNameCopyWithImpl<_$_ProjectName>(this, _$identity);
+  _$$ProjectNameImplCopyWith<_$ProjectNameImpl> get copyWith =>
+      __$$ProjectNameImplCopyWithImpl<_$ProjectNameImpl>(this, _$identity);
 }
 
 abstract class _ProjectName implements ProjectFormField {
   factory _ProjectName({required final String? errMsg, final bool isValid}) =
-      _$_ProjectName;
+      _$ProjectNameImpl;
 
   @override
   String? get errMsg;
@@ -309,7 +309,7 @@ abstract class _ProjectName implements ProjectFormField {
   bool get isValid;
   @override
   @JsonKey(ignore: true)
-  _$$_ProjectNameCopyWith<_$_ProjectName> get copyWith =>
+  _$$ProjectNameImplCopyWith<_$ProjectNameImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -415,11 +415,11 @@ class _$PersonnelFormCopyWithImpl<$Res, $Val extends PersonnelForm>
 }
 
 /// @nodoc
-abstract class _$$_PersonnelFormCopyWith<$Res>
+abstract class _$$PersonnelFormImplCopyWith<$Res>
     implements $PersonnelFormCopyWith<$Res> {
-  factory _$$_PersonnelFormCopyWith(
-          _$_PersonnelForm value, $Res Function(_$_PersonnelForm) then) =
-      __$$_PersonnelFormCopyWithImpl<$Res>;
+  factory _$$PersonnelFormImplCopyWith(
+          _$PersonnelFormImpl value, $Res Function(_$PersonnelFormImpl) then) =
+      __$$PersonnelFormImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -439,11 +439,11 @@ abstract class _$$_PersonnelFormCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_PersonnelFormCopyWithImpl<$Res>
-    extends _$PersonnelFormCopyWithImpl<$Res, _$_PersonnelForm>
-    implements _$$_PersonnelFormCopyWith<$Res> {
-  __$$_PersonnelFormCopyWithImpl(
-      _$_PersonnelForm _value, $Res Function(_$_PersonnelForm) _then)
+class __$$PersonnelFormImplCopyWithImpl<$Res>
+    extends _$PersonnelFormCopyWithImpl<$Res, _$PersonnelFormImpl>
+    implements _$$PersonnelFormImplCopyWith<$Res> {
+  __$$PersonnelFormImplCopyWithImpl(
+      _$PersonnelFormImpl _value, $Res Function(_$PersonnelFormImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -454,7 +454,7 @@ class __$$_PersonnelFormCopyWithImpl<$Res>
     Object? initial = null,
     Object? collNum = null,
   }) {
-    return _then(_$_PersonnelForm(
+    return _then(_$PersonnelFormImpl(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -477,8 +477,8 @@ class __$$_PersonnelFormCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_PersonnelForm extends _PersonnelForm {
-  const _$_PersonnelForm(
+class _$PersonnelFormImpl extends _PersonnelForm {
+  const _$PersonnelFormImpl(
       {required this.name,
       required this.email,
       required this.initial,
@@ -500,10 +500,10 @@ class _$_PersonnelForm extends _PersonnelForm {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_PersonnelForm &&
+            other is _$PersonnelFormImpl &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.initial, initial) || other.initial == initial) &&
@@ -516,8 +516,8 @@ class _$_PersonnelForm extends _PersonnelForm {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_PersonnelFormCopyWith<_$_PersonnelForm> get copyWith =>
-      __$$_PersonnelFormCopyWithImpl<_$_PersonnelForm>(this, _$identity);
+  _$$PersonnelFormImplCopyWith<_$PersonnelFormImpl> get copyWith =>
+      __$$PersonnelFormImplCopyWithImpl<_$PersonnelFormImpl>(this, _$identity);
 }
 
 abstract class _PersonnelForm extends PersonnelForm {
@@ -525,7 +525,7 @@ abstract class _PersonnelForm extends PersonnelForm {
       {required final PersonnelFormField name,
       required final PersonnelFormField email,
       required final PersonnelFormField initial,
-      required final PersonnelFormField collNum}) = _$_PersonnelForm;
+      required final PersonnelFormField collNum}) = _$PersonnelFormImpl;
   const _PersonnelForm._() : super._();
 
   @override
@@ -538,7 +538,7 @@ abstract class _PersonnelForm extends PersonnelForm {
   PersonnelFormField get collNum;
   @override
   @JsonKey(ignore: true)
-  _$$_PersonnelFormCopyWith<_$_PersonnelForm> get copyWith =>
+  _$$PersonnelFormImplCopyWith<_$PersonnelFormImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -591,22 +591,22 @@ class _$PersonnelFormFieldCopyWithImpl<$Res, $Val extends PersonnelFormField>
 }
 
 /// @nodoc
-abstract class _$$_PersonnelFormFieldCopyWith<$Res>
+abstract class _$$PersonnelFormFieldImplCopyWith<$Res>
     implements $PersonnelFormFieldCopyWith<$Res> {
-  factory _$$_PersonnelFormFieldCopyWith(_$_PersonnelFormField value,
-          $Res Function(_$_PersonnelFormField) then) =
-      __$$_PersonnelFormFieldCopyWithImpl<$Res>;
+  factory _$$PersonnelFormFieldImplCopyWith(_$PersonnelFormFieldImpl value,
+          $Res Function(_$PersonnelFormFieldImpl) then) =
+      __$$PersonnelFormFieldImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String? errMsg, bool isValid});
 }
 
 /// @nodoc
-class __$$_PersonnelFormFieldCopyWithImpl<$Res>
-    extends _$PersonnelFormFieldCopyWithImpl<$Res, _$_PersonnelFormField>
-    implements _$$_PersonnelFormFieldCopyWith<$Res> {
-  __$$_PersonnelFormFieldCopyWithImpl(
-      _$_PersonnelFormField _value, $Res Function(_$_PersonnelFormField) _then)
+class __$$PersonnelFormFieldImplCopyWithImpl<$Res>
+    extends _$PersonnelFormFieldCopyWithImpl<$Res, _$PersonnelFormFieldImpl>
+    implements _$$PersonnelFormFieldImplCopyWith<$Res> {
+  __$$PersonnelFormFieldImplCopyWithImpl(_$PersonnelFormFieldImpl _value,
+      $Res Function(_$PersonnelFormFieldImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -615,7 +615,7 @@ class __$$_PersonnelFormFieldCopyWithImpl<$Res>
     Object? errMsg = freezed,
     Object? isValid = null,
   }) {
-    return _then(_$_PersonnelFormField(
+    return _then(_$PersonnelFormFieldImpl(
       errMsg: freezed == errMsg
           ? _value.errMsg
           : errMsg // ignore: cast_nullable_to_non_nullable
@@ -630,8 +630,8 @@ class __$$_PersonnelFormFieldCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_PersonnelFormField implements _PersonnelFormField {
-  _$_PersonnelFormField({required this.errMsg, this.isValid = false});
+class _$PersonnelFormFieldImpl implements _PersonnelFormField {
+  _$PersonnelFormFieldImpl({required this.errMsg, this.isValid = false});
 
   @override
   final String? errMsg;
@@ -645,10 +645,10 @@ class _$_PersonnelFormField implements _PersonnelFormField {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_PersonnelFormField &&
+            other is _$PersonnelFormFieldImpl &&
             (identical(other.errMsg, errMsg) || other.errMsg == errMsg) &&
             (identical(other.isValid, isValid) || other.isValid == isValid));
   }
@@ -659,15 +659,15 @@ class _$_PersonnelFormField implements _PersonnelFormField {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_PersonnelFormFieldCopyWith<_$_PersonnelFormField> get copyWith =>
-      __$$_PersonnelFormFieldCopyWithImpl<_$_PersonnelFormField>(
+  _$$PersonnelFormFieldImplCopyWith<_$PersonnelFormFieldImpl> get copyWith =>
+      __$$PersonnelFormFieldImplCopyWithImpl<_$PersonnelFormFieldImpl>(
           this, _$identity);
 }
 
 abstract class _PersonnelFormField implements PersonnelFormField {
   factory _PersonnelFormField(
       {required final String? errMsg,
-      final bool isValid}) = _$_PersonnelFormField;
+      final bool isValid}) = _$PersonnelFormFieldImpl;
 
   @override
   String? get errMsg;
@@ -675,6 +675,6 @@ abstract class _PersonnelFormField implements PersonnelFormField {
   bool get isValid;
   @override
   @JsonKey(ignore: true)
-  _$$_PersonnelFormFieldCopyWith<_$_PersonnelFormField> get copyWith =>
+  _$$PersonnelFormFieldImplCopyWith<_$PersonnelFormFieldImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

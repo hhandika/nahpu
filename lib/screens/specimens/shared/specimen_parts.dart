@@ -1071,7 +1071,7 @@ class TissueIDMenuState extends ConsumerState<TissueIDMenu> {
                 );
                 widget.tissueIDct.text = tissueID;
                 if (mounted) {
-                  Navigator.of(context).pop();
+                  Navigator.pop(context);
                 }
               },
               label: 'Save',

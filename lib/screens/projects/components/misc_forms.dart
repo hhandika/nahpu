@@ -4,7 +4,7 @@ import 'package:nahpu/screens/projects/statistics/statistics.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 
 class MiscForm extends ConsumerStatefulWidget {
-  const MiscForm({Key? key}) : super(key: key);
+  const MiscForm({super.key});
 
   @override
   MiscFormState createState() => MiscFormState();

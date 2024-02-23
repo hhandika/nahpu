@@ -10,7 +10,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeMenuDrawer extends StatelessWidget {
-  const HomeMenuDrawer({Key? key}) : super(key: key);
+  const HomeMenuDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {

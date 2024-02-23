@@ -160,7 +160,7 @@ class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
               widget.catalogFmt!,
             );
             if (context.mounted) {
-              Navigator.of(context).pop();
+              Navigator.pop(context);
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (_) => const SpecimenViewer()),
               );

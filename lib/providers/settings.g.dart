@@ -20,7 +20,7 @@ final settingProvider = Provider<SharedPreferences>.internal(
 );
 
 typedef SettingRef = ProviderRef<SharedPreferences>;
-String _$themeSettingHash() => r'1682726aace061dc3c97d75d80ce1418de5eea2f';
+String _$themeSettingHash() => r'65dc8dedd68a34209f4f3d469ca61b3f9bb06e91';
 
 /// See also [ThemeSetting].
 @ProviderFor(ThemeSetting)
@@ -36,4 +36,4 @@ final themeSettingProvider =
 
 typedef _$ThemeSetting = AsyncNotifier<ThemeMode>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

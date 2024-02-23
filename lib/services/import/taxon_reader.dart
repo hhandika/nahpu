@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:csv/csv.dart';
+import 'package:csv/csv_settings_autodetection.dart';
 import 'package:nahpu/providers/taxa.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/io_services.dart';
@@ -18,19 +19,22 @@ class TaxonEntryReader extends DbAccess {
   Future<CsvData> parseCsv(File inputFile) async {
     try {
       final reader = inputFile.openRead();
-      List<List<dynamic>> parsedCsv = await reader
+      const eolDetector = FirstOccurrenceSettingsDetector(
+        eols: ['\r\n', '\n'],
+      );
+      final lines = await reader
           .transform(utf8.decoder)
-          .transform(const CsvToListConverter())
+          .transform(const CsvToListConverter(csvSettingsDetector: eolDetector))
           .toList();
 
       /// We expect at least one line
       /// of data in the file
-      if (parsedCsv.length < 2) {
+      if (lines.length < 2) {
         throw Exception('No data found in file');
       }
 
       CsvData data = CsvData.empty();
-      data.parseTaxonEntryFromList(parsedCsv);
+      data.parseTaxonEntryFromList(lines);
 
       return data;
     } catch (e) {

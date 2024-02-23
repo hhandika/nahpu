@@ -41,7 +41,7 @@ class ApplicationSettings extends ConsumerWidget {
 }
 
 class ThemeSettings extends ConsumerStatefulWidget {
-  const ThemeSettings({Key? key, required this.isSelected}) : super(key: key);
+  const ThemeSettings({super.key, required this.isSelected});
   final String isSelected;
   @override
   ThemeSettingState createState() => ThemeSettingState();
@@ -120,7 +120,7 @@ class DataUsage extends ConsumerWidget {
 }
 
 class DataUsageSettings extends ConsumerStatefulWidget {
-  const DataUsageSettings({Key? key}) : super(key: key);
+  const DataUsageSettings({super.key});
 
   @override
   DataUsageSettingsState createState() => DataUsageSettingsState();

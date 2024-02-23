@@ -29,8 +29,6 @@ class _SystemHash {
   }
 }
 
-typedef NarrativeMediaRef = AutoDisposeFutureProviderRef<List<MediaData>>;
-
 /// See also [narrativeMedia].
 @ProviderFor(narrativeMedia)
 const narrativeMediaProvider = NarrativeMediaFamily();
@@ -78,10 +76,10 @@ class NarrativeMediaProvider
     extends AutoDisposeFutureProvider<List<MediaData>> {
   /// See also [narrativeMedia].
   NarrativeMediaProvider({
-    required this.narrativeId,
-  }) : super.internal(
+    required int narrativeId,
+  }) : this._internal(
           (ref) => narrativeMedia(
-            ref,
+            ref as NarrativeMediaRef,
             narrativeId: narrativeId,
           ),
           from: narrativeMediaProvider,
@@ -93,9 +91,43 @@ class NarrativeMediaProvider
           dependencies: NarrativeMediaFamily._dependencies,
           allTransitiveDependencies:
               NarrativeMediaFamily._allTransitiveDependencies,
+          narrativeId: narrativeId,
         );
 
+  NarrativeMediaProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.narrativeId,
+  }) : super.internal();
+
   final int narrativeId;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<MediaData>> Function(NarrativeMediaRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: NarrativeMediaProvider._internal(
+        (ref) => create(ref as NarrativeMediaRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        narrativeId: narrativeId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<MediaData>> createElement() {
+    return _NarrativeMediaProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -109,6 +141,20 @@ class NarrativeMediaProvider
 
     return _SystemHash.finish(hash);
   }
+}
+
+mixin NarrativeMediaRef on AutoDisposeFutureProviderRef<List<MediaData>> {
+  /// The parameter `narrativeId` of this provider.
+  int get narrativeId;
+}
+
+class _NarrativeMediaProviderElement
+    extends AutoDisposeFutureProviderElement<List<MediaData>>
+    with NarrativeMediaRef {
+  _NarrativeMediaProviderElement(super.provider);
+
+  @override
+  int get narrativeId => (origin as NarrativeMediaProvider).narrativeId;
 }
 
 String _$narrativeEntryHash() => r'42820d2e5f2c0f1d10e306b74ced76e1ed236df2';
@@ -128,4 +174,4 @@ final narrativeEntryProvider = AutoDisposeAsyncNotifierProvider<NarrativeEntry,
 
 typedef _$NarrativeEntry = AutoDisposeAsyncNotifier<List<NarrativeData>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

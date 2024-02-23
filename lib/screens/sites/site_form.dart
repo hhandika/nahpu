@@ -11,8 +11,7 @@ import 'package:nahpu/screens/sites/components/coordinates.dart';
 import 'package:nahpu/styles/catalog_pages.dart';
 
 class SiteForm extends ConsumerStatefulWidget {
-  const SiteForm({Key? key, required this.id, required this.siteFormCtr})
-      : super(key: key);
+  const SiteForm({super.key, required this.id, required this.siteFormCtr});
 
   final int id;
   final SiteFormCtrModel siteFormCtr;

@@ -5,7 +5,7 @@ import 'package:nahpu/screens/projects/components/project_form.dart';
 import 'package:nahpu/services/project_services.dart';
 
 class CreateProjectForm extends ConsumerStatefulWidget {
-  const CreateProjectForm({Key? key}) : super(key: key);
+  const CreateProjectForm({super.key});
 
   @override
   CreateProjectFormState createState() => CreateProjectFormState();

@@ -500,10 +500,10 @@ class CaptureDate extends ConsumerWidget {
 
 class CoordinateField extends ConsumerStatefulWidget {
   const CoordinateField({
-    Key? key,
+    super.key,
     required this.specimenUuid,
     required this.specimenCtr,
-  }) : super(key: key);
+  });
 
   final String specimenUuid;
   final SpecimenFormCtrModel specimenCtr;
@@ -687,9 +687,9 @@ class CollPersonnelField extends ConsumerWidget {
 
 class PersonnelName extends ConsumerWidget {
   const PersonnelName({
-    Key? key,
+    super.key,
     required this.personnelUuid,
-  }) : super(key: key);
+  });
 
   final String? personnelUuid;
 
