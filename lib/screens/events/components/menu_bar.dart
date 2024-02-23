@@ -116,14 +116,7 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
             await CollEventServices(ref: ref)
                 .deleteCollEvent(widget.collEventId!);
             if (context.mounted) {
-              Navigator.of(context).pop();
-              // We need to trigger a rebuild of the CollEventViewer
-              // to update page numbers and the CollEventViewer
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (_) => const CollEventViewer(),
-                ),
-              );
+              _navigate();
             }
           } catch (e) {
             _showError(e.toString());
@@ -133,15 +126,22 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
     }
   }
 
+  void _navigate() {
+    Navigator.of(context).pop();
+    // We need to trigger a rebuild of the CollEventViewer
+    // to update page numbers and the CollEventViewer
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (_) => const CollEventViewer(),
+      ),
+    );
+  }
+
   Future<void> _duplicateEvent() async {
     try {
       await EventDuplicateService(ref: ref).duplicate(widget.collEventId!);
       if (context.mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (_) => const CollEventViewer(),
-          ),
-        );
+        _navigate();
       }
     } catch (e) {
       _showError(e.toString());
@@ -163,13 +163,17 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
           await service.deleteAllCollEvents(projectUuid);
 
           if (context.mounted) {
-            Navigator.of(context).pop();
+            _pop();
           }
         } catch (e) {
           _showError(e.toString());
         }
       },
     );
+  }
+
+  void _pop() {
+    Navigator.pop(context);
   }
 
   void _showError(String errors) {

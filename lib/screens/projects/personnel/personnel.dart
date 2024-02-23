@@ -318,13 +318,17 @@ class PersonnelMenuState extends ConsumerState<PersonnelMenu> {
           await PersonnelServices(ref: ref)
               .deleteProjectPersonnel(widget.data.uuid);
           if (context.mounted) {
-            Navigator.of(context).pop();
+            _pop();
           }
         } catch (e) {
           _showError(e.toString());
         }
       },
     );
+  }
+
+  void _pop() {
+    Navigator.pop(context);
   }
 
   void _showError(String errors) {

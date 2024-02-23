@@ -113,24 +113,32 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
             await NarrativeServices(ref: ref)
                 .deleteNarrative(widget.narrativeId!);
             if (context.mounted) {
-              Navigator.of(context).pop();
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (_) => const NarrativeViewer()));
+              _navigateToNarrative();
             }
           } catch (e) {
             if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    'Error deleting narrative: $e',
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ),
-              );
+              _showError(e.toString());
             }
           }
         }
       },
+    );
+  }
+
+  void _navigateToNarrative() {
+    Navigator.of(context).pop();
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (_) => const NarrativeViewer()));
+  }
+
+  void _showError(String errors) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Error deleting narrative: $errors',
+          style: const TextStyle(color: Colors.white),
+        ),
+      ),
     );
   }
 
@@ -144,20 +152,23 @@ class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
         try {
           await NarrativeServices(ref: ref).deleteAllNarrative(projectUuid);
           if (context.mounted) {
-            Navigator.of(context).pop();
+            _showSuccess();
           }
         } catch (e) {
           if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                  content: Text(
-                'Error deleting all narrative: $e',
-                style: const TextStyle(color: Colors.white),
-              )),
-            );
+            _showError(e.toString());
           }
         }
       },
+    );
+  }
+
+  void _showSuccess() {
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Narrative deleted'),
+      ),
     );
   }
 }

@@ -215,19 +215,27 @@ class EventPersonnelFieldState extends ConsumerState<EventPersonnelField> {
           await CollEventServices(ref: ref)
               .deleteCollPersonnel(widget.controller.id!);
           if (context.mounted) {
-            Navigator.of(context).pop();
+            _pop();
           }
         } catch (e) {
           if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(e.toString()),
-              ),
-            );
+            _showError(e.toString());
           }
         }
       },
     );
+  }
+
+  void _showError(String errors) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(errors),
+      ),
+    );
+  }
+
+  void _pop() {
+    Navigator.pop(context);
   }
 }
 

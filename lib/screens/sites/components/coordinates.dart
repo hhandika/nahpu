@@ -340,17 +340,21 @@ class CoordinateMenuState extends ConsumerState<CoordinateMenu> {
       case CoordinatePopUpMenuItems.copy:
         await Clipboard.setData(ClipboardData(text: _latLong));
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Latitude and Longitude copied to clipboard'),
-            ),
-          );
+          _showCopiedSnackBar();
         }
         break;
       case CoordinatePopUpMenuItems.open:
         await _launchGoogleMap();
         break;
     }
+  }
+
+  void _showCopiedSnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Latitude and Longitude copied to clipboard'),
+      ),
+    );
   }
 
   Future<void> _launchGoogleMap() async {
@@ -578,26 +582,32 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
           .updateCoordinate(widget.coordinateId!, form);
     } catch (e) {
       // Error dialog box
-      AlertDialog alert = AlertDialog(
-        title: const Text('Error'),
-        content: const Text('There was an error updating the coordinate'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('OK'),
-          ),
-        ],
-      );
+
       if (context.mounted) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return alert;
-          },
-        );
+        _showAlertDialog();
       }
+    }
+  }
+
+  void _showAlertDialog() {
+    if (context.mounted) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: const Text('There was an error updating the coordinate'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 

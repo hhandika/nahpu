@@ -108,29 +108,37 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
         _isLoading = false;
       });
       if (context.mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => DBReplacedPage(
-              dbBackupPath: backupPath,
-            ),
-          ),
-        );
+        _navigate(backupPath);
       }
     } catch (e) {
       setState(() {
         _isLoading = false;
       });
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Failed to replace database!: $e',
-            ),
-            duration: const Duration(seconds: 10),
-          ),
-        );
+        _showError(e.toString());
       }
     }
+  }
+
+  void _navigate(File? backupPath) {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => DBReplacedPage(
+          dbBackupPath: backupPath,
+        ),
+      ),
+    );
+  }
+
+  void _showError(String errors) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Failed to replace database!: $errors',
+        ),
+        duration: const Duration(seconds: 10),
+      ),
+    );
   }
 }
 

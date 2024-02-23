@@ -384,16 +384,20 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
       );
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: e.toString().contains('File exists')
-                ? const Text('File already exists')
-                : Text(e.toString()),
-            duration: const Duration(seconds: 3),
-          ),
-        );
+        _showError(e.toString());
       }
     }
+  }
+
+  void _showError(String e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: e.toString().contains('File exists')
+            ? const Text('File already exists')
+            : Text(e.toString()),
+        duration: const Duration(seconds: 3),
+      ),
+    );
   }
 }
 
