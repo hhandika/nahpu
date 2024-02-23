@@ -11,7 +11,7 @@ import 'package:nahpu/services/export/report_writer.dart';
 import 'package:nahpu/services/platform_services.dart';
 
 class ReportForm extends ConsumerStatefulWidget {
-  const ReportForm({Key? key}) : super(key: key);
+  const ReportForm({super.key});
 
   @override
   ReportFormState createState() => ReportFormState();

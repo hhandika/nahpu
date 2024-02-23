@@ -4,7 +4,7 @@ import 'package:nahpu/providers/projects.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
 
 class ProjectBackButton extends ConsumerWidget {
-  const ProjectBackButton({Key? key}) : super(key: key);
+  const ProjectBackButton({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -81,12 +81,12 @@ class ShareButton extends StatelessWidget {
 
 class FormElevButton extends StatelessWidget {
   const FormElevButton({
-    Key? key,
+    super.key,
     required this.onPressed,
     required this.label,
     required this.icon,
     required this.enabled,
-  }) : super(key: key);
+  });
 
   final VoidCallback onPressed;
   final String label;

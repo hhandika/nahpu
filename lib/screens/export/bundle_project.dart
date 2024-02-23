@@ -11,7 +11,7 @@ import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/platform_services.dart';
 
 class BundleProjectForm extends ConsumerStatefulWidget {
-  const BundleProjectForm({Key? key}) : super(key: key);
+  const BundleProjectForm({super.key});
 
   @override
   BundleProjectFormState createState() => BundleProjectFormState();

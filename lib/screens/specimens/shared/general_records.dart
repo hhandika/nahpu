@@ -518,11 +518,11 @@ class IdTile extends ConsumerWidget {
 
 class SpecimenIdTile extends ConsumerWidget {
   const SpecimenIdTile({
-    Key? key,
+    super.key,
     required this.specimenUuid,
     required this.specimenCtr,
     required this.catalogerUuid,
-  }) : super(key: key);
+  });
 
   final SpecimenFormCtrModel specimenCtr;
   final String specimenUuid;

@@ -10,7 +10,7 @@ part 'collevent_queries.g.dart';
 )
 class CollEventQuery extends DatabaseAccessor<Database>
     with _$CollEventQueryMixin {
-  CollEventQuery(Database db) : super(db);
+  CollEventQuery(super.db);
 
   Future<int> createCollEvent(CollEventCompanion form) =>
       into(collEvent).insert(form);
@@ -61,7 +61,7 @@ class CollEventQuery extends DatabaseAccessor<Database>
 // We use the class mixin from CollEventQuery to create a new class
 class CollEffortQuery extends DatabaseAccessor<Database>
     with _$CollEventQueryMixin {
-  CollEffortQuery(Database db) : super(db);
+  CollEffortQuery(super.db);
 
   Future<int> createCollEffort(CollEffortCompanion form) =>
       into(collEffort).insert(form);
@@ -104,7 +104,7 @@ class CollEffortQuery extends DatabaseAccessor<Database>
 
 class CollPersonnelQuery extends DatabaseAccessor<Database>
     with _$CollEventQueryMixin {
-  CollPersonnelQuery(Database db) : super(db);
+  CollPersonnelQuery(super.db);
 
   Future<int> createCollPersonnel(CollPersonnelCompanion form) =>
       into(collPersonnel).insert(form);
@@ -166,7 +166,7 @@ class CollPersonnelQuery extends DatabaseAccessor<Database>
 
 class WeatherDataQuery extends DatabaseAccessor<Database>
     with _$CollEventQueryMixin {
-  WeatherDataQuery(Database db) : super(db);
+  WeatherDataQuery(super.db);
 
   Future<int> createWeatherData(WeatherCompanion form) =>
       into(weather).insert(form);

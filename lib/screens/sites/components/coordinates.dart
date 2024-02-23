@@ -442,12 +442,12 @@ class EditCoordinate extends ConsumerWidget {
 
 class CoordinateForms extends ConsumerStatefulWidget {
   const CoordinateForms({
-    Key? key,
+    super.key,
     required this.coordinateId,
     required this.siteId,
     required this.coordCtr,
     this.isEditing = false,
-  }) : super(key: key);
+  });
 
   final int? coordinateId;
   final int siteId;

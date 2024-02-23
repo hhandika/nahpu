@@ -7,7 +7,7 @@ part 'site_queries.g.dart';
   include: {'tables.drift'},
 )
 class SiteQuery extends DatabaseAccessor<Database> with _$SiteQueryMixin {
-  SiteQuery(Database db) : super(db);
+  SiteQuery(super.db);
 
   Future<int> createSite(SiteCompanion form) => into(site).insert(form);
 

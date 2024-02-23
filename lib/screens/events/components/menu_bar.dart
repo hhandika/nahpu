@@ -51,7 +51,7 @@ class NewCollEventTextButtonState
 }
 
 class NewCollEvents extends ConsumerWidget {
-  const NewCollEvents({Key? key}) : super(key: key);
+  const NewCollEvents({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

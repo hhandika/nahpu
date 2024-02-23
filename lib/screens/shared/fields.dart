@@ -163,7 +163,7 @@ class CommonDropdownText extends StatelessWidget {
 
 class CommonNumField extends ConsumerWidget {
   const CommonNumField({
-    Key? key,
+    super.key,
     required this.labelText,
     required this.hintText,
     this.controller,
@@ -172,7 +172,7 @@ class CommonNumField extends ConsumerWidget {
     required this.isLastField,
     this.isDouble = false,
     this.isSigned = false,
-  }) : super(key: key);
+  });
 
   final String labelText;
   final String hintText;
@@ -206,7 +206,7 @@ class CommonNumField extends ConsumerWidget {
 
 class CommonTextField extends StatelessWidget {
   const CommonTextField({
-    Key? key,
+    super.key,
     required this.labelText,
     this.controller,
     required this.hintText,
@@ -215,7 +215,7 @@ class CommonTextField extends StatelessWidget {
     this.onChanged,
     required this.isLastField,
     this.maxLines,
-  }) : super(key: key);
+  });
 
   final bool enabled;
   final TextEditingController? controller;

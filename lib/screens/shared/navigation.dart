@@ -136,9 +136,9 @@ class ProjectBottomNavbarState extends ConsumerState<ProjectBottomNavbar> {
 
 class PageNavButton extends ConsumerStatefulWidget {
   const PageNavButton({
-    Key? key,
+    super.key,
     required this.pageNav,
-  }) : super(key: key);
+  });
 
   final PageNavigation pageNav;
 
@@ -329,10 +329,10 @@ class PageInfo extends StatelessWidget {
 
 class NavSheet extends ConsumerStatefulWidget {
   const NavSheet({
-    Key? key,
+    super.key,
     required this.pageController,
     required this.pageNav,
-  }) : super(key: key);
+  });
 
   final PageController pageController;
   final PageNavigation pageNav;

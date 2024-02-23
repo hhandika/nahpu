@@ -10,7 +10,7 @@ part 'specimen_queries.g.dart';
 )
 class SpecimenQuery extends DatabaseAccessor<Database>
     with _$SpecimenQueryMixin {
-  SpecimenQuery(Database db) : super(db);
+  SpecimenQuery(super.db);
 
   // Specimen General table
   Future<int> createSpecimen(SpecimenCompanion form) =>
@@ -151,7 +151,7 @@ class SpecimenQuery extends DatabaseAccessor<Database>
 
 class MammalSpecimenQuery extends DatabaseAccessor<Database>
     with _$SpecimenQueryMixin {
-  MammalSpecimenQuery(Database db) : super(db);
+  MammalSpecimenQuery(super.db);
 
   Future<int> createMammalMeasurements(MammalMeasurementCompanion form) =>
       into(mammalMeasurement).insert(form);
@@ -179,7 +179,7 @@ class MammalSpecimenQuery extends DatabaseAccessor<Database>
 
 class AvianSpecimenQuery extends DatabaseAccessor<Database>
     with _$SpecimenQueryMixin {
-  AvianSpecimenQuery(Database db) : super(db);
+  AvianSpecimenQuery(super.db);
 
   Future<int> createAvianMeasurements(AvianMeasurementCompanion form) =>
       into(avianMeasurement).insert(form);
@@ -207,7 +207,7 @@ class AvianSpecimenQuery extends DatabaseAccessor<Database>
 
 class SpecimenPartQuery extends DatabaseAccessor<Database>
     with _$SpecimenQueryMixin {
-  SpecimenPartQuery(Database db) : super(db);
+  SpecimenPartQuery(super.db);
 
   Future<int> createSpecimenPart(SpecimenPartCompanion form) =>
       into(specimenPart).insert(form);
@@ -316,7 +316,7 @@ class SpecimenPartDistinctTypes {
 
 class AssociatedDataQuery extends DatabaseAccessor<Database>
     with _$SpecimenQueryMixin {
-  AssociatedDataQuery(Database db) : super(db);
+  AssociatedDataQuery(super.db);
 
   Future<int> createSpecimenDataAssociation(
           AssociatedDataCompanion form) async =>

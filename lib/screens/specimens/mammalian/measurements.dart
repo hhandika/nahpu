@@ -13,11 +13,11 @@ import 'package:drift/drift.dart' as db;
 
 class MammalMeasurementForms extends ConsumerStatefulWidget {
   const MammalMeasurementForms({
-    Key? key,
+    super.key,
     required this.useHorizontalLayout,
     required this.specimenUuid,
     required this.isBats,
-  }) : super(key: key);
+  });
 
   final bool useHorizontalLayout;
   final String specimenUuid;

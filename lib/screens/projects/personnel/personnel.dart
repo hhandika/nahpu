@@ -18,7 +18,7 @@ enum PersonnelMenuAction { edit, delete }
 const int avatarSize = 48;
 
 class PersonnelViewer extends ConsumerStatefulWidget {
-  const PersonnelViewer({Key? key}) : super(key: key);
+  const PersonnelViewer({super.key});
 
   @override
   PersonnelViewerState createState() => PersonnelViewerState();

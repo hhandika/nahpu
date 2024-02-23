@@ -6,8 +6,7 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/common.dart';
 
 class ProjectOverview extends ConsumerWidget {
-  const ProjectOverview({Key? key, required this.projectUuid})
-      : super(key: key);
+  const ProjectOverview({super.key, required this.projectUuid});
 
   final String projectUuid;
 
