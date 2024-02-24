@@ -961,17 +961,20 @@ class TissueIDformState extends ConsumerState<TissueIDform> {
     String? tissueID =
         await TissueIdServices(ref: ref).repeatNumber(widget.specimenUuid);
     if (tissueID == null || tissueID.isEmpty) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('No tissue ID available!'),
-            duration: Duration(seconds: 3),
-          ),
-        );
+      if (context.mounted) {
+        _showError('Failed to repeat tissue number');
       }
     } else {
       widget.tissueIdCtr.text = tissueID;
     }
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
   }
 }
 
@@ -1071,7 +1074,7 @@ class TissueIDMenuState extends ConsumerState<TissueIDMenu> {
                 );
                 widget.tissueIDct.text = tissueID;
                 if (mounted) {
-                  Navigator.pop(context);
+                  _pop();
                 }
               },
               label: 'Save',
@@ -1081,6 +1084,10 @@ class TissueIDMenuState extends ConsumerState<TissueIDMenu> {
         );
       },
     );
+  }
+
+  void _pop() {
+    Navigator.pop(context);
   }
 
   void _getNewNumber() {

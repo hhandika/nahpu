@@ -90,7 +90,7 @@ class CollectingPersonnelFormState extends ConsumerState<EventPersonnel> {
         .createCollPersonnel(CollPersonnelCompanion(
       eventID: db.Value(widget.eventID),
     ));
-    if (mounted) {
+    if (context.mounted) {
       setState(() {});
     }
   }
@@ -214,20 +214,28 @@ class EventPersonnelFieldState extends ConsumerState<EventPersonnelField> {
         try {
           await CollEventServices(ref: ref)
               .deleteCollPersonnel(widget.controller.id!);
-          if (mounted) {
-            Navigator.of(context).pop();
+          if (context.mounted) {
+            _pop();
           }
         } catch (e) {
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(e.toString()),
-              ),
-            );
+          if (context.mounted) {
+            _showError(e.toString());
           }
         }
       },
     );
+  }
+
+  void _showError(String errors) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(errors),
+      ),
+    );
+  }
+
+  void _pop() {
+    Navigator.pop(context);
   }
 }
 

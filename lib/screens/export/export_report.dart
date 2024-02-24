@@ -170,21 +170,25 @@ class ReportFormState extends ConsumerState<ReportForm> {
         _hasSaved = true;
       });
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: ErrorText(error: e.toString()),
-          ),
-        );
+      if (context.mounted) {
+        _showError(e.toString());
       }
     }
+  }
+
+  void _showError(String errors) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(errors),
+      ),
+    );
   }
 
   Future<void> _shareFile(BuildContext context) async {
     try {
       await FilePickerServices().shareFile(context, _savePath);
     } catch (e) {
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             duration: const Duration(seconds: 5),

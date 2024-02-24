@@ -258,7 +258,7 @@ class TaxonListViewState extends ConsumerState<TaxonListView> {
                   setState(() {
                     _selectedTaxon.clear();
                   });
-                  if (mounted) {
+                  if (context.mounted) {
                     Navigator.of(context).pop();
                   }
                 },

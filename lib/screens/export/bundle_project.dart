@@ -128,15 +128,18 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
     try {
       await FilePickerServices().shareFile(context, _savePath);
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: $e'),
-            duration: const Duration(seconds: 8),
-          ),
-        );
+      if (context.mounted) {
+        _showErrors(e.toString());
       }
     }
+  }
+
+  void _showErrors(String errors) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(errors),
+      ),
+    );
   }
 
   Future<void> _getDir() async {
@@ -149,7 +152,7 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
   }
 
   void _finishProcessing() {
-    if (mounted) {
+    if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: systemPlatform == PlatformType.desktop

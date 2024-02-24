@@ -59,7 +59,7 @@ class SpecimenViewerState extends ConsumerState<SpecimenViewer> {
                 : () async {
                     final specimenData =
                         await SpecimenServices(ref: ref).getAllSpecimens();
-                    if (mounted) {
+                    if (context.mounted) {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) =>
                             SpecimenSearchView(specimenData: specimenData),

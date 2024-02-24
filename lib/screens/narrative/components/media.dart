@@ -83,7 +83,7 @@ class NarrativeMediaViewerState extends ConsumerState<NarrativeMediaViewer> {
             );
           }
         } catch (e) {
-          if (mounted) {
+          if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
@@ -105,7 +105,7 @@ class NarrativeMediaViewerState extends ConsumerState<NarrativeMediaViewer> {
             );
           }
         } catch (e) {
-          if (mounted) {
+          if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
