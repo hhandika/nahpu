@@ -95,13 +95,16 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
                       isRunning: _isRunning,
                       icon: Icons.archive_outlined,
                     )
-                  : Builder(builder: (context) {
-                      return ShareButton(
+                  : Builder(builder: (newContext) {
+                      return ProgressButton(
+                        label: 'Share',
                         onPressed: () async {
-                          await _shareFile();
+                          await _shareFile(newContext);
                         },
+                        isRunning: _isRunning,
+                        icon: Icons.share,
                       );
-                    })
+                    }),
             ],
           ),
         ],
@@ -124,9 +127,9 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
   }
 
   // TODO: Fix builder errors.
-  Future<void> _shareFile() async {
+  Future<void> _shareFile(BuildContext newContext) async {
     try {
-      await FilePickerServices().shareFile(context, _savePath);
+      await FilePickerServices().shareFile(newContext, _savePath);
     } catch (e) {
       if (context.mounted) {
         _showErrors(e.toString());

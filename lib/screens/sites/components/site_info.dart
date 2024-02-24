@@ -76,6 +76,7 @@ class SiteInfo extends ConsumerWidget {
           ),
           DropdownButtonFormField(
             value: siteFormCtr.leadStaffCtr,
+            isExpanded: true,
             decoration: const InputDecoration(
               labelText: 'Site Leader',
               hintText: 'Choose a person name',
@@ -97,6 +98,7 @@ class SiteInfo extends ConsumerWidget {
           ),
           DropdownButtonFormField<String?>(
             value: siteFormCtr.siteTypeCtr,
+            isExpanded: true,
             decoration: const InputDecoration(
               labelText: 'Site Type',
               hintText: 'Choose a site type',
