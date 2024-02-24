@@ -9,7 +9,7 @@ import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/db_services.dart';
 
 class Home extends ConsumerStatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   HomeState createState() => HomeState();

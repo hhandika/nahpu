@@ -14,7 +14,7 @@ import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/navigation.dart';
 
 class CollEventViewer extends ConsumerStatefulWidget {
-  const CollEventViewer({Key? key}) : super(key: key);
+  const CollEventViewer({super.key});
 
   @override
   CollEventViewerState createState() => CollEventViewerState();

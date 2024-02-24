@@ -336,11 +336,11 @@ void showDeleteAlertOnMenu({
 
 class DeleteAlerts extends ConsumerWidget {
   const DeleteAlerts({
-    Key? key,
+    super.key,
     required this.title,
     required this.deletePrompt,
     required this.onDelete,
-  }) : super(key: key);
+  });
 
   final String title;
   final String deletePrompt;

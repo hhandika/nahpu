@@ -11,7 +11,7 @@ import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/platform_services.dart';
 
 class BundleProjectForm extends ConsumerStatefulWidget {
-  const BundleProjectForm({Key? key}) : super(key: key);
+  const BundleProjectForm({super.key});
 
   @override
   BundleProjectFormState createState() => BundleProjectFormState();
@@ -88,7 +88,7 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
                               try {
                                 await _bundleProject();
                               } catch (e) {
-                                if (mounted) {
+                                if (context.mounted) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
@@ -135,7 +135,7 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
     try {
       await FilePickerServices().shareFile(context, _savePath);
     } catch (e) {
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error: $e'),
@@ -156,7 +156,7 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
   }
 
   void _finishProcessing() {
-    if (mounted) {
+    if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: systemPlatform == PlatformType.desktop

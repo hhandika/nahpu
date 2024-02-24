@@ -141,14 +141,14 @@ class ProjectMenuDrawerState extends ConsumerState<ProjectMenuDrawer> {
                 onDelete: () async {
                   try {
                     await ProjectServices(ref: ref).deleteProject(projectUuid);
-                    if (mounted) {
+                    if (context.mounted) {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => const Home()),
                       );
                     }
                   } catch (e) {
-                    if (mounted) {
+                    if (context.mounted) {
                       Navigator.pop(context);
                       showDialog(
                           context: context,
@@ -174,7 +174,7 @@ class ProjectMenuDrawerState extends ConsumerState<ProjectMenuDrawer> {
 }
 
 class MenuAvatar extends ConsumerWidget {
-  const MenuAvatar({Key? key, required this.projectUuid}) : super(key: key);
+  const MenuAvatar({super.key, required this.projectUuid});
 
   final String projectUuid;
 

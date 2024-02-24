@@ -14,7 +14,7 @@ import 'package:nahpu/screens/shared/navigation.dart';
 import 'package:nahpu/services/database/database.dart';
 
 class NarrativeViewer extends ConsumerStatefulWidget {
-  const NarrativeViewer({Key? key}) : super(key: key);
+  const NarrativeViewer({super.key});
 
   @override
   NarrativeViewerState createState() => NarrativeViewerState();

@@ -48,7 +48,7 @@ class SiteMediaFormState extends ConsumerState<SiteMediaForm> {
                     _doneSelecting();
                   }
                 } catch (e) {
-                  if (mounted) {
+                  if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
@@ -73,7 +73,7 @@ class SiteMediaFormState extends ConsumerState<SiteMediaForm> {
                     setState(() {});
                   }
                 } catch (e) {
-                  if (mounted) {
+                  if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(

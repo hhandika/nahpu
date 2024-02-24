@@ -159,31 +159,42 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
       setState(() {
         _hasSaved = true;
         _savePath = currentSavePath;
-        _isRunning = false;
       });
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('File saved as $_savePath'),
-          ),
-        );
+      if (context.mounted) {
+        _showSuccess();
       }
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: ErrorText(error: e.toString()),
-          ),
-        );
+      if (context.mounted) {
+        _showError(e.toString());
       }
     }
+
+    setState(() {
+      _isRunning = false;
+    });
+  }
+
+  void _showSuccess() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('File saved as $_savePath'),
+      ),
+    );
+  }
+
+  void _showError(String errors) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: ErrorText(error: errors),
+      ),
+    );
   }
 
   Future<void> _shareFile(BuildContext context) async {
     try {
       await FilePickerServices().shareFile(context, _savePath);
     } catch (e) {
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: ErrorText(error: e.toString()),

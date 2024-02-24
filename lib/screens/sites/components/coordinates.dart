@@ -103,7 +103,7 @@ class AddCoordinateButtonState extends ConsumerState<AddCoordinateButton> {
   Future<void> _addCoordinate(Position position) async {
     final locator = GeoLocationServices();
     final coordinateCtr = locator.getControllerModel(position);
-    if (mounted) {
+    if (context.mounted) {
       _navigateToAddCoordinate(coordinateCtr);
     }
   }
@@ -340,17 +340,21 @@ class CoordinateMenuState extends ConsumerState<CoordinateMenu> {
       case CoordinatePopUpMenuItems.copy:
         await Clipboard.setData(ClipboardData(text: _latLong));
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Latitude and Longitude copied to clipboard'),
-            ),
-          );
+          _showCopiedSnackBar();
         }
         break;
       case CoordinatePopUpMenuItems.open:
         await _launchGoogleMap();
         break;
     }
+  }
+
+  void _showCopiedSnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Latitude and Longitude copied to clipboard'),
+      ),
+    );
   }
 
   Future<void> _launchGoogleMap() async {
@@ -438,12 +442,12 @@ class EditCoordinate extends ConsumerWidget {
 
 class CoordinateForms extends ConsumerStatefulWidget {
   const CoordinateForms({
-    Key? key,
+    super.key,
     required this.coordinateId,
     required this.siteId,
     required this.coordCtr,
     this.isEditing = false,
-  }) : super(key: key);
+  });
 
   final int? coordinateId;
   final int siteId;
@@ -578,26 +582,32 @@ class CoordinateFormsState extends ConsumerState<CoordinateForms> {
           .updateCoordinate(widget.coordinateId!, form);
     } catch (e) {
       // Error dialog box
-      AlertDialog alert = AlertDialog(
-        title: const Text('Error'),
-        content: const Text('There was an error updating the coordinate'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('OK'),
-          ),
-        ],
-      );
-      if (mounted) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return alert;
-          },
-        );
+
+      if (context.mounted) {
+        _showAlertDialog();
       }
+    }
+  }
+
+  void _showAlertDialog() {
+    if (context.mounted) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: const Text('There was an error updating the coordinate'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 

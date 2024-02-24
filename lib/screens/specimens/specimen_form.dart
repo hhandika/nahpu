@@ -7,11 +7,10 @@ import 'package:nahpu/screens/specimens/mammalian/main_forms.dart';
 
 class SpecimenForm extends ConsumerStatefulWidget {
   const SpecimenForm(
-      {Key? key,
+      {super.key,
       required this.specimenUuid,
       required this.specimenCtr,
-      required this.catalogFmt})
-      : super(key: key);
+      required this.catalogFmt});
 
   final String specimenUuid;
   final SpecimenFormCtrModel specimenCtr;

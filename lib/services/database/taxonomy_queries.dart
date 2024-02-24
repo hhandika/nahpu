@@ -8,7 +8,7 @@ part 'taxonomy_queries.g.dart';
 )
 class TaxonomyQuery extends DatabaseAccessor<Database>
     with _$TaxonomyQueryMixin {
-  TaxonomyQuery(Database db) : super(db);
+  TaxonomyQuery(super.db);
 
   Future<TaxonomyData> getTaxonById(int id) {
     return (select(taxonomy)..where((t) => t.id.equals(id))).getSingle();

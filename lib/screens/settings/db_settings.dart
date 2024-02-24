@@ -40,7 +40,7 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
                   try {
                     await _getDbPath();
                   } catch (e) {
-                    if (mounted) {
+                    if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
@@ -107,30 +107,38 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
       setState(() {
         _isLoading = false;
       });
-      if (mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => DBReplacedPage(
-              dbBackupPath: backupPath,
-            ),
-          ),
-        );
+      if (context.mounted) {
+        _navigate(backupPath);
       }
     } catch (e) {
       setState(() {
         _isLoading = false;
       });
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Failed to replace database!: $e',
-            ),
-            duration: const Duration(seconds: 10),
-          ),
-        );
+      if (context.mounted) {
+        _showError(e.toString());
       }
     }
+  }
+
+  void _navigate(File? backupPath) {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => DBReplacedPage(
+          dbBackupPath: backupPath,
+        ),
+      ),
+    );
+  }
+
+  void _showError(String errors) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Failed to replace database!: $errors',
+        ),
+        duration: const Duration(seconds: 10),
+      ),
+    );
   }
 }
 

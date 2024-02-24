@@ -201,15 +201,19 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
           _hasData = false;
           _isRunning = false;
         });
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(e.toString()),
-            ),
-          );
+        if (context.mounted) {
+          _showError(e.toString());
         }
       }
     }
+  }
+
+  void _showError(String errors) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(errors),
+      ),
+    );
   }
 
   Future<void> _parseData() async {
@@ -221,25 +225,25 @@ class TaxonImportFormState extends ConsumerState<TaxonImportForm> {
       setState(() {
         _isRunning = false;
       });
-      if (mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => ImportRecords(importData: data),
-          ),
-        );
+      if (context.mounted) {
+        _navigate(data);
       }
     } catch (e) {
       setState(() {
         _isRunning = false;
       });
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(e.toString()),
-          ),
-        );
+      if (context.mounted) {
+        _showError(e.toString());
       }
     }
+  }
+
+  void _navigate(ParsedCSVdata data) {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => ImportRecords(importData: data),
+      ),
+    );
   }
 }
 

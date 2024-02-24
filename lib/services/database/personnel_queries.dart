@@ -8,7 +8,7 @@ part 'personnel_queries.g.dart';
 )
 class PersonnelQuery extends DatabaseAccessor<Database>
     with _$PersonnelQueryMixin {
-  PersonnelQuery(Database db) : super(db);
+  PersonnelQuery(super.db);
 
   // Personnel table
   Future<int> createPersonnel(PersonnelCompanion form) =>

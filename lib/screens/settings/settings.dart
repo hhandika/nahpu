@@ -14,7 +14,7 @@ import 'package:nahpu/screens/settings/application_settings.dart';
 import 'package:nahpu/screens/settings/specimen_settings.dart';
 
 class AppSettings extends ConsumerStatefulWidget {
-  const AppSettings({Key? key}) : super(key: key);
+  const AppSettings({super.key});
 
   @override
   ProjectSettingState createState() => ProjectSettingState();

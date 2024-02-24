@@ -199,7 +199,7 @@ class EventIdFieldState extends ConsumerState<EventIdField> {
                           TextButton(
                               onPressed: () async {
                                 await _updateSite(newValue);
-                                if (mounted) {
+                                if (context.mounted) {
                                   Navigator.pop(context);
                                 }
                               },
@@ -254,7 +254,7 @@ class EventIdFieldState extends ConsumerState<EventIdField> {
                           TextButton(
                               onPressed: () async {
                                 await _updateSpecimen(newValue);
-                                if (mounted) {
+                                if (context.mounted) {
                                   Navigator.pop(context);
                                 }
                               },
@@ -303,14 +303,18 @@ class EventIdFieldState extends ConsumerState<EventIdField> {
         ),
       );
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(e.toString()),
-          ),
-        );
+      if (context.mounted) {
+        _showError(e.toString());
       }
     }
+  }
+
+  void _showError(String errors) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(errors),
+      ),
+    );
   }
 }
 
@@ -500,10 +504,10 @@ class CaptureDate extends ConsumerWidget {
 
 class CoordinateField extends ConsumerStatefulWidget {
   const CoordinateField({
-    Key? key,
+    super.key,
     required this.specimenUuid,
     required this.specimenCtr,
-  }) : super(key: key);
+  });
 
   final String specimenUuid;
   final SpecimenFormCtrModel specimenCtr;
@@ -687,9 +691,9 @@ class CollPersonnelField extends ConsumerWidget {
 
 class PersonnelName extends ConsumerWidget {
   const PersonnelName({
-    Key? key,
+    super.key,
     required this.personnelUuid,
-  }) : super(key: key);
+  });
 
   final String? personnelUuid;
 

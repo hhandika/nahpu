@@ -404,27 +404,17 @@ class CollEffortFormState extends ConsumerState<CollEffortForm> {
       await CollEventServices(ref: ref)
           .updateCollEffortEntry(widget.collEffortId!, form);
     } catch (e) {
-      AlertDialog alert = AlertDialog(
-        title: const Text('Error'),
-        content: Text(e.toString()),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('OK'),
-          ),
-        ],
-      );
-      if (mounted) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return alert;
-          },
-        );
-      }
+      _showError(e.toString());
     }
+  }
+
+  void _showError(String error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(error),
+        backgroundColor: Theme.of(context).colorScheme.error,
+      ),
+    );
   }
 
   Future<void> _addCollEffort() async {

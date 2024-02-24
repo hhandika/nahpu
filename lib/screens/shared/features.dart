@@ -40,11 +40,11 @@ class SpecimenSearchChips extends StatelessWidget {
 
 class SiteIdField extends ConsumerWidget {
   const SiteIdField({
-    Key? key,
+    super.key,
     required this.onChanges,
     required this.siteData,
     required this.value,
-  }) : super(key: key);
+  });
 
   final void Function(int?) onChanges;
   final List<SiteData> siteData;

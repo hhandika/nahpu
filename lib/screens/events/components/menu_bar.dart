@@ -36,7 +36,7 @@ class NewCollEventTextButtonState
         try {
           await createNewCollEvents(context, ref);
         } catch (e) {
-          if (mounted) {
+          if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(e.toString()),
@@ -51,7 +51,7 @@ class NewCollEventTextButtonState
 }
 
 class NewCollEvents extends ConsumerWidget {
-  const NewCollEvents({Key? key}) : super(key: key);
+  const NewCollEvents({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -115,15 +115,8 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
           try {
             await CollEventServices(ref: ref)
                 .deleteCollEvent(widget.collEventId!);
-            if (mounted) {
-              Navigator.of(context).pop();
-              // We need to trigger a rebuild of the CollEventViewer
-              // to update page numbers and the CollEventViewer
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (_) => const CollEventViewer(),
-                ),
-              );
+            if (context.mounted) {
+              _navigate();
             }
           } catch (e) {
             _showError(e.toString());
@@ -133,15 +126,22 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
     }
   }
 
+  void _navigate() {
+    Navigator.of(context).pop();
+    // We need to trigger a rebuild of the CollEventViewer
+    // to update page numbers and the CollEventViewer
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (_) => const CollEventViewer(),
+      ),
+    );
+  }
+
   Future<void> _duplicateEvent() async {
     try {
       await EventDuplicateService(ref: ref).duplicate(widget.collEventId!);
-      if (mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (_) => const CollEventViewer(),
-          ),
-        );
+      if (context.mounted) {
+        _navigate();
       }
     } catch (e) {
       _showError(e.toString());
@@ -162,14 +162,18 @@ class NarrativeMenuState extends ConsumerState<CollEventMenu> {
           final service = CollEventServices(ref: ref);
           await service.deleteAllCollEvents(projectUuid);
 
-          if (mounted) {
-            Navigator.of(context).pop();
+          if (context.mounted) {
+            _pop();
           }
         } catch (e) {
           _showError(e.toString());
         }
       },
     );
+  }
+
+  void _pop() {
+    Navigator.pop(context);
   }
 
   void _showError(String errors) {

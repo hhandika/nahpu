@@ -142,7 +142,7 @@ class _$_ProjectForm extends _ProjectForm {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ProjectForm &&
@@ -281,7 +281,7 @@ class _$_ProjectName implements _ProjectName {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ProjectName &&
@@ -500,7 +500,7 @@ class _$_PersonnelForm extends _PersonnelForm {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_PersonnelForm &&
@@ -645,7 +645,7 @@ class _$_PersonnelFormField implements _PersonnelFormField {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_PersonnelFormField &&

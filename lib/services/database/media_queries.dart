@@ -7,7 +7,7 @@ part 'media_queries.g.dart';
   include: {'tables.drift'},
 )
 class MediaDbQuery extends DatabaseAccessor<Database> with _$MediaDbQueryMixin {
-  MediaDbQuery(Database db) : super(db);
+  MediaDbQuery(super.db);
 
   Future<int> createMedia(MediaCompanion form) {
     return into(media).insert(form);

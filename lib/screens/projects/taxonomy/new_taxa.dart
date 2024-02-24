@@ -340,11 +340,11 @@ class TaxonRegistryFormState extends ConsumerState<TaxonRegistryForm> {
               try {
                 await _deleteTaxon();
                 ref.invalidate(taxonRegistryProvider);
-                if (mounted) {
+                if (context.mounted) {
                   Navigator.of(context).pop();
                 }
               } catch (e) {
-                if (mounted) {
+                if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Cannot delete taxon.'

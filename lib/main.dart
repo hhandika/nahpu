@@ -16,7 +16,7 @@ void main() async {
 }
 
 class NahpuApp extends ConsumerWidget {
-  const NahpuApp({Key? key}) : super(key: key);
+  const NahpuApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
