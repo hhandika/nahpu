@@ -220,31 +220,15 @@ class SelectFileField extends StatelessWidget {
                     size: 56,
                     color: Theme.of(context).colorScheme.tertiary,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Wrap(
+                    alignment: WrapAlignment.start,
+                    crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withAlpha(120),
-                          ),
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(16),
-                          ),
-                          color: Theme.of(context).colorScheme.surfaceVariant,
-                        ),
-                        child: Text(
-                          p.basename(filePath!.path),
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                        ),
+                      Text(
+                        p.basename(filePath!.path),
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.labelLarge,
                       ),
                       IconButton(
                         onPressed: onCleared,
