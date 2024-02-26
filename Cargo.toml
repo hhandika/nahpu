@@ -1,0 +1,3 @@
+[workspace]
+members = ["nahpu_api", "rust"]
+resolver = "2"

@@ -10,7 +10,8 @@ import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/styles/catalog_pages.dart';
 
 class CollEventForm extends ConsumerStatefulWidget {
-  const CollEventForm({super.key, required this.id, required this.collEventCtr});
+  const CollEventForm(
+      {super.key, required this.id, required this.collEventCtr});
 
   final int id;
   final CollEventFormCtrModel collEventCtr;
