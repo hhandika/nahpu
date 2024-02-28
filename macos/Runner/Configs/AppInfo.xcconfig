@@ -11,4 +11,4 @@ PRODUCT_NAME = nahpu
 PRODUCT_BUNDLE_IDENTIFIER = com.hhandika.nahpu
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2023 com.hhandika. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2024 com.hhandika. All rights reserved.
