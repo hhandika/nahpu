@@ -1,0 +1,1 @@
+cargo ndk -o ..\android\app\src\main\jniLibs\ -t armv7-linux-androideabi build --release 
