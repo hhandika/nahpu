@@ -36,7 +36,7 @@ dependencies:
   sqlite3_flutter_libs: ^0.5.9
   path_provider: ^2.0.15
   path: ^1.8.2
-  uuid: ^3.0.6
+  uuid: ^4.1.0
   dynamic_color: ^1.6.5
   url_launcher: ^6.1.5
   intl: ^0.18.0
@@ -49,7 +49,7 @@ dependencies:
   sqlite3: ^2.1.0
   pdf: ^3.8.4
   riverpod_annotation: ^2.1.1
-  csv: ^5.0.2
+  csv: ^6.0.0
   dotted_border: ^2.0.0+3
   image_picker: ^1.0.0
   archive: ^3.3.7
