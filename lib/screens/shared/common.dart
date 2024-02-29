@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:nahpu/styles/decoration.dart';
 
 /// Used by specimen forms to avoid the
 /// bottom sheet covering the last field
@@ -82,7 +83,7 @@ class TileSvgIcon extends StatelessWidget {
       height: 28,
       width: 28,
       colorFilter: ColorFilter.mode(
-        Theme.of(context).colorScheme.tertiary.withAlpha(120),
+        getIconColor(context),
         BlendMode.srcIn,
       ),
     );

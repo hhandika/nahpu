@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/platform_services.dart';
+import 'package:nahpu/styles/decoration.dart';
 
 class FormCard extends StatelessWidget {
   const FormCard({
@@ -435,7 +436,7 @@ class CommonEmptyForm extends StatelessWidget {
           iconPath,
           height: 64,
           colorFilter: ColorFilter.mode(
-            Theme.of(context).colorScheme.secondary.withAlpha(80),
+            getIconColor(context),
             BlendMode.srcIn,
           ),
         ),
