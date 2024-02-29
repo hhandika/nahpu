@@ -58,16 +58,7 @@ class SpecimenServices extends DbAccess {
   String getIconPath() {
     return ref.watch(catalogFmtNotifierProvider).when(
           data: (fmt) {
-            switch (fmt) {
-              case CatalogFmt.generalMammals:
-                return 'assets/icons/mouse.svg';
-              case CatalogFmt.bats:
-                return 'assets/icons/bat.svg';
-              case CatalogFmt.birds:
-                return 'assets/icons/bird.svg';
-              default:
-                return 'assets/icons/mouse.svg';
-            }
+            return matchCatalogFmtToIconPath(fmt);
           },
           loading: () => 'assets/icons/mouse.svg',
           error: (error, stack) => 'assets/icons/mouse.svg',

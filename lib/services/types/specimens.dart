@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/types/export.dart';
 
 enum CatalogFmt { generalMammals, birds, bats }
@@ -210,6 +208,19 @@ const Map<String, String> partIconPath = {
   'unknown': 'assets/icons/clue.svg',
 };
 
+String matchCatalogFmtToIconPath(CatalogFmt fmt) {
+  switch (fmt) {
+    case CatalogFmt.generalMammals:
+      return 'assets/icons/mouse.svg';
+    case CatalogFmt.bats:
+      return 'assets/icons/bat.svg';
+    case CatalogFmt.birds:
+      return 'assets/icons/bird.svg';
+    default:
+      return 'assets/icons/mouse.svg';
+  }
+}
+
 const List<String> specimenPartList = [
   'skin',
   'skull',
@@ -220,17 +231,17 @@ const List<String> specimenPartList = [
 ];
 
 class SpecimenPartIcon {
-  const SpecimenPartIcon({required this.ref, required this.part});
+  const SpecimenPartIcon({required this.catalogFmt, required this.part});
 
   final String part;
-  final WidgetRef ref;
+  final CatalogFmt catalogFmt;
 
   String matchPartToIconPath() {
     final lowercased = _cleanPart();
     if (kDebugMode) print('Part: $part, Lowercased: $lowercased');
     bool isSpecimen = specimenPartList.contains(lowercased);
     if (isSpecimen) {
-      return SpecimenServices(ref: ref).getIconPath();
+      return matchCatalogFmtToIconPath(catalogFmt);
     }
 
     return partIconPath[lowercased] ?? partIconPath['unknown']!;

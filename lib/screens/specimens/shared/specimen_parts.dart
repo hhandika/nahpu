@@ -68,7 +68,10 @@ class PartDataFormState extends ConsumerState<PartDataForm>
           )
         ],
         children: [
-          SpecimenPartFields(specimenUuid: widget.specimenUuid),
+          SpecimenPartFields(
+            specimenUuid: widget.specimenUuid,
+            catalogFmt: widget.catalogFmt,
+          ),
           AssociatedDataViewer(specimenUuid: widget.specimenUuid),
         ],
       ),
@@ -80,9 +83,11 @@ class SpecimenPartFields extends StatelessWidget {
   const SpecimenPartFields({
     super.key,
     required this.specimenUuid,
+    required this.catalogFmt,
   });
 
   final String specimenUuid;
+  final CatalogFmt catalogFmt;
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +103,7 @@ class SpecimenPartFields extends StatelessWidget {
           height: 450,
           child: PartList(
             specimenUuid: specimenUuid,
+            catalogFmt: catalogFmt,
           ),
         )
       ],
@@ -109,9 +115,11 @@ class PartList extends ConsumerStatefulWidget {
   const PartList({
     super.key,
     required this.specimenUuid,
+    required this.catalogFmt,
   });
 
   final String specimenUuid;
+  final CatalogFmt catalogFmt;
 
   @override
   PartListState createState() => PartListState();
@@ -148,6 +156,7 @@ class PartListState extends ConsumerState<PartList> {
                           return ListTile(
                             leading: PartIcon(
                               partType: part.type ?? 'unknown',
+                              catalogFmt: widget.catalogFmt,
                             ),
                             title: PartTitle(
                               partType: part.type,
@@ -226,15 +235,19 @@ class EmptyPart extends StatelessWidget {
 }
 
 class PartIcon extends ConsumerWidget {
-  const PartIcon({super.key, required this.partType});
+  const PartIcon({
+    super.key,
+    required this.partType,
+    required this.catalogFmt,
+  });
 
   final String partType;
-
+  final CatalogFmt catalogFmt;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TileSvgIcon(
-      iconPath:
-          SpecimenPartIcon(ref: ref, part: partType).matchPartToIconPath(),
+      iconPath: SpecimenPartIcon(part: partType, catalogFmt: catalogFmt)
+          .matchPartToIconPath(),
     );
   }
 }
