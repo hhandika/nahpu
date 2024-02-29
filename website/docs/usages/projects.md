@@ -23,7 +23,7 @@ To create a new project, use the `+` button in the bottom right corner of the ho
 
 After you create a project, you will proceed to the project dashboard. The dashboard is divided into four main panels:
 
-- **Project overview** - This panel provides a quick overview of the project. It includes the project name, description, [principal investigator](/projects#principal-investigator), location, start date, end date, database creation date and last access date.
+- **Project overview** - This panel provides a quick overview of the project. It includes the project name, description, [principal investigator](./projects#principal-investigator), location, start date, end date, database creation date and last access date.
 - **Personnel** - This panel lists all the personnel associated with the project. You can add more personnel by clicking the `[+ Add personnel]` button in the bottom of the panel.
 - **Taxon registry** - This panel lists all the taxa registered in the database. You can add more taxa by clicking the `[+ Add taxon]` button in the bottom of the panel. You can also import taxa from a csv file by clicking the `[Import from file]` button.
 - **Record statistics** - Graph showing real-time statistics of the number of records in the project.
