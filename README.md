@@ -12,5 +12,4 @@
 
 Documentation:
 
-[EN](https://docs.page/hhandika/nahpu-docs/en)
-[ID](https://docs.page/hhandika/nahpu-docs/id)
+[EN](https://nahpu.app)
