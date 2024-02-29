@@ -645,6 +645,9 @@ class SpecimenTypeField extends ConsumerWidget {
               onChanged: (String? value) {
                 if (value != null) {
                   partCtr.typeCtr.text = value;
+                  if (partCtr.countCtr.text.isEmpty) {
+                    partCtr.countCtr.text = '1';
+                  }
                 }
               },
             );
