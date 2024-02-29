@@ -126,7 +126,6 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
     await archiveServices.createArchive();
   }
 
-  // TODO: Fix builder errors.
   Future<void> _shareFile(BuildContext newContext) async {
     try {
       await FilePickerServices().shareFile(newContext, _savePath);
