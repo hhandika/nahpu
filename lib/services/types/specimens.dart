@@ -195,6 +195,7 @@ IconData matchCatFmtToIcon(CatalogFmt catalogFmt, bool isSelected) {
 }
 
 const Map<String, String> partIconPath = {
+  'cecum': 'assets/icons/microbial-culture.svg',
   'liver': 'assets/icons/liver.svg',
   'lung': 'assets/icons/lungs.svg',
   'heart': 'assets/icons/heart.svg',
@@ -205,6 +206,7 @@ const Map<String, String> partIconPath = {
   'swab': 'assets/icons/swab.svg',
   'feces': 'assets/icons/poo.svg',
   'parasite': 'assets/icons/mite.svg',
+  'testis': 'assets/icons/testis.svg',
   'unknown': 'assets/icons/clue.svg',
 };
 
@@ -235,9 +237,13 @@ class SpecimenPartIcon {
   }
 
   String _cleanPart() {
-    if (part.endsWith('s')) {
-      return part.substring(0, part.length - 1).toLowerCase();
+    final lowercased = part.toLowerCase().trim();
+    if (lowercased == 'testes' || lowercased == 'testis') {
+      return 'testis';
     }
-    return part.trim().toLowerCase().replaceAll(' ', '-');
+    if (lowercased.endsWith('s') || lowercased.endsWith('es')) {
+      return lowercased.substring(0, part.length - 1).toLowerCase();
+    }
+    return lowercased.replaceAll(' ', '-');
   }
 }
