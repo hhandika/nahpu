@@ -18,9 +18,9 @@ Then, select the main catalog format. The app currently support mammal and bird 
 
 After you create a project, the app will automatically generate a project UUID. This is a unique identifier used throughout the database to distinguish records from different projects. We used [UUID version 4](https://en.wikipedia.org/wiki/Universally_unique_identifier). It almost impossible to collide while still protecting your privacy.
 
-### 2. In the project Dashboard, add a new personnel
+### 2. Add a new personnel
 
-You need at least a person with specimen care role as a cataloger. You can add more people with different roles.
+Navigate ot the project add a new personnel. You need at least a person with specimen care role as a cataloger. You can add more people with different roles.
 
 [Cataloger](./usages/personnel#cataloger) is the person that will be responsible for cataloging the specimen. In some institutions, this could be called a collector. In the app, we call collector as someone who collects the specimen, whether they are involved in cataloging the app or not. Their initial and field number will be used to generate the Field ID on the specimen catalog page. Their name will also appear whenever the field asks for a personnel name, such as collecting personnel and preparator. The app does not allow changing the cataloger role after it is created.
 

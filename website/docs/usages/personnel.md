@@ -1,4 +1,7 @@
-# Personnel
+---
+sidebar_position: 3
+title: Personnel
+---
 
 ## Adding a new personnel
 

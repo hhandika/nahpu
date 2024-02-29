@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 6
 ---
 
 # Installation
@@ -7,6 +7,10 @@ sidebar_position: 3
 ## Windows and Android
 
 Download beta version from [GitHub Releases](https://github.com/hhandika/nahpu/releases).
+
+## Linux
+
+We are currently working on the Linux version. Please check back later.
 
 ## Apple Devices
 
