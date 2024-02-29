@@ -146,6 +146,9 @@ class PartListState extends ConsumerState<PartList> {
                         itemBuilder: (context, index) {
                           final part = data[index];
                           return ListTile(
+                            leading: PartIcon(
+                              partType: part.type ?? 'unknown',
+                            ),
                             title: PartTitle(
                               partType: part.type,
                               partCount: part.count.toString(),
@@ -218,6 +221,20 @@ class EmptyPart extends StatelessWidget {
         const SizedBox(height: 8),
         AddPartButton(specimenUuid: specimenUuid),
       ],
+    );
+  }
+}
+
+class PartIcon extends ConsumerWidget {
+  const PartIcon({super.key, required this.partType});
+
+  final String partType;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return TileSvgIcon(
+      iconPath:
+          SpecimenPartIcon(ref: ref, part: partType).matchPartToIconPath(),
     );
   }
 }

@@ -1,5 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/types/export.dart';
 
 enum CatalogFmt { generalMammals, birds, bats }
@@ -188,5 +191,53 @@ IconData matchCatFmtToIcon(CatalogFmt catalogFmt, bool isSelected) {
       return MdiIcons.bat;
     default:
       return MdiIcons.paw;
+  }
+}
+
+const Map<String, String> partIconPath = {
+  'liver': 'assets/icons/liver.svg',
+  'lung': 'assets/icons/lungs.svg',
+  'heart': 'assets/icons/heart.svg',
+  'intestine': 'assets/icons/intestine.svg',
+  'kidney': 'assets/icons/kidneys.svg',
+  'muscle': 'assets/icons/muscles.svg',
+  'stomach': 'assets/icons/stomach.svg',
+  'swab': 'assets/icons/swab.svg',
+  'feces': 'assets/icons/poo.svg',
+  'parasite': 'assets/icons/mite.svg',
+  'unknown': 'assets/icons/clue.svg',
+};
+
+const List<String> specimenPartList = [
+  'skin',
+  'skull',
+  'skeleton',
+  'alcohol',
+  'formalin',
+  'whole-specimen'
+];
+
+class SpecimenPartIcon {
+  const SpecimenPartIcon({required this.ref, required this.part});
+
+  final String part;
+  final WidgetRef ref;
+
+  String matchPartToIconPath() {
+    final lowercased = _cleanPart();
+    if (kDebugMode) print('Part: $part, Lowercased: $lowercased');
+    bool isSpecimen = specimenPartList.contains(lowercased);
+    if (isSpecimen) {
+      return SpecimenServices(ref: ref).getIconPath();
+    }
+
+    return partIconPath[lowercased] ?? partIconPath['unknown']!;
+  }
+
+  String _cleanPart() {
+    if (part.endsWith('s')) {
+      return part.substring(0, part.length - 1).toLowerCase();
+    }
+    return part.trim().toLowerCase().replaceAll(' ', '-');
   }
 }

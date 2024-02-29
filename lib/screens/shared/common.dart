@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 /// Used by specimen forms to avoid the
 /// bottom sheet covering the last field
@@ -66,5 +67,24 @@ class CommonLineDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Divider(color: Colors.grey);
+  }
+}
+
+class TileSvgIcon extends StatelessWidget {
+  const TileSvgIcon({super.key, required this.iconPath});
+
+  final String iconPath;
+
+  @override
+  Widget build(BuildContext context) {
+    return SvgPicture.asset(
+      iconPath,
+      height: 28,
+      width: 28,
+      colorFilter: ColorFilter.mode(
+        Theme.of(context).colorScheme.tertiary.withAlpha(120),
+        BlendMode.srcIn,
+      ),
+    );
   }
 }
