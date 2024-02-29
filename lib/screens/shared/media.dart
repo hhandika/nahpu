@@ -10,6 +10,7 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/import/multimedia.dart';
+import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/media_services.dart';
 import 'package:nahpu/services/platform_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
@@ -354,6 +355,18 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
               },
             ),
           ),
+          PopupMenuItem(
+              child: ListTile(
+            leading: Icon(Icons.adaptive.share),
+            title: const Text('Share'),
+            onTap: () async {
+              MediaCategory category =
+                  matchMediaCategoryString(widget.ctr.categoryCtr.text);
+              File path = await ImageServices(ref: ref, category: category)
+                  .getMediaPath(widget.ctr.fileNameCtr!);
+              _shareFile(path);
+            },
+          )),
           const PopupMenuDivider(),
           PopupMenuItem(
             onTap: () async {
@@ -372,6 +385,10 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
         ];
       },
     );
+  }
+
+  void _shareFile(File path) {
+    FilePickerServices().shareFile(context, path);
   }
 
   Future<void> _renameMedia(TextEditingController fileNameCtr) async {
