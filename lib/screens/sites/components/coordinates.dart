@@ -13,6 +13,7 @@ import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/site_services.dart';
+import 'package:nahpu/services/types/sites.dart';
 import 'package:nahpu/services/utility_services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -148,6 +149,9 @@ class CoordinateList extends ConsumerWidget {
                           itemCount: data.length,
                           itemBuilder: (context, index) {
                             return ListTile(
+                              dense: true,
+                              leading: CoordinateTileIcon(
+                                  name: data[index].nameId ?? 'unknown'),
                               title: CoordinateTitle(
                                   coordinateId: data[index].nameId),
                               subtitle:
@@ -188,6 +192,21 @@ class EmptyCoordinateList extends StatelessWidget {
         AddCoordinateButton(siteId: siteId),
       ],
     );
+  }
+}
+
+class CoordinateTileIcon extends StatelessWidget {
+  const CoordinateTileIcon({super.key, required this.name});
+
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    return TileSvgIcon(iconPath: _iconPath);
+  }
+
+  String get _iconPath {
+    return CoordinateIcon(coordinateName: name).matchCoordinateToIconPath();
   }
 }
 

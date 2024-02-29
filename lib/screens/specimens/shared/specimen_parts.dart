@@ -246,9 +246,13 @@ class PartIcon extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TileSvgIcon(
-      iconPath: SpecimenPartIcon(part: partType, catalogFmt: catalogFmt)
-          .matchPartToIconPath(),
+      iconPath: _iconPath,
     );
+  }
+
+  String get _iconPath {
+    return SpecimenPartIcon(part: partType, catalogFmt: catalogFmt)
+        .matchPartToIconPath();
   }
 }
 
