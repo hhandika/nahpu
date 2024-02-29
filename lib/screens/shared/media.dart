@@ -80,7 +80,7 @@ class EmptyMedia extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const CommonEmptyForm(
-      iconPath: 'assets/icons/gallery.svg',
+      iconPath: 'assets/icons/image-gallery.svg',
       text: 'No media added',
     );
   }
