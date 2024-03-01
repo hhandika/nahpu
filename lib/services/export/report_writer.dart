@@ -9,7 +9,7 @@ import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/types/export.dart';
 import 'package:xml/xml.dart';
 
-class ReportServices extends DbAccess {
+class ReportServices extends AppServices {
   const ReportServices({required super.ref});
 
   Future<void> writeReport(File savePath, ReportType reportType) async {
@@ -31,7 +31,7 @@ class ReportServices extends DbAccess {
   }
 }
 
-class CoordinateWriter extends DbAccess {
+class CoordinateWriter extends AppServices {
   const CoordinateWriter({required super.ref});
 
   Future<void> writeCoordinate(File savePath) async {
@@ -87,7 +87,7 @@ class CoordinateWriter extends DbAccess {
   }
 }
 
-class SpeciesListWriter extends DbAccess {
+class SpeciesListWriter extends AppServices {
   const SpeciesListWriter({required super.ref});
 
   Future<void> writeSpeciesListCompact(File filePath) async {

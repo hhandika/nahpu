@@ -4,7 +4,7 @@ import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/taxonomy_services.dart';
 
-class CollectingRecordWriterServices extends DbAccess {
+class CollectingRecordWriterServices extends AppServices {
   const CollectingRecordWriterServices({
     required super.ref,
   });

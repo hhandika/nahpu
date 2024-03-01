@@ -1,3 +1,5 @@
+//! This file contains the class to write the database into a file
+// and replace the current database with a new one.
 import 'dart:io';
 
 import 'package:archive/archive_io.dart';
@@ -8,17 +10,22 @@ import 'package:sqlite3/sqlite3.dart' as sqlite3;
 import 'package:nahpu/services/database/database.dart';
 import 'package:path/path.dart' as p;
 
-class DbWriter extends DbAccess {
-  const DbWriter({required super.ref});
+class DbWriter extends AppServices {
+  const DbWriter({required super.ref, required this.filePath});
 
-  Future<File> writeDb(File savePath, bool isWithProjectData) async {
-    dbAccess.exportInto(savePath);
+  final File filePath;
+
+  /// Write the database into a file
+  /// If [isWithProjectData] is true, the project data will be included
+  /// and the file will be zipped
+  Future<File> writeDb(bool isWithProjectData) async {
+    dbAccess.exportInto(filePath);
     if (isWithProjectData) {
-      String archivePath = p.setExtension(savePath.path, '.zip');
-      await _archiveProjectData(savePath, archivePath);
+      String archivePath = p.setExtension(filePath.path, '.zip');
+      await _archiveProjectData(filePath, archivePath);
       return File(archivePath);
     }
-    return savePath;
+    return filePath;
   }
 
   Future<void> _archiveProjectData(File dbPath, archivePath) async {
@@ -41,12 +48,13 @@ class DbWriter extends DbAccess {
     dbPath.deleteSync();
   }
 
-  Future<void> replaceDb(File file, File? backupPath, bool isArchived) async {
-    String dbImportPath = file.path;
+  Future<void> replaceDb(bool backup, bool isArchived) async {
+    String dbImportPath = filePath.path;
     if (isArchived) {
-      dbImportPath = await _copyProjectData(file);
+      dbImportPath = await _copyProjectData(filePath);
     }
-    if (backupPath != null) {
+    if (backup) {
+      File backupPath = await backupDir;
       await _backUpBeforeDelete(backupPath);
     }
     await _writeDb(dbImportPath);

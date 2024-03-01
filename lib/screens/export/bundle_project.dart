@@ -103,7 +103,7 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
                           await _shareFile(newContext);
                         },
                         isRunning: _isRunning,
-                        icon: Icons.share,
+                        icon: Icons.adaptive.share_outlined,
                       );
                     }),
             ],
@@ -119,12 +119,12 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
       fileStem: _fileStem,
       ext: 'zip',
     ).getSavePath();
-    final archiveServices = ArchiveServices(
+    final archiveServices = BundleServices(
       ref: ref,
       outputFile: _savePath,
       isInaccurateInBrackets: _isInaccurateInBrackets,
     );
-    await archiveServices.createArchive();
+    await archiveServices.create();
   }
 
   Future<void> _shareFile(BuildContext newContext) async {

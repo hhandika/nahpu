@@ -145,7 +145,7 @@ class MediaWriterServices {
   }
 }
 
-class MediaCategoryServices extends DbAccess {
+class MediaCategoryServices extends AppServices {
   const MediaCategoryServices({required super.ref});
 
   Future<String> getLinkedData(int? mediaId, String? category) async {

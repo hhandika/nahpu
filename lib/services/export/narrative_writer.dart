@@ -8,7 +8,7 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/narrative_services.dart';
 import 'package:nahpu/services/export/site_writer.dart';
 
-class NarrativeRecordWriter extends DbAccess {
+class NarrativeRecordWriter extends AppServices {
   NarrativeRecordWriter({required super.ref});
 
   Future<void> writeNarrativeDelimited(File filePath, bool isCsv) async {

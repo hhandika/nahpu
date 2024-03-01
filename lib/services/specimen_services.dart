@@ -25,7 +25,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 const String tissueIDPrefixKey = 'tissueIDPrefix';
 const String tissueIDNumberKey = 'tissueIDNumber';
 
-class SpecimenServices extends DbAccess {
+class SpecimenServices extends AppServices {
   const SpecimenServices({required super.ref});
 
   Future<String> createSpecimen() async {
@@ -493,7 +493,7 @@ class SpecimenSearchServices {
   }
 }
 
-class TissueIdServices extends DbAccess {
+class TissueIdServices extends AppServices {
   const TissueIdServices({required super.ref});
 
   SharedPreferences get _prefs => ref.read(settingProvider);
@@ -545,7 +545,7 @@ class TissueIdServices extends DbAccess {
   }
 }
 
-class SpecimenPartServices extends DbAccess {
+class SpecimenPartServices extends AppServices {
   const SpecimenPartServices({required super.ref});
 
   Future<void> createSpecimenPart(SpecimenPartCompanion form) async {
@@ -639,7 +639,7 @@ class SpecimenSettingServices {
   }
 }
 
-class AssociatedDataServices extends DbAccess {
+class AssociatedDataServices extends AppServices {
   const AssociatedDataServices({required super.ref});
 
   Future<List<AssociatedDataData>> getAssociatedData(

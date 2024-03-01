@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const String newDbPref = 'isNewDb';
 
-class DbServices extends DbAccess {
+class DbServices extends AppServices {
   const DbServices({required super.ref});
 
   SharedPreferences get prefs => ref.read(settingProvider);

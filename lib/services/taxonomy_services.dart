@@ -3,7 +3,7 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/taxonomy_queries.dart';
 import 'package:nahpu/services/io_services.dart';
 
-class TaxonomyServices extends DbAccess {
+class TaxonomyServices extends AppServices {
   const TaxonomyServices({required super.ref});
 
   Future<TaxonomyData> getTaxonById(int id) async {

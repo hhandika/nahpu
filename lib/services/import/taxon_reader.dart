@@ -13,7 +13,7 @@ import 'package:nahpu/services/import/taxon_entry.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/utility_services.dart';
 
-class TaxonEntryReader extends DbAccess {
+class TaxonEntryReader extends AppServices {
   const TaxonEntryReader({required super.ref});
 
   Future<CsvData> parseCsv(File inputFile) async {

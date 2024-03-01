@@ -14,7 +14,7 @@ import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/utility_services.dart';
 import 'package:path/path.dart';
 
-class SiteServices extends DbAccess {
+class SiteServices extends AppServices {
   const SiteServices({required super.ref});
 
   Future<int> createNewSite() async {
@@ -158,7 +158,7 @@ class SiteSearchServices {
   }
 }
 
-class CoordinateServices extends DbAccess {
+class CoordinateServices extends AppServices {
   const CoordinateServices({required super.ref});
 
   Future<List<CoordinateData>> getCoordinatesBySiteID(int siteID) async {

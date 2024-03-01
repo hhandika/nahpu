@@ -97,13 +97,17 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
 
   Future<void> _replaceDb() async {
     Navigator.of(context).pop();
+
     try {
       setState(() {
         _isLoading = true;
       });
-      File? backupPath = _isBackup ? await getDbBackUpPath() : null;
-      await DbWriter(ref: ref)
-          .replaceDb(File(_dbPath!.path), backupPath, _isArchived);
+
+      final backupPath =
+          _isBackup ? await AppServices(ref: ref).backupDir : null;
+
+      await DbWriter(ref: ref, filePath: File(_dbPath!.path))
+          .replaceDb(_isBackup, _isArchived);
       setState(() {
         _isLoading = false;
       });

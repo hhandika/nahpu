@@ -7,7 +7,7 @@ import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/site_services.dart';
 import 'package:nahpu/services/types/collecting.dart';
 
-class CollEventServices extends DbAccess {
+class CollEventServices extends AppServices {
   const CollEventServices({required super.ref});
 
   Future<int> createNewCollEvents() async {
@@ -177,7 +177,7 @@ class CollEventServices extends DbAccess {
   }
 }
 
-class EventDuplicateService extends DbAccess {
+class EventDuplicateService extends AppServices {
   const EventDuplicateService({required super.ref});
 
   CollEventServices get collEventServices => CollEventServices(ref: ref);
@@ -279,7 +279,7 @@ class CollEventSearchServices {
   }
 }
 
-class CollEvenPersonnelServices extends DbAccess {
+class CollEvenPersonnelServices extends AppServices {
   const CollEvenPersonnelServices({required super.ref});
 
   Future<void> getAllRoles() async {
@@ -317,7 +317,7 @@ class CollEvenPersonnelServices extends DbAccess {
   }
 }
 
-class CollMethodServices extends DbAccess {
+class CollMethodServices extends AppServices {
   const CollMethodServices({required super.ref});
 
   Future<void> getAllMethods() async {

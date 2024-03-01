@@ -7,7 +7,7 @@ import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/site_services.dart';
 import 'package:nahpu/services/types/export.dart';
 
-class SiteWriterServices extends DbAccess {
+class SiteWriterServices extends AppServices {
   const SiteWriterServices({
     required super.ref,
   });

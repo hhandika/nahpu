@@ -120,18 +120,7 @@ class AppIOServices {
   }
 }
 
-/// This class is used to access the database
-/// from the service classes.
-class DbAccess {
-  const DbAccess({required this.ref});
-
-  final WidgetRef ref;
-
-  Database get dbAccess => ref.read(databaseProvider);
-  String get currentProjectUuid => ref.read(projectUuidProvider);
-}
-
-class FileServices extends DbAccess {
+class FileServices extends AppServices {
   FileServices({required super.ref});
 
   Future<Directory> get currentProjectDir async {
@@ -162,35 +151,44 @@ class FileServices extends DbAccess {
   }
 }
 
-Future<File> getDbBackUpPath() async {
-  final documentDir = await nahpuDocumentDir;
-  final backupDir = Directory(path.join(documentDir.path, 'nahpu/backup'));
-  await backupDir.create(recursive: true);
-  final backupFile =
-      File(path.join(backupDir.path, 'nahpu_backup$dateTimeStamp.sqlite3'));
-  return backupFile;
-}
+const String nahpuBackupDir = 'nahpu/backup';
+const String nahpuAppDir = 'nahpu';
 
-String get nahpuBackupDir => 'nahpu/backup';
+class AppServices {
+  const AppServices({required this.ref});
+
+  final WidgetRef ref;
+
+  Database get dbAccess => ref.read(databaseProvider);
+
+  String get currentProjectUuid => ref.read(projectUuidProvider);
+
+  Future<File> get backupDir async {
+    final documentDir = await nahpuDocumentDir;
+    final backupDir = Directory(path.join(documentDir.path, nahpuBackupDir));
+    await backupDir.create(recursive: true);
+    final backupFile =
+        File(path.join(backupDir.path, 'nahpu_backup$dateTimeStamp.sqlite3'));
+    return backupFile;
+  }
+
+  Future<Directory> get tempDirectory async {
+    final dbDir = await getApplicationDocumentsDirectory();
+    final tempDir = Directory(path.join(dbDir.path, 'temp'));
+    await tempDir.create(recursive: true);
+    return tempDir;
+  }
+}
 
 Future<Directory> get nahpuDocumentDir async {
   final dbDir = await getApplicationDocumentsDirectory();
-  final nahpuDir = Directory(path.join(dbDir.path, 'nahpu'));
+  final nahpuDir = Directory(path.join(dbDir.path, nahpuAppDir));
   await nahpuDir.create(recursive: true);
   return nahpuDir;
 }
 
-Future<Directory> get tempDirectory async {
-  final dbDir = await getApplicationDocumentsDirectory();
-  final tempDir = Directory(path.join(dbDir.path, 'temp'));
-  await tempDir.create(recursive: true);
-  return tempDir;
-}
-
-class DataUsageServices {
-  const DataUsageServices({required this.ref});
-
-  final WidgetRef ref;
+class DataUsageServices extends AppServices {
+  const DataUsageServices({required super.ref});
 
   Future<String> get appDataUsage async {
     final nahpuDir = await nahpuDocumentDir;

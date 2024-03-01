@@ -5,7 +5,7 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/utility_services.dart';
 
-class MammalianMeasurements extends DbAccess {
+class MammalianMeasurements extends AppServices {
   MammalianMeasurements({
     required super.ref,
     required this.specimenUuid,

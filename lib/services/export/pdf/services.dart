@@ -6,7 +6,7 @@ import 'package:nahpu/services/project_services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-class PdfServices extends DbAccess {
+class PdfServices extends AppServices {
   PdfServices({
     required super.ref,
     required this.pageFormat,

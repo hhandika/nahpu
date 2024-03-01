@@ -12,7 +12,7 @@ import 'package:path/path.dart' as path;
 
 const String mediaDir = 'media';
 
-class ImageServices extends DbAccess {
+class ImageServices extends AppServices {
   const ImageServices({required super.ref, required this.category});
 
   final MediaCategory category;

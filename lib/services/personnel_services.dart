@@ -10,7 +10,7 @@ import 'package:drift/drift.dart' as db;
 import 'package:nahpu/services/utility_services.dart';
 import 'package:path/path.dart' as path;
 
-class PersonnelServices extends DbAccess {
+class PersonnelServices extends AppServices {
   const PersonnelServices({required super.ref});
 
   Future<int> createPersonnel(PersonnelCompanion personnel) async {

@@ -10,7 +10,7 @@ import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/types/import.dart';
 import 'package:path/path.dart';
 
-class NarrativeServices extends DbAccess {
+class NarrativeServices extends AppServices {
   const NarrativeServices({required super.ref});
 
   Future<int> createNewNarrative() async {

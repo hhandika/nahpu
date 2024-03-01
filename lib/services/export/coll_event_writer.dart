@@ -8,7 +8,7 @@ import 'package:nahpu/services/export/common.dart';
 import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/export/site_writer.dart';
 
-class CollEventRecordWriter extends DbAccess {
+class CollEventRecordWriter extends AppServices {
   CollEventRecordWriter({
     required super.ref,
   });

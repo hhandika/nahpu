@@ -13,8 +13,8 @@ import 'package:nahpu/services/types/export.dart';
 import 'package:nahpu/services/types/specimens.dart';
 import 'package:path/path.dart' as path;
 
-class ArchiveServices extends DbAccess {
-  const ArchiveServices({
+class BundleServices extends AppServices {
+  const BundleServices({
     required super.ref,
     required this.outputFile,
     required this.isInaccurateInBrackets,
@@ -26,15 +26,15 @@ class ArchiveServices extends DbAccess {
 
   /// Compressed every file in the project directory
   /// into a single archive
-  Future<void> createArchive() async {
+  Future<void> create() async {
     final projectDir = await FileServices(ref: ref).currentProjectDir;
     projectDir.createSync(recursive: true);
     try {
-      await _writeReport();
-      await _writeNarrativeRecord();
-      await _writeSiteRecord();
-      await _writeCollEventRecord();
-      await _writeSpecimenRecords();
+      final recordPaths = await _writeAllRecords();
+
+      /// TODO: Add media files to the archive
+      /// Handle in Rust.
+      if (kDebugMode) print(recordPaths);
 
       // Create the archive
       ZipFileEncoder encoder = ZipFileEncoder();
@@ -47,17 +47,28 @@ class ArchiveServices extends DbAccess {
     }
   }
 
-  Future<void> _writeReport() async {
+  Future<List<String>> _writeAllRecords() async {
+    final List<String> recordPaths = [];
+    recordPaths.add(await _writeReport());
+    recordPaths.add(await _writeNarrativeRecord());
+    recordPaths.add(await _writeSiteRecord());
+    recordPaths.add(await _writeCollEventRecord());
+    recordPaths.addAll(await _writeSpecimenRecords());
+    return recordPaths;
+  }
+
+  Future<String> _writeReport() async {
     final filePath = await _getSpeciesReportSavePath();
     if (filePath.existsSync()) {
       await filePath.delete();
     }
 
-    return await ReportServices(ref: ref)
+    await ReportServices(ref: ref)
         .writeReport(filePath, ReportType.speciesCount);
+    return filePath.path;
   }
 
-  Future<void> _writeNarrativeRecord() async {
+  Future<String> _writeNarrativeRecord() async {
     final filePath = await _getNarrativeSavePath();
     bool isCsv = true;
     if (filePath.existsSync()) {
@@ -67,9 +78,11 @@ class ArchiveServices extends DbAccess {
       filePath,
       isCsv,
     );
+
+    return filePath.path;
   }
 
-  Future<void> _writeSiteRecord() async {
+  Future<String> _writeSiteRecord() async {
     final filePath = await _getSiteSavePath();
     bool isCsv = true;
     if (filePath.existsSync()) {
@@ -79,9 +92,11 @@ class ArchiveServices extends DbAccess {
       filePath,
       isCsv,
     );
+
+    return filePath.path;
   }
 
-  Future<void> _writeCollEventRecord() async {
+  Future<String> _writeCollEventRecord() async {
     final filePath = await _getCollEventSavePath();
     bool isCsv = true;
     if (filePath.existsSync()) {
@@ -89,10 +104,13 @@ class ArchiveServices extends DbAccess {
     }
     await CollEventRecordWriter(ref: ref)
         .writeCollEventDelimited(filePath, isCsv);
+
+    return filePath.path;
   }
 
-  Future<void> _writeSpecimenRecords() async {
+  Future<List<String>> _writeSpecimenRecords() async {
     final recordType = await _getSpecimenRecordType();
+    List<String> specimenFiles = [];
     if (recordType.contains(SpecimenRecordType.birds)) {
       final File birdDir = await _getBirdSpecimenSavePath();
       await SpecimenRecordWriter(
@@ -100,23 +118,28 @@ class ArchiveServices extends DbAccess {
         recordType: SpecimenRecordType.birds,
         isInaccurateInBrackets: isInaccurateInBrackets,
       ).writeRecordDelimited(birdDir, isCsv);
+      specimenFiles.add(birdDir.path);
     }
     SpecimenRecordType? mammalRecord = _getMammalRecordType(recordType);
     if (mammalRecord != null) {
-      await _writeMammalSpecimenRecord(mammalRecord);
+      final mammalFile = await _writeMammalSpecimenRecord(mammalRecord);
+      specimenFiles.add(mammalFile);
     }
     if (kDebugMode) print(recordType);
+
+    return specimenFiles;
   }
 
-  Future<void> _writeMammalSpecimenRecord(
+  Future<String> _writeMammalSpecimenRecord(
       SpecimenRecordType mammalRecordType) async {
-    final File mammalDir = await _getMammalSpecimenSavePath();
+    final File mammalFile = await _getMammalSpecimenSavePath();
 
     await SpecimenRecordWriter(
       ref: ref,
       recordType: mammalRecordType,
       isInaccurateInBrackets: isInaccurateInBrackets,
-    ).writeRecordDelimited(mammalDir, isCsv);
+    ).writeRecordDelimited(mammalFile, isCsv);
+    return mammalFile.path;
   }
 
   SpecimenRecordType? _getMammalRecordType(

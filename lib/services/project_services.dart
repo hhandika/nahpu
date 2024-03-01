@@ -9,7 +9,7 @@ get uuid => const Uuid().v4();
 
 get defaultCatalog => 'general-mammals';
 
-class ProjectServices extends DbAccess {
+class ProjectServices extends AppServices {
   const ProjectServices({required super.ref});
 
   void createProject(ProjectCompanion form) {

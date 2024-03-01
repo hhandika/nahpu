@@ -14,7 +14,7 @@ import 'package:nahpu/services/types/import.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:path/path.dart' as path;
 
-class MediaServices extends DbAccess {
+class MediaServices extends AppServices {
   const MediaServices({required super.ref});
 
   Future<int> createMedia(MediaCompanion form) {

@@ -7,7 +7,7 @@ import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/types/export.dart';
 
-class SpecimenPartWriter extends DbAccess {
+class SpecimenPartWriter extends AppServices {
   const SpecimenPartWriter({
     required super.ref,
   });
@@ -51,7 +51,7 @@ class SpecimenPartWriter extends DbAccess {
   }
 }
 
-class SpecimenPartWriterServices extends DbAccess {
+class SpecimenPartWriterServices extends AppServices {
   const SpecimenPartWriterServices({
     required super.ref,
     required this.isWithLabel,
