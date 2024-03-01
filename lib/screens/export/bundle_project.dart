@@ -9,6 +9,7 @@ import 'package:nahpu/services/export/archive_writer.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/platform_services.dart';
+import 'package:path/path.dart' as p;
 
 class BundleProjectForm extends ConsumerStatefulWidget {
   const BundleProjectForm({super.key});
@@ -159,7 +160,7 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
         SnackBar(
           content: systemPlatform == PlatformType.desktop
               ? Text('Done!\n'
-                  '$_savePath')
+                  '${p.basename(_savePath.path)}\n')
               : const Text('Done!'),
           duration: const Duration(seconds: 8),
         ),
@@ -172,14 +173,10 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
   }
 
   void _showError(String errors) {
-    Navigator.of(context).pop();
+    Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(
-          errors.contains('SqliteException(787)')
-              ? 'Failed to delete the events.'
-              : errors,
-        ),
+        content: Text(errors),
       ),
     );
   }
