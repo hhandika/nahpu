@@ -6,9 +6,11 @@ on:
       - v*
 
 jobs:
-  windows:
-    name: Windows x86_64
-    runs-on: windows-latest
+  release:
+    strategy:
+      matrix:
+        os: ["windows-latest", "ubuntu-latest"]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout sources
         uses: actions/checkout@v3
@@ -27,27 +29,63 @@ jobs:
           flutter pub get
           flutter analyze
 
-      - name: Build release
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+
+      - name: Build
         uses: subosito/flutter-action@v2
-      - run: |
+      - if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install clang cmake git ninja-build pkg-config libgtk-3-dev liblzma-dev libstdc++-12-dev
+          flutter build linux --release
+      - if: ${{ matrix.os == 'windows-latest' }}
+        run: |
           flutter build windows --release
           flutter build apk --release
 
-      - name: Compress Windows release
-        run: powershell Compress-Archive -Path build\windows\runner\Release -DestinationPath nahpu.zip
+      - name: Compress Linux
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: |
+          echo "Compressing files..."
+          mkdir nahpu
+          mv build/linux/x64/release/bundle/* nahpu
+          tar -czvf nahpu.tar.gz nahpu
 
-      - name: Upload Windows release
+      - name: Compress Windows
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: |
+          echo "Creating folder..."
+          mkdir nahpu
+          echo "Compressing files..."
+          mv build\windows\x64\runner\Release\* nahpu
+          powershell Compress-Archive -Path nahpu -DestinationPath nahpu.zip
+
+      - name: Upload linux
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: nahpu.tar.gz
+          asset_name: nahpu-Linux-x86_64.tar.gz
+          tag: ${{ github.ref_name }}
+
+      - name: Upload windows
+        if: ${{ matrix.os == 'windows-latest' }}
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: nahpu.zip
-          asset_name: nahpu-windows-x86_64.zip
-          tag: ${{ github.ref }}
+          asset_name: nahpu-Windows-x86_64.zip
+          tag: ${{ github.ref_name }}
 
-      - name: Upload Android release
+      - name: Upload android
+        if: ${{ matrix.os == 'windows-latest' }}
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build\app\outputs\flutter-apk\app-release.apk
-          asset_name: nahpu-android.apk
-          tag: ${{ github.ref }}
+          file: build/app/outputs/flutter-apk/app-release.apk
+          asset_name: nahpu-Android.apk
+          tag: ${{ github.ref_name }}
