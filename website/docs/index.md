@@ -1,14 +1,11 @@
 ---
 sidebar_position: 1
+title: Introduction
 ---
-
-# Welcome to NAHPU
 
 **_Rethinking Biodiversity Inventory in the Digital Age_**
 
-NAHPU is a cross-platform field cataloging app for managing biological specimens. It is designed to be used by students and staffs of natural history collection and other institutions that collect and manage biological specimens.
-
-NAHPU is a free and open source project, and is currently available in [beta](./installation). Current version supports mammal and bird specimens. We are working on adding support herpetofauna and fishes.
+NAHPU is a cross-platform field cataloging app for managing biological specimens. The app streamlines data processing and management from fieldwork to museum curation. NAHPU is a free and open source project, and is currently available in [beta](./installation). Current version supports mammal and bird specimens. We are working on adding support herpetofauna and fishes.
 
 ## Why NAHPU?
 
