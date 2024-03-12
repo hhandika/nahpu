@@ -7,33 +7,40 @@ import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 class ZipWriter {
-  final String outputPath;
+  final String parentDir;
   final List<String> files;
+  final String outputPath;
 
   const ZipWriter({
-    required this.outputPath,
+    required this.parentDir,
     required this.files,
+    required this.outputPath,
   });
 
   static Future<ZipWriter> newZipWriter(
-          {required String outputPath,
+          {required String parentDir,
           required List<String> files,
+          required String outputPath,
           dynamic hint}) =>
-      RustLib.instance.api
-          .zipWriterNew(outputPath: outputPath, files: files, hint: hint);
+      RustLib.instance.api.zipWriterNew(
+          parentDir: parentDir,
+          files: files,
+          outputPath: outputPath,
+          hint: hint);
 
   Future<void> write({dynamic hint}) => RustLib.instance.api.zipWriterWrite(
         that: this,
       );
 
   @override
-  int get hashCode => outputPath.hashCode ^ files.hashCode;
+  int get hashCode => parentDir.hashCode ^ files.hashCode ^ outputPath.hashCode;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is ZipWriter &&
           runtimeType == other.runtimeType &&
-          outputPath == other.outputPath &&
-          files == other.files;
+          parentDir == other.parentDir &&
+          files == other.files &&
+          outputPath == other.outputPath;
 }

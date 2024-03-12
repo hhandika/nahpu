@@ -35,7 +35,11 @@ class BundleServices extends AppServices {
       /// TODO: Add media files to the archive
       if (kDebugMode) print(recordPaths);
 
-      await ZipWriter(outputPath: outputFile.path, files: recordPaths).write();
+      await ZipWriter(
+        parentDir: projectDir.path,
+        files: recordPaths,
+        outputPath: outputFile.path,
+      ).write();
 
       // // Create the archive
       // ZipFileEncoder encoder = ZipFileEncoder();

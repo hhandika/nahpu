@@ -159,8 +159,7 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: systemPlatform == PlatformType.desktop
-              ? Text('Done!\n'
-                  '${p.basename(_savePath.path)}\n')
+              ? Text('Finished creating bundle: ${p.basename(_savePath.path)}')
               : const Text('Done!'),
           duration: const Duration(seconds: 8),
         ),

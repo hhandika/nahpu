@@ -60,14 +60,16 @@ fn wire_ZipWriter_new_impl(
             };
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
-            let api_output_path = <String>::sse_decode(&mut deserializer);
+            let api_parent_dir = <String>::sse_decode(&mut deserializer);
             let api_files = <Vec<String>>::sse_decode(&mut deserializer);
+            let api_output_path = <String>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| {
                 transform_result_sse((move || {
                     Result::<_, ()>::Ok(crate::api::archive::ZipWriter::new(
-                        api_output_path,
+                        api_parent_dir,
                         api_files,
+                        api_output_path,
                     ))
                 })())
             }
@@ -215,11 +217,13 @@ impl SseDecode for () {
 impl SseDecode for crate::api::archive::ZipWriter {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_outputPath = <String>::sse_decode(deserializer);
+        let mut var_parentDir = <String>::sse_decode(deserializer);
         let mut var_files = <Vec<String>>::sse_decode(deserializer);
+        let mut var_outputPath = <String>::sse_decode(deserializer);
         return crate::api::archive::ZipWriter {
-            output_path: var_outputPath,
+            parent_dir: var_parentDir,
             files: var_files,
+            output_path: var_outputPath,
         };
     }
 }
@@ -273,8 +277,9 @@ fn pde_ffi_dispatcher_sync_impl(
 impl flutter_rust_bridge::IntoDart for crate::api::archive::ZipWriter {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
-            self.output_path.into_into_dart().into_dart(),
+            self.parent_dir.into_into_dart().into_dart(),
             self.files.into_into_dart().into_dart(),
+            self.output_path.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -333,8 +338,9 @@ impl SseEncode for () {
 impl SseEncode for crate::api::archive::ZipWriter {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.output_path, serializer);
+        <String>::sse_encode(self.parent_dir, serializer);
         <Vec<String>>::sse_encode(self.files, serializer);
+        <String>::sse_encode(self.output_path, serializer);
     }
 }
 

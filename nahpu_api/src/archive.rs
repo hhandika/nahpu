@@ -6,13 +6,22 @@ use std::{
 };
 
 pub struct ZipArchive<'a> {
-    pub output_path: &'a Path,
+    /// The parent directory of the files to be archived.
+    /// This is used to create the directory structure in the archive.
+    pub parent_dir: &'a Path,
+    /// The files to be archived.
     pub files: &'a [PathBuf],
+    /// The path to the output file.
+    pub output_path: &'a Path,
 }
 
 impl<'a> ZipArchive<'a> {
-    pub fn new(output_path: &'a Path, files: &'a [PathBuf]) -> Self {
-        Self { output_path, files }
+    pub fn new(parent_dir: &'a Path, output_path: &'a Path, files: &'a [PathBuf]) -> Self {
+        Self {
+            parent_dir,
+            files,
+            output_path,
+        }
     }
 
     pub fn write(&self) -> Result<(), std::io::Error> {
@@ -21,19 +30,26 @@ impl<'a> ZipArchive<'a> {
             zip::write::FileOptions::default().compression_method(zip::CompressionMethod::Deflated);
 
         for file in self.files {
-            let file_name = file
-                .file_name()
-                .expect("Failed getting file names")
-                .to_str()
-                .expect("Failed converting file names");
-            zip.start_file(file_name, options)?;
+            let file_path = self.parse_file_path(file);
             let inner = std::fs::File::open(file)?;
             let mut buff = BufReader::new(inner);
+            zip.start_file(file_path, options)?;
             std::io::copy(&mut buff, &mut zip)?;
         }
 
         zip.finish()?;
 
         Ok(())
+    }
+
+    fn parse_file_path(&self, file: &Path) -> String {
+        let file_name = Path::new(file.file_name().unwrap_or_else(|| {
+            panic!("Failed parsing file name: {:?}", file);
+        }));
+        let file_path = file.strip_prefix(self.parent_dir).unwrap_or(file_name);
+        file_path
+            .to_str()
+            .expect("Failed parsing file path")
+            .to_string()
     }
 }

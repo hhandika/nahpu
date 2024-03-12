@@ -1,25 +1,27 @@
-//! Rust FRB Boilerplate to access the archieve API
-
+//! Rust FRB Boilerplate to access the archive API
 use nahpu_api::archive::ZipArchive;
+use std::path::{Path, PathBuf};
 
 pub struct ZipWriter {
-    pub output_path: String,
+    pub parent_dir: String,
     pub files: Vec<String>,
+    pub output_path: String,
 }
 
 impl ZipWriter {
-    pub fn new(output_path: String, files: Vec<String>) -> Self {
-        Self { output_path, files }
+    pub fn new(parent_dir: String, files: Vec<String>, output_path: String) -> Self {
+        Self {
+            parent_dir,
+            files,
+            output_path,
+        }
     }
 
     pub fn write(&self) {
-        let files: Vec<std::path::PathBuf> = self
-            .files
-            .iter()
-            .map(|f| std::path::PathBuf::from(f))
-            .collect();
-        let output_path = std::path::Path::new(&self.output_path);
-        let zip = ZipArchive::new(output_path, &files);
+        let files: Vec<std::path::PathBuf> = self.files.iter().map(PathBuf::from).collect();
+        let output_path = Path::new(&self.output_path);
+        let parent_dir = Path::new(&self.parent_dir);
+        let zip = ZipArchive::new(parent_dir, output_path, &files);
         zip.write().expect("Failed writing zip file");
     }
 }

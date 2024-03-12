@@ -66,7 +66,10 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 
 abstract class RustLibApi extends BaseApi {
   Future<ZipWriter> zipWriterNew(
-      {required String outputPath, required List<String> files, dynamic hint});
+      {required String parentDir,
+      required List<String> files,
+      required String outputPath,
+      dynamic hint});
 
   Future<void> zipWriterWrite({required ZipWriter that, dynamic hint});
 
@@ -85,12 +88,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @override
   Future<ZipWriter> zipWriterNew(
-      {required String outputPath, required List<String> files, dynamic hint}) {
+      {required String parentDir,
+      required List<String> files,
+      required String outputPath,
+      dynamic hint}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_String(outputPath, serializer);
+        sse_encode_String(parentDir, serializer);
         sse_encode_list_String(files, serializer);
+        sse_encode_String(outputPath, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
             funcId: 1, port: port_);
       },
@@ -99,7 +106,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeErrorData: null,
       ),
       constMeta: kZipWriterNewConstMeta,
-      argValues: [outputPath, files],
+      argValues: [parentDir, files, outputPath],
       apiImpl: this,
       hint: hint,
     ));
@@ -107,7 +114,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   TaskConstMeta get kZipWriterNewConstMeta => const TaskConstMeta(
         debugName: "ZipWriter_new",
-        argNames: ["outputPath", "files"],
+        argNames: ["parentDir", "files", "outputPath"],
       );
 
   @override
@@ -222,11 +229,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ZipWriter dco_decode_zip_writer(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 2)
-      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
     return ZipWriter(
-      outputPath: dco_decode_String(arr[0]),
+      parentDir: dco_decode_String(arr[0]),
       files: dco_decode_list_String(arr[1]),
+      outputPath: dco_decode_String(arr[2]),
     );
   }
 
@@ -276,9 +284,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   ZipWriter sse_decode_zip_writer(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_outputPath = sse_decode_String(deserializer);
+    var var_parentDir = sse_decode_String(deserializer);
     var var_files = sse_decode_list_String(deserializer);
-    return ZipWriter(outputPath: var_outputPath, files: var_files);
+    var var_outputPath = sse_decode_String(deserializer);
+    return ZipWriter(
+        parentDir: var_parentDir, files: var_files, outputPath: var_outputPath);
   }
 
   @protected
@@ -337,8 +347,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   void sse_encode_zip_writer(ZipWriter self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.outputPath, serializer);
+    sse_encode_String(self.parentDir, serializer);
     sse_encode_list_String(self.files, serializer);
+    sse_encode_String(self.outputPath, serializer);
   }
 
   @protected
