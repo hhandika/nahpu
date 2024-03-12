@@ -175,10 +175,7 @@ class AppServices {
   }
 
   Future<Directory> get tempDirectory async {
-    final dbDir = await getApplicationDocumentsDirectory();
-    final tempDir = Directory(path.join(dbDir.path, 'temp'));
-    await tempDir.create(recursive: true);
-    return tempDir;
+    return await getTemporaryDirectory();
   }
 
   Directory getMediaDir(MediaCategory category) {

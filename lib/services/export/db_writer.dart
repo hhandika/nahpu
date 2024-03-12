@@ -19,7 +19,7 @@ class DbWriter extends AppServices {
   /// If [isWithProjectData] is true, the project data will be included
   /// and the file will be zipped
   Future<File> writeDb(bool isWithProjectData) async {
-    dbAccess.exportInto(filePath);
+    await dbAccess.exportInto(filePath);
     if (isWithProjectData) {
       String archivePath = p.setExtension(filePath.path, '.zip');
       await _archiveProjectData(filePath, archivePath);
