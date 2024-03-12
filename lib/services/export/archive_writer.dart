@@ -7,10 +7,10 @@ import 'package:nahpu/services/export/record_writer.dart';
 import 'package:nahpu/services/export/report_writer.dart';
 import 'package:nahpu/services/export/site_writer.dart';
 import 'package:nahpu/services/io_services.dart';
-import 'package:archive/archive_io.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/types/export.dart';
 import 'package:nahpu/services/types/specimens.dart';
+import 'package:nahpu/src/rust/api/archive.dart';
 import 'package:path/path.dart' as path;
 
 class BundleServices extends AppServices {
@@ -33,15 +33,16 @@ class BundleServices extends AppServices {
       final recordPaths = await _writeAllRecords();
 
       /// TODO: Add media files to the archive
-      /// Handle in Rust.
       if (kDebugMode) print(recordPaths);
 
-      // Create the archive
-      ZipFileEncoder encoder = ZipFileEncoder();
-      encoder.zipDirectory(
-        projectDir,
-        filename: outputFile.path,
-      );
+      await ZipWriter(outputPath: outputFile.path, files: recordPaths).write();
+
+      // // Create the archive
+      // ZipFileEncoder encoder = ZipFileEncoder();
+      // encoder.zipDirectory(
+      //   projectDir,
+      //   filename: outputFile.path,
+      // );
     } catch (e) {
       throw Exception('Error creating archive: $e');
     }
