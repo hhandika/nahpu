@@ -26,14 +26,16 @@ impl<'a> ZipArchive<'a> {
 
     pub fn write(&self) -> Result<(), std::io::Error> {
         let mut zip = zip::ZipWriter::new(std::fs::File::create(self.output_path)?);
-        let options =
-            zip::write::FileOptions::default().compression_method(zip::CompressionMethod::Deflated);
+        let options = zip::write::FileOptions::default()
+            .compression_method(zip::CompressionMethod::Deflated)
+            .large_file(true);
 
         for file in self.files {
             let file_path = self.parse_file_path(file);
             let inner = std::fs::File::open(file)?;
             let mut buff = BufReader::new(inner);
             zip.start_file(file_path, options)?;
+
             std::io::copy(&mut buff, &mut zip)?;
         }
 

@@ -153,7 +153,7 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
         ext: _dbExtension,
       ).getSavePath();
       final currentSavePath =
-          await DbWriter(ref: ref, filePath: _savePath).writeDb(
+          await DbArchive(ref: ref, filePath: _savePath).writeDb(
         _isWithProjectData,
       );
       setState(() {
@@ -186,6 +186,7 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: ErrorText(error: errors),
+        duration: const Duration(seconds: 10),
       ),
     );
   }
