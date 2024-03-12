@@ -8,6 +8,7 @@ import 'package:nahpu/services/media_services.dart';
 import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/types/file_format.dart';
+import 'package:nahpu/services/types/import.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/providers/projects.dart';
@@ -153,6 +154,7 @@ class FileServices extends AppServices {
 
 const String nahpuBackupDir = 'nahpu/backup';
 const String nahpuAppDir = 'nahpu';
+const String mediaDir = 'media';
 
 class AppServices {
   const AppServices({required this.ref});
@@ -177,6 +179,23 @@ class AppServices {
     final tempDir = Directory(path.join(dbDir.path, 'temp'));
     await tempDir.create(recursive: true);
     return tempDir;
+  }
+
+  Directory getMediaDir(MediaCategory category) {
+    switch (category) {
+      case MediaCategory.site:
+        return Directory('$mediaDir/site');
+      case MediaCategory.specimen:
+        return Directory('$mediaDir/specimen');
+      case MediaCategory.narrative:
+        return Directory('$mediaDir/narrative');
+      case MediaCategory.personnel:
+        // Personnel media is stored in the app directory
+        // in lieu of the project directory
+        return Directory('appMedia/personnel');
+      default:
+        throw Exception('Unsupported media category');
+    }
   }
 }
 

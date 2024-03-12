@@ -10,8 +10,6 @@ import 'package:nahpu/services/utility_services.dart';
 import 'package:nahpu/services/types/file_format.dart';
 import 'package:path/path.dart' as path;
 
-const String mediaDir = 'media';
-
 class ImageServices extends AppServices {
   const ImageServices({required super.ref, required this.category});
 
@@ -19,13 +17,13 @@ class ImageServices extends AppServices {
 
   Future<File> getMediaPath(String filePath) async {
     Directory projectDir = await FileServices(ref: ref).currentProjectDir;
-    Directory mediaDir = _getMediaDir();
+    Directory mediaDir = getMediaDir(category);
     String fullPath = path.join(projectDir.path, mediaDir.path, filePath);
     return File(fullPath);
   }
 
   Future<File> getPersonnelMediaPath(String filePath) async {
-    Directory mediaDir = _getMediaDir();
+    Directory mediaDir = getMediaDir(category);
     Directory appDir = await nahpuDocumentDir;
     String fullPath = path.join(appDir.path, mediaDir.path, filePath);
     return File(fullPath);
@@ -90,27 +88,11 @@ class ImageServices extends AppServices {
   Future<File> _copySingleFile(String path) async {
     File file = File(path);
     File newPath = category == MediaCategory.personnel
-        ? await FileServices(ref: ref).copyFileToAppDir(file, _getMediaDir())
+        ? await FileServices(ref: ref)
+            .copyFileToAppDir(file, getMediaDir(category))
         : await FileServices(ref: ref)
-            .copyFileToProjectDir(file, _getMediaDir());
+            .copyFileToProjectDir(file, getMediaDir(category));
     return newPath;
-  }
-
-  Directory _getMediaDir() {
-    switch (category) {
-      case MediaCategory.site:
-        return Directory('$mediaDir/site');
-      case MediaCategory.specimen:
-        return Directory('$mediaDir/specimen');
-      case MediaCategory.narrative:
-        return Directory('$mediaDir/narrative');
-      case MediaCategory.personnel:
-        // Personnel media is stored in the app directory
-        // in lieu of the project directory
-        return Directory('appMedia/personnel');
-      default:
-        throw Exception('Unsupported media category');
-    }
   }
 }
 

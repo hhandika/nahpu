@@ -94,6 +94,8 @@ class MediaServices extends AppServices {
         break;
       case MediaCategory.personnel:
         break;
+      default:
+        break;
     }
     _invalidateMedia(category);
   }
@@ -109,7 +111,7 @@ class MediaServices extends AppServices {
       case MediaCategory.specimen:
         ref.invalidate(specimenMediaProvider);
         break;
-      case MediaCategory.personnel:
+      default:
         break;
     }
   }

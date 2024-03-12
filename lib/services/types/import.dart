@@ -92,8 +92,9 @@ const List<TaxonEntryHeader> requiredTaxonImportHeaders = [
   TaxonEntryHeader.specificEpithet,
 ];
 
-enum MediaCategory { site, narrative, specimen, personnel }
+enum MediaCategory { site, narrative, specimen, personnel, all }
 
+/// Returns the string representation of the media category
 String matchMediaCategory(MediaCategory category) {
   switch (category) {
     case MediaCategory.site:
