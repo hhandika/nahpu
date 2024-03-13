@@ -21,18 +21,32 @@ class DbArchive extends AppServices {
   /// If [isWithProjectData] is true, the project data will be included
   /// and the file will be zipped
   Future<File> writeDb(bool isWithProjectData) async {
-    await dbAccess.exportInto(filePath);
+    final nahpuDir = await nahpuDocumentDir;
+    final dbPath = await _writeSqlite(nahpuDir, isWithProjectData);
+
     if (isWithProjectData) {
-      final nahpuDir = await nahpuDocumentDir;
       String archivePath = p.setExtension(filePath.path, '.zip');
       List<String> allAppFiles = await _collectAppFiles(nahpuDir);
-      allAppFiles.add(filePath.path);
+      allAppFiles.add(dbPath.path);
+      if (kDebugMode) print('Archiving files: ${allAppFiles.length}');
+      await _archiveFiles(nahpuDir, allAppFiles, archivePath);
       // Delete the newly created database file
-      filePath.deleteSync();
-      await _archiveFiles(nahpuDir, allAppFiles, filePath.path);
+      dbPath.deleteSync();
       return File(archivePath);
     }
     return filePath;
+  }
+
+  Future<File> _writeSqlite(Directory nahpuDir, bool withProjectData) async {
+    if (withProjectData) {
+      final fileName = p.basename(filePath.path);
+      final outputPath = File(p.join(nahpuDir.path, fileName));
+      await dbAccess.exportInto(outputPath);
+      return outputPath;
+    } else {
+      await dbAccess.exportInto(filePath);
+      return filePath;
+    }
   }
 
   Future<List<String>> _collectAppFiles(Directory nahpuDir) async {
@@ -45,12 +59,15 @@ class DbArchive extends AppServices {
     List<String> files,
     String archivePath,
   ) async {
-    final archive = ZipWriter(
-      parentDir: nahpuDir.path,
-      files: files,
-      outputPath: archivePath,
-    );
-    await archive.write();
+    try {
+      await ZipWriter(
+        parentDir: nahpuDir.path,
+        files: files,
+        outputPath: archivePath,
+      ).write();
+    } catch (e) {
+      throw Exception('Error creating archive: $e');
+    }
   }
 }
 

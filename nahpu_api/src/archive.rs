@@ -35,7 +35,7 @@ impl<'a> ZipArchive<'a> {
     }
 
     pub fn write(&self) -> Result<(), std::io::Error> {
-        let mut zip = zip::ZipWriter::new(std::fs::File::create(self.output_path)?);
+        let mut zip = zip::ZipWriter::new(std::fs::File::create(self.output_path).unwrap());
         let options = zip::write::FileOptions::default()
             .compression_method(zip::CompressionMethod::Deflated)
             .large_file(true);
@@ -50,7 +50,6 @@ impl<'a> ZipArchive<'a> {
         }
 
         zip.finish()?;
-
         Ok(())
     }
 

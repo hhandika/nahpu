@@ -130,8 +130,16 @@ class MediaFinder extends AppServices {
     final List<MediaData> mediaList =
         await MediaServices(ref: ref).getAllMedia();
     final mediaPath = await _getAllPathForMedia(mediaList);
+
     final personnelPath = await getAllPersonnelMedia();
-    return mediaPath + personnelPath;
+    if (kDebugMode) {
+      print('Found ${mediaPath.length} media files');
+      print('Found ${personnelPath.length} personnel files');
+    }
+    return [
+      ...mediaPath,
+      ...personnelPath,
+    ];
   }
 
   Future<List<File>> getAllPersonnelMedia() async {
