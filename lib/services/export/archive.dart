@@ -14,8 +14,8 @@ import 'package:nahpu/services/types/specimens.dart';
 import 'package:nahpu/src/rust/api/archive.dart';
 import 'package:path/path.dart' as path;
 
-class BundleServices extends AppServices {
-  const BundleServices({
+class BundleWriter extends AppServices {
+  const BundleWriter({
     required super.ref,
     required this.outputFile,
     required this.isInaccurateInBrackets,

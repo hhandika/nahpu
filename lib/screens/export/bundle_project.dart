@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/file_operation.dart';
-import 'package:nahpu/services/export/archive_writer.dart';
+import 'package:nahpu/services/export/archive.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/platform_services.dart';
@@ -119,7 +119,7 @@ class BundleProjectFormState extends ConsumerState<BundleProjectForm> {
       fileStem: _fileStem,
       ext: 'zip',
     ).getSavePath();
-    final archiveServices = BundleServices(
+    final archiveServices = BundleWriter(
       ref: ref,
       outputFile: _savePath,
       isInaccurateInBrackets: _isInaccurateInBrackets,
