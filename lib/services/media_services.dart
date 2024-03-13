@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:nahpu/providers/narrative.dart';
-import 'package:nahpu/providers/sites.dart';
-import 'package:nahpu/providers/specimens.dart';
+import 'package:nahpu/services/providers/narrative.dart';
+import 'package:nahpu/services/providers/sites.dart';
+import 'package:nahpu/services/providers/specimens.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/media_queries.dart';
 import 'package:nahpu/services/database/narrative_queries.dart';

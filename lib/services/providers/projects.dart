@@ -3,7 +3,7 @@
 library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/providers/database.dart';
+import 'package:nahpu/services/providers/database.dart';
 import 'package:nahpu/services/database/database.dart' as db;
 import 'package:nahpu/services/database/project_queries.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

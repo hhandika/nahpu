@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/types/controllers.dart';
-import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/services/providers/projects.dart';
 import 'package:nahpu/screens/projects/components/project_form.dart';
 import 'package:nahpu/services/database/database.dart';
 

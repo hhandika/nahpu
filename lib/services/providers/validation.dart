@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:nahpu/providers/database.dart';
+import 'package:nahpu/services/providers/database.dart';
 import 'package:nahpu/services/database/project_queries.dart';
 import 'package:nahpu/services/project_services.dart';
 import 'package:nahpu/services/types/controllers.dart';

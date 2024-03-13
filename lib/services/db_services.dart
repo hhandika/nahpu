@@ -1,4 +1,4 @@
-import 'package:nahpu/providers/settings.dart';
+import 'package:nahpu/services/providers/settings.dart';
 import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/io_services.dart';

@@ -1,5 +1,5 @@
-import 'package:nahpu/providers/projects.dart';
-import 'package:nahpu/providers/validation.dart';
+import 'package:nahpu/services/providers/projects.dart';
+import 'package:nahpu/services/providers/validation.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/project_queries.dart';
 import 'package:nahpu/services/io_services.dart';

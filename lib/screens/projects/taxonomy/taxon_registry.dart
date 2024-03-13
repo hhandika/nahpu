@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/providers/taxa.dart';
+import 'package:nahpu/services/providers/taxa.dart';
 import 'package:nahpu/screens/projects/taxonomy/import_taxa.dart';
 import 'package:nahpu/screens/projects/taxonomy/new_taxa.dart';
 import 'package:nahpu/screens/projects/taxonomy/taxon_list.dart';
-import 'package:nahpu/providers/specimens.dart';
+import 'package:nahpu/services/providers/specimens.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/common.dart';

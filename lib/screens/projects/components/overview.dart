@@ -1,6 +1,6 @@
 import 'package:nahpu/screens/projects/project_info.dart';
 import 'package:flutter/material.dart';
-import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/services/providers/projects.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/common.dart';

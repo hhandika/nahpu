@@ -1,5 +1,5 @@
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:nahpu/providers/personnel.dart';
+import 'package:nahpu/services/providers/personnel.dart';
 import 'package:nahpu/screens/projects/personnel/add_personnel.dart';
 import 'package:nahpu/screens/projects/personnel/avatars.dart';
 import 'package:nahpu/screens/projects/personnel/new_personnel.dart';

@@ -5,7 +5,7 @@ import 'package:nahpu/services/platform_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/utility_services.dart';
 import 'package:flutter/material.dart';
-import 'package:nahpu/providers/settings.dart';
+import 'package:nahpu/services/providers/settings.dart';
 
 class ApplicationSettings extends ConsumerWidget {
   const ApplicationSettings({super.key});

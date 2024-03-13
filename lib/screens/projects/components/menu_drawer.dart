@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/services/providers/projects.dart';
 import 'package:nahpu/screens/export/bundle_project.dart';
 import 'package:nahpu/screens/export/export_db.dart';
 import 'package:nahpu/screens/export/export_pdf.dart';

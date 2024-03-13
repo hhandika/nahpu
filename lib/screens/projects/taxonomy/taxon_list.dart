@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/providers/taxa.dart';
+import 'package:nahpu/services/providers/taxa.dart';
 import 'package:nahpu/screens/projects/taxonomy/new_taxa.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/common.dart';

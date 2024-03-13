@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/providers/narrative.dart';
+import 'package:nahpu/services/providers/narrative.dart';
 import 'package:nahpu/screens/shared/media.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/import/multimedia.dart';

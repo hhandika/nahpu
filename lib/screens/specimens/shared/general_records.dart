@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/providers/personnel.dart';
-import 'package:nahpu/providers/taxa.dart';
+import 'package:nahpu/services/providers/personnel.dart';
+import 'package:nahpu/services/providers/taxa.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:nahpu/services/types/specimens.dart';

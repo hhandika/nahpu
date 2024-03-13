@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:geolocator/geolocator.dart';
-import 'package:nahpu/providers/sites.dart';
+import 'package:nahpu/services/providers/sites.dart';
 import 'package:nahpu/services/database/coordinate_queries.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/media_queries.dart';

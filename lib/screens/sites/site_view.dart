@@ -5,7 +5,7 @@ import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/navigation_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
-import 'package:nahpu/providers/sites.dart';
+import 'package:nahpu/services/providers/sites.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/navigation.dart';
 import 'package:nahpu/screens/sites/components/menu_bar.dart';

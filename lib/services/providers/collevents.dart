@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:nahpu/providers/database.dart';
-import 'package:nahpu/providers/settings.dart';
+import 'package:nahpu/services/providers/database.dart';
+import 'package:nahpu/services/providers/settings.dart';
 import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database/collevent_queries.dart';
 import 'package:nahpu/services/database/database.dart';
-import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/services/providers/projects.dart';
 import 'package:nahpu/services/types/collecting.dart';
 import 'package:nahpu/services/utility_services.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

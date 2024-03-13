@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/providers/collevents.dart';
+import 'package:nahpu/services/providers/collevents.dart';
 import 'package:nahpu/screens/settings/common.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/collevent_services.dart';

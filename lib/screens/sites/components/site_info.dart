@@ -3,7 +3,7 @@ import 'package:drift/drift.dart' as db;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/screens/shared/fields.dart';
-import 'package:nahpu/providers/personnel.dart';
+import 'package:nahpu/services/providers/personnel.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/database/database.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/providers/database.dart';
-import 'package:nahpu/providers/specimens.dart';
+import 'package:nahpu/services/providers/database.dart';
+import 'package:nahpu/services/providers/specimens.dart';
 import 'package:nahpu/screens/shared/features.dart';
 import 'package:nahpu/screens/specimens/specimen_view.dart';
 import 'package:nahpu/services/specimen_services.dart';

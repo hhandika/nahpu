@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/providers/personnel.dart';
-import 'package:nahpu/providers/taxa.dart';
+import 'package:nahpu/services/providers/personnel.dart';
+import 'package:nahpu/services/providers/taxa.dart';
 import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database/collevent_queries.dart';
 import 'package:nahpu/services/database/media_queries.dart';
@@ -10,8 +10,8 @@ import 'package:nahpu/services/database/taxonomy_queries.dart';
 import 'package:nahpu/services/import/multimedia.dart';
 import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/types/specimens.dart';
-import 'package:nahpu/providers/specimens.dart';
-import 'package:nahpu/providers/settings.dart';
+import 'package:nahpu/services/providers/specimens.dart';
+import 'package:nahpu/services/providers/settings.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/personnel_queries.dart';
 import 'package:nahpu/services/database/specimen_queries.dart';

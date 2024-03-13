@@ -7,7 +7,7 @@ import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/navigation_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
-import 'package:nahpu/providers/collevents.dart';
+import 'package:nahpu/services/providers/collevents.dart';
 import 'package:nahpu/screens/events/event_form.dart';
 import 'package:nahpu/screens/events/components/menu_bar.dart';
 import 'package:nahpu/screens/shared/common.dart';

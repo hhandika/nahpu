@@ -5,7 +5,7 @@ import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/collevent_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
-import 'package:nahpu/providers/collevents.dart';
+import 'package:nahpu/services/providers/collevents.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/screens/shared/forms.dart';

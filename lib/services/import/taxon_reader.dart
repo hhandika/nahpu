@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:csv/csv.dart';
 import 'package:csv/csv_settings_autodetection.dart';
-import 'package:nahpu/providers/taxa.dart';
+import 'package:nahpu/services/providers/taxa.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/taxonomy_services.dart';

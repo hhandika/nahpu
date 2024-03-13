@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/src/rust/api/common.dart';
 import 'package:nahpu/src/rust/frb_generated.dart';
 import 'package:nahpu/styles/themes.dart';
-import 'package:nahpu/providers/settings.dart';
+import 'package:nahpu/services/providers/settings.dart';
 import 'package:nahpu/screens/home/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

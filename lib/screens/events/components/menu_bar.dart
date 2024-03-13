@@ -3,7 +3,7 @@ import 'package:nahpu/screens/events/event_view.dart';
 import 'package:nahpu/screens/shared/buttons.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/services/collevent_services.dart';
-import 'package:nahpu/providers/projects.dart';
+import 'package:nahpu/services/providers/projects.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 Future<void> createNewCollEvents(BuildContext context, WidgetRef ref) {

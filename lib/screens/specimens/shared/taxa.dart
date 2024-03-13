@@ -4,7 +4,7 @@ import 'package:nahpu/screens/shared/fields.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/platform_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
-import 'package:nahpu/providers/taxa.dart';
+import 'package:nahpu/services/providers/taxa.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 
