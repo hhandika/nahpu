@@ -24,6 +24,7 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
   bool _hasSelected = false;
   bool _isArchived = false;
   bool _isLoading = false;
+  bool _isSelectingFile = false;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +37,7 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
             sections: [
               DbFileInputField(
                 dbPath: _dbPath,
+                isSelectingFile: _isSelectingFile,
                 onPressed: () async {
                   try {
                     await _getDbPath();
@@ -75,7 +77,7 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
 
   Future<void> _getDbPath() async {
     setState(() {
-      _isLoading = true;
+      _isSelectingFile = true;
     });
     final dbPath = await FilePickerServices().selectAnyFile();
     if (dbPath != null) {
@@ -86,11 +88,11 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
         if (ext == '.zip') {
           _isArchived = true;
         }
-        _isLoading = false;
+        _isSelectingFile = false;
       });
     } else {
       setState(() {
-        _isLoading = false;
+        _isSelectingFile = false;
       });
     }
   }
@@ -155,6 +157,7 @@ class DbFileInputField extends StatelessWidget {
     required this.onCleared,
     required this.onBackupChosen,
     required this.hasSelected,
+    required this.isSelectingFile,
     required this.isLoading,
     required this.onReplaceDb,
   });
@@ -165,6 +168,7 @@ class DbFileInputField extends StatelessWidget {
   final VoidCallback onCleared;
   final void Function(bool) onBackupChosen;
   final bool hasSelected;
+  final bool isSelectingFile;
   final bool isLoading;
   final VoidCallback onReplaceDb;
 
@@ -179,7 +183,7 @@ class DbFileInputField extends StatelessWidget {
             filePath: dbPath,
             width: 460,
             onPressed: onPressed,
-            isLoading: isLoading,
+            isLoading: isSelectingFile,
             onCleared: onCleared,
             supportedFormat: '.sqlite3, nahpu archive (.zip)',
             maxWidth: 460,

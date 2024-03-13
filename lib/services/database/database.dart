@@ -11,12 +11,12 @@ part 'database.g.dart';
 /// The database schema version.
 /// Steps to update the schema:
 /// 1. Write the new schema in the [tables.drift] file.
-/// 2. Write the new schema change at the top of the [tables.drift] file.
+/// 2. Write comments on the new schema changes at the top of the [tables.drift] file.
 /// 3. Dump the new schema by running the script in the [scripts/dump_schema.sh] file.
 /// 4. Use the equivalent schema script if doing it on Windows.
 /// 5. Copy the [tables.drift] to the [db_schemas/drift_tables] directory.
-/// 6. Run the [scripts/codegen.sh] command to generate the new schema.
-/// 7. Update the [kSchemaVersion] to the new version.
+/// 6. Update the [kSchemaVersion] to the new version.
+/// 7. Run the [scripts/codegen.sh] command to generate the new schema.
 /// 8. Write the migration steps in the [migration] method.
 /// 9. Run the app to update the database.
 /// It is a good practice to test the migration steps on a test database before
