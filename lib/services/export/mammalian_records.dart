@@ -27,7 +27,8 @@ class MammalianMeasurements extends AppServices {
         : standardMeasurement;
     String age = data.age != null ? specimenAgeList[data.age!] : '';
     List<String> sexData = _getSexData();
-    return [...measurement, age, ...sexData];
+    String remarks = data.remark ?? '';
+    return [...measurement, age, ...sexData, remarks];
   }
 
   String _getForearm() {

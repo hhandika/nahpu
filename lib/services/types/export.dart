@@ -161,6 +161,7 @@ const mammalMeasurementExportList = [
   'ovaryOpening',
   'mammaeCondition',
   'mammaeFormula',
+  'remark',
 ];
 
 const batMeasurementExportList = [
@@ -178,6 +179,7 @@ const batMeasurementExportList = [
   'ovaryOpening',
   'mammaeCondition',
   'mammaeFormula',
+  'remark',
 ];
 
 const avianMeasurementExportList = [
