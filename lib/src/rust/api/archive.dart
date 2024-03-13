@@ -8,11 +8,13 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 class ZipWriter {
   final String parentDir;
+  final String? altParentDir;
   final List<String> files;
   final String outputPath;
 
   const ZipWriter({
     required this.parentDir,
+    this.altParentDir,
     required this.files,
     required this.outputPath,
   });
@@ -33,7 +35,11 @@ class ZipWriter {
       );
 
   @override
-  int get hashCode => parentDir.hashCode ^ files.hashCode ^ outputPath.hashCode;
+  int get hashCode =>
+      parentDir.hashCode ^
+      altParentDir.hashCode ^
+      files.hashCode ^
+      outputPath.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -41,6 +47,7 @@ class ZipWriter {
       other is ZipWriter &&
           runtimeType == other.runtimeType &&
           parentDir == other.parentDir &&
+          altParentDir == other.altParentDir &&
           files == other.files &&
           outputPath == other.outputPath;
 }

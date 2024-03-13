@@ -214,6 +214,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  String? dco_decode_opt_String(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_String(raw);
+  }
+
+  @protected
   int dco_decode_u_8(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as int;
@@ -229,12 +235,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ZipWriter dco_decode_zip_writer(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 3)
-      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
     return ZipWriter(
       parentDir: dco_decode_String(arr[0]),
-      files: dco_decode_list_String(arr[1]),
-      outputPath: dco_decode_String(arr[2]),
+      altParentDir: dco_decode_opt_String(arr[1]),
+      files: dco_decode_list_String(arr[2]),
+      outputPath: dco_decode_String(arr[3]),
     );
   }
 
@@ -271,6 +278,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  String? sse_decode_opt_String(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_String(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
   int sse_decode_u_8(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getUint8();
@@ -285,10 +303,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ZipWriter sse_decode_zip_writer(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_parentDir = sse_decode_String(deserializer);
+    var var_altParentDir = sse_decode_opt_String(deserializer);
     var var_files = sse_decode_list_String(deserializer);
     var var_outputPath = sse_decode_String(deserializer);
     return ZipWriter(
-        parentDir: var_parentDir, files: var_files, outputPath: var_outputPath);
+        parentDir: var_parentDir,
+        altParentDir: var_altParentDir,
+        files: var_files,
+        outputPath: var_outputPath);
   }
 
   @protected
@@ -334,6 +356,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_opt_String(String? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_String(self, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_u_8(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putUint8(self);
@@ -348,6 +380,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_zip_writer(ZipWriter self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.parentDir, serializer);
+    sse_encode_opt_String(self.altParentDir, serializer);
     sse_encode_list_String(self.files, serializer);
     sse_encode_String(self.outputPath, serializer);
   }

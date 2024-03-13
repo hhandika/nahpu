@@ -9,6 +9,10 @@ pub struct ZipArchive<'a> {
     /// The parent directory of the files to be archived.
     /// This is used to create the directory structure in the archive.
     pub parent_dir: &'a Path,
+    /// Alternative parent directory to be used in the archive.
+    /// This is used to create the directory structure
+    /// if the parent directory is not present.
+    pub alt_parent_dir: Option<&'a Path>,
     /// The files to be archived.
     pub files: &'a [PathBuf],
     /// The path to the output file.
@@ -16,9 +20,15 @@ pub struct ZipArchive<'a> {
 }
 
 impl<'a> ZipArchive<'a> {
-    pub fn new(parent_dir: &'a Path, output_path: &'a Path, files: &'a [PathBuf]) -> Self {
+    pub fn new(
+        parent_dir: &'a Path,
+        alt_parent_dir: Option<&'a Path>,
+        output_path: &'a Path,
+        files: &'a [PathBuf],
+    ) -> Self {
         Self {
             parent_dir,
+            alt_parent_dir,
             files,
             output_path,
         }
@@ -48,7 +58,16 @@ impl<'a> ZipArchive<'a> {
         let file_name = Path::new(file.file_name().unwrap_or_else(|| {
             panic!("Failed parsing file name: {:?}", file);
         }));
-        let file_path = file.strip_prefix(self.parent_dir).unwrap_or(file_name);
+        let prefix = file.strip_prefix(self.parent_dir);
+        let file_path = match prefix {
+            Ok(p) => p,
+            // If the file is not in the parent directory,
+            // use the alternative parent directory.
+            // Otherwise, use the file name.
+            Err(_) => file
+                .strip_prefix(self.alt_parent_dir.unwrap_or(file_name))
+                .unwrap_or(file_name),
+        };
         file_path
             .to_str()
             .expect("Failed parsing file path")

@@ -4,11 +4,11 @@ import 'package:exif/exif.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nahpu/services/io_services.dart';
+import 'package:nahpu/services/media_services.dart';
 import 'package:nahpu/services/platform_services.dart';
 import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/utility_services.dart';
 import 'package:nahpu/services/types/file_format.dart';
-import 'package:path/path.dart' as path;
 
 class ImageServices extends AppServices {
   const ImageServices({required super.ref, required this.category});
@@ -16,17 +16,11 @@ class ImageServices extends AppServices {
   final MediaCategory category;
 
   Future<File> getMediaPath(String filePath) async {
-    Directory projectDir = await FileServices(ref: ref).currentProjectDir;
-    Directory mediaDir = getMediaDir(category);
-    String fullPath = path.join(projectDir.path, mediaDir.path, filePath);
-    return File(fullPath);
+    return MediaFinder(ref: ref).getPathForMedia(filePath, category);
   }
 
   Future<File> getPersonnelMediaPath(String filePath) async {
-    Directory mediaDir = getMediaDir(category);
-    Directory appDir = await nahpuDocumentDir;
-    String fullPath = path.join(appDir.path, mediaDir.path, filePath);
-    return File(fullPath);
+    return await MediaFinder(ref: ref).getPathForPersonnel(filePath, category);
   }
 
   Future<String> pickImageSingle() async {

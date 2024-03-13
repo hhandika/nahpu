@@ -125,9 +125,13 @@ class FileServices extends AppServices {
   FileServices({required super.ref});
 
   Future<Directory> get currentProjectDir async {
+    final projectDir = await getProjectDirByUUID(currentProjectUuid);
+    return projectDir;
+  }
+
+  Future<Directory> getProjectDirByUUID(String projectUuid) async {
     final documentDir = await nahpuDocumentDir;
-    final projectDir =
-        Directory(path.join(documentDir.path, currentProjectUuid));
+    final projectDir = Directory(path.join(documentDir.path, projectUuid));
     return projectDir;
   }
 

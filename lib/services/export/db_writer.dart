@@ -6,6 +6,7 @@ import 'package:archive/archive_io.dart';
 import 'package:flutter/foundation.dart';
 import 'package:nahpu/services/db_services.dart';
 import 'package:nahpu/services/io_services.dart';
+import 'package:nahpu/services/media_services.dart';
 import 'package:nahpu/src/rust/api/archive.dart';
 import 'package:sqlite3/sqlite3.dart' as sqlite3;
 import 'package:nahpu/services/database/database.dart';
@@ -35,17 +36,8 @@ class DbArchive extends AppServices {
   }
 
   Future<List<String>> _collectAppFiles(Directory nahpuDir) async {
-    final files = nahpuDir.listSync(recursive: true);
-    // remove .db file from the list
-    // it redundant to include the database file
-    files.removeWhere((file) => file.path.endsWith('.db'));
-    List<String> filePaths = [];
-    for (var file in files) {
-      if (file is File) {
-        filePaths.add(file.path);
-      }
-    }
-    return filePaths;
+    final mediaFiles = await MediaFinder(ref: ref).getAllMedia();
+    return mediaFiles.map((e) => e.path).toList();
   }
 
   Future<void> _archiveFiles(

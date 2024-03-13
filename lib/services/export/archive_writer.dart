@@ -1,18 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/export/coll_event_writer.dart';
 import 'package:nahpu/services/export/narrative_writer.dart';
 import 'package:nahpu/services/export/record_writer.dart';
 import 'package:nahpu/services/export/report_writer.dart';
 import 'package:nahpu/services/export/site_writer.dart';
-import 'package:nahpu/services/import/multimedia.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:nahpu/services/media_services.dart';
 import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/types/export.dart';
-import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/types/specimens.dart';
 import 'package:nahpu/src/rust/api/archive.dart';
 import 'package:path/path.dart' as path;
@@ -32,6 +29,7 @@ class BundleServices extends AppServices {
   /// into a single archive
   Future<void> create() async {
     final projectDir = await FileServices(ref: ref).currentProjectDir;
+    final appDir = await nahpuDocumentDir;
     projectDir.createSync(recursive: true);
     try {
       final recordPaths = await _getAllRecords();
@@ -40,6 +38,7 @@ class BundleServices extends AppServices {
 
       await ZipWriter(
         parentDir: projectDir.path,
+        altParentDir: appDir.path,
         files: recordPaths,
         outputPath: outputFile.path,
       ).write();
@@ -60,20 +59,9 @@ class BundleServices extends AppServices {
   }
 
   Future<List<String>> _getAllMediaPaths() async {
-    final List<MediaData> mediaList =
-        await MediaServices(ref: ref).getAllMediaByProject();
-    final List<String> mediaPaths = [];
-    for (final media in mediaList) {
-      if (media.fileName != null && media.category != null) {
-        final category = matchMediaCategoryString(media.category!);
-        final service = ImageServices(ref: ref, category: category);
-        final mediaPath = category == MediaCategory.personnel
-            ? await service.getPersonnelMediaPath(media.fileName!)
-            : await service.getMediaPath(media.fileName!);
-        mediaPaths.add(mediaPath.path);
-      }
-    }
-    return mediaPaths;
+    final mediaPaths = await MediaFinder(ref: ref).getAllMediaFileByProject();
+
+    return mediaPaths.map((e) => e.path).toList();
   }
 
   Future<String> _writeReport() async {

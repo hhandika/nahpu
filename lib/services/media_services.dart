@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:nahpu/providers/narrative.dart';
 import 'package:nahpu/providers/sites.dart';
 import 'package:nahpu/providers/specimens.dart';
@@ -10,6 +11,7 @@ import 'package:nahpu/services/database/site_queries.dart';
 import 'package:nahpu/services/database/specimen_queries.dart';
 import 'package:nahpu/services/import/multimedia.dart';
 import 'package:nahpu/services/io_services.dart';
+import 'package:nahpu/services/personnel_services.dart';
 import 'package:nahpu/services/types/import.dart';
 import 'package:drift/drift.dart' as db;
 import 'package:path/path.dart' as path;
@@ -35,6 +37,14 @@ class MediaServices extends AppServices {
   Future<bool> isImageUsed(File file) async {
     final String fileName = path.basename(file.path);
     return await MediaDbQuery(dbAccess).isImageUsed(fileName);
+  }
+
+  Future<List<MediaData>> getAllMedia() {
+    return MediaDbQuery(dbAccess).getAllMedia();
+  }
+
+  Future<List<MediaData>> getAllMediaByProject() {
+    return MediaDbQuery(dbAccess).getMediaByProject(currentProjectUuid);
   }
 
   Future<void> renameMedia(int mediaID, String oldName, String newName,
@@ -68,10 +78,6 @@ class MediaServices extends AppServices {
     }
 
     _invalidateMedia(category);
-  }
-
-  Future<List<MediaData>> getAllMediaByProject() {
-    return MediaDbQuery(dbAccess).getMediaByProject(currentProjectUuid);
   }
 
   Future<void> deleteMedia(int id, String category) async {
@@ -113,6 +119,85 @@ class MediaServices extends AppServices {
         break;
       default:
         break;
+    }
+  }
+}
+
+class MediaFinder extends AppServices {
+  const MediaFinder({required super.ref});
+
+  Future<List<File>> getAllMedia() async {
+    final List<MediaData> mediaList =
+        await MediaServices(ref: ref).getAllMedia();
+    final mediaPath = await _getAllPathForMedia(mediaList);
+    final personnelPath = await getAllPersonnelMedia();
+    return mediaPath + personnelPath;
+  }
+
+  Future<List<File>> getAllPersonnelMedia() async {
+    List<PersonnelData> personnelList =
+        await PersonnelServices(ref: ref).getAllPersonnel();
+    final List<File> mediaPaths = [];
+    for (final personnel in personnelList) {
+      if (personnel.photoPath != null &&
+          !personnel.photoPath!.startsWith(avatarPath)) {
+        final mediaPath = await getPathForPersonnel(
+            personnel.photoPath!, MediaCategory.personnel);
+        _checkPath(mediaPath);
+        mediaPaths.add(mediaPath);
+      }
+    }
+    return mediaPaths;
+  }
+
+  Future<List<File>> getAllMediaFileByProject() async {
+    final List<MediaData> mediaData =
+        await MediaServices(ref: ref).getAllMediaByProject();
+    final mediaPaths = await _getAllPathForMedia(mediaData);
+    final personnelPaths = await getAllPersonnelMedia();
+    return mediaPaths + personnelPaths;
+  }
+
+  Future<File> getPathForMedia(String filePath, MediaCategory category) async {
+    Directory projectDir = await FileServices(ref: ref).currentProjectDir;
+    return _getMediaPath(projectDir, filePath, category);
+  }
+
+  Future<File> getPathForPersonnel(
+      String filePath, MediaCategory category) async {
+    Directory mediaDir = getMediaDir(category);
+    Directory appDir = await nahpuDocumentDir;
+    String fullPath = path.join(appDir.path, mediaDir.path, filePath);
+    return File(fullPath);
+  }
+
+  Future<List<File>> _getAllPathForMedia(List<MediaData> data) async {
+    final List<File> mediaPaths = [];
+    for (final media in data) {
+      if (media.fileName != null && media.category != null) {
+        final category = matchMediaCategoryString(media.category!);
+        Directory projectDir = await FileServices(ref: ref)
+            .getProjectDirByUUID(media.projectUuid!);
+        File mediaPath = _getMediaPath(projectDir, media.fileName!, category);
+        if (kDebugMode) print(mediaPath.path);
+        _checkPath(mediaPath);
+
+        mediaPaths.add(mediaPath);
+      }
+    }
+    return mediaPaths;
+  }
+
+  File _getMediaPath(
+      Directory projectDir, String filePath, MediaCategory category) {
+    Directory mediaDir = getMediaDir(category);
+    String fullPath = path.join(projectDir.path, mediaDir.path, filePath);
+    return File(fullPath);
+  }
+
+  void _checkPath(File file) {
+    if (!file.existsSync()) {
+      throw Exception('File not found ${file.path}. Please, check the file');
     }
   }
 }
