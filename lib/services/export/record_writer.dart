@@ -40,14 +40,14 @@ class SpecimenRecordWriter {
     writer.writeln(header.toDelimitedText(delimiter));
 
     for (var element in specimenList) {
-      List<String> content = await getSpecimenDetails(element);
+      List<String> content = await _getSpecimenDetails(element);
       writer.writeln(content.toDelimitedText(delimiter));
     }
 
     writer.close();
   }
 
-  Future<List<String>> getSpecimenDetails(SpecimenData data) async {
+  Future<List<String>> _getSpecimenDetails(SpecimenData data) async {
     List<String> collectingRecord = await _getCollectingRecord(data);
     String parts = await _getPartList(data.uuid);
     List<String> collSiteDetails = await _getCollEventSiteDetails(
