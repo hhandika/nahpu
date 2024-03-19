@@ -2,66 +2,81 @@
 import subprocess
 import argparse
 import platform
+import os
+
+DART_FRB = "lib/src/rust/frb_generated.dart"
+DART_FRB_IO = "lib/src/rust/frb_generated.io.dart"
+DART_FRB_WEB = "lib/src/rust/frb_generated.web.dart"
+RUST_FRB_IO = "rust/src/frb_generated.io.rs"
+RUST_FRB = "rust/src/frb_generated.rs"
+RUST_FRB_WEB = "rust/src/frb_generated.web.rs"
+
+# List frb files
+FRB_FILES = [
+    DART_FRB, DART_FRB_IO, DART_FRB_WEB,
+    RUST_FRB_IO, RUST_FRB, RUST_FRB_WEB
+]
 
 class Build:
     def __init__(self):
         pass
-    
-    def build_apk() -> None:
+
+    def build_all(self) -> None:
+        os_name: str = platform.system()
+        print(f"Building for all platforms on {os_name}...")
+        try:
+            if platform.system() == "Windows":
+                self.build_windows()
+            elif platform.system() == "Darwin":
+                self.build_ios()
+                self.build_macos()
+            elif platform.system() == "Linux":
+                self.build_linux()
+            else:
+                print("Unsupported platform")
+            
+        except:
+            print("Error building project for all platforms")
+            
+    def build_apk(self) -> None:
         print("Building for Android...")
         try:
             subprocess.run(["flutter", "build", "apk", "--release"])
             print("Project built successfully\n")
         except:
             print("Error cleaning project for android")
-            return
 
-    def build_ios() -> None:
+    def build_ios(self) -> None:
         print("Building for iOS...")
         try:
             subprocess.run(["flutter", "build", "ios", "--release"])
             print("Project built successfully\n")
         except:
             print("Error building project for ios")
-            return
-    def build_macos() -> None:
+
+    def build_macos(self) -> None:
         print("Building for macOS...")
         try:
             subprocess.run(["flutter", "build", "macos", "--release"])
             print("Project built successfully\n")
         except:
             print("Error building project for macos")
-            return
-    def build_linux() -> None:
+
+    def build_linux(self) -> None:
         print("Building for Linux...")
         try:
             subprocess.run(["flutter", "build", "linux", "--release"])
             print("Project built successfully\n")
         except:
             print("Error building project for linux")
-            return
-    def build_all() -> None:
-        """
-        Build for all platforms
-        Detect the current OS and build for all platforms 
-        based on available build options for the current OS
-        """
-        os_name: str = platform.system()
-        print(f"Building for all platforms on {os_name}...")
+
+    def build_windows(self) -> None:
+        print("Building for Windows...")
         try:
-            if platform.system() == "Windows":
-                Build.build_macos()
-            elif platform.system() == "Darwin":
-                Build.build_ios()
-                Build.build_macos()
-            elif platform.system() == "Linux":
-                Build.build_linux()
-            else:
-                print("Unsupported platform")
-                return
-            Build.build_apk()
+            subprocess.run(["flutter", "build", "windows", "--release"])
+            print("Project built successfully\n")
         except:
-            print("Error building project for all platforms")
+            print("Error building project for windows")
             return
 
 class FlutterUtils:
@@ -99,16 +114,29 @@ class BuildRust:
     def __init__(self):
         pass
     
-    def generate_frb_code() -> None:
+    def generate_frb_code(self) -> None:
         print("Generating frb code...")
         try:
+            self.remove_old_frb_code()
             subprocess.run(["flutter_rust_bridge_codegen", "generate"])
             print("Rust code generated successfully\n")
         except:
             print("Error generating frb code")
             return
 
-    def check_rust_dependencies() -> None:
+    def remove_old_frb_code(self) -> None:
+        print("Removing old frb code...")
+        try:
+            for file in FRB_FILES:
+                if os.path.exists(file):
+                    os.remove(file)
+                    print(f"Removed {file}")
+            print("Old frb code removed successfully\n")
+        except:
+            print("Error removing old frb code")
+            return
+
+    def check_rust_dependencies(self) -> None:
         print("Checking rust dependencies...")
         try:
             subprocess.run(["cargo", "check"], cwd="rust")
@@ -117,7 +145,7 @@ class BuildRust:
             print("Error checking rust dependencies")
             return
     
-    def update_rust_dependencies() -> None:
+    def update_rust_dependencies(self) -> None:
         print("Updating rust dependencies...")
         try:
             subprocess.run(["cargo", "update"], cwd="rust")
@@ -157,18 +185,19 @@ def get_args() -> argparse.Namespace:
     return parser.parse_args()
 
 def parse_build_args(args: argparse.Namespace) -> None:
+    build = Build()
     if args.apk:
-        Build.build_apk()
+        build.build_apk()
     elif args.ios:
-        Build.build_ios()
+        build.build_ios()
     elif args.macos:
-        Build.build_macos()
+        build.build_macos()
     elif args.linux:
-        Build.build_linux()
+        build.build_linux()
     elif args.all:
-        Build.build_all()
+        build.build_all()
     else:
-        print("No build option selected")
+        print("No platform selected")
         return
 
 def parse_flutter_utils_args(args: argparse.Namespace) -> None:
