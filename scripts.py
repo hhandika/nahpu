@@ -83,7 +83,7 @@ class FlutterUtils:
     def __init__(self):
         pass
 
-    def clean_project() -> None:
+    def clean_project(self) -> None:
         print("Cleaning project...")
         try:
             subprocess.run(["flutter", "clean"])
@@ -92,7 +92,7 @@ class FlutterUtils:
             print("Error cleaning project")
             return
     
-    def fix_dart_code() -> None:
+    def fix_dart_code(self) -> None:
         print("Fixing dart code...")
         try:
             subprocess.run(["dart", "fix", "--apply"])
@@ -101,7 +101,7 @@ class FlutterUtils:
             print("Error fixing dart code")
             return
     
-    def update_flutter_dependencies() -> None:
+    def update_flutter_dependencies(self) -> None:
         print("Updating flutter dependencies...")
         try:
             subprocess.run(["flutter", "pub", "upgrade"])
@@ -153,83 +153,92 @@ class BuildRust:
         except:
             print("Error updating rust dependencies")
             return
-
-def get_flutter_build_args(args: argparse.Namespace) -> None:
-    parser = args.add_parser("build", help="Build project")
-    parser.add_argument("--apk", action="store_true", help="Build apk")
-    parser.add_argument("--ios", action="store_true", help="Build ios")
-    parser.add_argument("--macos", action="store_true", help="Build macos")
-    parser.add_argument("--linux", action="store_true", help="Build linux")
-    parser.add_argument("--all", action="store_true", help="Build all platforms")
-
-def get_flutter_utils_args(args: argparse.Namespace) -> None:
-    parser = args.add_parser("utils", help="Utilities for Flutter project")
-    parser.add_argument("--clean", action="store_true", help="Clean project")
-    parser.add_argument("--fix", action="store_true", help="Fix dart code")
-    parser.add_argument("--update", action="store_true", help="Update flutter dependencies")
-
-def get_rust_build_args(args: argparse.Namespace) -> None:
-    parser = args.add_parser("frb", help="Build options for Rust project")
-    parser.add_argument("--generate", action="store_true", help="Generate frb code")
-    parser.add_argument("--check", action="store_true", help="Check rust dependencies")
-    parser.add_argument("--update", action="store_true", help="Update rust dependencies")
+        
+class Args:
+    def __init__(self):
+        pass
     
-
-def get_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Various build scripts for the project")
-    subparsers = parser.add_subparsers(dest="command", help="Commands for build scripts")
-    get_flutter_build_args(subparsers)
-    get_flutter_utils_args(subparsers)
-    get_rust_build_args(subparsers)
+    def get_args(self) -> argparse.Namespace:
+        parser = argparse.ArgumentParser(description="Various build scripts for the project")
+        subparsers = parser.add_subparsers(dest="command", help="Commands for build scripts")
+        self.get_flutter_build_args(subparsers)
+        self.get_flutter_utils_args(subparsers)
+        self.get_rust_build_args(subparsers)
     
-    return parser.parse_args()
+        return parser.parse_args()
 
-def parse_build_args(args: argparse.Namespace) -> None:
-    build = Build()
-    if args.apk:
-        build.build_apk()
-    elif args.ios:
-        build.build_ios()
-    elif args.macos:
-        build.build_macos()
-    elif args.linux:
-        build.build_linux()
-    elif args.all:
-        build.build_all()
-    else:
-        print("No platform selected")
-        return
+    def get_flutter_build_args(self, args: argparse.Namespace) -> None:
+        parser = args.add_parser("build", help="Build project")
+        parser.add_argument("--apk", action="store_true", help="Build apk")
+        parser.add_argument("--ios", action="store_true", help="Build ios")
+        parser.add_argument("--macos", action="store_true", help="Build macos")
+        parser.add_argument("--linux", action="store_true", help="Build linux")
+        parser.add_argument("--all", action="store_true", help="Build all platforms")
+    
+    def get_flutter_utils_args(self, args: argparse.Namespace) -> None:
+        parser = args.add_parser("utils", help="Utilities for Flutter project")
+        parser.add_argument("--clean", action="store_true", help="Clean project")
+        parser.add_argument("--fix", action="store_true", help="Fix dart code")
+        parser.add_argument("--update", action="store_true", help="Update flutter dependencies")
+    
+    def get_rust_build_args(self, args: argparse.Namespace) -> None:
+        parser = args.add_parser("frb", help="Build options for Rust project")
+        parser.add_argument("--generate", action="store_true", help="Generate frb code")
+        parser.add_argument("--check", action="store_true", help="Check rust dependencies")
+        parser.add_argument("--update", action="store_true", help="Update rust dependencies")
 
-def parse_flutter_utils_args(args: argparse.Namespace) -> None:
-    if args.clean:
-        FlutterUtils.clean_project()
-    elif args.fix:
-        FlutterUtils.fix_dart_code()
-    elif args.update:
-        FlutterUtils.update_flutter_dependencies()
-    else:
-        print("No utility option selected")
-        return
+class Parser:
+    def __init__(self, args: argparse.Namespace):
+        self.args = args
 
-def parse_rust_build_args(args: argparse.Namespace) -> None:
-    if args.generate:
-        BuildRust.generate_frb_code()
-    elif args.check:
-        BuildRust.check_rust_dependencies()
-    elif args.update:
-        BuildRust.update_rust_dependencies()
-    else:
-        print("No build option selected")
-        return
+    def parse_build_args(self) -> None:
+        build = Build()
+        if self.args.apk:
+            build.build_apk()
+        elif self.args.ios:
+            build.build_ios()
+        elif self.args.macos:
+            build.build_macos()
+        elif self.args.linux:
+            build.build_linux()
+        elif self.args.all:
+            build.build_all()
+        else:
+            print("No platform selected")
+    
+    def parse_flutter_utils_args(self) -> None:
+        utils = FlutterUtils()
+        if self.args.clean:
+            utils.clean_project()
+        elif self.args.fix:
+            utils.fix_dart_code()
+        elif self.args.update:
+            utils.update_flutter_dependencies()
+        else:
+            print("No utility option selected")
+            return
+    
+    def parse_rust_build_args(self) -> None:
+        rust = BuildRust()
+        if self.args.generate:
+            rust.generate_frb_code()
+        elif self.args.check:
+            rust.check_rust_dependencies()
+        elif self.args.update:
+            rust.update_rust_dependencies()
+        else:
+            print("No build option selected")
+            return
     
 def main() -> None:
-    args = get_args()
+    args = Args().get_args()
+    parser = Parser()
     if args.command == "build":
-        parse_build_args(args)
+        parser.parse_build_args(args)
     elif args.command == "utils":
-        parse_flutter_utils_args(args)
+        parser.parse_flutter_utils_args(args)
     elif args.command == "frb":
-        parse_rust_build_args(args)
+        parser.parse_rust_build_args(args)
     else:
         print("No command selected")
         return
