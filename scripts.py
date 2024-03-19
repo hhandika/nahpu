@@ -1,9 +1,7 @@
 ## Various build scripts for the project
-
 import subprocess
 import argparse
 import platform
-
 
 class Build:
     def __init__(self):
@@ -43,13 +41,14 @@ class Build:
             print("Error building project for linux")
             return
     def build_all() -> None:
+        """
+        Build for all platforms
+        Detect the current OS and build for all platforms 
+        based on available build options for the current OS
+        """
         os_name: str = platform.system()
         print(f"Building for all platforms on {os_name}...")
         try:
-            # Detect platform and build for that platform
-            # If windows or linux build apk and windows
-            # If macos build ios, macos, and apk
-            # If linux build linux, apk
             if platform.system() == "Windows":
                 Build.build_macos()
             elif platform.system() == "Darwin":
