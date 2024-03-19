@@ -232,16 +232,15 @@ class Parser:
     
 def main() -> None:
     args = Args().get_args()
-    parser = Parser()
+    parser = Parser(args)
     if args.command == "build":
-        parser.parse_build_args(args)
+        parser.parse_build_args()
     elif args.command == "utils":
-        parser.parse_flutter_utils_args(args)
+        parser.parse_flutter_utils_args()
     elif args.command == "frb":
-        parser.parse_rust_build_args(args)
+        parser.parse_rust_build_args()
     else:
         print("No command selected")
-        return
     
 if __name__ == "__main__":
     main()
