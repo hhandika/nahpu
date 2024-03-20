@@ -104,6 +104,7 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                   labelText: 'Project description',
                   hintText: 'Enter a description of the project (optional)',
                   maxLines: 2,
+                  maxLength: 120,
                   onChanged: (_) {
                     _validateEditing();
                   },

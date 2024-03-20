@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:nahpu/services/database/database.dart';
-import 'package:nahpu/services/specimen_services.dart';
 import 'package:nahpu/services/utility_services.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class ProjectInfo extends ConsumerWidget {
   const ProjectInfo({super.key, required this.projectData});
@@ -14,9 +13,7 @@ class ProjectInfo extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
-        ProjectIcon(
-          path: SpecimenServices(ref: ref).getIconPath(),
-        ),
+        ProjectQrIcon(data: _getProjectJson(projectData)),
         ProjectInfoText(
           title: 'Project name: ',
           text: projectData?.name,
@@ -59,6 +56,10 @@ class ProjectInfo extends ConsumerWidget {
     final value = parseDate(date);
     return '${value.date} ${value.time}';
   }
+
+  String _getProjectJson(ProjectData? projectData) {
+    return projectData?.toJson().toString() ?? '';
+  }
 }
 
 class ProjectInfoText extends StatelessWidget {
@@ -96,19 +97,101 @@ class ProjectInfoText extends StatelessWidget {
   }
 }
 
-class ProjectIcon extends StatelessWidget {
-  const ProjectIcon({super.key, required this.path});
-  final String path;
+class ProjectQrIcon extends StatelessWidget {
+  const ProjectQrIcon({super.key, required this.data});
+
+  final String data;
+
   @override
   Widget build(BuildContext context) {
-    return SvgPicture.asset(
-      path,
-      colorFilter: ColorFilter.mode(
-        Theme.of(context).colorScheme.primary,
-        BlendMode.srcIn,
+    return InkWell(
+      child: SizedBox(
+        width: 96,
+        height: 96,
+        child: ProjectQrCodeViewer(
+          data: data,
+          isFullScreen: false,
+        ),
       ),
-      width: 96,
-      height: 96,
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: ProjectQrCodeViewer(
+                data: data,
+                isFullScreen: true,
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Close'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class ProjectQrCodeViewer extends StatelessWidget {
+  const ProjectQrCodeViewer({
+    super.key,
+    required this.data,
+    required this.isFullScreen,
+  });
+
+  final String data;
+  final bool isFullScreen;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: isFullScreen ? 400 : 80,
+      padding: const EdgeInsets.all(2),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: ProjectQrCode(
+        data: data,
+        color: Colors.black,
+        backgroundColor: Colors.transparent,
+      ),
+    );
+  }
+}
+
+class ProjectQrCode extends StatelessWidget {
+  const ProjectQrCode({
+    super.key,
+    required this.data,
+    required this.color,
+    required this.backgroundColor,
+  });
+
+  final Color? color;
+  final Color? backgroundColor;
+  final String data;
+
+  @override
+  Widget build(BuildContext context) {
+    return QrImageView(
+      data: data,
+      version: QrVersions.auto,
+      backgroundColor: backgroundColor ?? Colors.transparent,
+      eyeStyle: QrEyeStyle(
+        eyeShape: QrEyeShape.circle,
+        color: color,
+      ),
+      dataModuleStyle: QrDataModuleStyle(
+        dataModuleShape: QrDataModuleShape.circle,
+        color: color,
+      ),
     );
   }
 }
