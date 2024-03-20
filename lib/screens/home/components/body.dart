@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:nahpu/services/providers/projects.dart';
 import 'package:nahpu/screens/projects/dashboard.dart';
-import 'package:nahpu/screens/projects/project_info.dart';
+import 'package:nahpu/screens/projects/components/project_info.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/services/database/project_queries.dart';
 import 'package:nahpu/services/project_services.dart';

@@ -14,6 +14,7 @@ class ProjectInfo extends ConsumerWidget {
     return Column(
       children: [
         ProjectQrIcon(data: _getProjectJson(projectData)),
+        const SizedBox(height: 4),
         ProjectInfoText(
           title: 'Project name: ',
           text: projectData?.name,

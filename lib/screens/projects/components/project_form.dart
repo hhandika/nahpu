@@ -51,7 +51,7 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
       key: _formKey,
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(8),
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 500),
             child: Column(
@@ -174,7 +174,7 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                     },
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 24),
                 Wrap(spacing: 10, children: [
                   SecondaryButton(
                     text: 'Cancel',

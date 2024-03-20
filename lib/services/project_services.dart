@@ -5,7 +5,7 @@ import 'package:nahpu/services/database/project_queries.dart';
 import 'package:nahpu/services/io_services.dart';
 import 'package:uuid/uuid.dart';
 
-get uuid => const Uuid().v4();
+String get uuid => const Uuid().v4();
 
 get defaultCatalog => 'general-mammals';
 
