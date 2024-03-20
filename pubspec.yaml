@@ -67,6 +67,7 @@ dependencies:
   rust_lib_nahpu:
     path: rust_builder
   flutter_rust_bridge: 2.0.0-dev.28
+  mobile_scanner: ^4.0.1
 
 dev_dependencies:
   flutter_test:
