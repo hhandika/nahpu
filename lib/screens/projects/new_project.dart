@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:nahpu/screens/shared/forms.dart';
 import 'package:nahpu/services/platform_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
@@ -87,7 +88,11 @@ class CreateProjectFormState extends ConsumerState<CreateProjectForm> {
                   ),
                 ),
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ScannerScreen()),
+                  );
                 },
               ),
             ProjectForm(
@@ -98,6 +103,32 @@ class CreateProjectFormState extends ConsumerState<CreateProjectForm> {
         ),
       ),
     );
+  }
+}
+
+class ScannerScreen extends StatelessWidget {
+  const ScannerScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Scan QR code'),
+        ),
+        body: MobileScanner(
+          // fit: BoxFit.contain,
+          controller: MobileScannerController(
+            detectionSpeed: DetectionSpeed.normal,
+            facing: CameraFacing.front,
+            torchEnabled: true,
+          ),
+          onDetect: (capture) {
+            final List<Barcode> qr = capture.barcodes;
+            for (final barcode in qr) {
+              debugPrint('Barcode found! ${barcode.rawValue}');
+            }
+          },
+        ));
   }
 }
 
