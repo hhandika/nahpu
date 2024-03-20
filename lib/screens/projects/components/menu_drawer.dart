@@ -45,16 +45,6 @@ class ProjectMenuDrawerState extends ConsumerState<ProjectMenuDrawer> {
         ),
         const Divider(color: Colors.grey),
         ListTile(
-          leading: const Icon(Icons.table_view_rounded),
-          title: const Text('Create report'),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const ReportForm()),
-            );
-          },
-        ),
-        ListTile(
           leading: const Icon(Icons.archive_rounded),
           title: const Text('Bundle project'),
           onTap: () {
@@ -62,6 +52,16 @@ class ProjectMenuDrawerState extends ConsumerState<ProjectMenuDrawer> {
               context,
               MaterialPageRoute(
                   builder: (context) => const BundleProjectForm()),
+            );
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.table_view_rounded),
+          title: const Text('Create report'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ReportForm()),
             );
           },
         ),
