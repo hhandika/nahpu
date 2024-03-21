@@ -250,12 +250,12 @@ class SpecimenPartIcon {
   }
 
   String _matchTissues(String lowercased) {
-    if (!lowercased.contains('-')) {
+    if (!lowercased.contains(' ')) {
       return partIconPath[lowercased] ?? partIconPath['unknown']!;
     }
     // Match possible keys with words separated by whitespace.
     List<String> availableKeys = partIconPath.keys.toList();
-    List<String> words = lowercased.split('-');
+    List<String> words = lowercased.split(' ');
 
     List<String> matches =
         availableKeys.where((element) => words.contains(element)).toList();
@@ -275,6 +275,6 @@ class SpecimenPartIcon {
     if (lowercased.endsWith('s') || lowercased.endsWith('es')) {
       return lowercased.substring(0, part.length - 1).toLowerCase();
     }
-    return lowercased.replaceAll(' ', '-');
+    return lowercased;
   }
 }
