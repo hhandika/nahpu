@@ -19,6 +19,25 @@ class ProjectBackButton extends ConsumerWidget {
   }
 }
 
+class ShowMoreButton extends StatelessWidget {
+  const ShowMoreButton({
+    super.key,
+    required this.onPressed,
+    required this.showMore,
+  });
+
+  final VoidCallback onPressed;
+  final bool showMore;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: onPressed,
+      child: Text(showMore ? 'Show less' : 'Show more'),
+    );
+  }
+}
+
 class ProgressButton extends StatelessWidget {
   const ProgressButton({
     super.key,

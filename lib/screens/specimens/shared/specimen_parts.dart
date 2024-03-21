@@ -537,13 +537,13 @@ class PartFormState extends ConsumerState<PartForm> {
             isVisible: _showMore,
           ),
           AdditionalPartFields(visible: _showMore, partCtr: widget.partCtr),
-          TextButton(
+          ShowMoreButton(
+            showMore: _showMore,
             onPressed: () {
               setState(() {
                 _showMore = !_showMore;
               });
             },
-            child: Text(_showMore ? 'Show less' : 'Show more'),
           ),
           const SizedBox(height: 16),
           FormButtonWithDelete(
