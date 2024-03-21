@@ -9,6 +9,8 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+const String nahpuWebsite = 'https://nahpu.app/';
+
 class HomeMenuDrawer extends StatelessWidget {
   const HomeMenuDrawer({super.key});
 
@@ -90,7 +92,7 @@ class HomeMenuDrawer extends StatelessWidget {
   }
 
   Future<void> _launchHelpUrl() async {
-    final Uri url = Uri.parse('https://docs.nahpu.app/en');
+    final Uri url = Uri.parse(nahpuWebsite);
     if (!await launchUrl(
       url,
       mode: LaunchMode.externalApplication,
@@ -159,7 +161,7 @@ class DocQrCode extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       child: QrImageView(
-        data: 'https://docs.nahpu.app/en',
+        data: nahpuWebsite,
         version: QrVersions.auto,
         size: isPhone ? 80 : 120,
         backgroundColor: Colors.transparent,
