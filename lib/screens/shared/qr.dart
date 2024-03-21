@@ -52,8 +52,8 @@ class QrIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return SvgPicture.asset(
       'assets/icons/qr-code.svg',
-      width: 100,
-      height: 100,
+      width: 80,
+      height: 80,
       colorFilter: ColorFilter.mode(
         Theme.of(context).colorScheme.onSurface,
         BlendMode.srcIn,

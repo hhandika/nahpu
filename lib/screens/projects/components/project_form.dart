@@ -178,14 +178,15 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                     },
                   ),
                 ),
-                ShowMoreButton(
-                  onPressed: () {
-                    setState(() {
-                      _showMore = !_showMore;
-                    });
-                  },
-                  showMore: _showMore,
-                ),
+                if (!_allControllersFilled())
+                  ShowMoreButton(
+                    onPressed: () {
+                      setState(() {
+                        _showMore = !_showMore;
+                      });
+                    },
+                    showMore: _showMore,
+                  ),
                 const SizedBox(height: 16),
                 Wrap(spacing: 10, children: [
                   SecondaryButton(
@@ -227,6 +228,15 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
       ref.watch(projectFormValidatorProvider.notifier).validateOnEditing(
           initialProjectName, widget.projectCtr.projectNameCtr.text);
     }
+  }
+
+  bool _allControllersFilled() {
+    return widget.projectCtr.projectNameCtr.text.isNotEmpty &&
+        widget.projectCtr.descriptionCtr.text.isNotEmpty &&
+        widget.projectCtr.pICtr.text.isNotEmpty &&
+        widget.projectCtr.locationCtr.text.isNotEmpty &&
+        widget.projectCtr.startDateCtr.text.isNotEmpty &&
+        widget.projectCtr.endDateCtr.text.isNotEmpty;
   }
 
   Future<void> _getInitialProjectName() async {

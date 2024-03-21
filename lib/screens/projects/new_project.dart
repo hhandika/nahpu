@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:nahpu/screens/shared/forms.dart';
+import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/screens/shared/qr.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/platform_services.dart';
@@ -37,25 +38,28 @@ class CreateProjectFormState extends ConsumerState<CreateProjectForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Create a new project'),
-        automaticallyImplyLeading: false,
-      ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              if (systemPlatform == PlatformType.mobile)
-                QrCaptureButton(onDetect: onDetect),
-              if (_qrScanned) UuidText(uuid: _uuidKey),
-              project.ProjectForm(
-                projectCtr: projectCtr,
-                projectUuid: _uuidKey,
-              )
-            ],
+    return FalseWillPop(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Create a new project'),
+          automaticallyImplyLeading: false,
+        ),
+        body: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                if (systemPlatform == PlatformType.mobile)
+                  QrCaptureButton(onDetect: onDetect),
+                if (_qrScanned) UuidText(uuid: _uuidKey),
+                project.ProjectForm(
+                  projectCtr: projectCtr,
+                  projectUuid: _uuidKey,
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -164,10 +168,10 @@ class QrCaptureButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Container(
-        width: 180,
-        height: 180,
+        width: 160,
+        height: 160,
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primaryContainer.withAlpha(80),
+          color: Theme.of(context).colorScheme.primaryContainer.withAlpha(120),
           borderRadius: BorderRadius.circular(16),
         ),
         padding: const EdgeInsets.all(4),
