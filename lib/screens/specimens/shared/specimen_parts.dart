@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:nahpu/screens/shared/qr.dart';
+import 'package:nahpu/services/platform_services.dart';
 import 'package:nahpu/services/project_services.dart';
 import 'package:nahpu/services/providers/personnel.dart';
 import 'package:nahpu/screens/shared/common.dart';
@@ -956,25 +957,26 @@ class _UniqueIDFieldState extends State<UniqueIDField> {
         ),
         PopupMenuButton<String>(itemBuilder: (context) {
           return [
-            PopupMenuItem(
-              child: const ListTile(
-                leading: Icon(Icons.qr_code_scanner_outlined),
-                title: Text('Scan QR/Barcode'),
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ScannerScreen(
-                      onDetect: (barcode) {
-                        _onDetect(barcode);
-                      },
+            if (systemPlatform == PlatformType.mobile)
+              PopupMenuItem(
+                child: const ListTile(
+                  leading: Icon(Icons.qr_code_scanner_outlined),
+                  title: Text('Scan QR/Barcode'),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ScannerScreen(
+                        onDetect: (barcode) {
+                          _onDetect(barcode);
+                        },
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
-            const PopupMenuDivider(),
+                  );
+                },
+              ),
+            if (systemPlatform == PlatformType.mobile) const PopupMenuDivider(),
             PopupMenuItem(
               child: const ListTile(
                 leading: Icon(
