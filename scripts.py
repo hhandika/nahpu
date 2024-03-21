@@ -35,48 +35,48 @@ class Build:
             else:
                 print("Unsupported platform")
             
-        except:
-            print("Error building project for all platforms")
+        except Exception as e:
+            print(f"Error building project for all platforms: {str(e)}")
             
     def build_apk(self) -> None:
         print("Building for Android...")
         try:
             subprocess.run(["flutter", "build", "apk", "--release"])
             print("Project built successfully\n")
-        except:
-            print("Error cleaning project for android")
+        except Exception as e:
+            print("Error building project for android:", str(e))
 
     def build_ios(self) -> None:
         print("Building for iOS...")
         try:
             subprocess.run(["flutter", "build", "ios", "--release"])
             print("Project built successfully\n")
-        except:
-            print("Error building project for ios")
+        except Exception as e:
+            print("Error building project for ios:", str(e))
 
     def build_macos(self) -> None:
         print("Building for macOS...")
         try:
             subprocess.run(["flutter", "build", "macos", "--release"])
             print("Project built successfully\n")
-        except:
-            print("Error building project for macos")
+        except Exception as e:
+            print("Error building project for macos:", str(e))
 
     def build_linux(self) -> None:
         print("Building for Linux...")
         try:
             subprocess.run(["flutter", "build", "linux", "--release"])
             print("Project built successfully\n")
-        except:
-            print("Error building project for linux")
+        except Exception as e:
+            print("Error building project for linux:", str(e))
 
     def build_windows(self) -> None:
         print("Building for Windows...")
         try:
-            subprocess.run(["flutter", "build", "windows", "--release"])
+            subprocess.run(["flutter", "build", "windows", "--release"], shell=True)
             print("Project built successfully\n")
-        except:
-            print("Error building project for windows")
+        except Exception as e:
+            print("Error building project for windows:", str(e))
             return
 
 class FlutterUtils:
@@ -88,8 +88,8 @@ class FlutterUtils:
         try:
             subprocess.run(["flutter", "clean"])
             print("Project cleaned successfully\n")
-        except:
-            print("Error cleaning project")
+        except Exception as e:
+            print("Error cleaning project:", str(e))
             return
     
     def fix_dart_code(self) -> None:
@@ -97,8 +97,8 @@ class FlutterUtils:
         try:
             subprocess.run(["dart", "fix", "--apply"])
             print("Dart code fixed successfully\n")
-        except:
-            print("Error fixing dart code")
+        except Exception as e:
+            print("Error fixing dart code:", str(e))
             return
     
     def update_flutter_dependencies(self) -> None:
@@ -106,8 +106,8 @@ class FlutterUtils:
         try:
             subprocess.run(["flutter", "pub", "upgrade"])
             print("Flutter dependencies updated successfully\n")
-        except:
-            print("Error updating flutter dependencies")
+        except Exception as e:
+            print("Error updating flutter dependencies:", str(e))
             return
 
 class BuildRust:
@@ -120,8 +120,8 @@ class BuildRust:
             self.remove_old_frb_code()
             subprocess.run(["flutter_rust_bridge_codegen", "generate"])
             print("Rust code generated successfully\n")
-        except:
-            print("Error generating frb code")
+        except Exception as e:
+            print("Error generating frb code:", str(e))
             return
 
     def remove_old_frb_code(self) -> None:
@@ -132,8 +132,8 @@ class BuildRust:
                     os.remove(file)
                     print(f"Removed {file}")
             print("Old frb code removed successfully\n")
-        except:
-            print("Error removing old frb code")
+        except Exception as e:
+            print("Error removing old frb code:", str(e))
             return
 
     def check_rust_dependencies(self) -> None:
@@ -141,8 +141,8 @@ class BuildRust:
         try:
             subprocess.run(["cargo", "check"], cwd="rust")
             print("Rust dependencies checked successfully\n")
-        except:
-            print("Error checking rust dependencies")
+        except Exception as e:
+            print("Error checking rust dependencies:", str(e))
             return
     
     def update_rust_dependencies(self) -> None:
@@ -150,8 +150,8 @@ class BuildRust:
         try:
             subprocess.run(["cargo", "update"], cwd="rust")
             print("Rust dependencies updated successfully\n")
-        except:
-            print("Error updating rust dependencies")
+        except Exception as e:
+            print("Error updating rust dependencies:", str(e))
             return
         
 class Args:
@@ -169,11 +169,12 @@ class Args:
 
     def get_flutter_build_args(self, args: argparse.Namespace) -> None:
         parser = args.add_parser("build", help="Build project")
+        parser.add_argument("--all", action="store_true", help="Build all platforms")
         parser.add_argument("--apk", action="store_true", help="Build apk")
         parser.add_argument("--ios", action="store_true", help="Build ios")
-        parser.add_argument("--macos", action="store_true", help="Build macos")
         parser.add_argument("--linux", action="store_true", help="Build linux")
-        parser.add_argument("--all", action="store_true", help="Build all platforms")
+        parser.add_argument("--macos", action="store_true", help="Build macos")
+        parser.add_argument("--windows", action="store_true", help="Build windows")
     
     def get_flutter_utils_args(self, args: argparse.Namespace) -> None:
         parser = args.add_parser("utils", help="Utilities for Flutter project")
@@ -197,10 +198,12 @@ class Parser:
             build.build_apk()
         elif self.args.ios:
             build.build_ios()
-        elif self.args.macos:
-            build.build_macos()
         elif self.args.linux:
             build.build_linux()
+        elif self.args.macos:
+            build.build_macos()
+        elif self.args.windows:
+            build.build_windows()
         elif self.args.all:
             build.build_all()
         else:

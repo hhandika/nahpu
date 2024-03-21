@@ -4,7 +4,6 @@ $buildPath = "build\windows\x64\runner\Release"
 $buildExe = "$buildPath\nahpu.exe"
 $destinationPath = "$env:USERPROFILE\Documents\nahpu-app"
 $exePath = "$env:USERPROFILE\Documents\nahpu-app\nahpu.exe"
-$archivePath = "$env:USERPROFILE\Documents\Releases\"
 # Check build file exists
 if (Test-Path -Path $buildExe) {
     Write-Host "Build succeeded"
