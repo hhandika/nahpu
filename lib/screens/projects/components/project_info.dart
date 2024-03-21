@@ -108,36 +108,39 @@ class ProjectQrIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      child: SizedBox(
-        width: 96,
-        height: 96,
-        child: ProjectQrCodeViewer(
-          data: data,
-          isFullScreen: false,
+    return Tooltip(
+      message: 'Project QR code. Tap to view full.',
+      child: GestureDetector(
+        child: SizedBox(
+          width: 96,
+          height: 96,
+          child: ProjectQrCodeViewer(
+            data: data,
+            isFullScreen: false,
+          ),
         ),
-      ),
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              content: ProjectQrCodeViewer(
-                data: data,
-                isFullScreen: true,
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Close'),
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: ProjectQrCodeViewer(
+                  data: data,
+                  isFullScreen: true,
                 ),
-              ],
-            );
-          },
-        );
-      },
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Close'),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
