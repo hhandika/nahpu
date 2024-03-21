@@ -23,7 +23,7 @@ function HomepageHeader() {
           >
             Learn NAHPU
           </Link>
-          &nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;
           <Link
             className="button button--primary button--lg"
             to="/docs/installation"
