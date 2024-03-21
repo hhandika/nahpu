@@ -33,6 +33,7 @@ class ProjectForm extends ConsumerStatefulWidget {
 class ProjectFormState extends ConsumerState<ProjectForm> {
   final _formKey = GlobalKey<FormState>();
   String? initialProjectName;
+  bool _showMore = false;
 
   @override
   void initState() {
@@ -110,7 +111,7 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                   },
                 ),
                 Visibility(
-                  visible: widget.isEditing,
+                  visible: _showMore || widget.projectCtr.pICtr.text.isNotEmpty,
                   child: ProjectFormField(
                     controller: widget.projectCtr.pICtr,
                     labelText: 'Principal Investigator',
@@ -124,7 +125,8 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                     ? const TaxonGroupFields()
                     : const SizedBox.shrink(),
                 Visibility(
-                  visible: widget.isEditing,
+                  visible: _showMore ||
+                      widget.projectCtr.locationCtr.text.isNotEmpty,
                   child: ProjectFormField(
                     controller: widget.projectCtr.locationCtr,
                     labelText: 'Location',
@@ -135,7 +137,8 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                   ),
                 ),
                 Visibility(
-                  visible: widget.isEditing,
+                  visible: _showMore ||
+                      widget.projectCtr.startDateCtr.text.isNotEmpty,
                   child: TextField(
                     controller: widget.projectCtr.startDateCtr,
                     decoration: const InputDecoration(
@@ -155,7 +158,8 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                   ),
                 ),
                 Visibility(
-                  visible: widget.isEditing,
+                  visible:
+                      _showMore || widget.projectCtr.endDateCtr.text.isNotEmpty,
                   child: TextField(
                     controller: widget.projectCtr.endDateCtr,
                     decoration: const InputDecoration(
@@ -174,7 +178,15 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
                     },
                   ),
                 ),
-                const SizedBox(height: 24),
+                ShowMoreButton(
+                  onPressed: () {
+                    setState(() {
+                      _showMore = !_showMore;
+                    });
+                  },
+                  showMore: _showMore,
+                ),
+                const SizedBox(height: 16),
                 Wrap(spacing: 10, children: [
                   SecondaryButton(
                     text: 'Cancel',
