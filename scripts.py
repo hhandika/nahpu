@@ -11,11 +11,13 @@ RUST_FRB_IO = "rust/src/frb_generated.io.rs"
 RUST_FRB = "rust/src/frb_generated.rs"
 RUST_FRB_WEB = "rust/src/frb_generated.web.rs"
 
-# List frb files
 FRB_FILES = [
     DART_FRB, DART_FRB_IO, DART_FRB_WEB,
     RUST_FRB_IO, RUST_FRB, RUST_FRB_WEB
 ]
+
+DMG_CONFIG = "installer/config.json"
+OUTPUT_DMG = "installer/nahpu.dmg"
 
 class Build:
     def __init__(self):
@@ -59,9 +61,12 @@ class Build:
         try:
             subprocess.run(["flutter", "build", "macos", "--release"])
             print("Project built successfully\n")
+            self._remove_dmg()
+            self._create_dmg()
+            self._open_dmg()
         except:
             print("Error building project for macos")
-
+            
     def build_linux(self) -> None:
         print("Building for Linux...")
         try:
@@ -75,9 +80,36 @@ class Build:
         try:
             subprocess.run(["flutter", "build", "windows", "--release"])
             print("Project built successfully\n")
+
         except:
             print("Error building project for windows")
             return
+    
+    def _create_dmg(self) -> None:
+        print("Creating dmg...")
+        try:
+            subprocess.run(["appdmg", DMG_CONFIG, OUTPUT_DMG])
+            print("Dmg created successfully\n")
+        except:
+            print("Error creating dmg")
+    
+    def _remove_dmg(self) -> None:
+        print("Removing dmg...")
+        try:
+            if os.path.exists(OUTPUT_DMG):
+                os.remove(OUTPUT_DMG)
+                print("Dmg removed successfully\n")
+        except:
+            print("Error removing dmg")
+    
+    def _open_dmg(self) -> None:
+        print("Opening dmg...")
+        try:
+            subprocess.run(["open", OUTPUT_DMG])
+            print("Dmg opened successfully\n")
+        except:
+            print("Error opening dmg")
+    
 
 class FlutterUtils:
     def __init__(self):

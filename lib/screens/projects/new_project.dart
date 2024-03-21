@@ -1,11 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:nahpu/screens/shared/forms.dart';
+import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/platform_services.dart';
+import 'package:nahpu/services/providers/validation.dart';
 import 'package:nahpu/services/types/controllers.dart';
-import 'package:nahpu/screens/projects/components/project_form.dart';
+import 'package:nahpu/screens/projects/components/project_form.dart' as project;
 import 'package:nahpu/services/project_services.dart';
 
 class CreateProjectForm extends ConsumerStatefulWidget {
@@ -16,7 +20,7 @@ class CreateProjectForm extends ConsumerStatefulWidget {
 }
 
 class CreateProjectFormState extends ConsumerState<CreateProjectForm> {
-  final _uuidKey = uuid;
+  String _uuidKey = uuid;
   final ProjectFormCtrModel projectCtr = ProjectFormCtrModel.empty();
 
   @override
@@ -37,7 +41,7 @@ class CreateProjectFormState extends ConsumerState<CreateProjectForm> {
         title: const Text('Create a new project'),
         automaticallyImplyLeading: false,
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -91,11 +95,16 @@ class CreateProjectFormState extends ConsumerState<CreateProjectForm> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const ScannerScreen()),
+                      builder: (context) => ScannerScreen(
+                        onDetect: (BarcodeCapture barcode) {
+                          onDetect(barcode);
+                        },
+                      ),
+                    ),
                   );
                 },
               ),
-            ProjectForm(
+            project.ProjectForm(
               projectCtr: projectCtr,
               projectUuid: _uuidKey,
             )
@@ -104,10 +113,94 @@ class CreateProjectFormState extends ConsumerState<CreateProjectForm> {
       ),
     );
   }
+
+  void onDetect(BarcodeCapture capture) {
+    final Barcode barcode = capture.barcodes.first;
+
+    if (barcode.format != BarcodeFormat.qrCode) {
+      _showError('Invalid QR code');
+      return;
+    }
+    final String? qrData = barcode.rawValue;
+    if (qrData == null) {
+      _showError('Invalid QR code');
+      return;
+    }
+    final Map<String, dynamic> data = jsonDecode(qrData);
+    ProjectData projectData = ProjectData.fromJson(data);
+    debugPrint('QR data: ${projectData.uuid}');
+
+    _showSuccess(
+      projectData.name,
+    );
+    Navigator.pop(context);
+    setState(() {
+      projectCtr.updateData(projectData);
+      _uuidKey = projectData.uuid;
+    });
+    ref
+        .read(projectFormValidatorProvider.notifier)
+        .validateProjectName(projectData.name);
+  }
+
+  void _showSuccess(String projectName) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          content: RichText(
+            text: TextSpan(
+              children: [
+                const TextSpan(
+                  text: 'Found ',
+                ),
+                TextSpan(
+                  text: '$projectName! ',
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
+                const TextSpan(
+                  text: '🎉🎉🎉',
+                ),
+              ],
+            ),
+          )),
+    );
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
+  }
 }
 
-class ScannerScreen extends StatelessWidget {
-  const ScannerScreen({super.key});
+class ScannerScreen extends StatefulWidget {
+  const ScannerScreen({super.key, required this.onDetect});
+
+  final void Function(BarcodeCapture) onDetect;
+
+  @override
+  State<ScannerScreen> createState() => _ScannerScreenState();
+}
+
+class _ScannerScreenState extends State<ScannerScreen> {
+  final MobileScannerController _controller = MobileScannerController(
+    detectionSpeed: DetectionSpeed.normal,
+    facing: CameraFacing.back,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.start();
+  }
+
+  @override
+  void dispose() {
+    _controller.stop();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,17 +209,10 @@ class ScannerScreen extends StatelessWidget {
           title: const Text('Scan QR code'),
         ),
         body: MobileScanner(
-          // fit: BoxFit.contain,
-          controller: MobileScannerController(
-            detectionSpeed: DetectionSpeed.normal,
-            facing: CameraFacing.front,
-            torchEnabled: true,
-          ),
-          onDetect: (capture) {
-            final List<Barcode> qr = capture.barcodes;
-            for (final barcode in qr) {
-              debugPrint('Barcode found! ${barcode.rawValue}');
-            }
+          controller: _controller,
+          onDetect: (barcode) {
+            widget.onDetect(barcode);
+            _controller.stop();
           },
         ));
   }
