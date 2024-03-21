@@ -134,13 +134,13 @@ class CreateProjectFormState extends ConsumerState<CreateProjectForm> {
       projectData.name,
     );
     Navigator.pop(context);
+    ref
+        .read(projectFormValidatorProvider.notifier)
+        .checkProjectNameExists(projectData.name);
     setState(() {
       projectCtr.updateData(projectData);
       _uuidKey = projectData.uuid;
     });
-    ref
-        .read(projectFormValidatorProvider.notifier)
-        .validateProjectName(projectData.name);
   }
 
   void _showSuccess(String projectName) {
