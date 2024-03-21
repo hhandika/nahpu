@@ -194,17 +194,19 @@ IconData matchCatFmtToIcon(CatalogFmt catalogFmt, bool isSelected) {
 
 const Map<String, String> partIconPath = {
   'cecum': 'assets/icons/microbial-culture.svg',
+  'feather': 'assets/icons/feather.svg',
+  'feces': 'assets/icons/poo.svg',
   'liver': 'assets/icons/liver.svg',
   'lung': 'assets/icons/lungs.svg',
   'heart': 'assets/icons/heart.svg',
   'intestine': 'assets/icons/intestine.svg',
   'kidney': 'assets/icons/kidneys.svg',
   'muscle': 'assets/icons/muscles.svg',
-  'stomach': 'assets/icons/stomach.svg',
   'swab': 'assets/icons/swab.svg',
-  'feces': 'assets/icons/poo.svg',
+  'stomach': 'assets/icons/stomach.svg',
   'parasite': 'assets/icons/mite.svg',
   'testis': 'assets/icons/testis.svg',
+  'wing': 'assets/icons/wing.svg',
   'unknown': 'assets/icons/clue.svg',
 };
 
@@ -236,7 +238,7 @@ class SpecimenPartIcon {
   final String part;
   final CatalogFmt catalogFmt;
 
-  String matchPartToIconPath() {
+  String match() {
     final lowercased = _cleanPart();
     if (kDebugMode) print('Part: $part, Lowercased: $lowercased');
     bool isSpecimen = specimenPartList.contains(lowercased);
@@ -244,7 +246,25 @@ class SpecimenPartIcon {
       return matchCatalogFmtToIconPath(catalogFmt);
     }
 
-    return partIconPath[lowercased] ?? partIconPath['unknown']!;
+    return _matchTissues(lowercased);
+  }
+
+  String _matchTissues(String lowercased) {
+    if (!lowercased.contains('-')) {
+      return partIconPath[lowercased] ?? partIconPath['unknown']!;
+    }
+    // Match possible keys with words separated by whitespace.
+    List<String> availableKeys = partIconPath.keys.toList();
+    List<String> words = lowercased.split('-');
+
+    List<String> matches =
+        availableKeys.where((element) => words.contains(element)).toList();
+
+    if (matches.isNotEmpty) {
+      return partIconPath[matches.first] ?? partIconPath['unknown']!;
+    } else {
+      return partIconPath['unknown']!;
+    }
   }
 
   String _cleanPart() {

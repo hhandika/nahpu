@@ -251,8 +251,7 @@ class PartIcon extends ConsumerWidget {
   }
 
   String get _iconPath {
-    return SpecimenPartIcon(part: partType, catalogFmt: catalogFmt)
-        .matchPartToIconPath();
+    return SpecimenPartIcon(part: partType, catalogFmt: catalogFmt).match();
   }
 }
 
