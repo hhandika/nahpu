@@ -1,5 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:nahpu/screens/shared/qr.dart';
+import 'package:nahpu/services/project_services.dart';
 import 'package:nahpu/services/providers/personnel.dart';
 import 'package:nahpu/screens/shared/common.dart';
 import 'package:nahpu/screens/shared/layout.dart';
@@ -800,6 +803,20 @@ class AdditionalPartFields extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
+        CommonTimeField(
+          labelText: 'Time taken',
+          hintText: 'Enter time',
+          controller: partCtr.timeTakenCtr,
+          initialTime: TimeOfDay.now(),
+          onTap: () {},
+        ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'Recommended for fresh tissues',
+            style: Theme.of(context).textTheme.labelSmall,
+          ),
+        ),
         Visibility(
           visible: visible || partCtr.preparatorCtr != null,
           child: DropdownButtonFormField<String>(
@@ -836,16 +853,6 @@ class AdditionalPartFields extends ConsumerWidget {
             controller: partCtr.dateTakenCtr,
             initialDate: DateTime.now(),
             lastDate: DateTime.now(),
-            onTap: () {},
-          ),
-        ),
-        Visibility(
-          visible: visible || partCtr.timeTakenCtr.text.isNotEmpty,
-          child: CommonTimeField(
-            labelText: 'Time taken',
-            hintText: 'Enter time',
-            controller: partCtr.timeTakenCtr,
-            initialTime: TimeOfDay.now(),
             onTap: () {},
           ),
         ),
@@ -907,18 +914,112 @@ class PartIdForm extends ConsumerWidget {
       child: Column(children: [
         Text(
           'Additional Part ID',
-          style: Theme.of(context).textTheme.titleMedium,
+          style: Theme.of(context).textTheme.titleLarge,
         ),
         TissueIDform(
           specimenUuid: specimenUuid,
           tissueIdCtr: partCtr.tissueIdCtr,
         ),
-        CommonTextField(
-            controller: partCtr.barcodeIdCtr,
-            labelText: 'Barcode ID',
-            hintText: 'Enter barcode ID (if applicable)',
-            isLastField: false),
+        UniqueIDField(
+          barcodeIdCtr: partCtr.barcodeIdCtr,
+        ),
       ]),
+    );
+  }
+}
+
+class UniqueIDField extends StatefulWidget {
+  const UniqueIDField({
+    super.key,
+    required this.barcodeIdCtr,
+  });
+
+  final TextEditingController barcodeIdCtr;
+
+  @override
+  State<UniqueIDField> createState() => _UniqueIDFieldState();
+}
+
+class _UniqueIDFieldState extends State<UniqueIDField> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: CommonTextField(
+            controller: widget.barcodeIdCtr,
+            labelText: 'QR/barcode ID',
+            hintText: 'Enter barcode ID (if applicable)',
+            isLastField: false,
+          ),
+        ),
+        PopupMenuButton<String>(itemBuilder: (context) {
+          return [
+            PopupMenuItem(
+              child: const ListTile(
+                leading: Icon(Icons.qr_code_scanner_outlined),
+                title: Text('Scan QR/Barcode'),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ScannerScreen(
+                      onDetect: (barcode) {
+                        _onDetect(barcode);
+                      },
+                    ),
+                  ),
+                );
+              },
+            ),
+            const PopupMenuDivider(),
+            PopupMenuItem(
+              child: const ListTile(
+                leading: Icon(
+                  Icons.qr_code_2_outlined,
+                ),
+                title: Text('Generate UUID'),
+              ),
+              onTap: () {
+                _generateUuid();
+              },
+            ),
+          ];
+        }),
+      ],
+    );
+  }
+
+  void _onDetect(BarcodeCapture barcode) {
+    final barcodeId = barcode.barcodes.first;
+    final String? qrData = barcodeId.rawValue;
+    if (qrData == null) {
+      _showError('Invalid QR/barcode');
+      return;
+    }
+    setState(() {
+      widget.barcodeIdCtr.text = qrData;
+    });
+  }
+
+  void _generateUuid() {
+    if (widget.barcodeIdCtr.text.isNotEmpty) {
+      _showError('QR/barcode ID already exists. '
+          'Clear the field to generate a new UUID');
+      return;
+    }
+    setState(() {
+      widget.barcodeIdCtr.text = uuid;
+    });
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
     );
   }
 }
@@ -1031,43 +1132,41 @@ class TissueIDMenu extends ConsumerStatefulWidget {
 class TissueIDMenuState extends ConsumerState<TissueIDMenu> {
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<int>(
-        icon: const Icon(Icons.more_vert),
-        itemBuilder: (BuildContext context) {
-          return [
-            PopupMenuItem(
-              value: 1,
-              enabled: _hasNoId(),
-              child: const ListTile(
-                leading: Icon(Icons.add),
-                title: Text('New number'),
-              ),
-              onTap: () => {
-                if (widget.onNewNumber != null)
-                  {
-                    widget.onNewNumber!(),
-                    setState(() {
-                      _getNewNumber();
-                    }),
-                  }
-              },
+    return PopupMenuButton<int>(itemBuilder: (BuildContext context) {
+      return [
+        PopupMenuItem(
+          value: 1,
+          enabled: _hasNoId(),
+          child: const ListTile(
+            leading: Icon(Icons.add),
+            title: Text('New number'),
+          ),
+          onTap: () => {
+            if (widget.onNewNumber != null)
+              {
+                widget.onNewNumber!(),
+                setState(() {
+                  _getNewNumber();
+                }),
+              }
+          },
+        ),
+        const PopupMenuDivider(),
+        PopupMenuItem(
+            value: 2,
+            child: const ListTile(
+              leading: Icon(Icons.settings_outlined),
+              title: Text('Settings'),
             ),
-            const PopupMenuDivider(),
-            PopupMenuItem(
-                value: 2,
-                child: const ListTile(
-                  leading: Icon(Icons.settings_outlined),
-                  title: Text('Settings'),
-                ),
-                onTap: () => {
-                      Future.delayed(
-                        const Duration(milliseconds: 0),
-                      ).then(
-                        (value) => _showTissueSettings(),
-                      ),
-                    }),
-          ];
-        });
+            onTap: () => {
+                  Future.delayed(
+                    const Duration(milliseconds: 0),
+                  ).then(
+                    (value) => _showTissueSettings(),
+                  ),
+                }),
+      ];
+    });
   }
 
   void _showTissueSettings() {
