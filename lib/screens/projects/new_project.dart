@@ -41,74 +41,76 @@ class CreateProjectFormState extends ConsumerState<CreateProjectForm> {
         title: const Text('Create a new project'),
         automaticallyImplyLeading: false,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            if (systemPlatform == PlatformType.mobile)
-              GestureDetector(
-                child: Container(
-                  width: 180,
-                  height: 180,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .primaryContainer
-                        .withAlpha(80),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  padding: const EdgeInsets.all(4),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const QrIcon(),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'Scan QR',
-                                style: Theme.of(context).textTheme.titleLarge,
-                              ),
-                              const WidgetSpan(
-                                  child: InfoButton(
-                                content: Text(
-                                  'Scan QR code from other projects to import data. '
-                                  'This method is useful when multiple devices are '
-                                  'used to manage the same project. '
-                                  'To get the QR code, go to the project dashboard '
-                                  'in the other device. '
-                                  'Scan the QR code in the project overview. '
-                                  'You can also tap the QR code to enlarge it.',
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              if (systemPlatform == PlatformType.mobile)
+                GestureDetector(
+                  child: Container(
+                    width: 180,
+                    height: 180,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primaryContainer
+                          .withAlpha(80),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    padding: const EdgeInsets.all(4),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const QrIcon(),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Scan QR',
+                                  style: Theme.of(context).textTheme.titleLarge,
                                 ),
-                              ))
-                            ],
+                                const WidgetSpan(
+                                    child: InfoButton(
+                                  content: Text(
+                                    'Scan QR code from other projects to import data. '
+                                    'This method is useful when multiple devices are '
+                                    'used to manage the same project. '
+                                    'To get the QR code, go to the project dashboard '
+                                    'in the other device. '
+                                    'Scan the QR code in the project overview. '
+                                    'You can also tap the QR code to enlarge it.',
+                                  ),
+                                ))
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ScannerScreen(
-                        onDetect: (BarcodeCapture barcode) {
-                          onDetect(barcode);
-                        },
-                      ),
+                      ],
                     ),
-                  );
-                },
-              ),
-            project.ProjectForm(
-              projectCtr: projectCtr,
-              projectUuid: _uuidKey,
-            )
-          ],
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ScannerScreen(
+                          onDetect: (BarcodeCapture barcode) {
+                            onDetect(barcode);
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              project.ProjectForm(
+                projectCtr: projectCtr,
+                projectUuid: _uuidKey,
+              )
+            ],
+          ),
         ),
       ),
     );

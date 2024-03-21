@@ -238,6 +238,10 @@ class ProjectFormState extends ConsumerState<ProjectForm> {
       uuid: db.Value(widget.projectUuid),
       name: db.Value(widget.projectCtr.projectNameCtr.text),
       description: db.Value(widget.projectCtr.descriptionCtr.text),
+      principalInvestigator: db.Value(widget.projectCtr.pICtr.text),
+      location: db.Value(widget.projectCtr.locationCtr.text),
+      startDate: db.Value(widget.projectCtr.startDateCtr.text),
+      endDate: db.Value(widget.projectCtr.endDateCtr.text),
       created: db.Value(getSystemDateTime()),
       lastAccessed: db.Value(getSystemDateTime()),
     );
