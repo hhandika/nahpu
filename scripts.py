@@ -186,6 +186,28 @@ class BuildRust:
             print("Error updating rust dependencies:", str(e))
             return
         
+class BuildDocs:
+    def __init__(self):
+        pass
+
+    def run(self) -> None:
+        print("Building documentation...")
+        try:
+            subprocess.run(["yarn", "start"], cwd="website", shell=True)
+            print("Documentation built successfully\n")
+        except Exception as e:
+            print("Error building documentation:", str(e))
+            return
+    
+    def build(self) -> None:
+        print("Building documentation...")
+        try:
+            subprocess.run(["yarn", "build"], cwd="website", shell=True)
+            print("Documentation built successfully\n")
+        except Exception as e:
+            print("Error building documentation:", str(e))
+            return
+        
 class Args:
     def __init__(self):
         pass
@@ -196,6 +218,7 @@ class Args:
         self.get_flutter_build_args(subparsers)
         self.get_flutter_utils_args(subparsers)
         self.get_rust_build_args(subparsers)
+        self.get_doc_build_args(subparsers)
     
         return parser.parse_args()
 
@@ -219,6 +242,11 @@ class Args:
         parser.add_argument("--generate", action="store_true", help="Generate frb code")
         parser.add_argument("--check", action="store_true", help="Check rust dependencies")
         parser.add_argument("--update", action="store_true", help="Update rust dependencies")
+    
+    def get_doc_build_args(self, args: argparse.Namespace) -> None:
+        parser = args.add_parser("docs", help="Build documentation")
+        parser.add_argument("--run", action="store_true", help="Run documentation")
+        parser.add_argument("--build", action="store_true", help="Build documentation")
 
 class Parser:
     def __init__(self, args: argparse.Namespace):
@@ -265,6 +293,16 @@ class Parser:
             print("No build option selected")
             return
     
+    def parse_doc_build_args(self) -> None:
+        docs = BuildDocs()
+        if self.args.run:
+            docs.run()
+        elif self.args.build:
+            docs.build()
+        else:
+            print("No documentation option selected")
+            return
+    
 def main() -> None:
     args = Args().get_args()
     parser = Parser(args)
@@ -274,6 +312,8 @@ def main() -> None:
         parser.parse_flutter_utils_args()
     elif args.command == "frb":
         parser.parse_rust_build_args()
+    elif args.command == "docs":
+        parser.parse_doc_build_args()
     else:
         print("No command selected")
     
