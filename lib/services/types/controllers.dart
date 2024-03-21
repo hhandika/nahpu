@@ -39,6 +39,15 @@ class ProjectFormCtrModel {
         endDateCtr: TextEditingController(text: data?.endDate ?? ''),
       );
 
+  void updateData(ProjectData data) {
+    projectNameCtr.text = data.name;
+    descriptionCtr.text = data.description ?? '';
+    pICtr.text = data.principalInvestigator ?? '';
+    locationCtr.text = data.location ?? '';
+    startDateCtr.text = data.startDate ?? '';
+    endDateCtr.text = data.endDate ?? '';
+  }
+
   void dispose() {
     projectNameCtr.dispose();
     descriptionCtr.dispose();
