@@ -3,6 +3,7 @@ import subprocess
 import argparse
 import platform
 import os
+from typing import List
 
 DART_FRB = "lib/src/rust/frb_generated.dart"
 DART_FRB_IO = "lib/src/rust/frb_generated.io.dart"
@@ -192,8 +193,12 @@ class BuildDocs:
 
     def run(self) -> None:
         print("Building documentation...")
+        command: List[str] = ["yarn", "start"]
         try:
-            subprocess.run(["yarn", "start"], cwd="website", shell=True)
+            if platform.system() == "Darwin":
+                subprocess.run(command, cwd="website", shell=True)
+            else:
+                subprocess.run(command, cwd="website")
             print("Documentation built successfully\n")
         except Exception as e:
             print("Error building documentation:", str(e))
@@ -201,8 +206,12 @@ class BuildDocs:
     
     def build(self) -> None:
         print("Building documentation...")
+        command: List[str] = ["yarn", "build"]
         try:
-            subprocess.run(["yarn", "build"], cwd="website", shell=True)
+            if platform.system() == "Darwin":
+                subprocess.run(command, cwd="website", shell=True)
+            else:
+                subprocess.run(command, cwd="website")
             print("Documentation built successfully\n")
         except Exception as e:
             print("Error building documentation:", str(e))
