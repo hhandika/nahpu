@@ -1004,6 +1004,7 @@ class _UniqueIDFieldState extends State<UniqueIDField> {
     setState(() {
       widget.barcodeIdCtr.text = qrData;
     });
+    Navigator.pop(context);
   }
 
   void _generateUuid() {
