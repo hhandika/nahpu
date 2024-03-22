@@ -195,7 +195,7 @@ class BuildDocs:
         print("Building documentation...")
         command: List[str] = ["yarn", "start"]
         try:
-            if platform.system() == "Darwin":
+            if platform.system() == "Windows":
                 subprocess.run(command, cwd="website", shell=True)
             else:
                 subprocess.run(command, cwd="website")
@@ -208,7 +208,7 @@ class BuildDocs:
         print("Building documentation...")
         command: List[str] = ["yarn", "build"]
         try:
-            if platform.system() == "Darwin":
+            if platform.system() == "Windows":
                 subprocess.run(command, cwd="website", shell=True)
             else:
                 subprocess.run(command, cwd="website")
