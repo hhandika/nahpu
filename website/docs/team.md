@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 5
 title:  Team
 ---
 
@@ -28,6 +28,8 @@ All the development team members conceive ideas throughout the project and are t
 ## [Ada Chornelia](https://scholar.google.com/citations?user=DRDqstQAAAAJ&hl=en&oi=ao)
 
 ## [Darwin Morales-Martínez](https://scholar.google.com/citations?user=PJhU5VcAAAAJ&hl=en&oi=ao)
+
+## [Quinn McCallum](https://quinnmccallum.com/)
 
 ## [Gregory Thom](https://www.thom-lab.org/)
 
