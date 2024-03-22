@@ -911,21 +911,31 @@ class PartIdForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return CommonIDForm(
-      child: Column(children: [
-        Text(
-          'Additional Part ID',
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        TissueIDform(
-          specimenUuid: specimenUuid,
-          tissueIdCtr: partCtr.tissueIdCtr,
-        ),
-        UniqueIDField(
-          barcodeIdCtr: partCtr.barcodeIdCtr,
-        ),
-      ]),
-    );
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 4, 16),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Theme.of(context).colorScheme.primary,
+              width: 2.0,
+            ),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(children: [
+            Text(
+              'Additional Part ID',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            TissueIDform(
+              specimenUuid: specimenUuid,
+              tissueIdCtr: partCtr.tissueIdCtr,
+            ),
+            UniqueIDField(
+              barcodeIdCtr: partCtr.barcodeIdCtr,
+            ),
+          ]),
+        ));
   }
 }
 
