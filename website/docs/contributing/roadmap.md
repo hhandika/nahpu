@@ -5,11 +5,11 @@ title: "Development Roadmap"
 
 ## Overview
 
-NAHPU development focuses on three key areas: efficiency, reproducibility, and inclusivity. Inspired by the [Flutter Roadmap](https://github.com/flutter/flutter/wiki/Roadmap), we have created a roadmap to guide the development of NAHPU. The roadmap outlines the key features and improvements that we plan to implement in the upcoming releases. It is also a way to provide transparency to the community and gather feedback on the direction of the project. Just like most software development projects, the roadmap is subject to change based on feedback and new requirements. We welcome contributions from the community to help us achieve our goals.
+NAHPU development focuses on three key areas: **efficiency**, **reproducibility**, and **inclusivity**. Inspired by the [Flutter Roadmap](https://github.com/flutter/flutter/wiki/Roadmap), we have created a roadmap to guide the development of NAHPU. The roadmap outlines the key features and improvements that we plan to implement in the upcoming releases. It is also a way to provide transparency to the community and gather feedback on the direction of the project. Just like most software development projects, the roadmap is subject to change based on feedback and new requirements. We welcome contributions from the community to help us achieve our goals.
 
-## 2024
+## Year 2024
 
-This year, we are focusing on the following key areas:
+Our focus for 2024:
 
 ### Efficiency
 
