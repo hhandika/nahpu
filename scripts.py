@@ -217,6 +217,24 @@ class BuildDocs:
             print("Error building documentation:", str(e))
             return
         
+    def upgrade(self) -> None:
+        print("Upgrading documentation...")
+        command: List[str] = [
+            "yarn", "upgrade", "@docusaurus/core@latest", 
+            "@docusaurus/preset-classic@latest", 
+            "@docusaurus/module-type-aliases@latest", 
+            "@docusaurus/tsconfig@latest", "@docusaurus/types@latest"
+            ]
+        try:
+            if platform.system() == "Windows":
+                subprocess.run(command, cwd="website", shell=True)
+            else:
+                subprocess.run(command, cwd="website")
+            print("Documentation upgraded successfully\n")
+        except Exception as e:
+            print("Error upgrading documentation:", str(e))
+            return
+        
 class Args:
     def __init__(self):
         pass
@@ -256,6 +274,7 @@ class Args:
         parser = args.add_parser("docs", help="Build documentation")
         parser.add_argument("--run", action="store_true", help="Run documentation")
         parser.add_argument("--build", action="store_true", help="Build documentation")
+        parser.add_argument("--upgrade", action="store_true", help="Upgrade documentation")
 
 class Parser:
     def __init__(self, args: argparse.Namespace):
@@ -308,6 +327,8 @@ class Parser:
             docs.run()
         elif self.args.build:
             docs.build()
+        elif self.args.upgrade:
+            docs.upgrade()
         else:
             print("No documentation option selected")
             return
