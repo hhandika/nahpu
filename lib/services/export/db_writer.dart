@@ -86,8 +86,19 @@ class DbWriter extends AppServices {
       await _backUpBeforeDelete(backupPath);
     }
     await _writeDb(dbImportPath);
-    final tempDir = await tempDirectory;
-    tempDir.deleteSync(recursive: true);
+    await _deleteTempDir();
+  }
+
+  Future<void> _deleteTempDir() async {
+    // Try delete ignore if error
+    try {
+      final tempDir = await tempDirectory;
+      tempDir.deleteSync(recursive: true);
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error deleting temp dir: $e');
+      }
+    }
   }
 
   Future<String> _copyProjectData(File file) async {
@@ -96,7 +107,11 @@ class DbWriter extends AppServices {
     final files = tempDir.listSync(recursive: true);
     final dbPath = await _findSqlite3InTempDir(files);
     final nahpuDir = await nahpuDocumentDir;
-    files.removeWhere((file) => file.path.endsWith('.db'));
+    // Remove all .db files if exist in the zip file
+    if (files.any((file) => file.path.endsWith('.db'))) {
+      files.removeWhere((file) => file.path.endsWith('.db'));
+    }
+
     for (var file in files) {
       if (file is File) {
         final filename = p.relative(file.path, from: tempDir.path);

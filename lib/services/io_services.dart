@@ -159,6 +159,7 @@ class FileServices extends AppServices {
 const String nahpuBackupDir = 'nahpu/backup';
 const String nahpuAppDir = 'nahpu';
 const String mediaDir = 'media';
+const String nahpuTempDir = 'NahpuTemp';
 
 class AppServices {
   const AppServices({required this.ref});
@@ -179,7 +180,10 @@ class AppServices {
   }
 
   Future<Directory> get tempDirectory async {
-    return await getTemporaryDirectory();
+    final Directory tempDir = await getTemporaryDirectory();
+    final nahpuTemp = Directory(path.join(tempDir.path, nahpuTempDir));
+    await nahpuTemp.create(recursive: true);
+    return nahpuTemp;
   }
 
   Directory getMediaDir(MediaCategory category) {
