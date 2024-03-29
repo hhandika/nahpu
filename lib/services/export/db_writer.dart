@@ -2,7 +2,6 @@
 // and replace the current database with a new one.
 import 'dart:io';
 
-import 'package:archive/archive_io.dart';
 import 'package:flutter/foundation.dart';
 import 'package:nahpu/services/db_services.dart';
 import 'package:nahpu/services/io_services.dart';
@@ -76,7 +75,7 @@ class DbWriter extends AppServices {
 
   final File filePath;
 
-  Future<void> replaceDb(bool backup, bool isArchived) async {
+  Future<void> replace(bool backup, bool isArchived) async {
     String dbImportPath = filePath.path;
     if (isArchived) {
       dbImportPath = await _copyProjectData(filePath);
@@ -103,7 +102,11 @@ class DbWriter extends AppServices {
 
   Future<String> _copyProjectData(File file) async {
     final tempDir = await tempDirectory;
-    await extractFileToDisk(file.path, tempDir.path);
+    // await extractFileToDisk(file.path, tempDir.path);
+    await ZipExtractor(
+      archivePath: file.path,
+      outputDir: tempDir.path,
+    ).extract();
     final files = tempDir.listSync(recursive: true);
     final dbPath = await _findSqlite3InTempDir(files);
     final nahpuDir = await nahpuDocumentDir;

@@ -109,7 +109,7 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
           _isBackup ? await AppServices(ref: ref).backupDir : null;
 
       await DbWriter(ref: ref, filePath: File(_dbPath!.path))
-          .replaceDb(_isBackup, _isArchived);
+          .replace(_isBackup, _isArchived);
       setState(() {
         _isLoading = false;
       });
