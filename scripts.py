@@ -20,6 +20,8 @@ FRB_FILES = [
 DMG_CONFIG = "installer/config.json"
 OUTPUT_DMG = "installer/nahpu.dmg"
 
+FRB_INSTALL_NAME = "flutter_rust_bridge_codegen@^2.0.0-dev.0"
+
 class Build:
     def __init__(self):
         pass
@@ -110,7 +112,62 @@ class Build:
             print("Dmg opened successfully\n")
         except Exception as e:
             print("Error opening dmg:", str(e))
+
+
+class BuildRust:
+    def __init__(self):
+        pass
     
+    def generate_frb_code(self) -> None:
+        print("Generating frb code...")
+        try:
+            self.remove_old_frb_code()
+            subprocess.run(["flutter_rust_bridge_codegen", "generate"])
+            print("Rust code generated successfully\n")
+        except Exception as e:
+            print("Error generating frb code:", str(e))
+            return
+    
+    def update_frb_executable(self) -> None:
+        print("Updating frb executable...")
+        try:
+            subprocess.run(["cargo", "install", FRB_INSTALL_NAME])
+            self.update_rust_dependencies()
+            print("Frb executable updated successfully\n")
+        except Exception as e:
+            print("Error updating frb executable:", str(e))
+            return
+
+    def remove_old_frb_code(self) -> None:
+        print("Removing old frb code...")
+        try:
+            for file in FRB_FILES:
+                if os.path.exists(file):
+                    os.remove(file)
+                    print(f"Removed {file}")
+            print("Old frb code removed successfully\n")
+        except Exception as e:
+            print("Error removing old frb code:", str(e))
+            return
+
+    def check_rust_dependencies(self) -> None:
+        print("Checking rust dependencies...")
+        try:
+            subprocess.run(["cargo", "check"], cwd="rust")
+            print("Rust dependencies checked successfully\n")
+        except Exception as e:
+            print("Error checking rust dependencies:", str(e))
+            return
+    
+    def update_rust_dependencies(self) -> None:
+        print("Updating rust dependencies...")
+        try:
+            subprocess.run(["cargo", "update"], cwd="rust")
+            print("Rust dependencies updated successfully\n")
+        except Exception as e:
+            print("Error updating rust dependencies:", str(e))
+            return
+           
 
 class FlutterUtils:
     def __init__(self):
@@ -143,50 +200,6 @@ class FlutterUtils:
             print("Error updating flutter dependencies:", str(e))
             return
 
-class BuildRust:
-    def __init__(self):
-        pass
-    
-    def generate_frb_code(self) -> None:
-        print("Generating frb code...")
-        try:
-            self.remove_old_frb_code()
-            subprocess.run(["flutter_rust_bridge_codegen", "generate"])
-            print("Rust code generated successfully\n")
-        except Exception as e:
-            print("Error generating frb code:", str(e))
-            return
-
-    def remove_old_frb_code(self) -> None:
-        print("Removing old frb code...")
-        try:
-            for file in FRB_FILES:
-                if os.path.exists(file):
-                    os.remove(file)
-                    print(f"Removed {file}")
-            print("Old frb code removed successfully\n")
-        except Exception as e:
-            print("Error removing old frb code:", str(e))
-            return
-
-    def check_rust_dependencies(self) -> None:
-        print("Checking rust dependencies...")
-        try:
-            subprocess.run(["cargo", "check"], cwd="rust")
-            print("Rust dependencies checked successfully\n")
-        except Exception as e:
-            print("Error checking rust dependencies:", str(e))
-            return
-    
-    def update_rust_dependencies(self) -> None:
-        print("Updating rust dependencies...")
-        try:
-            subprocess.run(["cargo", "update"], cwd="rust")
-            print("Rust dependencies updated successfully\n")
-        except Exception as e:
-            print("Error updating rust dependencies:", str(e))
-            return
-        
 class BuildDocs:
     def __init__(self):
         pass
@@ -269,6 +282,7 @@ class Args:
         parser.add_argument("--generate", action="store_true", help="Generate frb code")
         parser.add_argument("--check", action="store_true", help="Check rust dependencies")
         parser.add_argument("--update", action="store_true", help="Update rust dependencies")
+        parser.add_argument("--upgrade", action="store_true", help="Upgrade frb executable")
     
     def get_doc_build_args(self, args: argparse.Namespace) -> None:
         parser = args.add_parser("docs", help="Build documentation")
@@ -317,6 +331,8 @@ class Parser:
             rust.check_rust_dependencies()
         elif self.args.update:
             rust.update_rust_dependencies()
+        elif self.args.upgrade:
+            rust.update_frb_executable()
         else:
             print("No build option selected")
             return
