@@ -27,7 +27,7 @@ NAHPU is developed to streamline efforts and foster collaboration. The app facil
 
 ### Accessible for everyone ♿️
 
-NAHPU is a free, open-source app that supports major desktop and mobile platforms. It is designed for natural history collectors and researchers with priority for user-friendliness and accessibility. We leverage the [Material Design](https://m3.material.io/) system to ensures an intuitive interface and visual appeal, while also accommodating people with disabilities. Our ongoing efforts include internationalization with multi-language and locale support. Join our diverse community of contributors in making NAHPU an inclusive and welcoming project for all. Feel free to use and contribute to the app!
+NAHPU is a free, open-source app that supports major desktop and mobile platforms. It is designed for natural history collectors and researchers with priority for user-friendliness and accessibility. We leverage the [Material Design](https://m3.material.io/) system to ensures an intuitive interface and visual appeal, while also accommodating people with disabilities. Our ongoing efforts include internationalization with multi-language and [locale](https://en.wikipedia.org/wiki/Locale_(computer_software)) support. Join our diverse community of contributors in making NAHPU an inclusive and welcoming project for all. Feel free to use and contribute to the app!
 
 ## Support and Contribute to NAHPU
 
