@@ -1,5 +1,6 @@
 //! An archive writer module.
-
+//!
+//! Compresses and decompresses files to and from zip archives.
 use std::{
     io::BufReader,
     path::{Path, PathBuf},
@@ -19,6 +20,12 @@ pub struct ZipArchive<'a> {
     pub output_path: &'a Path,
 }
 
+/// A zip archive writer.
+/// Writes the files to a zip archive.
+/// The files are written to the archive with the directory structure
+/// relative to the parent directory.
+/// If the parent directory is not present, the alternative parent directory
+/// is used to create the directory structure.
 impl<'a> ZipArchive<'a> {
     pub fn new(
         parent_dir: &'a Path,
@@ -70,5 +77,34 @@ impl<'a> ZipArchive<'a> {
             .to_str()
             .expect("Failed parsing file path")
             .to_string()
+    }
+}
+
+pub struct ZipExtractor<'a> {
+    /// The path to the zip archive.
+    pub archive_path: &'a Path,
+    /// The directory to extract the files to.
+    pub output_dir: &'a Path,
+}
+
+/// A zip archive extractor.
+/// Extracts the files from a zip archive.
+/// The files are extracted to the output directory.
+/// The directory structure is preserved.
+impl<'a> ZipExtractor<'a> {
+    pub fn new(archive_path: &'a Path, output_dir: &'a Path) -> Self {
+        Self {
+            archive_path,
+            output_dir,
+        }
+    }
+
+    pub fn extract(&self) -> Result<(), std::io::Error> {
+        let file = std::fs::File::open(self.archive_path)?;
+        let mut zip = zip::ZipArchive::new(file)?;
+
+        zip.extract(self.output_dir)?;
+
+        Ok(())
     }
 }

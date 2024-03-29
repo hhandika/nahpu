@@ -38,6 +38,74 @@ flutter_rust_bridge::frb_generated_default_handler!();
 
 // Section: wire_funcs
 
+fn wire_ZipExtractor_extract_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "ZipExtractor_extract",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <crate::api::archive::ZipExtractor>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| {
+                transform_result_sse((move || {
+                    Result::<_, ()>::Ok(crate::api::archive::ZipExtractor::extract(&api_that))
+                })())
+            }
+        },
+    )
+}
+fn wire_ZipExtractor_new_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "ZipExtractor_new",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_archive_path = <String>::sse_decode(&mut deserializer);
+            let api_output_dir = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| {
+                transform_result_sse((move || {
+                    Result::<_, ()>::Ok(crate::api::archive::ZipExtractor::new(
+                        api_archive_path,
+                        api_output_dir,
+                    ))
+                })())
+            }
+        },
+    )
+}
 fn wire_ZipWriter_new_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -225,6 +293,18 @@ impl SseDecode for () {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {}
 }
 
+impl SseDecode for crate::api::archive::ZipExtractor {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_archivePath = <String>::sse_decode(deserializer);
+        let mut var_outputDir = <String>::sse_decode(deserializer);
+        return crate::api::archive::ZipExtractor {
+            archive_path: var_archivePath,
+            output_dir: var_outputDir,
+        };
+    }
+}
+
 impl SseDecode for crate::api::archive::ZipWriter {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -264,9 +344,11 @@ fn pde_ffi_dispatcher_primary_impl(
 ) {
     // Codec=Pde (Serialization + dispatch), see doc to use other codecs
     match func_id {
+        4 => wire_ZipExtractor_extract_impl(port, ptr, rust_vec_len, data_len),
+        3 => wire_ZipExtractor_new_impl(port, ptr, rust_vec_len, data_len),
         1 => wire_ZipWriter_new_impl(port, ptr, rust_vec_len, data_len),
         2 => wire_ZipWriter_write_impl(port, ptr, rust_vec_len, data_len),
-        4 => wire_init_app_impl(port, ptr, rust_vec_len, data_len),
+        6 => wire_init_app_impl(port, ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -279,13 +361,34 @@ fn pde_ffi_dispatcher_sync_impl(
 ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
     // Codec=Pde (Serialization + dispatch), see doc to use other codecs
     match func_id {
-        3 => wire_test_rust_impl(ptr, rust_vec_len, data_len),
+        5 => wire_test_rust_impl(ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
 
 // Section: rust2dart
 
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::archive::ZipExtractor {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.archive_path.into_into_dart().into_dart(),
+            self.output_dir.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::archive::ZipExtractor
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::archive::ZipExtractor>
+    for crate::api::archive::ZipExtractor
+{
+    fn into_into_dart(self) -> crate::api::archive::ZipExtractor {
+        self
+    }
+}
 // Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::archive::ZipWriter {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
@@ -357,6 +460,14 @@ impl SseEncode for u8 {
 impl SseEncode for () {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {}
+}
+
+impl SseEncode for crate::api::archive::ZipExtractor {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.archive_path, serializer);
+        <String>::sse_encode(self.output_dir, serializer);
+    }
 }
 
 impl SseEncode for crate::api::archive::ZipWriter {

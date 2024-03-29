@@ -65,6 +65,11 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 }
 
 abstract class RustLibApi extends BaseApi {
+  Future<void> zipExtractorExtract({required ZipExtractor that, dynamic hint});
+
+  Future<ZipExtractor> zipExtractorNew(
+      {required String archivePath, required String outputDir, dynamic hint});
+
   Future<ZipWriter> zipWriterNew(
       {required String parentDir,
       required List<String> files,
@@ -85,6 +90,58 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     required super.generalizedFrbRustBinding,
     required super.portManager,
   });
+
+  @override
+  Future<void> zipExtractorExtract({required ZipExtractor that, dynamic hint}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_box_autoadd_zip_extractor(that, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 4, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta: kZipExtractorExtractConstMeta,
+      argValues: [that],
+      apiImpl: this,
+      hint: hint,
+    ));
+  }
+
+  TaskConstMeta get kZipExtractorExtractConstMeta => const TaskConstMeta(
+        debugName: "ZipExtractor_extract",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<ZipExtractor> zipExtractorNew(
+      {required String archivePath, required String outputDir, dynamic hint}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_String(archivePath, serializer);
+        sse_encode_String(outputDir, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 3, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_zip_extractor,
+        decodeErrorData: null,
+      ),
+      constMeta: kZipExtractorNewConstMeta,
+      argValues: [archivePath, outputDir],
+      apiImpl: this,
+      hint: hint,
+    ));
+  }
+
+  TaskConstMeta get kZipExtractorNewConstMeta => const TaskConstMeta(
+        debugName: "ZipExtractor_new",
+        argNames: ["archivePath", "outputDir"],
+      );
 
   @override
   Future<ZipWriter> zipWriterNew(
@@ -148,7 +205,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 4, port: port_);
+            funcId: 6, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -171,7 +228,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return handler.executeSync(SyncTask(
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 3)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 5)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -193,6 +250,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   String dco_decode_String(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as String;
+  }
+
+  @protected
+  ZipExtractor dco_decode_box_autoadd_zip_extractor(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_zip_extractor(raw);
   }
 
   @protected
@@ -232,6 +295,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ZipExtractor dco_decode_zip_extractor(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return ZipExtractor(
+      archivePath: dco_decode_String(arr[0]),
+      outputDir: dco_decode_String(arr[1]),
+    );
+  }
+
+  @protected
   ZipWriter dco_decode_zip_writer(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -250,6 +325,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_list_prim_u_8_strict(deserializer);
     return utf8.decoder.convert(inner);
+  }
+
+  @protected
+  ZipExtractor sse_decode_box_autoadd_zip_extractor(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_zip_extractor(deserializer));
   }
 
   @protected
@@ -300,6 +382,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ZipExtractor sse_decode_zip_extractor(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_archivePath = sse_decode_String(deserializer);
+    var var_outputDir = sse_decode_String(deserializer);
+    return ZipExtractor(archivePath: var_archivePath, outputDir: var_outputDir);
+  }
+
+  @protected
   ZipWriter sse_decode_zip_writer(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_parentDir = sse_decode_String(deserializer);
@@ -329,6 +419,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_String(String self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_list_prim_u_8_strict(utf8.encoder.convert(self), serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_zip_extractor(
+      ZipExtractor self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_zip_extractor(self, serializer);
   }
 
   @protected
@@ -374,6 +471,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   void sse_encode_unit(void self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
+  }
+
+  @protected
+  void sse_encode_zip_extractor(ZipExtractor self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.archivePath, serializer);
+    sse_encode_String(self.outputDir, serializer);
   }
 
   @protected

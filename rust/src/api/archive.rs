@@ -1,5 +1,5 @@
 //! Rust FRB Boilerplate to access the archive API
-use nahpu_api::archive::ZipArchive;
+use nahpu_api::archive;
 use std::path::{Path, PathBuf};
 
 pub struct ZipWriter {
@@ -24,7 +24,28 @@ impl ZipWriter {
         let output_path = Path::new(&self.output_path);
         let parent_dir = Path::new(&self.parent_dir);
         let alt_parent_dir = self.alt_parent_dir.as_ref().map(Path::new);
-        let zip = ZipArchive::new(parent_dir, alt_parent_dir, output_path, &files);
+        let zip = archive::ZipArchive::new(parent_dir, alt_parent_dir, output_path, &files);
         zip.write().expect("Failed writing zip file");
+    }
+}
+
+pub struct ZipExtractor {
+    pub archive_path: String,
+    pub output_dir: String,
+}
+
+impl ZipExtractor {
+    pub fn new(archive_path: String, output_dir: String) -> Self {
+        Self {
+            archive_path,
+            output_dir,
+        }
+    }
+
+    pub fn extract(&self) {
+        let archive_path = Path::new(&self.archive_path);
+        let output_dir = Path::new(&self.output_dir);
+        let zip = archive::ZipExtractor::new(archive_path, output_dir);
+        zip.extract().expect("Failed extracting zip file");
     }
 }

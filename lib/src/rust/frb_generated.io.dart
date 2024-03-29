@@ -23,6 +23,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String dco_decode_String(dynamic raw);
 
   @protected
+  ZipExtractor dco_decode_box_autoadd_zip_extractor(dynamic raw);
+
+  @protected
   ZipWriter dco_decode_box_autoadd_zip_writer(dynamic raw);
 
   @protected
@@ -41,10 +44,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void dco_decode_unit(dynamic raw);
 
   @protected
+  ZipExtractor dco_decode_zip_extractor(dynamic raw);
+
+  @protected
   ZipWriter dco_decode_zip_writer(dynamic raw);
 
   @protected
   String sse_decode_String(SseDeserializer deserializer);
+
+  @protected
+  ZipExtractor sse_decode_box_autoadd_zip_extractor(
+      SseDeserializer deserializer);
 
   @protected
   ZipWriter sse_decode_box_autoadd_zip_writer(SseDeserializer deserializer);
@@ -65,6 +75,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_decode_unit(SseDeserializer deserializer);
 
   @protected
+  ZipExtractor sse_decode_zip_extractor(SseDeserializer deserializer);
+
+  @protected
   ZipWriter sse_decode_zip_writer(SseDeserializer deserializer);
 
   @protected
@@ -75,6 +88,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_String(String self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_zip_extractor(
+      ZipExtractor self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_zip_writer(
@@ -95,6 +112,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_unit(void self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_zip_extractor(ZipExtractor self, SseSerializer serializer);
 
   @protected
   void sse_encode_zip_writer(ZipWriter self, SseSerializer serializer);

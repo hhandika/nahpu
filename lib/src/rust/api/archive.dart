@@ -6,6 +6,40 @@
 import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
+class ZipExtractor {
+  final String archivePath;
+  final String outputDir;
+
+  const ZipExtractor({
+    required this.archivePath,
+    required this.outputDir,
+  });
+
+  Future<void> extract({dynamic hint}) =>
+      RustLib.instance.api.zipExtractorExtract(
+        that: this,
+      );
+
+  // HINT: Make it `#[frb(sync)]` to let it become the default constructor of Dart class.
+  static Future<ZipExtractor> newInstance(
+          {required String archivePath,
+          required String outputDir,
+          dynamic hint}) =>
+      RustLib.instance.api.zipExtractorNew(
+          archivePath: archivePath, outputDir: outputDir, hint: hint);
+
+  @override
+  int get hashCode => archivePath.hashCode ^ outputDir.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ZipExtractor &&
+          runtimeType == other.runtimeType &&
+          archivePath == other.archivePath &&
+          outputDir == other.outputDir;
+}
+
 class ZipWriter {
   final String parentDir;
   final String? altParentDir;
