@@ -102,7 +102,6 @@ class DbWriter extends AppServices {
 
   Future<String> _copyProjectData(File file) async {
     final tempDir = await tempDirectory;
-    // await extractFileToDisk(file.path, tempDir.path);
     await ZipExtractor(
       archivePath: file.path,
       outputDir: tempDir.path,
