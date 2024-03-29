@@ -1,5 +1,5 @@
 //! This file contains the class to write the database into a file
-// and replace the current database with a new one.
+//! and replace the current database with a new one.
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
