@@ -30,7 +30,7 @@ class DatabaseSettingsState extends ConsumerState<DatabaseSettings> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Database Settings'),
+          title: const Text('Replace Database'),
         ),
         body: SafeArea(
           child: CommonSettingList(
@@ -175,9 +175,8 @@ class DbFileInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CommonSettingSection(
-      title: 'Replace database',
       children: [
-        const SizedBox(height: 16),
+        const SizedBox(height: 8),
         Center(
           child: SelectFileField(
             filePath: dbPath,

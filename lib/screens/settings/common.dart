@@ -27,12 +27,12 @@ class CommonSettingList extends StatelessWidget {
 class CommonSettingSection extends StatelessWidget {
   const CommonSettingSection({
     super.key,
-    required this.title,
+    this.title,
     required this.children,
     this.isDivided = false,
   });
 
-  final String title;
+  final String? title;
   final List<Widget> children;
   final bool isDivided;
 
@@ -41,14 +41,15 @@ class CommonSettingSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          textAlign: TextAlign.left,
-          style: TextStyle(
-            fontSize: 16,
-            color: Theme.of(context).colorScheme.onSurface.withAlpha(160),
+        if (title != null)
+          Text(
+            title!,
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              fontSize: 16,
+              color: Theme.of(context).colorScheme.onSurface.withAlpha(160),
+            ),
           ),
-        ),
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),

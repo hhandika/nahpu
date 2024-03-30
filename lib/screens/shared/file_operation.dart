@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:nahpu/screens/shared/layout.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:flutter/material.dart';
@@ -175,16 +174,21 @@ class SelectFileField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DottedBorder(
-      borderType: BorderType.RRect,
-      radius: const Radius.circular(16),
-      color: Theme.of(context).dividerColor,
-      strokeWidth: 2,
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(4, 8, 4, 4),
       child: Container(
         width: width,
         height: 160,
         constraints: BoxConstraints(
           maxWidth: maxWidth,
+        ),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Theme.of(context).colorScheme.secondary.withAlpha(40),
+            width: 2,
+          ),
+          color: Theme.of(context).colorScheme.secondary.withAlpha(24),
+          borderRadius: BorderRadius.circular(16),
         ),
         padding: const EdgeInsets.all(16),
         child: filePath == null
@@ -220,21 +224,10 @@ class SelectFileField extends StatelessWidget {
                     size: 56,
                     color: Theme.of(context).colorScheme.tertiary,
                   ),
-                  Wrap(
-                    alignment: WrapAlignment.start,
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      Text(
-                        p.basename(filePath!.path),
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.labelLarge,
-                      ),
-                      IconButton(
-                        onPressed: onCleared,
-                        icon: const Icon(Icons.clear_rounded),
-                      ),
-                    ],
+                  Chip(
+                    label: Text(p.basename(filePath!.path)),
+                    onDeleted: onCleared,
+                    deleteIcon: const Icon(Icons.close_rounded),
                   ),
                 ],
               ),
