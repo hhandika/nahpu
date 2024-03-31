@@ -47,13 +47,18 @@ class CommonSettingSection extends StatelessWidget {
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 16,
-              color: Theme.of(context).colorScheme.onSurface.withAlpha(160),
+              color: Theme.of(context).colorScheme.onSurface.withAlpha(180),
             ),
           ),
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: Theme.of(context).colorScheme.surfaceVariant.withAlpha(100),
+            color: Theme.of(context).colorScheme.surfaceVariant.withAlpha(120),
+            border: Border.all(
+              color:
+                  Theme.of(context).colorScheme.surfaceVariant.withAlpha(240),
+              width: 1.2,
+            ),
           ),
           child: Column(
             children: isDivided

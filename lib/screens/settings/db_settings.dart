@@ -264,7 +264,8 @@ class DbWarningText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Text(
-      'Are you sure you want to replace the database?',
+      'Replacing the database will delete all the current data. '
+      'Remember to backup your data before proceeding. Continue?',
       textAlign: TextAlign.center,
     );
   }

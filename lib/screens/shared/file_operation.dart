@@ -225,7 +225,18 @@ class SelectFileField extends StatelessWidget {
                     color: Theme.of(context).colorScheme.tertiary,
                   ),
                   Chip(
-                    label: Text(p.basename(filePath!.path)),
+                    label: Text(
+                      p.basename(filePath!.path),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    side: BorderSide(
+                      color:
+                          Theme.of(context).colorScheme.secondary.withAlpha(24),
+                      width: 2,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                     onDeleted: onCleared,
                     deleteIcon: const Icon(Icons.close_rounded),
                   ),
