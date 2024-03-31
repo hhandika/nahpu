@@ -229,7 +229,9 @@ class ListProjectCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: ListTile(
-        leading: const ProjectIcon(),
+        leading: ProjectIcon(
+          color: Theme.of(context).colorScheme.primary,
+        ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
           side: BorderSide(
@@ -242,6 +244,7 @@ class ListProjectCard extends StatelessWidget {
         title: Text(
           project.name,
           style: Theme.of(context).textTheme.titleMedium,
+          overflow: TextOverflow.ellipsis,
         ),
         subtitle: Text(
           'Last accessed: $_lastAccessedDate'
@@ -275,35 +278,51 @@ class GridProjectCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ItemContainer(
-        child: GridTile(
-      footer: ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
+    return GridTile(
+      footer: Padding(
+        padding: const EdgeInsets.all(8),
+        child: ListTile(
+          // shape: RoundedRectangleBorder(
+          //   borderRadius: BorderRadius.circular(16),
+          //   side: BorderSide(
+          //     color: Theme.of(context)
+          //         .colorScheme
+          //         .secondaryContainer
+          //         .withAlpha(80),
+          //     width: 1.5,
+          //   ),
+          // ),
+          // tileColor: Theme.of(context).colorScheme.primaryContainer,
+          dense: true,
+          title: Text(
+            project.name,
+            style: Theme.of(context).textTheme.titleMedium,
+            overflow: TextOverflow.ellipsis,
+          ),
+          subtitle: Text(
+            _lastAccessedDate,
+            style: const TextStyle(
+              fontSize: 12,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          trailing: ProjectPopUpMenu(project: project),
+          onTap: onPressed,
+        ),
+      ),
+      child: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 8, 8, 68),
           child: Container(
-            color:
-                Theme.of(context).colorScheme.secondaryContainer.withAlpha(500),
-            child: ListTile(
-              title: Text(
-                project.name,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-              subtitle: Text(
-                _lastAccessedDate,
-                style: const TextStyle(
-                  fontSize: 12,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              trailing: ProjectPopUpMenu(project: project),
-              onTap: onPressed,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              color: Theme.of(context).colorScheme.primaryContainer,
+            ),
+            padding: const EdgeInsets.all(16),
+            child: ProjectIcon(
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
             ),
           )),
-      child: const Padding(
-        padding: EdgeInsets.all(16),
-        child: ProjectIcon(),
-      ),
-    ));
+    );
   }
 
   String get _lastAccessedDate {
@@ -370,35 +389,19 @@ class ProjectPopUpMenuState extends ConsumerState<ProjectPopUpMenu> {
   }
 }
 
-class ItemContainer extends StatelessWidget {
-  const ItemContainer({super.key, required this.child});
-  final Widget child;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        padding: const EdgeInsets.all(2),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: Theme.of(context).colorScheme.surfaceVariant.withAlpha(80),
-          border: Border.all(
-            color: Theme.of(context).dividerColor.withAlpha(50),
-            width: 1.5,
-          ),
-        ),
-        child: child);
-  }
-}
-
 class ProjectIcon extends StatelessWidget {
-  const ProjectIcon({super.key});
+  const ProjectIcon({super.key, required this.color, this.size = 32});
+
+  final Color color;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
     return SvgPicture.asset(
       'assets/icons/project.svg',
-      height: 32,
+      height: size,
       colorFilter: ColorFilter.mode(
-        Theme.of(context).colorScheme.primary,
+        color,
         BlendMode.srcIn,
       ),
     );
