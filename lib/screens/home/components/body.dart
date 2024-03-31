@@ -75,22 +75,23 @@ class _ToggleViewState extends State<ToggleView> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Existing projects',
-                style: Theme.of(context).textTheme.titleLarge),
+                style: Theme.of(context).textTheme.labelLarge),
             IconButton(
                 onPressed: () {
                   setState(() {
                     isListSelected = !isListSelected;
                   });
                 },
+                iconSize: 24,
                 icon: isListSelected
                     ? const Icon(Icons.grid_view)
                     : const Icon(Icons.list_alt)),
           ],
         ),
-        Divider(
-          color: Theme.of(context).colorScheme.onSurface,
-          thickness: 1.5,
-        ),
+        // Divider(
+        //   color: Theme.of(context).colorScheme.onSurface,
+        //   thickness: 1.5,
+        // ),
         isListSelected
             ? ProjectListView(projectList: widget.projectList)
             : ProjectGridView(
@@ -226,26 +227,32 @@ class ListProjectCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(bottom: 8),
-        child: ItemContainer(
-          child: ListTile(
-            leading: const ProjectIcon(),
-            title: Text(
-              project.name,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            subtitle: Text(
-              'Last accessed: $_lastAccessedDate'
-              '${listTileSeparator}Created: $_creationDate',
-              style: const TextStyle(
-                fontSize: 12,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            trailing: ProjectPopUpMenu(project: project),
-            onTap: onTap,
+      padding: const EdgeInsets.only(bottom: 8),
+      child: ListTile(
+        leading: const ProjectIcon(),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(
+            color: Theme.of(context).dividerColor.withAlpha(40),
+            width: 1.5,
           ),
-        ));
+        ),
+        tileColor: Theme.of(context).colorScheme.surfaceVariant.withAlpha(80),
+        dense: true,
+        title: Text(
+          project.name,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        subtitle: Text(
+          'Last accessed: $_lastAccessedDate'
+          '${listTileSeparator}Created: $_creationDate',
+          style: Theme.of(context).textTheme.labelSmall,
+          overflow: TextOverflow.ellipsis,
+        ),
+        trailing: ProjectPopUpMenu(project: project),
+        onTap: onTap,
+      ),
+    );
   }
 
   String get _creationDate {
@@ -369,9 +376,9 @@ class ItemContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(2),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(16),
           color: Theme.of(context).colorScheme.surfaceVariant.withAlpha(80),
           border: Border.all(
             color: Theme.of(context).dividerColor.withAlpha(50),
@@ -389,7 +396,7 @@ class ProjectIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return SvgPicture.asset(
       'assets/icons/project.svg',
-      height: 64,
+      height: 32,
       colorFilter: ColorFilter.mode(
         Theme.of(context).colorScheme.primary,
         BlendMode.srcIn,
