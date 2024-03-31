@@ -11,15 +11,16 @@ import 'package:sqlite3/sqlite3.dart' as sqlite3;
 import 'package:nahpu/services/database/database.dart';
 import 'package:path/path.dart' as p;
 
-class DbArchive extends AppServices {
-  const DbArchive({required super.ref, required this.filePath});
+/// Export the database into a file
+/// If [isWithProjectData] is true, the project data will be included
+/// and the file will be zipped.
+/// Otherwise, the database file will be exported as a sqlite3 file.
+class DbExport extends AppServices {
+  const DbExport({required super.ref, required this.filePath});
 
   final File filePath;
 
-  /// Write the database into a file
-  /// If [isWithProjectData] is true, the project data will be included
-  /// and the file will be zipped
-  Future<File> writeDb(bool isWithProjectData) async {
+  Future<File> write(bool isWithProjectData) async {
     final nahpuDir = await nahpuDocumentDir;
     final dbPath = await _writeSqlite(nahpuDir, isWithProjectData);
 
@@ -70,11 +71,16 @@ class DbArchive extends AppServices {
   }
 }
 
+/// Write the database into a file
+/// and replace the current database with a new one.
+/// If [backup] is true, the current database will be backed up.
+/// If [isArchived] is true, the backup file is zipped.
 class DbWriter extends AppServices {
   const DbWriter({required super.ref, required this.filePath});
 
   final File filePath;
 
+  /// Replace the current database with a new one.
   Future<void> replace(bool backup, bool isArchived) async {
     String dbImportPath = filePath.path;
     if (isArchived) {

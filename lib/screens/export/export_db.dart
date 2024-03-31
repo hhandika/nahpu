@@ -153,7 +153,7 @@ class ExportDbFormState extends ConsumerState<ExportDbForm> {
         ext: _dbExtension,
       ).getSavePath();
       final currentSavePath =
-          await DbArchive(ref: ref, filePath: _savePath).writeDb(
+          await DbExport(ref: ref, filePath: _savePath).write(
         _isWithProjectData,
       );
       setState(() {
