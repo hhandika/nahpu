@@ -247,7 +247,7 @@ class ListProjectCard extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
         subtitle: Text(
-          'Last accessed: $_lastAccessedDate'
+          'Accessed: $_lastAccessedDate'
           '${listTileSeparator}Created: $_creationDate',
           style: Theme.of(context).textTheme.labelSmall,
           overflow: TextOverflow.ellipsis,
@@ -282,17 +282,6 @@ class GridProjectCard extends StatelessWidget {
       footer: Padding(
         padding: const EdgeInsets.all(8),
         child: ListTile(
-          // shape: RoundedRectangleBorder(
-          //   borderRadius: BorderRadius.circular(16),
-          //   side: BorderSide(
-          //     color: Theme.of(context)
-          //         .colorScheme
-          //         .secondaryContainer
-          //         .withAlpha(80),
-          //     width: 1.5,
-          //   ),
-          // ),
-          // tileColor: Theme.of(context).colorScheme.primaryContainer,
           dense: true,
           title: Text(
             project.name,
@@ -315,9 +304,14 @@ class GridProjectCard extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
-              color: Theme.of(context).colorScheme.primaryContainer,
+              color:
+                  Theme.of(context).colorScheme.primaryContainer.withAlpha(120),
+              border: Border.all(
+                color: Theme.of(context).colorScheme.primary.withAlpha(80),
+                width: 2,
+              ),
             ),
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(32),
             child: ProjectIcon(
               color: Theme.of(context).colorScheme.onPrimaryContainer,
             ),
@@ -327,7 +321,7 @@ class GridProjectCard extends StatelessWidget {
 
   String get _lastAccessedDate {
     final value = parseDate(project.lastAccessed);
-    return 'Last accessed: ${value.date} ${value.time}';
+    return 'Accessed: ${value.date} ${value.time}';
   }
 }
 
