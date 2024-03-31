@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # NAHPU Day 1
 
-NAHPU is a project based cataloging app. The data is manage and organize based on a project. Each project can have multiple personnel, sites, narratives, collecting events, and specimen records. The app is designed to be used in the field, but you can also use it in the lab.
+NAHPU is a project-based cataloging app. The data is managed and organized based on a project. Each project can have multiple people, sites, narratives, collecting events, and specimen records. The app is designed to be used in the field, but you can also use it in the lab.
 
 ## Typical Workflow
 
@@ -14,15 +14,15 @@ Use the `+` button in the bottom right corner of the home screen. Project name m
 
 You can add project description. This is optional, but it is useful to help you remember the project purpose and scope.
 
-Then, select the main catalog format. The app currently support mammal and bird catalog format. We separate bat and other mammmal. The bat format will have forearm field in the measurement form. You can change the catalog format later in the project setting. NAHPU allows to catalog all supported taxon group within the same project.
+Then, select the main catalog format. The app currently supports mammal and bird catalog formats. We separate bats from other mammmal. The bat format will have a forearm field in the measurement form. You can change the catalog format later in the project settings. NAHPU allows to catalog all supported taxon groups within the same project.
 
-After you create a project, the app will automatically generate a project UUID. This is a unique identifier used throughout the database to distinguish records from different projects. We used [UUID version 4](https://en.wikipedia.org/wiki/Universally_unique_identifier). It almost impossible to collide while still protecting your privacy.
+After you create a project, the app will automatically generate a project UUID. This is a unique identifier used throughout the database to distinguish records from different projects. We used [UUID version 4](https://en.wikipedia.org/wiki/Universally_unique_identifier). It is almost impossible for two UUIDs to collide.
 
 ### 2. Add a new personnel
 
-Navigate ot the project add a new personnel. You need at least a person with specimen care role as a cataloger. You can add more people with different roles.
+Navigate to the project and add new personnel. You need at least one person with a specimen care role as a cataloger. You can add more people with different roles.
 
-[Cataloger](./usages/personnel#cataloger) is the person that will be responsible for cataloging the specimen. In some institutions, this could be called a collector. In the app, we call collector as someone who collects the specimen, whether they are involved in cataloging the app or not. Their initial and field number will be used to generate the Field ID on the specimen catalog page. Their name will also appear whenever the field asks for a personnel name, such as collecting personnel and preparator. The app does not allow changing the cataloger role after it is created.
+[Cataloger](./usages/personnel#cataloger) is the person that will be responsible for cataloging the specimen. In some institutions, this could be called a collector. In the app, we call a collector anyone who collects the specimen, whether they are involved in cataloging the app or not. Their initial and field number will be used to generate the Field ID on the specimen catalog page. Their name will also appear whenever the field asks for a personnel name, such as collecting personnel and preparator. The app does not allow changing the cataloger role after it is created.
 
 [Preparator only](./usages/personnel#preparator-only) is a person that helps prepare the specimen, but does not involve in managing the data. Their names will not appear in the cataloger field in the specimen page, but will appear somewhere else, such as in the `Preparator` and `Collecting personnel` field in the specimen page.
 
