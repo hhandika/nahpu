@@ -3,7 +3,7 @@ sidebar_position: 3
 title: Switch to NAHPU
 ---
 
-NAHPU offers several benefits compare to the conventional paper based catalog or other digital catalog solution, such as Claris FileMaker Pro. It is specifically developed as a digital field catalog for natural history collection. We develop NAHPU to support our work in a remote field site.
+NAHPU offers several benefits compared to the conventional paper-based catalog or other digital catalog solutions, such as Claris FileMaker Pro. It is specifically developed as a digital field catalog for natural history collection. We developed NAHPU to support our work in remote field sites.
 
 ## Transition to NAHPU
 
@@ -15,24 +15,24 @@ Two typical approaches to transition to NAHPU:
 
 ## Devices Requirements
 
-The devices you need to work using NAHPU would vary depending on your field site. The following is a list of typical devices and accessories you need for different field budgets. This recommendation is based on our experience working in remote field sites in the tropics. You may need to adjust the list to suit your field sites.
+The devices you need for using NAHPU will vary depending on your field site and budget. The following is a list of typical devices and accessories you need for different field budgets. This recommendation is based on our experience working in remote field sites in the tropics. You may need to adjust the list to suit your field sites.
 
 ### Low-budget Option
 
-- **A smartphone**. You can start by using your own smartphone. NAHPU UI is designed to adapt to small screens.
-- **A flash drive**. You can use a flash drive to backup your data. If you have internet connection in the field, NAHPU allow you to share data to cloud providers such as Google Drive, Dropbox, etc.
+- **A smartphone**. You can start by using your own smartphone. The NAHPU UI is designed to adapt to small screens.
+- **A flash drive**. You can use a flash drive to back up your data. If you have internet connection in the field, NAHPU allow you to share data to cloud providers such as Google Drive, Dropbox, etc.
 - **A power bank**. You can use a power bank to charge your smartphone in the field when there is lack of electricity.
-- **A usb-c or lignthing to usb adapter**. You can use this adapter to connect your flash drive to your smartphone. Some flash drive has a usb-c connector. If you are using a recent Android phone, you may not need this adapter.
+- **A usb-c or lightning to usb adapter**. You can use this adapter to connect your flash drive to your smartphone. Some flash drives have a usb-c connector. If you are using a recent Android phone, you may not need this adapter.
 
 ### Medium-budget to High-budget Option
 
-- **A tablet**. We recommend using an iPad Mini. You can also get a bigger iPad. Keep in mind that, iPad Mini tend to have smaller battery capacity than a bigger iPad, while still having the same battery life. It allows more charge for the same power bank capacity
+- **A tablet**. We recommend using an iPad Mini. You can also get a bigger iPad. Keep in mind that the iPad Mini tends to have smaller battery capacity than a bigger iPad, while still having the same battery life. It allows more charge for the same power bank capacity
 
 - **An external wireless keyboard**. It helps you to type faster and avoid touching the screen with dirty hands.
 
 - **A usb-c flash drive**. Get a high quality flash drives with USB-C connector. Some of these flash drives are waterproof.
 
-- **A power bank**. We recommend using a 20,000 to 25,000 mAH power bank. It is usually airline approved. The weight to capacity ratio is also good. It is also good to have a power bank with a USB-C connector. It often allows to fast charging the devices. It also allows you to charge the power bank faster. For example, at the [Esseltyn's lab](https://esselstyn.github.io/), in a fieldwork in remote mountains in Indonesia, we sometimes have guides that can bring the power bank to the nearest village to charge it. A 25,000 mAH power bank with USB-C connector can be charged to full in 4 hours, while a 20,000 mAH power bank with micro-USB connector can take 8 hours or more to charge to full.
+- **A power bank**. We recommend using a 20,000 to 25,000 mAH power bank. It is usually airline approved. The weight to capacity ratio is also good. It is also good to have a power bank with a USB-C connector. It often allows to fast charging the devices. It also allows you to charge the power bank faster. For example, at the [Esseltyn's lab](https://esselstyn.github.io/), in fieldwork in remote mountains in Indonesia, we sometimes have guides that can bring the power bank to the nearest village to charge it. A 25,000 mAH power bank with USB-C connector can be charged to full in 4 hours, while a 20,000 mAH power bank with micro-USB connector can take 8 hours or more to charge to full.
 
 - **Multi-output wall charger**. It allows you to charge multiple devices at once. We recommend at least 65W chargers. Some brands has travel compatible, featuring switchable plugs.
 
