@@ -191,11 +191,13 @@ class DbFileInputField extends StatelessWidget {
         const SizedBox(height: 4),
         ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 460),
-          child: SwitchField(
-            label: 'Backup current database',
-            value: isBackup,
-            onPressed: onBackupChosen,
-          ),
+          child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: SwitchField(
+                label: 'Backup current database',
+                value: isBackup,
+                onPressed: onBackupChosen,
+              )),
         ),
         const SizedBox(height: 16),
         DbReplaceButtons(

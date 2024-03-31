@@ -175,7 +175,7 @@ class SelectFileField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(4, 8, 4, 4),
+      padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
       child: Container(
         width: width,
         height: 160,
