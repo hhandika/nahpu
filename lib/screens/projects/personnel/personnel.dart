@@ -1,4 +1,5 @@
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:nahpu/screens/projects/personnel/manage_personnel.dart';
 import 'package:nahpu/services/providers/personnel.dart';
 import 'package:nahpu/screens/projects/personnel/add_personnel.dart';
 import 'package:nahpu/screens/projects/personnel/avatars.dart';
@@ -120,17 +121,33 @@ class AddPersonnelButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PrimaryButton(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const AddPersonnel(),
-          ),
-        );
-      },
-      label: 'Add personnel',
-      icon: Icons.add,
+    return Wrap(
+      alignment: WrapAlignment.center,
+      spacing: 8,
+      children: [
+        SecondaryButton(
+            text: 'Manage',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ManagePersonnel(),
+                ),
+              );
+            }),
+        PrimaryButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AddPersonnel(),
+              ),
+            );
+          },
+          label: 'Add personnel',
+          icon: Icons.add,
+        ),
+      ],
     );
   }
 }
