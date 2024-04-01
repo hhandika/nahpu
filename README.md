@@ -10,4 +10,4 @@
 
 NAHPU (NAtural History Project Utility), loosely named after the Greater Malay Chevrotain, *Tragulus napu*, is a cross-platform cataloging app for natural history specimen collection. It leverages the mobile revolution to improve specimen data recording and management in the field, and streamlines the process of museum curation. Users can use nahpu as a standalone field catalog or to supplement conventional paper-based catalogs.
 
-Learn more about `nahpu` by visiting the [documentation](https://nahpu.app).
+Learn more about NAHPU by visiting the [documentation](https://nahpu.app).
