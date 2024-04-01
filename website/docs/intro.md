@@ -11,6 +11,16 @@ NAHPU is a cross-platform field cataloging app designed for natural history coll
 NAHPU is currently in beta. We are working on adding more features and support for other taxa. If you have any questions or interested to contribute to the app development, please contact [project maintainer](https://hhandika.com/contact.html).
 :::
 
+## Key Features
+
+- 📸 **Digital asset management**: Associate digital assets, such as photos of specimens and habitats, with your collection records. Support adding photos for sites, specimens, and field notes.
+- 🐦 **Multi-taxon support**: You can incorporate all the supported taxa in a single project, each with their own catalog format tailored specifically for that taxa.
+- 🌍 **Write site once, use it everywhere**: Create a site profile with detailed information about the location, habitat, and unlimited number of coordinates. Associate it with multiple specimens, collecting events, and field notes.
+- 📅 **Record collecting events**: Keep track of your collecting activities by documenting detailed information about the collection date, method, efforts, and personnel involved. This can be associated with multiple specimens.
+- 🧬 **Efficient tissue sample management**: Manage a large number of tissue samples efficiently and keep track of their collection date and time. The system supports barcode and QR code reading using the device’s camera for easy and accurate tracking.
+- 📊 **Real-time statistics**: Monitor your collecting activities and make informed decisions to manage tissue sampling in the face of tube shortages and prevent over-collection.
+- 🔄 **Advanced share function**: Take advantage of the app’s advanced share function to share your data with collaborators or incorporate it as an automatic pipeline to the museum database.
+
 ## NAHPU's mission
 
 ### Simplify complex fieldwork 🛠️
