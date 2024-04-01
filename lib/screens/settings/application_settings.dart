@@ -136,7 +136,6 @@ class DataUsageSettingsState extends ConsumerState<DataUsageSettings> {
       body: CommonSettingList(
         sections: [
           CommonSettingSection(
-            title: 'App data',
             isDivided: true,
             children: [
               FutureBuilder(
