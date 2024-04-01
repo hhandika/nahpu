@@ -279,44 +279,52 @@ class GridProjectCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridTile(
-      footer: Padding(
-        padding: const EdgeInsets.all(8),
-        child: ListTile(
-          dense: true,
-          title: Text(
-            project.name,
-            style: Theme.of(context).textTheme.titleMedium,
-            overflow: TextOverflow.ellipsis,
-          ),
-          subtitle: Text(
-            _lastAccessedDate,
-            style: const TextStyle(
-              fontSize: 12,
+        footer: Padding(
+          padding: const EdgeInsets.all(8),
+          child: ListTile(
+            dense: true,
+            title: Text(
+              project.name,
+              style: Theme.of(context).textTheme.titleMedium,
               overflow: TextOverflow.ellipsis,
             ),
-          ),
-          trailing: ProjectPopUpMenu(project: project),
-          onTap: onPressed,
-        ),
-      ),
-      child: Padding(
-          padding: const EdgeInsets.fromLTRB(8, 8, 8, 68),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              color:
-                  Theme.of(context).colorScheme.primaryContainer.withAlpha(120),
-              border: Border.all(
-                color: Theme.of(context).colorScheme.primary.withAlpha(80),
-                width: 2,
+            subtitle: Text(
+              _lastAccessedDate,
+              style: const TextStyle(
+                fontSize: 12,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
-            padding: const EdgeInsets.all(32),
-            child: ProjectIcon(
-              color: Theme.of(context).colorScheme.onPrimaryContainer,
-            ),
-          )),
-    );
+            trailing: ProjectPopUpMenu(project: project),
+            onTap: onPressed,
+          ),
+        ),
+        child: Padding(
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 68),
+            child: GestureDetector(
+              onTap: onPressed,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .surfaceVariant
+                      .withAlpha(80),
+                  // color: Theme.of(context)
+                  //     .colorScheme
+                  //     .primaryContainer
+                  //     .withAlpha(120),
+                  border: Border.all(
+                    color: Theme.of(context).dividerColor.withAlpha(40),
+                    width: 1.5,
+                  ),
+                ),
+                padding: const EdgeInsets.all(32),
+                child: ProjectIcon(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+            )));
   }
 
   String get _lastAccessedDate {
