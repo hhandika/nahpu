@@ -17,15 +17,12 @@ function HomepageHeader() {
         </Heading>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
-          <Link
-            className="button button--outline button--primary button--lg"
-            to="/docs/intro"
-          >
+          <Link className="button button--primary button--lg" to="/docs/intro">
             Learn NAHPU
           </Link>
           &nbsp;&nbsp;&nbsp;&nbsp;
           <Link
-            className="button button--primary button--lg"
+            className="button button--outline button--primary button--lg"
             to="/docs/installation"
           >
             Install
