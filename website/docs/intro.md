@@ -5,7 +5,7 @@ title: Introduction
 
 **_Rethinking Biodiversity Inventories in the Digital Age_**
 
-NAHPU (**NA**tural **H**istory **P**roject **U**tility), loosely named after the Greater Malay Chevrotain, [_Tragulus napu_](https://animaldiversity.org/accounts/Tragulus_napu/), is a cross-platform field cataloging app designed for natural history collections. It’s a free, open-source project that supports major desktop and mobile operating systems. The current version supports mammal and bird specimens.
+NAHPU (**NA**tural **H**istory **P**roject **U**tility), loosely named after the Greater Malay Chevrotain, [_Tragulus napu_](https://animaldiversity.org/accounts/Tragulus_napu/), is a field cataloging app designed for natural history collections. It is a free, open-source project with support for major desktop and mobile operating systems. The current version is equipped to catalog specimens of mammals and birds.
 
 :::info
 NAHPU is currently in beta. We are working to add more features and support for other taxa. If you have any questions or are interested in contributing to the app development, please contact [project maintainer](https://hhandika.com/contact.html).
