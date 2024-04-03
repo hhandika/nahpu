@@ -26,7 +26,7 @@ NAHPU is currently in beta. We are working to add more features and support for 
 
 ### Simplify complex fieldwork 🛠️
 
-NAHPU is designed with genomic studies and remote fieldwork in mind. It simplifies associating digital assets, including specimen and habitat photographs, while efficiently managing a large number of tissue samples. We optimize NAHPU using high-performance programming languages and frameworks to ensure smooth operation across various devices, while minimizing battery usage. Our ongoing efforts focus on enhancing NAHPU’s performance and stability.
+NAHPU is designed with genomic studies and remote fieldwork in mind. It simplifies associating digital assets (e.g., photographs or audio recordings) and specimen parts (e.g., tissue or parasite samples) with voucher specimens. We have optimized NAHPU using high-performance programming languages and frameworks to ensure smooth operation across various devices, while minimizing battery usage. Our ongoing efforts focus on enhancing NAHPU’s performance and stability.
 
 ### Support responsible and reproducible field-based research ❤️
 
