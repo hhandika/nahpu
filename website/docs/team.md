@@ -13,6 +13,8 @@ All the development team members conceive ideas throughout the project and are t
 
 ## [Andre E. Moncrieff](https://www.aemoncrieff.com/)
 
+**Project Collaborator**. Principal roles include conceiving new app features, designing the bird taxon format, writing documentation, and testing the app.
+
 ## [Roberta Canton](https://robertacanton.com/)
 
 ## [Giovanni Hernández-Canchola](https://scholar.google.com/citations?user=B6rbNOEAAAAJ)
