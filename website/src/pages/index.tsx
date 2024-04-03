@@ -38,7 +38,7 @@ export default function Home(): JSX.Element {
   return (
     <Layout
       title={siteConfig.tagline}
-      description="NAHPU is a free, open source digital field catalog for more efficient and inclusive natural history field expeditions."
+      description="Revolutionizing Field Expeditions with a Digital Catalog for Everyone"
     >
       <HomepageHeader />
       <main>

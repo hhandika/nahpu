@@ -14,18 +14,18 @@ const FeatureList: FeatureItem[] = [
     Svg: require("@site/static/img/complexFieldwork.svg").default,
     description: (
       <>
-        NAHPU is designed with genomic studies in mind and to support remote
-        fieldwork. Yet, it is beginner friendly.
+        NAHPU seamlessly integrates specimen data, including localities,
+        collecting effort, tissue sample information, and photographs.
       </>
     ),
   },
   {
-    title: "Designed for responsible collecting",
+    title: "Designed for modern collecting",
     Svg: require("@site/static/img/responsibleCollecting.svg").default,
     description: (
       <>
-        We develop NAHPU to maximize data collecting in the field, stream line
-        data management, and support inclusive fieldwork.
+        NAHPU boosts efficiency of specimen data collection, streamlines data
+        management, and provides real-time summaries for data monitoring.
       </>
     ),
   },
@@ -34,9 +34,9 @@ const FeatureList: FeatureItem[] = [
     Svg: require("@site/static/img/forEveryone.svg").default,
     description: (
       <>
-        NAHPU is a free, open source app that works on phones and computers. We
-        are writing instructions in different languages. We want NAHPU to be
-        easy to use for everyone.
+        NAHPU is a free, open-source app that works on various devices. We are
+        creating multilingual instructions to ensure NAHPU is universally
+        accessible and easy to use.
       </>
     ),
   },

@@ -4,8 +4,7 @@ import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
   title: "NAHPU",
-  tagline:
-    "A digital field catalog for more efficient and inclusive natural history field expeditions.",
+  tagline: "A Digital Field Catalog for Natural History Collections",
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here
