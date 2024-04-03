@@ -9,11 +9,11 @@ All the development team members conceive ideas throughout the project and are t
 
 **Project Maintainer**. Responsible for the overall project and the main developer of the app.
 
-## [Glaucia Del-Rio](https://www.gdel-rio.com/)
-
 ## [Andre E. Moncrieff](https://www.aemoncrieff.com/)
 
 **Project Collaborator**. Principal roles include conceiving new app features, designing the bird taxon format, writing documentation, and testing the app.
+
+## [Glaucia Del-Rio](https://www.gdel-rio.com/)
 
 ## [Roberta Canton](https://robertacanton.com/)
 
