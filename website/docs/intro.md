@@ -5,20 +5,20 @@ title: Introduction
 
 **_Rethinking Biodiversity Inventories in the Digital Age_**
 
-NAHPU (**NA**tural **H**istory **P**roject **U**tility), loosely named after the Greater Malay Chevrotain, [_Tragulus napu_](https://animaldiversity.org/accounts/Tragulus_napu/), is a cross-platform field cataloging app designed for natural history collections. It’s a free, open-source project that supports major desktop and mobile operating systems. Current version supports mammal and bird specimens.
+NAHPU (**NA**tural **H**istory **P**roject **U**tility), loosely named after the Greater Malay Chevrotain, [_Tragulus napu_](https://animaldiversity.org/accounts/Tragulus_napu/), is a cross-platform field cataloging app designed for natural history collections. It’s a free, open-source project that supports major desktop and mobile operating systems. The current version supports mammal and bird specimens.
 
 :::info
-NAHPU is currently in beta. We are working on adding more features and support for other taxa. If you have any questions or are interested in contributing to the app development, please contact [project maintainer](https://hhandika.com/contact.html).
+NAHPU is currently in beta. We are working to add more features and support for other taxa. If you have any questions or are interested in contributing to the app development, please contact [project maintainer](https://hhandika.com/contact.html).
 :::
 
 ## Key Features
 
 - 📸 **Digital asset management**: Associate digital assets, such as photos of specimens and habitats, with your collection records. Support adding photos for sites, specimens, and field notes.
-- 🐦 **Multi-taxon support**: You can incorporate all the supported taxa in a single project, each with their own catalog format tailored specifically for that taxa.
+- 🐦 **Multi-taxon support**: You can incorporate all the supported taxa in a single project, with each specimen entry having a catalog format tailored specifically for the appropriate taxon (e.g., birds, mammals, bats, etc.).
 - 🌍 **Write site once, use it everywhere**: Create a site profile with detailed information about the location, habitat, and unlimited number of coordinates. Associate it with multiple specimens, collecting events, and field notes.
 - 📅 **Record collecting events**: Keep track of your collecting activities by documenting detailed information about the collection date, method, efforts, and personnel involved. This can be associated with multiple specimens.
 - 🧬 **Efficient tissue sample management**: Manage a large number of tissue samples efficiently and keep track of their collection date and time. The system supports barcode and QR code reading using the device’s camera for easy and accurate tracking.
-- 📊 **Real-time statistics**: Monitor activities, make informed decisions to avoid over-collection, and use tissue preservation statistics to manage sampling amidst limited storage and preservation resources.
+- 📊 **Real-time statistics**: Monitor activities, make informed decisions to prevent over-collection, and use tissue preservation statistics to manage sampling amidst limited storage and preservation resources.
 - 🔄 **Advanced share function**: Take advantage of the app’s advanced share function to share your data with collaborators or incorporate it as an automatic pipeline to the museum database.
 - 💪 **Powered by open source and open standards**: NAHPU is built using open-source software stacks and adheres to the [Darwin Core](https://dwc.tdwg.org/) standard. It follows the [FAIR principles](https://www.go-fair.org/) to ensure that data is findable, accessible, interoperable, and reusable.
 
