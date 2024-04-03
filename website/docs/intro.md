@@ -3,12 +3,12 @@ sidebar_position: 1
 title: Introduction
 ---
 
-**_Rethinking Biodiversity Inventory in the Digital Age_**
+**_Rethinking Biodiversity Inventories in the Digital Age_**
 
 NAHPU (**NA**tural **H**istory **P**roject **U**tility), loosely named after the Greater Malay Chevrotain, [_Tragulus napu_](https://animaldiversity.org/accounts/Tragulus_napu/), is a cross-platform field cataloging app designed for natural history collections. It’s a free, open-source project that supports major desktop and mobile operating systems. Current version supports mammal and bird specimens.
 
 :::info
-NAHPU is currently in beta. We are working on adding more features and support for other taxa. If you have any questions or interested to contribute to the app development, please contact [project maintainer](https://hhandika.com/contact.html).
+NAHPU is currently in beta. We are working on adding more features and support for other taxa. If you have any questions or are interested in contributing to the app development, please contact [project maintainer](https://hhandika.com/contact.html).
 :::
 
 ## Key Features
@@ -26,7 +26,7 @@ NAHPU is currently in beta. We are working on adding more features and support f
 
 ### Simplify complex fieldwork 🛠️
 
-NAHPU is designed with genomic studies and remote fieldwork in mind. It simplifies associating digital assets, including specimen and habitat photographs, while efficiently managing a large number of tissue samples. We optimize NAHPU using high-performance programming languages and frameworks to ensure smooth operation across various devices, while minimizing battery usage. Our ongoing efforts focus on enhancing NAHPU’s performance and stability.
+NAHPU is designed with genomic studies and remote fieldwork in mind. It simplifies associating digital assets (e.g., photographs or audio recordings) and specimen parts (e.g., tissue or parasite samples) with voucher specimens. We have optimized NAHPU using high-performance programming languages and frameworks to ensure smooth operation across various devices, while minimizing battery usage. Our ongoing efforts focus on enhancing NAHPU’s performance and stability.
 
 ### Support responsible and reproducible field-based research ❤️
 
