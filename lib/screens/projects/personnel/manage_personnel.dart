@@ -195,7 +195,8 @@ class PersonnelListViewState extends ConsumerState<PersonnelListView> {
             ),
             TextButton(
               onPressed: () async {
-                _listedInProjectPersonnel = await _getListedInProject();
+                _listedInProjectPersonnel =
+                    await _getListedPersonnelInProject();
                 _allowedPersonnel = _getAllowedPersonnel();
 
                 setState(() {
@@ -365,7 +366,7 @@ class PersonnelListViewState extends ConsumerState<PersonnelListView> {
     return allowedPersonnel;
   }
 
-  Future<List<String>> _getListedInProject() async {
+  Future<List<String>> _getListedPersonnelInProject() async {
     return await PersonnelServices(ref: ref).getAllPersonnelListedInProjects();
   }
 
