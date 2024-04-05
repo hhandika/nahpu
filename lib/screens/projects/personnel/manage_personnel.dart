@@ -346,12 +346,11 @@ class PersonnelListViewState extends ConsumerState<PersonnelListView> {
         _isSelecting = false;
       });
       if (context.mounted) {
-        Navigator.pop(context);
+        _pop();
       }
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Error deleting personnel')));
+        _showError(e.toString());
       }
     }
   }
@@ -368,6 +367,15 @@ class PersonnelListViewState extends ConsumerState<PersonnelListView> {
 
   Future<List<String>> _getListedInProject() async {
     return await PersonnelServices(ref: ref).getAllPersonnelListedInProjects();
+  }
+
+  void _pop() {
+    Navigator.pop(context);
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 }
 
