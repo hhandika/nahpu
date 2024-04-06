@@ -3,9 +3,9 @@ sidebar_position: 3
 title: Personnel
 ---
 
-## Adding a new personnel
+## Adding new personnel
 
-Use the `Add a new personnel` button to add a new personnel. You will be asked to enter the following information below. The app by default only shows critical information. Click the `Show more` button to show all the fields.
+Use the `Add new personnel` button to add new personnel. You will be asked to enter the following information below. The app by default only shows critical information. Click the `Show more` button to show all the fields.
 
 - **Name (required)** - The name of the personnel.
 - **Email** - The email of the personnel.
@@ -18,9 +18,9 @@ Use the `Add a new personnel` button to add a new personnel. You will be asked t
 
 > **Important:** Some institutions may use a project ID and number combination for the field ID. Use this ID as the initial, instead of putting the actual initial of the person. For example, `ABC-1`. In this case, you can enter `ABC-` as the field initial and `1` as the field number.
 
-## Editing a personnel
+## Editing person information
 
-In the dashboard, click/tab the menu button (three dot icon) at the name of the personnel you want to edit, then select edit. You will be taken to the personnel page where you can edit the information.
+In the dashboard, click/tab the menu button (three dot icon) for the name of the person for which you want to edit information, then select edit. You will be taken to the personnel page where you can edit the information.
 
 ## Terminology
 
@@ -30,8 +30,8 @@ A person who creates and edits records in the catalog. This includes creating ne
 
 ### Preparator only
 
-A person who help prepare the specimens but does not create or edit records in the catalog.
+A person who helps prepare the specimens but does not create or edit records in the catalog.
 
 ### None
 
-In the specimen care role field, this means that the person does not have a role in taking care the specimen. They can be a field guide, a driver, or anyone else who support data collection but does not have a role in taking care the specimens.
+In the specimen care role field, this means that the person does not have a role in taking care of the specimen. This can be a field guide, a driver, or anyone else who support data collection but does not have a role in taking care of the specimens.
