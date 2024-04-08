@@ -17,4 +17,12 @@ There are several ways to contribute to the project:
 
 We appreciate all contributions, regardless of their size or complexity. We also welcome you to be a part of the development team. If you are interested, please contact us.
 
-More details soon...
+## Where to Start
+
+### Code Contributions
+
+Refer to the [Code Contribution](./code_contribution) section for more information.
+
+### Documentation Contributions
+
+Refer to the [Documentation Contribution](./doc_contribution) section for more information.

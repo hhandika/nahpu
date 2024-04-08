@@ -1,6 +1,6 @@
 ---
-sidebar_position: 4
-title: "Design Principles"
+sidebar_position: 1
+title: "App Design"
 ---
 
 ## Overview
