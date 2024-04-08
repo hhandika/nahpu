@@ -29,6 +29,6 @@ If you are not a team member, you can still contribute to the project. Here's ho
 
 ## Advanced Steps to Contribute
 
-This step allow more flexibility. The documentation is written in Markdown and built using Docusaurus. You can learn more about Docusaurus by visiting the [official website](https://docusaurus.io/). 
+This step allow more flexibility. The documentation is written in Markdown and built using Docusaurus. You can learn more about Docusaurus by visiting the [official website](https://docusaurus.io/).
 
 ### Local Setup
