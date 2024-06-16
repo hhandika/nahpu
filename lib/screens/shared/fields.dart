@@ -135,11 +135,11 @@ class CommonSearchBar extends StatelessWidget {
       controller: controller,
       focusNode: focusNode,
       leading: const Icon(Icons.search),
-      padding: const MaterialStatePropertyAll<EdgeInsets>(
+      padding: const WidgetStatePropertyAll<EdgeInsets>(
           EdgeInsets.symmetric(horizontal: 8.0)),
-      elevation: MaterialStateProperty.all(0),
+      elevation: WidgetStateProperty.all(0),
       hintText: hintText,
-      backgroundColor: MaterialStateProperty.all(Colors.grey.withAlpha(48)),
+      backgroundColor: WidgetStateProperty.all(Colors.grey.withAlpha(48)),
       trailing: trailing,
       onChanged: onChanged,
     );

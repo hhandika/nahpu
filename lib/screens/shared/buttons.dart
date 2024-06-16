@@ -419,7 +419,7 @@ class ListCheckBox extends StatelessWidget {
         side: BorderSide(
           width: 1.5,
           color: isDisabled
-              ? Theme.of(context).colorScheme.surfaceVariant
+              ? Theme.of(context).colorScheme.surfaceContainerHighest
               : Theme.of(context).colorScheme.onSurface,
         ),
         value: value,

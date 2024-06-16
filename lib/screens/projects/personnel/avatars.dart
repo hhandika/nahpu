@@ -138,7 +138,7 @@ class AvatarViewerState extends ConsumerState<AvatarViewer> {
             builder: (context, snapshot) {
               if (snapshot.hasData && snapshot.data != null) {
                 return CircleAvatar(
-                  backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+                  backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
                   foregroundImage: FileImage(snapshot.data as File),
                 );
               } else {
@@ -167,7 +167,7 @@ class DefaultAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-        backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
         foregroundImage: AssetImage(filePath));
   }
 }
@@ -184,7 +184,7 @@ class ImageButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surfaceVariant,
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
           shape: BoxShape.circle,
         ),
         child: IconButton(
@@ -211,7 +211,7 @@ class ImageSpeedDials extends StatelessWidget {
   Widget build(BuildContext context) {
     return SpeedDial(
       icon: Icons.add_a_photo_outlined,
-      backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
       foregroundColor: Theme.of(context).colorScheme.primary,
       direction: SpeedDialDirection.down,
       children: _getSpeedDial(context),

@@ -239,7 +239,8 @@ class ListProjectCard extends StatelessWidget {
             width: 1.5,
           ),
         ),
-        tileColor: Theme.of(context).colorScheme.surfaceVariant.withAlpha(80),
+        tileColor:
+            Theme.of(context).colorScheme.surfaceContainerHighest.withAlpha(80),
         dense: true,
         title: Text(
           project.name,
@@ -308,7 +309,7 @@ class GridProjectCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                   color: Theme.of(context)
                       .colorScheme
-                      .surfaceVariant
+                      .surfaceContainerHighest
                       .withAlpha(80),
                   // color: Theme.of(context)
                   //     .colorScheme
