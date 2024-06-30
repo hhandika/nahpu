@@ -11777,6 +11777,7 @@ class SpecimenPartCompanion extends UpdateCompanion<SpecimenPartData> {
 
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(e);
+  _$DatabaseManager get managers => _$DatabaseManager(this);
   late final Project project = Project(this);
   late final Personnel personnel = Personnel(this);
   late final Media media = Media(this);
@@ -11836,6 +11837,4926 @@ abstract class _$Database extends GeneratedDatabase {
         avianMeasurement,
         specimenPart
       ];
+}
+
+typedef $ProjectInsertCompanionBuilder = ProjectCompanion Function({
+  required String uuid,
+  required String name,
+  Value<String?> description,
+  Value<String?> principalInvestigator,
+  Value<String?> location,
+  Value<String?> startDate,
+  Value<String?> endDate,
+  Value<String?> created,
+  Value<String?> lastAccessed,
+  Value<int> rowid,
+});
+typedef $ProjectUpdateCompanionBuilder = ProjectCompanion Function({
+  Value<String> uuid,
+  Value<String> name,
+  Value<String?> description,
+  Value<String?> principalInvestigator,
+  Value<String?> location,
+  Value<String?> startDate,
+  Value<String?> endDate,
+  Value<String?> created,
+  Value<String?> lastAccessed,
+  Value<int> rowid,
+});
+
+class $ProjectTableManager extends RootTableManager<
+    _$Database,
+    Project,
+    ProjectData,
+    $ProjectFilterComposer,
+    $ProjectOrderingComposer,
+    $ProjectProcessedTableManager,
+    $ProjectInsertCompanionBuilder,
+    $ProjectUpdateCompanionBuilder> {
+  $ProjectTableManager(_$Database db, Project table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $ProjectFilterComposer(ComposerState(db, table)),
+          orderingComposer: $ProjectOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) => $ProjectProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<String> uuid = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String?> description = const Value.absent(),
+            Value<String?> principalInvestigator = const Value.absent(),
+            Value<String?> location = const Value.absent(),
+            Value<String?> startDate = const Value.absent(),
+            Value<String?> endDate = const Value.absent(),
+            Value<String?> created = const Value.absent(),
+            Value<String?> lastAccessed = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              ProjectCompanion(
+            uuid: uuid,
+            name: name,
+            description: description,
+            principalInvestigator: principalInvestigator,
+            location: location,
+            startDate: startDate,
+            endDate: endDate,
+            created: created,
+            lastAccessed: lastAccessed,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String uuid,
+            required String name,
+            Value<String?> description = const Value.absent(),
+            Value<String?> principalInvestigator = const Value.absent(),
+            Value<String?> location = const Value.absent(),
+            Value<String?> startDate = const Value.absent(),
+            Value<String?> endDate = const Value.absent(),
+            Value<String?> created = const Value.absent(),
+            Value<String?> lastAccessed = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              ProjectCompanion.insert(
+            uuid: uuid,
+            name: name,
+            description: description,
+            principalInvestigator: principalInvestigator,
+            location: location,
+            startDate: startDate,
+            endDate: endDate,
+            created: created,
+            lastAccessed: lastAccessed,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $ProjectProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    Project,
+    ProjectData,
+    $ProjectFilterComposer,
+    $ProjectOrderingComposer,
+    $ProjectProcessedTableManager,
+    $ProjectInsertCompanionBuilder,
+    $ProjectUpdateCompanionBuilder> {
+  $ProjectProcessedTableManager(super.$state);
+}
+
+class $ProjectFilterComposer extends FilterComposer<_$Database, Project> {
+  $ProjectFilterComposer(super.$state);
+  ColumnFilters<String> get uuid => $state.composableBuilder(
+      column: $state.table.uuid,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get description => $state.composableBuilder(
+      column: $state.table.description,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get principalInvestigator => $state.composableBuilder(
+      column: $state.table.principalInvestigator,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get location => $state.composableBuilder(
+      column: $state.table.location,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get startDate => $state.composableBuilder(
+      column: $state.table.startDate,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get endDate => $state.composableBuilder(
+      column: $state.table.endDate,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get created => $state.composableBuilder(
+      column: $state.table.created,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get lastAccessed => $state.composableBuilder(
+      column: $state.table.lastAccessed,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $ProjectOrderingComposer extends OrderingComposer<_$Database, Project> {
+  $ProjectOrderingComposer(super.$state);
+  ColumnOrderings<String> get uuid => $state.composableBuilder(
+      column: $state.table.uuid,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get description => $state.composableBuilder(
+      column: $state.table.description,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get principalInvestigator => $state.composableBuilder(
+      column: $state.table.principalInvestigator,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get location => $state.composableBuilder(
+      column: $state.table.location,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get startDate => $state.composableBuilder(
+      column: $state.table.startDate,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get endDate => $state.composableBuilder(
+      column: $state.table.endDate,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get created => $state.composableBuilder(
+      column: $state.table.created,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get lastAccessed => $state.composableBuilder(
+      column: $state.table.lastAccessed,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $PersonnelInsertCompanionBuilder = PersonnelCompanion Function({
+  required String uuid,
+  Value<String?> name,
+  Value<String?> initial,
+  Value<String?> email,
+  Value<String?> phone,
+  Value<String?> affiliation,
+  Value<String?> role,
+  Value<int?> currentFieldNumber,
+  Value<String?> notes,
+  Value<String?> photoPath,
+  Value<int> rowid,
+});
+typedef $PersonnelUpdateCompanionBuilder = PersonnelCompanion Function({
+  Value<String> uuid,
+  Value<String?> name,
+  Value<String?> initial,
+  Value<String?> email,
+  Value<String?> phone,
+  Value<String?> affiliation,
+  Value<String?> role,
+  Value<int?> currentFieldNumber,
+  Value<String?> notes,
+  Value<String?> photoPath,
+  Value<int> rowid,
+});
+
+class $PersonnelTableManager extends RootTableManager<
+    _$Database,
+    Personnel,
+    PersonnelData,
+    $PersonnelFilterComposer,
+    $PersonnelOrderingComposer,
+    $PersonnelProcessedTableManager,
+    $PersonnelInsertCompanionBuilder,
+    $PersonnelUpdateCompanionBuilder> {
+  $PersonnelTableManager(_$Database db, Personnel table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $PersonnelFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $PersonnelOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) => $PersonnelProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<String> uuid = const Value.absent(),
+            Value<String?> name = const Value.absent(),
+            Value<String?> initial = const Value.absent(),
+            Value<String?> email = const Value.absent(),
+            Value<String?> phone = const Value.absent(),
+            Value<String?> affiliation = const Value.absent(),
+            Value<String?> role = const Value.absent(),
+            Value<int?> currentFieldNumber = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+            Value<String?> photoPath = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              PersonnelCompanion(
+            uuid: uuid,
+            name: name,
+            initial: initial,
+            email: email,
+            phone: phone,
+            affiliation: affiliation,
+            role: role,
+            currentFieldNumber: currentFieldNumber,
+            notes: notes,
+            photoPath: photoPath,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String uuid,
+            Value<String?> name = const Value.absent(),
+            Value<String?> initial = const Value.absent(),
+            Value<String?> email = const Value.absent(),
+            Value<String?> phone = const Value.absent(),
+            Value<String?> affiliation = const Value.absent(),
+            Value<String?> role = const Value.absent(),
+            Value<int?> currentFieldNumber = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+            Value<String?> photoPath = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              PersonnelCompanion.insert(
+            uuid: uuid,
+            name: name,
+            initial: initial,
+            email: email,
+            phone: phone,
+            affiliation: affiliation,
+            role: role,
+            currentFieldNumber: currentFieldNumber,
+            notes: notes,
+            photoPath: photoPath,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $PersonnelProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    Personnel,
+    PersonnelData,
+    $PersonnelFilterComposer,
+    $PersonnelOrderingComposer,
+    $PersonnelProcessedTableManager,
+    $PersonnelInsertCompanionBuilder,
+    $PersonnelUpdateCompanionBuilder> {
+  $PersonnelProcessedTableManager(super.$state);
+}
+
+class $PersonnelFilterComposer extends FilterComposer<_$Database, Personnel> {
+  $PersonnelFilterComposer(super.$state);
+  ColumnFilters<String> get uuid => $state.composableBuilder(
+      column: $state.table.uuid,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get initial => $state.composableBuilder(
+      column: $state.table.initial,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get email => $state.composableBuilder(
+      column: $state.table.email,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get phone => $state.composableBuilder(
+      column: $state.table.phone,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get affiliation => $state.composableBuilder(
+      column: $state.table.affiliation,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get role => $state.composableBuilder(
+      column: $state.table.role,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get currentFieldNumber => $state.composableBuilder(
+      column: $state.table.currentFieldNumber,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get notes => $state.composableBuilder(
+      column: $state.table.notes,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get photoPath => $state.composableBuilder(
+      column: $state.table.photoPath,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ComposableFilter specimenRefs(
+      ComposableFilter Function($SpecimenFilterComposer f) f) {
+    final $SpecimenFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.uuid,
+        referencedTable: $state.db.specimen,
+        getReferencedColumn: (t) => t.preparatorID,
+        builder: (joinBuilder, parentComposers) => $SpecimenFilterComposer(
+            ComposerState(
+                $state.db, $state.db.specimen, joinBuilder, parentComposers)));
+    return f(composer);
+  }
+}
+
+class $PersonnelOrderingComposer
+    extends OrderingComposer<_$Database, Personnel> {
+  $PersonnelOrderingComposer(super.$state);
+  ColumnOrderings<String> get uuid => $state.composableBuilder(
+      column: $state.table.uuid,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get initial => $state.composableBuilder(
+      column: $state.table.initial,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get email => $state.composableBuilder(
+      column: $state.table.email,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get phone => $state.composableBuilder(
+      column: $state.table.phone,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get affiliation => $state.composableBuilder(
+      column: $state.table.affiliation,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get role => $state.composableBuilder(
+      column: $state.table.role,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get currentFieldNumber => $state.composableBuilder(
+      column: $state.table.currentFieldNumber,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get notes => $state.composableBuilder(
+      column: $state.table.notes,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get photoPath => $state.composableBuilder(
+      column: $state.table.photoPath,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $MediaInsertCompanionBuilder = MediaCompanion Function({
+  Value<int?> primaryId,
+  Value<String?> projectUuid,
+  Value<String?> secondaryId,
+  Value<String?> category,
+  Value<String?> tag,
+  Value<String?> taken,
+  Value<String?> camera,
+  Value<String?> lenses,
+  Value<String?> additionalExif,
+  Value<String?> personnelId,
+  Value<String?> fileName,
+  Value<String?> caption,
+});
+typedef $MediaUpdateCompanionBuilder = MediaCompanion Function({
+  Value<int?> primaryId,
+  Value<String?> projectUuid,
+  Value<String?> secondaryId,
+  Value<String?> category,
+  Value<String?> tag,
+  Value<String?> taken,
+  Value<String?> camera,
+  Value<String?> lenses,
+  Value<String?> additionalExif,
+  Value<String?> personnelId,
+  Value<String?> fileName,
+  Value<String?> caption,
+});
+
+class $MediaTableManager extends RootTableManager<
+    _$Database,
+    Media,
+    MediaData,
+    $MediaFilterComposer,
+    $MediaOrderingComposer,
+    $MediaProcessedTableManager,
+    $MediaInsertCompanionBuilder,
+    $MediaUpdateCompanionBuilder> {
+  $MediaTableManager(_$Database db, Media table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $MediaFilterComposer(ComposerState(db, table)),
+          orderingComposer: $MediaOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) => $MediaProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int?> primaryId = const Value.absent(),
+            Value<String?> projectUuid = const Value.absent(),
+            Value<String?> secondaryId = const Value.absent(),
+            Value<String?> category = const Value.absent(),
+            Value<String?> tag = const Value.absent(),
+            Value<String?> taken = const Value.absent(),
+            Value<String?> camera = const Value.absent(),
+            Value<String?> lenses = const Value.absent(),
+            Value<String?> additionalExif = const Value.absent(),
+            Value<String?> personnelId = const Value.absent(),
+            Value<String?> fileName = const Value.absent(),
+            Value<String?> caption = const Value.absent(),
+          }) =>
+              MediaCompanion(
+            primaryId: primaryId,
+            projectUuid: projectUuid,
+            secondaryId: secondaryId,
+            category: category,
+            tag: tag,
+            taken: taken,
+            camera: camera,
+            lenses: lenses,
+            additionalExif: additionalExif,
+            personnelId: personnelId,
+            fileName: fileName,
+            caption: caption,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<int?> primaryId = const Value.absent(),
+            Value<String?> projectUuid = const Value.absent(),
+            Value<String?> secondaryId = const Value.absent(),
+            Value<String?> category = const Value.absent(),
+            Value<String?> tag = const Value.absent(),
+            Value<String?> taken = const Value.absent(),
+            Value<String?> camera = const Value.absent(),
+            Value<String?> lenses = const Value.absent(),
+            Value<String?> additionalExif = const Value.absent(),
+            Value<String?> personnelId = const Value.absent(),
+            Value<String?> fileName = const Value.absent(),
+            Value<String?> caption = const Value.absent(),
+          }) =>
+              MediaCompanion.insert(
+            primaryId: primaryId,
+            projectUuid: projectUuid,
+            secondaryId: secondaryId,
+            category: category,
+            tag: tag,
+            taken: taken,
+            camera: camera,
+            lenses: lenses,
+            additionalExif: additionalExif,
+            personnelId: personnelId,
+            fileName: fileName,
+            caption: caption,
+          ),
+        ));
+}
+
+class $MediaProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    Media,
+    MediaData,
+    $MediaFilterComposer,
+    $MediaOrderingComposer,
+    $MediaProcessedTableManager,
+    $MediaInsertCompanionBuilder,
+    $MediaUpdateCompanionBuilder> {
+  $MediaProcessedTableManager(super.$state);
+}
+
+class $MediaFilterComposer extends FilterComposer<_$Database, Media> {
+  $MediaFilterComposer(super.$state);
+  ColumnFilters<int> get primaryId => $state.composableBuilder(
+      column: $state.table.primaryId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get projectUuid => $state.composableBuilder(
+      column: $state.table.projectUuid,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get secondaryId => $state.composableBuilder(
+      column: $state.table.secondaryId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get category => $state.composableBuilder(
+      column: $state.table.category,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get tag => $state.composableBuilder(
+      column: $state.table.tag,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get taken => $state.composableBuilder(
+      column: $state.table.taken,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get camera => $state.composableBuilder(
+      column: $state.table.camera,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get lenses => $state.composableBuilder(
+      column: $state.table.lenses,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get additionalExif => $state.composableBuilder(
+      column: $state.table.additionalExif,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get personnelId => $state.composableBuilder(
+      column: $state.table.personnelId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get fileName => $state.composableBuilder(
+      column: $state.table.fileName,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get caption => $state.composableBuilder(
+      column: $state.table.caption,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ComposableFilter narrativeRefs(
+      ComposableFilter Function($NarrativeFilterComposer f) f) {
+    final $NarrativeFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.primaryId,
+        referencedTable: $state.db.narrative,
+        getReferencedColumn: (t) => t.mediaID,
+        builder: (joinBuilder, parentComposers) => $NarrativeFilterComposer(
+            ComposerState(
+                $state.db, $state.db.narrative, joinBuilder, parentComposers)));
+    return f(composer);
+  }
+}
+
+class $MediaOrderingComposer extends OrderingComposer<_$Database, Media> {
+  $MediaOrderingComposer(super.$state);
+  ColumnOrderings<int> get primaryId => $state.composableBuilder(
+      column: $state.table.primaryId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get projectUuid => $state.composableBuilder(
+      column: $state.table.projectUuid,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get secondaryId => $state.composableBuilder(
+      column: $state.table.secondaryId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get category => $state.composableBuilder(
+      column: $state.table.category,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get tag => $state.composableBuilder(
+      column: $state.table.tag,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get taken => $state.composableBuilder(
+      column: $state.table.taken,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get camera => $state.composableBuilder(
+      column: $state.table.camera,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get lenses => $state.composableBuilder(
+      column: $state.table.lenses,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get additionalExif => $state.composableBuilder(
+      column: $state.table.additionalExif,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get personnelId => $state.composableBuilder(
+      column: $state.table.personnelId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get fileName => $state.composableBuilder(
+      column: $state.table.fileName,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get caption => $state.composableBuilder(
+      column: $state.table.caption,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $SiteInsertCompanionBuilder = SiteCompanion Function({
+  Value<int> id,
+  Value<String?> siteID,
+  Value<String?> projectUuid,
+  Value<String?> leadStaffId,
+  Value<String?> siteType,
+  Value<String?> country,
+  Value<String?> stateProvince,
+  Value<String?> county,
+  Value<String?> municipality,
+  Value<String?> mediaID,
+  Value<String?> locality,
+  Value<String?> remark,
+  Value<String?> habitatType,
+  Value<String?> habitatCondition,
+  Value<String?> habitatDescription,
+});
+typedef $SiteUpdateCompanionBuilder = SiteCompanion Function({
+  Value<int> id,
+  Value<String?> siteID,
+  Value<String?> projectUuid,
+  Value<String?> leadStaffId,
+  Value<String?> siteType,
+  Value<String?> country,
+  Value<String?> stateProvince,
+  Value<String?> county,
+  Value<String?> municipality,
+  Value<String?> mediaID,
+  Value<String?> locality,
+  Value<String?> remark,
+  Value<String?> habitatType,
+  Value<String?> habitatCondition,
+  Value<String?> habitatDescription,
+});
+
+class $SiteTableManager extends RootTableManager<
+    _$Database,
+    Site,
+    SiteData,
+    $SiteFilterComposer,
+    $SiteOrderingComposer,
+    $SiteProcessedTableManager,
+    $SiteInsertCompanionBuilder,
+    $SiteUpdateCompanionBuilder> {
+  $SiteTableManager(_$Database db, Site table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $SiteFilterComposer(ComposerState(db, table)),
+          orderingComposer: $SiteOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) => $SiteProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            Value<String?> siteID = const Value.absent(),
+            Value<String?> projectUuid = const Value.absent(),
+            Value<String?> leadStaffId = const Value.absent(),
+            Value<String?> siteType = const Value.absent(),
+            Value<String?> country = const Value.absent(),
+            Value<String?> stateProvince = const Value.absent(),
+            Value<String?> county = const Value.absent(),
+            Value<String?> municipality = const Value.absent(),
+            Value<String?> mediaID = const Value.absent(),
+            Value<String?> locality = const Value.absent(),
+            Value<String?> remark = const Value.absent(),
+            Value<String?> habitatType = const Value.absent(),
+            Value<String?> habitatCondition = const Value.absent(),
+            Value<String?> habitatDescription = const Value.absent(),
+          }) =>
+              SiteCompanion(
+            id: id,
+            siteID: siteID,
+            projectUuid: projectUuid,
+            leadStaffId: leadStaffId,
+            siteType: siteType,
+            country: country,
+            stateProvince: stateProvince,
+            county: county,
+            municipality: municipality,
+            mediaID: mediaID,
+            locality: locality,
+            remark: remark,
+            habitatType: habitatType,
+            habitatCondition: habitatCondition,
+            habitatDescription: habitatDescription,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            Value<String?> siteID = const Value.absent(),
+            Value<String?> projectUuid = const Value.absent(),
+            Value<String?> leadStaffId = const Value.absent(),
+            Value<String?> siteType = const Value.absent(),
+            Value<String?> country = const Value.absent(),
+            Value<String?> stateProvince = const Value.absent(),
+            Value<String?> county = const Value.absent(),
+            Value<String?> municipality = const Value.absent(),
+            Value<String?> mediaID = const Value.absent(),
+            Value<String?> locality = const Value.absent(),
+            Value<String?> remark = const Value.absent(),
+            Value<String?> habitatType = const Value.absent(),
+            Value<String?> habitatCondition = const Value.absent(),
+            Value<String?> habitatDescription = const Value.absent(),
+          }) =>
+              SiteCompanion.insert(
+            id: id,
+            siteID: siteID,
+            projectUuid: projectUuid,
+            leadStaffId: leadStaffId,
+            siteType: siteType,
+            country: country,
+            stateProvince: stateProvince,
+            county: county,
+            municipality: municipality,
+            mediaID: mediaID,
+            locality: locality,
+            remark: remark,
+            habitatType: habitatType,
+            habitatCondition: habitatCondition,
+            habitatDescription: habitatDescription,
+          ),
+        ));
+}
+
+class $SiteProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    Site,
+    SiteData,
+    $SiteFilterComposer,
+    $SiteOrderingComposer,
+    $SiteProcessedTableManager,
+    $SiteInsertCompanionBuilder,
+    $SiteUpdateCompanionBuilder> {
+  $SiteProcessedTableManager(super.$state);
+}
+
+class $SiteFilterComposer extends FilterComposer<_$Database, Site> {
+  $SiteFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get siteID => $state.composableBuilder(
+      column: $state.table.siteID,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get projectUuid => $state.composableBuilder(
+      column: $state.table.projectUuid,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get leadStaffId => $state.composableBuilder(
+      column: $state.table.leadStaffId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get siteType => $state.composableBuilder(
+      column: $state.table.siteType,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get country => $state.composableBuilder(
+      column: $state.table.country,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get stateProvince => $state.composableBuilder(
+      column: $state.table.stateProvince,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get county => $state.composableBuilder(
+      column: $state.table.county,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get municipality => $state.composableBuilder(
+      column: $state.table.municipality,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get mediaID => $state.composableBuilder(
+      column: $state.table.mediaID,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get locality => $state.composableBuilder(
+      column: $state.table.locality,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get remark => $state.composableBuilder(
+      column: $state.table.remark,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get habitatType => $state.composableBuilder(
+      column: $state.table.habitatType,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get habitatCondition => $state.composableBuilder(
+      column: $state.table.habitatCondition,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get habitatDescription => $state.composableBuilder(
+      column: $state.table.habitatDescription,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ComposableFilter collEventRefs(
+      ComposableFilter Function($CollEventFilterComposer f) f) {
+    final $CollEventFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $state.db.collEvent,
+        getReferencedColumn: (t) => t.siteID,
+        builder: (joinBuilder, parentComposers) => $CollEventFilterComposer(
+            ComposerState(
+                $state.db, $state.db.collEvent, joinBuilder, parentComposers)));
+    return f(composer);
+  }
+}
+
+class $SiteOrderingComposer extends OrderingComposer<_$Database, Site> {
+  $SiteOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get siteID => $state.composableBuilder(
+      column: $state.table.siteID,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get projectUuid => $state.composableBuilder(
+      column: $state.table.projectUuid,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get leadStaffId => $state.composableBuilder(
+      column: $state.table.leadStaffId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get siteType => $state.composableBuilder(
+      column: $state.table.siteType,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get country => $state.composableBuilder(
+      column: $state.table.country,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get stateProvince => $state.composableBuilder(
+      column: $state.table.stateProvince,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get county => $state.composableBuilder(
+      column: $state.table.county,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get municipality => $state.composableBuilder(
+      column: $state.table.municipality,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get mediaID => $state.composableBuilder(
+      column: $state.table.mediaID,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get locality => $state.composableBuilder(
+      column: $state.table.locality,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get remark => $state.composableBuilder(
+      column: $state.table.remark,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get habitatType => $state.composableBuilder(
+      column: $state.table.habitatType,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get habitatCondition => $state.composableBuilder(
+      column: $state.table.habitatCondition,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get habitatDescription => $state.composableBuilder(
+      column: $state.table.habitatDescription,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $CoordinateInsertCompanionBuilder = CoordinateCompanion Function({
+  Value<int?> id,
+  Value<String?> nameId,
+  Value<double?> decimalLatitude,
+  Value<double?> decimalLongitude,
+  Value<double?> elevationInMeter,
+  Value<String?> datum,
+  Value<int?> uncertaintyInMeters,
+  Value<String?> gpsUnit,
+  Value<String?> notes,
+  Value<int?> siteID,
+});
+typedef $CoordinateUpdateCompanionBuilder = CoordinateCompanion Function({
+  Value<int?> id,
+  Value<String?> nameId,
+  Value<double?> decimalLatitude,
+  Value<double?> decimalLongitude,
+  Value<double?> elevationInMeter,
+  Value<String?> datum,
+  Value<int?> uncertaintyInMeters,
+  Value<String?> gpsUnit,
+  Value<String?> notes,
+  Value<int?> siteID,
+});
+
+class $CoordinateTableManager extends RootTableManager<
+    _$Database,
+    Coordinate,
+    CoordinateData,
+    $CoordinateFilterComposer,
+    $CoordinateOrderingComposer,
+    $CoordinateProcessedTableManager,
+    $CoordinateInsertCompanionBuilder,
+    $CoordinateUpdateCompanionBuilder> {
+  $CoordinateTableManager(_$Database db, Coordinate table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $CoordinateFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $CoordinateOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) => $CoordinateProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int?> id = const Value.absent(),
+            Value<String?> nameId = const Value.absent(),
+            Value<double?> decimalLatitude = const Value.absent(),
+            Value<double?> decimalLongitude = const Value.absent(),
+            Value<double?> elevationInMeter = const Value.absent(),
+            Value<String?> datum = const Value.absent(),
+            Value<int?> uncertaintyInMeters = const Value.absent(),
+            Value<String?> gpsUnit = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+            Value<int?> siteID = const Value.absent(),
+          }) =>
+              CoordinateCompanion(
+            id: id,
+            nameId: nameId,
+            decimalLatitude: decimalLatitude,
+            decimalLongitude: decimalLongitude,
+            elevationInMeter: elevationInMeter,
+            datum: datum,
+            uncertaintyInMeters: uncertaintyInMeters,
+            gpsUnit: gpsUnit,
+            notes: notes,
+            siteID: siteID,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<int?> id = const Value.absent(),
+            Value<String?> nameId = const Value.absent(),
+            Value<double?> decimalLatitude = const Value.absent(),
+            Value<double?> decimalLongitude = const Value.absent(),
+            Value<double?> elevationInMeter = const Value.absent(),
+            Value<String?> datum = const Value.absent(),
+            Value<int?> uncertaintyInMeters = const Value.absent(),
+            Value<String?> gpsUnit = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+            Value<int?> siteID = const Value.absent(),
+          }) =>
+              CoordinateCompanion.insert(
+            id: id,
+            nameId: nameId,
+            decimalLatitude: decimalLatitude,
+            decimalLongitude: decimalLongitude,
+            elevationInMeter: elevationInMeter,
+            datum: datum,
+            uncertaintyInMeters: uncertaintyInMeters,
+            gpsUnit: gpsUnit,
+            notes: notes,
+            siteID: siteID,
+          ),
+        ));
+}
+
+class $CoordinateProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    Coordinate,
+    CoordinateData,
+    $CoordinateFilterComposer,
+    $CoordinateOrderingComposer,
+    $CoordinateProcessedTableManager,
+    $CoordinateInsertCompanionBuilder,
+    $CoordinateUpdateCompanionBuilder> {
+  $CoordinateProcessedTableManager(super.$state);
+}
+
+class $CoordinateFilterComposer extends FilterComposer<_$Database, Coordinate> {
+  $CoordinateFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get nameId => $state.composableBuilder(
+      column: $state.table.nameId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get decimalLatitude => $state.composableBuilder(
+      column: $state.table.decimalLatitude,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get decimalLongitude => $state.composableBuilder(
+      column: $state.table.decimalLongitude,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get elevationInMeter => $state.composableBuilder(
+      column: $state.table.elevationInMeter,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get datum => $state.composableBuilder(
+      column: $state.table.datum,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get uncertaintyInMeters => $state.composableBuilder(
+      column: $state.table.uncertaintyInMeters,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get gpsUnit => $state.composableBuilder(
+      column: $state.table.gpsUnit,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get notes => $state.composableBuilder(
+      column: $state.table.notes,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get siteID => $state.composableBuilder(
+      column: $state.table.siteID,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $CoordinateOrderingComposer
+    extends OrderingComposer<_$Database, Coordinate> {
+  $CoordinateOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get nameId => $state.composableBuilder(
+      column: $state.table.nameId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get decimalLatitude => $state.composableBuilder(
+      column: $state.table.decimalLatitude,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get decimalLongitude => $state.composableBuilder(
+      column: $state.table.decimalLongitude,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get elevationInMeter => $state.composableBuilder(
+      column: $state.table.elevationInMeter,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get datum => $state.composableBuilder(
+      column: $state.table.datum,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get uncertaintyInMeters => $state.composableBuilder(
+      column: $state.table.uncertaintyInMeters,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get gpsUnit => $state.composableBuilder(
+      column: $state.table.gpsUnit,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get notes => $state.composableBuilder(
+      column: $state.table.notes,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get siteID => $state.composableBuilder(
+      column: $state.table.siteID,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $CollEventInsertCompanionBuilder = CollEventCompanion Function({
+  Value<int> id,
+  Value<String?> idSuffix,
+  Value<String?> projectUuid,
+  Value<String?> startDate,
+  Value<String?> startTime,
+  Value<String?> endDate,
+  Value<String?> endTime,
+  Value<String?> primaryCollMethod,
+  Value<String?> collMethodNotes,
+  Value<int?> siteID,
+});
+typedef $CollEventUpdateCompanionBuilder = CollEventCompanion Function({
+  Value<int> id,
+  Value<String?> idSuffix,
+  Value<String?> projectUuid,
+  Value<String?> startDate,
+  Value<String?> startTime,
+  Value<String?> endDate,
+  Value<String?> endTime,
+  Value<String?> primaryCollMethod,
+  Value<String?> collMethodNotes,
+  Value<int?> siteID,
+});
+
+class $CollEventTableManager extends RootTableManager<
+    _$Database,
+    CollEvent,
+    CollEventData,
+    $CollEventFilterComposer,
+    $CollEventOrderingComposer,
+    $CollEventProcessedTableManager,
+    $CollEventInsertCompanionBuilder,
+    $CollEventUpdateCompanionBuilder> {
+  $CollEventTableManager(_$Database db, CollEvent table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $CollEventFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $CollEventOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) => $CollEventProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            Value<String?> idSuffix = const Value.absent(),
+            Value<String?> projectUuid = const Value.absent(),
+            Value<String?> startDate = const Value.absent(),
+            Value<String?> startTime = const Value.absent(),
+            Value<String?> endDate = const Value.absent(),
+            Value<String?> endTime = const Value.absent(),
+            Value<String?> primaryCollMethod = const Value.absent(),
+            Value<String?> collMethodNotes = const Value.absent(),
+            Value<int?> siteID = const Value.absent(),
+          }) =>
+              CollEventCompanion(
+            id: id,
+            idSuffix: idSuffix,
+            projectUuid: projectUuid,
+            startDate: startDate,
+            startTime: startTime,
+            endDate: endDate,
+            endTime: endTime,
+            primaryCollMethod: primaryCollMethod,
+            collMethodNotes: collMethodNotes,
+            siteID: siteID,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            Value<String?> idSuffix = const Value.absent(),
+            Value<String?> projectUuid = const Value.absent(),
+            Value<String?> startDate = const Value.absent(),
+            Value<String?> startTime = const Value.absent(),
+            Value<String?> endDate = const Value.absent(),
+            Value<String?> endTime = const Value.absent(),
+            Value<String?> primaryCollMethod = const Value.absent(),
+            Value<String?> collMethodNotes = const Value.absent(),
+            Value<int?> siteID = const Value.absent(),
+          }) =>
+              CollEventCompanion.insert(
+            id: id,
+            idSuffix: idSuffix,
+            projectUuid: projectUuid,
+            startDate: startDate,
+            startTime: startTime,
+            endDate: endDate,
+            endTime: endTime,
+            primaryCollMethod: primaryCollMethod,
+            collMethodNotes: collMethodNotes,
+            siteID: siteID,
+          ),
+        ));
+}
+
+class $CollEventProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    CollEvent,
+    CollEventData,
+    $CollEventFilterComposer,
+    $CollEventOrderingComposer,
+    $CollEventProcessedTableManager,
+    $CollEventInsertCompanionBuilder,
+    $CollEventUpdateCompanionBuilder> {
+  $CollEventProcessedTableManager(super.$state);
+}
+
+class $CollEventFilterComposer extends FilterComposer<_$Database, CollEvent> {
+  $CollEventFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get idSuffix => $state.composableBuilder(
+      column: $state.table.idSuffix,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get projectUuid => $state.composableBuilder(
+      column: $state.table.projectUuid,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get startDate => $state.composableBuilder(
+      column: $state.table.startDate,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get startTime => $state.composableBuilder(
+      column: $state.table.startTime,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get endDate => $state.composableBuilder(
+      column: $state.table.endDate,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get endTime => $state.composableBuilder(
+      column: $state.table.endTime,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get primaryCollMethod => $state.composableBuilder(
+      column: $state.table.primaryCollMethod,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get collMethodNotes => $state.composableBuilder(
+      column: $state.table.collMethodNotes,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  $SiteFilterComposer get siteID {
+    final $SiteFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.siteID,
+        referencedTable: $state.db.site,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) => $SiteFilterComposer(
+            ComposerState(
+                $state.db, $state.db.site, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+class $CollEventOrderingComposer
+    extends OrderingComposer<_$Database, CollEvent> {
+  $CollEventOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get idSuffix => $state.composableBuilder(
+      column: $state.table.idSuffix,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get projectUuid => $state.composableBuilder(
+      column: $state.table.projectUuid,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get startDate => $state.composableBuilder(
+      column: $state.table.startDate,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get startTime => $state.composableBuilder(
+      column: $state.table.startTime,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get endDate => $state.composableBuilder(
+      column: $state.table.endDate,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get endTime => $state.composableBuilder(
+      column: $state.table.endTime,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get primaryCollMethod => $state.composableBuilder(
+      column: $state.table.primaryCollMethod,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get collMethodNotes => $state.composableBuilder(
+      column: $state.table.collMethodNotes,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  $SiteOrderingComposer get siteID {
+    final $SiteOrderingComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.siteID,
+        referencedTable: $state.db.site,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) => $SiteOrderingComposer(
+            ComposerState(
+                $state.db, $state.db.site, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+typedef $WeatherInsertCompanionBuilder = WeatherCompanion Function({
+  Value<int?> eventID,
+  Value<double?> lowestDayTempC,
+  Value<double?> highestDayTempC,
+  Value<double?> lowestNightTempC,
+  Value<double?> highestNightTempC,
+  Value<double?> averageHumidity,
+  Value<double?> dewPointTemp,
+  Value<String?> sunriseTime,
+  Value<String?> sunsetTime,
+  Value<String?> moonPhase,
+  Value<String?> notes,
+  Value<int> rowid,
+});
+typedef $WeatherUpdateCompanionBuilder = WeatherCompanion Function({
+  Value<int?> eventID,
+  Value<double?> lowestDayTempC,
+  Value<double?> highestDayTempC,
+  Value<double?> lowestNightTempC,
+  Value<double?> highestNightTempC,
+  Value<double?> averageHumidity,
+  Value<double?> dewPointTemp,
+  Value<String?> sunriseTime,
+  Value<String?> sunsetTime,
+  Value<String?> moonPhase,
+  Value<String?> notes,
+  Value<int> rowid,
+});
+
+class $WeatherTableManager extends RootTableManager<
+    _$Database,
+    Weather,
+    WeatherData,
+    $WeatherFilterComposer,
+    $WeatherOrderingComposer,
+    $WeatherProcessedTableManager,
+    $WeatherInsertCompanionBuilder,
+    $WeatherUpdateCompanionBuilder> {
+  $WeatherTableManager(_$Database db, Weather table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $WeatherFilterComposer(ComposerState(db, table)),
+          orderingComposer: $WeatherOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) => $WeatherProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int?> eventID = const Value.absent(),
+            Value<double?> lowestDayTempC = const Value.absent(),
+            Value<double?> highestDayTempC = const Value.absent(),
+            Value<double?> lowestNightTempC = const Value.absent(),
+            Value<double?> highestNightTempC = const Value.absent(),
+            Value<double?> averageHumidity = const Value.absent(),
+            Value<double?> dewPointTemp = const Value.absent(),
+            Value<String?> sunriseTime = const Value.absent(),
+            Value<String?> sunsetTime = const Value.absent(),
+            Value<String?> moonPhase = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              WeatherCompanion(
+            eventID: eventID,
+            lowestDayTempC: lowestDayTempC,
+            highestDayTempC: highestDayTempC,
+            lowestNightTempC: lowestNightTempC,
+            highestNightTempC: highestNightTempC,
+            averageHumidity: averageHumidity,
+            dewPointTemp: dewPointTemp,
+            sunriseTime: sunriseTime,
+            sunsetTime: sunsetTime,
+            moonPhase: moonPhase,
+            notes: notes,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<int?> eventID = const Value.absent(),
+            Value<double?> lowestDayTempC = const Value.absent(),
+            Value<double?> highestDayTempC = const Value.absent(),
+            Value<double?> lowestNightTempC = const Value.absent(),
+            Value<double?> highestNightTempC = const Value.absent(),
+            Value<double?> averageHumidity = const Value.absent(),
+            Value<double?> dewPointTemp = const Value.absent(),
+            Value<String?> sunriseTime = const Value.absent(),
+            Value<String?> sunsetTime = const Value.absent(),
+            Value<String?> moonPhase = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              WeatherCompanion.insert(
+            eventID: eventID,
+            lowestDayTempC: lowestDayTempC,
+            highestDayTempC: highestDayTempC,
+            lowestNightTempC: lowestNightTempC,
+            highestNightTempC: highestNightTempC,
+            averageHumidity: averageHumidity,
+            dewPointTemp: dewPointTemp,
+            sunriseTime: sunriseTime,
+            sunsetTime: sunsetTime,
+            moonPhase: moonPhase,
+            notes: notes,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $WeatherProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    Weather,
+    WeatherData,
+    $WeatherFilterComposer,
+    $WeatherOrderingComposer,
+    $WeatherProcessedTableManager,
+    $WeatherInsertCompanionBuilder,
+    $WeatherUpdateCompanionBuilder> {
+  $WeatherProcessedTableManager(super.$state);
+}
+
+class $WeatherFilterComposer extends FilterComposer<_$Database, Weather> {
+  $WeatherFilterComposer(super.$state);
+  ColumnFilters<int> get eventID => $state.composableBuilder(
+      column: $state.table.eventID,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get lowestDayTempC => $state.composableBuilder(
+      column: $state.table.lowestDayTempC,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get highestDayTempC => $state.composableBuilder(
+      column: $state.table.highestDayTempC,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get lowestNightTempC => $state.composableBuilder(
+      column: $state.table.lowestNightTempC,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get highestNightTempC => $state.composableBuilder(
+      column: $state.table.highestNightTempC,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get averageHumidity => $state.composableBuilder(
+      column: $state.table.averageHumidity,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get dewPointTemp => $state.composableBuilder(
+      column: $state.table.dewPointTemp,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get sunriseTime => $state.composableBuilder(
+      column: $state.table.sunriseTime,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get sunsetTime => $state.composableBuilder(
+      column: $state.table.sunsetTime,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get moonPhase => $state.composableBuilder(
+      column: $state.table.moonPhase,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get notes => $state.composableBuilder(
+      column: $state.table.notes,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $WeatherOrderingComposer extends OrderingComposer<_$Database, Weather> {
+  $WeatherOrderingComposer(super.$state);
+  ColumnOrderings<int> get eventID => $state.composableBuilder(
+      column: $state.table.eventID,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get lowestDayTempC => $state.composableBuilder(
+      column: $state.table.lowestDayTempC,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get highestDayTempC => $state.composableBuilder(
+      column: $state.table.highestDayTempC,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get lowestNightTempC => $state.composableBuilder(
+      column: $state.table.lowestNightTempC,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get highestNightTempC => $state.composableBuilder(
+      column: $state.table.highestNightTempC,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get averageHumidity => $state.composableBuilder(
+      column: $state.table.averageHumidity,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get dewPointTemp => $state.composableBuilder(
+      column: $state.table.dewPointTemp,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get sunriseTime => $state.composableBuilder(
+      column: $state.table.sunriseTime,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get sunsetTime => $state.composableBuilder(
+      column: $state.table.sunsetTime,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get moonPhase => $state.composableBuilder(
+      column: $state.table.moonPhase,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get notes => $state.composableBuilder(
+      column: $state.table.notes,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $CollPersonnelInsertCompanionBuilder = CollPersonnelCompanion Function({
+  Value<int> id,
+  Value<int?> eventID,
+  Value<String?> personnelId,
+  Value<String?> name,
+  Value<String?> role,
+});
+typedef $CollPersonnelUpdateCompanionBuilder = CollPersonnelCompanion Function({
+  Value<int> id,
+  Value<int?> eventID,
+  Value<String?> personnelId,
+  Value<String?> name,
+  Value<String?> role,
+});
+
+class $CollPersonnelTableManager extends RootTableManager<
+    _$Database,
+    CollPersonnel,
+    CollPersonnelData,
+    $CollPersonnelFilterComposer,
+    $CollPersonnelOrderingComposer,
+    $CollPersonnelProcessedTableManager,
+    $CollPersonnelInsertCompanionBuilder,
+    $CollPersonnelUpdateCompanionBuilder> {
+  $CollPersonnelTableManager(_$Database db, CollPersonnel table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $CollPersonnelFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $CollPersonnelOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) => $CollPersonnelProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            Value<int?> eventID = const Value.absent(),
+            Value<String?> personnelId = const Value.absent(),
+            Value<String?> name = const Value.absent(),
+            Value<String?> role = const Value.absent(),
+          }) =>
+              CollPersonnelCompanion(
+            id: id,
+            eventID: eventID,
+            personnelId: personnelId,
+            name: name,
+            role: role,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            Value<int?> eventID = const Value.absent(),
+            Value<String?> personnelId = const Value.absent(),
+            Value<String?> name = const Value.absent(),
+            Value<String?> role = const Value.absent(),
+          }) =>
+              CollPersonnelCompanion.insert(
+            id: id,
+            eventID: eventID,
+            personnelId: personnelId,
+            name: name,
+            role: role,
+          ),
+        ));
+}
+
+class $CollPersonnelProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    CollPersonnel,
+    CollPersonnelData,
+    $CollPersonnelFilterComposer,
+    $CollPersonnelOrderingComposer,
+    $CollPersonnelProcessedTableManager,
+    $CollPersonnelInsertCompanionBuilder,
+    $CollPersonnelUpdateCompanionBuilder> {
+  $CollPersonnelProcessedTableManager(super.$state);
+}
+
+class $CollPersonnelFilterComposer
+    extends FilterComposer<_$Database, CollPersonnel> {
+  $CollPersonnelFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get eventID => $state.composableBuilder(
+      column: $state.table.eventID,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get personnelId => $state.composableBuilder(
+      column: $state.table.personnelId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get role => $state.composableBuilder(
+      column: $state.table.role,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $CollPersonnelOrderingComposer
+    extends OrderingComposer<_$Database, CollPersonnel> {
+  $CollPersonnelOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get eventID => $state.composableBuilder(
+      column: $state.table.eventID,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get personnelId => $state.composableBuilder(
+      column: $state.table.personnelId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get role => $state.composableBuilder(
+      column: $state.table.role,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $CollEffortInsertCompanionBuilder = CollEffortCompanion Function({
+  Value<int> id,
+  Value<int?> eventID,
+  Value<String?> method,
+  Value<String?> brand,
+  Value<int?> count,
+  Value<String?> size,
+  Value<String?> notes,
+});
+typedef $CollEffortUpdateCompanionBuilder = CollEffortCompanion Function({
+  Value<int> id,
+  Value<int?> eventID,
+  Value<String?> method,
+  Value<String?> brand,
+  Value<int?> count,
+  Value<String?> size,
+  Value<String?> notes,
+});
+
+class $CollEffortTableManager extends RootTableManager<
+    _$Database,
+    CollEffort,
+    CollEffortData,
+    $CollEffortFilterComposer,
+    $CollEffortOrderingComposer,
+    $CollEffortProcessedTableManager,
+    $CollEffortInsertCompanionBuilder,
+    $CollEffortUpdateCompanionBuilder> {
+  $CollEffortTableManager(_$Database db, CollEffort table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $CollEffortFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $CollEffortOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) => $CollEffortProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            Value<int?> eventID = const Value.absent(),
+            Value<String?> method = const Value.absent(),
+            Value<String?> brand = const Value.absent(),
+            Value<int?> count = const Value.absent(),
+            Value<String?> size = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+          }) =>
+              CollEffortCompanion(
+            id: id,
+            eventID: eventID,
+            method: method,
+            brand: brand,
+            count: count,
+            size: size,
+            notes: notes,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            Value<int?> eventID = const Value.absent(),
+            Value<String?> method = const Value.absent(),
+            Value<String?> brand = const Value.absent(),
+            Value<int?> count = const Value.absent(),
+            Value<String?> size = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+          }) =>
+              CollEffortCompanion.insert(
+            id: id,
+            eventID: eventID,
+            method: method,
+            brand: brand,
+            count: count,
+            size: size,
+            notes: notes,
+          ),
+        ));
+}
+
+class $CollEffortProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    CollEffort,
+    CollEffortData,
+    $CollEffortFilterComposer,
+    $CollEffortOrderingComposer,
+    $CollEffortProcessedTableManager,
+    $CollEffortInsertCompanionBuilder,
+    $CollEffortUpdateCompanionBuilder> {
+  $CollEffortProcessedTableManager(super.$state);
+}
+
+class $CollEffortFilterComposer extends FilterComposer<_$Database, CollEffort> {
+  $CollEffortFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get eventID => $state.composableBuilder(
+      column: $state.table.eventID,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get method => $state.composableBuilder(
+      column: $state.table.method,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get brand => $state.composableBuilder(
+      column: $state.table.brand,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get count => $state.composableBuilder(
+      column: $state.table.count,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get size => $state.composableBuilder(
+      column: $state.table.size,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get notes => $state.composableBuilder(
+      column: $state.table.notes,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $CollEffortOrderingComposer
+    extends OrderingComposer<_$Database, CollEffort> {
+  $CollEffortOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get eventID => $state.composableBuilder(
+      column: $state.table.eventID,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get method => $state.composableBuilder(
+      column: $state.table.method,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get brand => $state.composableBuilder(
+      column: $state.table.brand,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get count => $state.composableBuilder(
+      column: $state.table.count,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get size => $state.composableBuilder(
+      column: $state.table.size,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get notes => $state.composableBuilder(
+      column: $state.table.notes,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $NarrativeInsertCompanionBuilder = NarrativeCompanion Function({
+  Value<int> id,
+  Value<String?> projectUuid,
+  Value<String?> date,
+  Value<int?> siteID,
+  Value<String?> narrative,
+  Value<int?> mediaID,
+});
+typedef $NarrativeUpdateCompanionBuilder = NarrativeCompanion Function({
+  Value<int> id,
+  Value<String?> projectUuid,
+  Value<String?> date,
+  Value<int?> siteID,
+  Value<String?> narrative,
+  Value<int?> mediaID,
+});
+
+class $NarrativeTableManager extends RootTableManager<
+    _$Database,
+    Narrative,
+    NarrativeData,
+    $NarrativeFilterComposer,
+    $NarrativeOrderingComposer,
+    $NarrativeProcessedTableManager,
+    $NarrativeInsertCompanionBuilder,
+    $NarrativeUpdateCompanionBuilder> {
+  $NarrativeTableManager(_$Database db, Narrative table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $NarrativeFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $NarrativeOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) => $NarrativeProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            Value<String?> projectUuid = const Value.absent(),
+            Value<String?> date = const Value.absent(),
+            Value<int?> siteID = const Value.absent(),
+            Value<String?> narrative = const Value.absent(),
+            Value<int?> mediaID = const Value.absent(),
+          }) =>
+              NarrativeCompanion(
+            id: id,
+            projectUuid: projectUuid,
+            date: date,
+            siteID: siteID,
+            narrative: narrative,
+            mediaID: mediaID,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            Value<String?> projectUuid = const Value.absent(),
+            Value<String?> date = const Value.absent(),
+            Value<int?> siteID = const Value.absent(),
+            Value<String?> narrative = const Value.absent(),
+            Value<int?> mediaID = const Value.absent(),
+          }) =>
+              NarrativeCompanion.insert(
+            id: id,
+            projectUuid: projectUuid,
+            date: date,
+            siteID: siteID,
+            narrative: narrative,
+            mediaID: mediaID,
+          ),
+        ));
+}
+
+class $NarrativeProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    Narrative,
+    NarrativeData,
+    $NarrativeFilterComposer,
+    $NarrativeOrderingComposer,
+    $NarrativeProcessedTableManager,
+    $NarrativeInsertCompanionBuilder,
+    $NarrativeUpdateCompanionBuilder> {
+  $NarrativeProcessedTableManager(super.$state);
+}
+
+class $NarrativeFilterComposer extends FilterComposer<_$Database, Narrative> {
+  $NarrativeFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get projectUuid => $state.composableBuilder(
+      column: $state.table.projectUuid,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get date => $state.composableBuilder(
+      column: $state.table.date,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get siteID => $state.composableBuilder(
+      column: $state.table.siteID,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get narrative => $state.composableBuilder(
+      column: $state.table.narrative,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  $MediaFilterComposer get mediaID {
+    final $MediaFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.mediaID,
+        referencedTable: $state.db.media,
+        getReferencedColumn: (t) => t.primaryId,
+        builder: (joinBuilder, parentComposers) => $MediaFilterComposer(
+            ComposerState(
+                $state.db, $state.db.media, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+class $NarrativeOrderingComposer
+    extends OrderingComposer<_$Database, Narrative> {
+  $NarrativeOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get projectUuid => $state.composableBuilder(
+      column: $state.table.projectUuid,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get date => $state.composableBuilder(
+      column: $state.table.date,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get siteID => $state.composableBuilder(
+      column: $state.table.siteID,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get narrative => $state.composableBuilder(
+      column: $state.table.narrative,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  $MediaOrderingComposer get mediaID {
+    final $MediaOrderingComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.mediaID,
+        referencedTable: $state.db.media,
+        getReferencedColumn: (t) => t.primaryId,
+        builder: (joinBuilder, parentComposers) => $MediaOrderingComposer(
+            ComposerState(
+                $state.db, $state.db.media, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+typedef $NarrativeMediaInsertCompanionBuilder = NarrativeMediaCompanion
+    Function({
+  required int narrativeId,
+  Value<int?> mediaId,
+  Value<int> rowid,
+});
+typedef $NarrativeMediaUpdateCompanionBuilder = NarrativeMediaCompanion
+    Function({
+  Value<int> narrativeId,
+  Value<int?> mediaId,
+  Value<int> rowid,
+});
+
+class $NarrativeMediaTableManager extends RootTableManager<
+    _$Database,
+    NarrativeMedia,
+    NarrativeMediaData,
+    $NarrativeMediaFilterComposer,
+    $NarrativeMediaOrderingComposer,
+    $NarrativeMediaProcessedTableManager,
+    $NarrativeMediaInsertCompanionBuilder,
+    $NarrativeMediaUpdateCompanionBuilder> {
+  $NarrativeMediaTableManager(_$Database db, NarrativeMedia table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $NarrativeMediaFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $NarrativeMediaOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $NarrativeMediaProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int> narrativeId = const Value.absent(),
+            Value<int?> mediaId = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              NarrativeMediaCompanion(
+            narrativeId: narrativeId,
+            mediaId: mediaId,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required int narrativeId,
+            Value<int?> mediaId = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              NarrativeMediaCompanion.insert(
+            narrativeId: narrativeId,
+            mediaId: mediaId,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $NarrativeMediaProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    NarrativeMedia,
+    NarrativeMediaData,
+    $NarrativeMediaFilterComposer,
+    $NarrativeMediaOrderingComposer,
+    $NarrativeMediaProcessedTableManager,
+    $NarrativeMediaInsertCompanionBuilder,
+    $NarrativeMediaUpdateCompanionBuilder> {
+  $NarrativeMediaProcessedTableManager(super.$state);
+}
+
+class $NarrativeMediaFilterComposer
+    extends FilterComposer<_$Database, NarrativeMedia> {
+  $NarrativeMediaFilterComposer(super.$state);
+  ColumnFilters<int> get narrativeId => $state.composableBuilder(
+      column: $state.table.narrativeId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get mediaId => $state.composableBuilder(
+      column: $state.table.mediaId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $NarrativeMediaOrderingComposer
+    extends OrderingComposer<_$Database, NarrativeMedia> {
+  $NarrativeMediaOrderingComposer(super.$state);
+  ColumnOrderings<int> get narrativeId => $state.composableBuilder(
+      column: $state.table.narrativeId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get mediaId => $state.composableBuilder(
+      column: $state.table.mediaId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $SiteMediaInsertCompanionBuilder = SiteMediaCompanion Function({
+  required int siteId,
+  Value<int?> mediaId,
+  Value<int> rowid,
+});
+typedef $SiteMediaUpdateCompanionBuilder = SiteMediaCompanion Function({
+  Value<int> siteId,
+  Value<int?> mediaId,
+  Value<int> rowid,
+});
+
+class $SiteMediaTableManager extends RootTableManager<
+    _$Database,
+    SiteMedia,
+    SiteMediaData,
+    $SiteMediaFilterComposer,
+    $SiteMediaOrderingComposer,
+    $SiteMediaProcessedTableManager,
+    $SiteMediaInsertCompanionBuilder,
+    $SiteMediaUpdateCompanionBuilder> {
+  $SiteMediaTableManager(_$Database db, SiteMedia table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $SiteMediaFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $SiteMediaOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) => $SiteMediaProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int> siteId = const Value.absent(),
+            Value<int?> mediaId = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              SiteMediaCompanion(
+            siteId: siteId,
+            mediaId: mediaId,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required int siteId,
+            Value<int?> mediaId = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              SiteMediaCompanion.insert(
+            siteId: siteId,
+            mediaId: mediaId,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $SiteMediaProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    SiteMedia,
+    SiteMediaData,
+    $SiteMediaFilterComposer,
+    $SiteMediaOrderingComposer,
+    $SiteMediaProcessedTableManager,
+    $SiteMediaInsertCompanionBuilder,
+    $SiteMediaUpdateCompanionBuilder> {
+  $SiteMediaProcessedTableManager(super.$state);
+}
+
+class $SiteMediaFilterComposer extends FilterComposer<_$Database, SiteMedia> {
+  $SiteMediaFilterComposer(super.$state);
+  ColumnFilters<int> get siteId => $state.composableBuilder(
+      column: $state.table.siteId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get mediaId => $state.composableBuilder(
+      column: $state.table.mediaId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $SiteMediaOrderingComposer
+    extends OrderingComposer<_$Database, SiteMedia> {
+  $SiteMediaOrderingComposer(super.$state);
+  ColumnOrderings<int> get siteId => $state.composableBuilder(
+      column: $state.table.siteId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get mediaId => $state.composableBuilder(
+      column: $state.table.mediaId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $TaxonomyInsertCompanionBuilder = TaxonomyCompanion Function({
+  Value<int> id,
+  Value<String?> taxonClass,
+  Value<String?> taxonOrder,
+  Value<String?> taxonFamily,
+  Value<String?> genus,
+  Value<String?> specificEpithet,
+  Value<String?> authors,
+  Value<String?> commonName,
+  Value<String?> notes,
+  Value<String?> citesStatus,
+  Value<String?> redListCategory,
+  Value<String?> countryStatus,
+  Value<int?> sortingOrder,
+  Value<int?> mediaId,
+});
+typedef $TaxonomyUpdateCompanionBuilder = TaxonomyCompanion Function({
+  Value<int> id,
+  Value<String?> taxonClass,
+  Value<String?> taxonOrder,
+  Value<String?> taxonFamily,
+  Value<String?> genus,
+  Value<String?> specificEpithet,
+  Value<String?> authors,
+  Value<String?> commonName,
+  Value<String?> notes,
+  Value<String?> citesStatus,
+  Value<String?> redListCategory,
+  Value<String?> countryStatus,
+  Value<int?> sortingOrder,
+  Value<int?> mediaId,
+});
+
+class $TaxonomyTableManager extends RootTableManager<
+    _$Database,
+    Taxonomy,
+    TaxonomyData,
+    $TaxonomyFilterComposer,
+    $TaxonomyOrderingComposer,
+    $TaxonomyProcessedTableManager,
+    $TaxonomyInsertCompanionBuilder,
+    $TaxonomyUpdateCompanionBuilder> {
+  $TaxonomyTableManager(_$Database db, Taxonomy table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $TaxonomyFilterComposer(ComposerState(db, table)),
+          orderingComposer: $TaxonomyOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) => $TaxonomyProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            Value<String?> taxonClass = const Value.absent(),
+            Value<String?> taxonOrder = const Value.absent(),
+            Value<String?> taxonFamily = const Value.absent(),
+            Value<String?> genus = const Value.absent(),
+            Value<String?> specificEpithet = const Value.absent(),
+            Value<String?> authors = const Value.absent(),
+            Value<String?> commonName = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+            Value<String?> citesStatus = const Value.absent(),
+            Value<String?> redListCategory = const Value.absent(),
+            Value<String?> countryStatus = const Value.absent(),
+            Value<int?> sortingOrder = const Value.absent(),
+            Value<int?> mediaId = const Value.absent(),
+          }) =>
+              TaxonomyCompanion(
+            id: id,
+            taxonClass: taxonClass,
+            taxonOrder: taxonOrder,
+            taxonFamily: taxonFamily,
+            genus: genus,
+            specificEpithet: specificEpithet,
+            authors: authors,
+            commonName: commonName,
+            notes: notes,
+            citesStatus: citesStatus,
+            redListCategory: redListCategory,
+            countryStatus: countryStatus,
+            sortingOrder: sortingOrder,
+            mediaId: mediaId,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            Value<String?> taxonClass = const Value.absent(),
+            Value<String?> taxonOrder = const Value.absent(),
+            Value<String?> taxonFamily = const Value.absent(),
+            Value<String?> genus = const Value.absent(),
+            Value<String?> specificEpithet = const Value.absent(),
+            Value<String?> authors = const Value.absent(),
+            Value<String?> commonName = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+            Value<String?> citesStatus = const Value.absent(),
+            Value<String?> redListCategory = const Value.absent(),
+            Value<String?> countryStatus = const Value.absent(),
+            Value<int?> sortingOrder = const Value.absent(),
+            Value<int?> mediaId = const Value.absent(),
+          }) =>
+              TaxonomyCompanion.insert(
+            id: id,
+            taxonClass: taxonClass,
+            taxonOrder: taxonOrder,
+            taxonFamily: taxonFamily,
+            genus: genus,
+            specificEpithet: specificEpithet,
+            authors: authors,
+            commonName: commonName,
+            notes: notes,
+            citesStatus: citesStatus,
+            redListCategory: redListCategory,
+            countryStatus: countryStatus,
+            sortingOrder: sortingOrder,
+            mediaId: mediaId,
+          ),
+        ));
+}
+
+class $TaxonomyProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    Taxonomy,
+    TaxonomyData,
+    $TaxonomyFilterComposer,
+    $TaxonomyOrderingComposer,
+    $TaxonomyProcessedTableManager,
+    $TaxonomyInsertCompanionBuilder,
+    $TaxonomyUpdateCompanionBuilder> {
+  $TaxonomyProcessedTableManager(super.$state);
+}
+
+class $TaxonomyFilterComposer extends FilterComposer<_$Database, Taxonomy> {
+  $TaxonomyFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get taxonClass => $state.composableBuilder(
+      column: $state.table.taxonClass,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get taxonOrder => $state.composableBuilder(
+      column: $state.table.taxonOrder,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get taxonFamily => $state.composableBuilder(
+      column: $state.table.taxonFamily,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get genus => $state.composableBuilder(
+      column: $state.table.genus,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get specificEpithet => $state.composableBuilder(
+      column: $state.table.specificEpithet,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get authors => $state.composableBuilder(
+      column: $state.table.authors,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get commonName => $state.composableBuilder(
+      column: $state.table.commonName,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get notes => $state.composableBuilder(
+      column: $state.table.notes,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get citesStatus => $state.composableBuilder(
+      column: $state.table.citesStatus,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get redListCategory => $state.composableBuilder(
+      column: $state.table.redListCategory,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get countryStatus => $state.composableBuilder(
+      column: $state.table.countryStatus,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get sortingOrder => $state.composableBuilder(
+      column: $state.table.sortingOrder,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get mediaId => $state.composableBuilder(
+      column: $state.table.mediaId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $TaxonomyOrderingComposer extends OrderingComposer<_$Database, Taxonomy> {
+  $TaxonomyOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get taxonClass => $state.composableBuilder(
+      column: $state.table.taxonClass,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get taxonOrder => $state.composableBuilder(
+      column: $state.table.taxonOrder,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get taxonFamily => $state.composableBuilder(
+      column: $state.table.taxonFamily,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get genus => $state.composableBuilder(
+      column: $state.table.genus,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get specificEpithet => $state.composableBuilder(
+      column: $state.table.specificEpithet,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get authors => $state.composableBuilder(
+      column: $state.table.authors,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get commonName => $state.composableBuilder(
+      column: $state.table.commonName,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get notes => $state.composableBuilder(
+      column: $state.table.notes,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get citesStatus => $state.composableBuilder(
+      column: $state.table.citesStatus,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get redListCategory => $state.composableBuilder(
+      column: $state.table.redListCategory,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get countryStatus => $state.composableBuilder(
+      column: $state.table.countryStatus,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get sortingOrder => $state.composableBuilder(
+      column: $state.table.sortingOrder,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get mediaId => $state.composableBuilder(
+      column: $state.table.mediaId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $SpecimenInsertCompanionBuilder = SpecimenCompanion Function({
+  required String uuid,
+  Value<String?> projectUuid,
+  Value<int?> speciesID,
+  Value<int?> iDConfidence,
+  Value<String?> iDMethod,
+  Value<String?> taxonGroup,
+  Value<String?> condition,
+  Value<String?> prepDate,
+  Value<String?> prepTime,
+  Value<String?> collectionTime,
+  Value<String?> captureDate,
+  Value<int?> isRelativeTime,
+  Value<String?> captureTime,
+  Value<String?> trapType,
+  Value<String?> methodID,
+  Value<int?> coordinateID,
+  Value<String?> catalogerID,
+  Value<int?> fieldNumber,
+  Value<int?> collEventID,
+  Value<int?> isMultipleCollector,
+  Value<int?> collPersonnelID,
+  Value<int?> collMethodID,
+  Value<String?> museumID,
+  Value<String?> preparatorID,
+  Value<int> rowid,
+});
+typedef $SpecimenUpdateCompanionBuilder = SpecimenCompanion Function({
+  Value<String> uuid,
+  Value<String?> projectUuid,
+  Value<int?> speciesID,
+  Value<int?> iDConfidence,
+  Value<String?> iDMethod,
+  Value<String?> taxonGroup,
+  Value<String?> condition,
+  Value<String?> prepDate,
+  Value<String?> prepTime,
+  Value<String?> collectionTime,
+  Value<String?> captureDate,
+  Value<int?> isRelativeTime,
+  Value<String?> captureTime,
+  Value<String?> trapType,
+  Value<String?> methodID,
+  Value<int?> coordinateID,
+  Value<String?> catalogerID,
+  Value<int?> fieldNumber,
+  Value<int?> collEventID,
+  Value<int?> isMultipleCollector,
+  Value<int?> collPersonnelID,
+  Value<int?> collMethodID,
+  Value<String?> museumID,
+  Value<String?> preparatorID,
+  Value<int> rowid,
+});
+
+class $SpecimenTableManager extends RootTableManager<
+    _$Database,
+    Specimen,
+    SpecimenData,
+    $SpecimenFilterComposer,
+    $SpecimenOrderingComposer,
+    $SpecimenProcessedTableManager,
+    $SpecimenInsertCompanionBuilder,
+    $SpecimenUpdateCompanionBuilder> {
+  $SpecimenTableManager(_$Database db, Specimen table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $SpecimenFilterComposer(ComposerState(db, table)),
+          orderingComposer: $SpecimenOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) => $SpecimenProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<String> uuid = const Value.absent(),
+            Value<String?> projectUuid = const Value.absent(),
+            Value<int?> speciesID = const Value.absent(),
+            Value<int?> iDConfidence = const Value.absent(),
+            Value<String?> iDMethod = const Value.absent(),
+            Value<String?> taxonGroup = const Value.absent(),
+            Value<String?> condition = const Value.absent(),
+            Value<String?> prepDate = const Value.absent(),
+            Value<String?> prepTime = const Value.absent(),
+            Value<String?> collectionTime = const Value.absent(),
+            Value<String?> captureDate = const Value.absent(),
+            Value<int?> isRelativeTime = const Value.absent(),
+            Value<String?> captureTime = const Value.absent(),
+            Value<String?> trapType = const Value.absent(),
+            Value<String?> methodID = const Value.absent(),
+            Value<int?> coordinateID = const Value.absent(),
+            Value<String?> catalogerID = const Value.absent(),
+            Value<int?> fieldNumber = const Value.absent(),
+            Value<int?> collEventID = const Value.absent(),
+            Value<int?> isMultipleCollector = const Value.absent(),
+            Value<int?> collPersonnelID = const Value.absent(),
+            Value<int?> collMethodID = const Value.absent(),
+            Value<String?> museumID = const Value.absent(),
+            Value<String?> preparatorID = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              SpecimenCompanion(
+            uuid: uuid,
+            projectUuid: projectUuid,
+            speciesID: speciesID,
+            iDConfidence: iDConfidence,
+            iDMethod: iDMethod,
+            taxonGroup: taxonGroup,
+            condition: condition,
+            prepDate: prepDate,
+            prepTime: prepTime,
+            collectionTime: collectionTime,
+            captureDate: captureDate,
+            isRelativeTime: isRelativeTime,
+            captureTime: captureTime,
+            trapType: trapType,
+            methodID: methodID,
+            coordinateID: coordinateID,
+            catalogerID: catalogerID,
+            fieldNumber: fieldNumber,
+            collEventID: collEventID,
+            isMultipleCollector: isMultipleCollector,
+            collPersonnelID: collPersonnelID,
+            collMethodID: collMethodID,
+            museumID: museumID,
+            preparatorID: preparatorID,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String uuid,
+            Value<String?> projectUuid = const Value.absent(),
+            Value<int?> speciesID = const Value.absent(),
+            Value<int?> iDConfidence = const Value.absent(),
+            Value<String?> iDMethod = const Value.absent(),
+            Value<String?> taxonGroup = const Value.absent(),
+            Value<String?> condition = const Value.absent(),
+            Value<String?> prepDate = const Value.absent(),
+            Value<String?> prepTime = const Value.absent(),
+            Value<String?> collectionTime = const Value.absent(),
+            Value<String?> captureDate = const Value.absent(),
+            Value<int?> isRelativeTime = const Value.absent(),
+            Value<String?> captureTime = const Value.absent(),
+            Value<String?> trapType = const Value.absent(),
+            Value<String?> methodID = const Value.absent(),
+            Value<int?> coordinateID = const Value.absent(),
+            Value<String?> catalogerID = const Value.absent(),
+            Value<int?> fieldNumber = const Value.absent(),
+            Value<int?> collEventID = const Value.absent(),
+            Value<int?> isMultipleCollector = const Value.absent(),
+            Value<int?> collPersonnelID = const Value.absent(),
+            Value<int?> collMethodID = const Value.absent(),
+            Value<String?> museumID = const Value.absent(),
+            Value<String?> preparatorID = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              SpecimenCompanion.insert(
+            uuid: uuid,
+            projectUuid: projectUuid,
+            speciesID: speciesID,
+            iDConfidence: iDConfidence,
+            iDMethod: iDMethod,
+            taxonGroup: taxonGroup,
+            condition: condition,
+            prepDate: prepDate,
+            prepTime: prepTime,
+            collectionTime: collectionTime,
+            captureDate: captureDate,
+            isRelativeTime: isRelativeTime,
+            captureTime: captureTime,
+            trapType: trapType,
+            methodID: methodID,
+            coordinateID: coordinateID,
+            catalogerID: catalogerID,
+            fieldNumber: fieldNumber,
+            collEventID: collEventID,
+            isMultipleCollector: isMultipleCollector,
+            collPersonnelID: collPersonnelID,
+            collMethodID: collMethodID,
+            museumID: museumID,
+            preparatorID: preparatorID,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $SpecimenProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    Specimen,
+    SpecimenData,
+    $SpecimenFilterComposer,
+    $SpecimenOrderingComposer,
+    $SpecimenProcessedTableManager,
+    $SpecimenInsertCompanionBuilder,
+    $SpecimenUpdateCompanionBuilder> {
+  $SpecimenProcessedTableManager(super.$state);
+}
+
+class $SpecimenFilterComposer extends FilterComposer<_$Database, Specimen> {
+  $SpecimenFilterComposer(super.$state);
+  ColumnFilters<String> get uuid => $state.composableBuilder(
+      column: $state.table.uuid,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get projectUuid => $state.composableBuilder(
+      column: $state.table.projectUuid,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get speciesID => $state.composableBuilder(
+      column: $state.table.speciesID,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get iDConfidence => $state.composableBuilder(
+      column: $state.table.iDConfidence,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get iDMethod => $state.composableBuilder(
+      column: $state.table.iDMethod,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get taxonGroup => $state.composableBuilder(
+      column: $state.table.taxonGroup,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get condition => $state.composableBuilder(
+      column: $state.table.condition,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get prepDate => $state.composableBuilder(
+      column: $state.table.prepDate,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get prepTime => $state.composableBuilder(
+      column: $state.table.prepTime,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get collectionTime => $state.composableBuilder(
+      column: $state.table.collectionTime,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get captureDate => $state.composableBuilder(
+      column: $state.table.captureDate,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get isRelativeTime => $state.composableBuilder(
+      column: $state.table.isRelativeTime,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get captureTime => $state.composableBuilder(
+      column: $state.table.captureTime,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get trapType => $state.composableBuilder(
+      column: $state.table.trapType,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get methodID => $state.composableBuilder(
+      column: $state.table.methodID,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get coordinateID => $state.composableBuilder(
+      column: $state.table.coordinateID,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get catalogerID => $state.composableBuilder(
+      column: $state.table.catalogerID,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get fieldNumber => $state.composableBuilder(
+      column: $state.table.fieldNumber,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get collEventID => $state.composableBuilder(
+      column: $state.table.collEventID,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get isMultipleCollector => $state.composableBuilder(
+      column: $state.table.isMultipleCollector,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get collPersonnelID => $state.composableBuilder(
+      column: $state.table.collPersonnelID,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get collMethodID => $state.composableBuilder(
+      column: $state.table.collMethodID,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get museumID => $state.composableBuilder(
+      column: $state.table.museumID,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  $PersonnelFilterComposer get preparatorID {
+    final $PersonnelFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.preparatorID,
+        referencedTable: $state.db.personnel,
+        getReferencedColumn: (t) => t.uuid,
+        builder: (joinBuilder, parentComposers) => $PersonnelFilterComposer(
+            ComposerState(
+                $state.db, $state.db.personnel, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+class $SpecimenOrderingComposer extends OrderingComposer<_$Database, Specimen> {
+  $SpecimenOrderingComposer(super.$state);
+  ColumnOrderings<String> get uuid => $state.composableBuilder(
+      column: $state.table.uuid,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get projectUuid => $state.composableBuilder(
+      column: $state.table.projectUuid,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get speciesID => $state.composableBuilder(
+      column: $state.table.speciesID,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get iDConfidence => $state.composableBuilder(
+      column: $state.table.iDConfidence,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get iDMethod => $state.composableBuilder(
+      column: $state.table.iDMethod,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get taxonGroup => $state.composableBuilder(
+      column: $state.table.taxonGroup,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get condition => $state.composableBuilder(
+      column: $state.table.condition,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get prepDate => $state.composableBuilder(
+      column: $state.table.prepDate,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get prepTime => $state.composableBuilder(
+      column: $state.table.prepTime,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get collectionTime => $state.composableBuilder(
+      column: $state.table.collectionTime,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get captureDate => $state.composableBuilder(
+      column: $state.table.captureDate,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get isRelativeTime => $state.composableBuilder(
+      column: $state.table.isRelativeTime,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get captureTime => $state.composableBuilder(
+      column: $state.table.captureTime,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get trapType => $state.composableBuilder(
+      column: $state.table.trapType,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get methodID => $state.composableBuilder(
+      column: $state.table.methodID,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get coordinateID => $state.composableBuilder(
+      column: $state.table.coordinateID,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get catalogerID => $state.composableBuilder(
+      column: $state.table.catalogerID,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get fieldNumber => $state.composableBuilder(
+      column: $state.table.fieldNumber,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get collEventID => $state.composableBuilder(
+      column: $state.table.collEventID,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get isMultipleCollector => $state.composableBuilder(
+      column: $state.table.isMultipleCollector,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get collPersonnelID => $state.composableBuilder(
+      column: $state.table.collPersonnelID,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get collMethodID => $state.composableBuilder(
+      column: $state.table.collMethodID,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get museumID => $state.composableBuilder(
+      column: $state.table.museumID,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  $PersonnelOrderingComposer get preparatorID {
+    final $PersonnelOrderingComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.preparatorID,
+        referencedTable: $state.db.personnel,
+        getReferencedColumn: (t) => t.uuid,
+        builder: (joinBuilder, parentComposers) => $PersonnelOrderingComposer(
+            ComposerState(
+                $state.db, $state.db.personnel, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+typedef $SpecimenMediaInsertCompanionBuilder = SpecimenMediaCompanion Function({
+  required String specimenUuid,
+  Value<int?> mediaId,
+  Value<int> rowid,
+});
+typedef $SpecimenMediaUpdateCompanionBuilder = SpecimenMediaCompanion Function({
+  Value<String> specimenUuid,
+  Value<int?> mediaId,
+  Value<int> rowid,
+});
+
+class $SpecimenMediaTableManager extends RootTableManager<
+    _$Database,
+    SpecimenMedia,
+    SpecimenMediaData,
+    $SpecimenMediaFilterComposer,
+    $SpecimenMediaOrderingComposer,
+    $SpecimenMediaProcessedTableManager,
+    $SpecimenMediaInsertCompanionBuilder,
+    $SpecimenMediaUpdateCompanionBuilder> {
+  $SpecimenMediaTableManager(_$Database db, SpecimenMedia table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $SpecimenMediaFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $SpecimenMediaOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) => $SpecimenMediaProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<String> specimenUuid = const Value.absent(),
+            Value<int?> mediaId = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              SpecimenMediaCompanion(
+            specimenUuid: specimenUuid,
+            mediaId: mediaId,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String specimenUuid,
+            Value<int?> mediaId = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              SpecimenMediaCompanion.insert(
+            specimenUuid: specimenUuid,
+            mediaId: mediaId,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $SpecimenMediaProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    SpecimenMedia,
+    SpecimenMediaData,
+    $SpecimenMediaFilterComposer,
+    $SpecimenMediaOrderingComposer,
+    $SpecimenMediaProcessedTableManager,
+    $SpecimenMediaInsertCompanionBuilder,
+    $SpecimenMediaUpdateCompanionBuilder> {
+  $SpecimenMediaProcessedTableManager(super.$state);
+}
+
+class $SpecimenMediaFilterComposer
+    extends FilterComposer<_$Database, SpecimenMedia> {
+  $SpecimenMediaFilterComposer(super.$state);
+  ColumnFilters<String> get specimenUuid => $state.composableBuilder(
+      column: $state.table.specimenUuid,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get mediaId => $state.composableBuilder(
+      column: $state.table.mediaId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $SpecimenMediaOrderingComposer
+    extends OrderingComposer<_$Database, SpecimenMedia> {
+  $SpecimenMediaOrderingComposer(super.$state);
+  ColumnOrderings<String> get specimenUuid => $state.composableBuilder(
+      column: $state.table.specimenUuid,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get mediaId => $state.composableBuilder(
+      column: $state.table.mediaId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $AssociatedDataInsertCompanionBuilder = AssociatedDataCompanion
+    Function({
+  Value<int?> primaryId,
+  Value<String?> specimenUuid,
+  Value<String?> name,
+  Value<String?> type,
+  Value<String?> date,
+  Value<String?> description,
+  Value<String?> url,
+});
+typedef $AssociatedDataUpdateCompanionBuilder = AssociatedDataCompanion
+    Function({
+  Value<int?> primaryId,
+  Value<String?> specimenUuid,
+  Value<String?> name,
+  Value<String?> type,
+  Value<String?> date,
+  Value<String?> description,
+  Value<String?> url,
+});
+
+class $AssociatedDataTableManager extends RootTableManager<
+    _$Database,
+    AssociatedData,
+    AssociatedDataData,
+    $AssociatedDataFilterComposer,
+    $AssociatedDataOrderingComposer,
+    $AssociatedDataProcessedTableManager,
+    $AssociatedDataInsertCompanionBuilder,
+    $AssociatedDataUpdateCompanionBuilder> {
+  $AssociatedDataTableManager(_$Database db, AssociatedData table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $AssociatedDataFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $AssociatedDataOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $AssociatedDataProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int?> primaryId = const Value.absent(),
+            Value<String?> specimenUuid = const Value.absent(),
+            Value<String?> name = const Value.absent(),
+            Value<String?> type = const Value.absent(),
+            Value<String?> date = const Value.absent(),
+            Value<String?> description = const Value.absent(),
+            Value<String?> url = const Value.absent(),
+          }) =>
+              AssociatedDataCompanion(
+            primaryId: primaryId,
+            specimenUuid: specimenUuid,
+            name: name,
+            type: type,
+            date: date,
+            description: description,
+            url: url,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<int?> primaryId = const Value.absent(),
+            Value<String?> specimenUuid = const Value.absent(),
+            Value<String?> name = const Value.absent(),
+            Value<String?> type = const Value.absent(),
+            Value<String?> date = const Value.absent(),
+            Value<String?> description = const Value.absent(),
+            Value<String?> url = const Value.absent(),
+          }) =>
+              AssociatedDataCompanion.insert(
+            primaryId: primaryId,
+            specimenUuid: specimenUuid,
+            name: name,
+            type: type,
+            date: date,
+            description: description,
+            url: url,
+          ),
+        ));
+}
+
+class $AssociatedDataProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    AssociatedData,
+    AssociatedDataData,
+    $AssociatedDataFilterComposer,
+    $AssociatedDataOrderingComposer,
+    $AssociatedDataProcessedTableManager,
+    $AssociatedDataInsertCompanionBuilder,
+    $AssociatedDataUpdateCompanionBuilder> {
+  $AssociatedDataProcessedTableManager(super.$state);
+}
+
+class $AssociatedDataFilterComposer
+    extends FilterComposer<_$Database, AssociatedData> {
+  $AssociatedDataFilterComposer(super.$state);
+  ColumnFilters<int> get primaryId => $state.composableBuilder(
+      column: $state.table.primaryId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get specimenUuid => $state.composableBuilder(
+      column: $state.table.specimenUuid,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get type => $state.composableBuilder(
+      column: $state.table.type,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get date => $state.composableBuilder(
+      column: $state.table.date,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get description => $state.composableBuilder(
+      column: $state.table.description,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get url => $state.composableBuilder(
+      column: $state.table.url,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $AssociatedDataOrderingComposer
+    extends OrderingComposer<_$Database, AssociatedData> {
+  $AssociatedDataOrderingComposer(super.$state);
+  ColumnOrderings<int> get primaryId => $state.composableBuilder(
+      column: $state.table.primaryId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get specimenUuid => $state.composableBuilder(
+      column: $state.table.specimenUuid,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get type => $state.composableBuilder(
+      column: $state.table.type,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get date => $state.composableBuilder(
+      column: $state.table.date,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get description => $state.composableBuilder(
+      column: $state.table.description,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get url => $state.composableBuilder(
+      column: $state.table.url,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $PersonnelListInsertCompanionBuilder = PersonnelListCompanion Function({
+  Value<String?> projectUuid,
+  Value<String?> personnelUuid,
+  Value<int> rowid,
+});
+typedef $PersonnelListUpdateCompanionBuilder = PersonnelListCompanion Function({
+  Value<String?> projectUuid,
+  Value<String?> personnelUuid,
+  Value<int> rowid,
+});
+
+class $PersonnelListTableManager extends RootTableManager<
+    _$Database,
+    PersonnelList,
+    PersonnelListData,
+    $PersonnelListFilterComposer,
+    $PersonnelListOrderingComposer,
+    $PersonnelListProcessedTableManager,
+    $PersonnelListInsertCompanionBuilder,
+    $PersonnelListUpdateCompanionBuilder> {
+  $PersonnelListTableManager(_$Database db, PersonnelList table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $PersonnelListFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $PersonnelListOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) => $PersonnelListProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<String?> projectUuid = const Value.absent(),
+            Value<String?> personnelUuid = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              PersonnelListCompanion(
+            projectUuid: projectUuid,
+            personnelUuid: personnelUuid,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<String?> projectUuid = const Value.absent(),
+            Value<String?> personnelUuid = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              PersonnelListCompanion.insert(
+            projectUuid: projectUuid,
+            personnelUuid: personnelUuid,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $PersonnelListProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    PersonnelList,
+    PersonnelListData,
+    $PersonnelListFilterComposer,
+    $PersonnelListOrderingComposer,
+    $PersonnelListProcessedTableManager,
+    $PersonnelListInsertCompanionBuilder,
+    $PersonnelListUpdateCompanionBuilder> {
+  $PersonnelListProcessedTableManager(super.$state);
+}
+
+class $PersonnelListFilterComposer
+    extends FilterComposer<_$Database, PersonnelList> {
+  $PersonnelListFilterComposer(super.$state);
+  ColumnFilters<String> get projectUuid => $state.composableBuilder(
+      column: $state.table.projectUuid,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get personnelUuid => $state.composableBuilder(
+      column: $state.table.personnelUuid,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $PersonnelListOrderingComposer
+    extends OrderingComposer<_$Database, PersonnelList> {
+  $PersonnelListOrderingComposer(super.$state);
+  ColumnOrderings<String> get projectUuid => $state.composableBuilder(
+      column: $state.table.projectUuid,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get personnelUuid => $state.composableBuilder(
+      column: $state.table.personnelUuid,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $MammalMeasurementInsertCompanionBuilder = MammalMeasurementCompanion
+    Function({
+  required String specimenUuid,
+  Value<double?> totalLength,
+  Value<double?> tailLength,
+  Value<double?> hindFootLength,
+  Value<double?> earLength,
+  Value<double?> forearm,
+  Value<double?> weight,
+  Value<String?> accuracy,
+  Value<String?> accuracySpecify,
+  Value<int?> sex,
+  Value<int?> age,
+  Value<int?> testisPosition,
+  Value<double?> testisLength,
+  Value<double?> testisWidth,
+  Value<int?> epididymisAppearance,
+  Value<int?> reproductiveStage,
+  Value<int?> leftPlacentalScars,
+  Value<int?> rightPlacentalScars,
+  Value<int?> mammaeCondition,
+  Value<int?> mammaeInguinalCount,
+  Value<int?> mammaeAxillaryCount,
+  Value<int?> mammaeAbdominalCount,
+  Value<int?> vaginaOpening,
+  Value<int?> pubicSymphysis,
+  Value<int?> embryoLeftCount,
+  Value<int?> embryoRightCount,
+  Value<int?> embryoCR,
+  Value<String?> remark,
+  Value<int> rowid,
+});
+typedef $MammalMeasurementUpdateCompanionBuilder = MammalMeasurementCompanion
+    Function({
+  Value<String> specimenUuid,
+  Value<double?> totalLength,
+  Value<double?> tailLength,
+  Value<double?> hindFootLength,
+  Value<double?> earLength,
+  Value<double?> forearm,
+  Value<double?> weight,
+  Value<String?> accuracy,
+  Value<String?> accuracySpecify,
+  Value<int?> sex,
+  Value<int?> age,
+  Value<int?> testisPosition,
+  Value<double?> testisLength,
+  Value<double?> testisWidth,
+  Value<int?> epididymisAppearance,
+  Value<int?> reproductiveStage,
+  Value<int?> leftPlacentalScars,
+  Value<int?> rightPlacentalScars,
+  Value<int?> mammaeCondition,
+  Value<int?> mammaeInguinalCount,
+  Value<int?> mammaeAxillaryCount,
+  Value<int?> mammaeAbdominalCount,
+  Value<int?> vaginaOpening,
+  Value<int?> pubicSymphysis,
+  Value<int?> embryoLeftCount,
+  Value<int?> embryoRightCount,
+  Value<int?> embryoCR,
+  Value<String?> remark,
+  Value<int> rowid,
+});
+
+class $MammalMeasurementTableManager extends RootTableManager<
+    _$Database,
+    MammalMeasurement,
+    MammalMeasurementData,
+    $MammalMeasurementFilterComposer,
+    $MammalMeasurementOrderingComposer,
+    $MammalMeasurementProcessedTableManager,
+    $MammalMeasurementInsertCompanionBuilder,
+    $MammalMeasurementUpdateCompanionBuilder> {
+  $MammalMeasurementTableManager(_$Database db, MammalMeasurement table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $MammalMeasurementFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $MammalMeasurementOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $MammalMeasurementProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<String> specimenUuid = const Value.absent(),
+            Value<double?> totalLength = const Value.absent(),
+            Value<double?> tailLength = const Value.absent(),
+            Value<double?> hindFootLength = const Value.absent(),
+            Value<double?> earLength = const Value.absent(),
+            Value<double?> forearm = const Value.absent(),
+            Value<double?> weight = const Value.absent(),
+            Value<String?> accuracy = const Value.absent(),
+            Value<String?> accuracySpecify = const Value.absent(),
+            Value<int?> sex = const Value.absent(),
+            Value<int?> age = const Value.absent(),
+            Value<int?> testisPosition = const Value.absent(),
+            Value<double?> testisLength = const Value.absent(),
+            Value<double?> testisWidth = const Value.absent(),
+            Value<int?> epididymisAppearance = const Value.absent(),
+            Value<int?> reproductiveStage = const Value.absent(),
+            Value<int?> leftPlacentalScars = const Value.absent(),
+            Value<int?> rightPlacentalScars = const Value.absent(),
+            Value<int?> mammaeCondition = const Value.absent(),
+            Value<int?> mammaeInguinalCount = const Value.absent(),
+            Value<int?> mammaeAxillaryCount = const Value.absent(),
+            Value<int?> mammaeAbdominalCount = const Value.absent(),
+            Value<int?> vaginaOpening = const Value.absent(),
+            Value<int?> pubicSymphysis = const Value.absent(),
+            Value<int?> embryoLeftCount = const Value.absent(),
+            Value<int?> embryoRightCount = const Value.absent(),
+            Value<int?> embryoCR = const Value.absent(),
+            Value<String?> remark = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              MammalMeasurementCompanion(
+            specimenUuid: specimenUuid,
+            totalLength: totalLength,
+            tailLength: tailLength,
+            hindFootLength: hindFootLength,
+            earLength: earLength,
+            forearm: forearm,
+            weight: weight,
+            accuracy: accuracy,
+            accuracySpecify: accuracySpecify,
+            sex: sex,
+            age: age,
+            testisPosition: testisPosition,
+            testisLength: testisLength,
+            testisWidth: testisWidth,
+            epididymisAppearance: epididymisAppearance,
+            reproductiveStage: reproductiveStage,
+            leftPlacentalScars: leftPlacentalScars,
+            rightPlacentalScars: rightPlacentalScars,
+            mammaeCondition: mammaeCondition,
+            mammaeInguinalCount: mammaeInguinalCount,
+            mammaeAxillaryCount: mammaeAxillaryCount,
+            mammaeAbdominalCount: mammaeAbdominalCount,
+            vaginaOpening: vaginaOpening,
+            pubicSymphysis: pubicSymphysis,
+            embryoLeftCount: embryoLeftCount,
+            embryoRightCount: embryoRightCount,
+            embryoCR: embryoCR,
+            remark: remark,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String specimenUuid,
+            Value<double?> totalLength = const Value.absent(),
+            Value<double?> tailLength = const Value.absent(),
+            Value<double?> hindFootLength = const Value.absent(),
+            Value<double?> earLength = const Value.absent(),
+            Value<double?> forearm = const Value.absent(),
+            Value<double?> weight = const Value.absent(),
+            Value<String?> accuracy = const Value.absent(),
+            Value<String?> accuracySpecify = const Value.absent(),
+            Value<int?> sex = const Value.absent(),
+            Value<int?> age = const Value.absent(),
+            Value<int?> testisPosition = const Value.absent(),
+            Value<double?> testisLength = const Value.absent(),
+            Value<double?> testisWidth = const Value.absent(),
+            Value<int?> epididymisAppearance = const Value.absent(),
+            Value<int?> reproductiveStage = const Value.absent(),
+            Value<int?> leftPlacentalScars = const Value.absent(),
+            Value<int?> rightPlacentalScars = const Value.absent(),
+            Value<int?> mammaeCondition = const Value.absent(),
+            Value<int?> mammaeInguinalCount = const Value.absent(),
+            Value<int?> mammaeAxillaryCount = const Value.absent(),
+            Value<int?> mammaeAbdominalCount = const Value.absent(),
+            Value<int?> vaginaOpening = const Value.absent(),
+            Value<int?> pubicSymphysis = const Value.absent(),
+            Value<int?> embryoLeftCount = const Value.absent(),
+            Value<int?> embryoRightCount = const Value.absent(),
+            Value<int?> embryoCR = const Value.absent(),
+            Value<String?> remark = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              MammalMeasurementCompanion.insert(
+            specimenUuid: specimenUuid,
+            totalLength: totalLength,
+            tailLength: tailLength,
+            hindFootLength: hindFootLength,
+            earLength: earLength,
+            forearm: forearm,
+            weight: weight,
+            accuracy: accuracy,
+            accuracySpecify: accuracySpecify,
+            sex: sex,
+            age: age,
+            testisPosition: testisPosition,
+            testisLength: testisLength,
+            testisWidth: testisWidth,
+            epididymisAppearance: epididymisAppearance,
+            reproductiveStage: reproductiveStage,
+            leftPlacentalScars: leftPlacentalScars,
+            rightPlacentalScars: rightPlacentalScars,
+            mammaeCondition: mammaeCondition,
+            mammaeInguinalCount: mammaeInguinalCount,
+            mammaeAxillaryCount: mammaeAxillaryCount,
+            mammaeAbdominalCount: mammaeAbdominalCount,
+            vaginaOpening: vaginaOpening,
+            pubicSymphysis: pubicSymphysis,
+            embryoLeftCount: embryoLeftCount,
+            embryoRightCount: embryoRightCount,
+            embryoCR: embryoCR,
+            remark: remark,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $MammalMeasurementProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    MammalMeasurement,
+    MammalMeasurementData,
+    $MammalMeasurementFilterComposer,
+    $MammalMeasurementOrderingComposer,
+    $MammalMeasurementProcessedTableManager,
+    $MammalMeasurementInsertCompanionBuilder,
+    $MammalMeasurementUpdateCompanionBuilder> {
+  $MammalMeasurementProcessedTableManager(super.$state);
+}
+
+class $MammalMeasurementFilterComposer
+    extends FilterComposer<_$Database, MammalMeasurement> {
+  $MammalMeasurementFilterComposer(super.$state);
+  ColumnFilters<String> get specimenUuid => $state.composableBuilder(
+      column: $state.table.specimenUuid,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get totalLength => $state.composableBuilder(
+      column: $state.table.totalLength,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get tailLength => $state.composableBuilder(
+      column: $state.table.tailLength,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get hindFootLength => $state.composableBuilder(
+      column: $state.table.hindFootLength,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get earLength => $state.composableBuilder(
+      column: $state.table.earLength,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get forearm => $state.composableBuilder(
+      column: $state.table.forearm,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get weight => $state.composableBuilder(
+      column: $state.table.weight,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get accuracy => $state.composableBuilder(
+      column: $state.table.accuracy,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get accuracySpecify => $state.composableBuilder(
+      column: $state.table.accuracySpecify,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get sex => $state.composableBuilder(
+      column: $state.table.sex,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get age => $state.composableBuilder(
+      column: $state.table.age,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get testisPosition => $state.composableBuilder(
+      column: $state.table.testisPosition,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get testisLength => $state.composableBuilder(
+      column: $state.table.testisLength,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get testisWidth => $state.composableBuilder(
+      column: $state.table.testisWidth,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get epididymisAppearance => $state.composableBuilder(
+      column: $state.table.epididymisAppearance,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get reproductiveStage => $state.composableBuilder(
+      column: $state.table.reproductiveStage,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get leftPlacentalScars => $state.composableBuilder(
+      column: $state.table.leftPlacentalScars,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get rightPlacentalScars => $state.composableBuilder(
+      column: $state.table.rightPlacentalScars,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get mammaeCondition => $state.composableBuilder(
+      column: $state.table.mammaeCondition,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get mammaeInguinalCount => $state.composableBuilder(
+      column: $state.table.mammaeInguinalCount,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get mammaeAxillaryCount => $state.composableBuilder(
+      column: $state.table.mammaeAxillaryCount,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get mammaeAbdominalCount => $state.composableBuilder(
+      column: $state.table.mammaeAbdominalCount,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get vaginaOpening => $state.composableBuilder(
+      column: $state.table.vaginaOpening,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get pubicSymphysis => $state.composableBuilder(
+      column: $state.table.pubicSymphysis,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get embryoLeftCount => $state.composableBuilder(
+      column: $state.table.embryoLeftCount,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get embryoRightCount => $state.composableBuilder(
+      column: $state.table.embryoRightCount,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get embryoCR => $state.composableBuilder(
+      column: $state.table.embryoCR,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get remark => $state.composableBuilder(
+      column: $state.table.remark,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $MammalMeasurementOrderingComposer
+    extends OrderingComposer<_$Database, MammalMeasurement> {
+  $MammalMeasurementOrderingComposer(super.$state);
+  ColumnOrderings<String> get specimenUuid => $state.composableBuilder(
+      column: $state.table.specimenUuid,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get totalLength => $state.composableBuilder(
+      column: $state.table.totalLength,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get tailLength => $state.composableBuilder(
+      column: $state.table.tailLength,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get hindFootLength => $state.composableBuilder(
+      column: $state.table.hindFootLength,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get earLength => $state.composableBuilder(
+      column: $state.table.earLength,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get forearm => $state.composableBuilder(
+      column: $state.table.forearm,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get weight => $state.composableBuilder(
+      column: $state.table.weight,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get accuracy => $state.composableBuilder(
+      column: $state.table.accuracy,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get accuracySpecify => $state.composableBuilder(
+      column: $state.table.accuracySpecify,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get sex => $state.composableBuilder(
+      column: $state.table.sex,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get age => $state.composableBuilder(
+      column: $state.table.age,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get testisPosition => $state.composableBuilder(
+      column: $state.table.testisPosition,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get testisLength => $state.composableBuilder(
+      column: $state.table.testisLength,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get testisWidth => $state.composableBuilder(
+      column: $state.table.testisWidth,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get epididymisAppearance => $state.composableBuilder(
+      column: $state.table.epididymisAppearance,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get reproductiveStage => $state.composableBuilder(
+      column: $state.table.reproductiveStage,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get leftPlacentalScars => $state.composableBuilder(
+      column: $state.table.leftPlacentalScars,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get rightPlacentalScars => $state.composableBuilder(
+      column: $state.table.rightPlacentalScars,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get mammaeCondition => $state.composableBuilder(
+      column: $state.table.mammaeCondition,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get mammaeInguinalCount => $state.composableBuilder(
+      column: $state.table.mammaeInguinalCount,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get mammaeAxillaryCount => $state.composableBuilder(
+      column: $state.table.mammaeAxillaryCount,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get mammaeAbdominalCount => $state.composableBuilder(
+      column: $state.table.mammaeAbdominalCount,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get vaginaOpening => $state.composableBuilder(
+      column: $state.table.vaginaOpening,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get pubicSymphysis => $state.composableBuilder(
+      column: $state.table.pubicSymphysis,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get embryoLeftCount => $state.composableBuilder(
+      column: $state.table.embryoLeftCount,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get embryoRightCount => $state.composableBuilder(
+      column: $state.table.embryoRightCount,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get embryoCR => $state.composableBuilder(
+      column: $state.table.embryoCR,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get remark => $state.composableBuilder(
+      column: $state.table.remark,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $AvianMeasurementInsertCompanionBuilder = AvianMeasurementCompanion
+    Function({
+  required String specimenUuid,
+  Value<double?> weight,
+  Value<double?> wingspan,
+  Value<String?> irisColor,
+  Value<String?> irisHex,
+  Value<String?> billColor,
+  Value<String?> billHex,
+  Value<String?> footColor,
+  Value<String?> footHex,
+  Value<String?> tarsusColor,
+  Value<String?> tarsusHex,
+  Value<int?> sex,
+  Value<int?> broodPatch,
+  Value<int?> skullOssification,
+  Value<int?> hasBursa,
+  Value<double?> bursaWidth,
+  Value<double?> bursaLength,
+  Value<int?> fat,
+  Value<String?> stomachContent,
+  Value<double?> testisLength,
+  Value<double?> testisWidth,
+  Value<String?> testisRemark,
+  Value<double?> ovaryLength,
+  Value<double?> ovaryWidth,
+  Value<double?> oviductWidth,
+  Value<int?> ovaryAppearance,
+  Value<double?> firstOvaSize,
+  Value<double?> secondOvaSize,
+  Value<double?> thirdOvaSize,
+  Value<int?> oviductAppearance,
+  Value<String?> ovaryRemark,
+  Value<int?> wingIsMolt,
+  Value<String?> wingMolt,
+  Value<int?> tailIsMolt,
+  Value<String?> tailMolt,
+  Value<int?> bodyMolt,
+  Value<String?> moltRemark,
+  Value<String?> specimenRemark,
+  Value<String?> habitatRemark,
+  Value<int> rowid,
+});
+typedef $AvianMeasurementUpdateCompanionBuilder = AvianMeasurementCompanion
+    Function({
+  Value<String> specimenUuid,
+  Value<double?> weight,
+  Value<double?> wingspan,
+  Value<String?> irisColor,
+  Value<String?> irisHex,
+  Value<String?> billColor,
+  Value<String?> billHex,
+  Value<String?> footColor,
+  Value<String?> footHex,
+  Value<String?> tarsusColor,
+  Value<String?> tarsusHex,
+  Value<int?> sex,
+  Value<int?> broodPatch,
+  Value<int?> skullOssification,
+  Value<int?> hasBursa,
+  Value<double?> bursaWidth,
+  Value<double?> bursaLength,
+  Value<int?> fat,
+  Value<String?> stomachContent,
+  Value<double?> testisLength,
+  Value<double?> testisWidth,
+  Value<String?> testisRemark,
+  Value<double?> ovaryLength,
+  Value<double?> ovaryWidth,
+  Value<double?> oviductWidth,
+  Value<int?> ovaryAppearance,
+  Value<double?> firstOvaSize,
+  Value<double?> secondOvaSize,
+  Value<double?> thirdOvaSize,
+  Value<int?> oviductAppearance,
+  Value<String?> ovaryRemark,
+  Value<int?> wingIsMolt,
+  Value<String?> wingMolt,
+  Value<int?> tailIsMolt,
+  Value<String?> tailMolt,
+  Value<int?> bodyMolt,
+  Value<String?> moltRemark,
+  Value<String?> specimenRemark,
+  Value<String?> habitatRemark,
+  Value<int> rowid,
+});
+
+class $AvianMeasurementTableManager extends RootTableManager<
+    _$Database,
+    AvianMeasurement,
+    AvianMeasurementData,
+    $AvianMeasurementFilterComposer,
+    $AvianMeasurementOrderingComposer,
+    $AvianMeasurementProcessedTableManager,
+    $AvianMeasurementInsertCompanionBuilder,
+    $AvianMeasurementUpdateCompanionBuilder> {
+  $AvianMeasurementTableManager(_$Database db, AvianMeasurement table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $AvianMeasurementFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $AvianMeasurementOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $AvianMeasurementProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<String> specimenUuid = const Value.absent(),
+            Value<double?> weight = const Value.absent(),
+            Value<double?> wingspan = const Value.absent(),
+            Value<String?> irisColor = const Value.absent(),
+            Value<String?> irisHex = const Value.absent(),
+            Value<String?> billColor = const Value.absent(),
+            Value<String?> billHex = const Value.absent(),
+            Value<String?> footColor = const Value.absent(),
+            Value<String?> footHex = const Value.absent(),
+            Value<String?> tarsusColor = const Value.absent(),
+            Value<String?> tarsusHex = const Value.absent(),
+            Value<int?> sex = const Value.absent(),
+            Value<int?> broodPatch = const Value.absent(),
+            Value<int?> skullOssification = const Value.absent(),
+            Value<int?> hasBursa = const Value.absent(),
+            Value<double?> bursaWidth = const Value.absent(),
+            Value<double?> bursaLength = const Value.absent(),
+            Value<int?> fat = const Value.absent(),
+            Value<String?> stomachContent = const Value.absent(),
+            Value<double?> testisLength = const Value.absent(),
+            Value<double?> testisWidth = const Value.absent(),
+            Value<String?> testisRemark = const Value.absent(),
+            Value<double?> ovaryLength = const Value.absent(),
+            Value<double?> ovaryWidth = const Value.absent(),
+            Value<double?> oviductWidth = const Value.absent(),
+            Value<int?> ovaryAppearance = const Value.absent(),
+            Value<double?> firstOvaSize = const Value.absent(),
+            Value<double?> secondOvaSize = const Value.absent(),
+            Value<double?> thirdOvaSize = const Value.absent(),
+            Value<int?> oviductAppearance = const Value.absent(),
+            Value<String?> ovaryRemark = const Value.absent(),
+            Value<int?> wingIsMolt = const Value.absent(),
+            Value<String?> wingMolt = const Value.absent(),
+            Value<int?> tailIsMolt = const Value.absent(),
+            Value<String?> tailMolt = const Value.absent(),
+            Value<int?> bodyMolt = const Value.absent(),
+            Value<String?> moltRemark = const Value.absent(),
+            Value<String?> specimenRemark = const Value.absent(),
+            Value<String?> habitatRemark = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              AvianMeasurementCompanion(
+            specimenUuid: specimenUuid,
+            weight: weight,
+            wingspan: wingspan,
+            irisColor: irisColor,
+            irisHex: irisHex,
+            billColor: billColor,
+            billHex: billHex,
+            footColor: footColor,
+            footHex: footHex,
+            tarsusColor: tarsusColor,
+            tarsusHex: tarsusHex,
+            sex: sex,
+            broodPatch: broodPatch,
+            skullOssification: skullOssification,
+            hasBursa: hasBursa,
+            bursaWidth: bursaWidth,
+            bursaLength: bursaLength,
+            fat: fat,
+            stomachContent: stomachContent,
+            testisLength: testisLength,
+            testisWidth: testisWidth,
+            testisRemark: testisRemark,
+            ovaryLength: ovaryLength,
+            ovaryWidth: ovaryWidth,
+            oviductWidth: oviductWidth,
+            ovaryAppearance: ovaryAppearance,
+            firstOvaSize: firstOvaSize,
+            secondOvaSize: secondOvaSize,
+            thirdOvaSize: thirdOvaSize,
+            oviductAppearance: oviductAppearance,
+            ovaryRemark: ovaryRemark,
+            wingIsMolt: wingIsMolt,
+            wingMolt: wingMolt,
+            tailIsMolt: tailIsMolt,
+            tailMolt: tailMolt,
+            bodyMolt: bodyMolt,
+            moltRemark: moltRemark,
+            specimenRemark: specimenRemark,
+            habitatRemark: habitatRemark,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String specimenUuid,
+            Value<double?> weight = const Value.absent(),
+            Value<double?> wingspan = const Value.absent(),
+            Value<String?> irisColor = const Value.absent(),
+            Value<String?> irisHex = const Value.absent(),
+            Value<String?> billColor = const Value.absent(),
+            Value<String?> billHex = const Value.absent(),
+            Value<String?> footColor = const Value.absent(),
+            Value<String?> footHex = const Value.absent(),
+            Value<String?> tarsusColor = const Value.absent(),
+            Value<String?> tarsusHex = const Value.absent(),
+            Value<int?> sex = const Value.absent(),
+            Value<int?> broodPatch = const Value.absent(),
+            Value<int?> skullOssification = const Value.absent(),
+            Value<int?> hasBursa = const Value.absent(),
+            Value<double?> bursaWidth = const Value.absent(),
+            Value<double?> bursaLength = const Value.absent(),
+            Value<int?> fat = const Value.absent(),
+            Value<String?> stomachContent = const Value.absent(),
+            Value<double?> testisLength = const Value.absent(),
+            Value<double?> testisWidth = const Value.absent(),
+            Value<String?> testisRemark = const Value.absent(),
+            Value<double?> ovaryLength = const Value.absent(),
+            Value<double?> ovaryWidth = const Value.absent(),
+            Value<double?> oviductWidth = const Value.absent(),
+            Value<int?> ovaryAppearance = const Value.absent(),
+            Value<double?> firstOvaSize = const Value.absent(),
+            Value<double?> secondOvaSize = const Value.absent(),
+            Value<double?> thirdOvaSize = const Value.absent(),
+            Value<int?> oviductAppearance = const Value.absent(),
+            Value<String?> ovaryRemark = const Value.absent(),
+            Value<int?> wingIsMolt = const Value.absent(),
+            Value<String?> wingMolt = const Value.absent(),
+            Value<int?> tailIsMolt = const Value.absent(),
+            Value<String?> tailMolt = const Value.absent(),
+            Value<int?> bodyMolt = const Value.absent(),
+            Value<String?> moltRemark = const Value.absent(),
+            Value<String?> specimenRemark = const Value.absent(),
+            Value<String?> habitatRemark = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              AvianMeasurementCompanion.insert(
+            specimenUuid: specimenUuid,
+            weight: weight,
+            wingspan: wingspan,
+            irisColor: irisColor,
+            irisHex: irisHex,
+            billColor: billColor,
+            billHex: billHex,
+            footColor: footColor,
+            footHex: footHex,
+            tarsusColor: tarsusColor,
+            tarsusHex: tarsusHex,
+            sex: sex,
+            broodPatch: broodPatch,
+            skullOssification: skullOssification,
+            hasBursa: hasBursa,
+            bursaWidth: bursaWidth,
+            bursaLength: bursaLength,
+            fat: fat,
+            stomachContent: stomachContent,
+            testisLength: testisLength,
+            testisWidth: testisWidth,
+            testisRemark: testisRemark,
+            ovaryLength: ovaryLength,
+            ovaryWidth: ovaryWidth,
+            oviductWidth: oviductWidth,
+            ovaryAppearance: ovaryAppearance,
+            firstOvaSize: firstOvaSize,
+            secondOvaSize: secondOvaSize,
+            thirdOvaSize: thirdOvaSize,
+            oviductAppearance: oviductAppearance,
+            ovaryRemark: ovaryRemark,
+            wingIsMolt: wingIsMolt,
+            wingMolt: wingMolt,
+            tailIsMolt: tailIsMolt,
+            tailMolt: tailMolt,
+            bodyMolt: bodyMolt,
+            moltRemark: moltRemark,
+            specimenRemark: specimenRemark,
+            habitatRemark: habitatRemark,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $AvianMeasurementProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    AvianMeasurement,
+    AvianMeasurementData,
+    $AvianMeasurementFilterComposer,
+    $AvianMeasurementOrderingComposer,
+    $AvianMeasurementProcessedTableManager,
+    $AvianMeasurementInsertCompanionBuilder,
+    $AvianMeasurementUpdateCompanionBuilder> {
+  $AvianMeasurementProcessedTableManager(super.$state);
+}
+
+class $AvianMeasurementFilterComposer
+    extends FilterComposer<_$Database, AvianMeasurement> {
+  $AvianMeasurementFilterComposer(super.$state);
+  ColumnFilters<String> get specimenUuid => $state.composableBuilder(
+      column: $state.table.specimenUuid,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get weight => $state.composableBuilder(
+      column: $state.table.weight,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get wingspan => $state.composableBuilder(
+      column: $state.table.wingspan,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get irisColor => $state.composableBuilder(
+      column: $state.table.irisColor,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get irisHex => $state.composableBuilder(
+      column: $state.table.irisHex,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get billColor => $state.composableBuilder(
+      column: $state.table.billColor,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get billHex => $state.composableBuilder(
+      column: $state.table.billHex,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get footColor => $state.composableBuilder(
+      column: $state.table.footColor,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get footHex => $state.composableBuilder(
+      column: $state.table.footHex,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get tarsusColor => $state.composableBuilder(
+      column: $state.table.tarsusColor,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get tarsusHex => $state.composableBuilder(
+      column: $state.table.tarsusHex,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get sex => $state.composableBuilder(
+      column: $state.table.sex,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get broodPatch => $state.composableBuilder(
+      column: $state.table.broodPatch,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get skullOssification => $state.composableBuilder(
+      column: $state.table.skullOssification,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get hasBursa => $state.composableBuilder(
+      column: $state.table.hasBursa,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get bursaWidth => $state.composableBuilder(
+      column: $state.table.bursaWidth,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get bursaLength => $state.composableBuilder(
+      column: $state.table.bursaLength,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get fat => $state.composableBuilder(
+      column: $state.table.fat,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get stomachContent => $state.composableBuilder(
+      column: $state.table.stomachContent,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get testisLength => $state.composableBuilder(
+      column: $state.table.testisLength,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get testisWidth => $state.composableBuilder(
+      column: $state.table.testisWidth,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get testisRemark => $state.composableBuilder(
+      column: $state.table.testisRemark,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get ovaryLength => $state.composableBuilder(
+      column: $state.table.ovaryLength,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get ovaryWidth => $state.composableBuilder(
+      column: $state.table.ovaryWidth,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get oviductWidth => $state.composableBuilder(
+      column: $state.table.oviductWidth,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get ovaryAppearance => $state.composableBuilder(
+      column: $state.table.ovaryAppearance,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get firstOvaSize => $state.composableBuilder(
+      column: $state.table.firstOvaSize,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get secondOvaSize => $state.composableBuilder(
+      column: $state.table.secondOvaSize,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get thirdOvaSize => $state.composableBuilder(
+      column: $state.table.thirdOvaSize,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get oviductAppearance => $state.composableBuilder(
+      column: $state.table.oviductAppearance,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get ovaryRemark => $state.composableBuilder(
+      column: $state.table.ovaryRemark,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get wingIsMolt => $state.composableBuilder(
+      column: $state.table.wingIsMolt,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get wingMolt => $state.composableBuilder(
+      column: $state.table.wingMolt,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get tailIsMolt => $state.composableBuilder(
+      column: $state.table.tailIsMolt,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get tailMolt => $state.composableBuilder(
+      column: $state.table.tailMolt,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get bodyMolt => $state.composableBuilder(
+      column: $state.table.bodyMolt,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get moltRemark => $state.composableBuilder(
+      column: $state.table.moltRemark,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get specimenRemark => $state.composableBuilder(
+      column: $state.table.specimenRemark,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get habitatRemark => $state.composableBuilder(
+      column: $state.table.habitatRemark,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $AvianMeasurementOrderingComposer
+    extends OrderingComposer<_$Database, AvianMeasurement> {
+  $AvianMeasurementOrderingComposer(super.$state);
+  ColumnOrderings<String> get specimenUuid => $state.composableBuilder(
+      column: $state.table.specimenUuid,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get weight => $state.composableBuilder(
+      column: $state.table.weight,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get wingspan => $state.composableBuilder(
+      column: $state.table.wingspan,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get irisColor => $state.composableBuilder(
+      column: $state.table.irisColor,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get irisHex => $state.composableBuilder(
+      column: $state.table.irisHex,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get billColor => $state.composableBuilder(
+      column: $state.table.billColor,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get billHex => $state.composableBuilder(
+      column: $state.table.billHex,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get footColor => $state.composableBuilder(
+      column: $state.table.footColor,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get footHex => $state.composableBuilder(
+      column: $state.table.footHex,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get tarsusColor => $state.composableBuilder(
+      column: $state.table.tarsusColor,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get tarsusHex => $state.composableBuilder(
+      column: $state.table.tarsusHex,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get sex => $state.composableBuilder(
+      column: $state.table.sex,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get broodPatch => $state.composableBuilder(
+      column: $state.table.broodPatch,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get skullOssification => $state.composableBuilder(
+      column: $state.table.skullOssification,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get hasBursa => $state.composableBuilder(
+      column: $state.table.hasBursa,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get bursaWidth => $state.composableBuilder(
+      column: $state.table.bursaWidth,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get bursaLength => $state.composableBuilder(
+      column: $state.table.bursaLength,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get fat => $state.composableBuilder(
+      column: $state.table.fat,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get stomachContent => $state.composableBuilder(
+      column: $state.table.stomachContent,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get testisLength => $state.composableBuilder(
+      column: $state.table.testisLength,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get testisWidth => $state.composableBuilder(
+      column: $state.table.testisWidth,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get testisRemark => $state.composableBuilder(
+      column: $state.table.testisRemark,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get ovaryLength => $state.composableBuilder(
+      column: $state.table.ovaryLength,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get ovaryWidth => $state.composableBuilder(
+      column: $state.table.ovaryWidth,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get oviductWidth => $state.composableBuilder(
+      column: $state.table.oviductWidth,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get ovaryAppearance => $state.composableBuilder(
+      column: $state.table.ovaryAppearance,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get firstOvaSize => $state.composableBuilder(
+      column: $state.table.firstOvaSize,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get secondOvaSize => $state.composableBuilder(
+      column: $state.table.secondOvaSize,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get thirdOvaSize => $state.composableBuilder(
+      column: $state.table.thirdOvaSize,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get oviductAppearance => $state.composableBuilder(
+      column: $state.table.oviductAppearance,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get ovaryRemark => $state.composableBuilder(
+      column: $state.table.ovaryRemark,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get wingIsMolt => $state.composableBuilder(
+      column: $state.table.wingIsMolt,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get wingMolt => $state.composableBuilder(
+      column: $state.table.wingMolt,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get tailIsMolt => $state.composableBuilder(
+      column: $state.table.tailIsMolt,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get tailMolt => $state.composableBuilder(
+      column: $state.table.tailMolt,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get bodyMolt => $state.composableBuilder(
+      column: $state.table.bodyMolt,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get moltRemark => $state.composableBuilder(
+      column: $state.table.moltRemark,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get specimenRemark => $state.composableBuilder(
+      column: $state.table.specimenRemark,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get habitatRemark => $state.composableBuilder(
+      column: $state.table.habitatRemark,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $SpecimenPartInsertCompanionBuilder = SpecimenPartCompanion Function({
+  Value<int?> id,
+  Value<String?> specimenUuid,
+  Value<String?> personnelId,
+  Value<String?> tissueID,
+  Value<String?> barcodeID,
+  Value<String?> type,
+  Value<String?> count,
+  Value<String?> treatment,
+  Value<String?> additionalTreatment,
+  Value<String?> dateTaken,
+  Value<String?> timeTaken,
+  Value<String?> pmi,
+  Value<String?> museumPermanent,
+  Value<String?> museumLoan,
+  Value<String?> remark,
+});
+typedef $SpecimenPartUpdateCompanionBuilder = SpecimenPartCompanion Function({
+  Value<int?> id,
+  Value<String?> specimenUuid,
+  Value<String?> personnelId,
+  Value<String?> tissueID,
+  Value<String?> barcodeID,
+  Value<String?> type,
+  Value<String?> count,
+  Value<String?> treatment,
+  Value<String?> additionalTreatment,
+  Value<String?> dateTaken,
+  Value<String?> timeTaken,
+  Value<String?> pmi,
+  Value<String?> museumPermanent,
+  Value<String?> museumLoan,
+  Value<String?> remark,
+});
+
+class $SpecimenPartTableManager extends RootTableManager<
+    _$Database,
+    SpecimenPart,
+    SpecimenPartData,
+    $SpecimenPartFilterComposer,
+    $SpecimenPartOrderingComposer,
+    $SpecimenPartProcessedTableManager,
+    $SpecimenPartInsertCompanionBuilder,
+    $SpecimenPartUpdateCompanionBuilder> {
+  $SpecimenPartTableManager(_$Database db, SpecimenPart table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $SpecimenPartFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $SpecimenPartOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) => $SpecimenPartProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int?> id = const Value.absent(),
+            Value<String?> specimenUuid = const Value.absent(),
+            Value<String?> personnelId = const Value.absent(),
+            Value<String?> tissueID = const Value.absent(),
+            Value<String?> barcodeID = const Value.absent(),
+            Value<String?> type = const Value.absent(),
+            Value<String?> count = const Value.absent(),
+            Value<String?> treatment = const Value.absent(),
+            Value<String?> additionalTreatment = const Value.absent(),
+            Value<String?> dateTaken = const Value.absent(),
+            Value<String?> timeTaken = const Value.absent(),
+            Value<String?> pmi = const Value.absent(),
+            Value<String?> museumPermanent = const Value.absent(),
+            Value<String?> museumLoan = const Value.absent(),
+            Value<String?> remark = const Value.absent(),
+          }) =>
+              SpecimenPartCompanion(
+            id: id,
+            specimenUuid: specimenUuid,
+            personnelId: personnelId,
+            tissueID: tissueID,
+            barcodeID: barcodeID,
+            type: type,
+            count: count,
+            treatment: treatment,
+            additionalTreatment: additionalTreatment,
+            dateTaken: dateTaken,
+            timeTaken: timeTaken,
+            pmi: pmi,
+            museumPermanent: museumPermanent,
+            museumLoan: museumLoan,
+            remark: remark,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<int?> id = const Value.absent(),
+            Value<String?> specimenUuid = const Value.absent(),
+            Value<String?> personnelId = const Value.absent(),
+            Value<String?> tissueID = const Value.absent(),
+            Value<String?> barcodeID = const Value.absent(),
+            Value<String?> type = const Value.absent(),
+            Value<String?> count = const Value.absent(),
+            Value<String?> treatment = const Value.absent(),
+            Value<String?> additionalTreatment = const Value.absent(),
+            Value<String?> dateTaken = const Value.absent(),
+            Value<String?> timeTaken = const Value.absent(),
+            Value<String?> pmi = const Value.absent(),
+            Value<String?> museumPermanent = const Value.absent(),
+            Value<String?> museumLoan = const Value.absent(),
+            Value<String?> remark = const Value.absent(),
+          }) =>
+              SpecimenPartCompanion.insert(
+            id: id,
+            specimenUuid: specimenUuid,
+            personnelId: personnelId,
+            tissueID: tissueID,
+            barcodeID: barcodeID,
+            type: type,
+            count: count,
+            treatment: treatment,
+            additionalTreatment: additionalTreatment,
+            dateTaken: dateTaken,
+            timeTaken: timeTaken,
+            pmi: pmi,
+            museumPermanent: museumPermanent,
+            museumLoan: museumLoan,
+            remark: remark,
+          ),
+        ));
+}
+
+class $SpecimenPartProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    SpecimenPart,
+    SpecimenPartData,
+    $SpecimenPartFilterComposer,
+    $SpecimenPartOrderingComposer,
+    $SpecimenPartProcessedTableManager,
+    $SpecimenPartInsertCompanionBuilder,
+    $SpecimenPartUpdateCompanionBuilder> {
+  $SpecimenPartProcessedTableManager(super.$state);
+}
+
+class $SpecimenPartFilterComposer
+    extends FilterComposer<_$Database, SpecimenPart> {
+  $SpecimenPartFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get specimenUuid => $state.composableBuilder(
+      column: $state.table.specimenUuid,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get personnelId => $state.composableBuilder(
+      column: $state.table.personnelId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get tissueID => $state.composableBuilder(
+      column: $state.table.tissueID,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get barcodeID => $state.composableBuilder(
+      column: $state.table.barcodeID,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get type => $state.composableBuilder(
+      column: $state.table.type,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get count => $state.composableBuilder(
+      column: $state.table.count,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get treatment => $state.composableBuilder(
+      column: $state.table.treatment,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get additionalTreatment => $state.composableBuilder(
+      column: $state.table.additionalTreatment,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get dateTaken => $state.composableBuilder(
+      column: $state.table.dateTaken,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get timeTaken => $state.composableBuilder(
+      column: $state.table.timeTaken,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get pmi => $state.composableBuilder(
+      column: $state.table.pmi,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get museumPermanent => $state.composableBuilder(
+      column: $state.table.museumPermanent,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get museumLoan => $state.composableBuilder(
+      column: $state.table.museumLoan,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get remark => $state.composableBuilder(
+      column: $state.table.remark,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $SpecimenPartOrderingComposer
+    extends OrderingComposer<_$Database, SpecimenPart> {
+  $SpecimenPartOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get specimenUuid => $state.composableBuilder(
+      column: $state.table.specimenUuid,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get personnelId => $state.composableBuilder(
+      column: $state.table.personnelId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get tissueID => $state.composableBuilder(
+      column: $state.table.tissueID,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get barcodeID => $state.composableBuilder(
+      column: $state.table.barcodeID,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get type => $state.composableBuilder(
+      column: $state.table.type,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get count => $state.composableBuilder(
+      column: $state.table.count,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get treatment => $state.composableBuilder(
+      column: $state.table.treatment,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get additionalTreatment => $state.composableBuilder(
+      column: $state.table.additionalTreatment,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get dateTaken => $state.composableBuilder(
+      column: $state.table.dateTaken,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get timeTaken => $state.composableBuilder(
+      column: $state.table.timeTaken,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get pmi => $state.composableBuilder(
+      column: $state.table.pmi,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get museumPermanent => $state.composableBuilder(
+      column: $state.table.museumPermanent,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get museumLoan => $state.composableBuilder(
+      column: $state.table.museumLoan,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get remark => $state.composableBuilder(
+      column: $state.table.remark,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+class _$DatabaseManager {
+  final _$Database _db;
+  _$DatabaseManager(this._db);
+  $ProjectTableManager get project => $ProjectTableManager(_db, _db.project);
+  $PersonnelTableManager get personnel =>
+      $PersonnelTableManager(_db, _db.personnel);
+  $MediaTableManager get media => $MediaTableManager(_db, _db.media);
+  $SiteTableManager get site => $SiteTableManager(_db, _db.site);
+  $CoordinateTableManager get coordinate =>
+      $CoordinateTableManager(_db, _db.coordinate);
+  $CollEventTableManager get collEvent =>
+      $CollEventTableManager(_db, _db.collEvent);
+  $WeatherTableManager get weather => $WeatherTableManager(_db, _db.weather);
+  $CollPersonnelTableManager get collPersonnel =>
+      $CollPersonnelTableManager(_db, _db.collPersonnel);
+  $CollEffortTableManager get collEffort =>
+      $CollEffortTableManager(_db, _db.collEffort);
+  $NarrativeTableManager get narrative =>
+      $NarrativeTableManager(_db, _db.narrative);
+  $NarrativeMediaTableManager get narrativeMedia =>
+      $NarrativeMediaTableManager(_db, _db.narrativeMedia);
+  $SiteMediaTableManager get siteMedia =>
+      $SiteMediaTableManager(_db, _db.siteMedia);
+  $TaxonomyTableManager get taxonomy =>
+      $TaxonomyTableManager(_db, _db.taxonomy);
+  $SpecimenTableManager get specimen =>
+      $SpecimenTableManager(_db, _db.specimen);
+  $SpecimenMediaTableManager get specimenMedia =>
+      $SpecimenMediaTableManager(_db, _db.specimenMedia);
+  $AssociatedDataTableManager get associatedData =>
+      $AssociatedDataTableManager(_db, _db.associatedData);
+  $PersonnelListTableManager get personnelList =>
+      $PersonnelListTableManager(_db, _db.personnelList);
+  $MammalMeasurementTableManager get mammalMeasurement =>
+      $MammalMeasurementTableManager(_db, _db.mammalMeasurement);
+  $AvianMeasurementTableManager get avianMeasurement =>
+      $AvianMeasurementTableManager(_db, _db.avianMeasurement);
+  $SpecimenPartTableManager get specimenPart =>
+      $SpecimenPartTableManager(_db, _db.specimenPart);
 }
 
 class ListProjectResult {

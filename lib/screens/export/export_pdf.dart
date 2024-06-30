@@ -227,10 +227,8 @@ class ExportPdfFormState extends ConsumerState<ExportPdfForm> {
 
   Future<void> _getDir() async {
     Directory? path = await FilePickerServices().selectDir();
-    if (path != null) {
-      setState(() {
-        _selectedDir = path;
-      });
+    setState(() {
+      _selectedDir = path;
+    });
     }
-  }
 }

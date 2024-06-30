@@ -362,13 +362,8 @@ class MammalMeasurementFormsState
     ({String headAndBodyText, String percentTailText})? results =
         service.getHBandTailPercentage();
 
-    if (results != null) {
-      headBodyLengthCtr.text = results.headAndBodyText;
-      tailHeadBodyPercentCtr.text = results.percentTailText;
-    } else {
-      headBodyLengthCtr.text = '';
-      tailHeadBodyPercentCtr.text = '';
-    }
+    headBodyLengthCtr.text = results?.headAndBodyText ?? '';
+    tailHeadBodyPercentCtr.text = results?.percentTailText ?? '';
   }
 }
 

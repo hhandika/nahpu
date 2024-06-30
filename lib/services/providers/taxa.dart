@@ -12,16 +12,16 @@ final taxonRegistryProvider =
 
 final taxonDataProvider = FutureProvider.family
     .autoDispose<TaxonomyData?, String>((ref, specimenUuid) async {
-  int? taxonId = await SpecimenQuery(ref.read(databaseProvider))
+  final taxonId = await SpecimenQuery(ref.read(databaseProvider))
       .getSpeciesByUuid(specimenUuid);
 
-  if (taxonId != null) {
-    final taxonData =
-        TaxonomyQuery(ref.read(databaseProvider)).getTaxonById(taxonId);
-    return taxonData;
-  } else {
+  if (taxonId == null) {
     return null;
   }
+
+  final taxonData =
+      TaxonomyQuery(ref.read(databaseProvider)).getTaxonById(taxonId);
+  return taxonData;
 });
 
 final taxonProvider = FutureProvider.autoDispose<List<TaxonomyData>>((ref) {
