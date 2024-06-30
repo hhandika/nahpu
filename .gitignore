@@ -55,3 +55,7 @@ coverage/
 
 # Rust
 /target/
+
+*.jks
+
+keys/
