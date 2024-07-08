@@ -14,7 +14,7 @@ Use the `+` button in the bottom right corner of the home screen. Project name m
 
 You can add project description. This is optional, but it is useful to help you remember the project purpose and scope.
 
-Then, select the main catalog format. The app currently supports mammal and bird catalog formats. We separate bats from other mammmal. The bat format will have a forearm field in the measurement form. You can change the catalog format later in the project settings. NAHPU allows to catalog all supported taxon groups within the same project.
+Then, select the main catalog format. The app currently supports mammal and bird catalog formats. We separate bats from other mammal. The bat format will have a forearm field in the measurement form. You can change the catalog format later in the project settings. NAHPU allows to catalog all supported taxon groups within the same project.
 
 After you create a project, the app will automatically generate a project UUID. This is a unique identifier used throughout the database to distinguish records from different projects. We used [UUID version 4](https://en.wikipedia.org/wiki/Universally_unique_identifier). It is almost impossible for two UUIDs to collide.
 
@@ -77,4 +77,4 @@ To export records, go to the menu (indicated by the hamburger icon/three horizon
 
 ### 9. Backing up database
 
-To back up the database, go to the menu in the dashboard and select backup database. The database will be exported as a sqlite3 file. Current version does not export the media. We are working on a way to export the media as a part of database as well.
+To back up the database, go to the menu in the dashboard and select backup database. By default, the database will be exported as a sqlite3 file. Use the toggle button `include project data` to include the project data in the backup. The app will generate a zip file that contains the database and media.
