@@ -34,11 +34,11 @@ NAHPU enables you to record detailed information about the specimens you collect
 
 ### Promote data sharing and collaboration 🤝
 
-NAHPU is developed to streamline efforts and foster collaboration. The app facilitates data sharing and collaboration among researchers by adhering to open standards. It allows you to create automatic pipeline to simplify data transfer from fieldwork to museum database. The current version partially supports the [Darwin Core](https://dwc.tdwg.org/) standard and follows the [FAIR principles](https://www.go-fair.org/). We aim to further enhance NAHPU’s compliance with these standards and principles.
+NAHPU is developed to streamline efforts and foster collaboration. The app facilitates data sharing and collaboration among researchers by adhering to open standards. It allows you to create an automatic pipeline to simplify data transfer from fieldwork to the museum database. The current version partially supports the [Darwin Core](https://dwc.tdwg.org/) standard and follows the [FAIR principles](https://www.go-fair.org/). We aim further to enhance NAHPU’s compliance with these standards and principles.
 
 ### Accessible for everyone ♿️
 
-NAHPU is a free, open-source app that supports major desktop and mobile platforms. It is designed for natural history collectors and researchers with priority for user-friendliness and accessibility. We leverage the [Material Design](https://m3.material.io/) system to ensures an intuitive interface and visual appeal, while also accommodating people with disabilities. Our ongoing efforts include internationalization with multi-language and [locale](https://en.wikipedia.org/wiki/Locale_(computer_software)) support. Join our diverse community of contributors in making NAHPU an inclusive and welcoming project for all. Feel free to use and contribute to the app!
+NAHPU is a free, open-source app that supports major desktop and mobile platforms. It is designed for natural history collectors and researchers, prioritizing user-friendliness and accessibility. We leverage the [Material Design](https://m3.material.io/) system to ensure an intuitive interface and visual appeal while accommodating people with disabilities. Our ongoing efforts include internationalization with multi-language and [locale] support (https://en.wikipedia.org/wiki/Locale_(computer_software)). Join our diverse community of contributors in making NAHPU an inclusive and welcoming project for all. Feel free to use and contribute to the app!
 
 ## Get Started
 
@@ -46,14 +46,14 @@ NAHPU is a free, open-source app that supports major desktop and mobile platform
 - [Visit NAHPU Day 1 Guide](./day_one)
 
 :::tip
-If you are transitioning from paper-based cataloging or using other digital catalogs, consider visiting the [Switch to NAHPU](./switch) page.
+If transitioning from paper-based cataloging or using other digital catalogs, consider visiting the [Switch to NAHPU](./switch) page.
 :::
 
 ## Support and Contribute to NAHPU
 
-NAHPU is a free and open source project. We welcome any supports and contributions. You can support us by:
+NAHPU is a free and open-source project. We welcome any support and contributions. You can support us by:
 
 - [Report bugs and request features](https://github.com/hhandika/nahpu/issues)
 - [Contribute to the project](https://docs.NAHPU.app/en/contributing)
 
-If you would like to be a part of the team, please contact the [project maintainer](https://hhandika.com/contact.html).
+Please email us at [support@nahpu.app](mailto:support@nahpu.app). If you want to join the team, please get in touch with the [project maintainer](https://hhandika.com/contact.html).
