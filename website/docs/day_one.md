@@ -84,5 +84,5 @@ To export records, go to the dashboard's menu (indicated by the hamburger icon/t
 To back up the database, go to the menu in the dashboard and select backup database. By default, the database will be exported as a sqlite3 file. Use the toggle button `include project data` to add the project data to the backup. The app will generate a zip file that contains the database and media.
 
 :::info
-Backing up the database will back up all the data of all projects in the apps. For future releases, NAHPU will improve the bundle as a form of data backup.
+Backing up the database will back up all the data of all projects in the apps. For future releases, NAHPU will improve the bundle as a data backup method.
 :::
