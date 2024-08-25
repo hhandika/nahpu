@@ -11,6 +11,10 @@ NAHPU (**NA**tural **H**istory **P**roject **U**tility), loosely named after the
 NAHPU is currently in beta. We are working to add more features and support for other taxa. If you have any questions or are interested in contributing to the app development, please contact [project maintainer](https://hhandika.com/contact.html).
 :::
 
+## Introductory videos
+
+[Overview of app features and bird format](https://www.youtube.com/watch?v=izDc3oXse4Y)
+
 ## Key Features
 
 - 📸 **Digital asset management**: Associate digital assets, such as photos of specimens and habitats, with your collection records. Support adding photos for sites, specimens, and field notes.
