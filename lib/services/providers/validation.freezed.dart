@@ -19,7 +19,9 @@ mixin _$ProjectForm {
   ProjectFormField get projectName => throw _privateConstructorUsedError;
   ProjectFormField get existingProject => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ProjectForm
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ProjectFormCopyWith<ProjectForm> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -46,6 +48,8 @@ class _$ProjectFormCopyWithImpl<$Res, $Val extends ProjectForm>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ProjectForm
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -64,6 +68,8 @@ class _$ProjectFormCopyWithImpl<$Res, $Val extends ProjectForm>
     ) as $Val);
   }
 
+  /// Create a copy of ProjectForm
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ProjectFormFieldCopyWith<$Res> get projectName {
@@ -72,6 +78,8 @@ class _$ProjectFormCopyWithImpl<$Res, $Val extends ProjectForm>
     });
   }
 
+  /// Create a copy of ProjectForm
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ProjectFormFieldCopyWith<$Res> get existingProject {
@@ -105,6 +113,8 @@ class __$$ProjectFormImplCopyWithImpl<$Res>
       _$ProjectFormImpl _value, $Res Function(_$ProjectFormImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ProjectForm
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -155,7 +165,9 @@ class _$ProjectFormImpl extends _ProjectForm {
   @override
   int get hashCode => Object.hash(runtimeType, projectName, existingProject);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ProjectForm
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ProjectFormImplCopyWith<_$ProjectFormImpl> get copyWith =>
@@ -172,8 +184,11 @@ abstract class _ProjectForm extends ProjectForm {
   ProjectFormField get projectName;
   @override
   ProjectFormField get existingProject;
+
+  /// Create a copy of ProjectForm
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ProjectFormImplCopyWith<_$ProjectFormImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -183,7 +198,9 @@ mixin _$ProjectFormField {
   String? get errMsg => throw _privateConstructorUsedError;
   bool get isValid => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ProjectFormField
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ProjectFormFieldCopyWith<ProjectFormField> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -207,6 +224,8 @@ class _$ProjectFormFieldCopyWithImpl<$Res, $Val extends ProjectFormField>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ProjectFormField
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -245,6 +264,8 @@ class __$$ProjectNameImplCopyWithImpl<$Res>
       _$ProjectNameImpl _value, $Res Function(_$ProjectNameImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ProjectFormField
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -292,7 +313,9 @@ class _$ProjectNameImpl implements _ProjectName {
   @override
   int get hashCode => Object.hash(runtimeType, errMsg, isValid);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ProjectFormField
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ProjectNameImplCopyWith<_$ProjectNameImpl> get copyWith =>
@@ -307,8 +330,11 @@ abstract class _ProjectName implements ProjectFormField {
   String? get errMsg;
   @override
   bool get isValid;
+
+  /// Create a copy of ProjectFormField
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ProjectNameImplCopyWith<_$ProjectNameImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -320,7 +346,9 @@ mixin _$PersonnelForm {
   PersonnelFormField get initial => throw _privateConstructorUsedError;
   PersonnelFormField get collNum => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PersonnelForm
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $PersonnelFormCopyWith<PersonnelForm> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -353,6 +381,8 @@ class _$PersonnelFormCopyWithImpl<$Res, $Val extends PersonnelForm>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of PersonnelForm
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -381,6 +411,8 @@ class _$PersonnelFormCopyWithImpl<$Res, $Val extends PersonnelForm>
     ) as $Val);
   }
 
+  /// Create a copy of PersonnelForm
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PersonnelFormFieldCopyWith<$Res> get name {
@@ -389,6 +421,8 @@ class _$PersonnelFormCopyWithImpl<$Res, $Val extends PersonnelForm>
     });
   }
 
+  /// Create a copy of PersonnelForm
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PersonnelFormFieldCopyWith<$Res> get email {
@@ -397,6 +431,8 @@ class _$PersonnelFormCopyWithImpl<$Res, $Val extends PersonnelForm>
     });
   }
 
+  /// Create a copy of PersonnelForm
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PersonnelFormFieldCopyWith<$Res> get initial {
@@ -405,6 +441,8 @@ class _$PersonnelFormCopyWithImpl<$Res, $Val extends PersonnelForm>
     });
   }
 
+  /// Create a copy of PersonnelForm
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PersonnelFormFieldCopyWith<$Res> get collNum {
@@ -446,6 +484,8 @@ class __$$PersonnelFormImplCopyWithImpl<$Res>
       _$PersonnelFormImpl _value, $Res Function(_$PersonnelFormImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PersonnelForm
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -513,7 +553,9 @@ class _$PersonnelFormImpl extends _PersonnelForm {
   @override
   int get hashCode => Object.hash(runtimeType, name, email, initial, collNum);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PersonnelForm
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PersonnelFormImplCopyWith<_$PersonnelFormImpl> get copyWith =>
@@ -536,8 +578,11 @@ abstract class _PersonnelForm extends PersonnelForm {
   PersonnelFormField get initial;
   @override
   PersonnelFormField get collNum;
+
+  /// Create a copy of PersonnelForm
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PersonnelFormImplCopyWith<_$PersonnelFormImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -547,7 +592,9 @@ mixin _$PersonnelFormField {
   String? get errMsg => throw _privateConstructorUsedError;
   bool get isValid => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PersonnelFormField
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $PersonnelFormFieldCopyWith<PersonnelFormField> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -571,6 +618,8 @@ class _$PersonnelFormFieldCopyWithImpl<$Res, $Val extends PersonnelFormField>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of PersonnelFormField
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -609,6 +658,8 @@ class __$$PersonnelFormFieldImplCopyWithImpl<$Res>
       $Res Function(_$PersonnelFormFieldImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PersonnelFormField
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -656,7 +707,9 @@ class _$PersonnelFormFieldImpl implements _PersonnelFormField {
   @override
   int get hashCode => Object.hash(runtimeType, errMsg, isValid);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PersonnelFormField
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PersonnelFormFieldImplCopyWith<_$PersonnelFormFieldImpl> get copyWith =>
@@ -673,8 +726,11 @@ abstract class _PersonnelFormField implements PersonnelFormField {
   String? get errMsg;
   @override
   bool get isValid;
+
+  /// Create a copy of PersonnelFormField
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PersonnelFormFieldImplCopyWith<_$PersonnelFormFieldImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -310,6 +310,25 @@ class ProjectData extends DataClass implements Insertable<ProjectData> {
         lastAccessed:
             lastAccessed.present ? lastAccessed.value : this.lastAccessed,
       );
+  ProjectData copyWithCompanion(ProjectCompanion data) {
+    return ProjectData(
+      uuid: data.uuid.present ? data.uuid.value : this.uuid,
+      name: data.name.present ? data.name.value : this.name,
+      description:
+          data.description.present ? data.description.value : this.description,
+      principalInvestigator: data.principalInvestigator.present
+          ? data.principalInvestigator.value
+          : this.principalInvestigator,
+      location: data.location.present ? data.location.value : this.location,
+      startDate: data.startDate.present ? data.startDate.value : this.startDate,
+      endDate: data.endDate.present ? data.endDate.value : this.endDate,
+      created: data.created.present ? data.created.value : this.created,
+      lastAccessed: data.lastAccessed.present
+          ? data.lastAccessed.value
+          : this.lastAccessed,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('ProjectData(')
@@ -817,6 +836,24 @@ class PersonnelData extends DataClass implements Insertable<PersonnelData> {
         notes: notes.present ? notes.value : this.notes,
         photoPath: photoPath.present ? photoPath.value : this.photoPath,
       );
+  PersonnelData copyWithCompanion(PersonnelCompanion data) {
+    return PersonnelData(
+      uuid: data.uuid.present ? data.uuid.value : this.uuid,
+      name: data.name.present ? data.name.value : this.name,
+      initial: data.initial.present ? data.initial.value : this.initial,
+      email: data.email.present ? data.email.value : this.email,
+      phone: data.phone.present ? data.phone.value : this.phone,
+      affiliation:
+          data.affiliation.present ? data.affiliation.value : this.affiliation,
+      role: data.role.present ? data.role.value : this.role,
+      currentFieldNumber: data.currentFieldNumber.present
+          ? data.currentFieldNumber.value
+          : this.currentFieldNumber,
+      notes: data.notes.present ? data.notes.value : this.notes,
+      photoPath: data.photoPath.present ? data.photoPath.value : this.photoPath,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('PersonnelData(')
@@ -1390,6 +1427,28 @@ class MediaData extends DataClass implements Insertable<MediaData> {
         fileName: fileName.present ? fileName.value : this.fileName,
         caption: caption.present ? caption.value : this.caption,
       );
+  MediaData copyWithCompanion(MediaCompanion data) {
+    return MediaData(
+      primaryId: data.primaryId.present ? data.primaryId.value : this.primaryId,
+      projectUuid:
+          data.projectUuid.present ? data.projectUuid.value : this.projectUuid,
+      secondaryId:
+          data.secondaryId.present ? data.secondaryId.value : this.secondaryId,
+      category: data.category.present ? data.category.value : this.category,
+      tag: data.tag.present ? data.tag.value : this.tag,
+      taken: data.taken.present ? data.taken.value : this.taken,
+      camera: data.camera.present ? data.camera.value : this.camera,
+      lenses: data.lenses.present ? data.lenses.value : this.lenses,
+      additionalExif: data.additionalExif.present
+          ? data.additionalExif.value
+          : this.additionalExif,
+      personnelId:
+          data.personnelId.present ? data.personnelId.value : this.personnelId,
+      fileName: data.fileName.present ? data.fileName.value : this.fileName,
+      caption: data.caption.present ? data.caption.value : this.caption,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('MediaData(')
@@ -2078,6 +2137,37 @@ class SiteData extends DataClass implements Insertable<SiteData> {
             ? habitatDescription.value
             : this.habitatDescription,
       );
+  SiteData copyWithCompanion(SiteCompanion data) {
+    return SiteData(
+      id: data.id.present ? data.id.value : this.id,
+      siteID: data.siteID.present ? data.siteID.value : this.siteID,
+      projectUuid:
+          data.projectUuid.present ? data.projectUuid.value : this.projectUuid,
+      leadStaffId:
+          data.leadStaffId.present ? data.leadStaffId.value : this.leadStaffId,
+      siteType: data.siteType.present ? data.siteType.value : this.siteType,
+      country: data.country.present ? data.country.value : this.country,
+      stateProvince: data.stateProvince.present
+          ? data.stateProvince.value
+          : this.stateProvince,
+      county: data.county.present ? data.county.value : this.county,
+      municipality: data.municipality.present
+          ? data.municipality.value
+          : this.municipality,
+      mediaID: data.mediaID.present ? data.mediaID.value : this.mediaID,
+      locality: data.locality.present ? data.locality.value : this.locality,
+      remark: data.remark.present ? data.remark.value : this.remark,
+      habitatType:
+          data.habitatType.present ? data.habitatType.value : this.habitatType,
+      habitatCondition: data.habitatCondition.present
+          ? data.habitatCondition.value
+          : this.habitatCondition,
+      habitatDescription: data.habitatDescription.present
+          ? data.habitatDescription.value
+          : this.habitatDescription,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('SiteData(')
@@ -2674,6 +2764,29 @@ class CoordinateData extends DataClass implements Insertable<CoordinateData> {
         notes: notes.present ? notes.value : this.notes,
         siteID: siteID.present ? siteID.value : this.siteID,
       );
+  CoordinateData copyWithCompanion(CoordinateCompanion data) {
+    return CoordinateData(
+      id: data.id.present ? data.id.value : this.id,
+      nameId: data.nameId.present ? data.nameId.value : this.nameId,
+      decimalLatitude: data.decimalLatitude.present
+          ? data.decimalLatitude.value
+          : this.decimalLatitude,
+      decimalLongitude: data.decimalLongitude.present
+          ? data.decimalLongitude.value
+          : this.decimalLongitude,
+      elevationInMeter: data.elevationInMeter.present
+          ? data.elevationInMeter.value
+          : this.elevationInMeter,
+      datum: data.datum.present ? data.datum.value : this.datum,
+      uncertaintyInMeters: data.uncertaintyInMeters.present
+          ? data.uncertaintyInMeters.value
+          : this.uncertaintyInMeters,
+      gpsUnit: data.gpsUnit.present ? data.gpsUnit.value : this.gpsUnit,
+      notes: data.notes.present ? data.notes.value : this.notes,
+      siteID: data.siteID.present ? data.siteID.value : this.siteID,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('CoordinateData(')
@@ -3188,6 +3301,26 @@ class CollEventData extends DataClass implements Insertable<CollEventData> {
             : this.collMethodNotes,
         siteID: siteID.present ? siteID.value : this.siteID,
       );
+  CollEventData copyWithCompanion(CollEventCompanion data) {
+    return CollEventData(
+      id: data.id.present ? data.id.value : this.id,
+      idSuffix: data.idSuffix.present ? data.idSuffix.value : this.idSuffix,
+      projectUuid:
+          data.projectUuid.present ? data.projectUuid.value : this.projectUuid,
+      startDate: data.startDate.present ? data.startDate.value : this.startDate,
+      startTime: data.startTime.present ? data.startTime.value : this.startTime,
+      endDate: data.endDate.present ? data.endDate.value : this.endDate,
+      endTime: data.endTime.present ? data.endTime.value : this.endTime,
+      primaryCollMethod: data.primaryCollMethod.present
+          ? data.primaryCollMethod.value
+          : this.primaryCollMethod,
+      collMethodNotes: data.collMethodNotes.present
+          ? data.collMethodNotes.value
+          : this.collMethodNotes,
+      siteID: data.siteID.present ? data.siteID.value : this.siteID,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('CollEventData(')
@@ -3746,6 +3879,36 @@ class WeatherData extends DataClass implements Insertable<WeatherData> {
         moonPhase: moonPhase.present ? moonPhase.value : this.moonPhase,
         notes: notes.present ? notes.value : this.notes,
       );
+  WeatherData copyWithCompanion(WeatherCompanion data) {
+    return WeatherData(
+      eventID: data.eventID.present ? data.eventID.value : this.eventID,
+      lowestDayTempC: data.lowestDayTempC.present
+          ? data.lowestDayTempC.value
+          : this.lowestDayTempC,
+      highestDayTempC: data.highestDayTempC.present
+          ? data.highestDayTempC.value
+          : this.highestDayTempC,
+      lowestNightTempC: data.lowestNightTempC.present
+          ? data.lowestNightTempC.value
+          : this.lowestNightTempC,
+      highestNightTempC: data.highestNightTempC.present
+          ? data.highestNightTempC.value
+          : this.highestNightTempC,
+      averageHumidity: data.averageHumidity.present
+          ? data.averageHumidity.value
+          : this.averageHumidity,
+      dewPointTemp: data.dewPointTemp.present
+          ? data.dewPointTemp.value
+          : this.dewPointTemp,
+      sunriseTime:
+          data.sunriseTime.present ? data.sunriseTime.value : this.sunriseTime,
+      sunsetTime:
+          data.sunsetTime.present ? data.sunsetTime.value : this.sunsetTime,
+      moonPhase: data.moonPhase.present ? data.moonPhase.value : this.moonPhase,
+      notes: data.notes.present ? data.notes.value : this.notes,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('WeatherData(')
@@ -4144,6 +4307,17 @@ class CollPersonnelData extends DataClass
         name: name.present ? name.value : this.name,
         role: role.present ? role.value : this.role,
       );
+  CollPersonnelData copyWithCompanion(CollPersonnelCompanion data) {
+    return CollPersonnelData(
+      id: data.id.present ? data.id.value : this.id,
+      eventID: data.eventID.present ? data.eventID.value : this.eventID,
+      personnelId:
+          data.personnelId.present ? data.personnelId.value : this.personnelId,
+      name: data.name.present ? data.name.value : this.name,
+      role: data.role.present ? data.role.value : this.role,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('CollPersonnelData(')
@@ -4486,6 +4660,18 @@ class CollEffortData extends DataClass implements Insertable<CollEffortData> {
         size: size.present ? size.value : this.size,
         notes: notes.present ? notes.value : this.notes,
       );
+  CollEffortData copyWithCompanion(CollEffortCompanion data) {
+    return CollEffortData(
+      id: data.id.present ? data.id.value : this.id,
+      eventID: data.eventID.present ? data.eventID.value : this.eventID,
+      method: data.method.present ? data.method.value : this.method,
+      brand: data.brand.present ? data.brand.value : this.brand,
+      count: data.count.present ? data.count.value : this.count,
+      size: data.size.present ? data.size.value : this.size,
+      notes: data.notes.present ? data.notes.value : this.notes,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('CollEffortData(')
@@ -4838,6 +5024,18 @@ class NarrativeData extends DataClass implements Insertable<NarrativeData> {
         narrative: narrative.present ? narrative.value : this.narrative,
         mediaID: mediaID.present ? mediaID.value : this.mediaID,
       );
+  NarrativeData copyWithCompanion(NarrativeCompanion data) {
+    return NarrativeData(
+      id: data.id.present ? data.id.value : this.id,
+      projectUuid:
+          data.projectUuid.present ? data.projectUuid.value : this.projectUuid,
+      date: data.date.present ? data.date.value : this.date,
+      siteID: data.siteID.present ? data.siteID.value : this.siteID,
+      narrative: data.narrative.present ? data.narrative.value : this.narrative,
+      mediaID: data.mediaID.present ? data.mediaID.value : this.mediaID,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('NarrativeData(')
@@ -5083,6 +5281,14 @@ class NarrativeMediaData extends DataClass
         narrativeId: narrativeId ?? this.narrativeId,
         mediaId: mediaId.present ? mediaId.value : this.mediaId,
       );
+  NarrativeMediaData copyWithCompanion(NarrativeMediaCompanion data) {
+    return NarrativeMediaData(
+      narrativeId:
+          data.narrativeId.present ? data.narrativeId.value : this.narrativeId,
+      mediaId: data.mediaId.present ? data.mediaId.value : this.mediaId,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('NarrativeMediaData(')
@@ -5279,6 +5485,13 @@ class SiteMediaData extends DataClass implements Insertable<SiteMediaData> {
         siteId: siteId ?? this.siteId,
         mediaId: mediaId.present ? mediaId.value : this.mediaId,
       );
+  SiteMediaData copyWithCompanion(SiteMediaCompanion data) {
+    return SiteMediaData(
+      siteId: data.siteId.present ? data.siteId.value : this.siteId,
+      mediaId: data.mediaId.present ? data.mediaId.value : this.mediaId,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('SiteMediaData(')
@@ -5809,6 +6022,38 @@ class TaxonomyData extends DataClass implements Insertable<TaxonomyData> {
             sortingOrder.present ? sortingOrder.value : this.sortingOrder,
         mediaId: mediaId.present ? mediaId.value : this.mediaId,
       );
+  TaxonomyData copyWithCompanion(TaxonomyCompanion data) {
+    return TaxonomyData(
+      id: data.id.present ? data.id.value : this.id,
+      taxonClass:
+          data.taxonClass.present ? data.taxonClass.value : this.taxonClass,
+      taxonOrder:
+          data.taxonOrder.present ? data.taxonOrder.value : this.taxonOrder,
+      taxonFamily:
+          data.taxonFamily.present ? data.taxonFamily.value : this.taxonFamily,
+      genus: data.genus.present ? data.genus.value : this.genus,
+      specificEpithet: data.specificEpithet.present
+          ? data.specificEpithet.value
+          : this.specificEpithet,
+      authors: data.authors.present ? data.authors.value : this.authors,
+      commonName:
+          data.commonName.present ? data.commonName.value : this.commonName,
+      notes: data.notes.present ? data.notes.value : this.notes,
+      citesStatus:
+          data.citesStatus.present ? data.citesStatus.value : this.citesStatus,
+      redListCategory: data.redListCategory.present
+          ? data.redListCategory.value
+          : this.redListCategory,
+      countryStatus: data.countryStatus.present
+          ? data.countryStatus.value
+          : this.countryStatus,
+      sortingOrder: data.sortingOrder.present
+          ? data.sortingOrder.value
+          : this.sortingOrder,
+      mediaId: data.mediaId.present ? data.mediaId.value : this.mediaId,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('TaxonomyData(')
@@ -6795,6 +7040,58 @@ class SpecimenData extends DataClass implements Insertable<SpecimenData> {
         preparatorID:
             preparatorID.present ? preparatorID.value : this.preparatorID,
       );
+  SpecimenData copyWithCompanion(SpecimenCompanion data) {
+    return SpecimenData(
+      uuid: data.uuid.present ? data.uuid.value : this.uuid,
+      projectUuid:
+          data.projectUuid.present ? data.projectUuid.value : this.projectUuid,
+      speciesID: data.speciesID.present ? data.speciesID.value : this.speciesID,
+      iDConfidence: data.iDConfidence.present
+          ? data.iDConfidence.value
+          : this.iDConfidence,
+      iDMethod: data.iDMethod.present ? data.iDMethod.value : this.iDMethod,
+      taxonGroup:
+          data.taxonGroup.present ? data.taxonGroup.value : this.taxonGroup,
+      condition: data.condition.present ? data.condition.value : this.condition,
+      prepDate: data.prepDate.present ? data.prepDate.value : this.prepDate,
+      prepTime: data.prepTime.present ? data.prepTime.value : this.prepTime,
+      collectionTime: data.collectionTime.present
+          ? data.collectionTime.value
+          : this.collectionTime,
+      captureDate:
+          data.captureDate.present ? data.captureDate.value : this.captureDate,
+      isRelativeTime: data.isRelativeTime.present
+          ? data.isRelativeTime.value
+          : this.isRelativeTime,
+      captureTime:
+          data.captureTime.present ? data.captureTime.value : this.captureTime,
+      trapType: data.trapType.present ? data.trapType.value : this.trapType,
+      methodID: data.methodID.present ? data.methodID.value : this.methodID,
+      coordinateID: data.coordinateID.present
+          ? data.coordinateID.value
+          : this.coordinateID,
+      catalogerID:
+          data.catalogerID.present ? data.catalogerID.value : this.catalogerID,
+      fieldNumber:
+          data.fieldNumber.present ? data.fieldNumber.value : this.fieldNumber,
+      collEventID:
+          data.collEventID.present ? data.collEventID.value : this.collEventID,
+      isMultipleCollector: data.isMultipleCollector.present
+          ? data.isMultipleCollector.value
+          : this.isMultipleCollector,
+      collPersonnelID: data.collPersonnelID.present
+          ? data.collPersonnelID.value
+          : this.collPersonnelID,
+      collMethodID: data.collMethodID.present
+          ? data.collMethodID.value
+          : this.collMethodID,
+      museumID: data.museumID.present ? data.museumID.value : this.museumID,
+      preparatorID: data.preparatorID.present
+          ? data.preparatorID.value
+          : this.preparatorID,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('SpecimenData(')
@@ -7310,6 +7607,15 @@ class SpecimenMediaData extends DataClass
         specimenUuid: specimenUuid ?? this.specimenUuid,
         mediaId: mediaId.present ? mediaId.value : this.mediaId,
       );
+  SpecimenMediaData copyWithCompanion(SpecimenMediaCompanion data) {
+    return SpecimenMediaData(
+      specimenUuid: data.specimenUuid.present
+          ? data.specimenUuid.value
+          : this.specimenUuid,
+      mediaId: data.mediaId.present ? data.mediaId.value : this.mediaId,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('SpecimenMediaData(')
@@ -7632,6 +7938,21 @@ class AssociatedDataData extends DataClass
         description: description.present ? description.value : this.description,
         url: url.present ? url.value : this.url,
       );
+  AssociatedDataData copyWithCompanion(AssociatedDataCompanion data) {
+    return AssociatedDataData(
+      primaryId: data.primaryId.present ? data.primaryId.value : this.primaryId,
+      specimenUuid: data.specimenUuid.present
+          ? data.specimenUuid.value
+          : this.specimenUuid,
+      name: data.name.present ? data.name.value : this.name,
+      type: data.type.present ? data.type.value : this.type,
+      date: data.date.present ? data.date.value : this.date,
+      description:
+          data.description.present ? data.description.value : this.description,
+      url: data.url.present ? data.url.value : this.url,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('AssociatedDataData(')
@@ -7896,6 +8217,16 @@ class PersonnelListData extends DataClass
         personnelUuid:
             personnelUuid.present ? personnelUuid.value : this.personnelUuid,
       );
+  PersonnelListData copyWithCompanion(PersonnelListCompanion data) {
+    return PersonnelListData(
+      projectUuid:
+          data.projectUuid.present ? data.projectUuid.value : this.projectUuid,
+      personnelUuid: data.personnelUuid.present
+          ? data.personnelUuid.value
+          : this.personnelUuid,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('PersonnelListData(')
@@ -8842,6 +9173,76 @@ class MammalMeasurementData extends DataClass
         embryoCR: embryoCR.present ? embryoCR.value : this.embryoCR,
         remark: remark.present ? remark.value : this.remark,
       );
+  MammalMeasurementData copyWithCompanion(MammalMeasurementCompanion data) {
+    return MammalMeasurementData(
+      specimenUuid: data.specimenUuid.present
+          ? data.specimenUuid.value
+          : this.specimenUuid,
+      totalLength:
+          data.totalLength.present ? data.totalLength.value : this.totalLength,
+      tailLength:
+          data.tailLength.present ? data.tailLength.value : this.tailLength,
+      hindFootLength: data.hindFootLength.present
+          ? data.hindFootLength.value
+          : this.hindFootLength,
+      earLength: data.earLength.present ? data.earLength.value : this.earLength,
+      forearm: data.forearm.present ? data.forearm.value : this.forearm,
+      weight: data.weight.present ? data.weight.value : this.weight,
+      accuracy: data.accuracy.present ? data.accuracy.value : this.accuracy,
+      accuracySpecify: data.accuracySpecify.present
+          ? data.accuracySpecify.value
+          : this.accuracySpecify,
+      sex: data.sex.present ? data.sex.value : this.sex,
+      age: data.age.present ? data.age.value : this.age,
+      testisPosition: data.testisPosition.present
+          ? data.testisPosition.value
+          : this.testisPosition,
+      testisLength: data.testisLength.present
+          ? data.testisLength.value
+          : this.testisLength,
+      testisWidth:
+          data.testisWidth.present ? data.testisWidth.value : this.testisWidth,
+      epididymisAppearance: data.epididymisAppearance.present
+          ? data.epididymisAppearance.value
+          : this.epididymisAppearance,
+      reproductiveStage: data.reproductiveStage.present
+          ? data.reproductiveStage.value
+          : this.reproductiveStage,
+      leftPlacentalScars: data.leftPlacentalScars.present
+          ? data.leftPlacentalScars.value
+          : this.leftPlacentalScars,
+      rightPlacentalScars: data.rightPlacentalScars.present
+          ? data.rightPlacentalScars.value
+          : this.rightPlacentalScars,
+      mammaeCondition: data.mammaeCondition.present
+          ? data.mammaeCondition.value
+          : this.mammaeCondition,
+      mammaeInguinalCount: data.mammaeInguinalCount.present
+          ? data.mammaeInguinalCount.value
+          : this.mammaeInguinalCount,
+      mammaeAxillaryCount: data.mammaeAxillaryCount.present
+          ? data.mammaeAxillaryCount.value
+          : this.mammaeAxillaryCount,
+      mammaeAbdominalCount: data.mammaeAbdominalCount.present
+          ? data.mammaeAbdominalCount.value
+          : this.mammaeAbdominalCount,
+      vaginaOpening: data.vaginaOpening.present
+          ? data.vaginaOpening.value
+          : this.vaginaOpening,
+      pubicSymphysis: data.pubicSymphysis.present
+          ? data.pubicSymphysis.value
+          : this.pubicSymphysis,
+      embryoLeftCount: data.embryoLeftCount.present
+          ? data.embryoLeftCount.value
+          : this.embryoLeftCount,
+      embryoRightCount: data.embryoRightCount.present
+          ? data.embryoRightCount.value
+          : this.embryoRightCount,
+      embryoCR: data.embryoCR.present ? data.embryoCR.value : this.embryoCR,
+      remark: data.remark.present ? data.remark.value : this.remark,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('MammalMeasurementData(')
@@ -10446,6 +10847,87 @@ class AvianMeasurementData extends DataClass
         habitatRemark:
             habitatRemark.present ? habitatRemark.value : this.habitatRemark,
       );
+  AvianMeasurementData copyWithCompanion(AvianMeasurementCompanion data) {
+    return AvianMeasurementData(
+      specimenUuid: data.specimenUuid.present
+          ? data.specimenUuid.value
+          : this.specimenUuid,
+      weight: data.weight.present ? data.weight.value : this.weight,
+      wingspan: data.wingspan.present ? data.wingspan.value : this.wingspan,
+      irisColor: data.irisColor.present ? data.irisColor.value : this.irisColor,
+      irisHex: data.irisHex.present ? data.irisHex.value : this.irisHex,
+      billColor: data.billColor.present ? data.billColor.value : this.billColor,
+      billHex: data.billHex.present ? data.billHex.value : this.billHex,
+      footColor: data.footColor.present ? data.footColor.value : this.footColor,
+      footHex: data.footHex.present ? data.footHex.value : this.footHex,
+      tarsusColor:
+          data.tarsusColor.present ? data.tarsusColor.value : this.tarsusColor,
+      tarsusHex: data.tarsusHex.present ? data.tarsusHex.value : this.tarsusHex,
+      sex: data.sex.present ? data.sex.value : this.sex,
+      broodPatch:
+          data.broodPatch.present ? data.broodPatch.value : this.broodPatch,
+      skullOssification: data.skullOssification.present
+          ? data.skullOssification.value
+          : this.skullOssification,
+      hasBursa: data.hasBursa.present ? data.hasBursa.value : this.hasBursa,
+      bursaWidth:
+          data.bursaWidth.present ? data.bursaWidth.value : this.bursaWidth,
+      bursaLength:
+          data.bursaLength.present ? data.bursaLength.value : this.bursaLength,
+      fat: data.fat.present ? data.fat.value : this.fat,
+      stomachContent: data.stomachContent.present
+          ? data.stomachContent.value
+          : this.stomachContent,
+      testisLength: data.testisLength.present
+          ? data.testisLength.value
+          : this.testisLength,
+      testisWidth:
+          data.testisWidth.present ? data.testisWidth.value : this.testisWidth,
+      testisRemark: data.testisRemark.present
+          ? data.testisRemark.value
+          : this.testisRemark,
+      ovaryLength:
+          data.ovaryLength.present ? data.ovaryLength.value : this.ovaryLength,
+      ovaryWidth:
+          data.ovaryWidth.present ? data.ovaryWidth.value : this.ovaryWidth,
+      oviductWidth: data.oviductWidth.present
+          ? data.oviductWidth.value
+          : this.oviductWidth,
+      ovaryAppearance: data.ovaryAppearance.present
+          ? data.ovaryAppearance.value
+          : this.ovaryAppearance,
+      firstOvaSize: data.firstOvaSize.present
+          ? data.firstOvaSize.value
+          : this.firstOvaSize,
+      secondOvaSize: data.secondOvaSize.present
+          ? data.secondOvaSize.value
+          : this.secondOvaSize,
+      thirdOvaSize: data.thirdOvaSize.present
+          ? data.thirdOvaSize.value
+          : this.thirdOvaSize,
+      oviductAppearance: data.oviductAppearance.present
+          ? data.oviductAppearance.value
+          : this.oviductAppearance,
+      ovaryRemark:
+          data.ovaryRemark.present ? data.ovaryRemark.value : this.ovaryRemark,
+      wingIsMolt:
+          data.wingIsMolt.present ? data.wingIsMolt.value : this.wingIsMolt,
+      wingMolt: data.wingMolt.present ? data.wingMolt.value : this.wingMolt,
+      tailIsMolt:
+          data.tailIsMolt.present ? data.tailIsMolt.value : this.tailIsMolt,
+      tailMolt: data.tailMolt.present ? data.tailMolt.value : this.tailMolt,
+      bodyMolt: data.bodyMolt.present ? data.bodyMolt.value : this.bodyMolt,
+      moltRemark:
+          data.moltRemark.present ? data.moltRemark.value : this.moltRemark,
+      specimenRemark: data.specimenRemark.present
+          ? data.specimenRemark.value
+          : this.specimenRemark,
+      habitatRemark: data.habitatRemark.present
+          ? data.habitatRemark.value
+          : this.habitatRemark,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('AvianMeasurementData(')
@@ -11519,6 +12001,34 @@ class SpecimenPartData extends DataClass
         museumLoan: museumLoan.present ? museumLoan.value : this.museumLoan,
         remark: remark.present ? remark.value : this.remark,
       );
+  SpecimenPartData copyWithCompanion(SpecimenPartCompanion data) {
+    return SpecimenPartData(
+      id: data.id.present ? data.id.value : this.id,
+      specimenUuid: data.specimenUuid.present
+          ? data.specimenUuid.value
+          : this.specimenUuid,
+      personnelId:
+          data.personnelId.present ? data.personnelId.value : this.personnelId,
+      tissueID: data.tissueID.present ? data.tissueID.value : this.tissueID,
+      barcodeID: data.barcodeID.present ? data.barcodeID.value : this.barcodeID,
+      type: data.type.present ? data.type.value : this.type,
+      count: data.count.present ? data.count.value : this.count,
+      treatment: data.treatment.present ? data.treatment.value : this.treatment,
+      additionalTreatment: data.additionalTreatment.present
+          ? data.additionalTreatment.value
+          : this.additionalTreatment,
+      dateTaken: data.dateTaken.present ? data.dateTaken.value : this.dateTaken,
+      timeTaken: data.timeTaken.present ? data.timeTaken.value : this.timeTaken,
+      pmi: data.pmi.present ? data.pmi.value : this.pmi,
+      museumPermanent: data.museumPermanent.present
+          ? data.museumPermanent.value
+          : this.museumPermanent,
+      museumLoan:
+          data.museumLoan.present ? data.museumLoan.value : this.museumLoan,
+      remark: data.remark.present ? data.remark.value : this.remark,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('SpecimenPartData(')
@@ -11777,7 +12287,7 @@ class SpecimenPartCompanion extends UpdateCompanion<SpecimenPartData> {
 
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(e);
-  _$DatabaseManager get managers => _$DatabaseManager(this);
+  $DatabaseManager get managers => $DatabaseManager(this);
   late final Project project = Project(this);
   late final Personnel personnel = Personnel(this);
   late final Media media = Media(this);
@@ -11839,7 +12349,7 @@ abstract class _$Database extends GeneratedDatabase {
       ];
 }
 
-typedef $ProjectInsertCompanionBuilder = ProjectCompanion Function({
+typedef $ProjectCreateCompanionBuilder = ProjectCompanion Function({
   required String uuid,
   required String name,
   Value<String?> description,
@@ -11863,85 +12373,6 @@ typedef $ProjectUpdateCompanionBuilder = ProjectCompanion Function({
   Value<String?> lastAccessed,
   Value<int> rowid,
 });
-
-class $ProjectTableManager extends RootTableManager<
-    _$Database,
-    Project,
-    ProjectData,
-    $ProjectFilterComposer,
-    $ProjectOrderingComposer,
-    $ProjectProcessedTableManager,
-    $ProjectInsertCompanionBuilder,
-    $ProjectUpdateCompanionBuilder> {
-  $ProjectTableManager(_$Database db, Project table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer: $ProjectFilterComposer(ComposerState(db, table)),
-          orderingComposer: $ProjectOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) => $ProjectProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<String> uuid = const Value.absent(),
-            Value<String> name = const Value.absent(),
-            Value<String?> description = const Value.absent(),
-            Value<String?> principalInvestigator = const Value.absent(),
-            Value<String?> location = const Value.absent(),
-            Value<String?> startDate = const Value.absent(),
-            Value<String?> endDate = const Value.absent(),
-            Value<String?> created = const Value.absent(),
-            Value<String?> lastAccessed = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              ProjectCompanion(
-            uuid: uuid,
-            name: name,
-            description: description,
-            principalInvestigator: principalInvestigator,
-            location: location,
-            startDate: startDate,
-            endDate: endDate,
-            created: created,
-            lastAccessed: lastAccessed,
-            rowid: rowid,
-          ),
-          getInsertCompanionBuilder: ({
-            required String uuid,
-            required String name,
-            Value<String?> description = const Value.absent(),
-            Value<String?> principalInvestigator = const Value.absent(),
-            Value<String?> location = const Value.absent(),
-            Value<String?> startDate = const Value.absent(),
-            Value<String?> endDate = const Value.absent(),
-            Value<String?> created = const Value.absent(),
-            Value<String?> lastAccessed = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              ProjectCompanion.insert(
-            uuid: uuid,
-            name: name,
-            description: description,
-            principalInvestigator: principalInvestigator,
-            location: location,
-            startDate: startDate,
-            endDate: endDate,
-            created: created,
-            lastAccessed: lastAccessed,
-            rowid: rowid,
-          ),
-        ));
-}
-
-class $ProjectProcessedTableManager extends ProcessedTableManager<
-    _$Database,
-    Project,
-    ProjectData,
-    $ProjectFilterComposer,
-    $ProjectOrderingComposer,
-    $ProjectProcessedTableManager,
-    $ProjectInsertCompanionBuilder,
-    $ProjectUpdateCompanionBuilder> {
-  $ProjectProcessedTableManager(super.$state);
-}
 
 class $ProjectFilterComposer extends FilterComposer<_$Database, Project> {
   $ProjectFilterComposer(super.$state);
@@ -12039,7 +12470,90 @@ class $ProjectOrderingComposer extends OrderingComposer<_$Database, Project> {
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $PersonnelInsertCompanionBuilder = PersonnelCompanion Function({
+class $ProjectTableManager extends RootTableManager<
+    _$Database,
+    Project,
+    ProjectData,
+    $ProjectFilterComposer,
+    $ProjectOrderingComposer,
+    $ProjectCreateCompanionBuilder,
+    $ProjectUpdateCompanionBuilder,
+    (ProjectData, BaseReferences<_$Database, Project, ProjectData>),
+    ProjectData,
+    PrefetchHooks Function()> {
+  $ProjectTableManager(_$Database db, Project table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $ProjectFilterComposer(ComposerState(db, table)),
+          orderingComposer: $ProjectOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<String> uuid = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String?> description = const Value.absent(),
+            Value<String?> principalInvestigator = const Value.absent(),
+            Value<String?> location = const Value.absent(),
+            Value<String?> startDate = const Value.absent(),
+            Value<String?> endDate = const Value.absent(),
+            Value<String?> created = const Value.absent(),
+            Value<String?> lastAccessed = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              ProjectCompanion(
+            uuid: uuid,
+            name: name,
+            description: description,
+            principalInvestigator: principalInvestigator,
+            location: location,
+            startDate: startDate,
+            endDate: endDate,
+            created: created,
+            lastAccessed: lastAccessed,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String uuid,
+            required String name,
+            Value<String?> description = const Value.absent(),
+            Value<String?> principalInvestigator = const Value.absent(),
+            Value<String?> location = const Value.absent(),
+            Value<String?> startDate = const Value.absent(),
+            Value<String?> endDate = const Value.absent(),
+            Value<String?> created = const Value.absent(),
+            Value<String?> lastAccessed = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              ProjectCompanion.insert(
+            uuid: uuid,
+            name: name,
+            description: description,
+            principalInvestigator: principalInvestigator,
+            location: location,
+            startDate: startDate,
+            endDate: endDate,
+            created: created,
+            lastAccessed: lastAccessed,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $ProjectProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    Project,
+    ProjectData,
+    $ProjectFilterComposer,
+    $ProjectOrderingComposer,
+    $ProjectCreateCompanionBuilder,
+    $ProjectUpdateCompanionBuilder,
+    (ProjectData, BaseReferences<_$Database, Project, ProjectData>),
+    ProjectData,
+    PrefetchHooks Function()>;
+typedef $PersonnelCreateCompanionBuilder = PersonnelCompanion Function({
   required String uuid,
   Value<String?> name,
   Value<String?> initial,
@@ -12066,88 +12580,24 @@ typedef $PersonnelUpdateCompanionBuilder = PersonnelCompanion Function({
   Value<int> rowid,
 });
 
-class $PersonnelTableManager extends RootTableManager<
-    _$Database,
-    Personnel,
-    PersonnelData,
-    $PersonnelFilterComposer,
-    $PersonnelOrderingComposer,
-    $PersonnelProcessedTableManager,
-    $PersonnelInsertCompanionBuilder,
-    $PersonnelUpdateCompanionBuilder> {
-  $PersonnelTableManager(_$Database db, Personnel table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer: $PersonnelFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $PersonnelOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) => $PersonnelProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<String> uuid = const Value.absent(),
-            Value<String?> name = const Value.absent(),
-            Value<String?> initial = const Value.absent(),
-            Value<String?> email = const Value.absent(),
-            Value<String?> phone = const Value.absent(),
-            Value<String?> affiliation = const Value.absent(),
-            Value<String?> role = const Value.absent(),
-            Value<int?> currentFieldNumber = const Value.absent(),
-            Value<String?> notes = const Value.absent(),
-            Value<String?> photoPath = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              PersonnelCompanion(
-            uuid: uuid,
-            name: name,
-            initial: initial,
-            email: email,
-            phone: phone,
-            affiliation: affiliation,
-            role: role,
-            currentFieldNumber: currentFieldNumber,
-            notes: notes,
-            photoPath: photoPath,
-            rowid: rowid,
-          ),
-          getInsertCompanionBuilder: ({
-            required String uuid,
-            Value<String?> name = const Value.absent(),
-            Value<String?> initial = const Value.absent(),
-            Value<String?> email = const Value.absent(),
-            Value<String?> phone = const Value.absent(),
-            Value<String?> affiliation = const Value.absent(),
-            Value<String?> role = const Value.absent(),
-            Value<int?> currentFieldNumber = const Value.absent(),
-            Value<String?> notes = const Value.absent(),
-            Value<String?> photoPath = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              PersonnelCompanion.insert(
-            uuid: uuid,
-            name: name,
-            initial: initial,
-            email: email,
-            phone: phone,
-            affiliation: affiliation,
-            role: role,
-            currentFieldNumber: currentFieldNumber,
-            notes: notes,
-            photoPath: photoPath,
-            rowid: rowid,
-          ),
-        ));
-}
+final class $PersonnelReferences
+    extends BaseReferences<_$Database, Personnel, PersonnelData> {
+  $PersonnelReferences(super.$_db, super.$_table, super.$_typedResult);
 
-class $PersonnelProcessedTableManager extends ProcessedTableManager<
-    _$Database,
-    Personnel,
-    PersonnelData,
-    $PersonnelFilterComposer,
-    $PersonnelOrderingComposer,
-    $PersonnelProcessedTableManager,
-    $PersonnelInsertCompanionBuilder,
-    $PersonnelUpdateCompanionBuilder> {
-  $PersonnelProcessedTableManager(super.$state);
+  static MultiTypedResultKey<Specimen, List<SpecimenData>> _specimenRefsTable(
+          _$Database db) =>
+      MultiTypedResultKey.fromTable(db.specimen,
+          aliasName: $_aliasNameGenerator(
+              db.personnel.uuid, db.specimen.preparatorID));
+
+  $SpecimenProcessedTableManager get specimenRefs {
+    final manager = $SpecimenTableManager($_db, $_db.specimen)
+        .filter((f) => f.preparatorID.uuid($_item.uuid));
+
+    final cache = $_typedResult.readTableOrNull(_specimenRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
 }
 
 class $PersonnelFilterComposer extends FilterComposer<_$Database, Personnel> {
@@ -12270,7 +12720,117 @@ class $PersonnelOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $MediaInsertCompanionBuilder = MediaCompanion Function({
+class $PersonnelTableManager extends RootTableManager<
+    _$Database,
+    Personnel,
+    PersonnelData,
+    $PersonnelFilterComposer,
+    $PersonnelOrderingComposer,
+    $PersonnelCreateCompanionBuilder,
+    $PersonnelUpdateCompanionBuilder,
+    (PersonnelData, $PersonnelReferences),
+    PersonnelData,
+    PrefetchHooks Function({bool specimenRefs})> {
+  $PersonnelTableManager(_$Database db, Personnel table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $PersonnelFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $PersonnelOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<String> uuid = const Value.absent(),
+            Value<String?> name = const Value.absent(),
+            Value<String?> initial = const Value.absent(),
+            Value<String?> email = const Value.absent(),
+            Value<String?> phone = const Value.absent(),
+            Value<String?> affiliation = const Value.absent(),
+            Value<String?> role = const Value.absent(),
+            Value<int?> currentFieldNumber = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+            Value<String?> photoPath = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              PersonnelCompanion(
+            uuid: uuid,
+            name: name,
+            initial: initial,
+            email: email,
+            phone: phone,
+            affiliation: affiliation,
+            role: role,
+            currentFieldNumber: currentFieldNumber,
+            notes: notes,
+            photoPath: photoPath,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String uuid,
+            Value<String?> name = const Value.absent(),
+            Value<String?> initial = const Value.absent(),
+            Value<String?> email = const Value.absent(),
+            Value<String?> phone = const Value.absent(),
+            Value<String?> affiliation = const Value.absent(),
+            Value<String?> role = const Value.absent(),
+            Value<int?> currentFieldNumber = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+            Value<String?> photoPath = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              PersonnelCompanion.insert(
+            uuid: uuid,
+            name: name,
+            initial: initial,
+            email: email,
+            phone: phone,
+            affiliation: affiliation,
+            role: role,
+            currentFieldNumber: currentFieldNumber,
+            notes: notes,
+            photoPath: photoPath,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) =>
+                  (e.readTable(table), $PersonnelReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: ({specimenRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [if (specimenRefs) db.specimen],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (specimenRefs)
+                    await $_getPrefetchedData(
+                        currentTable: table,
+                        referencedTable:
+                            $PersonnelReferences._specimenRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $PersonnelReferences(db, table, p0).specimenRefs,
+                        referencedItemsForCurrentItem:
+                            (item, referencedItems) => referencedItems
+                                .where((e) => e.preparatorID == item.uuid),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
+        ));
+}
+
+typedef $PersonnelProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    Personnel,
+    PersonnelData,
+    $PersonnelFilterComposer,
+    $PersonnelOrderingComposer,
+    $PersonnelCreateCompanionBuilder,
+    $PersonnelUpdateCompanionBuilder,
+    (PersonnelData, $PersonnelReferences),
+    PersonnelData,
+    PrefetchHooks Function({bool specimenRefs})>;
+typedef $MediaCreateCompanionBuilder = MediaCompanion Function({
   Value<int?> primaryId,
   Value<String?> projectUuid,
   Value<String?> secondaryId,
@@ -12299,91 +12859,24 @@ typedef $MediaUpdateCompanionBuilder = MediaCompanion Function({
   Value<String?> caption,
 });
 
-class $MediaTableManager extends RootTableManager<
-    _$Database,
-    Media,
-    MediaData,
-    $MediaFilterComposer,
-    $MediaOrderingComposer,
-    $MediaProcessedTableManager,
-    $MediaInsertCompanionBuilder,
-    $MediaUpdateCompanionBuilder> {
-  $MediaTableManager(_$Database db, Media table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer: $MediaFilterComposer(ComposerState(db, table)),
-          orderingComposer: $MediaOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) => $MediaProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<int?> primaryId = const Value.absent(),
-            Value<String?> projectUuid = const Value.absent(),
-            Value<String?> secondaryId = const Value.absent(),
-            Value<String?> category = const Value.absent(),
-            Value<String?> tag = const Value.absent(),
-            Value<String?> taken = const Value.absent(),
-            Value<String?> camera = const Value.absent(),
-            Value<String?> lenses = const Value.absent(),
-            Value<String?> additionalExif = const Value.absent(),
-            Value<String?> personnelId = const Value.absent(),
-            Value<String?> fileName = const Value.absent(),
-            Value<String?> caption = const Value.absent(),
-          }) =>
-              MediaCompanion(
-            primaryId: primaryId,
-            projectUuid: projectUuid,
-            secondaryId: secondaryId,
-            category: category,
-            tag: tag,
-            taken: taken,
-            camera: camera,
-            lenses: lenses,
-            additionalExif: additionalExif,
-            personnelId: personnelId,
-            fileName: fileName,
-            caption: caption,
-          ),
-          getInsertCompanionBuilder: ({
-            Value<int?> primaryId = const Value.absent(),
-            Value<String?> projectUuid = const Value.absent(),
-            Value<String?> secondaryId = const Value.absent(),
-            Value<String?> category = const Value.absent(),
-            Value<String?> tag = const Value.absent(),
-            Value<String?> taken = const Value.absent(),
-            Value<String?> camera = const Value.absent(),
-            Value<String?> lenses = const Value.absent(),
-            Value<String?> additionalExif = const Value.absent(),
-            Value<String?> personnelId = const Value.absent(),
-            Value<String?> fileName = const Value.absent(),
-            Value<String?> caption = const Value.absent(),
-          }) =>
-              MediaCompanion.insert(
-            primaryId: primaryId,
-            projectUuid: projectUuid,
-            secondaryId: secondaryId,
-            category: category,
-            tag: tag,
-            taken: taken,
-            camera: camera,
-            lenses: lenses,
-            additionalExif: additionalExif,
-            personnelId: personnelId,
-            fileName: fileName,
-            caption: caption,
-          ),
-        ));
-}
+final class $MediaReferences
+    extends BaseReferences<_$Database, Media, MediaData> {
+  $MediaReferences(super.$_db, super.$_table, super.$_typedResult);
 
-class $MediaProcessedTableManager extends ProcessedTableManager<
-    _$Database,
-    Media,
-    MediaData,
-    $MediaFilterComposer,
-    $MediaOrderingComposer,
-    $MediaProcessedTableManager,
-    $MediaInsertCompanionBuilder,
-    $MediaUpdateCompanionBuilder> {
-  $MediaProcessedTableManager(super.$state);
+  static MultiTypedResultKey<Narrative, List<NarrativeData>>
+      _narrativeRefsTable(_$Database db) => MultiTypedResultKey.fromTable(
+          db.narrative,
+          aliasName:
+              $_aliasNameGenerator(db.media.primaryId, db.narrative.mediaID));
+
+  $NarrativeProcessedTableManager get narrativeRefs {
+    final manager = $NarrativeTableManager($_db, $_db.narrative)
+        .filter((f) => f.mediaID.primaryId($_item.primaryId));
+
+    final cache = $_typedResult.readTableOrNull(_narrativeRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
 }
 
 class $MediaFilterComposer extends FilterComposer<_$Database, Media> {
@@ -12525,7 +13018,119 @@ class $MediaOrderingComposer extends OrderingComposer<_$Database, Media> {
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $SiteInsertCompanionBuilder = SiteCompanion Function({
+class $MediaTableManager extends RootTableManager<
+    _$Database,
+    Media,
+    MediaData,
+    $MediaFilterComposer,
+    $MediaOrderingComposer,
+    $MediaCreateCompanionBuilder,
+    $MediaUpdateCompanionBuilder,
+    (MediaData, $MediaReferences),
+    MediaData,
+    PrefetchHooks Function({bool narrativeRefs})> {
+  $MediaTableManager(_$Database db, Media table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $MediaFilterComposer(ComposerState(db, table)),
+          orderingComposer: $MediaOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int?> primaryId = const Value.absent(),
+            Value<String?> projectUuid = const Value.absent(),
+            Value<String?> secondaryId = const Value.absent(),
+            Value<String?> category = const Value.absent(),
+            Value<String?> tag = const Value.absent(),
+            Value<String?> taken = const Value.absent(),
+            Value<String?> camera = const Value.absent(),
+            Value<String?> lenses = const Value.absent(),
+            Value<String?> additionalExif = const Value.absent(),
+            Value<String?> personnelId = const Value.absent(),
+            Value<String?> fileName = const Value.absent(),
+            Value<String?> caption = const Value.absent(),
+          }) =>
+              MediaCompanion(
+            primaryId: primaryId,
+            projectUuid: projectUuid,
+            secondaryId: secondaryId,
+            category: category,
+            tag: tag,
+            taken: taken,
+            camera: camera,
+            lenses: lenses,
+            additionalExif: additionalExif,
+            personnelId: personnelId,
+            fileName: fileName,
+            caption: caption,
+          ),
+          createCompanionCallback: ({
+            Value<int?> primaryId = const Value.absent(),
+            Value<String?> projectUuid = const Value.absent(),
+            Value<String?> secondaryId = const Value.absent(),
+            Value<String?> category = const Value.absent(),
+            Value<String?> tag = const Value.absent(),
+            Value<String?> taken = const Value.absent(),
+            Value<String?> camera = const Value.absent(),
+            Value<String?> lenses = const Value.absent(),
+            Value<String?> additionalExif = const Value.absent(),
+            Value<String?> personnelId = const Value.absent(),
+            Value<String?> fileName = const Value.absent(),
+            Value<String?> caption = const Value.absent(),
+          }) =>
+              MediaCompanion.insert(
+            primaryId: primaryId,
+            projectUuid: projectUuid,
+            secondaryId: secondaryId,
+            category: category,
+            tag: tag,
+            taken: taken,
+            camera: camera,
+            lenses: lenses,
+            additionalExif: additionalExif,
+            personnelId: personnelId,
+            fileName: fileName,
+            caption: caption,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), $MediaReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: ({narrativeRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [if (narrativeRefs) db.narrative],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (narrativeRefs)
+                    await $_getPrefetchedData(
+                        currentTable: table,
+                        referencedTable:
+                            $MediaReferences._narrativeRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $MediaReferences(db, table, p0).narrativeRefs,
+                        referencedItemsForCurrentItem:
+                            (item, referencedItems) => referencedItems
+                                .where((e) => e.mediaID == item.primaryId),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
+        ));
+}
+
+typedef $MediaProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    Media,
+    MediaData,
+    $MediaFilterComposer,
+    $MediaOrderingComposer,
+    $MediaCreateCompanionBuilder,
+    $MediaUpdateCompanionBuilder,
+    (MediaData, $MediaReferences),
+    MediaData,
+    PrefetchHooks Function({bool narrativeRefs})>;
+typedef $SiteCreateCompanionBuilder = SiteCompanion Function({
   Value<int> id,
   Value<String?> siteID,
   Value<String?> projectUuid,
@@ -12560,103 +13165,22 @@ typedef $SiteUpdateCompanionBuilder = SiteCompanion Function({
   Value<String?> habitatDescription,
 });
 
-class $SiteTableManager extends RootTableManager<
-    _$Database,
-    Site,
-    SiteData,
-    $SiteFilterComposer,
-    $SiteOrderingComposer,
-    $SiteProcessedTableManager,
-    $SiteInsertCompanionBuilder,
-    $SiteUpdateCompanionBuilder> {
-  $SiteTableManager(_$Database db, Site table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer: $SiteFilterComposer(ComposerState(db, table)),
-          orderingComposer: $SiteOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) => $SiteProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<int> id = const Value.absent(),
-            Value<String?> siteID = const Value.absent(),
-            Value<String?> projectUuid = const Value.absent(),
-            Value<String?> leadStaffId = const Value.absent(),
-            Value<String?> siteType = const Value.absent(),
-            Value<String?> country = const Value.absent(),
-            Value<String?> stateProvince = const Value.absent(),
-            Value<String?> county = const Value.absent(),
-            Value<String?> municipality = const Value.absent(),
-            Value<String?> mediaID = const Value.absent(),
-            Value<String?> locality = const Value.absent(),
-            Value<String?> remark = const Value.absent(),
-            Value<String?> habitatType = const Value.absent(),
-            Value<String?> habitatCondition = const Value.absent(),
-            Value<String?> habitatDescription = const Value.absent(),
-          }) =>
-              SiteCompanion(
-            id: id,
-            siteID: siteID,
-            projectUuid: projectUuid,
-            leadStaffId: leadStaffId,
-            siteType: siteType,
-            country: country,
-            stateProvince: stateProvince,
-            county: county,
-            municipality: municipality,
-            mediaID: mediaID,
-            locality: locality,
-            remark: remark,
-            habitatType: habitatType,
-            habitatCondition: habitatCondition,
-            habitatDescription: habitatDescription,
-          ),
-          getInsertCompanionBuilder: ({
-            Value<int> id = const Value.absent(),
-            Value<String?> siteID = const Value.absent(),
-            Value<String?> projectUuid = const Value.absent(),
-            Value<String?> leadStaffId = const Value.absent(),
-            Value<String?> siteType = const Value.absent(),
-            Value<String?> country = const Value.absent(),
-            Value<String?> stateProvince = const Value.absent(),
-            Value<String?> county = const Value.absent(),
-            Value<String?> municipality = const Value.absent(),
-            Value<String?> mediaID = const Value.absent(),
-            Value<String?> locality = const Value.absent(),
-            Value<String?> remark = const Value.absent(),
-            Value<String?> habitatType = const Value.absent(),
-            Value<String?> habitatCondition = const Value.absent(),
-            Value<String?> habitatDescription = const Value.absent(),
-          }) =>
-              SiteCompanion.insert(
-            id: id,
-            siteID: siteID,
-            projectUuid: projectUuid,
-            leadStaffId: leadStaffId,
-            siteType: siteType,
-            country: country,
-            stateProvince: stateProvince,
-            county: county,
-            municipality: municipality,
-            mediaID: mediaID,
-            locality: locality,
-            remark: remark,
-            habitatType: habitatType,
-            habitatCondition: habitatCondition,
-            habitatDescription: habitatDescription,
-          ),
-        ));
-}
+final class $SiteReferences extends BaseReferences<_$Database, Site, SiteData> {
+  $SiteReferences(super.$_db, super.$_table, super.$_typedResult);
 
-class $SiteProcessedTableManager extends ProcessedTableManager<
-    _$Database,
-    Site,
-    SiteData,
-    $SiteFilterComposer,
-    $SiteOrderingComposer,
-    $SiteProcessedTableManager,
-    $SiteInsertCompanionBuilder,
-    $SiteUpdateCompanionBuilder> {
-  $SiteProcessedTableManager(super.$state);
+  static MultiTypedResultKey<CollEvent, List<CollEventData>>
+      _collEventRefsTable(_$Database db) =>
+          MultiTypedResultKey.fromTable(db.collEvent,
+              aliasName: $_aliasNameGenerator(db.site.id, db.collEvent.siteID));
+
+  $CollEventProcessedTableManager get collEventRefs {
+    final manager = $CollEventTableManager($_db, $_db.collEvent)
+        .filter((f) => f.siteID.id($_item.id));
+
+    final cache = $_typedResult.readTableOrNull(_collEventRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
 }
 
 class $SiteFilterComposer extends FilterComposer<_$Database, Site> {
@@ -12828,7 +13352,131 @@ class $SiteOrderingComposer extends OrderingComposer<_$Database, Site> {
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $CoordinateInsertCompanionBuilder = CoordinateCompanion Function({
+class $SiteTableManager extends RootTableManager<
+    _$Database,
+    Site,
+    SiteData,
+    $SiteFilterComposer,
+    $SiteOrderingComposer,
+    $SiteCreateCompanionBuilder,
+    $SiteUpdateCompanionBuilder,
+    (SiteData, $SiteReferences),
+    SiteData,
+    PrefetchHooks Function({bool collEventRefs})> {
+  $SiteTableManager(_$Database db, Site table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $SiteFilterComposer(ComposerState(db, table)),
+          orderingComposer: $SiteOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String?> siteID = const Value.absent(),
+            Value<String?> projectUuid = const Value.absent(),
+            Value<String?> leadStaffId = const Value.absent(),
+            Value<String?> siteType = const Value.absent(),
+            Value<String?> country = const Value.absent(),
+            Value<String?> stateProvince = const Value.absent(),
+            Value<String?> county = const Value.absent(),
+            Value<String?> municipality = const Value.absent(),
+            Value<String?> mediaID = const Value.absent(),
+            Value<String?> locality = const Value.absent(),
+            Value<String?> remark = const Value.absent(),
+            Value<String?> habitatType = const Value.absent(),
+            Value<String?> habitatCondition = const Value.absent(),
+            Value<String?> habitatDescription = const Value.absent(),
+          }) =>
+              SiteCompanion(
+            id: id,
+            siteID: siteID,
+            projectUuid: projectUuid,
+            leadStaffId: leadStaffId,
+            siteType: siteType,
+            country: country,
+            stateProvince: stateProvince,
+            county: county,
+            municipality: municipality,
+            mediaID: mediaID,
+            locality: locality,
+            remark: remark,
+            habitatType: habitatType,
+            habitatCondition: habitatCondition,
+            habitatDescription: habitatDescription,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String?> siteID = const Value.absent(),
+            Value<String?> projectUuid = const Value.absent(),
+            Value<String?> leadStaffId = const Value.absent(),
+            Value<String?> siteType = const Value.absent(),
+            Value<String?> country = const Value.absent(),
+            Value<String?> stateProvince = const Value.absent(),
+            Value<String?> county = const Value.absent(),
+            Value<String?> municipality = const Value.absent(),
+            Value<String?> mediaID = const Value.absent(),
+            Value<String?> locality = const Value.absent(),
+            Value<String?> remark = const Value.absent(),
+            Value<String?> habitatType = const Value.absent(),
+            Value<String?> habitatCondition = const Value.absent(),
+            Value<String?> habitatDescription = const Value.absent(),
+          }) =>
+              SiteCompanion.insert(
+            id: id,
+            siteID: siteID,
+            projectUuid: projectUuid,
+            leadStaffId: leadStaffId,
+            siteType: siteType,
+            country: country,
+            stateProvince: stateProvince,
+            county: county,
+            municipality: municipality,
+            mediaID: mediaID,
+            locality: locality,
+            remark: remark,
+            habitatType: habitatType,
+            habitatCondition: habitatCondition,
+            habitatDescription: habitatDescription,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), $SiteReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: ({collEventRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [if (collEventRefs) db.collEvent],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (collEventRefs)
+                    await $_getPrefetchedData(
+                        currentTable: table,
+                        referencedTable:
+                            $SiteReferences._collEventRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $SiteReferences(db, table, p0).collEventRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.siteID == item.id),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
+        ));
+}
+
+typedef $SiteProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    Site,
+    SiteData,
+    $SiteFilterComposer,
+    $SiteOrderingComposer,
+    $SiteCreateCompanionBuilder,
+    $SiteUpdateCompanionBuilder,
+    (SiteData, $SiteReferences),
+    SiteData,
+    PrefetchHooks Function({bool collEventRefs})>;
+typedef $CoordinateCreateCompanionBuilder = CoordinateCompanion Function({
   Value<int?> id,
   Value<String?> nameId,
   Value<double?> decimalLatitude,
@@ -12852,87 +13500,6 @@ typedef $CoordinateUpdateCompanionBuilder = CoordinateCompanion Function({
   Value<String?> notes,
   Value<int?> siteID,
 });
-
-class $CoordinateTableManager extends RootTableManager<
-    _$Database,
-    Coordinate,
-    CoordinateData,
-    $CoordinateFilterComposer,
-    $CoordinateOrderingComposer,
-    $CoordinateProcessedTableManager,
-    $CoordinateInsertCompanionBuilder,
-    $CoordinateUpdateCompanionBuilder> {
-  $CoordinateTableManager(_$Database db, Coordinate table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $CoordinateFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $CoordinateOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) => $CoordinateProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<int?> id = const Value.absent(),
-            Value<String?> nameId = const Value.absent(),
-            Value<double?> decimalLatitude = const Value.absent(),
-            Value<double?> decimalLongitude = const Value.absent(),
-            Value<double?> elevationInMeter = const Value.absent(),
-            Value<String?> datum = const Value.absent(),
-            Value<int?> uncertaintyInMeters = const Value.absent(),
-            Value<String?> gpsUnit = const Value.absent(),
-            Value<String?> notes = const Value.absent(),
-            Value<int?> siteID = const Value.absent(),
-          }) =>
-              CoordinateCompanion(
-            id: id,
-            nameId: nameId,
-            decimalLatitude: decimalLatitude,
-            decimalLongitude: decimalLongitude,
-            elevationInMeter: elevationInMeter,
-            datum: datum,
-            uncertaintyInMeters: uncertaintyInMeters,
-            gpsUnit: gpsUnit,
-            notes: notes,
-            siteID: siteID,
-          ),
-          getInsertCompanionBuilder: ({
-            Value<int?> id = const Value.absent(),
-            Value<String?> nameId = const Value.absent(),
-            Value<double?> decimalLatitude = const Value.absent(),
-            Value<double?> decimalLongitude = const Value.absent(),
-            Value<double?> elevationInMeter = const Value.absent(),
-            Value<String?> datum = const Value.absent(),
-            Value<int?> uncertaintyInMeters = const Value.absent(),
-            Value<String?> gpsUnit = const Value.absent(),
-            Value<String?> notes = const Value.absent(),
-            Value<int?> siteID = const Value.absent(),
-          }) =>
-              CoordinateCompanion.insert(
-            id: id,
-            nameId: nameId,
-            decimalLatitude: decimalLatitude,
-            decimalLongitude: decimalLongitude,
-            elevationInMeter: elevationInMeter,
-            datum: datum,
-            uncertaintyInMeters: uncertaintyInMeters,
-            gpsUnit: gpsUnit,
-            notes: notes,
-            siteID: siteID,
-          ),
-        ));
-}
-
-class $CoordinateProcessedTableManager extends ProcessedTableManager<
-    _$Database,
-    Coordinate,
-    CoordinateData,
-    $CoordinateFilterComposer,
-    $CoordinateOrderingComposer,
-    $CoordinateProcessedTableManager,
-    $CoordinateInsertCompanionBuilder,
-    $CoordinateUpdateCompanionBuilder> {
-  $CoordinateProcessedTableManager(super.$state);
-}
 
 class $CoordinateFilterComposer extends FilterComposer<_$Database, Coordinate> {
   $CoordinateFilterComposer(super.$state);
@@ -13041,7 +13608,92 @@ class $CoordinateOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $CollEventInsertCompanionBuilder = CollEventCompanion Function({
+class $CoordinateTableManager extends RootTableManager<
+    _$Database,
+    Coordinate,
+    CoordinateData,
+    $CoordinateFilterComposer,
+    $CoordinateOrderingComposer,
+    $CoordinateCreateCompanionBuilder,
+    $CoordinateUpdateCompanionBuilder,
+    (CoordinateData, BaseReferences<_$Database, Coordinate, CoordinateData>),
+    CoordinateData,
+    PrefetchHooks Function()> {
+  $CoordinateTableManager(_$Database db, Coordinate table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $CoordinateFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $CoordinateOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int?> id = const Value.absent(),
+            Value<String?> nameId = const Value.absent(),
+            Value<double?> decimalLatitude = const Value.absent(),
+            Value<double?> decimalLongitude = const Value.absent(),
+            Value<double?> elevationInMeter = const Value.absent(),
+            Value<String?> datum = const Value.absent(),
+            Value<int?> uncertaintyInMeters = const Value.absent(),
+            Value<String?> gpsUnit = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+            Value<int?> siteID = const Value.absent(),
+          }) =>
+              CoordinateCompanion(
+            id: id,
+            nameId: nameId,
+            decimalLatitude: decimalLatitude,
+            decimalLongitude: decimalLongitude,
+            elevationInMeter: elevationInMeter,
+            datum: datum,
+            uncertaintyInMeters: uncertaintyInMeters,
+            gpsUnit: gpsUnit,
+            notes: notes,
+            siteID: siteID,
+          ),
+          createCompanionCallback: ({
+            Value<int?> id = const Value.absent(),
+            Value<String?> nameId = const Value.absent(),
+            Value<double?> decimalLatitude = const Value.absent(),
+            Value<double?> decimalLongitude = const Value.absent(),
+            Value<double?> elevationInMeter = const Value.absent(),
+            Value<String?> datum = const Value.absent(),
+            Value<int?> uncertaintyInMeters = const Value.absent(),
+            Value<String?> gpsUnit = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+            Value<int?> siteID = const Value.absent(),
+          }) =>
+              CoordinateCompanion.insert(
+            id: id,
+            nameId: nameId,
+            decimalLatitude: decimalLatitude,
+            decimalLongitude: decimalLongitude,
+            elevationInMeter: elevationInMeter,
+            datum: datum,
+            uncertaintyInMeters: uncertaintyInMeters,
+            gpsUnit: gpsUnit,
+            notes: notes,
+            siteID: siteID,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $CoordinateProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    Coordinate,
+    CoordinateData,
+    $CoordinateFilterComposer,
+    $CoordinateOrderingComposer,
+    $CoordinateCreateCompanionBuilder,
+    $CoordinateUpdateCompanionBuilder,
+    (CoordinateData, BaseReferences<_$Database, Coordinate, CoordinateData>),
+    CoordinateData,
+    PrefetchHooks Function()>;
+typedef $CollEventCreateCompanionBuilder = CollEventCompanion Function({
   Value<int> id,
   Value<String?> idSuffix,
   Value<String?> projectUuid,
@@ -13066,84 +13718,22 @@ typedef $CollEventUpdateCompanionBuilder = CollEventCompanion Function({
   Value<int?> siteID,
 });
 
-class $CollEventTableManager extends RootTableManager<
-    _$Database,
-    CollEvent,
-    CollEventData,
-    $CollEventFilterComposer,
-    $CollEventOrderingComposer,
-    $CollEventProcessedTableManager,
-    $CollEventInsertCompanionBuilder,
-    $CollEventUpdateCompanionBuilder> {
-  $CollEventTableManager(_$Database db, CollEvent table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer: $CollEventFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $CollEventOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) => $CollEventProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<int> id = const Value.absent(),
-            Value<String?> idSuffix = const Value.absent(),
-            Value<String?> projectUuid = const Value.absent(),
-            Value<String?> startDate = const Value.absent(),
-            Value<String?> startTime = const Value.absent(),
-            Value<String?> endDate = const Value.absent(),
-            Value<String?> endTime = const Value.absent(),
-            Value<String?> primaryCollMethod = const Value.absent(),
-            Value<String?> collMethodNotes = const Value.absent(),
-            Value<int?> siteID = const Value.absent(),
-          }) =>
-              CollEventCompanion(
-            id: id,
-            idSuffix: idSuffix,
-            projectUuid: projectUuid,
-            startDate: startDate,
-            startTime: startTime,
-            endDate: endDate,
-            endTime: endTime,
-            primaryCollMethod: primaryCollMethod,
-            collMethodNotes: collMethodNotes,
-            siteID: siteID,
-          ),
-          getInsertCompanionBuilder: ({
-            Value<int> id = const Value.absent(),
-            Value<String?> idSuffix = const Value.absent(),
-            Value<String?> projectUuid = const Value.absent(),
-            Value<String?> startDate = const Value.absent(),
-            Value<String?> startTime = const Value.absent(),
-            Value<String?> endDate = const Value.absent(),
-            Value<String?> endTime = const Value.absent(),
-            Value<String?> primaryCollMethod = const Value.absent(),
-            Value<String?> collMethodNotes = const Value.absent(),
-            Value<int?> siteID = const Value.absent(),
-          }) =>
-              CollEventCompanion.insert(
-            id: id,
-            idSuffix: idSuffix,
-            projectUuid: projectUuid,
-            startDate: startDate,
-            startTime: startTime,
-            endDate: endDate,
-            endTime: endTime,
-            primaryCollMethod: primaryCollMethod,
-            collMethodNotes: collMethodNotes,
-            siteID: siteID,
-          ),
-        ));
-}
+final class $CollEventReferences
+    extends BaseReferences<_$Database, CollEvent, CollEventData> {
+  $CollEventReferences(super.$_db, super.$_table, super.$_typedResult);
 
-class $CollEventProcessedTableManager extends ProcessedTableManager<
-    _$Database,
-    CollEvent,
-    CollEventData,
-    $CollEventFilterComposer,
-    $CollEventOrderingComposer,
-    $CollEventProcessedTableManager,
-    $CollEventInsertCompanionBuilder,
-    $CollEventUpdateCompanionBuilder> {
-  $CollEventProcessedTableManager(super.$state);
+  static Site _siteIDTable(_$Database db) => db.site
+      .createAlias($_aliasNameGenerator(db.collEvent.siteID, db.site.id));
+
+  $SiteProcessedTableManager? get siteID {
+    if ($_item.siteID == null) return null;
+    final manager =
+        $SiteTableManager($_db, $_db.site).filter((f) => f.id($_item.siteID!));
+    final item = $_typedResult.readTableOrNull(_siteIDTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
 }
 
 class $CollEventFilterComposer extends FilterComposer<_$Database, CollEvent> {
@@ -13267,7 +13857,123 @@ class $CollEventOrderingComposer
   }
 }
 
-typedef $WeatherInsertCompanionBuilder = WeatherCompanion Function({
+class $CollEventTableManager extends RootTableManager<
+    _$Database,
+    CollEvent,
+    CollEventData,
+    $CollEventFilterComposer,
+    $CollEventOrderingComposer,
+    $CollEventCreateCompanionBuilder,
+    $CollEventUpdateCompanionBuilder,
+    (CollEventData, $CollEventReferences),
+    CollEventData,
+    PrefetchHooks Function({bool siteID})> {
+  $CollEventTableManager(_$Database db, CollEvent table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $CollEventFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $CollEventOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String?> idSuffix = const Value.absent(),
+            Value<String?> projectUuid = const Value.absent(),
+            Value<String?> startDate = const Value.absent(),
+            Value<String?> startTime = const Value.absent(),
+            Value<String?> endDate = const Value.absent(),
+            Value<String?> endTime = const Value.absent(),
+            Value<String?> primaryCollMethod = const Value.absent(),
+            Value<String?> collMethodNotes = const Value.absent(),
+            Value<int?> siteID = const Value.absent(),
+          }) =>
+              CollEventCompanion(
+            id: id,
+            idSuffix: idSuffix,
+            projectUuid: projectUuid,
+            startDate: startDate,
+            startTime: startTime,
+            endDate: endDate,
+            endTime: endTime,
+            primaryCollMethod: primaryCollMethod,
+            collMethodNotes: collMethodNotes,
+            siteID: siteID,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String?> idSuffix = const Value.absent(),
+            Value<String?> projectUuid = const Value.absent(),
+            Value<String?> startDate = const Value.absent(),
+            Value<String?> startTime = const Value.absent(),
+            Value<String?> endDate = const Value.absent(),
+            Value<String?> endTime = const Value.absent(),
+            Value<String?> primaryCollMethod = const Value.absent(),
+            Value<String?> collMethodNotes = const Value.absent(),
+            Value<int?> siteID = const Value.absent(),
+          }) =>
+              CollEventCompanion.insert(
+            id: id,
+            idSuffix: idSuffix,
+            projectUuid: projectUuid,
+            startDate: startDate,
+            startTime: startTime,
+            endDate: endDate,
+            endTime: endTime,
+            primaryCollMethod: primaryCollMethod,
+            collMethodNotes: collMethodNotes,
+            siteID: siteID,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) =>
+                  (e.readTable(table), $CollEventReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: ({siteID = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (siteID) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.siteID,
+                    referencedTable: $CollEventReferences._siteIDTable(db),
+                    referencedColumn: $CollEventReferences._siteIDTable(db).id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $CollEventProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    CollEvent,
+    CollEventData,
+    $CollEventFilterComposer,
+    $CollEventOrderingComposer,
+    $CollEventCreateCompanionBuilder,
+    $CollEventUpdateCompanionBuilder,
+    (CollEventData, $CollEventReferences),
+    CollEventData,
+    PrefetchHooks Function({bool siteID})>;
+typedef $WeatherCreateCompanionBuilder = WeatherCompanion Function({
   Value<int?> eventID,
   Value<double?> lowestDayTempC,
   Value<double?> highestDayTempC,
@@ -13295,93 +14001,6 @@ typedef $WeatherUpdateCompanionBuilder = WeatherCompanion Function({
   Value<String?> notes,
   Value<int> rowid,
 });
-
-class $WeatherTableManager extends RootTableManager<
-    _$Database,
-    Weather,
-    WeatherData,
-    $WeatherFilterComposer,
-    $WeatherOrderingComposer,
-    $WeatherProcessedTableManager,
-    $WeatherInsertCompanionBuilder,
-    $WeatherUpdateCompanionBuilder> {
-  $WeatherTableManager(_$Database db, Weather table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer: $WeatherFilterComposer(ComposerState(db, table)),
-          orderingComposer: $WeatherOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) => $WeatherProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<int?> eventID = const Value.absent(),
-            Value<double?> lowestDayTempC = const Value.absent(),
-            Value<double?> highestDayTempC = const Value.absent(),
-            Value<double?> lowestNightTempC = const Value.absent(),
-            Value<double?> highestNightTempC = const Value.absent(),
-            Value<double?> averageHumidity = const Value.absent(),
-            Value<double?> dewPointTemp = const Value.absent(),
-            Value<String?> sunriseTime = const Value.absent(),
-            Value<String?> sunsetTime = const Value.absent(),
-            Value<String?> moonPhase = const Value.absent(),
-            Value<String?> notes = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              WeatherCompanion(
-            eventID: eventID,
-            lowestDayTempC: lowestDayTempC,
-            highestDayTempC: highestDayTempC,
-            lowestNightTempC: lowestNightTempC,
-            highestNightTempC: highestNightTempC,
-            averageHumidity: averageHumidity,
-            dewPointTemp: dewPointTemp,
-            sunriseTime: sunriseTime,
-            sunsetTime: sunsetTime,
-            moonPhase: moonPhase,
-            notes: notes,
-            rowid: rowid,
-          ),
-          getInsertCompanionBuilder: ({
-            Value<int?> eventID = const Value.absent(),
-            Value<double?> lowestDayTempC = const Value.absent(),
-            Value<double?> highestDayTempC = const Value.absent(),
-            Value<double?> lowestNightTempC = const Value.absent(),
-            Value<double?> highestNightTempC = const Value.absent(),
-            Value<double?> averageHumidity = const Value.absent(),
-            Value<double?> dewPointTemp = const Value.absent(),
-            Value<String?> sunriseTime = const Value.absent(),
-            Value<String?> sunsetTime = const Value.absent(),
-            Value<String?> moonPhase = const Value.absent(),
-            Value<String?> notes = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              WeatherCompanion.insert(
-            eventID: eventID,
-            lowestDayTempC: lowestDayTempC,
-            highestDayTempC: highestDayTempC,
-            lowestNightTempC: lowestNightTempC,
-            highestNightTempC: highestNightTempC,
-            averageHumidity: averageHumidity,
-            dewPointTemp: dewPointTemp,
-            sunriseTime: sunriseTime,
-            sunsetTime: sunsetTime,
-            moonPhase: moonPhase,
-            notes: notes,
-            rowid: rowid,
-          ),
-        ));
-}
-
-class $WeatherProcessedTableManager extends ProcessedTableManager<
-    _$Database,
-    Weather,
-    WeatherData,
-    $WeatherFilterComposer,
-    $WeatherOrderingComposer,
-    $WeatherProcessedTableManager,
-    $WeatherInsertCompanionBuilder,
-    $WeatherUpdateCompanionBuilder> {
-  $WeatherProcessedTableManager(super.$state);
-}
 
 class $WeatherFilterComposer extends FilterComposer<_$Database, Weather> {
   $WeatherFilterComposer(super.$state);
@@ -13499,7 +14118,98 @@ class $WeatherOrderingComposer extends OrderingComposer<_$Database, Weather> {
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $CollPersonnelInsertCompanionBuilder = CollPersonnelCompanion Function({
+class $WeatherTableManager extends RootTableManager<
+    _$Database,
+    Weather,
+    WeatherData,
+    $WeatherFilterComposer,
+    $WeatherOrderingComposer,
+    $WeatherCreateCompanionBuilder,
+    $WeatherUpdateCompanionBuilder,
+    (WeatherData, BaseReferences<_$Database, Weather, WeatherData>),
+    WeatherData,
+    PrefetchHooks Function()> {
+  $WeatherTableManager(_$Database db, Weather table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $WeatherFilterComposer(ComposerState(db, table)),
+          orderingComposer: $WeatherOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int?> eventID = const Value.absent(),
+            Value<double?> lowestDayTempC = const Value.absent(),
+            Value<double?> highestDayTempC = const Value.absent(),
+            Value<double?> lowestNightTempC = const Value.absent(),
+            Value<double?> highestNightTempC = const Value.absent(),
+            Value<double?> averageHumidity = const Value.absent(),
+            Value<double?> dewPointTemp = const Value.absent(),
+            Value<String?> sunriseTime = const Value.absent(),
+            Value<String?> sunsetTime = const Value.absent(),
+            Value<String?> moonPhase = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              WeatherCompanion(
+            eventID: eventID,
+            lowestDayTempC: lowestDayTempC,
+            highestDayTempC: highestDayTempC,
+            lowestNightTempC: lowestNightTempC,
+            highestNightTempC: highestNightTempC,
+            averageHumidity: averageHumidity,
+            dewPointTemp: dewPointTemp,
+            sunriseTime: sunriseTime,
+            sunsetTime: sunsetTime,
+            moonPhase: moonPhase,
+            notes: notes,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            Value<int?> eventID = const Value.absent(),
+            Value<double?> lowestDayTempC = const Value.absent(),
+            Value<double?> highestDayTempC = const Value.absent(),
+            Value<double?> lowestNightTempC = const Value.absent(),
+            Value<double?> highestNightTempC = const Value.absent(),
+            Value<double?> averageHumidity = const Value.absent(),
+            Value<double?> dewPointTemp = const Value.absent(),
+            Value<String?> sunriseTime = const Value.absent(),
+            Value<String?> sunsetTime = const Value.absent(),
+            Value<String?> moonPhase = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              WeatherCompanion.insert(
+            eventID: eventID,
+            lowestDayTempC: lowestDayTempC,
+            highestDayTempC: highestDayTempC,
+            lowestNightTempC: lowestNightTempC,
+            highestNightTempC: highestNightTempC,
+            averageHumidity: averageHumidity,
+            dewPointTemp: dewPointTemp,
+            sunriseTime: sunriseTime,
+            sunsetTime: sunsetTime,
+            moonPhase: moonPhase,
+            notes: notes,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $WeatherProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    Weather,
+    WeatherData,
+    $WeatherFilterComposer,
+    $WeatherOrderingComposer,
+    $WeatherCreateCompanionBuilder,
+    $WeatherUpdateCompanionBuilder,
+    (WeatherData, BaseReferences<_$Database, Weather, WeatherData>),
+    WeatherData,
+    PrefetchHooks Function()>;
+typedef $CollPersonnelCreateCompanionBuilder = CollPersonnelCompanion Function({
   Value<int> id,
   Value<int?> eventID,
   Value<String?> personnelId,
@@ -13513,67 +14223,6 @@ typedef $CollPersonnelUpdateCompanionBuilder = CollPersonnelCompanion Function({
   Value<String?> name,
   Value<String?> role,
 });
-
-class $CollPersonnelTableManager extends RootTableManager<
-    _$Database,
-    CollPersonnel,
-    CollPersonnelData,
-    $CollPersonnelFilterComposer,
-    $CollPersonnelOrderingComposer,
-    $CollPersonnelProcessedTableManager,
-    $CollPersonnelInsertCompanionBuilder,
-    $CollPersonnelUpdateCompanionBuilder> {
-  $CollPersonnelTableManager(_$Database db, CollPersonnel table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $CollPersonnelFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $CollPersonnelOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) => $CollPersonnelProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<int> id = const Value.absent(),
-            Value<int?> eventID = const Value.absent(),
-            Value<String?> personnelId = const Value.absent(),
-            Value<String?> name = const Value.absent(),
-            Value<String?> role = const Value.absent(),
-          }) =>
-              CollPersonnelCompanion(
-            id: id,
-            eventID: eventID,
-            personnelId: personnelId,
-            name: name,
-            role: role,
-          ),
-          getInsertCompanionBuilder: ({
-            Value<int> id = const Value.absent(),
-            Value<int?> eventID = const Value.absent(),
-            Value<String?> personnelId = const Value.absent(),
-            Value<String?> name = const Value.absent(),
-            Value<String?> role = const Value.absent(),
-          }) =>
-              CollPersonnelCompanion.insert(
-            id: id,
-            eventID: eventID,
-            personnelId: personnelId,
-            name: name,
-            role: role,
-          ),
-        ));
-}
-
-class $CollPersonnelProcessedTableManager extends ProcessedTableManager<
-    _$Database,
-    CollPersonnel,
-    CollPersonnelData,
-    $CollPersonnelFilterComposer,
-    $CollPersonnelOrderingComposer,
-    $CollPersonnelProcessedTableManager,
-    $CollPersonnelInsertCompanionBuilder,
-    $CollPersonnelUpdateCompanionBuilder> {
-  $CollPersonnelProcessedTableManager(super.$state);
-}
 
 class $CollPersonnelFilterComposer
     extends FilterComposer<_$Database, CollPersonnel> {
@@ -13633,7 +14282,78 @@ class $CollPersonnelOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $CollEffortInsertCompanionBuilder = CollEffortCompanion Function({
+class $CollPersonnelTableManager extends RootTableManager<
+    _$Database,
+    CollPersonnel,
+    CollPersonnelData,
+    $CollPersonnelFilterComposer,
+    $CollPersonnelOrderingComposer,
+    $CollPersonnelCreateCompanionBuilder,
+    $CollPersonnelUpdateCompanionBuilder,
+    (
+      CollPersonnelData,
+      BaseReferences<_$Database, CollPersonnel, CollPersonnelData>
+    ),
+    CollPersonnelData,
+    PrefetchHooks Function()> {
+  $CollPersonnelTableManager(_$Database db, CollPersonnel table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $CollPersonnelFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $CollPersonnelOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<int?> eventID = const Value.absent(),
+            Value<String?> personnelId = const Value.absent(),
+            Value<String?> name = const Value.absent(),
+            Value<String?> role = const Value.absent(),
+          }) =>
+              CollPersonnelCompanion(
+            id: id,
+            eventID: eventID,
+            personnelId: personnelId,
+            name: name,
+            role: role,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<int?> eventID = const Value.absent(),
+            Value<String?> personnelId = const Value.absent(),
+            Value<String?> name = const Value.absent(),
+            Value<String?> role = const Value.absent(),
+          }) =>
+              CollPersonnelCompanion.insert(
+            id: id,
+            eventID: eventID,
+            personnelId: personnelId,
+            name: name,
+            role: role,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $CollPersonnelProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    CollPersonnel,
+    CollPersonnelData,
+    $CollPersonnelFilterComposer,
+    $CollPersonnelOrderingComposer,
+    $CollPersonnelCreateCompanionBuilder,
+    $CollPersonnelUpdateCompanionBuilder,
+    (
+      CollPersonnelData,
+      BaseReferences<_$Database, CollPersonnel, CollPersonnelData>
+    ),
+    CollPersonnelData,
+    PrefetchHooks Function()>;
+typedef $CollEffortCreateCompanionBuilder = CollEffortCompanion Function({
   Value<int> id,
   Value<int?> eventID,
   Value<String?> method,
@@ -13651,75 +14371,6 @@ typedef $CollEffortUpdateCompanionBuilder = CollEffortCompanion Function({
   Value<String?> size,
   Value<String?> notes,
 });
-
-class $CollEffortTableManager extends RootTableManager<
-    _$Database,
-    CollEffort,
-    CollEffortData,
-    $CollEffortFilterComposer,
-    $CollEffortOrderingComposer,
-    $CollEffortProcessedTableManager,
-    $CollEffortInsertCompanionBuilder,
-    $CollEffortUpdateCompanionBuilder> {
-  $CollEffortTableManager(_$Database db, CollEffort table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $CollEffortFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $CollEffortOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) => $CollEffortProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<int> id = const Value.absent(),
-            Value<int?> eventID = const Value.absent(),
-            Value<String?> method = const Value.absent(),
-            Value<String?> brand = const Value.absent(),
-            Value<int?> count = const Value.absent(),
-            Value<String?> size = const Value.absent(),
-            Value<String?> notes = const Value.absent(),
-          }) =>
-              CollEffortCompanion(
-            id: id,
-            eventID: eventID,
-            method: method,
-            brand: brand,
-            count: count,
-            size: size,
-            notes: notes,
-          ),
-          getInsertCompanionBuilder: ({
-            Value<int> id = const Value.absent(),
-            Value<int?> eventID = const Value.absent(),
-            Value<String?> method = const Value.absent(),
-            Value<String?> brand = const Value.absent(),
-            Value<int?> count = const Value.absent(),
-            Value<String?> size = const Value.absent(),
-            Value<String?> notes = const Value.absent(),
-          }) =>
-              CollEffortCompanion.insert(
-            id: id,
-            eventID: eventID,
-            method: method,
-            brand: brand,
-            count: count,
-            size: size,
-            notes: notes,
-          ),
-        ));
-}
-
-class $CollEffortProcessedTableManager extends ProcessedTableManager<
-    _$Database,
-    CollEffort,
-    CollEffortData,
-    $CollEffortFilterComposer,
-    $CollEffortOrderingComposer,
-    $CollEffortProcessedTableManager,
-    $CollEffortInsertCompanionBuilder,
-    $CollEffortUpdateCompanionBuilder> {
-  $CollEffortProcessedTableManager(super.$state);
-}
 
 class $CollEffortFilterComposer extends FilterComposer<_$Database, CollEffort> {
   $CollEffortFilterComposer(super.$state);
@@ -13798,7 +14449,80 @@ class $CollEffortOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $NarrativeInsertCompanionBuilder = NarrativeCompanion Function({
+class $CollEffortTableManager extends RootTableManager<
+    _$Database,
+    CollEffort,
+    CollEffortData,
+    $CollEffortFilterComposer,
+    $CollEffortOrderingComposer,
+    $CollEffortCreateCompanionBuilder,
+    $CollEffortUpdateCompanionBuilder,
+    (CollEffortData, BaseReferences<_$Database, CollEffort, CollEffortData>),
+    CollEffortData,
+    PrefetchHooks Function()> {
+  $CollEffortTableManager(_$Database db, CollEffort table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $CollEffortFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $CollEffortOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<int?> eventID = const Value.absent(),
+            Value<String?> method = const Value.absent(),
+            Value<String?> brand = const Value.absent(),
+            Value<int?> count = const Value.absent(),
+            Value<String?> size = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+          }) =>
+              CollEffortCompanion(
+            id: id,
+            eventID: eventID,
+            method: method,
+            brand: brand,
+            count: count,
+            size: size,
+            notes: notes,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<int?> eventID = const Value.absent(),
+            Value<String?> method = const Value.absent(),
+            Value<String?> brand = const Value.absent(),
+            Value<int?> count = const Value.absent(),
+            Value<String?> size = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+          }) =>
+              CollEffortCompanion.insert(
+            id: id,
+            eventID: eventID,
+            method: method,
+            brand: brand,
+            count: count,
+            size: size,
+            notes: notes,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $CollEffortProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    CollEffort,
+    CollEffortData,
+    $CollEffortFilterComposer,
+    $CollEffortOrderingComposer,
+    $CollEffortCreateCompanionBuilder,
+    $CollEffortUpdateCompanionBuilder,
+    (CollEffortData, BaseReferences<_$Database, CollEffort, CollEffortData>),
+    CollEffortData,
+    PrefetchHooks Function()>;
+typedef $NarrativeCreateCompanionBuilder = NarrativeCompanion Function({
   Value<int> id,
   Value<String?> projectUuid,
   Value<String?> date,
@@ -13815,68 +14539,22 @@ typedef $NarrativeUpdateCompanionBuilder = NarrativeCompanion Function({
   Value<int?> mediaID,
 });
 
-class $NarrativeTableManager extends RootTableManager<
-    _$Database,
-    Narrative,
-    NarrativeData,
-    $NarrativeFilterComposer,
-    $NarrativeOrderingComposer,
-    $NarrativeProcessedTableManager,
-    $NarrativeInsertCompanionBuilder,
-    $NarrativeUpdateCompanionBuilder> {
-  $NarrativeTableManager(_$Database db, Narrative table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer: $NarrativeFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $NarrativeOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) => $NarrativeProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<int> id = const Value.absent(),
-            Value<String?> projectUuid = const Value.absent(),
-            Value<String?> date = const Value.absent(),
-            Value<int?> siteID = const Value.absent(),
-            Value<String?> narrative = const Value.absent(),
-            Value<int?> mediaID = const Value.absent(),
-          }) =>
-              NarrativeCompanion(
-            id: id,
-            projectUuid: projectUuid,
-            date: date,
-            siteID: siteID,
-            narrative: narrative,
-            mediaID: mediaID,
-          ),
-          getInsertCompanionBuilder: ({
-            Value<int> id = const Value.absent(),
-            Value<String?> projectUuid = const Value.absent(),
-            Value<String?> date = const Value.absent(),
-            Value<int?> siteID = const Value.absent(),
-            Value<String?> narrative = const Value.absent(),
-            Value<int?> mediaID = const Value.absent(),
-          }) =>
-              NarrativeCompanion.insert(
-            id: id,
-            projectUuid: projectUuid,
-            date: date,
-            siteID: siteID,
-            narrative: narrative,
-            mediaID: mediaID,
-          ),
-        ));
-}
+final class $NarrativeReferences
+    extends BaseReferences<_$Database, Narrative, NarrativeData> {
+  $NarrativeReferences(super.$_db, super.$_table, super.$_typedResult);
 
-class $NarrativeProcessedTableManager extends ProcessedTableManager<
-    _$Database,
-    Narrative,
-    NarrativeData,
-    $NarrativeFilterComposer,
-    $NarrativeOrderingComposer,
-    $NarrativeProcessedTableManager,
-    $NarrativeInsertCompanionBuilder,
-    $NarrativeUpdateCompanionBuilder> {
-  $NarrativeProcessedTableManager(super.$state);
+  static Media _mediaIDTable(_$Database db) => db.media.createAlias(
+      $_aliasNameGenerator(db.narrative.mediaID, db.media.primaryId));
+
+  $MediaProcessedTableManager? get mediaID {
+    if ($_item.mediaID == null) return null;
+    final manager = $MediaTableManager($_db, $_db.media)
+        .filter((f) => f.primaryId($_item.mediaID!));
+    final item = $_typedResult.readTableOrNull(_mediaIDTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
 }
 
 class $NarrativeFilterComposer extends FilterComposer<_$Database, Narrative> {
@@ -13960,7 +14638,108 @@ class $NarrativeOrderingComposer
   }
 }
 
-typedef $NarrativeMediaInsertCompanionBuilder = NarrativeMediaCompanion
+class $NarrativeTableManager extends RootTableManager<
+    _$Database,
+    Narrative,
+    NarrativeData,
+    $NarrativeFilterComposer,
+    $NarrativeOrderingComposer,
+    $NarrativeCreateCompanionBuilder,
+    $NarrativeUpdateCompanionBuilder,
+    (NarrativeData, $NarrativeReferences),
+    NarrativeData,
+    PrefetchHooks Function({bool mediaID})> {
+  $NarrativeTableManager(_$Database db, Narrative table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $NarrativeFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $NarrativeOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String?> projectUuid = const Value.absent(),
+            Value<String?> date = const Value.absent(),
+            Value<int?> siteID = const Value.absent(),
+            Value<String?> narrative = const Value.absent(),
+            Value<int?> mediaID = const Value.absent(),
+          }) =>
+              NarrativeCompanion(
+            id: id,
+            projectUuid: projectUuid,
+            date: date,
+            siteID: siteID,
+            narrative: narrative,
+            mediaID: mediaID,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String?> projectUuid = const Value.absent(),
+            Value<String?> date = const Value.absent(),
+            Value<int?> siteID = const Value.absent(),
+            Value<String?> narrative = const Value.absent(),
+            Value<int?> mediaID = const Value.absent(),
+          }) =>
+              NarrativeCompanion.insert(
+            id: id,
+            projectUuid: projectUuid,
+            date: date,
+            siteID: siteID,
+            narrative: narrative,
+            mediaID: mediaID,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) =>
+                  (e.readTable(table), $NarrativeReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: ({mediaID = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (mediaID) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.mediaID,
+                    referencedTable: $NarrativeReferences._mediaIDTable(db),
+                    referencedColumn:
+                        $NarrativeReferences._mediaIDTable(db).primaryId,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $NarrativeProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    Narrative,
+    NarrativeData,
+    $NarrativeFilterComposer,
+    $NarrativeOrderingComposer,
+    $NarrativeCreateCompanionBuilder,
+    $NarrativeUpdateCompanionBuilder,
+    (NarrativeData, $NarrativeReferences),
+    NarrativeData,
+    PrefetchHooks Function({bool mediaID})>;
+typedef $NarrativeMediaCreateCompanionBuilder = NarrativeMediaCompanion
     Function({
   required int narrativeId,
   Value<int?> mediaId,
@@ -13972,60 +14751,6 @@ typedef $NarrativeMediaUpdateCompanionBuilder = NarrativeMediaCompanion
   Value<int?> mediaId,
   Value<int> rowid,
 });
-
-class $NarrativeMediaTableManager extends RootTableManager<
-    _$Database,
-    NarrativeMedia,
-    NarrativeMediaData,
-    $NarrativeMediaFilterComposer,
-    $NarrativeMediaOrderingComposer,
-    $NarrativeMediaProcessedTableManager,
-    $NarrativeMediaInsertCompanionBuilder,
-    $NarrativeMediaUpdateCompanionBuilder> {
-  $NarrativeMediaTableManager(_$Database db, NarrativeMedia table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $NarrativeMediaFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $NarrativeMediaOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) =>
-              $NarrativeMediaProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<int> narrativeId = const Value.absent(),
-            Value<int?> mediaId = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              NarrativeMediaCompanion(
-            narrativeId: narrativeId,
-            mediaId: mediaId,
-            rowid: rowid,
-          ),
-          getInsertCompanionBuilder: ({
-            required int narrativeId,
-            Value<int?> mediaId = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              NarrativeMediaCompanion.insert(
-            narrativeId: narrativeId,
-            mediaId: mediaId,
-            rowid: rowid,
-          ),
-        ));
-}
-
-class $NarrativeMediaProcessedTableManager extends ProcessedTableManager<
-    _$Database,
-    NarrativeMedia,
-    NarrativeMediaData,
-    $NarrativeMediaFilterComposer,
-    $NarrativeMediaOrderingComposer,
-    $NarrativeMediaProcessedTableManager,
-    $NarrativeMediaInsertCompanionBuilder,
-    $NarrativeMediaUpdateCompanionBuilder> {
-  $NarrativeMediaProcessedTableManager(super.$state);
-}
 
 class $NarrativeMediaFilterComposer
     extends FilterComposer<_$Database, NarrativeMedia> {
@@ -14055,7 +14780,70 @@ class $NarrativeMediaOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $SiteMediaInsertCompanionBuilder = SiteMediaCompanion Function({
+class $NarrativeMediaTableManager extends RootTableManager<
+    _$Database,
+    NarrativeMedia,
+    NarrativeMediaData,
+    $NarrativeMediaFilterComposer,
+    $NarrativeMediaOrderingComposer,
+    $NarrativeMediaCreateCompanionBuilder,
+    $NarrativeMediaUpdateCompanionBuilder,
+    (
+      NarrativeMediaData,
+      BaseReferences<_$Database, NarrativeMedia, NarrativeMediaData>
+    ),
+    NarrativeMediaData,
+    PrefetchHooks Function()> {
+  $NarrativeMediaTableManager(_$Database db, NarrativeMedia table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $NarrativeMediaFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $NarrativeMediaOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> narrativeId = const Value.absent(),
+            Value<int?> mediaId = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              NarrativeMediaCompanion(
+            narrativeId: narrativeId,
+            mediaId: mediaId,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required int narrativeId,
+            Value<int?> mediaId = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              NarrativeMediaCompanion.insert(
+            narrativeId: narrativeId,
+            mediaId: mediaId,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $NarrativeMediaProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    NarrativeMedia,
+    NarrativeMediaData,
+    $NarrativeMediaFilterComposer,
+    $NarrativeMediaOrderingComposer,
+    $NarrativeMediaCreateCompanionBuilder,
+    $NarrativeMediaUpdateCompanionBuilder,
+    (
+      NarrativeMediaData,
+      BaseReferences<_$Database, NarrativeMedia, NarrativeMediaData>
+    ),
+    NarrativeMediaData,
+    PrefetchHooks Function()>;
+typedef $SiteMediaCreateCompanionBuilder = SiteMediaCompanion Function({
   required int siteId,
   Value<int?> mediaId,
   Value<int> rowid,
@@ -14065,58 +14853,6 @@ typedef $SiteMediaUpdateCompanionBuilder = SiteMediaCompanion Function({
   Value<int?> mediaId,
   Value<int> rowid,
 });
-
-class $SiteMediaTableManager extends RootTableManager<
-    _$Database,
-    SiteMedia,
-    SiteMediaData,
-    $SiteMediaFilterComposer,
-    $SiteMediaOrderingComposer,
-    $SiteMediaProcessedTableManager,
-    $SiteMediaInsertCompanionBuilder,
-    $SiteMediaUpdateCompanionBuilder> {
-  $SiteMediaTableManager(_$Database db, SiteMedia table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer: $SiteMediaFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $SiteMediaOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) => $SiteMediaProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<int> siteId = const Value.absent(),
-            Value<int?> mediaId = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              SiteMediaCompanion(
-            siteId: siteId,
-            mediaId: mediaId,
-            rowid: rowid,
-          ),
-          getInsertCompanionBuilder: ({
-            required int siteId,
-            Value<int?> mediaId = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              SiteMediaCompanion.insert(
-            siteId: siteId,
-            mediaId: mediaId,
-            rowid: rowid,
-          ),
-        ));
-}
-
-class $SiteMediaProcessedTableManager extends ProcessedTableManager<
-    _$Database,
-    SiteMedia,
-    SiteMediaData,
-    $SiteMediaFilterComposer,
-    $SiteMediaOrderingComposer,
-    $SiteMediaProcessedTableManager,
-    $SiteMediaInsertCompanionBuilder,
-    $SiteMediaUpdateCompanionBuilder> {
-  $SiteMediaProcessedTableManager(super.$state);
-}
 
 class $SiteMediaFilterComposer extends FilterComposer<_$Database, SiteMedia> {
   $SiteMediaFilterComposer(super.$state);
@@ -14145,7 +14881,63 @@ class $SiteMediaOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $TaxonomyInsertCompanionBuilder = TaxonomyCompanion Function({
+class $SiteMediaTableManager extends RootTableManager<
+    _$Database,
+    SiteMedia,
+    SiteMediaData,
+    $SiteMediaFilterComposer,
+    $SiteMediaOrderingComposer,
+    $SiteMediaCreateCompanionBuilder,
+    $SiteMediaUpdateCompanionBuilder,
+    (SiteMediaData, BaseReferences<_$Database, SiteMedia, SiteMediaData>),
+    SiteMediaData,
+    PrefetchHooks Function()> {
+  $SiteMediaTableManager(_$Database db, SiteMedia table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $SiteMediaFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $SiteMediaOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> siteId = const Value.absent(),
+            Value<int?> mediaId = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              SiteMediaCompanion(
+            siteId: siteId,
+            mediaId: mediaId,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required int siteId,
+            Value<int?> mediaId = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              SiteMediaCompanion.insert(
+            siteId: siteId,
+            mediaId: mediaId,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $SiteMediaProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    SiteMedia,
+    SiteMediaData,
+    $SiteMediaFilterComposer,
+    $SiteMediaOrderingComposer,
+    $SiteMediaCreateCompanionBuilder,
+    $SiteMediaUpdateCompanionBuilder,
+    (SiteMediaData, BaseReferences<_$Database, SiteMedia, SiteMediaData>),
+    SiteMediaData,
+    PrefetchHooks Function()>;
+typedef $TaxonomyCreateCompanionBuilder = TaxonomyCompanion Function({
   Value<int> id,
   Value<String?> taxonClass,
   Value<String?> taxonOrder,
@@ -14177,101 +14969,6 @@ typedef $TaxonomyUpdateCompanionBuilder = TaxonomyCompanion Function({
   Value<int?> sortingOrder,
   Value<int?> mediaId,
 });
-
-class $TaxonomyTableManager extends RootTableManager<
-    _$Database,
-    Taxonomy,
-    TaxonomyData,
-    $TaxonomyFilterComposer,
-    $TaxonomyOrderingComposer,
-    $TaxonomyProcessedTableManager,
-    $TaxonomyInsertCompanionBuilder,
-    $TaxonomyUpdateCompanionBuilder> {
-  $TaxonomyTableManager(_$Database db, Taxonomy table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer: $TaxonomyFilterComposer(ComposerState(db, table)),
-          orderingComposer: $TaxonomyOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) => $TaxonomyProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<int> id = const Value.absent(),
-            Value<String?> taxonClass = const Value.absent(),
-            Value<String?> taxonOrder = const Value.absent(),
-            Value<String?> taxonFamily = const Value.absent(),
-            Value<String?> genus = const Value.absent(),
-            Value<String?> specificEpithet = const Value.absent(),
-            Value<String?> authors = const Value.absent(),
-            Value<String?> commonName = const Value.absent(),
-            Value<String?> notes = const Value.absent(),
-            Value<String?> citesStatus = const Value.absent(),
-            Value<String?> redListCategory = const Value.absent(),
-            Value<String?> countryStatus = const Value.absent(),
-            Value<int?> sortingOrder = const Value.absent(),
-            Value<int?> mediaId = const Value.absent(),
-          }) =>
-              TaxonomyCompanion(
-            id: id,
-            taxonClass: taxonClass,
-            taxonOrder: taxonOrder,
-            taxonFamily: taxonFamily,
-            genus: genus,
-            specificEpithet: specificEpithet,
-            authors: authors,
-            commonName: commonName,
-            notes: notes,
-            citesStatus: citesStatus,
-            redListCategory: redListCategory,
-            countryStatus: countryStatus,
-            sortingOrder: sortingOrder,
-            mediaId: mediaId,
-          ),
-          getInsertCompanionBuilder: ({
-            Value<int> id = const Value.absent(),
-            Value<String?> taxonClass = const Value.absent(),
-            Value<String?> taxonOrder = const Value.absent(),
-            Value<String?> taxonFamily = const Value.absent(),
-            Value<String?> genus = const Value.absent(),
-            Value<String?> specificEpithet = const Value.absent(),
-            Value<String?> authors = const Value.absent(),
-            Value<String?> commonName = const Value.absent(),
-            Value<String?> notes = const Value.absent(),
-            Value<String?> citesStatus = const Value.absent(),
-            Value<String?> redListCategory = const Value.absent(),
-            Value<String?> countryStatus = const Value.absent(),
-            Value<int?> sortingOrder = const Value.absent(),
-            Value<int?> mediaId = const Value.absent(),
-          }) =>
-              TaxonomyCompanion.insert(
-            id: id,
-            taxonClass: taxonClass,
-            taxonOrder: taxonOrder,
-            taxonFamily: taxonFamily,
-            genus: genus,
-            specificEpithet: specificEpithet,
-            authors: authors,
-            commonName: commonName,
-            notes: notes,
-            citesStatus: citesStatus,
-            redListCategory: redListCategory,
-            countryStatus: countryStatus,
-            sortingOrder: sortingOrder,
-            mediaId: mediaId,
-          ),
-        ));
-}
-
-class $TaxonomyProcessedTableManager extends ProcessedTableManager<
-    _$Database,
-    Taxonomy,
-    TaxonomyData,
-    $TaxonomyFilterComposer,
-    $TaxonomyOrderingComposer,
-    $TaxonomyProcessedTableManager,
-    $TaxonomyInsertCompanionBuilder,
-    $TaxonomyUpdateCompanionBuilder> {
-  $TaxonomyProcessedTableManager(super.$state);
-}
 
 class $TaxonomyFilterComposer extends FilterComposer<_$Database, Taxonomy> {
   $TaxonomyFilterComposer(super.$state);
@@ -14419,7 +15116,106 @@ class $TaxonomyOrderingComposer extends OrderingComposer<_$Database, Taxonomy> {
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $SpecimenInsertCompanionBuilder = SpecimenCompanion Function({
+class $TaxonomyTableManager extends RootTableManager<
+    _$Database,
+    Taxonomy,
+    TaxonomyData,
+    $TaxonomyFilterComposer,
+    $TaxonomyOrderingComposer,
+    $TaxonomyCreateCompanionBuilder,
+    $TaxonomyUpdateCompanionBuilder,
+    (TaxonomyData, BaseReferences<_$Database, Taxonomy, TaxonomyData>),
+    TaxonomyData,
+    PrefetchHooks Function()> {
+  $TaxonomyTableManager(_$Database db, Taxonomy table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $TaxonomyFilterComposer(ComposerState(db, table)),
+          orderingComposer: $TaxonomyOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String?> taxonClass = const Value.absent(),
+            Value<String?> taxonOrder = const Value.absent(),
+            Value<String?> taxonFamily = const Value.absent(),
+            Value<String?> genus = const Value.absent(),
+            Value<String?> specificEpithet = const Value.absent(),
+            Value<String?> authors = const Value.absent(),
+            Value<String?> commonName = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+            Value<String?> citesStatus = const Value.absent(),
+            Value<String?> redListCategory = const Value.absent(),
+            Value<String?> countryStatus = const Value.absent(),
+            Value<int?> sortingOrder = const Value.absent(),
+            Value<int?> mediaId = const Value.absent(),
+          }) =>
+              TaxonomyCompanion(
+            id: id,
+            taxonClass: taxonClass,
+            taxonOrder: taxonOrder,
+            taxonFamily: taxonFamily,
+            genus: genus,
+            specificEpithet: specificEpithet,
+            authors: authors,
+            commonName: commonName,
+            notes: notes,
+            citesStatus: citesStatus,
+            redListCategory: redListCategory,
+            countryStatus: countryStatus,
+            sortingOrder: sortingOrder,
+            mediaId: mediaId,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String?> taxonClass = const Value.absent(),
+            Value<String?> taxonOrder = const Value.absent(),
+            Value<String?> taxonFamily = const Value.absent(),
+            Value<String?> genus = const Value.absent(),
+            Value<String?> specificEpithet = const Value.absent(),
+            Value<String?> authors = const Value.absent(),
+            Value<String?> commonName = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+            Value<String?> citesStatus = const Value.absent(),
+            Value<String?> redListCategory = const Value.absent(),
+            Value<String?> countryStatus = const Value.absent(),
+            Value<int?> sortingOrder = const Value.absent(),
+            Value<int?> mediaId = const Value.absent(),
+          }) =>
+              TaxonomyCompanion.insert(
+            id: id,
+            taxonClass: taxonClass,
+            taxonOrder: taxonOrder,
+            taxonFamily: taxonFamily,
+            genus: genus,
+            specificEpithet: specificEpithet,
+            authors: authors,
+            commonName: commonName,
+            notes: notes,
+            citesStatus: citesStatus,
+            redListCategory: redListCategory,
+            countryStatus: countryStatus,
+            sortingOrder: sortingOrder,
+            mediaId: mediaId,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $TaxonomyProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    Taxonomy,
+    TaxonomyData,
+    $TaxonomyFilterComposer,
+    $TaxonomyOrderingComposer,
+    $TaxonomyCreateCompanionBuilder,
+    $TaxonomyUpdateCompanionBuilder,
+    (TaxonomyData, BaseReferences<_$Database, Taxonomy, TaxonomyData>),
+    TaxonomyData,
+    PrefetchHooks Function()>;
+typedef $SpecimenCreateCompanionBuilder = SpecimenCompanion Function({
   required String uuid,
   Value<String?> projectUuid,
   Value<int?> speciesID,
@@ -14474,143 +15270,23 @@ typedef $SpecimenUpdateCompanionBuilder = SpecimenCompanion Function({
   Value<int> rowid,
 });
 
-class $SpecimenTableManager extends RootTableManager<
-    _$Database,
-    Specimen,
-    SpecimenData,
-    $SpecimenFilterComposer,
-    $SpecimenOrderingComposer,
-    $SpecimenProcessedTableManager,
-    $SpecimenInsertCompanionBuilder,
-    $SpecimenUpdateCompanionBuilder> {
-  $SpecimenTableManager(_$Database db, Specimen table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer: $SpecimenFilterComposer(ComposerState(db, table)),
-          orderingComposer: $SpecimenOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) => $SpecimenProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<String> uuid = const Value.absent(),
-            Value<String?> projectUuid = const Value.absent(),
-            Value<int?> speciesID = const Value.absent(),
-            Value<int?> iDConfidence = const Value.absent(),
-            Value<String?> iDMethod = const Value.absent(),
-            Value<String?> taxonGroup = const Value.absent(),
-            Value<String?> condition = const Value.absent(),
-            Value<String?> prepDate = const Value.absent(),
-            Value<String?> prepTime = const Value.absent(),
-            Value<String?> collectionTime = const Value.absent(),
-            Value<String?> captureDate = const Value.absent(),
-            Value<int?> isRelativeTime = const Value.absent(),
-            Value<String?> captureTime = const Value.absent(),
-            Value<String?> trapType = const Value.absent(),
-            Value<String?> methodID = const Value.absent(),
-            Value<int?> coordinateID = const Value.absent(),
-            Value<String?> catalogerID = const Value.absent(),
-            Value<int?> fieldNumber = const Value.absent(),
-            Value<int?> collEventID = const Value.absent(),
-            Value<int?> isMultipleCollector = const Value.absent(),
-            Value<int?> collPersonnelID = const Value.absent(),
-            Value<int?> collMethodID = const Value.absent(),
-            Value<String?> museumID = const Value.absent(),
-            Value<String?> preparatorID = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              SpecimenCompanion(
-            uuid: uuid,
-            projectUuid: projectUuid,
-            speciesID: speciesID,
-            iDConfidence: iDConfidence,
-            iDMethod: iDMethod,
-            taxonGroup: taxonGroup,
-            condition: condition,
-            prepDate: prepDate,
-            prepTime: prepTime,
-            collectionTime: collectionTime,
-            captureDate: captureDate,
-            isRelativeTime: isRelativeTime,
-            captureTime: captureTime,
-            trapType: trapType,
-            methodID: methodID,
-            coordinateID: coordinateID,
-            catalogerID: catalogerID,
-            fieldNumber: fieldNumber,
-            collEventID: collEventID,
-            isMultipleCollector: isMultipleCollector,
-            collPersonnelID: collPersonnelID,
-            collMethodID: collMethodID,
-            museumID: museumID,
-            preparatorID: preparatorID,
-            rowid: rowid,
-          ),
-          getInsertCompanionBuilder: ({
-            required String uuid,
-            Value<String?> projectUuid = const Value.absent(),
-            Value<int?> speciesID = const Value.absent(),
-            Value<int?> iDConfidence = const Value.absent(),
-            Value<String?> iDMethod = const Value.absent(),
-            Value<String?> taxonGroup = const Value.absent(),
-            Value<String?> condition = const Value.absent(),
-            Value<String?> prepDate = const Value.absent(),
-            Value<String?> prepTime = const Value.absent(),
-            Value<String?> collectionTime = const Value.absent(),
-            Value<String?> captureDate = const Value.absent(),
-            Value<int?> isRelativeTime = const Value.absent(),
-            Value<String?> captureTime = const Value.absent(),
-            Value<String?> trapType = const Value.absent(),
-            Value<String?> methodID = const Value.absent(),
-            Value<int?> coordinateID = const Value.absent(),
-            Value<String?> catalogerID = const Value.absent(),
-            Value<int?> fieldNumber = const Value.absent(),
-            Value<int?> collEventID = const Value.absent(),
-            Value<int?> isMultipleCollector = const Value.absent(),
-            Value<int?> collPersonnelID = const Value.absent(),
-            Value<int?> collMethodID = const Value.absent(),
-            Value<String?> museumID = const Value.absent(),
-            Value<String?> preparatorID = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              SpecimenCompanion.insert(
-            uuid: uuid,
-            projectUuid: projectUuid,
-            speciesID: speciesID,
-            iDConfidence: iDConfidence,
-            iDMethod: iDMethod,
-            taxonGroup: taxonGroup,
-            condition: condition,
-            prepDate: prepDate,
-            prepTime: prepTime,
-            collectionTime: collectionTime,
-            captureDate: captureDate,
-            isRelativeTime: isRelativeTime,
-            captureTime: captureTime,
-            trapType: trapType,
-            methodID: methodID,
-            coordinateID: coordinateID,
-            catalogerID: catalogerID,
-            fieldNumber: fieldNumber,
-            collEventID: collEventID,
-            isMultipleCollector: isMultipleCollector,
-            collPersonnelID: collPersonnelID,
-            collMethodID: collMethodID,
-            museumID: museumID,
-            preparatorID: preparatorID,
-            rowid: rowid,
-          ),
-        ));
-}
+final class $SpecimenReferences
+    extends BaseReferences<_$Database, Specimen, SpecimenData> {
+  $SpecimenReferences(super.$_db, super.$_table, super.$_typedResult);
 
-class $SpecimenProcessedTableManager extends ProcessedTableManager<
-    _$Database,
-    Specimen,
-    SpecimenData,
-    $SpecimenFilterComposer,
-    $SpecimenOrderingComposer,
-    $SpecimenProcessedTableManager,
-    $SpecimenInsertCompanionBuilder,
-    $SpecimenUpdateCompanionBuilder> {
-  $SpecimenProcessedTableManager(super.$state);
+  static Personnel _preparatorIDTable(_$Database db) =>
+      db.personnel.createAlias(
+          $_aliasNameGenerator(db.specimen.preparatorID, db.personnel.uuid));
+
+  $PersonnelProcessedTableManager? get preparatorID {
+    if ($_item.preparatorID == null) return null;
+    final manager = $PersonnelTableManager($_db, $_db.personnel)
+        .filter((f) => f.uuid($_item.preparatorID!));
+    final item = $_typedResult.readTableOrNull(_preparatorIDTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
 }
 
 class $SpecimenFilterComposer extends FilterComposer<_$Database, Specimen> {
@@ -14873,7 +15549,183 @@ class $SpecimenOrderingComposer extends OrderingComposer<_$Database, Specimen> {
   }
 }
 
-typedef $SpecimenMediaInsertCompanionBuilder = SpecimenMediaCompanion Function({
+class $SpecimenTableManager extends RootTableManager<
+    _$Database,
+    Specimen,
+    SpecimenData,
+    $SpecimenFilterComposer,
+    $SpecimenOrderingComposer,
+    $SpecimenCreateCompanionBuilder,
+    $SpecimenUpdateCompanionBuilder,
+    (SpecimenData, $SpecimenReferences),
+    SpecimenData,
+    PrefetchHooks Function({bool preparatorID})> {
+  $SpecimenTableManager(_$Database db, Specimen table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $SpecimenFilterComposer(ComposerState(db, table)),
+          orderingComposer: $SpecimenOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<String> uuid = const Value.absent(),
+            Value<String?> projectUuid = const Value.absent(),
+            Value<int?> speciesID = const Value.absent(),
+            Value<int?> iDConfidence = const Value.absent(),
+            Value<String?> iDMethod = const Value.absent(),
+            Value<String?> taxonGroup = const Value.absent(),
+            Value<String?> condition = const Value.absent(),
+            Value<String?> prepDate = const Value.absent(),
+            Value<String?> prepTime = const Value.absent(),
+            Value<String?> collectionTime = const Value.absent(),
+            Value<String?> captureDate = const Value.absent(),
+            Value<int?> isRelativeTime = const Value.absent(),
+            Value<String?> captureTime = const Value.absent(),
+            Value<String?> trapType = const Value.absent(),
+            Value<String?> methodID = const Value.absent(),
+            Value<int?> coordinateID = const Value.absent(),
+            Value<String?> catalogerID = const Value.absent(),
+            Value<int?> fieldNumber = const Value.absent(),
+            Value<int?> collEventID = const Value.absent(),
+            Value<int?> isMultipleCollector = const Value.absent(),
+            Value<int?> collPersonnelID = const Value.absent(),
+            Value<int?> collMethodID = const Value.absent(),
+            Value<String?> museumID = const Value.absent(),
+            Value<String?> preparatorID = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              SpecimenCompanion(
+            uuid: uuid,
+            projectUuid: projectUuid,
+            speciesID: speciesID,
+            iDConfidence: iDConfidence,
+            iDMethod: iDMethod,
+            taxonGroup: taxonGroup,
+            condition: condition,
+            prepDate: prepDate,
+            prepTime: prepTime,
+            collectionTime: collectionTime,
+            captureDate: captureDate,
+            isRelativeTime: isRelativeTime,
+            captureTime: captureTime,
+            trapType: trapType,
+            methodID: methodID,
+            coordinateID: coordinateID,
+            catalogerID: catalogerID,
+            fieldNumber: fieldNumber,
+            collEventID: collEventID,
+            isMultipleCollector: isMultipleCollector,
+            collPersonnelID: collPersonnelID,
+            collMethodID: collMethodID,
+            museumID: museumID,
+            preparatorID: preparatorID,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String uuid,
+            Value<String?> projectUuid = const Value.absent(),
+            Value<int?> speciesID = const Value.absent(),
+            Value<int?> iDConfidence = const Value.absent(),
+            Value<String?> iDMethod = const Value.absent(),
+            Value<String?> taxonGroup = const Value.absent(),
+            Value<String?> condition = const Value.absent(),
+            Value<String?> prepDate = const Value.absent(),
+            Value<String?> prepTime = const Value.absent(),
+            Value<String?> collectionTime = const Value.absent(),
+            Value<String?> captureDate = const Value.absent(),
+            Value<int?> isRelativeTime = const Value.absent(),
+            Value<String?> captureTime = const Value.absent(),
+            Value<String?> trapType = const Value.absent(),
+            Value<String?> methodID = const Value.absent(),
+            Value<int?> coordinateID = const Value.absent(),
+            Value<String?> catalogerID = const Value.absent(),
+            Value<int?> fieldNumber = const Value.absent(),
+            Value<int?> collEventID = const Value.absent(),
+            Value<int?> isMultipleCollector = const Value.absent(),
+            Value<int?> collPersonnelID = const Value.absent(),
+            Value<int?> collMethodID = const Value.absent(),
+            Value<String?> museumID = const Value.absent(),
+            Value<String?> preparatorID = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              SpecimenCompanion.insert(
+            uuid: uuid,
+            projectUuid: projectUuid,
+            speciesID: speciesID,
+            iDConfidence: iDConfidence,
+            iDMethod: iDMethod,
+            taxonGroup: taxonGroup,
+            condition: condition,
+            prepDate: prepDate,
+            prepTime: prepTime,
+            collectionTime: collectionTime,
+            captureDate: captureDate,
+            isRelativeTime: isRelativeTime,
+            captureTime: captureTime,
+            trapType: trapType,
+            methodID: methodID,
+            coordinateID: coordinateID,
+            catalogerID: catalogerID,
+            fieldNumber: fieldNumber,
+            collEventID: collEventID,
+            isMultipleCollector: isMultipleCollector,
+            collPersonnelID: collPersonnelID,
+            collMethodID: collMethodID,
+            museumID: museumID,
+            preparatorID: preparatorID,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) =>
+                  (e.readTable(table), $SpecimenReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: ({preparatorID = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (preparatorID) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.preparatorID,
+                    referencedTable: $SpecimenReferences._preparatorIDTable(db),
+                    referencedColumn:
+                        $SpecimenReferences._preparatorIDTable(db).uuid,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $SpecimenProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    Specimen,
+    SpecimenData,
+    $SpecimenFilterComposer,
+    $SpecimenOrderingComposer,
+    $SpecimenCreateCompanionBuilder,
+    $SpecimenUpdateCompanionBuilder,
+    (SpecimenData, $SpecimenReferences),
+    SpecimenData,
+    PrefetchHooks Function({bool preparatorID})>;
+typedef $SpecimenMediaCreateCompanionBuilder = SpecimenMediaCompanion Function({
   required String specimenUuid,
   Value<int?> mediaId,
   Value<int> rowid,
@@ -14883,59 +15735,6 @@ typedef $SpecimenMediaUpdateCompanionBuilder = SpecimenMediaCompanion Function({
   Value<int?> mediaId,
   Value<int> rowid,
 });
-
-class $SpecimenMediaTableManager extends RootTableManager<
-    _$Database,
-    SpecimenMedia,
-    SpecimenMediaData,
-    $SpecimenMediaFilterComposer,
-    $SpecimenMediaOrderingComposer,
-    $SpecimenMediaProcessedTableManager,
-    $SpecimenMediaInsertCompanionBuilder,
-    $SpecimenMediaUpdateCompanionBuilder> {
-  $SpecimenMediaTableManager(_$Database db, SpecimenMedia table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $SpecimenMediaFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $SpecimenMediaOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) => $SpecimenMediaProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<String> specimenUuid = const Value.absent(),
-            Value<int?> mediaId = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              SpecimenMediaCompanion(
-            specimenUuid: specimenUuid,
-            mediaId: mediaId,
-            rowid: rowid,
-          ),
-          getInsertCompanionBuilder: ({
-            required String specimenUuid,
-            Value<int?> mediaId = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              SpecimenMediaCompanion.insert(
-            specimenUuid: specimenUuid,
-            mediaId: mediaId,
-            rowid: rowid,
-          ),
-        ));
-}
-
-class $SpecimenMediaProcessedTableManager extends ProcessedTableManager<
-    _$Database,
-    SpecimenMedia,
-    SpecimenMediaData,
-    $SpecimenMediaFilterComposer,
-    $SpecimenMediaOrderingComposer,
-    $SpecimenMediaProcessedTableManager,
-    $SpecimenMediaInsertCompanionBuilder,
-    $SpecimenMediaUpdateCompanionBuilder> {
-  $SpecimenMediaProcessedTableManager(super.$state);
-}
 
 class $SpecimenMediaFilterComposer
     extends FilterComposer<_$Database, SpecimenMedia> {
@@ -14965,7 +15764,70 @@ class $SpecimenMediaOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $AssociatedDataInsertCompanionBuilder = AssociatedDataCompanion
+class $SpecimenMediaTableManager extends RootTableManager<
+    _$Database,
+    SpecimenMedia,
+    SpecimenMediaData,
+    $SpecimenMediaFilterComposer,
+    $SpecimenMediaOrderingComposer,
+    $SpecimenMediaCreateCompanionBuilder,
+    $SpecimenMediaUpdateCompanionBuilder,
+    (
+      SpecimenMediaData,
+      BaseReferences<_$Database, SpecimenMedia, SpecimenMediaData>
+    ),
+    SpecimenMediaData,
+    PrefetchHooks Function()> {
+  $SpecimenMediaTableManager(_$Database db, SpecimenMedia table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $SpecimenMediaFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $SpecimenMediaOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<String> specimenUuid = const Value.absent(),
+            Value<int?> mediaId = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              SpecimenMediaCompanion(
+            specimenUuid: specimenUuid,
+            mediaId: mediaId,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String specimenUuid,
+            Value<int?> mediaId = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              SpecimenMediaCompanion.insert(
+            specimenUuid: specimenUuid,
+            mediaId: mediaId,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $SpecimenMediaProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    SpecimenMedia,
+    SpecimenMediaData,
+    $SpecimenMediaFilterComposer,
+    $SpecimenMediaOrderingComposer,
+    $SpecimenMediaCreateCompanionBuilder,
+    $SpecimenMediaUpdateCompanionBuilder,
+    (
+      SpecimenMediaData,
+      BaseReferences<_$Database, SpecimenMedia, SpecimenMediaData>
+    ),
+    SpecimenMediaData,
+    PrefetchHooks Function()>;
+typedef $AssociatedDataCreateCompanionBuilder = AssociatedDataCompanion
     Function({
   Value<int?> primaryId,
   Value<String?> specimenUuid,
@@ -14985,76 +15847,6 @@ typedef $AssociatedDataUpdateCompanionBuilder = AssociatedDataCompanion
   Value<String?> description,
   Value<String?> url,
 });
-
-class $AssociatedDataTableManager extends RootTableManager<
-    _$Database,
-    AssociatedData,
-    AssociatedDataData,
-    $AssociatedDataFilterComposer,
-    $AssociatedDataOrderingComposer,
-    $AssociatedDataProcessedTableManager,
-    $AssociatedDataInsertCompanionBuilder,
-    $AssociatedDataUpdateCompanionBuilder> {
-  $AssociatedDataTableManager(_$Database db, AssociatedData table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $AssociatedDataFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $AssociatedDataOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) =>
-              $AssociatedDataProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<int?> primaryId = const Value.absent(),
-            Value<String?> specimenUuid = const Value.absent(),
-            Value<String?> name = const Value.absent(),
-            Value<String?> type = const Value.absent(),
-            Value<String?> date = const Value.absent(),
-            Value<String?> description = const Value.absent(),
-            Value<String?> url = const Value.absent(),
-          }) =>
-              AssociatedDataCompanion(
-            primaryId: primaryId,
-            specimenUuid: specimenUuid,
-            name: name,
-            type: type,
-            date: date,
-            description: description,
-            url: url,
-          ),
-          getInsertCompanionBuilder: ({
-            Value<int?> primaryId = const Value.absent(),
-            Value<String?> specimenUuid = const Value.absent(),
-            Value<String?> name = const Value.absent(),
-            Value<String?> type = const Value.absent(),
-            Value<String?> date = const Value.absent(),
-            Value<String?> description = const Value.absent(),
-            Value<String?> url = const Value.absent(),
-          }) =>
-              AssociatedDataCompanion.insert(
-            primaryId: primaryId,
-            specimenUuid: specimenUuid,
-            name: name,
-            type: type,
-            date: date,
-            description: description,
-            url: url,
-          ),
-        ));
-}
-
-class $AssociatedDataProcessedTableManager extends ProcessedTableManager<
-    _$Database,
-    AssociatedData,
-    AssociatedDataData,
-    $AssociatedDataFilterComposer,
-    $AssociatedDataOrderingComposer,
-    $AssociatedDataProcessedTableManager,
-    $AssociatedDataInsertCompanionBuilder,
-    $AssociatedDataUpdateCompanionBuilder> {
-  $AssociatedDataProcessedTableManager(super.$state);
-}
 
 class $AssociatedDataFilterComposer
     extends FilterComposer<_$Database, AssociatedData> {
@@ -15134,7 +15926,86 @@ class $AssociatedDataOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $PersonnelListInsertCompanionBuilder = PersonnelListCompanion Function({
+class $AssociatedDataTableManager extends RootTableManager<
+    _$Database,
+    AssociatedData,
+    AssociatedDataData,
+    $AssociatedDataFilterComposer,
+    $AssociatedDataOrderingComposer,
+    $AssociatedDataCreateCompanionBuilder,
+    $AssociatedDataUpdateCompanionBuilder,
+    (
+      AssociatedDataData,
+      BaseReferences<_$Database, AssociatedData, AssociatedDataData>
+    ),
+    AssociatedDataData,
+    PrefetchHooks Function()> {
+  $AssociatedDataTableManager(_$Database db, AssociatedData table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $AssociatedDataFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $AssociatedDataOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int?> primaryId = const Value.absent(),
+            Value<String?> specimenUuid = const Value.absent(),
+            Value<String?> name = const Value.absent(),
+            Value<String?> type = const Value.absent(),
+            Value<String?> date = const Value.absent(),
+            Value<String?> description = const Value.absent(),
+            Value<String?> url = const Value.absent(),
+          }) =>
+              AssociatedDataCompanion(
+            primaryId: primaryId,
+            specimenUuid: specimenUuid,
+            name: name,
+            type: type,
+            date: date,
+            description: description,
+            url: url,
+          ),
+          createCompanionCallback: ({
+            Value<int?> primaryId = const Value.absent(),
+            Value<String?> specimenUuid = const Value.absent(),
+            Value<String?> name = const Value.absent(),
+            Value<String?> type = const Value.absent(),
+            Value<String?> date = const Value.absent(),
+            Value<String?> description = const Value.absent(),
+            Value<String?> url = const Value.absent(),
+          }) =>
+              AssociatedDataCompanion.insert(
+            primaryId: primaryId,
+            specimenUuid: specimenUuid,
+            name: name,
+            type: type,
+            date: date,
+            description: description,
+            url: url,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $AssociatedDataProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    AssociatedData,
+    AssociatedDataData,
+    $AssociatedDataFilterComposer,
+    $AssociatedDataOrderingComposer,
+    $AssociatedDataCreateCompanionBuilder,
+    $AssociatedDataUpdateCompanionBuilder,
+    (
+      AssociatedDataData,
+      BaseReferences<_$Database, AssociatedData, AssociatedDataData>
+    ),
+    AssociatedDataData,
+    PrefetchHooks Function()>;
+typedef $PersonnelListCreateCompanionBuilder = PersonnelListCompanion Function({
   Value<String?> projectUuid,
   Value<String?> personnelUuid,
   Value<int> rowid,
@@ -15144,59 +16015,6 @@ typedef $PersonnelListUpdateCompanionBuilder = PersonnelListCompanion Function({
   Value<String?> personnelUuid,
   Value<int> rowid,
 });
-
-class $PersonnelListTableManager extends RootTableManager<
-    _$Database,
-    PersonnelList,
-    PersonnelListData,
-    $PersonnelListFilterComposer,
-    $PersonnelListOrderingComposer,
-    $PersonnelListProcessedTableManager,
-    $PersonnelListInsertCompanionBuilder,
-    $PersonnelListUpdateCompanionBuilder> {
-  $PersonnelListTableManager(_$Database db, PersonnelList table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $PersonnelListFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $PersonnelListOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) => $PersonnelListProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<String?> projectUuid = const Value.absent(),
-            Value<String?> personnelUuid = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              PersonnelListCompanion(
-            projectUuid: projectUuid,
-            personnelUuid: personnelUuid,
-            rowid: rowid,
-          ),
-          getInsertCompanionBuilder: ({
-            Value<String?> projectUuid = const Value.absent(),
-            Value<String?> personnelUuid = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              PersonnelListCompanion.insert(
-            projectUuid: projectUuid,
-            personnelUuid: personnelUuid,
-            rowid: rowid,
-          ),
-        ));
-}
-
-class $PersonnelListProcessedTableManager extends ProcessedTableManager<
-    _$Database,
-    PersonnelList,
-    PersonnelListData,
-    $PersonnelListFilterComposer,
-    $PersonnelListOrderingComposer,
-    $PersonnelListProcessedTableManager,
-    $PersonnelListInsertCompanionBuilder,
-    $PersonnelListUpdateCompanionBuilder> {
-  $PersonnelListProcessedTableManager(super.$state);
-}
 
 class $PersonnelListFilterComposer
     extends FilterComposer<_$Database, PersonnelList> {
@@ -15226,7 +16044,70 @@ class $PersonnelListOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $MammalMeasurementInsertCompanionBuilder = MammalMeasurementCompanion
+class $PersonnelListTableManager extends RootTableManager<
+    _$Database,
+    PersonnelList,
+    PersonnelListData,
+    $PersonnelListFilterComposer,
+    $PersonnelListOrderingComposer,
+    $PersonnelListCreateCompanionBuilder,
+    $PersonnelListUpdateCompanionBuilder,
+    (
+      PersonnelListData,
+      BaseReferences<_$Database, PersonnelList, PersonnelListData>
+    ),
+    PersonnelListData,
+    PrefetchHooks Function()> {
+  $PersonnelListTableManager(_$Database db, PersonnelList table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $PersonnelListFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $PersonnelListOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<String?> projectUuid = const Value.absent(),
+            Value<String?> personnelUuid = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              PersonnelListCompanion(
+            projectUuid: projectUuid,
+            personnelUuid: personnelUuid,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            Value<String?> projectUuid = const Value.absent(),
+            Value<String?> personnelUuid = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              PersonnelListCompanion.insert(
+            projectUuid: projectUuid,
+            personnelUuid: personnelUuid,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $PersonnelListProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    PersonnelList,
+    PersonnelListData,
+    $PersonnelListFilterComposer,
+    $PersonnelListOrderingComposer,
+    $PersonnelListCreateCompanionBuilder,
+    $PersonnelListUpdateCompanionBuilder,
+    (
+      PersonnelListData,
+      BaseReferences<_$Database, PersonnelList, PersonnelListData>
+    ),
+    PersonnelListData,
+    PrefetchHooks Function()>;
+typedef $MammalMeasurementCreateCompanionBuilder = MammalMeasurementCompanion
     Function({
   required String specimenUuid,
   Value<double?> totalLength,
@@ -15290,164 +16171,6 @@ typedef $MammalMeasurementUpdateCompanionBuilder = MammalMeasurementCompanion
   Value<String?> remark,
   Value<int> rowid,
 });
-
-class $MammalMeasurementTableManager extends RootTableManager<
-    _$Database,
-    MammalMeasurement,
-    MammalMeasurementData,
-    $MammalMeasurementFilterComposer,
-    $MammalMeasurementOrderingComposer,
-    $MammalMeasurementProcessedTableManager,
-    $MammalMeasurementInsertCompanionBuilder,
-    $MammalMeasurementUpdateCompanionBuilder> {
-  $MammalMeasurementTableManager(_$Database db, MammalMeasurement table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $MammalMeasurementFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $MammalMeasurementOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) =>
-              $MammalMeasurementProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<String> specimenUuid = const Value.absent(),
-            Value<double?> totalLength = const Value.absent(),
-            Value<double?> tailLength = const Value.absent(),
-            Value<double?> hindFootLength = const Value.absent(),
-            Value<double?> earLength = const Value.absent(),
-            Value<double?> forearm = const Value.absent(),
-            Value<double?> weight = const Value.absent(),
-            Value<String?> accuracy = const Value.absent(),
-            Value<String?> accuracySpecify = const Value.absent(),
-            Value<int?> sex = const Value.absent(),
-            Value<int?> age = const Value.absent(),
-            Value<int?> testisPosition = const Value.absent(),
-            Value<double?> testisLength = const Value.absent(),
-            Value<double?> testisWidth = const Value.absent(),
-            Value<int?> epididymisAppearance = const Value.absent(),
-            Value<int?> reproductiveStage = const Value.absent(),
-            Value<int?> leftPlacentalScars = const Value.absent(),
-            Value<int?> rightPlacentalScars = const Value.absent(),
-            Value<int?> mammaeCondition = const Value.absent(),
-            Value<int?> mammaeInguinalCount = const Value.absent(),
-            Value<int?> mammaeAxillaryCount = const Value.absent(),
-            Value<int?> mammaeAbdominalCount = const Value.absent(),
-            Value<int?> vaginaOpening = const Value.absent(),
-            Value<int?> pubicSymphysis = const Value.absent(),
-            Value<int?> embryoLeftCount = const Value.absent(),
-            Value<int?> embryoRightCount = const Value.absent(),
-            Value<int?> embryoCR = const Value.absent(),
-            Value<String?> remark = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              MammalMeasurementCompanion(
-            specimenUuid: specimenUuid,
-            totalLength: totalLength,
-            tailLength: tailLength,
-            hindFootLength: hindFootLength,
-            earLength: earLength,
-            forearm: forearm,
-            weight: weight,
-            accuracy: accuracy,
-            accuracySpecify: accuracySpecify,
-            sex: sex,
-            age: age,
-            testisPosition: testisPosition,
-            testisLength: testisLength,
-            testisWidth: testisWidth,
-            epididymisAppearance: epididymisAppearance,
-            reproductiveStage: reproductiveStage,
-            leftPlacentalScars: leftPlacentalScars,
-            rightPlacentalScars: rightPlacentalScars,
-            mammaeCondition: mammaeCondition,
-            mammaeInguinalCount: mammaeInguinalCount,
-            mammaeAxillaryCount: mammaeAxillaryCount,
-            mammaeAbdominalCount: mammaeAbdominalCount,
-            vaginaOpening: vaginaOpening,
-            pubicSymphysis: pubicSymphysis,
-            embryoLeftCount: embryoLeftCount,
-            embryoRightCount: embryoRightCount,
-            embryoCR: embryoCR,
-            remark: remark,
-            rowid: rowid,
-          ),
-          getInsertCompanionBuilder: ({
-            required String specimenUuid,
-            Value<double?> totalLength = const Value.absent(),
-            Value<double?> tailLength = const Value.absent(),
-            Value<double?> hindFootLength = const Value.absent(),
-            Value<double?> earLength = const Value.absent(),
-            Value<double?> forearm = const Value.absent(),
-            Value<double?> weight = const Value.absent(),
-            Value<String?> accuracy = const Value.absent(),
-            Value<String?> accuracySpecify = const Value.absent(),
-            Value<int?> sex = const Value.absent(),
-            Value<int?> age = const Value.absent(),
-            Value<int?> testisPosition = const Value.absent(),
-            Value<double?> testisLength = const Value.absent(),
-            Value<double?> testisWidth = const Value.absent(),
-            Value<int?> epididymisAppearance = const Value.absent(),
-            Value<int?> reproductiveStage = const Value.absent(),
-            Value<int?> leftPlacentalScars = const Value.absent(),
-            Value<int?> rightPlacentalScars = const Value.absent(),
-            Value<int?> mammaeCondition = const Value.absent(),
-            Value<int?> mammaeInguinalCount = const Value.absent(),
-            Value<int?> mammaeAxillaryCount = const Value.absent(),
-            Value<int?> mammaeAbdominalCount = const Value.absent(),
-            Value<int?> vaginaOpening = const Value.absent(),
-            Value<int?> pubicSymphysis = const Value.absent(),
-            Value<int?> embryoLeftCount = const Value.absent(),
-            Value<int?> embryoRightCount = const Value.absent(),
-            Value<int?> embryoCR = const Value.absent(),
-            Value<String?> remark = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              MammalMeasurementCompanion.insert(
-            specimenUuid: specimenUuid,
-            totalLength: totalLength,
-            tailLength: tailLength,
-            hindFootLength: hindFootLength,
-            earLength: earLength,
-            forearm: forearm,
-            weight: weight,
-            accuracy: accuracy,
-            accuracySpecify: accuracySpecify,
-            sex: sex,
-            age: age,
-            testisPosition: testisPosition,
-            testisLength: testisLength,
-            testisWidth: testisWidth,
-            epididymisAppearance: epididymisAppearance,
-            reproductiveStage: reproductiveStage,
-            leftPlacentalScars: leftPlacentalScars,
-            rightPlacentalScars: rightPlacentalScars,
-            mammaeCondition: mammaeCondition,
-            mammaeInguinalCount: mammaeInguinalCount,
-            mammaeAxillaryCount: mammaeAxillaryCount,
-            mammaeAbdominalCount: mammaeAbdominalCount,
-            vaginaOpening: vaginaOpening,
-            pubicSymphysis: pubicSymphysis,
-            embryoLeftCount: embryoLeftCount,
-            embryoRightCount: embryoRightCount,
-            embryoCR: embryoCR,
-            remark: remark,
-            rowid: rowid,
-          ),
-        ));
-}
-
-class $MammalMeasurementProcessedTableManager extends ProcessedTableManager<
-    _$Database,
-    MammalMeasurement,
-    MammalMeasurementData,
-    $MammalMeasurementFilterComposer,
-    $MammalMeasurementOrderingComposer,
-    $MammalMeasurementProcessedTableManager,
-    $MammalMeasurementInsertCompanionBuilder,
-    $MammalMeasurementUpdateCompanionBuilder> {
-  $MammalMeasurementProcessedTableManager(super.$state);
-}
 
 class $MammalMeasurementFilterComposer
     extends FilterComposer<_$Database, MammalMeasurement> {
@@ -15737,7 +16460,174 @@ class $MammalMeasurementOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $AvianMeasurementInsertCompanionBuilder = AvianMeasurementCompanion
+class $MammalMeasurementTableManager extends RootTableManager<
+    _$Database,
+    MammalMeasurement,
+    MammalMeasurementData,
+    $MammalMeasurementFilterComposer,
+    $MammalMeasurementOrderingComposer,
+    $MammalMeasurementCreateCompanionBuilder,
+    $MammalMeasurementUpdateCompanionBuilder,
+    (
+      MammalMeasurementData,
+      BaseReferences<_$Database, MammalMeasurement, MammalMeasurementData>
+    ),
+    MammalMeasurementData,
+    PrefetchHooks Function()> {
+  $MammalMeasurementTableManager(_$Database db, MammalMeasurement table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $MammalMeasurementFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $MammalMeasurementOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<String> specimenUuid = const Value.absent(),
+            Value<double?> totalLength = const Value.absent(),
+            Value<double?> tailLength = const Value.absent(),
+            Value<double?> hindFootLength = const Value.absent(),
+            Value<double?> earLength = const Value.absent(),
+            Value<double?> forearm = const Value.absent(),
+            Value<double?> weight = const Value.absent(),
+            Value<String?> accuracy = const Value.absent(),
+            Value<String?> accuracySpecify = const Value.absent(),
+            Value<int?> sex = const Value.absent(),
+            Value<int?> age = const Value.absent(),
+            Value<int?> testisPosition = const Value.absent(),
+            Value<double?> testisLength = const Value.absent(),
+            Value<double?> testisWidth = const Value.absent(),
+            Value<int?> epididymisAppearance = const Value.absent(),
+            Value<int?> reproductiveStage = const Value.absent(),
+            Value<int?> leftPlacentalScars = const Value.absent(),
+            Value<int?> rightPlacentalScars = const Value.absent(),
+            Value<int?> mammaeCondition = const Value.absent(),
+            Value<int?> mammaeInguinalCount = const Value.absent(),
+            Value<int?> mammaeAxillaryCount = const Value.absent(),
+            Value<int?> mammaeAbdominalCount = const Value.absent(),
+            Value<int?> vaginaOpening = const Value.absent(),
+            Value<int?> pubicSymphysis = const Value.absent(),
+            Value<int?> embryoLeftCount = const Value.absent(),
+            Value<int?> embryoRightCount = const Value.absent(),
+            Value<int?> embryoCR = const Value.absent(),
+            Value<String?> remark = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              MammalMeasurementCompanion(
+            specimenUuid: specimenUuid,
+            totalLength: totalLength,
+            tailLength: tailLength,
+            hindFootLength: hindFootLength,
+            earLength: earLength,
+            forearm: forearm,
+            weight: weight,
+            accuracy: accuracy,
+            accuracySpecify: accuracySpecify,
+            sex: sex,
+            age: age,
+            testisPosition: testisPosition,
+            testisLength: testisLength,
+            testisWidth: testisWidth,
+            epididymisAppearance: epididymisAppearance,
+            reproductiveStage: reproductiveStage,
+            leftPlacentalScars: leftPlacentalScars,
+            rightPlacentalScars: rightPlacentalScars,
+            mammaeCondition: mammaeCondition,
+            mammaeInguinalCount: mammaeInguinalCount,
+            mammaeAxillaryCount: mammaeAxillaryCount,
+            mammaeAbdominalCount: mammaeAbdominalCount,
+            vaginaOpening: vaginaOpening,
+            pubicSymphysis: pubicSymphysis,
+            embryoLeftCount: embryoLeftCount,
+            embryoRightCount: embryoRightCount,
+            embryoCR: embryoCR,
+            remark: remark,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String specimenUuid,
+            Value<double?> totalLength = const Value.absent(),
+            Value<double?> tailLength = const Value.absent(),
+            Value<double?> hindFootLength = const Value.absent(),
+            Value<double?> earLength = const Value.absent(),
+            Value<double?> forearm = const Value.absent(),
+            Value<double?> weight = const Value.absent(),
+            Value<String?> accuracy = const Value.absent(),
+            Value<String?> accuracySpecify = const Value.absent(),
+            Value<int?> sex = const Value.absent(),
+            Value<int?> age = const Value.absent(),
+            Value<int?> testisPosition = const Value.absent(),
+            Value<double?> testisLength = const Value.absent(),
+            Value<double?> testisWidth = const Value.absent(),
+            Value<int?> epididymisAppearance = const Value.absent(),
+            Value<int?> reproductiveStage = const Value.absent(),
+            Value<int?> leftPlacentalScars = const Value.absent(),
+            Value<int?> rightPlacentalScars = const Value.absent(),
+            Value<int?> mammaeCondition = const Value.absent(),
+            Value<int?> mammaeInguinalCount = const Value.absent(),
+            Value<int?> mammaeAxillaryCount = const Value.absent(),
+            Value<int?> mammaeAbdominalCount = const Value.absent(),
+            Value<int?> vaginaOpening = const Value.absent(),
+            Value<int?> pubicSymphysis = const Value.absent(),
+            Value<int?> embryoLeftCount = const Value.absent(),
+            Value<int?> embryoRightCount = const Value.absent(),
+            Value<int?> embryoCR = const Value.absent(),
+            Value<String?> remark = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              MammalMeasurementCompanion.insert(
+            specimenUuid: specimenUuid,
+            totalLength: totalLength,
+            tailLength: tailLength,
+            hindFootLength: hindFootLength,
+            earLength: earLength,
+            forearm: forearm,
+            weight: weight,
+            accuracy: accuracy,
+            accuracySpecify: accuracySpecify,
+            sex: sex,
+            age: age,
+            testisPosition: testisPosition,
+            testisLength: testisLength,
+            testisWidth: testisWidth,
+            epididymisAppearance: epididymisAppearance,
+            reproductiveStage: reproductiveStage,
+            leftPlacentalScars: leftPlacentalScars,
+            rightPlacentalScars: rightPlacentalScars,
+            mammaeCondition: mammaeCondition,
+            mammaeInguinalCount: mammaeInguinalCount,
+            mammaeAxillaryCount: mammaeAxillaryCount,
+            mammaeAbdominalCount: mammaeAbdominalCount,
+            vaginaOpening: vaginaOpening,
+            pubicSymphysis: pubicSymphysis,
+            embryoLeftCount: embryoLeftCount,
+            embryoRightCount: embryoRightCount,
+            embryoCR: embryoCR,
+            remark: remark,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $MammalMeasurementProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    MammalMeasurement,
+    MammalMeasurementData,
+    $MammalMeasurementFilterComposer,
+    $MammalMeasurementOrderingComposer,
+    $MammalMeasurementCreateCompanionBuilder,
+    $MammalMeasurementUpdateCompanionBuilder,
+    (
+      MammalMeasurementData,
+      BaseReferences<_$Database, MammalMeasurement, MammalMeasurementData>
+    ),
+    MammalMeasurementData,
+    PrefetchHooks Function()>;
+typedef $AvianMeasurementCreateCompanionBuilder = AvianMeasurementCompanion
     Function({
   required String specimenUuid,
   Value<double?> weight,
@@ -15823,208 +16713,6 @@ typedef $AvianMeasurementUpdateCompanionBuilder = AvianMeasurementCompanion
   Value<String?> habitatRemark,
   Value<int> rowid,
 });
-
-class $AvianMeasurementTableManager extends RootTableManager<
-    _$Database,
-    AvianMeasurement,
-    AvianMeasurementData,
-    $AvianMeasurementFilterComposer,
-    $AvianMeasurementOrderingComposer,
-    $AvianMeasurementProcessedTableManager,
-    $AvianMeasurementInsertCompanionBuilder,
-    $AvianMeasurementUpdateCompanionBuilder> {
-  $AvianMeasurementTableManager(_$Database db, AvianMeasurement table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $AvianMeasurementFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $AvianMeasurementOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) =>
-              $AvianMeasurementProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<String> specimenUuid = const Value.absent(),
-            Value<double?> weight = const Value.absent(),
-            Value<double?> wingspan = const Value.absent(),
-            Value<String?> irisColor = const Value.absent(),
-            Value<String?> irisHex = const Value.absent(),
-            Value<String?> billColor = const Value.absent(),
-            Value<String?> billHex = const Value.absent(),
-            Value<String?> footColor = const Value.absent(),
-            Value<String?> footHex = const Value.absent(),
-            Value<String?> tarsusColor = const Value.absent(),
-            Value<String?> tarsusHex = const Value.absent(),
-            Value<int?> sex = const Value.absent(),
-            Value<int?> broodPatch = const Value.absent(),
-            Value<int?> skullOssification = const Value.absent(),
-            Value<int?> hasBursa = const Value.absent(),
-            Value<double?> bursaWidth = const Value.absent(),
-            Value<double?> bursaLength = const Value.absent(),
-            Value<int?> fat = const Value.absent(),
-            Value<String?> stomachContent = const Value.absent(),
-            Value<double?> testisLength = const Value.absent(),
-            Value<double?> testisWidth = const Value.absent(),
-            Value<String?> testisRemark = const Value.absent(),
-            Value<double?> ovaryLength = const Value.absent(),
-            Value<double?> ovaryWidth = const Value.absent(),
-            Value<double?> oviductWidth = const Value.absent(),
-            Value<int?> ovaryAppearance = const Value.absent(),
-            Value<double?> firstOvaSize = const Value.absent(),
-            Value<double?> secondOvaSize = const Value.absent(),
-            Value<double?> thirdOvaSize = const Value.absent(),
-            Value<int?> oviductAppearance = const Value.absent(),
-            Value<String?> ovaryRemark = const Value.absent(),
-            Value<int?> wingIsMolt = const Value.absent(),
-            Value<String?> wingMolt = const Value.absent(),
-            Value<int?> tailIsMolt = const Value.absent(),
-            Value<String?> tailMolt = const Value.absent(),
-            Value<int?> bodyMolt = const Value.absent(),
-            Value<String?> moltRemark = const Value.absent(),
-            Value<String?> specimenRemark = const Value.absent(),
-            Value<String?> habitatRemark = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              AvianMeasurementCompanion(
-            specimenUuid: specimenUuid,
-            weight: weight,
-            wingspan: wingspan,
-            irisColor: irisColor,
-            irisHex: irisHex,
-            billColor: billColor,
-            billHex: billHex,
-            footColor: footColor,
-            footHex: footHex,
-            tarsusColor: tarsusColor,
-            tarsusHex: tarsusHex,
-            sex: sex,
-            broodPatch: broodPatch,
-            skullOssification: skullOssification,
-            hasBursa: hasBursa,
-            bursaWidth: bursaWidth,
-            bursaLength: bursaLength,
-            fat: fat,
-            stomachContent: stomachContent,
-            testisLength: testisLength,
-            testisWidth: testisWidth,
-            testisRemark: testisRemark,
-            ovaryLength: ovaryLength,
-            ovaryWidth: ovaryWidth,
-            oviductWidth: oviductWidth,
-            ovaryAppearance: ovaryAppearance,
-            firstOvaSize: firstOvaSize,
-            secondOvaSize: secondOvaSize,
-            thirdOvaSize: thirdOvaSize,
-            oviductAppearance: oviductAppearance,
-            ovaryRemark: ovaryRemark,
-            wingIsMolt: wingIsMolt,
-            wingMolt: wingMolt,
-            tailIsMolt: tailIsMolt,
-            tailMolt: tailMolt,
-            bodyMolt: bodyMolt,
-            moltRemark: moltRemark,
-            specimenRemark: specimenRemark,
-            habitatRemark: habitatRemark,
-            rowid: rowid,
-          ),
-          getInsertCompanionBuilder: ({
-            required String specimenUuid,
-            Value<double?> weight = const Value.absent(),
-            Value<double?> wingspan = const Value.absent(),
-            Value<String?> irisColor = const Value.absent(),
-            Value<String?> irisHex = const Value.absent(),
-            Value<String?> billColor = const Value.absent(),
-            Value<String?> billHex = const Value.absent(),
-            Value<String?> footColor = const Value.absent(),
-            Value<String?> footHex = const Value.absent(),
-            Value<String?> tarsusColor = const Value.absent(),
-            Value<String?> tarsusHex = const Value.absent(),
-            Value<int?> sex = const Value.absent(),
-            Value<int?> broodPatch = const Value.absent(),
-            Value<int?> skullOssification = const Value.absent(),
-            Value<int?> hasBursa = const Value.absent(),
-            Value<double?> bursaWidth = const Value.absent(),
-            Value<double?> bursaLength = const Value.absent(),
-            Value<int?> fat = const Value.absent(),
-            Value<String?> stomachContent = const Value.absent(),
-            Value<double?> testisLength = const Value.absent(),
-            Value<double?> testisWidth = const Value.absent(),
-            Value<String?> testisRemark = const Value.absent(),
-            Value<double?> ovaryLength = const Value.absent(),
-            Value<double?> ovaryWidth = const Value.absent(),
-            Value<double?> oviductWidth = const Value.absent(),
-            Value<int?> ovaryAppearance = const Value.absent(),
-            Value<double?> firstOvaSize = const Value.absent(),
-            Value<double?> secondOvaSize = const Value.absent(),
-            Value<double?> thirdOvaSize = const Value.absent(),
-            Value<int?> oviductAppearance = const Value.absent(),
-            Value<String?> ovaryRemark = const Value.absent(),
-            Value<int?> wingIsMolt = const Value.absent(),
-            Value<String?> wingMolt = const Value.absent(),
-            Value<int?> tailIsMolt = const Value.absent(),
-            Value<String?> tailMolt = const Value.absent(),
-            Value<int?> bodyMolt = const Value.absent(),
-            Value<String?> moltRemark = const Value.absent(),
-            Value<String?> specimenRemark = const Value.absent(),
-            Value<String?> habitatRemark = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              AvianMeasurementCompanion.insert(
-            specimenUuid: specimenUuid,
-            weight: weight,
-            wingspan: wingspan,
-            irisColor: irisColor,
-            irisHex: irisHex,
-            billColor: billColor,
-            billHex: billHex,
-            footColor: footColor,
-            footHex: footHex,
-            tarsusColor: tarsusColor,
-            tarsusHex: tarsusHex,
-            sex: sex,
-            broodPatch: broodPatch,
-            skullOssification: skullOssification,
-            hasBursa: hasBursa,
-            bursaWidth: bursaWidth,
-            bursaLength: bursaLength,
-            fat: fat,
-            stomachContent: stomachContent,
-            testisLength: testisLength,
-            testisWidth: testisWidth,
-            testisRemark: testisRemark,
-            ovaryLength: ovaryLength,
-            ovaryWidth: ovaryWidth,
-            oviductWidth: oviductWidth,
-            ovaryAppearance: ovaryAppearance,
-            firstOvaSize: firstOvaSize,
-            secondOvaSize: secondOvaSize,
-            thirdOvaSize: thirdOvaSize,
-            oviductAppearance: oviductAppearance,
-            ovaryRemark: ovaryRemark,
-            wingIsMolt: wingIsMolt,
-            wingMolt: wingMolt,
-            tailIsMolt: tailIsMolt,
-            tailMolt: tailMolt,
-            bodyMolt: bodyMolt,
-            moltRemark: moltRemark,
-            specimenRemark: specimenRemark,
-            habitatRemark: habitatRemark,
-            rowid: rowid,
-          ),
-        ));
-}
-
-class $AvianMeasurementProcessedTableManager extends ProcessedTableManager<
-    _$Database,
-    AvianMeasurement,
-    AvianMeasurementData,
-    $AvianMeasurementFilterComposer,
-    $AvianMeasurementOrderingComposer,
-    $AvianMeasurementProcessedTableManager,
-    $AvianMeasurementInsertCompanionBuilder,
-    $AvianMeasurementUpdateCompanionBuilder> {
-  $AvianMeasurementProcessedTableManager(super.$state);
-}
 
 class $AvianMeasurementFilterComposer
     extends FilterComposer<_$Database, AvianMeasurement> {
@@ -16424,7 +17112,218 @@ class $AvianMeasurementOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $SpecimenPartInsertCompanionBuilder = SpecimenPartCompanion Function({
+class $AvianMeasurementTableManager extends RootTableManager<
+    _$Database,
+    AvianMeasurement,
+    AvianMeasurementData,
+    $AvianMeasurementFilterComposer,
+    $AvianMeasurementOrderingComposer,
+    $AvianMeasurementCreateCompanionBuilder,
+    $AvianMeasurementUpdateCompanionBuilder,
+    (
+      AvianMeasurementData,
+      BaseReferences<_$Database, AvianMeasurement, AvianMeasurementData>
+    ),
+    AvianMeasurementData,
+    PrefetchHooks Function()> {
+  $AvianMeasurementTableManager(_$Database db, AvianMeasurement table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $AvianMeasurementFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $AvianMeasurementOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<String> specimenUuid = const Value.absent(),
+            Value<double?> weight = const Value.absent(),
+            Value<double?> wingspan = const Value.absent(),
+            Value<String?> irisColor = const Value.absent(),
+            Value<String?> irisHex = const Value.absent(),
+            Value<String?> billColor = const Value.absent(),
+            Value<String?> billHex = const Value.absent(),
+            Value<String?> footColor = const Value.absent(),
+            Value<String?> footHex = const Value.absent(),
+            Value<String?> tarsusColor = const Value.absent(),
+            Value<String?> tarsusHex = const Value.absent(),
+            Value<int?> sex = const Value.absent(),
+            Value<int?> broodPatch = const Value.absent(),
+            Value<int?> skullOssification = const Value.absent(),
+            Value<int?> hasBursa = const Value.absent(),
+            Value<double?> bursaWidth = const Value.absent(),
+            Value<double?> bursaLength = const Value.absent(),
+            Value<int?> fat = const Value.absent(),
+            Value<String?> stomachContent = const Value.absent(),
+            Value<double?> testisLength = const Value.absent(),
+            Value<double?> testisWidth = const Value.absent(),
+            Value<String?> testisRemark = const Value.absent(),
+            Value<double?> ovaryLength = const Value.absent(),
+            Value<double?> ovaryWidth = const Value.absent(),
+            Value<double?> oviductWidth = const Value.absent(),
+            Value<int?> ovaryAppearance = const Value.absent(),
+            Value<double?> firstOvaSize = const Value.absent(),
+            Value<double?> secondOvaSize = const Value.absent(),
+            Value<double?> thirdOvaSize = const Value.absent(),
+            Value<int?> oviductAppearance = const Value.absent(),
+            Value<String?> ovaryRemark = const Value.absent(),
+            Value<int?> wingIsMolt = const Value.absent(),
+            Value<String?> wingMolt = const Value.absent(),
+            Value<int?> tailIsMolt = const Value.absent(),
+            Value<String?> tailMolt = const Value.absent(),
+            Value<int?> bodyMolt = const Value.absent(),
+            Value<String?> moltRemark = const Value.absent(),
+            Value<String?> specimenRemark = const Value.absent(),
+            Value<String?> habitatRemark = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              AvianMeasurementCompanion(
+            specimenUuid: specimenUuid,
+            weight: weight,
+            wingspan: wingspan,
+            irisColor: irisColor,
+            irisHex: irisHex,
+            billColor: billColor,
+            billHex: billHex,
+            footColor: footColor,
+            footHex: footHex,
+            tarsusColor: tarsusColor,
+            tarsusHex: tarsusHex,
+            sex: sex,
+            broodPatch: broodPatch,
+            skullOssification: skullOssification,
+            hasBursa: hasBursa,
+            bursaWidth: bursaWidth,
+            bursaLength: bursaLength,
+            fat: fat,
+            stomachContent: stomachContent,
+            testisLength: testisLength,
+            testisWidth: testisWidth,
+            testisRemark: testisRemark,
+            ovaryLength: ovaryLength,
+            ovaryWidth: ovaryWidth,
+            oviductWidth: oviductWidth,
+            ovaryAppearance: ovaryAppearance,
+            firstOvaSize: firstOvaSize,
+            secondOvaSize: secondOvaSize,
+            thirdOvaSize: thirdOvaSize,
+            oviductAppearance: oviductAppearance,
+            ovaryRemark: ovaryRemark,
+            wingIsMolt: wingIsMolt,
+            wingMolt: wingMolt,
+            tailIsMolt: tailIsMolt,
+            tailMolt: tailMolt,
+            bodyMolt: bodyMolt,
+            moltRemark: moltRemark,
+            specimenRemark: specimenRemark,
+            habitatRemark: habitatRemark,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String specimenUuid,
+            Value<double?> weight = const Value.absent(),
+            Value<double?> wingspan = const Value.absent(),
+            Value<String?> irisColor = const Value.absent(),
+            Value<String?> irisHex = const Value.absent(),
+            Value<String?> billColor = const Value.absent(),
+            Value<String?> billHex = const Value.absent(),
+            Value<String?> footColor = const Value.absent(),
+            Value<String?> footHex = const Value.absent(),
+            Value<String?> tarsusColor = const Value.absent(),
+            Value<String?> tarsusHex = const Value.absent(),
+            Value<int?> sex = const Value.absent(),
+            Value<int?> broodPatch = const Value.absent(),
+            Value<int?> skullOssification = const Value.absent(),
+            Value<int?> hasBursa = const Value.absent(),
+            Value<double?> bursaWidth = const Value.absent(),
+            Value<double?> bursaLength = const Value.absent(),
+            Value<int?> fat = const Value.absent(),
+            Value<String?> stomachContent = const Value.absent(),
+            Value<double?> testisLength = const Value.absent(),
+            Value<double?> testisWidth = const Value.absent(),
+            Value<String?> testisRemark = const Value.absent(),
+            Value<double?> ovaryLength = const Value.absent(),
+            Value<double?> ovaryWidth = const Value.absent(),
+            Value<double?> oviductWidth = const Value.absent(),
+            Value<int?> ovaryAppearance = const Value.absent(),
+            Value<double?> firstOvaSize = const Value.absent(),
+            Value<double?> secondOvaSize = const Value.absent(),
+            Value<double?> thirdOvaSize = const Value.absent(),
+            Value<int?> oviductAppearance = const Value.absent(),
+            Value<String?> ovaryRemark = const Value.absent(),
+            Value<int?> wingIsMolt = const Value.absent(),
+            Value<String?> wingMolt = const Value.absent(),
+            Value<int?> tailIsMolt = const Value.absent(),
+            Value<String?> tailMolt = const Value.absent(),
+            Value<int?> bodyMolt = const Value.absent(),
+            Value<String?> moltRemark = const Value.absent(),
+            Value<String?> specimenRemark = const Value.absent(),
+            Value<String?> habitatRemark = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              AvianMeasurementCompanion.insert(
+            specimenUuid: specimenUuid,
+            weight: weight,
+            wingspan: wingspan,
+            irisColor: irisColor,
+            irisHex: irisHex,
+            billColor: billColor,
+            billHex: billHex,
+            footColor: footColor,
+            footHex: footHex,
+            tarsusColor: tarsusColor,
+            tarsusHex: tarsusHex,
+            sex: sex,
+            broodPatch: broodPatch,
+            skullOssification: skullOssification,
+            hasBursa: hasBursa,
+            bursaWidth: bursaWidth,
+            bursaLength: bursaLength,
+            fat: fat,
+            stomachContent: stomachContent,
+            testisLength: testisLength,
+            testisWidth: testisWidth,
+            testisRemark: testisRemark,
+            ovaryLength: ovaryLength,
+            ovaryWidth: ovaryWidth,
+            oviductWidth: oviductWidth,
+            ovaryAppearance: ovaryAppearance,
+            firstOvaSize: firstOvaSize,
+            secondOvaSize: secondOvaSize,
+            thirdOvaSize: thirdOvaSize,
+            oviductAppearance: oviductAppearance,
+            ovaryRemark: ovaryRemark,
+            wingIsMolt: wingIsMolt,
+            wingMolt: wingMolt,
+            tailIsMolt: tailIsMolt,
+            tailMolt: tailMolt,
+            bodyMolt: bodyMolt,
+            moltRemark: moltRemark,
+            specimenRemark: specimenRemark,
+            habitatRemark: habitatRemark,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $AvianMeasurementProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    AvianMeasurement,
+    AvianMeasurementData,
+    $AvianMeasurementFilterComposer,
+    $AvianMeasurementOrderingComposer,
+    $AvianMeasurementCreateCompanionBuilder,
+    $AvianMeasurementUpdateCompanionBuilder,
+    (
+      AvianMeasurementData,
+      BaseReferences<_$Database, AvianMeasurement, AvianMeasurementData>
+    ),
+    AvianMeasurementData,
+    PrefetchHooks Function()>;
+typedef $SpecimenPartCreateCompanionBuilder = SpecimenPartCompanion Function({
   Value<int?> id,
   Value<String?> specimenUuid,
   Value<String?> personnelId,
@@ -16458,107 +17357,6 @@ typedef $SpecimenPartUpdateCompanionBuilder = SpecimenPartCompanion Function({
   Value<String?> museumLoan,
   Value<String?> remark,
 });
-
-class $SpecimenPartTableManager extends RootTableManager<
-    _$Database,
-    SpecimenPart,
-    SpecimenPartData,
-    $SpecimenPartFilterComposer,
-    $SpecimenPartOrderingComposer,
-    $SpecimenPartProcessedTableManager,
-    $SpecimenPartInsertCompanionBuilder,
-    $SpecimenPartUpdateCompanionBuilder> {
-  $SpecimenPartTableManager(_$Database db, SpecimenPart table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $SpecimenPartFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $SpecimenPartOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) => $SpecimenPartProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<int?> id = const Value.absent(),
-            Value<String?> specimenUuid = const Value.absent(),
-            Value<String?> personnelId = const Value.absent(),
-            Value<String?> tissueID = const Value.absent(),
-            Value<String?> barcodeID = const Value.absent(),
-            Value<String?> type = const Value.absent(),
-            Value<String?> count = const Value.absent(),
-            Value<String?> treatment = const Value.absent(),
-            Value<String?> additionalTreatment = const Value.absent(),
-            Value<String?> dateTaken = const Value.absent(),
-            Value<String?> timeTaken = const Value.absent(),
-            Value<String?> pmi = const Value.absent(),
-            Value<String?> museumPermanent = const Value.absent(),
-            Value<String?> museumLoan = const Value.absent(),
-            Value<String?> remark = const Value.absent(),
-          }) =>
-              SpecimenPartCompanion(
-            id: id,
-            specimenUuid: specimenUuid,
-            personnelId: personnelId,
-            tissueID: tissueID,
-            barcodeID: barcodeID,
-            type: type,
-            count: count,
-            treatment: treatment,
-            additionalTreatment: additionalTreatment,
-            dateTaken: dateTaken,
-            timeTaken: timeTaken,
-            pmi: pmi,
-            museumPermanent: museumPermanent,
-            museumLoan: museumLoan,
-            remark: remark,
-          ),
-          getInsertCompanionBuilder: ({
-            Value<int?> id = const Value.absent(),
-            Value<String?> specimenUuid = const Value.absent(),
-            Value<String?> personnelId = const Value.absent(),
-            Value<String?> tissueID = const Value.absent(),
-            Value<String?> barcodeID = const Value.absent(),
-            Value<String?> type = const Value.absent(),
-            Value<String?> count = const Value.absent(),
-            Value<String?> treatment = const Value.absent(),
-            Value<String?> additionalTreatment = const Value.absent(),
-            Value<String?> dateTaken = const Value.absent(),
-            Value<String?> timeTaken = const Value.absent(),
-            Value<String?> pmi = const Value.absent(),
-            Value<String?> museumPermanent = const Value.absent(),
-            Value<String?> museumLoan = const Value.absent(),
-            Value<String?> remark = const Value.absent(),
-          }) =>
-              SpecimenPartCompanion.insert(
-            id: id,
-            specimenUuid: specimenUuid,
-            personnelId: personnelId,
-            tissueID: tissueID,
-            barcodeID: barcodeID,
-            type: type,
-            count: count,
-            treatment: treatment,
-            additionalTreatment: additionalTreatment,
-            dateTaken: dateTaken,
-            timeTaken: timeTaken,
-            pmi: pmi,
-            museumPermanent: museumPermanent,
-            museumLoan: museumLoan,
-            remark: remark,
-          ),
-        ));
-}
-
-class $SpecimenPartProcessedTableManager extends ProcessedTableManager<
-    _$Database,
-    SpecimenPart,
-    SpecimenPartData,
-    $SpecimenPartFilterComposer,
-    $SpecimenPartOrderingComposer,
-    $SpecimenPartProcessedTableManager,
-    $SpecimenPartInsertCompanionBuilder,
-    $SpecimenPartUpdateCompanionBuilder> {
-  $SpecimenPartProcessedTableManager(super.$state);
-}
 
 class $SpecimenPartFilterComposer
     extends FilterComposer<_$Database, SpecimenPart> {
@@ -16718,9 +17516,121 @@ class $SpecimenPartOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-class _$DatabaseManager {
+class $SpecimenPartTableManager extends RootTableManager<
+    _$Database,
+    SpecimenPart,
+    SpecimenPartData,
+    $SpecimenPartFilterComposer,
+    $SpecimenPartOrderingComposer,
+    $SpecimenPartCreateCompanionBuilder,
+    $SpecimenPartUpdateCompanionBuilder,
+    (
+      SpecimenPartData,
+      BaseReferences<_$Database, SpecimenPart, SpecimenPartData>
+    ),
+    SpecimenPartData,
+    PrefetchHooks Function()> {
+  $SpecimenPartTableManager(_$Database db, SpecimenPart table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $SpecimenPartFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $SpecimenPartOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int?> id = const Value.absent(),
+            Value<String?> specimenUuid = const Value.absent(),
+            Value<String?> personnelId = const Value.absent(),
+            Value<String?> tissueID = const Value.absent(),
+            Value<String?> barcodeID = const Value.absent(),
+            Value<String?> type = const Value.absent(),
+            Value<String?> count = const Value.absent(),
+            Value<String?> treatment = const Value.absent(),
+            Value<String?> additionalTreatment = const Value.absent(),
+            Value<String?> dateTaken = const Value.absent(),
+            Value<String?> timeTaken = const Value.absent(),
+            Value<String?> pmi = const Value.absent(),
+            Value<String?> museumPermanent = const Value.absent(),
+            Value<String?> museumLoan = const Value.absent(),
+            Value<String?> remark = const Value.absent(),
+          }) =>
+              SpecimenPartCompanion(
+            id: id,
+            specimenUuid: specimenUuid,
+            personnelId: personnelId,
+            tissueID: tissueID,
+            barcodeID: barcodeID,
+            type: type,
+            count: count,
+            treatment: treatment,
+            additionalTreatment: additionalTreatment,
+            dateTaken: dateTaken,
+            timeTaken: timeTaken,
+            pmi: pmi,
+            museumPermanent: museumPermanent,
+            museumLoan: museumLoan,
+            remark: remark,
+          ),
+          createCompanionCallback: ({
+            Value<int?> id = const Value.absent(),
+            Value<String?> specimenUuid = const Value.absent(),
+            Value<String?> personnelId = const Value.absent(),
+            Value<String?> tissueID = const Value.absent(),
+            Value<String?> barcodeID = const Value.absent(),
+            Value<String?> type = const Value.absent(),
+            Value<String?> count = const Value.absent(),
+            Value<String?> treatment = const Value.absent(),
+            Value<String?> additionalTreatment = const Value.absent(),
+            Value<String?> dateTaken = const Value.absent(),
+            Value<String?> timeTaken = const Value.absent(),
+            Value<String?> pmi = const Value.absent(),
+            Value<String?> museumPermanent = const Value.absent(),
+            Value<String?> museumLoan = const Value.absent(),
+            Value<String?> remark = const Value.absent(),
+          }) =>
+              SpecimenPartCompanion.insert(
+            id: id,
+            specimenUuid: specimenUuid,
+            personnelId: personnelId,
+            tissueID: tissueID,
+            barcodeID: barcodeID,
+            type: type,
+            count: count,
+            treatment: treatment,
+            additionalTreatment: additionalTreatment,
+            dateTaken: dateTaken,
+            timeTaken: timeTaken,
+            pmi: pmi,
+            museumPermanent: museumPermanent,
+            museumLoan: museumLoan,
+            remark: remark,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $SpecimenPartProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    SpecimenPart,
+    SpecimenPartData,
+    $SpecimenPartFilterComposer,
+    $SpecimenPartOrderingComposer,
+    $SpecimenPartCreateCompanionBuilder,
+    $SpecimenPartUpdateCompanionBuilder,
+    (
+      SpecimenPartData,
+      BaseReferences<_$Database, SpecimenPart, SpecimenPartData>
+    ),
+    SpecimenPartData,
+    PrefetchHooks Function()>;
+
+class $DatabaseManager {
   final _$Database _db;
-  _$DatabaseManager(this._db);
+  $DatabaseManager(this._db);
   $ProjectTableManager get project => $ProjectTableManager(_db, _db.project);
   $PersonnelTableManager get personnel =>
       $PersonnelTableManager(_db, _db.personnel);
