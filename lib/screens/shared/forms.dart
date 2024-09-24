@@ -39,7 +39,10 @@ class FormCard extends StatelessWidget {
           color: isPrimary
               ? Color.lerp(Theme.of(context).colorScheme.secondaryContainer,
                   Theme.of(context).colorScheme.surface, 0.2)
-              : Theme.of(context).colorScheme.surfaceContainerHighest.withAlpha(80),
+              : Theme.of(context)
+                  .colorScheme
+                  .surfaceContainerHighest
+                  .withAlpha(80),
           border: Border.all(
             color: isPrimary
                 ? Theme.of(context).colorScheme.secondary.withAlpha(50)

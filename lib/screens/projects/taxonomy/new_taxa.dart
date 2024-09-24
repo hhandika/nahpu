@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/providers/taxa.dart';
@@ -40,17 +39,11 @@ class SliderView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CarouselSlider(
-        items: items,
-        options: CarouselOptions(
-          height: 400,
-          viewportFraction: 0.7,
-          initialPage: 0,
-          enableInfiniteScroll: false,
-          reverse: false,
-          autoPlay: false,
-          scrollDirection: Axis.horizontal,
-        ));
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      itemExtent: 340,
+      children: items,
+    );
   }
 }
 

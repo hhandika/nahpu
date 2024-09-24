@@ -138,7 +138,8 @@ class AvatarViewerState extends ConsumerState<AvatarViewer> {
             builder: (context, snapshot) {
               if (snapshot.hasData && snapshot.data != null) {
                 return CircleAvatar(
-                  backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                  backgroundColor:
+                      Theme.of(context).colorScheme.surfaceContainerHighest,
                   foregroundImage: FileImage(snapshot.data as File),
                 );
               } else {
