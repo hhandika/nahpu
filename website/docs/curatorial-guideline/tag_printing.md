@@ -9,7 +9,7 @@ This page contains information on generating specimen tags using NAHPU data.
 
 - **Saves time in the field.** Rather than writing out full specimen tags, which can easily take 10 or more minutes per tag, a faster alternative is to use small tags with identifiers such as a tissue number (e.g., “B-729113”) and field number (e.g., “JPO 7299”). Then, back in a museum, the users can print the final, complete tags for the specimens.
 - **Neater and more standardized tags.** Some people have the gift of neat handwriting, whereas others are less gifted. Printing tags ensures that all the tag data is easy to read!
-- **Avoids errors from repetive, tedious task.** Writing a detailed locality name with coordinates and elevational data can be tedious to write out dozens of times in the field. Human error is common. Using NAHPU, this information need only be entered once and can then be associated with each specimen via a dropdown site menu. If necessary, the locality details can also be easily updated within the app.
+- **Avoids errors from repetitive, tedious task.** Writing a detailed locality name with coordinates and elevational data can be tedious to write out dozens of times in the field. Human error is common. Using NAHPU, this information need only be entered once and can then be associated with each specimen via a dropdown site menu. If necessary, the locality details can also be easily updated within the app.
 - **Allows for data cleanup phase.** Before printing, it is easy to use a final spreadsheet to correct whacky coordinates, elevations, terminology errors, spelling, etc.
 
 ## Tag-printing workflow
