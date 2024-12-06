@@ -20,6 +20,8 @@ final allPersonnelProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef AllPersonnelRef = AutoDisposeFutureProviderRef<List<PersonnelData>>;
 String _$projectPersonnelHash() => r'1addf1bc5c176866f051ac91b413d89bdbc6d7fc';
 
@@ -36,6 +38,8 @@ final projectPersonnelProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef ProjectPersonnelRef = AutoDisposeFutureProviderRef<List<PersonnelData>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

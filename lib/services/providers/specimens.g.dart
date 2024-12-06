@@ -146,6 +146,8 @@ class AssociatedDataProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin AssociatedDataRef
     on AutoDisposeFutureProviderRef<List<AssociatedDataData>> {
   /// The parameter `specimenUuid` of this provider.
@@ -276,6 +278,8 @@ class SpecimenMediaProvider extends AutoDisposeFutureProvider<List<MediaData>> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin SpecimenMediaRef on AutoDisposeFutureProviderRef<List<MediaData>> {
   /// The parameter `specimenUuid` of this provider.
   String get specimenUuid;
@@ -356,4 +360,4 @@ final treatmentOptionsProvider =
 
 typedef _$TreatmentOptions = AutoDisposeAsyncNotifier<List<String>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

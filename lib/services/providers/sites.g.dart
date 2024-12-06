@@ -141,6 +141,8 @@ class SiteMediaProvider extends AutoDisposeFutureProvider<List<MediaData>> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin SiteMediaRef on AutoDisposeFutureProviderRef<List<MediaData>> {
   /// The parameter `siteId` of this provider.
   int get siteId;
@@ -168,6 +170,8 @@ final siteInEventProvider = AutoDisposeFutureProvider<List<SiteData>>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef SiteInEventRef = AutoDisposeFutureProviderRef<List<SiteData>>;
 String _$siteEntryHash() => r'de7c968d0f594ec4fbaf6661642d45cf60ba40e3';
 
@@ -185,4 +189,4 @@ final siteEntryProvider =
 
 typedef _$SiteEntry = AutoDisposeAsyncNotifier<List<SiteData>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
