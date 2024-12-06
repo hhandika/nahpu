@@ -6,6 +6,7 @@ import 'package:nahpu/services/database/media_queries.dart';
 import 'package:nahpu/services/database/specimen_queries.dart';
 import 'package:nahpu/services/types/specimens.dart';
 import 'package:nahpu/services/utility_services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'specimens.g.dart';
@@ -71,7 +72,7 @@ final partBySpecimenProvider = FutureProvider.family
             .getSpecimenParts(specimenUuid));
 
 @riverpod
-Future<List<AssociatedDataData>> associatedData(AssociatedDataRef ref,
+Future<List<AssociatedDataData>> associatedData(Ref ref,
     {required String specimenUuid}) async {
   final associatedDataEntries =
       await AssociatedDataQuery(ref.read(databaseProvider))
@@ -81,7 +82,7 @@ Future<List<AssociatedDataData>> associatedData(AssociatedDataRef ref,
 }
 
 @riverpod
-Future<List<MediaData>> specimenMedia(SpecimenMediaRef ref,
+Future<List<MediaData>> specimenMedia(Ref ref,
     {required String specimenUuid}) async {
   List<SpecimenMediaData> mediaList =
       await SpecimenQuery(ref.read(databaseProvider))

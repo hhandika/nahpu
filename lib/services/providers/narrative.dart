@@ -4,6 +4,7 @@ import 'package:nahpu/services/providers/projects.dart';
 import 'package:nahpu/services/database/media_queries.dart';
 import 'package:nahpu/services/database/narrative_queries.dart';
 import 'package:nahpu/services/narrative_services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'narrative.g.dart';
@@ -39,7 +40,7 @@ class NarrativeEntry extends _$NarrativeEntry {
 }
 
 @riverpod
-Future<List<MediaData>> narrativeMedia(NarrativeMediaRef ref,
+Future<List<MediaData>> narrativeMedia(Ref ref,
     {required int narrativeId}) async {
   List<NarrativeMediaData> mediaList =
       await NarrativeQuery(ref.read(databaseProvider))

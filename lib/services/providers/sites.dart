@@ -6,6 +6,7 @@ import 'package:nahpu/services/database/media_queries.dart';
 import 'package:nahpu/services/database/site_queries.dart';
 import 'package:nahpu/services/database/coordinate_queries.dart';
 import 'package:nahpu/services/site_services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'sites.g.dart';
@@ -59,8 +60,7 @@ final coordinateByEventProvider = FutureProvider.family
 });
 
 @riverpod
-Future<List<MediaData>> siteMedia(SiteMediaRef ref,
-    {required int siteId}) async {
+Future<List<MediaData>> siteMedia(Ref ref, {required int siteId}) async {
   List<SiteMediaData> mediaList =
       await SiteQuery(ref.read(databaseProvider)).getSiteMedia(siteId);
   List<MediaData> mediaDataList = [];
@@ -75,7 +75,7 @@ Future<List<MediaData>> siteMedia(SiteMediaRef ref,
 }
 
 @riverpod
-Future<List<SiteData>> siteInEvent(SiteInEventRef ref) async {
+Future<List<SiteData>> siteInEvent(Ref ref) async {
   List<int?> siteList = await CollEventQuery(ref.read(databaseProvider))
       .getAllDistinctSites(ref.read(projectUuidProvider));
   List<SiteData> siteDataList = [];
