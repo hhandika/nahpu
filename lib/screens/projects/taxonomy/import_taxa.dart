@@ -443,7 +443,10 @@ class SkippedImport extends StatelessWidget {
             margin: const EdgeInsets.all(8),
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+              color: Theme.of(context)
+                  .colorScheme
+                  .secondary
+                  .withAlpha((0.1 * 255).toInt()),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Text(record),

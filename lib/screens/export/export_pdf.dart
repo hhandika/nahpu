@@ -205,8 +205,6 @@ class ExportPdfFormState extends ConsumerState<ExportPdfForm> {
           pageOrientation: _pdfPageOrientation,
         ).generatePdf();
         break;
-      default:
-        break;
     }
   }
 

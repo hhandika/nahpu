@@ -31,8 +31,6 @@ class ImageServices extends AppServices {
         return await pickFromFileSingle();
       case PlatformType.unknown:
         throw Exception('Unsupported platform');
-      default:
-        return '';
     }
   }
 

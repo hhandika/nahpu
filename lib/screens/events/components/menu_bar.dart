@@ -11,11 +11,13 @@ Future<void> createNewCollEvents(BuildContext context, WidgetRef ref) {
 
   return services.createNewCollEvents().then(
     (_) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (_) => const CollEventViewer(),
-        ),
-      );
+      if (context.mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (_) => const CollEventViewer(),
+          ),
+        );
+      }
     },
   );
 }

@@ -36,7 +36,5 @@ IconData matchIcon(ValidationStatus status) {
       return Icons.close;
     case ValidationWarning():
       return Icons.warning;
-    default:
-      return Icons.error;
   }
 }

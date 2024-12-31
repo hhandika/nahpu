@@ -99,13 +99,11 @@ class NarrativeMediaViewerState extends ConsumerState<NarrativeMediaViewer> {
           String? image = await ImageServices(ref: ref, category: mediaCategory)
               .accessCamera();
           if (image != null) {
-            return;
+            await NarrativeServices(ref: ref).createNarrativeMedia(
+              widget.narrativeId,
+              image,
+            );
           }
-
-          await NarrativeServices(ref: ref).createNarrativeMedia(
-            widget.narrativeId,
-            image!,
-          );
         } catch (e) {
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(

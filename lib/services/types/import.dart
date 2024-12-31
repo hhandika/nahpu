@@ -51,8 +51,6 @@ String matchTaxonEntryHeader(TaxonEntryHeader headerEnum) {
       return 'Notes';
     case TaxonEntryHeader.ignore:
       return 'Ignore';
-    default:
-      return 'Ignore';
   }
 }
 

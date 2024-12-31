@@ -249,8 +249,6 @@ class SpecimenPdfWriter extends PdfServices {
         return _getMammalMeasurements(specimenUuid, true);
       case CatalogFmt.birds:
         return _getAvianMeasurements(specimenUuid);
-      default:
-        return pw.SizedBox.shrink();
     }
   }
 

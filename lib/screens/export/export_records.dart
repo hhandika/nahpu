@@ -215,8 +215,6 @@ class ExportFormState extends ConsumerState<ExportForm> {
         return 'assets/icons/csv.svg';
       case ExportFmt.tsv:
         return 'assets/icons/tsv.svg';
-      default:
-        return 'assets/icons/csv.svg';
     }
   }
 
@@ -267,9 +265,6 @@ class ExportFormState extends ConsumerState<ExportForm> {
         break;
       case ExportFmt.tsv:
         await _writeDelimited(false);
-        break;
-      default:
-        await _writeDelimited(true);
         break;
     }
   }

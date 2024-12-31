@@ -134,8 +134,6 @@ class EventInfoFieldState extends ConsumerState<EventInfoField> {
             return DateTime.now().subtract(const Duration(days: 1));
           case CatalogFmt.bats:
             return DateTime.now().subtract(const Duration(days: 1));
-          default:
-            return DateTime.now();
         }
       },
       loading: () {
@@ -361,8 +359,6 @@ class EventTimeField extends ConsumerWidget {
               case CatalogFmt.generalMammals:
                 return const TimeOfDay(hour: 7, minute: 0);
               case CatalogFmt.bats:
-                return TimeOfDay.now();
-              default:
                 return TimeOfDay.now();
             }
           },

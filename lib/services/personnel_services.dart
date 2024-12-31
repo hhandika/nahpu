@@ -153,8 +153,6 @@ class PersonnelImageService {
         return _getMammalAvatar();
       case CatalogFmt.bats:
         return _getBatAvatar();
-      default:
-        return _getMammalAvatar();
     }
   }
 

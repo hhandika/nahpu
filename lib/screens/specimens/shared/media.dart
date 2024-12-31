@@ -69,14 +69,12 @@ class SpecimenMediaFormState extends ConsumerState<SpecimenMediaForm> {
                     ref: ref,
                     category: mediaCategory,
                   ).accessCamera();
-
-                  if (image == null) {
-                    return;
+                  if (image != null) {
+                    await SpecimenServices(ref: ref).createSpecimenMedia(
+                      widget.specimenUuid,
+                      image,
+                    );
                   }
-                  await SpecimenServices(ref: ref).createSpecimenMedia(
-                    widget.specimenUuid,
-                    image,
-                  );
                   setState(() {});
                 } catch (e) {
                   if (context.mounted) {

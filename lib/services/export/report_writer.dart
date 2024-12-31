@@ -24,9 +24,6 @@ class ReportServices extends AppServices {
       case ReportType.coordinate:
         await CoordinateWriter(ref: ref).writeCoordinate(savePath);
         break;
-      default:
-        await SpeciesListWriter(ref: ref).writeSpeciesListCompact(savePath);
-        break;
     }
   }
 }

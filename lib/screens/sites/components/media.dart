@@ -65,14 +65,12 @@ class SiteMediaFormState extends ConsumerState<SiteMediaForm> {
                     ref: ref,
                     category: mediaCategory,
                   ).accessCamera();
-
-                  if (image == null) {
-                    return;
+                  if (image != null) {
+                    await SiteServices(ref: ref).createSiteMedia(
+                      widget.siteId,
+                      image,
+                    );
                   }
-                  await SiteServices(ref: ref).createSiteMedia(
-                    widget.siteId,
-                    image,
-                  );
                   setState(() {});
                 } catch (e) {
                   if (context.mounted) {

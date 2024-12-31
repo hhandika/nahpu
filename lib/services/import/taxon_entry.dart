@@ -133,8 +133,6 @@ class TaxonParser {
           break;
         case TaxonEntryHeader.ignore:
           break;
-        default:
-          break;
       }
     }
 

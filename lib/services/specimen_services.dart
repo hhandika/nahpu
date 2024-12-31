@@ -47,9 +47,6 @@ class SpecimenServices extends AppServices {
       case CatalogFmt.generalMammals:
         _createMammalSpecimen(specimenUuid);
         break;
-      default:
-        _createMammalSpecimen(specimenUuid);
-        break;
     }
     invalidateSpecimenList();
     return specimenUuid;

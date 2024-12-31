@@ -65,7 +65,7 @@ class BarChartViewer extends StatelessWidget {
               tooltipBgColor: Theme.of(context)
                   .colorScheme
                   .secondaryContainer
-                  .withOpacity(0.9),
+                  .withAlpha((0.9 * 255).toInt()),
               getTooltipItem: (group, groupIndex, rod, rodIndex) {
                 return BarTooltipItem(
                     rod.toY.truncateZero(),

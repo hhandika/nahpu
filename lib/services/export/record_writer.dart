@@ -82,8 +82,6 @@ class SpecimenRecordWriter {
         return batMeasurementExportList;
       case SpecimenRecordType.allMammals:
         return batMeasurementExportList;
-      default:
-        throw Exception('Invalid record type');
     }
   }
 
@@ -121,8 +119,6 @@ class SpecimenRecordWriter {
         return await _getMeasurementGeneralMammals(specimenUuid, isBat);
       case SpecimenRecordType.allMammals:
         return await _getMeasurementGeneralMammals(specimenUuid, isBat);
-      default:
-        throw Exception('Invalid record type');
     }
   }
 
