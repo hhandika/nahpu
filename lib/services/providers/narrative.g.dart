@@ -6,7 +6,7 @@ part of 'narrative.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$narrativeMediaHash() => r'2590b064ddd1667c284ae7c5af4f27dc25eaeadb';
+String _$narrativeMediaHash() => r'8691ad8ee18572f79e7628e81341688b3564c463';
 
 /// Copied from Dart SDK
 class _SystemHash {

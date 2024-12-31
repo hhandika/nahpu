@@ -6,7 +6,7 @@ part of 'sites.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$siteMediaHash() => r'fa651ae49536f275c6344f8c9dfb7eac80c74ac0';
+String _$siteMediaHash() => r'6fef1803e85c8f887c7e5ee2413cf20434763f9d';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -157,7 +157,7 @@ class _SiteMediaProviderElement
   int get siteId => (origin as SiteMediaProvider).siteId;
 }
 
-String _$siteInEventHash() => r'e5a9719e1879bfeb98ed5ae4064fd3c55312ae69';
+String _$siteInEventHash() => r'ceb819c4b5d481d81f5df18170061602aef1ff6d';
 
 /// See also [siteInEvent].
 @ProviderFor(siteInEvent)

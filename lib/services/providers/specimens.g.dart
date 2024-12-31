@@ -6,7 +6,7 @@ part of 'specimens.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$associatedDataHash() => r'a03704740f855637bcf807ad6fc16e2a1c1582b0';
+String _$associatedDataHash() => r'4e0e25829cadfca3f664c936d1094a1f0e0614f2';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -163,7 +163,7 @@ class _AssociatedDataProviderElement
   String get specimenUuid => (origin as AssociatedDataProvider).specimenUuid;
 }
 
-String _$specimenMediaHash() => r'7134f2bc7aa8ba9911a75aa6724e353f35e050f1';
+String _$specimenMediaHash() => r'ee0304c9ec68e62aa92c788bc0f81d9e5aa8227e';
 
 /// See also [specimenMedia].
 @ProviderFor(specimenMedia)

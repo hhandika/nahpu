@@ -6,7 +6,7 @@ part of 'personnel.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$allPersonnelHash() => r'52ea5b13168bd25f2f2b2a6fc8b8bdfb62b736fc';
+String _$allPersonnelHash() => r'31608700bb89b98ad59c55a68867424b961a1bca';
 
 /// See also [allPersonnel].
 @ProviderFor(allPersonnel)
@@ -23,7 +23,7 @@ final allPersonnelProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef AllPersonnelRef = AutoDisposeFutureProviderRef<List<PersonnelData>>;
-String _$projectPersonnelHash() => r'1addf1bc5c176866f051ac91b413d89bdbc6d7fc';
+String _$projectPersonnelHash() => r'2008a93774a2ae73e5f875f0cd3817980a4352c4';
 
 /// See also [projectPersonnel].
 @ProviderFor(projectPersonnel)
