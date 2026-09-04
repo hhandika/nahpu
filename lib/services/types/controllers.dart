@@ -4,6 +4,7 @@ import 'package:nahpu/services/types/mammals.dart';
 import 'package:nahpu/services/types/arthropods.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/types/geography.dart';
+import 'package:nahpu/services/types/events.dart';
 import 'package:nahpu/services/projects/coordinate_input.dart';
 import 'package:nahpu/services/common/utility_services.dart';
 import 'package:uuid/uuid.dart';
@@ -1773,6 +1774,7 @@ class CollEnvironmentCtrModel {
     required this.dissolvedOxygenCtr,
     required this.flowVelocityCtr,
     required this.noteCtr,
+    required this.initialErrors,
   });
 
   TextEditingController lowestDayTempCtr;
@@ -1793,6 +1795,7 @@ class CollEnvironmentCtrModel {
   TextEditingController pHCtr;
   TextEditingController dissolvedOxygenCtr;
   TextEditingController flowVelocityCtr;
+  final Map<String, String> initialErrors;
 
   factory CollEnvironmentCtrModel.fromData(EnvironmentData data) =>
       CollEnvironmentCtrModel(
@@ -1842,7 +1845,62 @@ class CollEnvironmentCtrModel {
           text: data.flowVelocity?.toString() ?? '',
         ),
         noteCtr: TextEditingController(text: data.notes ?? ''),
+        initialErrors: EditableEnvironmentData.fromRaw(
+          data.toJson(),
+        ).fieldErrors,
       );
+
+  factory CollEnvironmentCtrModel.fromEditableData(
+    EditableEnvironmentData data,
+  ) => CollEnvironmentCtrModel(
+    lowestDayTempCtr: TextEditingController(
+      text: data.displayValue('lowestDayTempC'),
+    ),
+    highestDayTempCtr: TextEditingController(
+      text: data.displayValue('highestDayTempC'),
+    ),
+    lowestNightTempCtr: TextEditingController(
+      text: data.displayValue('lowestNightTempC'),
+    ),
+    highestNightTempCtr: TextEditingController(
+      text: data.displayValue('highestNightTempC'),
+    ),
+    averageHumidityCtr: TextEditingController(
+      text: data.displayValue('averageHumidity'),
+    ),
+    dewPointCtr: TextEditingController(text: data.displayValue('dewPointTemp')),
+    sunriseTimeCtr: TextEditingController(
+      text: data.displayValue('sunriseTime'),
+    ),
+    sunsetTimeCtr: TextEditingController(text: data.displayValue('sunsetTime')),
+    moonPhaseCtr: data.value('moonPhase') == null
+        ? null
+        : data.displayValue('moonPhase'),
+    cloudCoverCtr: data.value('cloudCover') == null
+        ? null
+        : data.displayValue('cloudCover'),
+    rainfallInMmCtr: TextEditingController(
+      text: data.displayValue('rainfallInMm'),
+    ),
+    ambientTemperatureCtr: TextEditingController(
+      text: data.displayValue('ambientTemperature'),
+    ),
+    ambientHumidityCtr: TextEditingController(
+      text: data.displayValue('ambientHumidity'),
+    ),
+    waterTemperatureCtr: TextEditingController(
+      text: data.displayValue('waterTemperature'),
+    ),
+    pHCtr: TextEditingController(text: data.displayValue('pH')),
+    dissolvedOxygenCtr: TextEditingController(
+      text: data.displayValue('dissolvedOxygen'),
+    ),
+    flowVelocityCtr: TextEditingController(
+      text: data.displayValue('flowVelocity'),
+    ),
+    noteCtr: TextEditingController(text: data.displayValue('notes')),
+    initialErrors: data.fieldErrors,
+  );
 
   void dispose() {
     lowestDayTempCtr.dispose();

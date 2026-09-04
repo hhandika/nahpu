@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/database/record_sort_terms.dart';
 import 'package:nahpu/services/common/utility_services.dart';
+import 'package:nahpu/services/types/events.dart';
 import 'package:nahpu/services/types/record_sort.dart';
 
 part 'collevent_queries.g.dart';
@@ -260,7 +261,7 @@ class EnvironmentDataQuery extends DatabaseAccessor<Database>
   Future<int> createEnvironmentData(EnvironmentCompanion form) =>
       into(environment).insert(form);
 
-  Future updateEnvironmentDataEntry(int id, EnvironmentCompanion entry) {
+  Future<int> updateEnvironmentDataEntry(int id, EnvironmentCompanion entry) {
     return (update(
       environment,
     )..where((t) => t.eventID.equals(id))).write(entry);
@@ -270,6 +271,25 @@ class EnvironmentDataQuery extends DatabaseAccessor<Database>
     return await (select(
       environment,
     )..where((t) => t.eventID.equals(eventId))).getSingle();
+  }
+
+  Future<EditableEnvironmentData> getEditableEnvironmentDataByEventId(
+    int eventId,
+  ) async {
+    final rows = await customSelect(
+      'SELECT * FROM environment WHERE eventID = ?',
+      variables: [Variable.withInt(eventId)],
+      readsFrom: {environment},
+    ).get();
+    if (rows.isEmpty) {
+      throw StateError('Environmental data is missing for event $eventId.');
+    }
+    if (rows.length > 1) {
+      throw StateError(
+        'Event $eventId has multiple environmental data records.',
+      );
+    }
+    return EditableEnvironmentData.fromRaw(rows.single.data);
   }
 
   Future<void> deleteEnvironmentData(int eventId) {

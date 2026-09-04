@@ -329,6 +329,7 @@ class CommonTextField extends StatelessWidget {
     this.onChanged,
     required this.isLastField,
     this.maxLines,
+    this.errorText,
   });
 
   final bool enabled;
@@ -340,6 +341,7 @@ class CommonTextField extends StatelessWidget {
   final void Function(String?)? onChanged;
   final bool isLastField;
   final int? maxLines;
+  final String? errorText;
 
   @override
   Widget build(BuildContext context) {
@@ -348,7 +350,12 @@ class CommonTextField extends StatelessWidget {
       maxLines: maxLines,
       controller: controller,
       focusNode: focusNode,
-      decoration: InputDecoration(labelText: labelText, hintText: hintText),
+      decoration: InputDecoration(
+        labelText: labelText,
+        hintText: hintText,
+        errorText: errorText,
+        errorMaxLines: 3,
+      ),
       keyboardType: keyboardType,
       onChanged: onChanged,
       textInputAction: keyboardType == TextInputType.multiline
