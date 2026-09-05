@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:material_ui/material_ui.dart';
@@ -7,11 +6,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:nahpu/screens/projects/statistics/spatial_statistics_legend.dart';
 import 'package:nahpu/screens/shared/maps/full_screen_map_page.dart';
+import 'package:nahpu/screens/shared/maps/offline_basemap_notice.dart';
 import 'package:nahpu/services/sites/natural_earth.dart';
 import 'package:nahpu/services/types/spatial_statistics.dart';
 import 'package:nahpu/screens/projects/statistics/spatial_statistics_maplibre.dart';
-import 'package:nahpu/screens/projects/statistics/linux_user_map_layers.dart';
+import 'package:nahpu/screens/projects/statistics/offline_user_map_layers.dart';
 import 'package:nahpu/screens/settings/application/map_settings.dart';
+import 'package:nahpu/services/providers/map_renderer.dart';
 import 'package:nahpu/services/providers/settings.dart';
 import 'package:nahpu/services/types/map_layers.dart';
 
@@ -149,7 +150,7 @@ class _SpatialMapViewport extends ConsumerWidget {
       fit: StackFit.expand,
       children: [
         Positioned.fill(
-          child: Platform.isLinux
+          child: ref.watch(mapRendererProvider) == MapRenderer.naturalEarth
               ? FutureBuilder<List<NaturalEarthPolygon>>(
                   future: showsBaseLayer
                       ? _naturalEarthPolygons
@@ -175,6 +176,7 @@ class _SpatialMapViewport extends ConsumerWidget {
                       polygons: snapshot.data!,
                       showsBaseLayer: showsBaseLayer,
                       legendInitiallyExpanded: !isNarrow,
+                      isFallback: mapLibreIsExpected,
                     );
                   },
                 )
@@ -256,6 +258,7 @@ class _NaturalEarthMap extends StatelessWidget {
     required this.polygons,
     required this.showsBaseLayer,
     required this.legendInitiallyExpanded,
+    required this.isFallback,
   });
 
   final SpatialStatisticKind kind;
@@ -264,6 +267,10 @@ class _NaturalEarthMap extends StatelessWidget {
   final List<NaturalEarthPolygon> polygons;
   final bool showsBaseLayer;
   final bool legendInitiallyExpanded;
+
+  /// Whether this map is standing in for a MapLibre map that failed to load,
+  /// rather than being the renderer this platform always uses.
+  final bool isFallback;
 
   @override
   Widget build(BuildContext context) {
@@ -314,7 +321,7 @@ class _NaturalEarthMap extends StatelessWidget {
                       ),
                   ],
                 ),
-              const LinuxUserMapLayers(),
+              const OfflineUserMapLayers(),
               if (rows.isNotEmpty)
                 MarkerLayer(
                   markers: [
@@ -334,7 +341,9 @@ class _NaturalEarthMap extends StatelessWidget {
             Positioned(
               left: 8,
               bottom: 8,
-              child: _MapAttribution(colorScheme: colorScheme),
+              child: isFallback
+                  ? const OfflineBasemapNotice()
+                  : const NaturalEarthAttribution(),
             ),
           if (rows.isEmpty)
             const Positioned.fill(
@@ -403,22 +412,6 @@ class _NaturalEarthMap extends StatelessWidget {
       ),
     );
   }
-}
-
-class _MapAttribution extends StatelessWidget {
-  const _MapAttribution({required this.colorScheme});
-
-  final ColorScheme colorScheme;
-
-  @override
-  Widget build(BuildContext context) => Material(
-    color: colorScheme.surface.withValues(alpha: 0.9),
-    borderRadius: BorderRadius.circular(4),
-    child: const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-      child: Text('Natural Earth', style: TextStyle(fontSize: 12)),
-    ),
-  );
 }
 
 class _MapMessage extends StatelessWidget {

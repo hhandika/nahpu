@@ -186,7 +186,7 @@ class _CustomLayerTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final supported = !Platform.isLinux || layer.kind.isSupportedOnLinux;
+    final supported = !Platform.isLinux || layer.kind.isSupportedOffline;
     return CommonSettingTile(
       title: layer.name,
       label: supported
@@ -233,7 +233,7 @@ class _LayerDetailsSheet extends ConsumerWidget {
         catalog?.layers.indexWhere((layer) => layer.id == layerId) ?? -1;
     if (catalog == null || index < 0) return const SizedBox.shrink();
     final layer = catalog.layers[index];
-    final supported = !Platform.isLinux || layer.kind.isSupportedOnLinux;
+    final supported = !Platform.isLinux || layer.kind.isSupportedOffline;
     final notifier = ref.read(userMapCatalogProvider.notifier);
     return SafeArea(
       child: SingleChildScrollView(

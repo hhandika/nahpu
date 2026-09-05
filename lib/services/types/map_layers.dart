@@ -54,7 +54,7 @@ extension UserMapLayerKindDetails on UserMapLayerKind {
     UserMapLayerKind.demPmtiles => 'Elevation model',
   };
 
-  bool get isSupportedOnLinux =>
+  bool get isSupportedOffline =>
       this == UserMapLayerKind.geoJson ||
       this == UserMapLayerKind.rasterPmtiles;
 }

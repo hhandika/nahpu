@@ -5,11 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:maplibre/maplibre.dart';
 import 'package:nahpu/screens/shared/maps/maplibre_gesture_surface.dart';
 import 'package:nahpu/screens/shared/maps/maplibre_camera_readiness.dart';
+import 'package:nahpu/screens/shared/maps/maplibre_load_watchdog.dart';
 import 'package:nahpu/screens/shared/maps/maplibre_viewport_projection.dart';
 import 'package:nahpu/screens/shared/maps/map_point_hit_test.dart';
 import 'package:nahpu/screens/shared/maps/map_tooltip_card.dart';
 import 'package:nahpu/services/common/io_services.dart';
 import 'package:nahpu/services/providers/map_layers.dart';
+import 'package:nahpu/services/providers/map_renderer.dart';
 import 'package:nahpu/services/providers/settings.dart';
 import 'package:nahpu/services/statistics/spatial_map_style.dart';
 import 'package:nahpu/services/types/map_layers.dart';
@@ -79,7 +81,7 @@ class MapLibreSpatialStatisticsMap extends ConsumerWidget {
   }
 }
 
-class _MapLibreMap extends StatefulWidget {
+class _MapLibreMap extends ConsumerStatefulWidget {
   const _MapLibreMap({
     super.key,
     required this.kind,
@@ -100,12 +102,13 @@ class _MapLibreMap extends StatefulWidget {
   final bool legendInitiallyExpanded;
 
   @override
-  State<_MapLibreMap> createState() => _MapLibreMapState();
+  ConsumerState<_MapLibreMap> createState() => _MapLibreMapState();
 }
 
-class _MapLibreMapState extends State<_MapLibreMap> {
+class _MapLibreMapState extends ConsumerState<_MapLibreMap> {
   MapController? _controller;
   final _readiness = MapLibreCameraReadiness();
+  late final _watchdog = MapLibreLoadWatchdog(onTimeout: _handleLoadTimeout);
   SpatialStatisticDatum? _tooltipRow;
 
   /// Built once per state. [MapOptions] compares by identity, so a fresh
@@ -114,6 +117,12 @@ class _MapLibreMapState extends State<_MapLibreMap> {
   late final MapOptions _options = _buildOptions();
 
   bool get _isReady => mounted && _readiness.isReady;
+
+  @override
+  void initState() {
+    super.initState();
+    _watchdog.start();
+  }
 
   @override
   void didUpdateWidget(covariant _MapLibreMap oldWidget) {
@@ -128,6 +137,7 @@ class _MapLibreMapState extends State<_MapLibreMap> {
 
   @override
   void dispose() {
+    _watchdog.dispose();
     _controller = null;
     super.dispose();
   }
@@ -149,10 +159,12 @@ class _MapLibreMapState extends State<_MapLibreMap> {
               if (!mounted) return;
               _controller = controller;
               _readiness.markMapCreated();
+              _markRendered();
               _initializeCamera();
             },
             onStyleLoaded: (_) {
               _readiness.markStyleLoaded();
+              _markRendered();
               _initializeCamera();
             },
             onEvent: _handleEvent,
@@ -196,7 +208,9 @@ class _MapLibreMapState extends State<_MapLibreMap> {
               const Positioned(right: 8, bottom: 8, child: MapScalebar()),
             ],
           ),
-          if (widget.rows.isEmpty)
+          if (_watchdog.isWaiting)
+            const Positioned.fill(child: _MapLibreLoading())
+          else if (widget.rows.isEmpty)
             const Positioned.fill(
               child: _MapLibreMessage(
                 message: 'No valid coordinates are available to map.',
@@ -217,6 +231,19 @@ class _MapLibreMapState extends State<_MapLibreMap> {
         ],
       ),
     );
+  }
+
+  /// Stops the watchdog once MapLibre has actually drawn something.
+  void _markRendered() {
+    if (!_readiness.isReady) return;
+    if (_watchdog.markReady() && mounted) setState(() {});
+  }
+
+  /// Hands the session over to the offline renderer after a map that never
+  /// loaded. The provider latches, so no later map waits this out again.
+  void _handleLoadTimeout() {
+    if (!mounted) return;
+    ref.read(mapRendererProvider.notifier).markMapLibreUnavailable();
   }
 
   MapOptions _buildOptions() {
@@ -412,6 +439,18 @@ class _MapLibreAttribution extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
       child: Text(label, style: const TextStyle(fontSize: 12)),
     ),
+  );
+}
+
+class _MapLibreLoading extends StatelessWidget {
+  const _MapLibreLoading();
+
+  @override
+  Widget build(BuildContext context) => ColoredBox(
+    color: Theme.of(
+      context,
+    ).colorScheme.surfaceContainerLow.withValues(alpha: 0.82),
+    child: const Center(child: CircularProgressIndicator()),
   );
 }
 

@@ -75,6 +75,8 @@
 			</dict>
 		</dict>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to use your camera to scan specimen QR codes</string>
 	<key>NSLocationUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to access you location to get site coordinates</string>
 	<key>NSMicrophoneUsageDescription</key>
