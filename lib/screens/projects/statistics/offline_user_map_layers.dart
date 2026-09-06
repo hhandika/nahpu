@@ -149,7 +149,11 @@ class OfflineUserMapLayers extends ConsumerWidget {
         if (feature is Map) geometry(feature['geometry']);
       }
     }
-    return _OfflineGeoJsonData(points: points, lines: lines, polygons: polygons);
+    return _OfflineGeoJsonData(
+      points: points,
+      lines: lines,
+      polygons: polygons,
+    );
   }
 
   LatLng? _point(Object? value) {

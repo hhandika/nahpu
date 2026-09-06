@@ -43,13 +43,21 @@ void main() {
     );
   });
 
+  /// `pubspec.yaml` as text with LF newlines.
+  ///
+  /// Windows CI checks the repo out with CRLF, and the declaration pattern
+  /// below is anchored on newlines. Normalizing here keeps the pattern
+  /// readable instead of threading `\r?` through every line break in it.
+  String readPubspec() =>
+      File('pubspec.yaml').readAsStringSync().replaceAll('\r\n', '\n');
+
   test('every bundled family is declared under its internal name', () {
     // Flutter resolves a canvas font by the `pubspec.yaml` family name while
     // Typst resolves the same font by the name inside the file. They only
     // agree if the declaration uses the font's own family name, so a font
     // swap that changes that name has to update `pubspec.yaml` and
     // `kBundledFontFamilies` with it.
-    final pubspec = File('pubspec.yaml').readAsStringSync();
+    final pubspec = readPubspec();
     final declarations = RegExp(
       r'- family: "([^"]+)"\n((?:\s+fonts:\n)?(?:\s+- asset: [^\n]+\n(?:\s+(?:weight|style): [^\n]+\n)*)+)',
     ).allMatches(pubspec);
@@ -67,7 +75,9 @@ void main() {
       for (final asset in RegExp(
         r'- asset: (\S+)',
       ).allMatches(declaration.group(2)!)) {
-        final path = asset.group(1)!;
+        // Asset paths in `pubspec.yaml` are POSIX regardless of host.
+        final assetPath = asset.group(1)!;
+        final path = p.joinAll(p.posix.split(assetPath));
         expect(
           reader.read(File(path).readAsBytesSync()).family,
           family,
@@ -78,7 +88,7 @@ void main() {
   });
 
   test('every registered family is declared in pubspec.yaml', () {
-    final pubspec = File('pubspec.yaml').readAsStringSync();
+    final pubspec = readPubspec();
     for (final family in kBundledFontFamilies) {
       expect(
         pubspec,
