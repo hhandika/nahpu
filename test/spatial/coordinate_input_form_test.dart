@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:drift/drift.dart' show DatabaseConnection;
 import 'package:drift/native.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nahpu/screens/sites/components/coordinates.dart';
 import 'package:nahpu/services/settings/controlled_vocabulary_services.dart';
@@ -14,22 +11,11 @@ import 'package:nahpu/services/providers/database.dart';
 import 'package:nahpu/services/providers/settings.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/src/rust/api/gis.dart';
-import 'package:nahpu/src/rust/frb_generated.dart';
+
+import '../helpers/rust_library.dart';
 
 void main() {
-  setUpAll(() async {
-    final isTest = Platform.environment.containsKey('FLUTTER_TEST');
-    if (isTest) {
-      final dylibPath = Platform.isMacOS
-          ? 'rust/target/debug/librust_lib_nahpu.dylib'
-          : Platform.isWindows
-          ? 'rust/target/debug/rust_lib_nahpu.dll'
-          : 'rust/target/debug/librust_lib_nahpu.so';
-      await RustLib.init(externalLibrary: ExternalLibrary.open(dylibPath));
-    } else {
-      await RustLib.init();
-    }
-  });
+  setUpAll(initRustLibForTest);
 
   testWidgets('DDM and DMS use numeric component fields without directions', (
     tester,

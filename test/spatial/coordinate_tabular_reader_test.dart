@@ -1,28 +1,16 @@
 import 'dart:io';
 
-import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nahpu/services/import/coordinate_tabular_reader.dart';
 import 'package:nahpu/services/types/coordinate_import.dart';
-import 'package:nahpu/src/rust/frb_generated.dart';
+
+import '../helpers/rust_library.dart';
 
 void main() {
   const reader = CoordinateTabularReader();
   late Directory tempDirectory;
 
-  setUpAll(() async {
-    final isTest = Platform.environment.containsKey('FLUTTER_TEST');
-    if (isTest) {
-      final libraryPath = Platform.isMacOS
-          ? 'rust/target/debug/librust_lib_nahpu.dylib'
-          : Platform.isWindows
-          ? 'rust/target/debug/rust_lib_nahpu.dll'
-          : 'rust/target/debug/librust_lib_nahpu.so';
-      await RustLib.init(externalLibrary: ExternalLibrary.open(libraryPath));
-    } else {
-      await RustLib.init();
-    }
-  });
+  setUpAll(initRustLibForTest);
 
   setUp(() {
     tempDirectory = Directory.systemTemp.createTempSync(

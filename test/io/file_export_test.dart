@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nahpu/services/common/file_export_services.dart';
 import 'package:nahpu/services/types/export.dart';
-import 'package:nahpu/src/rust/frb_generated.dart';
 import 'package:path/path.dart' as path;
+
+import '../helpers/rust_library.dart';
 
 /// Exercises the archive the explorer writes when a user moves files out of
 /// the app folder. The safety property under test is that the originals are
@@ -16,19 +16,7 @@ void main() {
 
   // The archive writers live in Rust, so the bridge has to be up before any
   // export runs.
-  setUpAll(() async {
-    final isTest = Platform.environment.containsKey('FLUTTER_TEST');
-    if (isTest) {
-      final dylibPath = Platform.isMacOS
-          ? 'rust/target/debug/librust_lib_nahpu.dylib'
-          : Platform.isWindows
-          ? 'rust/target/debug/rust_lib_nahpu.dll'
-          : 'rust/target/debug/librust_lib_nahpu.so';
-      await RustLib.init(externalLibrary: ExternalLibrary.open(dylibPath));
-    } else {
-      await RustLib.init();
-    }
-  });
+  setUpAll(initRustLibForTest);
 
   setUp(() {
     root = Directory.systemTemp.createTempSync('nahpu-export-root');

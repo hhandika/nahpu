@@ -6,7 +6,6 @@ import 'package:file_selector/file_selector.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/specimens/parasite_services.dart';
 import 'package:nahpu/services/providers/database.dart';
@@ -20,25 +19,14 @@ import 'package:nahpu/services/settings/user_config_transfer_service.dart';
 import 'package:nahpu/services/custom_fields/custom_field_service.dart';
 import 'package:nahpu/services/types/custom_field.dart';
 import 'package:nahpu/src/rust/api/config.dart' as rust_config;
-import 'package:nahpu/src/rust/frb_generated.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../helpers/rust_library.dart';
 
 void main() {
   late Directory tempDir;
 
-  setUpAll(() async {
-    final isTest = Platform.environment.containsKey('FLUTTER_TEST');
-    if (isTest) {
-      final dylibPath = Platform.isMacOS
-          ? 'rust/target/debug/librust_lib_nahpu.dylib'
-          : Platform.isWindows
-          ? 'rust/target/debug/rust_lib_nahpu.dll'
-          : 'rust/target/debug/librust_lib_nahpu.so';
-      await RustLib.init(externalLibrary: ExternalLibrary.open(dylibPath));
-    } else {
-      await RustLib.init();
-    }
-  });
+  setUpAll(initRustLibForTest);
 
   setUp(() async {
     tempDir = Directory.systemTemp.createTempSync('nahpu_config_transfer_');

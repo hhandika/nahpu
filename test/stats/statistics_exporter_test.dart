@@ -1,25 +1,18 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nahpu/services/export/statistics_exporter.dart';
 import 'package:nahpu/services/types/export.dart';
 import 'package:nahpu/services/types/spatial_statistics.dart';
 import 'package:nahpu/services/types/statistics.dart';
-import 'package:nahpu/src/rust/frb_generated.dart';
+
+import '../helpers/rust_library.dart';
 
 void main() {
   late Directory tempDirectory;
 
-  setUpAll(() async {
-    final libraryPath = Platform.isMacOS
-        ? 'rust/target/debug/librust_lib_nahpu.dylib'
-        : Platform.isWindows
-        ? 'rust/target/debug/rust_lib_nahpu.dll'
-        : 'rust/target/debug/librust_lib_nahpu.so';
-    await RustLib.init(externalLibrary: ExternalLibrary.open(libraryPath));
-  });
+  setUpAll(initRustLibForTest);
 
   setUp(() {
     tempDirectory = Directory.systemTemp.createTempSync('nahpu_stats_export_');

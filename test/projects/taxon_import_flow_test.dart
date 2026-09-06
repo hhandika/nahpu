@@ -5,7 +5,6 @@ import 'package:drift/native.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:nahpu/screens/projects/taxonomy/add_taxon.dart';
@@ -19,6 +18,7 @@ import 'package:nahpu/src/rust/frb_generated.dart';
 import 'package:path/path.dart' as p;
 
 import '../helpers/taxon_camera.dart';
+import '../helpers/rust_library.dart';
 
 void main() => taxonImportFlowTests();
 
@@ -27,13 +27,7 @@ void taxonImportFlowTests({bool useAppLibrary = false}) {
     if (useAppLibrary) {
       await RustLib.init();
     } else {
-      final libraryName = Platform.isMacOS
-          ? 'librust_lib_nahpu.dylib'
-          : Platform.isWindows
-          ? 'rust_lib_nahpu.dll'
-          : 'librust_lib_nahpu.so';
-      final libraryPath = p.join('rust', 'target', 'debug', libraryName);
-      await RustLib.init(externalLibrary: ExternalLibrary.open(libraryPath));
+      await initRustLibForTest();
     }
   });
 

@@ -3,26 +3,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:nahpu/services/import/taxon_entry.dart';
 import 'package:nahpu/services/import/taxon_reader.dart';
 import 'package:nahpu/services/types/import.dart';
-import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
-import 'package:nahpu/src/rust/frb_generated.dart';
+
+import '../helpers/rust_library.dart';
 
 void main() {
   const parser = TaxonFileParser();
   late Directory tempDir;
 
-  setUpAll(() async {
-    final isTest = Platform.environment.containsKey('FLUTTER_TEST');
-    if (isTest) {
-      final String dylibPath = Platform.isMacOS
-          ? 'rust/target/debug/librust_lib_nahpu.dylib'
-          : Platform.isWindows
-          ? 'rust/target/debug/rust_lib_nahpu.dll'
-          : 'rust/target/debug/librust_lib_nahpu.so';
-      await RustLib.init(externalLibrary: ExternalLibrary.open(dylibPath));
-    } else {
-      await RustLib.init();
-    }
-  });
+  setUpAll(initRustLibForTest);
 
   setUp(() {
     tempDir = Directory.systemTemp.createTempSync('nahpu_taxon_import_test_');
