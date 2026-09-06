@@ -190,7 +190,9 @@ class FocusDetectedLayout extends StatelessWidget {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: NahpuSpacing.xl),
+        padding: const EdgeInsets.symmetric(
+          horizontal: NahpuPageMargin.horizontal,
+        ),
         children: children,
       ),
     );

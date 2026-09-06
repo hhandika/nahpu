@@ -355,48 +355,58 @@ class StatisticPieChart extends StatelessWidget {
     final colors = _chartColors(Theme.of(context).colorScheme);
     return Semantics(
       label: data.map((datum) => _legendLabel(datum, total)).join(', '),
-      child: Column(
-        children: [
-          SizedBox(
-            height: math.max(0, height - _chartTopPadding),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final outerRadius = _outerRadius(constraints);
-                final centerSpaceRadius = outerRadius * _centerSpaceRatio;
-                return PieChart(
-                  PieChartData(
-                    centerSpaceRadius: centerSpaceRadius,
-                    sectionsSpace: 2,
-                    sections: [
-                      for (var index = 0; index < data.length; index++)
-                        _pieSection(
-                          context,
-                          data[index],
-                          colors[index % colors.length],
-                          total,
-                          outerRadius - centerSpaceRadius,
-                        ),
-                    ],
-                  ),
-                );
-              },
+      child: SizedBox(
+        height: height,
+        child: Column(
+          children: [
+            const SizedBox(height: _chartTopPadding),
+            Expanded(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final outerRadius = _outerRadius(constraints);
+                  final centerSpaceRadius = outerRadius * _centerSpaceRatio;
+                  return PieChart(
+                    PieChartData(
+                      centerSpaceRadius: centerSpaceRadius,
+                      sectionsSpace: 2,
+                      sections: [
+                        for (var index = 0; index < data.length; index++)
+                          _pieSection(
+                            context,
+                            data[index],
+                            colors[index % colors.length],
+                            total,
+                            outerRadius - centerSpaceRadius,
+                          ),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          Wrap(
-            alignment: WrapAlignment.center,
-            spacing: 12,
-            runSpacing: 8,
-            children: [
-              for (var index = 0; index < data.length; index++)
-                _LegendItem(
-                  key: ValueKey('statistics-pie-${data[index].label}'),
-                  label: _legendLabel(data[index], total),
-                  color: colors[index % colors.length],
+            const SizedBox(height: 8),
+            // The legend takes only what it needs and scrolls past half the
+            // chart, so long labels never push the pie out of its box.
+            ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: height / 2),
+              child: SingleChildScrollView(
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 12,
+                  runSpacing: 8,
+                  children: [
+                    for (var index = 0; index < data.length; index++)
+                      _LegendItem(
+                        key: ValueKey('statistics-pie-${data[index].label}'),
+                        label: _legendLabel(data[index], total),
+                        color: colors[index % colors.length],
+                      ),
+                  ],
                 ),
-            ],
-          ),
-        ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -677,8 +687,7 @@ class _StatisticChartSwitcherState extends State<StatisticChartSwitcher> {
 
   Widget _buildChart(double height) {
     if (widget.usePieByDefault && _view == _StatisticChartView.pie) {
-      final pieHeight = widget.fitHeight && height > 32 ? height - 32 : height;
-      return StatisticPieChart(data: widget.data, height: pieHeight);
+      return StatisticPieChart(data: widget.data, height: height);
     }
     return StatisticBarChart(
       data: widget.data,

@@ -16,6 +16,10 @@ import 'package:nahpu/styles/design_tokens.dart';
 const int topStatisticCount = 5;
 const int _pieChartCategoryThreshold = 5;
 
+/// Height of the chart area in every summary card, so bar and pie cards end
+/// at the same line no matter which chart they show.
+const double _summaryChartHeight = 360;
+
 String _formatProjectDays(int? totalDays) =>
     totalDays?.toString() ?? 'Not recorded';
 
@@ -472,7 +476,12 @@ class _StatisticFullScreenState extends ConsumerState<StatisticFullScreen> {
       appBar: AppBar(title: const Text('Record Statistics')),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(8, 12, 8, 32),
+          padding: const EdgeInsets.fromLTRB(
+            NahpuPageMargin.horizontal,
+            NahpuPageMargin.top,
+            NahpuPageMargin.horizontal,
+            NahpuPageMargin.bottom,
+          ),
           child: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 1400),
@@ -1218,36 +1227,42 @@ class _StatisticSummaryCard extends ConsumerWidget {
                 TextButton(onPressed: onExplore, child: const Text('Explore')),
               ],
             ),
-            _StatisticAsyncContent(
-              value: value,
-              onRetry: () => ref.invalidate(statisticDataProvider(request)),
-              builder: (rows) {
-                if (_isPieChartGroup(request.group)) {
-                  return StatisticChartSwitcher(
+            SizedBox(
+              height: _summaryChartHeight,
+              child: _StatisticAsyncContent(
+                value: value,
+                onRetry: () => ref.invalidate(statisticDataProvider(request)),
+                builder: (rows) {
+                  if (_isPieChartGroup(request.group)) {
+                    return StatisticChartSwitcher(
+                      data: rows
+                          .take(topStatisticCount)
+                          .toList(growable: false),
+                      measure: request.measure,
+                      group: request.group,
+                      rank: request.rank,
+                      usePieByDefault: _shouldUseStandalonePieChart(
+                        request,
+                        rows,
+                      ),
+                      compact: true,
+                      height: _summaryChartHeight,
+                      fitHeight: true,
+                      toggleKey: ValueKey(
+                        'statistics-summary-chart-toggle-${request.group.name}',
+                      ),
+                    );
+                  }
+                  return StatisticBarChart(
                     data: rows.take(topStatisticCount).toList(growable: false),
                     measure: request.measure,
                     group: request.group,
                     rank: request.rank,
-                    usePieByDefault: _shouldUseStandalonePieChart(
-                      request,
-                      rows,
-                    ),
                     compact: true,
-                    height: 280,
-                    toggleKey: ValueKey(
-                      'statistics-summary-chart-toggle-${request.group.name}',
-                    ),
+                    height: _summaryChartHeight,
                   );
-                }
-                return StatisticBarChart(
-                  data: rows.take(topStatisticCount).toList(growable: false),
-                  measure: request.measure,
-                  group: request.group,
-                  rank: request.rank,
-                  compact: true,
-                  height: 280,
-                );
-              },
+                },
+              ),
             ),
           ],
         ),
