@@ -59,8 +59,6 @@ dependencies:
   flutter_rust_bridge: 2.13.0
   mobile_scanner: ^7.0.0
   sqlite3: ^3.1.5
-  rust_lib_nahpu:
-    path: rust_builder
   timezone: ^0.11.0
   material_ui: ^1.0.0
   qr: ^4.0.0
@@ -80,6 +78,7 @@ dependencies:
   fvp: ^0.37.3
   record: ^7.1.1
   cupertino_ui: ^1.0.0
+  flutter_rust_bridge_hooks: 2.13.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
