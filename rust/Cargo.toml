@@ -4,6 +4,10 @@ version = "0.1.0"
 edition = "2021"
 
 [lib]
+# Named explicitly so the Native Assets build hook resolves `lib.name`
+# directly instead of logging a caught lookup failure before falling
+# back to `package.name`.
+name = "rust_lib_nahpu"
 crate-type = ["cdylib", "staticlib"]
 
 [dependencies]

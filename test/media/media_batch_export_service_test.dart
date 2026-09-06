@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:nahpu/services/common/io_services.dart';
@@ -13,8 +12,9 @@ import 'package:nahpu/services/export/export_task.dart';
 import 'package:nahpu/services/media/media_export_service.dart';
 import 'package:nahpu/src/rust/api/archive.dart';
 import 'package:nahpu/src/rust/api/images.dart' as rust_images;
-import 'package:nahpu/src/rust/frb_generated.dart';
 import 'package:path/path.dart' as path;
+
+import '../helpers/rust_library.dart';
 
 const _projectUuid = 'batch-media-project';
 final _pngBytes = base64Decode(
@@ -28,14 +28,7 @@ void main() {
   late Directory appDirectory;
   late Directory exportDirectory;
 
-  setUpAll(() async {
-    final dylibPath = Platform.isMacOS
-        ? 'rust/target/debug/librust_lib_nahpu.dylib'
-        : Platform.isWindows
-        ? 'rust/target/debug/rust_lib_nahpu.dll'
-        : 'rust/target/debug/librust_lib_nahpu.so';
-    await RustLib.init(externalLibrary: ExternalLibrary.open(dylibPath));
-  });
+  setUpAll(initRustLibForTest);
 
   setUp(() {
     appDirectory = Directory.systemTemp.createTempSync('nahpu-batch-media-');

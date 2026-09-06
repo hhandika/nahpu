@@ -6,32 +6,20 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:nahpu/screens/exports/bundle_records.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/export/dwc_bundle.dart';
 import 'package:nahpu/services/providers/database.dart';
 import 'package:nahpu/services/providers/projects.dart';
 import 'package:nahpu/src/rust/api/config.dart' as rust_config;
-import 'package:nahpu/src/rust/frb_generated.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+
+import '../helpers/rust_library.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  setUpAll(() async {
-    final isTest = Platform.environment.containsKey('FLUTTER_TEST');
-    if (isTest) {
-      final dylibPath = Platform.isMacOS
-          ? 'rust/target/debug/librust_lib_nahpu.dylib'
-          : Platform.isWindows
-          ? 'rust/target/debug/rust_lib_nahpu.dll'
-          : 'rust/target/debug/librust_lib_nahpu.so';
-      await RustLib.init(externalLibrary: ExternalLibrary.open(dylibPath));
-    } else {
-      await RustLib.init();
-    }
-  });
+  setUpAll(initRustLibForTest);
 
   test('normalizes current and legacy bundle taxon labels', () {
     expect(normalizeBundleTaxonGroup('Avians'), 'Birds');

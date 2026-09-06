@@ -1,29 +1,15 @@
-import 'dart:io';
-
 import 'package:flutter/services.dart';
-import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nahpu/screens/templates/template_model.dart';
 import 'package:nahpu/services/export/document_writer.dart';
 import 'package:nahpu/src/rust/api/document.dart' as rust_document;
-import 'package:nahpu/src/rust/frb_generated.dart';
+
+import '../helpers/rust_library.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  setUpAll(() async {
-    final isTest = Platform.environment.containsKey('FLUTTER_TEST');
-    if (isTest) {
-      final dylibPath = Platform.isMacOS
-          ? 'rust/target/debug/librust_lib_nahpu.dylib'
-          : Platform.isWindows
-          ? 'rust/target/debug/rust_lib_nahpu.dll'
-          : 'rust/target/debug/librust_lib_nahpu.so';
-      await RustLib.init(externalLibrary: ExternalLibrary.open(dylibPath));
-    } else {
-      await RustLib.init();
-    }
-  });
+  setUpAll(initRustLibForTest);
 
   test('conditional brackets and generated markup compile to PDF', () async {
     final conditionalText = resolveDocumentTemplatePlaceholders(
