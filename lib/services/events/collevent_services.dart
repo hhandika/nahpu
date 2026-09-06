@@ -170,13 +170,19 @@ class CollEventServices extends AppServices {
     CollEventQuery(dbAccess).updateCollEventEntry(id, entries);
   }
 
-  void updateEnvironmentData(
+  Future<void> updateEnvironmentData(
     int eventID,
     EnvironmentCompanion environmentData,
-  ) {
-    EnvironmentDataQuery(
+  ) async {
+    final updatedRows = await EnvironmentDataQuery(
       dbAccess,
     ).updateEnvironmentDataEntry(eventID, environmentData);
+    if (updatedRows != 1) {
+      throw StateError(
+        'Expected one environmental record for event $eventID, '
+        'but updated $updatedRows.',
+      );
+    }
   }
 
   Future<void> updateCollEffortEntry(int id, CollEffortCompanion entry) async {

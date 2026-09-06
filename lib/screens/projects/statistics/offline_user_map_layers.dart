@@ -11,15 +11,15 @@ import 'package:nahpu/services/providers/map_layers.dart';
 import 'package:nahpu/services/types/map_layers.dart';
 import 'package:path/path.dart' as path;
 
-class LinuxUserMapLayers extends ConsumerWidget {
-  const LinuxUserMapLayers({super.key});
+class OfflineUserMapLayers extends ConsumerWidget {
+  const OfflineUserMapLayers({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final catalog = ref.watch(userMapCatalogProvider).value;
     final supported =
         catalog?.layers
-            .where((layer) => layer.enabled && layer.kind.isSupportedOnLinux)
+            .where((layer) => layer.enabled && layer.kind.isSupportedOffline)
             .toList(growable: false) ??
         const <UserMapLayer>[];
     return FutureBuilder<List<Widget>>(
@@ -94,7 +94,7 @@ class LinuxUserMapLayers extends ConsumerWidget {
     return widgets;
   }
 
-  Future<_LinuxGeoJsonData> _parseGeoJson(File file) async {
+  Future<_OfflineGeoJsonData> _parseGeoJson(File file) async {
     final decoded = jsonDecode(await file.readAsString());
     final points = <LatLng>[];
     final lines = <List<LatLng>>[];
@@ -149,7 +149,11 @@ class LinuxUserMapLayers extends ConsumerWidget {
         if (feature is Map) geometry(feature['geometry']);
       }
     }
-    return _LinuxGeoJsonData(points: points, lines: lines, polygons: polygons);
+    return _OfflineGeoJsonData(
+      points: points,
+      lines: lines,
+      polygons: polygons,
+    );
   }
 
   LatLng? _point(Object? value) {
@@ -165,8 +169,8 @@ class LinuxUserMapLayers extends ConsumerWidget {
       : const [];
 }
 
-class _LinuxGeoJsonData {
-  const _LinuxGeoJsonData({
+class _OfflineGeoJsonData {
+  const _OfflineGeoJsonData({
     required this.points,
     required this.lines,
     required this.polygons,

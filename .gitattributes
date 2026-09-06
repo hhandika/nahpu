@@ -1,0 +1,22 @@
+# Line endings are decided here, not by each contributor's core.autocrlf.
+#
+# Windows checkouts default to CRLF, which silently breaks anything that reads
+# a repository file and matches on "\n" -- test/templates/font_metadata_test.dart
+# failed on Windows CI that way while passing everywhere else. Normalizing text
+# to LF in the repository and in every working tree keeps those reads honest and
+# keeps diffs free of line-ending noise.
+* text=auto eol=lf
+
+# cmd.exe can mis-parse a batch file that has no carriage returns, so these keep
+# CRLF in the working tree. PowerShell reads LF fine and is left alone.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Pinned so content detection can never get these wrong: SVG is text that can
+# look binary, the rest are binaries that must never be line-ending converted.
+*.svg text
+*.icns binary
+*.ico binary
+*.png binary
+*.ttf binary
+*.xlsx binary

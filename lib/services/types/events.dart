@@ -72,6 +72,127 @@ const Map<String, String> environmentalDataFieldLabels = {
   'notes': 'Notes',
 };
 
+const List<String> environmentMoonPhaseOptions = [
+  'New Moon',
+  'Waxing Crescent',
+  'First Quarter',
+  'Waxing Gibbous',
+  'Full Moon',
+  'Waning Gibbous',
+  'Last Quarter',
+  'Waning Crescent',
+];
+
+const Set<String> _environmentNumericFields = {
+  'lowestDayTempC',
+  'highestDayTempC',
+  'lowestNightTempC',
+  'highestNightTempC',
+  'averageHumidity',
+  'dewPointTemp',
+  'rainfallInMm',
+  'ambientTemperature',
+  'ambientHumidity',
+  'waterTemperature',
+  'pH',
+  'dissolvedOxygen',
+  'flowVelocity',
+};
+
+const Set<String> _environmentTextFields = {
+  'sunriseTime',
+  'sunsetTime',
+  'moonPhase',
+  'cloudCover',
+  'notes',
+};
+
+const Set<String> _cloudCoverOptions = {
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+};
+
+/// Raw environmental values prepared for an editable form.
+///
+/// SQLite can retain values whose storage type does not match a column's
+/// declared affinity. Keeping those raw values here lets the editor show and
+/// repair one malformed field without losing the rest of the record.
+class EditableEnvironmentData {
+  EditableEnvironmentData._({
+    required Map<String, Object?> values,
+    required Map<String, String> fieldErrors,
+  }) : values = Map.unmodifiable(values),
+       fieldErrors = Map.unmodifiable(fieldErrors);
+
+  factory EditableEnvironmentData.fromRaw(Map<String, Object?> raw) {
+    final values = <String, Object?>{
+      for (final field in environmentalDataFields) field: raw[field],
+    };
+    final errors = <String, String>{};
+
+    for (final field in _environmentNumericFields) {
+      final value = values[field];
+      if (value == null) continue;
+      if (value is! num || !value.toDouble().isFinite) {
+        errors[field] =
+            'Stored value is not a finite number. Enter a valid number.';
+      }
+    }
+    for (final field in _environmentTextFields) {
+      final value = values[field];
+      if (value != null && value is! String) {
+        errors[field] = 'Stored value must be text. Enter a valid value.';
+      }
+    }
+
+    _validateRange(values, errors, 'averageHumidity', 0, 100);
+    _validateRange(values, errors, 'ambientHumidity', 0, 100);
+    _validateRange(values, errors, 'pH', 0, 14);
+
+    final cloudCover = values['cloudCover'];
+    if (cloudCover is String && !_cloudCoverOptions.contains(cloudCover)) {
+      errors['cloudCover'] = 'Select a cloud cover value from 0 to 9.';
+    }
+    final moonPhase = values['moonPhase'];
+    if (moonPhase is String &&
+        !environmentMoonPhaseOptions.contains(moonPhase)) {
+      errors['moonPhase'] = 'Select a supported moon phase.';
+    }
+
+    return EditableEnvironmentData._(values: values, fieldErrors: errors);
+  }
+
+  final Map<String, Object?> values;
+  final Map<String, String> fieldErrors;
+
+  Object? value(String field) => values[field];
+
+  String displayValue(String field) => values[field]?.toString() ?? '';
+
+  static void _validateRange(
+    Map<String, Object?> values,
+    Map<String, String> errors,
+    String field,
+    num minimum,
+    num maximum,
+  ) {
+    final value = values[field];
+    if (value is num &&
+        value.toDouble().isFinite &&
+        (value < minimum || value > maximum)) {
+      errors[field] = 'Enter a value from $minimum to $maximum';
+    }
+  }
+}
+
 /// Icon vocabulary for collecting methods.
 ///
 /// This exists only to pick an SVG for an effort row. Methods themselves stay

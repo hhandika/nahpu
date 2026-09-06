@@ -8,6 +8,7 @@ import 'package:nahpu/services/database/media_queries.dart';
 import 'package:nahpu/services/providers/page_jump.dart';
 import 'package:nahpu/services/providers/projects.dart';
 import 'package:nahpu/services/providers/record_sort.dart';
+import 'package:nahpu/services/types/events.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final collEventEntryProvider =
@@ -70,10 +71,10 @@ final collPersonnelProvider = FutureProvider.family
     );
 
 final environmentDataProvider = FutureProvider.family
-    .autoDispose<EnvironmentData, int>(
+    .autoDispose<EditableEnvironmentData, int>(
       (ref, collEventId) => EnvironmentDataQuery(
         ref.read(databaseProvider),
-      ).getEnvironmentDataByEventId(collEventId),
+      ).getEditableEnvironmentDataByEventId(collEventId),
     );
 
 final eventMediaProvider = FutureProvider.family

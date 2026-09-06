@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_map/flutter_map.dart' as flutter_map;
@@ -8,14 +7,17 @@ import 'package:latlong2/latlong.dart';
 import 'package:maplibre/maplibre.dart' as maplibre;
 import 'package:nahpu/screens/shared/maps/maplibre_gesture_surface.dart';
 import 'package:nahpu/screens/shared/maps/maplibre_camera_readiness.dart';
+import 'package:nahpu/screens/shared/maps/maplibre_load_watchdog.dart';
+import 'package:nahpu/screens/shared/maps/offline_basemap_notice.dart';
 import 'package:nahpu/screens/shared/maps/maplibre_viewport_projection.dart';
 import 'package:nahpu/screens/shared/maps/map_tooltip_card.dart';
 import 'package:nahpu/screens/shared/maps/map_point_hit_test.dart';
-import 'package:nahpu/screens/projects/statistics/linux_user_map_layers.dart';
+import 'package:nahpu/screens/projects/statistics/offline_user_map_layers.dart';
 import 'package:nahpu/services/sites/coordinate_map_point.dart';
 import 'package:nahpu/services/sites/natural_earth.dart';
 import 'package:nahpu/services/common/io_services.dart';
 import 'package:nahpu/services/providers/map_layers.dart';
+import 'package:nahpu/services/providers/map_renderer.dart';
 import 'package:nahpu/services/providers/settings.dart';
 import 'package:nahpu/services/statistics/spatial_map_style.dart';
 import 'package:nahpu/services/types/map_layers.dart';
@@ -50,7 +52,7 @@ class CoordinateLocationMap extends ConsumerWidget {
         ref.watch(spatialBasemapStyleProvider).value ??
         SpatialBasemapStyle.automatic;
     final showsBaseLayer = baseLayer != SpatialBasemapStyle.none;
-    if (Platform.isLinux) {
+    if (ref.watch(mapRendererProvider) == MapRenderer.naturalEarth) {
       return FutureBuilder<List<NaturalEarthPolygon>>(
         future: showsBaseLayer
             ? _naturalEarthPolygons
@@ -69,6 +71,7 @@ class CoordinateLocationMap extends ConsumerWidget {
             onPointSelected: onPointSelected,
             controlsTopOffset: controlsTopOffset,
             showsBaseLayer: showsBaseLayer,
+            isFallback: mapLibreIsExpected,
           );
         },
       );
@@ -122,6 +125,7 @@ class _NaturalEarthCoordinateMap extends StatefulWidget {
     required this.onPointSelected,
     required this.controlsTopOffset,
     required this.showsBaseLayer,
+    required this.isFallback,
   });
 
   final List<CoordinateMapPoint> points;
@@ -132,6 +136,10 @@ class _NaturalEarthCoordinateMap extends StatefulWidget {
   final ValueChanged<int> onPointSelected;
   final double controlsTopOffset;
   final bool showsBaseLayer;
+
+  /// Whether this map is standing in for a MapLibre map that failed to load,
+  /// rather than being the renderer this platform always uses.
+  final bool isFallback;
 
   @override
   State<_NaturalEarthCoordinateMap> createState() =>
@@ -204,7 +212,7 @@ class _NaturalEarthCoordinateMapState
                       ),
                   ],
                 ),
-              const LinuxUserMapLayers(),
+              const OfflineUserMapLayers(),
               flutter_map.MarkerLayer(
                 markers: [
                   for (final point in widget.points)
@@ -242,10 +250,12 @@ class _NaturalEarthCoordinateMapState
             ),
           ),
           if (widget.showsBaseLayer)
-            const Positioned(
+            Positioned(
               left: 8,
               bottom: 8,
-              child: _NaturalEarthAttribution(),
+              child: widget.isFallback
+                  ? const OfflineBasemapNotice()
+                  : const NaturalEarthAttribution(),
             ),
           if (widget.points.isEmpty)
             const Positioned.fill(child: _MapMessage()),
@@ -300,7 +310,7 @@ class _NaturalEarthCoordinateMapState
   }
 }
 
-class _MapLibreCoordinateMap extends StatefulWidget {
+class _MapLibreCoordinateMap extends ConsumerStatefulWidget {
   const _MapLibreCoordinateMap({
     super.key,
     required this.points,
@@ -323,12 +333,15 @@ class _MapLibreCoordinateMap extends StatefulWidget {
   final double controlsTopOffset;
 
   @override
-  State<_MapLibreCoordinateMap> createState() => _MapLibreCoordinateMapState();
+  ConsumerState<_MapLibreCoordinateMap> createState() =>
+      _MapLibreCoordinateMapState();
 }
 
-class _MapLibreCoordinateMapState extends State<_MapLibreCoordinateMap> {
+class _MapLibreCoordinateMapState
+    extends ConsumerState<_MapLibreCoordinateMap> {
   maplibre.MapController? _controller;
   final _readiness = MapLibreCameraReadiness();
+  late final _watchdog = MapLibreLoadWatchdog(onTimeout: _handleLoadTimeout);
   CoordinateMapPoint? _tooltipPoint;
 
   /// Built once per state. [maplibre.MapOptions] compares by identity, so a
@@ -337,6 +350,12 @@ class _MapLibreCoordinateMapState extends State<_MapLibreCoordinateMap> {
   late final maplibre.MapOptions _options = _buildOptions();
 
   bool get _isReady => mounted && _readiness.isReady;
+
+  @override
+  void initState() {
+    super.initState();
+    _watchdog.start();
+  }
 
   @override
   void didUpdateWidget(covariant _MapLibreCoordinateMap oldWidget) {
@@ -364,6 +383,7 @@ class _MapLibreCoordinateMapState extends State<_MapLibreCoordinateMap> {
 
   @override
   void dispose() {
+    _watchdog.dispose();
     _controller = null;
     super.dispose();
   }
@@ -381,10 +401,12 @@ class _MapLibreCoordinateMapState extends State<_MapLibreCoordinateMap> {
               if (!mounted) return;
               _controller = controller;
               _readiness.markMapCreated();
+              _markRendered();
               _initializeMap();
             },
             onStyleLoaded: (_) {
               _readiness.markStyleLoaded();
+              _markRendered();
               _initializeMap();
             },
             onEvent: _handleEvent,
@@ -428,11 +450,26 @@ class _MapLibreCoordinateMapState extends State<_MapLibreCoordinateMap> {
               ),
             ],
           ),
-          if (widget.points.isEmpty)
+          if (_watchdog.isWaiting)
+            const Positioned.fill(child: _MapLoading())
+          else if (widget.points.isEmpty)
             const Positioned.fill(child: _MapMessage()),
         ],
       ),
     );
+  }
+
+  /// Stops the watchdog once MapLibre has actually drawn something.
+  void _markRendered() {
+    if (!_readiness.isReady) return;
+    if (_watchdog.markReady() && mounted) setState(() {});
+  }
+
+  /// Hands the session over to the offline renderer after a map that never
+  /// loaded. The provider latches, so no later map waits this out again.
+  void _handleLoadTimeout() {
+    if (!mounted) return;
+    ref.read(mapRendererProvider.notifier).markMapLibreUnavailable();
   }
 
   maplibre.MapOptions _buildOptions() {
@@ -670,20 +707,6 @@ class _MapMarker extends StatelessWidget {
   );
 }
 
-class _NaturalEarthAttribution extends StatelessWidget {
-  const _NaturalEarthAttribution();
-
-  @override
-  Widget build(BuildContext context) => Material(
-    color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.9),
-    borderRadius: BorderRadius.circular(4),
-    child: const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-      child: Text('Natural Earth', style: TextStyle(fontSize: 12)),
-    ),
-  );
-}
-
 class _BaseLayerAttribution extends StatelessWidget {
   const _BaseLayerAttribution({required this.label});
 
@@ -697,6 +720,18 @@ class _BaseLayerAttribution extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
       child: Text(label, style: const TextStyle(fontSize: 12)),
     ),
+  );
+}
+
+class _MapLoading extends StatelessWidget {
+  const _MapLoading();
+
+  @override
+  Widget build(BuildContext context) => ColoredBox(
+    color: Theme.of(
+      context,
+    ).colorScheme.surfaceContainerLow.withValues(alpha: 0.82),
+    child: const Center(child: CircularProgressIndicator()),
   );
 }
 
