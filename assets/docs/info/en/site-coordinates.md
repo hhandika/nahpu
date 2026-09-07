@@ -8,7 +8,7 @@ A site can have several coordinate records. Each one should describe a documente
 
 Manual entry accepts decimal degrees (DD), degrees and decimal minutes (DDM), degrees-minutes-seconds (DMS), and WGS84 UTM. `Select coordinate file` imports CSV, TSV, Excel, GeoJSON/JSON, KML, zipped Shapefile, and GPX; `Scan QR` reads a NAHPU coordinate QR code. Review every imported position before saving it.
 
-Uncertainty is the horizontal distance in metres within which the true position is expected to fall. Report a realistic value rather than a default one, and keep the coordinate as it was recorded in the field: NAHPU stores the entered representation alongside the decimal values it derives from it.
+For coordinate entered in non-decimal degree format, NAHPU will store both the entered coordinates and automatically converted decimal degree values.
 
 ## Darwin Core context
 

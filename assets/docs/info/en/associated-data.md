@@ -6,7 +6,7 @@ sidebar:
 
 Associated data connects a record to supporting links and non-media files, such as accession references, datasets, permits, protocols, sequence records, or documents.
 
-Choose the data type that describes the relationship, add a name, description, and date, and provide a stable URI or a managed file. Use Media instead for images, audio, and video so audiovisual metadata is recorded consistently. Verify every link or file after adding it, and do not attach sensitive material unless its access and sharing are authorized.
+Choose the data type that describes the relationship, add a name, description, and date, and provide a stable URI or a managed file. Use Media instead for images, audio, and video so audiovisual metadata is recorded consistently. Verify every link or file after adding it.
 
 ## Darwin Core context
 

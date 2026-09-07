@@ -167,11 +167,23 @@ class ProjectTransferPayload {
     'appVersion': appVersion,
     'databaseVersion': databaseVersion,
     'project': project,
-    'records': includeMedia ? records : _recordsWithoutMedia,
+    'records': _populated(includeMedia ? records : _recordsWithoutMedia),
     'media': includeMedia
         ? mediaFiles.map((entry) => entry.toJson()).toList()
         : const [],
     'warnings': includeMedia ? warnings : const [],
+  };
+
+  /// Drops collections with no rows.
+  ///
+  /// A project only records the taxon groups it works with, so a mammals-only project
+  /// carries no bird or arthropod collection at all rather than an empty one. Readers use
+  /// [rows], which already treats a missing collection as empty.
+  Map<String, List<Map<String, dynamic>>> _populated(
+    Map<String, List<Map<String, dynamic>>> source,
+  ) => <String, List<Map<String, dynamic>>>{
+    for (final entry in source.entries)
+      if (entry.value.isNotEmpty) entry.key: entry.value,
   };
 
   Map<String, List<Map<String, dynamic>>> get _recordsWithoutMedia {

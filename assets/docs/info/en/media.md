@@ -6,9 +6,7 @@ sidebar:
 
 Media stores the images, audio, and video associated with a project record. Use `Add` to import a file or, where the device supports it, to take a photo or video or record audio.
 
-Edit the file name, caption, tag, and photographer so another person can tell what the file shows. The category follows the file type, and capture date, camera, and lens details are read from the file’s own metadata when it carries any. Confirm that a managed file opens before leaving the field, and include media in backups or full project transfers when it must move to another device.
-
-Media describes the resource, not the specimen. Keep observations about the organism in the specimen record.
+Edit the file name, caption, tag, and photographer so another person can tell what the file shows. The category follows the file type, and capture date, camera, and lens details are read from the file’s own metadata when it carries any.
 
 ## Exporting media
 

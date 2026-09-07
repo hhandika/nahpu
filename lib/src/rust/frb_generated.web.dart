@@ -16,12 +16,9 @@ import 'api/gis.dart';
 import 'api/images.dart';
 import 'api/import.dart';
 import 'api/nahpu_dp.dart';
-
 import 'dart:async';
 import 'dart:convert';
-
 import 'frb_generated.dart';
-
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated_web.dart';
 
 abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
@@ -163,6 +160,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DocumentSortDirection dco_decode_document_sort_direction(dynamic raw);
 
   @protected
+  DwcBundleColumn dco_decode_dwc_bundle_column(dynamic raw);
+
+  @protected
   DwcHeader dco_decode_dwc_header(dynamic raw);
 
   @protected
@@ -231,6 +231,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<DocumentLayoutStatus> dco_decode_list_document_layout_status(
     dynamic raw,
   );
+
+  @protected
+  List<DwcBundleColumn> dco_decode_list_dwc_bundle_column(dynamic raw);
 
   @protected
   List<DwcHeader> dco_decode_list_dwc_header(dynamic raw);
@@ -546,6 +549,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  DwcBundleColumn sse_decode_dwc_bundle_column(SseDeserializer deserializer);
+
+  @protected
   DwcHeader sse_decode_dwc_header(SseDeserializer deserializer);
 
   @protected
@@ -628,6 +634,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<DocumentLayoutStatus> sse_decode_list_document_layout_status(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  List<DwcBundleColumn> sse_decode_list_dwc_bundle_column(
     SseDeserializer deserializer,
   );
 
@@ -1015,6 +1026,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_dwc_bundle_column(
+    DwcBundleColumn self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_dwc_header(DwcHeader self, SseSerializer serializer);
 
   @protected
@@ -1113,6 +1130,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_list_document_layout_status(
     List<DocumentLayoutStatus> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_list_dwc_bundle_column(
+    List<DwcBundleColumn> self,
     SseSerializer serializer,
   );
 

@@ -1959,6 +1959,33 @@ void main() {
     expect(find.text('Events'), findsNothing);
     expect(find.text('Narratives'), findsNothing);
   });
+  test('payload JSON omits collections the project never populated', () {
+    final payload = _payload(
+      records: {
+        'site': [
+          {'id': 1, 'siteID': 'Camp A', 'projectUuid': 'project-a'},
+        ],
+        'mammalAttribute': [
+          {'specimenUuid': 'specimen-1'},
+        ],
+        'birdAttribute': const [],
+        'arthropodAttribute': const [],
+      },
+    );
+
+    final decoded = jsonDecode(payload.encoded) as Map<String, dynamic>;
+    final records = decoded['records'] as Map<String, dynamic>;
+
+    expect(records.keys, containsAll(<String>{'site', 'mammalAttribute'}));
+    expect(records.containsKey('birdAttribute'), isFalse);
+    expect(records.containsKey('arthropodAttribute'), isFalse);
+
+    // A pruned payload still round-trips: readers treat a missing collection
+    // as empty.
+    final restored = ProjectTransferPayload.parse(payload.encoded);
+    expect(restored.rows('mammalAttribute'), hasLength(1));
+    expect(restored.rows('birdAttribute'), isEmpty);
+  });
 }
 
 ProjectTransferPayload _payload({
