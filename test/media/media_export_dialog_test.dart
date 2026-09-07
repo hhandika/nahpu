@@ -37,6 +37,42 @@ void main() {
     expect(find.text('Export media'), findsOneWidget);
   });
 
+  testWidgets('dialog layout closes from the top-right close button', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1000, 900);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    await _pumpLauncher(tester, _audioSource());
+    await tester.tap(find.text('Open export'));
+    await tester.pumpAndSettle();
+
+    final closeButton = find.widgetWithIcon(IconButton, Icons.close);
+    expect(closeButton, findsOneWidget);
+    expect(
+      tester.getCenter(closeButton).dx,
+      greaterThan(tester.getCenter(find.text('Export media')).dx),
+    );
+
+    await tester.tap(closeButton);
+    await tester.pumpAndSettle();
+    expect(find.text('Export media'), findsNothing);
+  });
+
+  testWidgets('bottom sheet layout omits the close button', (tester) async {
+    tester.view.physicalSize = const Size(500, 900);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    await _pumpLauncher(tester, _audioSource());
+    await tester.tap(find.text('Open export'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Export media'), findsOneWidget);
+    expect(find.widgetWithIcon(IconButton, Icons.close), findsNothing);
+  });
+
   testWidgets('non-image media offers Original export only', (tester) async {
     await _pumpDialog(tester, _audioSource());
 

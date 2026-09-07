@@ -1,4 +1,6 @@
 import 'dart:math' as math;
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/svg.dart';
@@ -358,7 +360,7 @@ class QrImageView extends StatelessWidget {
 
     return CustomPaint(
       size: size != null ? Size(size!, size!) : const Size.square(200),
-      painter: _QrPainter(
+      painter: QrCodePainter(
         data: data,
         qrImage: qrImage,
         color: color ?? Theme.of(context).colorScheme.onSurface,
@@ -416,6 +418,50 @@ class QrCodeViewer extends StatelessWidget {
   }
 }
 
+/// Size in logical pixels of the square PNG produced by [renderQrCodePng].
+const int qrCodeImageSize = 1024;
+
+/// Renders [data] as a scan-safe black-on-white square PNG.
+///
+/// Returns `null` when the payload is too large to encode as a QR code.
+Future<Uint8List?> renderQrCodePng({
+  required String data,
+  int size = qrCodeImageSize,
+}) async {
+  assert(size > 0);
+  if (!canEncodeQrPayload(data)) return null;
+  final qrImage = QrImage(
+    QrCode(
+      payload: QrPayload.fromString(data),
+      errorCorrectLevel: QrErrorCorrectLevel.low,
+    ),
+  );
+  final canvasSize = Size.square(size.toDouble());
+  final recorder = ui.PictureRecorder();
+  final canvas = Canvas(recorder, Offset.zero & canvasSize);
+  canvas.drawRect(Offset.zero & canvasSize, Paint()..color = Colors.white);
+  QrCodePainter(
+    data: data,
+    qrImage: qrImage,
+    color: Colors.black,
+    backgroundColor: Colors.white,
+    shape: 'square',
+    padding: size * 0.06,
+  ).paint(canvas, canvasSize);
+  final picture = recorder.endRecording();
+  try {
+    final image = await picture.toImage(size, size);
+    try {
+      final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
+      return bytes?.buffer.asUint8List();
+    } finally {
+      image.dispose();
+    }
+  } finally {
+    picture.dispose();
+  }
+}
+
 bool canEncodeQrPayload(String data) {
   try {
     QrCode(
@@ -428,7 +474,7 @@ bool canEncodeQrPayload(String data) {
   }
 }
 
-class _QrPainter extends CustomPainter {
+class QrCodePainter extends CustomPainter {
   final String data;
   final QrImage qrImage;
   final Color color;
@@ -436,7 +482,7 @@ class _QrPainter extends CustomPainter {
   final String shape;
   final double padding;
 
-  _QrPainter({
+  QrCodePainter({
     required this.data,
     required this.qrImage,
     required this.color,
@@ -499,7 +545,7 @@ class _QrPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _QrPainter oldDelegate) {
+  bool shouldRepaint(covariant QrCodePainter oldDelegate) {
     return oldDelegate.data != data ||
         oldDelegate.color != color ||
         oldDelegate.backgroundColor != backgroundColor ||

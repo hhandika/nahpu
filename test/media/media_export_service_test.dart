@@ -210,6 +210,53 @@ void main() {
     expect(result.resized, isTrue);
   });
 
+  testWidgets('stages generated image bytes for the shared export flow', (
+    tester,
+  ) async {
+    final ref = await _widgetRef(tester);
+    final service = MediaExportService(
+      ref: ref,
+      inspectImage: ({required inputPath}) async {
+        return const rust_images.ImageSourceInfo(
+          format: rust_images.ImageExportFormat.png,
+          width: 1024,
+          height: 1024,
+        );
+      },
+    );
+
+    final source = await tester.runAsync(
+      () => service.prepareImageBytes(
+        bytes: Uint8List.fromList([1, 2, 3]),
+        fileStem: 'Project QR code',
+      ),
+    );
+
+    expect(source!.file.existsSync(), isTrue);
+    expect(source.file.readAsBytesSync(), [1, 2, 3]);
+    expect(source.defaultFileStem, 'Project-QR-code');
+    expect(source.originalExtension, 'png');
+    expect(source.kind, MediaKind.image);
+    expect(source.availableFormats, contains(MediaExportFormat.jpeg));
+    expect(path.isWithin(appDirectory.path, source.file.path), isTrue);
+  });
+
+  testWidgets('rejects empty generated image bytes', (tester) async {
+    final ref = await _widgetRef(tester);
+    final error = await tester.runAsync(() async {
+      try {
+        await MediaExportService(
+          ref: ref,
+        ).prepareImageBytes(bytes: Uint8List(0), fileStem: 'empty');
+      } catch (error) {
+        return error;
+      }
+      return null;
+    });
+
+    expect(error, isA<FormatException>());
+  });
+
   testWidgets('rejects resize dimensions larger than the source', (
     tester,
   ) async {

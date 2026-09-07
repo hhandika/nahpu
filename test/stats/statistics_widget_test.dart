@@ -811,7 +811,7 @@ void main() {
     expect(find.text('lucifugus'), findsOneWidget);
   });
 
-  testWidgets('summary pie plot matches bar plot height', (tester) async {
+  testWidgets('summary charts fill the height they are given', (tester) async {
     const chartHeight = 280.0;
     await tester.pumpWidget(
       const MaterialApp(
@@ -840,9 +840,34 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    final barPlot = tester.getSize(find.byType(BarChart));
-    final piePlot = tester.getSize(find.byType(PieChart));
-    expect(piePlot.height, closeTo(barPlot.height, 0.1));
+    final barChart = tester.getSize(find.byType(StatisticBarChart));
+    final pieChart = tester.getSize(find.byType(StatisticPieChart));
+    expect(barChart.height, closeTo(chartHeight, 0.1));
+    expect(pieChart.height, closeTo(chartHeight, 0.1));
+  });
+
+  testWidgets('summary cards end on the same line whatever chart they show', (
+    tester,
+  ) async {
+    await _pumpRecordStatisticsPanel(
+      tester,
+      const Size(1000, 1400),
+      includeAdditionalCategoryValues: true,
+    );
+    await tester.tap(find.text('Explore more stats'));
+    for (var index = 0; index < 4; index++) {
+      await tester.pump(const Duration(milliseconds: 500));
+    }
+
+    double cardHeight(String title) => tester
+        .getRect(
+          find.ancestor(of: find.text(title), matching: find.byType(Card)),
+        )
+        .height;
+
+    final barCardHeight = cardHeight('Specimens by family');
+    expect(cardHeight('Specimens by sex'), closeTo(barCardHeight, 0.1));
+    expect(cardHeight('Specimens by method'), closeTo(barCardHeight, 0.1));
   });
 
   testWidgets('detailed statistics keeps a fixed card and expands its chart', (

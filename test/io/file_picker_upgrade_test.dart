@@ -141,6 +141,7 @@ final class _FakeFilePickerPlatform extends FilePickerPlatform {
     Function(FilePickerStatus)? onFileLoading,
     int compressionQuality = 0,
     AndroidOptions androidOptions = const AndroidOptions(),
+    DarwinOptions darwinOptions = const DarwinOptions(),
     WindowsOptions windowsOptions = const WindowsOptions(),
     LinuxOptions linuxOptions = const LinuxOptions(),
     WebOptions webOptions = const WebOptions(),
@@ -157,13 +158,16 @@ base class _FakePlatformFile extends PlatformFile {
   final String _path;
 
   @override
-  String get name => _path.split('/').last;
+  String get name => path.basename(_path);
 
   @override
   Uri get uri => Uri.file(_path);
 
   @override
   XFile get xFile => XFile(_path);
+
+  @override
+  int? lengthSync() => 0;
 
   @override
   Future<int> length() async => 0;

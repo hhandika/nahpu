@@ -59,6 +59,15 @@ abstract final class NahpuBreakpoints {
   static const double laptop = 1280;
 }
 
+/// Gap between a scrolling page and the screen edge. It stays the same at
+/// every screen size, so cards on the dashboard, the record forms, and the
+/// statistics page line up with each other.
+abstract final class NahpuPageMargin {
+  static const double horizontal = NahpuSpacing.md;
+  static const double top = NahpuSpacing.lg;
+  static const double bottom = NahpuSpacing.xxxl;
+}
+
 /// Fixed geometry for dashboard panels so every panel lines up.
 abstract final class NahpuDashboardPanel {
   static const double height = 360;

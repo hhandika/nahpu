@@ -30,14 +30,14 @@ Future<void> showMediaExportDialog({
   required PrepareMediaExportCallback prepare,
   required MediaExportCallback onExport,
 }) async {
-  final content = MediaExportDialog(prepare: prepare, onExport: onExport);
   if (MediaQuery.sizeOf(context).width < NahpuBreakpoints.compact) {
     await showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
       showDragHandle: true,
-      builder: (context) => content,
+      builder: (context) =>
+          MediaExportDialog._bottomSheet(prepare: prepare, onExport: onExport),
     );
     return;
   }
@@ -49,7 +49,7 @@ Future<void> showMediaExportDialog({
           maxWidth: NahpuContentWidth.form,
           maxHeight: MediaQuery.sizeOf(context).height * 0.9,
         ),
-        child: content,
+        child: MediaExportDialog(prepare: prepare, onExport: onExport),
       ),
     ),
   );
@@ -60,10 +60,18 @@ class MediaExportDialog extends StatefulWidget {
     super.key,
     required this.prepare,
     required this.onExport,
-  });
+  }) : _useBottomSheet = false;
+
+  /// The compact layout is dismissed with its drag handle, so it omits the
+  /// close button the dialog needs.
+  const MediaExportDialog._bottomSheet({
+    required this.prepare,
+    required this.onExport,
+  }) : _useBottomSheet = true;
 
   final PrepareMediaExportCallback prepare;
   final MediaExportCallback onExport;
+  final bool _useBottomSheet;
 
   @override
   State<MediaExportDialog> createState() => _MediaExportDialogState();
@@ -111,9 +119,23 @@ class _MediaExportDialogState extends State<MediaExportDialog> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            'Export media',
-            style: Theme.of(context).textTheme.headlineSmall,
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  'Export media',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+              ),
+              if (!widget._useBottomSheet)
+                IconButton(
+                  tooltip: 'Close',
+                  icon: const Icon(Icons.close),
+                  onPressed: _isRunning
+                      ? null
+                      : () => Navigator.of(context).pop(),
+                ),
+            ],
           ),
           const SizedBox(height: NahpuSpacing.xl),
           if (_loadError != null)
