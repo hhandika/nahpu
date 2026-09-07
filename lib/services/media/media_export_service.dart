@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:nahpu/services/common/io_services.dart';
 import 'package:nahpu/services/database/database.dart';
@@ -261,38 +262,35 @@ class MediaExportService extends AppServices {
       throw FormatException('Media file not found: ${file.path}');
     }
 
-    final extension = normalizeExtension(file.path);
-    final kind = matchMediaKindFromPath(file.path);
-    if (!convertibleImageExtensions.contains(extension)) {
-      return MediaExportSource(
-        file: file,
-        kind: kind,
-        originalExtension: extension,
-        conversionUnavailableReason: kind == MediaKind.image
-            ? '${extension.toUpperCase()} images can only be exported in '
-                  'their original format.'
-            : null,
-      );
-    }
+    return _describe(file);
+  }
 
-    try {
-      final info = await _inspectImage(inputPath: file.path);
-      return MediaExportSource(
-        file: file,
-        kind: kind,
-        originalExtension: extension,
-        imageInfo: info,
-      );
-    } catch (error) {
-      return MediaExportSource(
-        file: file,
-        kind: kind,
-        originalExtension: extension,
-        conversionUnavailableReason:
-            'Image conversion is unavailable. The original file can still '
-            'be exported. ${error.toString()}',
-      );
+  /// Stages generated image [bytes] in the temporary directory so they can be
+  /// exported with the shared media export flow.
+  ///
+  /// [fileStem] seeds the default export file name and is sanitized before it
+  /// is used on disk.
+  Future<MediaExportSource> prepareImageBytes({
+    required Uint8List bytes,
+    required String fileStem,
+    String extension = 'png',
+  }) async {
+    if (bytes.isEmpty) {
+      throw const FormatException('The image has no data to export.');
     }
+    final tempRoot = await tempDirectory;
+    final staging = Directory(
+      path.join(
+        tempRoot.path,
+        'media-source-${DateTime.now().microsecondsSinceEpoch}',
+      ),
+    );
+    await staging.create(recursive: true);
+    final file = File(
+      path.join(staging.path, '${_safeFileStem(fileStem)}.$extension'),
+    );
+    await file.writeAsBytes(bytes, flush: true);
+    return _describe(file);
   }
 
   Future<PreparedMediaBatch> prepareBatch(Iterable<MediaData> media) async {
@@ -539,6 +537,41 @@ class MediaExportService extends AppServices {
       height: converted.height,
       resized: converted.resized,
     );
+  }
+
+  Future<MediaExportSource> _describe(File file) async {
+    final extension = normalizeExtension(file.path);
+    final kind = matchMediaKindFromPath(file.path);
+    if (!convertibleImageExtensions.contains(extension)) {
+      return MediaExportSource(
+        file: file,
+        kind: kind,
+        originalExtension: extension,
+        conversionUnavailableReason: kind == MediaKind.image
+            ? '${extension.toUpperCase()} images can only be exported in '
+                  'their original format.'
+            : null,
+      );
+    }
+
+    try {
+      final info = await _inspectImage(inputPath: file.path);
+      return MediaExportSource(
+        file: file,
+        kind: kind,
+        originalExtension: extension,
+        imageInfo: info,
+      );
+    } catch (error) {
+      return MediaExportSource(
+        file: file,
+        kind: kind,
+        originalExtension: extension,
+        conversionUnavailableReason:
+            'Image conversion is unavailable. The original file can still '
+            'be exported. ${error.toString()}',
+      );
+    }
   }
 
   ImagePixelDimensions? _validateDimensions(
@@ -871,6 +904,14 @@ class MediaExportService extends AppServices {
     } on FileSystemException {
       // The primary export error is more useful than a cleanup failure.
     }
+  }
+
+  String _safeFileStem(String value) {
+    final cleaned = path
+        .basename(value.trim())
+        .replaceAll(RegExp(r'[^a-zA-Z0-9_-]+'), '-')
+        .replaceAll(RegExp(r'^-+|-+$'), '');
+    return cleaned.isEmpty ? 'media' : cleaned;
   }
 
   String _safeArchiveStem(String value) {
