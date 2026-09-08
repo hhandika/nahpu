@@ -8,6 +8,6 @@ Associated data connects a record to supporting links and non-media files, such 
 
 Choose the data type that describes the relationship, add a name, description, and date, and provide a stable URI or a managed file. Use Media instead for images, audio, and video so audiovisual metadata is recorded consistently. Verify every link or file after adding it.
 
-## Darwin Core context
+## Learn more
 
-Associated data has no Darwin Core class of its own. Tabular exports map these records to Dublin Core terms: the name to `dcterms:title`, the data type to `dcterms:type`, the description to `dcterms:description`, the date to `dcterms:created`, and the URI to `dcterms:identifier`.
+- [Specimen Records](https://nahpu.app/en/usages/specimens/#associated-data)

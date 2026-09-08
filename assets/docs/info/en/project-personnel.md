@@ -15,6 +15,7 @@ Personnel records represent people who participate in the project. A person is s
 
 These are NAHPU workflow roles that control what a person can be assigned to inside the app. They are not the same as the roles reported in an export, which follow each record’s actual relationships.
 
-## Darwin Core context
+## Learn more
 
-A person is exported as an agent identified by `dwc:agentID`, taken from the ORCID when one is recorded and from the NAHPU identifier otherwise; personnel notes become `dwc:agentRemarks`. Specimen relationships supply the agent terms: the collector fills `dwc:recordedBy` and `dwc:recordedByID`, and the determiner fills `dwc:identifiedBy` and `dwc:identifiedByID`.
+- [Personnel](https://nahpu.app/en/usages/personnel/)
+- [Settings](https://nahpu.app/en/usages/settings/)

@@ -14,6 +14,6 @@ The panel counts the distinct orders, families, and full species names held in t
 
 For QR import, select `Scan QR`, then `Single taxon` or `Multiple taxa`. A single valid scan opens the preview; multiple mode keeps the camera open until `Done`. Review and import the selected taxa to save them. Existing taxa are disabled and never overwritten.
 
-## Darwin Core context
+## Learn more
 
-A registered name supplies the identification terms of an export: `dwc:taxonID`, `dwc:kingdom`, `dwc:phylum`, `dwc:class`, `dwc:order`, `dwc:family`, `dwc:genus`, `dwc:specificEpithet`, `dwc:infraspecificEpithet`, `dwc:taxonRank`, `dwc:scientificNameAuthorship`, `dwc:vernacularName`, and `dwc:taxonRemarks`.
+- [Taxon Registry](https://nahpu.app/en/usages/taxon/)

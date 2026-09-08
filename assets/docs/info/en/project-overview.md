@@ -18,6 +18,7 @@ Keep the project description concise. Record detailed daily context in Narrative
 
 Reserve `Backup database` for a weekly checkpoint and for the moment before any merge. It copies all projects and every file in NAHPU app data, whether or not a project links to it. In the field, run it occasionally, when battery use is not a concern.
 
-## Darwin Core context
+## Learn more
 
-The project UUID identifies the dataset in exports and is written to `dwc:datasetID`.
+- [Projects](https://nahpu.app/en/usages/projects/)
+- [Export](https://nahpu.app/en/usages/export/#backup-strategy)

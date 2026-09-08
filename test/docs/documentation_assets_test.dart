@@ -27,6 +27,65 @@ void main() {
     }
   });
 
+  test('every info topic points to the documentation site', () {
+    const learnMoreHeadings = {
+      DocsLanguage.english: '## Learn more',
+      DocsLanguage.portuguese: '## Saiba mais',
+      DocsLanguage.spanish: '## Más información',
+      DocsLanguage.indonesian: '## Pelajari lebih lanjut',
+    };
+
+    for (final language in DocsLanguage.values) {
+      for (final topic in InfoTopic.values) {
+        final assetPath =
+            'assets/docs/info/${language.code}/${topic.assetSlug}.md';
+        final document = repository.parseDocument(
+          assetPath: assetPath,
+          source: File(assetPath).readAsStringSync(),
+        );
+
+        // Darwin Core mappings live on the website, not in the app panels.
+        expect(
+          document.markdown,
+          isNot(contains('Darwin Core context')),
+          reason: assetPath,
+        );
+        expect(
+          document.markdown,
+          contains(learnMoreHeadings[language]!),
+          reason: assetPath,
+        );
+
+        // Panels link to reference pages, which the app cannot resolve on its
+        // own, so every link needs a scheme and the reader's own locale.
+        final links = RegExp(
+          r'\[[^\]]+\]\(([^)]+)\)',
+        ).allMatches(document.markdown).map((match) => match.group(1)!);
+        expect(links, isNotEmpty, reason: assetPath);
+        for (final link in links) {
+          expect(
+            link,
+            startsWith('https://nahpu.app/${language.code}/usages/'),
+            reason: assetPath,
+          );
+        }
+      }
+    }
+  });
+
+  test('info topics link to the same pages in every language', () {
+    for (final topic in InfoTopic.values) {
+      final english = _infoLinkPaths(repository, DocsLanguage.english, topic);
+      for (final language in DocsLanguage.values.skip(1)) {
+        expect(
+          _infoLinkPaths(repository, language, topic),
+          english,
+          reason: '${language.code}/${topic.assetSlug}',
+        );
+      }
+    }
+  });
+
   test('Cookbook paths and ordering match across locales', () {
     final english = _cookbookMetadata(DocsLanguage.english, repository);
     expect(english.recipePaths, hasLength(31));
@@ -183,6 +242,27 @@ void main() {
       }
     }
   });
+}
+
+/// The linked website pages of one info topic, with the locale segment removed.
+List<String> _infoLinkPaths(
+  DocumentationRepository repository,
+  DocsLanguage language,
+  InfoTopic topic,
+) {
+  final assetPath = 'assets/docs/info/${language.code}/${topic.assetSlug}.md';
+  final document = repository.parseDocument(
+    assetPath: assetPath,
+    source: File(assetPath).readAsStringSync(),
+  );
+  return RegExp(r'\[[^\]]+\]\(([^)]+)\)')
+      .allMatches(document.markdown)
+      .map(
+        (match) => match
+            .group(1)!
+            .replaceFirst('https://nahpu.app/${language.code}/', ''),
+      )
+      .toList();
 }
 
 _CookbookMetadata _cookbookMetadata(

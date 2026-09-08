@@ -8,6 +8,6 @@ Weather fields describe the conditions observed during the collecting event, inc
 
 Do not copy weather between events unless the measurement truly applies to both.
 
-## Darwin Core context
+## Learn more
 
-Weather, water, and astronomy values have no Darwin Core term of their own. Structured exports carry each recorded value as a measurement of the event, keeping its type and unit, and the environment notes become `dwc:eventRemarks`.
+- [Collecting Events](https://nahpu.app/en/usages/events/)

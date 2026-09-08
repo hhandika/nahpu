@@ -15,6 +15,7 @@ Catatan personel mewakili orang-orang yang terlibat dalam proyek. Seseorang disi
 
 Ini adalah peran alur kerja NAHPU yang menentukan pada apa seseorang dapat ditugaskan di dalam aplikasi. Peran ini berbeda dari peran yang dilaporkan dalam hasil ekspor, yang mengikuti hubungan sebenarnya pada setiap catatan.
 
-## Konteks Darwin Core
+## Pelajari lebih lanjut
 
-Seseorang diekspor sebagai agen dengan pengenal `dwc:agentID`, yang diambil dari ORCID bila tercatat dan dari pengenal NAHPU bila tidak; keterangan personel menjadi `dwc:agentRemarks`. Hubungan pada catatan spesimen mengisi kolom agen: pengumpul mengisi `dwc:recordedBy` dan `dwc:recordedByID`, sedangkan penentu identifikasi mengisi `dwc:identifiedBy` dan `dwc:identifiedByID`.
+- [Personel](https://nahpu.app/id/usages/personnel/)
+- [Pengaturan](https://nahpu.app/id/usages/settings/)

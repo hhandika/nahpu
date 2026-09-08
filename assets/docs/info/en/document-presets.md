@@ -11,3 +11,8 @@ Create a separate layout for each distinct workflow, and duplicate a known-good 
 Templates and their layouts are transferred together through user configurations, so move both when a collaborator needs the same output.
 
 When designing a template, you can use bundled fonts or import your own fonts. Fonts are managed in `Documents` > `Fonts`.
+
+## Learn more
+
+- [Export Documents](https://nahpu.app/en/usages/export/export-documents/)
+- [Template Editor Reference](https://nahpu.app/en/usages/export/template-editor-reference/)

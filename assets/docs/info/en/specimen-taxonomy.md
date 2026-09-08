@@ -10,6 +10,7 @@ The taxon registry holds records at any rank, so a specimen that is not yet iden
 
 Edit the taxon registry when the shared name record is wrong; change the specimen’s selected taxon when only that identification is wrong. Preserve scientific-name authorship and identification notes when they are available, and record the responsible Determiner.
 
-## Darwin Core context
+## Learn more
 
-Exports build `dwc:scientificName` from the genus and specific epithet of the selected taxon, and carry the surrounding ranks in `dwc:kingdom` through `dwc:infraspecificEpithet` with `dwc:scientificNameAuthorship`. The determiner fills `dwc:identifiedBy` and `dwc:identifiedByID`.
+- [Specimen Records](https://nahpu.app/en/usages/specimens/)
+- [Taxon Registry](https://nahpu.app/en/usages/taxon/)

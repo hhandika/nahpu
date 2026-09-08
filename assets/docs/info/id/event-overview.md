@@ -1,15 +1,15 @@
 ---
-title: "Ikhtisar kegiatan"
+title: "Ikhtisar kegiatan pengumpulan"
 sidebar:
   order: 0
 ---
 
 Kegiatan pengumpulan mencatat satu upaya pengambilan sampel tertentu pada satu lokasi dan waktu. Spesimen ditautkan ke kegiatan untuk memperoleh lokasi, tanggal, konteks pengambilan sampel, dan tim lapangannya, sehingga banyak catatan spesimen dapat berbagi satu kegiatan.
 
-NAHPU menyusun Event ID dari Site ID dan tanggal mulai; tambahkan akhiran hanya bila kegiatan lain akan memiliki pengenal yang sama. Buat kegiatan terpisah bila lokasi, rentang waktu, protokol pengambilan sampel, upaya, atau tim yang terlibat berubah secara berarti.
+NAHPU menyusun Event ID dari Site ID dan tanggal mulai. Tambahkan akhiran hanya bila kegiatan lain akan memiliki pengenal yang sama.
 
-Menggandakan kegiatan akan memakai ulang pengaturan yang relevan, tetapi memajukan tanggal dan mengosongkan data cuaca. Periksa setiap nilai yang tersalin sebelum digunakan.
+Cara Anda membuat kegiatan bergantung pada protokol pengambilan sampel dan pada apakah Anda mencatat data lingkungan. Misalnya, bila Anda mengambil sampel beberapa hari di lokasi yang sama dengan protokol yang sama dan tidak mencatat data lingkungan, Anda dapat memakai kegiatan yang sama untuk semua hari itu. Meski begitu, kami menyarankan membuat kegiatan baru setidaknya sekali sehari agar data lingkungan serta kemungkinan perubahan tim lapangan dan peralatan ikut tercatat, dan agar kegiatan terekam secara konsisten. Tombol `Duplicate` di sudut kanan atas dapat dipakai untuk membuat kegiatan baru dengan pengaturan yang sama seperti kegiatan yang sudah ada.
 
-## Konteks Darwin Core
+## Pelajari lebih lanjut
 
-Kegiatan diekspor sebagai sampling event: Event ID menjadi `dwc:eventID`, lokasi menjadi `dwc:locationID`, serta tanggal dan waktu menjadi `dwc:eventDate` dan `dwc:eventTime`. Rentang tanggal diekspor sebagai satu interval ISO 8601.
+- [Kegiatan Pengumpulan](https://nahpu.app/id/usages/events/)

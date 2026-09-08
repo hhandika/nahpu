@@ -8,6 +8,7 @@ Attributes hold the measurements and biological observations made for the specim
 
 Enter only observed or documented values and keep the displayed unit. Use `Unknown` or leave a field empty according to the project protocol rather than guessing. Notes should explain qualifiers, damage, uncertainty, or a method that affects how a value is interpreted.
 
-## Darwin Core context
+## Learn more
 
-Sex, life stage, and reproductive condition map to `dwc:sex`, `dwc:lifeStage`, and `dwc:reproductiveCondition`; arthropod caste maps to `dwc:caste` and a recorded host to `dwc:associatedTaxa`. Every other measurement is exported as a measurement rather than a column of its own: a tabular export emits `dwc:measurementType`, `dwc:measurementValue`, and `dwc:measurementUnit` for each selected measurement, and structured packages carry the same triple as one measurement row per value.
+- [Specimen Records](https://nahpu.app/en/usages/specimens/)
+- [Settings](https://nahpu.app/en/usages/settings/)

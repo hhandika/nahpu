@@ -17,3 +17,8 @@ Select **Explore more stats** for detailed charts, tables, filters, and exports.
 ## Exporting statistics
 
 Select **Explore more stats**, choose a measure and grouping, then switch the panel to **Table**. The `Export table` button writes the rows currently shown to CSV, TSV, Excel, or JSON. The spatial panel exports the same way, one row per site coordinate.
+
+## Learn more
+
+- [Export Statistics](https://nahpu.app/en/usages/export/export-statistics/)
+- [Projects](https://nahpu.app/en/usages/projects/)

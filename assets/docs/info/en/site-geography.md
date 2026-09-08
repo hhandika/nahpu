@@ -10,6 +10,7 @@ Geography describes the administrative hierarchy of the site, from country down 
 
 Enter values according to the responsible institution’s geographic conventions. `Precise Locality` should describe the specific named place below municipality level.
 
-## Darwin Core context
+## Learn more
 
-The geographic fields export to `dwc:country`, `dwc:islandGroup`, `dwc:stateProvince`, `dwc:county`, and `dwc:municipality`. The precise locality is exported as `dwc:verbatimLocality` because it is recorded as written rather than normalized, and remarks become `dwc:locationRemarks`.
+- [Sites](https://nahpu.app/en/usages/sites/)
+- [Settings](https://nahpu.app/en/usages/settings/)

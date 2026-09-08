@@ -10,6 +10,7 @@ Changing the collecting event changes the record’s sampling context. NAHPU cle
 
 Coordinate extent describes how far the specimen could have been from the recorded position. Use it when a trap line, transect, or search area is wider than the coordinate itself.
 
-## Darwin Core context
+## Learn more
 
-Capture date and time are exported as `dwc:eventDate` and `dwc:eventTime`, falling back to the event dates when the specimen has none. The chosen coordinate supplies the location terms, and the coordinate extent is combined with the coordinate’s own uncertainty into `dwc:coordinateUncertaintyInMeters`. The collector fills `dwc:recordedBy` and `dwc:recordedByID`.
+- [Specimen Records](https://nahpu.app/en/usages/specimens/)
+- [Collecting Events](https://nahpu.app/en/usages/events/)
