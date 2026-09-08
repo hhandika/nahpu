@@ -8,6 +8,8 @@ Attributes hold the measurements and biological observations made for the specim
 
 Enter only observed or documented values and keep the displayed unit. Use `Unknown` or leave a field empty according to the project protocol rather than guessing. Notes should explain qualifiers, damage, uncertainty, or a method that affects how a value is interpreted.
 
+Use custom fields for additional observations when no built-in field fits. Check their type, unit convention, and catalog applicability before entering values; do not use zero for an unmeasured value.
+
 ## Learn more
 
 - [Specimen Records](https://nahpu.app/en/usages/specimens/)

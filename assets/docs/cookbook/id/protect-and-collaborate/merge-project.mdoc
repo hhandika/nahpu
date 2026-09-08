@@ -4,30 +4,30 @@ sidebar:
   order: 6
 ---
 
-Gabungkan record dari salinan lain proyek yang sama melalui peninjauan konflik terpandu.
+Gabungkan catatan dari salinan lain proyek yang sama melalui peninjauan konflik terpandu.
 
 ## Langkah
 
 {% steps %}
 
-1. Buat backup basis data penerima.
+1. Buat cadangan basis data penerima.
 2. Buka proyek penerima lalu pilih `Merge project`.
 3. Pilih proyek JSON.GZ, ZIP, TAR.GZ, atau NAHPU Data Package yang kompatibel.
-4. Tinjau informasi proyek, personnel, taxonomy, site, event, specimen, dan narrative secara berurutan.
+4. Tinjau informasi proyek, personel, taxonomy, lokasi, kegiatan, spesimen, dan narrative secara berurutan.
 5. Untuk setiap konflik, pilih `Keep current`, `Use imported`, `Import as new`, atau `Skip`.
 6. Selesaikan semua kartu bertanda `Needs attention` sebelum melanjutkan.
-7. Tinjau ringkasan akhir, jalankan merge, lalu periksa jumlah record dan media.
+7. Tinjau ringkasan akhir, jalankan merge, lalu periksa jumlah catatan dan media.
 {% /steps %}
 
-## Cara record dicocokkan
+## Cara catatan dicocokkan
 
-Event dicocokkan berdasarkan bagian yang ditampilkan NAHPU sebagai event ID: site, tanggal mulai, dan suffix. Event lapangan yang sama tetap cocok meskipun waktu mulainya dicatat berbeda.
+Event dicocokkan berdasarkan bagian yang ditampilkan NAHPU sebagai kegiatan ID: lokasi, tanggal mulai, dan suffix. Event lapangan yang sama tetap cocok meskipun waktu mulainya dicatat berbeda.
 
 ## Identifier ganda
 
-Field ID, project ID, tissue ID, dan barcode ID berakhir di label fisik dan di ekspor yang dipublikasikan, jadi NAHPU tidak pernah menomori ulang secara otomatis. Identifier ganda, UUID specimen atau parasit yang sudah ada di basis data, serta site ID atau event ID yang cocok dengan lebih dari satu record menjadi kartu bertanda `Needs attention`. Wizard tidak akan lanjut sampai setiap kartu punya tindakan.
+Field ID, project ID, tissue ID, dan barcode ID berakhir di label fisik dan di ekspor yang dipublikasikan, jadi NAHPU tidak pernah menomori ulang secara otomatis. Identifier ganda, UUID spesimen atau parasit yang sudah ada di basis data, serta lokasi ID atau kegiatan ID yang cocok dengan lebih dari satu catatan menjadi kartu bertanda `Needs attention`. Wizard tidak akan lanjut sampai setiap kartu punya tindakan.
 
-Periksa record yang diimpor, ubah ID lalu impor ulang, atau lewati record tersebut.
+Periksa catatan yang diimpor, ubah ID lalu impor ulang, atau lewati catatan tersebut.
 
 {% aside type="caution" %}
 
@@ -35,7 +35,9 @@ Gunakan `Force merge` hanya bila UUID berbeda benar-benar merujuk pada proyek la
 
 {% /aside %}
 
+Gunakan alur ini hanya di dalam proyek yang sudah ada. Untuk menerima proyek yang belum ada pada instalasi, mulai dengan Import project pada layar awal.
+
 ## Pelajari lebih lanjut
 
-- [Buka panduan lengkap](https://nahpu.app/id/usages/export/project-transfer/#merge-into-the-matching-project)
+- [Transfer Proyek](https://nahpu.app/id/usages/export/project-transfer/#merge-into-the-matching-project)
 - [Ekspor proyek untuk perangkat lain](https://nahpu.app/id/how-to-recipes/protect-and-collaborate/export-project/)

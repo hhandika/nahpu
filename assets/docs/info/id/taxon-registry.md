@@ -14,6 +14,8 @@ Panel menghitung ordo, famili, dan nama spesies lengkap yang berbeda di dalam re
 
 Untuk impor QR, pilih `Scan QR`, lalu `Single taxon` atau `Multiple taxa`. Satu pemindaian valid membuka pratinjau; mode beberapa takson membiarkan kamera terbuka sampai `Done` dipilih. Tinjau dan impor takson yang dipilih untuk menyimpannya. Takson yang sudah ada dinonaktifkan dan tidak pernah ditimpa.
 
+Mengedit takson terdaftar mengubah catatan nama bersama. Untuk memperbaiki identifikasi satu spesimen saja, pilih takson yang sesuai pada spesimen tersebut.
+
 ## Pelajari lebih lanjut
 
 - [Registri Takson](https://nahpu.app/id/usages/taxon/)

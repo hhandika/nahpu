@@ -8,6 +8,8 @@ Elija la actividad principal que mejor describa el evento de recolecta. Use las 
 
 La actividad es una categorización a nivel de proyecto que mantiene consistentes el filtrado y los informes, y sus valores disponibles se configuran en Settings. El equipo, los conteos, las dimensiones y otros detalles de muestreo pertenecen a los registros de esfuerzo, no a la etiqueta de actividad.
 
+Compruebe la actividad seleccionada después de duplicar un evento; la etiqueta copiada puede no describir la nueva sesión de muestreo.
+
 ## Más información
 
 - [Eventos de Recolecta](https://nahpu.app/es/usages/events/#activity)

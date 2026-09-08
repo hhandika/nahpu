@@ -12,6 +12,8 @@ Os modelos e seus layouts são transferidos juntos por meio das configurações 
 
 Ao desenhar um modelo, você pode usar as fontes incluídas ou importar suas próprias fontes. As fontes são gerenciadas em `Documents` > `Fonts`.
 
+As definições transferidas não incluem fontes personalizadas nem imagens dos modelos. Instale as fontes e adicione as imagens no dispositivo de destino; depois compare o PDF gerado com a saída desejada.
+
 ## Saiba mais
 
 - [Exportar Documentos](https://nahpu.app/pt/usages/export/export-documents/)

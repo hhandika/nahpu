@@ -10,6 +10,8 @@ La geografía describe la jerarquía administrativa del sitio, desde el país ha
 
 Ingrese los valores según las convenciones geográficas de la institución responsable. `Precise Locality` debe describir el lugar específico con nombre por debajo del nivel de municipio.
 
+Revise todos los niveles completados al seleccionar una localidad existente. Los nombres similares no siempre identifican el mismo lugar.
+
 ## Más información
 
 - [Sitios](https://nahpu.app/es/usages/sites/)

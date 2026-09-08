@@ -4,27 +4,22 @@ sidebar:
   order: 2
 ---
 
-Close each field day with a project export, and keep the full database backup for a weekly checkpoint.
+Keep a verified copy of each field day’s project data away from the working device.
 
 ## Steps
 
 {% steps %}
 
 1. Open the project drawer and select `Export project`.
-2. Review the record counts and any warnings about missing media.
-3. Choose ZIP or TAR.GZ to carry media, or turn on `Light export` for a small `JSON.GZ` when the upload must be tiny.
-4. Save it to storage separate from the working device, naming it with the project and date.
-5. Once a week, and always before merging a project, run `Backup database` instead: it copies the whole installation, so keep it occasional in the field.
+2. Review record counts and missing-file warnings. Choose ZIP or TAR.GZ to include available media. Light JSON.GZ contains records only and is not a complete media backup.
+3. Save the export with the project name and date, and copy it to separate storage or another device.
+4. Check that the copy is accessible and review warnings before treating the backup as complete. Periodically test recovery on another installation.
+5. Use `Import project` on the home screen to recover onto a receiving installation, or `Merge project` within an existing project.
+6. Create a full `Backup database` at a regular checkpoint, such as weekly, and before importing, merging, or replacing data. Retain the previous verified backup until the new one is checked.
 {% /steps %}
-
-{% aside type="tip" %}
-A project export is the better daily habit: it is smaller, faster, and easier on the battery than a database backup, and `Merge project` restores it onto a replacement device if one is lost or broken. A database backup copies whole directories, so it carries every file in NAHPU app data whether or not a project links to it; in the field, run it occasionally, when battery use is not a concern. Darwin Core bundles and CSV exports cannot be imported back, so they never count as a backup.
-{% /aside %}
 
 ## Learn more
 
-- [Open the full guide](https://nahpu.app/en/usages/export/#backup-strategy)
-- [Export a project for another device](https://nahpu.app/en/how-to-recipes/protect-and-collaborate/export-project/)
-- [Merge a project and resolve conflicts](https://nahpu.app/en/how-to-recipes/protect-and-collaborate/merge-project/)
+- [Export](https://nahpu.app/en/usages/export/#backup-strategy)
+- [Import a project onto another device](https://nahpu.app/en/how-to-recipes/protect-and-collaborate/import-project/)
 - [Restore or replace a database](https://nahpu.app/en/how-to-recipes/protect-and-collaborate/restore-database/)
-- [Project Management](https://nahpu.app/en/best-practices/project-management/)

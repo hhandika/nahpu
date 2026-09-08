@@ -8,6 +8,8 @@ Choose the primary activity that best describes the collecting event. Use the no
 
 Activity is a project-level categorization that keeps filtering and reporting consistent, and the available values are configurable in Settings. Equipment, counts, dimensions, and other sampling details belong in effort records rather than in the activity label.
 
+Check the selected activity after duplicating an event; a copied label may not describe the new sampling session.
+
 ## Learn more
 
 - [Collecting Events](https://nahpu.app/en/usages/events/#activity)

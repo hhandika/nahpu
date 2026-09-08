@@ -12,6 +12,8 @@ Edit the file name, caption, tag, and photographer so another person can tell wh
 
 Use `Export` on a media item to save one file, with options to convert it to JPEG, PNG, or WebP and to resize it. To save several files at once, open the media gallery, turn on selection, and select `Export`. That writes one TAR.GZ or ZIP archive, with the images converted and resized together and audio and video copied unchanged.
 
+Keep the original file when preservation matters. Converting or resizing an exported image creates a delivery copy; verify the result and check any skipped-file warnings before sharing it.
+
 ## Learn more
 
 - [Export Images](https://nahpu.app/en/usages/export/export-images/)

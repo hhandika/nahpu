@@ -34,3 +34,13 @@ reviewing the reported paths.
 
 Flutter asset directory entries are not recursive. When adding a Cookbook
 category, add its four locale directories to `pubspec.yaml`.
+
+After building the website, validate Cookbook, Day One, and Info links against
+the rendered pages and section IDs from the website repository:
+
+```sh
+bun run check:doc-links --info-root <nahpu-root>/assets/docs/info
+```
+
+Day One teaches the key concepts and guides first-time users through a practice
+project. Recipes describe individual tasks; Info explains the current panel.

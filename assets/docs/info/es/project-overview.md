@@ -4,19 +4,11 @@ sidebar:
   order: 0
 ---
 
-Un proyecto agrupa el personal, los taxones, los sitios, los eventos de recolecta, los registros de especímenes, las narrativas y los medios creados para un mismo trabajo. Use `Edit` para actualizar sus metadatos descriptivos y `Export info` o `Show QR` para compartir solo su identidad.
+Un proyecto reúne sitios, eventos de recolección, especímenes, personal, taxones, narrativas y archivos de apoyo de un trabajo. Use `Edit` para actualizar la información. Configure la zona horaria del proyecto para describir las horas locales registradas; cambiarla no convierte las fechas y horas existentes.
 
-## UUID del proyecto
+El UUID identifica el proyecto entre dispositivos. `Export info` y `Show QR` comparten su identidad y metadatos, sin registros ni archivos multimedia. El UUID es distinto del número de catálogo del proyecto utilizado en los Field IDs de los especímenes.
 
-NAHPU asigna a cada proyecto nuevo un identificador único universal (UUID). Importar la información del proyecto conserva ese UUID para que los dispositivos que colaboran puedan reconocer copias del mismo proyecto. La información del proyecto no incluye registros ni medios; use la transferencia de proyecto cuando también deban moverse.
-
-Mantenga breve la descripción del proyecto. Registre el contexto diario detallado en Narratives.
-
-## Copias de seguridad en el campo
-
-`Export project` es la copia de campo diaria. Es más pequeña y rápida que una copia de la base de datos y consume menos batería. `Import project` la vuelve a leer en otro dispositivo, así que un dispositivo perdido o roto cuesta como máximo un día de trabajo. Elija ZIP o TAR.GZ para llevar los medios, o una exportación ligera `JSON.GZ` cuando la carga deba ser pequeña.
-
-Reserve `Backup database` para un punto de control semanal y para el momento previo a cualquier fusión. Copia todos los proyectos y todos los archivos de los datos de la aplicación NAHPU, estén o no vinculados a un proyecto. En el campo, ejecútela de forma ocasional, cuando el consumo de batería no sea una preocupación.
+Para la copia de seguridad diaria en campo, use `Export project` y conserve una copia fuera del dispositivo de trabajo. ZIP y TAR.GZ incluyen los archivos multimedia disponibles; JSON.GZ ligero contiene registros sin estos archivos. Revise los avisos de archivos ausentes. En el dispositivo receptor, use `Import project` en la pantalla inicial o `Merge project` dentro de un proyecto existente. Haga una copia del banco de datos antes de importar, combinar o sustituir los datos de la instalación.
 
 ## Más información
 

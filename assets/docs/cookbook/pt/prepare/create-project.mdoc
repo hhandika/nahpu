@@ -11,19 +11,21 @@ Crie a identidade do projeto e os padrões locais de catálogo usados pelos novo
 {% steps %}
 
 1. Na tela inicial, selecione `+` e depois `New project`.
-2. Escolha `Create new project` e informe os dados do projeto e o fuso horário IANA.
+2. Escolha `Create new project` e informe os dados e o fuso horário dos horários locais registrados. Alterar o fuso não converte valores existentes.
 3. Escolha o formato do táxon principal usado nos novos formulários de espécime deste dispositivo.
 4. Escolha um Field ID baseado em pessoa ou projeto e complete os dados solicitados do Cataloger.
-5. Revise o resumo e selecione `Create project`.
+5. Revise o resumo, selecione `Create project` e confira as informações no painel.
 {% /steps %}
 
-{% aside type="caution" %}
-Todo projeto precisa de pelo menos um `Cataloger`. Com identificadores de campo de pessoal, o assistente não conclui enquanto não existir um, então crie essa pessoa aqui, e não depois de começar a catalogar.
+{% aside type="note" %}
+
+Field IDs pessoais exigem um `Cataloger` habilitado durante a criação. A numeração por projeto usa o número de catálogo do projeto, não um número de campo pessoal.
+
 {% /aside %}
 
 ## Saiba mais
 
-- [Abra o guia completo](https://nahpu.app/pt/usages/projects/)
+- [Projetos](https://nahpu.app/pt/usages/projects/)
 - [Configure pessoal e Field IDs](https://nahpu.app/pt/how-to-recipes/prepare/personnel-and-field-ids/)
 - [Gerenciamento de Projetos](https://nahpu.app/pt/best-practices/project-management/)
 - [NAHPU Dia 1](https://nahpu.app/pt/day-one/)

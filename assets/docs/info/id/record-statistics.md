@@ -18,6 +18,8 @@ Pilih **Explore more stats** untuk bagan, tabel, penyaring, dan ekspor yang lebi
 
 Pilih **Explore more stats**, tentukan measure dan pengelompokan, lalu ubah panel ke **Table**. Tombol `Export table` menulis baris yang sedang tampil ke CSV, TSV, Excel, atau JSON. Panel spasial diekspor dengan cara yang sama, satu baris per koordinat lokasi.
 
+Jumlah membantu menemukan perubahan yang tidak terduga, tetapi tidak membuktikan bahwa catatan lengkap atau identifikasinya benar. Periksa catatan sumber sebelum menggunakan ringkasan dalam laporan.
+
 ## Pelajari lebih lanjut
 
 - [Ekspor Statistik](https://nahpu.app/id/usages/export/export-statistics/)

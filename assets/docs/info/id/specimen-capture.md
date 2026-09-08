@@ -10,6 +10,8 @@ Mengubah kegiatan pengumpulan mengubah konteks pengambilan sampel catatan ini. N
 
 Rentang koordinat menjelaskan seberapa jauh spesimen mungkin berada dari posisi yang dicatat. Gunakan bila jalur perangkap, transek, atau area pencarian lebih luas daripada koordinatnya sendiri.
 
+Ikuti ketentuan waktu lokal kegiatan untuk waktu penangkapan. Koordinat spesimen harus menunjukkan tempat spesimen diperoleh, bukan sekadar titik pertama pada lokasi.
+
 ## Pelajari lebih lanjut
 
 - [Catatan Spesimen](https://nahpu.app/id/usages/specimens/)

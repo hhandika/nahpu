@@ -10,6 +10,8 @@ Changing the collecting event changes the record’s sampling context. NAHPU cle
 
 Coordinate extent describes how far the specimen could have been from the recorded position. Use it when a trap line, transect, or search area is wider than the coordinate itself.
 
+Use the event’s local-time convention for capture times. A coordinate selected for a specimen should represent where that specimen was obtained, not simply the first point at the site.
+
 ## Learn more
 
 - [Specimen Records](https://nahpu.app/en/usages/specimens/)

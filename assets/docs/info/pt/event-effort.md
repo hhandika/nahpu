@@ -8,6 +8,8 @@ Os registros de esforço descrevem como a amostragem foi realizada. Adicione cad
 
 Use as mesmas unidades e nomes de método controlados em todo o projeto para que os esforços possam ser comparados. Informe contexto suficiente para que outra pessoa entenda o esforço sem inferir dados ausentes. Duplicar um evento também copia os registros de esforço.
 
+Revise as contagens de equipamentos e os métodos copiados em cada evento. Registre zero apenas quando for uma contagem observada e explique esforços incompletos nas notas.
+
 ## Saiba mais
 
 - [Eventos de Coleta](https://nahpu.app/pt/usages/events/)

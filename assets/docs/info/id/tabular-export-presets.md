@@ -10,6 +10,8 @@ Prasetel ekspor tabel menyimpan definisi yang dapat diulang: jenis catatan, kelo
 
 Pengaturan tersimpan otomatis saat Anda mengubahnya, tetapi nama prasetel tidak: ketik nama baru lalu pilih `Rename` untuk menyimpannya. Ekspor satu prasetel dari barisnya, atau semua prasetel dari menu opsi; kedua berkas diimpor dengan tindakan yang sama.
 
+Header Darwin Core tidak dengan sendirinya memvalidasi data ekspor. Tinjau makna bidang, satuan, dan nilai berulang. Ekspor tabel digunakan untuk pemrosesan selanjutnya, bukan untuk memulihkan proyek NAHPU.
+
 ## Pelajari lebih lanjut
 
 - [Ekspor Catatan](https://nahpu.app/id/usages/export/export-records/)

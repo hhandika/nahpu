@@ -18,6 +18,8 @@ Seleccione **Explore more stats** para ver gráficos, tablas, filtros y exportac
 
 Seleccione **Explore more stats**, elija una medida y una agrupación, y luego cambie el panel a **Table**. El botón `Export table` escribe las filas que se muestran en ese momento en CSV, TSV, Excel o JSON. El panel espacial se exporta de la misma forma, con una fila por coordenada de sitio.
 
+Los recuentos ayudan a identificar cambios inesperados, pero no demuestran que los registros estén completos o correctamente identificados. Compruebe los registros de origen antes de usar un resumen en un informe.
+
 ## Más información
 
 - [Exportar Estadísticas](https://nahpu.app/es/usages/export/export-statistics/)

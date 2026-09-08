@@ -8,6 +8,8 @@ Tambahkan semua orang yang ikut serta atau memberi dukungan pada kegiatan pengum
 
 Partisipasi dalam kegiatan berbeda dari peran perawatan spesimen NAHPU, yaitu Cataloger, Preparator, dan Determiner. Orang yang terdaftar di sini menunjukkan siapa yang hadir dan bekerja, bukan siapa yang mempreparasi atau mengidentifikasi spesimen.
 
+Tinjau peserta setelah menduplikasi kegiatan. Tambahkan orang yang belum tersedia ke personel proyek sebelum menetapkannya di sini.
+
 ## Pelajari lebih lanjut
 
 - [Kegiatan Pengumpulan](https://nahpu.app/id/usages/events/)

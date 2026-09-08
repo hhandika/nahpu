@@ -12,6 +12,8 @@ Las plantillas y sus diseños se transfieren juntos mediante las configuraciones
 
 Al diseñar una plantilla puede usar las fuentes incluidas o importar sus propias fuentes. Las fuentes se gestionan en `Documents` > `Fonts`.
 
+Las definiciones transferidas no incluyen fuentes personalizadas ni imágenes de las plantillas. Instale las fuentes y añada las imágenes en el dispositivo receptor; después compare el PDF generado con el resultado previsto.
+
 ## Más información
 
 - [Exportar Documentos](https://nahpu.app/es/usages/export/export-documents/)

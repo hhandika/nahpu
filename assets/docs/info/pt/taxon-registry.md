@@ -14,6 +14,8 @@ O painel conta as ordens, as famílias e os nomes de espécie completos distinto
 
 Para importar de QR, selecione `Scan QR` e depois `Single taxon` ou `Multiple taxa`. Um escaneamento válido abre a prévia; o modo múltiplo mantém a câmera aberta até selecionar `Done`. Revise e importe os táxons selecionados para salvá-los. Os táxons existentes ficam desabilitados e nunca são sobrescritos.
 
+Editar um táxon registrado altera o registro compartilhado do nome. Para corrigir apenas a identificação de um espécime, selecione o táxon adequado nesse espécime.
+
 ## Saiba mais
 
 - [Registro de Táxons](https://nahpu.app/pt/usages/taxon/)

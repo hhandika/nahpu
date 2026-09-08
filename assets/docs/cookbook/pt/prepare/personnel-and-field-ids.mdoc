@@ -4,26 +4,20 @@ sidebar:
   order: 4
 ---
 
-Adicione o pessoal do projeto e escolha como os Field IDs dos espécimes serão atribuídos.
+Atribua funções ao pessoal e escolha uma convenção consistente de numeração dos espécimes.
 
 ## Etapas
 
 {% steps %}
 
-1. Abra o painel do projeto e selecione `Add personnel`.
-2. Selecione uma pessoa existente ou crie um registro no banco de dados.
-3. Atribua `Cataloger`, `Preparator only`, `Determiner only` ou `None` de acordo com o trabalho da pessoa.
-4. Para Field IDs pessoais, informe as iniciais e o número de campo atual de cada Cataloger habilitado.
-5. Para Field IDs do projeto, execute `Setup NAHPU` e use a etapa `Identifiers` para configurar prefixo, número, sufixo e incremento automático.
+1. No painel do projeto, selecione `Add personnel` e escolha uma pessoa existente ou crie um registro.
+2. Atribua `Cataloger`, `Preparator only`, `Determiner only` ou `None` conforme o trabalho realizado. A função Cataloger não pode ser alterada após a criação.
+3. Para Field IDs pessoais, configure iniciais, registro de campo e número pessoal atual dos Catalogers habilitados. Combine iniciais e faixas de números entre dispositivos.
+4. Para Field IDs de projeto, configure prefixo, número de catálogo atual, sufixo e incremento automático em `Setup NAHPU` > `Identifiers` ou nas configurações de Field ID dos espécimes. Esse modo não usa o número pessoal do Cataloger.
+5. Confira o identificador gerado com a etiqueta desejada antes da coleta. O número de catálogo não é o UUID do projeto; alterar prefixo ou sufixo afeta os IDs de projeto exibidos.
 {% /steps %}
-
-{% aside type="caution" %}
-Um projeto precisa de pelo menos uma pessoa com o papel `Cataloger`. Essa pessoa é a dona do número de campo que gera cada identificador de campo de espécime, e o papel não pode ser alterado depois de criado.
-{% /aside %}
 
 ## Saiba mais
 
-- [Abra o guia completo](https://nahpu.app/pt/usages/personnel/)
-- [Crie um projeto](https://nahpu.app/pt/how-to-recipes/prepare/create-project/)
+- [Pessoal](https://nahpu.app/pt/usages/personnel/)
 - [Configurações](https://nahpu.app/pt/usages/settings/)
-- [NAHPU Dia 1](https://nahpu.app/pt/day-one/)

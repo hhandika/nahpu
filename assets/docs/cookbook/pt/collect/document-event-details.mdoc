@@ -4,21 +4,21 @@ sidebar:
   order: 5
 ---
 
-Descreva como a amostragem foi conduzida, por quem e em quais condições.
+Registre métodos de amostragem, participantes e condições ambientais de um evento.
 
 ## Etapas
 
 {% steps %}
 
-1. Escolha a atividade principal no vocabulário controlado. Os padrões não incluem `Other`; adicione-o nas configurações somente se necessário.
-2. Adicione cada método de amostragem, quantidade ou tamanho do equipamento e notas do método como registros de esforço.
-3. Adicione todas as pessoas participantes e atribua a função adequada no evento.
-4. Escolha os campos ambientais exibidos; temperatura ambiente, umidade ambiente, cobertura de nuvens, chuva e notas são os cinco padrões. Valores ocultos continuam armazenados e exportáveis.
-5. Registre medições e campos ambientais personalizados por evento. Um okta representa um oitavo do céu visível; `9` indica céu oculto.
-6. Revise os valores astronômicos e corrija horário ou localização do evento se forem inesperados.
+1. Selecione a atividade principal e registre atividades secundárias nas notas. Adicione métodos, contagens de equipamentos, dimensões com unidades e notas como registros de esforço.
+2. Adicione os participantes e atribua as funções adequadas no evento.
+3. Em `Settings` > `Events`, escolha os campos ambientais exibidos. Valores ocultos permanecem armazenados e exportáveis.
+4. Informe valores observados nas unidades exibidas. A cobertura de nuvens usa 0–8 para oitavos do céu coberto, ou 9 para céu obscurecido. Deixe vazios os campos não medidos.
+5. Informe nascer e pôr do sol e fase da Lua a partir de observações ou de uma fonte documentada; o NAHPU não calcula esses valores. Siga a convenção de horário local do projeto.
+6. Use campos personalizados para medidas adicionais. Revise valores e mensagens de validação antes de sair; os dados ambientais ficam vazios após duplicar um evento.
 {% /steps %}
 
 ## Saiba mais
 
-- [Abra o guia completo](https://nahpu.app/pt/usages/events/#activity)
-- [Crie um evento de coleta](https://nahpu.app/pt/how-to-recipes/collect/create-collecting-event/)
+- [Eventos de Coleta](https://nahpu.app/pt/usages/events/#environmental-data-and-astronomy)
+- [Configure campos personalizados](https://nahpu.app/pt/how-to-recipes/prepare/configure-custom-fields/)

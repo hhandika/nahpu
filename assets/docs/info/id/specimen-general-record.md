@@ -4,11 +4,11 @@ sidebar:
   order: 0
 ---
 
-Catatan umum menyimpan pengenal kerja spesimen, orang yang bertanggung jawab atasnya, taksonnya, serta konteks preparasi dan kondisinya. Bergantung pada pengaturan proyek, Field ID menggabungkan inisial seorang Cataloger dengan nomor lapangan pribadi, atau menggabungkan awalan dan akhiran proyek dengan nomor katalog proyek.
+Catatan umum mengidentifikasi spesimen dan orang yang bertanggung jawab atas katalogisasi, preparasi, dan identifikasi. Pilih takson dari registri proyek dan gunakan `ID Confidence` untuk mencatat tingkat keyakinan identifikasi.
 
-Pilih takson dari registri takson. Bila taksonnya tidak ada, periksa dahulu apakah Anda sudah mendaftarkan takson itu di registri takson proyek.
+Field ID personel menggunakan inisial dan nomor lapangan Cataloger yang memenuhi syarat. Field ID proyek menggunakan awalan, nomor katalog, dan akhiran proyek. Keduanya bukan UUID proyek. Cocokkan pengenal dengan label fisik sebelum melanjutkan.
 
-Catat Cataloger, Preparator, dan Determiner sesuai pekerjaan yang benar-benar dilakukan masing-masing. Jelaskan kondisi pada saat preparasi berdasarkan bukti langsung, dan simpan tanggal serta waktu pengumpulan dan preparasi bila diketahui.
+Tetapkan Cataloger, Preparator, dan Determiner sesuai pekerjaan sebenarnya. Catat kondisi yang diamati serta tanggal dan waktu pengumpulan dan preparasi yang diketahui. Bidang diperbarui saat diedit; tinjau catatan dan kesalahan validasi sebelum meninggalkannya.
 
 ## Pelajari lebih lanjut
 

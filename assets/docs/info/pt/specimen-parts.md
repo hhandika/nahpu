@@ -10,6 +10,8 @@ Registre o tipo de preparação, o tratamento, a contagem, o tissue ID, o códig
 
 Mantenha os identificadores sincronizados com os recipientes físicos. Um tissue ID que já não corresponde ao seu frasco é mais difícil de corrigir do que um ausente.
 
+Após duplicar uma parte, confira identificadores, preparação, datas e armazenamento com o novo material. Os valores copiados são um ponto de partida para revisão.
+
 ## Saiba mais
 
 - [Registros de Espécimes](https://nahpu.app/pt/usages/specimens/#specimen-parts)

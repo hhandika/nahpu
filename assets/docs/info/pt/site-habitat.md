@@ -8,6 +8,8 @@ Registre o habitat observado no local. Use valores controlados de tipo e condiç
 
 Na descrição, anote as evidências que ajudam a interpretar o ambiente de coleta, como vegetação dominante, substrato, cobertura de dossel ou de solo, condições da água, distúrbio e uso do solo. Mantenha métodos, equipamentos de amostragem e esforço no evento de coleta.
 
+Descreva as condições observadas na visita, sem presumir que uma descrição copiada ainda se aplica. Registre medidas ambientais de uma data específica no evento.
+
 ## Saiba mais
 
 - [Localidades](https://nahpu.app/pt/usages/sites/)

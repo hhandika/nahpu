@@ -10,6 +10,8 @@ Geography describes the administrative hierarchy of the site, from country down 
 
 Enter values according to the responsible institution’s geographic conventions. `Precise Locality` should describe the specific named place below municipality level.
 
+Review every populated level when selecting an existing locality. Similar names do not necessarily identify the same place.
+
 ## Learn more
 
 - [Sites](https://nahpu.app/en/usages/sites/)

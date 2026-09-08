@@ -12,6 +12,8 @@ Templates and their layouts are transferred together through user configurations
 
 When designing a template, you can use bundled fonts or import your own fonts. Fonts are managed in `Documents` > `Fonts`.
 
+Transferred definitions do not include custom fonts or template images. Install the required fonts and add the images on the receiving device, then compare a generated PDF with the intended output.
+
 ## Learn more
 
 - [Export Documents](https://nahpu.app/en/usages/export/export-documents/)

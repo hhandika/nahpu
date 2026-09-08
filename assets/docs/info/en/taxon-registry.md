@@ -14,6 +14,8 @@ The panel counts the distinct orders, families, and full species names held in t
 
 For QR import, select `Scan QR`, then `Single taxon` or `Multiple taxa`. A single valid scan opens the preview; multiple mode keeps the camera open until `Done`. Review and import the selected taxa to save them. Existing taxa are disabled and never overwritten.
 
+Editing a registered taxon changes the shared name record. To correct only one specimen’s identification, select the appropriate taxon on that specimen instead.
+
 ## Learn more
 
 - [Taxon Registry](https://nahpu.app/en/usages/taxon/)

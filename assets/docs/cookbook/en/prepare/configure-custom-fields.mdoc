@@ -1,0 +1,24 @@
+---
+title: "Configure custom fields"
+sidebar:
+  order: 7
+---
+
+Define additional fields and verify how they appear in project records.
+
+## Steps
+
+{% steps %}
+
+1. Open the intended project and go to `Settings` > `Custom fields`, then create a field and choose its target section.
+2. Set `Label` and `Type`. For a dropdown, enter the permitted options. Choose `Current project` or `Global` scope; global definitions apply across this installation.
+3. For specimen-related fields, check catalog applicability. Use the reference guide for optional Darwin Core mappings.
+4. Save the definition, open a record in the target section, and enter a test value using the agreed unit convention. Reopen the record to check the value.
+5. Use `Archive` to retire a field while retaining its data, and `Restore` to make it available again. `Delete` is unavailable while stored values remain.
+6. Export the definition from `Custom fields` or include it in user-config transfer. Import it on the receiving device and verify the target section, scope, and options.
+{% /steps %}
+
+## Learn more
+
+- [Settings](https://nahpu.app/en/usages/settings/#custom-fields)
+- [Transfer user configurations](https://nahpu.app/en/how-to-recipes/protect-and-collaborate/transfer-user-configs/)

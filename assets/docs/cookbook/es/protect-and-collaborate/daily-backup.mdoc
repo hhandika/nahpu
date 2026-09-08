@@ -4,27 +4,22 @@ sidebar:
   order: 2
 ---
 
-Cierre cada jornada de campo con una exportación de proyecto y reserve la copia completa de la base de datos para un punto de control semanal.
+Conserve una copia verificada de los datos de cada jornada fuera del dispositivo de trabajo.
 
 ## Pasos
 
 {% steps %}
 
 1. Abra el menú del proyecto y seleccione `Export project`.
-2. Revise los conteos de registros y las advertencias sobre medios faltantes.
-3. Elija ZIP o TAR.GZ para llevar los medios, o active `Light export` para un `JSON.GZ` pequeño cuando la subida deba ser mínima.
-4. Guárdela en un almacenamiento separado del dispositivo de trabajo, con el nombre del proyecto y la fecha.
-5. Una vez por semana, y siempre antes de fusionar un proyecto, use `Backup database`: copia toda la instalación, así que manténgalo ocasional en el campo.
+2. Revise recuentos y avisos de archivos ausentes. Elija ZIP o TAR.GZ para incluir los archivos multimedia disponibles. JSON.GZ ligero contiene solo registros y no es una copia multimedia completa.
+3. Guarde con el nombre del proyecto y la fecha y copie a otro almacenamiento o dispositivo.
+4. Compruebe que la copia sea accesible y revise los avisos antes de considerarla completa. Pruebe la recuperación periódicamente en otra instalación.
+5. Use `Import project` en la pantalla inicial para recuperar en la instalación receptora o `Merge project` dentro de un proyecto existente.
+6. Haga un `Backup database` completo a intervalos regulares, por ejemplo semanalmente, y antes de importar, combinar o sustituir datos. Conserve la copia anterior verificada hasta comprobar la nueva.
 {% /steps %}
-
-{% aside type="tip" %}
-La exportación de proyecto es el mejor hábito diario: es más pequeña, más rápida y consume menos batería que una copia de la base de datos, y `Merge project` la restaura en un dispositivo de reemplazo si uno se pierde o se rompe. Una copia de la base de datos copia directorios completos, así que lleva todos los archivos de los datos de la aplicación NAHPU, estén o no vinculados a un proyecto; en el campo, ejecútela de forma ocasional, cuando el consumo de batería no sea una preocupación. Los paquetes Darwin Core y las exportaciones CSV no se pueden volver a importar, así que nunca cuentan como copia de seguridad.
-{% /aside %}
 
 ## Más información
 
-- [Abra la guía completa](https://nahpu.app/es/usages/export/#backup-strategy)
-- [Exporte un proyecto para otro dispositivo](https://nahpu.app/es/how-to-recipes/protect-and-collaborate/export-project/)
-- [Fusione un proyecto y resuelva conflictos](https://nahpu.app/es/how-to-recipes/protect-and-collaborate/merge-project/)
+- [Exportar](https://nahpu.app/es/usages/export/#backup-strategy)
+- [Importe un proyecto en otro dispositivo](https://nahpu.app/es/how-to-recipes/protect-and-collaborate/import-project/)
 - [Restaure o sustituya una base de datos](https://nahpu.app/es/how-to-recipes/protect-and-collaborate/restore-database/)
-- [Gestión de Proyectos](https://nahpu.app/es/best-practices/project-management/)

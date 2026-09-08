@@ -4,26 +4,20 @@ sidebar:
   order: 3
 ---
 
-Substitua os dados ativos da instalação por um backup verificado do NAHPU.
+Substitua dados da instalação a partir de um backup do banco quando importar um projeto não for a recuperação desejada.
 
 ## Etapas
 
 {% steps %}
 
-1. Crie um backup atual do banco de dados ativo.
-2. Abra `Settings` > `Database` e escolha `Replace database`.
-3. Selecione o banco SQLite ou o arquivo de backup do NAHPU compatível.
-4. Revise o aviso e confirme somente depois de verificar o arquivo de origem.
-5. Reinicie ou reabra o NAHPU se solicitado e verifique projetos, contagens e arquivos gerenciados.
+1. Confirme que o arquivo é um backup do banco. Para uma exportação de projeto, use `Import project` na tela inicial.
+2. Crie e mantenha um backup atual do banco antes da substituição.
+3. Abra `Settings` > `Database` > `Replace database` e selecione o banco SQLite ou um arquivo de backup compatível.
+4. Leia o aviso e confirme a origem. A substituição não mescla projetos: ela troca o banco ativo e sobrescreve arquivos de mídia ou configuração correspondentes no backup.
+5. Siga as instruções de reinicialização e confira projetos, contagens, configurações e alguns arquivos gerenciados. Um arquivo SQLite isolado não fornece a mídia ausente.
 {% /steps %}
-
-{% aside type="caution" %}
-
-A substituição sobrescreve o banco de dados ativo e qualquer arquivo de mídia ou configuração que corresponda a um do arquivo compactado, e não pode ser desfeita sem um backup; ela não combina projetos. Se o único arquivo que você trouxe do campo for uma exportação de projeto, instale o NAHPU do zero e use o `Merge project`: ele restaura os registros e a mídia disponível daquele projeto sem tocar em mais nada.
-
-{% /aside %}
 
 ## Saiba mais
 
-- [Abra o guia completo](https://nahpu.app/pt/usages/export/#restoring-a-database)
-- [Faça o backup de um dia de campo](https://nahpu.app/pt/how-to-recipes/protect-and-collaborate/daily-backup/)
+- [Exportar](https://nahpu.app/pt/usages/export/#restoring-a-database)
+- [Importe um projeto em outro dispositivo](https://nahpu.app/pt/how-to-recipes/protect-and-collaborate/import-project/)

@@ -4,11 +4,9 @@ sidebar:
   order: 0
 ---
 
-Un sitio puede tener varios registros de coordenadas. Cada uno debe describir una posición documentada, con su formato de coordenada, la elevación, el datum geodésico, la incertidumbre, la unidad de GPS y notas sobre la fuente.
+Un sitio puede contener varias posiciones, como trampas a lo largo de una línea. Dé un nombre útil a cada coordenada y registre fuente, datum, elevación, incertidumbre y unidad GPS cuando se conozcan. La incertidumbre de la coordenada describe la incertidumbre de la posición; es distinta de la extensión de la coordenada de un espécimen.
 
-La entrada manual acepta grados decimales (DD), grados y minutos decimales (DDM), grados-minutos-segundos (DMS) y UTM WGS84. `Select coordinate file` importa CSV, TSV, Excel, GeoJSON/JSON, KML, Shapefile comprimido y GPX; `Scan QR` lee un código QR de coordenadas de NAHPU. Revise cada posición importada antes de guardarla.
-
-Para una coordenada introducida en un formato distinto de grados decimales, NAHPU almacena tanto las coordenadas introducidas como los valores en grados decimales convertidos automáticamente.
+La entrada manual admite DD, DDM, DMS y UTM WGS84. NAHPU conserva la entrada no decimal y los valores convertidos a grados decimales. `Select coordinate file` acepta CSV, TSV, Excel, GeoJSON/JSON, KML, Shapefile comprimido y GPX. Para hojas de cálculo, revise la asignación de columnas antes de seleccionar puntos. `Scan QR` lee un código de coordenada de NAHPU. Compruebe avisos, unidades y posiciones en el mapa antes de añadir las coordenadas seleccionadas.
 
 ## Más información
 

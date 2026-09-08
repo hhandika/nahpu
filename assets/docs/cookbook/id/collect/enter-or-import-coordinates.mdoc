@@ -4,20 +4,21 @@ sidebar:
   order: 3
 ---
 
-Tambahkan koordinat dari catatan lapangan, berkas GIS, atau QR code NAHPU.
+Tambahkan koordinat dari catatan lapangan, lembar kerja, berkas GIS, atau kode QR NAHPU.
 
 ## Langkah
 
 {% steps %}
 
-1. Buka `Coordinates` lalu pilih `Add coordinate`.
-2. Untuk entri manual, pilih DD, DDM, DMS, atau WGS84 UTM lalu isi nilai dan arah yang diperlukan.
-3. Untuk impor berkas, pilih `Import` lalu pilih GeoJSON/JSON, KML, zipped Shapefile, atau GPX.
-4. Untuk QR code koordinat NAHPU, pilih `Scan QR` lalu arahkan kamera ke kode yang ditampilkan `Show QR` di perangkat lain.
-5. Tinjau datum, uncertainty, elevation, dan posisi peta sebelum menyimpan.
+1. Buka lokasi dan pilih `Add coordinate`. Untuk entri manual, pilih DD, DDM, DMS, atau UTM WGS84, lalu masukkan nilai dan arah.
+2. Untuk impor berkas, pilih `Import` > `Select coordinate file`. Format yang didukung meliputi CSV, TSV, Excel, GeoJSON/JSON, KML, Shapefile terkompresi, dan GPX.
+3. Untuk berkas tabel, petakan kolom koordinat dan bidang opsional, lalu pilih `Review coordinates`. Gunakan `Edit column mapping` jika pratinjau keliru.
+4. Untuk kode QR NAHPU, gunakan `Scan QR` untuk membaca koordinat yang ditampilkan perangkat lain.
+5. Tinjau peringatan dan posisi peta. Periksa datum, format koordinat, satuan elevasi, serta informasi ketidakpastian yang belum tersedia.
+6. Pilih titik yang diperlukan dan gunakan `Add N selected` untuk impor berkas. Buka koordinat tersimpan pada lokasi untuk memeriksa hasilnya.
 {% /steps %}
 
 ## Pelajari lebih lanjut
 
-- [Buka panduan lengkap](https://nahpu.app/id/usages/sites/#manually-adding-coordinate)
+- [Lokasi](https://nahpu.app/id/usages/sites/#import-coordinates-from-a-file)
 - [Rekam koordinat dengan GPS](https://nahpu.app/id/how-to-recipes/collect/capture-gps-coordinate/)

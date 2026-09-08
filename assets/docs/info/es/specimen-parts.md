@@ -10,6 +10,8 @@ Registre el tipo de preparación, el tratamiento, el conteo, el tissue ID, el c�
 
 Mantenga los identificadores sincronizados con los recipientes físicos. Un tissue ID que ya no corresponde con su vial es más difícil de corregir que uno faltante.
 
+Después de duplicar una parte, compare identificadores, preparación, fechas y almacenamiento con el nuevo material. Los valores copiados son un punto de partida para la revisión.
+
 ## Más información
 
 - [Registros de Especímenes](https://nahpu.app/es/usages/specimens/#specimen-parts)

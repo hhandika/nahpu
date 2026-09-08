@@ -12,6 +12,8 @@ Templat dan tata letaknya dipindahkan bersama melalui konfigurasi pengguna, jadi
 
 Saat merancang templat, Anda dapat memakai fon bawaan atau mengimpor fon Anda sendiri. Fon dikelola di `Documents` > `Fonts`.
 
+Definisi yang ditransfer tidak menyertakan fon khusus atau gambar templat. Pasang fon dan tambahkan gambar pada perangkat penerima, lalu bandingkan PDF yang dihasilkan dengan keluaran yang diinginkan.
+
 ## Pelajari lebih lanjut
 
 - [Ekspor Dokumen](https://nahpu.app/id/usages/export/export-documents/)

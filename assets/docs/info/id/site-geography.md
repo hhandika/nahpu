@@ -10,6 +10,8 @@ Geografi menjelaskan hierarki administratif lokasi, dari negara sampai lokalitas
 
 Isi nilai sesuai konvensi geografis lembaga yang bertanggung jawab. `Precise Locality` sebaiknya menjelaskan tempat bernama yang spesifik di bawah tingkat kota atau kecamatan.
 
+Periksa setiap tingkat yang terisi saat memilih lokalitas yang sudah ada. Nama yang mirip belum tentu menunjukkan tempat yang sama.
+
 ## Pelajari lebih lanjut
 
 - [Lokasi](https://nahpu.app/id/usages/sites/)

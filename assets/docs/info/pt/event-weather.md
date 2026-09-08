@@ -4,9 +4,11 @@ sidebar:
   order: 0
 ---
 
-Os campos de clima descrevem as condições observadas durante o evento de coleta, incluindo temperatura e umidade do ar, cobertura de nuvens e chuva. Nas configurações do evento, você pode escolher quais campos aparecem nos dados ambientais.
+Os dados ambientais registram as condições deste evento. Em `Settings` > `Events`, escolha os campos integrados a exibir. Ocultar um campo não apaga seus valores nem os exclui das exportações.
 
-Não copie o clima entre eventos, a menos que a medição realmente valha para ambos.
+Use as unidades exibidas: temperatura em °C, umidade em porcentagem e precipitação em milímetros. A cobertura de nuvens usa códigos de 0 a 8 para oitavos do céu coberto, ou 9 para céu obscurecido. Deixe vazios os valores não medidos; zero é uma medida.
+
+Informe nascer e pôr do sol e fase da Lua a partir de observações ou de uma fonte documentada; o NAHPU não os calcula. Siga a convenção de horário local do projeto. Adicione campos personalizados para outras medidas. Um evento duplicado começa com os dados ambientais vazios.
 
 ## Saiba mais
 

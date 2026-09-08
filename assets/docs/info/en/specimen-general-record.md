@@ -4,11 +4,11 @@ sidebar:
   order: 0
 ---
 
-The general record holds the specimen’s working identifier, the people responsible for it, its taxon, and its preparation context and condition. Depending on project settings, the Field ID combines a Cataloger’s initials with a personal field number, or the project prefix and suffix with a project catalog number.
+The general record identifies the specimen and the people responsible for cataloging, preparation, and identification. Choose the taxon from the project registry and use `ID Confidence` to record confidence in that identification.
 
-Choose the taxon from the taxon registry. If it doesn't exist, check if you have registered that taxon in the project's taxon registry first.
+Personnel Field IDs use an eligible Cataloger's initials and personal field number. Project Field IDs use the project prefix, catalog number, and suffix. Neither is the project UUID. Check the identifier against the physical label before continuing.
 
-Record Cataloger, Preparator, and Determiner according to the work each person actually did. Describe condition at preparation from direct evidence, and preserve collection and preparation dates and times when they are known.
+Assign Cataloger, Preparator, and Determiner according to their actual work. Record observed condition and known collection and preparation dates and times. Fields update as you edit; review the record and any validation errors before leaving it.
 
 ## Learn more
 

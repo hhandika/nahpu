@@ -8,6 +8,8 @@ Lokasi adalah catatan tempat NAHPU yang dapat dipakai ulang. Kegiatan pengumpula
 
 Catat orang yang bertanggung jawab dan tipe lokasi bila berguna. Gunakan `Duplicate site` untuk menyalin informasi deskriptif dengan Site ID dan koordinat baru dibiarkan kosong. Gunakan `Copy from project ...` hanya bila lokasi di proyek lain menggambarkan tempat yang memang perlu dipakai ulang. Periksa setiap nilai yang disalin sebelum pengumpulan dimulai.
 
+Lokasi menjelaskan tempat, sedangkan kegiatan menjelaskan pekerjaan di tempat tersebut. Gunakan kembali lokasi untuk kunjungan berulang dan buat kegiatan sesuai setiap periode pengambilan sampel.
+
 ## Pelajari lebih lanjut
 
 - [Lokasi](https://nahpu.app/id/usages/sites/)

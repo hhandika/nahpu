@@ -8,6 +8,8 @@ Um local é o registro de lugar reutilizável do NAHPU. Os eventos de coleta obt
 
 Registre a pessoa responsável e o tipo de local quando for útil. Use `Duplicate site` para copiar as informações descritivas deixando vazios o novo Site ID e as coordenadas. Use `Copy from project ...` apenas quando um local de outro projeto descrever um lugar que deva ser reaproveitado. Verifique cada valor copiado antes de iniciar a coleta.
 
+Um local descreve um lugar; um evento descreve o trabalho nesse lugar. Reutilize o local nas visitas seguintes e crie eventos adequados a cada período de amostragem.
+
 ## Saiba mais
 
 - [Localidades](https://nahpu.app/pt/usages/sites/)

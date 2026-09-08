@@ -10,6 +10,8 @@ The taxon registry holds records at any rank, so a specimen that is not yet iden
 
 Edit the taxon registry when the shared name record is wrong; change the specimen’s selected taxon when only that identification is wrong. Preserve scientific-name authorship and identification notes when they are available, and record the responsible Determiner.
 
+Use identification confidence and notes to document uncertainty. An empty species name is preferable to an unsupported species-level identification.
+
 ## Learn more
 
 - [Specimen Records](https://nahpu.app/en/usages/specimens/)

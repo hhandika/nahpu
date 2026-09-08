@@ -8,6 +8,8 @@ Adicione todas as pessoas que participaram do evento de coleta ou o apoiaram, e 
 
 A participação no evento é distinta das funções de cuidado com o espécime do NAHPU: Cataloger, Preparator e Determiner. Uma pessoa listada aqui documenta quem esteve presente e trabalhando, não quem preparou ou identificou os espécimes.
 
+Revise os participantes após duplicar um evento. Adicione uma pessoa ao pessoal do projeto antes de atribuí-la aqui.
+
 ## Saiba mais
 
 - [Eventos de Coleta](https://nahpu.app/pt/usages/events/)

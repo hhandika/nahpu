@@ -12,6 +12,8 @@ Sunting nama berkas, keterangan gambar, tag, dan fotografernya agar orang lain t
 
 Gunakan `Export` pada satu item media untuk menyimpan satu berkas, lengkap dengan pilihan mengonversinya ke JPEG, PNG, atau WebP dan mengubah ukurannya. Untuk menyimpan beberapa berkas sekaligus, buka galeri media, aktifkan seleksi, lalu pilih `Export`. Langkah itu menulis satu arsip TAR.GZ atau ZIP, dengan gambar dikonversi dan diubah ukurannya bersama-sama, sedangkan audio dan video disalin apa adanya.
 
+Simpan berkas asli jika pelestarian penting. Konversi atau perubahan ukuran gambar ekspor menghasilkan salinan untuk dibagikan; periksa hasil dan peringatan berkas yang dilewati sebelum membagikannya.
+
 ## Pelajari lebih lanjut
 
 - [Ekspor Gambar](https://nahpu.app/id/usages/export/export-images/)

@@ -10,6 +10,8 @@ Un preajuste de exportación tabular guarda una definición repetible: el tipo d
 
 Los ajustes se guardan a medida que los cambia, pero el nombre del preajuste no: escriba un nombre nuevo y seleccione `Rename` para confirmarlo. Exporte un solo preajuste desde su fila, o todos desde el menú de opciones; ambos archivos se importan con la misma acción.
 
+Un encabezado Darwin Core no valida por sí solo los datos exportados. Revise el significado de los campos, las unidades y los valores repetidos. Las exportaciones tabulares son para uso posterior, no para restaurar un proyecto NAHPU.
+
 ## Más información
 
 - [Exportar Registros](https://nahpu.app/es/usages/export/export-records/)

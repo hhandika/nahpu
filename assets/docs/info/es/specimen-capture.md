@@ -10,6 +10,8 @@ Cambiar el evento de recolecta cambia el contexto de muestreo del registro. NAHP
 
 La extensión de la coordenada describe cuán lejos pudo estar el espécimen de la posición registrada. Úsela cuando una línea de trampas, un transecto o un área de búsqueda sea más amplia que la coordenada misma.
 
+Siga la convención de hora local del evento para las horas de captura. La coordenada del espécimen debe representar dónde se obtuvo, no simplemente el primer punto del sitio.
+
 ## Más información
 
 - [Registros de Especímenes](https://nahpu.app/es/usages/specimens/)

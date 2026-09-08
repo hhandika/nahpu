@@ -4,11 +4,9 @@ sidebar:
   order: 0
 ---
 
-A site can have several coordinate records. Each one should describe a documented position, with its coordinate format, elevation, geodetic datum, uncertainty, GPS unit, and notes about the source.
+A site can contain several positions, such as individual traps along a line. Give each coordinate a useful name and record its source, datum, elevation, uncertainty, and GPS unit when known. Coordinate uncertainty describes positional uncertainty; it is separate from a specimen's coordinate extent.
 
-Manual entry accepts decimal degrees (DD), degrees and decimal minutes (DDM), degrees-minutes-seconds (DMS), and WGS84 UTM. `Select coordinate file` imports CSV, TSV, Excel, GeoJSON/JSON, KML, zipped Shapefile, and GPX; `Scan QR` reads a NAHPU coordinate QR code. Review every imported position before saving it.
-
-For coordinate entered in non-decimal degree format, NAHPU will store both the entered coordinates and automatically converted decimal degree values.
+Manual entry supports DD, DDM, DMS, and WGS84 UTM. NAHPU retains non-decimal input and converted decimal-degree values. `Select coordinate file` accepts CSV, TSV, Excel, GeoJSON/JSON, KML, zipped Shapefile, and GPX. For spreadsheets, review column mapping before selecting points. `Scan QR` reads a NAHPU coordinate code. Check warnings, units, and mapped positions before adding the selected coordinates.
 
 ## Learn more
 

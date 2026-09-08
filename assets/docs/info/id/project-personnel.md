@@ -15,6 +15,8 @@ Catatan personel mewakili orang-orang yang terlibat dalam proyek. Seseorang disi
 
 Ini adalah peran alur kerja NAHPU yang menentukan pada apa seseorang dapat ditugaskan di dalam aplikasi. Peran ini berbeda dari peran yang dilaporkan dalam hasil ekspor, yang mengikuti hubungan sebenarnya pada setiap catatan.
 
+Pilih mode Field ID secara terpisah dari peran personel. Penomoran proyek tidak menggunakan nomor lapangan pribadi Cataloger.
+
 ## Pelajari lebih lanjut
 
 - [Personel](https://nahpu.app/id/usages/personnel/)

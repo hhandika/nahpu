@@ -4,26 +4,20 @@ sidebar:
   order: 3
 ---
 
-Ganti data instalasi aktif dengan backup NAHPU yang telah diverifikasi.
+Ganti data instalasi dari cadangan basis data jika impor proyek bukan pemulihan yang diperlukan.
 
 ## Langkah
 
 {% steps %}
 
-1. Buat backup terkini dari basis data aktif.
-2. Buka `Settings` > `Database` lalu pilih `Replace database`.
-3. Pilih basis data SQLite atau arsip backup NAHPU yang didukung.
-4. Tinjau peringatan dan konfirmasikan hanya setelah memeriksa berkas sumber.
-5. Mulai ulang atau buka kembali NAHPU bila diminta, lalu periksa proyek, jumlah record, dan managed file.
+1. Pastikan berkas merupakan cadangan basis data. Untuk ekspor proyek, gunakan `Import project` pada layar awal.
+2. Buat dan simpan cadangan basis data saat ini sebelum penggantian.
+3. Buka `Settings` > `Database` > `Replace database`, lalu pilih basis data SQLite atau arsip cadangan yang didukung.
+4. Baca peringatan dan pastikan sumbernya. Penggantian tidak menggabungkan proyek: tindakan ini mengganti basis data aktif dan menimpa berkas media atau konfigurasi yang cocok dalam arsip.
+5. Ikuti petunjuk mulai ulang, lalu periksa proyek, jumlah catatan, pengaturan, dan beberapa berkas yang dikelola. Berkas SQLite saja tidak menyediakan media yang hilang.
 {% /steps %}
-
-{% aside type="caution" %}
-
-Penggantian menimpa basis data aktif serta setiap berkas media atau konfigurasi yang namanya sama dengan berkas di dalam arsip, dan tidak dapat dibatalkan tanpa cadangan; tindakan ini tidak menggabungkan proyek. Bila satu-satunya berkas yang Anda bawa dari lapangan adalah ekspor proyek, pasang NAHPU dari awal lalu gunakan `Merge project`: berkas itu memulihkan catatan dan media proyek tersebut tanpa menyentuh apa pun yang lain.
-
-{% /aside %}
 
 ## Pelajari lebih lanjut
 
-- [Buka panduan lengkap](https://nahpu.app/id/usages/export/#restoring-a-database)
-- [Cadangkan satu hari lapangan](https://nahpu.app/id/how-to-recipes/protect-and-collaborate/daily-backup/)
+- [Ekspor](https://nahpu.app/id/usages/export/#restoring-a-database)
+- [Impor proyek ke perangkat lain](https://nahpu.app/id/how-to-recipes/protect-and-collaborate/import-project/)

@@ -15,6 +15,8 @@ Personnel records represent people who participate in the project. A person is s
 
 These are NAHPU workflow roles that control what a person can be assigned to inside the app. They are not the same as the roles reported in an export, which follow each record’s actual relationships.
 
+Choose the Field ID mode separately from personnel roles. Project numbering does not use a Cataloger’s personal field number.
+
 ## Learn more
 
 - [Personnel](https://nahpu.app/en/usages/personnel/)

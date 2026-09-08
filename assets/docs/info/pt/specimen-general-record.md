@@ -4,11 +4,11 @@ sidebar:
   order: 0
 ---
 
-O registro geral guarda o identificador de trabalho do espécime, as pessoas responsáveis por ele, seu táxon e seu contexto de preparação e condição. Conforme as configurações do projeto, o Field ID combina as iniciais de um Cataloger com um número de campo pessoal, ou o prefixo e o sufixo do projeto com um número de catálogo do projeto.
+O registro geral identifica o espécime e as pessoas responsáveis pela catalogação, preparação e identificação. Escolha o táxon no registro do projeto e use `ID Confidence` para indicar a confiança na identificação.
 
-Escolha o táxon no registro de táxons. Se ele não existir, verifique primeiro se você registrou esse táxon no registro de táxons do projeto.
+Field IDs pessoais usam as iniciais e o número de campo de um Cataloger habilitado. Field IDs de projeto usam prefixo, número de catálogo e sufixo do projeto. Nenhum deles é o UUID do projeto. Confira o identificador com a etiqueta física antes de continuar.
 
-Registre Cataloger, Preparator e Determiner conforme o trabalho que cada pessoa realmente fez. Descreva a condição no momento da preparação a partir de evidência direta e preserve as datas e horários de coleta e de preparação quando forem conhecidos.
+Atribua Cataloger, Preparator e Determiner conforme o trabalho realizado. Registre a condição observada e as datas e horários conhecidos de coleta e preparação. Os campos são atualizados durante a edição; revise o registro e os erros de validação antes de sair.
 
 ## Saiba mais
 

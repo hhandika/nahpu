@@ -10,6 +10,8 @@ Alterar o evento de coleta altera o contexto de amostragem do registro. O NAHPU 
 
 A extensão da coordenada descreve o quão longe o espécime pode ter estado da posição registrada. Use-a quando uma linha de armadilhas, um transecto ou uma área de busca for maior que a própria coordenada.
 
+Siga a convenção de horário local do evento para os horários de captura. A coordenada do espécime deve representar onde ele foi obtido, não apenas o primeiro ponto do local.
+
 ## Saiba mais
 
 - [Registros de Espécimes](https://nahpu.app/pt/usages/specimens/)

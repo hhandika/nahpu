@@ -12,6 +12,8 @@ Edite o nome do arquivo, a legenda, a etiqueta e quem fotografou, para que outra
 
 Use `Export` em um item de mídia para salvar um arquivo, com opções de converter para JPEG, PNG ou WebP e de redimensionar. Para salvar vários arquivos de uma vez, abra a galeria de mídia, ative a seleção e escolha `Export`. Isso grava um único pacote TAR.GZ ou ZIP, com as imagens convertidas e redimensionadas em conjunto e áudio e vídeo copiados sem alteração.
 
+Mantenha o arquivo original quando a preservação for importante. Converter ou redimensionar uma imagem exportada cria uma cópia para entrega; confira o resultado e os avisos de arquivos ignorados antes de compartilhar.
+
 ## Saiba mais
 
 - [Exportar Imagens](https://nahpu.app/pt/usages/export/export-images/)

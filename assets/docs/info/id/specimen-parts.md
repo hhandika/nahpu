@@ -10,6 +10,8 @@ Catat tipe preparasi, perlakuan, jumlah, tissue ID, kode QR atau kode batang, Pr
 
 Jaga agar pengenal tetap selaras dengan wadah fisiknya. Tissue ID yang tidak lagi cocok dengan vialnya lebih sulit diperbaiki daripada yang belum diisi.
 
+Setelah menduplikasi bagian spesimen, cocokkan pengenal, preparasi, tanggal, dan penyimpanan dengan bahan yang baru. Nilai salinan merupakan titik awal untuk peninjauan.
+
 ## Pelajari lebih lanjut
 
 - [Catatan Spesimen](https://nahpu.app/id/usages/specimens/#specimen-parts)

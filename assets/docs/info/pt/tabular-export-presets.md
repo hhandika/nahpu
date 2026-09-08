@@ -10,6 +10,8 @@ Uma predefinição de exportação tabular salva uma definição repetível: o t
 
 As configurações são salvas conforme você as altera, mas o nome da predefinição não: digite um nome novo e selecione `Rename` para confirmá-lo. Exporte uma única predefinição a partir de sua linha, ou todas pelo menu de opções; qualquer um dos arquivos é importado pela mesma ação.
 
+Um cabeçalho Darwin Core não valida, por si só, os dados exportados. Revise o significado dos campos, unidades e valores repetidos. Exportações tabulares são destinadas ao uso posterior, não à restauração de um projeto NAHPU.
+
 ## Saiba mais
 
 - [Exportar Registros](https://nahpu.app/pt/usages/export/export-records/)

@@ -10,6 +10,8 @@ O registro de táxons aceita registros em qualquer nível, então um espécime a
 
 Edite o registro de táxons quando o registro de nome compartilhado estiver errado; altere o táxon selecionado do espécime quando apenas aquela identificação estiver errada. Preserve a autoria do nome científico e as notas de identificação quando disponíveis, e registre o Determiner responsável.
 
+Use a confiança na identificação e as notas para documentar incertezas. É preferível deixar o nome da espécie vazio a atribuir uma identificação sem evidências.
+
 ## Saiba mais
 
 - [Registros de Espécimes](https://nahpu.app/pt/usages/specimens/)

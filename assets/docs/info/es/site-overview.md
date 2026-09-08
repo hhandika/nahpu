@@ -8,6 +8,8 @@ Un sitio es el registro de lugar reutilizable de NAHPU. Los eventos de recolecta
 
 Registre a la persona responsable y el tipo de sitio cuando sea útil. Use `Duplicate site` para copiar la información descriptiva dejando vacíos el nuevo Site ID y las coordenadas. Use `Copy from project ...` solo cuando un sitio de otro proyecto describa un lugar que deba reutilizarse. Verifique cada valor copiado antes de comenzar la recolecta.
 
+Un sitio describe un lugar; un evento describe el trabajo en ese lugar. Reutilice el sitio en visitas posteriores y cree eventos adecuados a cada período de muestreo.
+
 ## Más información
 
 - [Sitios](https://nahpu.app/es/usages/sites/)

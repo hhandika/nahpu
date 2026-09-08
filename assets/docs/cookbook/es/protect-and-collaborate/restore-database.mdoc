@@ -4,26 +4,20 @@ sidebar:
   order: 3
 ---
 
-Sustituya los datos activos de la instalación por una copia verificada de NAHPU.
+Sustituya datos de la instalación desde una copia del banco de datos cuando importar un proyecto no sea la recuperación deseada.
 
 ## Pasos
 
 {% steps %}
 
-1. Cree una copia actual de la base de datos activa.
-2. Abra `Settings` > `Database` y elija `Replace database`.
-3. Seleccione la base SQLite o el archivo de copia de NAHPU compatible.
-4. Revise la advertencia y confirme solo después de comprobar el archivo de origen.
-5. Reinicie o vuelva a abrir NAHPU si se solicita y verifique proyectos, recuentos y archivos administrados.
+1. Confirme que el archivo sea una copia del banco de datos. Para una exportación de proyecto, use `Import project` en la pantalla inicial.
+2. Cree y conserve una copia actual del banco antes de sustituirlo.
+3. Abra `Settings` > `Database` > `Replace database` y seleccione el banco SQLite o un archivo de copia compatible.
+4. Lea el aviso y confirme el origen. La sustitución no combina proyectos: reemplaza el banco activo y sobrescribe los archivos multimedia o de configuración coincidentes del archivo.
+5. Siga las instrucciones de reinicio y compruebe proyectos, recuentos, configuraciones y varios archivos gestionados. Un archivo SQLite aislado no proporciona los archivos multimedia ausentes.
 {% /steps %}
-
-{% aside type="caution" %}
-
-La sustitución sobrescribe la base de datos activa y cualquier archivo de medios o de configuración que coincida con uno del archivo comprimido, y no se puede deshacer sin una copia de seguridad; no combina proyectos. Si el único archivo que se trajo del campo es una exportación de proyecto, instale NAHPU desde cero y use `Merge project`: restaura los registros y los medios disponibles de ese proyecto sin tocar nada más.
-
-{% /aside %}
 
 ## Más información
 
-- [Abra la guía completa](https://nahpu.app/es/usages/export/#restoring-a-database)
-- [Respalde una jornada de campo](https://nahpu.app/es/how-to-recipes/protect-and-collaborate/daily-backup/)
+- [Exportar](https://nahpu.app/es/usages/export/#restoring-a-database)
+- [Importe un proyecto en otro dispositivo](https://nahpu.app/es/how-to-recipes/protect-and-collaborate/import-project/)

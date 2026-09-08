@@ -8,6 +8,8 @@ Los registros de esfuerzo describen cómo se realizó el muestreo. Agregue cada 
 
 Use las mismas unidades y nombres de método controlados en todo el proyecto para poder comparar los esfuerzos. Indique suficiente contexto para que otra persona entienda el esfuerzo sin inferir datos faltantes. Duplicar un evento copia también sus registros de esfuerzo.
 
+Revise los recuentos de equipos y los métodos copiados en cada evento. Registre cero solo cuando sea un recuento observado y explique el esfuerzo incompleto en las notas.
+
 ## Más información
 
 - [Eventos de Recolecta](https://nahpu.app/es/usages/events/)

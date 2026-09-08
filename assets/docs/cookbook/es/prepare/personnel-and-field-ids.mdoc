@@ -4,26 +4,20 @@ sidebar:
   order: 4
 ---
 
-Añada el personal del proyecto y elija cómo se asignarán los Field IDs de los especímenes.
+Asigne funciones al personal y elija una convención coherente de numeración de especímenes.
 
 ## Pasos
 
 {% steps %}
 
-1. Abra el panel del proyecto y seleccione `Add personnel`.
-2. Seleccione una persona existente o cree un registro en la base de datos.
-3. Asigne `Cataloger`, `Preparator only`, `Determiner only` o `None` según el trabajo de la persona.
-4. Para Field IDs personales, indique las iniciales y el número de campo actual de cada Cataloger habilitado.
-5. Para Field IDs del proyecto, ejecute `Setup NAHPU` y use el paso `Identifiers` para configurar prefijo, número, sufijo e incremento automático.
+1. En el panel del proyecto, seleccione `Add personnel` y elija una persona existente o cree un registro.
+2. Asigne `Cataloger`, `Preparator only`, `Determiner only` o `None` según el trabajo realizado. La función Cataloger no puede cambiarse después de crearla.
+3. Para Field IDs personales, configure iniciales, registro de campo y número personal actual de los Catalogers habilitados. Coordine iniciales e intervalos de números entre dispositivos.
+4. Para Field IDs de proyecto, configure prefijo, número de catálogo actual, sufijo e incremento automático en `Setup NAHPU` > `Identifiers` o en la configuración de Field ID de especímenes. Este modo no usa el número personal del Cataloger.
+5. Compare el identificador generado con la etiqueta prevista antes de recolectar. El número de catálogo no es el UUID del proyecto; cambiar prefijo o sufijo afecta los IDs de proyecto mostrados.
 {% /steps %}
-
-{% aside type="caution" %}
-Un proyecto necesita al menos una persona con el rol `Cataloger`. Esa persona es la dueña del número de campo que genera cada identificador de campo de espécimen, y el rol no se puede cambiar después de crearlo.
-{% /aside %}
 
 ## Más información
 
-- [Abra la guía completa](https://nahpu.app/es/usages/personnel/)
-- [Cree un proyecto](https://nahpu.app/es/how-to-recipes/prepare/create-project/)
+- [Personal](https://nahpu.app/es/usages/personnel/)
 - [Configuración](https://nahpu.app/es/usages/settings/)
-- [NAHPU Día 1](https://nahpu.app/es/day-one/)

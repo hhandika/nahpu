@@ -18,6 +18,8 @@ Selecione **Explore more stats** para gráficos, tabelas, filtros e exportaçõe
 
 Selecione **Explore more stats**, escolha uma medida e um agrupamento e mude o painel para **Table**. O botão `Export table` grava as linhas exibidas no momento em CSV, TSV, Excel ou JSON. O painel espacial exporta da mesma forma, uma linha por coordenada de local.
 
+As contagens ajudam a identificar mudanças inesperadas, mas não comprovam que os registros estão completos ou corretamente identificados. Confira os registros de origem antes de usar um resumo em um relatório.
+
 ## Saiba mais
 
 - [Exportar Estatísticas](https://nahpu.app/pt/usages/export/export-statistics/)

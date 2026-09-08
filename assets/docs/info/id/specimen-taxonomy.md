@@ -10,6 +10,8 @@ Registri takson memuat catatan pada tingkat mana pun, sehingga spesimen yang bel
 
 Ubah registri takson bila catatan nama bersamanya keliru; ubah takson yang dipilih pada spesimen bila hanya identifikasi itu yang keliru. Pertahankan kepengarangan nama ilmiah dan catatan identifikasi bila tersedia, serta catat Determiner yang bertanggung jawab.
 
+Gunakan tingkat keyakinan identifikasi dan catatan untuk menjelaskan ketidakpastian. Nama spesies kosong lebih baik daripada identifikasi tingkat spesies tanpa bukti.
+
 ## Pelajari lebih lanjut
 
 - [Catatan Spesimen](https://nahpu.app/id/usages/specimens/)

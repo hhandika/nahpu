@@ -15,6 +15,8 @@ Los registros de personal representan a las personas que participan en el proyec
 
 Estos son roles del flujo de trabajo de NAHPU que controlan a qué se puede asignar cada persona dentro de la aplicación. No son los mismos roles que se informan en una exportación, los cuales siguen las relaciones reales de cada registro.
 
+Elija el modo de Field ID por separado de las funciones del personal. La numeración del proyecto no utiliza el número de campo personal de un Cataloger.
+
 ## Más información
 
 - [Personal](https://nahpu.app/es/usages/personnel/)

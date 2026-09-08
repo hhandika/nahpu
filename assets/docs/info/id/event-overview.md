@@ -4,11 +4,9 @@ sidebar:
   order: 0
 ---
 
-Kegiatan pengumpulan mencatat satu upaya pengambilan sampel tertentu pada satu lokasi dan waktu. Spesimen ditautkan ke kegiatan untuk memperoleh lokasi, tanggal, konteks pengambilan sampel, dan tim lapangannya, sehingga banyak catatan spesimen dapat berbagi satu kegiatan.
+Kegiatan pengumpulan menjelaskan pengambilan sampel di suatu lokasi selama periode tertentu. Spesimen yang ditautkan berbagi lokasi dan konteks pengambilan sampel. Masukkan tanggal dan waktu yang menggambarkan upaya sebenarnya, termasuk kegiatan yang melewati tengah malam.
 
-NAHPU menyusun Event ID dari Site ID dan tanggal mulai. Tambahkan akhiran hanya bila kegiatan lain akan memiliki pengenal yang sama.
-
-Cara Anda membuat kegiatan bergantung pada protokol pengambilan sampel dan pada apakah Anda mencatat data lingkungan. Misalnya, bila Anda mengambil sampel beberapa hari di lokasi yang sama dengan protokol yang sama dan tidak mencatat data lingkungan, Anda dapat memakai kegiatan yang sama untuk semua hari itu. Meski begitu, kami menyarankan membuat kegiatan baru setidaknya sekali sehari agar data lingkungan serta kemungkinan perubahan tim lapangan dan peralatan ikut tercatat, dan agar kegiatan terekam secara konsisten. Tombol `Duplicate` di sudut kanan atas dapat dipakai untuk membuat kegiatan baru dengan pengaturan yang sama seperti kegiatan yang sudah ada.
+NAHPU membentuk Event ID dari Site ID dan tanggal mulai. Tambahkan akhiran untuk membedakan kegiatan di lokasi dan tanggal yang sama. Buat kegiatan baru jika periode, protokol, upaya, atau tim berubah. `Duplicate` menyalin pengaturan, termasuk catatan upaya, tetapi mengosongkan data lingkungan. Tinjau salinan dan catat kondisi yang baru.
 
 ## Pelajari lebih lanjut
 

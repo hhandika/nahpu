@@ -10,6 +10,8 @@ El registro de taxones admite registros de cualquier rango, así que un espécim
 
 Edite el registro de taxones cuando el registro de nombre compartido esté mal; cambie el taxón seleccionado del espécimen cuando solo esa identificación esté mal. Conserve la autoría del nombre científico y las notas de identificación cuando estén disponibles, y registre al Determiner responsable.
 
+Use la confianza en la identificación y las notas para documentar la incertidumbre. Es preferible dejar vacío el nombre de la especie que asignar una identificación sin evidencia.
+
 ## Más información
 
 - [Registros de Especímenes](https://nahpu.app/es/usages/specimens/)
