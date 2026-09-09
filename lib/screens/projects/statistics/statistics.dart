@@ -958,6 +958,38 @@ class _FullScreenRecordStatisticsCard extends StatelessWidget {
             ),
           ],
         ),
+        const SizedBox(height: NahpuSpacing.md),
+        _SummaryGroup(
+          key: const ValueKey('full-screen-record-stat-media'),
+          title: 'Media breakdown',
+          children: [
+            _SummaryMetric(
+              key: RecordMetricKind.media.fullScreenKey,
+              kind: RecordMetricKind.media,
+              value: totals.mediaCount.toString(),
+            ),
+            _SummaryMetric(
+              key: RecordMetricKind.specimenMedia.fullScreenKey,
+              kind: RecordMetricKind.specimenMedia,
+              value: totals.specimenMediaCount.toString(),
+            ),
+            _SummaryMetric(
+              key: RecordMetricKind.siteMedia.fullScreenKey,
+              kind: RecordMetricKind.siteMedia,
+              value: totals.siteMediaCount.toString(),
+            ),
+            _SummaryMetric(
+              key: RecordMetricKind.eventMedia.fullScreenKey,
+              kind: RecordMetricKind.eventMedia,
+              value: totals.eventMediaCount.toString(),
+            ),
+            _SummaryMetric(
+              key: RecordMetricKind.narrativeMedia.fullScreenKey,
+              kind: RecordMetricKind.narrativeMedia,
+              value: totals.narrativeMediaCount.toString(),
+            ),
+          ],
+        ),
       ],
     );
   }

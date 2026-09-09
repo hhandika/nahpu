@@ -289,6 +289,11 @@ class RecordStatisticTotals {
     required this.genusCount,
     required this.speciesCount,
     required this.narrativeCount,
+    required this.mediaCount,
+    required this.specimenMediaCount,
+    required this.siteMediaCount,
+    required this.eventMediaCount,
+    required this.narrativeMediaCount,
     this.minimumRecordedElevationInMeter,
     this.maximumRecordedElevationInMeter,
     this.minimumSampledElevationInMeter,
@@ -314,6 +319,17 @@ class RecordStatisticTotals {
   final int speciesCount;
 
   final int narrativeCount;
+
+  /// Media files attached to the records of the project.
+  ///
+  /// [mediaCount] is the sum of the four record categories below. Personnel
+  /// avatars document people rather than records, so they are left out of every
+  /// one of these counts.
+  final int mediaCount;
+  final int specimenMediaCount;
+  final int siteMediaCount;
+  final int eventMediaCount;
+  final int narrativeMediaCount;
 
   /// Elevation range across every site recorded in the project.
   final double? minimumRecordedElevationInMeter;
