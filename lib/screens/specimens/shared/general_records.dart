@@ -697,6 +697,7 @@ class IdTile extends ConsumerWidget {
             children: [
               SelectableText(
                 'Specimen UUID: $specimenUuid',
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),

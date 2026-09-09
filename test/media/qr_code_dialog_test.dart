@@ -79,11 +79,10 @@ void main() {
 
     await tester.tap(find.widgetWithIcon(IconButton, Icons.download_outlined));
     await tester.pump();
-    // The PNG encoder completes on the real event loop.
-    await tester.runAsync(
-      () => Future<void>.delayed(const Duration(milliseconds: 50)),
-    );
-    await tester.pump();
+    // The QR dialog pops itself and opens the export dialog once the encode
+    // finishes, so waiting for that dialog waits for the whole sequence.
+    await _pumpUntilFound(tester, find.text('Export media'));
+    // Let the popped QR route finish its exit transition.
     await tester.pump(const Duration(milliseconds: 500));
 
     expect(find.byType(QrCodeDialog), findsNothing);
@@ -111,6 +110,28 @@ void main() {
 
     expect(bytes, isNull);
   });
+}
+
+/// Pumps until [finder] matches, advancing both real and animation time.
+///
+/// The PNG encode runs on the real event loop, so the test has to yield to it
+/// rather than only pumping frames. How long it takes varies with the machine:
+/// a fixed delay long enough for a developer laptop can expire mid-encode on a
+/// slower CI runner, which then fails on a later expectation instead of here.
+Future<void> _pumpUntilFound(
+  WidgetTester tester,
+  Finder finder, {
+  Duration timeout = const Duration(seconds: 20),
+}) async {
+  final stopwatch = Stopwatch()..start();
+  while (stopwatch.elapsed < timeout) {
+    if (finder.evaluate().isNotEmpty) return;
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(milliseconds: 20)),
+    );
+    await tester.pump(const Duration(milliseconds: 100));
+  }
+  fail('Timed out after $timeout waiting for $finder');
 }
 
 Future<void> _pumpDialog(WidgetTester tester, String data) async {

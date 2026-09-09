@@ -49,7 +49,7 @@ class EventInfoFieldState extends ConsumerState<EventInfoField> {
     final siteEntry = ref.watch(siteEntryProvider);
     siteEntry.whenData((siteEntry) => {data = siteEntry});
     return FormCard(
-      title: 'Event Details',
+      title: 'Event Identity',
       isPrimary: true,
       infoTopic: InfoTopic.eventOverview,
       mainAxisSize: MainAxisSize.min,
