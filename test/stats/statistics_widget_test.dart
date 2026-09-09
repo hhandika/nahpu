@@ -237,7 +237,7 @@ void main() {
       (RecordMetricKind.narrativeMedia, '1'),
     ]) {
       final metric = find.descendant(
-        of: find.byKey(const ValueKey('full-screen-record-stat-media')),
+        of: find.byKey(const ValueKey('full-screen-record-stat-media-breakdown')),
         matching: find.byKey(entry.$1.fullScreenKey),
       );
       expect(
@@ -370,7 +370,7 @@ void main() {
         find.byKey(const ValueKey('full-screen-record-stat-taxonomy')),
       );
       final media = tester.getRect(
-        find.byKey(const ValueKey('full-screen-record-stat-media')),
+        find.byKey(const ValueKey('full-screen-record-stat-media-breakdown')),
       );
       expect(records.width, closeTo(taxonomy.width, 0.1));
       expect(taxonomy.width, closeTo(media.width, 0.1));

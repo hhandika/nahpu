@@ -960,7 +960,7 @@ class _FullScreenRecordStatisticsCard extends StatelessWidget {
         ),
         const SizedBox(height: NahpuSpacing.md),
         _SummaryGroup(
-          key: const ValueKey('full-screen-record-stat-media'),
+          key: const ValueKey('full-screen-record-stat-media-breakdown'),
           title: 'Media breakdown',
           children: [
             _SummaryMetric(
