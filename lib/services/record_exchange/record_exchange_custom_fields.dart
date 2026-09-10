@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart';
+import 'package:nahpu/services/types/specimens.dart';
 import 'package:nahpu/services/common/io_services.dart';
 import 'package:uuid/uuid.dart';
 
@@ -217,6 +218,17 @@ class RecordExchangeCustomFields extends AppServices {
   }
 
   Future<int> _insertDefinition(Map<String, dynamic> row) async {
+    // Catalog formats moved from taxa to disciplines in v22. Normalizing here
+    // stops an older record file writing a value the custom-field triggers
+    // would then reject for every specimen.
+    final catalogFormat = row['catalogFormat'];
+    if (catalogFormat is String) {
+      row = {
+        ...row,
+        'catalogFormat':
+            catalogFmtFromStoredName(catalogFormat)?.name ?? catalogFormat,
+      };
+    }
     final columns = row.keys.toList(growable: false);
     await dbAccess.customStatement(
       'INSERT INTO customFieldDefinition (${columns.join(',')}) VALUES '
@@ -296,12 +308,19 @@ class RecordExchangeCustomFields extends AppServices {
         .toList(growable: false);
   }
 
+  /// Persisted [CatalogFmt] name for [taxonGroup].
+  ///
+  /// Catalog formats are stored as disciplines, so the taxon a record carries
+  /// has to be translated rather than lower-cased.
   String _catalogFormat(String? taxonGroup) {
     return switch (taxonGroup?.toLowerCase()) {
-      'aves' || 'birds' => 'birds',
-      'reptilia' || 'amphibia' || 'herpetofauna' => 'herpetofauna',
-      'arthropoda' || 'arthropods' => 'arthropods',
-      _ => 'mammals',
+      'aves' || 'birds' => 'ornithology',
+      'reptilia' || 'amphibia' || 'herpetofauna' => 'herpetology',
+      'invertebrata' ||
+      'invertebrates' ||
+      'arthropoda' ||
+      'arthropods' => 'invertebrateZoology',
+      _ => 'mammalogy',
     };
   }
 }

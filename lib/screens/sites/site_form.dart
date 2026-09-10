@@ -92,7 +92,7 @@ class SiteContextFields extends ConsumerWidget {
     return ref
         .watch(catalogFmtNotifierProvider)
         .when(
-          data: (format) => format == CatalogFmt.fossils
+          data: (format) => format == CatalogFmt.paleontology
               ? Sedimentology(id: id, useHorizontalLayout: useHorizontalLayout)
               : Habitat(
                   id: id,

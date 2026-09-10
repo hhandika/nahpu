@@ -77,13 +77,13 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Continue'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Mammals'));
+    await tester.tap(find.text('Mammalogy'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Fossils').last);
+    await tester.tap(find.text('Paleontology').last);
     await tester.pumpAndSettle();
     expect(
       await container.read(catalogFmtNotifierProvider.future),
-      CatalogFmt.mammals,
+      CatalogFmt.mammalogy,
     );
     await tester.tap(find.text('Back'));
     await tester.pumpAndSettle();
@@ -94,7 +94,7 @@ void main() {
     expect(await database.select(database.project).get(), isEmpty);
     expect(
       await container.read(catalogFmtNotifierProvider.future),
-      CatalogFmt.mammals,
+      CatalogFmt.mammalogy,
     );
   });
 
@@ -217,7 +217,7 @@ void main() {
 
 class _TestCatalogFormat extends CatalogFmtNotifier {
   @override
-  Future<CatalogFmt> build() async => CatalogFmt.mammals;
+  Future<CatalogFmt> build() async => CatalogFmt.mammalogy;
 }
 
 class _TestFieldIdMode extends FieldIdModeNotifier {

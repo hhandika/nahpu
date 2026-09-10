@@ -26,6 +26,11 @@ const Map<String, String> _geographySourceFields = {
   'verbatimLocality': 'verbatimLocality',
 };
 
+/// Pre-v19 source keys, which spell the attribute table by its pre-v22 name.
+///
+/// [specimenAttributeTableAliases] must never gain an `arthropodAttribute`
+/// entry: [canonicalizeSpecimenAttributeExpression] applies that map first,
+/// which would rewrite these keys before they are matched here.
 const Map<String, String> _v19SourceAliases = {
   'arthropodAttribute::canopyCover': 'siteAttribute::canopyCover',
   'arthropodAttribute::ambientTemperature': 'environment::ambientTemperature',

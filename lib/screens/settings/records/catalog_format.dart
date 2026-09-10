@@ -59,7 +59,7 @@ class CatalogFmtSelectionState extends ConsumerState<CatalogFmtSelection> {
                     }).toList(),
                   ),
                   Visibility(
-                    visible: selectedFmt == CatalogFmt.mammals,
+                    visible: selectedFmt == CatalogFmt.mammalogy,
                     child: CommonSettingSection(
                       title: 'Measurement records',
                       children: [

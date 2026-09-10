@@ -1,13 +1,15 @@
 ---
-title: "Upaya kegiatan"
+title: "Upaya pengambilan sampel"
 sidebar:
   order: 0
 ---
 
-Catatan upaya menjelaskan bagaimana pengambilan sampel dilakukan. Tambahkan setiap metode secara terpisah dan catat jumlah unit, merek dan model peralatan, ukuran atau dimensinya, serta keterangan.
+Catatan upaya menjelaskan bagaimana pengambilan sampel dilakukan. Tambahkan setiap metode secara terpisah dan catat jumlah unit, merek dan model peralatan, ukuran atau dimensinya, serta keterangan. Sertakan satuan pada nilai ukuran (misalnya "10cm x 10cm x 10cm").
 
-Gunakan satuan dan nama metode terkontrol yang sama di seluruh proyek agar upaya dapat dibandingkan. Durasi, luas, dan besaran lain yang tidak punya kolom khusus dituliskan pada keterangan. Sampaikan konteks yang cukup agar orang lain memahami upaya tersebut tanpa harus menduga data yang hilang.
+Gunakan satuan dan nama metode terkontrol yang sama di seluruh proyek agar upaya dapat dibandingkan. Sampaikan konteks yang cukup agar orang lain memahami upaya tersebut tanpa harus menduga rincian yang hilang. Menggandakan kegiatan akan menyalin catatan upayanya juga.
 
-## Konteks Darwin Core
+Tinjau jumlah peralatan dan metode yang disalin untuk setiap kegiatan. Catat nol hanya jika merupakan jumlah yang diamati, dan jelaskan upaya yang tidak lengkap dalam catatan.
 
-Dalam ekspor tabel, metode dipetakan ke `dwc:samplingProtocol` dan keterangan ke `dwc:samplingEffort`; jumlah, merek, dan ukuran tidak memiliki padanan Darwin Core dan tetap memakai tajuk NAHPU. Darwin Core Archive dan Data Package justru membawa aktivitas dan catatan milik kegiatan itu sendiri, jadi catat pula pada kegiatan hal-hal yang harus dilaporkan oleh arsip.
+## Pelajari lebih lanjut
+
+- [Kegiatan Pengumpulan](https://nahpu.app/id/usages/events/)

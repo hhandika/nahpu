@@ -38,7 +38,8 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen> {
   Widget build(BuildContext context) {
     final catalogFmt = ref.watch(catalogFmtNotifierProvider).asData?.value;
     final steps = _stepsFor(catalogFmt);
-    // Choosing arthropods drops the parasite step, which can leave the wizard
+    // Choosing invertebrate zoology drops the parasite step, which can leave
+    // the wizard
     // parked past the end of its own step list.
     final step = _step.clamp(0, steps.length - 1);
     final maxVisitedStep = _maxVisitedStep.clamp(0, steps.length - 1);

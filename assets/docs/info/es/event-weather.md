@@ -1,13 +1,15 @@
 ---
-title: "Clima del evento"
+title: "Clima y astronomía"
 sidebar:
   order: 0
 ---
 
-Los campos de clima describen las condiciones observadas durante el evento de recolecta, incluidas la temperatura y la humedad del aire, la nubosidad, la lluvia y, cuando corresponda, la temperatura del agua, el pH, el oxígeno disuelto y la velocidad de flujo. Registre los valores en las unidades mostradas e indique si son mediciones directas, lecturas de instrumento u otra fuente documentada.
+Los datos ambientales registran las condiciones de este evento. En `Settings` > `Events`, elija los campos integrados que se muestran. Ocultar un campo no elimina sus valores ni los excluye de las exportaciones.
 
-Los valores astronómicos se derivan de la ubicación, la fecha y la hora del evento. Trátelos como contexto calculado, no como observaciones directas. Si un resultado es inesperado, verifique las coordenadas del sitio seleccionado, la zona horaria del proyecto y los horarios del evento antes de cambiar otros datos. No copie el clima entre eventos salvo que la medición realmente valga para ambos.
+Use las unidades mostradas: temperatura en °C, humedad en porcentaje y precipitación en milímetros. La nubosidad usa códigos de 0 a 8 para octavos del cielo cubierto, o 9 para cielo oscurecido. Deje vacíos los valores no medidos; cero es una medición.
 
-## Contexto de Darwin Core
+Introduzca la salida y puesta del sol y la fase lunar a partir de observaciones o de una fuente documentada; NAHPU no las calcula. Siga la convención de hora local del proyecto. Añada campos personalizados para otras mediciones. Un evento duplicado comienza con los datos ambientales vacíos.
 
-Los valores de clima, agua y astronomía no tienen un término propio en Darwin Core. Las exportaciones estructuradas llevan cada valor registrado como una medición del evento, conservando su tipo y su unidad, y las notas del ambiente se convierten en `dwc:eventRemarks`.
+## Más información
+
+- [Eventos de Recolecta](https://nahpu.app/es/usages/events/)

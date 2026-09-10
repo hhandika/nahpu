@@ -1,6 +1,7 @@
 //! Darwin Core header mapping APIs for tabular export presets.
 
 use nahpu_dwc::dwc::DwcMapper;
+use nahpu_dwc::dwc::terms::{BundleProfile, TermRegistry};
 use nahpu_dwc::package;
 use std::collections::BTreeSet;
 
@@ -39,6 +40,40 @@ pub fn get_dwc_headers(source_keys: Vec<String>) -> Vec<DwcHeader> {
         .collect()
 }
 
+/// One column a Darwin Core bundle is permitted to write.
+pub struct DwcBundleColumn {
+    /// The bundle CSV table the column belongs to, without its extension.
+    pub table: String,
+    /// The CSV header exactly as written.
+    pub header: String,
+    /// The absolute IRI the column is advertised under.
+    pub term_uri: String,
+    /// Either `archive` or `data_package`.
+    pub profile: String,
+}
+
+/// Returns every column the registered Darwin Core term registry permits.
+///
+/// Callers use this to assert that the rows they build resolve to standard terms, so an
+/// unregistered header fails a test rather than being silently withheld at export time.
+pub fn dwc_bundle_columns() -> Vec<DwcBundleColumn> {
+    TermRegistry::tables()
+        .iter()
+        .flat_map(|table| {
+            let profile = match table.profile {
+                BundleProfile::Archive => "archive",
+                BundleProfile::DataPackage => "data_package",
+            };
+            table.terms.iter().map(move |term| DwcBundleColumn {
+                table: table.table.to_string(),
+                header: term.header.to_string(),
+                term_uri: TermRegistry::term_uri(term),
+                profile: profile.to_string(),
+            })
+        })
+        .collect()
+}
+
 /// Plans the exact package contents for the Bundle Project contents panel.
 pub fn plan_dwc_bundle(request_json: String) -> Result<String, String> {
     package::plan_bundle_json(&request_json)
@@ -49,7 +84,7 @@ pub fn validate_dwc_bundle(request_json: String) -> Result<String, String> {
     package::validate_bundle_json(&request_json)
 }
 
-/// Writes a Darwin Core Archive file or a Darwin Core Data Package directory.
+/// Writes a Darwin Core Archive file or a Darwin Core Data Package archive.
 pub fn write_dwc_bundle(request_json: String, output_path: String) -> Result<String, String> {
     package::write_bundle_json(&request_json, &output_path)
 }
@@ -83,7 +118,7 @@ mod tests {
             "environment::cloudCover".to_string(),
             "weather::cloudCover".to_string(),
             "mammalAttribute::lifeStage".to_string(),
-            "arthropodAttribute::caste".to_string(),
+            "invertebrateAttribute::caste".to_string(),
             "fossilAttribute::sex".to_string(),
             "fossilAttribute::ontogeneticStage".to_string(),
             "fossilAttribute::weight".to_string(),
@@ -99,7 +134,7 @@ mod tests {
                 .unwrap_or_else(|| panic!("missing mapping for {source_key}"))
         };
 
-        assert_eq!(header_for("arthropodAttribute::caste").header, "dwc:caste");
+        assert_eq!(header_for("invertebrateAttribute::caste").header, "dwc:caste");
         assert_eq!(
             header_for("environment::cloudCover").measurement_unit,
             Some("okta".to_string())

@@ -4,12 +4,10 @@ sidebar:
   order: 0
 ---
 
-Um local pode ter vários registros de coordenadas. Cada um deve descrever uma posição documentada, com seu formato de coordenada, altitude, datum geodésico, incerteza, unidade de GPS e notas sobre a origem.
+Um local pode conter várias posições, como armadilhas ao longo de uma linha. Dê um nome útil a cada coordenada e registre fonte, datum, elevação, incerteza e unidade GPS quando conhecidos. A incerteza da coordenada descreve a incerteza da posição; ela é diferente da extensão da coordenada de um espécime.
 
-A entrada manual aceita graus decimais (DD), graus e minutos decimais (DDM), graus-minutos-segundos (DMS) e UTM WGS84. `Select coordinate file` importa CSV, TSV, Excel, GeoJSON/JSON, KML, Shapefile compactado e GPX; `Scan QR` lê um código QR de coordenada do NAHPU. Revise cada posição importada antes de salvá-la.
+A entrada manual aceita DD, DDM, DMS e UTM WGS84. O NAHPU mantém a entrada não decimal e os valores convertidos em graus decimais. `Select coordinate file` aceita CSV, TSV, Excel, GeoJSON/JSON, KML, Shapefile compactado e GPX. Para planilhas, revise o mapeamento das colunas antes de selecionar os pontos. `Scan QR` lê um código de coordenada do NAHPU. Confira avisos, unidades e posições no mapa antes de adicionar as coordenadas selecionadas.
 
-A incerteza é a distância horizontal, em metros, dentro da qual se espera que a posição real esteja. Informe um valor realista em vez de um valor padrão e preserve a coordenada como foi registrada em campo: o NAHPU armazena a representação digitada junto com os valores decimais que deriva dela.
+## Saiba mais
 
-## Contexto do Darwin Core
-
-Os valores decimais derivados são exportados para `dwc:decimalLatitude` e `dwc:decimalLongitude`, e a entrada como foi digitada é mantida em `dwc:verbatimCoordinates`, `dwc:verbatimLatitude`, `dwc:verbatimLongitude` e `dwc:verbatimCoordinateSystem`. Datum, incerteza e notas viram `dwc:geodeticDatum`, `dwc:coordinateUncertaintyInMeters` e `dwc:georeferenceRemarks`. Uma única altitude preenche tanto `dwc:minimumElevationInMeters` quanto `dwc:maximumElevationInMeters`.
+- [Localidades](https://nahpu.app/pt/usages/sites/#adding-coordinates)

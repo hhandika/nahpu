@@ -159,6 +159,84 @@ class AiTranslationNotice extends StatelessWidget {
   }
 }
 
+/// Tells the reader that the links in a document leave the app.
+///
+/// Bundled documentation reads offline, but every `Learn more` link opens the
+/// NAHPU website. The notice belongs to the app rather than to the website
+/// copy, because only a reader inside the app can be offline.
+class OnlineLinkNotice extends StatelessWidget {
+  const OnlineLinkNotice({super.key, this.language = DocsLanguage.english});
+
+  final DocsLanguage language;
+
+  static final RegExp _externalLink = RegExp(r'\]\(https?://');
+
+  /// Whether [markdown] links to anything outside the bundled documentation.
+  static bool isNeededFor(String markdown) => _externalLink.hasMatch(markdown);
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final foreground = colorScheme.onSurfaceVariant;
+
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        key: const ValueKey('online-link-notice'),
+        padding: const EdgeInsets.symmetric(
+          horizontal: NahpuSpacing.lg,
+          vertical: NahpuSpacing.md,
+        ),
+        decoration: BoxDecoration(
+          color: colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(NahpuRadius.xl),
+          border: Border.all(
+            color: colorScheme.outlineVariant,
+            width: NahpuStroke.thin,
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.public_rounded,
+              color: foreground,
+              size: NahpuControlSize.iconMedium,
+            ),
+            const SizedBox(width: NahpuSpacing.sm),
+            Flexible(
+              child: Text(
+                _message(language),
+                style: (theme.textTheme.bodySmall ?? const TextStyle())
+                    .copyWith(color: foreground),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _message(DocsLanguage language) {
+    return switch (language) {
+      DocsLanguage.english =>
+        'These links open the NAHPU documentation and need an internet '
+            'connection.',
+      DocsLanguage.portuguese =>
+        'Estes links abrem a documentação do NAHPU e exigem conexão com a '
+            'internet.',
+      DocsLanguage.spanish =>
+        'Estos enlaces abren la documentación de NAHPU y requieren conexión a '
+            'internet.',
+      DocsLanguage.indonesian =>
+        'Tautan ini membuka dokumentasi NAHPU dan memerlukan koneksi '
+            'internet.',
+    };
+  }
+}
+
 class MarkdownDocumentView extends StatelessWidget {
   const MarkdownDocumentView({super.key, required this.document});
 
@@ -185,6 +263,10 @@ class MarkdownDocumentView extends StatelessWidget {
             styleSheet: documentationMarkdownStyleSheet(context),
             onTapLink: (text, href, title) => _openLink(href),
           ),
+          if (OnlineLinkNotice.isNeededFor(document.markdown)) ...[
+            const SizedBox(height: NahpuSpacing.md),
+            OnlineLinkNotice(language: document.language),
+          ],
         ],
       ),
     );

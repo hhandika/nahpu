@@ -4,12 +4,10 @@ sidebar:
   order: 0
 ---
 
-A collecting event records one defined sampling effort at a site and time. Specimens link to an event for their site, dates, sampling context, and field team, so many specimen records can share a single event.
+A collecting event describes sampling at a site over a defined period. Specimens linked to it share the site and sampling context. Choose start and end dates and times that describe the actual effort, including work that spans midnight.
 
-NAHPU builds the Event ID from the Site ID and the start date; add a suffix only when another event would otherwise have the same identifier. Create a separate event when the site, time period, sampling protocol, effort, or participating team changes materially.
+NAHPU builds the Event ID from the Site ID and start date. Add a suffix to distinguish events at the same site on the same date. Create a separate event when the period, protocol, effort, or team changes. `Duplicate` reuses the setup, including effort records, but leaves environmental data blank. Review the copied setup and enter the new conditions.
 
-Duplicating an event reuses applicable setup but advances the dates and leaves weather data empty. Review every copied value before use.
+## Learn more
 
-## Darwin Core context
-
-The event is exported as a sampling event: the Event ID becomes `dwc:eventID`, the site becomes `dwc:locationID`, and the dates and times become `dwc:eventDate` and `dwc:eventTime`. A date range is exported as a single ISO 8601 interval.
+- [Collecting Events](https://nahpu.app/en/usages/events/)

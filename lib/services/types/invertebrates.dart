@@ -1,4 +1,4 @@
-const List<String> arthropodCasteList = [
+const List<String> invertebrateCasteList = [
   // Male bees from colonies of social bees
   'drone',
   // Reproductive female of a social insect, typically an unmated or newly mated future queen

@@ -114,7 +114,7 @@ void main() {
     ).getRecord(record);
     expect(fields.single['fossilAttribute::weightUnit'], 'kg');
     expect(fields.single['fossilAttribute::ontogeneticStage'], 'Subadult');
-    await service.deleteSpecimen(uuid, CatalogFmt.fossils);
+    await service.deleteSpecimen(uuid, CatalogFmt.paleontology);
     expect(await database.select(database.fossilAttribute).get(), isEmpty);
     await service.createSpecimen();
     await service.deleteAllSpecimens('a');

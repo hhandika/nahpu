@@ -3,7 +3,7 @@ import 'package:drift/native.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:nahpu/screens/specimens/arthropods/attributes.dart';
+import 'package:nahpu/screens/specimens/invertebrates/attributes.dart';
 import 'package:nahpu/screens/specimens/shared/attributes.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/providers/database.dart';
@@ -12,7 +12,7 @@ import 'package:nahpu/services/types/specimens.dart';
 
 void main() {
   testWidgets(
-    'arthropod life stage, caste, and ecology precede morphometrics',
+    'invertebrate life stage, caste, and ecology precede morphometrics',
     (tester) async {
       final database = Database.forTesting(
         DatabaseConnection(NativeDatabase.memory()),
@@ -30,16 +30,16 @@ void main() {
           .into(database.specimen)
           .insert(
             const SpecimenCompanion(
-              uuid: Value('arthropod-a'),
+              uuid: Value('invertebrate-a'),
               projectUuid: Value('project-a'),
-              taxonGroup: Value('Arthropods'),
+              taxonGroup: Value('Invertebrates'),
             ),
           );
       await database
-          .into(database.arthropodAttribute)
+          .into(database.invertebrateAttribute)
           .insert(
-            const ArthropodAttributeCompanion(
-              specimenUuid: Value('arthropod-a'),
+            const InvertebrateAttributeCompanion(
+              specimenUuid: Value('invertebrate-a'),
             ),
           );
 
@@ -55,9 +55,9 @@ void main() {
             home: Scaffold(
               body: SizedBox(
                 width: 900,
-                child: ArthropodAttributeForms(
+                child: InvertebrateAttributeForms(
                   useHorizontalLayout: true,
-                  specimenUuid: 'arthropod-a',
+                  specimenUuid: 'invertebrate-a',
                 ),
               ),
             ),
@@ -100,7 +100,7 @@ void main() {
     },
   );
 
-  testWidgets('saved arthropod morphometrics reopen their section', (
+  testWidgets('saved invertebrate morphometrics reopen their section', (
     tester,
   ) async {
     final database = Database.forTesting(
@@ -119,16 +119,16 @@ void main() {
         .into(database.specimen)
         .insert(
           const SpecimenCompanion(
-            uuid: Value('arthropod-a'),
+            uuid: Value('invertebrate-a'),
             projectUuid: Value('project-a'),
-            taxonGroup: Value('Arthropods'),
+            taxonGroup: Value('Invertebrates'),
           ),
         );
     await database
-        .into(database.arthropodAttribute)
+        .into(database.invertebrateAttribute)
         .insert(
-          const ArthropodAttributeCompanion(
-            specimenUuid: Value('arthropod-a'),
+          const InvertebrateAttributeCompanion(
+            specimenUuid: Value('invertebrate-a'),
             bodyLength: Value(12.5),
           ),
         );
@@ -143,9 +143,9 @@ void main() {
         ],
         child: const MaterialApp(
           home: Scaffold(
-            body: ArthropodAttributeForms(
+            body: InvertebrateAttributeForms(
               useHorizontalLayout: false,
-              specimenUuid: 'arthropod-a',
+              specimenUuid: 'invertebrate-a',
             ),
           ),
         ),

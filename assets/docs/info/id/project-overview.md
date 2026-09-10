@@ -4,20 +4,13 @@ sidebar:
   order: 0
 ---
 
-Proyek mengelompokkan personel, takson, lokasi, kegiatan pengumpulan, catatan spesimen, narasi, dan media yang dibuat untuk satu pekerjaan. Gunakan `Edit` untuk memperbarui metadata deskriptifnya, dan `Export info` atau `Show QR` untuk membagikan identitasnya saja.
+Proyek mengelompokkan lokasi, kegiatan pengumpulan, spesimen, personel, takson, narasi, dan berkas pendukung untuk satu pekerjaan. Gunakan `Edit` untuk memperbarui informasi proyek. Tetapkan zona waktu proyek untuk menjelaskan waktu lokal yang dicatat; perubahan zona waktu tidak mengonversi tanggal dan waktu yang sudah tersimpan.
 
-## UUID proyek
+UUID mengidentifikasi proyek antarperangkat. `Export info` dan `Show QR` membagikan identitas dan metadata tanpa catatan atau media. UUID berbeda dari nomor katalog proyek yang digunakan dalam Field ID spesimen.
 
-NAHPU memberikan pengenal unik universal (UUID) kepada setiap proyek baru. Mengimpor informasi proyek mempertahankan UUID tersebut sehingga perangkat yang berkolaborasi dapat mengenali salinan proyek yang sama. Informasi proyek tidak mencakup catatan atau media; gunakan transfer proyek bila keduanya juga perlu dipindahkan.
+Untuk cadangan harian di lapangan, gunakan `Export project` dan simpan salinan di luar perangkat kerja. ZIP dan TAR.GZ menyertakan media yang tersedia; JSON.GZ ringan berisi catatan tanpa media. Periksa peringatan berkas yang hilang. Gunakan `Import project` di layar awal perangkat penerima, atau `Merge project` di dalam proyek yang sudah ada. Cadangkan basis data sebelum mengimpor, menggabungkan, atau mengganti data instalasi.
 
-Jaga agar deskripsi proyek tetap ringkas. Catat konteks harian yang rinci di Narratives.
+## Pelajari lebih lanjut
 
-## Mencadangkan di lapangan
-
-`Export project` adalah cadangan lapangan harian. Ukurannya lebih kecil dan prosesnya lebih cepat daripada cadangan basis data serta lebih hemat baterai, dan `Merge project` membacanya kembali di perangkat lain, sehingga perangkat yang hilang atau rusak paling banyak menghabiskan satu hari kerja. Pilih ZIP atau TAR.GZ agar media ikut terbawa, atau ekspor ringan `JSON.GZ` bila unggahannya harus kecil.
-
-Simpan `Backup database` untuk pemeriksaan mingguan dan untuk saat sebelum penggabungan apa pun. Cadangan itu menyalin semua proyek dan setiap berkas di data aplikasi NAHPU, baik yang tertaut ke suatu proyek maupun tidak. Di lapangan, jalankan sesekali saja, saat pemakaian baterai bukan masalah.
-
-## Konteks Darwin Core
-
-UUID proyek menjadi pengenal kumpulan data dalam hasil ekspor dan ditulis ke `dwc:datasetID`.
+- [Proyek](https://nahpu.app/id/usages/projects/)
+- [Ekspor](https://nahpu.app/id/usages/export/#backup-strategy)

@@ -5,264 +5,97 @@ sidebar:
     order: 2
 ---
 
-NAHPU menyederhanakan pencatatan dan pengelolaan data biologi yang kompleks, lingkungan yang memengaruhinya, serta orang-orang yang mengumpulkannya. Aplikasi ini dioptimalkan untuk layar ponsel dan desktop, serta dirancang untuk mencatat spesimen sejarah alam, baik di laboratorium maupun di lapangan. Dengan kata lain, NAHPU bukan sekadar versi digital dari katalog kertas.
+Panduan ini memperkenalkan NAHPU dan membantu Anda berlatih sebelum menggunakannya untuk pekerjaan koleksi. Anda tidak perlu berada di lapangan atau memiliki spesimen nyata. Gunakan proyek latihan dengan nama jelas dan nilai contoh agar catatan latihan terpisah dari data penelitian.
 
-## Konsep Utama
+## Konsep utama
 
-### Memahami Proyek
+### Proyek dan catatan bersama
 
-NAHPU mengorganisasi data berdasarkan proyek. Sebuah proyek adalah satu kumpulan data, dan Anda sendiri yang menentukan apa yang dihitung sebagai proyek. Proyek dapat berupa ekspedisi lapangan, kumpulan spesimen yang disiapkan di laboratorium untuk tahun tertentu, atau kegiatan pemantauan jangka panjang. Jika satu ekspedisi mencakup beberapa lokalitas dan setiap lokalitas memiliki kebutuhan pelaporan sendiri, sering kali lebih masuk akal membuat satu proyek untuk setiap lokalitas.
+Proyek mengelompokkan satu pekerjaan, seperti ekspedisi, program pemantauan, atau spesimen yang dipreparasi di laboratorium. Tentukan batas proyek sesuai pengelolaan dan pelaporan data. Sebagian besar layar dan ekspor sehari-hari menggunakan proyek aktif.
 
-Setiap proyek memiliki pengenal unik (UUID) dan dikelola secara terpisah. Pencarian, ekspor, impor, dan statistik data bekerja pada tingkat proyek. Jika institusi Anda menggunakan nomor akses, Anda dapat menetapkannya pada sebuah proyek atau memakai nomor yang sama di beberapa proyek, sehingga proyek-proyek itu dapat dikelompokkan menjadi satu kesatuan.
+Personel dan nama takson disimpan dalam basis data dan dapat dikaitkan dengan beberapa proyek. Mengedit personel atau takson bersama dapat memengaruhi catatan di luar proyek yang sedang dibuka. Keanggotaan proyek berbeda dari catatan dasarnya dalam basis data.
 
-{% aside type="note" %}
-Pembaruan NAHPU mendatang akan menyediakan pencarian, ekspor, dan statistik data secara global di beberapa proyek.
-{% /aside %}
+### Lokasi, kegiatan pengumpulan, dan spesimen
 
-### Relasi Site dan Kegiatan Pengumpulan
+Lokasi menjelaskan tempat yang dapat dikunjungi kembali. Kegiatan menjelaskan pekerjaan di lokasi selama periode tertentu, termasuk metode, upaya, peserta, dan kondisi lingkungan. Spesimen ditautkan ke kegiatan yang menyediakan lokasi dan konteks pengambilan sampel. Beberapa spesimen dapat berbagi satu kegiatan, dan satu lokasi dapat memiliki beberapa kegiatan.
 
-Jika Anda terbiasa dengan katalog berbasis kertas, ini mungkin konsep baru: anggaplah kegiatan pengumpulan sebagai "sesi" saat spesimen dikumpulkan, yang berbeda dari site tempat kegiatan itu berlangsung.
+Misalnya, gunakan satu lokasi untuk jalur perangkap dan kegiatan terpisah untuk sesi pada tanggal berbeda. Proyek laboratorium dapat menggunakan struktur yang sama untuk mendokumentasikan tempat dan waktu bahan diperoleh. Pisahkan konteks pengumpulan asli dari tanggal preparasi spesimen.
 
-Site menyimpan informasi yang biasanya tidak berubah dalam waktu singkat (umumnya sampai satu hari), seperti geografi, kondisi habitat, dan koordinat. Kegiatan pengumpulan menyimpan detail yang berubah pada site dan periode tertentu, seperti personel yang memeriksa perangkap, jumlah perangkap, cuaca, dan data astronomi. Kegiatan ini mencatat upaya pengumpulan, orang-orang yang terlibat, dan kondisi lingkungan pada saat itu. Catatan spesimen terhubung ke kegiatan pengumpulan, bukan langsung ke site.
+### Cakupan tempat, lokalitas, dan koordinat
 
-### Wilayah, Lokalitas, dan Cakupan Site
+Lokasi proyek menjelaskan wilayah umum pekerjaan. Geografi lokasi mencatat hierarki administratif dan deskripsi lokalitas yang rinci. Deskripsi lokalitas dapat digunakan bersama oleh beberapa lokasi. Site ID mengidentifikasi tempat tertentu dalam proyek, seperti kamp atau jalur perangkap.
 
-Ketiga istilah ini sering digunakan secara bergantian di lingkungan museum, dan ontologi di baliknya dapat menimbulkan [perdebatan yang "melelahkan"](https://naomicleghorn.weebly.com/blog/site-vs-locality-and-the-paleocore-workshop). NAHPU memakai ketiganya pada tiga cakupan yang berbeda.
+Satu lokasi dapat memiliki beberapa koordinat, misalnya satu per perangkap. Pilih koordinat yang relevan untuk spesimen jika diketahui. Ketidakpastian koordinat menjelaskan ketidakpastian posisi; cakupan koordinat spesimen menjelaskan kemungkinan jaraknya dari posisi tersebut.
 
-Wilayah adalah tempat luas yang meliputi seluruh proyek, dan Anda mencatatnya dalam informasi proyek. Lokalitas adalah keterangan tempat yang lebih rinci, tersimpan pada geografi site dan dipakai bersama antarsite sehingga dapat digunakan ulang. Site adalah cakupan yang paling sempit. Kemah, hotel tempat Anda menginap selama ekspedisi, jalur jaring atau perangkap, dan sebagainya, semuanya merupakan site.
+### Pengenal dan waktu
 
-Anda dapat menambahkan koordinat dalam jumlah berapa pun ke satu site. Saat mengumpulkan spesimen dengan perangkap, misalnya, Anda dapat mencatat koordinat untuk setiap perangkap dan menghubungkan spesimen ke koordinat tersebut. Dengan cara ini lokasi spesimen tercatat hingga tingkat akurasi GPS, yang pada GPS modern dapat mencapai radius 3 sampai 5 meter. Aplikasi juga menyediakan kolom rentang koordinat untuk memperkirakan jarak dari koordinat yang dicatat.
+Field ID adalah pengenal kerja pada label spesimen. ID personel menggunakan inisial dan nomor lapangan Cataloger. ID proyek menggunakan awalan, nomor katalog, dan akhiran proyek. Koordinasikan penomoran antarperangkat dan periksa label; penomoran otomatis tidak menggantikan koordinasi tersebut.
 
-### Kosakata Terkontrol
+NAHPU juga menetapkan UUID untuk proyek dan catatan spesimen. Pengenal internal ini berbeda dari Field ID. Berbagi identitas mempertahankan UUID agar perangkat mengenali proyek yang sama; tindakan ini tidak mentransfer catatan spesimen.
 
-Kosakata terkontrol adalah daftar istilah yang telah ditentukan sebelumnya untuk menjaga konsistensi saat memasukkan data, dan ini merupakan praktik umum dalam sistem manajemen data yang dipakai museum sejarah alam. Kami berusaha sebaik mungkin menyelaraskan istilah bawaan NAHPU dengan istilah yang dipakai perangkat lunak manajemen koleksi seperti [Arctos](https://arctosdb.org/), sekaligus tetap memberi Anda keleluasaan menyesuaikannya.
+Zona waktu proyek menjelaskan waktu lokal yang dicatat. Zona waktu tidak mengubah jam perangkat atau mengonversi nilai tersimpan. Sepakati ketentuan waktu sebelum mencatat pada beberapa perangkat.
 
-Di dalam aplikasi, kosakata ini muncul sebagai menu dropdown. Setiap kali sebuah isian bersandar pada kosakata, seperti tipe site, tipe habitat, datum koordinat, aktivitas utama, metode pengumpulan, peran personel, tahap hidup, kondisi spesimen, tipe dan perlakuan bagian spesimen, serta hampir seluruh isian parasit, Anda memilih dari daftar alih-alih mengetik teks bebas. Dengan begitu, istilah yang sama selalu ditulis dengan cara yang sama di setiap catatan.
+### Personel dan identifikasi
 
-Daftar itu bebas Anda ubah dan bebas Anda bagikan. Tambahkan istilah, hapus yang tidak akan Anda pakai, atur format huruf, lalu jalankan `Export user configs` sekali saja agar seluruh tim mengimpor kosakata yang sama. Lihat [Pengaturan](https://nahpu.app/id/usages/settings/).
+Pengumpul memperoleh spesimen; Cataloger mengatalogkannya; Preparator melakukan preparasi; Determiner mengidentifikasinya. Satu orang dapat menjalankan beberapa pekerjaan. Peran personel mengatur tempat seseorang dapat ditetapkan dalam NAHPU, sedangkan peran kegiatan menjelaskan partisipasinya dalam kegiatan tersebut.
 
-Bagaimana kalau berbagi itu tidak pernah terjadi? NAHPU tetap sanggup. Setiap dropdown juga menawarkan nilai-nilai unik yang sudah tersimpan di basis data, sehingga apa pun yang diketik rekan Anda tidak akan membuat aplikasi gagal. Sebuah kumpulan data dapat membangun ulang kosakata yang menghasilkannya, dan itulah yang dibutuhkan catatan yang reprodusibel.
+Pilih identifikasi dari registri takson. Gunakan famili atau genus jika spesies belum diketahui dan catat tingkat keyakinannya. Untuk memperbaiki satu spesimen, ubah takson terpilih pada spesimen tersebut. Edit catatan registri bersama jika catatan namanya yang keliru.
 
-### Pengenal Lapangan
+### Pengaturan, kosakata, dan bidang khusus
 
-Praktik pemberian pengenal unik kepada spesimen di lapangan terbagi menjadi tiga jenis: ID lapangan personal, institusional, dan khusus proyek.
+Kosakata terkontrol adalah daftar dalam pilihan, seperti metode pengumpulan dan jenis preparasi. Istilah yang konsisten memudahkan perbandingan catatan. Atur daftar sesuai pekerjaan dan bagikan konfigurasi jika tim memerlukan istilah yang sama.
 
-NAHPU mendukung ID lapangan personal melalui peran `cataloger`. Tambahkan inisial dan nomor lapangan Anda saat ini pada formulir personel, lalu aplikasi membuat ID lapangan unik dengan menggabungkan keduanya. Nomor tersebut bertambah otomatis dan dapat diganti secara manual.
+Format katalog aktif mengatur bidang untuk spesimen baru pada perangkat; satu proyek dapat berisi beberapa kelompok takson. Bidang khusus menambahkan pengamatan yang tidak sesuai dengan bidang bawaan. Cakupannya dapat berupa satu proyek atau instalasi, dan bidang spesimen dapat berlaku untuk katalog tertentu. Beberapa pengaturan memengaruhi proyek lain dalam instalasi; periksa cakupannya sebelum mengubahnya.
 
-Untuk dua jenis lainnya, istilah NAHPU untuk hal itu adalah `project ID`. Anda dapat menetapkan awalan, akhiran, dan nomor awal, dengan pilihan penambahan otomatis.
+### Penyimpanan, bukti pendukung, dan berbagi
 
-{% aside type="note" %}
-NAHPU dirancang mengikuti prinsip [FAIR](https://www.go-fair.org/fair-principles/). Aplikasi ini secara otomatis menetapkan UUID pada setiap catatan spesimen. Dengan demikian, setiap spesimen selalu memiliki pengenal unik jika terjadi konflik ID lapangan, misalnya ketika dua pengatalog menggunakan inisial dan rentang nomor lapangan yang serupa.
-{% /aside %}
+Banyak bidang diperbarui saat diedit; dialog, impor, dan ekspor dapat memerlukan konfirmasi. Periksa pesan validasi dan buka kembali catatan latihan untuk memahami apa yang tersimpan.
 
-### Peran Cataloger dan Collector
+Gunakan Narratives untuk konteks, Associated Data untuk tautan dan berkas nonmedia, serta Media untuk gambar, audio, atau video. Tautan tidak menyediakan salinan luring dari tujuannya.
 
-NAHPU mendefinisikan collector sebagai orang yang mengumpulkan spesimen, tetapi belum tentu mengatalogkannya. Peran ini merupakan kolom khusus dalam formulir spesimen, dan siapa pun dapat ditetapkan ke kolom tersebut, baik memiliki peran perawatan spesimen maupun tidak. Pemandu lapangan yang membawa spesimen kepada Anda, atau orang yang menyumbangkan spesimen yang belum dipreparasi ke koleksi, dapat ditetapkan sebagai collector.
+Identitas proyek, transfer proyek, konfigurasi, dan cadangan basis data membawa informasi berbeda. Gunakan transfer untuk catatan dan media yang tersedia, konfigurasi untuk pengaturan yang dapat digunakan kembali, serta cadangan basis data untuk titik pemulihan instalasi. Tabel dan PDF digunakan untuk peninjauan atau pelaporan; keduanya bukan cadangan proyek.
 
-Orang yang mengatalogkan spesimen disebut cataloger. Peran ini memberikan akses ke ID lapangan, dan orang dengan peran ini juga dapat ditetapkan sebagai preparator, collector, atau personel pada kolom lainnya.
-
-
-### Kemudahan Berbagi dan Penyesuaian
-
-Hampir semua hal di NAHPU dirancang untuk dibagikan dan direproduksi. Catatan proyek, identitas proyek beserta UUID-nya, daftar takson, personel, kosakata terkontrol, preset ekspor, templat dokumen, tata letak cetak, dan custom field semuanya dapat diekspor dan diserahkan kepada orang lain. Cukup satu orang menyiapkan NAHPU sesuai cara kerja tim Anda dan mengekspornya sekali, lalu setiap perangkat berangkat dari konvensi yang sama. Di situlah letak kekuatan NAHPU dalam reprodusibilitas.
-
-Sebagian besar di antaranya hanya berjarak satu kode QR. Hal yang lebih besar, seperti proyek utuh, media, dan basis data, dibagikan sebagai berkas, dan NAHPU akan memberi tahu bila sebuah catatan terlalu besar untuk satu kode QR lalu menawarkan berkas sebagai gantinya. Lihat [Transfer Proyek](https://nahpu.app/id/usages/export/project-transfer/).
-
-Anda juga dapat mengekspor data proyek dalam format tabular sederhana, mengemasnya dalam format terstandar, serta mengekspor catatan sebagai PDF dengan rancangan tata letak Anda sendiri. Semua ekspor dan perancangan tata letak dapat dilakukan di dalam NAHPU tanpa perangkat lunak tambahan. Lihat [Ekspor](https://nahpu.app/id/usages/export/).
-
-{% aside type="note" title="Beberapa hal yang perlu diingat" %}
-Kami sengaja membuat pengaturan tema dan pilihan gaya lapisan peta dasar Anda tidak dapat dibagikan. Membaca layar di dalam tenda gelap pukul dua dini hari dan membacanya di laboratorium yang terang adalah dua persoalan berbeda, dan tidak ada berkas proyek yang berhak ikut menentukan Anda sedang menghadapi yang mana.
-
-Gayanya biar tetap milik Anda, sainsnya dibagikan! Itulah semangat NAHPU.
-{% /aside %}
-
-## Memulai
+## Berlatih menggunakan NAHPU
 
 {% steps %}
 
-1. **Menyiapkan NAHPU**
+1. **Buka NAHPU dan jelajahi pengaturan**
 
-    Saat pertama kali memasang NAHPU, tombol penyiapan akan terlihat di layar
-    beranda. Jika tombol tersebut tidak terlihat atau Anda ingin menyiapkannya
-    nanti, Anda dapat mengaksesnya melalui menu drawer. Wizard penyiapan
-    menuntun Anda melalui format katalog, pengenal lapangan dan jaringan,
-    kosakata terkontrol untuk site, kegiatan pengumpulan, dan spesimen, serta
-    apakah Anda mengumpulkan parasit. Anda juga dapat mengimpor dan mengekspor
-    pengaturan tersebut, sehingga penyiapan cukup dilakukan satu kali untuk
-    seluruh tim.
+    Buka `Setup NAHPU` dari layar awal atau menu. Jelajahi format katalog, pengenal, dan kosakata, atau impor konfigurasi yang telah disiapkan. Temukan dasbor, navigasi, dan tombol informasi. Lihat [Pengaturan](https://nahpu.app/id/usages/settings/).
 
-2. **Membuat proyek baru**
+2. **Buat proyek latihan**
 
-    Gunakan tombol `+` di sudut kanan bawah layar beranda, lalu pilih
-    `New project`. Wizard penyiapan mengumpulkan informasi proyek, menawarkan
-    takson utama dan pengaturan ID lapangan opsional, meminta Cataloger jika ID
-    personel dipilih, lalu menampilkan tinjauan. Nama proyek harus terdiri dari
-    3 hingga 25 karakter.
+    Beri nama proyek `NAHPU Practice` agar data latihan mudah dikenali. Untuk proyek baru, pilih `+` > `New project` > `Create new project`. Masukkan informasi dan zona waktu, pilih format katalog dan mode Field ID, lalu selesaikan peninjauan. ID personel memerlukan Cataloger yang memenuhi syarat; ID proyek menggunakan awalan, nomor katalog, dan akhiran. Zona waktu menjelaskan waktu lokal yang dicatat dan tidak mengonversi nilai tersimpan. Untuk proyek tim, impor identitas agar UUID sama atau gunakan `Import project` di layar awal untuk menerima catatan dan media yang tersedia. Lihat [Proyek](https://nahpu.app/id/usages/projects/).
 
-    Anda dapat melewati penyiapan perangkat dan menyelesaikannya nanti melalui
-    [Pengaturan](https://nahpu.app/id/usages/settings/). Lihat [Proyek](https://nahpu.app/id/usages/projects/) untuk
-    wizard lengkap dan alur impor informasi proyek.
+3. **Tambahkan personel dan takson latihan**
 
-    Setelah tinjauan, `Create project` akan membuka dasbor.
+    Tambahkan personel dan tetapkan peran sesuai pekerjaan. Koordinasikan inisial dan rentang nomor antarperangkat. Daftarkan takson secara manual menurut peringkat atau impor CSV, TSV, atau Excel dan tinjau pemetaan kolom. Jika kolom Class tidak ada, pilih kelas yang didukung dan sama untuk semua baris; berkas dengan beberapa kelas memerlukan kolom tersebut. NAHPU dapat menyimpulkan kingdom dan filum untuk kelas yang dikenal. Tinjau peringkat dan nama sebelum impor. Impor QR juga memerlukan peninjauan dan konfirmasi. Lihat [Personel](https://nahpu.app/id/usages/personnel/) dan [Registri takson](https://nahpu.app/id/usages/taxon/).
 
-    NAHPU membuat UUID untuk setiap proyek baru. Kami menggunakan
-    [UUID versi 4](https://en.wikipedia.org/wiki/Universally_unique_identifier).
-    Saat Anda mengimpor informasi proyek dari perangkat lain, NAHPU
-    mempertahankan UUID yang diimpor.
+4. **Buat lokasi latihan**
 
-    {% aside type="tip" %}
+    Buka Sites dan pilih `+`. Masukkan Site ID yang tetap, geografi, dan habitat yang diamati. Tambahkan koordinat secara manual, dari GPS, berkas, atau QR. Tinjau kolom dan titik impor, lalu periksa peta, datum, satuan, serta ketidakpastian. Gunakan kembali lokasi untuk kunjungan berulang ke tempat yang sama. Lihat [Lokasi](https://nahpu.app/id/usages/sites/).
 
-    Anda dapat mentransfer informasi proyek dan UUID-nya menggunakan ekspor QR
-    atau JSON. Fitur ini sangat berguna ketika beberapa orang mengatalogkan
-    proyek yang sama menggunakan perangkat masing-masing, karena UUID yang sama
-    membuat penggabungan data di kemudian hari lebih mudah. Lihat
-    [Transfer Proyek](https://nahpu.app/id/usages/export/project-transfer/) untuk informasi lebih
-    lanjut.
+5. **Tambahkan kegiatan latihan**
 
-    {% /aside %}
+    Buka Events dan pilih `+`. Pilih lokasi serta contoh tanggal dan waktu mulai dan selesai. Tambahkan akhiran Event ID jika diperlukan untuk membedakan sesi pada lokasi dan tanggal yang sama. Catat aktivitas, upaya, peserta, serta kondisi yang diukur. Masukkan data astronomi berdasarkan pengamatan atau sumber yang dicatat. Duplikasi menyalin pengaturan kegiatan tetapi mengosongkan data lingkungan. Lihat [Kegiatan pengumpulan](https://nahpu.app/id/usages/events/).
 
-3. **Mengenal dasbor**
+6. **Buat contoh catatan spesimen**
 
-    Dasbor adalah antarmuka utama proyek. Dasbor terbagi menjadi empat panel.
+    Gunakan nilai contoh dan label latihan; spesimen nyata tidak diperlukan. Buka Specimen Records dan pilih `+`. Cocokkan Field ID dengan label fisik, tetapkan penanggung jawab, lalu pilih takson dan tingkat keyakinan identifikasi. Gunakan peringkat lebih tinggi jika spesies belum pasti. Tautkan kegiatan dan tinjau penangkapan, pengukuran, bagian spesimen, serta pengamatan parasit. Gunakan Associated Data untuk tautan atau berkas nonmedia dan Media untuk gambar, audio, atau video. Bidang diperbarui saat diedit; periksa pesan validasi dan buka kembali catatan untuk memverifikasinya. Lihat [Catatan spesimen](https://nahpu.app/id/usages/specimens/).
 
-    - **Panel kiri atas** adalah ringkasan proyek. Gunakan `Edit` dan `Export info` untuk mengelola informasi proyek. Gunakan `Export project` jika perlu mentransfer catatan dan media.
-    - **Panel kanan atas** berisi data personel. Gunakan panel ini untuk menambahkan dan mengelola personel proyek. Setelah dibuat, personel akan ditampilkan sebagai daftar di panel ini.
-    - **Panel kiri bawah** adalah registri takson. Gunakan panel ini untuk menambahkan dan mengelola informasi takson proyek.
-    - **Panel kanan bawah** berisi statistik catatan. Panel ini menampilkan jumlah catatan yang telah ditambahkan ke proyek. Pilih `Explore more stats` untuk melihat grafik, tabel, dan filter yang lebih rinci.
+7. **Tinjau dan edit contoh Anda**
 
-    {% aside type="note" %}
+    Cocokkan pengenal dengan label dan tinjau jumlah, hubungan kegiatan, koordinat, serta lampiran. Tulis narasi untuk konteks yang relevan dan periksa pratinjau teks. Gunakan `Export records` untuk tabel tinjauan atau `Export documents` untuk label dan laporan. Keluaran ini tidak menggantikan cadangan proyek. Lihat [Narasi](https://nahpu.app/id/usages/narrative/) dan [Ekspor](https://nahpu.app/id/usages/export/).
 
-    Pada layar ponsel, panel tersusun dalam urutan berikut: **informasi proyek**, **personel**, **registri takson**, dan **statistik catatan**.
-    {% /aside %}
+8. **Latih ekspor dan pemulihan**
 
-4. **Menambahkan personel baru**
-
-    **Setiap proyek memerlukan setidaknya satu Cataloger.** Wizard pembuatan proyek meminta satu orang begitu Anda memilih ID lapangan personel, dan tidak akan mengizinkan Anda menyelesaikannya tanpa itu. Cataloger memegang nomor lapangan yang menghasilkan ID lapangan setiap spesimen, jadi tambahkan orang ini sebelum Anda mulai mengatalogkan. Setelah itu, tambahkan orang lain sebanyak yang diperlukan proyek.
-
-    - **[Cataloger](https://nahpu.app/id/usages/personnel/#cataloger)** bertanggung jawab mengatalogkan spesimen. Inisial dan nomor lapangannya dipakai untuk membuat ID Lapangan pada halaman katalog spesimen. Namanya juga muncul setiap kali kolom meminta personel, misalnya pada personel pengumpul dan preparator. Aplikasi tidak memungkinkan Anda mengubah peran cataloger setelah peran tersebut dibuat.
-
-    - **[Determiner only](https://nahpu.app/id/usages/personnel/#determiner-only)** adalah orang yang mengidentifikasi spesimen, tetapi tidak mengatalogkan atau mempreparasinya. Pilih orang tersebut pada kolom `Determiner` di formulir spesimen.
-
-    - **[Preparator only](https://nahpu.app/id/usages/personnel/#preparator-only)** adalah orang yang membantu mempreparasi spesimen, tetapi tidak terlibat dalam pengelolaan data. Namanya tidak muncul pada kolom cataloger di halaman spesimen, tetapi dapat muncul di kolom lain, seperti `Preparator` dan `Collecting personnel`.
-
-    - **[None](https://nahpu.app/id/usages/personnel/#none)** disediakan untuk personel yang tidak terlibat langsung dalam perawatan spesimen. NAHPU bertujuan memastikan semua orang yang terlibat di lapangan tercatat dalam data lapangan. Anda dapat menetapkan peran ini kepada pengemudi, pemandu lokal, juru masak, dan lainnya. Nama mereka hanya muncul pada kolom `Collecting personnel`. Jika mereka terlibat dalam memperoleh spesimen, Anda juga dapat menghubungkan mereka sebagai collector.
-
-5. **Menambahkan takson baru**
-
-    Anda dapat menambahkan takson secara manual menggunakan tombol Add taxon atau mengimpornya dari file. Format yang disarankan adalah `.xlsx`, `.csv`, dan `.tsv`. NAHPU akan berusaha sebaik mungkin untuk membaca jenis file lainnya.
-
-    Entri manual dan impor berkas sama-sama mendukung catatan kelas, ordo, famili, genus, spesies, dan subspesies. Dalam berkas impor, tambahkan kolom `taxon rank`. Kolom ini hanya boleh dihilangkan jika kelas, ordo, famili, genus, dan epitet spesifik lengkap; dalam hal itu, baris dianggap sebagai spesies.
-
-    - Untuk file terdelimitasi yang dikenali, aplikasi memilih delimiter berdasarkan ekstensi (`.csv` = koma, `.tsv` = tab).
-    - Untuk ekstensi yang tidak dikenali, deteksi otomatis akan mencoba Excel, koma, tab, dan titik koma terlebih dahulu. Jika gagal, gunakan advanced parser override dan masukkan delimiter mentah khusus.
-    - Dukungan terbaik tersedia untuk `.xlsx`; format Excel lama atau format Excel lainnya mungkin gagal.
-
-    Setiap baris memerlukan kolom klasifikasi dari `class` sampai tingkat yang dipilih. Karena itu, baris subspesies juga memerlukan `subspecific epithet`. Anda dapat menyertakan `authors`, `common name`, `IUCN Category`, `CITES status`, `country status`, `sorting order`, dan `notes`. Aplikasi secara otomatis mendeteksi alias header yang didukung, seperti `taxonRank`, `taxonClass`, `taxonOrder`, `taxonFamily`, `specificEpithet`, dan `infraspecificEpithet`. Anda dapat memilih jenis kolom secara manual melalui menu dropdown jika aplikasi tidak menetapkan jenis yang benar secara otomatis. Kolom lainnya akan diabaikan.
-
-    Contoh tabel impor takson:
-
-    ```text
-    | taxon rank | class    | order    | family  | genus   | epithet   | common name       |
-    | ---------- | -------- | -------- | ------- | ------- | --------- | ----------------- |
-    | species    | Mammalia | Rodentia | Muridae | Bunomys | coelestis | Heavenly hill rat |
-    | species    | Mammalia | Rodentia | Muridae | Bunomys | penitus   | Inland hill rat   |
-    ```
-
-6. **Membuat site**
-
-    Buka halaman site melalui bilah navigasi. Untuk membuat site baru, gunakan tombol `+` di sudut kanan atas. Isi setidaknya `Site ID`. Aplikasi membatasi Site ID hingga 20 karakter dan menerapkan format huruf kapital. Anda akan menggunakan ID ini di seluruh formulir catatan setiap kali kolom meminta site.
-
-    {% aside type="tip" %}
-
-    Kami menyarankan Anda membuat konvensi Site ID yang unik untuk tim. Berikut contoh untuk kerja lapangan mamalogi:
-
-    - Nama kota, kota kecil, atau desa digunakan apa adanya. Misalnya, kota Bogor menjadi `BOGOR`.
-    - Lokasi kemah menggunakan format `{2-letter locality abbreviation}-CAMP{camp number}`. Misalnya, kemah 1 di Mt. Gede-Pangrango menjadi `GP-CAMP1`.
-    - Jalur perangkap menggunakan format `{2-letter locality abbreviation}{trapline leader initial}-L{line number}`. Misalnya, jalur 1 di Mt. Gede-Pangrango yang dipimpin Heru Handika menjadi `GPHH-L1`.
-    - Jalur perangkap sumuran menggunakan format `{2-letter locality abbreviation}{pitfall line leader initial}-P{line number}`. Misalnya, jalur 1 di Mt. Gede-Pangrango yang dipimpin Heru Handika menjadi `GPHH-P1`.
-
-    {% /aside %}
-
-7. **Menambahkan narasi**
-
-    Ini adalah jurnal lapangan Anda. Sebaiknya tulis narasi setiap hari, dan Anda dapat menulis apa pun yang terjadi pada hari itu. Buka halaman Narrative melalui bilah navigasi bawah, lalu pilih `+`. Tambahkan tanggal, waktu, site, penulis, dan teks narasi yang mendukung Markdown. Teks biasa sudah cukup; ketika catatan panjang lebih mudah dibaca dengan judul, daftar, atau penekanan, [contekan Markdown](https://nahpu.app/id/usages/narrative/#contekan-markdown) memuat semua yang dipahami editor narasi. Anda juga dapat melampirkan media serta mencari atau melihat pratinjau entri di kemudian hari. Lihat [Narasi](https://nahpu.app/id/usages/narrative/).
-
-8. **Menambahkan kegiatan pengumpulan**
-
-    Untuk membuat kegiatan pengumpulan, gunakan tombol `+` di sudut kanan atas halaman kegiatan pengumpulan. Pilih `site ID`, `start date`, `start time`, `end date`, dan `end time`. Kemudian, isi bagian formulir lainnya.
-
-    Aplikasi menggabungkan Site ID dan tanggal mulai untuk membuat ID unik bagi setiap kegiatan pengumpulan, misalnya `GP-L1-March, 23 2023`. Anda akan menggunakan ID ini untuk merujuk kegiatan pengumpulan di catatan spesimen. Jika Anda menjalankan beberapa kegiatan pengumpulan di site yang sama pada hari yang sama, tambahkan akhiran untuk membedakannya, misalnya `Line1-Mar 26, 2023-1`, `Line1-Mar 26, 2023-2`, `Line1-Mar 26, 2023-day`, atau `Line1-Mar 26, 2023-night`.
-
-    {% aside type="tip" %}
-    Berbeda dari site, yang dibuat satu kali untuk setiap lokasi baru, kami menyarankan Anda membuat kegiatan pengumpulan baru untuk **setiap upaya pengumpulan individual** di site yang sama. Misalnya, ketika mempelajari hewan pengerat nokturnal, perangkap biasanya dipasang pada malam sebelumnya dan diperiksa keesokan paginya. Dalam kasus ini:
-
-    - **Start date** = malam ketika perangkap dipasang
-
-    - **End date** = pagi ketika perangkap diperiksa dan spesimen dikumpulkan
-
-    Pendekatan ini mencatat upaya pemasangan perangkap secara akurat dan memungkinkan Anda melacak perubahan jumlah perangkap atau personel antarkegiatan.
-    {% /aside %}
-
-9. **Menambahkan catatan spesimen**
-
-    Untuk membuat catatan spesimen, gunakan tombol `+` di sudut kanan atas halaman catatan spesimen. NAHPU membuat catatan dalam format katalog yang sedang aktif. Satu-satunya perbedaan antarformat katalog adalah kolom pengukuran. Setelah membuat catatan spesimen baru, isi informasi yang relevan, lalu ulangi untuk spesimen berikutnya.
-
-    {% aside type="note" %}
-    NAHPU memungkinkan collector mendokumentasikan beberapa kelompok takson dalam satu proyek. Ikon `Specimen Record` di bilah navigasi menunjukkan format yang sedang aktif, dan ikon pada bagian-bagian spesimen menunjukkan katalog yang dipakai halaman saat ini. Misalnya, ikon `paw` menunjukkan katalog mamalia, sedangkan `bird head` menunjukkan katalog burung.
-
-    Untuk berganti format, buka Settings, pilih **Format**, pilih format katalog yang berbeda, kembali ke Specimen Record, lalu buat spesimen.
-    {% /aside %}
-
-10. **Mengekspor catatan**
-
-    Untuk mengekspor catatan, buka menu dasbor yang ditandai ikon hamburger (tiga garis horizontal) di sudut kiri atas. Anda memiliki beberapa pilihan ekspor:
-
-    - `Export records`. Pilih preset ekspor tabular dan tulis satu tipe catatan ke `.csv`, `.tsv`, `.xlsx`, atau `.json`. Ekspor ini sangat dapat disesuaikan, dan Anda dapat membuat preset ekspor sendiri.
-        Preset menentukan tipe catatan, judul kolom, dan pemetaan kolomnya. Lihat [Ekspor Catatan](https://nahpu.app/id/usages/export/export-records/).
-
-    - `Bundle records`. Membuat Darwin Core Archive, Darwin Core Data Package, atau NAHPU Data Package lengkap. Data Package dapat menggunakan TAR.GZ atau ZIP.
-        Ini berguna untuk berbagi data atau analisis dalam format terstandar.
-        Lihat [Bundle records](https://nahpu.app/id/usages/export/export-bundles/).
-
-    - `Export documents`. Menghasilkan label, tag, cetakan katalog, dan dokumen cetak lain sebagai PDF dari templat dokumen dan tata letak cetak.
-    Anda dapat merancang tata letak sendiri di editor [WYSIWYG](https://id.wikipedia.org/wiki/WYSIWYG) yang tersedia di dalam aplikasi. Lihat [Ekspor Dokumen](https://nahpu.app/id/usages/export/export-documents/).
-
-    {% aside type="tip" %}
-    NAHPU juga dapat mengekspor tabel statistik ringkas dan gambar secara terpisah dari ekspor proyek. Ini berguna ketika Anda memerlukan tabel ringkasan atau sekumpulan foto untuk laporan hibah, laporan izin, atau manuskrip ekspedisi lapangan. Gambar dapat diekspor dalam JPEG, PNG, atau WebP, dengan pilihan untuk mengubah ukuran dan mengompresnya. Lihat [Ekspor Statistik](https://nahpu.app/id/usages/export/export-statistics/) dan [Ekspor Gambar](https://nahpu.app/id/usages/export/export-images/).
-    {% /aside %}
-
-11. **Mencadangkan proyek Anda**
-
-    Seperti data digital lainnya, pencadangan rutin sangat dianjurkan.
-    NAHPU menyediakan dua pilihan pencadangan: ekspor proyek dan cadangan
-    pangkalan data.
-    Untuk kerja lapangan, kami menyarankan mengekspor proyek di akhir setiap
-    hari lapangan. Buka menu dasbor lalu pilih
-    `Export project`. Pilih ZIP atau TAR.GZ agar media yang tersedia ikut
-    dikemas bersama catatannya, atau aktifkan `Light export` untuk `JSON.GZ`
-    kecil bila unggahannya harus muat lewat koneksi yang lemah. Menyimpan
-    salinan ekspor proyek di tempat selain perangkat kerja dan berbagi silang
-    dengan anggota tim sangat dianjurkan sebagai redundansi.
-
-    Sebagai alternatif, pilih
-    `Backup database`. Pilih TAR.GZ atau ZIP. Arsipnya memuat basis data dan
-    semua berkas di data aplikasi NAHPU, baik yang tertaut ke suatu proyek
-    maupun tidak. Di lapangan, jalankan sesekali saja, saat pemakaian baterai
-    bukan masalah.
-
-    {% aside type="tip" title="Tips kerja lapangan" %}
-
-    Jadikan ekspor proyek sebagai kebiasaan harian Anda di lapangan, bukan
-    cadangan
-    pangkalan data. Ukurannya lebih kecil, prosesnya lebih cepat, dan lebih
-    ringan bagi baterai yang mungkin tidak dapat Anda isi ulang selama
-    berhari-hari, dan `Import project` membacanya kembali ke NAHPU pada perangkat
-    pengganti bila satu perangkat hilang atau rusak. Cadangan pangkalan data
-    adalah perkakas yang lebih berat: ia memulihkan satu instalasi utuh, dan
-    itulah yang Anda perlukan setiap minggu serta tepat sebelum penggabungan.
-    Lihat [Strategi pencadangan](https://nahpu.app/id/usages/export/#backup-strategy) dan
-    [Pengelolaan Proyek](https://nahpu.app/id/best-practices/project-management/).
-
-    {% /aside %}
+    Ekspor proyek latihan sebagai ZIP atau TAR.GZ dan periksa hasil serta peringatannya. JSON.GZ ringan berisi catatan tanpa media. Jika instalasi lain tersedia, coba `Import project` di layar awal dan bandingkan catatan serta lampiran; jika proyek yang sama sudah ada, gunakan `Merge project`. Cadangkan data yang ada sebelum kedua operasi. Jangan mengganti basis data kerja hanya untuk menyelesaikan latihan ini. Lihat [Transfer dan pemulihan proyek](https://nahpu.app/id/usages/export/project-transfer/).
 
 {% /steps %}
+
+## Periksa pemahaman Anda
+
+Sebelum pekerjaan sebenarnya, pastikan Anda dapat menjelaskan hubungan lokasi–kegiatan–spesimen, mengenali mode penomoran yang digunakan, memperbaiki satu identifikasi tanpa mengedit takson bersama, serta memilih antara berbagi identitas, transfer proyek, dan cadangan basis data.
+
+- [Atur bidang khusus](https://nahpu.app/id/how-to-recipes/prepare/configure-custom-fields/)
+- [Jelajahi panduan praktis](https://nahpu.app/id/how-to-recipes/)

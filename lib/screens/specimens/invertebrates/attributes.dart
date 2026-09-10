@@ -12,13 +12,13 @@ import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/specimens/specimen_services.dart';
 import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/specimens.dart';
-import 'package:nahpu/services/types/arthropods.dart';
+import 'package:nahpu/services/types/invertebrates.dart';
 
-typedef _ArthropodCompanionBuilder =
-    ArthropodAttributeCompanion Function(double? value);
+typedef _InvertebrateCompanionBuilder =
+    InvertebrateAttributeCompanion Function(double? value);
 
-class ArthropodAttributeForms extends ConsumerStatefulWidget {
-  const ArthropodAttributeForms({
+class InvertebrateAttributeForms extends ConsumerStatefulWidget {
+  const InvertebrateAttributeForms({
     super.key,
     required this.useHorizontalLayout,
     required this.specimenUuid,
@@ -28,13 +28,13 @@ class ArthropodAttributeForms extends ConsumerStatefulWidget {
   final String specimenUuid;
 
   @override
-  ConsumerState<ArthropodAttributeForms> createState() =>
-      _ArthropodAttributeFormsState();
+  ConsumerState<InvertebrateAttributeForms> createState() =>
+      _InvertebrateAttributeFormsState();
 }
 
-class _ArthropodAttributeFormsState
-    extends ConsumerState<ArthropodAttributeForms> {
-  ArthropodAttributeCtrModel _ctr = ArthropodAttributeCtrModel.empty();
+class _InvertebrateAttributeFormsState
+    extends ConsumerState<InvertebrateAttributeForms> {
+  InvertebrateAttributeCtrModel _ctr = InvertebrateAttributeCtrModel.empty();
   Key _sexDropdownKey = UniqueKey();
   bool _showMorphometrics = false;
 
@@ -47,7 +47,7 @@ class _ArthropodAttributeFormsState
   }
 
   @override
-  void didUpdateWidget(covariant ArthropodAttributeForms oldWidget) {
+  void didUpdateWidget(covariant InvertebrateAttributeForms oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.specimenUuid != widget.specimenUuid) {
       _loadAttributes();
@@ -77,7 +77,7 @@ class _ArthropodAttributeFormsState
               onChanged: (value) {
                 setState(() => _ctr.lifeStageCtr = value);
                 _updateAttribute(
-                  ArthropodAttributeCompanion(lifeStage: db.Value(value)),
+                  InvertebrateAttributeCompanion(lifeStage: db.Value(value)),
                 );
               },
             ),
@@ -93,7 +93,7 @@ class _ArthropodAttributeFormsState
                   value: null,
                   child: CommonDropdownText(text: 'Not assigned'),
                 ),
-                ...arthropodCasteList.indexed.map(
+                ...invertebrateCasteList.indexed.map(
                   (entry) => DropdownMenuItem<int?>(
                     value: entry.$1,
                     child: CommonDropdownText(text: entry.$2),
@@ -103,7 +103,7 @@ class _ArthropodAttributeFormsState
               onChanged: (value) {
                 setState(() => _ctr.casteCtr = value);
                 _updateAttribute(
-                  ArthropodAttributeCompanion(caste: db.Value(value)),
+                  InvertebrateAttributeCompanion(caste: db.Value(value)),
                 );
               },
             ),
@@ -114,12 +114,12 @@ class _ArthropodAttributeFormsState
           ctr: _ctr,
           useHorizontalLayout: widget.useHorizontalLayout,
           onHostOrganismChanged: (value) => _updateAttribute(
-            ArthropodAttributeCompanion(
+            InvertebrateAttributeCompanion(
               hostOrganism: db.Value(_optionalText(value)),
             ),
           ),
           onHostPartChanged: (value) => _updateAttribute(
-            ArthropodAttributeCompanion(
+            InvertebrateAttributeCompanion(
               hostPart: db.Value(_optionalText(value)),
             ),
           ),
@@ -145,22 +145,24 @@ class _ArthropodAttributeFormsState
             onHeadWidthChanged: (value) => _updateDouble(
               value,
               (parsed) =>
-                  ArthropodAttributeCompanion(headWidth: db.Value(parsed)),
+                  InvertebrateAttributeCompanion(headWidth: db.Value(parsed)),
             ),
             onBodyLengthChanged: (value) => _updateDouble(
               value,
               (parsed) =>
-                  ArthropodAttributeCompanion(bodyLength: db.Value(parsed)),
+                  InvertebrateAttributeCompanion(bodyLength: db.Value(parsed)),
             ),
             onUpperWingspanChanged: (value) => _updateDouble(
               value,
-              (parsed) =>
-                  ArthropodAttributeCompanion(wingspanUpper: db.Value(parsed)),
+              (parsed) => InvertebrateAttributeCompanion(
+                wingspanUpper: db.Value(parsed),
+              ),
             ),
             onLowerWingspanChanged: (value) => _updateDouble(
               value,
-              (parsed) =>
-                  ArthropodAttributeCompanion(wingspanLower: db.Value(parsed)),
+              (parsed) => InvertebrateAttributeCompanion(
+                wingspanLower: db.Value(parsed),
+              ),
             ),
           ),
         ],
@@ -176,7 +178,7 @@ class _ArthropodAttributeFormsState
               maxLines: 6,
               isLastField: true,
               onChanged: (value) => _updateAttribute(
-                ArthropodAttributeCompanion(
+                InvertebrateAttributeCompanion(
                   remark: db.Value(_optionalText(value)),
                 ),
               ),
@@ -191,8 +193,8 @@ class _ArthropodAttributeFormsState
   Future<void> _loadAttributes() async {
     final data = await SpecimenServices(
       ref: ref,
-    ).getArthropodAttributeData(widget.specimenUuid);
-    final nextCtr = ArthropodAttributeCtrModel.fromData(data);
+    ).getInvertebrateAttributeData(widget.specimenUuid);
+    final nextCtr = InvertebrateAttributeCtrModel.fromData(data);
 
     if (!mounted) {
       nextCtr.dispose();
@@ -211,19 +213,19 @@ class _ArthropodAttributeFormsState
   void _updateSex(SpecimenSex? value) {
     final code = value == null ? null : getSpecimenSexCode(value);
     setState(() => _ctr.sexCtr = code);
-    _updateAttribute(ArthropodAttributeCompanion(sex: db.Value(code)));
+    _updateAttribute(InvertebrateAttributeCompanion(sex: db.Value(code)));
   }
 
-  void _updateDouble(String? value, _ArthropodCompanionBuilder builder) {
+  void _updateDouble(String? value, _InvertebrateCompanionBuilder builder) {
     final parsed = double.tryParse(value ?? '');
     if (value?.isNotEmpty == true && parsed == null) return;
     _updateAttribute(builder(parsed));
   }
 
-  void _updateAttribute(ArthropodAttributeCompanion attribute) {
+  void _updateAttribute(InvertebrateAttributeCompanion attribute) {
     SpecimenServices(
       ref: ref,
-    ).updateArthropodAttribute(widget.specimenUuid, attribute);
+    ).updateInvertebrateAttribute(widget.specimenUuid, attribute);
   }
 
   String? _optionalText(String? value) {
@@ -240,7 +242,7 @@ class _EcologicalInteractionSection extends StatelessWidget {
     required this.onHostPartChanged,
   });
 
-  final ArthropodAttributeCtrModel ctr;
+  final InvertebrateAttributeCtrModel ctr;
   final bool useHorizontalLayout;
   final ValueChanged<String?> onHostOrganismChanged;
   final ValueChanged<String?> onHostPartChanged;
@@ -288,7 +290,7 @@ class _MorphometricsSection extends StatelessWidget {
     required this.onLowerWingspanChanged,
   });
 
-  final ArthropodAttributeCtrModel ctr;
+  final InvertebrateAttributeCtrModel ctr;
   final bool useHorizontalLayout;
   final ValueChanged<String?> onHeadWidthChanged;
   final ValueChanged<String?> onBodyLengthChanged;

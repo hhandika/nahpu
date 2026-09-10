@@ -97,7 +97,7 @@ final effectiveUserDefinedFieldProvider = FutureProvider.autoDispose
 
       return mergeVocabularyOptions(configured, [
         ...stored,
-        if (catalog == CatalogFmt.fossils) ...defaultFossilSiteTypes,
+        if (catalog == CatalogFmt.paleontology) ...defaultFossilSiteTypes,
       ]);
     });
 

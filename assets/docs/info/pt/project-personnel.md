@@ -15,6 +15,9 @@ Os registros de pessoal representam as pessoas que participam do projeto. Uma pe
 
 Estas são funções de fluxo de trabalho do NAHPU que definem a que cada pessoa pode ser atribuída dentro do aplicativo. Não são as mesmas funções informadas em uma exportação, que seguem as relações reais de cada registro.
 
-## Contexto do Darwin Core
+Escolha o modo de Field ID separadamente das funções do pessoal. A numeração do projeto não usa o número de campo pessoal de um Cataloger.
 
-Uma pessoa é exportada como um agente identificado por `dwc:agentID`, obtido do ORCID quando registrado e do identificador do NAHPU caso contrário; as notas do pessoal viram `dwc:agentRemarks`. As relações do espécime preenchem os campos de agente: quem coleta preenche `dwc:recordedBy` e `dwc:recordedByID`, e quem determina preenche `dwc:identifiedBy` e `dwc:identifiedByID`.
+## Saiba mais
+
+- [Pessoal](https://nahpu.app/pt/usages/personnel/)
+- [Configurações](https://nahpu.app/pt/usages/settings/)

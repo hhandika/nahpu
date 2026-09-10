@@ -8,6 +8,9 @@ Atribut memuat pengukuran dan pengamatan biologis yang dilakukan untuk spesimen,
 
 Isi hanya nilai yang teramati atau terdokumentasi, dan pertahankan satuan yang ditampilkan. Gunakan `Unknown` atau kosongkan kolom sesuai protokol proyek alih-alih menebak. Keterangan sebaiknya menjelaskan syarat, kerusakan, ketidakpastian, atau metode yang memengaruhi cara sebuah nilai ditafsirkan.
 
-## Konteks Darwin Core
+Gunakan bidang khusus untuk pengamatan yang tidak sesuai dengan bidang bawaan. Periksa jenis, ketentuan satuan, dan katalog yang berlaku sebelum mengisi; jangan gunakan nol untuk nilai yang tidak diukur.
 
-Jenis kelamin, tahap hidup, dan kondisi reproduksi dipetakan ke `dwc:sex`, `dwc:lifeStage`, dan `dwc:reproductiveCondition`; kasta artropoda dipetakan ke `dwc:caste` dan inang yang tercatat ke `dwc:associatedTaxa`. Pengukuran lainnya diekspor sebagai pengukuran, bukan sebagai kolom tersendiri: ekspor tabel menghasilkan `dwc:measurementType`, `dwc:measurementValue`, dan `dwc:measurementUnit` untuk setiap pengukuran yang dipilih, dan paket terstruktur membawa trio yang sama sebagai satu baris pengukuran per nilai.
+## Pelajari lebih lanjut
+
+- [Catatan Spesimen](https://nahpu.app/id/usages/specimens/)
+- [Pengaturan](https://nahpu.app/id/usages/settings/)

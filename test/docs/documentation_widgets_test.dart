@@ -386,6 +386,74 @@ void main() {
     );
   });
 
+  testWidgets('only documents with website links carry the online notice', (
+    tester,
+  ) async {
+    const offline = MarkdownDocument(
+      id: 'offline',
+      title: 'Offline info',
+      markdown: 'Body without links.',
+      assetPath: 'assets/docs/info/en/project-overview.md',
+      order: 1,
+    );
+    await tester.pumpWidget(
+      _documentApp(document: offline, theme: NahpuTheme.lightTheme()),
+    );
+    expect(find.byType(OnlineLinkNotice), findsNothing);
+
+    const linked = MarkdownDocument(
+      id: 'linked',
+      title: 'Info proyek',
+      markdown: '## Pelajari lebih lanjut\n\n- [Proyek](https://nahpu.app/id/)',
+      assetPath: 'assets/docs/info/id/project-overview.md',
+      order: 1,
+      language: DocsLanguage.indonesian,
+    );
+    await tester.pumpWidget(
+      _documentApp(document: linked, theme: NahpuTheme.lightTheme()),
+    );
+    expect(find.byKey(const ValueKey('online-link-notice')), findsOneWidget);
+    expect(
+      find.text(
+        'Tautan ini membuka dokumentasi NAHPU dan memerlukan koneksi internet.',
+      ),
+      findsOneWidget,
+    );
+
+    // The notice closes the document, below the links it applies to.
+    final notice = tester.getRect(
+      find.byKey(const ValueKey('online-link-notice')),
+    );
+    final link = tester.getBottomLeft(find.textContaining('Proyek')).dy;
+    expect(notice.top, greaterThanOrEqualTo(link));
+  });
+
+  testWidgets('online link notice colors meet WCAG AA in both themes', (
+    tester,
+  ) async {
+    for (final theme in [NahpuTheme.lightTheme(), NahpuTheme.darkTheme()]) {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: theme,
+          home: const Scaffold(body: OnlineLinkNotice()),
+        ),
+      );
+
+      final container = tester.widget<Container>(
+        find.descendant(
+          of: find.byType(OnlineLinkNotice),
+          matching: find.byType(Container),
+        ),
+      );
+      final decoration = container.decoration! as BoxDecoration;
+      final icon = tester.widget<Icon>(find.byType(Icon));
+      expect(
+        _contrastRatio(icon.color!, decoration.color!),
+        greaterThanOrEqualTo(4.5),
+      );
+    }
+  });
+
   testWidgets('translation notice colors meet WCAG AA in both themes', (
     tester,
   ) async {

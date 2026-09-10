@@ -19086,12 +19086,12 @@ class HerpAttributeCompanion extends UpdateCompanion<HerpAttributeData> {
   }
 }
 
-class ArthropodAttribute extends Table
-    with TableInfo<ArthropodAttribute, ArthropodAttributeData> {
+class InvertebrateAttribute extends Table
+    with TableInfo<InvertebrateAttribute, InvertebrateAttributeData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  ArthropodAttribute(this.attachedDatabase, [this._alias]);
+  InvertebrateAttribute(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _specimenUuidMeta = const VerificationMeta(
     'specimenUuid',
   );
@@ -19225,10 +19225,10 @@ class ArthropodAttribute extends Table
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'arthropodAttribute';
+  static const String $name = 'invertebrateAttribute';
   @override
   VerificationContext validateIntegrity(
-    Insertable<ArthropodAttributeData> instance, {
+    Insertable<InvertebrateAttributeData> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -19319,9 +19319,12 @@ class ArthropodAttribute extends Table
   @override
   Set<GeneratedColumn> get $primaryKey => const {};
   @override
-  ArthropodAttributeData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  InvertebrateAttributeData map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return ArthropodAttributeData(
+    return InvertebrateAttributeData(
       specimenUuid: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}specimenUuid'],
@@ -19370,8 +19373,8 @@ class ArthropodAttribute extends Table
   }
 
   @override
-  ArthropodAttribute createAlias(String alias) {
-    return ArthropodAttribute(attachedDatabase, alias);
+  InvertebrateAttribute createAlias(String alias) {
+    return InvertebrateAttribute(attachedDatabase, alias);
   }
 
   @override
@@ -19382,8 +19385,8 @@ class ArthropodAttribute extends Table
   bool get dontWriteConstraints => true;
 }
 
-class ArthropodAttributeData extends DataClass
-    implements Insertable<ArthropodAttributeData> {
+class InvertebrateAttributeData extends DataClass
+    implements Insertable<InvertebrateAttributeData> {
   final String specimenUuid;
   final double? headWidth;
   final double? bodyLength;
@@ -19395,7 +19398,7 @@ class ArthropodAttributeData extends DataClass
   final String? hostOrganism;
   final String? hostPart;
   final String? remark;
-  const ArthropodAttributeData({
+  const InvertebrateAttributeData({
     required this.specimenUuid,
     this.headWidth,
     this.bodyLength,
@@ -19445,8 +19448,8 @@ class ArthropodAttributeData extends DataClass
     return map;
   }
 
-  ArthropodAttributeCompanion toCompanion(bool nullToAbsent) {
-    return ArthropodAttributeCompanion(
+  InvertebrateAttributeCompanion toCompanion(bool nullToAbsent) {
+    return InvertebrateAttributeCompanion(
       specimenUuid: Value(specimenUuid),
       headWidth: headWidth == null && nullToAbsent
           ? const Value.absent()
@@ -19479,12 +19482,12 @@ class ArthropodAttributeData extends DataClass
     );
   }
 
-  factory ArthropodAttributeData.fromJson(
+  factory InvertebrateAttributeData.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return ArthropodAttributeData(
+    return InvertebrateAttributeData(
       specimenUuid: serializer.fromJson<String>(json['specimenUuid']),
       headWidth: serializer.fromJson<double?>(json['headWidth']),
       bodyLength: serializer.fromJson<double?>(json['bodyLength']),
@@ -19516,7 +19519,7 @@ class ArthropodAttributeData extends DataClass
     };
   }
 
-  ArthropodAttributeData copyWith({
+  InvertebrateAttributeData copyWith({
     String? specimenUuid,
     Value<double?> headWidth = const Value.absent(),
     Value<double?> bodyLength = const Value.absent(),
@@ -19528,7 +19531,7 @@ class ArthropodAttributeData extends DataClass
     Value<String?> hostOrganism = const Value.absent(),
     Value<String?> hostPart = const Value.absent(),
     Value<String?> remark = const Value.absent(),
-  }) => ArthropodAttributeData(
+  }) => InvertebrateAttributeData(
     specimenUuid: specimenUuid ?? this.specimenUuid,
     headWidth: headWidth.present ? headWidth.value : this.headWidth,
     bodyLength: bodyLength.present ? bodyLength.value : this.bodyLength,
@@ -19545,8 +19548,10 @@ class ArthropodAttributeData extends DataClass
     hostPart: hostPart.present ? hostPart.value : this.hostPart,
     remark: remark.present ? remark.value : this.remark,
   );
-  ArthropodAttributeData copyWithCompanion(ArthropodAttributeCompanion data) {
-    return ArthropodAttributeData(
+  InvertebrateAttributeData copyWithCompanion(
+    InvertebrateAttributeCompanion data,
+  ) {
+    return InvertebrateAttributeData(
       specimenUuid: data.specimenUuid.present
           ? data.specimenUuid.value
           : this.specimenUuid,
@@ -19573,7 +19578,7 @@ class ArthropodAttributeData extends DataClass
 
   @override
   String toString() {
-    return (StringBuffer('ArthropodAttributeData(')
+    return (StringBuffer('InvertebrateAttributeData(')
           ..write('specimenUuid: $specimenUuid, ')
           ..write('headWidth: $headWidth, ')
           ..write('bodyLength: $bodyLength, ')
@@ -19606,7 +19611,7 @@ class ArthropodAttributeData extends DataClass
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is ArthropodAttributeData &&
+      (other is InvertebrateAttributeData &&
           other.specimenUuid == this.specimenUuid &&
           other.headWidth == this.headWidth &&
           other.bodyLength == this.bodyLength &&
@@ -19620,8 +19625,8 @@ class ArthropodAttributeData extends DataClass
           other.remark == this.remark);
 }
 
-class ArthropodAttributeCompanion
-    extends UpdateCompanion<ArthropodAttributeData> {
+class InvertebrateAttributeCompanion
+    extends UpdateCompanion<InvertebrateAttributeData> {
   final Value<String> specimenUuid;
   final Value<double?> headWidth;
   final Value<double?> bodyLength;
@@ -19634,7 +19639,7 @@ class ArthropodAttributeCompanion
   final Value<String?> hostPart;
   final Value<String?> remark;
   final Value<int> rowid;
-  const ArthropodAttributeCompanion({
+  const InvertebrateAttributeCompanion({
     this.specimenUuid = const Value.absent(),
     this.headWidth = const Value.absent(),
     this.bodyLength = const Value.absent(),
@@ -19648,7 +19653,7 @@ class ArthropodAttributeCompanion
     this.remark = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  ArthropodAttributeCompanion.insert({
+  InvertebrateAttributeCompanion.insert({
     required String specimenUuid,
     this.headWidth = const Value.absent(),
     this.bodyLength = const Value.absent(),
@@ -19662,7 +19667,7 @@ class ArthropodAttributeCompanion
     this.remark = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : specimenUuid = Value(specimenUuid);
-  static Insertable<ArthropodAttributeData> custom({
+  static Insertable<InvertebrateAttributeData> custom({
     Expression<String>? specimenUuid,
     Expression<double>? headWidth,
     Expression<double>? bodyLength,
@@ -19692,7 +19697,7 @@ class ArthropodAttributeCompanion
     });
   }
 
-  ArthropodAttributeCompanion copyWith({
+  InvertebrateAttributeCompanion copyWith({
     Value<String>? specimenUuid,
     Value<double?>? headWidth,
     Value<double?>? bodyLength,
@@ -19706,7 +19711,7 @@ class ArthropodAttributeCompanion
     Value<String?>? remark,
     Value<int>? rowid,
   }) {
-    return ArthropodAttributeCompanion(
+    return InvertebrateAttributeCompanion(
       specimenUuid: specimenUuid ?? this.specimenUuid,
       headWidth: headWidth ?? this.headWidth,
       bodyLength: bodyLength ?? this.bodyLength,
@@ -19766,7 +19771,7 @@ class ArthropodAttributeCompanion
 
   @override
   String toString() {
-    return (StringBuffer('ArthropodAttributeCompanion(')
+    return (StringBuffer('InvertebrateAttributeCompanion(')
           ..write('specimenUuid: $specimenUuid, ')
           ..write('headWidth: $headWidth, ')
           ..write('bodyLength: $bodyLength, ')
@@ -24778,7 +24783,8 @@ abstract class _$Database extends GeneratedDatabase {
   late final MammalAttribute mammalAttribute = MammalAttribute(this);
   late final BirdAttribute birdAttribute = BirdAttribute(this);
   late final HerpAttribute herpAttribute = HerpAttribute(this);
-  late final ArthropodAttribute arthropodAttribute = ArthropodAttribute(this);
+  late final InvertebrateAttribute invertebrateAttribute =
+      InvertebrateAttribute(this);
   late final FossilAttribute fossilAttribute = FossilAttribute(this);
   late final ParasiteDetection parasiteDetection = ParasiteDetection(this);
   late final Parasite parasite = Parasite(this);
@@ -24811,11 +24817,11 @@ abstract class _$Database extends GeneratedDatabase {
     'CREATE UNIQUE INDEX IF NOT EXISTS custom_field_template_target_idx ON customFieldDefinition (sourceTemplateUuid, scope, ifnull(projectUuid, \'\')) WHERE sourceTemplateUuid IS NOT NULL',
   );
   late final Trigger customFieldValueValidateInsert = Trigger(
-    'CREATE TRIGGER custom_field_value_validate_insert BEFORE INSERT ON customFieldValue WHEN NEW.isLegacy = 0 BEGIN SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM customFieldDefinition AS d WHERE d.id = NEW.fieldDefinitionId AND d.uiSection = CASE WHEN NEW.eventId IS NOT NULL THEN \'environmentalData\' WHEN NEW.siteId IS NOT NULL THEN \'siteAttribute\' WHEN NEW.specimenUuid IS NOT NULL THEN \'specimenAttribute\' WHEN NEW.specimenPartId IS NOT NULL THEN \'specimenPart\' WHEN NEW.parasiteId IS NOT NULL THEN \'parasite\' END AND(d.scope = \'global\' OR d.projectUuid = NEW.projectUuid)) THEN RAISE (ABORT, \'Custom field definition does not match its value owner\') END;SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM customFieldDefinition AS d WHERE d.id = NEW.fieldDefinitionId AND((NEW.eventId IS NOT NULL AND EXISTS (SELECT 1 FROM collEvent AS e WHERE e.id = NEW.eventId AND e.projectUuid = NEW.projectUuid))OR(NEW.siteId IS NOT NULL AND EXISTS (SELECT 1 FROM site AS s WHERE s.id = NEW.siteId AND s.projectUuid = NEW.projectUuid))OR(NEW.specimenUuid IS NOT NULL AND EXISTS (SELECT 1 FROM specimen AS s WHERE s.uuid = NEW.specimenUuid AND s.projectUuid = NEW.projectUuid AND(d.catalogFormat IS NULL OR d.catalogFormat = CASE lower(s.taxonGroup) WHEN \'birds\' THEN \'birds\' WHEN \'herpetofauna\' THEN \'herpetofauna\' WHEN \'arthropods\' THEN \'arthropods\' ELSE \'mammals\' END)))OR(NEW.specimenPartId IS NOT NULL AND EXISTS (SELECT 1 FROM specimenPart AS p JOIN specimen AS s ON s.uuid = p.specimenUuid WHERE p.id = NEW.specimenPartId AND s.projectUuid = NEW.projectUuid AND(d.catalogFormat IS NULL OR d.catalogFormat = CASE lower(s.taxonGroup) WHEN \'birds\' THEN \'birds\' WHEN \'herpetofauna\' THEN \'herpetofauna\' WHEN \'arthropods\' THEN \'arthropods\' ELSE \'mammals\' END)))OR(NEW.parasiteId IS NOT NULL AND EXISTS (SELECT 1 FROM parasite AS p JOIN specimen AS s ON s.uuid = p.specimenUuid WHERE p.id = NEW.parasiteId AND s.projectUuid = NEW.projectUuid AND(d.catalogFormat IS NULL OR d.catalogFormat = CASE lower(s.taxonGroup) WHEN \'birds\' THEN \'birds\' WHEN \'herpetofauna\' THEN \'herpetofauna\' WHEN \'arthropods\' THEN \'arthropods\' ELSE \'mammals\' END))))) THEN RAISE (ABORT, \'Custom field value project or catalog does not match its owner\') END;END',
+    'CREATE TRIGGER custom_field_value_validate_insert BEFORE INSERT ON customFieldValue WHEN NEW.isLegacy = 0 BEGIN SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM customFieldDefinition AS d WHERE d.id = NEW.fieldDefinitionId AND d.uiSection = CASE WHEN NEW.eventId IS NOT NULL THEN \'environmentalData\' WHEN NEW.siteId IS NOT NULL THEN \'siteAttribute\' WHEN NEW.specimenUuid IS NOT NULL THEN \'specimenAttribute\' WHEN NEW.specimenPartId IS NOT NULL THEN \'specimenPart\' WHEN NEW.parasiteId IS NOT NULL THEN \'parasite\' END AND(d.scope = \'global\' OR d.projectUuid = NEW.projectUuid)) THEN RAISE (ABORT, \'Custom field definition does not match its value owner\') END;SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM customFieldDefinition AS d WHERE d.id = NEW.fieldDefinitionId AND((NEW.eventId IS NOT NULL AND EXISTS (SELECT 1 FROM collEvent AS e WHERE e.id = NEW.eventId AND e.projectUuid = NEW.projectUuid))OR(NEW.siteId IS NOT NULL AND EXISTS (SELECT 1 FROM site AS s WHERE s.id = NEW.siteId AND s.projectUuid = NEW.projectUuid))OR(NEW.specimenUuid IS NOT NULL AND EXISTS (SELECT 1 FROM specimen AS s WHERE s.uuid = NEW.specimenUuid AND s.projectUuid = NEW.projectUuid AND(d.catalogFormat IS NULL OR d.catalogFormat = CASE lower(s.taxonGroup) WHEN \'birds\' THEN \'ornithology\' WHEN \'herpetofauna\' THEN \'herpetology\' WHEN \'invertebrates\' THEN \'invertebrateZoology\' WHEN \'arthropods\' THEN \'invertebrateZoology\' ELSE \'mammalogy\' END)))OR(NEW.specimenPartId IS NOT NULL AND EXISTS (SELECT 1 FROM specimenPart AS p JOIN specimen AS s ON s.uuid = p.specimenUuid WHERE p.id = NEW.specimenPartId AND s.projectUuid = NEW.projectUuid AND(d.catalogFormat IS NULL OR d.catalogFormat = CASE lower(s.taxonGroup) WHEN \'birds\' THEN \'ornithology\' WHEN \'herpetofauna\' THEN \'herpetology\' WHEN \'invertebrates\' THEN \'invertebrateZoology\' WHEN \'arthropods\' THEN \'invertebrateZoology\' ELSE \'mammalogy\' END)))OR(NEW.parasiteId IS NOT NULL AND EXISTS (SELECT 1 FROM parasite AS p JOIN specimen AS s ON s.uuid = p.specimenUuid WHERE p.id = NEW.parasiteId AND s.projectUuid = NEW.projectUuid AND(d.catalogFormat IS NULL OR d.catalogFormat = CASE lower(s.taxonGroup) WHEN \'birds\' THEN \'ornithology\' WHEN \'herpetofauna\' THEN \'herpetology\' WHEN \'invertebrates\' THEN \'invertebrateZoology\' WHEN \'arthropods\' THEN \'invertebrateZoology\' ELSE \'mammalogy\' END))))) THEN RAISE (ABORT, \'Custom field value project or catalog does not match its owner\') END;END',
     'custom_field_value_validate_insert',
   );
   late final Trigger customFieldValueValidateUpdate = Trigger(
-    'CREATE TRIGGER custom_field_value_validate_update BEFORE UPDATE ON customFieldValue WHEN NEW.isLegacy = 0 BEGIN SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM customFieldDefinition AS d WHERE d.id = NEW.fieldDefinitionId AND d.uiSection = CASE WHEN NEW.eventId IS NOT NULL THEN \'environmentalData\' WHEN NEW.siteId IS NOT NULL THEN \'siteAttribute\' WHEN NEW.specimenUuid IS NOT NULL THEN \'specimenAttribute\' WHEN NEW.specimenPartId IS NOT NULL THEN \'specimenPart\' WHEN NEW.parasiteId IS NOT NULL THEN \'parasite\' END AND(d.scope = \'global\' OR d.projectUuid = NEW.projectUuid)) THEN RAISE (ABORT, \'Custom field definition does not match its value owner\') END;SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM customFieldDefinition AS d WHERE d.id = NEW.fieldDefinitionId AND((NEW.eventId IS NOT NULL AND EXISTS (SELECT 1 FROM collEvent AS e WHERE e.id = NEW.eventId AND e.projectUuid = NEW.projectUuid))OR(NEW.siteId IS NOT NULL AND EXISTS (SELECT 1 FROM site AS s WHERE s.id = NEW.siteId AND s.projectUuid = NEW.projectUuid))OR(NEW.specimenUuid IS NOT NULL AND EXISTS (SELECT 1 FROM specimen AS s WHERE s.uuid = NEW.specimenUuid AND s.projectUuid = NEW.projectUuid AND(d.catalogFormat IS NULL OR d.catalogFormat = CASE lower(s.taxonGroup) WHEN \'birds\' THEN \'birds\' WHEN \'herpetofauna\' THEN \'herpetofauna\' WHEN \'arthropods\' THEN \'arthropods\' ELSE \'mammals\' END)))OR(NEW.specimenPartId IS NOT NULL AND EXISTS (SELECT 1 FROM specimenPart AS p JOIN specimen AS s ON s.uuid = p.specimenUuid WHERE p.id = NEW.specimenPartId AND s.projectUuid = NEW.projectUuid AND(d.catalogFormat IS NULL OR d.catalogFormat = CASE lower(s.taxonGroup) WHEN \'birds\' THEN \'birds\' WHEN \'herpetofauna\' THEN \'herpetofauna\' WHEN \'arthropods\' THEN \'arthropods\' ELSE \'mammals\' END)))OR(NEW.parasiteId IS NOT NULL AND EXISTS (SELECT 1 FROM parasite AS p JOIN specimen AS s ON s.uuid = p.specimenUuid WHERE p.id = NEW.parasiteId AND s.projectUuid = NEW.projectUuid AND(d.catalogFormat IS NULL OR d.catalogFormat = CASE lower(s.taxonGroup) WHEN \'birds\' THEN \'birds\' WHEN \'herpetofauna\' THEN \'herpetofauna\' WHEN \'arthropods\' THEN \'arthropods\' ELSE \'mammals\' END))))) THEN RAISE (ABORT, \'Custom field value project or catalog does not match its owner\') END;END',
+    'CREATE TRIGGER custom_field_value_validate_update BEFORE UPDATE ON customFieldValue WHEN NEW.isLegacy = 0 BEGIN SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM customFieldDefinition AS d WHERE d.id = NEW.fieldDefinitionId AND d.uiSection = CASE WHEN NEW.eventId IS NOT NULL THEN \'environmentalData\' WHEN NEW.siteId IS NOT NULL THEN \'siteAttribute\' WHEN NEW.specimenUuid IS NOT NULL THEN \'specimenAttribute\' WHEN NEW.specimenPartId IS NOT NULL THEN \'specimenPart\' WHEN NEW.parasiteId IS NOT NULL THEN \'parasite\' END AND(d.scope = \'global\' OR d.projectUuid = NEW.projectUuid)) THEN RAISE (ABORT, \'Custom field definition does not match its value owner\') END;SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM customFieldDefinition AS d WHERE d.id = NEW.fieldDefinitionId AND((NEW.eventId IS NOT NULL AND EXISTS (SELECT 1 FROM collEvent AS e WHERE e.id = NEW.eventId AND e.projectUuid = NEW.projectUuid))OR(NEW.siteId IS NOT NULL AND EXISTS (SELECT 1 FROM site AS s WHERE s.id = NEW.siteId AND s.projectUuid = NEW.projectUuid))OR(NEW.specimenUuid IS NOT NULL AND EXISTS (SELECT 1 FROM specimen AS s WHERE s.uuid = NEW.specimenUuid AND s.projectUuid = NEW.projectUuid AND(d.catalogFormat IS NULL OR d.catalogFormat = CASE lower(s.taxonGroup) WHEN \'birds\' THEN \'ornithology\' WHEN \'herpetofauna\' THEN \'herpetology\' WHEN \'invertebrates\' THEN \'invertebrateZoology\' WHEN \'arthropods\' THEN \'invertebrateZoology\' ELSE \'mammalogy\' END)))OR(NEW.specimenPartId IS NOT NULL AND EXISTS (SELECT 1 FROM specimenPart AS p JOIN specimen AS s ON s.uuid = p.specimenUuid WHERE p.id = NEW.specimenPartId AND s.projectUuid = NEW.projectUuid AND(d.catalogFormat IS NULL OR d.catalogFormat = CASE lower(s.taxonGroup) WHEN \'birds\' THEN \'ornithology\' WHEN \'herpetofauna\' THEN \'herpetology\' WHEN \'invertebrates\' THEN \'invertebrateZoology\' WHEN \'arthropods\' THEN \'invertebrateZoology\' ELSE \'mammalogy\' END)))OR(NEW.parasiteId IS NOT NULL AND EXISTS (SELECT 1 FROM parasite AS p JOIN specimen AS s ON s.uuid = p.specimenUuid WHERE p.id = NEW.parasiteId AND s.projectUuid = NEW.projectUuid AND(d.catalogFormat IS NULL OR d.catalogFormat = CASE lower(s.taxonGroup) WHEN \'birds\' THEN \'ornithology\' WHEN \'herpetofauna\' THEN \'herpetology\' WHEN \'invertebrates\' THEN \'invertebrateZoology\' WHEN \'arthropods\' THEN \'invertebrateZoology\' ELSE \'mammalogy\' END))))) THEN RAISE (ABORT, \'Custom field value project or catalog does not match its owner\') END;END',
     'custom_field_value_validate_update',
   );
   late final Index specimenProjectSpeciesIdx = Index(
@@ -24913,7 +24919,7 @@ abstract class _$Database extends GeneratedDatabase {
     mammalAttribute,
     birdAttribute,
     herpAttribute,
-    arthropodAttribute,
+    invertebrateAttribute,
     fossilAttribute,
     parasiteDetection,
     parasite,
@@ -25516,7 +25522,10 @@ class $ProjectTableManager
               ),
           withReferenceMapper: (p0) => p0
               .map(
-                (e) => (e.readTable(table), $ProjectReferences(db, table, e)),
+                (e) => (
+                  e.readTable<Project, ProjectData>(table),
+                  $ProjectReferences(db, table, e),
+                ),
               )
               .toList(),
           prefetchHooksCallback: ({associatedDataRefs = false}) {
@@ -25794,7 +25803,16 @@ class $GeographyTableManager
                 matchKey: matchKey,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<Geography, GeographyData>(table),
+                  BaseReferences<_$Database, Geography, GeographyData>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -26198,7 +26216,10 @@ class $PersonnelTableManager
               ),
           withReferenceMapper: (p0) => p0
               .map(
-                (e) => (e.readTable(table), $PersonnelReferences(db, table, e)),
+                (e) => (
+                  e.readTable<Personnel, PersonnelData>(table),
+                  $PersonnelReferences(db, table, e),
+                ),
               )
               .toList(),
           prefetchHooksCallback: ({parasiteRefs = false}) {
@@ -26644,7 +26665,12 @@ class $MediaTableManager
                 caption: caption,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), $MediaReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<Media, MediaData>(table),
+                  $MediaReferences(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: ({narrativeRefs = false}) {
             return PrefetchHooks(
@@ -26986,7 +27012,12 @@ class $SiteTableManager
                 remark: remark,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), $SiteReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<Site, SiteData>(table),
+                  $SiteReferences(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: ({collEventRefs = false}) {
             return PrefetchHooks(
@@ -27210,7 +27241,16 @@ class $SiteAttributeTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<SiteAttribute, SiteAttributeData>(table),
+                  BaseReferences<_$Database, SiteAttribute, SiteAttributeData>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -27661,7 +27701,16 @@ class $FossilSiteTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<FossilSite, FossilSiteData>(table),
+                  BaseReferences<_$Database, FossilSite, FossilSiteData>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -28036,7 +28085,16 @@ class $CoordinateTableManager
                 siteID: siteID,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<Coordinate, CoordinateData>(table),
+                  BaseReferences<_$Database, Coordinate, CoordinateData>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -28401,7 +28459,10 @@ class $CollEventTableManager
               ),
           withReferenceMapper: (p0) => p0
               .map(
-                (e) => (e.readTable(table), $CollEventReferences(db, table, e)),
+                (e) => (
+                  e.readTable<CollEvent, CollEventData>(table),
+                  $CollEventReferences(db, table, e),
+                ),
               )
               .toList(),
           prefetchHooksCallback: ({siteID = false}) {
@@ -28932,7 +28993,16 @@ class $EnvironmentTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<Environment, EnvironmentData>(table),
+                  BaseReferences<_$Database, Environment, EnvironmentData>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -29127,7 +29197,16 @@ class $CollPersonnelTableManager
                 role: role,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<CollPersonnel, CollPersonnelData>(table),
+                  BaseReferences<_$Database, CollPersonnel, CollPersonnelData>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -29356,7 +29435,16 @@ class $CollEffortTableManager
                 notes: notes,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<CollEffort, CollEffortData>(table),
+                  BaseReferences<_$Database, CollEffort, CollEffortData>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -29679,7 +29767,10 @@ class $NarrativeTableManager
               ),
           withReferenceMapper: (p0) => p0
               .map(
-                (e) => (e.readTable(table), $NarrativeReferences(db, table, e)),
+                (e) => (
+                  e.readTable<Narrative, NarrativeData>(table),
+                  $NarrativeReferences(db, table, e),
+                ),
               )
               .toList(),
           prefetchHooksCallback: ({mediaID = false}) {
@@ -29862,7 +29953,16 @@ class $NarrativeMediaTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<NarrativeMedia, NarrativeMediaData>(table),
+                  BaseReferences<
+                    _$Database,
+                    NarrativeMedia,
+                    NarrativeMediaData
+                  >(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -29999,7 +30099,16 @@ class $SiteMediaTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<SiteMedia, SiteMediaData>(table),
+                  BaseReferences<_$Database, SiteMedia, SiteMediaData>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -30136,7 +30245,16 @@ class $EventMediaTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<EventMedia, EventMediaData>(table),
+                  BaseReferences<_$Database, EventMedia, EventMediaData>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -30588,7 +30706,16 @@ class $TaxonomyTableManager
                 mediaId: mediaId,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<Taxonomy, TaxonomyData>(table),
+                  BaseReferences<_$Database, Taxonomy, TaxonomyData>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -31423,7 +31550,10 @@ class $SpecimenTableManager
               ),
           withReferenceMapper: (p0) => p0
               .map(
-                (e) => (e.readTable(table), $SpecimenReferences(db, table, e)),
+                (e) => (
+                  e.readTable<Specimen, SpecimenData>(table),
+                  $SpecimenReferences(db, table, e),
+                ),
               )
               .toList(),
           prefetchHooksCallback:
@@ -31619,7 +31749,16 @@ class $SpecimenMediaTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<SpecimenMedia, SpecimenMediaData>(table),
+                  BaseReferences<_$Database, SpecimenMedia, SpecimenMediaData>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -31930,7 +32069,7 @@ class $AssociatedDataTableManager
           withReferenceMapper: (p0) => p0
               .map(
                 (e) => (
-                  e.readTable(table),
+                  e.readTable<AssociatedData, AssociatedDataData>(table),
                   $AssociatedDataReferences(db, table, e),
                 ),
               )
@@ -32123,7 +32262,19 @@ class $SpecimenAssociatedDataTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<
+                    SpecimenAssociatedData,
+                    SpecimenAssociatedDataData
+                  >(table),
+                  BaseReferences<
+                    _$Database,
+                    SpecimenAssociatedData,
+                    SpecimenAssociatedDataData
+                  >(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -32276,7 +32427,18 @@ class $SiteAssociatedDataTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<SiteAssociatedData, SiteAssociatedDataData>(
+                    table,
+                  ),
+                  BaseReferences<
+                    _$Database,
+                    SiteAssociatedData,
+                    SiteAssociatedDataData
+                  >(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -32425,7 +32587,18 @@ class $EventAssociatedDataTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<EventAssociatedData, EventAssociatedDataData>(
+                    table,
+                  ),
+                  BaseReferences<
+                    _$Database,
+                    EventAssociatedData,
+                    EventAssociatedDataData
+                  >(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -32575,7 +32748,16 @@ class $PersonnelListTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<PersonnelList, PersonnelListData>(table),
+                  BaseReferences<_$Database, PersonnelList, PersonnelListData>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -33437,7 +33619,16 @@ class $MammalAttributeTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<MammalAttribute, MammalAttributeData>(table),
+                  BaseReferences<
+                    _$Database,
+                    MammalAttribute,
+                    MammalAttributeData
+                  >(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -34454,7 +34645,16 @@ class $BirdAttributeTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<BirdAttribute, BirdAttributeData>(table),
+                  BaseReferences<_$Database, BirdAttribute, BirdAttributeData>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -34695,7 +34895,16 @@ class $HerpAttributeTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<HerpAttribute, HerpAttributeData>(table),
+                  BaseReferences<_$Database, HerpAttribute, HerpAttributeData>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -34719,8 +34928,8 @@ typedef $HerpAttributeProcessedTableManager =
       HerpAttributeData,
       PrefetchHooks Function()
     >;
-typedef $ArthropodAttributeCreateCompanionBuilder =
-    ArthropodAttributeCompanion Function({
+typedef $InvertebrateAttributeCreateCompanionBuilder =
+    InvertebrateAttributeCompanion Function({
       required String specimenUuid,
       Value<double?> headWidth,
       Value<double?> bodyLength,
@@ -34734,8 +34943,8 @@ typedef $ArthropodAttributeCreateCompanionBuilder =
       Value<String?> remark,
       Value<int> rowid,
     });
-typedef $ArthropodAttributeUpdateCompanionBuilder =
-    ArthropodAttributeCompanion Function({
+typedef $InvertebrateAttributeUpdateCompanionBuilder =
+    InvertebrateAttributeCompanion Function({
       Value<String> specimenUuid,
       Value<double?> headWidth,
       Value<double?> bodyLength,
@@ -34750,9 +34959,9 @@ typedef $ArthropodAttributeUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
-class $ArthropodAttributeFilterComposer
-    extends Composer<_$Database, ArthropodAttribute> {
-  $ArthropodAttributeFilterComposer({
+class $InvertebrateAttributeFilterComposer
+    extends Composer<_$Database, InvertebrateAttribute> {
+  $InvertebrateAttributeFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -34815,9 +35024,9 @@ class $ArthropodAttributeFilterComposer
   );
 }
 
-class $ArthropodAttributeOrderingComposer
-    extends Composer<_$Database, ArthropodAttribute> {
-  $ArthropodAttributeOrderingComposer({
+class $InvertebrateAttributeOrderingComposer
+    extends Composer<_$Database, InvertebrateAttribute> {
+  $InvertebrateAttributeOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -34880,9 +35089,9 @@ class $ArthropodAttributeOrderingComposer
   );
 }
 
-class $ArthropodAttributeAnnotationComposer
-    extends Composer<_$Database, ArthropodAttribute> {
-  $ArthropodAttributeAnnotationComposer({
+class $InvertebrateAttributeAnnotationComposer
+    extends Composer<_$Database, InvertebrateAttribute> {
+  $InvertebrateAttributeAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -34933,39 +35142,39 @@ class $ArthropodAttributeAnnotationComposer
       $composableBuilder(column: $table.remark, builder: (column) => column);
 }
 
-class $ArthropodAttributeTableManager
+class $InvertebrateAttributeTableManager
     extends
         RootTableManager<
           _$Database,
-          ArthropodAttribute,
-          ArthropodAttributeData,
-          $ArthropodAttributeFilterComposer,
-          $ArthropodAttributeOrderingComposer,
-          $ArthropodAttributeAnnotationComposer,
-          $ArthropodAttributeCreateCompanionBuilder,
-          $ArthropodAttributeUpdateCompanionBuilder,
+          InvertebrateAttribute,
+          InvertebrateAttributeData,
+          $InvertebrateAttributeFilterComposer,
+          $InvertebrateAttributeOrderingComposer,
+          $InvertebrateAttributeAnnotationComposer,
+          $InvertebrateAttributeCreateCompanionBuilder,
+          $InvertebrateAttributeUpdateCompanionBuilder,
           (
-            ArthropodAttributeData,
+            InvertebrateAttributeData,
             BaseReferences<
               _$Database,
-              ArthropodAttribute,
-              ArthropodAttributeData
+              InvertebrateAttribute,
+              InvertebrateAttributeData
             >,
           ),
-          ArthropodAttributeData,
+          InvertebrateAttributeData,
           PrefetchHooks Function()
         > {
-  $ArthropodAttributeTableManager(_$Database db, ArthropodAttribute table)
+  $InvertebrateAttributeTableManager(_$Database db, InvertebrateAttribute table)
     : super(
         TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $ArthropodAttributeFilterComposer($db: db, $table: table),
+              $InvertebrateAttributeFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
-              $ArthropodAttributeOrderingComposer($db: db, $table: table),
+              $InvertebrateAttributeOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
-              $ArthropodAttributeAnnotationComposer($db: db, $table: table),
+              $InvertebrateAttributeAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> specimenUuid = const Value.absent(),
@@ -34980,7 +35189,7 @@ class $ArthropodAttributeTableManager
                 Value<String?> hostPart = const Value.absent(),
                 Value<String?> remark = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => ArthropodAttributeCompanion(
+              }) => InvertebrateAttributeCompanion(
                 specimenUuid: specimenUuid,
                 headWidth: headWidth,
                 bodyLength: bodyLength,
@@ -35008,7 +35217,7 @@ class $ArthropodAttributeTableManager
                 Value<String?> hostPart = const Value.absent(),
                 Value<String?> remark = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => ArthropodAttributeCompanion.insert(
+              }) => InvertebrateAttributeCompanion.insert(
                 specimenUuid: specimenUuid,
                 headWidth: headWidth,
                 bodyLength: bodyLength,
@@ -35023,28 +35232,43 @@ class $ArthropodAttributeTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<InvertebrateAttribute, InvertebrateAttributeData>(
+                    table,
+                  ),
+                  BaseReferences<
+                    _$Database,
+                    InvertebrateAttribute,
+                    InvertebrateAttributeData
+                  >(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
       );
 }
 
-typedef $ArthropodAttributeProcessedTableManager =
+typedef $InvertebrateAttributeProcessedTableManager =
     ProcessedTableManager<
       _$Database,
-      ArthropodAttribute,
-      ArthropodAttributeData,
-      $ArthropodAttributeFilterComposer,
-      $ArthropodAttributeOrderingComposer,
-      $ArthropodAttributeAnnotationComposer,
-      $ArthropodAttributeCreateCompanionBuilder,
-      $ArthropodAttributeUpdateCompanionBuilder,
+      InvertebrateAttribute,
+      InvertebrateAttributeData,
+      $InvertebrateAttributeFilterComposer,
+      $InvertebrateAttributeOrderingComposer,
+      $InvertebrateAttributeAnnotationComposer,
+      $InvertebrateAttributeCreateCompanionBuilder,
+      $InvertebrateAttributeUpdateCompanionBuilder,
       (
-        ArthropodAttributeData,
-        BaseReferences<_$Database, ArthropodAttribute, ArthropodAttributeData>,
+        InvertebrateAttributeData,
+        BaseReferences<
+          _$Database,
+          InvertebrateAttribute,
+          InvertebrateAttributeData
+        >,
       ),
-      ArthropodAttributeData,
+      InvertebrateAttributeData,
       PrefetchHooks Function()
     >;
 typedef $FossilAttributeCreateCompanionBuilder =
@@ -35290,7 +35514,16 @@ class $FossilAttributeTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<FossilAttribute, FossilAttributeData>(table),
+                  BaseReferences<
+                    _$Database,
+                    FossilAttribute,
+                    FossilAttributeData
+                  >(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -35483,7 +35716,16 @@ class $ParasiteDetectionTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<ParasiteDetection, ParasiteDetectionData>(table),
+                  BaseReferences<
+                    _$Database,
+                    ParasiteDetection,
+                    ParasiteDetectionData
+                  >(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -36120,7 +36362,10 @@ class $ParasiteTableManager
               ),
           withReferenceMapper: (p0) => p0
               .map(
-                (e) => (e.readTable(table), $ParasiteReferences(db, table, e)),
+                (e) => (
+                  e.readTable<Parasite, ParasiteData>(table),
+                  $ParasiteReferences(db, table, e),
+                ),
               )
               .toList(),
           prefetchHooksCallback: ({identifierID = false}) {
@@ -36590,7 +36835,16 @@ class $SpecimenPartTableManager
                 remark: remark,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<SpecimenPart, SpecimenPartData>(table),
+                  BaseReferences<_$Database, SpecimenPart, SpecimenPartData>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -37045,7 +37299,18 @@ class $CustomFieldDefinitionTableManager
                 updatedAt: updatedAt,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<CustomFieldDefinition, CustomFieldDefinitionData>(
+                    table,
+                  ),
+                  BaseReferences<
+                    _$Database,
+                    CustomFieldDefinition,
+                    CustomFieldDefinitionData
+                  >(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -37367,7 +37632,16 @@ class $CustomFieldValueTableManager
                 isLegacy: isLegacy,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<CustomFieldValue, CustomFieldValueData>(table),
+                  BaseReferences<
+                    _$Database,
+                    CustomFieldValue,
+                    CustomFieldValueData
+                  >(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -37446,8 +37720,8 @@ class $DatabaseManager {
       $BirdAttributeTableManager(_db, _db.birdAttribute);
   $HerpAttributeTableManager get herpAttribute =>
       $HerpAttributeTableManager(_db, _db.herpAttribute);
-  $ArthropodAttributeTableManager get arthropodAttribute =>
-      $ArthropodAttributeTableManager(_db, _db.arthropodAttribute);
+  $InvertebrateAttributeTableManager get invertebrateAttribute =>
+      $InvertebrateAttributeTableManager(_db, _db.invertebrateAttribute);
   $FossilAttributeTableManager get fossilAttribute =>
       $FossilAttributeTableManager(_db, _db.fossilAttribute);
   $ParasiteDetectionTableManager get parasiteDetection =>

@@ -14,6 +14,13 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 Future<List<DwcHeader>> getDwcHeaders({required List<String> sourceKeys}) =>
     RustLib.instance.api.crateApiDwcGetDwcHeaders(sourceKeys: sourceKeys);
 
+/// Returns every column the registered Darwin Core term registry permits.
+///
+/// Callers use this to assert that the rows they build resolve to standard terms, so an
+/// unregistered header fails a test rather than being silently withheld at export time.
+Future<List<DwcBundleColumn>> dwcBundleColumns() =>
+    RustLib.instance.api.crateApiDwcDwcBundleColumns();
+
 /// Plans the exact package contents for the Bundle Project contents panel.
 Future<String> planDwcBundle({required String requestJson}) =>
     RustLib.instance.api.crateApiDwcPlanDwcBundle(requestJson: requestJson);
@@ -22,7 +29,7 @@ Future<String> planDwcBundle({required String requestJson}) =>
 Future<String> validateDwcBundle({required String requestJson}) =>
     RustLib.instance.api.crateApiDwcValidateDwcBundle(requestJson: requestJson);
 
-/// Writes a Darwin Core Archive file or a Darwin Core Data Package directory.
+/// Writes a Darwin Core Archive file or a Darwin Core Data Package archive.
 Future<String> writeDwcBundle({
   required String requestJson,
   required String outputPath,
@@ -30,6 +37,42 @@ Future<String> writeDwcBundle({
   requestJson: requestJson,
   outputPath: outputPath,
 );
+
+/// One column a Darwin Core bundle is permitted to write.
+class DwcBundleColumn {
+  /// The bundle CSV table the column belongs to, without its extension.
+  final String table;
+
+  /// The CSV header exactly as written.
+  final String header;
+
+  /// The absolute IRI the column is advertised under.
+  final String termUri;
+
+  /// Either `archive` or `data_package`.
+  final String profile;
+
+  const DwcBundleColumn({
+    required this.table,
+    required this.header,
+    required this.termUri,
+    required this.profile,
+  });
+
+  @override
+  int get hashCode =>
+      table.hashCode ^ header.hashCode ^ termUri.hashCode ^ profile.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DwcBundleColumn &&
+          runtimeType == other.runtimeType &&
+          table == other.table &&
+          header == other.header &&
+          termUri == other.termUri &&
+          profile == other.profile;
+}
 
 /// A resolved Darwin Core header for one NAHPU `table::field` source key.
 class DwcHeader {

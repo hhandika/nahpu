@@ -8,6 +8,7 @@ import 'package:nahpu/screens/settings/settings.dart';
 import 'package:nahpu/screens/settings/onboarding/setup_wizard.dart';
 import 'package:nahpu/screens/settings/transfer/app_settings_import.dart';
 import 'package:nahpu/screens/shared/common/common.dart';
+import 'package:nahpu/screens/shared/common/legal_links.dart';
 import 'package:nahpu/services/common/platform_services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -133,6 +134,8 @@ class HomeMenuDrawer extends StatelessWidget {
             _launchHelpUrl();
           },
         ),
+        const PrivacyPolicyTile(),
+        const TermsTile(),
         const SizedBox(height: 32),
         const DocQrCode(),
       ],

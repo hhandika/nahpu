@@ -6,8 +6,10 @@ sidebar:
 
 Lokasi adalah catatan tempat NAHPU yang dapat dipakai ulang. Kegiatan pengumpulan mengambil informasi tempatnya dari lokasi, jadi berikan setiap lokasi Site ID yang stabil dan unik dalam proyek, serta gunakan satu konvensi penamaan di seluruh perangkat yang berkolaborasi.
 
-Catat orang yang bertanggung jawab dan tipe lokasi bila berguna. Gunakan `Duplicate site` untuk menyalin informasi deskriptif dengan Site ID dan koordinat baru dibiarkan kosong. Gunakan `Copy from project ...` hanya bila lokasi di proyek lain menggambarkan tempat yang memang perlu dipakai ulang; periksa setiap nilai yang disalin sebelum pengumpulan dimulai.
+Catat orang yang bertanggung jawab dan tipe lokasi bila berguna. Gunakan `Duplicate site` untuk menyalin informasi deskriptif dengan Site ID dan koordinat baru dibiarkan kosong. Gunakan `Copy from project ...` hanya bila lokasi di proyek lain menggambarkan tempat yang memang perlu dipakai ulang. Periksa setiap nilai yang disalin sebelum pengumpulan dimulai.
 
-## Konteks Darwin Core
+Lokasi menjelaskan tempat, sedangkan kegiatan menjelaskan pekerjaan di tempat tersebut. Gunakan kembali lokasi untuk kunjungan berulang dan buat kegiatan sesuai setiap periode pengambilan sampel.
 
-Site ID menjadi pengenal tempat dalam hasil ekspor dan ditulis ke `dwc:locationID`; keterangan lokasi menjadi `dwc:locationRemarks`.
+## Pelajari lebih lanjut
+
+- [Lokasi](https://nahpu.app/id/usages/sites/)

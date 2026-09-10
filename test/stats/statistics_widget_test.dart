@@ -228,6 +228,31 @@ void main() {
         reason: '${kind.label} belongs to the taxonomic breakdown',
       );
     }
+    expect(find.text('Media breakdown'), findsOneWidget);
+    for (final entry in const <(RecordMetricKind, String)>[
+      (RecordMetricKind.media, '6'),
+      (RecordMetricKind.specimenMedia, '3'),
+      (RecordMetricKind.siteMedia, '1'),
+      (RecordMetricKind.eventMedia, '1'),
+      (RecordMetricKind.narrativeMedia, '1'),
+    ]) {
+      final metric = find.descendant(
+        of: find.byKey(
+          const ValueKey('full-screen-record-stat-media-breakdown'),
+        ),
+        matching: find.byKey(entry.$1.fullScreenKey),
+      );
+      expect(
+        metric,
+        findsOneWidget,
+        reason: '${entry.$1.label} belongs to the media breakdown',
+      );
+      expect(
+        find.descendant(of: metric, matching: find.text(entry.$2)),
+        findsOneWidget,
+        reason: '${entry.$1.label} counts the project media files',
+      );
+    }
     expect(find.text('Recorded elevation'), findsOneWidget);
     expect(find.text('Sampled elevation'), findsOneWidget);
     expect(find.text('120.5–350.25 m'), findsNWidgets(2));
@@ -326,111 +351,131 @@ void main() {
     expect(find.text('Capture days'), findsOneWidget);
   });
 
-  testWidgets('wide summary stacks records above taxonomy at full width', (
-    tester,
-  ) async {
-    await _pumpRecordStatisticsPanel(
-      tester,
-      const Size(1000, 1400),
-      includeProjectDates: true,
-    );
+  testWidgets(
+    'wide summary stacks records, taxonomy, and media at full width',
+    (tester) async {
+      await _pumpRecordStatisticsPanel(
+        tester,
+        const Size(1000, 1400),
+        includeProjectDates: true,
+      );
 
-    await tester.tap(find.text('Explore more stats'));
-    for (var index = 0; index < 4; index++) {
-      await tester.pump(const Duration(milliseconds: 500));
-    }
+      await tester.tap(find.text('Explore more stats'));
+      for (var index = 0; index < 4; index++) {
+        await tester.pump(const Duration(milliseconds: 500));
+      }
 
-    final records = tester.getRect(
-      find.byKey(const ValueKey('full-screen-record-stat-record-summary')),
-    );
-    final taxonomy = tester.getRect(
-      find.byKey(const ValueKey('full-screen-record-stat-taxonomy')),
-    );
-    expect(records.width, closeTo(taxonomy.width, 0.1));
-    expect(taxonomy.top, greaterThanOrEqualTo(records.bottom));
-    for (final group in const <List<RecordMetricKind>>[
-      [
-        RecordMetricKind.specimens,
-        RecordMetricKind.narratives,
+      final records = tester.getRect(
+        find.byKey(const ValueKey('full-screen-record-stat-record-summary')),
+      );
+      final taxonomy = tester.getRect(
+        find.byKey(const ValueKey('full-screen-record-stat-taxonomy')),
+      );
+      final media = tester.getRect(
+        find.byKey(const ValueKey('full-screen-record-stat-media-breakdown')),
+      );
+      expect(records.width, closeTo(taxonomy.width, 0.1));
+      expect(taxonomy.width, closeTo(media.width, 0.1));
+      expect(taxonomy.top, greaterThanOrEqualTo(records.bottom));
+      expect(media.top, greaterThanOrEqualTo(taxonomy.bottom));
+      for (final group in const <List<RecordMetricKind>>[
+        [
+          RecordMetricKind.specimens,
+          RecordMetricKind.narratives,
+          RecordMetricKind.recordedSites,
+          RecordMetricKind.sampledSites,
+          RecordMetricKind.events,
+          RecordMetricKind.captureDays,
+          RecordMetricKind.projectDays,
+          RecordMetricKind.recordedElevation,
+          RecordMetricKind.sampledElevation,
+        ],
+        [
+          RecordMetricKind.classes,
+          RecordMetricKind.orders,
+          RecordMetricKind.families,
+          RecordMetricKind.genera,
+          RecordMetricKind.species,
+        ],
+        [
+          RecordMetricKind.media,
+          RecordMetricKind.specimenMedia,
+          RecordMetricKind.siteMedia,
+          RecordMetricKind.eventMedia,
+          RecordMetricKind.narrativeMedia,
+        ],
+      ]) {
+        final gridRows = <double, List<Rect>>{};
+        for (final kind in group) {
+          final rect = tester.getRect(find.byKey(kind.fullScreenKey));
+          gridRows.putIfAbsent(rect.top, () => <Rect>[]).add(rect);
+        }
+        expect(
+          gridRows.length,
+          greaterThan(1),
+          reason: '${group.first.label} group should wrap onto several rows',
+        );
+        final left = gridRows.values.first.map((rect) => rect.left).reduce(min);
+        final right = gridRows.values.first
+            .map((rect) => rect.right)
+            .reduce(max);
+        for (final row in gridRows.values) {
+          expect(
+            row.map((rect) => rect.left).reduce(min),
+            closeTo(left, 0.1),
+            reason: 'every row should start at the grid edge',
+          );
+          expect(
+            row.map((rect) => rect.right).reduce(max),
+            closeTo(right, 0.1),
+            reason: 'every row should fill the group width',
+          );
+        }
+      }
+      for (final kind in const [
+        RecordMetricKind.recordedElevation,
+        RecordMetricKind.sampledElevation,
+        RecordMetricKind.captureDays,
+        RecordMetricKind.projectDays,
         RecordMetricKind.recordedSites,
         RecordMetricKind.sampledSites,
         RecordMetricKind.events,
-        RecordMetricKind.captureDays,
-        RecordMetricKind.projectDays,
-        RecordMetricKind.recordedElevation,
-        RecordMetricKind.sampledElevation,
-      ],
-      [
+        RecordMetricKind.narratives,
+      ]) {
+        expect(
+          find.descendant(
+            of: find.byKey(kind.fullScreenKey),
+            matching: find.byIcon(kind.icon!),
+          ),
+          findsOneWidget,
+          reason: '${kind.label} should keep its icon on the full-screen page',
+        );
+      }
+      for (final kind in const [
+        RecordMetricKind.specimens,
         RecordMetricKind.classes,
         RecordMetricKind.orders,
         RecordMetricKind.families,
         RecordMetricKind.genera,
         RecordMetricKind.species,
-      ],
-    ]) {
-      final gridRows = <double, List<Rect>>{};
-      for (final kind in group) {
-        final rect = tester.getRect(find.byKey(kind.fullScreenKey));
-        gridRows.putIfAbsent(rect.top, () => <Rect>[]).add(rect);
-      }
-      expect(
-        gridRows.length,
-        greaterThan(1),
-        reason: '${group.first.label} group should wrap onto several rows',
-      );
-      final left = gridRows.values.first.map((rect) => rect.left).reduce(min);
-      final right = gridRows.values.first.map((rect) => rect.right).reduce(max);
-      for (final row in gridRows.values) {
+        RecordMetricKind.media,
+        RecordMetricKind.specimenMedia,
+        RecordMetricKind.siteMedia,
+        RecordMetricKind.eventMedia,
+        RecordMetricKind.narrativeMedia,
+      ]) {
+        expect(kind.hasIcon, isFalse, reason: '${kind.label} declares no icon');
         expect(
-          row.map((rect) => rect.left).reduce(min),
-          closeTo(left, 0.1),
-          reason: 'every row should start at the grid edge',
-        );
-        expect(
-          row.map((rect) => rect.right).reduce(max),
-          closeTo(right, 0.1),
-          reason: 'every row should fill the group width',
+          find.descendant(
+            of: find.byKey(kind.fullScreenKey),
+            matching: find.byType(Icon),
+          ),
+          findsNothing,
+          reason: '${kind.label} is iconless on the dashboard, so also here',
         );
       }
-    }
-    for (final kind in const [
-      RecordMetricKind.recordedElevation,
-      RecordMetricKind.sampledElevation,
-      RecordMetricKind.captureDays,
-      RecordMetricKind.projectDays,
-      RecordMetricKind.recordedSites,
-      RecordMetricKind.sampledSites,
-      RecordMetricKind.events,
-      RecordMetricKind.narratives,
-    ]) {
-      expect(
-        find.descendant(
-          of: find.byKey(kind.fullScreenKey),
-          matching: find.byIcon(kind.icon!),
-        ),
-        findsOneWidget,
-        reason: '${kind.label} should keep its icon on the full-screen page',
-      );
-    }
-    for (final kind in const [
-      RecordMetricKind.specimens,
-      RecordMetricKind.classes,
-      RecordMetricKind.orders,
-      RecordMetricKind.families,
-      RecordMetricKind.genera,
-      RecordMetricKind.species,
-    ]) {
-      expect(kind.hasIcon, isFalse, reason: '${kind.label} declares no icon');
-      expect(
-        find.descendant(
-          of: find.byKey(kind.fullScreenKey),
-          matching: find.byType(Icon),
-        ),
-        findsNothing,
-        reason: '${kind.label} is iconless on the dashboard, so also here',
-      );
-    }
-  });
+    },
+  );
 
   testWidgets(
     'detailed statistics use dependent measures and accurate titles',
@@ -1422,6 +1467,43 @@ Future<void> _pumpRecordStatisticsPanel(
       NarrativeCompanion(projectUuid: Value(projectUuid)),
       NarrativeCompanion(projectUuid: Value(projectUuid)),
       NarrativeCompanion(projectUuid: Value(projectUuid)),
+    ]);
+    batch.insertAll(database.media, const [
+      MediaCompanion(
+        projectUuid: Value(projectUuid),
+        category: Value('specimen'),
+        fileName: Value('specimen-1.jpg'),
+      ),
+      MediaCompanion(
+        projectUuid: Value(projectUuid),
+        category: Value('specimen'),
+        fileName: Value('specimen-2.jpg'),
+      ),
+      MediaCompanion(
+        projectUuid: Value(projectUuid),
+        category: Value('specimen'),
+        fileName: Value('specimen-3.jpg'),
+      ),
+      MediaCompanion(
+        projectUuid: Value(projectUuid),
+        category: Value('site'),
+        fileName: Value('site-1.jpg'),
+      ),
+      MediaCompanion(
+        projectUuid: Value(projectUuid),
+        category: Value('event'),
+        fileName: Value('event-1.jpg'),
+      ),
+      MediaCompanion(
+        projectUuid: Value(projectUuid),
+        category: Value('narrative'),
+        fileName: Value('narrative-1.jpg'),
+      ),
+      MediaCompanion(
+        projectUuid: Value(projectUuid),
+        category: Value('personnel'),
+        fileName: Value('avatar.jpg'),
+      ),
     ]);
   });
 

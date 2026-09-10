@@ -11,15 +11,17 @@ Escolha backup, transferência, exportação estruturada ou pacote de publicaç�
 {% steps %}
 
 1. Para o backup diário de campo e para combinar dispositivos NAHPU, escolha `Export project`; use ZIP/TAR.GZ com mídia ou JSON.GZ sem ela.
-2. Para o checkpoint semanal, antes de uma mesclagem ou para reconstruir uma instalação inteira, escolha `Backup database`.
+2. Para um ponto de recuperação da instalação, escolha `Backup database`. Faça cópias periódicas e antes de importar, mesclar ou substituir dados.
 3. Para planilhas ou análise, escolha `Export records`.
-4. Para compartilhamento baseado em padrões, escolha `Bundle records` e selecione Darwin Core Archive, Darwin Core Data Package ou NAHPU Data Package.
+4. Para intercâmbio de biodiversidade, escolha `Bundle records` e um formato Darwin Core; essas saídas não restauram um projeto NAHPU. Escolha NAHPU Data Package para o esquema nativo e dados de projeto compatíveis com reimportação.
 5. Para etiquetas ou relatórios, escolha `Export documents`.
 {% /steps %}
 
+Após escolher o formato, siga o guia correspondente e verifique o arquivo gerado antes de compartilhar.
+
 ## Saiba mais
 
-- [Abra o guia completo](https://nahpu.app/pt/usages/export/)
+- [Exportar](https://nahpu.app/pt/usages/export/)
 - [Exporte registros tabulares](https://nahpu.app/pt/how-to-recipes/export-and-print/export-tabular-records/)
 - [Crie um Darwin Core ou NAHPU Data Package](https://nahpu.app/pt/how-to-recipes/export-and-print/create-data-package/)
 - [Exporte um projeto para outro dispositivo](https://nahpu.app/pt/how-to-recipes/protect-and-collaborate/export-project/)

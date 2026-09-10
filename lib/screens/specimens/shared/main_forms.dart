@@ -4,7 +4,7 @@ import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/specimens.dart';
 import 'package:nahpu/screens/shared/common/common.dart';
 import 'package:nahpu/screens/shared/layout/layout.dart';
-import 'package:nahpu/screens/specimens/arthropods/attributes.dart';
+import 'package:nahpu/screens/specimens/invertebrates/attributes.dart';
 import 'package:nahpu/screens/specimens/birds/attributes.dart';
 import 'package:nahpu/screens/specimens/mammalian/attributes.dart';
 import 'package:nahpu/screens/specimens/herpetofauna/attributes.dart';
@@ -115,27 +115,27 @@ class SpecimenAttributeForms extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     switch (catalogFmt) {
-      case CatalogFmt.birds:
+      case CatalogFmt.ornithology:
         return BirdAttributeForms(
           useHorizontalLayout: useHorizontalLayout,
           specimenUuid: specimenUuid,
         );
-      case CatalogFmt.mammals:
+      case CatalogFmt.mammalogy:
         return MammalAttributeForms(
           useHorizontalLayout: useHorizontalLayout,
           specimenUuid: specimenUuid,
         );
-      case CatalogFmt.herpetofauna:
+      case CatalogFmt.herpetology:
         return HerpAttributeForms(
           useHorizontalLayout: useHorizontalLayout,
           specimenUuid: specimenUuid,
         );
-      case CatalogFmt.arthropods:
-        return ArthropodAttributeForms(
+      case CatalogFmt.invertebrateZoology:
+        return InvertebrateAttributeForms(
           useHorizontalLayout: useHorizontalLayout,
           specimenUuid: specimenUuid,
         );
-      case CatalogFmt.fossils:
+      case CatalogFmt.paleontology:
         return FossilAttributeForms(
           useHorizontalLayout: useHorizontalLayout,
           specimenUuid: specimenUuid,

@@ -187,9 +187,10 @@ class _AvailableFieldsSectionState
                               ),
                             ),
                             DropdownMenuItem(
-                              // Value stays 'Arthropods': it is persisted on
-                              // the template and matched by the field catalog.
-                              value: 'Arthropods',
+                              // Persisted on the template and matched by
+                              // the field catalog, which also accepts the
+                              // pre-v22 'Arthropods' value.
+                              value: 'Invertebrates',
                               child: Text(
                                 'Invertebrates',
                                 style: TextStyle(fontSize: 12.0),

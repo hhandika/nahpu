@@ -1,13 +1,15 @@
 ---
-title: "Esforço do evento"
+title: "Esforço de amostragem"
 sidebar:
   order: 0
 ---
 
-Os registros de esforço descrevem como a amostragem foi realizada. Adicione cada método separadamente e registre o número de unidades, a marca e o modelo do equipamento, seu tamanho ou dimensões e as notas.
+Os registros de esforço descrevem como a amostragem foi realizada. Adicione cada método separadamente e registre o número de unidades, a marca e o modelo do equipamento, seu tamanho ou dimensões e as notas. Inclua as unidades nos valores de tamanho (por exemplo, "10cm x 10cm x 10cm").
 
-Use as mesmas unidades e nomes de método controlados em todo o projeto para que os esforços possam ser comparados. Duração, área e qualquer outra magnitude sem campo próprio ficam nas notas. Informe contexto suficiente para que outra pessoa entenda o esforço sem inferir dados ausentes.
+Use as mesmas unidades e nomes de método controlados em todo o projeto para que os esforços possam ser comparados. Informe contexto suficiente para que outra pessoa entenda o esforço sem inferir dados ausentes. Duplicar um evento também copia os registros de esforço.
 
-## Contexto do Darwin Core
+Revise as contagens de equipamentos e os métodos copiados em cada evento. Registre zero apenas quando for uma contagem observada e explique esforços incompletos nas notas.
 
-Em uma exportação tabular, o método é mapeado para `dwc:samplingProtocol` e as notas para `dwc:samplingEffort`; contagem, marca e tamanho não têm equivalente no Darwin Core e mantêm seus cabeçalhos do NAHPU. Os Darwin Core Archives e os Data Packages levam, em vez disso, a atividade e as notas do próprio evento, então registre também no evento aquilo que um arquivo precise informar.
+## Saiba mais
+
+- [Eventos de Coleta](https://nahpu.app/pt/usages/events/)

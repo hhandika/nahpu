@@ -49,7 +49,7 @@ class EventInfoFieldState extends ConsumerState<EventInfoField> {
     final siteEntry = ref.watch(siteEntryProvider);
     siteEntry.whenData((siteEntry) => {data = siteEntry});
     return FormCard(
-      title: 'Event Details',
+      title: 'Event Identity',
       isPrimary: true,
       infoTopic: InfoTopic.eventOverview,
       mainAxisSize: MainAxisSize.min,
@@ -131,7 +131,7 @@ class EventInfoFieldState extends ConsumerState<EventInfoField> {
         .when(
           data: (catalogFmt) {
             switch (catalogFmt) {
-              case CatalogFmt.mammals:
+              case CatalogFmt.mammalogy:
                 return DateTime.now().subtract(const Duration(days: 1));
               default:
                 // Birds, herpetofauna
@@ -377,7 +377,7 @@ class EventTimeField extends ConsumerWidget {
         .when(
           data: (catalogFmt) {
             switch (catalogFmt) {
-              case CatalogFmt.mammals:
+              case CatalogFmt.mammalogy:
                 return const TimeOfDay(hour: 7, minute: 0);
               default:
                 // Birds, bats, herpetofauna

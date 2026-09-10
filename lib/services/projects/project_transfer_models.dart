@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:nahpu/services/specimens/specimen_attribute_names.dart';
+import 'package:nahpu/services/types/specimens.dart';
 
-const int projectTransferVersion = 8;
-const Set<int> supportedProjectTransferVersions = {1, 2, 3, 4, 5, 6, 7, 8};
+const int projectTransferVersion = 9;
+const Set<int> supportedProjectTransferVersions = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 const String projectTransferMarker = 'project';
 const String projectTransferManifestName = 'nahpu-project.json';
 
@@ -167,11 +168,24 @@ class ProjectTransferPayload {
     'appVersion': appVersion,
     'databaseVersion': databaseVersion,
     'project': project,
-    'records': includeMedia ? records : _recordsWithoutMedia,
+    'records': _populated(includeMedia ? records : _recordsWithoutMedia),
     'media': includeMedia
         ? mediaFiles.map((entry) => entry.toJson()).toList()
         : const [],
     'warnings': includeMedia ? warnings : const [],
+  };
+
+  /// Drops collections with no rows.
+  ///
+  /// A project only records the taxon groups it works with, so a mammals-only project
+  /// carries no bird or invertebrate collection at all rather than an empty
+  /// one. Readers use
+  /// [rows], which already treats a missing collection as empty.
+  Map<String, List<Map<String, dynamic>>> _populated(
+    Map<String, List<Map<String, dynamic>>> source,
+  ) => <String, List<Map<String, dynamic>>>{
+    for (final entry in source.entries)
+      if (entry.value.isNotEmpty) entry.key: entry.value,
   };
 
   Map<String, List<Map<String, dynamic>>> get _recordsWithoutMedia {
@@ -292,7 +306,9 @@ class ProjectTransferPayload {
   ) {
     final canonical = <String, List<Map<String, dynamic>>>{};
     for (final entry in records.entries) {
-      final key = canonicalizeSpecimenAttributeTableName(entry.key);
+      final key = canonicalizeSpecimenAttributeTableName(
+        _transferCollectionAliases[entry.key] ?? entry.key,
+      );
       final existing = canonical[key];
       if (existing != null && existing.isNotEmpty && entry.value.isNotEmpty) {
         throw FormatException(
@@ -328,9 +344,15 @@ class ProjectTransferPayload {
                   ]),
                 )
                 .toList(growable: false),
-          'arthropodAttribute' =>
+          'invertebrateAttribute' =>
             entry.value
-                .map(_normalizeArthropodAttribute)
+                .map(_normalizeInvertebrateAttribute)
+                .toList(growable: false),
+          'specimen' =>
+            entry.value.map(_normalizeSpecimen).toList(growable: false),
+          'customFieldDefinition' =>
+            entry.value
+                .map(_normalizeCustomFieldDefinition)
                 .toList(growable: false),
           _ => entry.value,
         };
@@ -362,6 +384,37 @@ class ProjectTransferPayload {
     return canonical;
   }
 
+  /// Transfer collections renamed since the payload was written.
+  ///
+  /// Kept here rather than in [specimenAttributeTableAliases] so the v19
+  /// source-key aliases, which still spell the pre-v22 table name, keep
+  /// resolving.
+  static const Map<String, String> _transferCollectionAliases = {
+    'arthropodAttribute': 'invertebrateAttribute',
+  };
+
+  static Map<String, dynamic> _normalizeSpecimen(Map<String, dynamic> source) {
+    final normalized = Map<String, dynamic>.from(source);
+    normalized['taxonGroup'] = canonicalizeTaxonGroup(
+      normalized['taxonGroup'] as String?,
+    );
+    return normalized;
+  }
+
+  /// Rewrites a pre-v22 taxon-based catalog format to its discipline name so
+  /// the custom-field triggers accept values for the imported definition.
+  static Map<String, dynamic> _normalizeCustomFieldDefinition(
+    Map<String, dynamic> source,
+  ) {
+    final catalogFormat = source['catalogFormat'];
+    if (catalogFormat is! String) return source;
+    return {
+      ...source,
+      'catalogFormat':
+          catalogFmtFromStoredName(catalogFormat)?.name ?? catalogFormat,
+    };
+  }
+
   static Map<String, dynamic> _normalizeLifeStage(
     Map<String, dynamic> source,
     List<String> legacyLabels,
@@ -377,7 +430,7 @@ class ProjectTransferPayload {
     return normalized;
   }
 
-  static Map<String, dynamic> _normalizeArthropodAttribute(
+  static Map<String, dynamic> _normalizeInvertebrateAttribute(
     Map<String, dynamic> source,
   ) {
     final normalized = Map<String, dynamic>.from(source);

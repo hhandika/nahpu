@@ -257,7 +257,7 @@ void main() {
           speciesID: Value(myotis.id),
         ),
         SpecimenCompanion(
-          uuid: const Value('a-arthropod'),
+          uuid: const Value('a-invertebrate'),
           projectUuid: const Value('project-a'),
           speciesID: Value(myotis.id),
         ),
@@ -290,9 +290,9 @@ void main() {
           lifeStage: Value('Juvenile'),
         ),
       ]);
-      batch.insertAll(db.arthropodAttribute, const [
-        ArthropodAttributeCompanion(
-          specimenUuid: Value('a-arthropod'),
+      batch.insertAll(db.invertebrateAttribute, const [
+        InvertebrateAttributeCompanion(
+          specimenUuid: Value('a-invertebrate'),
           sex: Value(4),
           lifeStage: Value('Larva'),
         ),
@@ -483,6 +483,31 @@ void main() {
     expect(updatedTotals.genusCount, 3);
     expect(updatedTotals.speciesCount, 2);
     expect(updatedTotals.totalCaptureDays, 0);
+  });
+
+  test('record totals break media down by category', () async {
+    final totals = await query.watchRecordTotals('project-a').first;
+
+    expect(totals.specimenMediaCount, 2);
+    expect(totals.siteMediaCount, 1);
+    expect(totals.eventMediaCount, 1);
+    expect(
+      totals.narrativeMediaCount,
+      1,
+      reason: 'category matching ignores case and surrounding spaces',
+    );
+    expect(
+      totals.mediaCount,
+      5,
+      reason: 'personnel avatars and uncategorized files are not records',
+    );
+
+    final otherProjectTotals = await query.watchRecordTotals('project-b').first;
+    expect(otherProjectTotals.mediaCount, 1);
+    expect(otherProjectTotals.specimenMediaCount, 1);
+    expect(otherProjectTotals.siteMediaCount, 0);
+    expect(otherProjectTotals.eventMediaCount, 0);
+    expect(otherProjectTotals.narrativeMediaCount, 0);
   });
 
   test('record totals treat blank project dates as not recorded', () async {
@@ -677,6 +702,50 @@ Future<void> _seedStatistics(Database db) async {
       NarrativeCompanion(
         projectUuid: Value('project-b'),
         narrative: Value('Project B note'),
+      ),
+    ]);
+  });
+
+  await db.batch((batch) {
+    batch.insertAll(db.media, const [
+      MediaCompanion(
+        projectUuid: Value('project-a'),
+        category: Value('specimen'),
+        fileName: Value('a-specimen-1.jpg'),
+      ),
+      MediaCompanion(
+        projectUuid: Value('project-a'),
+        category: Value('specimen'),
+        fileName: Value('a-specimen-2.jpg'),
+      ),
+      MediaCompanion(
+        projectUuid: Value('project-a'),
+        category: Value('site'),
+        fileName: Value('a-site.jpg'),
+      ),
+      MediaCompanion(
+        projectUuid: Value('project-a'),
+        category: Value('event'),
+        fileName: Value('a-event.jpg'),
+      ),
+      MediaCompanion(
+        projectUuid: Value('project-a'),
+        category: Value(' Narrative '),
+        fileName: Value('a-narrative.jpg'),
+      ),
+      MediaCompanion(
+        projectUuid: Value('project-a'),
+        category: Value('personnel'),
+        fileName: Value('a-avatar.jpg'),
+      ),
+      MediaCompanion(
+        projectUuid: Value('project-a'),
+        fileName: Value('a-uncategorized.jpg'),
+      ),
+      MediaCompanion(
+        projectUuid: Value('project-b'),
+        category: Value('specimen'),
+        fileName: Value('b-specimen.jpg'),
       ),
     ]);
   });

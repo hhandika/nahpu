@@ -138,14 +138,14 @@ void main() {
     test('skull and skeleton resolve per catalog format', () {
       expect(
         const SpecimenPartIcon(
-          catalogFmt: CatalogFmt.birds,
+          catalogFmt: CatalogFmt.ornithology,
           part: 'skull',
         ).match(),
         'assets/icons/bird_skull.svg',
       );
       expect(
         const SpecimenPartIcon(
-          catalogFmt: CatalogFmt.herpetofauna,
+          catalogFmt: CatalogFmt.herpetology,
           part: 'skeleton',
         ).match(),
         'assets/icons/herp_skeleton.svg',
@@ -155,7 +155,7 @@ void main() {
     test('plural and mixed-case part names normalise', () {
       expect(
         const SpecimenPartIcon(
-          catalogFmt: CatalogFmt.mammals,
+          catalogFmt: CatalogFmt.mammalogy,
           part: 'Skulls',
         ).match(),
         'assets/icons/mammal_skull.svg',
@@ -167,7 +167,7 @@ void main() {
     test('whitespace-padded part names do not throw', () {
       expect(
         const SpecimenPartIcon(
-          catalogFmt: CatalogFmt.mammals,
+          catalogFmt: CatalogFmt.mammalogy,
           part: '  skulls',
         ).match(),
         'assets/icons/mammal_skull.svg',
@@ -177,17 +177,17 @@ void main() {
     test('a format without dedicated art falls back to the whole animal', () {
       expect(
         const SpecimenPartIcon(
-          catalogFmt: CatalogFmt.birds,
+          catalogFmt: CatalogFmt.ornithology,
           part: 'skin',
         ).match(),
-        matchCatalogFmtToIconPath(CatalogFmt.birds),
+        matchCatalogFmtToIconPath(CatalogFmt.ornithology),
       );
     });
 
     test('unknown parts fall back to the clue icon', () {
       expect(
         const SpecimenPartIcon(
-          catalogFmt: CatalogFmt.mammals,
+          catalogFmt: CatalogFmt.mammalogy,
           part: 'nonsense value',
         ).match(),
         partIconPath['unknown'],

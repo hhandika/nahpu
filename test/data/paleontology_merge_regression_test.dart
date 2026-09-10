@@ -22,7 +22,7 @@ void main() {
           child: MaterialApp(
             home: Scaffold(
               body: TaxonGroupFields(
-                value: CatalogFmt.mammals,
+                value: CatalogFmt.mammalogy,
                 onChanged: (value) => selected = value,
               ),
             ),
@@ -30,24 +30,24 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Mammals'));
+      await tester.tap(find.text('Mammalogy'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Fossils').last);
+      await tester.tap(find.text('Paleontology').last);
       await tester.pumpAndSettle();
-      expect(selected, CatalogFmt.fossils);
+      expect(selected, CatalogFmt.paleontology);
       expect(preferences.getString(catalogFmtPrefKey), 'Mammals');
     },
   );
 
   test('fossil mappings preserve existing catalog and export enum codes', () {
-    expect(CatalogFmt.arthropods.index, 3);
+    expect(CatalogFmt.invertebrateZoology.index, 3);
     expect(SpecimenRecordType.allTaxa.index, 6);
     expect(
-      matchCatalogFmtToRecordType(CatalogFmt.fossils),
+      matchCatalogFmtToRecordType(CatalogFmt.paleontology),
       SpecimenRecordType.fossils,
     );
     expect(matchTaxonGroupToRecordType('Fossils'), SpecimenRecordType.fossils);
     expect(matchRecordTypeToTaxonGroup(SpecimenRecordType.fossils), 'Fossils');
-    expect(matchTaxonGroupToCatFmt('Fossils'), CatalogFmt.fossils);
+    expect(matchTaxonGroupToCatFmt('Fossils'), CatalogFmt.paleontology);
   });
 }

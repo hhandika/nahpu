@@ -79,7 +79,7 @@ void main() {
       expect(rows.single.rockType, 'Mudstone');
       expect(rows.single.formation, 'Hell Creek');
       expect(rows.single.sedimentologyRemark, 'Oxidized');
-      expect(database.schemaVersion, 21);
+      expect(database.schemaVersion, kSchemaVersion);
     },
   );
 
@@ -253,7 +253,7 @@ void main() {
       );
       await container
           .read(catalogFmtNotifierProvider.notifier)
-          .set(CatalogFmt.birds);
+          .set(CatalogFmt.ornithology);
       final extant = await container.read(
         effectiveUserDefinedFieldProvider(siteTypePrefKey).future,
       );

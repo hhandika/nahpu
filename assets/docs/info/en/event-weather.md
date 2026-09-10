@@ -4,10 +4,12 @@ sidebar:
   order: 0
 ---
 
-Weather fields describe the conditions observed during the collecting event, including air temperature and humidity, cloud cover, rainfall, and — where they apply — water temperature, pH, dissolved oxygen, and flow velocity. Record values in the displayed units and note whether they are direct measurements, instrument readings, or another documented source.
+Environmental data records conditions for this event. In `Settings` > `Events`, choose the built-in fields to display. Hiding a field does not delete its stored values or exclude them from exports.
 
-Astronomy values are derived from the event’s location, date, and time. Treat them as calculated context, not direct observations. If a result is unexpected, verify the selected site coordinates, project time zone, and event times before changing other data. Do not copy weather between events unless the measurement truly applies to both.
+Record measurements in the displayed units: temperature in °C, humidity in percent, and rainfall in millimeters. Cloud cover uses codes 0–8 for eighths of the sky covered, or 9 for an obscured sky. Leave unmeasured values empty; zero is a measurement.
 
-## Darwin Core context
+Enter sunrise, sunset, and moon phase from your observations or a documented source; NAHPU does not calculate them. Use the project's local-time convention. Add custom fields for additional measurements. A duplicated event starts with blank environmental data.
 
-Weather, water, and astronomy values have no Darwin Core term of their own. Structured exports carry each recorded value as a measurement of the event, keeping its type and unit, and the environment notes become `dwc:eventRemarks`.
+## Learn more
+
+- [Collecting Events](https://nahpu.app/en/usages/events/)

@@ -99,19 +99,19 @@ class SpecimenServices extends AppServices {
         ),
       );
       switch (catalogFmt) {
-        case CatalogFmt.birds:
+        case CatalogFmt.ornithology:
           await _createBirdSpecimen(specimenUuid);
           break;
-        case CatalogFmt.mammals:
+        case CatalogFmt.mammalogy:
           await _createMammalSpecimen(specimenUuid);
           break;
-        case CatalogFmt.herpetofauna:
+        case CatalogFmt.herpetology:
           await _createHerpSpecimen(specimenUuid);
           break;
-        case CatalogFmt.arthropods:
-          await _createArthropodSpecimen(specimenUuid);
+        case CatalogFmt.invertebrateZoology:
+          await _createInvertebrateSpecimen(specimenUuid);
           break;
-        case CatalogFmt.fossils:
+        case CatalogFmt.paleontology:
           await FossilSpecimenQuery(dbAccess).save(
             specimenUuid,
             const FossilAttributeCompanion(weightUnit: db.Value('g')),
@@ -134,9 +134,9 @@ class SpecimenServices extends AppServices {
           data: (fmt) {
             return matchCatalogFmtToIconPath(fmt);
           },
-          loading: () => matchCatalogFmtToIconPath(CatalogFmt.mammals),
+          loading: () => matchCatalogFmtToIconPath(CatalogFmt.mammalogy),
           error: (error, stack) =>
-              matchCatalogFmtToIconPath(CatalogFmt.mammals),
+              matchCatalogFmtToIconPath(CatalogFmt.mammalogy),
         );
   }
 
@@ -529,27 +529,27 @@ class SpecimenServices extends AppServices {
     );
   }
 
-  Future<void> _createArthropodSpecimen(String specimenUuid) async {
-    await ArthropodSpecimenQuery(dbAccess).createArthropodAttributes(
-      ArthropodAttributeCompanion(specimenUuid: db.Value(specimenUuid)),
+  Future<void> _createInvertebrateSpecimen(String specimenUuid) async {
+    await InvertebrateSpecimenQuery(dbAccess).createInvertebrateAttributes(
+      InvertebrateAttributeCompanion(specimenUuid: db.Value(specimenUuid)),
     );
   }
 
-  Future<ArthropodAttributeData> getArthropodAttributeData(
+  Future<InvertebrateAttributeData> getInvertebrateAttributeData(
     String specimenUuid,
   ) {
-    return ArthropodSpecimenQuery(
+    return InvertebrateSpecimenQuery(
       dbAccess,
-    ).getArthropodAttributeByUuid(specimenUuid);
+    ).getInvertebrateAttributeByUuid(specimenUuid);
   }
 
-  Future<void> updateArthropodAttribute(
+  Future<void> updateInvertebrateAttribute(
     String specimenUuid,
-    ArthropodAttributeCompanion entries,
+    InvertebrateAttributeCompanion entries,
   ) {
-    return ArthropodSpecimenQuery(
+    return InvertebrateSpecimenQuery(
       dbAccess,
-    ).updateArthropodAttributes(specimenUuid, entries);
+    ).updateInvertebrateAttributes(specimenUuid, entries);
   }
 
   Future<void> deleteBirdAttributes(String specimenUuid) async {
@@ -574,10 +574,10 @@ class SpecimenServices extends AppServices {
     await HerpSpecimenQuery(dbAccess).deleteHerpAttributes(specimenUuid);
   }
 
-  Future<void> deleteArthropodAttributes(String specimenUuid) async {
-    await ArthropodSpecimenQuery(
+  Future<void> deleteInvertebrateAttributes(String specimenUuid) async {
+    await InvertebrateSpecimenQuery(
       dbAccess,
-    ).deleteArthropodAttributes(specimenUuid);
+    ).deleteInvertebrateAttributes(specimenUuid);
   }
 
   Future<void> deleteSpecimen(
@@ -590,19 +590,19 @@ class SpecimenServices extends AppServices {
       ref: ref,
     ).detachAllFromTarget(AssociatedDataTarget.specimen(specimenUuid));
     switch (catalogFmt) {
-      case CatalogFmt.birds:
+      case CatalogFmt.ornithology:
         await deleteBirdAttributes(specimenUuid);
         break;
-      case CatalogFmt.mammals:
+      case CatalogFmt.mammalogy:
         await deleteMammalAttributes(specimenUuid);
         break;
-      case CatalogFmt.herpetofauna:
+      case CatalogFmt.herpetology:
         await deleteHerpAttributes(specimenUuid);
         break;
-      case CatalogFmt.arthropods:
-        await deleteArthropodAttributes(specimenUuid);
+      case CatalogFmt.invertebrateZoology:
+        await deleteInvertebrateAttributes(specimenUuid);
         break;
-      case CatalogFmt.fossils:
+      case CatalogFmt.paleontology:
         await FossilSpecimenQuery(dbAccess).deleteAttributes(specimenUuid);
         break;
     }
@@ -624,19 +624,19 @@ class SpecimenServices extends AppServices {
       await SpecimenQuery(dbAccess).deleteAllSpecimenMedias(specimen.uuid);
       CatalogFmt catalogFmt = matchTaxonGroupToCatFmt(specimen.taxonGroup);
       switch (catalogFmt) {
-        case CatalogFmt.birds:
+        case CatalogFmt.ornithology:
           await deleteBirdAttributes(specimen.uuid);
           break;
-        case CatalogFmt.mammals:
+        case CatalogFmt.mammalogy:
           await deleteMammalAttributes(specimen.uuid);
           break;
-        case CatalogFmt.herpetofauna:
+        case CatalogFmt.herpetology:
           await deleteHerpAttributes(specimen.uuid);
           break;
-        case CatalogFmt.arthropods:
-          await deleteArthropodAttributes(specimen.uuid);
+        case CatalogFmt.invertebrateZoology:
+          await deleteInvertebrateAttributes(specimen.uuid);
           break;
-        case CatalogFmt.fossils:
+        case CatalogFmt.paleontology:
           await FossilSpecimenQuery(dbAccess).deleteAttributes(specimen.uuid);
           break;
       }

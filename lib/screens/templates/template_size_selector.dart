@@ -106,7 +106,7 @@ const List<TemplatePreset> cryotubePresets = [
 
 const List<TemplatePreset> specimenPresets = [
   TemplatePreset(
-    name: 'Arthropod Pinned (Locality)',
+    name: 'Invertebrate Pinned (Locality)',
     widthMm: 18.0,
     heightMm: 8.0,
     dimensionsIn: '0.70 × 0.31 in',
@@ -114,7 +114,7 @@ const List<TemplatePreset> specimenPresets = [
         'Rigid boundary for pinned insects; fits 5-6 lines of ultra-compact metadata.',
   ),
   TemplatePreset(
-    name: 'Arthropod Pinned (Taxon ID)',
+    name: 'Invertebrate Pinned (Taxon ID)',
     widthMm: 15.0,
     heightMm: 7.0,
     dimensionsIn: '0.59 × 0.28 in',

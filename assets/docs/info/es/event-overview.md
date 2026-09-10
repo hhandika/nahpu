@@ -1,15 +1,13 @@
 ---
-title: "Resumen del evento"
+title: "Resumen del evento de recolecta"
 sidebar:
   order: 0
 ---
 
-Un evento de recolecta registra un esfuerzo de muestreo definido en un sitio y en un momento. Los especímenes se vinculan a un evento para tomar su sitio, sus fechas, su contexto de muestreo y su equipo de campo, de modo que muchos registros de especímenes pueden compartir un mismo evento.
+Un evento de recolección describe el muestreo en un sitio durante un período definido. Los especímenes vinculados comparten el sitio y el contexto del muestreo. Indique fechas y horas que representen el esfuerzo real, incluso cuando atraviese la medianoche.
 
-NAHPU construye el Event ID a partir del Site ID y de la fecha de inicio; agregue un sufijo solo cuando otro evento tendría el mismo identificador. Cree un evento separado cuando el sitio, el período, el protocolo de muestreo, el esfuerzo o el equipo participante cambien de forma significativa.
+NAHPU forma el Event ID con el Site ID y la fecha inicial. Añada un sufijo para distinguir eventos en el mismo sitio y día. Cree otro evento cuando cambien el período, protocolo, esfuerzo o equipo. `Duplicate` reutiliza la configuración, incluidos los registros de esfuerzo, pero deja vacíos los datos ambientales. Revise los datos copiados y registre las nuevas condiciones.
 
-Duplicar un evento reutiliza la configuración aplicable, pero adelanta las fechas y deja vacíos los datos meteorológicos. Revise cada valor copiado antes de usarlo.
+## Más información
 
-## Contexto de Darwin Core
-
-El evento se exporta como un evento de muestreo: el Event ID se convierte en `dwc:eventID`, el sitio en `dwc:locationID`, y las fechas y horas en `dwc:eventDate` y `dwc:eventTime`. Un rango de fechas se exporta como un único intervalo ISO 8601.
+- [Eventos de Recolecta](https://nahpu.app/es/usages/events/)

@@ -430,6 +430,10 @@ class AutoCompleteField<T extends Object> extends StatelessWidget {
   /// Caps the overlay so a long list scrolls instead of covering the form.
   static const double _maxOptionsHeight = 320;
 
+  /// Lines an option may wrap to before it is ellipsized. Enough for a long
+  /// locality on a phone, short enough that a few options still fit at once.
+  static const int _maxOptionLines = 3;
+
   @override
   Widget build(BuildContext context) {
     // The overlay is positioned over the field but sized independently, so the
@@ -477,19 +481,27 @@ class AutoCompleteField<T extends Object> extends StatelessWidget {
                 AutocompleteOnSelected<T> onSelected,
                 Iterable<T> options,
               ) {
-                final colors = Theme.of(context).colorScheme;
+                final theme = Theme.of(context);
+                final colors = theme.colorScheme;
                 return Align(
                   alignment: Alignment.topLeft,
                   child: Material(
                     // Opaque so the form does not show through, and bordered
                     // rather than shadowed to match every other NAHPU surface
-                    // (see the card theme in themes.dart).
-                    color: colors.surfaceContainerHighest,
+                    // (see the card theme in themes.dart). One container step
+                    // above the card behind the form: light enough to read the
+                    // options against, tinted enough to stay a distinct layer.
+                    color: colors.surfaceContainer,
                     elevation: NahpuElevation.none,
                     shadowColor: Colors.transparent,
                     surfaceTintColor: Colors.transparent,
+                    // The list drops out of the bottom of the field, so only
+                    // its bottom corners are rounded. Rounded top corners would
+                    // cut into the field sitting right above it.
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(NahpuRadius.lg),
+                      borderRadius: const BorderRadius.vertical(
+                        bottom: Radius.circular(NahpuRadius.md),
+                      ),
                       side: BorderSide(
                         color: colors.outlineVariant,
                         width: NahpuStroke.thin,
@@ -504,16 +516,25 @@ class AutoCompleteField<T extends Object> extends StatelessWidget {
                       child: ListView.builder(
                         shrinkWrap: true,
                         padding: const EdgeInsets.symmetric(
-                          vertical: NahpuSpacing.md,
+                          vertical: NahpuSpacing.xs,
                         ),
                         itemCount: options.length,
                         itemBuilder: (BuildContext context, int index) {
                           final option = options.elementAt(index);
                           return ListTile(
                             dense: true,
+                            // Options that share a leading string, such as
+                            // localities built from the same country and
+                            // province, only differ near the end. Wrapping
+                            // keeps that tail readable on a phone instead of
+                            // clipping every option to the same text.
                             title: Text(
                               displayStringFor(option),
+                              maxLines: _maxOptionLines,
                               overflow: TextOverflow.ellipsis,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: colors.onSurface,
+                              ),
                             ),
                             onTap: () => onSelected(option),
                           );

@@ -119,7 +119,7 @@ class _CustomFieldFormState extends ConsumerState<CustomFieldForm> {
       final catalog =
           creationContext.catalogFormat ??
           await ref.read(catalogFmtNotifierProvider.future) ??
-          CatalogFmt.mammals;
+          CatalogFmt.mammalogy;
       if (!mounted) return;
       await Navigator.of(context).push<void>(
         MaterialPageRoute(
@@ -276,7 +276,7 @@ class _CustomFieldDraftFormState extends ConsumerState<CustomFieldDraftForm> {
       final catalog =
           creationContext.catalogFormat ??
           await ref.read(catalogFmtNotifierProvider.future) ??
-          CatalogFmt.mammals;
+          CatalogFmt.mammalogy;
       if (!mounted) return;
       await Navigator.of(context).push<void>(
         MaterialPageRoute(

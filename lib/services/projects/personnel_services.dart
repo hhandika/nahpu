@@ -180,13 +180,13 @@ class PersonnelImageService {
 
   String getDefaultAvatar(CatalogFmt catalogFmt) {
     switch (catalogFmt) {
-      case CatalogFmt.birds:
+      case CatalogFmt.ornithology:
         return _getBirdAvatar();
-      case CatalogFmt.mammals:
+      case CatalogFmt.mammalogy:
         return _getMammalAvatar();
-      case CatalogFmt.herpetofauna:
-      case CatalogFmt.arthropods:
-      case CatalogFmt.fossils:
+      case CatalogFmt.herpetology:
+      case CatalogFmt.invertebrateZoology:
+      case CatalogFmt.paleontology:
         return _getMammalAvatar();
     }
   }

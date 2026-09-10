@@ -4,27 +4,22 @@ sidebar:
   order: 2
 ---
 
-Tutup setiap hari lapangan dengan ekspor proyek, dan simpan backup basis data lengkap untuk pemeriksaan mingguan.
+Simpan salinan data proyek setiap hari lapangan yang telah diperiksa di luar perangkat kerja.
 
 ## Langkah
 
 {% steps %}
 
-1. Buka drawer proyek lalu pilih `Export project`.
-2. Periksa jumlah catatan dan peringatan tentang media yang hilang.
-3. Pilih ZIP atau TAR.GZ agar media ikut terbawa, atau aktifkan `Light export` untuk `JSON.GZ` kecil bila unggahannya harus ringan.
-4. Simpan pada penyimpanan yang terpisah dari perangkat kerja, dengan nama berisi proyek dan tanggal.
-5. Sekali seminggu, dan selalu sebelum menggabungkan proyek, jalankan `Backup database`: perintah ini menyalin seluruh instalasi, jadi jalankan sesekali saja di lapangan.
+1. Buka menu proyek dan pilih `Export project`.
+2. Tinjau jumlah catatan dan peringatan berkas yang hilang. Pilih ZIP atau TAR.GZ untuk menyertakan media yang tersedia. JSON.GZ ringan hanya berisi catatan dan bukan cadangan media lengkap.
+3. Simpan dengan nama proyek dan tanggal, lalu salin ke penyimpanan atau perangkat lain.
+4. Pastikan salinan dapat diakses dan tinjau peringatan sebelum menganggap cadangan lengkap. Uji pemulihan secara berkala pada instalasi lain.
+5. Gunakan `Import project` di layar awal untuk memulihkan pada instalasi penerima, atau `Merge project` di dalam proyek yang sudah ada.
+6. Buat `Backup database` lengkap secara berkala, misalnya mingguan, serta sebelum mengimpor, menggabungkan, atau mengganti data. Simpan cadangan lama yang terverifikasi hingga cadangan baru diperiksa.
 {% /steps %}
-
-{% aside type="tip" %}
-Ekspor proyek adalah kebiasaan harian yang lebih baik: ukurannya lebih kecil, prosesnya lebih cepat, dan lebih hemat baterai daripada backup basis data, dan `Merge project` memulihkannya ke perangkat pengganti bila satu perangkat hilang atau rusak. Backup basis data menyalin seluruh direktori, sehingga membawa semua berkas di data aplikasi NAHPU, baik yang tertaut ke suatu proyek maupun tidak; di lapangan, jalankan sesekali saja, saat pemakaian baterai bukan masalah. Paket Darwin Core dan ekspor CSV tidak dapat diimpor kembali, jadi keduanya tidak pernah dihitung sebagai cadangan.
-{% /aside %}
 
 ## Pelajari lebih lanjut
 
-- [Buka panduan lengkap](https://nahpu.app/id/usages/export/#backup-strategy)
-- [Ekspor proyek untuk perangkat lain](https://nahpu.app/id/how-to-recipes/protect-and-collaborate/export-project/)
-- [Gabungkan proyek dan selesaikan konflik](https://nahpu.app/id/how-to-recipes/protect-and-collaborate/merge-project/)
+- [Ekspor](https://nahpu.app/id/usages/export/#backup-strategy)
+- [Impor proyek ke perangkat lain](https://nahpu.app/id/how-to-recipes/protect-and-collaborate/import-project/)
 - [Pulihkan atau ganti basis data](https://nahpu.app/id/how-to-recipes/protect-and-collaborate/restore-database/)
-- [Pengelolaan Proyek](https://nahpu.app/id/best-practices/project-management/)

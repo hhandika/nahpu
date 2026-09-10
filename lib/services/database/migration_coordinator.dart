@@ -29,6 +29,7 @@ class _MigrationCoordinator {
       18: (m) => _Version19Migration(db).upgrade(m),
       19: (m) => _Version20Migration(db).upgrade(m),
       20: (m) => _Version21Migration(db).upgrade(m),
+      21: (m) => _Version22Migration(db).upgrade(m),
     };
     while (currentVersion < to) {
       final step = releaseSteps[currentVersion];
@@ -40,6 +41,146 @@ class _MigrationCoordinator {
       }
       await step(migrator);
       currentVersion++;
+    }
+  }
+}
+
+class _Version22Migration {
+  const _Version22Migration(this.db);
+
+  final Database db;
+
+  /// Persisted `CatalogFmt.name` values, keyed by the taxon-based name they
+  /// replace. Catalog formats are stored as disciplines from v22 on.
+  static const Map<String, String> _catalogFormats = {
+    'mammals': 'mammalogy',
+    'birds': 'ornithology',
+    'herpetofauna': 'herpetology',
+    'arthropods': 'invertebrateZoology',
+  };
+
+  Future<void> upgrade(Migrator migrator) async {
+    // Dropped first: both triggers compare customFieldDefinition.catalogFormat
+    // against specimen.taxonGroup, and the backfills below rewrite both.
+    for (final name in const [
+      'custom_field_value_validate_insert',
+      'custom_field_value_validate_update',
+    ]) {
+      await db.customStatement('DROP TRIGGER IF EXISTS $name');
+    }
+
+    final attributeCount = await _rowCount('arthropodAttribute');
+    await db._renameTableIfPresent(
+      'arthropodAttribute',
+      'invertebrateAttribute',
+    );
+
+    await db.customStatement(
+      "UPDATE specimen SET taxonGroup = 'Invertebrates' "
+      "WHERE taxonGroup = 'Arthropods'",
+    );
+    for (final entry in _catalogFormats.entries) {
+      await db.customStatement(
+        'UPDATE customFieldDefinition SET catalogFormat = ? '
+        'WHERE catalogFormat = ?',
+        [entry.value, entry.key],
+      );
+    }
+
+    await migrator.create(db.customFieldValueValidateInsert);
+    await migrator.create(db.customFieldValueValidateUpdate);
+    await _validate(attributeCount);
+  }
+
+  Future<int> _rowCount(String table) async {
+    final row = await db
+        .customSelect(
+          'SELECT COUNT(*) AS count FROM $table',
+          readsFrom: const {},
+        )
+        .getSingle();
+    return row.read<int>('count');
+  }
+
+  Future<int> _count(String sql) async {
+    final row = await db.customSelect(sql, readsFrom: const {}).getSingle();
+    return row.read<int>('count');
+  }
+
+  Future<void> _validate(int expectedAttributes) async {
+    await db._requireTable('invertebrateAttribute');
+    if (await db._tableExists('arthropodAttribute')) {
+      throw StateError(
+        'Database migration retained the arthropodAttribute table.',
+      );
+    }
+    if (await _rowCount('invertebrateAttribute') != expectedAttributes) {
+      throw StateError(
+        'Database migration lost invertebrate attribute records.',
+      );
+    }
+
+    final staleTaxonGroups = await _count(
+      "SELECT COUNT(*) AS count FROM specimen WHERE taxonGroup = 'Arthropods'",
+    );
+    if (staleTaxonGroups != 0) {
+      throw StateError(
+        "Database migration retained $staleTaxonGroups 'Arthropods' "
+        'specimen(s).',
+      );
+    }
+
+    final staleFormats = await _count(
+      'SELECT COUNT(*) AS count FROM customFieldDefinition '
+      'WHERE catalogFormat IS NOT NULL AND catalogFormat NOT IN '
+      "('mammalogy', 'ornithology', 'herpetology', 'invertebrateZoology')",
+    );
+    if (staleFormats != 0) {
+      throw StateError(
+        'Database migration left $staleFormats unknown custom-field catalog '
+        'format(s).',
+      );
+    }
+
+    // The recreated triggers reject any later edit of a value whose definition
+    // no longer matches its specimen. Fail here rather than at the user's next
+    // edit. The CASE must stay identical to the one in tables.drift.
+    final mismatched = await _count('''
+      SELECT COUNT(*) AS count
+      FROM customFieldValue v
+      JOIN customFieldDefinition d ON d.id = v.fieldDefinitionId
+      JOIN specimen s ON s.uuid = v.specimenUuid
+      WHERE v.isLegacy = 0
+        AND v.specimenUuid IS NOT NULL
+        AND d.catalogFormat IS NOT NULL
+        AND d.catalogFormat <> CASE lower(s.taxonGroup)
+          WHEN 'birds' THEN 'ornithology'
+          WHEN 'herpetofauna' THEN 'herpetology'
+          WHEN 'invertebrates' THEN 'invertebrateZoology'
+          WHEN 'arthropods' THEN 'invertebrateZoology'
+          ELSE 'mammalogy' END
+    ''');
+    if (mismatched != 0) {
+      throw StateError(
+        'Database migration left $mismatched custom-field value(s) whose '
+        'catalog no longer matches their specimen.',
+      );
+    }
+
+    final violations = await db
+        .customSelect('PRAGMA foreign_key_check', readsFrom: const {})
+        .get();
+    if (violations.isNotEmpty) {
+      throw StateError(
+        'Database migration introduced ${violations.length} foreign-key '
+        'violation(s).',
+      );
+    }
+    final integrity = await db
+        .customSelect('PRAGMA integrity_check', readsFrom: const {})
+        .getSingle();
+    if (integrity.data.values.single != 'ok') {
+      throw StateError('Database integrity check failed after v22 migration.');
     }
   }
 }
@@ -582,7 +723,25 @@ class _Version19Migration {
     await db.customStatement(
       'ALTER TABLE arthropodAttribute RENAME TO arthropodAttributeV18',
     );
-    await migrator.createTable(db.arthropodAttribute);
+    // Spelled out rather than `migrator.createTable(db.arthropodAttribute)` so
+    // this step keeps producing the v19 shape. v22 renamed the generated table
+    // to `invertebrateAttribute`.
+    await db.customStatement('''
+      CREATE TABLE arthropodAttribute (
+        specimenUuid TEXT NOT NULL,
+        headWidth REAL,
+        bodyLength REAL,
+        wingspanUpper REAL,
+        wingspanLower REAL,
+        sex INT,
+        lifeStage TEXT,
+        caste INT,
+        hostOrganism TEXT,
+        hostPart TEXT,
+        remark TEXT,
+        FOREIGN KEY(specimenUuid) REFERENCES specimen(uuid)
+      )
+    ''');
     await db.customStatement('''
       INSERT INTO arthropodAttribute (
         specimenUuid,
@@ -1281,7 +1440,7 @@ class _Version12Migration {
     await migrator.addColumn(db.associatedData, db.associatedData.projectUuid);
 
     await _createPaleontologySite();
-    await migrator.createTable(db.arthropodAttribute);
+    await _createArthropodAttribute();
     await migrator.createTable(db.fossilAttribute);
     await migrator.createTable(db.parasiteDetection);
     await migrator.createTable(db.parasite);
@@ -1375,6 +1534,35 @@ class _Version12Migration {
     if (integrity.data.values.single != 'ok') {
       throw StateError('Database integrity check failed after v12 migration.');
     }
+  }
+
+  /// Spelled out rather than `migrator.createTable(db.arthropodAttribute)` so
+  /// this step keeps producing the v12 shape. The generated table has since
+  /// dropped the site and environmental columns and, in v22, was renamed to
+  /// `invertebrateAttribute`.
+  Future<void> _createArthropodAttribute() {
+    return db.customStatement('''
+      CREATE TABLE arthropodAttribute (
+        specimenUuid TEXT NOT NULL,
+        headWidth REAL,
+        bodyLength REAL,
+        wingspanUpper REAL,
+        wingspanLower REAL,
+        sex INT,
+        hostOrganism TEXT,
+        hostPart TEXT,
+        canopyAffinity TEXT,
+        canopyCover TEXT,
+        ambientTemperature REAL,
+        ambientHumidity REAL,
+        waterTemperature REAL,
+        pH REAL,
+        dissolvedOxygen REAL,
+        flowVelocity REAL,
+        remark TEXT,
+        FOREIGN KEY(specimenUuid) REFERENCES specimen(uuid)
+      )
+    ''');
   }
 
   Future<void> _createPaleontologySite() {

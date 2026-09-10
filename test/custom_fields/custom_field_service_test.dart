@@ -102,7 +102,7 @@ void main() {
         placement: FieldUISection.specimenAttribute,
         scope: FieldScope.project,
         projectUuid: 'project-a',
-        catalogFormat: CatalogFmt.birds,
+        catalogFormat: CatalogFmt.ornithology,
       ),
     );
 
@@ -139,11 +139,11 @@ void main() {
     expect(site.projectUuid, 'project-a');
     expect(site.catalogFormat, null);
     expect(specimen.projectUuid, 'project-a');
-    expect(specimen.catalogFormat, CatalogFmt.birds);
+    expect(specimen.catalogFormat, CatalogFmt.ornithology);
     expect(part.projectUuid, 'project-a');
-    expect(part.catalogFormat, CatalogFmt.birds);
+    expect(part.catalogFormat, CatalogFmt.ornithology);
     expect(parasite.projectUuid, 'project-a');
-    expect(parasite.catalogFormat, CatalogFmt.mammals);
+    expect(parasite.catalogFormat, CatalogFmt.mammalogy);
   });
 
   test(
@@ -239,7 +239,7 @@ void main() {
           placement: FieldUISection.environmentalData,
           scope: FieldScope.project,
           projectUuid: 'project-a',
-          catalogFormat: CatalogFmt.birds,
+          catalogFormat: CatalogFmt.ornithology,
         ),
       );
       expect(definition.catalogFormat, isNull);
@@ -287,7 +287,7 @@ void main() {
           type: FieldType.number,
           placement: FieldUISection.specimenAttribute,
           scope: FieldScope.global,
-          catalogFormat: CatalogFmt.birds,
+          catalogFormat: CatalogFmt.ornithology,
         ),
       ),
       throwsA(isA<CustomFieldValidationException>()),

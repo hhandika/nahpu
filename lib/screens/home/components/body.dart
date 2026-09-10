@@ -11,6 +11,7 @@ import 'package:nahpu/screens/projects/components/project_info.dart';
 import 'package:nahpu/screens/projects/edit_project.dart';
 import 'package:nahpu/screens/settings/onboarding/setup_wizard.dart';
 import 'package:nahpu/screens/shared/common/common.dart';
+import 'package:nahpu/screens/shared/common/legal_links.dart';
 import 'package:nahpu/services/database/project_queries.dart';
 import 'package:nahpu/services/record_exchange/project_exchange_service.dart';
 import 'package:nahpu/services/projects/project_services.dart';
@@ -140,6 +141,8 @@ class ProjectNotFound extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyLarge,
           ),
           const SizedBox(height: NahpuSpacing.xxl),
+          const LegalNotice(),
+          const SizedBox(height: NahpuSpacing.xl),
           FilledButton.icon(
             onPressed: () => Navigator.push(
               context,

@@ -4,20 +4,13 @@ sidebar:
   order: 0
 ---
 
-Um projeto agrupa o pessoal, os táxons, os locais, os eventos de coleta, os registros de espécimes, as narrativas e as mídias criados para um mesmo trabalho. Use `Edit` para atualizar seus metadados descritivos e `Export info` ou `Show QR` para compartilhar apenas sua identidade.
+Um projeto reúne locais, eventos de coleta, espécimes, pessoal, táxons, narrativas e arquivos de apoio de um trabalho. Use `Edit` para atualizar as informações. Defina o fuso horário do projeto para descrever os horários locais registrados; alterá-lo não converte datas e horários existentes.
 
-## UUID do projeto
+O UUID identifica o projeto entre dispositivos. `Export info` e `Show QR` compartilham sua identidade e seus metadados, sem registros ou mídia. O UUID é diferente do número de catálogo do projeto usado nos Field IDs dos espécimes.
 
-O NAHPU atribui a cada projeto novo um identificador único universal (UUID). Importar as informações do projeto preserva esse UUID para que os dispositivos que colaboram reconheçam cópias do mesmo projeto. As informações do projeto não incluem registros nem mídias; use a transferência de projeto quando eles também precisarem ser movidos.
+Para o backup diário em campo, use `Export project` e mantenha uma cópia fora do dispositivo de trabalho. ZIP e TAR.GZ incluem a mídia disponível; JSON.GZ leve contém registros sem mídia. Confira os avisos de arquivos ausentes. No dispositivo de destino, use `Import project` na tela inicial ou `Merge project` dentro de um projeto existente. Faça um backup do banco antes de importar, mesclar ou substituir os dados da instalação.
 
-Mantenha a descrição do projeto concisa. Registre o contexto diário detalhado em Narratives.
+## Saiba mais
 
-## Fazendo backup em campo
-
-O `Export project` é o backup diário de campo. Ele é menor e mais rápido que um backup do banco de dados e consome menos bateria, e o `Merge project` o lê de volta em outro dispositivo, então um aparelho perdido ou quebrado custa no máximo um dia de trabalho. Escolha ZIP ou TAR.GZ para levar a mídia, ou uma exportação leve `JSON.GZ` quando o envio precisar ser pequeno.
-
-Reserve o `Backup database` para um checkpoint semanal e para o momento anterior a qualquer mesclagem. Ele copia todos os projetos e todos os arquivos dos dados do aplicativo NAHPU, estejam eles vinculados a um projeto ou não. No campo, execute-o ocasionalmente, quando o consumo de bateria não for uma preocupação.
-
-## Contexto do Darwin Core
-
-O UUID do projeto identifica o conjunto de dados nas exportações e é gravado em `dwc:datasetID`.
+- [Projetos](https://nahpu.app/pt/usages/projects/)
+- [Exportar](https://nahpu.app/pt/usages/export/#backup-strategy)

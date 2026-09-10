@@ -4,26 +4,20 @@ sidebar:
   order: 4
 ---
 
-Tambahkan personel proyek dan pilih cara Field ID specimen diberikan.
+Tetapkan peran personel dan pilih ketentuan penomoran spesimen yang konsisten.
 
 ## Langkah
 
 {% steps %}
 
-1. Buka dashboard proyek lalu pilih `Add personnel`.
-2. Pilih orang yang sudah ada atau buat record basis data baru.
-3. Tetapkan `Cataloger`, `Preparator only`, `Determiner only`, atau `None` sesuai pekerjaan orang tersebut.
-4. Untuk Field ID personel, isi inisial dan nomor lapangan saat ini bagi setiap Cataloger yang memenuhi syarat.
-5. Untuk Field ID proyek, jalankan `Setup NAHPU` lalu gunakan langkah `Identifiers` untuk mengatur awalan, nomor, akhiran, dan penambahan otomatis.
+1. Pada dasbor proyek, pilih `Add personnel`, lalu pilih orang yang sudah ada atau buat catatan.
+2. Tetapkan `Cataloger`, `Preparator only`, `Determiner only`, atau `None` sesuai pekerjaan. Peran Cataloger tidak dapat diubah setelah dibuat.
+3. Untuk Field ID personel, tetapkan inisial, registrasi lapangan, dan nomor pribadi saat ini bagi Cataloger yang memenuhi syarat. Koordinasikan inisial dan rentang nomor antarperangkat.
+4. Untuk Field ID proyek, atur awalan, nomor katalog saat ini, akhiran, dan penambahan otomatis di `Setup NAHPU` > `Identifiers` atau pengaturan Field ID spesimen. Mode ini tidak menggunakan nomor pribadi Cataloger.
+5. Cocokkan pengenal yang dihasilkan dengan label yang diinginkan sebelum pengumpulan. Nomor katalog bukan UUID proyek; perubahan awalan atau akhiran memengaruhi ID proyek yang ditampilkan.
 {% /steps %}
-
-{% aside type="caution" %}
-Sebuah proyek memerlukan setidaknya satu orang dengan peran `Cataloger`. Orang itu memegang nomor lapangan yang menghasilkan setiap ID lapangan spesimen, dan perannya tidak dapat diubah setelah dibuat.
-{% /aside %}
 
 ## Pelajari lebih lanjut
 
-- [Buka panduan lengkap](https://nahpu.app/id/usages/personnel/)
-- [Buat proyek](https://nahpu.app/id/how-to-recipes/prepare/create-project/)
+- [Personel](https://nahpu.app/id/usages/personnel/)
 - [Pengaturan](https://nahpu.app/id/usages/settings/)
-- [NAHPU Hari Ke-1](https://nahpu.app/id/day-one/)

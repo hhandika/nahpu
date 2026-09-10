@@ -217,13 +217,13 @@ void main() {
     expect(find.text('Sedimentology'), findsOneWidget);
     await widgetRef
         .read(catalogFmtNotifierProvider.notifier)
-        .set(CatalogFmt.mammals);
+        .set(CatalogFmt.mammalogy);
     await tester.pumpAndSettle();
     expect(find.text('Sedimentology'), findsNothing);
     expect(find.text('Site Attributes'), findsOneWidget);
     await widgetRef
         .read(catalogFmtNotifierProvider.notifier)
-        .set(CatalogFmt.fossils);
+        .set(CatalogFmt.paleontology);
     await tester.pumpAndSettle();
     expect(find.text('Sandstone'), findsOneWidget);
     expect(

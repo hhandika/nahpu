@@ -10,7 +10,7 @@ import 'package:nahpu/services/types/specimens.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/specimens/specimen_services.dart';
 import 'package:nahpu/services/export/bird_attributes.dart';
-import 'package:nahpu/services/export/arthropod_attributes.dart';
+import 'package:nahpu/services/export/invertebrate_attributes.dart';
 import 'package:nahpu/services/export/mammal_attributes.dart';
 import 'package:nahpu/services/export/herp_attributes.dart';
 import 'package:nahpu/services/export/fossil_attributes.dart';
@@ -138,8 +138,8 @@ class SpecimenRecordWriter {
         return batAttributeExportList;
       case SpecimenRecordType.herpetofauna:
         return herpAttributeExportList;
-      case SpecimenRecordType.arthropods:
-        return arthropodAttributeExportList;
+      case SpecimenRecordType.invertebrates:
+        return invertebrateAttributeExportList;
       case SpecimenRecordType.fossils:
         return fossilAttributeExportList;
       case SpecimenRecordType.allTaxa:
@@ -148,7 +148,7 @@ class SpecimenRecordWriter {
           ...birdAttributeExportList,
           ...batAttributeExportList,
           ...herpAttributeExportList,
-          ...arthropodAttributeExportList,
+          ...invertebrateAttributeExportList,
           ...fossilAttributeExportList,
         }.toList();
     }
@@ -222,9 +222,9 @@ class SpecimenRecordWriter {
         keys = herpAttributeExportList;
         values = await _getHerpAttributes(data.uuid);
         break;
-      case SpecimenRecordType.arthropods:
-        keys = arthropodAttributeExportList;
-        values = await _getArthropodAttributes(data.uuid);
+      case SpecimenRecordType.invertebrates:
+        keys = invertebrateAttributeExportList;
+        values = await _getInvertebrateAttributes(data.uuid);
         break;
       case SpecimenRecordType.fossils:
         keys = fossilAttributeExportList;
@@ -280,16 +280,16 @@ class SpecimenRecordWriter {
     return await herps.getAttributes();
   }
 
-  Future<List<String>> _getArthropodAttributes(String specimenUuid) async {
-    final arthropods = ArthropodAttributes(
+  Future<List<String>> _getInvertebrateAttributes(String specimenUuid) async {
+    final invertebrates = InvertebrateAttributes(
       specimenUuid: specimenUuid,
       ref: ref,
     );
-    return await arthropods.getAttributes();
+    return await invertebrates.getAttributes();
   }
 
   bool get _includeParasites =>
-      recordType != SpecimenRecordType.arthropods &&
+      recordType != SpecimenRecordType.invertebrates &&
       recordType != SpecimenRecordType.fossils;
 
   Future<String> _getSpecimenMedia(String specimenUuid) async {

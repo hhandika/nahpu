@@ -12,6 +12,11 @@ enum RecordMetricKind {
   families(label: 'Families', slug: 'families'),
   genera(label: 'Genera', slug: 'genera'),
   species(label: 'Species', slug: 'species'),
+  media(label: 'Media files', slug: 'media'),
+  specimenMedia(label: 'Specimen media', slug: 'specimen-media'),
+  siteMedia(label: 'Site media', slug: 'site-media'),
+  eventMedia(label: 'Event media', slug: 'event-media'),
+  narrativeMedia(label: 'Narrative media', slug: 'narrative-media'),
   recordedSites(
     label: 'Recorded sites',
     slug: 'recorded-sites',
@@ -58,7 +63,9 @@ enum RecordMetricKind {
   ///
   /// The specimen headline and the taxonomic rank counts lean on type scale and
   /// fill for emphasis, and the rank counts read as one ladder, so they stay
-  /// iconless on both the dashboard panel and the full-screen summary.
+  /// iconless on both the dashboard panel and the full-screen summary. The
+  /// media counts slice one total by category and read as one set the same
+  /// way, so they stay iconless too.
   final IconData? icon;
 
   /// Whether this metric is rendered with its [icon].

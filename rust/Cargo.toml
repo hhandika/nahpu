@@ -13,26 +13,29 @@ crate-type = ["cdylib", "staticlib"]
 [dependencies]
 flutter_rust_bridge = "=2.13.0"
 nahpu_archive = "0.3.0"
-nahpu_db = "0.5.2"
-nahpu_export = "0.6.0"
+nahpu_db = "0.6.0"
+nahpu_export = "0.7.0"
 nahpu_gis = "0.5.0"
 nahpu_images = "0.2.0"
 rayon = "1.12.0"
 serde_json = "1.0.150"
 nahpu_configs = "0.7.1"
-nahpu_dwc = "0.5.0"
-nahpu_dp = "0.3.3"
+nahpu_dwc = "0.7.0"
+nahpu_dp = "0.3.4"
 
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(frb_expand)'] }
 
-# Schema v21 support is built from the sibling `nahpu_api` checkout until compatible
-# `nahpu_db` and `nahpu_export` releases are published.
+# Every schema v22 crate is published, so the app builds from crates.io. Keep
+# this scaffold commented out for the next unpublished API change: uncomment the
+# crates you are developing against and raise their `[dependencies]` versions to
+# match, or cargo ignores the patch. The paths are relative to this file, so the
+# checkout must sit beside the Flutter repository as `Rust/nahpu_api`.
 [patch.crates-io]
 # nahpu_archive = { path = "../../../Rust/nahpu_api/crates/nahpu_archive" }
 # # nahpu_configs = { path = "../../../Rust/nahpu_api/crates/nahpu_configs" }
 # nahpu_db = { path = "../../../Rust/nahpu_api/crates/nahpu_db" }
-# # nahpu_dp = { path = "../../../Rust/nahpu_api/crates/nahpu_dp" }
+# nahpu_dp = { path = "../../../Rust/nahpu_api/crates/nahpu_dp" }
 # nahpu_dwc = { path = "../../../Rust/nahpu_api/crates/nahpu_dwc" }
 # nahpu_export = { path = "../../../Rust/nahpu_api/crates/nahpu_export" }
 # nahpu_gis = { path = "../../../Rust/nahpu_api/crates/nahpu_gis" }

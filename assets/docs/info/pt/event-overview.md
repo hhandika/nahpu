@@ -1,15 +1,13 @@
 ---
-title: "Visão geral do evento"
+title: "Visão geral do evento de coleta"
 sidebar:
   order: 0
 ---
 
-Um evento de coleta registra um esforço de amostragem definido em um local e em um momento. Os espécimes se vinculam a um evento para obter seu local, suas datas, seu contexto de amostragem e sua equipe de campo, de modo que muitos registros de espécimes podem compartilhar um mesmo evento.
+Um evento de coleta descreve a amostragem em um local durante um período definido. Os espécimes vinculados compartilham o local e o contexto da amostragem. Informe datas e horários que representem o esforço real, inclusive quando ele atravessa a meia-noite.
 
-O NAHPU monta o Event ID a partir do Site ID e da data de início; acrescente um sufixo apenas quando outro evento teria o mesmo identificador. Crie um evento separado quando o local, o período, o protocolo de amostragem, o esforço ou a equipe participante mudarem de forma significativa.
+O NAHPU forma o Event ID com o Site ID e a data inicial. Adicione um sufixo para distinguir eventos no mesmo local e dia. Crie outro evento quando o período, protocolo, esforço ou equipe mudar. `Duplicate` reutiliza a configuração, incluindo os registros de esforço, mas deixa os dados ambientais vazios. Revise os dados copiados e registre as novas condições.
 
-Duplicar um evento reaproveita a configuração aplicável, mas avança as datas e deixa os dados meteorológicos vazios. Revise cada valor copiado antes de usar.
+## Saiba mais
 
-## Contexto do Darwin Core
-
-O evento é exportado como um evento de amostragem: o Event ID vira `dwc:eventID`, o local vira `dwc:locationID`, e as datas e horas viram `dwc:eventDate` e `dwc:eventTime`. Um intervalo de datas é exportado como um único intervalo ISO 8601.
+- [Eventos de Coleta](https://nahpu.app/pt/usages/events/)

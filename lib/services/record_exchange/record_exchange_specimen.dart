@@ -234,8 +234,8 @@ class RecordExchangeSpecimen extends AppServices {
     final herp = await (dbAccess.select(
       dbAccess.herpAttribute,
     )..where((row) => row.specimenUuid.equals(uuid))).getSingleOrNull();
-    final arthropod = await (dbAccess.select(
-      dbAccess.arthropodAttribute,
+    final invertebrate = await (dbAccess.select(
+      dbAccess.invertebrateAttribute,
     )..where((row) => row.specimenUuid.equals(uuid))).getSingleOrNull();
     final fossil = await (dbAccess.select(
       dbAccess.fossilAttribute,
@@ -244,7 +244,7 @@ class RecordExchangeSpecimen extends AppServices {
       'mammal': mammal?.toJson(),
       'avian': bird?.toJson(),
       'herp': herp?.toJson(),
-      'arthropod': arthropod?.toJson(),
+      'invertebrate': invertebrate?.toJson(),
       'fossil': fossil?.toJson(),
     };
   }
@@ -473,6 +473,7 @@ class RecordExchangeSpecimen extends AppServices {
     final source = SpecimenData.fromJson({
       ...json,
       'condition': canonicalizeCondition(json['condition'] as String?),
+      'taxonGroup': canonicalizeTaxonGroup(json['taxonGroup'] as String?),
       'uuid': uuid,
       'projectUuid': currentProjectUuid,
       'speciesID': taxonomyId,
@@ -510,7 +511,7 @@ class RecordExchangeSpecimen extends AppServices {
       dbAccess.herpAttribute,
     )..where((row) => row.specimenUuid.equals(uuid))).go();
     await (dbAccess.delete(
-      dbAccess.arthropodAttribute,
+      dbAccess.invertebrateAttribute,
     )..where((row) => row.specimenUuid.equals(uuid))).go();
     await (dbAccess.delete(
       dbAccess.fossilAttribute,
@@ -585,13 +586,14 @@ class RecordExchangeSpecimen extends AppServices {
             }).toCompanion(true),
           );
     }
-    final arthropod = attributes['arthropod'];
-    if (arthropod is Map) {
+    // 'arthropod' is the pre-v6 key for the same collection.
+    final invertebrate = attributes['invertebrate'] ?? attributes['arthropod'];
+    if (invertebrate is Map) {
       await dbAccess
-          .into(dbAccess.arthropodAttribute)
+          .into(dbAccess.invertebrateAttribute)
           .insert(
-            ArthropodAttributeData.fromJson({
-              ...Map<String, dynamic>.from(arthropod),
+            InvertebrateAttributeData.fromJson({
+              ...Map<String, dynamic>.from(invertebrate),
               'specimenUuid': uuid,
             }).toCompanion(true),
           );

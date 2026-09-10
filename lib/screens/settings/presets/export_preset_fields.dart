@@ -619,7 +619,7 @@ Map<String, List<String>> _availableFieldGroups(
         'mammalAttribute',
         'birdAttribute',
         'herpAttribute',
-        'arthropodAttribute',
+        'invertebrateAttribute',
         'fossilAttribute',
         'specimenPart',
       };
@@ -628,23 +628,23 @@ Map<String, List<String>> _availableFieldGroups(
           specimenRecordType == SpecimenRecordType.allMammals) {
         allowedTables.remove('birdAttribute');
         allowedTables.remove('herpAttribute');
-        allowedTables.remove('arthropodAttribute');
+        allowedTables.remove('invertebrateAttribute');
       } else if (specimenRecordType == SpecimenRecordType.birds) {
         allowedTables.remove('mammalAttribute');
         allowedTables.remove('herpAttribute');
-        allowedTables.remove('arthropodAttribute');
+        allowedTables.remove('invertebrateAttribute');
       } else if (specimenRecordType == SpecimenRecordType.herpetofauna) {
         allowedTables.remove('mammalAttribute');
         allowedTables.remove('birdAttribute');
-        allowedTables.remove('arthropodAttribute');
+        allowedTables.remove('invertebrateAttribute');
       } else if (specimenRecordType == SpecimenRecordType.fossils) {
         allowedTables.removeAll({
           'mammalAttribute',
           'birdAttribute',
           'herpAttribute',
-          'arthropodAttribute',
+          'invertebrateAttribute',
         });
-      } else if (specimenRecordType == SpecimenRecordType.arthropods) {
+      } else if (specimenRecordType == SpecimenRecordType.invertebrates) {
         allowedTables.remove('mammalAttribute');
         allowedTables.remove('birdAttribute');
         allowedTables.remove('herpAttribute');
@@ -695,13 +695,14 @@ bool _matchesSpecimenRecordType(
     return true;
   }
   return switch (recordType) {
-    SpecimenRecordType.birds => catalog == CatalogFmt.birds,
+    SpecimenRecordType.birds => catalog == CatalogFmt.ornithology,
     SpecimenRecordType.generalMammals ||
     SpecimenRecordType.bats ||
-    SpecimenRecordType.allMammals => catalog == CatalogFmt.mammals,
-    SpecimenRecordType.herpetofauna => catalog == CatalogFmt.herpetofauna,
-    SpecimenRecordType.arthropods => catalog == CatalogFmt.arthropods,
-    SpecimenRecordType.fossils => catalog == CatalogFmt.fossils,
+    SpecimenRecordType.allMammals => catalog == CatalogFmt.mammalogy,
+    SpecimenRecordType.herpetofauna => catalog == CatalogFmt.herpetology,
+    SpecimenRecordType.invertebrates =>
+      catalog == CatalogFmt.invertebrateZoology,
+    SpecimenRecordType.fossils => catalog == CatalogFmt.paleontology,
     SpecimenRecordType.allTaxa => true,
   };
 }

@@ -4,20 +4,21 @@ sidebar:
   order: 3
 ---
 
-Add coordinates from field notes, GIS files, or a NAHPU QR code.
+Add coordinates from field notes, spreadsheets, GIS files, or a NAHPU QR code.
 
 ## Steps
 
 {% steps %}
 
-1. Open `Coordinates` and select `Add coordinate`.
-2. For manual entry, choose DD, DDM, DMS, or WGS84 UTM and enter the required values and directions.
-3. For file import, choose `Import` and select GeoJSON/JSON, KML, zipped Shapefile, or GPX.
-4. For a NAHPU coordinate QR code, select `Scan QR` and point the camera at a code shown by `Show QR` on the other device.
-5. Review the datum, uncertainty, elevation, and mapped position before saving.
+1. Open a site and select `Add coordinate`. For manual entry, choose DD, DDM, DMS, or WGS84 UTM and enter the values and directions.
+2. For file import, choose `Import` > `Select coordinate file`. Supported files include CSV, TSV, Excel, GeoJSON/JSON, KML, zipped Shapefile, and GPX.
+3. For tabular files, map the coordinate columns and optional fields, then select `Review coordinates`. Use `Edit column mapping` if the preview is incorrect.
+4. For a NAHPU QR code, use `Scan QR` to read the coordinate shown on another device.
+5. Review warnings and mapped positions. Check the datum, coordinate format, elevation units, and any missing uncertainty information.
+6. Select the points to keep and use `Add N selected` for a file import. Open the saved coordinates on the site to verify the result.
 {% /steps %}
 
 ## Learn more
 
-- [Open the full guide](https://nahpu.app/en/usages/sites/#manually-adding-coordinate)
+- [Sites](https://nahpu.app/en/usages/sites/#import-coordinates-from-a-file)
 - [Capture a coordinate with GPS](https://nahpu.app/en/how-to-recipes/collect/capture-gps-coordinate/)

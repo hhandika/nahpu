@@ -151,7 +151,7 @@ void main() {
   );
 
   for (final catalog in CatalogFmt.values.where(
-    (value) => value != CatalogFmt.fossils,
+    (value) => value != CatalogFmt.paleontology,
   )) {
     testWidgets(
       'standard ${catalog.name} export keeps incomplete records aligned',

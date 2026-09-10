@@ -21,7 +21,7 @@ import 'package:nahpu/services/projects/taxonomy_services.dart';
 import 'package:nahpu/services/types/birds.dart' as birds;
 import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/types/mammals.dart' as mammals;
-import 'package:nahpu/services/types/arthropods.dart';
+import 'package:nahpu/services/types/invertebrates.dart';
 import 'package:nahpu/services/types/specimens.dart';
 import 'package:nahpu/services/types/custom_field.dart';
 import 'package:nahpu/services/types/parasites.dart';
@@ -291,6 +291,7 @@ class DwcBundleWriter extends AppServices {
     final interactionRows = <Map<String, dynamic>>[];
     final mediaRows = <Map<String, dynamic>>[];
     final warnings = <String>[];
+    final withheldCustomFields = <String>{};
     final agents = <String, _ResolvedAgent>{};
     final occurrenceAgentRoles = <Map<String, dynamic>>[];
     final eventAgentRoles = <Map<String, dynamic>>[];
@@ -372,6 +373,7 @@ class DwcBundleWriter extends AppServices {
         assertionOwnerKey: 'occurrenceID',
         assertionOwnerId: specimen.uuid,
         warnings: warnings,
+        withheldCustomFields: withheldCustomFields,
       );
       occurrenceRows.add(occurrenceRow);
       if (event != null) {
@@ -400,6 +402,7 @@ class DwcBundleWriter extends AppServices {
             assertionOwnerKey: 'eventID',
             assertionOwnerId: eventId,
             warnings: warnings,
+            withheldCustomFields: withheldCustomFields,
           );
           if (site != null) {
             _applyCustomFields(
@@ -411,6 +414,7 @@ class DwcBundleWriter extends AppServices {
               assertionOwnerKey: 'eventID',
               assertionOwnerId: eventId,
               warnings: warnings,
+              withheldCustomFields: withheldCustomFields,
             );
           }
           events[eventId] = eventRow;
@@ -444,6 +448,7 @@ class DwcBundleWriter extends AppServices {
           materialAgentRoles,
           materialAssertionRows,
           warnings,
+          withheldCustomFields,
         ),
       );
       measurementRows.addAll(await _measurementRows(specimen));
@@ -455,11 +460,21 @@ class DwcBundleWriter extends AppServices {
         occurrenceAssertionRows,
         interactionAssertionRows,
         warnings,
+        withheldCustomFields,
       );
       occurrenceRows.addAll(parasiteExport.occurrences);
       interactionRows.addAll(parasiteExport.interactions);
       mediaRows.addAll(
         await _mediaRows(specimen.uuid, agents, mediaAgentRoles),
+      );
+    }
+
+    if (withheldCustomFields.isNotEmpty) {
+      final names = withheldCustomFields.toList()..sort();
+      warnings.add(
+        '${names.length} custom field(s) have no Darwin Core term and were not '
+        'exported: ${names.join(', ')}. Export a NAHPU Data Package to keep '
+        'them.',
       );
     }
 
@@ -544,6 +559,11 @@ class DwcBundleWriter extends AppServices {
       );
       final userConfigs =
           jsonDecode(await configsFile.readAsString()) as Map<String, dynamic>;
+      final tables = await _buildNahpuTables(database, payload);
+      final populatedTables = tables
+          .where((table) => (table['rows'] as List).isNotEmpty)
+          .map((table) => table['name'] as String)
+          .toSet();
       final request = <String, dynamic>{
         'archive_format': archiveFormat.wireValue,
         'name': '${payload.projectName} NAHPU data',
@@ -554,8 +574,8 @@ class DwcBundleWriter extends AppServices {
         'user_config_schema_version': userConfigs['schema_version'] as int,
         'project_json': payload.encoded,
         'user_configs': userConfigs,
-        'tables': await _buildNahpuTables(database, payload),
-        'enum_mappings': buildNahpuSqliteEnumMappings(),
+        'tables': tables,
+        'enum_mappings': buildNahpuSqliteEnumMappings(tables: populatedTables),
         'controlled_vocabularies': controlledVocabularies,
         'files': await _collectNahpuPackageFiles(payload),
       };
@@ -789,10 +809,10 @@ class DwcBundleWriter extends AppServices {
   }
 
   String? _casteLabel(dynamic value) {
-    if (value is! int || value < 0 || value >= arthropodCasteList.length) {
+    if (value is! int || value < 0 || value >= invertebrateCasteList.length) {
       return null;
     }
-    return arthropodCasteList[value];
+    return invertebrateCasteList[value];
   }
 
   String? _habitat(SiteAttributeData? attribute) {
@@ -897,6 +917,7 @@ class DwcBundleWriter extends AppServices {
     List<Map<String, dynamic>> roles,
     List<Map<String, dynamic>> assertionRows,
     List<String> warnings,
+    Set<String> withheldCustomFields,
   ) async {
     final parts = await SpecimenPartServices(
       ref: ref,
@@ -932,6 +953,7 @@ class DwcBundleWriter extends AppServices {
         assertionOwnerKey: 'materialEntityID',
         assertionOwnerId: materialEntityId,
         warnings: warnings,
+        withheldCustomFields: withheldCustomFields,
       );
       rows.add(row);
       final agent = await _resolveAgent(
@@ -966,6 +988,7 @@ class DwcBundleWriter extends AppServices {
     List<Map<String, dynamic>> occurrenceAssertions,
     List<Map<String, dynamic>> interactionAssertions,
     List<String> warnings,
+    Set<String> withheldCustomFields,
   ) async {
     final parasites = await (dbAccess.select(
       dbAccess.parasite,
@@ -1049,6 +1072,7 @@ class DwcBundleWriter extends AppServices {
         assertionOwnerKey: 'occurrenceID',
         assertionOwnerId: occurrenceId,
         warnings: warnings,
+        withheldCustomFields: withheldCustomFields,
       );
       _applyCustomFields(
         entries
@@ -1062,7 +1086,7 @@ class DwcBundleWriter extends AppServices {
         assertionOwnerKey: 'organismInteractionID',
         assertionOwnerId: interactionId,
         warnings: warnings,
-        includeUnmapped: false,
+        withheldCustomFields: withheldCustomFields,
       );
       occurrences.add(occurrence);
       interactions.add(interaction);
@@ -1070,6 +1094,11 @@ class DwcBundleWriter extends AppServices {
     return (occurrences: occurrences, interactions: interactions);
   }
 
+  /// Applies custom-field values that resolve to an exact Darwin Core term.
+  ///
+  /// A value whose definition has no Darwin Core mapping is not written to a Darwin Core
+  /// bundle at all. Its name is collected in [withheldCustomFields] so the caller can tell
+  /// the user where the value is still available.
   void _applyCustomFields(
     List<CustomFieldEntry> entries,
     Map<String, dynamic> row, {
@@ -1077,9 +1106,8 @@ class DwcBundleWriter extends AppServices {
     required String assertionOwnerKey,
     required String assertionOwnerId,
     required List<String> warnings,
-    bool includeUnmapped = true,
+    required Set<String> withheldCustomFields,
   }) {
-    final dynamicProperties = <String, dynamic>{};
     for (final entry in entries) {
       final value = entry.value;
       if (value == null) continue;
@@ -1087,12 +1115,7 @@ class DwcBundleWriter extends AppServices {
       final display = definition.displayValue(value.value);
       final mapping = definition.dwcMapping;
       if (mapping == null) {
-        if (includeUnmapped) {
-          dynamicProperties[definition.name] = _typedCustomValue(
-            definition,
-            value.value,
-          );
-        }
+        withheldCustomFields.add(definition.name);
         continue;
       }
       if (mapping.mode == DwcMappingMode.assertion) {
@@ -1116,19 +1139,7 @@ class DwcBundleWriter extends AppServices {
         row[targetField] = display;
       }
     }
-    if (dynamicProperties.isNotEmpty) {
-      row['dynamicProperties'] = jsonEncode(dynamicProperties);
-    }
   }
-
-  Object _typedCustomValue(
-    CustomFieldDefinitionData definition,
-    String value,
-  ) => switch (definition.fieldType) {
-    FieldType.boolean => value == 'true',
-    FieldType.number => num.tryParse(value) ?? value,
-    FieldType.text || FieldType.dropdown => definition.displayValue(value),
-  };
 
   Future<List<Map<String, dynamic>>> _measurementRows(
     SpecimenData specimen,
@@ -1162,10 +1173,10 @@ class DwcBundleWriter extends AppServices {
           return (await SpecimenServices(
             ref: ref,
           ).getHerpAttributeData(specimen.uuid)).toJson();
-        case 'Arthropods':
+        case 'Invertebrates':
           return (await SpecimenServices(
             ref: ref,
-          ).getArthropodAttributeData(specimen.uuid)).toJson();
+          ).getInvertebrateAttributeData(specimen.uuid)).toJson();
         case 'Fossils':
           return (await (dbAccess.select(dbAccess.fossilAttribute)
                     ..where((row) => row.specimenUuid.equals(specimen.uuid)))
@@ -1391,18 +1402,24 @@ class DwcBundleWriter extends AppServices {
   }
 }
 
-List<Map<String, dynamic>> buildNahpuSqliteEnumMappings() {
-  return [
+/// The SQLite enum mappings a NAHPU Data Package describes.
+///
+/// [tables] limits the result to the tables the package actually carries, so a
+/// mammals-only project does not describe bird, herpetofauna, or invertebrate
+/// enum columns.
+/// Passing null returns every mapping.
+List<Map<String, dynamic>> buildNahpuSqliteEnumMappings({Set<String>? tables}) {
+  final mappings = <Map<String, dynamic>>[
     ..._specimenSexMappingRows(table: 'mammalAttribute', column: 'sex'),
     ..._specimenSexMappingRows(table: 'birdAttribute', column: 'sex'),
     ..._specimenSexMappingRows(table: 'herpAttribute', column: 'sex'),
-    ..._specimenSexMappingRows(table: 'arthropodAttribute', column: 'sex'),
+    ..._specimenSexMappingRows(table: 'invertebrateAttribute', column: 'sex'),
     ..._indexedMappingRows(
-      table: 'arthropodAttribute',
+      table: 'invertebrateAttribute',
       column: 'caste',
-      enumType: 'ArthropodCaste',
-      enumNames: arthropodCasteList,
-      displayNames: arthropodCasteList,
+      enumType: 'InvertebrateCaste',
+      enumNames: invertebrateCasteList,
+      displayNames: invertebrateCasteList,
     ),
     ..._enumMappingRows(
       table: 'mammalAttribute',
@@ -1489,6 +1506,10 @@ List<Map<String, dynamic>> buildNahpuSqliteEnumMappings() {
       displayNames: idConfidenceList,
     ),
   ];
+  if (tables == null) return mappings;
+  return mappings
+      .where((row) => tables.contains(row['table']))
+      .toList(growable: false);
 }
 
 List<Map<String, dynamic>> _specimenSexMappingRows({
@@ -1707,10 +1728,11 @@ String normalizeBundleTaxonGroup(String? value) {
       normalized.contains('amphib')) {
     return 'Herpetofauna';
   }
-  if (normalized.contains('arthropod') ||
+  if (normalized.contains('invertebrate') ||
+      normalized.contains('arthropod') ||
       normalized.contains('insect') ||
       normalized.contains('arachnid')) {
-    return 'Arthropods';
+    return 'Invertebrates';
   }
   if (normalized.contains('fossil') || normalized.contains('paleo')) {
     return 'Fossils';

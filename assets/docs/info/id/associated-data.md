@@ -6,8 +6,12 @@ sidebar:
 
 Data terkait menghubungkan sebuah catatan dengan tautan dan berkas non-media pendukung, seperti rujukan aksesi, kumpulan data, izin, protokol, catatan sekuens, atau dokumen.
 
-Pilih tipe data yang menggambarkan hubungannya, tambahkan nama, deskripsi, dan tanggal, lalu sediakan URI yang stabil atau berkas terkelola. Gunakan Media untuk gambar, audio, dan video agar metadata audiovisual tercatat secara konsisten. Periksa setiap tautan atau berkas setelah ditambahkan, dan jangan melampirkan materi sensitif kecuali akses dan pembagiannya sudah diizinkan.
+Pilih `Link` atau `File` dalam `Data type`, tambahkan nama, deskripsi, dan tanggal, lalu sediakan URI yang stabil atau berkas terkelola. Gunakan Media untuk gambar, audio, dan video agar metadata audiovisual tercatat secara konsisten. Periksa setiap tautan atau berkas setelah ditambahkan.
 
-## Konteks Darwin Core
+URI merujuk ke sumber eksternal; URI tidak membuat sumber tersebut tersedia secara luring. Buka berkas yang dikelola setelah impor dan sertakan dalam pemeriksaan cadangan.
 
-Data terkait tidak memiliki kelas tersendiri dalam Darwin Core. Ekspor tabel memetakan catatan ini ke istilah Dublin Core: nama ke `dcterms:title`, tipe data ke `dcterms:type`, deskripsi ke `dcterms:description`, tanggal ke `dcterms:created`, dan URI ke `dcterms:identifier`.
+Pada desktop, `Copy to project` menyimpan salinan terkelola; `Link original` bergantung pada akses ke jalur sumber. Periksa ketersediaan berkas setelah transfer.
+
+## Pelajari lebih lanjut
+
+- [Catatan Spesimen](https://nahpu.app/id/usages/specimens/#associated-data)

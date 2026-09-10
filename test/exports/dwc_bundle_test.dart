@@ -14,6 +14,7 @@ import 'package:nahpu/services/export/dwc_bundle.dart';
 import 'package:nahpu/services/providers/database.dart';
 import 'package:nahpu/services/providers/projects.dart';
 import 'package:nahpu/src/rust/api/config.dart' as rust_config;
+import 'package:nahpu/src/rust/api/dwc.dart' as rust_dwc;
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../helpers/rust_library.dart';
@@ -29,8 +30,10 @@ void main() {
     expect(normalizeBundleTaxonGroup('Non-Bat Mammals'), 'Mammals');
     expect(normalizeBundleTaxonGroup('Bats'), 'Bats');
     expect(normalizeBundleTaxonGroup('Herpetofauna'), 'Herpetofauna');
-    expect(normalizeBundleTaxonGroup('Arthropoda'), 'Arthropods');
-    expect(normalizeBundleTaxonGroup('Insects'), 'Arthropods');
+    expect(normalizeBundleTaxonGroup('Arthropoda'), 'Invertebrates');
+    expect(normalizeBundleTaxonGroup('Arthropods'), 'Invertebrates');
+    expect(normalizeBundleTaxonGroup('Invertebrates'), 'Invertebrates');
+    expect(normalizeBundleTaxonGroup('Insects'), 'Invertebrates');
   });
 
   test('bundle types expose valid archive choices and extensions', () {
@@ -154,6 +157,50 @@ void main() {
           ),
         );
 
+    for (final definition in <List<Object?>>[
+      ['cf-unmapped', 'Field notebook page', null, null, null],
+      [
+        'cf-direct',
+        'Collector note',
+        'occurrence',
+        'dwc:occurrenceRemarks',
+        'direct',
+      ],
+      [
+        'cf-assertion',
+        'Tail condition',
+        'occurrence',
+        'dwc:occurrenceRemarks',
+        'assertion',
+      ],
+    ]) {
+      final id = await database
+          .into(database.customFieldDefinition)
+          .insert(
+            CustomFieldDefinitionCompanion(
+              uuid: Value(definition[0]! as String),
+              name: Value(definition[1]! as String),
+              type: const Value('text'),
+              uiSection: const Value('specimenAttribute'),
+              scope: const Value('project'),
+              projectUuid: const Value('project-dwc'),
+              dwcTarget: Value(definition[2] as String?),
+              dwcField: Value(definition[3] as String?),
+              dwcMode: Value(definition[4] as String?),
+            ),
+          );
+      await database
+          .into(database.customFieldValue)
+          .insert(
+            CustomFieldValueCompanion(
+              fieldDefinitionId: Value(id),
+              projectUuid: const Value('project-dwc'),
+              specimenUuid: const Value('specimen-dwc'),
+              value: Value('value for ${definition[0]}'),
+            ),
+          );
+    }
+
     WidgetRef? widgetRef;
     await tester.pumpWidget(
       ProviderScope(
@@ -184,15 +231,35 @@ void main() {
     expect(
       files['occurrence.csv']!.columns,
       containsAll(<String>{
+        'occurrence_pk',
         'identificationVerificationStatus',
         'reproductiveCondition',
-        'catalogNumber',
-        'individualCount',
-        'samplingProtocol',
         'identifiedByID',
       }),
     );
+    // The Data Package Occurrence class is thin: determination ranks belong to
+    // `identification`, and location and collecting values belong to `event`.
+    expect(
+      files['occurrence.csv']!.columns,
+      isNot(
+        anyOf(
+          contains('catalogNumber'),
+          contains('basisOfRecord'),
+          contains('genus'),
+          contains('decimalLatitude'),
+          contains('samplingProtocol'),
+        ),
+      ),
+    );
+    expect(
+      files['identification.csv']!.columns,
+      containsAll(<String>{'occurrence_fk', 'genus', 'scientificName'}),
+    );
     expect(files['event.csv']!.columns, contains('eventRemarks'));
+    expect(
+      files['event.csv']!.columns,
+      isNot(anyOf(contains('eventConductedBy'), contains('samplingProtocol'))),
+    );
     expect(
       files['material.csv']!.columns,
       containsAll(<String>{
@@ -209,6 +276,129 @@ void main() {
         'relatedOrganismPart',
       }),
     );
+
+    // A custom field with no Darwin Core term is withheld, not blobbed into
+    // dynamicProperties, and the user is told where the value still lives.
+    expect(
+      files['occurrence.csv']!.columns,
+      isNot(contains('dynamicProperties')),
+    );
+    final withheld = manifest.warnings.singleWhere(
+      (warning) => warning.contains('Field notebook page'),
+    );
+    expect(withheld, contains('NAHPU Data Package'));
+    expect(withheld, isNot(contains('Collector note')));
+    expect(withheld, isNot(contains('Tail condition')));
+    expect(files['occurrence.csv']!.columns, contains('occurrenceRemarks'));
+    expect(
+      files['occurrence-assertion.csv']!.columns,
+      containsAll(<String>{'assertionType', 'assertionValue'}),
+    );
+  });
+
+  testWidgets('every planned bundle column is a registered term', (
+    tester,
+  ) async {
+    final registered = <String>{};
+    for (final column
+        in await tester.runAsync(rust_dwc.dwcBundleColumns) ?? []) {
+      registered.add('${column.profile}:${column.table}:${column.header}');
+    }
+    expect(registered, isNotEmpty);
+
+    final database = Database.forTesting(
+      DatabaseConnection(NativeDatabase.memory()),
+    );
+    addTearDown(database.close);
+    await database
+        .into(database.project)
+        .insert(
+          const ProjectCompanion(
+            uuid: Value('project-guard'),
+            name: Value('Guard project'),
+          ),
+        );
+    final eventId = await database
+        .into(database.collEvent)
+        .insert(
+          const CollEventCompanion(
+            projectUuid: Value('project-guard'),
+            startDate: Value('2026-08-20'),
+          ),
+        );
+    await database
+        .into(database.specimen)
+        .insert(
+          SpecimenCompanion(
+            uuid: const Value('specimen-guard'),
+            projectUuid: const Value('project-guard'),
+            taxonGroup: const Value('Mammals'),
+            collEventID: Value(eventId),
+          ),
+        );
+    await database
+        .into(database.specimenPart)
+        .insert(
+          const SpecimenPartCompanion(
+            specimenUuid: Value('specimen-guard'),
+            type: Value('tissue'),
+            count: Value('1'),
+          ),
+        );
+
+    WidgetRef? widgetRef;
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [databaseProvider.overrideWithValue(database)],
+        child: MaterialApp(
+          home: Consumer(
+            builder: (context, ref, child) {
+              widgetRef = ref;
+              return const SizedBox.shrink();
+            },
+          ),
+        ),
+      ),
+    );
+    widgetRef!
+        .read(projectUuidProvider.notifier)
+        .updateProjectUuid('project-guard');
+
+    for (final format in <DwcBundleFormat>[
+      DwcBundleFormat.darwinCoreArchive,
+      DwcBundleFormat.darwinCoreDataPackage,
+    ]) {
+      final profile = format == DwcBundleFormat.darwinCoreArchive
+          ? 'archive'
+          : 'data_package';
+      final manifest = (await tester.runAsync(
+        () => DwcBundleWriter(ref: widgetRef!).plan(
+          format: format,
+          archiveFormat: format.defaultArchive,
+          selectedTaxonGroups: const {'Mammals'},
+        ),
+      ))!;
+      var checked = 0;
+      for (final file in manifest.files) {
+        if (!file.path.endsWith('.csv')) continue;
+        final table = file.path.substring(0, file.path.length - 4);
+        for (final header in file.columns) {
+          expect(
+            registered,
+            contains('$profile:$table:$header'),
+            reason: '$profile $table.$header is not a registered term',
+          );
+          checked++;
+        }
+      }
+      expect(checked, greaterThan(10), reason: '$profile planned no columns');
+      if (format == DwcBundleFormat.darwinCoreArchive) {
+        final paths = manifest.files.map((file) => file.path).toSet();
+        expect(paths, isNot(contains('event.csv')));
+        expect(paths, isNot(contains('agent.csv')));
+        expect(paths, isNot(contains('identification.csv')));
+      }
+    }
   });
 
   test('NAHPU package maps every SQLite enum index with table context', () {
@@ -222,6 +412,13 @@ void main() {
 
     expect(mappings, hasLength(76));
     expect(keys, hasLength(mappings.length));
+    expect(
+      buildNahpuSqliteEnumMappings(
+        tables: const {'specimen'},
+      ).map((mapping) => mapping['table']).toSet(),
+      <String>{'specimen'},
+    );
+    expect(buildNahpuSqliteEnumMappings(tables: const {}), isEmpty);
     final qcf = mappings.singleWhere(
       (mapping) =>
           mapping['table'] == 'mammalAttribute' &&
@@ -242,24 +439,24 @@ void main() {
     expect(highConfidence['enum_name'], 'high');
     expect(highConfidence['display_name'], 'High');
 
-    final arthropodFemale = mappings.singleWhere(
+    final invertebrateFemale = mappings.singleWhere(
       (mapping) =>
-          mapping['table'] == 'arthropodAttribute' &&
+          mapping['table'] == 'invertebrateAttribute' &&
           mapping['column'] == 'sex' &&
           mapping['sqlite_index'] == 1,
     );
-    expect(arthropodFemale['enum_name'], 'female');
-    expect(arthropodFemale['display_name'], 'Female');
+    expect(invertebrateFemale['enum_name'], 'female');
+    expect(invertebrateFemale['display_name'], 'Female');
 
-    final arthropodWorker = mappings.singleWhere(
+    final invertebrateWorker = mappings.singleWhere(
       (mapping) =>
-          mapping['table'] == 'arthropodAttribute' &&
+          mapping['table'] == 'invertebrateAttribute' &&
           mapping['column'] == 'caste' &&
           mapping['sqlite_index'] == 8,
     );
-    expect(arthropodWorker['enum_type'], 'ArthropodCaste');
-    expect(arthropodWorker['enum_name'], 'worker');
-    expect(arthropodWorker['display_name'], 'worker');
+    expect(invertebrateWorker['enum_type'], 'InvertebrateCaste');
+    expect(invertebrateWorker['enum_name'], 'worker');
+    expect(invertebrateWorker['display_name'], 'worker');
 
     final birdMaleUncertain = mappings.singleWhere(
       (mapping) =>
@@ -555,5 +752,5 @@ void _ignoreSelectionMode(BundleTaxonSelectionMode _) {}
 
 class _ExportCatalogFormat extends CatalogFmtNotifier {
   @override
-  Future<CatalogFmt> build() async => CatalogFmt.mammals;
+  Future<CatalogFmt> build() async => CatalogFmt.mammalogy;
 }

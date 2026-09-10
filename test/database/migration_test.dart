@@ -32,15 +32,120 @@ void main() {
     18,
     19,
     20,
+    21,
   ]) {
-    test('upgrade from v$version to v21', () async {
+    test('upgrade from v$version to v22', () async {
       final connection = await verifier.startAt(version);
       final db = Database.forMigrationTesting(connection);
 
-      await verifier.migrateAndValidate(db, 21);
+      await verifier.migrateAndValidate(db, 22);
       await db.close();
     });
   }
+
+  test('v21 to v22 renames invertebrate attributes and disciplines', () async {
+    final schema = await verifier.schemaAt(21);
+    final raw = schema.rawDatabase;
+    raw.execute("INSERT INTO project (uuid, name) VALUES ('project', 'Test')");
+    raw.execute(
+      'INSERT INTO specimen (uuid, projectUuid, taxonGroup) VALUES '
+      "('inv', 'project', 'Arthropods'), "
+      "('bat', 'project', 'Bats'), "
+      "('avian', 'project', 'Avians'), "
+      "('fossil', 'project', 'Fossils')",
+    );
+    raw.execute(
+      'INSERT INTO arthropodAttribute (specimenUuid, headWidth, remark) '
+      "VALUES ('inv', 2.25, 'retained')",
+    );
+    // One definition per pre-v22 catalog format, plus an unrestricted one.
+    for (final entry in const [
+      ('d-inv', 'Caste note', "'arthropods'"),
+      ('d-mammal', 'Pelage note', "'mammals'"),
+      ('d-bird', 'Molt note', "'birds'"),
+      ('d-herp', 'Skin note', "'herpetofauna'"),
+      ('d-any', 'Field note', 'NULL'),
+    ]) {
+      raw.execute(
+        'INSERT INTO customFieldDefinition '
+        '(uuid, name, type, uiSection, scope, projectUuid, catalogFormat) '
+        "VALUES ('${entry.$1}', '${entry.$2}', 'text', 'specimenAttribute', "
+        "'project', 'project', ${entry.$3})",
+      );
+    }
+    raw.execute(
+      'INSERT INTO customFieldValue '
+      '(fieldDefinitionId, projectUuid, value, specimenUuid) VALUES '
+      "((SELECT id FROM customFieldDefinition WHERE uuid = 'd-inv'), "
+      "'project', 'worker', 'inv'), "
+      "((SELECT id FROM customFieldDefinition WHERE uuid = 'd-mammal'), "
+      "'project', 'grey', 'bat')",
+    );
+
+    final db = Database.forMigrationTesting(schema.newConnection());
+    await verifier.migrateAndValidate(db, 22);
+
+    final attribute = await db.select(db.invertebrateAttribute).getSingle();
+    expect(attribute.specimenUuid, 'inv');
+    expect(attribute.headWidth, 2.25);
+    expect(attribute.remark, 'retained');
+    expect(
+      await db.customSelect('PRAGMA table_info(arthropodAttribute)').get(),
+      isEmpty,
+    );
+
+    // Taxon groups keep naming the taxon; only the invertebrate one changed.
+    final taxonGroups = {
+      for (final row in await db.select(db.specimen).get())
+        row.uuid: row.taxonGroup,
+    };
+    expect(taxonGroups['inv'], 'Invertebrates');
+    expect(taxonGroups['bat'], 'Bats');
+    expect(taxonGroups['avian'], 'Avians');
+    expect(taxonGroups['fossil'], 'Fossils');
+
+    // Catalog formats are now disciplines.
+    final formats = {
+      for (final row in await db.select(db.customFieldDefinition).get())
+        row.uuid: row.catalogFormat,
+    };
+    expect(formats['d-inv'], 'invertebrateZoology');
+    expect(formats['d-mammal'], 'mammalogy');
+    expect(formats['d-bird'], 'ornithology');
+    expect(formats['d-herp'], 'herpetology');
+    expect(formats['d-any'], isNull);
+
+    // The recreated triggers must accept the migrated pairings. The
+    // invertebrate value proves the renamed taxon maps to its discipline; the
+    // bat value proves legacy taxon groups still fall through to mammalogy.
+    await expectLater(
+      db.customStatement(
+        "UPDATE customFieldValue SET value = 'soldier' "
+        "WHERE specimenUuid = 'inv'",
+      ),
+      completes,
+    );
+    await expectLater(
+      db.customStatement(
+        "UPDATE customFieldValue SET value = 'brown' "
+        "WHERE specimenUuid = 'bat'",
+      ),
+      completes,
+    );
+
+    // A mismatched catalog is still rejected.
+    await expectLater(
+      db.customStatement(
+        'INSERT INTO customFieldValue '
+        '(fieldDefinitionId, projectUuid, value, specimenUuid) VALUES '
+        "((SELECT id FROM customFieldDefinition WHERE uuid = 'd-bird'), "
+        "'project', 'heavy', 'inv')",
+      ),
+      throwsA(isA<Exception>()),
+    );
+
+    await db.close();
+  });
 
   test('v20 to v21 deduplicates localities into shared geography', () async {
     final schema = await verifier.schemaAt(20);
@@ -72,7 +177,7 @@ void main() {
     );
 
     final db = Database.forMigrationTesting(schema.newConnection());
-    await verifier.migrateAndValidate(db, 21);
+    await verifier.migrateAndValidate(db, 22);
 
     final localities = await db.select(db.geography).get();
     expect(localities, hasLength(2));
@@ -123,7 +228,7 @@ void main() {
     );
 
     final db = Database.forMigrationTesting(schema.newConnection());
-    await verifier.migrateAndValidate(db, 21);
+    await verifier.migrateAndValidate(db, 22);
 
     final preserved = await db.select(db.customFieldValue).getSingle();
     expect(preserved.value, 'Preserved');
@@ -207,7 +312,8 @@ void main() {
     }
     raw.execute(
       "INSERT INTO specimen (uuid, projectUuid) VALUES "
-      "('bird', 'project'), ('arthropod', 'project'), ('fossil', 'project')",
+      "('bird', 'project'), ('invertebrate', 'project'), "
+      "('fossil', 'project')",
     );
     raw.execute(
       "INSERT INTO birdAttribute (specimenUuid, weight) VALUES ('bird', 8.5)",
@@ -216,7 +322,7 @@ void main() {
       'INSERT INTO arthropodAttribute '
       '(specimenUuid, headWidth, hostOrganism, canopyCover, '
       'ambientTemperature, remark) '
-      "VALUES ('arthropod', 2.25, 'Ficus', '75%', 26.5, 'retained')",
+      "VALUES ('invertebrate', 2.25, 'Ficus', '75%', 26.5, 'retained')",
     );
     raw.execute(
       'INSERT INTO fossilAttribute '
@@ -225,7 +331,7 @@ void main() {
     );
 
     final db = Database.forMigrationTesting(schema.newConnection());
-    await verifier.migrateAndValidate(db, 21);
+    await verifier.migrateAndValidate(db, 22);
 
     final site = await db.select(db.site).getSingle();
     expect(site.siteID, 'SITE-7');
@@ -274,17 +380,17 @@ void main() {
     final bird = await db.select(db.birdAttribute).getSingle();
     expect(bird.weight, 8.5);
     expect(bird.lifeStage, isNull);
-    final arthropod = await db.select(db.arthropodAttribute).getSingle();
-    expect(arthropod.headWidth, 2.25);
-    expect(arthropod.hostOrganism, 'Ficus');
-    expect(arthropod.remark, 'retained');
-    expect(arthropod.lifeStage, isNull);
-    expect(arthropod.caste, isNull);
-    final arthropodColumns = raw
-        .select('PRAGMA table_info(arthropodAttribute)')
+    final invertebrate = await db.select(db.invertebrateAttribute).getSingle();
+    expect(invertebrate.headWidth, 2.25);
+    expect(invertebrate.hostOrganism, 'Ficus');
+    expect(invertebrate.remark, 'retained');
+    expect(invertebrate.lifeStage, isNull);
+    expect(invertebrate.caste, isNull);
+    final invertebrateColumns = raw
+        .select('PRAGMA table_info(invertebrateAttribute)')
         .map((row) => row['name']);
-    expect(arthropodColumns, isNot(contains('canopyCover')));
-    expect(arthropodColumns, isNot(contains('ambientTemperature')));
+    expect(invertebrateColumns, isNot(contains('canopyCover')));
+    expect(invertebrateColumns, isNot(contains('ambientTemperature')));
 
     final fossil = await db.select(db.fossilAttribute).getSingle();
     expect(fossil.fossilType, 'Trace fossil');
@@ -328,7 +434,7 @@ void main() {
     );
 
     final db = Database.forMigrationTesting(schema.newConnection());
-    await verifier.migrateAndValidate(db, 21);
+    await verifier.migrateAndValidate(db, 22);
 
     final definition = await db.select(db.customFieldDefinition).getSingle();
     final value = await db.select(db.customFieldValue).getSingle();
@@ -382,7 +488,7 @@ void main() {
     );
 
     final db = Database.forMigrationTesting(schema.newConnection());
-    await verifier.migrateAndValidate(db, 21);
+    await verifier.migrateAndValidate(db, 22);
 
     final mammal = await (db.select(
       db.specimen,
@@ -431,7 +537,7 @@ void main() {
     );
 
     final db = Database.forMigrationTesting(schema.newConnection());
-    await verifier.migrateAndValidate(db, 21);
+    await verifier.migrateAndValidate(db, 22);
 
     final project = await db.select(db.project).getSingle();
     final part = await db.select(db.specimenPart).getSingle();
@@ -451,7 +557,7 @@ void main() {
     );
     final db = Database.forMigrationTesting(schema.newConnection());
 
-    await verifier.migrateAndValidate(db, 21);
+    await verifier.migrateAndValidate(db, 22);
     await db.close();
   });
 
@@ -463,7 +569,7 @@ void main() {
     );
     final db = Database.forMigrationTesting(schema.newConnection());
 
-    await verifier.migrateAndValidate(db, 21);
+    await verifier.migrateAndValidate(db, 22);
     final columns = await db
         .customSelect(
           'PRAGMA index_info(site_project_idx)',
@@ -533,7 +639,7 @@ void main() {
     }
 
     final db = Database.forMigrationTesting(schema.newConnection());
-    await verifier.migrateAndValidate(db, 21);
+    await verifier.migrateAndValidate(db, 22);
 
     for (final entry in legacyToCanonical.entries) {
       final actual = await db
@@ -595,7 +701,7 @@ void main() {
       );
 
       final db = Database.forMigrationTesting(schema.newConnection());
-      await verifier.migrateAndValidate(db, 21);
+      await verifier.migrateAndValidate(db, 22);
 
       final data = await db.select(db.associatedData).getSingle();
       expect(data.projectUuid, 'project-a');
@@ -651,7 +757,7 @@ void main() {
     );
 
     final db = Database.forMigrationTesting(schema.newConnection());
-    await verifier.migrateAndValidate(db, 21);
+    await verifier.migrateAndValidate(db, 22);
 
     final fossilSite = await db.select(db.fossilSite).getSingle();
     expect(fossilSite.siteID, 7);
@@ -711,7 +817,7 @@ void main() {
     );
 
     final db = Database.forMigrationTesting(schema.newConnection());
-    await verifier.migrateAndValidate(db, 21);
+    await verifier.migrateAndValidate(db, 22);
 
     final specimens = await db.select(db.specimen).get();
     expect(
@@ -752,7 +858,7 @@ void main() {
       "('specimen', 1, 1, 'Fleas observed')",
     );
     final db = Database.forMigrationTesting(schema.newConnection());
-    await verifier.migrateAndValidate(db, 21);
+    await verifier.migrateAndValidate(db, 22);
 
     final project = await db.select(db.project).getSingle();
     expect(project.accession, isNull);

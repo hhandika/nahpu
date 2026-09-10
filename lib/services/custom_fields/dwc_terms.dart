@@ -2,9 +2,12 @@ import 'package:nahpu/services/types/custom_field.dart';
 
 const dwcTermsVersion = '2026-05-26';
 
+/// Terms a custom field may be mapped onto directly.
+///
+/// Every entry must be a registered bundle column for at least one target in
+/// [builtInDwcFieldsByTarget]; `nahpu_dwc` withholds anything else from a Darwin Core
+/// bundle rather than publishing it under an invented term.
 const officialDwcFields = <String>[
-  'dcterms:created',
-  'dcterms:modified',
   'dwc:associatedTaxa',
   'dwc:basisOfRecord',
   'dwc:behavior',

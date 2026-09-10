@@ -58,6 +58,30 @@ class StatisticsQuery extends DatabaseAccessor<Database> {
           ) AS $alias''';
   }
 
+  /// Media categories that document a record, in the order they are reported.
+  ///
+  /// Personnel avatars are left out: they document people, not records.
+  static const _recordMediaCategories = [
+    'specimen',
+    'site',
+    'event',
+    'narrative',
+  ];
+
+  /// Scalar subquery counting the project media files in [categories], matched
+  /// case-insensitively and ignoring surrounding spaces. Takes one positional
+  /// project UUID.
+  static String _mediaCount(List<String> categories, String alias) {
+    final values = categories.map((category) => "'$category'").join(', ');
+    return '''
+          (
+            SELECT COUNT(*)
+            FROM media
+            WHERE media.projectUuid = ?
+              AND lower(trim(coalesce(media.category, ''))) IN ($values)
+          ) AS $alias''';
+  }
+
   static const _siteLabel = '''
     CASE
       WHEN site.id IS NULL THEN 'No site'
@@ -135,7 +159,7 @@ class StatisticsQuery extends DatabaseAccessor<Database> {
       UNION ALL
       SELECT specimenUuid, sex, lifeStage AS life_stage FROM herpAttribute
       UNION ALL
-      SELECT specimenUuid, sex, lifeStage AS life_stage FROM arthropodAttribute
+      SELECT specimenUuid, sex, lifeStage AS life_stage FROM invertebrateAttribute
       UNION ALL
       SELECT specimenUuid, sex, NULL AS life_stage FROM fossilAttribute
     ),
@@ -296,6 +320,11 @@ ${_taxonRankCount(StatisticTaxonRank.family, 'family_count')},
 ${_taxonRankCount(StatisticTaxonRank.genus, 'genus_count')},
 ${_taxonRankCount(StatisticTaxonRank.species, 'species_count')},
           (SELECT COUNT(*) FROM narrative WHERE projectUuid = ?) AS narrative_count,
+${_mediaCount(_recordMediaCategories, 'media_count')},
+${_mediaCount(const ['specimen'], 'specimen_media_count')},
+${_mediaCount(const ['site'], 'site_media_count')},
+${_mediaCount(const ['event'], 'event_media_count')},
+${_mediaCount(const ['narrative'], 'narrative_media_count')},
           (
             SELECT MIN(coordinate.elevationInMeter)
             FROM coordinate
@@ -346,6 +375,7 @@ ${_taxonRankCount(StatisticTaxonRank.species, 'species_count')},
         db.specimen,
         db.taxonomy,
         db.narrative,
+        db.media,
       },
     ).watchSingle().map(
       (row) => RecordStatisticTotals(
@@ -359,6 +389,11 @@ ${_taxonRankCount(StatisticTaxonRank.species, 'species_count')},
         genusCount: row.read<int>('genus_count'),
         speciesCount: row.read<int>('species_count'),
         narrativeCount: row.read<int>('narrative_count'),
+        mediaCount: row.read<int>('media_count'),
+        specimenMediaCount: row.read<int>('specimen_media_count'),
+        siteMediaCount: row.read<int>('site_media_count'),
+        eventMediaCount: row.read<int>('event_media_count'),
+        narrativeMediaCount: row.read<int>('narrative_media_count'),
         minimumRecordedElevationInMeter: row.readNullable<double>(
           'minimum_recorded_elevation',
         ),
@@ -684,7 +719,7 @@ ${_taxonRankCount(StatisticTaxonRank.species, 'species_count')},
     db.mammalAttribute,
     db.birdAttribute,
     db.herpAttribute,
-    db.arthropodAttribute,
+    db.invertebrateAttribute,
     db.fossilAttribute,
   };
 }

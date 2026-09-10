@@ -1,13 +1,15 @@
 ---
-title: "Cuaca kegiatan"
+title: "Cuaca dan astronomi"
 sidebar:
   order: 0
 ---
 
-Kolom cuaca menjelaskan kondisi yang teramati selama kegiatan pengumpulan, termasuk suhu dan kelembapan udara, tutupan awan, curah hujan, dan — bila relevan — suhu air, pH, oksigen terlarut, serta kecepatan aliran. Catat nilai dalam satuan yang ditampilkan dan sebutkan apakah nilai itu pengukuran langsung, pembacaan alat, atau sumber terdokumentasi lain.
+Data lingkungan mencatat kondisi untuk kegiatan ini. Di `Settings` > `Events`, pilih bidang bawaan yang ditampilkan. Menyembunyikan bidang tidak menghapus nilainya atau mengecualikannya dari ekspor.
 
-Nilai astronomi diturunkan dari lokasi, tanggal, dan waktu kegiatan. Perlakukan sebagai konteks hasil perhitungan, bukan pengamatan langsung. Bila hasilnya tidak seperti yang diharapkan, periksa koordinat lokasi yang dipilih, zona waktu proyek, dan waktu kegiatan sebelum mengubah data lain. Jangan menyalin cuaca antarkegiatan kecuali pengukurannya memang berlaku untuk keduanya.
+Gunakan satuan yang ditampilkan: suhu dalam °C, kelembapan dalam persen, dan curah hujan dalam milimeter. Tutupan awan menggunakan kode 0–8 untuk perdelapan langit yang tertutup, atau 9 jika langit terhalang. Kosongkan nilai yang tidak diukur; nol merupakan hasil pengukuran.
 
-## Konteks Darwin Core
+Masukkan waktu matahari terbit, terbenam, dan fase bulan berdasarkan pengamatan atau sumber yang dicatat; NAHPU tidak menghitungnya. Ikuti ketentuan waktu lokal proyek. Tambahkan bidang khusus untuk pengukuran lain. Kegiatan hasil duplikasi memiliki data lingkungan kosong.
 
-Nilai cuaca, air, dan astronomi tidak memiliki istilah Darwin Core tersendiri. Ekspor terstruktur membawa setiap nilai tercatat sebagai pengukuran kegiatan, lengkap dengan jenis dan satuannya, sedangkan catatan lingkungan menjadi `dwc:eventRemarks`.
+## Pelajari lebih lanjut
+
+- [Kegiatan Pengumpulan](https://nahpu.app/id/usages/events/)

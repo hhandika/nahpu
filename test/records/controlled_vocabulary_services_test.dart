@@ -228,5 +228,5 @@ void main() {
 
 class _VocabularyCatalog extends CatalogFmtNotifier {
   @override
-  Future<CatalogFmt> build() async => CatalogFmt.mammals;
+  Future<CatalogFmt> build() async => CatalogFmt.mammalogy;
 }

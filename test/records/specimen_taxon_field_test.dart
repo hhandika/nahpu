@@ -244,6 +244,9 @@ void main() {
 
     expect(document.title, 'Specimen general record');
     expect(document.markdown, contains('Choose the taxon'));
-    expect(document.markdown, contains('`dwc:Occurrence`'));
+    expect(
+      document.markdown,
+      contains('https://nahpu.app/en/usages/specimens/'),
+    );
   });
 }

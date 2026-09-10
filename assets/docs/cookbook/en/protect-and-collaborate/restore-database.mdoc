@@ -4,26 +4,20 @@ sidebar:
   order: 3
 ---
 
-Replace the active installation data with a verified NAHPU backup.
+Replace installation data from a database backup when project import is not the intended recovery.
 
 ## Steps
 
 {% steps %}
 
-1. Create a current backup of the active database.
-2. Open `Settings` > `Database` and choose `Replace database`.
-3. Select the SQLite database or supported NAHPU backup archive.
-4. Review the warning and confirm only after checking the source file.
-5. Restart or reopen NAHPU if requested, then verify projects, counts, and managed files.
+1. Confirm the file is a database backup. For a project export, use home-screen `Import project` instead.
+2. Create and retain a current database backup before replacement.
+3. Open `Settings` > `Database` > `Replace database` and select the SQLite database or supported backup archive.
+4. Read the replacement warning and confirm the source. Replacement does not merge projects: it replaces the active database and overwrites matching media or configuration files from the archive.
+5. Follow any restart instructions, then check projects, counts, settings, and several managed files. A standalone SQLite file does not supply missing media.
 {% /steps %}
-
-{% aside type="caution" %}
-
-Replacement overwrites the active database and any media or config file matching one in the archive, and it cannot be undone without a backup; it does not merge projects. If the only file you carried out of the field is a project export, install NAHPU fresh and use `Merge project` instead: it restores that project's records and available media without touching anything else.
-
-{% /aside %}
 
 ## Learn more
 
-- [Open the full guide](https://nahpu.app/en/usages/export/#restoring-a-database)
-- [Back up a field day](https://nahpu.app/en/how-to-recipes/protect-and-collaborate/daily-backup/)
+- [Export](https://nahpu.app/en/usages/export/#restoring-a-database)
+- [Import a project onto another device](https://nahpu.app/en/how-to-recipes/protect-and-collaborate/import-project/)

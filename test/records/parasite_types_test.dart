@@ -23,13 +23,13 @@ void main() {
 
   test('parasites support only the current compatible catalog formats', () {
     expect(parasiteCatalogFormats, {
-      CatalogFmt.mammals,
-      CatalogFmt.birds,
-      CatalogFmt.herpetofauna,
+      CatalogFmt.mammalogy,
+      CatalogFmt.ornithology,
+      CatalogFmt.herpetology,
     });
-    expect(supportsParasites(CatalogFmt.mammals), isTrue);
-    expect(supportsParasites(CatalogFmt.birds), isTrue);
-    expect(supportsParasites(CatalogFmt.herpetofauna), isTrue);
-    expect(supportsParasites(CatalogFmt.arthropods), isFalse);
+    expect(supportsParasites(CatalogFmt.mammalogy), isTrue);
+    expect(supportsParasites(CatalogFmt.ornithology), isTrue);
+    expect(supportsParasites(CatalogFmt.herpetology), isTrue);
+    expect(supportsParasites(CatalogFmt.invertebrateZoology), isFalse);
   });
 }

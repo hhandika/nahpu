@@ -4,12 +4,10 @@ sidebar:
   order: 0
 ---
 
-Satu lokasi dapat memiliki beberapa catatan koordinat. Masing-masing sebaiknya menjelaskan posisi terdokumentasi beserta format koordinat, ketinggian, datum geodetik, ketidakpastian, unit GPS, dan catatan tentang sumbernya.
+Satu lokasi dapat memiliki beberapa posisi, misalnya setiap perangkap pada satu jalur. Beri nama yang jelas dan catat sumber, datum, elevasi, ketidakpastian, serta unit GPS jika diketahui. Ketidakpastian koordinat menjelaskan ketidakpastian posisi; nilainya berbeda dari cakupan koordinat spesimen.
 
-Masukan manual menerima derajat desimal (DD), derajat dan menit desimal (DDM), derajat-menit-detik (DMS), serta UTM WGS84. `Select coordinate file` mengimpor CSV, TSV, Excel, GeoJSON/JSON, KML, Shapefile terkompresi, dan GPX; `Scan QR` membaca kode QR koordinat NAHPU. Periksa setiap posisi hasil impor sebelum menyimpannya.
+Entri manual mendukung DD, DDM, DMS, dan UTM WGS84. NAHPU menyimpan masukan non-desimal dan hasil konversi derajat desimal. `Select coordinate file` menerima CSV, TSV, Excel, GeoJSON/JSON, KML, Shapefile terkompresi, dan GPX. Untuk lembar kerja, tinjau pemetaan kolom sebelum memilih titik. `Scan QR` membaca kode koordinat NAHPU. Periksa peringatan, satuan, dan posisi peta sebelum menambahkan koordinat terpilih.
 
-Ketidakpastian adalah jarak horizontal, dalam meter, yang diperkirakan mencakup posisi sebenarnya. Laporkan nilai yang realistis, bukan nilai bawaan, dan pertahankan koordinat sebagaimana dicatat di lapangan: NAHPU menyimpan bentuk yang dimasukkan bersama nilai desimal yang diturunkan darinya.
+## Pelajari lebih lanjut
 
-## Konteks Darwin Core
-
-Nilai desimal hasil turunan diekspor ke `dwc:decimalLatitude` dan `dwc:decimalLongitude`, sedangkan masukan apa adanya disimpan di `dwc:verbatimCoordinates`, `dwc:verbatimLatitude`, `dwc:verbatimLongitude`, dan `dwc:verbatimCoordinateSystem`. Datum, ketidakpastian, dan catatan menjadi `dwc:geodeticDatum`, `dwc:coordinateUncertaintyInMeters`, dan `dwc:georeferenceRemarks`. Satu nilai ketinggian mengisi `dwc:minimumElevationInMeters` sekaligus `dwc:maximumElevationInMeters`.
+- [Lokasi](https://nahpu.app/id/usages/sites/#adding-coordinates)

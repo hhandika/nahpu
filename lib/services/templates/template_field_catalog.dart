@@ -56,30 +56,33 @@ Map<String, List<String>> availableTemplateFieldGroups(
         'mammalAttribute',
         'birdAttribute',
         'herpAttribute',
-        'arthropodAttribute',
+        'invertebrateAttribute',
         'fossilAttribute',
         'specimenPart',
       };
       if (selectedTaxon == 'Mammals') {
         allowedTables.remove('birdAttribute');
         allowedTables.remove('herpAttribute');
-        allowedTables.remove('arthropodAttribute');
+        allowedTables.remove('invertebrateAttribute');
       } else if (selectedTaxon == 'Birds') {
         allowedTables.remove('mammalAttribute');
         allowedTables.remove('herpAttribute');
-        allowedTables.remove('arthropodAttribute');
+        allowedTables.remove('invertebrateAttribute');
       } else if (selectedTaxon == 'Herpetofauna') {
         allowedTables.remove('mammalAttribute');
         allowedTables.remove('birdAttribute');
-        allowedTables.remove('arthropodAttribute');
+        allowedTables.remove('invertebrateAttribute');
       } else if (selectedTaxon == 'Fossils') {
         allowedTables.removeAll({
           'mammalAttribute',
           'birdAttribute',
           'herpAttribute',
-          'arthropodAttribute',
+          'invertebrateAttribute',
         });
-      } else if (selectedTaxon == 'Arthropods') {
+        // 'Arthropods' is the pre-v22 label, still stored on templates
+        // saved before the rename.
+      } else if (selectedTaxon == 'Invertebrates' ||
+          selectedTaxon == 'Arthropods') {
         allowedTables.remove('mammalAttribute');
         allowedTables.remove('birdAttribute');
         allowedTables.remove('herpAttribute');
