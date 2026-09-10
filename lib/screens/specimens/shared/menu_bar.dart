@@ -1,7 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:nahpu/services/types/specimens.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/screens/shared/actions/buttons.dart';
+import 'package:nahpu/screens/shared/actions/adaptive_menu.dart';
 import 'package:nahpu/screens/shared/dialogs/record_sort_dialog.dart';
 import 'package:nahpu/screens/shared/forms/forms.dart';
 import 'package:nahpu/services/providers/page_jump.dart';
@@ -74,6 +74,16 @@ class NewSpecimensState extends ConsumerState<NewSpecimens> {
   }
 }
 
+enum _SpecimenMenuAction {
+  create,
+  duplicatePart,
+  sort,
+  export,
+  import,
+  delete,
+  deleteAll,
+}
+
 class SpecimenMenu extends ConsumerStatefulWidget {
   const SpecimenMenu({
     super.key,
@@ -91,63 +101,79 @@ class SpecimenMenu extends ConsumerStatefulWidget {
 class SpecimenMenuState extends ConsumerState<SpecimenMenu> {
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton(
-      itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-        PopupMenuItem(
-          child: CreateMenuButton(text: _getNewSpecimenLabel()),
-          onTap: () => createNewSpecimens(context, ref),
-        ),
-        PopupMenuItem(
-          onTap: widget.specimenUuid == null
-              ? null
-              : () async {
-                  await _duplicatePart();
-                },
-          child: const DuplicateMenuButton(text: 'Duplicate part'),
-        ),
-        const PopupMenuDivider(height: 8),
-        PopupMenuItem(
-          onTap: () => showRecordSortDialog(
-            context: context,
-            viewer: RecordViewer.specimen,
-          ),
-          child: const SortMenuButton(),
-        ),
-        const PopupMenuDivider(height: 8),
-        PopupMenuItem(
-          enabled: widget.specimenUuid != null,
-          onTap: widget.specimenUuid == null
-              ? null
-              : () => RecordExchangeActions(
-                  context: context,
-                  ref: ref,
-                ).exportSpecimenRecord(widget.specimenUuid!),
-          child: const ListTile(
-            leading: Icon(Icons.file_upload_outlined),
-            title: Text('Export specimen'),
-          ),
-        ),
-        PopupMenuItem(
-          onTap: () => RecordExchangeActions(
-            context: context,
-            ref: ref,
-          ).importSpecimenRecord(initialTargetUuid: widget.specimenUuid),
-          child: const ListTile(
-            leading: Icon(Icons.file_download_outlined),
-            title: Text('Import specimen'),
-          ),
-        ),
-        const PopupMenuDivider(height: 8),
-        PopupMenuItem(
-          child: const DeleteMenuButton(deleteAll: false),
-          onTap: () => _deleteSpecimen(),
-        ),
-        PopupMenuItem(
-          child: const DeleteMenuButton(deleteAll: true),
-          onTap: () => _deleteAllSpecimens(),
-        ),
-      ],
+    return AdaptiveMenuButton<_SpecimenMenuAction>(
+      tooltip: 'Specimen actions',
+      itemBuilder: _items,
+      onSelected: _onSelected,
     );
+  }
+
+  List<AdaptiveMenuItem<_SpecimenMenuAction>> _items() {
+    final hasSpecimen = widget.specimenUuid != null;
+    return [
+      AdaptiveMenuItem(
+        value: _SpecimenMenuAction.create,
+        icon: Icons.create_outlined,
+        label: _getNewSpecimenLabel(),
+      ),
+      AdaptiveMenuItem(
+        value: _SpecimenMenuAction.duplicatePart,
+        icon: Icons.copy_outlined,
+        label: 'Duplicate part',
+        enabled: hasSpecimen,
+      ),
+      const AdaptiveMenuItem(
+        value: _SpecimenMenuAction.sort,
+        icon: Icons.sort_rounded,
+        label: 'Sort records',
+        hasDividerBefore: true,
+      ),
+      AdaptiveMenuItem(
+        value: _SpecimenMenuAction.export,
+        icon: Icons.file_upload_outlined,
+        label: 'Export specimen',
+        enabled: hasSpecimen,
+        hasDividerBefore: true,
+      ),
+      const AdaptiveMenuItem(
+        value: _SpecimenMenuAction.import,
+        icon: Icons.file_download_outlined,
+        label: 'Import specimen',
+      ),
+      const AdaptiveMenuItem(
+        value: _SpecimenMenuAction.delete,
+        icon: Icons.delete_outline,
+        label: 'Delete record',
+        isDestructive: true,
+        hasDividerBefore: true,
+      ),
+      const AdaptiveMenuItem(
+        value: _SpecimenMenuAction.deleteAll,
+        icon: Icons.delete_forever_outlined,
+        label: 'Delete all records',
+        isDestructive: true,
+      ),
+    ];
+  }
+
+  void _onSelected(_SpecimenMenuAction action) {
+    final exchange = RecordExchangeActions(context: context, ref: ref);
+    switch (action) {
+      case _SpecimenMenuAction.create:
+        createNewSpecimens(context, ref);
+      case _SpecimenMenuAction.duplicatePart:
+        _duplicatePart();
+      case _SpecimenMenuAction.sort:
+        showRecordSortDialog(context: context, viewer: RecordViewer.specimen);
+      case _SpecimenMenuAction.export:
+        exchange.exportSpecimenRecord(widget.specimenUuid!);
+      case _SpecimenMenuAction.import:
+        exchange.importSpecimenRecord(initialTargetUuid: widget.specimenUuid);
+      case _SpecimenMenuAction.delete:
+        _deleteSpecimen();
+      case _SpecimenMenuAction.deleteAll:
+        _deleteAllSpecimens();
+    }
   }
 
   String _getNewSpecimenLabel() {

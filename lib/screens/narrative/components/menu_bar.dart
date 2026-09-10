@@ -1,4 +1,4 @@
-import 'package:nahpu/screens/shared/actions/buttons.dart';
+import 'package:nahpu/screens/shared/actions/adaptive_menu.dart';
 import 'package:nahpu/screens/shared/dialogs/record_sort_dialog.dart';
 import 'package:nahpu/screens/shared/forms/forms.dart';
 import 'package:nahpu/services/narrative/narrative_services.dart';
@@ -82,35 +82,54 @@ class NarrativeMenu extends ConsumerStatefulWidget {
 class NarrativeMenuState extends ConsumerState<NarrativeMenu> {
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<MenuSelection>(
-      itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuSelection>>[
-        PopupMenuItem<MenuSelection>(
-          value: MenuSelection.newNarrative,
-          child: const CreateMenuButton(text: 'Create narrative'),
-          onTap: () => createNewNarrative(context, ref),
-        ),
-        const PopupMenuDivider(height: 8),
-        PopupMenuItem<MenuSelection>(
-          value: MenuSelection.sortRecords,
-          onTap: () => showRecordSortDialog(
-            context: context,
-            viewer: RecordViewer.narrative,
-          ),
-          child: const SortMenuButton(),
-        ),
-        const PopupMenuDivider(height: 8),
-        PopupMenuItem<MenuSelection>(
-          value: MenuSelection.deleteRecords,
-          child: const DeleteMenuButton(deleteAll: false),
-          onTap: () => _deleteNarrative(),
-        ),
-        PopupMenuItem<MenuSelection>(
-          value: MenuSelection.deleteAllRecords,
-          child: const DeleteMenuButton(deleteAll: true),
-          onTap: () => _deleteAllNarrative(),
-        ),
-      ],
+    return AdaptiveMenuButton<MenuSelection>(
+      tooltip: 'Narrative actions',
+      itemBuilder: _items,
+      onSelected: _onSelected,
     );
+  }
+
+  List<AdaptiveMenuItem<MenuSelection>> _items() => const [
+    AdaptiveMenuItem(
+      value: MenuSelection.newNarrative,
+      icon: Icons.create_outlined,
+      label: 'Create narrative',
+    ),
+    AdaptiveMenuItem(
+      value: MenuSelection.sortRecords,
+      icon: Icons.sort_rounded,
+      label: 'Sort records',
+      hasDividerBefore: true,
+    ),
+    AdaptiveMenuItem(
+      value: MenuSelection.deleteRecords,
+      icon: Icons.delete_outline,
+      label: 'Delete record',
+      isDestructive: true,
+      hasDividerBefore: true,
+    ),
+    AdaptiveMenuItem(
+      value: MenuSelection.deleteAllRecords,
+      icon: Icons.delete_forever_outlined,
+      label: 'Delete all records',
+      isDestructive: true,
+    ),
+  ];
+
+  void _onSelected(MenuSelection action) {
+    switch (action) {
+      case MenuSelection.newNarrative:
+        createNewNarrative(context, ref);
+      case MenuSelection.sortRecords:
+        showRecordSortDialog(context: context, viewer: RecordViewer.narrative);
+      case MenuSelection.deleteRecords:
+        _deleteNarrative();
+      case MenuSelection.deleteAllRecords:
+        _deleteAllNarrative();
+      case MenuSelection.duplicate:
+      case MenuSelection.pdfExport:
+        return;
+    }
   }
 
   void _deleteNarrative() {

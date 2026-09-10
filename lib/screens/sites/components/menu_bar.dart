@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nahpu/screens/shared/actions/buttons.dart';
+import 'package:nahpu/screens/shared/actions/adaptive_menu.dart';
 import 'package:nahpu/screens/shared/dialogs/record_sort_dialog.dart';
 import 'package:nahpu/screens/shared/forms/forms.dart';
 import 'package:nahpu/services/providers/page_jump.dart';
@@ -75,6 +75,19 @@ class NewSiteState extends ConsumerState<NewSite> {
   }
 }
 
+enum _SiteMenuAction {
+  create,
+  duplicate,
+  copyFromProject,
+  sort,
+  showQr,
+  export,
+  scanQr,
+  import,
+  delete,
+  deleteAll,
+}
+
 class SiteMenu extends ConsumerStatefulWidget {
   const SiteMenu({super.key, required this.siteId});
 
@@ -87,93 +100,105 @@ class SiteMenu extends ConsumerStatefulWidget {
 class SiteMenuState extends ConsumerState<SiteMenu> {
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton(
-      itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-        PopupMenuItem(
-          child: const CreateMenuButton(text: 'Create site'),
-          onTap: () => createNewSite(context, ref),
-        ),
-        PopupMenuItem(
-          onTap: widget.siteId == null
-              ? null
-              : () async => await _duplicateSite(),
-          child: const DuplicateMenuButton(text: 'Duplicate site'),
-        ),
-        PopupMenuItem(
-          enabled: widget.siteId != null,
-          onTap: widget.siteId == null ? null : _copyFromProject,
-          child: const ListTile(
-            leading: Icon(Icons.content_copy_outlined),
-            title: Text('Copy from project ...'),
-          ),
-        ),
-        const PopupMenuDivider(height: 8),
-        PopupMenuItem(
-          onTap: () =>
-              showRecordSortDialog(context: context, viewer: RecordViewer.site),
-          child: const SortMenuButton(),
-        ),
-        const PopupMenuDivider(height: 8),
-        PopupMenuItem(
-          enabled: widget.siteId != null,
-          onTap: widget.siteId == null
-              ? null
-              : () => RecordExchangeActions(
-                  context: context,
-                  ref: ref,
-                ).showSiteQr(widget.siteId!),
-          child: const ListTile(
-            leading: Icon(Icons.qr_code_outlined),
-            title: Text('Show QR'),
-          ),
-        ),
-        PopupMenuItem(
-          enabled: widget.siteId != null,
-          onTap: widget.siteId == null
-              ? null
-              : () => RecordExchangeActions(
-                  context: context,
-                  ref: ref,
-                ).exportSiteRecord(widget.siteId!),
-          child: const ListTile(
-            leading: Icon(Icons.file_upload_outlined),
-            title: Text('Export site'),
-          ),
-        ),
-        const PopupMenuDivider(height: 8),
-        PopupMenuItem(
-          onTap: () => RecordExchangeActions(
-            context: context,
-            ref: ref,
-          ).scanSiteQr(initialTargetId: widget.siteId),
-          child: const ListTile(
-            leading: Icon(Icons.qr_code_scanner_outlined),
-            title: Text('Scan QR'),
-          ),
-        ),
-        PopupMenuItem(
-          onTap: () => RecordExchangeActions(
-            context: context,
-            ref: ref,
-          ).importSiteRecord(initialTargetId: widget.siteId),
-          child: const ListTile(
-            leading: Icon(Icons.file_download_outlined),
-            title: Text('Import site'),
-          ),
-        ),
-        const PopupMenuDivider(height: 8),
-        PopupMenuItem(
-          enabled: widget.siteId != null,
-          onTap: () => _deleteSite(),
-          child: const DeleteMenuButton(deleteAll: false),
-        ),
-        PopupMenuItem(
-          enabled: widget.siteId != null,
-          onTap: () => _deleteAllSites(),
-          child: const DeleteMenuButton(deleteAll: true),
-        ),
-      ],
+    return AdaptiveMenuButton<_SiteMenuAction>(
+      tooltip: 'Site actions',
+      itemBuilder: _items,
+      onSelected: _onSelected,
     );
+  }
+
+  List<AdaptiveMenuItem<_SiteMenuAction>> _items() {
+    final hasSite = widget.siteId != null;
+    return [
+      const AdaptiveMenuItem(
+        value: _SiteMenuAction.create,
+        icon: Icons.create_outlined,
+        label: 'Create site',
+      ),
+      AdaptiveMenuItem(
+        value: _SiteMenuAction.duplicate,
+        icon: Icons.copy_outlined,
+        label: 'Duplicate site',
+        enabled: hasSite,
+      ),
+      AdaptiveMenuItem(
+        value: _SiteMenuAction.copyFromProject,
+        icon: Icons.content_copy_outlined,
+        label: 'Copy from project ...',
+        enabled: hasSite,
+      ),
+      const AdaptiveMenuItem(
+        value: _SiteMenuAction.sort,
+        icon: Icons.sort_rounded,
+        label: 'Sort records',
+        hasDividerBefore: true,
+      ),
+      AdaptiveMenuItem(
+        value: _SiteMenuAction.showQr,
+        icon: Icons.qr_code_outlined,
+        label: 'Show QR',
+        enabled: hasSite,
+        hasDividerBefore: true,
+      ),
+      AdaptiveMenuItem(
+        value: _SiteMenuAction.export,
+        icon: Icons.file_upload_outlined,
+        label: 'Export site',
+        enabled: hasSite,
+      ),
+      const AdaptiveMenuItem(
+        value: _SiteMenuAction.scanQr,
+        icon: Icons.qr_code_scanner_outlined,
+        label: 'Scan QR',
+        hasDividerBefore: true,
+      ),
+      const AdaptiveMenuItem(
+        value: _SiteMenuAction.import,
+        icon: Icons.file_download_outlined,
+        label: 'Import site',
+      ),
+      AdaptiveMenuItem(
+        value: _SiteMenuAction.delete,
+        icon: Icons.delete_outline,
+        label: 'Delete record',
+        enabled: hasSite,
+        isDestructive: true,
+        hasDividerBefore: true,
+      ),
+      AdaptiveMenuItem(
+        value: _SiteMenuAction.deleteAll,
+        icon: Icons.delete_forever_outlined,
+        label: 'Delete all records',
+        enabled: hasSite,
+        isDestructive: true,
+      ),
+    ];
+  }
+
+  void _onSelected(_SiteMenuAction action) {
+    final exchange = RecordExchangeActions(context: context, ref: ref);
+    switch (action) {
+      case _SiteMenuAction.create:
+        createNewSite(context, ref);
+      case _SiteMenuAction.duplicate:
+        _duplicateSite();
+      case _SiteMenuAction.copyFromProject:
+        _copyFromProject();
+      case _SiteMenuAction.sort:
+        showRecordSortDialog(context: context, viewer: RecordViewer.site);
+      case _SiteMenuAction.showQr:
+        exchange.showSiteQr(widget.siteId!);
+      case _SiteMenuAction.export:
+        exchange.exportSiteRecord(widget.siteId!);
+      case _SiteMenuAction.scanQr:
+        exchange.scanSiteQr(initialTargetId: widget.siteId);
+      case _SiteMenuAction.import:
+        exchange.importSiteRecord(initialTargetId: widget.siteId);
+      case _SiteMenuAction.delete:
+        _deleteSite();
+      case _SiteMenuAction.deleteAll:
+        _deleteAllSites();
+    }
   }
 
   Future<void> _duplicateSite() async {

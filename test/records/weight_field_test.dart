@@ -29,7 +29,12 @@ void main() {
     expect(find.text('kg'), findsOneWidget);
     expect(find.text('lbs'), findsOneWidget);
 
-    await tester.tap(find.text('kg'));
+    await tester.tap(
+      find.byWidgetPredicate(
+        (widget) =>
+            widget is CheckedPopupMenuItem<String> && widget.value == 'kg',
+      ),
+    );
     await tester.pumpAndSettle();
     expect(selectedUnit, 'kg');
     expect(controller.text, '12.5');

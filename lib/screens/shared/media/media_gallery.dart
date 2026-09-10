@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/shared/actions/adaptive_menu.dart';
 import 'package:nahpu/screens/shared/actions/buttons.dart';
 import 'package:nahpu/screens/shared/common/common.dart';
 import 'package:nahpu/screens/shared/forms/fields.dart';
@@ -383,17 +384,17 @@ class _SortMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<MediaGallerySort>(
+    return AdaptiveMenuButton<MediaGallerySort>(
       tooltip: 'Sort media',
       initialValue: value,
       icon: const Icon(Icons.sort),
       onSelected: onSelected,
-      itemBuilder: (context) => [
+      itemBuilder: () => [
         for (final sort in MediaGallerySort.values)
-          CheckedPopupMenuItem(
+          AdaptiveMenuItem(
             value: sort,
+            label: sort.label,
             checked: sort == value,
-            child: Text(sort.label),
           ),
       ],
     );

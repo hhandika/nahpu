@@ -4,6 +4,7 @@ import 'package:drift/drift.dart' as db;
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:nahpu/screens/shared/actions/adaptive_menu.dart';
 import 'package:nahpu/screens/shared/actions/buttons.dart';
 import 'package:nahpu/screens/shared/common/common.dart';
 import 'package:nahpu/screens/shared/file/file_operation.dart';
@@ -343,65 +344,41 @@ class AssociatedDataActions extends ConsumerWidget {
   final AssociatedDataTarget target;
   final AssociatedDataData data;
 
-  List<AssociatedDataAction> get _actions => [
-    AssociatedDataAction.edit,
-    AssociatedDataAction.info,
-    AssociatedDataAction.share,
-    if (data.type == 'Link' ||
-        (data.type == 'File' && systemPlatform == PlatformType.desktop))
-      AssociatedDataAction.open,
-  ];
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (MediaQuery.sizeOf(context).width < associatedDataCompactBreakpoint) {
-      return IconButton(
-        tooltip: 'Associated data actions',
-        onPressed: () => _showActionSheet(context, ref),
-        icon: const Icon(Icons.more_vert),
-      );
-    }
-    return PopupMenuButton<AssociatedDataAction>(
+    return AdaptiveMenuButton<AssociatedDataAction>(
       tooltip: 'Associated data actions',
       icon: const Icon(Icons.more_vert),
+      itemBuilder: _items,
       onSelected: (action) => _handleAction(context, ref, action),
-      itemBuilder: (context) => [
-        for (final action in _actions) ...[
-          if (action == AssociatedDataAction.share) const PopupMenuDivider(),
-          PopupMenuItem(
-            value: action,
-            child: _AssociatedDataActionTile(action: action, data: data),
-          ),
-        ],
-      ],
     );
   }
 
-  Future<void> _showActionSheet(BuildContext context, WidgetRef ref) async {
-    final action = await showModalBottomSheet<AssociatedDataAction>(
-      context: context,
-      showDragHandle: true,
-      builder: (sheetContext) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            for (final action in _actions) ...[
-              if (action == AssociatedDataAction.share) const Divider(),
-              _AssociatedDataActionTile(
-                action: action,
-                data: data,
-                onTap: () => Navigator.of(sheetContext).pop(action),
-              ),
-            ],
-            const SizedBox(height: 8),
-          ],
-        ),
+  List<AdaptiveMenuItem<AssociatedDataAction>> _items() => [
+    const AdaptiveMenuItem(
+      value: AssociatedDataAction.edit,
+      icon: Icons.edit_outlined,
+      label: 'Edit',
+    ),
+    const AdaptiveMenuItem(
+      value: AssociatedDataAction.info,
+      icon: Icons.info_outline,
+      label: 'Show info',
+    ),
+    AdaptiveMenuItem(
+      value: AssociatedDataAction.share,
+      icon: Icons.adaptive.share,
+      label: 'Share',
+      hasDividerBefore: true,
+    ),
+    if (data.type == 'Link' ||
+        (data.type == 'File' && systemPlatform == PlatformType.desktop))
+      AdaptiveMenuItem(
+        value: AssociatedDataAction.open,
+        icon: Icons.open_in_new,
+        label: data.type == 'File' ? 'Open in default app' : 'Open link',
       ),
-    );
-    if (action != null && context.mounted) {
-      await _handleAction(context, ref, action);
-    }
-  }
+  ];
 
   Future<void> _handleAction(
     BuildContext context,
@@ -456,38 +433,6 @@ class AssociatedDataActions extends ConsumerWidget {
       throw FormatException('Could not open $uri');
     }
   }
-}
-
-class _AssociatedDataActionTile extends StatelessWidget {
-  const _AssociatedDataActionTile({
-    required this.action,
-    required this.data,
-    this.onTap,
-  });
-
-  final AssociatedDataAction action;
-  final AssociatedDataData data;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(onTap: onTap, leading: Icon(_icon), title: Text(_label));
-  }
-
-  IconData get _icon => switch (action) {
-    AssociatedDataAction.edit => Icons.edit_outlined,
-    AssociatedDataAction.info => Icons.info_outline,
-    AssociatedDataAction.share => Icons.adaptive.share,
-    AssociatedDataAction.open => Icons.open_in_new,
-  };
-
-  String get _label => switch (action) {
-    AssociatedDataAction.edit => 'Edit',
-    AssociatedDataAction.info => 'Show info',
-    AssociatedDataAction.share => 'Share',
-    AssociatedDataAction.open =>
-      data.type == 'File' ? 'Open in default app' : 'Open link',
-  };
 }
 
 class AddAssociatedDataButton extends StatelessWidget {

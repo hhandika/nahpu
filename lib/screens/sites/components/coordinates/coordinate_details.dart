@@ -19,50 +19,43 @@ class CoordinateMenu extends ConsumerStatefulWidget {
 class CoordinateMenuState extends ConsumerState<CoordinateMenu> {
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton(
+    return AdaptiveMenuButton<CoordinatePopUpMenuItems>(
+      tooltip: 'Coordinate actions',
       icon: const Icon(Icons.more_vert),
+      itemBuilder: _items,
       onSelected: _onSelected,
-      itemBuilder: (context) => <PopupMenuEntry<CoordinatePopUpMenuItems>>[
-        const PopupMenuItem<CoordinatePopUpMenuItems>(
-          value: CoordinatePopUpMenuItems.edit,
-          child: ListTile(
-            leading: Icon(Icons.edit_outlined),
-            title: Text('Edit'),
-          ),
-        ),
-        const PopupMenuDivider(),
-        const PopupMenuItem<CoordinatePopUpMenuItems>(
-          value: CoordinatePopUpMenuItems.qr,
-          child: ListTile(
-            leading: Icon(Icons.qr_code_outlined),
-            title: Text('Show QR'),
-          ),
-        ),
-        const PopupMenuItem<CoordinatePopUpMenuItems>(
-          value: CoordinatePopUpMenuItems.copy,
-          child: ListTile(
-            leading: Icon(Icons.copy_outlined),
-            title: Text('Copy'),
-          ),
-        ),
-        const PopupMenuItem<CoordinatePopUpMenuItems>(
-          value: CoordinatePopUpMenuItems.open,
-          child: ListTile(
-            leading: Icon(Icons.open_in_browser_outlined),
-            title: Text('Open in map'),
-          ),
-        ),
-        const PopupMenuDivider(),
-        const PopupMenuItem<CoordinatePopUpMenuItems>(
-          value: CoordinatePopUpMenuItems.details,
-          child: ListTile(
-            leading: Icon(Icons.info_outline),
-            title: Text('Details'),
-          ),
-        ),
-      ],
     );
   }
+
+  List<AdaptiveMenuItem<CoordinatePopUpMenuItems>> _items() => const [
+    AdaptiveMenuItem(
+      value: CoordinatePopUpMenuItems.edit,
+      icon: Icons.edit_outlined,
+      label: 'Edit',
+    ),
+    AdaptiveMenuItem(
+      value: CoordinatePopUpMenuItems.qr,
+      icon: Icons.qr_code_outlined,
+      label: 'Show QR',
+      hasDividerBefore: true,
+    ),
+    AdaptiveMenuItem(
+      value: CoordinatePopUpMenuItems.copy,
+      icon: Icons.copy_outlined,
+      label: 'Copy',
+    ),
+    AdaptiveMenuItem(
+      value: CoordinatePopUpMenuItems.open,
+      icon: Icons.open_in_browser_outlined,
+      label: 'Open in map',
+    ),
+    AdaptiveMenuItem(
+      value: CoordinatePopUpMenuItems.details,
+      icon: Icons.info_outline,
+      label: 'Details',
+      hasDividerBefore: true,
+    ),
+  ];
 
   Future<void> _onSelected(CoordinatePopUpMenuItems item) async {
     switch (item) {

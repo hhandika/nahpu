@@ -1,5 +1,5 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:nahpu/screens/shared/actions/buttons.dart';
+import 'package:nahpu/screens/shared/actions/adaptive_menu.dart';
 import 'package:nahpu/screens/shared/dialogs/record_sort_dialog.dart';
 import 'package:nahpu/screens/shared/forms/forms.dart';
 import 'package:nahpu/services/events/collevent_services.dart';
@@ -72,6 +72,18 @@ class NewCollEvents extends ConsumerWidget {
   }
 }
 
+enum _EventMenuAction {
+  create,
+  duplicate,
+  sort,
+  showQr,
+  export,
+  scanQr,
+  import,
+  delete,
+  deleteAll,
+}
+
 class CollEventMenu extends ConsumerStatefulWidget {
   const CollEventMenu({super.key, required this.collEventId});
 
@@ -84,85 +96,95 @@ class CollEventMenu extends ConsumerStatefulWidget {
 class NarrativeMenuState extends ConsumerState<CollEventMenu> {
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton(
-      itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-        PopupMenuItem(
-          child: const CreateMenuButton(text: 'Create event'),
-          onTap: () => createNewCollEvents(context, ref),
-        ),
-        PopupMenuItem(
-          onTap: widget.collEventId == null
-              ? null
-              : () async => await _duplicateEvent(),
-          child: const DuplicateMenuButton(text: 'Duplicate event'),
-        ),
-        const PopupMenuDivider(height: 8),
-        PopupMenuItem(
-          onTap: () => showRecordSortDialog(
-            context: context,
-            viewer: RecordViewer.collEvent,
-          ),
-          child: const SortMenuButton(),
-        ),
-        const PopupMenuDivider(height: 8),
-        PopupMenuItem(
-          enabled: widget.collEventId != null,
-          onTap: widget.collEventId == null
-              ? null
-              : () => RecordExchangeActions(
-                  context: context,
-                  ref: ref,
-                ).showEventQr(widget.collEventId!),
-          child: const ListTile(
-            leading: Icon(Icons.qr_code_outlined),
-            title: Text('Show QR'),
-          ),
-        ),
-        PopupMenuItem(
-          enabled: widget.collEventId != null,
-          onTap: widget.collEventId == null
-              ? null
-              : () => RecordExchangeActions(
-                  context: context,
-                  ref: ref,
-                ).exportEventRecord(widget.collEventId!),
-          child: const ListTile(
-            leading: Icon(Icons.file_upload_outlined),
-            title: Text('Export event'),
-          ),
-        ),
-        const PopupMenuDivider(height: 8),
-        PopupMenuItem(
-          onTap: () => RecordExchangeActions(
-            context: context,
-            ref: ref,
-          ).scanEventQr(initialTargetId: widget.collEventId),
-          child: const ListTile(
-            leading: Icon(Icons.qr_code_scanner_outlined),
-            title: Text('Scan QR'),
-          ),
-        ),
-        PopupMenuItem(
-          onTap: () => RecordExchangeActions(
-            context: context,
-            ref: ref,
-          ).importEventRecord(initialTargetId: widget.collEventId),
-          child: const ListTile(
-            leading: Icon(Icons.file_download_outlined),
-            title: Text('Import event'),
-          ),
-        ),
-        const PopupMenuDivider(height: 8),
-        PopupMenuItem(
-          child: const DeleteMenuButton(deleteAll: false),
-          onTap: () => _deleteEvent(),
-        ),
-        PopupMenuItem(
-          child: const DeleteMenuButton(deleteAll: true),
-          onTap: () => _deleteAllEvents(),
-        ),
-      ],
+    return AdaptiveMenuButton<_EventMenuAction>(
+      tooltip: 'Event actions',
+      itemBuilder: _items,
+      onSelected: _onSelected,
     );
+  }
+
+  List<AdaptiveMenuItem<_EventMenuAction>> _items() {
+    final hasEvent = widget.collEventId != null;
+    return [
+      const AdaptiveMenuItem(
+        value: _EventMenuAction.create,
+        icon: Icons.create_outlined,
+        label: 'Create event',
+      ),
+      AdaptiveMenuItem(
+        value: _EventMenuAction.duplicate,
+        icon: Icons.copy_outlined,
+        label: 'Duplicate event',
+        enabled: hasEvent,
+      ),
+      const AdaptiveMenuItem(
+        value: _EventMenuAction.sort,
+        icon: Icons.sort_rounded,
+        label: 'Sort records',
+        hasDividerBefore: true,
+      ),
+      AdaptiveMenuItem(
+        value: _EventMenuAction.showQr,
+        icon: Icons.qr_code_outlined,
+        label: 'Show QR',
+        enabled: hasEvent,
+        hasDividerBefore: true,
+      ),
+      AdaptiveMenuItem(
+        value: _EventMenuAction.export,
+        icon: Icons.file_upload_outlined,
+        label: 'Export event',
+        enabled: hasEvent,
+      ),
+      const AdaptiveMenuItem(
+        value: _EventMenuAction.scanQr,
+        icon: Icons.qr_code_scanner_outlined,
+        label: 'Scan QR',
+        hasDividerBefore: true,
+      ),
+      const AdaptiveMenuItem(
+        value: _EventMenuAction.import,
+        icon: Icons.file_download_outlined,
+        label: 'Import event',
+      ),
+      const AdaptiveMenuItem(
+        value: _EventMenuAction.delete,
+        icon: Icons.delete_outline,
+        label: 'Delete record',
+        isDestructive: true,
+        hasDividerBefore: true,
+      ),
+      const AdaptiveMenuItem(
+        value: _EventMenuAction.deleteAll,
+        icon: Icons.delete_forever_outlined,
+        label: 'Delete all records',
+        isDestructive: true,
+      ),
+    ];
+  }
+
+  void _onSelected(_EventMenuAction action) {
+    final exchange = RecordExchangeActions(context: context, ref: ref);
+    switch (action) {
+      case _EventMenuAction.create:
+        createNewCollEvents(context, ref);
+      case _EventMenuAction.duplicate:
+        _duplicateEvent();
+      case _EventMenuAction.sort:
+        showRecordSortDialog(context: context, viewer: RecordViewer.collEvent);
+      case _EventMenuAction.showQr:
+        exchange.showEventQr(widget.collEventId!);
+      case _EventMenuAction.export:
+        exchange.exportEventRecord(widget.collEventId!);
+      case _EventMenuAction.scanQr:
+        exchange.scanEventQr(initialTargetId: widget.collEventId);
+      case _EventMenuAction.import:
+        exchange.importEventRecord(initialTargetId: widget.collEventId);
+      case _EventMenuAction.delete:
+        _deleteEvent();
+      case _EventMenuAction.deleteAll:
+        _deleteAllEvents();
+    }
   }
 
   void _deleteEvent() {

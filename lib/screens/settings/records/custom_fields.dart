@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:nahpu/screens/settings/transfer/custom_field_transfer.dart';
+import 'package:nahpu/screens/shared/actions/adaptive_menu.dart';
 import 'package:nahpu/screens/shared/actions/preset_actions.dart';
 import 'package:nahpu/screens/shared/forms/custom_field_definition_editor.dart';
 import 'package:nahpu/screens/shared/layout/layout.dart';
@@ -492,115 +493,58 @@ class _DefinitionTile extends ConsumerWidget {
         '${_catalogLabel(definition)}'
         '${definition.archived ? ' · Archived' : ''}',
       ),
-      trailing: MediaQuery.sizeOf(context).width < 600
-          ? IconButton(
-              key: const ValueKey('custom-field-actions-bottom-sheet'),
-              icon: const Icon(Icons.more_vert),
-              tooltip: 'Definition actions',
-              onPressed: () => _showActionSheet(context, currentUsage),
-            )
-          : PopupMenuButton<_DefinitionAction>(
-              tooltip: 'Definition actions',
-              onSelected: _selectAction,
-              itemBuilder: (_) => _popupItems(currentUsage),
-            ),
+      trailing: AdaptiveMenuButton<_DefinitionAction>(
+        tooltip: 'Definition actions',
+        itemBuilder: () => _items(currentUsage),
+        onSelected: _selectAction,
+      ),
       onTap: onInspect,
     );
   }
 
-  List<PopupMenuEntry<_DefinitionAction>> _popupItems(
-    CustomFieldUsage? usage,
-  ) => [
-    const PopupMenuItem(
+  List<AdaptiveMenuItem<_DefinitionAction>> _items(CustomFieldUsage? usage) => [
+    const AdaptiveMenuItem(
       value: _DefinitionAction.inspect,
-      child: Text('View definition'),
+      icon: Icons.visibility_outlined,
+      label: 'View definition',
     ),
-    const PopupMenuItem(value: _DefinitionAction.edit, child: Text('Edit')),
-    const PopupMenuDivider(height: 8),
-    const PopupMenuItem(value: _DefinitionAction.up, child: Text('Move up')),
-    const PopupMenuItem(
+    const AdaptiveMenuItem(
+      value: _DefinitionAction.edit,
+      icon: Icons.edit_outlined,
+      label: 'Edit',
+    ),
+    const AdaptiveMenuItem(
+      value: _DefinitionAction.up,
+      icon: Icons.arrow_upward,
+      label: 'Move up',
+      hasDividerBefore: true,
+    ),
+    const AdaptiveMenuItem(
       value: _DefinitionAction.down,
-      child: Text('Move down'),
+      icon: Icons.arrow_downward,
+      label: 'Move down',
     ),
-    const PopupMenuDivider(height: 8),
-    PopupMenuItem(
+    AdaptiveMenuItem(
       value: _DefinitionAction.archive,
-      child: Text(definition.archived ? 'Restore' : 'Archive'),
+      icon: definition.archived
+          ? Icons.unarchive_outlined
+          : Icons.archive_outlined,
+      label: definition.archived ? 'Restore' : 'Archive',
+      hasDividerBefore: true,
     ),
     if (usage?.legacyValueCount case final count? when count > 0)
-      const PopupMenuItem(
+      const AdaptiveMenuItem(
         value: _DefinitionAction.discardLegacy,
-        child: Text('Discard legacy values'),
+        icon: Icons.delete_sweep_outlined,
+        label: 'Discard legacy values',
       ),
-    PopupMenuItem(
+    AdaptiveMenuItem(
       value: _DefinitionAction.delete,
+      icon: Icons.delete_outline,
+      label: usage?.canDelete == true ? 'Delete' : 'Delete (values in use)',
       enabled: usage?.canDelete ?? false,
-      child: Text(
-        usage?.canDelete == true ? 'Delete' : 'Delete (values in use)',
-      ),
     ),
   ];
-
-  Future<void> _showActionSheet(
-    BuildContext context,
-    CustomFieldUsage? usage,
-  ) async {
-    final action = await showModalBottomSheet<_DefinitionAction>(
-      context: context,
-      showDragHandle: true,
-      builder: (sheetContext) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _DefinitionActionTile(
-              icon: Icons.visibility_outlined,
-              label: 'View definition',
-              action: _DefinitionAction.inspect,
-            ),
-            _DefinitionActionTile(
-              icon: Icons.edit_outlined,
-              label: 'Edit',
-              action: _DefinitionAction.edit,
-            ),
-            const Divider(height: 1),
-            const _DefinitionActionTile(
-              icon: Icons.arrow_upward,
-              label: 'Move up',
-              action: _DefinitionAction.up,
-            ),
-            const _DefinitionActionTile(
-              icon: Icons.arrow_downward,
-              label: 'Move down',
-              action: _DefinitionAction.down,
-            ),
-            const Divider(height: 1),
-            _DefinitionActionTile(
-              icon: definition.archived
-                  ? Icons.unarchive_outlined
-                  : Icons.archive_outlined,
-              label: definition.archived ? 'Restore' : 'Archive',
-              action: _DefinitionAction.archive,
-            ),
-            if (usage?.legacyValueCount case final count? when count > 0)
-              const _DefinitionActionTile(
-                icon: Icons.delete_sweep_outlined,
-                label: 'Discard legacy values',
-                action: _DefinitionAction.discardLegacy,
-              ),
-            _DefinitionActionTile(
-              icon: Icons.delete_outline,
-              label: usage?.canDelete == true
-                  ? 'Delete'
-                  : 'Delete (values in use)',
-              action: _DefinitionAction.delete,
-              enabled: usage?.canDelete ?? false,
-            ),
-          ],
-        ),
-      ),
-    );
-    if (action != null) _selectAction(action);
-  }
 
   void _selectAction(_DefinitionAction action) {
     switch (action) {
@@ -630,30 +574,6 @@ enum _DefinitionAction {
   archive,
   discardLegacy,
   delete,
-}
-
-class _DefinitionActionTile extends StatelessWidget {
-  const _DefinitionActionTile({
-    required this.icon,
-    required this.label,
-    required this.action,
-    this.enabled = true,
-  });
-
-  final IconData icon;
-  final String label;
-  final _DefinitionAction action;
-  final bool enabled;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      enabled: enabled,
-      leading: Icon(icon),
-      title: Text(label),
-      onTap: enabled ? () => Navigator.pop(context, action) : null,
-    );
-  }
 }
 
 class _DefinitionDetailsSheet extends ConsumerWidget {

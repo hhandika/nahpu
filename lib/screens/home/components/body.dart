@@ -9,6 +9,7 @@ import 'package:nahpu/services/providers/projects.dart';
 import 'package:nahpu/screens/shared/layout/project_shell.dart';
 import 'package:nahpu/screens/projects/components/project_info.dart';
 import 'package:nahpu/screens/projects/edit_project.dart';
+import 'package:nahpu/screens/shared/actions/adaptive_menu.dart';
 import 'package:nahpu/screens/settings/onboarding/setup_wizard.dart';
 import 'package:nahpu/screens/shared/common/common.dart';
 import 'package:nahpu/screens/shared/common/legal_links.dart';
@@ -505,64 +506,40 @@ class ProjectPopUpMenu extends ConsumerStatefulWidget {
 }
 
 class ProjectPopUpMenuState extends ConsumerState<ProjectPopUpMenu> {
-  static const _actions = [
-    MenuSelection.editInfo,
-    MenuSelection.showQr,
-    MenuSelection.exportInfo,
-    MenuSelection.details,
-  ];
-
   @override
   Widget build(BuildContext context) {
-    if (MediaQuery.sizeOf(context).width < NahpuBreakpoints.compact) {
-      return IconButton(
-        tooltip: 'Project actions',
-        onPressed: _showActionSheet,
-        icon: const Icon(Icons.more_vert),
-      );
-    }
-    return PopupMenuButton<MenuSelection>(
+    return AdaptiveMenuButton<MenuSelection>(
       tooltip: 'Project actions',
       icon: const Icon(Icons.more_vert),
+      itemBuilder: _items,
       onSelected: _onSelected,
-      itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuSelection>>[
-        for (final action in _actions) ...[
-          if (_hasDividerBefore(action))
-            const PopupMenuDivider(height: NahpuSpacing.md),
-          PopupMenuItem<MenuSelection>(
-            value: action,
-            child: _ProjectMenuTile(action: action),
-          ),
-        ],
-      ],
     );
   }
 
-  Future<void> _showActionSheet() async {
-    final action = await showModalBottomSheet<MenuSelection>(
-      context: context,
-      showDragHandle: true,
-      isScrollControlled: true,
-      builder: (sheetContext) => SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              for (final action in _actions) ...[
-                if (_hasDividerBefore(action)) const Divider(),
-                _ProjectMenuTile(
-                  action: action,
-                  onTap: () => Navigator.of(sheetContext).pop(action),
-                ),
-              ],
-              const SizedBox(height: NahpuSpacing.md),
-            ],
-          ),
-        ),
-      ),
-    );
-    if (action != null && mounted) await _onSelected(action);
-  }
+  List<AdaptiveMenuItem<MenuSelection>> _items() => const [
+    AdaptiveMenuItem(
+      value: MenuSelection.editInfo,
+      icon: Icons.edit_outlined,
+      label: 'Edit info',
+    ),
+    AdaptiveMenuItem(
+      value: MenuSelection.showQr,
+      icon: Icons.qr_code_outlined,
+      label: 'Show QR',
+      hasDividerBefore: true,
+    ),
+    AdaptiveMenuItem(
+      value: MenuSelection.exportInfo,
+      icon: Icons.file_upload_outlined,
+      label: 'Export info',
+    ),
+    AdaptiveMenuItem(
+      value: MenuSelection.details,
+      icon: Icons.info_outlined,
+      label: 'Details',
+      hasDividerBefore: true,
+    ),
+  ];
 
   Future<void> _onSelected(MenuSelection action) async {
     switch (action) {
@@ -632,38 +609,6 @@ class ProjectPopUpMenuState extends ConsumerState<ProjectPopUpMenu> {
       },
     );
   }
-}
-
-bool _hasDividerBefore(MenuSelection action) {
-  return action == MenuSelection.showQr || action == MenuSelection.details;
-}
-
-class _ProjectMenuTile extends StatelessWidget {
-  const _ProjectMenuTile({required this.action, this.onTap});
-
-  final MenuSelection action;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(leading: Icon(_icon), title: Text(_label), onTap: onTap);
-  }
-
-  IconData get _icon => switch (action) {
-    MenuSelection.editInfo => Icons.edit_outlined,
-    MenuSelection.showQr => Icons.qr_code_outlined,
-    MenuSelection.exportInfo => Icons.file_upload_outlined,
-    MenuSelection.details => Icons.info_outlined,
-    MenuSelection.deleteProject => Icons.delete_outline,
-  };
-
-  String get _label => switch (action) {
-    MenuSelection.editInfo => 'Edit info',
-    MenuSelection.showQr => 'Show QR',
-    MenuSelection.exportInfo => 'Export info',
-    MenuSelection.details => 'Details',
-    MenuSelection.deleteProject => 'Delete project',
-  };
 }
 
 class ProjectIcon extends StatelessWidget {
