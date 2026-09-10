@@ -163,7 +163,7 @@ void main() {
       expect(data['specimenUuid'], 'specimen-a');
     });
 
-    test('normalizes v6 site, weather, age, and arthropod fields', () {
+    test('normalizes v6 site, weather, age, and invertebrate fields', () {
       final decoded = ProjectTransferPayload.parse(
         jsonEncode({
           'nahpu_project': 'project',
@@ -190,7 +190,7 @@ void main() {
             ],
             'arthropodAttribute': [
               {
-                'specimenUuid': 'arthropod',
+                'specimenUuid': 'invertebrate',
                 'headWidth': 2.5,
                 'ambientTemperature': 26.0,
                 'canopyCover': '75%',
@@ -210,10 +210,10 @@ void main() {
       expect(decoded.rows('environment').single['averageHumidity'], 80.0);
       expect(decoded.rows('mammalAttribute').single['lifeStage'], 'Subadult');
       expect(decoded.rows('herpAttribute').single['lifeStage'], 'Metamorph');
-      final arthropod = decoded.rows('arthropodAttribute').single;
-      expect(arthropod['headWidth'], 2.5);
-      expect(arthropod, isNot(contains('ambientTemperature')));
-      expect(arthropod, isNot(contains('canopyCover')));
+      final invertebrate = decoded.rows('invertebrateAttribute').single;
+      expect(invertebrate['headWidth'], 2.5);
+      expect(invertebrate, isNot(contains('ambientTemperature')));
+      expect(invertebrate, isNot(contains('canopyCover')));
     });
 
     test('rejects conflicting legacy and canonical collections', () {
@@ -424,7 +424,7 @@ void main() {
       expect(payload.rows('specimen'), hasLength(1));
     });
 
-    testWidgets('exports arthropod attributes with project specimens', (
+    testWidgets('exports invertebrate attributes with project specimens', (
       tester,
     ) async {
       await setUpService(tester);
@@ -433,16 +433,16 @@ void main() {
           .into(database.specimen)
           .insert(
             const SpecimenCompanion(
-              uuid: Value('arthropod-a'),
+              uuid: Value('invertebrate-a'),
               projectUuid: Value('project-a'),
-              taxonGroup: Value('Arthropods'),
+              taxonGroup: Value('Invertebrates'),
             ),
           );
       await database
-          .into(database.arthropodAttribute)
+          .into(database.invertebrateAttribute)
           .insert(
-            const ArthropodAttributeCompanion(
-              specimenUuid: Value('arthropod-a'),
+            const InvertebrateAttributeCompanion(
+              specimenUuid: Value('invertebrate-a'),
               headWidth: Value(3.25),
               lifeStage: Value('Adult'),
             ),
@@ -451,9 +451,12 @@ void main() {
       final payload = await tester.runAsync(service.buildExport);
 
       expect(payload!.version, projectTransferVersion);
-      expect(payload.rows('arthropodAttribute'), hasLength(1));
-      expect(payload.rows('arthropodAttribute').single['headWidth'], 3.25);
-      expect(payload.rows('arthropodAttribute').single['lifeStage'], 'Adult');
+      expect(payload.rows('invertebrateAttribute'), hasLength(1));
+      expect(payload.rows('invertebrateAttribute').single['headWidth'], 3.25);
+      expect(
+        payload.rows('invertebrateAttribute').single['lifeStage'],
+        'Adult',
+      );
     });
 
     testWidgets('exports fossil site attributes with project sites', (
@@ -1969,7 +1972,7 @@ void main() {
           {'specimenUuid': 'specimen-1'},
         ],
         'birdAttribute': const [],
-        'arthropodAttribute': const [],
+        'invertebrateAttribute': const [],
       },
     );
 
@@ -1978,7 +1981,7 @@ void main() {
 
     expect(records.keys, containsAll(<String>{'site', 'mammalAttribute'}));
     expect(records.containsKey('birdAttribute'), isFalse);
-    expect(records.containsKey('arthropodAttribute'), isFalse);
+    expect(records.containsKey('invertebrateAttribute'), isFalse);
 
     // A pruned payload still round-trips: readers treat a missing collection
     // as empty.

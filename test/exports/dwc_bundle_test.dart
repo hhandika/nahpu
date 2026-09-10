@@ -28,8 +28,10 @@ void main() {
     expect(normalizeBundleTaxonGroup('Non-Bat Mammals'), 'Mammals');
     expect(normalizeBundleTaxonGroup('Bats'), 'Bats');
     expect(normalizeBundleTaxonGroup('Herpetofauna'), 'Herpetofauna');
-    expect(normalizeBundleTaxonGroup('Arthropoda'), 'Arthropods');
-    expect(normalizeBundleTaxonGroup('Insects'), 'Arthropods');
+    expect(normalizeBundleTaxonGroup('Arthropoda'), 'Invertebrates');
+    expect(normalizeBundleTaxonGroup('Arthropods'), 'Invertebrates');
+    expect(normalizeBundleTaxonGroup('Invertebrates'), 'Invertebrates');
+    expect(normalizeBundleTaxonGroup('Insects'), 'Invertebrates');
   });
 
   test('bundle types expose valid archive choices and extensions', () {
@@ -435,24 +437,24 @@ void main() {
     expect(highConfidence['enum_name'], 'high');
     expect(highConfidence['display_name'], 'High');
 
-    final arthropodFemale = mappings.singleWhere(
+    final invertebrateFemale = mappings.singleWhere(
       (mapping) =>
-          mapping['table'] == 'arthropodAttribute' &&
+          mapping['table'] == 'invertebrateAttribute' &&
           mapping['column'] == 'sex' &&
           mapping['sqlite_index'] == 1,
     );
-    expect(arthropodFemale['enum_name'], 'female');
-    expect(arthropodFemale['display_name'], 'Female');
+    expect(invertebrateFemale['enum_name'], 'female');
+    expect(invertebrateFemale['display_name'], 'Female');
 
-    final arthropodWorker = mappings.singleWhere(
+    final invertebrateWorker = mappings.singleWhere(
       (mapping) =>
-          mapping['table'] == 'arthropodAttribute' &&
+          mapping['table'] == 'invertebrateAttribute' &&
           mapping['column'] == 'caste' &&
           mapping['sqlite_index'] == 8,
     );
-    expect(arthropodWorker['enum_type'], 'ArthropodCaste');
-    expect(arthropodWorker['enum_name'], 'worker');
-    expect(arthropodWorker['display_name'], 'worker');
+    expect(invertebrateWorker['enum_type'], 'InvertebrateCaste');
+    expect(invertebrateWorker['enum_name'], 'worker');
+    expect(invertebrateWorker['display_name'], 'worker');
 
     final birdMaleUncertain = mappings.singleWhere(
       (mapping) =>

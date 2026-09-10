@@ -2094,20 +2094,7 @@ checksum = "13d2233c9842d08cfe13f9eac96e207ca6a2ea10b80259ebe8ad0268be27d2af"
 
 [[package]]
 name = "nahpu_archive"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9a04c36913d5310390b6eda2628e583e6c47e7b46660b62d7127533085db4c84"
-dependencies = [
- "flate2",
- "tar",
- "zip 8.6.0",
-]
-
-[[package]]
-name = "nahpu_archive"
 version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9438e4c80f3b2dfbb8fb63d1fdb499982c33f81786c9d6a9b55891cbdf7eecf6"
 dependencies = [
  "flate2",
  "tar",
@@ -2127,9 +2114,7 @@ dependencies = [
 
 [[package]]
 name = "nahpu_db"
-version = "0.5.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2f21dd371ab1dde2f01d21162f33c24e3c5b71bc61087ffeacaabe0cdc347c01"
+version = "0.6.0"
 dependencies = [
  "calamine",
  "csv",
@@ -2143,24 +2128,20 @@ dependencies = [
 [[package]]
 name = "nahpu_dp"
 version = "0.3.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cae6d86054d5fd3084431f24f9868dfb1cbac15a79c67d43ad0e60ee78435905"
 dependencies = [
  "chrono",
  "csv",
- "nahpu_archive 0.3.0",
+ "nahpu_archive",
  "serde",
  "serde_json",
 ]
 
 [[package]]
 name = "nahpu_dwc"
-version = "0.6.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "24b74e37af36887bfd12b0e5e94872a2a249a88a3c3d4f915626fdaba30b1eec"
+version = "0.7.0"
 dependencies = [
  "csv",
- "nahpu_archive 0.3.0",
+ "nahpu_archive",
  "nahpu_db",
  "quick-xml 0.36.2",
  "serde",
@@ -2170,9 +2151,7 @@ dependencies = [
 
 [[package]]
 name = "nahpu_export"
-version = "0.6.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fefca35fb5aed9de47fea1d8285a6b7706b493a3256f5746771deac0d6be02eb"
+version = "0.7.0"
 dependencies = [
  "chrono",
  "nahpu_db",
@@ -2187,14 +2166,12 @@ dependencies = [
 [[package]]
 name = "nahpu_gis"
 version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9262001a75c36c2059e317e34030d7fd992adeaaaf341135d185432dcdc8a14a"
 dependencies = [
  "dbase",
  "geo",
  "geojson",
  "kml",
- "nahpu_archive 0.2.0",
+ "nahpu_archive",
  "quick-xml 0.39.4",
  "serde",
  "serde_json",
@@ -2922,7 +2899,7 @@ name = "rust_lib_nahpu"
 version = "0.1.0"
 dependencies = [
  "flutter_rust_bridge",
- "nahpu_archive 0.3.0",
+ "nahpu_archive",
  "nahpu_configs",
  "nahpu_db",
  "nahpu_dp",

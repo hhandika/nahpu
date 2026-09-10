@@ -399,9 +399,7 @@ class UserConfigTransferService {
         placement: FieldUISection.values.byName(template.placement),
         scope: scope,
         projectUuid: targetProjectUuid,
-        catalogFormat: template.catalogFormat == null
-            ? null
-            : CatalogFmt.values.byName(template.catalogFormat!),
+        catalogFormat: catalogFmtFromStoredName(template.catalogFormat),
         options: options,
         dwcMapping: mapping,
         sourceTemplateUuid: template.templateUuid,

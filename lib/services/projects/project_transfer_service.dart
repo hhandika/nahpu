@@ -104,8 +104,8 @@ class ProjectTransferService extends AppServices {
       'specimenUuid',
       specimenUuids,
     );
-    records['arthropodAttribute'] = await _rowsForStrings(
-      'arthropodAttribute',
+    records['invertebrateAttribute'] = await _rowsForStrings(
+      'invertebrateAttribute',
       'specimenUuid',
       specimenUuids,
     );
@@ -1558,7 +1558,7 @@ class ProjectTransferService extends AppServices {
       'mammalAttribute',
       'birdAttribute',
       'herpAttribute',
-      'arthropodAttribute',
+      'invertebrateAttribute',
       'fossilAttribute',
     ]) {
       for (final row in payload.rows(table)) {
@@ -2077,7 +2077,7 @@ class ProjectTransferService extends AppServices {
       'mammalAttribute',
       'birdAttribute',
       'herpAttribute',
-      'arthropodAttribute',
+      'invertebrateAttribute',
       'fossilAttribute',
       'specimenPart',
       'parasiteDetection',
@@ -2143,7 +2143,7 @@ class ProjectTransferService extends AppServices {
       'mammalAttribute',
       'birdAttribute',
       'herpAttribute',
-      'arthropodAttribute',
+      'invertebrateAttribute',
       'fossilAttribute',
       'specimenPart',
       'parasiteDetection',

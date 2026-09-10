@@ -34,7 +34,7 @@ void main() {
 
   Future<void> pumpWizard(
     WidgetTester tester, {
-    CatalogFmt catalogFmt = CatalogFmt.mammals,
+    CatalogFmt catalogFmt = CatalogFmt.mammalogy,
     FieldIdMode fieldIdMode = FieldIdMode.personnel,
   }) async {
     useWideSurface(tester);
@@ -87,7 +87,7 @@ void main() {
           databaseProvider.overrideWithValue(database),
           settingProvider.overrideWithValue(preferences),
           catalogFmtNotifierProvider.overrideWith(
-            () => _TestCatalogFormat(CatalogFmt.mammals),
+            () => _TestCatalogFormat(CatalogFmt.mammalogy),
           ),
           fieldIdModeNotifierProvider.overrideWith(
             () => _TestFieldIdMode(FieldIdMode.personnel),
@@ -151,16 +151,16 @@ void main() {
   testWidgets('a parasite-capable format keeps the parasite step', (
     tester,
   ) async {
-    await pumpWizard(tester, catalogFmt: CatalogFmt.mammals);
+    await pumpWizard(tester, catalogFmt: CatalogFmt.mammalogy);
 
     expect(find.widgetWithText(ListTile, 'Parasites'), findsOneWidget);
     expect(find.widgetWithText(ListTile, 'Specimens'), findsOneWidget);
   });
 
-  testWidgets('arthropods drop the parasite step from the rail', (
+  testWidgets('invertebrate zoology drops the parasite step from the rail', (
     tester,
   ) async {
-    await pumpWizard(tester, catalogFmt: CatalogFmt.arthropods);
+    await pumpWizard(tester, catalogFmt: CatalogFmt.invertebrateZoology);
 
     expect(find.widgetWithText(ListTile, 'Parasites'), findsNothing);
     expect(find.widgetWithText(ListTile, 'Specimens'), findsOneWidget);
@@ -248,7 +248,7 @@ void main() {
           databaseProvider.overrideWithValue(database),
           settingProvider.overrideWithValue(preferences),
           catalogFmtNotifierProvider.overrideWith(
-            () => _TestCatalogFormat(CatalogFmt.mammals),
+            () => _TestCatalogFormat(CatalogFmt.mammalogy),
           ),
           fieldIdModeNotifierProvider.overrideWith(
             () => _TestFieldIdMode(FieldIdMode.personnel),

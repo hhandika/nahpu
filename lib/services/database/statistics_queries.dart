@@ -159,7 +159,7 @@ class StatisticsQuery extends DatabaseAccessor<Database> {
       UNION ALL
       SELECT specimenUuid, sex, lifeStage AS life_stage FROM herpAttribute
       UNION ALL
-      SELECT specimenUuid, sex, lifeStage AS life_stage FROM arthropodAttribute
+      SELECT specimenUuid, sex, lifeStage AS life_stage FROM invertebrateAttribute
       UNION ALL
       SELECT specimenUuid, sex, NULL AS life_stage FROM fossilAttribute
     ),
@@ -719,7 +719,7 @@ ${_mediaCount(const ['narrative'], 'narrative_media_count')},
     db.mammalAttribute,
     db.birdAttribute,
     db.herpAttribute,
-    db.arthropodAttribute,
+    db.invertebrateAttribute,
     db.fossilAttribute,
   };
 }

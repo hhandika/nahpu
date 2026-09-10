@@ -278,16 +278,16 @@ void main() {
           .into(database.specimen)
           .insert(
             const SpecimenCompanion(
-              uuid: Value('arthropod'),
+              uuid: Value('invertebrate'),
               projectUuid: Value('project'),
-              taxonGroup: Value('Arthropods'),
+              taxonGroup: Value('Invertebrates'),
             ),
           );
       await database
-          .into(database.arthropodAttribute)
+          .into(database.invertebrateAttribute)
           .insert(
-            const ArthropodAttributeCompanion(
-              specimenUuid: Value('arthropod'),
+            const InvertebrateAttributeCompanion(
+              specimenUuid: Value('invertebrate'),
               sex: Value(3),
             ),
           );

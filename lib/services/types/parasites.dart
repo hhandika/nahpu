@@ -18,9 +18,9 @@ const parasiteLifeStages = [
 const parasiteAssociationStatuses = {1: 'Confirmed', 0: 'Suspected'};
 
 const parasiteCatalogFormats = {
-  CatalogFmt.mammals,
-  CatalogFmt.birds,
-  CatalogFmt.herpetofauna,
+  CatalogFmt.mammalogy,
+  CatalogFmt.ornithology,
+  CatalogFmt.herpetology,
 };
 
 bool supportsParasites(CatalogFmt catalogFmt) =>

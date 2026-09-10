@@ -118,7 +118,7 @@ mod tests {
             "environment::cloudCover".to_string(),
             "weather::cloudCover".to_string(),
             "mammalAttribute::lifeStage".to_string(),
-            "arthropodAttribute::caste".to_string(),
+            "invertebrateAttribute::caste".to_string(),
             "fossilAttribute::sex".to_string(),
             "fossilAttribute::ontogeneticStage".to_string(),
             "fossilAttribute::weight".to_string(),
@@ -134,7 +134,7 @@ mod tests {
                 .unwrap_or_else(|| panic!("missing mapping for {source_key}"))
         };
 
-        assert_eq!(header_for("arthropodAttribute::caste").header, "dwc:caste");
+        assert_eq!(header_for("invertebrateAttribute::caste").header, "dwc:caste");
         assert_eq!(
             header_for("environment::cloudCover").measurement_unit,
             Some("okta".to_string())

@@ -136,7 +136,7 @@ void main() {
       expect(find.text('All catalog formats'), findsOneWidget);
       await tester.tap(find.text('All catalog formats'));
       await tester.pumpAndSettle();
-      expect(find.text('Current catalog only (Birds)'), findsOneWidget);
+      expect(find.text('Current catalog only (Ornithology)'), findsOneWidget);
       await tester.tap(find.text('All catalog formats').last);
       await tester.pumpAndSettle();
 
@@ -183,7 +183,7 @@ void main() {
                       MaterialPageRoute(
                         builder: (_) => const CustomFieldsSettings(
                           projectUuid: 'project-a',
-                          currentCatalog: CatalogFmt.mammals,
+                          currentCatalog: CatalogFmt.mammalogy,
                         ),
                       ),
                     ),
@@ -466,7 +466,7 @@ void main() {
                       MaterialPageRoute(
                         builder: (_) => const CustomFieldsSettings(
                           projectUuid: 'project-a',
-                          currentCatalog: CatalogFmt.birds,
+                          currentCatalog: CatalogFmt.ornithology,
                         ),
                       ),
                     ),

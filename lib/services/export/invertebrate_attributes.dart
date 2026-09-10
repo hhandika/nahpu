@@ -3,19 +3,19 @@ import 'package:nahpu/services/common/utility_services.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/specimens/specimen_services.dart';
 import 'package:nahpu/services/types/specimens.dart';
-import 'package:nahpu/services/types/arthropods.dart';
+import 'package:nahpu/services/types/invertebrates.dart';
 
-/// Formats arthropod attribute records for specimen exports.
-class ArthropodAttributes {
-  ArthropodAttributes({required this.ref, required this.specimenUuid});
+/// Formats invertebrate attribute records for specimen exports.
+class InvertebrateAttributes {
+  InvertebrateAttributes({required this.ref, required this.specimenUuid});
 
   final WidgetRef ref;
   final String specimenUuid;
 
   Future<List<String>> getAttributes() async {
-    final ArthropodAttributeData data = await SpecimenServices(
+    final InvertebrateAttributeData data = await SpecimenServices(
       ref: ref,
-    ).getArthropodAttributeData(specimenUuid);
+    ).getInvertebrateAttributeData(specimenUuid);
 
     return [
       _number(data.headWidth),
@@ -26,9 +26,9 @@ class ArthropodAttributes {
       data.lifeStage ?? '',
       data.caste == null ||
               data.caste! < 0 ||
-              data.caste! >= arthropodCasteList.length
+              data.caste! >= invertebrateCasteList.length
           ? ''
-          : arthropodCasteList[data.caste!],
+          : invertebrateCasteList[data.caste!],
       data.hostOrganism ?? '',
       data.hostPart ?? '',
       data.remark ?? '',

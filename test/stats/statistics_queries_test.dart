@@ -257,7 +257,7 @@ void main() {
           speciesID: Value(myotis.id),
         ),
         SpecimenCompanion(
-          uuid: const Value('a-arthropod'),
+          uuid: const Value('a-invertebrate'),
           projectUuid: const Value('project-a'),
           speciesID: Value(myotis.id),
         ),
@@ -290,9 +290,9 @@ void main() {
           lifeStage: Value('Juvenile'),
         ),
       ]);
-      batch.insertAll(db.arthropodAttribute, const [
-        ArthropodAttributeCompanion(
-          specimenUuid: Value('a-arthropod'),
+      batch.insertAll(db.invertebrateAttribute, const [
+        InvertebrateAttributeCompanion(
+          specimenUuid: Value('a-invertebrate'),
           sex: Value(4),
           lifeStage: Value('Larva'),
         ),

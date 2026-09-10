@@ -237,7 +237,9 @@ void main() {
       (RecordMetricKind.narrativeMedia, '1'),
     ]) {
       final metric = find.descendant(
-        of: find.byKey(const ValueKey('full-screen-record-stat-media-breakdown')),
+        of: find.byKey(
+          const ValueKey('full-screen-record-stat-media-breakdown'),
+        ),
         matching: find.byKey(entry.$1.fullScreenKey),
       );
       expect(

@@ -34,8 +34,8 @@ mixin _$ProjectQueryMixin on DatabaseAccessor<Database> {
   MammalAttribute get mammalAttribute => attachedDatabase.mammalAttribute;
   BirdAttribute get birdAttribute => attachedDatabase.birdAttribute;
   HerpAttribute get herpAttribute => attachedDatabase.herpAttribute;
-  ArthropodAttribute get arthropodAttribute =>
-      attachedDatabase.arthropodAttribute;
+  InvertebrateAttribute get invertebrateAttribute =>
+      attachedDatabase.invertebrateAttribute;
   FossilAttribute get fossilAttribute => attachedDatabase.fossilAttribute;
   ParasiteDetection get parasiteDetection => attachedDatabase.parasiteDetection;
   Parasite get parasite => attachedDatabase.parasite;
@@ -112,10 +112,10 @@ class ProjectQueryManager {
       $BirdAttributeTableManager(_db.attachedDatabase, _db.birdAttribute);
   $HerpAttributeTableManager get herpAttribute =>
       $HerpAttributeTableManager(_db.attachedDatabase, _db.herpAttribute);
-  $ArthropodAttributeTableManager get arthropodAttribute =>
-      $ArthropodAttributeTableManager(
+  $InvertebrateAttributeTableManager get invertebrateAttribute =>
+      $InvertebrateAttributeTableManager(
         _db.attachedDatabase,
-        _db.arthropodAttribute,
+        _db.invertebrateAttribute,
       );
   $FossilAttributeTableManager get fossilAttribute =>
       $FossilAttributeTableManager(_db.attachedDatabase, _db.fossilAttribute);

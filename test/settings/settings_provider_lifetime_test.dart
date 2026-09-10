@@ -94,9 +94,9 @@ class _OneOffWriterState extends ConsumerState<_OneOffWriter> {
       await ref
           .read(catalogFmtNotifierProvider.notifier)
           .set(
-            current == CatalogFmt.mammals
-                ? CatalogFmt.birds
-                : CatalogFmt.mammals,
+            current == CatalogFmt.mammalogy
+                ? CatalogFmt.ornithology
+                : CatalogFmt.mammalogy,
           );
       final setting = ref.read(catalogFmtNotifierProvider);
       if (setting.hasError) throw setting.error!;

@@ -1,7 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:nahpu/services/types/export.dart';
 import 'package:nahpu/services/types/mammals.dart';
-import 'package:nahpu/services/types/arthropods.dart';
+import 'package:nahpu/services/types/invertebrates.dart';
 import 'package:nahpu/services/database/database.dart';
 import 'package:nahpu/services/types/geography.dart';
 import 'package:nahpu/services/types/events.dart';
@@ -1006,8 +1006,8 @@ class HerpAttributeCtrModel {
   }
 }
 
-class ArthropodAttributeCtrModel {
-  ArthropodAttributeCtrModel({
+class InvertebrateAttributeCtrModel {
+  InvertebrateAttributeCtrModel({
     required this.headWidthCtr,
     required this.bodyLengthCtr,
     required this.wingspanUpperCtr,
@@ -1037,45 +1037,47 @@ class ArthropodAttributeCtrModel {
       wingspanUpperCtr.text.isNotEmpty ||
       wingspanLowerCtr.text.isNotEmpty;
 
-  factory ArthropodAttributeCtrModel.empty() => ArthropodAttributeCtrModel(
-    headWidthCtr: TextEditingController(),
-    bodyLengthCtr: TextEditingController(),
-    wingspanUpperCtr: TextEditingController(),
-    wingspanLowerCtr: TextEditingController(),
-    sexCtr: null,
-    lifeStageCtr: null,
-    casteCtr: null,
-    hostOrganismCtr: TextEditingController(),
-    hostPartCtr: TextEditingController(),
-    remarkCtr: TextEditingController(),
-  );
-
-  factory ArthropodAttributeCtrModel.fromData(ArthropodAttributeData data) =>
-      ArthropodAttributeCtrModel(
-        headWidthCtr: TextEditingController(
-          text: data.headWidth?.truncateZero() ?? '',
-        ),
-        bodyLengthCtr: TextEditingController(
-          text: data.bodyLength?.truncateZero() ?? '',
-        ),
-        wingspanUpperCtr: TextEditingController(
-          text: data.wingspanUpper?.truncateZero() ?? '',
-        ),
-        wingspanLowerCtr: TextEditingController(
-          text: data.wingspanLower?.truncateZero() ?? '',
-        ),
-        sexCtr: data.sex,
-        lifeStageCtr: data.lifeStage,
-        casteCtr:
-            data.caste != null &&
-                data.caste! >= 0 &&
-                data.caste! < arthropodCasteList.length
-            ? data.caste
-            : null,
-        hostOrganismCtr: TextEditingController(text: data.hostOrganism ?? ''),
-        hostPartCtr: TextEditingController(text: data.hostPart ?? ''),
-        remarkCtr: TextEditingController(text: data.remark ?? ''),
+  factory InvertebrateAttributeCtrModel.empty() =>
+      InvertebrateAttributeCtrModel(
+        headWidthCtr: TextEditingController(),
+        bodyLengthCtr: TextEditingController(),
+        wingspanUpperCtr: TextEditingController(),
+        wingspanLowerCtr: TextEditingController(),
+        sexCtr: null,
+        lifeStageCtr: null,
+        casteCtr: null,
+        hostOrganismCtr: TextEditingController(),
+        hostPartCtr: TextEditingController(),
+        remarkCtr: TextEditingController(),
       );
+
+  factory InvertebrateAttributeCtrModel.fromData(
+    InvertebrateAttributeData data,
+  ) => InvertebrateAttributeCtrModel(
+    headWidthCtr: TextEditingController(
+      text: data.headWidth?.truncateZero() ?? '',
+    ),
+    bodyLengthCtr: TextEditingController(
+      text: data.bodyLength?.truncateZero() ?? '',
+    ),
+    wingspanUpperCtr: TextEditingController(
+      text: data.wingspanUpper?.truncateZero() ?? '',
+    ),
+    wingspanLowerCtr: TextEditingController(
+      text: data.wingspanLower?.truncateZero() ?? '',
+    ),
+    sexCtr: data.sex,
+    lifeStageCtr: data.lifeStage,
+    casteCtr:
+        data.caste != null &&
+            data.caste! >= 0 &&
+            data.caste! < invertebrateCasteList.length
+        ? data.caste
+        : null,
+    hostOrganismCtr: TextEditingController(text: data.hostOrganism ?? ''),
+    hostPartCtr: TextEditingController(text: data.hostPart ?? ''),
+    remarkCtr: TextEditingController(text: data.remark ?? ''),
+  );
 
   void dispose() {
     headWidthCtr.dispose();

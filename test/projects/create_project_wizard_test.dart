@@ -175,7 +175,7 @@ void main() {
 
 class _TestCatalogFormat extends CatalogFmtNotifier {
   @override
-  Future<CatalogFmt> build() async => CatalogFmt.mammals;
+  Future<CatalogFmt> build() async => CatalogFmt.mammalogy;
 }
 
 class _TestFieldIdMode extends FieldIdModeNotifier {

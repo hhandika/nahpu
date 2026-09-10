@@ -21,7 +21,7 @@ import 'package:nahpu/services/projects/taxonomy_services.dart';
 import 'package:nahpu/services/types/birds.dart' as birds;
 import 'package:nahpu/services/types/import.dart';
 import 'package:nahpu/services/types/mammals.dart' as mammals;
-import 'package:nahpu/services/types/arthropods.dart';
+import 'package:nahpu/services/types/invertebrates.dart';
 import 'package:nahpu/services/types/specimens.dart';
 import 'package:nahpu/services/types/custom_field.dart';
 import 'package:nahpu/services/types/parasites.dart';
@@ -809,10 +809,10 @@ class DwcBundleWriter extends AppServices {
   }
 
   String? _casteLabel(dynamic value) {
-    if (value is! int || value < 0 || value >= arthropodCasteList.length) {
+    if (value is! int || value < 0 || value >= invertebrateCasteList.length) {
       return null;
     }
-    return arthropodCasteList[value];
+    return invertebrateCasteList[value];
   }
 
   String? _habitat(SiteAttributeData? attribute) {
@@ -1173,10 +1173,10 @@ class DwcBundleWriter extends AppServices {
           return (await SpecimenServices(
             ref: ref,
           ).getHerpAttributeData(specimen.uuid)).toJson();
-        case 'Arthropods':
+        case 'Invertebrates':
           return (await SpecimenServices(
             ref: ref,
-          ).getArthropodAttributeData(specimen.uuid)).toJson();
+          ).getInvertebrateAttributeData(specimen.uuid)).toJson();
         case 'Fossils':
           return (await (dbAccess.select(dbAccess.fossilAttribute)
                     ..where((row) => row.specimenUuid.equals(specimen.uuid)))
@@ -1405,20 +1405,21 @@ class DwcBundleWriter extends AppServices {
 /// The SQLite enum mappings a NAHPU Data Package describes.
 ///
 /// [tables] limits the result to the tables the package actually carries, so a
-/// mammals-only project does not describe bird, herpetofauna, or arthropod enum columns.
+/// mammals-only project does not describe bird, herpetofauna, or invertebrate
+/// enum columns.
 /// Passing null returns every mapping.
 List<Map<String, dynamic>> buildNahpuSqliteEnumMappings({Set<String>? tables}) {
   final mappings = <Map<String, dynamic>>[
     ..._specimenSexMappingRows(table: 'mammalAttribute', column: 'sex'),
     ..._specimenSexMappingRows(table: 'birdAttribute', column: 'sex'),
     ..._specimenSexMappingRows(table: 'herpAttribute', column: 'sex'),
-    ..._specimenSexMappingRows(table: 'arthropodAttribute', column: 'sex'),
+    ..._specimenSexMappingRows(table: 'invertebrateAttribute', column: 'sex'),
     ..._indexedMappingRows(
-      table: 'arthropodAttribute',
+      table: 'invertebrateAttribute',
       column: 'caste',
-      enumType: 'ArthropodCaste',
-      enumNames: arthropodCasteList,
-      displayNames: arthropodCasteList,
+      enumType: 'InvertebrateCaste',
+      enumNames: invertebrateCasteList,
+      displayNames: invertebrateCasteList,
     ),
     ..._enumMappingRows(
       table: 'mammalAttribute',
@@ -1727,10 +1728,11 @@ String normalizeBundleTaxonGroup(String? value) {
       normalized.contains('amphib')) {
     return 'Herpetofauna';
   }
-  if (normalized.contains('arthropod') ||
+  if (normalized.contains('invertebrate') ||
+      normalized.contains('arthropod') ||
       normalized.contains('insect') ||
       normalized.contains('arachnid')) {
-    return 'Arthropods';
+    return 'Invertebrates';
   }
   if (normalized.contains('fossil') || normalized.contains('paleo')) {
     return 'Fossils';

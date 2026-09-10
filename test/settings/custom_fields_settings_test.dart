@@ -22,7 +22,7 @@ void main() {
         child: const MaterialApp(
           home: CustomFieldsSettings(
             projectUuid: null,
-            currentCatalog: CatalogFmt.mammals,
+            currentCatalog: CatalogFmt.mammalogy,
           ),
         ),
       ),
@@ -79,7 +79,7 @@ void main() {
         child: const MaterialApp(
           home: CustomFieldsSettings(
             projectUuid: 'project-a',
-            currentCatalog: CatalogFmt.mammals,
+            currentCatalog: CatalogFmt.mammalogy,
           ),
         ),
       ),
@@ -133,7 +133,7 @@ void main() {
         child: const MaterialApp(
           home: CustomFieldsSettings(
             projectUuid: null,
-            currentCatalog: CatalogFmt.mammals,
+            currentCatalog: CatalogFmt.mammalogy,
           ),
         ),
       ),
@@ -184,7 +184,7 @@ void main() {
         child: const MaterialApp(
           home: CustomFieldsSettings(
             projectUuid: null,
-            currentCatalog: CatalogFmt.mammals,
+            currentCatalog: CatalogFmt.mammalogy,
           ),
         ),
       ),
@@ -192,7 +192,10 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byIcon(Icons.place_outlined), findsOneWidget);
-    expect(find.byIcon(matchCatFmtToIcon(CatalogFmt.mammals)), findsOneWidget);
+    expect(
+      find.byIcon(matchCatFmtToIcon(CatalogFmt.mammalogy)),
+      findsOneWidget,
+    );
     expect(find.byIcon(NahpuIcons.vialOutlined), findsOneWidget);
     expect(find.byIcon(Icons.bug_report_outlined), findsOneWidget);
   });
@@ -229,7 +232,7 @@ void main() {
         child: const MaterialApp(
           home: CustomFieldsSettings(
             projectUuid: null,
-            currentCatalog: CatalogFmt.mammals,
+            currentCatalog: CatalogFmt.mammalogy,
           ),
         ),
       ),

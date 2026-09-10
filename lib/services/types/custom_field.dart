@@ -204,8 +204,7 @@ extension CustomFieldDefinitionX on CustomFieldDefinitionData {
   FieldType get fieldType => FieldType.values.byName(type);
   FieldUISection get placement => FieldUISection.values.byName(uiSection);
   FieldScope get fieldScope => FieldScope.values.byName(scope);
-  CatalogFmt? get applicableCatalog =>
-      catalogFormat == null ? null : CatalogFmt.values.byName(catalogFormat!);
+  CatalogFmt? get applicableCatalog => catalogFmtFromStoredName(catalogFormat);
   bool get archived => isArchived == 1;
   bool get permitsDwcConflict => allowDwcConflict == 1;
 

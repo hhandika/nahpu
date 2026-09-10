@@ -4,7 +4,7 @@ import 'package:nahpu/services/types/controllers.dart';
 import 'package:nahpu/services/types/specimens.dart';
 import 'package:nahpu/screens/shared/common/common.dart';
 import 'package:nahpu/screens/shared/layout/layout.dart';
-import 'package:nahpu/screens/specimens/arthropods/attributes.dart';
+import 'package:nahpu/screens/specimens/invertebrates/attributes.dart';
 import 'package:nahpu/screens/specimens/birds/attributes.dart';
 import 'package:nahpu/screens/specimens/mammalian/attributes.dart';
 import 'package:nahpu/screens/specimens/herpetofauna/attributes.dart';
@@ -96,23 +96,23 @@ class MainFormsState extends ConsumerState<MainForms> {
 
   Widget getAttributeForm(CatalogFmt fmt, bool useHorizontalLayout) {
     switch (widget.catalogFmt) {
-      case CatalogFmt.birds:
+      case CatalogFmt.ornithology:
         return BirdAttributeForms(
           useHorizontalLayout: useHorizontalLayout,
           specimenUuid: widget.specimenUuid,
         );
-      case CatalogFmt.mammals:
+      case CatalogFmt.mammalogy:
         return MammalAttributeForms(
           useHorizontalLayout: useHorizontalLayout,
           specimenUuid: widget.specimenUuid,
         );
-      case CatalogFmt.herpetofauna:
+      case CatalogFmt.herpetology:
         return HerpAttributeForms(
           useHorizontalLayout: useHorizontalLayout,
           specimenUuid: widget.specimenUuid,
         );
-      case CatalogFmt.arthropods:
-        return ArthropodAttributeForms(
+      case CatalogFmt.invertebrateZoology:
+        return InvertebrateAttributeForms(
           useHorizontalLayout: useHorizontalLayout,
           specimenUuid: widget.specimenUuid,
         );

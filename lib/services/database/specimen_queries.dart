@@ -206,10 +206,10 @@ class SpecimenQuery extends DatabaseAccessor<Database>
             ..where(herpAttribute.lifeStage.isNotNull()))
           .map((row) => row.read(herpAttribute.lifeStage))
           .get(),
-      (selectOnly(arthropodAttribute, distinct: true)
-            ..addColumns([arthropodAttribute.lifeStage])
-            ..where(arthropodAttribute.lifeStage.isNotNull()))
-          .map((row) => row.read(arthropodAttribute.lifeStage))
+      (selectOnly(invertebrateAttribute, distinct: true)
+            ..addColumns([invertebrateAttribute.lifeStage])
+            ..where(invertebrateAttribute.lifeStage.isNotNull()))
+          .map((row) => row.read(invertebrateAttribute.lifeStage))
           .get(),
     ]);
     return values
@@ -231,15 +231,15 @@ class SpecimenQuery extends DatabaseAccessor<Database>
     final herpQuery = selectOnly(herpAttribute, distinct: true)
       ..addColumns([herpAttribute.sex])
       ..where(herpAttribute.sex.isNotNull());
-    final arthropodQuery = selectOnly(arthropodAttribute, distinct: true)
-      ..addColumns([arthropodAttribute.sex])
-      ..where(arthropodAttribute.sex.isNotNull());
+    final invertebrateQuery = selectOnly(invertebrateAttribute, distinct: true)
+      ..addColumns([invertebrateAttribute.sex])
+      ..where(invertebrateAttribute.sex.isNotNull());
 
     final results = await Future.wait([
       mammalQuery.map((row) => row.read(mammalAttribute.sex)).get(),
       birdQuery.map((row) => row.read(birdAttribute.sex)).get(),
       herpQuery.map((row) => row.read(herpAttribute.sex)).get(),
-      arthropodQuery.map((row) => row.read(arthropodAttribute.sex)).get(),
+      invertebrateQuery.map((row) => row.read(invertebrateAttribute.sex)).get(),
     ]);
     codes.addAll(results.expand((values) => values).whereType<int>());
     return codes;
@@ -525,33 +525,34 @@ class HerpSpecimenQuery extends DatabaseAccessor<Database>
   }
 }
 
-class ArthropodSpecimenQuery extends DatabaseAccessor<Database>
+class InvertebrateSpecimenQuery extends DatabaseAccessor<Database>
     with _$SpecimenQueryMixin {
-  ArthropodSpecimenQuery(super.db);
+  InvertebrateSpecimenQuery(super.db);
 
-  Future<int> createArthropodAttributes(ArthropodAttributeCompanion form) =>
-      into(arthropodAttribute).insert(form);
+  Future<int> createInvertebrateAttributes(
+    InvertebrateAttributeCompanion form,
+  ) => into(invertebrateAttribute).insert(form);
 
-  Future<void> updateArthropodAttributes(
+  Future<void> updateInvertebrateAttributes(
     String specimenUuid,
-    ArthropodAttributeCompanion entry,
+    InvertebrateAttributeCompanion entry,
   ) async {
     await (update(
-      arthropodAttribute,
+      invertebrateAttribute,
     )..where((t) => t.specimenUuid.equals(specimenUuid))).write(entry);
   }
 
-  Future<ArthropodAttributeData> getArthropodAttributeByUuid(
+  Future<InvertebrateAttributeData> getInvertebrateAttributeByUuid(
     String specimenUuid,
   ) {
     return (select(
-      arthropodAttribute,
+      invertebrateAttribute,
     )..where((t) => t.specimenUuid.equals(specimenUuid))).getSingle();
   }
 
-  Future<void> deleteArthropodAttributes(String specimenUuid) async {
+  Future<void> deleteInvertebrateAttributes(String specimenUuid) async {
     await (delete(
-      arthropodAttribute,
+      invertebrateAttribute,
     )..where((t) => t.specimenUuid.equals(specimenUuid))).go();
   }
 }

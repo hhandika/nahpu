@@ -65,7 +65,7 @@ enum SpecimenRecordType {
   bats,
   allMammals,
   herpetofauna,
-  arthropods,
+  invertebrates,
   allTaxa,
 }
 
@@ -77,7 +77,7 @@ const List<String> specimenExportFmtList = [
   'Custom fields',
 ];
 
-enum TaxonRecordType { birds, mammals, herps, arthropods }
+enum TaxonRecordType { birds, mammals, herps, invertebrates }
 
 /// Labels for [TaxonRecordType], in enum order.
 ///
@@ -316,7 +316,7 @@ const herpAttributeExportList = [
   'measurement::remark',
 ];
 
-const arthropodAttributeExportList = [
+const invertebrateAttributeExportList = [
   'measurement::headWidth',
   'measurement::bodyLength',
   'measurement::wingspanUpper',
@@ -409,7 +409,7 @@ enum ListExportMode { concatenate, spreadColumns }
 /// How a one-based index is added to an exported column name.
 enum IndexedHeaderStyle { underscore, compact, brackets }
 
-const int recordExportPresetSchemaVersion = 10;
+const int recordExportPresetSchemaVersion = 11;
 const Set<int> _supportedRecordExportPresetSchemaVersions = {
   2,
   3,
@@ -420,6 +420,7 @@ const Set<int> _supportedRecordExportPresetSchemaVersions = {
   8,
   9,
   10,
+  11,
 };
 
 /// Scalar export format that conditionally wraps a populated value in brackets.
@@ -720,9 +721,8 @@ class ExportPresetModel {
     return ExportPresetModel(
       schemaVersion: recordExportPresetSchemaVersion,
       recordType: parseRecordType(json['recordType'] as String?),
-      specimenRecordType: SpecimenRecordType.values.byName(
-        json['specimenRecordType'] as String? ??
-            SpecimenRecordType.allTaxa.name,
+      specimenRecordType: parseSpecimenRecordType(
+        json['specimenRecordType'] as String?,
       ),
       headerFormat: ExportHeaderFormat.values.byName(
         json['headerFormat'] as String? ??
@@ -745,6 +745,20 @@ class ExportPresetModel {
     'headerFormat': headerFormat.name,
     'mappings': mappings.map((mapping) => mapping.toJson()).toList(),
   };
+}
+
+/// [SpecimenRecordType] for a persisted enum name.
+///
+/// v22 renamed `arthropods` to `invertebrates`. Parsing rather than
+/// `values.byName` keeps an older preset loading instead of throwing, which
+/// would discard the whole preset rather than one field.
+SpecimenRecordType parseSpecimenRecordType(String? value) {
+  if (value == null) return SpecimenRecordType.allTaxa;
+  if (value == 'arthropods') return SpecimenRecordType.invertebrates;
+  for (final type in SpecimenRecordType.values) {
+    if (type.name == value) return type;
+  }
+  return SpecimenRecordType.allTaxa;
 }
 
 RecordType parseRecordType(String? value) {

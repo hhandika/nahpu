@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:nahpu/services/types/export.dart';
 import 'nahpu_icons.dart';
 
-enum CatalogFmt { mammals, birds, herpetofauna, arthropods }
+enum CatalogFmt { mammalogy, ornithology, herpetology, invertebrateZoology }
 
 enum SpecimenSex {
   male,
@@ -174,6 +174,27 @@ String? canonicalizeCondition(String? value) {
   return value;
 }
 
+/// Canonical `specimen.taxonGroup` for [value].
+///
+/// v22 renamed the invertebrate taxon, but imported records can still carry
+/// the old label.
+String? canonicalizeTaxonGroup(String? value) =>
+    value == 'Arthropods' ? 'Invertebrates' : value;
+
+/// [CatalogFmt] for a persisted `CatalogFmt.name`.
+///
+/// Tolerates the pre-v22 taxon-based names so an old preset, record file, or
+/// user-config file loads instead of throwing. Returns null for anything
+/// unrecognized, which callers treat as "no catalog restriction".
+CatalogFmt? catalogFmtFromStoredName(String? name) => switch (name) {
+  null => null,
+  'mammalogy' || 'mammals' => CatalogFmt.mammalogy,
+  'ornithology' || 'birds' => CatalogFmt.ornithology,
+  'herpetology' || 'herpetofauna' => CatalogFmt.herpetology,
+  'invertebrateZoology' || 'arthropods' => CatalogFmt.invertebrateZoology,
+  _ => null,
+};
+
 const List<String> defaultCondition = [
   'Freshly euthanized',
   'Good',
@@ -260,35 +281,38 @@ const List<String> taxonGroupList = [
   'Birds',
   'Mammals',
   'Herpetofauna',
-  'Arthropods',
+  'Invertebrates',
 ];
 
 CatalogFmt matchTaxonGroupToCatFmt(String? taxonGroup) {
   switch (taxonGroup) {
     case 'Birds':
-      return CatalogFmt.birds;
+      return CatalogFmt.ornithology;
     case 'General Mammals':
     case 'Mammals':
-      return CatalogFmt.mammals;
+      return CatalogFmt.mammalogy;
     case 'Herpetofauna':
-      return CatalogFmt.herpetofauna;
+      return CatalogFmt.herpetology;
+    // 'Arthropods' is the pre-v22 label. It is still accepted so a saved
+    // catalog-format preference resolves after the rename.
+    case 'Invertebrates':
     case 'Arthropods':
-      return CatalogFmt.arthropods;
+      return CatalogFmt.invertebrateZoology;
     default:
-      return CatalogFmt.mammals;
+      return CatalogFmt.mammalogy;
   }
 }
 
 SpecimenRecordType matchCatalogFmtToRecordType(CatalogFmt catalogFmt) {
   switch (catalogFmt) {
-    case CatalogFmt.birds:
+    case CatalogFmt.ornithology:
       return SpecimenRecordType.birds;
-    case CatalogFmt.mammals:
+    case CatalogFmt.mammalogy:
       return SpecimenRecordType.generalMammals;
-    case CatalogFmt.herpetofauna:
+    case CatalogFmt.herpetology:
       return SpecimenRecordType.herpetofauna;
-    case CatalogFmt.arthropods:
-      return SpecimenRecordType.arthropods;
+    case CatalogFmt.invertebrateZoology:
+      return SpecimenRecordType.invertebrates;
   }
 }
 
@@ -302,8 +326,8 @@ String matchRecordTypeToTaxonGroup(SpecimenRecordType recordType) {
       return 'Bats';
     case SpecimenRecordType.herpetofauna:
       return 'Herpetofauna';
-    case SpecimenRecordType.arthropods:
-      return 'Arthropods';
+    case SpecimenRecordType.invertebrates:
+      return 'Invertebrates';
     default:
       throw Exception('Invalid record type');
   }
@@ -320,8 +344,9 @@ SpecimenRecordType matchTaxonGroupToRecordType(String taxonGroup) {
       return SpecimenRecordType.bats;
     case 'Herpetofauna':
       return SpecimenRecordType.herpetofauna;
+    case 'Invertebrates':
     case 'Arthropods':
-      return SpecimenRecordType.arthropods;
+      return SpecimenRecordType.invertebrates;
     default:
       return SpecimenRecordType.generalMammals;
   }
@@ -335,14 +360,14 @@ SpecimenRecordType matchTaxonGroupToRecordType(String taxonGroup) {
 /// that renaming a format never rewrites stored records.
 String matchCatFmtToTaxonGroup(CatalogFmt catalogFmt) {
   switch (catalogFmt) {
-    case CatalogFmt.birds:
+    case CatalogFmt.ornithology:
       return 'Birds';
-    case CatalogFmt.mammals:
+    case CatalogFmt.mammalogy:
       return 'Mammals';
-    case CatalogFmt.herpetofauna:
+    case CatalogFmt.herpetology:
       return 'Herpetofauna';
-    case CatalogFmt.arthropods:
-      return 'Arthropods';
+    case CatalogFmt.invertebrateZoology:
+      return 'Invertebrates';
   }
 }
 
@@ -353,14 +378,14 @@ String matchCatFmtToTaxonGroup(CatalogFmt catalogFmt) {
 /// value stays stable for existing projects and exports.
 String catalogFmtDisplayName(CatalogFmt catalogFmt) {
   switch (catalogFmt) {
-    case CatalogFmt.birds:
-      return 'Birds';
-    case CatalogFmt.mammals:
-      return 'Mammals';
-    case CatalogFmt.herpetofauna:
-      return 'Herpetofauna';
-    case CatalogFmt.arthropods:
-      return 'Invertebrates';
+    case CatalogFmt.ornithology:
+      return 'Ornithology';
+    case CatalogFmt.mammalogy:
+      return 'Mammalogy';
+    case CatalogFmt.herpetology:
+      return 'Herpetology';
+    case CatalogFmt.invertebrateZoology:
+      return 'Invertebrate zoology';
   }
 }
 
@@ -368,24 +393,24 @@ String catalogFmtDisplayName(CatalogFmt catalogFmt) {
 /// the catalog-format pickers.
 bool isCatalogFmtBeta(CatalogFmt catalogFmt) {
   switch (catalogFmt) {
-    case CatalogFmt.birds:
-    case CatalogFmt.mammals:
-    case CatalogFmt.herpetofauna:
+    case CatalogFmt.ornithology:
+    case CatalogFmt.mammalogy:
+    case CatalogFmt.herpetology:
       return false;
-    case CatalogFmt.arthropods:
+    case CatalogFmt.invertebrateZoology:
       return true;
   }
 }
 
 IconData matchCatFmtToIcon(CatalogFmt catalogFmt, {bool isFilledIcon = false}) {
   switch (catalogFmt) {
-    case CatalogFmt.birds:
+    case CatalogFmt.ornithology:
       return isFilledIcon ? NahpuIcons.birdFilled : NahpuIcons.birdOutlined;
-    case CatalogFmt.mammals:
+    case CatalogFmt.mammalogy:
       return isFilledIcon ? NahpuIcons.ratFilled : NahpuIcons.ratOutlined;
-    case CatalogFmt.herpetofauna:
+    case CatalogFmt.herpetology:
       return isFilledIcon ? NahpuIcons.frogFilled : NahpuIcons.frogOutlined;
-    case CatalogFmt.arthropods:
+    case CatalogFmt.invertebrateZoology:
       return isFilledIcon ? NahpuIcons.beetleFilled : NahpuIcons.beetleOutlined;
   }
 }
@@ -410,13 +435,13 @@ const Map<String, String> partIconPath = {
 
 String matchCatalogFmtToIconPath(CatalogFmt fmt) {
   switch (fmt) {
-    case CatalogFmt.mammals:
+    case CatalogFmt.mammalogy:
       return 'assets/icons/mouse_outlined.svg';
-    case CatalogFmt.birds:
+    case CatalogFmt.ornithology:
       return 'assets/icons/bird_outlined.svg';
-    case CatalogFmt.herpetofauna:
+    case CatalogFmt.herpetology:
       return 'assets/icons/frog.svg';
-    case CatalogFmt.arthropods:
+    case CatalogFmt.invertebrateZoology:
       return 'assets/icons/beetle.svg';
   }
 }
@@ -437,16 +462,16 @@ const List<String> specimenPartList = [
 /// [matchCatalogFmtToIconPath]. A format missing an entry falls back to that
 /// whole-animal icon rather than throwing, so partial coverage is safe.
 const Map<CatalogFmt, Map<String, String>> preparationIconPath = {
-  CatalogFmt.mammals: {
+  CatalogFmt.mammalogy: {
     'skin': 'assets/icons/mammal_skin.svg',
     'skull': 'assets/icons/mammal_skull.svg',
     'skeleton': 'assets/icons/mammal_skeleton.svg',
   },
-  CatalogFmt.birds: {
+  CatalogFmt.ornithology: {
     'skull': 'assets/icons/bird_skull.svg',
     'skeleton': 'assets/icons/bird_skeleton.svg',
   },
-  CatalogFmt.herpetofauna: {
+  CatalogFmt.herpetology: {
     'skull': 'assets/icons/herp_skull.svg',
     'skeleton': 'assets/icons/herp_skeleton.svg',
   },
