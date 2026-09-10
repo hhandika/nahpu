@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nahpu/services/providers/personnel.dart';
+import 'package:nahpu/screens/shared/actions/adaptive_menu.dart';
 import 'package:nahpu/screens/shared/actions/buttons.dart';
 import 'package:nahpu/screens/shared/common/common.dart';
 import 'package:nahpu/screens/shared/forms/fields.dart';
@@ -714,57 +715,47 @@ class MediaPopUpMenu extends ConsumerStatefulWidget {
 class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
   @override
   Widget build(BuildContext context) {
-    final icon = Icon(
-      Icons.more_vert,
-      color: Theme.of(context).colorScheme.onPrimaryContainer,
-    );
-    if (MediaQuery.sizeOf(context).width < 600) {
-      return IconButton(
-        tooltip: 'Media actions',
-        onPressed: _showActionSheet,
-        icon: icon,
-      );
-    }
-    return PopupMenuButton<_MediaMenuAction>(
+    return AdaptiveMenuButton<_MediaMenuAction>(
       tooltip: 'Media actions',
-      icon: icon,
+      icon: Icon(
+        Icons.more_vert,
+        color: Theme.of(context).colorScheme.onPrimaryContainer,
+      ),
+      itemBuilder: _items,
       onSelected: _onSelected,
-      itemBuilder: (context) => [
-        for (final action in _MediaMenuAction.values) ...[
-          if (_hasDividerBefore(action)) const PopupMenuDivider(),
-          PopupMenuItem(
-            value: action,
-            child: _MediaMenuTile(action: action),
-          ),
-        ],
-      ],
     );
   }
 
-  Future<void> _showActionSheet() async {
-    final action = await showModalBottomSheet<_MediaMenuAction>(
-      context: context,
-      showDragHandle: true,
-      builder: (context) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            for (final action in _MediaMenuAction.values) ...[
-              if (_hasDividerBefore(action)) const Divider(),
-              _MediaMenuTile(
-                action: action,
-                onTap: () => Navigator.of(context).pop(action),
-              ),
-            ],
-            const SizedBox(height: 8),
-          ],
-        ),
-      ),
-    );
-    if (action != null && mounted) {
-      await _onSelected(action);
-    }
-  }
+  List<AdaptiveMenuItem<_MediaMenuAction>> _items() => [
+    const AdaptiveMenuItem(
+      value: _MediaMenuAction.edit,
+      icon: Icons.edit_outlined,
+      label: 'Edit',
+    ),
+    const AdaptiveMenuItem(
+      value: _MediaMenuAction.info,
+      icon: Icons.info_outline,
+      label: 'Show info',
+    ),
+    const AdaptiveMenuItem(
+      value: _MediaMenuAction.export,
+      icon: Icons.file_upload_outlined,
+      label: 'Export',
+      hasDividerBefore: true,
+    ),
+    AdaptiveMenuItem(
+      value: _MediaMenuAction.share,
+      icon: Icons.adaptive.share,
+      label: 'Share',
+    ),
+    const AdaptiveMenuItem(
+      value: _MediaMenuAction.delete,
+      icon: Icons.delete_outline,
+      label: 'Delete',
+      isDestructive: true,
+      hasDividerBefore: true,
+    ),
+  ];
 
   Future<void> _onSelected(_MediaMenuAction action) async {
     switch (action) {
@@ -947,48 +938,6 @@ class MediaPopUpMenuState extends ConsumerState<MediaPopUpMenu> {
       ),
     );
   }
-}
-
-bool _hasDividerBefore(_MediaMenuAction action) =>
-    action == _MediaMenuAction.export || action == _MediaMenuAction.delete;
-
-class _MediaMenuTile extends StatelessWidget {
-  const _MediaMenuTile({required this.action, this.onTap});
-
-  final _MediaMenuAction action;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final isDelete = action == _MediaMenuAction.delete;
-    return ListTile(
-      onTap: onTap,
-      leading: Icon(_icon, color: isDelete ? _errorColor(context) : null),
-      title: Text(
-        _label,
-        style: TextStyle(color: isDelete ? _errorColor(context) : null),
-      ),
-    );
-  }
-
-  Color _errorColor(BuildContext context) =>
-      Theme.of(context).colorScheme.error;
-
-  IconData get _icon => switch (action) {
-    _MediaMenuAction.edit => Icons.edit_outlined,
-    _MediaMenuAction.info => Icons.info_outline,
-    _MediaMenuAction.export => Icons.file_upload_outlined,
-    _MediaMenuAction.share => Icons.adaptive.share,
-    _MediaMenuAction.delete => Icons.delete_outline,
-  };
-
-  String get _label => switch (action) {
-    _MediaMenuAction.edit => 'Edit',
-    _MediaMenuAction.info => 'Show info',
-    _MediaMenuAction.export => 'Export',
-    _MediaMenuAction.share => 'Share',
-    _MediaMenuAction.delete => 'Delete',
-  };
 }
 
 class MediaEditForm extends ConsumerStatefulWidget {

@@ -16,6 +16,7 @@ import 'package:nahpu/services/types/associated_data.dart';
 import 'package:nahpu/services/providers/specimens.dart';
 import 'package:nahpu/services/providers/settings.dart';
 import 'package:nahpu/services/settings/controlled_vocabulary_services.dart';
+import 'package:nahpu/screens/shared/actions/adaptive_menu.dart';
 import 'package:nahpu/screens/shared/actions/buttons.dart';
 import 'package:nahpu/screens/shared/forms/fields.dart';
 import 'package:nahpu/screens/shared/forms/forms.dart';
@@ -1147,6 +1148,8 @@ class PartIdForm extends ConsumerWidget {
   }
 }
 
+enum _UniqueIdAction { scan, generateUuid }
+
 class UniqueIDField extends StatefulWidget {
   const UniqueIDField({super.key, required this.barcodeIdCtr});
 
@@ -1170,48 +1173,45 @@ class _UniqueIDFieldState extends State<UniqueIDField> {
             isLastField: false,
           ),
         ),
-        PopupMenuButton<String>(
-          itemBuilder: (context) {
-            return [
-              if (systemPlatform == PlatformType.mobile)
-                PopupMenuItem(
-                  child: const ListTile(
-                    leading: Icon(Icons.qr_code_scanner_outlined),
-                    title: Text('Scan QR/Barcode'),
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ScannerScreen(
-                          supportedModes: const {
-                            ScannerMode.qr,
-                            ScannerMode.barcode,
-                          },
-                          onDetect: (barcode) {
-                            _onDetect(barcode);
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              if (systemPlatform == PlatformType.mobile)
-                const PopupMenuDivider(),
-              PopupMenuItem(
-                child: const ListTile(
-                  leading: Icon(Icons.qr_code_2_outlined),
-                  title: Text('Generate UUID'),
-                ),
-                onTap: () {
-                  _generateUuid();
-                },
+        AdaptiveMenuButton<_UniqueIdAction>(
+          tooltip: 'QR/barcode ID options',
+          onSelected: _onSelected,
+          itemBuilder: () => [
+            if (systemPlatform == PlatformType.mobile)
+              const AdaptiveMenuItem(
+                value: _UniqueIdAction.scan,
+                icon: Icons.qr_code_scanner_outlined,
+                label: 'Scan QR/Barcode',
               ),
-            ];
-          },
+            const AdaptiveMenuItem(
+              value: _UniqueIdAction.generateUuid,
+              icon: Icons.qr_code_2_outlined,
+              label: 'Generate UUID',
+              hasDividerBefore: true,
+            ),
+          ],
         ),
       ],
     );
+  }
+
+  void _onSelected(_UniqueIdAction action) {
+    switch (action) {
+      case _UniqueIdAction.scan:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ScannerScreen(
+              supportedModes: const {ScannerMode.qr, ScannerMode.barcode},
+              onDetect: (barcode) {
+                _onDetect(barcode);
+              },
+            ),
+          ),
+        );
+      case _UniqueIdAction.generateUuid:
+        _generateUuid();
+    }
   }
 
   void _onDetect(BarcodeCapture barcode) {
@@ -1349,45 +1349,43 @@ class TissueIDMenu extends ConsumerStatefulWidget {
   TissueIDMenuState createState() => TissueIDMenuState();
 }
 
+enum _TissueIdAction { newNumber, settings }
+
 class TissueIDMenuState extends ConsumerState<TissueIDMenu> {
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<int>(
-      itemBuilder: (BuildContext context) {
-        return [
-          PopupMenuItem(
-            value: 1,
-            enabled: _hasNoId(),
-            child: const ListTile(
-              leading: Icon(Icons.add),
-              title: Text('New number'),
-            ),
-            onTap: () => {
-              if (widget.onNewNumber != null)
-                {
-                  widget.onNewNumber!(),
-                  setState(() {
-                    _getNewNumber();
-                  }),
-                },
-            },
-          ),
-          const PopupMenuDivider(),
-          PopupMenuItem(
-            value: 2,
-            child: const ListTile(
-              leading: Icon(Icons.settings_outlined),
-              title: Text('Settings'),
-            ),
-            onTap: () => {
-              Future.delayed(
-                const Duration(milliseconds: 0),
-              ).then((value) => _showTissueSettings()),
-            },
-          ),
-        ];
-      },
+    return AdaptiveMenuButton<_TissueIdAction>(
+      tooltip: 'Tissue ID options',
+      onSelected: _onSelected,
+      itemBuilder: () => [
+        AdaptiveMenuItem(
+          value: _TissueIdAction.newNumber,
+          icon: Icons.add,
+          label: 'New number',
+          enabled: _hasNoId(),
+        ),
+        const AdaptiveMenuItem(
+          value: _TissueIdAction.settings,
+          icon: Icons.settings_outlined,
+          label: 'Settings',
+          hasDividerBefore: true,
+        ),
+      ],
     );
+  }
+
+  void _onSelected(_TissueIdAction action) {
+    switch (action) {
+      case _TissueIdAction.newNumber:
+        if (widget.onNewNumber != null) {
+          widget.onNewNumber!();
+          setState(() {
+            _getNewNumber();
+          });
+        }
+      case _TissueIdAction.settings:
+        _showTissueSettings();
+    }
   }
 
   void _showTissueSettings() {

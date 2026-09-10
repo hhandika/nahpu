@@ -285,54 +285,6 @@ class TertiaryButton extends StatelessWidget {
   }
 }
 
-class DeleteMenuButton extends StatelessWidget {
-  const DeleteMenuButton({super.key, required this.deleteAll});
-
-  final bool deleteAll;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(
-        deleteAll ? Icons.delete_forever_outlined : Icons.delete_outline,
-        color: Theme.of(context).colorScheme.error,
-      ),
-      title: Text(
-        deleteAll ? 'Delete all records' : 'Delete record',
-        style: TextStyle(color: Theme.of(context).colorScheme.error),
-      ),
-    );
-  }
-}
-
-class CreateMenuButton extends StatelessWidget {
-  const CreateMenuButton({super.key, required this.text});
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: const Icon(Icons.create_outlined),
-      title: Text(text, overflow: TextOverflow.ellipsis),
-    );
-  }
-}
-
-class DuplicateMenuButton extends StatelessWidget {
-  const DuplicateMenuButton({super.key, required this.text});
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: const Icon(Icons.copy_outlined),
-      title: Text(text),
-    );
-  }
-}
-
 class PdfExportMenuButton extends StatelessWidget {
   const PdfExportMenuButton({super.key});
 
@@ -353,18 +305,6 @@ class FindMenuButton extends StatelessWidget {
     return const ListTile(
       leading: Icon(Icons.search_outlined),
       title: Text('Find'),
-    );
-  }
-}
-
-class SortMenuButton extends StatelessWidget {
-  const SortMenuButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const ListTile(
-      leading: Icon(Icons.sort_rounded),
-      title: Text('Sort records'),
     );
   }
 }

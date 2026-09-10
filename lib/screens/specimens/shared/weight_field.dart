@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
+import 'package:nahpu/screens/shared/actions/adaptive_menu.dart';
 
 const List<String> specimenWeightUnits = ['g', 'kg', 'lbs'];
 
@@ -29,14 +30,19 @@ class WeightField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: 'Weight ($unit)${isBracketed ? '*' : ''}',
         hintText: 'Enter specimen weight',
-        suffixIcon: PopupMenuButton<String>(
+        suffixIcon: AdaptiveMenuButton<String>(
           tooltip: 'Change weight unit',
           icon: const Icon(Icons.edit_outlined),
           initialValue: unit,
           onSelected: onUnitChanged,
-          itemBuilder: (context) => specimenWeightUnits
-              .map((value) => PopupMenuItem(value: value, child: Text(value)))
-              .toList(),
+          itemBuilder: () => [
+            for (final value in specimenWeightUnits)
+              AdaptiveMenuItem(
+                value: value,
+                label: value,
+                checked: value == unit,
+              ),
+          ],
         ),
       ),
       inputFormatters: [

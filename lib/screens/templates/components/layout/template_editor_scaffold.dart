@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:material_ui/material_ui.dart';
+import 'package:nahpu/screens/shared/actions/adaptive_menu.dart';
 import 'package:nahpu/screens/templates/components/canvas/template_canvas_workspace.dart';
 import 'package:nahpu/screens/templates/components/controls/template_editor_toolbar.dart';
 import 'package:nahpu/screens/templates/components/properties/template_element_properties_panel.dart';
@@ -353,7 +354,6 @@ class _TemplateEditorAppBar extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
     return AppBar(
       title: const Text('Template Editor'),
       actions: [
@@ -362,106 +362,87 @@ class _TemplateEditorAppBar extends StatelessWidget
           icon: const Icon(Icons.add_circle_outline_rounded),
           tooltip: 'Create new template',
         ),
-        PopupMenuButton<String>(
+        AdaptiveMenuButton<_TemplateEditorAction>(
           tooltip: 'Template Options',
-          onSelected: (action) {
-            if (action == 'create') {
-              onCreateNewTemplate();
-            } else if (action == 'save') {
-              onSaveTemplate();
-            } else if (action == 'save_as') {
-              onSaveAsTemplate();
-            } else if (action == 'import') {
-              onImportTemplate();
-            } else if (action == 'export') {
-              onExportTemplate();
-            } else if (action == 'settings') {
-              onTemplateSettingsPressed();
-            } else if (action == 'delete') {
-              onDeleteTemplate();
-            }
-          },
-          itemBuilder: (ctx) => [
-            const PopupMenuItem(
-              value: 'create',
-              child: Row(
-                children: [
-                  Icon(Icons.add_circle_outline_rounded),
-                  SizedBox(width: 8),
-                  Text('Create new'),
-                ],
-              ),
-            ),
-            const PopupMenuDivider(height: 8),
-            const PopupMenuItem(
-              value: 'save',
-              child: Row(
-                children: [
-                  Icon(Icons.save_outlined),
-                  SizedBox(width: 8),
-                  Text('Save'),
-                ],
-              ),
-            ),
-            const PopupMenuItem(
-              value: 'save_as',
-              child: Row(
-                children: [
-                  Icon(Icons.save_as_outlined),
-                  SizedBox(width: 8),
-                  Text('Save as...'),
-                ],
-              ),
-            ),
-            const PopupMenuDivider(height: 8),
-            const PopupMenuItem(
-              value: 'import',
-              child: Row(
-                children: [
-                  Icon(Icons.file_download_outlined),
-                  SizedBox(width: 8),
-                  Text('Import'),
-                ],
-              ),
-            ),
-            const PopupMenuItem(
-              value: 'export',
-              child: Row(
-                children: [
-                  Icon(Icons.file_upload_outlined),
-                  SizedBox(width: 8),
-                  Text('Export'),
-                ],
-              ),
-            ),
-            const PopupMenuDivider(height: 8),
-            const PopupMenuItem(
-              value: 'settings',
-              child: Row(
-                children: [
-                  Icon(Icons.settings_outlined),
-                  SizedBox(width: 8),
-                  Text('Template settings'),
-                ],
-              ),
-            ),
-            const PopupMenuDivider(height: 8),
-            if (canDeleteSavedTemplate)
-              PopupMenuItem(
-                value: 'delete',
-                child: Row(
-                  children: [
-                    Icon(Icons.delete_outline_rounded, color: scheme.error),
-                    const SizedBox(width: 8),
-                    Text('Delete', style: TextStyle(color: scheme.error)),
-                  ],
-                ),
-              ),
-          ],
+          itemBuilder: _items,
+          onSelected: _onSelected,
         ),
       ],
     );
   }
+
+  List<AdaptiveMenuItem<_TemplateEditorAction>> _items() => [
+    const AdaptiveMenuItem(
+      value: _TemplateEditorAction.create,
+      icon: Icons.add_circle_outline_rounded,
+      label: 'Create new',
+    ),
+    const AdaptiveMenuItem(
+      value: _TemplateEditorAction.save,
+      icon: Icons.save_outlined,
+      label: 'Save',
+      hasDividerBefore: true,
+    ),
+    const AdaptiveMenuItem(
+      value: _TemplateEditorAction.saveAs,
+      icon: Icons.save_as_outlined,
+      label: 'Save as...',
+    ),
+    const AdaptiveMenuItem(
+      value: _TemplateEditorAction.import,
+      icon: Icons.file_download_outlined,
+      label: 'Import',
+      hasDividerBefore: true,
+    ),
+    const AdaptiveMenuItem(
+      value: _TemplateEditorAction.export,
+      icon: Icons.file_upload_outlined,
+      label: 'Export',
+    ),
+    const AdaptiveMenuItem(
+      value: _TemplateEditorAction.settings,
+      icon: Icons.settings_outlined,
+      label: 'Template settings',
+      hasDividerBefore: true,
+    ),
+    if (canDeleteSavedTemplate)
+      const AdaptiveMenuItem(
+        value: _TemplateEditorAction.delete,
+        icon: Icons.delete_outline_rounded,
+        label: 'Delete',
+        isDestructive: true,
+        hasDividerBefore: true,
+      ),
+  ];
+
+  void _onSelected(_TemplateEditorAction action) {
+    switch (action) {
+      case _TemplateEditorAction.create:
+        onCreateNewTemplate();
+      case _TemplateEditorAction.save:
+        onSaveTemplate();
+      case _TemplateEditorAction.saveAs:
+        onSaveAsTemplate();
+      case _TemplateEditorAction.import:
+        onImportTemplate();
+      case _TemplateEditorAction.export:
+        onExportTemplate();
+      case _TemplateEditorAction.settings:
+        onTemplateSettingsPressed();
+      case _TemplateEditorAction.delete:
+        onDeleteTemplate();
+    }
+  }
+}
+
+enum _TemplateEditorAction {
+  create,
+  save,
+  saveAs,
+  import,
+  export,
+  settings,
+  delete,
 }
 
 class _TemplatePropertiesStrip extends StatelessWidget {

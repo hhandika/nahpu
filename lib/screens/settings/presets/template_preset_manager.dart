@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:nahpu/screens/settings/presets/template_preset_deletion.dart';
+import 'package:nahpu/screens/shared/actions/adaptive_menu.dart';
 import 'package:nahpu/screens/shared/actions/preset_actions.dart';
 import 'package:nahpu/screens/shared/media/qr.dart';
 import 'package:nahpu/screens/templates/components/dialogs/missing_font_dialog.dart';
@@ -165,7 +166,7 @@ class _TemplatePresetManagerState extends ConsumerState<TemplatePresetManager> {
                       await _load();
                     },
                   ),
-                  PopupMenuButton<_TemplateTileAction>(
+                  AdaptiveMenuButton<_TemplateTileAction>(
                     tooltip: 'Template options',
                     onSelected: (action) {
                       switch (action) {
@@ -177,34 +178,22 @@ class _TemplatePresetManagerState extends ConsumerState<TemplatePresetManager> {
                           _delete(summary);
                       }
                     },
-                    itemBuilder: (context) => const [
-                      PopupMenuItem(
+                    itemBuilder: () => const [
+                      AdaptiveMenuItem(
                         value: _TemplateTileAction.export,
-                        child: ListTile(
-                          dense: true,
-                          contentPadding: EdgeInsets.zero,
-                          leading: Icon(Icons.file_upload_outlined),
-                          title: Text('Export'),
-                        ),
+                        icon: Icons.file_upload_outlined,
+                        label: 'Export',
                       ),
-                      PopupMenuItem(
+                      AdaptiveMenuItem(
                         value: _TemplateTileAction.showQr,
-                        child: ListTile(
-                          dense: true,
-                          contentPadding: EdgeInsets.zero,
-                          leading: Icon(Icons.qr_code),
-                          title: Text('Show QR'),
-                        ),
+                        icon: Icons.qr_code,
+                        label: 'Show QR',
                       ),
-                      PopupMenuDivider(height: 8),
-                      PopupMenuItem(
+                      AdaptiveMenuItem(
                         value: _TemplateTileAction.delete,
-                        child: ListTile(
-                          dense: true,
-                          contentPadding: EdgeInsets.zero,
-                          leading: Icon(Icons.delete_outline),
-                          title: Text('Delete'),
-                        ),
+                        icon: Icons.delete_outline,
+                        label: 'Delete',
+                        hasDividerBefore: true,
                       ),
                     ],
                   ),

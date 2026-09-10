@@ -22,6 +22,7 @@ import 'package:nahpu/services/providers/sites.dart';
 import 'package:nahpu/services/providers/settings.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nahpu/screens/shared/actions/adaptive_menu.dart';
 import 'package:nahpu/screens/shared/actions/buttons.dart';
 import 'package:nahpu/screens/shared/actions/export_share_button.dart';
 import 'package:nahpu/screens/exports/components/file_settings.dart';

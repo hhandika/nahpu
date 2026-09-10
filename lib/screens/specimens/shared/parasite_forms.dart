@@ -3,6 +3,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:nahpu/screens/projects/taxonomy/new_taxa.dart';
+import 'package:nahpu/screens/shared/actions/adaptive_menu.dart';
 import 'package:nahpu/screens/shared/actions/buttons.dart';
 import 'package:nahpu/screens/shared/common/common.dart';
 import 'package:nahpu/screens/shared/forms/fields.dart';
@@ -826,32 +827,27 @@ class _ParasiteIdFieldState extends ConsumerState<_ParasiteIdField> {
             isLastField: false,
           ),
         ),
-        PopupMenuButton<_ParasiteIdAction>(
+        AdaptiveMenuButton<_ParasiteIdAction>(
+          tooltip: 'Parasite ID options',
           onSelected: _handleAction,
-          itemBuilder: (_) => [
+          itemBuilder: () => [
             if (systemPlatform == PlatformType.mobile)
-              const PopupMenuItem(
+              const AdaptiveMenuItem(
                 value: _ParasiteIdAction.scan,
-                child: ListTile(
-                  leading: Icon(Icons.qr_code_scanner_outlined),
-                  title: Text('Scan QR/Barcode'),
-                ),
+                icon: Icons.qr_code_scanner_outlined,
+                label: 'Scan QR/Barcode',
               ),
-            PopupMenuItem(
+            AdaptiveMenuItem(
               value: _ParasiteIdAction.newNumber,
+              icon: Icons.add,
+              label: 'New number',
               enabled: widget.controller.text.isEmpty,
-              child: const ListTile(
-                leading: Icon(Icons.add),
-                title: Text('New number'),
-              ),
             ),
-            const PopupMenuDivider(),
-            const PopupMenuItem(
+            const AdaptiveMenuItem(
               value: _ParasiteIdAction.settings,
-              child: ListTile(
-                leading: Icon(Icons.settings_outlined),
-                title: Text('Settings'),
-              ),
+              icon: Icons.settings_outlined,
+              label: 'Settings',
+              hasDividerBefore: true,
             ),
           ],
         ),

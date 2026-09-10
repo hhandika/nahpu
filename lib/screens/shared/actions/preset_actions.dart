@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:nahpu/screens/shared/actions/adaptive_menu.dart';
 
 /// App-bar actions shared by document, template, and tabular preset screens.
 ///
@@ -34,89 +35,61 @@ class PresetAppBarActions extends StatelessWidget {
           icon: const Icon(Icons.add_circle_outline_rounded),
           tooltip: 'Create new $itemName',
         ),
-        PopupMenuButton<_PresetMenuAction>(
+        AdaptiveMenuButton<_PresetMenuAction>(
           tooltip:
               '${itemName[0].toUpperCase()}${itemName.substring(1)} options',
-          onSelected: (action) {
-            switch (action) {
-              case _PresetMenuAction.create:
-                onCreate();
-              case _PresetMenuAction.scanQr:
-                onScanQr();
-              case _PresetMenuAction.import:
-                onImport();
-              case _PresetMenuAction.exportSelected:
-                onExportSelected?.call();
-              case _PresetMenuAction.exportAll:
-                onExportAll();
-            }
-          },
-          itemBuilder: (context) => [
-            const PopupMenuItem(
-              value: _PresetMenuAction.create,
-              child: _PresetMenuItem(
-                icon: Icons.add_circle_outline_rounded,
-                label: 'Create new',
-              ),
-            ),
-            const PopupMenuDivider(height: 8),
-            const PopupMenuItem(
-              value: _PresetMenuAction.scanQr,
-              child: _PresetMenuItem(
-                icon: Icons.qr_code_scanner_outlined,
-                label: 'Scan QR',
-              ),
-            ),
-            const PopupMenuItem(
-              value: _PresetMenuAction.import,
-              child: _PresetMenuItem(
-                icon: Icons.file_download_outlined,
-                label: 'Import',
-              ),
-            ),
-            if (onExportSelected != null)
-              PopupMenuItem(
-                value: _PresetMenuAction.exportSelected,
-                child: _PresetMenuItem(
-                  icon: Icons.file_upload_outlined,
-                  label: 'Export this $itemName',
-                ),
-              ),
-            PopupMenuItem(
-              value: _PresetMenuAction.exportAll,
-              child: _PresetMenuItem(
-                icon: Icons.drive_folder_upload_outlined,
-                // Only distinguish the scopes when both are offered.
-                label: onExportSelected == null
-                    ? 'Export'
-                    : 'Export all ${itemName}s',
-              ),
-            ),
-          ],
+          itemBuilder: _items,
+          onSelected: _onSelected,
         ),
       ],
     );
   }
+
+  List<AdaptiveMenuItem<_PresetMenuAction>> _items() => [
+    const AdaptiveMenuItem(
+      value: _PresetMenuAction.create,
+      icon: Icons.add_circle_outline_rounded,
+      label: 'Create new',
+    ),
+    const AdaptiveMenuItem(
+      value: _PresetMenuAction.scanQr,
+      icon: Icons.qr_code_scanner_outlined,
+      label: 'Scan QR',
+      hasDividerBefore: true,
+    ),
+    const AdaptiveMenuItem(
+      value: _PresetMenuAction.import,
+      icon: Icons.file_download_outlined,
+      label: 'Import',
+    ),
+    if (onExportSelected != null)
+      AdaptiveMenuItem(
+        value: _PresetMenuAction.exportSelected,
+        icon: Icons.file_upload_outlined,
+        label: 'Export this $itemName',
+      ),
+    AdaptiveMenuItem(
+      value: _PresetMenuAction.exportAll,
+      icon: Icons.drive_folder_upload_outlined,
+      // Only distinguish the scopes when both are offered.
+      label: onExportSelected == null ? 'Export' : 'Export all ${itemName}s',
+    ),
+  ];
+
+  void _onSelected(_PresetMenuAction action) {
+    switch (action) {
+      case _PresetMenuAction.create:
+        onCreate();
+      case _PresetMenuAction.scanQr:
+        onScanQr();
+      case _PresetMenuAction.import:
+        onImport();
+      case _PresetMenuAction.exportSelected:
+        onExportSelected?.call();
+      case _PresetMenuAction.exportAll:
+        onExportAll();
+    }
+  }
 }
 
 enum _PresetMenuAction { create, scanQr, import, exportSelected, exportAll }
-
-class _PresetMenuItem extends StatelessWidget {
-  const _PresetMenuItem({required this.icon, required this.label});
-
-  final IconData icon;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(icon),
-        const SizedBox(width: 8),
-        // Scoped export labels carry the item name, so they need room to
-        // shrink rather than overflow on a narrow menu.
-        Flexible(child: Text(label, overflow: TextOverflow.ellipsis)),
-      ],
-    );
-  }
-}
