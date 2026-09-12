@@ -83,5 +83,8 @@ abstract final class NahpuContentWidth {
   static const double projectForm = 720;
   static const double projectWizard = 760;
   static const double home = 800;
+
+  /// Home screen when the project list and its actions sit side by side.
+  static const double homeSplit = 1200;
   static const double settings = 1200;
 }
