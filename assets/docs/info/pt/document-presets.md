@@ -17,4 +17,4 @@ As definições transferidas não incluem fontes personalizadas nem imagens dos 
 ## Saiba mais
 
 - [Exportar Documentos](https://nahpu.app/pt/usages/export/export-documents/)
-- [Referência do Editor de Modelos](https://nahpu.app/pt/usages/export/template-editor-reference/)
+- [Expressões de Exportação](https://nahpu.app/pt/usages/export/export-expressions/)

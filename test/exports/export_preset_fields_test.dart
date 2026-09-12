@@ -189,7 +189,7 @@ void main() {
     expect(find.textContaining('Format: encoded'), findsOneWidget);
   });
 
-  testWidgets('combined text editors retain their values when reordered', (
+  testWidgets('custom field text editors retain their values when reordered', (
     tester,
   ) async {
     const preset = ExportPresetModel(
@@ -199,7 +199,7 @@ void main() {
       mappings: [
         ExportFieldMapping(
           expression: '[site::siteID]-[site::siteName]/[site::country]',
-          headerOverride: 'combined',
+          headerOverride: 'custom',
         ),
       ],
     );
@@ -217,7 +217,7 @@ void main() {
     await tester.tap(find.byTooltip('Customize'));
     await tester.pumpAndSettle();
 
-    final secondTextCard = find.byKey(const ValueKey('combined-segment-3'));
+    final secondTextCard = find.byKey(const ValueKey('custom-segment-3'));
     final secondEditor = find.descendant(
       of: secondTextCard,
       matching: find.byType(EditableText),
@@ -233,7 +233,7 @@ void main() {
     await tester.pump();
 
     final movedEditor = find.descendant(
-      of: find.byKey(const ValueKey('combined-segment-3')),
+      of: find.byKey(const ValueKey('custom-segment-3')),
       matching: find.byType(EditableText),
     );
     expect(tester.widget<EditableText>(movedEditor).controller.text, '/');
@@ -241,6 +241,102 @@ void main() {
       find.text('Expression: [site::siteID]-/[site::siteName][site::country]'),
       findsOneWidget,
     );
+  });
+
+  testWidgets('raw source expression wraps without inserting line breaks', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(1200, 900));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    const preset = ExportPresetModel(
+      recordType: RecordType.site,
+      specimenRecordType: SpecimenRecordType.allTaxa,
+      headerFormat: ExportHeaderFormat.fieldName,
+      mappings: [
+        ExportFieldMapping(
+          expression: '[site::siteID] - [site::siteName] / [site::country]',
+          headerOverride: 'locality',
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [databaseProvider.overrideWithValue(db)],
+        child: const MaterialApp(
+          home: ExportPresetFieldsScreen(preset: preset),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byTooltip('Customize'));
+    await tester.pumpAndSettle();
+    final advanced = find.text('Advanced');
+    await tester.ensureVisible(advanced);
+    await tester.tap(advanced);
+    await tester.pumpAndSettle();
+
+    final rawField = find.descendant(
+      of: find.widgetWithText(TextFormField, 'Raw source expression'),
+      matching: find.byType(TextField),
+    );
+    final textField = tester.widget<TextField>(rawField);
+    expect(textField.minLines, 2);
+    expect(textField.maxLines, 8);
+
+    await tester.ensureVisible(rawField);
+    await tester.enterText(rawField, '[site::siteID]\n-[site::siteName]');
+    await tester.pumpAndSettle();
+
+    expect(
+      tester.widget<TextField>(rawField).controller!.text,
+      '[site::siteID]-[site::siteName]',
+    );
+  });
+
+  testWidgets('custom fields can be saved with text and no source field', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(1200, 800));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    const preset = ExportPresetModel(
+      recordType: RecordType.site,
+      specimenRecordType: SpecimenRecordType.allTaxa,
+      headerFormat: ExportHeaderFormat.fieldName,
+      mappings: [ExportFieldMapping(expression: '[site::siteID]')],
+    );
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [databaseProvider.overrideWithValue(db)],
+        child: const MaterialApp(
+          home: ExportPresetFieldsScreen(preset: preset),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Add custom field'));
+    await tester.pumpAndSettle();
+    expect(find.text('Add a field or text to begin.'), findsOneWidget);
+
+    await tester.tap(find.text('Add text'));
+    await tester.pumpAndSettle();
+    final textSegment = find.byKey(const ValueKey('custom-text-0'));
+    await tester.ensureVisible(textSegment);
+    await tester.enterText(textSegment, 'NAHPU');
+    final columnName = find.widgetWithText(TextFormField, 'Column name');
+    await tester.ensureVisible(columnName);
+    await tester.enterText(columnName, 'institution');
+    await tester.pumpAndSettle();
+
+    expect(find.text('Expression: NAHPU'), findsOneWidget);
+    await tester.ensureVisible(find.text('Done'));
+    await tester.tap(find.text('Done'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Custom: NAHPU'), findsOneWidget);
   });
 
   testWidgets(
@@ -275,7 +371,7 @@ void main() {
         FontWeight.bold,
       );
       expect(find.text('SITE'), findsNothing);
-      expect(find.text('Add combined'), findsOneWidget);
+      expect(find.text('Add custom field'), findsOneWidget);
       expect(find.text('Add nested'), findsOneWidget);
       expect(
         find.descendant(

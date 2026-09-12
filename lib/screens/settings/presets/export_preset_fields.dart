@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/services.dart';
 import 'package:nahpu/screens/shared/inline_grouped_field_picker.dart';
 import 'package:nahpu/screens/shared/text_replacement_rules_editor.dart';
 import 'package:nahpu/services/specimens/conditional_brackets.dart';
@@ -78,7 +79,7 @@ class _ExportPresetFieldsScreenState
               child: _SelectedMappingsHeader(
                 key: const ValueKey('selected-mappings-header'),
                 canAddNested: canAddNested,
-                onAddCombined: _addCombined,
+                onAddCustom: _addCustom,
                 onAddNested: _addNested,
               ),
             ),
@@ -235,12 +236,12 @@ class _ExportPresetFieldsScreenState
     );
   }
 
-  void _addCombined() {
+  void _addCustom() {
     _openMappingCustomizer(
       const ExportFieldMapping(expression: ''),
       allowExpandRows: true,
       onSave: (mapping) => _update(mappings: [..._preset.mappings, mapping]),
-      initialMappingKind: 'combined',
+      initialMappingKind: 'custom',
     );
   }
 
@@ -998,19 +999,19 @@ class _SelectedMappingsHeader extends StatelessWidget {
   const _SelectedMappingsHeader({
     super.key,
     required this.canAddNested,
-    required this.onAddCombined,
+    required this.onAddCustom,
     required this.onAddNested,
   });
 
   final bool canAddNested;
-  final VoidCallback onAddCombined;
+  final VoidCallback onAddCustom;
   final VoidCallback onAddNested;
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final compactActions = constraints.maxWidth < 440;
+        final compactActions = constraints.maxWidth < 480;
         final title = Text(
           'Selected Mappings',
           style: Theme.of(
@@ -1022,9 +1023,9 @@ class _SelectedMappingsHeader extends StatelessWidget {
             children: [
               Expanded(child: title),
               IconButton(
-                tooltip: 'Add combined',
-                onPressed: onAddCombined,
-                icon: const Icon(Icons.merge_type_outlined),
+                tooltip: 'Add custom field',
+                onPressed: onAddCustom,
+                icon: const Icon(Icons.edit_note_outlined),
               ),
               IconButton(
                 tooltip: 'Add nested',
@@ -1038,9 +1039,9 @@ class _SelectedMappingsHeader extends StatelessWidget {
           children: [
             Expanded(child: title),
             TextButton.icon(
-              onPressed: onAddCombined,
-              icon: const Icon(Icons.merge_type_outlined),
-              label: const Text('Add combined'),
+              onPressed: onAddCustom,
+              icon: const Icon(Icons.edit_note_outlined),
+              label: const Text('Add custom field'),
             ),
             TextButton.icon(
               onPressed: canAddNested ? onAddNested : null,
@@ -1095,7 +1096,7 @@ class _ExportMappingCard extends StatelessWidget {
     } else {
       title = isDirectExportSourceExpression(mapping.expression)
           ? 'Field: ${mapping.expression}'
-          : 'Combined: ${mapping.expression}';
+          : 'Custom: ${mapping.expression}';
       subtitle =
           'Format: ${_valueFormatLabel(mapping.textType)} · '
           'Options: ${mapping.formatOption}';
@@ -1224,7 +1225,7 @@ class _MappingCustomizerFormState
             ? 'list'
             : isDirectExportSourceExpression(_localMapping.expression)
             ? 'scalar'
-            : 'combined');
+            : 'custom');
 
     _expressionController = TextEditingController(
       text: _localMapping.expression,
@@ -1311,7 +1312,7 @@ class _MappingCustomizerFormState
           decoration: const InputDecoration(labelText: 'Mapping type'),
           items: const [
             DropdownMenuItem(value: 'scalar', child: Text('Single field')),
-            DropdownMenuItem(value: 'combined', child: Text('Combined fields')),
+            DropdownMenuItem(value: 'custom', child: Text('Custom field')),
             DropdownMenuItem(value: 'list', child: Text('List field')),
             DropdownMenuItem(value: 'nested', child: Text('Nested records')),
           ],
@@ -1543,8 +1544,8 @@ class _MappingCustomizerFormState
               ],
             ],
           ],
-        ] else if (_mappingKind == 'combined') ...[
-          _ConcatenatedExpressionComposer(
+        ] else if (_mappingKind == 'custom') ...[
+          _CustomExpressionComposer(
             expression: _expressionController.text,
             fieldGroups: groups,
             onChanged: (expression) => setState(() {
@@ -1558,8 +1559,7 @@ class _MappingCustomizerFormState
             onChanged: (_) => setState(() {}),
             decoration: const InputDecoration(
               labelText: 'Column name',
-              helperText:
-                  'Name the output column containing the combined value.',
+              helperText: 'Name the output column containing the custom value.',
             ),
           ),
         ] else ...[
@@ -1756,6 +1756,15 @@ class _MappingCustomizerFormState
               TextFormField(
                 controller: _expressionController,
                 onChanged: (_) => setState(() {}),
+                // Long expressions wrap for review, but stay one logical line
+                // because a line break would be written into the export cell.
+                minLines: 2,
+                maxLines: 8,
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.done,
+                inputFormatters: [
+                  FilteringTextInputFormatter.singleLineFormatter,
+                ],
                 decoration: const InputDecoration(
                   labelText: 'Raw source expression',
                   helperText: 'Example: [specimen::catalogNum]',
@@ -1853,7 +1862,7 @@ class _MappingCustomizerFormState
         expression: _expressionController.text.trim(),
         textType: switch (_mappingKind) {
           'list' => 'list',
-          'combined' => 'normal',
+          'custom' => 'normal',
           _ => _localMapping.textType,
         },
         clearNestedNamespace: true,
@@ -1971,15 +1980,9 @@ class _MappingCustomizerFormState
       return '';
     }
     if (_expressionController.text.trim().isEmpty) {
-      return _mappingKind == 'combined'
-          ? 'Add at least one source field.'
+      return _mappingKind == 'custom'
+          ? 'Add at least one field or text segment.'
           : 'Choose a source field.';
-    }
-    if (_mappingKind == 'combined' &&
-        !parseExportExpression(
-          _expressionController.text,
-        ).any((segment) => segment.isField)) {
-      return 'Combined values must include at least one source field.';
     }
     if (usesStandardizedExportHeaders(widget.headerFormat) &&
         _headerController.text.trim().isEmpty &&
@@ -2047,8 +2050,8 @@ class _MappingCustomizerFormState
   }
 }
 
-class _ConcatenatedExpressionComposer extends StatefulWidget {
-  const _ConcatenatedExpressionComposer({
+class _CustomExpressionComposer extends StatefulWidget {
+  const _CustomExpressionComposer({
     required this.expression,
     required this.fieldGroups,
     required this.onChanged,
@@ -2059,12 +2062,11 @@ class _ConcatenatedExpressionComposer extends StatefulWidget {
   final ValueChanged<String> onChanged;
 
   @override
-  State<_ConcatenatedExpressionComposer> createState() =>
-      _ConcatenatedExpressionComposerState();
+  State<_CustomExpressionComposer> createState() =>
+      _CustomExpressionComposerState();
 }
 
-class _ConcatenatedExpressionComposerState
-    extends State<_ConcatenatedExpressionComposer> {
+class _CustomExpressionComposerState extends State<_CustomExpressionComposer> {
   late List<ExportExpressionSegment> _segments;
   late List<int> _segmentIds;
   int _nextSegmentId = 0;
@@ -2077,7 +2079,7 @@ class _ConcatenatedExpressionComposerState
   }
 
   @override
-  void didUpdateWidget(covariant _ConcatenatedExpressionComposer oldWidget) {
+  void didUpdateWidget(covariant _CustomExpressionComposer oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.expression != oldWidget.expression &&
         widget.expression != serializeExportExpression(_segments)) {
@@ -2091,7 +2093,7 @@ class _ConcatenatedExpressionComposerState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text('Combined value', style: Theme.of(context).textTheme.titleSmall),
+        Text('Custom value', style: Theme.of(context).textTheme.titleSmall),
         const SizedBox(height: 4),
         const Text(
           'Fields and text are emitted left to right. Add as many segments as needed.',
@@ -2100,7 +2102,7 @@ class _ConcatenatedExpressionComposerState
         if (_segments.isEmpty)
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 8),
-            child: Text('Add a source field to begin.'),
+            child: Text('Add a field or text to begin.'),
           ),
         ..._segments.asMap().entries.map((entry) {
           final index = entry.key;
@@ -2109,7 +2111,7 @@ class _ConcatenatedExpressionComposerState
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 2),
             child: Material(
-              key: ValueKey('combined-segment-$segmentId'),
+              key: ValueKey('custom-segment-$segmentId'),
               color: Theme.of(context).colorScheme.surfaceContainerLow,
               elevation: 0,
               shadowColor: Colors.transparent,
@@ -2132,7 +2134,7 @@ class _ConcatenatedExpressionComposerState
                       child: segment.isField
                           ? Text(segment.value)
                           : TextFormField(
-                              key: ValueKey('combined-text-$segmentId'),
+                              key: ValueKey('custom-text-$segmentId'),
                               initialValue: segment.value,
                               decoration: const InputDecoration(
                                 labelText: 'Text or separator',
@@ -2589,7 +2591,7 @@ class _MappingOutputExample extends StatelessWidget {
         ? namespace.trim()
         : source ?? '';
     if (base.isEmpty) return const [];
-    if (mappingKind == 'scalar' || mappingKind == 'combined') return [base];
+    if (mappingKind == 'scalar' || mappingKind == 'custom') return [base];
     if (mappingKind == 'list') {
       if (listMode == ListExportMode.concatenate) return [base];
       return List.generate(3, (index) => _indexed(base, index + 1));

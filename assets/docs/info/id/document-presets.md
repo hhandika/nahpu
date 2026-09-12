@@ -17,4 +17,4 @@ Definisi yang ditransfer tidak menyertakan fon khusus atau gambar templat. Pasan
 ## Pelajari lebih lanjut
 
 - [Ekspor Dokumen](https://nahpu.app/id/usages/export/export-documents/)
-- [Referensi Editor Templat](https://nahpu.app/id/usages/export/template-editor-reference/)
+- [Ekspresi Ekspor](https://nahpu.app/id/usages/export/export-expressions/)

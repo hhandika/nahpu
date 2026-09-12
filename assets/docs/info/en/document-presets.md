@@ -17,4 +17,4 @@ Transferred definitions do not include custom fonts or template images. Install 
 ## Learn more
 
 - [Export Documents](https://nahpu.app/en/usages/export/export-documents/)
-- [Template Editor Reference](https://nahpu.app/en/usages/export/template-editor-reference/)
+- [Export Expressions](https://nahpu.app/en/usages/export/export-expressions/)
