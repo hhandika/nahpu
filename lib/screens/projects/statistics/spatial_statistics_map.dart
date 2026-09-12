@@ -66,8 +66,7 @@ class _SpatialStatisticsMapState extends State<SpatialStatisticsMap> {
               ),
             )
           else
-            SizedBox(
-              height: 480,
+            Expanded(
               child: _fullScreenMapOpen
                   ? ColoredBox(color: Theme.of(context).colorScheme.surface)
                   : _SpatialMapViewport(
