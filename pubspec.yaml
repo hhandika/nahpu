@@ -64,7 +64,7 @@ dependencies:
   qr: ^4.0.0
   mime: ^2.0.0
   flutter_markdown_plus: ^1.0.7
-  flex_color_picker: ^3.8.0
+  flex_color_picker: ^4.0.0
   pdfrx: ^2.4.7
   flutter_map: ^8.3.1
   flutter_map_pmtiles: ^1.0.5
