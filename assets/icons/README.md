@@ -50,8 +50,8 @@ adding or editing an icon.
 | Size | Widget | Where |
 |---|---|---|
 | 28px | `TileSvgIcon` | specimen part rows, coordinate rows, effort rows |
-| 32px | `ProjectActionBadge` | home project actions pinned above the list |
-| 40px | `ProjectActionBadge` | home project actions beside the list, empty home |
+| 32–40px | `ProjectActionIcon` | home project actions pinned above the list |
+| 40–48px | `ProjectActionIcon` | home project actions beside the list, empty home |
 | 64px | `CommonEmptyForm` | empty states |
 | 80px | `QrIcon` | QR view |
 | 116px | `FileFormatIcon` | export/bundle format pickers |

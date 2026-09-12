@@ -188,19 +188,33 @@ void main() {
     );
   }
 
-  testWidgets('create project is the primary action with its own icon', (
+  testWidgets('create project is the high-contrast primary action', (
     tester,
   ) async {
     await pumpHome(tester, size: const Size(1400, 900), projects: 1);
 
-    final colors = Theme.of(tester.element(find.byType(HomeBody))).colorScheme;
+    final create = find.byKey(_createKey);
+    final importCard = find.byKey(_importKey);
+    final fill = tester.widget<Material>(create).color!;
+    final title = tester.widget<Text>(
+      find.descendant(of: create, matching: find.byType(Text)),
+    );
+    final titleLuminance = title.style!.color!.computeLuminance();
+    final fillLuminance = fill.computeLuminance();
+    final contrast = titleLuminance > fillLuminance
+        ? (titleLuminance + 0.05) / (fillLuminance + 0.05)
+        : (fillLuminance + 0.05) / (titleLuminance + 0.05);
+    expect(contrast, greaterThanOrEqualTo(4.5));
+    expect(tester.widget<Material>(importCard).color, isNot(fill));
+
+    // Only the secondary action sits its icon on a tinted container.
     expect(
-      tester.widget<Material>(find.byKey(_createKey)).color,
-      colors.primary,
+      find.descendant(of: create, matching: find.byType(DecoratedBox)),
+      findsNothing,
     );
     expect(
-      tester.widget<Material>(find.byKey(_importKey)).color,
-      isNot(colors.primary),
+      find.descendant(of: importCard, matching: find.byType(DecoratedBox)),
+      findsOneWidget,
     );
 
     for (final (key, path) in const [

@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:nahpu/screens/projects/new_project.dart';
 import 'package:nahpu/screens/projects/project_transfer/import_project.dart';
 import 'package:nahpu/styles/design_tokens.dart';
+import 'package:nahpu/styles/themes.dart';
 
 /// The project actions offered on the home screen.
 enum HomeProjectAction {
@@ -31,8 +32,14 @@ enum HomeProjectAction {
   final String iconPath;
   final bool isPrimary;
 
+  Color containerOf(ColorScheme colors) {
+    return isPrimary
+        ? NahpuTheme.primaryAction
+        : colors.surfaceContainerHighest.withValues(alpha: 0.4);
+  }
+
   Color foregroundOf(ColorScheme colors) {
-    return isPrimary ? colors.onPrimary : colors.onSurface;
+    return isPrimary ? NahpuTheme.onPrimaryAction : colors.onSurface;
   }
 }
 
@@ -185,9 +192,7 @@ class ProjectActionCard extends StatelessWidget {
         button: true,
         child: Material(
           key: action.key,
-          color: action.isPrimary
-              ? colors.primary
-              : colors.surfaceContainerHighest.withValues(alpha: 0.4),
+          color: action.containerOf(colors),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(NahpuRadius.lg),
             side: action.isPrimary
@@ -228,8 +233,11 @@ class ProjectActionCard extends StatelessWidget {
   }
 }
 
-class ProjectActionBadge extends StatelessWidget {
-  const ProjectActionBadge({
+/// The action's icon inside a square of [size]. The secondary action sits
+/// its icon on a tinted container; the primary action shows the icon alone,
+/// since its filled card already sets it apart.
+class ProjectActionIcon extends StatelessWidget {
+  const ProjectActionIcon({
     super.key,
     required this.action,
     required this.size,
@@ -238,32 +246,64 @@ class ProjectActionBadge extends StatelessWidget {
 
   final HomeProjectAction action;
   final double size;
+
+  /// Icon size inside the secondary action's container. The bare primary icon
+  /// is drawn [NahpuSpacing.md] larger so both icons carry similar weight.
   final double iconSize;
 
   @override
   Widget build(BuildContext context) {
+    if (action.isPrimary) {
+      return SizedBox.square(
+        dimension: size,
+        child: Align(
+          alignment: Alignment.topLeft,
+          child: _ActionSvg(
+            iconPath: action.iconPath,
+            size: iconSize + NahpuSpacing.md,
+            color: NahpuTheme.onPrimaryAction,
+          ),
+        ),
+      );
+    }
     final colors = Theme.of(context).colorScheme;
     return Container(
       width: size,
       height: size,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: action.isPrimary
-            ? colors.onPrimary.withValues(alpha: 0.16)
-            : colors.primaryContainer,
+        color: colors.primaryContainer,
         borderRadius: BorderRadius.circular(
           size < NahpuControlSize.prominent ? NahpuRadius.sm : NahpuRadius.md,
         ),
       ),
-      child: SvgPicture.asset(
-        action.iconPath,
-        width: iconSize,
-        height: iconSize,
-        colorFilter: ColorFilter.mode(
-          action.isPrimary ? colors.onPrimary : colors.onPrimaryContainer,
-          BlendMode.srcIn,
-        ),
+      child: _ActionSvg(
+        iconPath: action.iconPath,
+        size: iconSize,
+        color: colors.onPrimaryContainer,
       ),
+    );
+  }
+}
+
+class _ActionSvg extends StatelessWidget {
+  const _ActionSvg({
+    required this.iconPath,
+    required this.size,
+    required this.color,
+  });
+
+  final String iconPath;
+  final double size;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return SvgPicture.asset(
+      iconPath,
+      width: size,
+      height: size,
+      colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
     );
   }
 }
@@ -278,7 +318,7 @@ class _RowActionContent extends StatelessWidget {
     final theme = Theme.of(context);
     return Row(
       children: [
-        ProjectActionBadge(
+        ProjectActionIcon(
           action: action,
           size: NahpuControlSize.control,
           iconSize: NahpuControlSize.iconLarge,
@@ -316,7 +356,7 @@ class _TallActionContent extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ProjectActionBadge(
+            ProjectActionIcon(
               action: action,
               size: NahpuControlSize.prominent,
               iconSize: NahpuControlSize.control,
